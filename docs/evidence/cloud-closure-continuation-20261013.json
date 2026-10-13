@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-13T09:26:51.732359+00:00",
+  "as_of": "2026-10-13T09:39:27.243663+00:00",
   "turn_classification": "PROGRESS",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "c50e554bc516e937f9faa5fcb3fc30c83ab07022",
+  "head": "e1903ed499344dc6025d9fde0b873d85bee1e7f2",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -79,8 +79,8 @@
       "hardlinks": 154
     },
     "latest_cloud_migration_checks": {
-      "run": 38372661182,
-      "source": "b9091be1ef86df1269a822c41304f3e7f9e7af57",
+      "run": 38376372112,
+      "source": "126bf5a64741fdc13bc4ea07552fdd479a182807",
       "status": "PASS_SPDX_INVENTORY_REUSE_AND_MIGRATION_REGRESSION"
     }
   },
@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect seven final-macro conductor-class sensitivity cases in38376209270 and unchangedactualcontrol38375733511. Bind actualcontrol to original38372656723 before causalcomparison. Use sensitivity only to select realgeometry repairs; never adopt artificialR. Staticmetaldiagnosis38375278729 iscomplete andshows smallgain fromwidercuts.",
+    "Inspect actualsignaltrunkphysicalrun38377693620. If allnativeDRC/LVS/faultcontrols pass, bind exactgeometry to newnativeRC extraction/composition then originalfixedphasewaveforms. Widerrealtrunks target internal losses identified by38376209270; artificialR success isnotphysical acceptance.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -4493,11 +4493,967 @@
   "tree_rc_sensitivity": {
     "run": 38376209270,
     "source": "c50e554bc516e937f9faa5fcb3fc30c83ab07022",
-    "status": "LIVE_LAST_VERIFIED",
+    "status": "COMPLETE_SOURCE_BOUND_ARTIFICIAL_R_DIAGNOSIS_NOT_ACCEPTANCE",
     "actual_control_run": 38375733511,
     "failed_preparation_run": 38375733511,
     "failed_preparation": "Seven diagnostic preparations rejected added wire_cref port before simulation; all65unit/source-bit tests passed. Native composition root proves wire_cref is the appended shunt-C reference, not metal. Preserved failed captures.",
     "repair": "Allow only exact appended wire_cref, require it to appear in capacitance only, reject R/device/body use or any other extra port, preserve every C/non-R line exactly. Added positive and corruption controls. Rerun only seven mutations; healthy actual control continues.",
-    "scope": "Artificial final-macro R sensitivity only. Preserve unmodified3889R2593C source and all original device/bit/phase/voltage limits. No physical adoption even if diagnostic gates pass."
+    "scope": "Artificial final-macro R sensitivity only. Preserve unmodified3889R2593C source and all original device/bit/phase/voltage limits. No physical adoption even if diagnostic gates pass.",
+    "cases": [
+      {
+        "run": 38375733511,
+        "case": "actual",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38375733511-1-tree-rc-actual/tx-tree-rc-actual-38375733511-1.summary.json",
+        "summary_sha256": "c1d0bd38d5cb7e5a8f6f2022fa97b1f8066f578c2190ca45882e5aefc647f853",
+        "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": null,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.014320226062285224,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 127,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.014320226062285224,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 127
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2690476667596835,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27409895086808356,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2712598186209081,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8942239655263584,
+              1.898145571771656
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.1613196419645173,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8073119541110556,
+              1.8739116330345493
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.39213148175147994,
+            "max_post_vce_v": 0.809776226722602,
+            "max_whole_abs_vce_v": 0.8198867240244424,
+            "max_whole_abs_vbe_v": 0.8580071314053275,
+            "max_whole_abs_ic_per_emitter_a": 0.0006116942761815349,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.3881653523607811,
+            "max_post_vce_v": 0.807108994818872,
+            "max_whole_abs_vce_v": 0.807108994818872,
+            "max_whole_abs_vbe_v": 0.8613996925817864,
+            "max_whole_abs_ic_per_emitter_a": 0.0006522777802875188,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.39302198415128653,
+            "max_post_vce_v": 0.8098200622763521,
+            "max_whole_abs_vce_v": 0.8198944669333389,
+            "max_whole_abs_vbe_v": 0.8585265379481621,
+            "max_whole_abs_ic_per_emitter_a": 0.0006181998441704389,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.3873166747732135,
+            "max_post_vce_v": 0.807219719979416,
+            "max_whole_abs_vce_v": 0.807219719979416,
+            "max_whole_abs_vbe_v": 0.8610714593182286,
+            "max_whole_abs_ic_per_emitter_a": 0.0006480059089632866,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "284e516d40882a291e314ce99be8778886228fecdf5350f8755bb9d82146b521"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {},
+        "selected_resistor_count": 0
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r/tx-tree-rc-low_r-38376209270-1.summary.json",
+        "summary_sha256": "908015a93e7df8a6d6660141ef4e7308291a6916dd50aba8d932055a3be3c384",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": true,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.20844101871715015,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.20844101871715015,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2833786829237417,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2825316306372292,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2709904985931817,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.894624951217169,
+              1.8980750687606174
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.15738157718224555,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8157815443030554,
+              1.8732083762802603
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "42be0660138f3fd0c742333129f26110e948d25b0ecfeb81ac2ba0433ffb2828"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "all",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "486fcc334734b89a71c46bd4fa3db104b809d8dfc46e1aefd41b508783740eeb",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 3889
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r_supply",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r_supply/tx-tree-rc-low_r_supply-38376209270-1.summary.json",
+        "summary_sha256": "cd2b575eb2f06a8df0f8e18f5a81c66d5329a342bf26614d4c438e069e57b09c",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.0641247770954787,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.0641247770954787,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 128
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26115714473181106,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2691797790628765,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27136712787050965,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8942708401226693,
+              1.8981182011176974
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.1771180886808228,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.811556792841877,
+              1.873053030444289
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.39637748852074184,
+            "max_post_vce_v": 0.7991290404214788,
+            "max_whole_abs_vce_v": 0.7991290404214788,
+            "max_whole_abs_vbe_v": 0.861371748082512,
+            "max_whole_abs_ic_per_emitter_a": 0.0006518448768200233,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.39552745253017374,
+            "max_post_vce_v": 0.7992317539266641,
+            "max_whole_abs_vce_v": 0.7992317539266641,
+            "max_whole_abs_vbe_v": 0.8610450738691933,
+            "max_whole_abs_ic_per_emitter_a": 0.000647612313190961,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "1a0404340c513a2c0ecd5fd04e774a21089d2c171fe10904eb8406d576956c9f"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "supply",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "4456a0315522046334ca03edab4cec1c22c376f5a719de88696670692097e216",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 113
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r_return",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r_return/tx-tree-rc-low_r_return-38376209270-1.summary.json",
+        "summary_sha256": "8f9df6a85524a311c249e30b105f63e56b1840bd37b90508f290cc346eb2470f",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.049778906222421204,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 73,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.049778906222421204,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 73
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.27434518996548096,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27040909757742715,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27063448344293217,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8945332308457252,
+              1.8990354041134632
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.13000437479467353,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 64,
+            "common_mode_range_v": [
+              1.8003842960260377,
+              1.8734503904963948
+            ],
+            "passed": false
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0006": {
+            "min_post_vce_v": 0.3819958390296924,
+            "max_post_vce_v": 0.42580571906631715,
+            "max_whole_abs_vce_v": 0.42580571906631715,
+            "max_whole_abs_vbe_v": 0.8897168995337513,
+            "max_whole_abs_ic_per_emitter_a": 0.0010702465062891343,
+            "passed": false
+          },
+          "xmux.xd0007": {
+            "min_post_vce_v": 0.3321720849710217,
+            "max_post_vce_v": 1.1452687839337619,
+            "max_whole_abs_vce_v": 1.1452687839337619,
+            "max_whole_abs_vbe_v": 0.8642124405095437,
+            "max_whole_abs_ic_per_emitter_a": 0.0006861630791812351,
+            "passed": false
+          },
+          "xmux.xd0008": {
+            "min_post_vce_v": 0.38086049299361807,
+            "max_post_vce_v": 0.424666534454594,
+            "max_whole_abs_vce_v": 0.424666534454594,
+            "max_whole_abs_vbe_v": 0.8896943822792677,
+            "max_whole_abs_ic_per_emitter_a": 0.0010696884690954592,
+            "passed": false
+          },
+          "xmux.xd0009": {
+            "min_post_vce_v": 0.3583799531802758,
+            "max_post_vce_v": 1.1581807502212025,
+            "max_whole_abs_vce_v": 1.1581807502212025,
+            "max_whole_abs_vbe_v": 0.8612410696272386,
+            "max_whole_abs_ic_per_emitter_a": 0.0006463428595925921,
+            "passed": false
+          },
+          "xmux.xd0010": {
+            "min_post_vce_v": 0.33247668239542394,
+            "max_post_vce_v": 1.142050355062287,
+            "max_whole_abs_vce_v": 1.142050355062287,
+            "max_whole_abs_vbe_v": 0.8617465400549664,
+            "max_whole_abs_ic_per_emitter_a": 0.0006548996701733465,
+            "passed": false
+          },
+          "xmux.xd0011": {
+            "min_post_vce_v": 0.3586573775061739,
+            "max_post_vce_v": 1.1581938659847772,
+            "max_whole_abs_vce_v": 1.1581938659847772,
+            "max_whole_abs_vbe_v": 0.862344806991056,
+            "max_whole_abs_ic_per_emitter_a": 0.000660714776117495,
+            "passed": false
+          },
+          "xmux.xd0012": {
+            "min_post_vce_v": 0.36097022523537725,
+            "max_post_vce_v": 1.1555150655321584,
+            "max_whole_abs_vce_v": 1.1555150655321584,
+            "max_whole_abs_vbe_v": 0.8618268116895149,
+            "max_whole_abs_ic_per_emitter_a": 0.0006582818604510859,
+            "passed": false
+          },
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.3416054969563853,
+            "max_post_vce_v": 0.8631038692417077,
+            "max_whole_abs_vce_v": 0.8631038692417077,
+            "max_whole_abs_vbe_v": 0.8810707863120746,
+            "max_whole_abs_ic_per_emitter_a": 0.0009389239765546141,
+            "passed": false
+          },
+          "xmux.xd0014": {
+            "min_post_vce_v": 0.3605222864788882,
+            "max_post_vce_v": 1.1554955643423044,
+            "max_whole_abs_vce_v": 1.1554955643423044,
+            "max_whole_abs_vbe_v": 0.8601848134916117,
+            "max_whole_abs_ic_per_emitter_a": 0.0006368126897630906,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.336374328297268,
+            "max_post_vce_v": 0.8650875807496833,
+            "max_whole_abs_vce_v": 0.8650875807496833,
+            "max_whole_abs_vbe_v": 0.8848305164040486,
+            "max_whole_abs_ic_per_emitter_a": 0.0009927044613881636,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.34281411043026655,
+            "max_post_vce_v": 0.8632750400962503,
+            "max_whole_abs_vce_v": 0.8632750400962503,
+            "max_whole_abs_vbe_v": 0.8818111950357198,
+            "max_whole_abs_ic_per_emitter_a": 0.0009505082987128288,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.33519249334162626,
+            "max_post_vce_v": 0.8650142042719742,
+            "max_whole_abs_vce_v": 0.8650142042719742,
+            "max_whole_abs_vbe_v": 0.8842337824725779,
+            "max_whole_abs_ic_per_emitter_a": 0.00098313911897336,
+            "passed": false
+          },
+          "xmux.xd0018": {
+            "min_post_vce_v": 0.3606715370232456,
+            "max_post_vce_v": 1.1555020684356405,
+            "max_whole_abs_vce_v": 1.1555020684356405,
+            "max_whole_abs_vbe_v": 0.8607312792992958,
+            "max_whole_abs_ic_per_emitter_a": 0.0006439141429966734,
+            "passed": false
+          },
+          "xmux.xd0019": {
+            "min_post_vce_v": 0.33218734978707687,
+            "max_post_vce_v": 1.1420299990161813,
+            "max_whole_abs_vce_v": 1.1420299990161813,
+            "max_whole_abs_vbe_v": 0.8607026134679197,
+            "max_whole_abs_ic_per_emitter_a": 0.0006413580462342191,
+            "passed": false
+          },
+          "xmux.xd0020": {
+            "min_post_vce_v": 0.35824131561354555,
+            "max_post_vce_v": 1.1581741882131404,
+            "max_whole_abs_vce_v": 1.1581741882131404,
+            "max_whole_abs_vbe_v": 0.8606905801539033,
+            "max_whole_abs_ic_per_emitter_a": 0.0006392386173047698,
+            "passed": false
+          },
+          "xmux.xd0021": {
+            "min_post_vce_v": 0.33197585094927096,
+            "max_post_vce_v": 1.1417357520648794,
+            "max_whole_abs_vce_v": 1.1417357520648794,
+            "max_whole_abs_vbe_v": 0.8607933713033473,
+            "max_whole_abs_ic_per_emitter_a": 0.000642103658078565,
+            "passed": false
+          },
+          "xmux.xd0022": {
+            "min_post_vce_v": 0.33190482697435386,
+            "max_post_vce_v": 1.1452512443139902,
+            "max_whole_abs_vce_v": 1.1452512443139902,
+            "max_whole_abs_vbe_v": 0.8631279365458491,
+            "max_whole_abs_ic_per_emitter_a": 0.0006717822620685374,
+            "passed": false
+          },
+          "xmux.xd0023": {
+            "min_post_vce_v": 0.33175710453461194,
+            "max_post_vce_v": 1.1450772735874337,
+            "max_whole_abs_vce_v": 1.1450772735874337,
+            "max_whole_abs_vbe_v": 0.8628620906403792,
+            "max_whole_abs_ic_per_emitter_a": 0.0006682661729347228,
+            "passed": false
+          },
+          "xtx.xtail": {
+            "min_post_vce_v": 0.3923590873296833,
+            "max_post_vce_v": 0.5407262806767241,
+            "max_whole_abs_vce_v": 0.5407262806767241,
+            "max_whole_abs_vbe_v": 0.9115185264801848,
+            "max_whole_abs_ic_per_emitter_a": 0.001513531445268793,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "bf65a88af973c617543b9846ff2879c314d6aa9ac903abb7e2b3bb2ef83b3037"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "return",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "49e3db6459251b7c6c5f7250fee9c730009564f02acfedb3e0938f810e872d35",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 394
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r_inputs",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r_inputs/tx-tree-rc-low_r_inputs-38376209270-1.summary.json",
+        "summary_sha256": "ec8e781cf88fe9919a5d120e49fa78e743ae86eaed53e0844c79eb3134ea72e6",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.029021692641604924,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 106,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.029021692641604924,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 106
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26983487355989344,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2740568216137329,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2712837739054865,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.894381200806262,
+              1.8981240373356294
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.16165415946395978,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8095228294343635,
+              1.8738517385010023
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.3929002358215621,
+            "max_post_vce_v": 0.8089611299426948,
+            "max_whole_abs_vce_v": 0.8196249837041197,
+            "max_whole_abs_vbe_v": 0.8578415317865972,
+            "max_whole_abs_ic_per_emitter_a": 0.000609760666650547,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.38887408017932723,
+            "max_post_vce_v": 0.8061896005188334,
+            "max_whole_abs_vce_v": 0.8061896005188334,
+            "max_whole_abs_vbe_v": 0.861398875606151,
+            "max_whole_abs_ic_per_emitter_a": 0.0006522706070422176,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.3937921591240724,
+            "max_post_vce_v": 0.8090028212707162,
+            "max_whole_abs_vce_v": 0.8196327329247453,
+            "max_whole_abs_vbe_v": 0.8583611110318965,
+            "max_whole_abs_ic_per_emitter_a": 0.0006162689251599625,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.38802133383901516,
+            "max_post_vce_v": 0.8062635884171208,
+            "max_whole_abs_vce_v": 0.8062635884171208,
+            "max_whole_abs_vbe_v": 0.8610714114121722,
+            "max_whole_abs_ic_per_emitter_a": 0.0006480126556352414,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "eb84e0ee4227455bdbb2419c2267ee935ccde41e2ea5c76a61296b5e6c87c6bc"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "inputs",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "a2e26b023fc2a2bc21bd99bcd08dfafa805da6134191277414ec606849bd11ef",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 714
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r_internal",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r_internal/tx-tree-rc-low_r_internal-38376209270-1.summary.json",
+        "summary_sha256": "1829e29aa6f0492e8dbe9cdf856cd11f69f26dc58e4cb616efea828e96e96cbd",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.07606290983573372,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 59,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.07606290983573372,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 59
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2652110802463734,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27094954753553435,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2711408301664713,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8942960032894702,
+              1.8979404422732775
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.16942995196126942,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8159606559662576,
+              1.8735280853526468
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "4762d66247f95bf61ecdbd41d24ed24c25abb308773e3a21f72bb33ab585d7a8"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "internal",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "fc58e59e4ce42945613288c7cf4432347a27508bbadd712e93976aa327d385c8",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 1529
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r_bias",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r_bias/tx-tree-rc-low_r_bias-38376209270-1.summary.json",
+        "summary_sha256": "aab5609d2ee6501d96a037ad67052b1abc6b3739b715c783b74d374173463455",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.014534748263682395,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 127,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.014534748263682395,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 127
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2689633329812797,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2740731756596886,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27124415731527285,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8942140961327563,
+              1.8981501669896947
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.16138681431804702,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.807416343903769,
+              1.8738873488079797
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.3920986095725899,
+            "max_post_vce_v": 0.8096978356768749,
+            "max_whole_abs_vce_v": 0.8199105565226964,
+            "max_whole_abs_vbe_v": 0.8579703304191398,
+            "max_whole_abs_ic_per_emitter_a": 0.0006111263547977854,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.3881730929849031,
+            "max_post_vce_v": 0.8069747958595691,
+            "max_whole_abs_vce_v": 0.8069747958595691,
+            "max_whole_abs_vbe_v": 0.8610962679012739,
+            "max_whole_abs_ic_per_emitter_a": 0.0006483451528120349,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.3929890664121124,
+            "max_post_vce_v": 0.8097416110262815,
+            "max_whole_abs_vce_v": 0.8199183169030213,
+            "max_whole_abs_vbe_v": 0.8584895358158809,
+            "max_whole_abs_ic_per_emitter_a": 0.000617624521873374,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.3873249943563809,
+            "max_post_vce_v": 0.8070909757322606,
+            "max_whole_abs_vce_v": 0.8070909757322606,
+            "max_whole_abs_vbe_v": 0.8607698072449654,
+            "max_whole_abs_ic_per_emitter_a": 0.0006441134417205636,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "c773de25c5b02f49d205c5d20b1c87f8c324278b4e5e989340b250675525e376"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "bias",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "5a50570d2b9b94b5b85f54d31c6893cf5333b050b6797aa3cb5f0aff94e9cc3e",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 179
+      },
+      {
+        "run": 38376209270,
+        "case": "low_r_outputs",
+        "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38376209270-1-tree-rc-low_r_outputs/tx-tree-rc-low_r_outputs-38376209270-1.summary.json",
+        "summary_sha256": "ce8bda8d81dc81675813f999916de8d38a46ecba3a8fec2dcce6a6e3fb4fd4fb",
+        "status": "COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE",
+        "accepted": false,
+        "component_screen_passed": false,
+        "diagnostic_screen_passed": false,
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.026238929237314634,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 97,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.026238929237314634,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 97
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2709866018514451,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2745264848629816,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27126255901026863,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.89422285903783,
+              1.8981457496716732
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.16191762597159176,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8074731941931759,
+              1.8738445123613405
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0013": {
+            "min_post_vce_v": 0.3925429898966234,
+            "max_post_vce_v": 0.8093810278556612,
+            "max_whole_abs_vce_v": 0.8197220260866181,
+            "max_whole_abs_vbe_v": 0.8580109992299996,
+            "max_whole_abs_ic_per_emitter_a": 0.0006117257110538723,
+            "passed": false
+          },
+          "xmux.xd0015": {
+            "min_post_vce_v": 0.38856933158998075,
+            "max_post_vce_v": 0.8067116490654546,
+            "max_whole_abs_vce_v": 0.8067116490654546,
+            "max_whole_abs_vbe_v": 0.8614021224824493,
+            "max_whole_abs_ic_per_emitter_a": 0.0006523084134845135,
+            "passed": false
+          },
+          "xmux.xd0016": {
+            "min_post_vce_v": 0.39343364836437655,
+            "max_post_vce_v": 0.8094248315763931,
+            "max_whole_abs_vce_v": 0.8197297713331252,
+            "max_whole_abs_vbe_v": 0.8585304360270223,
+            "max_whole_abs_ic_per_emitter_a": 0.0006182318470763676,
+            "passed": false
+          },
+          "xmux.xd0017": {
+            "min_post_vce_v": 0.3877202451338094,
+            "max_post_vce_v": 0.8068221717856509,
+            "max_whole_abs_vce_v": 0.8068221717856509,
+            "max_whole_abs_vbe_v": 0.8610738760210578,
+            "max_whole_abs_ic_per_emitter_a": 0.000648035913607157,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "diagnostics": [],
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "bc90b732bc57fac0986879c8754f00a640e59a99721d9ed7efa9bdac0a9a1240"
+        },
+        "contract_sha256": "0609758c1170e28ee47350e03f31aba326ce55b0d4c2157ad459fd6001945b00",
+        "mutation": {
+          "category": "outputs",
+          "factor": 0.01,
+          "original_sha256": "f7eeb9bcc952ee43962992a36389c9388451b9d35732391f1cfeac91a804bb77",
+          "mutated_sha256": "7d99f40f3794e6a0126a69cda3a995555c58b26b7abaac25d8c15c1e293bbe8c",
+          "resistors": 3889,
+          "conductors": 17,
+          "scope": "Artificial metal-R sensitivity only; actual geometry and native PDK coefficients unchanged. Not physical or PHY acceptance."
+        },
+        "selected_resistor_count": 178
+      }
+    ],
+    "actual_control_status": "EXACT_ORIGINAL_RAW_WAVE_COMPLETE_REVIEW_AND_CONTRACT_REPRODUCED",
+    "interpretation": "All-final-R x0.01 reaches208.441mV withzerooriginalbit/device/interfacefailures. Internal-only eliminates4HBTfailures and raisesminimum14.320to76.063mV but59earlysignalviolations remain. Supply-only64.125mV/2HBTfailures; return-onlycreates19HBTfailuresandfailsfinalinterface. No artificial model adopted."
+  },
+  "signal_trunk_physical": {
+    "run": 38377693620,
+    "source": "e1903ed499344dc6025d9fde0b873d85bee1e7f2",
+    "status": "in_progress",
+    "variant": "critical_buses_kelvin_signal_trunks",
+    "change": "ActualTM1trunkwidth1.64to3.0um only on qn,qp,ea,eb,tail. Inherit wider2rowvia baseline. Keep4.8umlanes, devices, viaarrays, sourcebits, limits andallPDKcoefficients unchanged.",
+    "source_inspection_run": 38377234347,
+    "source_generator_sha256": "948900be1ce02b72852a567dde3b9858e926cce81986538932308259c48e6aba",
+    "accepted": false
   }
 }

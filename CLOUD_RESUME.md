@@ -111,18 +111,26 @@ assets for large results. Do not download bulk CAD results onto this computer.
 - Source licence/inventory/REUSE and migration regression checks
   38372661182 passed on b9091be1. No local checkout or test files were created.
 
-## Conductor-loss diagnosis
+## Conductor-loss diagnosis and next physical candidate
 
 - Native metal comparison **38375278729** passed both dense profiles. Wider
   via columns reduce the worst internal terminal-pair resistances by about
-  0.88–0.95 ohm; 15.93–18.82 ohm remains in the wider candidate. This is
-  static metal-only diagnosis, not loaded or RF acceptance.
-- Unmodified actual-wave control **38375733511** continues. Its seven
-  sensitivity preparations stopped before simulation because the diagnostic
-  required identical port lists; the native wire model appends `wire_cref`.
-  Source inspection proves this is the shunt-capacitance reference.
-- Corrected sensitivity run **38376209270** permits only that appended
-  capacitance-only reference and rejects its use by any resistor or device.
-  Original models, all C/device lines and original measurement gates are
-  preserved. Only the seven failed preparations are retried. Even a passing
-  artificial-R waveform cannot establish physical or PHY acceptance.
+  0.88–0.95 ohm; 15.93–18.82 ohm remains in the wider candidate.
+- Unmodified actual control **38375733511** completed: raw-wave hash, complete
+  review and contract exactly reproduce **38372656723**. Its seven initial
+  sensitivity preparations failed before simulation on the appended
+  capacitance-only `wire_cref`; failed captures are retained.
+- Corrected sensitivity **38376209270** completed all seven cases. Actual
+  source models, all C/device lines, original bits/phases/limits are bound.
+  All final metal R scaled by0.01 yields **208.441 mV**, zero signal/device/
+  interface violations. This artificial model is **not physical acceptance**.
+  Internal-only scaling removes all four HBT failures but leaves59early
+  samples below100mV (minimum76.063mV); supply-only reaches64.125mV with
+  two HBT failures. Return-only creates19HBT failures and fails an interface.
+- New actual geometry **38377693620** widens only `qn`, `qp`, `ea`, `eb`,
+  `tail` TM1 trunks from1.64to3.0um on existing4.8um lanes. It keeps devices,
+  return/bias geometry, via arrays and extraction coefficients unchanged.
+  Source **e1903ed4**; inspect native DRC/LVS/fault gates before extracting
+  new RC and rerunning the unchanged original waveform screen.
+- Source licence/inventory/REUSE and migration regression **38376372112**
+  passed on126bf5a6. Local workspace remains empty; all CAD/tests are hosted.
