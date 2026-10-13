@@ -149,7 +149,8 @@ def main():
                 checkpoint=OUT/(f'newer-postcts-placement-{args.placement_profile}-'
                     f'{os.environ["GITHUB_RUN_ID"]}-{os.environ["GITHUB_RUN_ATTEMPT"]}.pre-route.json')
                 checkpoint.write_text(json.dumps(result,indent=2)+'\n')
-                subprocess.run(['gh','release','upload','cloud-migration-20261012-000',str(checkpoint)],check=True)
+                from publish_cloud_results import publish_results
+                publish_results('route-'+args.placement_profile, [checkpoint])
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]
         commands = [prefix, 'set_thread_count 2', 'check_placement -verbose',

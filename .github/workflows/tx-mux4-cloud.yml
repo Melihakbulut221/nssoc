@@ -54,7 +54,7 @@ jobs:
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
       - name: Reject source-bit corruption and incomplete output captures
-        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py
+        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
       - name: Run actual complete tree and full-wave engineering screen
         run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage divider14 --frontend damped_strong --clock-bias native_res --final-drive double_taps_guard --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
@@ -67,4 +67,12 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-mux4/result.json "$summary"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'tx-${{ matrix.streams }}-${{ matrix.condition }}-${{ matrix.fault }}' "$archive" "$archive.sha256" "$summary"
+      - name: Retain capture if permanent publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-${{ matrix.streams }}-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tx-serializer-*
+          if-no-files-found: warn
+          retention-days: 30

@@ -55,4 +55,4 @@ jobs:
           archive='cloud-output-restore-${{ matrix.group }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-output-restore
           sha256sum "$archive" > "$archive.sha256"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256"
+          python3 scripts/publish_cloud_results.py --group 'restore-${{ matrix.group }}' "$archive" "$archive.sha256"

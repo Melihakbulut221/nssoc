@@ -51,11 +51,8 @@ def main():
         archive_sha256=digest, archive_bytes=asset['size'], member=args.member,
         member_sha256=hashlib.sha256(member_bytes).hexdigest(), member_bytes=len(member_bytes),
         result=result), indent=2) + '\n')
-    existing = [a for page in assets for a in page if a['name'] == out.name]
-    if existing:
-        assert len(existing) == 1 and existing[0]['digest'] == 'sha256:' + hashlib.sha256(out.read_bytes()).hexdigest()
-    else:
-        subprocess.run(['gh', 'release', 'upload', release, str(out), '-R', repo], check=True)
+    from publish_cloud_results import publish_results
+    print(json.dumps(publish_results('summary', [out])), flush=True)
     print(out.read_text(), flush=True)
 
 

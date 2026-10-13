@@ -400,7 +400,9 @@ def main():
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
         def limits():
-            resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,)*2)
+            # Larger physical trees exceeded the old four-GiB process cap.
+            # Hosted public Linux runners provide sixteen GiB; retain headroom.
+            resource.setrlimit(resource.RLIMIT_AS,((12 if args.streams==32 else 8 if args.streams==8 else 4)*1024**3,)*2)
             resource.setrlimit(resource.RLIMIT_FSIZE,((2 if args.streams==4 else 8)*1024**3,)*2)
             resource.setrlimit(resource.RLIMIT_CORE,(0,0))
             os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})

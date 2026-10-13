@@ -18,7 +18,7 @@ from migrate_outputs_to_cloud import ROOT, atomic, publish
 
 REPO = 'Melihakbulut221/nssoc'
 BRANCH = 'codex/complete-open-work'
-TAG = 'cloud-migration-20261012-000'
+TAG = 'cloud-migration-finalization-20261013'
 STATES = [ROOT / 'hw/soc/out/cloud-migration-20261012',
           ROOT / 'hw/soc/out/cloud-migration-pnr-20261013']
 DIRECTORY = ROOT / 'hw/soc/out/cloud-migration-finalization-20261013'

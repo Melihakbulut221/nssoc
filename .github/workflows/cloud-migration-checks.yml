@@ -6,6 +6,8 @@ on:
       - scripts/finish_cloud_output_migration.py
       - scripts/clean_cloud_output_links.py
       - sw/tests/test_cloud_output_links.py
+      - sw/tests/test_cloud_result_publication.py
+      - scripts/publish_cloud_results.py
       - sw/tests/test_cloud_migration_finalization.py
       - scripts/migrate_outputs_to_cloud.py
       - sw/tests/test_cloud_output_migration.py
@@ -29,4 +31,4 @@ jobs:
       - run: python scripts/spdx_check.py
       - run: python scripts/licence_inventory.py --check
       - run: python -m reuse lint
-      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py sw/tests/test_cloud_restore_hardlinks.py sw/tests/test_cloud_migration_finalization.py sw/tests/test_cloud_output_links.py
+      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py sw/tests/test_cloud_restore_hardlinks.py sw/tests/test_cloud_migration_finalization.py sw/tests/test_cloud_output_links.py sw/tests/test_cloud_result_publication.py
