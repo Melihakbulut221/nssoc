@@ -16,6 +16,7 @@ on:
       - hw/soc/analog/pcie/tx_mux2_hbt_passive_drive_v2.spice
       - hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice
       - hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice
+      - hw/soc/analog/pcie/tx_pre_bias_res_v1.inc
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,10 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        condition: [nominal, hot_low, cold_high]
-        pre_bias: [baseline, plus10, plus20]
-        include:
-          - {condition: quarter_step, pre_bias: plus10}
+        condition: [nominal, quarter_step, hot_low, cold_high]
     permissions:
       contents: write
     steps:
@@ -54,13 +52,13 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --prestage divider14 --frontend damped_strong --clock-bias native_vbe --final-drive double_taps_guard --pre-bias '${{ matrix.pre_bias }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --prestage divider14 --frontend damped_strong --clock-bias native_vbe --final-drive double_taps_guard --pre-bias native_res
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-mux4-headroom-${{ matrix.condition }}-${{ matrix.pre_bias }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-mux4-res-bias-${{ matrix.condition }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-mux4
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"

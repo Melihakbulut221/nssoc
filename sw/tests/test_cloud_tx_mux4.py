@@ -170,3 +170,26 @@ def test_headroom_repair_changes_only_two_collector_resistor_widths():
         rows.append(line)
     assert ''.join(rows)==mux4.TAPPED_FINAL.read_text()
     assert mux4.PRE_BIASES=={'baseline':.0005,'plus10':.00055,'plus20':.0006}
+
+
+def test_native_prestage_bias_replaces_current_sources_and_measures_loaded_feeds(tmp_path):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text('''
+.subckt sg13g2_buf_16 X A VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 X net1 VDD VDD sg13_lv_pmos
+XP0 net1 A VDD VDD sg13_lv_pmos
+.ends
+''')
+    deck,c=mux4.build(tmp_path,'hot_low',clock_bias='native_vbe',final_drive='double_taps_guard',pre_bias='native_res')
+    assert len(c['hbt'])==62 and len(c['mos'])==64
+    assert not any(line.startswith(('Ira ','Irb ')) for line in deck.splitlines())
+    for reference in ('ra','rb'):
+        assert f'Vprebias_{reference} avdd prefeed_{reference} 0' in deck
+        assert f'XPREBIAS_{reference} prefeed_{reference} {reference} 0 nssoc_tx_pre_bias_res_v1' in deck
+        assert f'i(vprebias_{reference})' in c['vectors']
+        assert f'v(prefeed_{reference})' in c['vectors']
+    assert 'Imr avdd mr PWL(0 0 1n 0.001)' in deck
+    assert 'rppd w=2u l=22u' in mux4.PRE_FEED.read_text()

@@ -35,6 +35,8 @@ FAST_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux2_hbt_passive_drive_v2.spice'
 TAPPED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice'
 GUARDED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice'
 PRE_BIASES = {'baseline':.0005,'plus10':.00055,'plus20':.0006}
+PRE_BIAS_MODES = (*PRE_BIASES, 'native_res')
+PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
 
 
 def sequence():
@@ -107,7 +109,7 @@ def prepare_inputs(inputs):
 
 
 def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline'):
-    assert pre_bias in PRE_BIASES
+    assert pre_bias in PRE_BIAS_MODES
     assert final_drive in ('baseline','double','double_taps','double_taps_guard')
     assert clock_bias in ('ideal','native_vbe')
     bits = sequence()
@@ -122,6 +124,8 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         ('MOShv', c['hv_corner'], frontend / 'models')]:
         lines.append(f'.lib "{directory / ("corner" + kind + ".lib")}" {corner}')
     lines += [f'.include "{p}"' for p in (PRE, FRONT, TX, final, frontend / 'buf16.inc')]
+    if pre_bias=='native_res':
+        lines.append(f'.include "{PRE_FEED}"')
     if clock_bias=='native_vbe':
         lines.append(f'.include "{BIAS}"')
     lines += [f'.temp {c["temperature_c"]}', '.options reltol=1e-4 abstol=1e-12']
@@ -175,6 +179,12 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         hbt.update(found)
         lines += ['XCLKBIAS clkbias 0 0 '+subckt, 'ICLKBIAS avdd clkbias PWL(0 0 1n .00065)']
     for reference in ('ra', 'rb', 'mr'):
+        if pre_bias=='native_res' and reference in ('ra','rb'):
+            # Zero-volt source is only a current probe, not a bias generator.
+            lines.append(f'Vprebias_{reference} avdd prefeed_{reference} 0')
+            if not (fault=='disable_pre_b_bias' and reference=='rb'):
+                lines.append(f'XPREBIAS_{reference} prefeed_{reference} {reference} 0 nssoc_tx_pre_bias_res_v1')
+            continue
         bias = 0 if fault == 'disable_pre_b_bias' and reference == 'rb' else .0005
         if reference in ('ra','rb') and not (fault=='disable_pre_b_bias' and reference=='rb'):
             bias=PRE_BIASES[pre_bias]
@@ -192,6 +202,9 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     nodes = ({n for row in [*hbt.values(), *mos.values()] for n in row['terminals']} | set(rails)) - {'0'}
     nodes.update(f'd{i}{suffix}0' for i in range(4) for suffix in ('p','n'))
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
+    if pre_bias=='native_res':
+        vectors += [f'i(vprebias_{reference})' for reference in ('ra','rb')]
+        vectors += [f'v(prefeed_{reference})' for reference in ('ra','rb')]
     vectors += ['@q.'+n+'.qnpn13g2[ic]' for n in hbt]
     assert len(vectors) == len(set(vectors))
     lines += ['.control', f'pre_osdi {inputs / "r3_cmc.osdi"}',
@@ -225,6 +238,12 @@ def review(run, contract):
     for name, expected in contract['rails'].items():
         assert np.max(np.abs(volt(name)-expected*np.clip(t/1e-9,0,1))) < 1e-9
     active = t >= START
+    bias_current={}
+    if contract.get('pre_bias')=='native_res':
+        for reference in ('ra','rb'):
+            assert np.max(np.abs(volt('prefeed_'+reference)-volt('avdd'))) < 1e-12
+            current=values[f'i(vprebias_{reference})'][active]
+            bias_current[reference]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
     devices = {}
     for name, row in contract['hbt'].items():
         c,b,e,_ = (volt(n) for n in row['terminals'])
@@ -256,7 +275,7 @@ def review(run, contract):
     signal = original_bit_output_screen(t,volt('op'),volt('on'),contract['bits'],START,UI)
     interfaces = {name:interface(name) for name in ('cmos', 'final')}
     clocks={name:[float(((volt(name+'p')+volt(name+'n'))/2)[active].min()),float(((volt(name+'p')+volt(name+'n'))/2)[active].max())] for name in ('sa','sb','s')}
-    return dict(clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
+    return dict(prestage_native_bias_current_a=bias_current,clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
         signals=signal,hbt_devices=devices,mos_devices=mos,interfaces=interfaces,
         failed_hbts={n:r for n,r in devices.items() if not r['passed']},
         failed_mos={n:r for n,r in mos.items() if not r['passed']},
@@ -273,7 +292,7 @@ def main():
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe'),default='ideal')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard'),default='baseline')
-    parser.add_argument('--pre-bias',choices=tuple(PRE_BIASES),default='baseline')
+    parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
     args=parser.parse_args()
     if args.prestage=='divider14':
         PRE=ROOT/'hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice'
@@ -285,14 +304,14 @@ def main():
     inputs=out/'inputs';inputs.mkdir()
     run=out/'native';run.mkdir()
     result=dict(status='RUNNING',condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,final_drive=args.final_drive,pre_bias=args.pre_bias,accepted=False,
-        scope='Actual 61-HBT/64-MOS two-level4:1 schematic; native_vbe adds one fully screened HBT and resistor for loaded clock common-mode generation. Differential clock phases and reference currents remain ideal external sources. Four synchronous2Gb/s sources; final8GT/s 256-bit original oracle unchanged. No upstream32:1 tree, PLL/CDR, physical layout, PEX, ESD, jitter/BER or full PHY acceptance.')
+        scope='Actual 61-HBT/64-MOS two-level4:1 schematic; native_vbe adds one fully screened HBT and resistor for loaded clock common-mode generation. Differential clock phases and final/TX/clock-reference currents remain external ideal sources; native_res replaces only the two prestage ideal currents with real loaded resistor feeds. Four synchronous2Gb/s sources; final8GT/s 256-bit original oracle unchanged. No upstream32:1 tree, PLL/CDR, physical layout, PEX, ESD, jitter/BER or full PHY acceptance.')
     try:
         prepare_inputs(inputs)
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias)
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        paths=[PRE,FRONT,TX,BIAS,FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
+        paths=[PRE,FRONT,TX,BIAS,FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,PRE_FEED,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
                ROOT/'scripts/run_cloud_tx_operating_point.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
