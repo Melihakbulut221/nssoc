@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T13:34:19.591785+00:00",
+  "as_of": "2026-10-13T13:45:27.804011+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -94,7 +94,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Run fresh local-return geometry through native DRC/LVS/fault controls before RC extraction or loaded waves. Existing local-tail and cascade16 candidates remain rejected. Diagnosis38405000500/38405006454 passed; exact records retained in local_tail_hot_diagnosis.",
+    "Local-return physical38406919993 PASS560DRC/0markers and strict hierarchical/flat LVS plus fivefaultcontrols. Native RC extraction is the next gate; use exact newly bound archive. Only then compose native devices and launch original-bit loaded hot/cold/nominal studies. Earlier failed38406101139 retained.",
     "Do not rerun the four completed local-tail studies unchanged. Read completed_local_tail_comparison and its exact immutable summaries. Neither candidate is accepted; hot wire and compact violations remain. Diagnose actual voltage/headroom and parasitic delay before selecting another source-bound circuit or geometry change.",
     "Inspect existing main route38395878470 before dispatching another route. Latest observed status:in_progress. Keep estimated eth_rx setup regression-4.524ps recorded; no routing or timing closure without native reports.",
     "All source edits through GitHub API; all CAD, simulation, tests and bulk artifacts on GitHub-hosted infrastructure. Local project and transient paths are empty; never recreate local checkout or CAD producers.",
@@ -26015,7 +26015,7 @@
   "local_return_candidate": {
     "variant": "critical_buses_kelvin_local_return",
     "circuit_profile": "final_drive_v8",
-    "status": "SOURCE_READY_NOT_PHYSICALLY_VERIFIED",
+    "status": "PASS_PHYSICAL_REQUIRES_NATIVE_RC_AND_LOADED_WAVES",
     "accepted": false,
     "change": "Same local-tail geometry; M5 return width1.6to3.2um, reference/tail M2-to-M5 columns4to6 (eight failed native spacing), return M5-to-TM1 columns4to8. Fresh DRC/LVS pending; devices and all RC/acceptance limits unchanged.",
     "failed_first_physical": {
@@ -26033,6 +26033,79 @@
       "edge_pairs": "(286.375,100.085;286.375,100.375)|(286.185,100.464;286.185,99.996)",
       "measured_gap_um": 0.19,
       "adopted": false
+    },
+    "physical_run": 38406919993,
+    "physical_source": "e2ae819c50dbe5e68b9e064d380918d4f6006396",
+    "summary_sha256": "0b7b55938b1cbeb05938258c49a313c7252c7848786ed7916937149c119a5b16",
+    "archive": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38406919993-1-layout-final_drive_v8-critical_buses_kelvin_local_return/tx-layout-repair-cloud-final_drive_v8-critical_buses_kelvin_local_return-38406919993-1.tar.gz",
+      "bytes": 388494,
+      "sha256": "0b0867c1b7454e6a07f242fd350e57b74fc080e989d3990e1a14f5a85997692d"
+    },
+    "drc": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 560,
+      "report_sha256": "9362644f1330028659c4b1ed944affff0a77bb6f62ee01a6a5709c1aa96a7ccf",
+      "log_sha256": "9113f8d3894eed363df6f1a7333af2bf27ad1aec562d52a9f403ce9589d76008"
+    },
+    "lvs": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_mux2_final_drive_v8_layout_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_mux2_final_drive_v8_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V8_LAYOUT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+          "bytes": 383997,
+          "sha256": "481f18bcf406329959813270995c5a066b10da0eaa774b52a3492ac655df0658"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+          "bytes": 37169,
+          "sha256": "cc8775f0ef6314f6fc650085cc8c8c3a9c9a6f39290df79f24f3b1ce184b97ae"
+        }
+      }
+    },
+    "lvs_flat": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_mux2_final_drive_v8_layout_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_mux2_final_drive_v8_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V8_LAYOUT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/result.lvsdb": {
+          "bytes": 359547,
+          "sha256": "3d2f85a7254c7d3765c0789940955768c5aca0d025f808dbc35c8e0ac46e726a"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/deck.log": {
+          "bytes": 37168,
+          "sha256": "338a5c1b38a5e8ccd7901f8d07ff379c9a3ed434a1a5482f57b963c401ccef95"
+        }
+      }
     }
   }
 }

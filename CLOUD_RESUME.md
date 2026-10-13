@@ -53,7 +53,10 @@ is retained. Revision uses6columns at M2-to-M5 pin stacks (original4),
 keeping8columns at the M5-to-TM1 return feed. Fresh DRC/LVS is required.
 First prove actual DRC/LVS and physical fault rejection, then extract native
 RC and test unchanged full-wave/PVT gates. This is an unverified candidate.
-Source/licence/migration checks38405171329passed on2b0afc09.
+Revised physical run **38406919993 passed** all560DRC categories with zero
+markers, strict hierarchical/flat54-device LVS and fivefaultcontrols. Exact
+archive is bound in the extraction input; native RC and loaded waves remain
+required. Source/licence/migration checks38405171329passed on2b0afc09.
 
 ### Exact physical sources for these studies
 
