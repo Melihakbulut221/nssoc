@@ -8670,5 +8670,15 @@
     "native_identity_run": 38390363372,
     "status": "DISPATCHED_UNSCREENED",
     "scope": "Actual same v8 geometry/circuit and wire model; native devices at two PVT cases and finer0.25ps simulation. No wire-temperature coefficient/RF/body qualification. Even a corner pass is not fullPHY acceptance."
+  },
+  "cascade14_dense_candidate": {
+    "status": "UNSCREENED_PHYSICAL_GEOMETRY",
+    "circuit_profile": "cascade14",
+    "variant": "critical_buses_kelvin_dense_wide",
+    "circuit_source": "hw/soc/analog/pcie/tx_mux2_hbt_cascade_v2.spice",
+    "circuit_sha256": "c97692bcc4389c256479631e820a4293b79121d2225d767f5635429cd7dd0805",
+    "change": "Keep every native transistor/resistor unchanged; apply interleaved resistor placement, short Kelvin return and12-column/two-row M3-to-TM1 arrays to the prestage. Existing power_trunks_vias geometry stays unchanged.",
+    "reason": "v8 hot_low extracted tree has58wrong signs and prestage output common mode1.736968..1.781254V; compact hot_low common mode1.834811..1.852364V passes. Investigate native geometric voltage loss before tuning only final MUX size. Dense geometry is a hypothesis, not accepted for this circuit.",
+    "adopted": false
   }
 }

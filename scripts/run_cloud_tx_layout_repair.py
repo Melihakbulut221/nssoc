@@ -33,8 +33,9 @@ def main():
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8'), default='baseline')
     args = parser.parse_args()
+    dense_prestage = args.circuit_profile == 'cascade14' and args.variant == 'critical_buses_kelvin_dense_wide'
     if args.variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
-        assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8')
+        assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') or dense_prestage
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
     spec = json.loads(spec_path.read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
@@ -172,7 +173,7 @@ def main():
                     ("width = 16 if net in ['avdd','avss'] else 4",
                      "width = 32 if net in ['avdd','avss'] else 4"),
                 ]
-            if args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            if (args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8') or dense_prestage) and args.variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
                 # Actual first-layout extraction shorted ea to avdd: D20's
                 # 18um resistor contact via at x365.4 meets D21's ea escape
                 # lane x366 at the same y. DRC alone did not detect this.
