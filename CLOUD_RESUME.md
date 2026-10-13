@@ -10,6 +10,27 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Active hosted jobs and tested capture repair
+
+Source **26e3692a27cb4aea7faa877b8df3388ddc06024d**:
+- **38441886627**: cascade158/direct-supply exact device/RC composition, running.
+- **38441891276**: source/SPDX/REUSE/migration and complete serializer capture
+  regressions PASSED, including bounded save commands and4/8/16/32device census.
+- **38441895491**: corrected32:1 nominal compact/wire study, pending behind
+  original **38440472079**. Same stiff65, supply-feed prestage, matched low-critical
+  final macro; only observation-command batching changed. Preserve original
+  failure/success evidence; pending is not failure, and do not duplicate either.
+- Main-chip route **38420407838** remains in_progress; final route/STA not proven.
+
+Next inspect composition result and bind its immutable archive plus compact/wire
+hashes to a distinct cascade158 loaded profile. Then use unchanged4:1 nominal,
+hot/cold screens with stiff65 and final v8_kelvin_low_critical before expanding
+that new prestage. Never substitute old cascade14/16 parasitics. The independent
+32:1 run retains the old prestage so its result is not silently mixed with158.
+All six completed4:1 stiff65 results and original failed controls are preserved.
+Local workspace is empty; all CAD, tests and large captures remain hosted.
+Full serial Gen3x4, assembled layout and final setup/hold remain OPEN.
+
 ## Complete stiff65 evidence and cascade158 composition next
 
 All six exact stiff65 cases are in
