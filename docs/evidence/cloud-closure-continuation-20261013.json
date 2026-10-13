@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T11:19:21.051823+00:00",
+  "as_of": "2026-10-13T11:23:33.830595+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -8522,10 +8522,73 @@
   "final_v8_loaded_tree": {
     "run": 38389211866,
     "source_head": "ad01294b949962454d2db384c43963e783a53c47",
-    "status": "NATIVE_COMPACT_AND_WIRE_SIMULATIONS_IN_PROGRESS",
+    "status": "COMPACT_PASSED_WIRE_NATIVE_SIMULATION_IN_PROGRESS",
     "streams": 4,
     "condition": "nominal",
     "source_checks_run": 38389215320,
-    "adopted": false
+    "adopted": false,
+    "source_checks_status": "PASS",
+    "compact": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38389211866-1-tree-4-physical_compact-nominal-none/tx-tree-physical-4-physical_compact-nominal-none-38389211866-1.summary.json",
+      "summary_sha256": "afbd0f5dc65da506abb0ca6bc3975a138a5b820335ac580fc028c714e1b0b79a",
+      "component_screen_passed": true,
+      "accepted": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.28113823123807036,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.28113823123807036,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2816096213547101,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.28158531932061925,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.26678913902707957,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8890105332504232,
+            1.8986475547325936
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.28479623866083514,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9136749033927165,
+            1.9379497217006867
+          ],
+          "passed": true
+        }
+      },
+      "diagnostics": []
+    }
   }
 }
