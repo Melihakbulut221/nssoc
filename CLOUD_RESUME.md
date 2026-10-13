@@ -130,7 +130,10 @@ assets for large results. Do not download bulk CAD results onto this computer.
 - New actual geometry **38377693620** widens only `qn`, `qp`, `ea`, `eb`,
   `tail` TM1 trunks from1.64to3.0um on existing4.8um lanes. It keeps devices,
   return/bias geometry, via arrays and extraction coefficients unchanged.
-  Source **e1903ed4**; inspect native DRC/LVS/fault gates before extracting
-  new RC and rerunning the unchanged original waveform screen.
+  Source **e1903ed4** passed all560DRCcategories with0markers, strict
+  hierarchical/flat54-deviceLVS andfivephysicalfaultcontrols.
+  Native RC extraction **38378229860** is running on **fea63a53**. Inspect
+  every native graph/C check and13corruptioncontrols, then bind composition
+  and rerun original fixed-phase waveforms. No electrical adoption yet.
 - Source licence/inventory/REUSE and migration regression **38376372112**
   passed on126bf5a6. Local workspace remains empty; all CAD/tests are hosted.
