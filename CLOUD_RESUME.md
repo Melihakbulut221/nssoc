@@ -193,3 +193,8 @@ acceptance: new native RC, composition and fixed-phase waveforms are required.
   It has no electrical acceptance yet. Source checks: **38384885565**.
 - Profile-corruption regression rejects a validly hashed v5 report when v6
   is requested. Device accounting uses the actual Nx4 emitter multiplicity.
+
+- v6 compact control completed: **768 samples, 278.590 mV minimum**, zero
+  bit/amplitude/device/interface violations and no simulator diagnostics.
+  The wire job in **38384881419** is still actively simulating. Compact pass
+  is not physical acceptance. Source/REUSE/migration checks **38384885565** passed.

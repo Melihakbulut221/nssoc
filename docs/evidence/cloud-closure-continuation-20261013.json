@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-13T10:40:50.729258+00:00",
+  "as_of": "2026-10-13T10:46:43.336122+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -8003,7 +8003,7 @@
   "final_v6_loaded_tree": {
     "run": 38384881419,
     "source_head": "03fd06b33fa3404a92e364e0e6d15133f7e367f9",
-    "status": "DISPATCHED_AWAITING_NATIVE_WAVEFORMS",
+    "status": "COMPACT_PASSED_WIRE_NATIVE_SIMULATION_IN_PROGRESS",
     "physical_final_profile": "v6_kelvin_dense_wide",
     "prestage_profile": "power_trunks_vias",
     "streams": 4,
@@ -8015,6 +8015,70 @@
       "physical_wire"
     ],
     "source_checks_run": 38384885565,
-    "adopted": false
+    "adopted": false,
+    "compact": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38384881419-1-tree-4-physical_compact-nominal-none/tx-tree-physical-4-physical_compact-nominal-none-38384881419-1.summary.json",
+      "summary_sha256": "d26bd5af66c630b08102d8bbf13b7f5c9b453e5ea2fe0ed4eda5f83c019c4ac9",
+      "component_screen_passed": true,
+      "accepted": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.27858989038142457,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.27858989038142457,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.28051100771116233,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.28045775702584597,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2668138588526494,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8885143099087713,
+            1.8986134179819936
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.28253402025711605,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9139726030935411,
+            1.9354036567690087
+          ],
+          "passed": true
+        }
+      },
+      "diagnostics": []
+    },
+    "source_checks_status": "PASS",
+    "next": "Inspect existing wire job in38384881419. If every unchanged gate passes, extend to full32:1 and independent corners/fault controls; actual analog clocks, assembled layout, RX/CDR/ESD and full-chip timing remain required. If it fails, preserve capture and diagnose exact failing devices/transition before changing geometry."
   }
 }
