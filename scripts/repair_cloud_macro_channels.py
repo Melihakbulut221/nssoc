@@ -83,12 +83,14 @@ def prepare():
     before=dict(connectivity_sha256=signature(block),source_odb_sha256=SOURCE_SHA,
         selected=sorted(selected),profile=os.environ['NSSOC_PLACEMENT_PROFILE'],
         instances={n:dict(position=position(i),status=str(i.getPlacementStatus())) for n,i in instances.items()})
-    profile=before['profile'];assert profile in ('left_compact','left_spread')
-    xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.)}[profile]
+    profile=before['profile'];assert profile in ('left_compact','left_spread','local_optimize')
+    xstart,width={'left_compact':(2110.,160.),'left_spread':(2010.,260.),'local_optimize':(0.,0.)}[profile]
     for name,inst in instances.items():
         if name not in selected:
             if str(inst.getPlacementStatus())=='PLACED':inst.setPlacementStatus('FIRM')
         else:
+            if profile=='local_optimize':
+                continue  # Native DPO starts from the exact original positions.
             x,y=inst.getLocation()
             fraction=(x/scale-2340.)/(3266.4-2340.)
             assert 0<=fraction<=1

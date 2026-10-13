@@ -48,7 +48,7 @@ def execute(script, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
-    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread'], default='none')
+    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize'], default='none')
     args = parser.parse_args()
     # The actual failed report has7.2um gcells. Half-cell offsets change only
     # partition alignment, never placement, routing capacity or physical rules.
@@ -132,8 +132,10 @@ def main():
                         stdout=log,stderr=subprocess.STDOUT)
                 assert code==0,(mode,code,(OUT/f'placement-{mode}.log').read_text()[-6000:])
             native_placement('prepare')
+            placement_command=('improve_placement -max_displacement {20 8}' if args.placement_profile=='local_optimize'
+                               else 'detailed_placement -max_displacement {200 100}')
             execute(f'read_db {{{OUT/"proposed-placement.odb"}}}\n'
-                    'set_thread_count 2\ndetailed_placement -max_displacement {200 100}\n'
+                    f'set_thread_count 2\n{placement_command}\n'
                     'check_placement -verbose\n'
                     f'write_db {{{OUT/"legalized-placement.odb"}}}\n','legalize-macro-channels')
             native_placement('verify')
