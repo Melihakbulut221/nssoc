@@ -145,8 +145,8 @@ def tree_plan(streams):
 
 
 def physical_spec_path(profile):
-    assert profile in ('baseline','wide_access','supply_access')
-    prefix={'baseline':'','wide_access':'wide-access-','supply_access':'supply-access-'}[profile]
+    assert profile in ('baseline','wide_access','supply_access','power_trunks')
+    prefix={'baseline':'','wide_access':'wide-access-','supply_access':'supply-access-','power_trunks':'power-trunks-'}[profile]
     return ROOT/'docs/evidence'/('pcie-cascade14-'+prefix+'composition-20261013.json')
 
 
@@ -413,7 +413,7 @@ def main():
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
-    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access'),default='baseline')
+    parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
