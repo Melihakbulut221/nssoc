@@ -30,7 +30,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        condition: [nominal, quarter_step, hot_low, cold_high]
+        condition: [mos_ss, mos_ff, lv_ss_hv_ff, lv_ff_hv_ss, mos_sf, mos_fs]
+        fault: [none]
+        include:
+          - condition: nominal
+            fault: swap_pre_a_select
+          - condition: nominal
+            fault: disable_pre_b_bias
     permissions:
       contents: write
     steps:
@@ -52,13 +58,13 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --prestage divider14 --frontend damped_strong --clock-bias native_vbe --final-drive double_taps_guard --pre-bias native_res
+        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --prestage divider14 --frontend damped_strong --clock-bias native_vbe --final-drive double_taps_guard --pre-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          archive='tx-mux4-res-bias-${{ matrix.condition }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          archive='tx-mux4-res-corners-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
           tar -czf "$archive" cloud-tx-mux4
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
