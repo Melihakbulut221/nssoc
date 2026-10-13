@@ -40,5 +40,11 @@
     "full_serial_phy_complete": false,
     "main_chip_route_complete": false,
     "final_setup_hold_closed": false
+  },
+  "independent_output_shunt_hypothesis": {
+    "variant": "critical_buses_kelvin_low_ports_shunts",
+    "baseline": "critical_buses_kelvin_low_ports, not the pending load-move geometry",
+    "geometry": "Move R23(op,avss) from279.6,-50 to92.4,-82um and R24(on,avss) from318,-50 to54,-82um. Their output TM1 lanes align with R25/R26 series-resistor op/on lanes, removing the long horizontal output buses. Route avss on separate TM1 lanes x150/34.8um to avoid occupied signal/substrate lanes.",
+    "scope": "Same54devices and resistor values; fresh native DRC/LVS, five physical faults, native RC graph with13faults and unchanged loaded PVT required. This is a hypothesis, not an electrical improvement claim."
   }
 }
