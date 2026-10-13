@@ -10,6 +10,20 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Collector-route geometry passed physical checks
+
+Physical run **38432737984**, source e05b3df4, passed **560 DRC categories with
+zero markers**, strict hierarchical/flat 54-device LVS, and all five physical
+fault controls. Summary SHA256:
+`b7120f21a860122cd9dcba636e6ba2efbab1f0a581b62803502b2c413edf9974`.
+The 389760-byte archive SHA256
+`5b5a2a05662e8bfd3a9702ebcf16310434b68380f9a6010e349bef78e75b4ce8`
+is bound for fresh native extraction of `critical_buses_kelvin_low_critical`.
+Discover the extraction run before dispatching another. Then compose this exact
+new RC and run the original loaded gates; no acceptance follows from DRC/LVS.
+Source checks38432740891passed. Main route38420407838 remains live. All work
+stays hosted; full serial PHY and final setup/hold closure remain OPEN.
+
 ## Low upper-metal loaded result rejected; collector-route followup
 
 Runs38430178745/38430182410 completed. All six exact cases are in
