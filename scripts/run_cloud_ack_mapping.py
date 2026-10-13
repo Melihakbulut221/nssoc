@@ -103,7 +103,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
     assert proof['source_profile']=='physical_replay'
     assert proof['proofs'][0]['passed'] and proof['proofs'][1]['negative_rejected']
     assert proof['source_sha256']==selected[replay]['sha256']
-    if profile in ('physical_idle','physical_idle_credit'):
+    if profile in ('physical_idle','physical_idle_credit','physical_idle_credit_eop'):
         from run_cloud_replay_idle import candidate
         altered=candidate(Path(selected[replay]['path']).read_text())
         target=output/'candidate-soc_pcie_replay_tx.v'
@@ -111,7 +111,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
         assert sha(target)==proof['candidate_sha256']=='1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc'
         assert recipe.count(replay)==1
         recipe=recipe.replace(replay,str(target))
-    if profile=='physical_idle_credit':
+    if profile in ('physical_idle_credit','physical_idle_credit_eop'):
         from run_cloud_credit_late_verdict import candidate as credit_candidate
         credit_proof_path=output/'credit-source-bound-proof.json'
         credit_proof_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471835755-1-credit-late-verdict/credit-late-verdict-38471835755-1.json'
@@ -133,6 +133,39 @@ def physical_recipe(inputs, manifest, output, profile, status):
             proof_sha256=sha(credit_proof_path),source_sha256=selected[credit]['sha256'],
             candidate_path=str(target),candidate_sha256=sha(target),
             scope='Isolated credit-verdict change on the same proved replay-idle physical RTL baseline; fresh paired mapping, not an adopted layout.')
+    if profile=='physical_idle_credit_eop':
+        from run_cloud_advert_eop import candidate as eop_candidate
+        eop_path=output/'eop-source-bound-proof.json'
+        eop_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38476888145-1-advert-eop/advert-eop-38476888145-1.json'
+        subprocess.run(['curl','--fail','--location','--retry','4',eop_url,'-o',str(eop_path)],check=True)
+        assert sha(eop_path)=='58c6fb6035fa5018d220138e003b12669e42ae2e9e22443b9dbffe1a9a9ee37c'
+        eop=json.loads(eop_path.read_text())
+        assert eop['status']=='PASS_ACTUAL_ADVERTISER_ARBITER_REGION_EQUIVALENCE_AND_BUFFERED_PORTS_NOT_TIMING'
+        assert [p['refresh_cycles'] for p in eop['proofs']]==[128,0,1,128]
+        assert all(p['passed'] for p in eop['proofs'][:3]) and eop['proofs'][3]['negative_rejected']
+        assert eop['proofs'][3]['counterexample_sha256']=='6649b87f34c57bc8173152f1c582dc22b2b679f72f153b257177842cd1781ef6'
+        assert [p['actual_tests'] for p in eop['ports']]==[
+            dict(passed=5,failed=0,skipped=0),dict(passed=5,failed=0,skipped=0),dict(passed=0,failed=5,skipped=0)]
+        paths={Path(old).name:(old,pin) for old,pin in selected.items() if Path(old).name.startswith('soc_pcie_')}
+        assert len(paths)==21
+        for name,(old,pin) in paths.items():
+            actual=(output/('candidate-'+name)) if name in ('soc_pcie_replay_tx.v','soc_pcie_credit_tx.v') else Path(pin['path'])
+            assert sha(actual)==eop['source_binding']['selected'][name]['sha256'],name
+        parent,pin=paths['soc_pcie_buffered_flow_packets.v']
+        assert pin['sha256']==eop['source_binding']['source_sha256']
+        # The exact top instantiation overrides APB_TIMEOUT only; the native
+        # parent default FC_REFRESH_CYCLES=128 is within the proved cases.
+        top=Path(selected[manifest['old_root']+'/hw/soc/rtl/soc_top.v']['path']).read_text()
+        assert 'soc_pcie_buffered_flow_packets #(.APB_TIMEOUT(APB_TIMEOUT)) u_pcie (' in top
+        assert 'RX_SLOTS_PER_CLASS=2,FC_REFRESH_CYCLES=128' in Path(pin['path']).read_text()
+        target=output/'candidate-soc_pcie_buffered_flow_packets.v'
+        target.write_text(eop_candidate(Path(pin['path']).read_text()))
+        assert sha(target)==eop['source_binding']['candidate_sha256']=='27168904071b6b66087fbbfc532e12a1ade1dcf1fd6b9078b0ad01472e17d942'
+        assert recipe.count(parent)==1
+        recipe=recipe.replace(parent,str(target))
+        status['eop_owner_binding']=dict(proof_run=38476888145,proof_sha256=sha(eop_path),
+            candidate_path=str(target),candidate_sha256=sha(target),
+            scope='Actual reset-reachable producer/arbiter/egress proof and all frozen buffered port tests. Only EOP ready differs from physical_idle_credit. Fresh paired unplaced screen; not final timing.')
     status['physical_source_binding']=dict(
         physical_result_sha256='616eee906f67d937bb29fa23b586626f7cb7df9f11c5103257fd22323ade7d17',
         original_mapping_status=mapping['status'], corrected_mapping_audit_status=audit['status'],
@@ -145,7 +178,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit'], required=True)
+    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit', 'physical_idle_credit_eop'], required=True)
     args = parser.parse_args()
     output = ROOT / 'cloud-ack-map' / args.profile
     output.mkdir(parents=True, exist_ok=False)
@@ -220,8 +253,11 @@ def main():
         assert all(sha(inputs / name) == pin['sha256'] for name, pin in manifest['files'].items())
         if args.profile.startswith('physical_'):
             assert all(sha(Path(pin['path']))==pin['sha256'] for pin in status['physical_source_binding']['selected'].values())
-        if args.profile=='physical_idle_credit':
+        if args.profile in ('physical_idle_credit','physical_idle_credit_eop'):
             pin=status['credit_verdict_binding']
+            assert sha(Path(pin['candidate_path']))==pin['candidate_sha256']
+        if args.profile=='physical_idle_credit_eop':
+            pin=status['eop_owner_binding']
             assert sha(Path(pin['candidate_path']))==pin['candidate_sha256']
         status['status'] = 'COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
         status['screen_result'] = result
