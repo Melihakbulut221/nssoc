@@ -10,6 +10,19 @@ verified preservation. Use `Melihakbulut221/nssoc`, branch
 when the local workspace is empty. Do not recreate a local CAD checkout or
 resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
+## Low internal upper-metal RC complete
+
+Native extraction **38429186148** passed actual RC connectivity, geometry ownership,
+capacitance conservation and thirteen fault controls. Its immutable summarySHA
+`09ca997c274f4e66e32391c4a10229aa6f371836675ddab8e72f456784b01b83`
+and6285275bytearchiveSHA
+`0ed04dbbf2a6f25e730a402fa16fffbd6223c120eb60b46184a0a35857e72825`
+are verified. Composition is now bound to this exact archive. Discover the
+composition run before dispatching another copy. Then create its distinct
+`v8_kelvin_low_internal` loaded profile and compare with prestage supply_feed,
+matched modes, streams4, offset75, nominal/hot/cold and original limits.
+Source checks38429189528passed. Full PHY and final chip closure stay OPEN.
+
 ## Latest completed comparison and physical followup
 
 All12cases are source-bound in
