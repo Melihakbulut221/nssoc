@@ -29,7 +29,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
-                                             'critical_buses_supply_escape'), required=True)
+                                             'critical_buses_supply_escape', 'critical_buses_power_trunks'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14'), default='baseline')
     args = parser.parse_args()
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
@@ -123,10 +123,10 @@ def main():
                 # buses in the explicit critical-net order above.
                 changes.append(('cursor_y = y + half + 3',
                                 "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
-            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape'):
+            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks'):
                 changes.append(('escape(pin, met, net, lane, name, 4, off)',
                                 'escape(pin, met, net, lane, name, 8, off)'))
-            if args.variant == 'critical_buses_supply_escape':
+            if args.variant in ('critical_buses_supply_escape','critical_buses_power_trunks'):
                 # Actual measured tail-emitter lift differs from the reference
                 # return. Reduce native supply/return metal resistance in GDS;
                 # keep signal escape geometry and all circuit devices intact.
@@ -137,6 +137,23 @@ def main():
                 changes.append(('            box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)',
                     "            half_trunk = 1.0 if net in ['avdd','avss'] else 0.82\n"
                     '            box(6, x - half_trunk, min(sy, y) - 0.2, x + half_trunk, max(sy, y) + 0.2)'))
+            if args.variant == 'critical_buses_power_trunks':
+                # More room between routing lanes permits wider native power
+                # trunks without stealing spacing from adjacent signal metal.
+                # This is a new physical candidate, not a scaled RC surrogate.
+                changes += [
+                    ('30+28.8*c,30+14*r','30+38.4*c,30+14*r'),
+                    ('260.4+14.4*(i-19)','337.2+19.2*(i-19)'),
+                    ('(collector, 1, n[0], x - 10.8, 0.04)','(collector, 1, n[0], x - 14.4, 0.04)'),
+                    ('(base, 1, n[1], x - 7.2, -0.04)','(base, 1, n[1], x - 9.6, -0.04)'),
+                    ('(m2[0], 2, n[2], x - 3.6, 0)','(m2[0], 2, n[2], x - 4.8, 0)'),
+                    ('x - 7.2 + 3.6 * k','x - 9.6 + 4.8 * k'),
+                    ('"sub", x + 14.4','"sub", x + 19.2'),
+                    ("half_trunk = 1.0 if net in ['avdd','avss'] else 0.82",
+                     "half_trunk = 1.64 if net in ['avdd','avss'] else 0.82"),
+                    ("width = 16 if net in ['avdd','avss'] else 4",
+                     "width = 32 if net in ['avdd','avss'] else 4"),
+                ]
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
