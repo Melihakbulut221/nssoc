@@ -28,7 +28,8 @@ def fetch(url, digest, target):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
-                                             'critical_buses', 'critical_buses_wide_escape'), required=True)
+                                             'critical_buses', 'critical_buses_wide_escape',
+                                             'critical_buses_supply_escape'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14'), default='baseline')
     args = parser.parse_args()
     spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
@@ -122,9 +123,20 @@ def main():
                 # buses in the explicit critical-net order above.
                 changes.append(('cursor_y = y + half + 3',
                                 "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
-            if args.variant == 'critical_buses_wide_escape':
+            if args.variant in ('critical_buses_wide_escape','critical_buses_supply_escape'):
                 changes.append(('escape(pin, met, net, lane, name, 4, off)',
                                 'escape(pin, met, net, lane, name, 8, off)'))
+            if args.variant == 'critical_buses_supply_escape':
+                # Actual measured tail-emitter lift differs from the reference
+                # return. Reduce native supply/return metal resistance in GDS;
+                # keep signal escape geometry and all circuit devices intact.
+                # The same native DRC/LVS/fault checks decide legality.
+                changes.append(('        box(3, lane - 0.2, y - 0.2, x + 0.2, y + 0.2)',
+                    "        half_escape = 0.4 if net in ['avdd','avss'] else 0.2\n"
+                    '        box(3, lane - half_escape, y - half_escape, x + half_escape, y + half_escape)'))
+                changes.append(('            box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)',
+                    "            half_trunk = 1.0 if net in ['avdd','avss'] else 0.82\n"
+                    '            box(6, x - half_trunk, min(sy, y) - 0.2, x + half_trunk, max(sy, y) + 0.2)'))
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
