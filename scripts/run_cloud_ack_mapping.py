@@ -230,11 +230,12 @@ def physical_recipe(inputs, manifest, output, profile, status):
                         '--iverilog-dir',Path(iverilog).parent],
                         stdout=stream,stderr=subprocess.STDOUT)
                 record=json.loads((out/'result.json').read_text())
-                counts=count_results([out/'results.xml'])
+                xml=out/'results.xml'
+                counts=count_results([xml]) if xml.is_file() else None
                 status['joint_controls'].append(dict(case=case,top=top,
                     returncode=result.returncode,source_sha256=before,
-                    expected_tests=expected,actual_tests=dict(zip(('passed','failed','skipped'),counts)),
-                    result_sha256=sha(out/'result.json'),xml_sha256=sha(out/'results.xml'),
+                    expected_tests=expected,actual_tests=dict(zip(('passed','failed','skipped'),counts)) if counts is not None else None,
+                    result_sha256=sha(out/'result.json'),xml_sha256=sha(xml) if xml.is_file() else None,
                     log_sha256=sha(log)))
                 assert result.returncode==0 and counts==(expected,0,0)
                 assert before=={p.name:sha(p) for p in rtl.glob('*.v')}

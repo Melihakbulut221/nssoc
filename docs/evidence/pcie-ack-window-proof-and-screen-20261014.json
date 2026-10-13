@@ -59,6 +59,18 @@
     "baseline": "physical_idle_credit",
     "candidate": "physical_idle_credit_window_eop",
     "required_joint_controls": "16 baseline plus16 combined public-port cases; exact21PCIe source bytes and both isolated proof digests pinned before mapping.",
-    "next": "Require joint controls and unchanged SRAM/clocks; compare all original corners against reproduced baseline and inspect critical source nets. No physical adoption until evidence improves and mapped/physical proof obligations pass."
+    "next": "Require joint controls and unchanged SRAM/clocks; compare all original corners against reproduced baseline and inspect critical source nets. No physical adoption until evidence improves and mapped/physical proof obligations pass.",
+    "failed_first_attempt": {
+      "run": 38481655736,
+      "job": 115585423661,
+      "summary_asset_id": 638504809,
+      "summary_sha256": "35e96e558b2a55e765d5c33e6d1e35880cb130ccf8091bc5345d4bf2aaaeb7bc",
+      "archive_asset_id": 638504635,
+      "archive_bytes": 1650962,
+      "archive_sha256": "391695381bc6a1c4dd4826baf92df37933f9d99756f6ff99853ba1b3c818185d",
+      "simulation_log_sha256": "37c2c20f17b593f651b0d016316fb497e63b0e2468fdcfa9b32ae5f82e50d9cf",
+      "cause": "Before the first baseline test: OSS-suite cocotb-config imported hosted Python3.12 standard-library modules into its different interpreter, producing SRE module mismatch; no results.xml. No candidate functional or timing verdict was produced.",
+      "repair": "Use the same hw/.venv with hw/requirements.txt as successful isolated proof workflows. Record missing XML as an execution failure with retained wrapper/log evidence, never as skipped or passed tests."
+    }
   }
 }
