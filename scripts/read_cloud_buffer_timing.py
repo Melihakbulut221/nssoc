@@ -10,7 +10,6 @@ from pathlib import Path
 import subprocess
 import tarfile
 
-from read_opensta_phase_slacks import parse_phases
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'cloud-buffer-timing'
@@ -64,6 +63,7 @@ def native():
     (OUT / 'native-cells.json').write_text(json.dumps(result, indent=2) + '\n')
 
 def main():
+    from read_opensta_phase_slacks import parse_phases
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Archive readback runs only on GitHub')
     evidence_path = ROOT / 'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json'
@@ -100,7 +100,7 @@ def main():
         with (OUT / 'native.log').open('w') as log:
             code = subprocess.call([os.environ['CLOUD_APPIMAGE'], 'openroad', '-exit', '-python', str(Path(__file__).resolve())],
                 env=dict(os.environ, CLOUD_BUFFER_TIMING_NATIVE='1'), stdout=log, stderr=subprocess.STDOUT)
-        assert code == 0, ('native-binding', code)
+        assert code == 0, ('native-binding', code, (OUT / 'native.log').read_text()[-8000:])
         assert all(sha(OUT / name) == digest for name, digest in protected.items())
         binding = json.loads((OUT / 'native-cells.json').read_text())
         result.update(native_binding_sha256=sha(OUT / 'native-cells.json'),
