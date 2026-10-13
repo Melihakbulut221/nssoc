@@ -375,3 +375,30 @@ XP0 net1 A VDD VDD sg13_lv_pmos
     physical.write_text(original.replace(header,reordered.replace(' wire_cref',' unexpected_pin')))
     with pytest.raises(AssertionError):
         mux4.build(tmp_path,'nominal',streams=8)
+
+
+def test_physical_top_renaming_preserves_native_device_text_and_formal_order():
+    text=mux4.MARGIN_FINAL.read_text()
+    new=mux4.rename_physical_top(text,'nssoc_physical_final_v5')
+    assert [line for line in text.splitlines() if line.startswith('X')]==[line for line in new.splitlines() if line.startswith('X')]
+    old_header=next(line.split() for line in text.splitlines() if line.startswith('.subckt'))
+    new_header=next(line.split() for line in new.splitlines() if line.startswith('.subckt'))
+    assert old_header[2:]==new_header[2:]
+    assert new_header[1]=='nssoc_physical_final_v5'
+    ports=['n'+str(i) for i in range(len(old_header)-2)]
+    import tempfile
+    with tempfile.TemporaryDirectory() as directory:
+        from pathlib import Path
+        path=Path(directory)/'renamed.spice';path.write_text(new)
+        _,before=mux4.bind_devices(mux4.MARGIN_FINAL,'xmux',ports,{'npn13g2'})
+        _,after=mux4.bind_devices(path,'xmux',ports,{'npn13g2'})
+        assert before==after and len(after)==19
+
+
+@pytest.mark.parametrize('text',[
+ '.subckt x a b\n.ends y\n',
+ '.subckt x a b\n.ends x\n.subckt y a b\n.ends y\n',
+ '.subckt x a b\nXX a b x\n.ends x\n',
+])
+def test_physical_top_rename_rejects_ambiguous_or_recursive_models(text):
+    with pytest.raises(AssertionError):mux4.rename_physical_top(text,'unique_final')

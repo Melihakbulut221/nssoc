@@ -150,18 +150,19 @@ def physical_spec_path(profile):
     return ROOT/'docs/evidence'/('pcie-cascade14-'+prefix+'composition-20261013.json')
 
 
-def physical_prestage(inputs, mode, profile='baseline'):
-    spec=json.loads(physical_spec_path(profile).read_text())
+def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
+    assert mode in ('physical_compact','physical_wire')
+    spec=json.loads(spec_path.read_text())
     assert spec['status']=='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT'
-    archive=inputs/'physical-prestage.tar.gz'
+    archive=inputs/(folder+'.tar.gz')
     fetch(spec['receipt']['url'],spec['receipt']['sha256'],archive)
     assert archive.stat().st_size==spec['receipt']['bytes']
-    destination=inputs/'physical-prestage';destination.mkdir()
+    destination=inputs/folder;destination.mkdir()
     with tarfile.open(archive) as packed:
         raw=packed.extractfile('cloud-tx-layout-composition/result.json').read()
         assert hashlib.sha256(raw).hexdigest()==spec['summary_sha256']
         report=json.loads(raw)
-        assert report['circuit_profile']=='cascade14' and report['outputs']==spec['outputs']
+        assert report['circuit_profile']==circuit_profile and report['outputs']==spec['outputs']
         (destination/'result.json').write_bytes(raw)
         for name,digest in spec['outputs'].items():
             assert name in ('mux54-wire01.spice','mux54-compact01.spice')
@@ -172,7 +173,25 @@ def physical_prestage(inputs, mode, profile='baseline'):
     return destination/('mux54-wire01.spice' if mode=='physical_wire' else 'mux54-compact01.spice')
 
 
-def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4):
+def physical_prestage(inputs, mode, profile='baseline'):
+    return physical_macro(inputs,mode,physical_spec_path(profile),'cascade14','physical-prestage')
+
+
+def rename_physical_top(text, new_name):
+    """Namespace only the verified top, so two physical macros cannot collide."""
+    lines=text.splitlines()
+    headers=[i for i,line in enumerate(lines) if line.lower().startswith('.subckt ')]
+    ends=[i for i,line in enumerate(lines) if line.lower().split()[:1]==['.ends']]
+    assert len(headers)==len(ends)==1 and headers[0]<ends[0]
+    header=lines[headers[0]].split();old_name=header[1]
+    assert lines[ends[0]].split()[1:] in ([],[old_name])
+    assert all(line.split()[-1:]!=[old_name] for line in lines[headers[0]+1:ends[0]] if line.strip() and not line.startswith('*'))
+    header[1]=new_name
+    lines[headers[0]]=' '.join(header);lines[ends[0]]='.ends '+new_name
+    return '\n'.join(lines)+'\n'
+
+
+def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None):
     plan=tree_plan(streams)
     assert fault in ('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select')
     references=[n['reference'] for n in plan['nodes']]
@@ -186,6 +205,9 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     c.update(CONDITIONS[condition])
     frontend = inputs / 'frontend'
     final = {'double':FAST_FINAL,'double_taps':TAPPED_FINAL,'double_taps_guard':GUARDED_FINAL,'double_taps_margin':MARGIN_FINAL}.get(final_drive,inputs / 'mux54-compact01.spice')
+    if final_override is not None:
+        assert final_drive=='double_taps_margin'
+        final=final_override
     lines = [f'NSSOC native full {streams}:1 tree, unchanged source-bit oracle']
     for kind, corner, directory in [('HBT', c['hbt'], inputs / 'models'),
         ('RES', c['resistor'], inputs / 'models'), ('MOSlv', c['lv_corner'], frontend / 'models'),
@@ -245,6 +267,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         # output oracle remain untouched. In32:1 this is the15/31 leaf pair.
         assert all(name.startswith('d') for name in plan['nodes'][-1]['inputs'])
     formal = next(line.lower().split() for line in final.read_text().splitlines() if line.lower().startswith('.subckt '))
+    assert len(formal[2:])==len(set(formal[2:])) and set(formal[2:]) in (required,required|{'wire_cref'})
     public = dict(ap='ap',an='an',bp='bp',bn='bn',sp='sp',sn='sn',op='mp',on='mn',
                   avdd='avdd',avss='0',sub='0',iref='mr',wire_cref='0')
     stages += [(final, 'xmux', [public[p] for p in formal[2:]]),
@@ -413,6 +436,7 @@ def main():
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
+    parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
     parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
     parser.add_argument('--clock-bias',choices=('ideal','native_vbe','native_res'),default='ideal')
@@ -446,8 +470,25 @@ def main():
                 source=str(physical_spec.relative_to(ROOT)),source_sha256=sha(physical_spec),
                 intermacro_connections_ideal=True,assembled_tree_gds=False,
                 qualified_substrate_resistance=False,qualified_rf_distribution=False)
+        final_override=None
+        if args.physical_final!='off':
+            assert args.final_drive=='double_taps_margin'
+            final_spec=ROOT/'docs/evidence/pcie-final-v5-composition-20261013.json'
+            original=physical_macro(inputs,args.physical_final,final_spec,'final_drive_v5','physical-final')
+            final_override=original.with_name('namespaced-final.spice')
+            final_override.write_text(rename_physical_top(original.read_text(),'nssoc_physical_final_v5'))
+            counts=json.loads(final_spec.read_text())['counts']
+            result['physical_final_scope']=dict(mode=args.physical_final,instances=1,
+                source=str(final_spec.relative_to(ROOT)),source_sha256=sha(final_spec),
+                original_model_sha256=sha(original),namespaced_model_sha256=sha(final_override),
+                native_devices=counts['devices'],substrate_contacts=27,
+                metal_resistors=counts['R'] if args.physical_final=='physical_wire' else 0,
+                metal_capacitors=counts['C'] if args.physical_final=='physical_wire' else 0,
+                intermacro_connections_ideal=True,assembled_tree_gds=False,
+                qualified_substrate_resistance=False,qualified_rf_distribution=False)
         result['output_bias']=args.output_bias
-        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams)
+        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override)
+
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
