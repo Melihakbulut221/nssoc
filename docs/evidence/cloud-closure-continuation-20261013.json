@@ -92,7 +92,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Inspect existing M3-only extraction run 38380642029. Physical run 38380208915 passed 560 DRC categories with zero markers, strict 54-device hierarchical/flat LVS, and five fault controls. After the full native graph/C checks and 13 corruption controls pass, bind composition and run original fixed-phase waveforms. TM1-only parent and 1.2um M3 geometries remain rejected.",
+    "v7 physical run38386165678 passed native54 strict hierarchical/flat LVS,560DRC categories with zero markers and all5physical faults. Extract exact v7 receipt, validate13RC fault controls, compose actual devices, then compare nominal streams4 compact/wire using v7_kelvin_dense_wide. v6 output signal passes140.606mV but two tail VCE values fail400mV; v6 is not accepted.",
     "Inspect live main-chiproute38371498733 after960nativeplacementmoves among1505selecteddatacells; sourcebound1563endpointenvelope, clockcells/unselectedplacement/master/connectivity invariant andtwomutationcontrols passed. Full routedSTAanddetailedroute stillrequired.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -8181,14 +8181,32 @@
     }
   },
   "final_v7_candidate": {
-    "status": "UNSCREENED",
+    "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
     "change": "Only four selector HBTs Nx4 to Nx8; twelve data HBTs remain Nx4; reference/tails/R/taps unchanged.",
     "reason": "v6 extracted output passes every100mV sample but two tail HBTs have minimum VCE388.383mV and387.043mV. Larger selector emitter area is a hypothesis to recover tail headroom; fresh physical and electrical evidence required.",
     "source_sha256": {
-      "tx_mux2_final_drive_v6_layout_core.spice": "55249822b97b01e8c5f9f90faa408fbf1a0cd34ce55f8f48a5cde87304c9217a",
-      "tx_mux54_passive_drive_v6.spice": "6f03f8557173a8528f3ad20a16c3102487cbcfe2ba0ac657190f2d46c95edc81"
+      "tx_mux2_final_drive_v7_layout_core.spice": "55249822b97b01e8c5f9f90faa408fbf1a0cd34ce55f8f48a5cde87304c9217a",
+      "tx_mux54_passive_drive_v7.spice": "6f03f8557173a8528f3ad20a16c3102487cbcfe2ba0ac657190f2d46c95edc81"
     },
     "adopted": false,
-    "physical_run": 38386165678
+    "physical_run": 38386165678,
+    "physical_receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38386165678-1-layout-final_drive_v7-critical_buses_kelvin_dense_wide/tx-layout-repair-cloud-final_drive_v7-critical_buses_kelvin_dense_wide-38386165678-1.tar.gz",
+      "bytes": 375219,
+      "sha256": "308c0c4250e5a9ffcc687cc9a130d685a1cb9f1659a8c50219cf0ab708923441"
+    },
+    "physical_summary_sha256": "c7722f634cde12405d36c5764c02ec636bc9fe4a0cd98d243c665bfd4a46e280",
+    "source_checks_run": 38386169981,
+    "source_checks_status": "PASS",
+    "physical_gates": {
+      "drc": "PASS",
+      "lvs": "PASS",
+      "lvs_flat": "PASS",
+      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+      "missing_hbt": "REJECTED_EXPECTED_FAULT",
+      "q_open": "REJECTED_EXPECTED_FAULT",
+      "rail_short": "REJECTED_EXPECTED_FAULT",
+      "offgrid": "REJECTED_EXPECTED_FAULT"
+    }
   }
 }
