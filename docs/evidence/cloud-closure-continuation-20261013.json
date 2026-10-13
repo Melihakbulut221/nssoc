@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-10-13T01:42:45.857509+00:00",
-  "turn_classification": "PROGRESS: all work runs in cloud. Same native resistor-biased compact4:1 passes four base conditions and six MOS corners, two actual faults detected. PNR transfer/readback complete, main transfer active. Two grid routing variants fail153overflow; third active. No full PHY/routing/timing closure.",
+  "as_of": "2026-10-13T01:44:53.286972+00:00",
+  "turn_classification": "PROGRESS: all work runs in cloud. Same native resistor-biased compact4:1 passes four base conditions and six MOS corners, two actual faults detected. PNR transfer/readback complete, main transfer active. All three grid routing variants fail153overflow; no chip route currently running. No full PHY/routing/timing closure.",
   "goal_status": "OPEN_FULL_SERIAL_PHY_MAIN_CHIP_ROUTING_FINAL_TIMING",
   "execution_policy": "Latest user instruction: all CAD, simulations and tests on GitHub-hosted runners. Local source editing and verified transfer/cleanup only. No local CAD running.",
   "head": "d6d49b88",
@@ -81,15 +81,15 @@
   },
   "transfer_snapshot": {
     "status": "RUNNING",
-    "next_index": 287140,
-    "batch": 247,
-    "removed_bytes": 141950447779,
-    "uploaded_bytes": 64873955616
+    "next_index": 289427,
+    "batch": 250,
+    "removed_bytes": 143159840221,
+    "uploaded_bytes": 65146973027
   },
   "next_actions": [
     "Main output transfer remains active; inspect transfer-progress.json and controller state. PNR8022files67.782GB fully restored in38330635076. Finalizer dispatches final all-family hosted restoration only after both plans complete. Do not delete state until that finishes.",
     "All CAD/simulation/tests hosted only. Local editing, metadata reads, packaging/upload/hash/cleanup only. Preserve32historical untracked sources and repository/tools while prior scope clarification remains unanswered.",
-    "Read remaining half_x run38326473503; y/xy both153overflow, no observed improvement. Next routing experiment must address actual placement/congestion, not repeat same grid profiles. Full detailed route and final timing remain open.",
+    "All three grid profiles38326473503 completed with153overflow/GRT0116. Do not wait or rerun unchanged. Next actual placement/congestion repair runs on GitHub; source binding, original SDC/RC and all clock-domain timing screens remain required.",
     "Use native resistor-biased compact4:1 as next component baseline:10positive screens and2actual fault controls passed across38332104799/38332663087. Independent HBT/RES mixed corners, newlayout/PEX, upstreamserializer/clocks/bias/fullPHY/mainchip integration remain open."
   ],
   "extraction_source_inspection": {
@@ -339,8 +339,9 @@
     "run": 38326473503,
     "half_y": "FAIL_GRT0116_153_OVERFLOW",
     "half_xy": "FAIL_GRT0116_153_OVERFLOW",
-    "half_x": "IN_PROGRESS_LAST_OBSERVED",
-    "evidence": "docs/evidence/cloud-half-grid-route-partial-20261013.json"
+    "half_x": "FAIL_GRT0116_153_OVERFLOW",
+    "evidence": "docs/evidence/cloud-half-grid-route-partial-20261013.json",
+    "status": "ALL_THREE_TERMINAL_FAILURES"
   },
   "output_link_cleanup": {
     "validation_run": 38333023127,

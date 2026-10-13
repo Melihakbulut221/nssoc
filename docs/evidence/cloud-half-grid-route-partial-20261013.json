@@ -1,11 +1,11 @@
 {
   "run": 38326473503,
-  "status": "TWO_TERMINAL_FAILURES_THIRD_STILL_RUNNING",
+  "status": "COMPLETE_ALL_THREE_VARIANTS_REJECTED",
   "reader_runs": [
     38333089706,
     38333091961
   ],
-  "result": "half_y and half_xy both end with153 overflow andGRT-0116; identical final resource/demand/wirelength figures. Parameter accepted inDBU but no observed improvement. Automatic router NDR removals are recorded, not hidden. half_x still running; no duplicate restart.",
+  "result": "All three half-grid variants end with153overflow andGRT-0116, with identical reported final resource/demand/wirelength. No global/detailed route or final timing closure. Do not restart unchanged grid variants. Actual placement/congestion repair is next.",
   "documentation": "https://openroad.readthedocs.io/en/latest/main/src/grt/README.html",
   "profiles": {
     "newer-postcts-cloud-half_xy-38326473503-1.194ed3f45839.summary.json": {
@@ -36,5 +36,17 @@
         "[ERROR GRT-0116] Global routing finished with congestion. Check the congestion regions in the DRC Viewer."
       ]
     }
+  },
+  "half_x": {
+    "job_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38326473503/job/115066196505",
+    "full_job_log_sha256": "bc2c4067fd2b9a4c2191fed18fde711f339f618c74738dc0bb5d4e835ce87c5e",
+    "diagnostics": [
+      "route (half_x)\tReproduce exact newer postCTS then route all domains\t2026-10-13T00:18:45.0440125Z [global-route] NSSOC_ROUTING_GRID_ORIGIN_DBU 3600 0",
+      "route (half_x)\tReproduce exact newer postCTS then route all domains\t2026-10-13T01:39:21.7049616Z [global-route] Total          5891301       1166966           19.81%             8 /  4 / 153",
+      "route (half_x)\tReproduce exact newer postCTS then route all domains\t2026-10-13T01:39:21.9642588Z [global-route] [ERROR GRT-0116] Global routing finished with congestion. Check the congestion regions in the DRC Viewer.",
+      "route (half_x)\tReproduce exact newer postCTS then route all domains\t2026-10-13T01:39:23.3518260Z NSSOC_ROUTING_GRID_ORIGIN_DBU 3600 0",
+      "route (half_x)\tReproduce exact newer postCTS then route all domains\t2026-10-13T01:39:23.3640986Z Total          5891301       1166966           19.81%             8 /  4 / 153",
+      "route (half_x)\tReproduce exact newer postCTS then route all domains\t2026-10-13T01:39:23.3642880Z [ERROR GRT-0116] Global routing finished with congestion. Check the congestion regions in the DRC Viewer."
+    ]
   }
 }
