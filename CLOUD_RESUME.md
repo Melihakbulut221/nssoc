@@ -204,3 +204,13 @@ No candidate adoption, route, final hold or fullPHY closure is claimed.
 
 Launch existing cloud-migration-checks.yml with credit_prefix_eco=true.
 All native work is hosted. Do not launch full routing until measurements exist.
+
+
+Credit-prefix candidate dispatched as run38460825316 on
+9588d4421d7d574edfd7f5e687b72431f7628b8b. Latest authoritative status: completed/success.
+Job115515232477 runs native proof/geometry/STA; source checks already passed.
+Keep this exact handle; do not start another candidate or rerun on a polling
+timeout. Read result.json in release cloud-results-38460825316-1-credit-prefix-eco
+when published. Check all7output SAT proof and actual wrong-gate negative
+control, exact retained geometry/power audit, allcorner/group deltas and all
+remaining violations before any adoption. No accepted timing gain yet.
