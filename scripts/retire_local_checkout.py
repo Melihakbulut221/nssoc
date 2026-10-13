@@ -48,6 +48,24 @@ def ready(root):
     return r
 
 
+def remove_empty_directory(path):
+    if not allowed(path) or path.is_symlink():
+        raise ValueError('Unsafe directory cleanup')
+    try:
+        path.rmdir()
+    except PermissionError:
+        parent = path.parent
+        info = parent.stat()
+        mode = info.st_mode & 0o7777
+        if info.st_uid != os.getuid() or mode & 0o200:
+            raise
+        parent.chmod(mode | 0o200)
+        try:
+            path.rmdir()
+        finally:
+            parent.chmod(mode)
+
+
 def main():
     STATE.mkdir(exist_ok=True)
     transfer.allowed = allowed
@@ -118,7 +136,7 @@ def main():
         if Path(directory) == ROOT:
             continue
         try:
-            Path(directory).rmdir()
+            remove_empty_directory(Path(directory))
         except OSError:
             pass  # New or changed files are never recursively erased.
     if list(ROOT.iterdir()):

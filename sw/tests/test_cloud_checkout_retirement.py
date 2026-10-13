@@ -72,3 +72,27 @@ def test_hosted_success_must_bind_exact_manifest(change):
     proof.update(change)
     with pytest.raises(ValueError, match='exact manifest'):
         readback.check_result(proof, manifest)
+
+
+def test_only_empty_owned_directory_removed_with_parent_mode_restored(tmp_path, monkeypatch):
+    root = tmp_path / 'checkout'
+    parent = root / 'readonly'
+    empty = parent / 'empty'
+    empty.mkdir(parents=True)
+    retained = parent / 'nonempty'
+    retained.mkdir()
+    (retained / 'new-result').write_text('preserve')
+    parent.chmod(0o555)
+    monkeypatch.setattr(m, 'ROOT', root)
+    try:
+        m.remove_empty_directory(empty)
+        assert not empty.exists()
+        assert parent.stat().st_mode & 0o777 == 0o555
+        with pytest.raises(OSError):
+            m.remove_empty_directory(retained)
+        assert (retained / 'new-result').read_text() == 'preserve'
+        assert parent.stat().st_mode & 0o777 == 0o555
+        with pytest.raises(ValueError, match='Unsafe'):
+            m.remove_empty_directory(tmp_path)
+    finally:
+        parent.chmod(0o755)
