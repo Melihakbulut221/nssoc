@@ -12,6 +12,13 @@ resume historical local producers. Only GitHub-hosted runners run CAD/tests.
 
 ## Cascade158 exact composition passed; loaded profile ready
 
+Hosted loaded runs on **7997d2d035497bb223ac661a8bf432d1a58d0d51**:
+nominal **38442809617**, hot/cold **38442814441**. Source/licence/migration,
+original-bit, native-capture and wrong-circuit binding checks **38442818351**
+PASSED. Both loaded studies are in progress with unchanged sample/device gates.
+Inspect those exact runs and all six summaries; no electrical acceptance yet.
+Do not rerun completed composition38441886627 or use an old prestage receipt.
+
 Composition38441886627 passed exact54devices/3870R/2579C, including both real
 15.8um output-divider resistors. Distinct immutable receipt:
 docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json.
