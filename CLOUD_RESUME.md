@@ -118,6 +118,18 @@ Latest source/license/migrationchecks **38421374578** passed onb1e9e234.
 This is a physical hypothesis, not adopted circuitry or fullPHY completion.
 Main-chip timing-priority route **38420407838** is active ondb3a36b3.
 
+### Internal-route followup — remove superseded long metal
+
+Localinternal hotwire38423088377 fails31wrong signs/128low samples, minmargin
+-11.008mV, finalinputCM minimum1.759579V. AllHBT gates pass. DC improvement
+therefore doesnot establish waveform improvement; preserve that failure.
+Candidate `critical_buses_kelvin_compact_internal` retains the verified short
+eaM4/ebM5 routes but removes their superseded globalTM1 trunks/TM2 buses.
+The globalcursor advances before those two internalnets are skipped, so all
+other bus positions/publicports remain fixed. Nineactualterminals pernet,
+all54devices, extractedR/C rules and acceptance limits remain unchanged.
+Native DRC/strictLVS/faults thenfreshRC/loadedPVT must validate this hypothesis.
+
 ### Independent prestage supply-access candidate
 
 `critical_buses_kelvin_supply_direct` oncascade14 retains the proven low TM2
