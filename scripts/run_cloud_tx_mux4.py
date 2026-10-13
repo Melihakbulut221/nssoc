@@ -151,9 +151,10 @@ def physical_spec_path(profile):
 
 
 def physical_final_spec_path(profile):
-    if profile in ('v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths'):
+    if profile in ('v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail'):
         version, geometry = profile.split('_',1)
-        return ROOT/'docs/evidence'/f'pcie-final-{version}-{geometry.replace(chr(95), chr(45))}-composition-20261013.json'
+        geometry = geometry.replace('_', '-')
+        return ROOT/'docs/evidence'/f'pcie-final-{version}-{geometry}-composition-20261013.json'
     assert profile in ('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10')
     middle={'power_trunks':'','interleaved':'interleaved-','kelvin_return':'kelvin-','kelvin_short':'kelvin-short-','kelvin_short_vias':'kelvin-short-vias-','kelvin_dense':'kelvin-dense-','kelvin_dense_wide':'kelvin-dense-wide-','kelvin_signal_trunks':'kelvin-signal-trunks-','kelvin_m3_10':'kelvin-m3-10-'}[profile]
     return ROOT/'docs/evidence'/('pcie-final-v5-'+middle+'composition-20261013.json')
@@ -161,7 +162,7 @@ def physical_final_spec_path(profile):
 
 def physical_final_circuit_profile(profile):
     physical_final_spec_path(profile)  # Reject unknown routing/circuit bindings.
-    if profile in ('v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths'):
+    if profile in ('v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail'):
         return 'final_drive_'+profile.split('_',1)[0]
     return 'final_drive_v5'
 
@@ -454,7 +455,7 @@ def main():
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
-    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths'),default='power_trunks')
+    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
     parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')

@@ -328,3 +328,13 @@ unchanged cascade14denseprestage before combining the newcircuit.
 Cascade16 physical **38400973160** passed560DRC/0markers,strict54deviceLVS
 andfivefaultcontrols. NewRC extraction is next. Discover existing composition/
 extraction runs before dispatch. Mainroute38395878470 remains live.
+
+## Local-tail waveform and cascade16 composition continuation
+
+Local-tail composition **38401482919** passed54devices/4000R/2643C.
+Final profile `v8_kelvin_local_tail` binds its immutable receipt. First
+load it with unchanged prestage`kelvin_dense_wide`,matchedcompact/wire,
+streams4,nominal andtemperature_voltage. Discover existingruns first.
+Cascade16 extraction **38401479870** passed3803R/2541C/13controls. Compose
+its exact newdevices next, then add an explicitcascade16prestage binding
+before combined loaded PVT. No adoption from any of these component gates.

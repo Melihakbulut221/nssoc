@@ -94,8 +94,8 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Wider-tail runs38398957797/38398961815 COMPLETE: wire nominal134.431mV andcold232.281mV pass;hot has2wrong/128earlymarginfails,two tailVCE+CMfailures;reject. Local-tail physical38400244543 andRC38400976763 pass4000R2643C. Compose thenloadlocaltail withunchangeddenseprestage to isolate geometry effect before combining newprestage.",
-    "Cascade16 physical38400973160 passed560DRC/0markers,strict54deviceLVS/5faults. ExtractnewRC thencompose its ownnative source;prestageprofile mustbind cascade16 explicitly. Screen cold2.05Vmax aswellashot1.8Vmin andallunchangedoriginalgates. Discoverexistingrunbefore eachdispatch.",
+    "Localtail finalv8composition38401482919 passed54devices/4000R/2643C. Loadedprofilev8_kelvin_local_tail withdenseprestagekelvin_dense_wide isolatesgeometry. Runmatchedcompact/wire streams4 originalnominal andhot/cold studies;discoverlivejobsbefore dispatch. Prior wider-tail rejectedhot result retained.",
+    "Cascade16RC38401479870 passed3803R/2541C/13controls. Compose exact newprestage, then add separatecascade16prestageprofile and immutablecompositionreceipt;rejectvalidlyhashedcascade14 when16requested. Onlythenruncombinednewprestage/localtailgates,includingunchangedcold2.05Vmax.",
     "Route38395878470 is LIVE after exact-source/native invariants passed:1747selected,744moved,227dataFFsselected/33moved. New placement estimate eth_rx slow setup regresses+23.324ps to-4.524ps; keep failure,noadoption. StrictGRT running; inspect native terminal outcome before new routing or timing ECO.",
     "Dense4 run38370105586 failed38M3.bmarkers and isrejected. Prior dense38365522474 has0wrong signs but128early marginfailures and4HBTminVCE failures; diagnosis38369613905 bindsactualvoltagesandcrossings. Do not repeat knownfailures unchanged or move samplingphases.",
     "Broadplacement38334595459 hit explicit6hjobtimeouts; conservativeM5reservation38347061685 regressed overflow147to158. Neither isaccepted. ExactfailureODB/congestiondiagnosis preserved.",
@@ -10431,5 +10431,45 @@
     "capacitors": 2643,
     "adopted": false,
     "qualified_pex": false
+  },
+  "final_v8_local_tail_composition": {
+    "run": 38401482919,
+    "source_head": "434c437aa70ebc9e18d0bca4580614db0b9d9b32",
+    "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+    "variant": "critical_buses_kelvin_local_tail",
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38401482919-1-compose-final_drive_v8-critical_buses_kelvin_local_tail/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_tail-38401482919-1.tar.gz",
+      "bytes": 6664193,
+      "sha256": "a5fd72cd6fa35e0762253082d7d7f1bdd12226e9a1c95a55ad407ce385a58c2d"
+    },
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38401482919-1-compose-final_drive_v8-critical_buses_kelvin_local_tail/tx-layout-composition-final_drive_v8-critical_buses_kelvin_local_tail-38401482919-1.summary.json",
+    "summary_sha256": "8ccdaf068373fd2538847ed1e85de20bae529381c8999be8730bd277bb1e778d",
+    "outputs": {
+      "mux54-wire01.spice": "0b2479be39887235a23975f8e73d11592a1612461a607cc3607ad285cbf30f54",
+      "mux54-compact01.spice": "8c80493dbd768a0c502272b3c5341b272f695c95d15ac0cd1386f4a400053c1f"
+    },
+    "counts": {
+      "devices": 54,
+      "R": 4000,
+      "C": 2643
+    },
+    "extraction_source_sha256": "76e90a58ff6e365349fbab01c9137debefcc6d8471075cd10275c05525b9ed33",
+    "adopted": false,
+    "scope": "Unchanged finalv8 native54 devices with new4000R/2643C from real M4 local tail shunt and M5-to-TM1 ground return feed. Original loaded-wave gates required. No completePHY/body/RF/chip acceptance."
+  },
+  "cascade16_extraction": {
+    "run": 38401479870,
+    "source_head": "434c437aa70ebc9e18d0bca4580614db0b9d9b32",
+    "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+    "summary_sha256": "93be7d02ab2e6d26816fefe2bc771bc8ab46766d69907616489cfdfb02d2bf34",
+    "receipt": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38401479870-1-extract-cascade16-critical_buses_kelvin_dense_wide/tx-layout-extraction-cloud-cascade16-critical_buses_kelvin_dense_wide-38401479870-1.tar.gz",
+      "bytes": 6275100,
+      "sha256": "c0910de3ce1e2390734050bb9870e0c8ed267684457f941a9155436b1dbbe58b"
+    },
+    "resistors": 3803,
+    "capacitors": 2541,
+    "qualified_pex": false,
+    "adopted": false
   }
 }

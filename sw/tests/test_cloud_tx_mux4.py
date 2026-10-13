@@ -418,6 +418,8 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     assert mux4.physical_final_spec_path('kelvin_m3_10').name=='pcie-final-v5-kelvin-m3-10-composition-20261013.json'
     assert mux4.physical_final_spec_path('v8_kelvin_tail_paths').name=='pcie-final-v8-kelvin-tail-paths-composition-20261013.json'
     assert mux4.physical_final_circuit_profile('v8_kelvin_tail_paths')=='final_drive_v8'
+    assert mux4.physical_final_spec_path('v8_kelvin_local_tail').name=='pcie-final-v8-kelvin-local-tail-composition-20261013.json'
+    assert mux4.physical_final_circuit_profile('v8_kelvin_local_tail')=='final_drive_v8'
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
 
 
