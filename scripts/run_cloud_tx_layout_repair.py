@@ -185,6 +185,25 @@ def main():
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)
                 edits.append(dict(before=before, after=after))
+        if args.variant=='critical_buses_interleaved_resistors':
+            # Power buses no longer share an x interval. The frozen mutation
+            # assumed they did and failed before injecting any physical fault.
+            # Join the two verified actual pin centres using an L-shaped bridge.
+            before = """    x=max(ports['avdd'][2],ports['avss'][2])+2.5
+    region=pya.Region(top.shapes(L.layer(134,0)))
+    for net in ['avdd','avss']:assert not (region & pya.Region(pya.DBox(x,ys[net]-.1,x+.1,ys[net]+.1).to_itype(L.dbu))).is_empty()
+    top.shapes(L.layer(134,0)).insert(pya.DBox(x,min(ys['avdd'],ys['avss'])-.7,x+.5,max(ys['avdd'],ys['avss'])+.7))"""
+            after = """    xa=(ports['avdd'][0]+ports['avdd'][2])/2
+    xb=(ports['avss'][0]+ports['avss'][2])/2
+    region=pya.Region(top.shapes(L.layer(134,0)))
+    for net,x in [('avdd',xa),('avss',xb)]:assert not (region & pya.Region(pya.DBox(x-.1,ys[net]-.1,x+.1,ys[net]+.1).to_itype(L.dbu))).is_empty()
+    top.shapes(L.layer(134,0)).insert(pya.DBox(min(xa,xb)-.25,ys['avdd']-.25,max(xa,xb)+.25,ys['avdd']+.25))
+    top.shapes(L.layer(134,0)).insert(pya.DBox(xb-.25,min(ys['avdd'],ys['avss'])-.25,xb+.25,max(ys['avdd'],ys['avss'])+.25))
+    assert (pya.Region(top.shapes(L.layer(134,0)))-region).area()>0"""
+            assert physical_source.count(before)==1
+            physical_source=physical_source.replace(before,after)
+            result['physical_fault_geometry_adaptation']=dict(before=before,after=after,
+                scope='Actual avdd/avss pin-centre bridge only. Same DRC/LVS decks, expected fault verdicts and all other controls unchanged.')
         generator = out / 'generate.py'
         generator.write_text(source)
         physical_method=out/'verify-physical.py'
