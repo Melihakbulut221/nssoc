@@ -28,7 +28,7 @@ def native():
     scale = block.getDbUnitsPerMicron()
     text = (OUT / 'relocated-placement-sta.log').read_text()
     reported = {}
-    for name, pin, master in re.findall(r'[^\\n]*[\^v] +(.+?)/(\S+) +\(([^)]+)\)\s*$', text, re.M):
+    for name, pin, master in re.findall(r'[^\n]*[\^v] +(.+?)/(\S+) +\(([^)]+)\)\s*$', text, re.M):
         name = name.strip()
         if name in reported:
             assert reported[name] == master, (name, reported[name], master)
@@ -61,7 +61,7 @@ def native():
                   sta_log_sha256=sha(OUT / 'relocated-placement-sta.log'),
                   reported_cells=len(reported), cells=cells, nets=nets,
                   scope='Read-only binding of all reported cells and their incident nets. Placement estimates only.')
-    (OUT / 'native-cells.json').write_text(json.dumps(result, indent=2) + '\\n')
+    (OUT / 'native-cells.json').write_text(json.dumps(result, indent=2) + '\n')
 
 def main():
     if os.environ.get('GITHUB_ACTIONS') != 'true':
