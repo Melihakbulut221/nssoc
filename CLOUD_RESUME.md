@@ -8,6 +8,21 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Fresh placement/CTS completed; verifier stopped before timing/routing.**
+38596343019 terminalFAIL, summary640931131 SHA4315605ee0a05f234000ad04cbe37393215657f87e6613b0db894885f0187bae.
+Placement exact connectivityPASS:97661cells/12453dataflops moved; source97722.
+Fresh CTSODB5b18b0607c41a9605c7252648849b21483c6a349460e995b41a16f37de0dd809
+saved in archive640930633 SHAaab7e72e2cc2d2e2f434c08dfd84e509ba8eee22b9933e408d36f1bed4a4d4f8.
+Failure checks SWIG ITerm wrappers with==; corrected to exact instance/MTerm
+identity, still requires exactly one driver. Explicit disconnected-output
+added CTS dummy loads are counted; every original terminal and inserted supply
+must still validate, with actual terminal/supply disconnect negative controls.
+Prepared resume_fresh_cts=true with prects_grt/seed13/hold0: resumes these exact
+three saved databases, does not rerun native placement/CTS. Inspect actual
+proof before any timing or routing acceptance. Full goalsOPEN/cloud-only.
+PLL full50 diagnosis38597592170 dispatched on4bec64e0; retain same handle.
+
+
 **Current-parent full-node PLL waveform located; hosted diagnosis prepared.**
 Use PBUF10 native86520261012 full50ns, not older20261011 reset865 capture.
 Finite parentSHA b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48

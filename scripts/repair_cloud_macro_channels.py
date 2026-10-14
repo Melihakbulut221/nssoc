@@ -324,30 +324,43 @@ def verify_fresh_prects():
         assert set(original_instances)<=set(actual),'CTS removed an original instance'
         added=set(actual)-set(original_instances)
         assert added,'CTS inserted no clock buffers'
-        roots={}
+        roots={}; dummy_loads=[]; buffer_inputs=[]
         for n in added:
             inst=actual[n]
             assert inst.getMaster().getName() in {'sg13g2_buf_2','sg13g2_buf_4','sg13g2_buf_8','sg13g2_buf_16'},('Unexpected CTS cell',n)
             a=inst.findITerm('A');x=inst.findITerm('X')
-            assert a and x and a.getNet() and x.getNet(),('Incomplete CTS buffer',n)
-            drivers=[t for t in x.getNet().getITerms() if str(t.getIoType())=='OUTPUT']
-            assert len(drivers)==1 and drivers[0]==x,('Multiple CTS drivers',n)
+            assert a and x and a.getNet(),('Incomplete CTS buffer input',n)
+            buffer_inputs.append(a.getNet())
+            if x.getNet():
+                drivers=sorted((t.getInst().getName(),t.getMTerm().getName())
+                    for t in x.getNet().getITerms() if str(t.getIoType())=='OUTPUT')
+                # SWIG wrapper equality is not native object identity. Bind the
+                # unique physical instance/pin; multiple drivers still reject.
+                assert drivers==[(n,'X')],('Multiple CTS drivers',n,drivers)
+            else:
+                # Native CTS explicitly inserts balancing dummy loads. An
+                # added buffer with no output connection cannot drive an
+                # original terminal; every original terminal is checked below.
+                dummy_loads.append(n)
             power=[t for t in inst.getITerms() if str(t.getSigType()) in ('POWER','GROUND')]
             assert {str(t.getSigType()) for t in power}=={'POWER','GROUND'},('Missing supply pins',n)
             for t in power:
                 assert t.getNet() and str(t.getNet().getSigType())==str(t.getSigType()),('Unconnected CTS supply',n,t.getMTerm().getName())
                 source_net=original.findNet(t.getNet().getName())
                 assert source_net and str(source_net.getSigType())==str(t.getSigType()),('New supply domain',n)
-            key=x.getNet().getName();assert key not in roots
-            roots[key]=a.getNet().getName()
+            if x.getNet():
+                key=x.getNet().getName();assert key not in roots
+                roots[key]=a.getNet().getName()
         def root(net):
             n=net.getName() if net else None;seen=set()
             while n in roots:
                 assert n not in seen,'Cycle in inserted clock graph'
                 seen.add(n);n=roots[n]
             return n
+        original_nets={n.getName() for n in original.getNets()}
         for n in roots:
-            root(cts.findNet(n))
+            assert root(cts.findNet(n)) in original_nets,('Unanchored CTS tree',n)
+        assert all(root(n) in original_nets for n in buffer_inputs),'Unanchored dummy/buffer input'
         checked=0
         for n,inst in original_instances.items():
             other=actual[n]
@@ -360,7 +373,8 @@ def verify_fresh_prects():
         before={t.getName():t.getNet().getName() if t.getNet() else None for t in original.getBTerms()}
         after={t.getName():root(t.getNet()) for t in cts.getBTerms()}
         assert before==after,'Boundary connectivity changed'
-        return dict(inserted_transparent_buffers=len(added),original_terminals_checked=checked)
+        return dict(inserted_transparent_buffers=len(added),original_terminals_checked=checked,
+            undriven_added_dummy_outputs=sorted(dummy_loads),driver_identity='native instance name and MTerm pin name')
     report['cts']=prove()
     fault=next(t for i in cts.getInsts() if i.getName() in original_instances
         for t in i.getITerms() if t.getNet() and str(t.getSigType()) not in ('POWER','GROUND'))

@@ -145,6 +145,47 @@ def fresh_prects_trial(script, result):
     return script.replace(original_path,str(OUT/'fresh-cts.odb'))
 
 
+
+def resume_fresh_cts_trial(script, result):
+    """Recheck saved physical work after verifier fix, no placement/CTS rerun."""
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    packed=OUT/'saved-fresh-cts.tar.gz'
+    fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38596343019-1-route-prects_grt/newer-postcts-placement-prects_grt-38596343019-1.tar.gz',
+        'aab7e72e2cc2d2e2f434c08dfd84e509ba8eee22b9933e408d36f1bed4a4d4f8',packed)
+    with tarfile.open(packed) as tar:
+        raw=tar.extractfile('cloud-newer-postcts/result.json').read()
+        assert digest_bytes(raw)=='4315605ee0a05f234000ad04cbe37393215657f87e6613b0db894885f0187bae'
+        previous=json.loads(raw)
+        assert previous['status']=='FAIL_OR_ERROR' and previous['placement_profile']=='prects_grt'
+        assert previous['fresh_prects_placement']['status']=='PASS_EXACT_PRECTS_PLACEMENT_CONNECTIVITY'
+        assert 'Multiple CTS drivers' in previous['error']
+        pins={'prects.odb':'4739da2254a80397ab82f5c70550b9215e7ac5853c0e78cd0fb7dabefece20d8',
+            'prects-placement.odb':'8fecc538427c9fb4aef9f854aedc0294a8a9bbee314764134800196f98a5a4f0',
+            'fresh-cts.odb':'5b18b0607c41a9605c7252648849b21483c6a349460e995b41a16f37de0dd809'}
+        for name in [*pins,'fresh-cts.log','fresh-cts.tcl','fresh-prects-placement.log','fresh-prects-placement.tcl']:
+            raw=tar.extractfile('cloud-newer-postcts/'+name).read()
+            assert digest_bytes(raw)==previous['failure_outputs'][name]
+            if name in pins:assert digest_bytes(raw)==pins[name]
+            (OUT/name).write_bytes(raw)
+    packed.unlink()
+    with (OUT/'verify_fresh_cts.log').open('w') as log:
+        code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',
+            str(ROOT/'scripts/repair_cloud_macro_channels.py')],
+            env=dict(os.environ,NSSOC_PLACEMENT_MODE='verify_fresh_cts'),stdout=log,stderr=subprocess.STDOUT)
+    assert code==0,('Saved CTS invariant check',(OUT/'verify_fresh_cts.log').read_text()[-8000:])
+    assert all(sha(OUT/n)==h for n,h in pins.items())
+    result.update(fresh_prects_placement=previous['fresh_prects_placement'],
+        fresh_cts=json.loads((OUT/'fresh-cts-proof.json').read_text()),
+        resumed_physical_work=dict(run=38596343019,unchanged_database_sha256=pins,
+            previous_error=previous['error'],new_placement_or_cts_executed=False))
+    original_path=str(OUT/'inputs/postcts.odb');assert script.count(original_path)==1
+    return script.replace(original_path,str(OUT/'fresh-cts.odb'))
+
+
+def digest_bytes(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline'], default='baseline')
@@ -156,9 +197,12 @@ def main():
     parser.add_argument('--router-solver', choices=['fast_route','cugr'], default='fast_route')
     parser.add_argument('--self-test', action='store_true')
     parser.add_argument('--cugr-empty-net-cleanup', action='store_true')
+    parser.add_argument('--resume-fresh-cts', action='store_true')
     args = parser.parse_args()
     if args.self_test:
         self_test(); return
+    if args.resume_fresh_cts:
+        assert args.placement_profile=='prects_grt'
     if args.cugr_empty_net_cleanup:
         assert args.router_solver=='cugr'
     if args.router_solver=='cugr':
@@ -292,7 +336,7 @@ def main():
             result['ethernet_hold']=dict(evidence=case,exact_placement_timing_reproduced=measured)
             save()
         if args.placement_profile == 'prects_grt':
-            script=fresh_prects_trial(script,result)
+            script=(resume_fresh_cts_trial if args.resume_fresh_cts else fresh_prects_trial)(script,result)
             result['fresh_cts_timing']=parse_phases(execute(script,'fresh-cts-sta'),'CORNER')
             save()
         if args.placement_profile not in ('none','prects_grt'):
