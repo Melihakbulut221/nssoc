@@ -7,6 +7,30 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Current dispatch handles (do not restart queued/live jobs):**
+- 38496975171: V10 4:1 hot-low compact/wire at0.25ps maxstep; compare against
+  original hot-low0.5ps summaries638812939/638828378, same bit oracle/phases.
+- 38496978055: V10 4:1 independent HBT/resistor and mixed PVT corners,24cases,
+  at most4parallel. Every engineering gate still applies.
+- 38496981217: V10 full32:1 compact/wire nominal, actual30prestage macros.
+  All three run on31d4d70464ed0c395ca9c4564e81e101fee849da, same
+  cascade158_kelvin_supply_direct / v10_kelvin_low_ports_loads_shunts_series /
+  stiff65 / matched physical. Read terminal native captures, not workflow color.
+- 38496983888: source/license/capture checks for31d4d704.
+- 38496628841: paired typical/slow ABC mapping on96b1ee51; native preparation
+  has started. OriginalD4000,32joint controls,all3STA corners.
+- 38490952579: main-chip halo1 native routing remains running, original source.
+V10six-case base measurements: compact/wire nominal280.128025493/234.097230665mV;
+hot232.866874337/103.786226760mV; cold273.459379164/263.748860088mV.
+All6pass original768samples/device/interface/diagnostics. Narrow hot margin
+requires the above numerical/process checks before any acceptance expansion.
+Unchanged schematic divider14 nine-job push38496930380 was cancelled after
+inspecting its exact workflow; it does not exercise the new physical V10.
+Legacy schematic/native study jobs now require explicit dispatch; standard CI
+and all explicit physical/timing jobs remain enabled. No local artifacts.
+FullserialGen3x4 PHY, assembled main-chip routing and finalsetup/hold OPEN.
+
+
 **Newest PHY result:** V10series loaded38495318320/38495321089 completed all6
 component cases successfully. Hot extracted-wire minimum103.786226760mV,
 0wrong-sign/0below100mV among768original samples; all native device/interface
