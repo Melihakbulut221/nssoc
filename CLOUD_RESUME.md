@@ -5,64 +5,83 @@
 
 ## Latest cloud-only checkpoint — 14 October 2026
 
-Update: diagnosis38491313386 and source/license checks38491360348 completed
-successfully. The native wire clock-to-MUX median is17.390ps versus9.491ps
-compact; source-to100mV maximum38.278ps misses the37.5ps early sample.
-The next actual geometry trial is `critical_buses_kelvin_low_ports_loads_shunts_series`
-with onlyR25/R26 moved fromy=-50 toy=-18um. Dispatch/read the physical run on
-this commit before pinning its outputs for fresh extraction/composition/PVT.
-The exact diagnosis and proposed change are appended to the combined rejection
-receipt. No change to waveform acceptance or transistor values.
+This section supersedes older running/pending statements below. The local
+workspace is empty. No local checkout, CAD, tests or artifacts; metadata/source
+edits stay in RAM and native work runs on GitHub. Final retirement backup:
+`cloud-migration-final-checkout-20261013`. Never force-push or retry uncertain
+mutations before reading the branch ref. Latest engineering source:
+`895fc9a44b85c1a8ae3451f0fdfb28b1ec58d73f`.
 
-This section supersedes all older running/pending statements below. Continue
-cloud-only: the local workspace is empty; no local checkout, CAD, tests or
-artifacts. Source and metadata edits may be prepared in RAM for Git Data API
-publication. Final local backup release: `cloud-migration-final-checkout-20261013`.
+### Live runs to inspect before dispatching anything again
 
-Latest engineering source: `89634832f6057fb741f82f6564e629a59ee1e84f`.
-Inspect these existing runs before dispatching replacements:
-
-- **Main-chip conservative macro halo:38490952579**, source
+- **38490952579 main-chip macro halo**, source
   `a011880cdadc7f4c22cf077383382880528b1f14`, job115615743460.
-  Native runtime and Python syntax passed; exact postCTS replay/routing is live.
-  `local_optimize_buffers`, GMIIhold2, seed13, critical0, guideoffset0, halo1.
-  Exact baseline placement is enforced by hash. Native `set_macro_extension 1`
-  enlarges macro obstructions; original PDK layer derates, SDC, cells and
-  zero-overflow gate remain. Do not interpret a pre-route receipt as route closure.
-- **Combined PHY hot-wave diagnosis:38491313386**, source89634832,
-  study `v8_loads_shunts_hot`, job115616906802. Input/integration tests passed;
-  full source-bound compact/wire waveform analysis is live.
-- **Source/license/capture checks:38491360348**, source89634832. Inspect outcome.
+  Native replay/routing is in progress. `local_optimize_buffers`, GMIIhold2,
+  seed13, critical0, guideoffset0, halo1; exact baseline placement hash enforced.
+  Native `set_macro_extension 1` enlarges actual macro OBS. Same original layer
+  derates, SDC, cells and zero-overflow gate. No detailed routing/STA acceptance.
+- **38492859554 nominal** and **38492856902 hot/cold PHY**, source
+  `a1d1ae9707cf567b638951cdabc3f54087014a85`.
+  All3compact jobs completed; three extracted-wire jobs remain running.
+  Profile `v8_kelvin_low_ports_loads_shunts_series`, prestage
+  `cascade158_kelvin_supply_direct`, stiff65, streams4, matchedcompact/wire.
+  Read allsix engineering summaries; a green workflow does not mean acceptance.
+- **38493229154 reset-dominance proof and paired digital map**, source895fc9a4.
+  Baseline `physical_idle_credit_window_eop`, candidate
+  `physical_idle_credit_window_reset`; jobs115623078791/115623079002 live.
+  Candidate ties only advertiser.link_up_i high beneath unchanged actual
+  asynchronous local_reset=rst_ni&&link_up_i&&!retrain_done_i. All other link
+  connections, original FC state, EOP candidate, latency and SDC preserved.
+  `run_cloud_advert_reset.py` requires full-region state/output induction with
+  arbitrary reset/link/clock traces, wrong-owner counterexample, full public
+  port controls before native paired mapping. Never assume proof/timing passes.
+- **38493231713 source/license/capture checks**, source895fc9a4, running.
+  Earlier source checks38492861940 and38492081693 passed.
 
-The combined collector-load/output-shunt geometry passed native physical38487899624,
-corrected extraction38489084202 and composition38489385975. Loaded runs
-38489754238 and38489752340 completed allsix captures: five pass, hot extracted
-wire fails50original early samples, minimum88.309416767mV against100mV.
-All HBT/MOS/interface gates passed, fixing the three HBT failures of shunts-only.
-Still rejected for electrical acceptance. Full source-bound case records:
+### Fresh physical evidence
+
+Series-output candidate moves only R25/R26 fromy=-50 toy=-18um on combined
+loads/shunts geometry. Physical38491698578 passed zero-marker560-category DRC,
+strict hierarchical/flat54device LVS and5actual faults. Extraction38492320653
+passed native4021R/2638C graph/capacitance checks and all13negative controls.
+Composition38492591399 passed exact native device/wire binding. Receipt:
+`docs/evidence/pcie-final-v8-kelvin-low-ports-loads-shunts-series-composition-20261013.json`.
+Summary638734981 SHA3f7c9eff40f67dd43f7d16be4b6f92730ae6fb5c2cf6e90d9aacb386a10b7192;
+archive638734847 SHA7d23c3d62afd75a822f007b6b4fb0a4179c11659bac4da3f26afc8477f2c976b.
+Do not reuse prior geometry RC or call physical pass an electrical pass.
+
+Prior combined loads/shunts run38489754238/38489752340 passed5/6: hotwire had
+50early samples below100mV, minimum88.309416767mV; allHBT/MOS/interface gates
+passed. Diagnosis38491313386 proved clock-to-MUX median17.390ps versus9.491ps
+compact; source-to100mV maximum38.278ps misses original37.5ps early sample.
+These exact records and subsequent physical/RC receipts are retained in
 `docs/evidence/pcie-v8-loads-shunts-loaded-rejection-20261014.json`.
-Use native diagnosis to select the next actual metal change; do not change source
-bits, sample phases, limits or model scope to manufacture a pass.
+Next after a genuine6/6pass: independent native device/process corners,
+numerical step agreement/fault controls, full32:1 and actual clock/intermacro
+layout. Do not change bit oracle, sample phases or electrical thresholds.
 
-Digital non-SOP owner study38488788552 completed with exact region induction,
-expected wrong-owner counterexample and32joint public-port tests, zero skips.
-It is **rejected**: PCIe slow setup -0.991500ns to -1.261001ns, cells79065 to79386.
-Full comparison, allcorner slacks and hashes are in `body_owner_completed_screen`
-of `docs/evidence/pcie-ack-window-proof-and-screen-20261014.json`.
-The best unplaced baseline remains `physical_idle_credit_window_eop`; this is
-not routed timing acceptance. Prior FC snapshot/refresh trials also remain rejected.
+### Rejected digital and route hypotheses
 
-Half-grid main-chip run38472175339 is terminal GRT failure: the same congestion
-report and placement hashes as seed13baseline132overflow. Receipt and correction:
-`half_grid_rejected_followup` in
-`docs/evidence/cloud-seed13-buffers-route-failure-20261014.json`.
-Exact OpenROADdcf36133 source shows `grid_origin` is used for saved guides,
-not routing-grid initialization. The false partition-shift claim was withdrawn,
-nonbaseline options removed from script/workflow. Never repeat half_x/half_y.
-Any future solver must preserve actual capacity derates/OBS and zero-overflow gate.
+- Non-SOP owner38488788552 passed exact proofs/ports but setup worsened
+  -0.991500 to-1.261001ns; rejected.
+- Factored EOP38492079062 passed3region inductions, wrong-owner counterexample
+  and32joint public-port tests but setup worsened-0.991500 to-1.015753ns;
+  cells79065 to79564. Rejected. Fast PCIe hold unchanged-0.109062ns.
+  Allcorner evidence, hashes and candidate identities for both studies and
+  earlier rejected FC refresh/snapshot trials are in
+  `docs/evidence/pcie-ack-window-proof-and-screen-20261014.json`.
+  Best unplaced baseline is still `physical_idle_credit_window_eop`.
+- Half-grid38472175339 failed with identical seed13placement/congestion hashes
+  (132overflow). Exact OpenROADdcf36133 source uses grid_origin only when
+  saving guides, not routing partition creation. False shift claim withdrawn;
+  nonzero choices removed. Never repeat half_x/half_y. Receipt/correction:
+  `half_grid_rejected_followup` in
+  `docs/evidence/cloud-seed13-buffers-route-failure-20261014.json`.
 
-Full serial Gen3x4 PHY, main-chip PCIe/Ethernet routing, final setup/hold and
-production acceptance remain OPEN. No passing component test closes these scopes.
+Full serial Gen3x4 PHY, assembled PCIe/Ethernet main-chip routing, final
+setup/hold and production acceptance remain OPEN. Ideal clock/intermacro
+segments, schematic TX driver and unqualified RF/substrate extraction are
+explicit gaps; passing a4:1 component does not close them.
 
 ## Controlling request and scope
 
