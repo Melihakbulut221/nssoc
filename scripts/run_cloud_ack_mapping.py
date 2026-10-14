@@ -104,7 +104,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
     assert proof['source_profile']=='physical_replay'
     assert proof['proofs'][0]['passed'] and proof['proofs'][1]['negative_rejected']
     assert proof['source_sha256']==selected[replay]['sha256']
-    if profile in ('physical_idle','physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap'):
+    if profile in ('physical_idle','physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap','physical_idle_credit_control'):
         from run_cloud_replay_idle import candidate
         altered=candidate(Path(selected[replay]['path']).read_text())
         target=output/'candidate-soc_pcie_replay_tx.v'
@@ -112,7 +112,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
         assert sha(target)==proof['candidate_sha256']=='1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc'
         assert recipe.count(replay)==1
         recipe=recipe.replace(replay,str(target))
-    if profile in ('physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap'):
+    if profile in ('physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap','physical_idle_credit_control'):
         from run_cloud_credit_late_verdict import candidate as credit_candidate
         credit_proof_path=output/'credit-source-bound-proof.json'
         credit_proof_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471835755-1-credit-late-verdict/credit-late-verdict-38471835755-1.json'
@@ -134,6 +134,37 @@ def physical_recipe(inputs, manifest, output, profile, status):
             proof_sha256=sha(credit_proof_path),source_sha256=selected[credit]['sha256'],
             candidate_path=str(target),candidate_sha256=sha(target),
             scope='Isolated credit-verdict change on the same proved replay-idle physical RTL baseline; fresh paired mapping, not an adopted layout.')
+    if profile=='physical_idle_credit_control':
+        import run_cloud_advert_control as control_proof
+        control_proof.OUT=output/'control-factoring-proof'
+        control_proof.main()
+        proof=json.loads((control_proof.OUT/'result.json').read_text())
+        assert proof['status']=='PASS_ACTUAL_ADVERTISER_CONTROL_FACTORING_REGION_AND_PORTS_NOT_TIMING'
+        assert [p['refresh_cycles'] for p in proof['proofs']]==[128,0,1,128]
+        assert all(p['passed'] for p in proof['proofs'][:3]) and proof['proofs'][3]['negative_rejected']
+        assert all(p['actual_tests']==dict(passed=5,failed=0,skipped=0) for p in proof['ports'][:2])
+        assert proof['ports'][2]['actual_tests']['failed']>0 and proof['ports'][2]['actual_tests']['skipped']==0
+        paths={Path(old).name:(old,pin) for old,pin in selected.items() if Path(old).name.startswith('soc_pcie_')}
+        assert len(paths)==21
+        for name,(old,pin) in paths.items():
+            actual=(output/('candidate-'+name)) if name in ('soc_pcie_replay_tx.v','soc_pcie_credit_tx.v') else Path(pin['path'])
+            assert sha(actual)==proof['source_binding']['selected'][name]['sha256'],name
+        top=Path(selected[manifest['old_root']+'/hw/soc/rtl/soc_top.v']['path']).read_text()
+        assert 'soc_pcie_buffered_flow_packets #(.APB_TIMEOUT(APB_TIMEOUT)) u_pcie (' in top
+        parent,pin=paths['soc_pcie_buffered_flow_packets.v']
+        assert 'RX_SLOTS_PER_CLASS=2,FC_REFRESH_CYCLES=128' in Path(pin['path']).read_text()
+        changed={}
+        for name,key in [('soc_pcie_buffered_flow_packets.v','candidate_sha256'),
+                         ('soc_pcie_fc_tx.v','candidate_fc_sha256')]:
+            old,pin=paths[name]
+            target=control_proof.OUT/'candidate-rtl'/name
+            assert sha(target)==proof['source_binding'][key]
+            assert recipe.count(old)==1
+            recipe=recipe.replace(old,str(target))
+            changed[name]=dict(path=str(target),sha256=sha(target),original_sha256=pin['sha256'])
+        proof['mapped_candidates']=changed
+        proof['helper_sha256']=sha(Path(control_proof.__file__))
+        status['control_factoring_binding']=proof
     if profile in ('physical_idle_credit_eop','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap'):
         from run_cloud_advert_eop import candidate as eop_candidate
         eop_path=output/'eop-source-bound-proof.json'
@@ -339,7 +370,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit', 'physical_idle_credit_eop', 'physical_idle_credit_window', 'physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap'], required=True)
+    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit', 'physical_idle_credit_eop', 'physical_idle_credit_window', 'physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000','physical_idle_credit_window_eop_slowmap','physical_idle_credit_control'], required=True)
     args = parser.parse_args()
     output = ROOT / 'cloud-ack-map' / args.profile
     output.mkdir(parents=True, exist_ok=False)

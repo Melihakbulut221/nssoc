@@ -7,6 +7,20 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Cloud diagnostics dispatched and guarded timing mapping prepared:** V11 actual
+metal/geometry diagnosis38508868002 and artificial input-R sensitivity38508878110
+are dispatched on1e74f55c; do not duplicate. Source-bound actual hotwire failure
+38507486510 remains baseline, not overwritten by sensitivity results.
+Advertiser control proof38508286832 has reached native formal/port checks.
+New pcie-ack-cloud-mapping study=advert_control compares physical_idle_credit
+with ONLY the reset/valid/ready factoring; no ACK-window/EOP refinement. It
+reruns complete region proof, negative control and buffered tests and checks
+all21 physical source hashes before replacing exactly parent+FC RTL. Dispatch
+mapping only after reviewing38508286832 result. Original SDC/corners unchanged;
+no synthesized/placed/routed success asserted. Existing analog/PLL/route jobs
+retain handles in preceding checkpoints; all cloud-only and all goalsOPEN.
+
+
 **V11 hot-wire rejection drives physical diagnosis:** real hot_low wire result
 639132211 from38507486510 FAILS: originalbit margin0.011488287V, final interface
 margin0.133128903V/64sub150mV samples, CMmin1.78408764V, sixdata VCE failures
