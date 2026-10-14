@@ -1829,10 +1829,19 @@ def compose_pfd_actual_parent():
             rows=copy.deepcopy(devices)
             for d in rows:d['nets']=[rename.get(n,n)for n in d['nets']]
             return rows
+        macro_names={i['name']for i in physical['instances']}
+        require(len(macro_names)==10,'Actual parent macro census')
+        def macro_owner(d):
+            path=d['path']
+            owner=path[3:].split('_',1)[0] if path.startswith('x_x') else path.split('.',1)[0][1:]
+            require(owner in macro_names,'Device has no physical macro owner '+path)
+            return owner
+        require(Counter(macro_owner(d)for d in actual)==Counter(macro_owner(d)for d in expected),'Macro device census mismatch')
+        result['macro_ownership_census']=dict(Counter(macro_owner(d)for d in actual));save()
         def graph(rows):
             g=nx.Graph()
             for d in rows:
-                dn='d:'+d['path'];g.add_node(dn,label=('device',d['model'],geometry(d)))
+                dn='d:'+d['path'];g.add_node(dn,label=('device',macro_owner(d),d['model'],geometry(d)))
                 for i,n in enumerate(d['nets']):
                     role='ds'if d['model'].startswith('sg13_') and i in (0,2)else 'ends'if d['model'] in ('rppd','rhigh') and i in (0,1)else i
                     tn=dn+':'+str(i);nn='n:'+n
@@ -1863,6 +1872,7 @@ def compose_pfd_actual_parent():
                 if len(pool)==prior:break
                 prior=len(pool)
             for g,c in zip(graphs,colors):nx.set_node_attributes(g,c,'refined')
+            print('EXACT_GRAPH_SEARCH',len(graphs[0]),len(pool),'classes',flush=True)
             mapping=nx.vf2pp_isomorphism(*graphs,node_label='refined')
             require(mapping is not None and set(mapping)==set(graphs[0]) and set(mapping.values())==set(graphs[1]),'No exact intrinsic graph bijection')
             require(all(graphs[0].nodes[a]['label']==graphs[1].nodes[b]['label']for a,b in mapping.items()),'Bijection changes labels')
