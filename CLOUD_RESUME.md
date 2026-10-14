@@ -7,6 +7,33 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Cloud-only execution and local retirement reverified.** Local workspace
+`/home/hasanmelih/Documents/ChatGPT/nnsoc` has zero entries, including hidden
+files. No local checkout, CAD run, simulation or test artifacts were created.
+Retirement asset636387277 records nine archive batches, each with hosted
+PASS_EVERY_REMOTE_ARCHIVE_MEMBER proof, and the final inventory. Source changes,
+CAD, simulation, tests and durable results remain on GitHub. Continue cloud-only.
+
+**Both paired hot TC waveform analyses are now terminal success:**
+- Run 38520023196, summary asset 639420551, study v8_tc_hot, SHA256 `8d3585334599ba614e93ff53a70079c55b36950ce782005f2389e9f85e575e75`.
+- Run 38520032724, summary asset 639420603, study v8_tc_hot_res_bcs, SHA256 `f57022cab578f067549a7a58c5937c7c3ea0e8694a1bf0fd6c7dfa4a16ddbf64`.
+These statuses mean source-bound analysis completed, not PHY acceptance.
+Next inspect the preserved per-device terminal drops, feed currents and stage
+transitions before choosing an actual metal-layout repair. Keep original
+compact/wire cases and engineering limits; do not repeat the native captures.
+Dedicated endpoint trace38519890192 also completed (asset639416287): the new
+limiting startpoint maps to `u_pcie.flow.packets.ack_sequence` bit0; endpoints
+still need exact inversion/net binding before the next RTL candidate. Dedicated
+mapping38519026139 improves slow PCIe setup to -1.046260ns, but fast PCIe hold
+remains -0.109062ns; unplaced screen only, no physical adoption.
+
+Existing PLL38507479646 and route38511490580 were freshly verified in_progress;
+retain both handles and do not duplicate them. Dispatch the prepared PLL
+acquisition review only after the original capture completes successfully.
+Full serial PHY, routed main chip and final setup/hold remain OPEN. This update
+records cloud handoff and terminal readbacks; it does not claim product closure.
+
+
 
 **Both exact hot compact TC controls PASS; paired waveform diagnosis ready.**
 38519483522 hot639412001: bitmin0.222802747V, finalCMmin1.848810921V;
