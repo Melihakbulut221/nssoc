@@ -16,7 +16,7 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant', required=True)
-    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10'), default='baseline')
+    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     parser.add_argument('--prepared-layout', action='store_true',
                         help='Consume the verified layout generated in this same hosted job')
     args = parser.parse_args()

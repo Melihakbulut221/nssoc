@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**V11 physical result verified and bound for fresh extraction:**38505016479 on
+16ff1e202cf713dc4b50c12126c241109013377e passed actual native geometry gates:
+560DRC categories/0markers; strict hierarchical+flat54-device LVS;5intentional
+finger/device/open/short/grid faults rejected. Summary639060800,archive639060607
+393975bytes SHA6143b74d12cedffdc9ac399470ffb52f0d23f4b845862a8fa9a90c23e6164274.
+This is only the V11finalstage block, NOT wholechip, electricalspeed, RFPEX or
+PHY acceptance. Exact receipt now inpcie-tx-cloud-extraction-input-20261013.json
+underfinal_drive_v11/critical_buses_kelvin_low_ports_loads_shunts_series.
+Dispatch tx-layout-extraction-cloud.yml for that exactprofile/variant; verify
+actual native RC and13fault controls before binding to devices and waves.
+32um feedback experiment38505258788 is already dispatched on2aabe087; do not
+repeat it. PLL snapshot38503868241,32:1wire38496981217 and mainchiproute
+38490952579 retain live handles. Localworkspace remains empty; all goalsOPEN.
+
+
 **Newest measured feedback decision and live physical build:**26um feedback
 38503692385 is TERMINAL:8cases,2pass/6FAIL. All summaries/output hashes retained
 underoutput_feedback_26um_rejection_20261014 in V10series receipt. ColdresWCS
