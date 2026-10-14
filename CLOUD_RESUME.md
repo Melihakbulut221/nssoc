@@ -8,6 +8,16 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Static-commit proof dispatched38513261561** on8a51acdd; do not duplicate.
+Paired map option advert_static_commit prepared, but dispatch only after proof:
+physical_idle_credit vs physical_idle_credit_static, exact21sourcebindings,
+unchanged SDC/corners/runtime. Mapping reruns fullregion proof including corrupted
+commit control; every candidate source SHA rechecked after native synthesis/STA.
+Callable proof main now takes explicit argv so embedding does not parse the
+mapping --profile argument. No existing live work changed. Other native handles
+in previous checkpoint remain active; all full goalsOPEN/cloud-only.
+
+
 **Exact timing trace identifies the next RTL repair:**38512839026 PASS, summary
 639244698 binds actual worst baseline register to advertiser.sent_data_o and
 rejected candidate to sent_data_o/header_o, preserving mapped JSON source hashes.

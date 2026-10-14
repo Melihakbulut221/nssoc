@@ -167,10 +167,10 @@ def static_commit(fc):
     return fc.replace(old,'\n'.join(rows))
 
 
-def main():
+def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--variant',choices=('control','static_commit'),default='control')
-    args=parser.parse_args()
+    args=parser.parse_args(argv)
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
     record=dict(status='RUNNING',adopted=False,production_rtl_modified=False,
