@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**New actual V8 direct-load supply layout passes native physical gates.**
+38521214968 on88399e38 summary639446885:560DRC categories/zero markers,
+strict hierarchical+flat LVS and original physical fault controls PASS.
+All54devices preserved. Archive639446743 SHA42369bd4fe6b1abc0846bf2a85ea33411518fd508c178b065c958a5a97c7293c,
+401366bytes, now source-bound in extraction input. Dispatch native extraction
+for final_drive_v8/critical_buses_kelvin_low_ports_loads_shunts_series_direct
+once. No electrical or fullPHY acceptance; original hot/cold gates still required.
+
+Digital polarity readback38521217396 result639444756 completed but the three
+limiting replay-register Qs have no surviving public alias through inv/buf
+cells. Do not infer an RTL bit. Expanded readback now preserves exact archived
+replay candidate source, synthesis recipe/inventory and original synthesis log
+for a bound provenance diagnosis, no remapping. Dispatch trace_dedicated_endpoints
+once on this source. Current route38511490580/PLL38507479646 retain handles;
+cloud-only, all full goalsOPEN. Prior failed electrical studies remain intact.
+
+
 **Actual final-load supply repair prepared from matched native evidence.**
 Hot TC paired analysis38520023196: clock-to-MUX median9.489683ps compact versus
 17.522559ps actual wire; source-to100mV max27.716935 versus39.218292ps. Final

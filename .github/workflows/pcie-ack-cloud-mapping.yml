@@ -122,11 +122,26 @@ jobs:
               assert summary['profile']==profile and summary['status']=='COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
               assert summary['screen_result']['outputs']['screen.log']==logsha
               name=f'cloud-ack-map/{profile}/screen05/screen.log'
+              provenance={}
               with tarfile.open(fileobj=io.BytesIO(raw)) as tf:
                   hits=[m for m in tf if m.name==name]
                   assert len(hits)==1 and hits[0].isfile() and hits[0].size<20000000
                   log=tf.extractfile(hits[0]).read()
                   mapped_raw=None
+                  if os.environ['TRACE_ENDPOINTS']=='trace_dedicated_endpoints':
+                      provenance['mapping_inventory']=[dict(name=m.name,bytes=m.size) for m in tf if m.isfile() and (f'cloud-ack-map/{profile}/map/' in m.name or m.name.endswith('candidate-soc_pcie_replay_tx.v'))]
+                      for member in tf:
+                          if not member.isfile():
+                              continue
+                          if member.name.endswith(('/map/synthesis.ys','candidate-soc_pcie_replay_tx.v')):
+                              assert member.size<100000
+                              data=tf.extractfile(member).read()
+                              provenance[member.name]=dict(sha256=hashlib.sha256(data).hexdigest(),text=data.decode())
+                          elif member.name==f'cloud-ack-map/{profile}/map/synthesis.log':
+                              assert member.size<100000000
+                              data=tf.extractfile(member).read()
+                              (out/(profile+'.synthesis.log')).write_bytes(data)
+                              provenance['synthesis_log_sha256']=hashlib.sha256(data).hexdigest()
                   if os.environ['TRACE_ENDPOINTS'] in ('trace_control_endpoints','read_static_reports','trace_dedicated_endpoints'):
                       mapping_name=f'cloud-ack-map/{profile}/map/soc_top.mapped.json'
                       members=[m for m in tf if m.name==mapping_name]
@@ -142,6 +157,7 @@ jobs:
               assert {p['path_type'] for v in phases.values() for p in v['paths']}=={'min','max'}
               assert len({p['corner'] for v in phases.values() for p in v['paths']})==3
               results[profile]=dict(archive_asset=aid,archive_sha256=digest,summary_asset=sid,summary_sha256=hashlib.sha256(summaryraw).hexdigest(),log_sha256=logsha,mapped_cells=summary['mapped_cells'],phases=phases)
+              results[profile]['archive_provenance']=provenance
               if mapped_raw is not None:
                   mapped=json.loads(mapped_raw)['modules']['soc_top']
                   assert len(mapped['cells'])==summary['mapped_cells']
