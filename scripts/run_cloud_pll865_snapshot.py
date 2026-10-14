@@ -320,13 +320,124 @@ def review_completed_acquisition(diagnose=False):
         result.update(status='FAILED_EXACT_NATIVE865_ACQUISITION_REVIEW',error=repr(error));save();raise
 
 
+
+def diagnose_full50():
+    """Read original full-node PBUF10 wave, not the older reset865 circuit."""
+    import gzip
+    import shutil
+    assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted waveform analysis only'
+    out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
+    result=dict(status='RUNNING_FULL50_INTERNAL_DIAGNOSIS',full_phy_accepted=False,
+        acquisition_accepted=False,no_new_native=True,
+        scope='Exact current PBUF10 parent865 full-node50ns startup diagnosis only. This cannot prove late1us lock or its failure cause; original rolling-frequency rejection remains.')
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        finite_files={FINITE_ROOT+n:pin for n,pin in {
+            'result.json':(943771,'ffe86baa2ddfc6a0eb47214adb03360caaeb63e2da9aec199813f01d4b8ba855'),
+            'bench.cir':(85790,'75a79f2248f9a941ff6a32bfab2d26cce8b23fa75379bb292f9952e1cf6acfd1'),
+            'parent865.spice':(603656,RECORDS['native07/parent865.spice'][1]),
+        }.items()}
+        unpack(BASE+'cloud-migration-20261012-000/batch-000007.tar.gz',FINITE_SHA,669884,out/'finite',finite_files)
+        finite=json.loads((out/'finite/result.json').read_text())
+        assert finite['status']=='PASS_NATIVE_PARENT865_FINITE_POINT'
+        fetch(BASE+'cloud-results-38589545075-1-pll-acquisition-review/result.json',
+            '02d9495f9c3b5b4f3f0d113e777712dd9f20ef162ebcc5f04768946b07bc5b66',out/'one-us-diagnosis.json')
+        diagnosis=json.loads((out/'one-us-diagnosis.json').read_text())
+        parent=diagnosis['bound_source_netlists']['parent865'];bench=diagnosis['bound_source_netlists']['bench']
+        assert digest(parent['text'].encode())==parent['sha256']==sha(out/'finite/parent865.spice')
+        assert digest(bench['text'].encode())==bench['sha256']==RECORDS['native07/bench.cir'][1]
+        old_body,old_control=(out/'finite/bench.cir').read_text().split('.control\n')
+        new_body,new_control=bench['text'].split('.control\n')
+        assert old_body.count('.tran 3.125e-13 5e-08 0 3.125e-13')==1
+        assert old_body.replace('.tran 3.125e-13 5e-08 0 3.125e-13','.tran 3.125e-13 1e-06 0 3.125e-13')==new_body
+        for prefix in ('alter ','pre_osdi '):
+            assert [l for l in old_control.splitlines() if l.startswith(prefix)]==[l for l in new_control.splitlines() if l.startswith(prefix)]
+        assert finite['zero_source_op'] and finite['clean_diagnostics']
+        result['source_identity']=dict(parent_sha256=parent['sha256'],full50_bench_sha256=sha(out/'finite/bench.cir'),
+            one_us_bench_sha256=bench['sha256'],circuit_body_identical_except_stop_time=True,
+            native_off_flags_identical=True,osdi_loads_identical=True,
+            original_late_acquisition_passed=diagnosis['selected_probe_acquisition_passed'])
+        manifest_path=out/'full50.manifest.json'
+        fetch(BASE+'cloud-migration-20261012-000/batch-000008.manifest.json',
+            '2cd4453dd465ed3f8d69e363503e16e7d8cfbce4bfb51786b463e8ac5cb95d47',manifest_path)
+        manifest=json.loads(manifest_path.read_text())
+        assert manifest['encoding']=='concatenated-gzip-parts-single-file' and len(manifest['records'])==1
+        record=manifest['records'][0]
+        assert record['path']==FINITE_ROOT+'wave.raw.gz'
+        assert record['sha256']==finite['outputs']['wave.raw.gz']['sha256']=='7eb021ef4143f8b9c7e706d212f8058512db654a9d86ac6d6ae38133f0f89a5e'
+        packed=out/'wave.raw.gz';completed=[]
+        with packed.open('xb') as dst:
+            for part in manifest['parts']:
+                path=out/'part.gz';fetch(part['url'],part['sha256'],path)
+                assert path.stat().st_size==part['bytes']
+                with gzip.open(path,'rb') as src:shutil.copyfileobj(src,dst,1024**2)
+                path.unlink();completed.append(part['name'])
+                result['verified_parts']=completed[:];save()
+        assert packed.stat().st_size==record['bytes'] and sha(packed)==record['sha256']
+        raw_path=out/'wave.raw'
+        with gzip.open(packed,'rb') as src,raw_path.open('xb') as dst:shutil.copyfileobj(src,dst,1024**2)
+        assert raw_path.stat().st_size==finite['raw_bytes'] and sha(raw_path)==finite['raw_sha256']
+        with raw_path.open('rb') as src:
+            header=b''
+            while not header.endswith(b'Binary:\n'):
+                line=src.readline();assert line and len(header)<1048576;header+=line
+            offset=len(header)
+            assert hashlib.file_digest(src,'sha256').hexdigest()==finite['payload_sha256']
+        header=header.decode('ascii');assert 'Flags: real\n' in header
+        fields={line.split(':',1)[0]:line.split(':',1)[1].strip() for line in header.splitlines() if ':' in line}
+        table=[line.split() for line in header.split('Variables:\n',1)[1].split('Binary:\n',1)[0].splitlines()]
+        assert table==finite['raw_table']
+        names=[row[1] for row in table];assert names==finite['columns'] and names[0]=='time' and len(set(names))==len(names)
+        rows,width=finite['rows'],len(names)
+        assert int(fields['No. Variables'])==width and int(fields['No. Points'])==rows
+        assert offset+8*rows*width==finite['raw_bytes']
+        values=np.memmap(raw_path,dtype='<f8',mode='r',offset=offset,shape=(rows,width))
+        for first in range(0,rows,4096):assert np.isfinite(values[first:first+4096]).all()
+        t=np.asarray(values[:,0]).copy();assert t[0]==0 and abs(t[-1]-50e-9)<1e-18
+        assert np.all(np.diff(t)>0) and np.max(np.diff(t))<=3.125e-13*1.00001
+        chosen=[n for n in names if n in {'time','v(clkp)','v(clkn)','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)','v(reset)'}
+            or n.startswith(('v(xloop.xpfd.n_','v(xloop.xpump.','v(xloop.a_pfd','v(xloop.a_pump'))
+            or n.startswith('@') and 'xpump' in n]
+        assert {'time','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)'}<=set(chosen)
+        data={n:np.asarray(values[:,names.index(n)]).copy() for n in chosen}
+        feedback=rising(t,data['v(fb)'],1.25)
+        intervals=[(0.,50e-9),*[(float(a),float(b)) for a,b in zip(feedback[:-1],feedback[1:])]]
+        result['wave']=dict(raw_sha256=finite['raw_sha256'],payload_sha256=finite['payload_sha256'],rows=rows,columns=width,
+            complete_header_payload_verified=True,selected_columns=chosen)
+        records=[]
+        for start,stop in intervals:
+            mask=(t>start)&(t<stop);at=np.r_[start,t[mask],stop];signals={}
+            for n,v in data.items():
+                if n=='time':continue
+                y=np.r_[np.interp(start,t,v),v[mask],np.interp(stop,t,v)]
+                stats=dict(minimum=float(y.min()),maximum=float(y.max()),time_mean=float(np.trapezoid(y,at)/(stop-start)))
+                if n.startswith('v('):
+                    edges=rising(at,y,1.25)
+                    stats.update(rising_edges_at_1p25_v_s=edges.tolist(),
+                        above_1p25_v_time_fraction=float(np.trapezoid((y>=1.25).astype(float),at)/(stop-start)))
+                signals[n]=stats
+            records.append(dict(start_s=start,stop_s=stop,signals=signals))
+        result.update(status='COMPLETE_FULL50_PFD_PUMP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE',intervals=records,
+            parent_pfd_and_pump_statements=[l for l in parent['text'].splitlines() if any(k in l.lower() for k in ['xpfd','xpump','a_pfd','a_pump'])],
+            scope='Exact full-node50ns startup observation. Voltage duty is not pump current. Actual recorded pump device currents are labeled by original vector names. No late1us internal capture, fitted phase, relaxed lock gate or causal closure.')
+        save();del values;raw_path.unlink();packed.unlink()
+        print(result['status'],flush=True)
+    except BaseException as error:
+        result.update(status='FAILED_FULL50_INTERNAL_DIAGNOSIS',error=repr(error));save();raise
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
+    parser.add_argument('--diagnose-full50',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.diagnose_full50:
+        assert not (args.acquisition or args.self_test or args.review_acquisition or args.diagnose_acquisition)
+        diagnose_full50();return
     if args.review_acquisition or args.diagnose_acquisition:
         assert not args.acquisition and not args.self_test
         review_completed_acquisition(diagnose=args.diagnose_acquisition);return

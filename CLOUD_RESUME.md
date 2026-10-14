@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Current-parent full-node PLL waveform located; hosted diagnosis prepared.**
+Use PBUF10 native86520261012 full50ns, not older20261011 reset865 capture.
+Finite parentSHA b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48
+matches original1us exactly; bench circuit body differs only50ns/1us stop,
+with identical native off flags and OSDI loads. Full waveform is migration
+batch000008: six separately gzipped transport parts, each decoded in order
+into originalwave.raw.gz SHA7eb021ef4143f8b9c7e706d212f8058512db654a9d86ac6d6ae38133f0f89a5e.
+Prepared cloud-migration-checks pll_full50_diagnosis=true restores/hashes it
+on hosted runner, verifies full2438-column160072-row header/payload, then
+records internal PFD nodes and pump voltage/current statistics per cycle.
+This is startup diagnosis, not late1us causal proof or acquisition acceptance.
+Retain active fresh placement/CTS38596343019; no native restart or local files.
+
+
 **Live corrected fresh-placement/CTS handle:38596343019.**
 Sourceb81af7396d907284a63cec47306a5f905694b1de; jobs115963950590.
 Current API state:in_progress/None. Preserve this handle and
