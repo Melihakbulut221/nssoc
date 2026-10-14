@@ -1780,5 +1780,437 @@
     "expression": "local_reset && selected_ready && ((locked && !owner) || (!locked && !advert_eop && (!flow_valid || (advert_valid && !prefer_flow))))",
     "rationale": "Baseline critical path pcie_link_up_i to advertiser.refresh[0] traverses nested arbitration/control terms. Algebraic factoring may change mapping depth; actual native paired timing decides. No timing or PHY acceptance assumed.",
     "required_controls": "Whole actual FC/arbiter/egress temporal induction with complete storage and arbitrary boundary requests; wrong-owner counterexample; all frozen buffered and32joint public-port tests; unchanged allcorner STA."
+  },
+  "factored_eop_completed_screen": {
+    "run": 38492079062,
+    "source_head": "6e15be6c56c4b756fda27ce2a805e56d434901e8",
+    "status": "REJECTED_TIMING_REGRESSION_DESPITE_EQUIVALENCE",
+    "adopted": false,
+    "cases": [
+      {
+        "profile": "physical_idle_credit_window_eop",
+        "summary_asset_id": 638737240,
+        "summary_bytes": 64452,
+        "summary_sha256": "9fb2d29003b685cd88f5abbe0d92599e9c3a0f232d519b30170f58c311d22c9e",
+        "archive_asset_id": 638736989,
+        "archive_bytes": 17150951,
+        "archive_sha256": "cced36eafeb681e2a6f59b4e68157e895ed1c93b1d7ad41a31cdaae8885e8e54",
+        "mapped_cells": 79065,
+        "macros": {
+          "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+        },
+        "all_corner_group_minima_ns": {
+          "CORNER_slow_max": {
+            "asynchronous": 1.378776,
+            "path delay": 2.505196,
+            "clk_i": 0.474044,
+            "eth_gtx": 4.901397,
+            "eth_rx_clk_i": 1.702392,
+            "eth_tx_clk_i": 1.672676,
+            "pcie_clk_i": -0.9915
+          },
+          "CORNER_slow_min": {
+            "asynchronous": 0.35541,
+            "clk_i": -0.439722,
+            "eth_gtx": -0.43793,
+            "eth_rx_clk_i": -0.469247,
+            "eth_tx_clk_i": -0.413411,
+            "pcie_clk_i": 0.057926
+          },
+          "CORNER_typical_max": {
+            "asynchronous": 1.964831,
+            "path delay": 2.754967,
+            "clk_i": 7.507642,
+            "eth_gtx": 5.012421,
+            "eth_rx_clk_i": 4.178513,
+            "eth_tx_clk_i": 4.158348,
+            "pcie_clk_i": 0.461441
+          },
+          "CORNER_typical_min": {
+            "asynchronous": 0.139328,
+            "clk_i": -0.387129,
+            "eth_gtx": -0.53948,
+            "eth_rx_clk_i": -0.368327,
+            "eth_tx_clk_i": -0.36629,
+            "pcie_clk_i": -0.04421
+          },
+          "CORNER_fast_max": {
+            "asynchronous": 2.294923,
+            "path delay": 2.897573,
+            "clk_i": 11.659833,
+            "eth_gtx": 5.083783,
+            "eth_rx_clk_i": 4.507247,
+            "eth_tx_clk_i": 5.491168,
+            "pcie_clk_i": 1.317098
+          },
+          "CORNER_fast_min": {
+            "asynchronous": 0.013901,
+            "clk_i": -0.3678,
+            "eth_gtx": -0.601382,
+            "eth_rx_clk_i": -0.351181,
+            "eth_tx_clk_i": -0.353123,
+            "pcie_clk_i": -0.109062
+          }
+        },
+        "screen_log_sha256": "20484e7663263f6d3a5828b2b414fafcef9b90ee0a30c0badca368af23c2d940"
+      },
+      {
+        "profile": "physical_idle_credit_window_factored",
+        "summary_asset_id": 638740013,
+        "summary_bytes": 154784,
+        "summary_sha256": "40db33f82e82d9208aeff5965e3f9f1ce639af26b1ed1d359e72e955f57401e7",
+        "archive_asset_id": 638739835,
+        "archive_bytes": 17654252,
+        "archive_sha256": "f4439b857ab944de0769ef89940944235c1628a7792b06d878f07e449b0895ce",
+        "mapped_cells": 79564,
+        "macros": {
+          "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+        },
+        "all_corner_group_minima_ns": {
+          "CORNER_slow_max": {
+            "asynchronous": 1.259481,
+            "path delay": 2.505196,
+            "clk_i": 0.625462,
+            "eth_gtx": 4.901397,
+            "eth_rx_clk_i": 1.702765,
+            "eth_tx_clk_i": 1.6711,
+            "pcie_clk_i": -1.015753
+          },
+          "CORNER_slow_min": {
+            "asynchronous": 0.35886,
+            "clk_i": -0.502855,
+            "eth_gtx": -0.43793,
+            "eth_rx_clk_i": -0.469247,
+            "eth_tx_clk_i": -0.398751,
+            "pcie_clk_i": 0.057926
+          },
+          "CORNER_typical_max": {
+            "asynchronous": 1.890195,
+            "path delay": 2.754967,
+            "clk_i": 7.59492,
+            "eth_gtx": 5.012421,
+            "eth_rx_clk_i": 4.178771,
+            "eth_tx_clk_i": 4.157494,
+            "pcie_clk_i": 0.452153
+          },
+          "CORNER_typical_min": {
+            "asynchronous": 0.140185,
+            "clk_i": -0.38814,
+            "eth_gtx": -0.53948,
+            "eth_rx_clk_i": -0.350454,
+            "eth_tx_clk_i": -0.357973,
+            "pcie_clk_i": -0.04421
+          },
+          "CORNER_fast_max": {
+            "asynchronous": 2.243112,
+            "path delay": 2.897573,
+            "clk_i": 11.725809,
+            "eth_gtx": 5.083783,
+            "eth_rx_clk_i": 4.505313,
+            "eth_tx_clk_i": 5.490891,
+            "pcie_clk_i": 1.299807
+          },
+          "CORNER_fast_min": {
+            "asynchronous": 0.015035,
+            "clk_i": -0.368573,
+            "eth_gtx": -0.601382,
+            "eth_rx_clk_i": -0.340607,
+            "eth_tx_clk_i": -0.348586,
+            "pcie_clk_i": -0.109062
+          }
+        },
+        "screen_log_sha256": "59468aae62e846e0db3744b48afb75ab6aee02e402e5e32790beb2f98cfb8028",
+        "proof": {
+          "status": "PASS_ACTUAL_ADVERTISER_FACTORED_EOP_REGION_AND_BUFFERED_PORTS_NOT_TIMING",
+          "candidate_sha256": "31757b4b293cd156607b1a7a841810e45e09ee7c7b8ac8cd5ebd18e9f30254a3",
+          "helper_sha256": "bbea5e98f1c661378b557de0b49123c8ca6b0ab3190643c782678ba9762064cd",
+          "proof_method": "Whole-region SAT temporal induction, explicit clock/asynchronous reset; all actual storage and outputs equal plus ownership invariant proved jointly, not assumed. Initial reset only; arbitrary subsequent inputs/clocks. Prior cutpoint failure retained in run 38476024561.",
+          "scope": "Factored EOP advertiser ready isolates the locked-owner term from unlocked arbitration; algebraically equivalent to the previous EOP candidate. Actual advertiser/arbiter/registered-egress region, every output including invalid payload, explicit clock/asynchronous reset, arbitrary boundary requests. Full frozen physical buffered port tests and bad-owner control. Not mapped timing, routed chip or PHY acceptance.",
+          "proofs": [
+            {
+              "case": "candidate",
+              "refresh_cycles": 128,
+              "returncode": 0,
+              "passed": true,
+              "negative_rejected": false,
+              "log_sha256": "2dbd8b8e122b02f3781a4f68b0fbd5090625405d0451cfb0dd978d6ca8813bff",
+              "counterexample_sha256": null
+            },
+            {
+              "case": "candidate_refresh0",
+              "refresh_cycles": 0,
+              "returncode": 0,
+              "passed": true,
+              "negative_rejected": false,
+              "log_sha256": "f992c854cbe3ca3809d4242c54bbb920d4666d3f97cdc0af6c0c0afee5a98ba4",
+              "counterexample_sha256": null
+            },
+            {
+              "case": "candidate_refresh1",
+              "refresh_cycles": 1,
+              "returncode": 0,
+              "passed": true,
+              "negative_rejected": false,
+              "log_sha256": "08bf936142b205ade247077d09d9722860ff5bc6196cccffa8e85bbeb936f28c",
+              "counterexample_sha256": null
+            },
+            {
+              "case": "wrong_owner",
+              "refresh_cycles": 128,
+              "returncode": 1,
+              "passed": false,
+              "negative_rejected": true,
+              "log_sha256": "41d88595b291afd248cbb9509ec81fc9b2744ee5c6ded96794042115ab485321",
+              "counterexample_sha256": "10609ea221f522d36aac7078bc91e010373290211ee2f6b4d98ed80b4e65f377"
+            }
+          ],
+          "ports": [
+            {
+              "case": "baseline",
+              "returncode": 0,
+              "actual_tests": {
+                "passed": 5,
+                "failed": 0,
+                "skipped": 0
+              }
+            },
+            {
+              "case": "candidate",
+              "returncode": 0,
+              "actual_tests": {
+                "passed": 5,
+                "failed": 0,
+                "skipped": 0
+              }
+            },
+            {
+              "case": "wrong_owner",
+              "returncode": 1,
+              "actual_tests": {
+                "passed": 0,
+                "failed": 5,
+                "skipped": 0
+              }
+            }
+          ]
+        },
+        "joint_controls": [
+          {
+            "case": "baseline",
+            "top": "soc_pcie_replay_tx",
+            "returncode": 0,
+            "actual_tests": {
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0
+            },
+            "source_sha256": {
+              "soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+              "soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+              "soc_pcie_acknak_tx.v": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47",
+              "soc_pcie_crc16_byte.v": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a",
+              "soc_pcie_fc_tx.v": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+              "soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+              "soc_pcie_reliable_packets.v": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9",
+              "soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+              "soc_pcie_credit_tx.v": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a",
+              "soc_pcie_packet_tx.v": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26",
+              "soc_pcie_lcrc_tx.v": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928",
+              "soc_pcie_replay_tx.v": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc",
+              "soc_pcie_buffered_flow_packets.v": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509",
+              "soc_pcie_packet_endpoint.v": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b",
+              "soc_pcie_tlp_stream.v": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2",
+              "soc_pcie_link_packets.v": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408",
+              "soc_pcie_lcrc_rx.v": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4",
+              "soc_pcie_apb_arbiter.v": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef",
+              "soc_pcie_dllp_rx.v": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956",
+              "soc_pcie_sequence_rx.v": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d",
+              "soc_pcie_flow_packets.v": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+            },
+            "result_sha256": "108c5492789bb4bb1a71b866c8a766970c924523ee38f3b8e721037192eaf91e"
+          },
+          {
+            "case": "baseline",
+            "top": "soc_pcie_reliable_packets",
+            "returncode": 0,
+            "actual_tests": {
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0
+            },
+            "source_sha256": {
+              "soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+              "soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+              "soc_pcie_acknak_tx.v": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47",
+              "soc_pcie_crc16_byte.v": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a",
+              "soc_pcie_fc_tx.v": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+              "soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+              "soc_pcie_reliable_packets.v": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9",
+              "soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+              "soc_pcie_credit_tx.v": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a",
+              "soc_pcie_packet_tx.v": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26",
+              "soc_pcie_lcrc_tx.v": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928",
+              "soc_pcie_replay_tx.v": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc",
+              "soc_pcie_buffered_flow_packets.v": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509",
+              "soc_pcie_packet_endpoint.v": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b",
+              "soc_pcie_tlp_stream.v": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2",
+              "soc_pcie_link_packets.v": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408",
+              "soc_pcie_lcrc_rx.v": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4",
+              "soc_pcie_apb_arbiter.v": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef",
+              "soc_pcie_dllp_rx.v": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956",
+              "soc_pcie_sequence_rx.v": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d",
+              "soc_pcie_flow_packets.v": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+            },
+            "result_sha256": "255a247b8e77a6c3858a0dfe6843778bad9943eb327d5fc811df5bd1577345eb"
+          },
+          {
+            "case": "baseline",
+            "top": "soc_pcie_buffered_flow_packets",
+            "returncode": 0,
+            "actual_tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "source_sha256": {
+              "soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+              "soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+              "soc_pcie_acknak_tx.v": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47",
+              "soc_pcie_crc16_byte.v": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a",
+              "soc_pcie_fc_tx.v": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+              "soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+              "soc_pcie_reliable_packets.v": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9",
+              "soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+              "soc_pcie_credit_tx.v": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a",
+              "soc_pcie_packet_tx.v": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26",
+              "soc_pcie_lcrc_tx.v": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928",
+              "soc_pcie_replay_tx.v": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc",
+              "soc_pcie_buffered_flow_packets.v": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509",
+              "soc_pcie_packet_endpoint.v": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b",
+              "soc_pcie_tlp_stream.v": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2",
+              "soc_pcie_link_packets.v": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408",
+              "soc_pcie_lcrc_rx.v": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4",
+              "soc_pcie_apb_arbiter.v": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef",
+              "soc_pcie_dllp_rx.v": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956",
+              "soc_pcie_sequence_rx.v": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d",
+              "soc_pcie_flow_packets.v": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+            },
+            "result_sha256": "48a5d18868b19b18a31f9f0c9c792c36f35d6179c0adc8e0020868a97dc93b5a"
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_replay_tx",
+            "returncode": 0,
+            "actual_tests": {
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0
+            },
+            "source_sha256": {
+              "soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+              "soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+              "soc_pcie_acknak_tx.v": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47",
+              "soc_pcie_crc16_byte.v": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a",
+              "soc_pcie_fc_tx.v": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+              "soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+              "soc_pcie_reliable_packets.v": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9",
+              "soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+              "soc_pcie_credit_tx.v": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a",
+              "soc_pcie_packet_tx.v": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26",
+              "soc_pcie_lcrc_tx.v": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928",
+              "soc_pcie_replay_tx.v": "5a65cd18f765120555a193e1bacddb61e0bd5eb175350b41502c678a5ff5b47a",
+              "soc_pcie_buffered_flow_packets.v": "31757b4b293cd156607b1a7a841810e45e09ee7c7b8ac8cd5ebd18e9f30254a3",
+              "soc_pcie_packet_endpoint.v": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b",
+              "soc_pcie_tlp_stream.v": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2",
+              "soc_pcie_link_packets.v": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408",
+              "soc_pcie_lcrc_rx.v": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4",
+              "soc_pcie_apb_arbiter.v": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef",
+              "soc_pcie_dllp_rx.v": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956",
+              "soc_pcie_sequence_rx.v": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d",
+              "soc_pcie_flow_packets.v": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+            },
+            "result_sha256": "115416dbfc8749d5defd4eccc65d3fc5b8addef18431a0be47a47eb2dfb6b3d5"
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_reliable_packets",
+            "returncode": 0,
+            "actual_tests": {
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0
+            },
+            "source_sha256": {
+              "soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+              "soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+              "soc_pcie_acknak_tx.v": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47",
+              "soc_pcie_crc16_byte.v": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a",
+              "soc_pcie_fc_tx.v": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+              "soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+              "soc_pcie_reliable_packets.v": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9",
+              "soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+              "soc_pcie_credit_tx.v": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a",
+              "soc_pcie_packet_tx.v": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26",
+              "soc_pcie_lcrc_tx.v": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928",
+              "soc_pcie_replay_tx.v": "5a65cd18f765120555a193e1bacddb61e0bd5eb175350b41502c678a5ff5b47a",
+              "soc_pcie_buffered_flow_packets.v": "31757b4b293cd156607b1a7a841810e45e09ee7c7b8ac8cd5ebd18e9f30254a3",
+              "soc_pcie_packet_endpoint.v": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b",
+              "soc_pcie_tlp_stream.v": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2",
+              "soc_pcie_link_packets.v": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408",
+              "soc_pcie_lcrc_rx.v": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4",
+              "soc_pcie_apb_arbiter.v": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef",
+              "soc_pcie_dllp_rx.v": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956",
+              "soc_pcie_sequence_rx.v": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d",
+              "soc_pcie_flow_packets.v": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+            },
+            "result_sha256": "87ed4153eef5ff3567210cb9bfb7fe4a0a1fde953a738ff00344dec09e51f8c8"
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_buffered_flow_packets",
+            "returncode": 0,
+            "actual_tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "source_sha256": {
+              "soc_pcie_rx_credit.v": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a",
+              "soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+              "soc_pcie_acknak_tx.v": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47",
+              "soc_pcie_crc16_byte.v": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a",
+              "soc_pcie_fc_tx.v": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904",
+              "soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+              "soc_pcie_reliable_packets.v": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9",
+              "soc_pcie_tlp_regs.v": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168",
+              "soc_pcie_credit_tx.v": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a",
+              "soc_pcie_packet_tx.v": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26",
+              "soc_pcie_lcrc_tx.v": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928",
+              "soc_pcie_replay_tx.v": "5a65cd18f765120555a193e1bacddb61e0bd5eb175350b41502c678a5ff5b47a",
+              "soc_pcie_buffered_flow_packets.v": "31757b4b293cd156607b1a7a841810e45e09ee7c7b8ac8cd5ebd18e9f30254a3",
+              "soc_pcie_packet_endpoint.v": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b",
+              "soc_pcie_tlp_stream.v": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2",
+              "soc_pcie_link_packets.v": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408",
+              "soc_pcie_lcrc_rx.v": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4",
+              "soc_pcie_apb_arbiter.v": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef",
+              "soc_pcie_dllp_rx.v": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956",
+              "soc_pcie_sequence_rx.v": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d",
+              "soc_pcie_flow_packets.v": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+            },
+            "result_sha256": "b673c7a4345d1193a619826329608b233a93187c514791d9fb17fdbb42c2bb5b"
+          }
+        ]
+      }
+    ],
+    "decision": "Worst PCIe slow setup -0.991500 to-1.015753ns; fast PCIe hold unchanged-0.109062ns; cells79065 to79564. Region induction, negative owner control and32joint port tests passed expectations. Not adopted."
+  },
+  "reset_dominance_followup": {
+    "status": "UNVERIFIED_PROOF_AND_PAIRED_MAPPING_CANDIDATE",
+    "profile": "physical_idle_credit_window_reset",
+    "baseline": "physical_idle_credit_window_eop",
+    "change": "Only advertiser.link_up_i tied1 beneath original asynchronous local_reset=rst_ni&&link_up_i&&!retrain_done_i. All other instances retain original links. Original reset, EOP candidate, FC logic, ports and clock constraints remain.",
+    "required": "Exact full-region storage/output induction with arbitrary link/reset/clock transitions, wrong-owner controls,32source-bound joint port tests and allcorner paired STA. No stable-link assumption, timing exception, increased period or accepted behavior change."
   }
 }
