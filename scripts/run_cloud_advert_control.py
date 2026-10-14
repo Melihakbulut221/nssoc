@@ -46,6 +46,9 @@ def region(parent,fc,name,refresh,gate=False):
     begin=parent.index('    soc_pcie_fc_tx #(')
     end=parent.index('    // END_REGISTERED_TX_EGRESS')+len('    // END_REGISTERED_TX_EGRESS')
     body=parent[begin:end]
+    if '    wire selected_ready;' not in body:
+        assert parent[:begin].count('    wire selected_ready;')==1
+        body='    wire selected_ready;\n'+body
     reset=re.findall(r'^\s*wire local_reset\s*=\s*(.+);',parent,re.M)
     assert len(reset)==1 and re.sub(r'\s','',reset[0])=='rst_ni&&link_up_i&&!retrain_done_i',reset
     header="""module NAME (
@@ -257,6 +260,11 @@ def main(argv=None):
             anchor='.tx_valid_o(advert_valid),.tx_ready_i(advert_ready));'
             assert altered.count(anchor)==1
             altered=altered.replace(anchor,'.commit_ready_i(selected_ready),'+anchor)
+            declaration='    wire selected_ready;\n'
+            assert altered.count(declaration)==1
+            altered=altered.replace(declaration,'')
+            start=altered.index('    soc_pcie_fc_tx #(')
+            altered=altered[:start]+declaration+altered[start:]
         assert altered.count(ready_line)==1
         wrong=altered.replace(ready_line,'    assign advert_ready=chosen && selected_ready;')
         fc=selected['soc_pcie_fc_tx.v'].decode()
@@ -325,7 +333,12 @@ def main(argv=None):
                 '--rtl-dir',dirs[case],'--iverilog-dir',Path(iverilog).parent],'ports-'+case)
             result=json.loads((out/'result.json').read_text())
             from cocotb_results import count_results
-            xml=out/'results.xml';assert xml.is_file()
+            xml=out/'results.xml'
+            if not xml.is_file():
+                record['port_preparation_failure']=dict(case=case,returncode=code,result=result,
+                    simulation_log_tail=(out/'simulation.log').read_text(errors='replace')[-8000:])
+                save()
+            assert xml.is_file(), 'Port simulation did not produce result XML; inspect preserved preparation failure'
             passed,failed,skipped=count_results([xml])
             record['ports'].append(dict(case=case,returncode=code,result=result,
                 actual_tests=dict(passed=passed,failed=failed,skipped=skipped),xml_sha256=sha(xml)));save()

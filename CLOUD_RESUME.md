@@ -8,6 +8,21 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Dedicated-commit preparation failure fixed, prior failure retained.**
+38518563421 summary639387011: all3formal cases and2negative proofs passed,
+but candidate Icarus elaboration rejected selected_ready declared after its
+new port connection; no candidate port-test pass claimed. Move that existing
+wire declaration before advertiser instance, and explicitly preserve it in
+extracted formal region. No logic or threshold change. Port preparation errors
+now retain the actual simulator tail before missing-XML assertion. Rerun the
+same dedicated study once on corrected source; map only after all port tests.
+ActualNx4 TC results all4terminal: cold2PASS, hot639381366FAILbit0.075877689V,
+CMmin1.787411677V/diffmin0.148238710V; hotres639379188FAILbit0.098371279V,
+CMmin1.773306078V. All actual HBTs pass; no diagnostics. Matching actualgeometry
+improves hot margins/removes old selector failures, but not enough: no adoption.
+Route38511490580/PLL38507479646 remain retained; cloud-only/full goalsOPEN.
+
+
 **Bank-EOP mapping rejected; dedicated internal commit port prepared.**
 38517610171 completed. Baseline639376752 slowPCIe-1.101756ns;
 candidate639375563 slowPCIe-1.391512ns, fastPCIehold both-0.109062ns.
