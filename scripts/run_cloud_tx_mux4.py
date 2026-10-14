@@ -610,9 +610,14 @@ def main():
                 result['diagnostic_device_mutation']=mutation
             if args.diagnostic_final_r != 'actual':
                 from analyze_cloud_metal_resistance import reduce_conductor_class
+                compact_text=original.with_name('mux54-compact01.spice').read_text()
+                if args.diagnostic_final_nx:
+                    # Keep exact model/parameter equality for the independent
+                    # metal-owner verifier; do not weaken its circuit checks.
+                    compact_text, compact_mutation=diagnostic_v11_data_area(compact_text,args.diagnostic_final_nx)
+                    result['diagnostic_compact_device_mutation']=compact_mutation
                 final_text, mutation = reduce_conductor_class(
-                    original.with_name('mux54-compact01.spice').read_text(),
-                    final_text, args.diagnostic_final_r)
+                    compact_text, final_text, args.diagnostic_final_r)
                 result['diagnostic_mutation'] = mutation
             final_override.write_text(rename_physical_top(final_text,'nssoc_physical_final_'+final_circuit.rsplit('_',1)[1]))
             counts=json.loads(final_spec.read_text())['counts']
