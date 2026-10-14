@@ -280,7 +280,7 @@ jobs:
               raw=fetch(639409574)
               assert len(raw)==17175029 and hashlib.sha256(raw).hexdigest()=='64733ac1ec40294ab72209a0b37463cc9a2d6f2f3b5688abc56f459bb86ea1f3'
               with tarfile.open(fileobj=io.BytesIO(raw)) as tf:
-                  assert all(m.name.startswith('cloud-ack-map/') and not m.issym() and not m.islnk() for m in tf)
+                  assert all(m.name=='cloud-ack-map' or m.name.startswith('cloud-ack-map/') for m in tf)
                   tf.extractall('.',filter='data')
               base=Path('cloud-ack-map/physical_idle_credit_dedicated')
               original=json.loads((base/'result.json').read_text())

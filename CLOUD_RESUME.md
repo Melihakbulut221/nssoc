@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Direct-supply native RC recovered and ready for exact device composition.**
+Recovery38522280250 PASS; original extraction summary639469687 retained with
+4083R/2673C and13raw-fault controls PASS. Recovery receipt639469765 verifies
+original failed-publication run/artifact bytes; no native rerun. Source archive
+639469443,6309420bytes,SHAbd4c6c6750d8247eb636bb4ec741733c0ce17e83641c18496c50e89b4640ef09
+is now bound in composition input. Dispatch tx-layout-waveform-cloud with
+final_drive_v8/critical_buses_kelvin_low_ports_loads_shunts_series_direct and
+compose_only=true. Only after verified composition bind original hot/cold
+loaded-tree simulation. Substrate/RF extraction qualification remains OPEN.
+
+Exact digital trace_dedicated_preabc prepared: restore original candidate
+archive and runtime, execute unchanged synthesis prefix up to original ABC,
+require pre_map.v byte equality and protected-input hashes, then trace actual
+inverters to public register aliases. This avoids inferring RTL bits from
+optimized names. Dispatch once; no timing constraint or hardware mutation.
+Native PLL38507479646/mainchip route38511490580 keep original handles.
+All full goalsOPEN/cloud-only. This turn has actual passing new geometry/RC
+and preserves the publication failure and recovery evidence.
+
+
 **Direct-supply native extraction passed; publication-only failure recovery.**
 38521648860/job115712481875 completed native extraction and all13raw corruption
 controls PASS; Actions artifact11873244348 preserves516files/7118011zipbytes,
