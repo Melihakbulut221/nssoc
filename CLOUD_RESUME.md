@@ -8,6 +8,18 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Full50 payload/trailer verified; preserve native device-current aliases.**
+38598305939 terminalFAIL after original compressed/raw/payload hashes and
+exact FIFO trailer verification, at raw-name vs canonical-vector equality.
+Original header1648_01.py maps native i(@device[param])/v(@device[param])
+wrappers to original @device[param] names;487of2438columns use this form.
+Reader now binds exact ordered source-vector bijection, with missing/reordered/
+wrong-device/duplicate aliases rejected by4negativecontrols. No raw edits,
+column omissions or electrical-gate changes. Rerun pll_full50_diagnosis on
+this corrected source. Saved CTS proof/routing38598795406 is the live routing
+handle; retain it. Full PHY/routedmainchip/finalsetup-hold OPEN/cloud-only.
+
+
 **Native CTS dummy-load type distinguished from functional clock buffers.**
 Resume38597967217 terminalFAIL at clkload427 master whitelist, before routing.
 Frozen native TritonCTS.cpp:2430-2437 intentionally chooses inverter dummy

@@ -350,6 +350,34 @@ def full50_fifo_controls():
     return dict(positive=1,rejected_missing_wrong_extra_trailer_or_truncated_payload=len(bads))
 
 
+
+def full50_column_names(table, expected):
+    """Preserve original source-vector order and exact native @device aliases."""
+    assert len(table)==len(expected) and len(set(expected))==len(expected)
+    assert all(len(row)==3 for row in table) and table[0]==['0','time','time']
+    assert [row[0] for row in table]==list(map(str,range(len(table))))
+    assert len({row[1] for row in table})==len(table)
+    for row,name in zip(table,expected,strict=True):
+        allowed={name}
+        if name.startswith('@'):allowed|={'i('+name+')','v('+name+')'}
+        assert row[1] in allowed,('Unexpected native vector alias/order',row,name)
+    return list(expected)
+
+
+def full50_alias_controls():
+    table=[['0','time','time'],['1','v(up)','voltage'],['2','i(@n.m[ids])','current']]
+    expected=['time','v(up)','@n.m[ids]']
+    assert full50_column_names(table,expected)==expected
+    faults=[table[:-1],[table[0],table[2],table[1]],
+        [table[0],table[1],['2','i(@n.other[ids])','current']],
+        [table[0],table[1],['2','v(up)','current']]]
+    for bad in faults:
+        try:full50_column_names(bad,expected)
+        except AssertionError:continue
+        raise AssertionError('Incorrect native vector binding accepted')
+    return dict(positive=1,negative=len(faults))
+
+
 def diagnose_full50():
     """Read original full-node PBUF10 wave, not the older reset865 circuit."""
     import gzip
@@ -418,7 +446,7 @@ def diagnose_full50():
         fields={line.split(':',1)[0]:line.split(':',1)[1].strip() for line in header.splitlines() if ':' in line}
         table=[line.split() for line in header.split('Variables:\n',1)[1].split('Binary:\n',1)[0].splitlines()]
         assert table==finite['raw_table']
-        names=[row[1] for row in table];assert names==finite['columns'] and names[0]=='time' and len(set(names))==len(names)
+        names=full50_column_names(table,finite['columns'])
         rows,width=finite['rows'],len(names)
         assert int(fields['No. Variables'])==width and int(fields['No. Points'])==0
         assert offset+8*rows*width+len(str(rows))==finite['raw_bytes']
@@ -476,6 +504,7 @@ def main():
     controls['acquisition_review']=acquisition_controls()
     controls['cycle_diagnosis']=acquisition_cycle_controls()
     controls['full50_fifo']=full50_fifo_controls()
+    controls['full50_alias']=full50_alias_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)
