@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Doubled-drive PFD freshRC38615210714 PASS; actual native capture prepared.**
+New235device layout yields715R1177C (not old716R1178C),53conductors/431anchors;
+all8binding+13rawRC+6composition faults passed with preservednativepoints.
+Summary641264393 SHA1df255b18e5fed6df0c3ad4470dcd0e6afd339727d9cfd2e0b4c0fbf6f23a82d;
+archive641264152/6788161bytes SHA1d3eb4cf985251b4c5eac6e451ce720b713c5758a6ed4edea28688907efeb86b.
+MacroSHAa0ace2729326fd774bb40e8c60bcb7a817cada4036308a9b6bb0a4ebf347248c.
+
+Use pll_pfd_stage=physical_wave_d2 for actual845device fixture with freshD2RC,
+original610otherdevices/nonPFD RC, exactmodels/OSDI/startup/.3125ps/50ns.
+Unique94MOS topology against shared D2generator, reversibleterminaltranslation,
+all235device terminalvoltages and resetmaskevents required. No waveform/lock
+or newparentlayout acceptance inferred from DRC/LVS/RC pass. Originalaoi4_rc
+source38610259816 and its failedreset behavior remain preserved. Newparent
+physical/commonbulk reassembly stillrequired; mainchiproute38598795406 live.
+Allworkcloud-only; fullserialPHY/routedmainchip/finalsetuphold remainOPEN.
+
+
 **Doubled-drive actual PFD94 layout38614342619 PASS; freshRC prepared.**
 560DRC categories/zero markers, hierarchical+flat235deviceLVS and allfive
 actual physical/reference faults passed. Same94MOS topology with88DFF W*2,
