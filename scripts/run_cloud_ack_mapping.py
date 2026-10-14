@@ -6,6 +6,7 @@ import collections
 import hashlib
 import json
 import os
+import re
 import shutil
 import shlex
 import subprocess
@@ -103,7 +104,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
     assert proof['source_profile']=='physical_replay'
     assert proof['proofs'][0]['passed'] and proof['proofs'][1]['negative_rejected']
     assert proof['source_sha256']==selected[replay]['sha256']
-    if profile in ('physical_idle','physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+    if profile in ('physical_idle','physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
         from run_cloud_replay_idle import candidate
         altered=candidate(Path(selected[replay]['path']).read_text())
         target=output/'candidate-soc_pcie_replay_tx.v'
@@ -111,7 +112,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
         assert sha(target)==proof['candidate_sha256']=='1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc'
         assert recipe.count(replay)==1
         recipe=recipe.replace(replay,str(target))
-    if profile in ('physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+    if profile in ('physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
         from run_cloud_credit_late_verdict import candidate as credit_candidate
         credit_proof_path=output/'credit-source-bound-proof.json'
         credit_proof_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471835755-1-credit-late-verdict/credit-late-verdict-38471835755-1.json'
@@ -133,7 +134,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
             proof_sha256=sha(credit_proof_path),source_sha256=selected[credit]['sha256'],
             candidate_path=str(target),candidate_sha256=sha(target),
             scope='Isolated credit-verdict change on the same proved replay-idle physical RTL baseline; fresh paired mapping, not an adopted layout.')
-    if profile in ('physical_idle_credit_eop','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+    if profile in ('physical_idle_credit_eop','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
         from run_cloud_advert_eop import candidate as eop_candidate
         eop_path=output/'eop-source-bound-proof.json'
         eop_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38476888145-1-advert-eop/advert-eop-38476888145-1.json'
@@ -166,7 +167,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
         status['eop_owner_binding']=dict(proof_run=38476888145,proof_sha256=sha(eop_path),
             candidate_path=str(target),candidate_sha256=sha(target),
             scope='Actual reset-reachable producer/arbiter/egress proof and all frozen buffered port tests. EOP ready transformation; combined study also applies separately proved ACK-window logic. Fresh paired unplaced screen; not final timing.')
-    if profile in ('physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+    if profile in ('physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
         from run_cloud_ack_window import candidate as window_candidate
         window_path=output/'ack-window-source-bound-proof.json'
         window_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38479260742-1-ack-window/ack-window-38479260742-1.json'
@@ -271,7 +272,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
         body['helper_sha256']=sha(Path(body_proof.__file__))
         assert body['candidate_sha256']==body['source_binding']['candidate_sha256']
         status['factored_owner_binding']=body
-    if profile in ('physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+    if profile in ('physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
 
         # Each isolated transformation is proved at its complete module boundary.
         # Exercise their composition on the exact mapped source set before STA.
@@ -338,7 +339,7 @@ def physical_recipe(inputs, manifest, output, profile, status):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit', 'physical_idle_credit_eop', 'physical_idle_credit_window', 'physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'], required=True)
+    parser.add_argument('--profile', choices=['baseline', 'ack', 'physical_baseline', 'physical_idle', 'physical_idle_credit', 'physical_idle_credit_eop', 'physical_idle_credit_window', 'physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'], required=True)
     args = parser.parse_args()
     output = ROOT / 'cloud-ack-map' / args.profile
     output.mkdir(parents=True, exist_ok=False)
@@ -371,6 +372,21 @@ def main():
             assert recipe.count(old) == 1
             recipe = recipe.replace(old, new)
         recipe = recipe.replace(oldoutput, str(mapping)).replace(oldroot, str(inputs / 'root')).replace(oldpdk, str(inputs / 'pdk'))
+        if args.profile == 'physical_idle_credit_window_eop_d2000':
+            # Tighten only combinational mapping. Original clocks, port delays,
+            # uncertainty, SRAM views and all STA corners remain unchanged.
+            abc_lines=[line for line in recipe.splitlines() if line.startswith('abc ')]
+            assert len(abc_lines)==1 and '-liberty ' in abc_lines[0] and '-constr ' in abc_lines[0]
+            before=abc_lines[0]
+            assert re.search(r' -D 4000$',before), before
+            assert '-dff' not in before and '-retime' not in before
+            after=re.sub(r' -D 4000$', ' -D 2000', before)
+            assert before != after and recipe.count(before)==1
+            recipe=recipe.replace(before,after)
+            status['mapping_delay_target']=dict(baseline_ps=4000,candidate_ps=2000,
+                original_abc_command=before,candidate_abc_command=after,
+                reference='https://yosyshq.readthedocs.io/projects/yosys/en/0.40/cmd/abc.html',
+                scope='Exact EOP+ACK-window physical RTL, original FF mapping and ABC constraints. Only combinational ABC target changes. No -dff/retime, SDC exception, clock-period change, source logic modification or timing acceptance.')
         script = mapping / 'synthesis.ys'
         script.write_text(recipe)
         if args.profile.startswith('physical_'):
@@ -379,6 +395,11 @@ def main():
         yosys = shutil.which('yosys')
         assert yosys
         status['runtime'] = subprocess.check_output([yosys, '-V'], text=True).strip()
+        if args.profile == 'physical_idle_credit_window_eop_d2000':
+            help_text=subprocess.check_output([yosys,'-Q','-T','-p','help abc'],text=True)
+            assert '-D <picoseconds>' in help_text
+            (output/'native-abc-help.log').write_text(help_text)
+            status['mapping_delay_target']['native_help_sha256']=sha(output/'native-abc-help.log')
         status['archive_sha256'] = spec['sha256']
         save()
         with (mapping / 'synthesis.log').open('w') as log:
@@ -413,13 +434,13 @@ def main():
         assert all(sha(inputs / name) == pin['sha256'] for name, pin in manifest['files'].items())
         if args.profile.startswith('physical_'):
             assert all(sha(Path(pin['path']))==pin['sha256'] for pin in status['physical_source_binding']['selected'].values())
-        if args.profile in ('physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+        if args.profile in ('physical_idle_credit','physical_idle_credit_eop','physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
             pin=status['credit_verdict_binding']
             assert sha(Path(pin['candidate_path']))==pin['candidate_sha256']
-        if args.profile in ('physical_idle_credit_eop','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+        if args.profile in ('physical_idle_credit_eop','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
             pin=status['eop_owner_binding']
             assert sha(Path(pin['candidate_path']))==pin['candidate_sha256']
-        if args.profile in ('physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset'):
+        if args.profile in ('physical_idle_credit_window','physical_idle_credit_window_eop','physical_idle_credit_window_eop_refresh','physical_idle_credit_window_eop_snapshot','physical_idle_credit_window_body','physical_idle_credit_window_factored','physical_idle_credit_window_reset','physical_idle_credit_window_eop_d2000'):
             pin=status['ack_window_binding']
             assert sha(Path(pin['candidate_path']))==pin['candidate_sha256']
         if args.profile=='physical_idle_credit_window_eop_refresh':

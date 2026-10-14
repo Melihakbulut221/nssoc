@@ -2212,5 +2212,13 @@
     "baseline": "physical_idle_credit_window_eop",
     "change": "Only advertiser.link_up_i tied1 beneath original asynchronous local_reset=rst_ni&&link_up_i&&!retrain_done_i. All other instances retain original links. Original reset, EOP candidate, FC logic, ports and clock constraints remain.",
     "required": "Exact full-region storage/output induction with arbitrary link/reset/clock transitions, wrong-owner controls,32source-bound joint port tests and allcorner paired STA. No stable-link assumption, timing exception, increased period or accepted behavior change."
+  },
+  "abc_delay_followup": {
+    "status": "UNVERIFIED_PAIRED_MAPPING_CANDIDATE",
+    "profile": "physical_idle_credit_window_eop_d2000",
+    "baseline": "physical_idle_credit_window_eop",
+    "only_change": "ABC -D4000 to-D2000ps. Same RTL, FF mapping, Liberty, drive/load constr and allcorner SDC. No retiming or relaxed constraints.",
+    "rationale": "Control-equivalent RTL rewrites worsened mapped PCIe setup. Request tighter combinational synthesis on the best proved source; actual allcorner setup/hold, area and routing must decide.",
+    "reference": "https://yosyshq.readthedocs.io/projects/yosys/en/0.40/cmd/abc.html"
   }
 }
