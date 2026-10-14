@@ -7,6 +7,18 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD internal-node diagnostic coverage correction prepared.**
+Successful full50 review38599049135 preserved exact raw capture and pump
+observations, but its xpfd.n_ selection only covered well nodes, not the MOS
+drain/gate/source probes xpfd.t*. Full raw capture contains these terminals.
+Reader now requires every102actualPFD MOS D/G/S vector, retains all PFD
+voltages and reports both rising/falling edges. Missing terminal/duplicate/
+wrong-device-count controls must reject. Re-run only full50 diagnostic on
+this corrected source; no new native simulation or altered gate. Use actual
+reset/latch terminals to investigate alternating output before circuit change.
+Routing38598795406 remains live; retain exact handle/cloud-only execution.
+
+
 **Cloud-only checkpoint — 2026-10-14T16:41:49.948312+00:00.**
 Local NSSOC workspace and NSSOC paths in /tmp and /dev/shm are empty; no
 local CAD/simulation process. Remote retirement receipt636387277 SHA

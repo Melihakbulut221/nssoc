@@ -378,6 +378,43 @@ def full50_alias_controls():
     return dict(positive=1,negative=len(faults))
 
 
+def full50_probe_selection(names, parent, expected_pfd_mos=102):
+    """Require actual PFD D/G/S coverage, not just extracted well-node names."""
+    assert len(names)==len(set(names))
+    devices=[]
+    for line in parent.splitlines():
+        words=line.lower().split()
+        if words and words[0].startswith('x_xpfd_') and len(words)>5 and words[5] in ('sg13_hv_nmos','sg13_hv_pmos'):
+            devices.append(dict(instance=words[0],model=words[5],terminals=dict(zip(('d','g','s'),words[1:4]))))
+    assert len(devices)==expected_pfd_mos, ('Unexpected PFD MOS inventory',len(devices))
+    required={'v(xloop.'+node+')' for d in devices for node in d['terminals'].values()}
+    assert required<=set(names), ('Unrecorded PFD D/G/S probes',sorted(required-set(names)))
+    chosen=[n for n in names if n in {'time','v(clkp)','v(clkn)','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)','v(reset)'}
+        or n.startswith(('v(xloop.xpfd.','v(xloop.xpump.','v(xloop.a_pfd','v(xloop.a_pump'))
+        or n.startswith('@') and 'xpump' in n]
+    assert {'time','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)'}<=set(chosen)
+    assert required<=set(chosen), 'PFD D/G/S probe omitted from analysis'
+    return chosen,dict(pfd_mos_count=len(devices),required_terminal_vectors=sorted(required),
+        every_pfd_drain_gate_source_recorded_and_analyzed=True,devices=devices)
+
+
+def full50_probe_controls():
+    parent='X_xpfd_xd0001 xpfd.t001_d xpfd.t001_g xpfd.t001_s xpfd.n_1 sg13_hv_nmos w=2u l=.45u'
+    names=['time','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)',
+        'v(xloop.xpfd.n_1)','v(xloop.xpfd.t001_d)','v(xloop.xpfd.t001_g)','v(xloop.xpfd.t001_s)']
+    selected,proof=full50_probe_selection(names,parent,1)
+    assert selected==names and len(proof['required_terminal_vectors'])==3
+    faults=[names[:-1],names[:-2]+[names[-1]],names+names[-1:]]
+    for bad in faults:
+        try:full50_probe_selection(bad,parent,1)
+        except AssertionError:continue
+        raise AssertionError('Missing/duplicate PFD terminal probe accepted')
+    try:full50_probe_selection(names,parent,2)
+    except AssertionError:pass
+    else:raise AssertionError('Wrong PFD MOS inventory accepted')
+    return dict(positive=1,negative=4)
+
+
 def diagnose_full50():
     """Read original full-node PBUF10 wave, not the older reset865 circuit."""
     import gzip
@@ -454,10 +491,8 @@ def diagnose_full50():
         for first in range(0,rows,4096):assert np.isfinite(values[first:first+4096]).all()
         t=np.asarray(values[:,0]).copy();assert t[0]==0 and abs(t[-1]-50e-9)<1e-18
         assert np.all(np.diff(t)>0) and np.max(np.diff(t))<=3.125e-13*1.00001
-        chosen=[n for n in names if n in {'time','v(clkp)','v(clkn)','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)','v(reset)'}
-            or n.startswith(('v(xloop.xpfd.n_','v(xloop.xpump.','v(xloop.a_pfd','v(xloop.a_pump'))
-            or n.startswith('@') and 'xpump' in n]
-        assert {'time','v(fb)','v(reference)','v(up)','v(down)','v(vctrl)'}<=set(chosen)
+        chosen,coverage=full50_probe_selection(names,parent['text'])
+        result['pfd_terminal_coverage']=coverage
         data={n:np.asarray(values[:,names.index(n)]).copy() for n in chosen}
         feedback=rising(t,data['v(fb)'],1.25)
         intervals=[(0.,50e-9),*[(float(a),float(b)) for a,b in zip(feedback[:-1],feedback[1:])]]
@@ -474,12 +509,13 @@ def diagnose_full50():
                 if n.startswith('v('):
                     edges=rising(at,y,1.25)
                     stats.update(rising_edges_at_1p25_v_s=edges.tolist(),
+                        falling_edges_at_1p25_v_s=rising(at,-y,-1.25).tolist(),
                         above_1p25_v_time_fraction=float(np.trapezoid((y>=1.25).astype(float),at)/(stop-start)))
                 signals[n]=stats
             records.append(dict(start_s=start,stop_s=stop,signals=signals))
         result.update(status='COMPLETE_FULL50_PFD_PUMP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE',intervals=records,
             parent_pfd_and_pump_statements=[l for l in parent['text'].splitlines() if any(k in l.lower() for k in ['xpfd','xpump','a_pfd','a_pump'])],
-            scope='Exact full-node50ns startup observation. Voltage duty is not pump current. Actual recorded pump device currents are labeled by original vector names. No late1us internal capture, fitted phase, relaxed lock gate or causal closure.')
+            scope='Exact full-node50ns startup observation with every102PFD MOS drain/gate/source included. Voltage duty is not pump current. Actual recorded pump device currents are labeled by original vector names. No late1us internal capture, fitted phase, relaxed lock gate or causal closure.')
         save();del values;raw_path.unlink();packed.unlink()
         print(result['status'],flush=True)
     except BaseException as error:
@@ -505,6 +541,7 @@ def main():
     controls['cycle_diagnosis']=acquisition_cycle_controls()
     controls['full50_fifo']=full50_fifo_controls()
     controls['full50_alias']=full50_alias_controls()
+    controls['full50_probe_coverage']=full50_probe_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)
