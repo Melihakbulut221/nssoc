@@ -791,22 +791,25 @@ def pfd_terminal_controls():
         else:raise AssertionError('Accepted malformed physical-terminal evidence: '+label)
     return dict(positive=1,rejected=failures,qualified_pex=False)
 
-def review_physical_pfd():
+def review_physical_pfd(profile='aoi4_rc'):
     """Read exact completed native capture, reconstruct source, quantify PFD stress."""
     assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted waveform analysis only'
+    assert profile in ('aoi4_rc','aoi4_d2_rc')
+    source_run=38616009542 if profile=='aoi4_d2_rc' else 38610259816
+    source_head='e0bd3db29bd0bcc3b840da4e0334419bff5c128a' if profile=='aoi4_d2_rc' else '9e56ae047a0e36725bac42daa4868c092c2da261'
     out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
-    result=dict(status='RUNNING_PHYSICAL_PFD_NATIVE50_REVIEW',source_run=38610259816,
+    result=dict(status='RUNNING_PHYSICAL_PFD_NATIVE50_REVIEW',source_run=source_run,profile=profile,
         full_phy_accepted=False,acquisition_accepted=False,full_device_safety_accepted=False,
         no_new_native=True,controls=pfd_terminal_controls())
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def api(path):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
     save()
     try:
-        run=api('actions/runs/38610259816')
+        run=api(f'actions/runs/{source_run}')
         assert run['status']=='completed' and run['conclusion']=='success','Await exact native capture; never restart it'
-        assert run['head_sha']=='9e56ae047a0e36725bac42daa4868c092c2da261' and run['run_attempt']==1
-        release=api('releases/tags/cloud-results-38610259816-1-pll-pfd-aoi4_rc')
-        stem='pll-snapshot-aoi4_rc-38610259816-1'
+        assert run['head_sha']==source_head and run['run_attempt']==1
+        release=api(f'releases/tags/cloud-results-{source_run}-1-pll-pfd-{profile}')
+        stem=f'pll-snapshot-{profile}-{source_run}-1'
         def asset(name):
             matches=[r for r in release['assets'] if r['name']==name];assert len(matches)==1
             return matches[0]
@@ -838,9 +841,8 @@ def review_physical_pfd():
             generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
             spec=importlib.util.spec_from_file_location('physical_pfd_source_generator',generator)
             module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-            ref=module.devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES})
-            ref=[d for d in ref if d['path'].startswith(('xloop.xup.','xloop.xdn.'))]+pfd_aoi_devices()
-            expected,proof=pfd_physical_parent(original,macro,ref)
+            ref=module.profile_devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES},profile.removesuffix('_rc'))
+            expected,proof=pfd_physical_parent(original,macro,ref,profile)
             assert parent==expected and proof==capture['pfd_replacement']
             assert digest(parent.encode())==capture['parent_sha256']
             bench=member('source/bench.cir').decode()
@@ -1681,6 +1683,7 @@ def main():
     parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
     parser.add_argument('--review-physical-pfd',action='store_true')
+    parser.add_argument('--review-physical-pfd-drive2',action='store_true')
     parser.add_argument('--recover-parent-methods',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc','aoi4_d2_rc'))
@@ -1699,6 +1702,9 @@ def main():
     if args.recover_parent_methods:
         assert not any([args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         recover_parent_methods();return
+    if args.review_physical_pfd_drive2:
+        assert not any([args.review_physical_pfd,args.pfd_candidate,args.self_test,args.acquisition])
+        review_physical_pfd('aoi4_d2_rc');return
     if args.review_physical_pfd:
         assert not any([args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         review_physical_pfd();return
