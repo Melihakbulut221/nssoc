@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Dispatch update and diagnosed harness correction:** output-feedback candidate
+38503692385 dispatched on c6d595fedca1c151de20fe0d866c17320fe4e05b; inspect tests
+then eight actual compact/wire failing-corner controls. Do not duplicate.
+PLL snapshot38503239727 terminatedFAIL before any transient: reusable circuit
+original title was parsed as a capacitor when included. Native log retained
+in archive639010147(SHAe8bbd909b1cae489079bb8fe61b4dc3d96c49a9cf630185d179a28fc68c22afc).
+Source/model/finite-input pins and four comparison corruption controls passed;
+this is a harness error, not snapshot-compatibility evidence. Original title
+now comment-prefixed, consistent with upstream ngspice snapshot example.
+Only title syntax changed; no electrical controls removed. Corrected snapshot
+requires one hosted dispatch; native simulation was not previously started.
+
+
 **Current concrete continuation:** native PLL snapshot experiment38503239727
 dispatched on83e3270e035f886479d475a665280bce84b55979. Keep its handle; inspect
 native evidence before assuming snapshot/KLU/OSDI compatibility. No local run.

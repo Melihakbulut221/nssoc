@@ -192,7 +192,8 @@ def main():
             setup=setup.replace(OSDI_ROOT+'/'+n,str(out/'frontend'/n))
         assert '/home/hasanmelih/' not in relocated+setup and '/dev/shm/' not in relocated+setup
         (out/'parent865.spice').write_bytes((out/'source/parent865.spice').read_bytes())
-        (out/'circuit.cir').write_text(relocated+'.control\n'+setup+'\n.endc\n.end\n')
+        # The reusable deck is also included: its original title must be a comment.
+        (out/'circuit.cir').write_text('* '+relocated+'.control\n'+setup+'\n.endc\n.end\n')
         (out/'spinit').write_text('set num_threads=1\n')
         common='.include "circuit.cir"\n.control\nop\nwrite op.raw all\n'
         continuous='NSSOC native865 continuous50ns reference\n'+common+'stop when time > 50n\nrun\nwrite continuous.raw all\nquit\n.endc\n.end\n'
