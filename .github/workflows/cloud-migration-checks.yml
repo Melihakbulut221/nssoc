@@ -497,8 +497,6 @@ jobs:
       - name: Review exact original one-us capture without new simulation
         env:
           GH_TOKEN: ${{ github.token }}
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'methods' && '--recover-pfd-methods' || inputs.pll_pfd_stage == 'topology' && '--diagnose-pfd-topology' || inputs.pll_full50_diagnosis && '--diagnose-full50' || inputs.pll_acquisition_diagnosis && '--diagnose-acquisition' || '--review-acquisition' }}
       - name: Preserve complete independent review or failure
         if: always()
