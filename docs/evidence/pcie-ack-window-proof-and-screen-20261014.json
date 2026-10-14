@@ -2887,5 +2887,153 @@
     ],
     "decision": "All six native corner group minima and mapped cell counts are unchanged. Native ABC trace confirms 2000 ps was applied to retime, nf, upsize and dnsize. No sequential cells were passed to ABC; its log explicitly calls the network combinational. Do not repeat target-only tuning unchanged.",
     "next_hypothesis": "Map identical proved RTL with pinned slow standard-cell Liberty instead of typical; retain D4000, original FF mapping, load/drive constraints, all three STA corners and 32 joint tests. Slow setup fails while typical PCIe setup passes; this is an experiment, not adoption or closure."
+  },
+  "abc_slow_corner_completed_screen": {
+    "run": 38496628841,
+    "source_head": "96b1ee516547344e072705b3dd3cb48bad66adf3",
+    "status": "MINOR_UNPLACED_IMPROVEMENT_NOT_ADOPTED_NOT_CLOSURE",
+    "adopted": false,
+    "baseline": {
+      "summary_asset_id": 638872721,
+      "summary_sha256": "040b1cc370fb5f5fd41ee531aff12da6a90f3286dd9caba6f5d5317f62fa4ba5",
+      "mapped_cells": 79065,
+      "screen_log_sha256": "20484e7663263f6d3a5828b2b414fafcef9b90ee0a30c0badca368af23c2d940"
+    },
+    "candidate": {
+      "summary_asset_id": 638866663,
+      "summary_sha256": "eed48232c02587e60667b33fd30efdc5d027cd2c7ae102d4b741537196d21e55",
+      "mapped_cells": 79055,
+      "archive_asset_id": 638866441,
+      "archive_sha256": "7713502f05d3dd5bb80356df2d0c9738a2ee0737b616644dcc20ff49f932bca3",
+      "screen_log": {
+        "member": "cloud-ack-map/physical_idle_credit_window_eop_slowmap/screen05/screen.log",
+        "bytes": 403733,
+        "sha256": "f0f66a7c112d1a69433a560ea81bde2150e3ac7f66d35ae81e7f0c34598f982e"
+      },
+      "all_corner_group_minima_ns": {
+        "slow_max": {
+          "asynchronous": 1.377019,
+          "path delay": 2.505196,
+          "clk_i": 0.511671,
+          "eth_gtx": 4.901397,
+          "eth_rx_clk_i": 1.702392,
+          "eth_tx_clk_i": 1.672676,
+          "pcie_clk_i": -0.991351
+        },
+        "slow_min": {
+          "asynchronous": 0.35541,
+          "clk_i": -0.439722,
+          "eth_gtx": -0.43793,
+          "eth_rx_clk_i": -0.469247,
+          "eth_tx_clk_i": -0.413411,
+          "pcie_clk_i": 0.057926
+        },
+        "typical_max": {
+          "asynchronous": 1.963955,
+          "path delay": 2.754967,
+          "clk_i": 7.530363,
+          "eth_gtx": 5.012421,
+          "eth_rx_clk_i": 4.178513,
+          "eth_tx_clk_i": 4.158348,
+          "pcie_clk_i": 0.461522
+        },
+        "typical_min": {
+          "asynchronous": 0.139328,
+          "clk_i": -0.387129,
+          "eth_gtx": -0.53948,
+          "eth_rx_clk_i": -0.368327,
+          "eth_tx_clk_i": -0.36629,
+          "pcie_clk_i": -0.04421
+        },
+        "fast_max": {
+          "asynchronous": 2.294569,
+          "path delay": 2.897573,
+          "clk_i": 11.675054,
+          "eth_gtx": 5.083783,
+          "eth_rx_clk_i": 4.507263,
+          "eth_tx_clk_i": 5.491168,
+          "pcie_clk_i": 1.317133
+        },
+        "fast_min": {
+          "asynchronous": 0.013901,
+          "clk_i": -0.3678,
+          "eth_gtx": -0.601382,
+          "eth_rx_clk_i": -0.351181,
+          "eth_tx_clk_i": -0.353123,
+          "pcie_clk_i": -0.109062
+        }
+      },
+      "critical_pcie_slow_path": "Startpoint: pcie_link_up_i (input port clocked by pcie_clk_i)\nEndpoint: $auto$ff.cc:337:slice$1304820\n          (rising edge-triggered flip-flop clocked by pcie_clk_i)\nPath Group: pcie_clk_i\nPath Type: max\nCorner: slow\n\nFanout         Cap        Slew       Delay        Time   Description\n---------------------------------------------------------------------------------------------\n                      0.150000    0.000000    0.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    0.000000   clock network delay (ideal)\n                                  0.800000    0.800000 ^ input external delay\n     5    0.013548    0.048225    0.018067    0.818067 ^ pcie_link_up_i (in)\n     4    0.010141    0.064403    0.079934    0.898001 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1705357/Y (sg13g2_inv_1)\n     2    0.007938    0.131218    0.150961    1.048962 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1705358/Y (sg13g2_nor2_1)\n     6    0.015601    0.102863    0.155046    1.204008 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1705359/Y (sg13g2_nand2_2)\n     3    0.007534    0.072589    0.096071    1.300079 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1705630/Y (sg13g2_inv_1)\n     2    0.004983    0.084779    0.107695    1.407773 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1705637/Y (sg13g2_nand2_1)\n     1    0.002920    0.076781    0.099493    1.507266 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1705638/Y (sg13g2_nor2_1)\n     3    0.006508    0.108219    0.120458    1.627724 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1705639/Y (sg13g2_a22oi_1)\n     3    0.006862    0.063513    0.207770    1.835495 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715155/X (sg13g2_or2_1)\n     2    0.005498    0.056559    0.181084    2.016578 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715156/X (sg13g2_or2_1)\n     1    0.002150    0.091935    0.117474    2.134053 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715158/Y (sg13g2_a22oi_1)\n     7    0.019207    0.135192    0.206061    2.340114 ^ gain3611/X (sg13g2_buf_1)\n     1    0.002150    0.034468    0.147454    2.487568 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715159/X (sg13g2_or2_1)\n     3    0.013987    0.102964    0.149185    2.636753 ^ gain3382/X (sg13g2_buf_1)\n     4    0.011387    0.086809    0.115728    2.752482 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715161/Y (sg13g2_nand2_2)\n     2    0.005128    0.103393    0.122311    2.874793 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715162/Y (sg13g2_nor2_1)\n     4    0.010560    0.089782    0.115435    2.990228 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715163/Y (sg13g2_nor3_1)\n     3    0.008170    0.137900    0.164144    3.154372 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715166/Y (sg13g2_nor2_1)\n     1    0.002150    0.047177    0.225237    3.379609 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715168/X (sg13g2_and3_1)\n     1    0.002502    0.033321    0.101096    3.480704 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715169/X (sg13g2_buf_1)\n     6    0.020214    0.081180    0.145363    3.626067 ^ gain1971/X (sg13g2_buf_2)\n     5    0.011227    0.088854    0.118455    3.744522 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715179/Y (sg13g2_nand2_2)\n     1    0.002081    0.040687    0.186116    3.930638 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715181/X (sg13g2_or2_1)\n     4    0.011421    0.073418    0.137813    4.068450 v gain1779/X (sg13g2_buf_1)\n     2    0.004977    0.132957    0.159065    4.227515 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715182/Y (sg13g2_o21ai_1)\n     1    0.002502    0.036445    0.148247    4.375762 ^ $abc$1705020$auto$blifparse.cc:397:parse_blif$1715183/X (sg13g2_or2_1)\n     7    0.019707    0.079735    0.145960    4.521722 ^ gain1573/X (sg13g2_buf_2)\n     1    0.001355    0.043179    0.075058    4.596779 v $abc$1705020$auto$blifparse.cc:397:parse_blif$1715204/Y (sg13g2_nor3_1)\n                      0.043179    0.000000    4.596779 v $auto$ff.cc:337:slice$1304820/D (sg13g2_dfrbpq_1)\n                                              4.596779   data arrival time\n\n                      0.150000    4.000000    4.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    4.000000   clock network delay (ideal)\n                                 -0.250000    3.750000   clock uncertainty\n                                  0.000000    3.750000   clock reconvergence pessimism\n                                              3.750000 ^ $auto$ff.cc:337:slice$1304820/CLK (sg13g2_dfrbpq_1)\n                                 -0.144571    3.605428   library setup time\n                                              3.605428   data required time\n---------------------------------------------------------------------------------------------\n                                              3.605428   data required time\n                                             -4.596779   data arrival time\n---------------------------------------------------------------------------------------------\n                                             -0.991351   slack (VIOLATED)\n\n\n",
+      "mapping_corner_study": {
+        "original_abc_command": "abc -liberty /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_slowmap/inputs/pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib -constr /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_slowmap/inputs/root/hw/soc/out/pcie-replay-bank-read-20261009/map01/abc.constr -D 4000",
+        "candidate_abc_command": "abc -liberty /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_slowmap/inputs/pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib -constr /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_slowmap/inputs/root/hw/soc/out/pcie-replay-bank-read-20261009/map01/abc.constr -D 4000",
+        "slow_lib_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+        "target_ps": 4000,
+        "scope": "Only combinational ABC Liberty changes from typical to slow. Original sequential mapping, RTL, SDC, drive/load constraints and all STA corners remain. Unplaced experiment; not adopted or signoff."
+      },
+      "joint_controls": [
+        {
+          "case": "baseline",
+          "top": "soc_pcie_replay_tx",
+          "actual_tests": {
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0
+          },
+          "returncode": 0
+        },
+        {
+          "case": "baseline",
+          "top": "soc_pcie_reliable_packets",
+          "actual_tests": {
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0
+          },
+          "returncode": 0
+        },
+        {
+          "case": "baseline",
+          "top": "soc_pcie_buffered_flow_packets",
+          "actual_tests": {
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0
+          },
+          "returncode": 0
+        },
+        {
+          "case": "combined",
+          "top": "soc_pcie_replay_tx",
+          "actual_tests": {
+            "passed": 7,
+            "failed": 0,
+            "skipped": 0
+          },
+          "returncode": 0
+        },
+        {
+          "case": "combined",
+          "top": "soc_pcie_reliable_packets",
+          "actual_tests": {
+            "passed": 4,
+            "failed": 0,
+            "skipped": 0
+          },
+          "returncode": 0
+        },
+        {
+          "case": "combined",
+          "top": "soc_pcie_buffered_flow_packets",
+          "actual_tests": {
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0
+          },
+          "returncode": 0
+        }
+      ]
+    },
+    "decision": "Slow-corner mapping changes79065 to79055cells, CPU slow setup0.474044 to0.511671ns, but PCIe only-0.991500 to-0.991351ns (0.149ps). Fast PCIe hold unchanged-0.109062ns. Not sufficient for adoption or closure. Actual critical endpoint remains advertiser.refresh[0] at FF1304820. Investigate its full reset/ready/arbiter control cone; do not blindly sweep ABC targets or relax SDC."
   }
 }

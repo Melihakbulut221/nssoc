@@ -7,6 +7,27 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Newest authoritative findings:** slow-corner mapping38496628841 completed;
+79055cells, PCIe slow setup-0.991351ns versus-0.991500baseline (only0.149ps),
+fast hold-0.109062ns unchanged. Not adopted. Full corners/critical path pinned
+in `abc_slow_corner_completed_screen` ofpcie-ack-window-proof-and-screen-20261014.json.
+Actual endpoint is advertiser.refresh[0], FF1304820; further blindABC sweeps
+are not justified. Inspect full ready/arbiter/reset cone before the next ECO.
+**PLL historical-state correction:**744native05 was finitePASS;753native03
+was finiteFAIL, with a separate limited phase-window review. Newer compact
+parent753native02 ALSO FAILED electrical and functional/phase checks. None is
+running. Exact terminal records, raw hashes and independent reviews recovered
+from migration batch259(asset635605533,68.8MB),316(asset635797234,1.46MB), and
+744records628261905 are in `cloud_terminal_readback_20261014` of the existing
+PLL753evidence receipt. Repair from compact753native02, not the older pending
+snapshot or the unchanged wide parent. No PLL lock/fullPHY acceptance.
+Native TX hot0.25ps38496975171: compact has passed, wired stilllive at lastread.
+Independent corners38496978055 and32tree38496981217 retain original handles.
+Main-chip halo38490952579 remains native-running; release summary638701652 is
+an INTERMEDIATE placement/STA checkpoint, NOT a terminal route result.
+All work stays cloud-only. FullserialPHY/main-chiproute/finalsetuphold OPEN.
+
+
 **Current dispatch handles (do not restart queued/live jobs):**
 - 38496975171: V10 4:1 hot-low compact/wire at0.25ps maxstep; compare against
   original hot-low0.5ps summaries638812939/638828378, same bit oracle/phases.
