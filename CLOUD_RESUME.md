@@ -7,6 +7,27 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Latest verified cloud outcome:** PLL prefix38501501029 onb2242dc77f4ba386cf16582deba163393d5c06e3
+completed diagnosis and hosted source/license checks successfully. Summary
+638969192,archive638969080; exact full summary pinned in
+pcie-pll753-parent-rounded-credit-20261010.json underparent865_cloud_prefix_20261014.
+748851 complete rows end233.92609375ns;40 trailing bytes excluded with hash,
+never padded. Five corruption controls plus explicit partial-row controlPASS.
+Feedback median frequency falls100.206270MHz(25-50ns) to100.068033MHz
+(200-230ns); last short-window error~680ppm, not100ppm lock. VCTRL lastwindow
+0.427578..0.593801V. Missing800-1000ns windows, phase/slip criteria and full
+1us safety remain OPEN. Next PLL work: exact source-bound hosted native865
+acquisition with valid runtime/resource plan, not another prefix acceptance
+or redundantKLU change. Base finite50ns proof remains separate.
+TX independent run38496978055 additionally fails hot_low_res_bcs physical_wire:
+final CMmin1.799833864V<1.8V, although bits/devices pass. Exact summary638961839
+now retained in V10series receipt; don't waive the small violation. Remaining
+independent wire cases,32:1wire38496981217 and chiproute38490952579 stilllive
+at this checkpoint. Preserve these original handles before any next dispatch.
+Local cleanup complete as recorded below, all computation hosted. Fullserial
+PHY,assembledchiprouting,finalsetup/hold all remain OPEN.
+
+
 **Newest cloud-only cleanup and diagnostic checkpoint:** four legacy LVS `.cir`
 files outside the checkout in its parent were archived, fetched back and
 byte-for-byte verified, then ONLY those exact unchanged files removed.

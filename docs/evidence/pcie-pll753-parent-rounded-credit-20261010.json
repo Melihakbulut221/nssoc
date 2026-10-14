@@ -7654,5 +7654,406 @@
         "next_action": "Run pll_prefix_readback on GitHub. Inspect unchanged partial trajectory before proposing a long replay or circuit repair. Existing KLU must not be proposed as a new speedup. No partial prefix proves final800-1000ns acquisition or full-device/PVT safety."
       }
     }
+  },
+  "parent865_cloud_prefix_20261014": {
+    "asset_id": 638969192,
+    "summary_sha256": "1b3257b3e99026689ed43061a3dd62ac4752d50f0b699951f08cf3bf22462008",
+    "summary": {
+      "status": "COMPLETE_INTERRUPTED_PREFIX_DIAGNOSIS_NOT_ACQUISITION",
+      "full_phy_accepted": false,
+      "acquisition_accepted": false,
+      "controls": {
+        "valid_interrupted_header_preserved": true,
+        "negative_controls_rejected": 5,
+        "explicit_partial_diagnosis_control": true
+      },
+      "sources": [
+        {
+          "asset_id": 634832275,
+          "bytes": 141989022,
+          "sha256": "6021e860444f74adae386a07f85254169bb6e75ab03fd981dff8cc52c098f6ce",
+          "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/batch-000002.tar.gz",
+          "members": [
+            "native07/result.json",
+            "native07/owned-processes.json",
+            "native07/run.log",
+            "native07/bench.cir",
+            "native07/parent865.spice",
+            "gate01.json"
+          ]
+        },
+        {
+          "asset_id": 634833900,
+          "bytes": 121865817,
+          "sha256": "867100a4e8844477ae6003fa84bb7c10801099afb335b8dd3d1b56a6a99450fb",
+          "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/batch-000003.tar.gz",
+          "members": [
+            "native07/wave.raw"
+          ]
+        }
+      ],
+      "records": {
+        "native07/wave.raw": {
+          "bytes": 149771119,
+          "sha256": "7c1f37bd9e29e794f2a33c67fe5efaa3f0c021bc907484d1d7efa60521d25ba8"
+        },
+        "native07/result.json": {
+          "bytes": 51922,
+          "sha256": "757dff0cd5bfaac9eac3f62a138e6538255098513c88ee33a77bba0845d4bc4f"
+        },
+        "native07/owned-processes.json": {
+          "bytes": 1044,
+          "sha256": "9b3be045bad01f6c1fcf92a7382373d0b702237464739d52281bb5dc90ba2d6f"
+        },
+        "native07/run.log": {
+          "bytes": 1973718,
+          "sha256": "4054c46355a18e55001d01751398082319eef537367f3437a64acefce93653a2"
+        },
+        "native07/bench.cir": {
+          "bytes": 20469,
+          "sha256": "8d1ace49e8c2abe21be67433b1b5714f7a468790358e4ef33d4ef038b93944af"
+        },
+        "native07/parent865.spice": {
+          "bytes": 603656,
+          "sha256": "b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48"
+        },
+        "gate01.json": {
+          "bytes": 1772,
+          "sha256": "f1c202dfc05e9210f7fb53f017cf3bf68d9f8ca63bb902a93f28bbab1b8ac861"
+        }
+      },
+      "native_status": "FAILED_ONE_US_SELECTED_PROBE_DIAGNOSTIC",
+      "cancellation": {
+        "status": "CANCELLED",
+        "reason": "Parent received SIGTERM",
+        "elapsed_watchdog_seconds": null,
+        "failure_grace_seconds": 5.0,
+        "processes": [
+          {
+            "kind": "native",
+            "command": [
+              "/dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice",
+              "-n",
+              "-b",
+              "bench.cir"
+            ],
+            "identity": {
+              "pid": 3467316,
+              "state": "R",
+              "process_group": 3467316,
+              "start_ticks": "39630552"
+            },
+            "process_group": 3467316,
+            "status": "FAILURE_REAPED",
+            "returncode": -15
+          }
+        ],
+        "cleanup": {
+          "reason": "Parent received SIGTERM",
+          "started_monotonic": 438079.531184652,
+          "global_deadline_monotonic": 438084.531184652,
+          "groups": [
+            {
+              "process_group": 3467316,
+              "identity_reused": false,
+              "before": [],
+              "term_sent": false,
+              "kill_sent": false,
+              "immediate_after_kill": []
+            }
+          ],
+          "recording_errors": [],
+          "observation_errors": [],
+          "finished_monotonic": 438079.632078823
+        }
+      },
+      "capture": {
+        "header_points": 0,
+        "observed_rows": 748851,
+        "width": 25,
+        "header_bytes": 879,
+        "payload_sha256": "1dbf452bc6f9fe6dff452721168cd5f052488689088864d947d9405e497aaf3f",
+        "header_matches_observed": false,
+        "payload_has_only_complete_rows": false,
+        "excluded_trailing_bytes": 40,
+        "excluded_trailing_sha256": "a8a2396c7e3bbac938e9ac96bf31cd8d9823719b16c6d0084616f938b089b3be",
+        "complete_rows_sha256": "c932b774b4e7eb3a4cfc12a6363d77bdd549f7ea7c0d4062f9c7480cb8e8cb65",
+        "interrupted_diagnostic": true
+      },
+      "captured_start_s": 0.0,
+      "captured_end_s": 2.3392609374992736e-07,
+      "required_stop_s": 1e-06,
+      "missing_required_windows_ns": [
+        [
+          800,
+          900
+        ],
+        [
+          900,
+          1000
+        ]
+      ],
+      "windows": [
+        {
+          "start_ns": 25,
+          "end_ns": 50,
+          "edges": {
+            "vco": {
+              "rising_edges": 200,
+              "frequency_from_median_period_hz": 8011033622.904825,
+              "min_period_s": 1.2109699964827557e-10,
+              "max_period_s": 1.273049810598864e-10
+            },
+            "feedback": {
+              "rising_edges": 3,
+              "frequency_from_median_period_hz": 100206270.27019297,
+              "min_period_s": 9.966905010932196e-09,
+              "max_period_s": 9.991925854713879e-09
+            },
+            "reference": {
+              "rising_edges": 2,
+              "frequency_from_median_period_hz": 99999999.99999997,
+              "min_period_s": 1.0000000000000004e-08,
+              "max_period_s": 1.0000000000000004e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.42209032363392746,
+              "mean": 0.5292159380073678,
+              "maximum": 0.5938617536543309
+            },
+            "v(up)": {
+              "minimum": -0.014537590564684828,
+              "mean": 0.7356684181910007,
+              "maximum": 2.5248255148040117
+            },
+            "v(down)": {
+              "minimum": -0.10772041581609865,
+              "mean": 1.019258019411293,
+              "maximum": 2.6262265565750553
+            },
+            "v(fb)": {
+              "minimum": 0.008059783198235904,
+              "mean": 0.7947615500199516,
+              "maximum": 2.3575982082526794
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "mean": 1.3936959772897708,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 50,
+          "end_ns": 100,
+          "edges": {
+            "vco": {
+              "rising_edges": 401,
+              "frequency_from_median_period_hz": 8005929260.465763,
+              "min_period_s": 1.211507247541656e-10,
+              "max_period_s": 1.2736698958829047e-10
+            },
+            "feedback": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100114961.15774497,
+              "min_period_s": 9.972161721709572e-09,
+              "max_period_s": 1.000316299920577e-08
+            },
+            "reference": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100000000.00000003,
+              "min_period_s": 9.99999999999999e-09,
+              "max_period_s": 1.0000000000000023e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.42313350486962664,
+              "mean": 0.5296325211459774,
+              "maximum": 0.594116620830875
+            },
+            "v(up)": {
+              "minimum": -0.01441853729008953,
+              "mean": 0.6922542824845022,
+              "maximum": 2.5255747317941957
+            },
+            "v(down)": {
+              "minimum": -0.10884663004950874,
+              "mean": 1.1819089118446502,
+              "maximum": 2.6282413025617424
+            },
+            "v(fb)": {
+              "minimum": 0.00800881527949195,
+              "mean": 0.6860634562765228,
+              "maximum": 2.3589719078613696
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "mean": 1.2437523428714232,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 100,
+          "end_ns": 150,
+          "edges": {
+            "vco": {
+              "rising_edges": 400,
+              "frequency_from_median_period_hz": 8009919811.746738,
+              "min_period_s": 1.2121080199273691e-10,
+              "max_period_s": 1.2736011295304196e-10
+            },
+            "feedback": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100090656.88055712,
+              "min_period_s": 9.977292829381758e-09,
+              "max_period_s": 1.0003525828462477e-08
+            },
+            "reference": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100000000.00000003,
+              "min_period_s": 9.999999999999984e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.4251455312570548,
+              "mean": 0.528257518332067,
+              "maximum": 0.5941587126113748
+            },
+            "v(up)": {
+              "minimum": -0.01414970728986987,
+              "mean": 0.9229479251347017,
+              "maximum": 2.5266605806322238
+            },
+            "v(down)": {
+              "minimum": -0.11001560302221346,
+              "mean": 1.224526694488467,
+              "maximum": 2.630546908745923
+            },
+            "v(fb)": {
+              "minimum": 0.008005192085104041,
+              "mean": 0.6842521447651561,
+              "maximum": 2.3593074841250483
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "mean": 1.2437523428714237,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 150,
+          "end_ns": 200,
+          "edges": {
+            "vco": {
+              "rising_edges": 400,
+              "frequency_from_median_period_hz": 8005931083.302627,
+              "min_period_s": 1.2123981673828282e-10,
+              "max_period_s": 1.2735305240129138e-10
+            },
+            "feedback": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100077960.6312339,
+              "min_period_s": 9.97963644866961e-09,
+              "max_period_s": 1.0003801721839156e-08
+            },
+            "reference": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100000000.00000003,
+              "min_period_s": 9.999999999999984e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.42622374014525294,
+              "mean": 0.5310438234731095,
+              "maximum": 0.5940780930488321
+            },
+            "v(up)": {
+              "minimum": -0.013997325402014843,
+              "mean": 0.6961098558166375,
+              "maximum": 2.5279487780269494
+            },
+            "v(down)": {
+              "minimum": -0.11065897265408253,
+              "mean": 1.1725108606710717,
+              "maximum": 2.631507089204727
+            },
+            "v(fb)": {
+              "minimum": 0.008005687447387331,
+              "mean": 0.6864911419703849,
+              "maximum": 2.359696093330272
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "mean": 1.243752342871425,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 200,
+          "end_ns": 230,
+          "edges": {
+            "vco": {
+              "rising_edges": 241,
+              "frequency_from_median_period_hz": 8008919332.005529,
+              "min_period_s": 1.212753765357613e-10,
+              "max_period_s": 1.2734562736145654e-10
+            },
+            "feedback": {
+              "rising_edges": 3,
+              "frequency_from_median_period_hz": 100068032.65103503,
+              "min_period_s": 9.982519724960378e-09,
+              "max_period_s": 1.000388299542241e-08
+            },
+            "reference": {
+              "rising_edges": 3,
+              "frequency_from_median_period_hz": 100000000.00000003,
+              "min_period_s": 9.999999999999984e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.4275776981107712,
+              "mean": 0.5288487239658359,
+              "maximum": 0.5938007201079843
+            },
+            "v(up)": {
+              "minimum": -0.013799244287025222,
+              "mean": 0.994738911407726,
+              "maximum": 2.5290340041859594
+            },
+            "v(down)": {
+              "minimum": -0.11121175931638176,
+              "mean": 1.228506891701051,
+              "maximum": 2.6321256473067933
+            },
+            "v(fb)": {
+              "minimum": 0.008007620195777424,
+              "mean": 0.6832644144596083,
+              "maximum": 2.3597975943452916
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "mean": 1.2437523428714246,
+              "maximum": 2.5
+            }
+          }
+        }
+      ],
+      "scope": "Exact historical865 native prefix only. Original bytes and cancellation retained; no simulation rerun, no phase fit, no changed electrical thresholds. Incomplete trailing row is excluded with exact byte count/hash, never padded; strict complete-capture decoding remains fail-closed. Fixed short windows diagnose direction of frequency/control-voltage evolution. They cannot substitute the missing final800-1000ns acquisition windows, full-device1us safety, timestep/PVT, PLL/CDR or fullPHY acceptance."
+    },
+    "run": 38501501029,
+    "source_head": "b2242dc77f4ba386cf16582deba163393d5c06e3",
+    "scope": "Later parent865 exact interrupted acquisition; historical753 data above remain unchanged. This is partial-prefix diagnosis, not lock acceptance."
   }
 }
