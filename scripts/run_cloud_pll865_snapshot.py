@@ -1566,6 +1566,117 @@ assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
     save();print(result['status'],flush=True)
 
 
+def extract_pfd_parent_rc():
+    """Extract and audit fresh real845-parent wires, never reuse the old parent RC."""
+    import sys
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_ACTUAL_D2_PARENT_NATIVE_RC',source_run=38623406807,qualified_pex=False,full_phy_accepted=False,main_chip_integrated=False)
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    def run(cmd,name):
+        log=out/(name+'.log')
+        with log.open('wb') as stream:code=subprocess.call([str(x)for x in cmd],cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+        result.setdefault('commands',[]).append(dict(name=name,returncode=code,log_sha256=sha(log)));save()
+        if code:print(log.read_text(errors='replace')[-14000:],flush=True)
+        assert code==0,(name,'failed')
+    save()
+    try:
+        packed=out/'wire-source.tar.gz'
+        fetch(BASE+'cloud-results-38623406807-1-pll-pfd-layout/pfd94-layout-38623406807-1.tar.gz',
+            '001843bd6a160f987a7e8d55351a4e6cd75f07845b6684886ec93241ca4ef241',packed)
+        assert packed.stat().st_size==2465615
+        prefix='hw/soc/out/cloud-pfd-layout/'
+        with tarfile.open(packed) as tar:
+            for m in tar.getmembers():
+                if not m.isfile():continue
+                assert m.name.startswith(prefix)
+                rel=m.name[len(prefix):];assert not Path(rel).is_absolute() and '..' not in Path(rel).parts
+                if rel=='result.json':rel='wire-source-result.json'
+                p=out/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(tar.extractfile(m).read())
+        packed.unlink()
+        assert sha(out/'wire-source-result.json')=='7d2b48d8abe17db8e4b8243f9ed10de36ddcf1de7862c0cde7e53ba90ad1d512'
+        source=json.loads((out/'wire-source-result.json').read_text())
+        assert source['status']=='PASS_ACTUAL_D2_PARENT_WIRE_BINDING_AND_FAULTS_NOT_RC'
+        binding=json.loads((out/'parent-wires/result.json').read_text())
+        assert binding==source['wire_binding']
+        assert binding['counts']==dict(components=25,anchors=83,child_macro_pins=66,parent_pins=17)
+        assert all(sha(Path(p))==h for p,h in binding['inputs'].items())
+        assert all(sha(out/'parent-wires'/p)==h for p,h in binding['outputs'].items())
+        runtime=json.loads((ROOT/'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
+        rt=out/'magic-cloud';rt.mkdir();packed=out/'magic-runtime.tar.gz'
+        fetch(runtime['receipt']['url'],runtime['receipt']['sha256'],packed)
+        assert packed.stat().st_size==runtime['receipt']['bytes']
+        with tarfile.open(packed) as tar:tar.extractall(rt,filter='data')
+        packed.unlink();manifest=json.loads((rt/'manifest.json').read_text())
+        assert all(sha(rt/n)==v['sha256']for n,v in manifest['files'].items())
+        rawspec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())['raw_parser']
+        raw=ROOT/'hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py'
+        raw.parent.mkdir(parents=True,exist_ok=True);fetch(rawspec['url'],rawspec['sha256'],raw)
+        methods=out/'recovered-parent-methods.json'
+        fetch(BASE+'cloud-results-38612960848-1-pll-acquisition-review/result.json',
+            'a7b9bdce63bd51971e7295f571f557cbf5b1ae40df80b8529b3ad8c6ee0c1e49',methods)
+        assert methods.stat().st_size==1464733
+        rows=json.loads(methods.read_text())['recovered_sources'];frozen=out/'frozen-parent-methods';frozen.mkdir()
+        prefix='hw/soc/out/pcie-pll753-parent-layout-20261010/'
+        pins={'run-parent-rc25.py':'f0d72913bd4cbdda4dea037fe0410fa7de28cf47cf095fac0d1dd68a2e9a054b',
+            'audit-parent-rc26.py':'b95945a63367c80f27522cff4c2e2fc90426e92a1540cc6f6380f538c6c10cae'}
+        result['method_adaptations']={}
+        for name,h in pins.items():
+            item=rows[prefix+name];data=item['text'].encode()
+            assert digest(data)==h==item['sha256'] and len(data)==item['bytes']
+            (frozen/name).write_bytes(data);s=data.decode();changes=[]
+            def replace(a,b):
+                nonlocal s
+                count=s.count(a);assert count>0,(name,a)
+                s=s.replace(a,b);changes.append(dict(before=a,after=b,count=count))
+            replace('parent-wires24/','parent-wires/')
+            if name=='run-parent-rc25.py':
+                replace("B/'parent-rc25'","B/'parent-rc'")
+                replace("Path('/dev/shm/nssoc-magic-area-product-v4-build/runtime/lib')","B/'magic-cloud/runtime/lib'")
+                replace("Path('/dev/shm/nssoc-magic-pad-stack-tech-v1')","B/'magic-cloud/tech'")
+                target=out/'run-parent-rc.py'
+            else:
+                replace("def audit(p,anchors):", """def audit(p,anchors):
+ frozen=json.loads((B/'parent-wires/result.json').read_text())
+ require(frozen['status']=='PASS_ACTUAL845_PARENT_WIRE_GEOMETRY_AND_NATIVE_NET_BINDING_WITH_FAULTS','Unverified parent conductor geometry')
+ n_components=frozen['counts']['components'];anchor_count=frozen['counts']['anchors']
+ component_ids={r['component'] for r in frozen['wire_components']}
+ require(len(component_ids)==n_components==25 and anchor_count==83,'Actual parent component or anchor census differs')""")
+                for a,b in [
+                    ("==['25']","==[str(n_components+1)]"),("==['24']","==[str(n_components)]"),
+                    ("set(range(1,25))","component_ids"),("==78","==anchor_count"),("==24","==n_components"),
+                    ("public_ports=17","public_ports=frozen['counts']['parent_pins']"),
+                    ("physical_wire_components=24","physical_wire_components=n_components"),
+                    ("geometry_probes=78","geometry_probes=anchor_count"),
+                    ("logical_metal_references=78","logical_metal_references=anchor_count"),
+                    ("connected_wire_components=24","connected_wire_components=n_components"),
+                    ("collapsed_matrix_entries=25**2","collapsed_matrix_entries=(n_components+1)**2")]:replace(a,b)
+                target=out/'audit-parent-rc.py'
+            target.write_text(s);result['method_adaptations'][name]=dict(original_sha256=h,adapted_sha256=sha(target),edits=changes)
+        result['runtime']=runtime;save()
+        run([sys.executable,out/'run-parent-rc.py'],'native-parent-rc')
+        result['native']=json.loads((out/'parent-rc/result.json').read_text())
+        assert result['native']['status']=='NATIVE_COMPLETE_AWAITING_RC_AUDIT' and result['native']['returncode']==0
+        save()
+        run([sys.executable,out/'audit-parent-rc.py',out/'parent-rc',out/'parent-wires/result.json',out/'parent-rc-audit.json'],'audit-parent-rc')
+        result['audit']=json.loads((out/'parent-rc-audit.json').read_text());save()
+        assert result['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY',result['audit']
+        controls=out/'parent-rc-faults.py';controls.write_text("from pathlib import Path\nimport json,shutil,hashlib,importlib.util\nO=Path(__file__).resolve().parent;A=O/'parent-rc';source=O/'audit-parent-rc.py'\nsp=importlib.util.spec_from_file_location('parent_rc_audit',source);m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m)\nanchors=json.loads((O/'parent-wires/result.json').read_text())\nsha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\nprotected={str(p):sha(p)for p in A.iterdir()if p.is_file()}\npositive=m.audit(A,anchors);assert positive['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'\nfaults=[];base=O/'parent-rc-faults';base.mkdir()\nfor name in ['drop_R','change_R','drop_C','change_C','move_C_reference','change_native_R','change_native_point_C','wrong_anchor']:\n D=base/name;shutil.copytree(A,D);mutated_anchors=json.loads(json.dumps(anchors))\n path=D/('parent_wires.res.ext'if name.startswith('change_native')else'wires.spice')\n lines=path.read_text().splitlines()\n if name=='wrong_anchor':mutated_anchors['anchors'][0]['point_dbu'][0]+=5\n elif name.startswith('change_native'):\n  kind='resist'if name=='change_native_R'else'rnode'\n  i=next(i for i,l in enumerate(lines)if l.startswith(kind+' '))\n  row=lines[i].split();j=3\n  row[j]=str(float(row[j])+1);lines[i]=' '.join(row);path.write_text('\\n'.join(lines)+'\\n')\n else:\n  kind='R'if name.endswith('_R')else'C'\n  i=next(i for i,l in enumerate(lines)if l and l[0].upper()==kind and not l.startswith('*'))\n  if name.startswith('drop'):lines.pop(i)\n  else:\n   row=lines[i].split()\n   if name=='move_C_reference':row[2]='UNBOUND_CAP_REFERENCE'\n   else:row[3]='9.999'\n   lines[i]=' '.join(row)\n  path.write_text('\\n'.join(lines)+'\\n')\n try:\n  result=m.audit(D,mutated_anchors)\n  assert result['status']!='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY','Accepted physical raw corruption '+name\n  rejection=result['status']\n except ValueError as error:rejection=str(error)\n faults.append(dict(name=name,rejection=rejection))\nassert len(faults)==8\nassert all(sha(Path(p))==h for p,h in protected.items())\nresult=dict(status='PASS_PARENT_RC_EIGHT_ACTUAL_CORRUPTION_CONTROLS',positive=positive,negative_controls=faults,unchanged_positive_inputs=protected,qualified_pex=False)\n(O/'parent-rc-controls.json').write_text(json.dumps(result,indent=2)+'\\n')\nprint(result['status'])\n")
+        run([sys.executable,controls],'parent-rc-faults')
+        result['controls']=json.loads((out/'parent-rc-controls.json').read_text())
+        assert result['controls']['status']=='PASS_PARENT_RC_EIGHT_ACTUAL_CORRUPTION_CONTROLS'
+        assert all(sha(Path(p))==h for p,h in binding['inputs'].items())
+        assert all(sha(rt/n)==v['sha256']for n,v in manifest['files'].items())
+        result['status']='PASS_ACTUAL845_PARENT_WIRE_RC_AND_EIGHT_FAULTS_NOT_COMPOSITION_OR_ELECTRICAL_ACCEPTANCE'
+    except BaseException as error:
+        result.update(status='FAILED_D2_PARENT_NATIVE_RC',error=repr(error))
+        for key,path in [('native','parent-rc/result.json'),('audit','parent-rc-audit.json'),('controls','parent-rc-controls.json')]:
+            if (out/path).exists():result[key]=json.loads((out/path).read_text())
+        result['diagnostic_logs']={str(p.relative_to(out)):p.read_text(errors='replace')[-14000:]for p in out.glob('*.log')}
+        save();raise
+    save();print(result['status'],flush=True)
+
+
 def export_pfd_parent_wires():
     """Export only real parent interconnect and bind every polygon/anchor to native LVS."""
     assert os.environ.get('GITHUB_ACTIONS')=='true'
@@ -1929,6 +2040,7 @@ def main():
     parser.add_argument('--integrate-pfd-parent',action='store_true')
     parser.add_argument('--review-pfd-parent',action='store_true')
     parser.add_argument('--export-pfd-parent-wires',action='store_true')
+    parser.add_argument('--extract-pfd-parent-rc',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
@@ -1967,6 +2079,9 @@ def main():
     if args.recover_pfd_methods:
         assert not (args.pfd_layout or args.pfd_lef or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         recover_pfd_methods();return
+    if args.extract_pfd_parent_rc:
+        assert not any([args.export_pfd_parent_wires,args.pfd_candidate,args.self_test,args.acquisition])
+        extract_pfd_parent_rc();return
     if args.export_pfd_parent_wires:
         assert not any([args.review_pfd_parent,args.pfd_candidate,args.self_test,args.acquisition])
         export_pfd_parent_wires();return

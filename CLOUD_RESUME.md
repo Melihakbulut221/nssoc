@@ -7,6 +7,9 @@
 
 ### Newest state — supersedes every older live statement below
 
+- Parent-wire binding38623406807 TERMINAL PASS:25actual conductors,83anchors (66macro+17public), all parent-only metal/via polygons bound to native845-device LVS; reset-open and wrong logical reset mapping rejected. Source summary641409182/55459bytes/SHA7d2b48d8abe17db8e4b8243f9ed10de36ddcf1de7862c0cde7e53ba90ad1d512; archive641409027/2465615bytes/SHA001843bd6a160f987a7e8d55351a4e6cd75f07845b6684886ec93241ca4ef241. Physical wires GDS06ecd9616f23ba7d2e76d28293720494d10ba73a9c9c7cdd72fe262ff0133afb.
+- Added fresh parent-only Magic extraction from that exact source with pinned runtime/raw parser; adapted recovered parent audit only for verified25conductor/83anchor census and hosted paths. All native R values/topology, individual pointC/mutual attachments, collapsedC and source ownership remain required. Eight actual raw/anchor corruptions must fail. No old parent RC reused and no electrical acceptance claimed.
+
 - Current live native continuation: parent-wire binding38623406807, source6a7227840f2d191dff713fb743a7a64bc2b5b9ac, job116056406564. Native runtime preparation confirmed in progress. Uses actual pin/parent-wire overlap for release power anchor. Do not restart from an observation timeout. All earlier D2/parent physical runs are terminal.
 - Last completed engineering result remains actual845-device PLL parent physical PASS38622111375 (560DRC categories; hierarchical9Match; flat845/845; two real faults rejected). Next: consume38623406807; if binding passes, extract fresh parent-only Magic RC, audit native R multiset/each pointC/mutual attachment against physical conductor ownership, retain raw fault controls, then compose D2child RC with actual parent and explicit shared substrate reference. Full serial PHY, RF/substrate qualification, acquisition/PVT and mainchip routing/finalSTA remain OPEN. All computation and archives stay on hosted runners; local project remains empty.
 
