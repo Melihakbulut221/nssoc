@@ -7,6 +7,25 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Direct ACK commit proof PASS; prestage native RC PASS.**
+38525456371 ACK job115724648567 summary639541970 passes all-input enable
+identity, full replay equivalence and baseline11/candidate11 port tests; invalid
+ACK guard negative rejected formally and2of7port tests fail as expected/no skips.
+Candidate replaySHAa26f36608154ca66a365129284d74b03d627acddfe90811a52e2c30d928a568c.
+Workflow was red only because sibling tracked-path inventory still had22577;
+new evidence makes22578/4223inline/18355path/docs1508. LICENSES.md updated;
+dispatch empty cloud-migration-checks once to recheck every original test.
+No timing adoption. Next pair direct-ACK+dedicatedFC against dedicated-only,
+with exact proof source and combined port controls before native mapping.
+
+Prestage extraction38525671945 PASS original RC graph/13fault controls;
+source archive now in composition input. Dispatch tx-layout-waveform-cloud
+cascade158/critical_buses_kelvin_supply_direct_low_outputs compose_only=true.
+Then source-bind combined newprestage+directV8 hot/cold waves; retain every
+prior failed native result. Original route38511490580/PLL38507479646 retain
+handles; cloud-only/full goalsOPEN. Real proof/physical progress, no blocker.
+
+
 **Prestage short outputs: native physical PASS, exact extraction prepared.**
 38524919925 summary639530448:560DRC categories/zero markers, strict LVS and
 physical fault controls PASS. Archive639530335382687bytes SHA4c5d0246ed2f2aed89b9bde38bf13f46b28efff5a446fa3d823fcfd05594a6f9
