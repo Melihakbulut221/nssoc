@@ -8,6 +8,25 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Heartbeat final checkpoint: congestion diagnosis terminal, no old live jobs.**
+38566051147/job115858892640 PASS native geometry diagnosis and orientation tests.
+Summary640359444 SHA c3978c991f6e2e2e84d14c91b4693325deb432857b6da17e8410a5975f2526da
+binds exact failedODB fb2e0306e85818041f49bc6032bb9e38e167ef21e293492769717113370157d5
+and congestionreport e91b84dcb03d3699977b124d3e698cf5f2ae224abcf30b7d953fadcab253e0f7.
+100 native markers account for138overflow; every reported net is associated
+with native endpoints and geometry. Archive640359163/19342818bytes preserves
+original inputs/diagnosis. This is not routing closure. Use complete native
+marker/net/macro records to design next repair, preserving existing OBS/capacity.
+
+All explicitly listed older PLL, hot, timing and route jobs are now terminal.
+PLL lock review remainsREJECTED (rolling100ppm windows); short-prestage hot
+remainsREJECTED (CM/bitmargin and four HBT bounds); directACK unplaced setup
+improves but slowCPUhold regresses. No candidate adopted. Three full goalsOPEN.
+Latest structurednext_actions supersede older dispatch/wait instructions. Next
+scheduled work is diagnosis-driven repair, not polling these completed runs.
+Cloud-only execution and verified local retirement remain in force.
+
+
 **14 October heartbeat follow-up: original PLL review terminal REJECTED.**
 38565392744/job115856656627 completed source-bound original-gate review;
 summary640347167 SHA4684318385d1ac7e9a7855a7a24b73853865e482e2a0a783bf2a8656c830485b.
