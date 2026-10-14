@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Actual final-load supply repair prepared from matched native evidence.**
+Hot TC paired analysis38520023196: clock-to-MUX median9.489683ps compact versus
+17.522559ps actual wire; source-to100mV max27.716935 versus39.218292ps. Final
+data collector time-means fall123-146mV and tail emitters rise33-35mV. Compact
+hot passes, wire fails. New V8 low_ports_loads_shunts_series_direct preserves
+all54devices and existing geometry, adding direct actual resistor-supply landing
+TM1 routes into the existing low TM2 feed. This is a physical hypothesis, not
+an accepted fix. Dispatch tx-layout-repair-cloud with that variant/profile
+final_drive_v8 once. Require original560DRC/strictLVS/fault controls before
+fresh RC and original hot/cold electrical gates. No RC rescaling/threshold waiver.
+
+Dedicated endpoint readback now follows exact mapped library inv/buf edges to
+recover original RTL aliases behind Yosys flip_bits, retaining polarity and
+complete cell paths. Dispatch trace_dedicated_endpoints once on this source;
+no synthesis rerun. Existing route38511490580/PLL38507479646 remain live and
+must not be duplicated. Previous goal turn: verified wait plus persisted
+terminal evidence; this turn makes new source/geometry progress. Cloud-only,
+empty local workspace, all three full product goals OPEN.
+
+
 **Cloud-only execution and local retirement reverified.** Local workspace
 `/home/hasanmelih/Documents/ChatGPT/nnsoc` has zero entries, including hidden
 files. No local checkout, CAD run, simulation or test artifacts were created.

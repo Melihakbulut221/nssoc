@@ -30,9 +30,14 @@ def main():
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
-                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
+                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_direct','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     args = parser.parse_args()
+    requested_variant = args.variant
+    direct_final_supply = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct'
+    if direct_final_supply:
+        assert args.circuit_profile == 'final_drive_v8', 'Direct supply trial binds exact actual V8 devices'
+        args.variant = 'critical_buses_kelvin_low_ports_loads_shunts_series'
     geometry_variant = args.variant
     if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
         assert args.circuit_profile == 'final_drive_v8' or (
@@ -57,7 +62,7 @@ def main():
     spec = json.loads(spec_path.read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
     out.mkdir(parents=True, exist_ok=False)
-    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, adopted=False,
+    result = dict(status='RUNNING', variant=requested_variant, circuit_profile=args.circuit_profile, adopted=False,
         scope='Real generated layout with54native devices. DRC/LVS and physical fault controls only; new native RC extraction and full waveform validation still required before any electrical adoption. No main-chip or full serial PHY acceptance.')
 
     def run(command, name):
@@ -343,7 +348,13 @@ def main():
                     '    via(6, 7, riser_x, avdd_y)\n'
                     '    for x in feed_xs: via(6, 7, x, feed_y)\n'
                     '    assert set(ports) == set(PORTS)\n'))
-            if geometry_variant == 'critical_buses_kelvin_supply_direct':
+            # Paired native TC captures38520023196/38520032724 preserve exact
+            # Nx4 geometry. Final data collectors lose123-146mV time-mean with
+            # metal; compact hot controls pass. Extend the actual direct M1
+            # landing-to-TM1 supply route to the final V8 load pair, preserving
+            # all original paths, devices and widths. DRC/LVS then fresh RC
+            # and loaded native waves decide; no extracted-R substitution.
+            if geometry_variant == 'critical_buses_kelvin_supply_direct' or direct_final_supply:
                 # The verified prestage still has7.034/8.203ohm from avdd to
                 # load pins and loses inputcommonmode in hot loaded operation.
                 # Connect the actual resistor M1->M3 landing directly to the

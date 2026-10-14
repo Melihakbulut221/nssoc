@@ -149,6 +149,38 @@ jobs:
                   # Exact Yosys register names survive the saved OpenROAD repair.
                   # Never substitute fuzzy aliases or silently skip an endpoint.
                   start_names={p['startpoint'].split(' (',1)[0] for phase in phases.values() for p in phase['paths'] if p['group']=='pcie_clk_i'} if os.environ['TRACE_ENDPOINTS']=='trace_dedicated_endpoints' else set()
+                  # Follow only actual one-input/one-output library inverters
+                  # and buffers. This recovers Yosys flip_bits register aliases
+                  # without guessing an RTL name from a generated identifier.
+                  polarity_edges={}
+                  all_aliases={}
+                  for net,record in mapped['netnames'].items():
+                      for index,bit in enumerate(record['bits']):
+                          all_aliases.setdefault(bit,[]).append(dict(net=net,bit_index=index,attributes=record.get('attributes',{})))
+                  for gate_name,gate in mapped['cells'].items():
+                      master=gate['type']
+                      if not master.startswith(('sg13g2_inv_','sg13g2_buf_')):
+                          continue
+                      directions=gate['port_directions']; conn=gate['connections']
+                      ins=[pin for pin,direction in directions.items() if direction=='input']
+                      outs=[pin for pin,direction in directions.items() if direction=='output']
+                      assert len(ins)==len(outs)==1 and len(conn[ins[0]])==len(conn[outs[0]])==1
+                      ib,ob=conn[ins[0]][0],conn[outs[0]][0]
+                      polarity_edges.setdefault(ib,[]).append(dict(cell=gate_name,master=master,input_pin=ins[0],output_pin=outs[0],input_bit=ib,output_bit=ob,inverted=master.startswith('sg13g2_inv_')))
+                  def polarity_aliases(bit):
+                      queue=[(bit,False,[])]; seen=set(); found=[]
+                      while queue:
+                          current,inverted,path=queue.pop(0)
+                          assert (current,inverted) not in seen, ('cyclic or reconvergent buffer/inverter chain',current,path)
+                          seen.add((current,inverted))
+                          aliases=all_aliases.get(current,[])
+                          public=[a for a in aliases if not a['net'].startswith('$')]
+                          if public:
+                              found.append(dict(bit=current,inverted_from_register_q=inverted,cell_path=path,aliases=public))
+                          for edge in polarity_edges.get(current,[]):
+                              assert len(path)<32, 'Unexpectedly long polarity-only path'
+                              queue.append((edge['output_bit'],inverted ^ edge['inverted'],path+[edge]))
+                      return found
                   endpoints={}
                   for name in sorted(endpoint_names | start_names):
                       if name in mapped['cells']:
@@ -167,6 +199,9 @@ jobs:
                                   aliases[str(bit)].append(dict(net=net,bit_index=index,attributes=record.get('attributes',{})))
                       assert all(aliases[str(bit)] for bit in bits)
                       endpoints[name]=dict(master=cell['type'],attributes=cell.get('attributes',{}),connections=connections,bit_aliases=aliases)
+                      if cell['type']!='input_port':
+                          assert len(connections['Q'])==1
+                          endpoints[name]['q_polarity_rtl_aliases']=polarity_aliases(connections['Q'][0])
                   results[profile]['reported_pcie_endpoints']={n:endpoints[n] for n in sorted(endpoint_names)}
                   if start_names:
                       results[profile]['reported_pcie_startpoints']={n:endpoints[n] for n in sorted(start_names)}
