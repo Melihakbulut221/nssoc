@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Latest advancement:** V10extraction38494852996 passed4017R/2636C and13faults;
+composition38495079171 passed native54device binding. Receipt:
+`docs/evidence/pcie-final-v10-kelvin-low-ports-loads-shunts-series-composition-20261013.json`.
+**Loaded V10 hot/cold38495318320 and nominal38495321089 are now running** on
+`84a5222afc769c035eec46335df3f8b74256dcb2`; streams4, matchedphysical,
+`v10_kelvin_low_ports_loads_shunts_series`, cascade158direct, stiff65.
+Source/license/capture checks38495323612 run on the same source.
+Do not repeat extraction/composition or infer loaded acceptance from them.
+ABC4000/2000study38494637444 remains running (jobs115627512925/115627513061).
+Main-chip halo38490952579 remains running on its original source. All three
+full-goal scopes remain OPEN. Continue cloud-only; local workspace stays empty.
+
+
 - V8series loaded38492859554/38492856902 completed all6:5pass, hotwire fails50
   early samples, minimum88.993072473mV versus100mV. All devices/interfaces pass.
   Receipt `docs/evidence/pcie-v8-series-loaded-rejection-20261014.json` retains
