@@ -7,6 +7,8 @@
 
 ### Newest state — supersedes every older live statement below
 
+- D2 native LEF check38617744218 dispatched from d76daf7ee30196bad6cec93c66adc5e5f86a709b. D2 native waveform38616009542 remains live. Mainchip route38598795406 is TERMINAL, not running; added a read-only native diagnosis profile for its exact failed ODB and congestion report before choosing another physical change. Fresh-CTS placement-estimated slow setup -2.876039ns and fast hold -0.624604ns are failures, not final extracted timing. No unchanged reroute launched.
+
 - Cloud-only continuation: D2 PFD native run38616009542 remains in progress. Added exact D2 GDS/LEF native interface verification using completed physical run38614342619; checks retain all eight pins, outline, use/direction, seven obstruction layers and two actual missing/blocked-pin negative controls. No local files or CAD runs.
 - Fresh-CTS mainchip route38598795406 completed with failure: actual FastRoute overflow222 (M2=1,M3=31,M4=26,M5=153,TM1=7,TM2=4), source9d904ed0. This is worse than earlier132; rejected, not final routing/timing closure. All logs and partial state retained in release cloud-results-38598795406-1-route-prects_grt.
 
