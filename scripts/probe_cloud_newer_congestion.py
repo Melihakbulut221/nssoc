@@ -228,10 +228,141 @@ def native():
     (OUT / 'diagnosis.json').write_text(json.dumps(report, indent=2) + '\n')
 
 
+
+# Restore the actual October 12 pre-CTS lineage, never the older September
+# chip. All native reads and bulk archive restoration run on hosted machines.
+PRECTS_BATCHES = {
+    13: ('e55c3b18997b7ee871cca6dfd21400f66ecab824c038f7dcd385c09f2ac67313',
+         'e9653c2c3b1fcf1ff248759db6374c0356b2db6d52e2e15680898e84ea13a781'),
+    14: ('00ef57438d9021e48a863afb9a80af39d5c067ee8114b767288e620b2d3c28c9',
+         'a7f993fbf53b6f1bc07245eba6a71391d7a18cd7d94892191e5d9c65fc8cbb5b'),
+    15: ('6fc9d73aba25812cb24af818928b54c7c13caacad6e73062c5cd137e16c9f8dc',
+         '36536854aa6d634ada8b22ede623ef6eaf7f06c71209729e2891240f7090c4c2'),
+    16: ('026ffa6be2ca58807f8d0a598257436b088d003409d8cc318ff2674730fc5d83',
+         '2b804a75f501025631c0955adedf155df2c095686c537ae46d2c1751ad826912'),
+}
+PRECTS_PREFIX = 'hw/soc/out/pcie-rx-return-metadata-20261012/'
+PRECTS_RUN = PRECTS_PREFIX + 'physical19/runs/metadata-postcts19/'
+PRECTS_DATABASES = {
+    'preplacement': ('13-openroad-ioplacement/soc_top.odb',
+        '518b889c9d8dc9674509be7bab88d9ecadfc4262769f824c1af270dd041fbcb7'),
+    'prects': ('22-openroad-detailedplacement/soc_top.odb',
+        '4739da2254a80397ab82f5c70550b9215e7ac5853c0e78cd0fb7dabefece20d8'),
+    'postcts': ('final/odb/soc_top.odb', ODB_SHA),
+}
+
+
+def prects_native():
+    import odb
+    from repair_cloud_macro_channels import signature, boundary_geometry
+    result = {}
+    for label, (_, expected) in PRECTS_DATABASES.items():
+        path = OUT / (label + '.odb')
+        assert sha(path) == expected
+        db = odb.dbDatabase.create(); odb.read_db(db, str(path))
+        block = db.getChip().getBlock(); scale = block.getDbUnitsPerMicron()
+        def bounds(rect):
+            return [x/scale for x in (rect.xMin(),rect.yMin(),rect.xMax(),rect.yMax())]
+        macros, masters, hierarchy, data_flops = {}, Counter(), Counter(), []
+        for inst in block.getInsts():
+            name = inst.getName(); master = inst.getMaster().getName()
+            masters[master] += 1
+            if inst.getMaster().isBlock():
+                macros[name] = dict(master=master,bbox_um=bounds(inst.getBBox()),
+                    origin_dbu=list(inst.getOrigin()),orientation=str(inst.getOrient()))
+            # Hierarchical names and all connected net names are retained for
+            # placement-domain design. A name is not a functional equivalence proof.
+            if master.startswith('sg13g2_df'):
+                connected = sorted(t.getNet().getName() for t in inst.getITerms() if t.getNet())
+                domains = sorted({prefix for prefix in ('u_pcie.','u_eth.','u_ibex.')
+                    if name.startswith(prefix) or any(n.startswith(prefix) for n in connected)})
+                hierarchy.update(domains or ['other'])
+                if 'u_pcie.' in domains or 'u_eth.' in domains:
+                    data_flops.append(dict(name=name,master=master,bbox_um=bounds(inst.getBBox()),nets=connected))
+        result[label] = dict(odb_sha256=expected,instances=len(block.getInsts()),nets=len(block.getNets()),
+            connectivity_sha256=signature(block),masters=dict(masters),macros=macros,
+            boundary_geometry=boundary_geometry(block),die_um=bounds(block.getDieArea()),
+            core_um=bounds(block.getCoreArea()),data_flop_domain_counts=dict(hierarchy),data_flops=data_flops)
+        assert sha(path) == expected, 'Read-only native source changed'
+    # Resizing/CTS legitimately change instances and connectivity; do not call
+    # equal macro geometry functional equivalence of these three databases.
+    for label in ('preplacement','prects'):
+        for key in ('macros','boundary_geometry','die_um','core_um'):
+            assert result[label][key] == result['postcts'][key], (label,key)
+    assert result['prects']['instances'] < result['postcts']['instances']
+    (OUT/'prects-native.json').write_text(json.dumps(dict(
+        status='PASS_NATIVE_PRECTS_LINEAGE_GEOMETRY_NOT_EQUIVALENCE', stages=result),indent=2)+'\n')
+
+
+def prects_inventory():
+    assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Hosted-only recovery'
+    OUT.mkdir(exist_ok=False)
+    result = dict(status='RUNNING',adopted=False,source_profile='prects_inventory',
+        scope='Exact current-chip preplacement/pre-CTS recovery and native geometry audit. No placement change, circuit equivalence, CTS, route or timing acceptance.')
+    def save():
+        (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        metadata, restored = {}, {}
+        wanted = {PRECTS_RUN+member:(label,expected) for label,(member,expected) in PRECTS_DATABASES.items()}
+        for index,(archive_sha,manifest_sha) in PRECTS_BATCHES.items():
+            prefix = 'batch-'+str(index).zfill(6)
+            url = 'https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/'+prefix
+            archive_path=OUT/(prefix+'.tar.gz'); manifest_path=OUT/(prefix+'.manifest.json')
+            for path,suffix,digest in [(archive_path,'.tar.gz',archive_sha),(manifest_path,'.manifest.json',manifest_sha)]:
+                subprocess.run(['curl','--fail','--location','--retry','4',url+suffix,'-o',str(path)],check=True)
+                assert sha(path)==digest,path
+            manifest=json.loads(manifest_path.read_text())
+            records={r['path']:r for r in manifest['records']}
+            assert len(records)==len(manifest['records']), 'Duplicate source record'
+            with tarfile.open(archive_path) as tar:
+                names=[m.name for m in tar.getmembers()]
+                assert len(names)==len(set(names)), 'Duplicate archive path'
+                for name,row in records.items():
+                    parent=Path(name).parent.name
+                    text_selected=(name.startswith(PRECTS_PREFIX) and row['bytes']<65536 and
+                        (name in [PRECTS_PREFIX+'physical19.py',PRECTS_PREFIX+'physical-result19.json',
+                                  PRECTS_PREFIX+'physical19/config.json',PRECTS_PREFIX+'physical19/physical.sdc']
+                         or name.startswith(PRECTS_RUN) and
+                            (parent in ['16-openroad-globalplacement','20-openroad-repairdesignpostgpl',
+                              '22-openroad-detailedplacement','23-openroad-cts','25-openroad-resizertimingpostcts']
+                             and Path(name).suffix in ['.json','.tcl','.log']
+                             or name==PRECTS_RUN+'resolved.json')))
+                    if name not in wanted and not text_selected: continue
+                    member=tar.getmember(name)
+                    assert member.isfile() or member.islnk()
+                    raw=tar.extractfile(member).read()
+                    assert len(raw)==row['bytes'] and hashlib.sha256(raw).hexdigest()==row['sha256'],name
+                    if name in wanted:
+                        label,expected=wanted[name]; assert row['sha256']==expected
+                        (OUT/(label+'.odb')).write_bytes(raw)
+                        restored[label]=dict(row,archive_sha256=archive_sha,manifest_sha256=manifest_sha)
+                    else:
+                        metadata[name]=dict(sha256=row['sha256'],text=raw.decode())
+            archive_path.unlink()
+        assert set(restored)==set(PRECTS_DATABASES)
+        assert PRECTS_PREFIX+'physical19.py' in metadata and PRECTS_RUN+'23-openroad-cts/config.json' in metadata
+        result.update(restored_databases=restored,bound_metadata=metadata)
+        save()
+        with (OUT/'native.log').open('w') as log:
+            code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',str(Path(__file__).resolve())],
+                env=dict(os.environ,NSSOC_PRECTS_NATIVE='1'),stdout=log,stderr=subprocess.STDOUT)
+        assert code==0,(code,(OUT/'native.log').read_text()[-8000:])
+        result['native']=json.loads((OUT/'prects-native.json').read_text())
+        result['status']='PASS_SOURCE_BOUND_PRECTS_RECOVERY_NOT_IMPLEMENTATION'
+        (OUT/'diagnosis.json').write_text(json.dumps(result,indent=2)+'\n')
+    except BaseException as error:
+        result.update(status='FAIL_OR_ERROR',error=repr(error)); raise
+    finally:
+        save()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data'), default='baseline')
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data','prects_inventory'), default='baseline')
     args = parser.parse_args()
+    if args.source_profile == 'prects_inventory':
+        prects_inventory(); return
     url, archive_sha, odb_sha = URL, ARCHIVE_SHA, ODB_SHA
     odb_member = 'cloud-newer-postcts/inputs/postcts.odb'
     report_sha = None
@@ -316,4 +447,6 @@ def main():
 
 
 if __name__ == '__main__':
-    native() if os.environ.get('NSSOC_CONGESTION_NATIVE') == '1' else main()
+    if os.environ.get('NSSOC_PRECTS_NATIVE') == '1': prects_native()
+    elif os.environ.get('NSSOC_CONGESTION_NATIVE') == '1': native()
+    else: main()

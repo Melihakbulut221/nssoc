@@ -8,6 +8,17 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Prepared source-bound pre-CTS recovery for a new placement/CTS repair.**
+October12 physical19 archives13-16 contain the actual preplacement ODB518b889c,
+preCTS ODB4739da22 and original postCTS ODBe4e04605. New congestion probe
+source_profile=prects_inventory restores exact manifests/member hashes on
+GitHub, audits native macro/boundary/die geometry and records source flow,
+CTS/global-placement config plus actual PCIe/Ethernet data-flop endpoints.
+No source geometry/constraint mutation or adoption. Dispatch once, inspect
+complete bound metadata before preparing new placement and fresh CTS.
+All three full goals OPEN; cloud-only policy supersedes older local instructions.
+
+
 **Cloud-only recheck and terminal CUGR result — 14 October 2026.**
 Run38591636770/job115947747389 is completed FAILURE, not live.
 Native input repair PASS: exactly three empty declarations removed, all real
