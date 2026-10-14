@@ -7,6 +7,14 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD235 RC38608389008 stopped safely before native execution.**
+Strict source adaptation expected renamed diagnostic Complete235 but the
+original literal is Complete255; corrected exact match without changing any
+device/graph/electrical gate. Failedsummary641143185 SHA9a9af91dbdd1a490aa90815712f1d5ee50245de32dcbb5330d944b4175d8d6ac retained.
+Rerun pll_pfd_stage=rc on corrected source; no native extraction duplicated.
+Route38598795406 remains original live handle; all work cloud-only.
+
+
 **New PFD235 native binding and actual geometry RC prepared.**
 Use pll_pfd_stage=rc to restore exact physical38604234902 GDS/LVS, verified
 recovered methods641099130, pinned PDK/models and native Magic runtime.

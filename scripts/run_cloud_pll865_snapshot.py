@@ -997,7 +997,7 @@ cases=[
             if name=='check-compose01.py':
                 replace('len(wires)==2027 and len(tokens)==2284',
                     'len(wires)==len(raw)-2 and len(tokens)==235+len(raw)',True)
-                replace('Complete235 devices and771R1256C','Complete235 devices and every actual native wire record',True)
+                replace('Complete255 devices and771R1256C','Complete235 devices and every actual native wire record',True)
                 replace('PASS_NATIVE235_AND_ALL2027_WIRE_RECORDS_WITH_EXPLICIT_REFERENCES',
                     'PASS_NATIVE235_AND_ALL_NATIVE_WIRE_RECORDS_WITH_EXPLICIT_REFERENCES',True)
                 # Select actual device classes instead of inherited native IDs.
