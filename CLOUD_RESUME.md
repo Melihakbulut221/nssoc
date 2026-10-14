@@ -7,6 +7,22 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Live cloud-native continuation handles — retain exact runs.**
+Physical PFD candidate capture38610259816 on9e56ae047a0e36725bac42daa4868c092c2da261,
+job116011470430 (aoi4_rc), observedin_progress at requested-native-capture step.
+Common selftests/SPDX/inventory/REUSE/regression job116011469688 completedPASS.
+Read terminal capture and actual full235device terminal voltages/reset recovery
+before any electrical acceptance. Do not restart on observation timeout.
+
+Route38598795406/job115972338767 remainsin_progress in exactpostCTS route step;
+source9d904ed0 and savedfreshCTS5b18b060 retained. Inspect all original-terminal/
+supply fault proofs, truezerooverflow and originalcorner timing when terminal.
+PFD componentRC review38609444130 is completePASS, not fullPHY/mainchipsignoff.
+No local durable files/CAD. This turn changed circuit-analysis implementation,
+completed actual nativeRC and27faultcontrols, and dispatched the next native
+simulation. FullserialPHY/routedmainchip/finalsetup-hold remainOPEN.
+
+
 **PFD235 saved nativeRC review38609444130 PASS; electrical fixture screen prepared.**
 Exact235devices/716R1178C,53metal conductors,431anchors with8binding+13rawRC+
 6composition faults allpass. No native extraction rerun. Summary641161303
