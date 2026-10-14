@@ -3,6 +3,51 @@
 
 # NSSOC cloud continuation — 13 October 2026
 
+## Latest cloud-only checkpoint — 14 October 2026
+
+This section supersedes older running/pending statements below. The user again
+requires all work in the cloud and no local project files. Live verification:
+`/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty and no local CAD/simulation
+process is running. Do not restore it. Final checkout and residue archives are
+preserved in release `cloud-migration-final-checkout-20261013`.
+
+Source before this checkpoint: `29f3ef09790bd8a61686236c8c80559ade9a2346`.
+Inspect existing runs before starting replacements:
+
+- Combined actual collector-load/output-shunt geometry: native physical
+  38487899624, corrected extraction 38489084202 and composition 38489385975
+  completed successfully. Loaded nominal/PVT runs **38489754238** and
+  **38489752340** are still running on that source. Read both complete summaries;
+  workflow success alone is not electrical acceptance. Receipt:
+  `docs/evidence/pcie-final-v8-kelvin-low-ports-loads-shunts-composition-20261013.json`.
+- Non-SOP advertiser ownership proof and paired map **38488788552** completed
+  with workflow success on `92e3c437dbea1a06546cba8b6b2e1738da603723`.
+  Engineering timing comparison remains to be read before adopting the candidate.
+  Study `advert_body`, baseline `physical_idle_credit_window_eop`, candidate
+  `physical_idle_credit_window_body`.
+- Main-chip half-grid run **38472175339** is a terminal failure, not live.
+  Preserve release `cloud-results-38472175339-1-route-local_optimize_buffers`;
+  summary asset 638662952 and archive 638662621. Prior analysis recorded the same
+  132 overflow as seed13 baseline (M3=5, M4=20, M5=97, TM1=6, TM2=4).
+  Do not repeat half_x/half_y as purported routing-grid improvements.
+- Important source finding, verified against exact OpenROAD commit
+  `dcf36133a369abc8f3c5e5738cd4d82e4903c0e0`: in
+  `src/grt/src/GlobalRouter.cpp`, `setGridOrigin` only stores the offset;
+  `saveGuides` uses it, while `initGrid` starts from the die area. It does not
+  change the routing partition in this runtime. Correct old grid-profile
+  descriptions and prevent ineffective nonbaseline grid trials before further
+  route experiments. Any alternative router must first preserve the actual
+  routing capacity derates, macro obstructions and zero-overflow acceptance.
+
+Rejected shunts-only hot-wire results and their native diagnosis are retained
+in `docs/evidence/pcie-v8-low-ports-shunts-loaded-rejection-20261014.json`.
+Rejected FC refresh/snapshot timing trials and prior ACK-window/EOP evidence
+are retained in `docs/evidence/pcie-ack-window-proof-and-screen-20261014.json`.
+Do not adopt candidates just because formal checks passed or cell count fell.
+
+Full serial PHY, main-chip routing, final setup/hold and production acceptance
+remain OPEN. Keep all original physical/electrical limits and negative controls.
+
 ## Controlling request and scope
 
 The user requires **cloud-only execution**. The local workspace is empty.
