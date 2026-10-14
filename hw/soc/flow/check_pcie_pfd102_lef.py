@@ -66,9 +66,9 @@ def run(layout, out, pdk, app):
         raise ValueError("Fresh project directory and pinned tool required")
     generated = json.loads((layout / "result.json").read_text())
     profile=generated.get('reset_profile','baseline')
-    if profile not in ('baseline','aoi4'):raise ValueError('Unknown PFD profile')
-    TOP='nssoc_pfd94_aoi4_layout_v1' if profile=='aoi4' else 'nssoc_pfd102_layout_v1'
-    if profile=='aoi4' and generated.get('top')!=TOP:raise ValueError('PFD top differs')
+    if profile not in ('baseline','aoi4','aoi4_d2'):raise ValueError('Unknown PFD profile')
+    TOP='nssoc_pfd102_layout_v1' if profile=='baseline' else 'nssoc_pfd94_'+profile+'_layout_v1'
+    if profile!='baseline' and generated.get('top')!=TOP:raise ValueError('PFD top differs')
     lef = layout / (TOP + ".lef")
     if digest(lef) != generated["outputs"][lef.name]:
         raise ValueError("LEF changed")

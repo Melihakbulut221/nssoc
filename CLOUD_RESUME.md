@@ -7,6 +7,9 @@
 
 ### Newest state — supersedes every older live statement below
 
+- Cloud-only continuation: D2 PFD native run38616009542 remains in progress. Added exact D2 GDS/LEF native interface verification using completed physical run38614342619; checks retain all eight pins, outline, use/direction, seven obstruction layers and two actual missing/blocked-pin negative controls. No local files or CAD runs.
+- Fresh-CTS mainchip route38598795406 completed with failure: actual FastRoute overflow222 (M2=1,M3=31,M4=26,M5=153,TM1=7,TM2=4), source9d904ed0. This is worse than earlier132; rejected, not final routing/timing closure. All logs and partial state retained in release cloud-results-38598795406-1-route-prects_grt.
+
 **Newest live handles — doubled-drive native capture and mainchip route only.**
 PFD native38616009542/job116031150471 (aoi4_d2_rc), sourcee0bd3db29bd0bcc3b840da4e0334419bff5c128a,
 observedin_progress at requested-native-capture step. Commonchecks116031150251

@@ -1564,39 +1564,46 @@ assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
     save();print(result['status'],flush=True)
 
 
-def run_pfd_lef():
+def run_pfd_lef(reset_profile='aoi4'):
     """Read exact accepted-development GDS companion LEF without rerunning DRC."""
     import sys
     assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted physical-interface verification only'
+    assert reset_profile in ('aoi4','aoi4_d2')
+    drive2=reset_profile=='aoi4_d2'
+    source_run=38614342619 if drive2 else 38604234902
+    archive_sha='9e3de73d250ba223b093f44c55e91c1e7327f8487c8d185b96f2350104e45210' if drive2 else '869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953'
+    archive_bytes=654630 if drive2 else 639953
+    top='nssoc_pfd94_'+reset_profile+'_layout_v1'
+    gds_sha='0451b81b8f73a8f1c4e2923e5f50d26cf3c09ad2c3a77ebd0f08acc864e1e08a' if drive2 else '5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6'
+    lef_sha='6a94d26e4a0803f80d661b116d5df91a76b1887ee763375664f28961d5a9d89e' if drive2 else '00e00d8794e9aa98c162c804f41cd23aec1986031d1136219a799675ea5d7bea'
     out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING_PFD94_NATIVE_LEF',adopted=False,full_phy_accepted=False,
-        scope='Exact DRC/LVS-checked candidate38604234902 LEF. Native OpenROAD pin/outline/obstruction readback and actual missing/obstructed-pin controls. Not RC, electrical, mainchip or PHY acceptance.')
+    result=dict(status='RUNNING_PFD94_NATIVE_LEF',reset_profile=reset_profile,adopted=False,full_phy_accepted=False,
+        scope=f'Exact DRC/LVS-checked candidate{source_run} LEF. Native OpenROAD pin/outline/obstruction readback and actual missing/obstructed-pin controls. Not RC, electrical, mainchip or PHY acceptance.')
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
         archive=out/'physical.tar.gz'
-        fetch(BASE+'cloud-results-38604234902-1-pll-pfd-layout/pfd94-layout-38604234902-1.tar.gz',
-            '869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953',archive)
-        assert archive.stat().st_size==639953
+        fetch(BASE+f'cloud-results-{source_run}-1-pll-pfd-layout/pfd94-layout-{source_run}-1.tar.gz',archive_sha,archive)
+        assert archive.stat().st_size==archive_bytes
         layout=out/'layout';layout.mkdir()
-        names=['result.json','schematic.cir','nssoc_pfd94_aoi4_layout_v1.gds','nssoc_pfd94_aoi4_layout_v1.lef']
+        names=['result.json','schematic.cir',top+'.gds',top+'.lef']
         with tarfile.open(archive) as tar:
             for name in names:
                 matches=[m for m in tar.getmembers() if m.name=='hw/soc/out/cloud-pfd-layout/layout/'+name]
                 assert len(matches)==1 and matches[0].isfile()
                 (layout/name).write_bytes(tar.extractfile(matches[0]).read())
         archive.unlink();generated=json.loads((layout/'result.json').read_text())
-        assert generated['reset_profile']=='aoi4' and len(generated['core_devices'])==94
-        assert sha(layout/'nssoc_pfd94_aoi4_layout_v1.gds')=='5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6'
-        assert sha(layout/'nssoc_pfd94_aoi4_layout_v1.lef')=='00e00d8794e9aa98c162c804f41cd23aec1986031d1136219a799675ea5d7bea'
+        assert generated['reset_profile']==reset_profile and generated['top']==top and len(generated['core_devices'])==94
+        assert sha(layout/(top+'.gds'))==gds_sha
+        assert sha(layout/(top+'.lef'))==lef_sha
         assert all(sha(layout/n)==h for n,h in generated['outputs'].items())
         tech=ROOT/'pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef';tech.parent.mkdir(parents=True,exist_ok=True)
         fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef',
             'e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6',tech)
         assert tech.stat().st_size==28396
         app=Path(os.environ['CLOUD_APPIMAGE']);checker=ROOT/'hw/soc/flow/check_pcie_pfd102_lef.py'
-        result['source_bindings']=dict(physical_run=38604234902,physical_archive_sha256='869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953',
-            geometry_sha256=sha(layout/'nssoc_pfd94_aoi4_layout_v1.gds'),lef_sha256=sha(layout/'nssoc_pfd94_aoi4_layout_v1.lef'),technology_sha256=sha(tech),checker_sha256=sha(checker))
+        result['source_bindings']=dict(physical_run=source_run,physical_archive_sha256=archive_sha,
+            geometry_sha256=sha(layout/(top+'.gds')),lef_sha256=sha(layout/(top+'.lef')),technology_sha256=sha(tech),checker_sha256=sha(checker))
         save()
         log=out/'lef.log'
         with log.open('wb') as stream:
@@ -1669,6 +1676,7 @@ def main():
     parser.add_argument('--pfd-layout',action='store_true')
     parser.add_argument('--pfd-layout-drive2',action='store_true')
     parser.add_argument('--pfd-lef',action='store_true')
+    parser.add_argument('--pfd-lef-drive2',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
@@ -1703,6 +1711,9 @@ def main():
     if args.recover_pfd_methods:
         assert not (args.pfd_layout or args.pfd_lef or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         recover_pfd_methods();return
+    if args.pfd_lef_drive2:
+        assert not (args.pfd_lef or args.pfd_layout or args.pfd_candidate or args.self_test or args.acquisition)
+        run_pfd_lef('aoi4_d2');return
     if args.pfd_lef:
         assert not (args.pfd_layout or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         run_pfd_lef();return
