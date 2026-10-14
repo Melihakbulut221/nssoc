@@ -21,7 +21,7 @@ on:
         description: PFD diagnostic, native schematic, physical layout or saved LEF verification
         type: choice
         default: none
-        options: [none, topology, schematic, layout, lef, methods]
+        options: [none, topology, schematic, layout, lef, methods, rc]
       request_id:
         type: string
       verification_tag:
@@ -507,7 +507,7 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-acquisition-review cloud-pll-acquisition-review/result.json
 
   pll-pfd-layout:
-    if: ${{ inputs.pll_pfd_stage == 'layout' || inputs.pll_pfd_stage == 'lef' }}
+    if: ${{ inputs.pll_pfd_stage == 'layout' || inputs.pll_pfd_stage == 'lef' || inputs.pll_pfd_stage == 'rc' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -521,16 +521,16 @@ jobs:
           python-version: '3.12'
       - name: Verify circuit truth controls and exact native runtime
         run: |
-          python -m pip install numpy==2.3.3
+          python -m pip install numpy==2.3.3 networkx==3.5
           python scripts/run_cloud_pll865_snapshot.py --self-test
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
           curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Generate actual PFD94 geometry and run native physical gates
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'lef' && '--pfd-lef' || '--pfd-layout' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'rc' && '--pfd-rc' || inputs.pll_pfd_stage == 'lef' && '--pfd-lef' || '--pfd-layout' }}
       - name: Preserve actual geometry and every failed or passed native check
         if: always()
         env:

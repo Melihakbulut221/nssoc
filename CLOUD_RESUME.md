@@ -7,6 +7,17 @@
 
 ### Newest state — supersedes every older live statement below
 
+**New PFD235 native binding and actual geometry RC prepared.**
+Use pll_pfd_stage=rc to restore exact physical38604234902 GDS/LVS, verified
+recovered methods641099130, pinned PDK/models and native Magic runtime.
+Export235 actual devices (94MOS/141contacts), bind658 native terminals with
+423metal/235body references plus8ports. Conductor/R/C counts derive from
+actual new geometry; never reuse original255-device parasitics. Require8binding,
+13rawRC and6composition faults, exact wire graph and per-point capacitance.
+No waveform, RF/substrate extraction qualification, acquisition or PHY claim.
+Route38598795406 remains live; all native work and persistent files on GitHub.
+
+
 **PFD extraction/binding source recovery38606020769 terminalPASS.**
 448migration manifests searched;15exact source/anchor/device records recovered
 without executing archived code. Summary641099130/640488bytes SHA
