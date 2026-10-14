@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Timing critical endpoint tracing prepared:** readback logs show worst unplaced
+PCIe setup starts at pcie_link_up_i, then a long combinational path. Baseline
+endpoint$auto$ff.cc:337:slice$1165056; rejected control endpoint$auto$ff.cc:337:slice$1678497.
+Before another RTL trial, new pcie-ack-cloud-mapping study=trace_control_endpoints
+restores SHA-pinned paired archives, binds every reported PCIe endpoint exactly
+to original mapped JSON/master/connections/RTL aliases, rejects missing matches,
+and preserves source attributes. No synthesis/STA rerun or false-path exception.
+Dispatch once. Nx4 andNx6 coldHBT compact summaries639230237/639236749 also pass
+original gates; hotwire and unchangedNx8 controls still pending/live. Do not
+select a sizing candidate yet. Route38511490580,PLL38507479646 and32:1wire38496981217
+remain live; all computations cloud-only and goalsOPEN.
+
+
 **Native placement checkpoint available, routing still live:**38511490580
 pre-route summary639222493 passed exact connectivity/master/fixed-cell/pin
 geometry checks and both fault controls.74988combinational cells selected,

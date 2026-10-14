@@ -10,7 +10,7 @@ on:
     inputs:
       study:
         type: choice
-        options: [read_control_reports, advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
+        options: [trace_control_endpoints, read_control_reports, advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
         default: ack
 permissions:
   contents: read
@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   map-and-screen:
-    if: github.event_name == 'workflow_dispatch' && inputs.study != 'read_control_reports'
+    if: github.event_name == 'workflow_dispatch' && inputs.study != 'read_control_reports' && inputs.study != 'trace_control_endpoints'
     runs-on: ubuntu-22.04
     timeout-minutes: 360 # Hosted platform ceiling; no shorter native watchdog.
     strategy:
@@ -78,7 +78,7 @@ jobs:
           python3 scripts/publish_cloud_results.py --group 'ack-map-${{ matrix.profile }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
 
   read-control-reports:
-    if: github.event_name == 'workflow_dispatch' && inputs.study == 'read_control_reports'
+    if: github.event_name == 'workflow_dispatch' && (inputs.study == 'read_control_reports' || inputs.study == 'trace_control_endpoints')
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -92,6 +92,7 @@ jobs:
       - name: Read exact preserved reports on hosted runner
         env:
           GH_TOKEN: ${{ github.token }}
+          TRACE_ENDPOINTS: ${{ inputs.study }}
         run: |
           python3 - <<'PYCODE'
           import hashlib, io, json, os, re, subprocess, sys, tarfile
@@ -115,6 +116,12 @@ jobs:
                   hits=[m for m in tf if m.name==name]
                   assert len(hits)==1 and hits[0].isfile() and hits[0].size<20000000
                   log=tf.extractfile(hits[0]).read()
+                  mapped_raw=None
+                  if os.environ['TRACE_ENDPOINTS']=='trace_control_endpoints':
+                      mapping_name=f'cloud-ack-map/{profile}/map/soc_top.mapped.json'
+                      members=[m for m in tf if m.name==mapping_name]
+                      assert len(members)==1 and members[0].isfile() and members[0].size<300000000
+                      mapped_raw=tf.extractfile(members[0]).read()
               assert hashlib.sha256(log).hexdigest()==logsha
               (out/(profile+'.log')).write_bytes(log)
               text=log.decode()
@@ -125,6 +132,27 @@ jobs:
               assert {p['path_type'] for v in phases.values() for p in v['paths']}=={'min','max'}
               assert len({p['corner'] for v in phases.values() for p in v['paths']})==3
               results[profile]=dict(archive_asset=aid,archive_sha256=digest,summary_asset=sid,summary_sha256=hashlib.sha256(summaryraw).hexdigest(),log_sha256=logsha,mapped_cells=summary['mapped_cells'],phases=phases)
+              if mapped_raw is not None:
+                  mapped=json.loads(mapped_raw)['modules']['soc_top']
+                  assert len(mapped['cells'])==summary['mapped_cells']
+                  endpoint_names={p['endpoint'] for phase in phases.values() for p in phase['paths'] if p['group']=='pcie_clk_i'}
+                  # Exact Yosys register names survive the saved OpenROAD repair.
+                  # Never substitute fuzzy aliases or silently skip an endpoint.
+                  endpoints={}
+                  for name in sorted(endpoint_names):
+                      assert name in mapped['cells'], ('Unbound reported endpoint',name)
+                      cell=mapped['cells'][name]
+                      assert cell['type'].startswith('sg13g2_df'), cell
+                      connections=cell['connections']; bits={bit for row in connections.values() for bit in row if isinstance(bit,int)}
+                      aliases={str(bit):[] for bit in bits}
+                      for net,record in mapped['netnames'].items():
+                          for index,bit in enumerate(record['bits']):
+                              if bit in bits:
+                                  aliases[str(bit)].append(dict(net=net,bit_index=index,attributes=record.get('attributes',{})))
+                      assert all(aliases[str(bit)] for bit in bits)
+                      endpoints[name]=dict(master=cell['type'],attributes=cell.get('attributes',{}),connections=connections,bit_aliases=aliases)
+                  results[profile]['reported_pcie_endpoints']=endpoints
+                  results[profile]['mapped_json_sha256']=hashlib.sha256(mapped_raw).hexdigest()
           base=results['physical_idle_credit']['phases']; cand=results['physical_idle_credit_control']['phases']
           assert base.keys()==cand.keys()
           differences={}
@@ -146,4 +174,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 scripts/publish_cloud_results.py --group control-reports cloud-control-reports/result.json cloud-control-reports/*.log
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.study == 'trace_control_endpoints' && 'control-endpoints' || 'control-reports' }}' cloud-control-reports/result.json cloud-control-reports/*.log
