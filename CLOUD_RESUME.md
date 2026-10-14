@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Causal TC-feedback hot controls38519483522 active; readback prepared.**
+Only exact actualV8 hot_low/hot_low_res_bcs compact models run. Existing wire
+38517527891 captures retained. Prepared tx-physical-tree-diagnosis studies
+v8_tc_hot / v8_tc_hot_res_bcs require source-bound compact entries under
+actual_geometry_followup.hot_compact_controls after native publication. Do not
+dispatch readback until both summaries pinned. Selector requires exact two run
+IDs/corner/bias/clock/54device profiles and equal source/oracle hashes; full raw
+byte verification and physical-time voltage/current/stage-delay reductions on
+hosted runner. Added foreign corner/geometry/bias controls. Diagnosis workflow
+now manual-only to avoid rerunning an unrelated old default on source push.
+Dedicated timing38519026139/PLL38507479646/route38511490580 remain live handles.
+Cloud-only/full goalsOPEN; no candidate acceptance from preparation or tests.
+
+
 **Paired hot compact controls prepared for causal physical diagnosis.**
 ActualV8 wired TCfeedback38517527891 failed bothhotcases while bothcoldcompact
 passed. No same-hot compact captures exist for this exact feedback geometry;

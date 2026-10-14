@@ -128,3 +128,31 @@ def test_paired_clock_feed_binding_rejects_changed_native_feed():
     changed=dict(common,clock_feed_sha256='different-native-feed')
     with pytest.raises(AssertionError):
         m.pair({'contract_identity':common},{'contract_identity':changed})
+
+
+@pytest.mark.parametrize('study', ['v8_tc_hot','v8_tc_hot_res_bcs'])
+def test_tc_feedback_pair_rejects_wrong_geometry_bias_or_corner(study):
+    import copy
+    import json
+    source=json.loads((path.parents[1]/'docs/evidence/pcie-final-v11-kelvin-low-ports-loads-shunts-series-composition-20261014.json').read_text())
+    actual=source['feedback_temperature_compensation_20261014']['actual_geometry_followup']
+    corner=m.TC_STUDIES[study]
+    # Selector-only positive fixture; no fabricated capture is sent to read_case.
+    fixture=copy.deepcopy(source)
+    base=fixture['feedback_temperature_compensation_20261014']['actual_geometry_followup']
+    pin=copy.deepcopy(actual['cases'][corner])
+    pin['result']['prestage']='physical_compact'
+    for key in ('physical_prestage_scope','physical_final_scope'):
+        pin['result'][key]['mode']='physical_compact'
+    base['hot_compact_controls']={'run':38519483522,'cases':{corner:pin}}
+    assert len(m.feedback_tc_records(fixture,study))==2
+    for key,value in [('condition','nominal'),('pre_bias','native_res'),('streams',32),
+                      ('clock_reference','baseline'),('diagnostic_mutation',{})]:
+        broken=copy.deepcopy(fixture)
+        r=broken['feedback_temperature_compensation_20261014']['actual_geometry_followup']['hot_compact_controls']['cases'][corner]['result']
+        r[key]=value
+        with pytest.raises(AssertionError):m.feedback_tc_records(broken,study)
+    broken=copy.deepcopy(fixture)
+    r=broken['feedback_temperature_compensation_20261014']['actual_geometry_followup']['hot_compact_controls']['cases'][corner]['result']
+    r['pre_bias_feedback_scope']['sha256']='foreign-bias'
+    with pytest.raises(AssertionError):m.feedback_tc_records(broken,study)

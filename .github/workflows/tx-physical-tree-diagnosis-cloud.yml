@@ -13,12 +13,13 @@ on:
       study:
         description: Exact source-bound compact and wire capture pair
         type: choice
-        options: [prestage_only, both_power, both_interleaved, both_kelvin, both_dense, v8_nominal, dense_v8_hot, local_tail_hot, cascade16_local_tail_hot, supply_feed_hot, supply_feed_cold, local_internal_hot, low_critical_hot, low_critical_cold, v9_cascade158_hot, v8_low_selects_hot, v8_shortrows_hot, v8_low_ports_hot, v8_low_ports_shunts_hot, v8_loads_shunts_hot]
+        options: [v8_tc_hot, v8_tc_hot_res_bcs, prestage_only, both_power, both_interleaved, both_kelvin, both_dense, v8_nominal, dense_v8_hot, local_tail_hot, cascade16_local_tail_hot, supply_feed_hot, supply_feed_cold, local_internal_hot, low_critical_hot, low_critical_cold, v9_cascade158_hot, v8_low_selects_hot, v8_shortrows_hot, v8_low_ports_hot, v8_low_ports_shunts_hot, v8_loads_shunts_hot]
         default: prestage_only
 permissions:
   contents: read
 jobs:
   diagnose:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:

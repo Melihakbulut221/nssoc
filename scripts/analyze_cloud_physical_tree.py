@@ -237,11 +237,53 @@ def routing_records(evidence, study):
     return records
 
 
+
+TC_STUDIES = {'v8_tc_hot': 'hot_low', 'v8_tc_hot_res_bcs': 'hot_low_res_bcs'}
+
+
+def feedback_tc_records(evidence, study):
+    """Bind matching native geometry/bias and original oracle across two runs."""
+    corner = TC_STUDIES[study]
+    actual = evidence['feedback_temperature_compensation_20261014']['actual_geometry_followup']
+    compact = actual['hot_compact_controls']
+    assert actual['run'] == 38517527891 and compact['run'] == 38519483522
+    records = []
+    for container, mode, label in [(compact, 'physical_compact', 'v8_feedback_tc_compact_hot'),
+                                   (actual, 'physical_wire', 'v8_feedback_tc_physical')]:
+        pin = container['cases'][corner]
+        r = dict(pin['result'])
+        assert r['status'] == 'COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE'
+        assert r['streams'] == 4 and r['fault'] == 'none' and r['condition'] == corner
+        assert r['prestage'] == mode and r['clock_reference'] == 'stiff65'
+        assert r['pre_bias'] == 'output_feedback_tc'
+        assert r['clock_bias'] == r['output_bias'] == 'native_res'
+        assert r['final_drive'] == 'double_taps_margin' and r['frontend'] == 'damped_strong'
+        assert r['physical_prestage_scope']['profile'] == 'cascade158_kelvin_supply_direct'
+        assert r['physical_final_scope']['profile'] == 'v8_kelvin_low_ports_loads_shunts_series'
+        assert r['physical_prestage_scope']['mode'] == r['physical_final_scope']['mode'] == mode
+        assert r['physical_final_scope']['circuit_profile'] == 'final_drive_v8'
+        assert r['physical_final_scope']['native_devices'] == 54
+        assert not any(k in r for k in ('diagnostic_device_mutation','diagnostic_mutation'))
+        assert r['pre_bias_feedback_scope']['native_resistors_per_stage'] == 4
+        assert r['raw_wave']['bytes'] > 0 and len(pin['sha256']) == 64
+        run = container['run']
+        tag = f'cloud-results-{run}-1-{label}-nx0-{corner}'
+        name = f'tx-{label}-nx0-{corner}-{run}-1.summary.json'
+        r.update(summary_url='https://github.com/Melihakbulut221/nssoc/releases/download/'+tag+'/'+name,
+                 summary_sha256=pin['sha256'])
+        records.append(r)
+    assert len({source_bits_hash(r) for r in records}) == 1
+    assert len({r['pre_bias_feedback_scope']['sha256'] for r in records}) == 1
+    for key in ('physical_prestage_scope','physical_final_scope'):
+        assert len({r[key]['source_sha256'] for r in records}) == 1
+    return records
+
+
 def main():
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Full native waveform analysis runs only on GitHub')
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot',*LOCAL_TAIL_STUDIES,*SUPPLY_FEED_STUDIES,*ROUTING_STUDIES),default='prestage_only')
+    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot',*LOCAL_TAIL_STUDIES,*SUPPLY_FEED_STUDIES,*ROUTING_STUDIES,*TC_STUDIES),default='prestage_only')
     args=parser.parse_args()
     evidence_path=ROOT/'docs/evidence'/dict(
         prestage_only='pcie-physical-prestage-tree-20261013.json',
@@ -252,6 +294,7 @@ def main():
         v8_nominal='pcie-v8-nominal-loaded-tree-20261013.json',
         dense_v8_hot='pcie-dense-v8-hot-loaded-tree-20261013.json',
         **{key:value[3] for key,value in ROUTING_STUDIES.items()},
+        **{key:'pcie-final-v11-kelvin-low-ports-loads-shunts-series-composition-20261014.json' for key in TC_STUDIES},
         **{key:'cloud-closure-continuation-20261013.json' for key in (*LOCAL_TAIL_STUDIES,*SUPPLY_FEED_STUDIES)})[args.study]
     out = Path('cloud-physical-tree-diagnosis')
     out.mkdir(exist_ok=False)
@@ -259,7 +302,9 @@ def main():
         scope='Read-only full-wave voltage/current comparison. Intermacro connections remain ideal; the source-bound case records identify which macros include actual metal RC. TX driver remains schematic. No new acceptance or RF/substrate extraction qualification.')
     try:
         evidence = json.loads(evidence_path.read_text())
-        if args.study in ROUTING_STUDIES:
+        if args.study in TC_STUDIES:
+            records = feedback_tc_records(evidence,args.study)
+        elif args.study in ROUTING_STUDIES:
             records = routing_records(evidence,args.study)
         elif args.study in SUPPLY_FEED_STUDIES:
             records = supply_feed_records(evidence,args.study)
