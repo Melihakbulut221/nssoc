@@ -7,6 +7,22 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PLL continuation correction:**744/753 terminal readback below is HISTORICAL.
+Later physical853(reset96) and865(PBUF10) descendants exist. Do NOT roll back
+to compact753. The latest migration roots to inspect are
+pcie-acquisition-resource-recovery-20261012,pcie-parent865-acquisition-20261011,
+pcie-pbuf10-native865-20261012,pcie-pbuf10-acquisition-20261012. The migration
+snapshot explicitly stopped acquisition retry01 on12October for cloud-only
+handoff. Find its terminal/partial capture and input manifests before hosted
+replay; old process/unit names are not live handles.
+Gate source asset632607200(8611bytes,SHA54901cd0d7aa00a98fb0d6a95e2516a2e7781368d61acc80da0597fe63c89fa2)
+requires independent finite865 pass before a1us diagnostic at.3125ps; no
+external VCTRL clamp. Acquisition criteria: final800-900/900-1000ns windows,
+100ppm,50ps phase range,no ordinal slips,VCTRL.4..1.5V. Selected24probes alone
+cannot qualify all-device safety/PVT or fullPHY. Preserve the failed-source
+negative gate. No new PLL simulation dispatched in this readback.
+
+
 **Newest authoritative findings:** slow-corner mapping38496628841 completed;
 79055cells, PCIe slow setup-0.991351ns versus-0.991500baseline (only0.149ps),
 fast hold-0.109062ns unchanged. Not adopted. Full corners/critical path pinned
