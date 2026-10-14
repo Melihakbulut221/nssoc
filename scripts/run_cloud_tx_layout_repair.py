@@ -35,7 +35,10 @@ def main():
     args = parser.parse_args()
     geometry_variant = args.variant
     if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
-        assert args.circuit_profile == 'final_drive_v8', 'Isolate selector routing on the screened v8 circuit'
+        assert args.circuit_profile == 'final_drive_v8' or (
+            args.circuit_profile == 'final_drive_v10' and
+            args.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series'
+        ), 'Only original V8 geometry trials or explicit V10 series-branch experiment'
         geometry_variant = 'critical_buses_kelvin_low_critical'
     if args.circuit_profile in ('cascade16','cascade158'):
         assert geometry_variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',), 'New prestage keeps proven dense physical geometry'
