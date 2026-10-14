@@ -25811,7 +25811,1115 @@
     "reason": "Formal3positive2negative passed; actual candidate Icarus port elaboration failed declaration-after-use. No port-test pass or timing acceptance.",
     "fix_commit": "925f83bbca066f21a38e09f1de42897f02bb8980",
     "fixed_run": 38518875447,
-    "fixed_status": "in_progress",
-    "adopted": false
+    "fixed_status": "PASS_ACTUAL_ADVERTISER_DEDICATED_COMMIT_REGION_AND_PORTS_NOT_TIMING",
+    "adopted": false,
+    "fixed_summary_asset": 639394358,
+    "fixed_summary_sha256": "feba9faba55bcdd2c8e93fb7639a98409d01b9701c8043f9996e082520ac1ecd",
+    "fixed_proof": {
+      "status": "PASS_ACTUAL_ADVERTISER_DEDICATED_COMMIT_REGION_AND_PORTS_NOT_TIMING",
+      "adopted": false,
+      "production_rtl_modified": false,
+      "scope": "Exact physical idle/credit baseline. Split committed header/data banks into independent asynchronous-reset processes with direct active/ready/EOP/class enables and unchanged link reset priority. Original storage and cycle behavior; no parent ready/valid factoring or timing constraints changed. Whole-region all-state induction, wrong-grant/wrong-commit controls and buffered ports; not adoption. Dedicated internal commit_ready_i binds directly to selected_ready, bypassing the packet arbitration expression only for sent header/data banks. Original advertiser handshake and every other state transition unchanged. Prove actual ownership and equality jointly; no false-path waiver.",
+      "variant": "dedicated_commit",
+      "source_binding": {
+        "archive_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38472422176-1-ack-map-physical_idle_credit/ack-map-physical_idle_credit-38472422176-1.tar.gz",
+        "archive_sha256": "ed43f52d14422ffb15c450350b5b697b61031ff50cee16d1e051a3e4374aa2be",
+        "selected": {
+          "soc_pcie_crc16_byte.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_crc16_byte.v",
+            "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+          },
+          "soc_pcie_acknak_tx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_acknak_tx.v",
+            "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+          },
+          "soc_pcie_packet_tx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_packet_tx.v",
+            "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+          },
+          "soc_pcie_crc32_byte.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_crc32_byte.v",
+            "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+          },
+          "soc_pcie_lcrc_rx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_lcrc_rx.v",
+            "sha256": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4"
+          },
+          "soc_pcie_sequence_rx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_sequence_rx.v",
+            "sha256": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d"
+          },
+          "soc_pcie_lcrc_tx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_lcrc_tx.v",
+            "sha256": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928"
+          },
+          "soc_pcie_packet_endpoint.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_packet_endpoint.v",
+            "sha256": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b"
+          },
+          "soc_pcie_tlp_stream.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_tlp_stream.v",
+            "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+          },
+          "soc_pcie_tlp_regs.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_tlp_regs.v",
+            "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+          },
+          "soc_pcie_link_packets.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_link_packets.v",
+            "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+          },
+          "soc_pcie_dllp_rx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_dllp_rx.v",
+            "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+          },
+          "soc_pcie_replay_tx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/candidate-soc_pcie_replay_tx.v",
+            "sha256": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc"
+          },
+          "soc_pcie_reliable_packets.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_reliable_packets.v",
+            "sha256": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9"
+          },
+          "soc_pcie_credit_tx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/candidate-soc_pcie_credit_tx.v",
+            "sha256": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a"
+          },
+          "soc_pcie_flow_packets.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_flow_packets.v",
+            "sha256": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+          },
+          "soc_pcie_rx_credit.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-rx-return-metadata-20261012/candidate01/soc_pcie_rx_credit.v",
+            "sha256": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a"
+          },
+          "soc_pcie_fc_tx.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_fc_tx.v",
+            "sha256": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904"
+          },
+          "soc_pcie_buffered_flow_packets.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_buffered_flow_packets.v",
+            "sha256": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509"
+          },
+          "soc_pcie_apb_arbiter.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_apb_arbiter.v",
+            "sha256": "242755c06bee196dcaaca68da60d281503e02de420ebd132b45a2377619a65ef"
+          },
+          "soc_pcie_apb_cdc.v": {
+            "member": "cloud-ack-map/physical_idle_credit/inputs/root/hw/soc/out/pcie-metadata-late-select-20261010/candidate02/soc_pcie_apb_cdc.v",
+            "sha256": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323"
+          }
+        },
+        "source_sha256": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509",
+        "candidate_sha256": "28e389f384cfff2237f1f211bb939554c660e4f69ab746ed07bd067cd81bd538",
+        "negative_sha256": "4d09e5dbb4a5dc10a103a4b063ff91fc96b2db3c7b19f3a3b7fa65364c10ca5b",
+        "candidate_fc_sha256": "45d493ba7ec604e8ff46b127c2a103e2f6e81ea1402171c84e0f2effd325107a"
+      },
+      "proofs": [
+        {
+          "case": "candidate",
+          "refresh_cycles": 128,
+          "returncode": 0,
+          "passed": true,
+          "negative_rejected": false,
+          "log_sha256": "cc0b6b213c5fbe63fa301b72ac077c1dfb9ef64a954b4feae5da39ed0916da3d",
+          "counterexample_sha256": null,
+          "log_tail": [
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2611#sampled$2614 = 8'00000000",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\\clk_i#sampled$2616 = 1'1",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2141#sampled$2144 = 16'0000000000000000",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1667#sampled$1670 = 2'00",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1647#sampled$1650 = 12'000000000000",
+            "Final init constraint equation: { $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1647#sampled$1650 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1667#sampled$1670 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2141#sampled$2144 $auto$clk2fflogic.cc:87:sample_control_edge$\\clk_i#sampled$2616 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2611#sampled$2614 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1687#sampled$1690 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2257#sampled$2260 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1707#sampled$1710 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2375#sampled$2378 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\refresh_count[7:0]#sampled$2594 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1727#sampled$1730 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1747#sampled$1750 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2161#sampled$2164 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2573#sampled$2576 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1767#sampled$1770 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1787#sampled$1790 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2315#sampled$2318 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2553#sampled$2556 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1807#sampled$1810 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1827#sampled$1830 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2181#sampled$2184 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2533#sampled$2536 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1847#sampled$1850 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1867#sampled$1870 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2355#sampled$2358 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2513#sampled$2516 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1887#sampled$1890 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1907#sampled$1910 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\sent_valid_o[0:0]#sampled$2202 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\sent_valid_o[0:0]#sampled$2496 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1927#sampled$1930 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1947#sampled$1950 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\active[0:0]#sampled$2278 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2475#sampled$2478 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\class_index[1:0]#sampled$1968 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\refresh_count[7:0]#sampled$2220 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1985#sampled$1988 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2455#sampled$2458 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2005#sampled$2008 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2335#sampled$2338 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2025#sampled$2028 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2435#sampled$2438 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\class_index[1:0]#sampled$2046 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2237#sampled$2240 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\active[0:0]#sampled$2064 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2415#sampled$2418 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2081#sampled$2084 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3267:Not$2407#sampled$2408 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2101#sampled$2104 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2295#sampled$2298 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2395#sampled$2398 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2121#sampled$2124 } = 282'000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "",
+            "Setting up time step 1:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "",
+            "** Trying induction with length 1 **",
+            "",
+            "Setting up time step 2:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "Import show expression: \\tx_ready_i",
+            "Import show expression: \\flow_replay",
+            "Import show expression: \\flow_dllp",
+            "Import show expression: \\flow_valid",
+            "Import show expression: \\flow_eop",
+            "Import show expression: \\flow_sop",
+            "Import show expression: \\flow_data",
+            "Import show expression: \\rx_data_limit_o",
+            "Import show expression: \\rx_header_limit_o",
+            "Import show expression: \\peer_init2_seen_o",
+            "Import show expression: \\peer_init1_done_o",
+            "Import show expression: \\retrain_done_i",
+            "Import show expression: \\training_i",
+            "Import show expression: \\link_up_i",
+            "Import show expression: \\rst_ni",
+            "Import show expression: \\clk_i",
+            "Import show expression: \\proof_ok",
+            "",
+            "[base case 1] Solving problem with 57273 variables and 155371 clauses..",
+            "Base case for induction length 1 proven.",
+            "",
+            "Setting up time step 2:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "Import show expression: \\tx_ready_i",
+            "Import show expression: \\flow_replay",
+            "Import show expression: \\flow_dllp",
+            "Import show expression: \\flow_valid",
+            "Import show expression: \\flow_eop",
+            "Import show expression: \\flow_sop",
+            "Import show expression: \\flow_data",
+            "Import show expression: \\rx_data_limit_o",
+            "Import show expression: \\rx_header_limit_o",
+            "Import show expression: \\peer_init2_seen_o",
+            "Import show expression: \\peer_init1_done_o",
+            "Import show expression: \\retrain_done_i",
+            "Import show expression: \\training_i",
+            "Import show expression: \\link_up_i",
+            "Import show expression: \\rst_ni",
+            "Import show expression: \\clk_i",
+            "Import show expression: \\proof_ok",
+            "",
+            "[induction step 1] Solving problem with 56710 variables and 153401 clauses..",
+            "Induction step proven: SUCCESS!",
+            "",
+            "                  /$$$$$$      /$$$$$$$$     /$$$$$$$    ",
+            "                 /$$__  $$    | $$_____/    | $$__  $$   ",
+            "                | $$  \\ $$    | $$          | $$  \\ $$   ",
+            "                | $$  | $$    | $$$$$       | $$  | $$   ",
+            "                | $$  | $$    | $$__/       | $$  | $$   ",
+            "                | $$/$$ $$    | $$          | $$  | $$   ",
+            "                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$",
+            "                 \\____ $$$|__/|________/|__/|_______/|__/",
+            "                       \\__/                              ",
+            "",
+            "End of script. Logfile hash: 84b099cb57, time: 0.82s, user: 0.79s, system: 0.04s, MEM: 107.21 MB peak",
+            "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+            "Time spent: 81% 1x sat (0 sec), 3% 8x opt_expr (0 sec), ..."
+          ]
+        },
+        {
+          "case": "candidate_refresh0",
+          "refresh_cycles": 0,
+          "returncode": 0,
+          "passed": true,
+          "negative_rejected": false,
+          "log_sha256": "c605799b1ef09764e59d60341d3abf08e80985edc03546b406cbafdd86915148",
+          "counterexample_sha256": null,
+          "log_tail": [
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2611#sampled$2614 = 8'00000000",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\\clk_i#sampled$2616 = 1'1",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2141#sampled$2144 = 16'0000000000000000",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1667#sampled$1670 = 2'00",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1647#sampled$1650 = 12'000000000000",
+            "Final init constraint equation: { $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1647#sampled$1650 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1667#sampled$1670 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2141#sampled$2144 $auto$clk2fflogic.cc:87:sample_control_edge$\\clk_i#sampled$2616 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2611#sampled$2614 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1687#sampled$1690 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2257#sampled$2260 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1707#sampled$1710 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2375#sampled$2378 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\refresh_count[0:0]#sampled$2594 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1727#sampled$1730 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1747#sampled$1750 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2161#sampled$2164 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2573#sampled$2576 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1767#sampled$1770 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1787#sampled$1790 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2315#sampled$2318 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2553#sampled$2556 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1807#sampled$1810 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1827#sampled$1830 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2181#sampled$2184 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2533#sampled$2536 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1847#sampled$1850 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1867#sampled$1870 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2355#sampled$2358 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2513#sampled$2516 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1887#sampled$1890 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1907#sampled$1910 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\sent_valid_o[0:0]#sampled$2202 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\sent_valid_o[0:0]#sampled$2496 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1927#sampled$1930 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1947#sampled$1950 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\active[0:0]#sampled$2278 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2475#sampled$2478 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\class_index[1:0]#sampled$1968 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\refresh_count[0:0]#sampled$2220 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1985#sampled$1988 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2455#sampled$2458 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2005#sampled$2008 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2335#sampled$2338 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2025#sampled$2028 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2435#sampled$2438 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\class_index[1:0]#sampled$2046 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2237#sampled$2240 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\active[0:0]#sampled$2064 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2415#sampled$2418 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2081#sampled$2084 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3267:Not$2407#sampled$2408 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2101#sampled$2104 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2295#sampled$2298 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2395#sampled$2398 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2121#sampled$2124 } = 268'0000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "",
+            "Setting up time step 1:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "",
+            "** Trying induction with length 1 **",
+            "",
+            "Setting up time step 2:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "Import show expression: \\tx_ready_i",
+            "Import show expression: \\flow_replay",
+            "Import show expression: \\flow_dllp",
+            "Import show expression: \\flow_valid",
+            "Import show expression: \\flow_eop",
+            "Import show expression: \\flow_sop",
+            "Import show expression: \\flow_data",
+            "Import show expression: \\rx_data_limit_o",
+            "Import show expression: \\rx_header_limit_o",
+            "Import show expression: \\peer_init2_seen_o",
+            "Import show expression: \\peer_init1_done_o",
+            "Import show expression: \\retrain_done_i",
+            "Import show expression: \\training_i",
+            "Import show expression: \\link_up_i",
+            "Import show expression: \\rst_ni",
+            "Import show expression: \\clk_i",
+            "Import show expression: \\proof_ok",
+            "",
+            "[base case 1] Solving problem with 54655 variables and 148301 clauses..",
+            "Base case for induction length 1 proven.",
+            "",
+            "Setting up time step 2:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "Import show expression: \\tx_ready_i",
+            "Import show expression: \\flow_replay",
+            "Import show expression: \\flow_dllp",
+            "Import show expression: \\flow_valid",
+            "Import show expression: \\flow_eop",
+            "Import show expression: \\flow_sop",
+            "Import show expression: \\flow_data",
+            "Import show expression: \\rx_data_limit_o",
+            "Import show expression: \\rx_header_limit_o",
+            "Import show expression: \\peer_init2_seen_o",
+            "Import show expression: \\peer_init1_done_o",
+            "Import show expression: \\retrain_done_i",
+            "Import show expression: \\training_i",
+            "Import show expression: \\link_up_i",
+            "Import show expression: \\rst_ni",
+            "Import show expression: \\clk_i",
+            "Import show expression: \\proof_ok",
+            "",
+            "[induction step 1] Solving problem with 54120 variables and 146429 clauses..",
+            "Induction step proven: SUCCESS!",
+            "",
+            "                  /$$$$$$      /$$$$$$$$     /$$$$$$$    ",
+            "                 /$$__  $$    | $$_____/    | $$__  $$   ",
+            "                | $$  \\ $$    | $$          | $$  \\ $$   ",
+            "                | $$  | $$    | $$$$$       | $$  | $$   ",
+            "                | $$  | $$    | $$__/       | $$  | $$   ",
+            "                | $$/$$ $$    | $$          | $$  | $$   ",
+            "                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$",
+            "                 \\____ $$$|__/|________/|__/|_______/|__/",
+            "                       \\__/                              ",
+            "",
+            "End of script. Logfile hash: 5000c21f3c, time: 0.76s, user: 0.72s, system: 0.04s, MEM: 101.05 MB peak",
+            "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+            "Time spent: 79% 1x sat (0 sec), 4% 8x opt_expr (0 sec), ..."
+          ]
+        },
+        {
+          "case": "candidate_refresh1",
+          "refresh_cycles": 1,
+          "returncode": 0,
+          "passed": true,
+          "negative_rejected": false,
+          "log_sha256": "65ec554ea3d5ac5335c77d6cfcfd275feb24a111490a4ef645bc5db78f81df73",
+          "counterexample_sha256": null,
+          "log_tail": [
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2611#sampled$2614 = 8'00000000",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:87:sample_control_edge$\\clk_i#sampled$2616 = 1'1",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2141#sampled$2144 = 16'0000000000000000",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1667#sampled$1670 = 2'00",
+            "Import set-constraint from init attribute: $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1647#sampled$1650 = 12'000000000000",
+            "Final init constraint equation: { $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1647#sampled$1650 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1667#sampled$1670 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2141#sampled$2144 $auto$clk2fflogic.cc:87:sample_control_edge$\\clk_i#sampled$2616 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2611#sampled$2614 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1687#sampled$1690 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2257#sampled$2260 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1707#sampled$1710 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2375#sampled$2378 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\refresh_count[0:0]#sampled$2594 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1727#sampled$1730 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1747#sampled$1750 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2161#sampled$2164 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2573#sampled$2576 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1767#sampled$1770 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1787#sampled$1790 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2315#sampled$2318 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2553#sampled$2556 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1807#sampled$1810 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1827#sampled$1830 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2181#sampled$2184 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2533#sampled$2536 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1847#sampled$1850 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1867#sampled$1870 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2355#sampled$2358 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2513#sampled$2516 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1887#sampled$1890 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1907#sampled$1910 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\sent_valid_o[0:0]#sampled$2202 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\sent_valid_o[0:0]#sampled$2496 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1927#sampled$1930 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1947#sampled$1950 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\active[0:0]#sampled$2278 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2475#sampled$2478 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\class_index[1:0]#sampled$1968 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\refresh_count[0:0]#sampled$2220 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$1985#sampled$1988 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2455#sampled$2458 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2005#sampled$2008 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2335#sampled$2338 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2025#sampled$2028 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2435#sampled$2438 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gate_inst.\\advertiser.$0\\class_index[1:0]#sampled$2046 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2237#sampled$2240 $auto$clk2fflogic.cc:101:sample_data$$flatten\\gold_inst.\\advertiser.$0\\active[0:0]#sampled$2064 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2415#sampled$2418 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2081#sampled$2084 $auto$clk2fflogic.cc:75:sample_control$$auto$rtlil.cc:3267:Not$2407#sampled$2408 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2101#sampled$2104 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2295#sampled$2298 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2395#sampled$2398 $auto$clk2fflogic.cc:101:sample_data$$auto$rtlil.cc:3402:Mux$2121#sampled$2124 } = 268'0000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "",
+            "Setting up time step 1:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "",
+            "** Trying induction with length 1 **",
+            "",
+            "Setting up time step 2:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "Import show expression: \\tx_ready_i",
+            "Import show expression: \\flow_replay",
+            "Import show expression: \\flow_dllp",
+            "Import show expression: \\flow_valid",
+            "Import show expression: \\flow_eop",
+            "Import show expression: \\flow_sop",
+            "Import show expression: \\flow_data",
+            "Import show expression: \\rx_data_limit_o",
+            "Import show expression: \\rx_header_limit_o",
+            "Import show expression: \\peer_init2_seen_o",
+            "Import show expression: \\peer_init1_done_o",
+            "Import show expression: \\retrain_done_i",
+            "Import show expression: \\training_i",
+            "Import show expression: \\link_up_i",
+            "Import show expression: \\rst_ni",
+            "Import show expression: \\clk_i",
+            "Import show expression: \\proof_ok",
+            "",
+            "[base case 1] Solving problem with 54659 variables and 148313 clauses..",
+            "Base case for induction length 1 proven.",
+            "",
+            "Setting up time step 2:",
+            "Final constraint equation: { } = { }",
+            "Imported 737 cells to SAT database.",
+            "Import proof-constraint: \\proof_ok = 1'1",
+            "Final proof equation: \\proof_ok = 1'1",
+            "Import show expression: \\tx_ready_i",
+            "Import show expression: \\flow_replay",
+            "Import show expression: \\flow_dllp",
+            "Import show expression: \\flow_valid",
+            "Import show expression: \\flow_eop",
+            "Import show expression: \\flow_sop",
+            "Import show expression: \\flow_data",
+            "Import show expression: \\rx_data_limit_o",
+            "Import show expression: \\rx_header_limit_o",
+            "Import show expression: \\peer_init2_seen_o",
+            "Import show expression: \\peer_init1_done_o",
+            "Import show expression: \\retrain_done_i",
+            "Import show expression: \\training_i",
+            "Import show expression: \\link_up_i",
+            "Import show expression: \\rst_ni",
+            "Import show expression: \\clk_i",
+            "Import show expression: \\proof_ok",
+            "",
+            "[induction step 1] Solving problem with 54124 variables and 146441 clauses..",
+            "Induction step proven: SUCCESS!",
+            "",
+            "                  /$$$$$$      /$$$$$$$$     /$$$$$$$    ",
+            "                 /$$__  $$    | $$_____/    | $$__  $$   ",
+            "                | $$  \\ $$    | $$          | $$  \\ $$   ",
+            "                | $$  | $$    | $$$$$       | $$  | $$   ",
+            "                | $$  | $$    | $$__/       | $$  | $$   ",
+            "                | $$/$$ $$    | $$          | $$  | $$   ",
+            "                |  $$$$$$/ /$$| $$$$$$$$ /$$| $$$$$$$//$$",
+            "                 \\____ $$$|__/|________/|__/|_______/|__/",
+            "                       \\__/                              ",
+            "",
+            "End of script. Logfile hash: 73ff9290d4, time: 0.78s, user: 0.74s, system: 0.04s, MEM: 104.06 MB peak",
+            "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+            "Time spent: 80% 1x sat (0 sec), 4% 8x opt_expr (0 sec), ..."
+          ]
+        },
+        {
+          "case": "wrong_owner",
+          "refresh_cycles": 128,
+          "returncode": 1,
+          "passed": false,
+          "negative_rejected": true,
+          "log_sha256": "23e178f602c67a5f03b92b27d427f67a72b87934a324cead314840dc08266eba",
+          "counterexample_sha256": "6ccf1ffa23327be1223abb7af9183d153b05c4074365595bfd652c0e1ff2bd78",
+          "log_tail": [
+            "    20 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000000000000",
+            "    20 \\rx_header_limit_o                                                                                                    0         0                000000000000000000000000",
+            "    20 \\training_i                                                                                                           1         1                                       1",
+            "    20 \\tx_ready_i                                                                                                           1         1                                       1",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    21 \\clk_i                                                                                                                0         0                                       0",
+            "    21 \\flow_data                                                                                                            0         0                                00000000",
+            "    21 \\flow_dllp                                                                                                            0         0                                       0",
+            "    21 \\flow_eop                                                                                                             1         1                                       1",
+            "    21 \\flow_replay                                                                                                          0         0                                       0",
+            "    21 \\flow_sop                                                                                                             0         0                                       0",
+            "    21 \\flow_valid                                                                                                           0         0                                       0",
+            "    21 \\link_up_i                                                                                                            1         1                                       1",
+            "    21 \\peer_init1_done_o                                                                                                    0         0                                       0",
+            "    21 \\peer_init2_seen_o                                                                                                    0         0                                       0",
+            "    21 \\proof_ok                                                                                                             1         1                                       1",
+            "    21 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    21 \\rst_ni                                                                                                               1         1                                       1",
+            "    21 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000000000000",
+            "    21 \\rx_header_limit_o                                                                                                    0         0                000000000000000000000000",
+            "    21 \\training_i                                                                                                           1         1                                       1",
+            "    21 \\tx_ready_i                                                                                                           1         1                                       1",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    22 \\clk_i                                                                                                                1         1                                       1",
+            "    22 \\flow_data                                                                                                            0         0                                00000000",
+            "    22 \\flow_dllp                                                                                                            1         1                                       1",
+            "    22 \\flow_eop                                                                                                             1         1                                       1",
+            "    22 \\flow_replay                                                                                                          0         0                                       0",
+            "    22 \\flow_sop                                                                                                             0         0                                       0",
+            "    22 \\flow_valid                                                                                                           1         1                                       1",
+            "    22 \\link_up_i                                                                                                            1         1                                       1",
+            "    22 \\peer_init1_done_o                                                                                                    0         0                                       0",
+            "    22 \\peer_init2_seen_o                                                                                                    0         0                                       0",
+            "    22 \\proof_ok                                                                                                             1         1                                       1",
+            "    22 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    22 \\rst_ni                                                                                                               1         1                                       1",
+            "    22 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000000000000",
+            "    22 \\rx_header_limit_o                                                                                                    0         0                000000000000000000000000",
+            "    22 \\training_i                                                                                                           1         1                                       1",
+            "    22 \\tx_ready_i                                                                                                           0         0                                       0",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    23 \\clk_i                                                                                                                1         1                                       1",
+            "    23 \\flow_data                                                                                                            0         0                                00000000",
+            "    23 \\flow_dllp                                                                                                            0         0                                       0",
+            "    23 \\flow_eop                                                                                                             1         1                                       1",
+            "    23 \\flow_replay                                                                                                          0         0                                       0",
+            "    23 \\flow_sop                                                                                                             0         0                                       0",
+            "    23 \\flow_valid                                                                                                           0         0                                       0",
+            "    23 \\link_up_i                                                                                                            1         1                                       1",
+            "    23 \\peer_init1_done_o                                                                                                    0         0                                       0",
+            "    23 \\peer_init2_seen_o                                                                                                    0         0                                       0",
+            "    23 \\proof_ok                                                                                                             1         1                                       1",
+            "    23 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    23 \\rst_ni                                                                                                               1         1                                       1",
+            "    23 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000000000000",
+            "    23 \\rx_header_limit_o                                                                                                    0         0                000000000000000000000000",
+            "    23 \\training_i                                                                                                           0         0                                       0",
+            "    23 \\tx_ready_i                                                                                                           0         0                                       0",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    24 \\clk_i                                                                                                                0         0                                       0",
+            "    24 \\flow_data                                                                                                            0         0                                00000000",
+            "    24 \\flow_dllp                                                                                                            0         0                                       0",
+            "    24 \\flow_eop                                                                                                             0         0                                       0",
+            "    24 \\flow_replay                                                                                                          0         0                                       0",
+            "    24 \\flow_sop                                                                                                             0         0                                       0",
+            "    24 \\flow_valid                                                                                                           0         0                                       0",
+            "    24 \\link_up_i                                                                                                            1         1                                       1",
+            "    24 \\peer_init1_done_o                                                                                                    0         0                                       0",
+            "    24 \\peer_init2_seen_o                                                                                                    0         0                                       0",
+            "    24 \\proof_ok                                                                                                             1         1                                       1",
+            "    24 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    24 \\rst_ni                                                                                                               1         1                                       1",
+            "    24 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000000000000",
+            "    24 \\rx_header_limit_o                                                                                                   36        24                000000000000000000100100",
+            "    24 \\training_i                                                                                                           1         1                                       1",
+            "    24 \\tx_ready_i                                                                                                           0         0                                       0",
+            "Dumping SAT model to VCD file counterexample.vcd",
+            "Dumping SAT model to WaveJSON file 'counterexample.json'.",
+            "",
+            "ERROR: Called with -verify and proof did fail!"
+          ]
+        },
+        {
+          "case": "wrong_commit",
+          "refresh_cycles": 128,
+          "returncode": 1,
+          "passed": false,
+          "negative_rejected": true,
+          "log_sha256": "b599007215aedb343d0d2ebdb8e8df4a59c906eb6c7e5dab3c6594f0277227d1",
+          "counterexample_sha256": "c2b1b4fd094465cf0d705a5262ac100b8683e6fe4ab0a950aab5ee35110f4b1e",
+          "log_tail": [
+            "    20 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000010000000",
+            "    20 \\rx_header_limit_o                                                                                                   77        4d                000000000000000001001101",
+            "    20 \\training_i                                                                                                           1         1                                       1",
+            "    20 \\tx_ready_i                                                                                                           1         1                                       1",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    21 \\clk_i                                                                                                                0         0                                       0",
+            "    21 \\flow_data                                                                                                            0         0                                00000000",
+            "    21 \\flow_dllp                                                                                                            0         0                                       0",
+            "    21 \\flow_eop                                                                                                             1         1                                       1",
+            "    21 \\flow_replay                                                                                                          0         0                                       0",
+            "    21 \\flow_sop                                                                                                             0         0                                       0",
+            "    21 \\flow_valid                                                                                                           0         0                                       0",
+            "    21 \\link_up_i                                                                                                            1         1                                       1",
+            "    21 \\peer_init1_done_o                                                                                                    1         1                                       1",
+            "    21 \\peer_init2_seen_o                                                                                                    1         1                                       1",
+            "    21 \\proof_ok                                                                                                             1         1                                       1",
+            "    21 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    21 \\rst_ni                                                                                                               1         1                                       1",
+            "    21 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000100000000",
+            "    21 \\rx_header_limit_o                                                                                                    0         0                000000000000000000000000",
+            "    21 \\training_i                                                                                                           0         0                                       0",
+            "    21 \\tx_ready_i                                                                                                           0         0                                       0",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    22 \\clk_i                                                                                                                0         0                                       0",
+            "    22 \\flow_data                                                                                                           89        59                                01011001",
+            "    22 \\flow_dllp                                                                                                            1         1                                       1",
+            "    22 \\flow_eop                                                                                                             0         0                                       0",
+            "    22 \\flow_replay                                                                                                          0         0                                       0",
+            "    22 \\flow_sop                                                                                                             0         0                                       0",
+            "    22 \\flow_valid                                                                                                           0         0                                       0",
+            "    22 \\link_up_i                                                                                                            1         1                                       1",
+            "    22 \\peer_init1_done_o                                                                                                    1         1                                       1",
+            "    22 \\peer_init2_seen_o                                                                                                    1         1                                       1",
+            "    22 \\proof_ok                                                                                                             1         1                                       1",
+            "    22 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    22 \\rst_ni                                                                                                               1         1                                       1",
+            "    22 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000101111101011",
+            "    22 \\rx_header_limit_o                                                                                                  228        e4                000000000000000011100100",
+            "    22 \\training_i                                                                                                           0         0                                       0",
+            "    22 \\tx_ready_i                                                                                                           1         1                                       1",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    23 \\clk_i                                                                                                                1         1                                       1",
+            "    23 \\flow_data                                                                                                          195        c3                                11000011",
+            "    23 \\flow_dllp                                                                                                            0         0                                       0",
+            "    23 \\flow_eop                                                                                                             0         0                                       0",
+            "    23 \\flow_replay                                                                                                          0         0                                       0",
+            "    23 \\flow_sop                                                                                                             1         1                                       1",
+            "    23 \\flow_valid                                                                                                           1         1                                       1",
+            "    23 \\link_up_i                                                                                                            1         1                                       1",
+            "    23 \\peer_init1_done_o                                                                                                    1         1                                       1",
+            "    23 \\peer_init2_seen_o                                                                                                    0         0                                       0",
+            "    23 \\proof_ok                                                                                                             1         1                                       1",
+            "    23 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    23 \\rst_ni                                                                                                               1         1                                       1",
+            "    23 \\rx_data_limit_o                                                                                                     --        --    000000000000101011001010111101111001",
+            "    23 \\rx_header_limit_o                                                                                                52247      cc17                000000001100110000010111",
+            "    23 \\training_i                                                                                                           0         0                                       0",
+            "    23 \\tx_ready_i                                                                                                           0         0                                       0",
+            "  ---- ----------------------------------------------------------------------------------------------------------- ----------- --------- ---------------------------------------",
+            "    24 \\clk_i                                                                                                                1         1                                       1",
+            "    24 \\flow_data                                                                                                            0         0                                00000000",
+            "    24 \\flow_dllp                                                                                                            0         0                                       0",
+            "    24 \\flow_eop                                                                                                             0         0                                       0",
+            "    24 \\flow_replay                                                                                                          0         0                                       0",
+            "    24 \\flow_sop                                                                                                             0         0                                       0",
+            "    24 \\flow_valid                                                                                                           0         0                                       0",
+            "    24 \\link_up_i                                                                                                            1         1                                       1",
+            "    24 \\peer_init1_done_o                                                                                                    0         0                                       0",
+            "    24 \\peer_init2_seen_o                                                                                                    0         0                                       0",
+            "    24 \\proof_ok                                                                                                             1         1                                       1",
+            "    24 \\retrain_done_i                                                                                                       0         0                                       0",
+            "    24 \\rst_ni                                                                                                               1         1                                       1",
+            "    24 \\rx_data_limit_o                                                                                                     --        --    000000000000000000000000000000000000",
+            "    24 \\rx_header_limit_o                                                                                                    8         8                000000000000000000001000",
+            "    24 \\training_i                                                                                                           1         1                                       1",
+            "    24 \\tx_ready_i                                                                                                           1         1                                       1",
+            "Dumping SAT model to VCD file counterexample.vcd",
+            "Dumping SAT model to WaveJSON file 'counterexample.json'.",
+            "",
+            "ERROR: Called with -verify and proof did fail!"
+          ]
+        }
+      ],
+      "proof_method": "Whole-region SAT temporal induction, explicit clock/asynchronous reset; all actual storage and outputs equal plus ownership invariant proved jointly, not assumed. Initial reset only; arbitrary subsequent inputs/clocks. Prior cutpoint failure retained in run 38476024561.",
+      "runtime": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+      "ports": [
+        {
+          "case": "baseline",
+          "returncode": 0,
+          "result": {
+            "status": "PASS_PORT_ONLY_PCIE_RX_FLOW",
+            "top": "soc_pcie_buffered_flow_packets",
+            "inputs": {
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_crc16_byte.v": {
+                "bytes": 663,
+                "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_acknak_tx.v": {
+                "bytes": 1909,
+                "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_packet_tx.v": {
+                "bytes": 2202,
+                "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_crc32_byte.v": {
+                "bytes": 1070,
+                "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_lcrc_rx.v": {
+                "bytes": 4565,
+                "sha256": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_sequence_rx.v": {
+                "bytes": 3801,
+                "sha256": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_lcrc_tx.v": {
+                "bytes": 4615,
+                "sha256": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_packet_endpoint.v": {
+                "bytes": 5181,
+                "sha256": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_tlp_stream.v": {
+                "bytes": 5931,
+                "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_tlp_regs.v": {
+                "bytes": 8352,
+                "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_link_packets.v": {
+                "bytes": 3068,
+                "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_dllp_rx.v": {
+                "bytes": 3448,
+                "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_replay_tx.v": {
+                "bytes": 14315,
+                "sha256": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_reliable_packets.v": {
+                "bytes": 8015,
+                "sha256": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_credit_tx.v": {
+                "bytes": 12319,
+                "sha256": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_flow_packets.v": {
+                "bytes": 5803,
+                "sha256": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_rx_credit.v": {
+                "bytes": 10437,
+                "sha256": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_fc_tx.v": {
+                "bytes": 4900,
+                "sha256": "599755ec5824cdea24379dbac7de7eff20cb5dd738cc4f4fd2767c8ddf73b904"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_buffered_flow_packets.v": {
+                "bytes": 11919,
+                "sha256": "459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_buffered_flow_packets.py": {
+                "bytes": 12996,
+                "sha256": "8bc5def4c46f999c1a76ca26e3562ab4879d8edc6c3929587675354d6d103a8c"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets": {
+                "bytes": 1734,
+                "sha256": "c28eead3b29af4d6e43009e86e655112ccfc2cf75b71a14700c28b2d9a948505"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_rx_flow.py": {
+                "bytes": 9020,
+                "sha256": "1523c64d32830705c0c8fdf3b0a4225c377c1fcbe3ad23db2ee98015b018a3bf"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity.py": {
+                "bytes": 4628,
+                "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity_native.py": {
+                "bytes": 6139,
+                "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+                "bytes": 1383,
+                "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+                "bytes": 6497,
+                "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+                "bytes": 9089,
+                "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+                "bytes": 8904,
+                "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/pcie_rx_flow_common.py": {
+                "bytes": 1385,
+                "sha256": "0169b4db0ee564c34fcca595e2f6eb4ac1c6e631c52b9cc3f1d41c673a053499"
+              }
+            },
+            "expected_tests": 5,
+            "mode": "rtl",
+            "commands": [
+              {
+                "argv": [
+                  "make",
+                  "-f",
+                  "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets",
+                  "--no-print-directory",
+                  "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_crc16_byte.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_acknak_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_packet_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_tlp_regs.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_link_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_dllp_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_replay_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_reliable_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_credit_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_flow_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_rx_credit.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_fc_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/baseline-rtl/soc_pcie_buffered_flow_packets.v",
+                  "SIM_BUILD=/home/runner/work/nssoc/nssoc/cloud-advert-control/ports-baseline/sim",
+                  "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/cloud-advert-control/ports-baseline/results.xml",
+                  "PCIE_NATIVE=0"
+                ],
+                "returncode": 0,
+                "log": "simulation.log",
+                "log_pin": {
+                  "bytes": 7881,
+                  "sha256": "46e98f4c7c0e079601991ac0c0e2d1f25eb203823b889bfca56ba09b9b7ff3b7"
+                }
+              }
+            ],
+            "runtime": {
+              "/home/runner/work/_temp/oss-cad-suite/bin/iverilog": {
+                "bytes": 453,
+                "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+              },
+              "/home/runner/work/_temp/oss-cad-suite/bin/vvp": {
+                "bytes": 485,
+                "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+              }
+            },
+            "address_space_limit_bytes": 2147483648,
+            "command_timeout_seconds": 300,
+            "scope": "Finite P/NP ownership, real local Init/Update FC and completer-only infinite Cpl with requester disabled. Component finite Cpl is not endpoint compliance. Ready/valid byte boundary; no PHY, calibrated link timers, SDF or SoC instance.",
+            "tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "outputs": {
+              "simulation.log": {
+                "bytes": 7881,
+                "sha256": "46e98f4c7c0e079601991ac0c0e2d1f25eb203823b889bfca56ba09b9b7ff3b7"
+              },
+              "results.xml": {
+                "bytes": 1762,
+                "sha256": "0e99dc0a776f200d3ac562cf849080638f0f4a211b44b134a5d20dba8bc2ce4f"
+              }
+            }
+          },
+          "actual_tests": {
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0
+          },
+          "xml_sha256": "0e99dc0a776f200d3ac562cf849080638f0f4a211b44b134a5d20dba8bc2ce4f"
+        },
+        {
+          "case": "candidate",
+          "returncode": 0,
+          "result": {
+            "status": "PASS_PORT_ONLY_PCIE_RX_FLOW",
+            "top": "soc_pcie_buffered_flow_packets",
+            "inputs": {
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_crc16_byte.v": {
+                "bytes": 663,
+                "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_acknak_tx.v": {
+                "bytes": 1909,
+                "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_packet_tx.v": {
+                "bytes": 2202,
+                "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_crc32_byte.v": {
+                "bytes": 1070,
+                "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_lcrc_rx.v": {
+                "bytes": 4565,
+                "sha256": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_sequence_rx.v": {
+                "bytes": 3801,
+                "sha256": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_lcrc_tx.v": {
+                "bytes": 4615,
+                "sha256": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_packet_endpoint.v": {
+                "bytes": 5181,
+                "sha256": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_tlp_stream.v": {
+                "bytes": 5931,
+                "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_tlp_regs.v": {
+                "bytes": 8352,
+                "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_link_packets.v": {
+                "bytes": 3068,
+                "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_dllp_rx.v": {
+                "bytes": 3448,
+                "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_replay_tx.v": {
+                "bytes": 14315,
+                "sha256": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_reliable_packets.v": {
+                "bytes": 8015,
+                "sha256": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_credit_tx.v": {
+                "bytes": 12319,
+                "sha256": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_flow_packets.v": {
+                "bytes": 5803,
+                "sha256": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_rx_credit.v": {
+                "bytes": 10437,
+                "sha256": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_fc_tx.v": {
+                "bytes": 6062,
+                "sha256": "45d493ba7ec604e8ff46b127c2a103e2f6e81ea1402171c84e0f2effd325107a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_buffered_flow_packets.v": {
+                "bytes": 11951,
+                "sha256": "28e389f384cfff2237f1f211bb939554c660e4f69ab746ed07bd067cd81bd538"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_buffered_flow_packets.py": {
+                "bytes": 12996,
+                "sha256": "8bc5def4c46f999c1a76ca26e3562ab4879d8edc6c3929587675354d6d103a8c"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets": {
+                "bytes": 1734,
+                "sha256": "c28eead3b29af4d6e43009e86e655112ccfc2cf75b71a14700c28b2d9a948505"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_rx_flow.py": {
+                "bytes": 9020,
+                "sha256": "1523c64d32830705c0c8fdf3b0a4225c377c1fcbe3ad23db2ee98015b018a3bf"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity.py": {
+                "bytes": 4628,
+                "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity_native.py": {
+                "bytes": 6139,
+                "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+                "bytes": 1383,
+                "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+                "bytes": 6497,
+                "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+                "bytes": 9089,
+                "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+                "bytes": 8904,
+                "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/pcie_rx_flow_common.py": {
+                "bytes": 1385,
+                "sha256": "0169b4db0ee564c34fcca595e2f6eb4ac1c6e631c52b9cc3f1d41c673a053499"
+              }
+            },
+            "expected_tests": 5,
+            "mode": "rtl",
+            "commands": [
+              {
+                "argv": [
+                  "make",
+                  "-f",
+                  "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets",
+                  "--no-print-directory",
+                  "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_crc16_byte.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_acknak_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_packet_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_tlp_regs.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_link_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_dllp_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_replay_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_reliable_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_credit_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_flow_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_rx_credit.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_fc_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/candidate-rtl/soc_pcie_buffered_flow_packets.v",
+                  "SIM_BUILD=/home/runner/work/nssoc/nssoc/cloud-advert-control/ports-candidate/sim",
+                  "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/cloud-advert-control/ports-candidate/results.xml",
+                  "PCIE_NATIVE=0"
+                ],
+                "returncode": 0,
+                "log": "simulation.log",
+                "log_pin": {
+                  "bytes": 7907,
+                  "sha256": "9c2a479912bacc724c15f50301bd036b55934bd1d51a10f5c74da3ba8ba0a0a8"
+                }
+              }
+            ],
+            "runtime": {
+              "/home/runner/work/_temp/oss-cad-suite/bin/iverilog": {
+                "bytes": 453,
+                "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+              },
+              "/home/runner/work/_temp/oss-cad-suite/bin/vvp": {
+                "bytes": 485,
+                "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+              }
+            },
+            "address_space_limit_bytes": 2147483648,
+            "command_timeout_seconds": 300,
+            "scope": "Finite P/NP ownership, real local Init/Update FC and completer-only infinite Cpl with requester disabled. Component finite Cpl is not endpoint compliance. Ready/valid byte boundary; no PHY, calibrated link timers, SDF or SoC instance.",
+            "tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "outputs": {
+              "simulation.log": {
+                "bytes": 7907,
+                "sha256": "9c2a479912bacc724c15f50301bd036b55934bd1d51a10f5c74da3ba8ba0a0a8"
+              },
+              "results.xml": {
+                "bytes": 1762,
+                "sha256": "630f701c17c7c707a8ec9b38813936ba9fc3415ebe43f61a4b8199425ecfa978"
+              }
+            }
+          },
+          "actual_tests": {
+            "passed": 5,
+            "failed": 0,
+            "skipped": 0
+          },
+          "xml_sha256": "630f701c17c7c707a8ec9b38813936ba9fc3415ebe43f61a4b8199425ecfa978"
+        },
+        {
+          "case": "wrong_owner",
+          "returncode": 1,
+          "result": {
+            "status": "FAIL",
+            "top": "soc_pcie_buffered_flow_packets",
+            "inputs": {
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_crc16_byte.v": {
+                "bytes": 663,
+                "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_acknak_tx.v": {
+                "bytes": 1909,
+                "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_packet_tx.v": {
+                "bytes": 2202,
+                "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_crc32_byte.v": {
+                "bytes": 1070,
+                "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_lcrc_rx.v": {
+                "bytes": 4565,
+                "sha256": "d0f77835907d50cb9a3eb75d9edf8af25b33bebd6f945dab122e2d08c9b6e9f4"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_sequence_rx.v": {
+                "bytes": 3801,
+                "sha256": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_lcrc_tx.v": {
+                "bytes": 4615,
+                "sha256": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_packet_endpoint.v": {
+                "bytes": 5181,
+                "sha256": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_tlp_stream.v": {
+                "bytes": 5931,
+                "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_tlp_regs.v": {
+                "bytes": 8352,
+                "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_link_packets.v": {
+                "bytes": 3068,
+                "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_dllp_rx.v": {
+                "bytes": 3448,
+                "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_replay_tx.v": {
+                "bytes": 14315,
+                "sha256": "1bfa8971728d65ec2cfad2337d083298d7bcec8e56ce1fe4dc19f38fbcaa2edc"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_reliable_packets.v": {
+                "bytes": 8015,
+                "sha256": "787e24221f29a6de862eb7444a46cca4a7c88b5a0cf1f78767740834901bdad9"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_credit_tx.v": {
+                "bytes": 12319,
+                "sha256": "7fc31891f0ae48a8df5247b6df72388ff12cf2603de9f9dc9654b30a0256d38a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_flow_packets.v": {
+                "bytes": 5803,
+                "sha256": "7cc3164ad20834bc63f1e941ec38fa2dc78c2280d64edc3aaee5030f317bf926"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_rx_credit.v": {
+                "bytes": 10437,
+                "sha256": "0186ea873dc755e95331c82b0647ada570ed7aced319d5e34ee79c0849e25d2a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_fc_tx.v": {
+                "bytes": 6062,
+                "sha256": "45d493ba7ec604e8ff46b127c2a103e2f6e81ea1402171c84e0f2effd325107a"
+              },
+              "/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_buffered_flow_packets.v": {
+                "bytes": 11935,
+                "sha256": "4d09e5dbb4a5dc10a103a4b063ff91fc96b2db3c7b19f3a3b7fa65364c10ca5b"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_buffered_flow_packets.py": {
+                "bytes": 12996,
+                "sha256": "8bc5def4c46f999c1a76ca26e3562ab4879d8edc6c3929587675354d6d103a8c"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets": {
+                "bytes": 1734,
+                "sha256": "c28eead3b29af4d6e43009e86e655112ccfc2cf75b71a14700c28b2d9a948505"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_rx_flow.py": {
+                "bytes": 9020,
+                "sha256": "1523c64d32830705c0c8fdf3b0a4225c377c1fcbe3ad23db2ee98015b018a3bf"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity.py": {
+                "bytes": 4628,
+                "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity_native.py": {
+                "bytes": 6139,
+                "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+              },
+              "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+                "bytes": 1383,
+                "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+                "bytes": 6497,
+                "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+                "bytes": 9089,
+                "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+                "bytes": 8904,
+                "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+              },
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/pcie_rx_flow_common.py": {
+                "bytes": 1385,
+                "sha256": "0169b4db0ee564c34fcca595e2f6eb4ac1c6e631c52b9cc3f1d41c673a053499"
+              }
+            },
+            "expected_tests": 5,
+            "mode": "rtl",
+            "commands": [
+              {
+                "argv": [
+                  "make",
+                  "-f",
+                  "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets",
+                  "--no-print-directory",
+                  "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_crc16_byte.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_acknak_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_packet_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_tlp_regs.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_link_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_dllp_rx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_replay_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_reliable_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_credit_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_flow_packets.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_rx_credit.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_fc_tx.v /home/runner/work/nssoc/nssoc/cloud-advert-control/wrong_owner-rtl/soc_pcie_buffered_flow_packets.v",
+                  "SIM_BUILD=/home/runner/work/nssoc/nssoc/cloud-advert-control/ports-wrong_owner/sim",
+                  "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/cloud-advert-control/ports-wrong_owner/results.xml",
+                  "PCIE_NATIVE=0"
+                ],
+                "returncode": 2,
+                "log": "simulation.log",
+                "log_pin": {
+                  "bytes": 17737,
+                  "sha256": "0e3205002c95c5e3e92737e9417658dc1020f23af276e94dc9e146a362097365"
+                }
+              }
+            ],
+            "runtime": {
+              "/home/runner/work/_temp/oss-cad-suite/bin/iverilog": {
+                "bytes": 453,
+                "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+              },
+              "/home/runner/work/_temp/oss-cad-suite/bin/vvp": {
+                "bytes": 485,
+                "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+              }
+            },
+            "address_space_limit_bytes": 2147483648,
+            "command_timeout_seconds": 300,
+            "scope": "Finite P/NP ownership, real local Init/Update FC and completer-only infinite Cpl with requester disabled. Component finite Cpl is not endpoint compliance. Ready/valid byte boundary; no PHY, calibrated link timers, SDF or SoC instance.",
+            "error": "RuntimeError('Control failed: /home/runner/work/nssoc/nssoc/cloud-advert-control/ports-wrong_owner/simulation.log')",
+            "outputs": {
+              "simulation.log": {
+                "bytes": 17737,
+                "sha256": "0e3205002c95c5e3e92737e9417658dc1020f23af276e94dc9e146a362097365"
+              },
+              "results.xml": {
+                "bytes": 2919,
+                "sha256": "3661b5db9fd7870dcfc36f7497d3bbcce268f1c1f13a7b6f0ef270c707021caa"
+              }
+            }
+          },
+          "actual_tests": {
+            "passed": 0,
+            "failed": 5,
+            "skipped": 0
+          },
+          "xml_sha256": "3661b5db9fd7870dcfc36f7497d3bbcce268f1c1f13a7b6f0ef270c707021caa"
+        }
+      ]
+    },
+    "mapping_run": 38519026139,
+    "mapping_status": "in_progress"
   }
 }

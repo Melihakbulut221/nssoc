@@ -8,6 +8,21 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Corrected dedicated-commit proof PASS; paired timing38519026139 dispatched.**
+38518875447 summary639394358 passes3all-state proofs(refresh128/0/1), both
+wrong-owner/wrong-data counterexamples, baseline5/candidate5positive port tests
+and5expected negative failures, no skips. Original preparation failure remains
+639387011. Corrected parent declaration has samelogic; exact source/candidate
+hashes saved in ACK evidence. Mapping onac549474 reruns proof and source bindings,
+then original all-corner reports, no timing exceptions. No timing/adoption claim.
+All actualNx4 TC cases38517527891 terminal2coldPASS/2hotFAIL, allHBT boundsPASS;
+no need rerun that rejected study. See latest structured receipts for actual
+hot bit/CM/differential failures. Route38511490580 and PLL38507479646 retain
+existing handles. Full goalsOPEN; cloud-only. Turn classification: progress
+(measured rejections, direct internal commit path, fixed Icarus preparation,
+complete proof+ports and new paired native timing dispatch), no genuine blocker.
+
+
 **Dedicated-commit preparation failure fixed, prior failure retained.**
 38518563421 summary639387011: all3formal cases and2negative proofs passed,
 but candidate Icarus elaboration rejected selected_ready declared after its
