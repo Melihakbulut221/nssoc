@@ -332,6 +332,12 @@ def verify_fresh_prects():
             assert a and x and a.getNet() and x.getNet(),('Incomplete CTS buffer',n)
             drivers=[t for t in x.getNet().getITerms() if str(t.getIoType())=='OUTPUT']
             assert len(drivers)==1 and drivers[0]==x,('Multiple CTS drivers',n)
+            power=[t for t in inst.getITerms() if str(t.getSigType()) in ('POWER','GROUND')]
+            assert {str(t.getSigType()) for t in power}=={'POWER','GROUND'},('Missing supply pins',n)
+            for t in power:
+                assert t.getNet() and str(t.getNet().getSigType())==str(t.getSigType()),('Unconnected CTS supply',n,t.getMTerm().getName())
+                source_net=original.findNet(t.getNet().getName())
+                assert source_net and str(source_net.getSigType())==str(t.getSigType()),('New supply domain',n)
             key=x.getNet().getName();assert key not in roots
             roots[key]=a.getNet().getName()
         def root(net):
@@ -365,6 +371,16 @@ def verify_fresh_prects():
         else:raise RuntimeError('Disconnected actual terminal accepted')
     finally:fault.connect(net)
     assert prove()==report['cts']
+    supply_fault=next(t for i in cts.getInsts() if i.getName() not in original_instances
+        for t in i.getITerms() if str(t.getSigType())=='POWER')
+    supply=supply_fault.getNet();supply_fault.disconnect()
+    try:
+        try:prove()
+        except AssertionError:report['actual_cts_supply_disconnect_negative_control']=True
+        else:raise RuntimeError('Disconnected CTS supply accepted')
+    finally:supply_fault.connect(supply)
+    assert prove()==report['cts']
+    report['inserted_buffer_power_and_ground_connected_to_original_domains']=True
     report.update(status='PASS_PLACEMENT_AND_TRANSPARENT_CTS_GRAPH_NOT_TIMING',
         cts_sha256=sha(OUT/'fresh-cts.odb'),scope='Original masters and every terminal preserved modulo inserted non-inverting CTS buffer trees. Source unchanged; no timing or route acceptance.')
     (OUT/'fresh-cts-proof.json').write_text(json.dumps(report,indent=2)+'\n')

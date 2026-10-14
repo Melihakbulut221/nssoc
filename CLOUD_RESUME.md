@@ -8,6 +8,15 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Fresh CTS supply invariant added before physical execution.**
+Initial prects_grt run38596031286/job115962883096 was cancelled during native
+runtime preparation to add explicit global_connect and verification of every
+inserted buffer POWER/GROUND pin against original supply domains. Both actual
+signal-terminal and inserted-supply disconnect negative controls must reject.
+Inspect cancellation terminal state before dispatching the revised source;
+this is a corrected-input trial, not a timeout restart. No layout accepted.
+
+
 **Pre-CTS lineage recovered; GRT-driven placement plus fresh CTS prepared.**
 38594940366/job115959121361 PASS, summary640896159/9514534bytes SHA
 817d6b0e4839f52630caa9630c18cfbff23cca80dcd380229d692da13204e493,

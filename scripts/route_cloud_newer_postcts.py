@@ -134,7 +134,7 @@ def fresh_prects_trial(script, result):
         'configure_cts_characterization\n'
         'clock_tree_synthesis -buf_list {sg13g2_buf_8 sg13g2_buf_4 sg13g2_buf_2} -root_buf sg13g2_buf_16 -sink_clustering_enable -apply_ndr half\n'
         'detailed_placement -max_displacement {500 100}\ncheck_placement -verbose\n'
-        'set_propagated_clock [all_clocks]\n'
+        'global_connect\nset_propagated_clock [all_clocks]\n'
         f'write_db {{{OUT/"fresh-cts.odb"}}}\n','fresh-cts')
     verify('verify_fresh_cts')
     result['fresh_cts']=json.loads((OUT/'fresh-cts-proof.json').read_text())
