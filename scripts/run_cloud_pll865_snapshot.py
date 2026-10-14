@@ -739,6 +739,34 @@ def pfd_schematic_parent(parent, reference, profile):
         scope='Matched schematic PFD screening only. Original610other devices and all non-PFD RC/ports remain byte-identical. Original255device PFD with771R1256C replaced; local body contacts and extracted PFD RC absent in BOTH schematic profiles. No layout, safety, PEX or PHY acceptance.')
 
 
+def zero_source_operating_point(raw, expected):
+    """Strict one-row native operating-point reader; it has no time column."""
+    end=raw.find(b'Binary:\n',0,1048576);assert end>=0
+    end+=len(b'Binary:\n');header=raw[:end].decode('ascii')
+    fields={l.split(':',1)[0]:l.split(':',1)[1].strip() for l in header.splitlines() if ':' in l}
+    assert fields['Flags']=='real' and fields['Plotname'].lower()=='operating point'
+    table=[l.split() for l in header.split('Variables:\n',1)[1].split('Binary:\n',1)[0].splitlines()]
+    assert int(fields['No. Points'])==1 and int(fields['No. Variables'])==len(expected)==len(table)
+    assert [r[0] for r in table]==list(map(str,range(len(table))))
+    names=[r[1] for r in table];assert len(set(names))==len(names) and set(names)==set(expected)
+    assert all(r[2]=='voltage' for r in table) and len(raw)-end==8*len(names)
+    values=np.frombuffer(raw[end:],dtype='<f8');assert np.isfinite(values).all()
+    maximum=float(np.max(np.abs(values)));assert maximum<1e-9,'Nonzero startup operating point'
+    return dict(maximum_abs_v=maximum,columns=names,sha256=digest(raw))
+
+
+def pfd_op_controls():
+    header=b'Title: OP control\nPlotname: Operating Point\nFlags: real\nNo. Variables: 2\nNo. Points: 1\nVariables:\n0 v(a) voltage\n1 v(b) voltage\nBinary:\n'
+    raw=header+np.array([0.,0.],dtype='<f8').tobytes()
+    assert zero_source_operating_point(raw,['v(a)','v(b)'])['maximum_abs_v']==0
+    faults=[header+np.array([0.,.01],dtype='<f8').tobytes(),raw[:-1],raw+b'x',raw.replace(b'v(b)',b'v(c)'),raw.replace(b'No. Points: 1',b'No. Points: 2')]
+    for bad in faults:
+        try:zero_source_operating_point(bad,['v(a)','v(b)'])
+        except AssertionError:continue
+        raise AssertionError('Corrupt/nonzero operating point accepted')
+    return dict(positive=1,negative=len(faults))
+
+
 def run_pfd_candidate(executable,out,common,result,save,vectors):
     """Bounded native50ns candidate screen; no timing/lock acceptance inferred."""
     text='NSSOC matched schematic PFD candidate50ns\n'+common+'run candidate.raw\nquit\n.endc\n.end\n'
@@ -760,14 +788,10 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
     for n in ('v(reference)','v(fb)'):
         edge=rising(t,v[n],1.25);clock_events[n]=[dict(time_s=float(e),clearb_v=float(np.interp(e,t,clear)),
             reset_asserted_at_1p25_v=bool(np.interp(e,t,clear)<1.25)) for e in edge if e>12e-9]
-    op_names,op,op_meta=decode_prefix((out/'op.raw').read_bytes())
-    assert op_meta['header_matches_observed'] and op_meta['payload_has_only_complete_rows']
-    assert set(op_names)==set(names) and np.isfinite(op).all()
-    op_max=float(np.max(np.abs(op[:,[i for i,n in enumerate(op_names) if n!='time']])))
-    assert op_max<1e-9, 'Nonzero startup operating point'
+    operating_point=zero_source_operating_point((out/'op.raw').read_bytes(),vectors)
     result.update(status='COMPLETE_SCHEMATIC_PFD_NATIVE50_SCREEN_NOT_PHYSICAL_OR_LOCK_ACCEPTANCE',
         captures={'candidate.raw':dict(**meta,sha256=digest(raw),bytes=len(raw),start_s=float(t[0]),end_s=float(t[-1]))},
-        zero_source_op_max_abs_v=op_max,signals=stats,clock_events=clock_events,
+        zero_source_operating_point=operating_point,signals=stats,clock_events=clock_events,
         required_followup=['Compare both matched baseline_schematic and aoi4 native results',
             'Generate actual PFD GDS/LEF, transistor LVS/DRC and exact new RC composition',
             'Repeat native full-device safety and original1us acquisition gates with physical candidate',
@@ -803,6 +827,7 @@ def main():
     controls['full50_probe_coverage']=full50_probe_controls()
     controls['pfd_topology']=pfd_topology_controls()
     controls['pfd_aoi_truth']=pfd_aoi_controls()
+    controls['pfd_operating_point']=pfd_op_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)
