@@ -23,6 +23,9 @@ on:
         type: string
       verification_manifest:
         type: string
+      pll_pfd_layout:
+        type: boolean
+        default: false
       pll_pfd_candidate:
         type: boolean
         default: false
@@ -506,3 +509,50 @@ jobs:
         run: |
           test -f cloud-pll-acquisition-review/result.json
           python scripts/publish_cloud_results.py --group pll-acquisition-review cloud-pll-acquisition-review/result.json
+
+  pll-pfd-layout:
+    if: ${{ inputs.pll_pfd_layout == true }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify circuit truth controls and exact native runtime
+        run: |
+          python -m pip install numpy==2.3.3
+          python scripts/run_cloud_pll865_snapshot.py --self-test
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Generate actual PFD94 geometry and run native physical gates
+        run: python scripts/run_cloud_pll865_snapshot.py --pfd-layout
+      - name: Preserve actual geometry and every failed or passed native check
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f hw/soc/out/cloud-pfd-layout/result.json
+          archive="pfd94-layout-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz"
+          tar -czf "$archive" hw/soc/out/cloud-pfd-layout
+          sha256sum "$archive" > "$archive.sha256"
+          cp hw/soc/out/cloud-pfd-layout/result.json "${archive%.tar.gz}.json"
+          python scripts/publish_cloud_results.py --group pll-pfd-layout "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+      - name: Retain evidence if permanent publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pfd94-layout-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            pfd94-layout-*
+            hw/soc/out/cloud-pfd-layout/
+          if-no-files-found: warn
+          retention-days: 30

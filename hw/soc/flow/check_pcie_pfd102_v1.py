@@ -54,6 +54,7 @@ layout.write({str(target)!r})
 
 
 def run(layout, out, app):
+    global TOP
     root = Path(__file__).resolve().parents[3]
     layout, out, app = layout.resolve(), out.resolve(), app.resolve()
     if out.exists() or not out.is_relative_to(root / "hw/soc/out"):
@@ -61,6 +62,19 @@ def run(layout, out, app):
     if digest(app) != APP_SHA:
         raise ValueError("Native tool archive changed")
     generated = json.loads((layout / "result.json").read_text())
+    profile=generated.get('reset_profile','baseline')
+    if profile not in ('baseline','aoi4'):raise ValueError('Unknown PFD circuit profile')
+    TOP='nssoc_pfd94_aoi4_layout_v1' if profile=='aoi4' else 'nssoc_pfd102_layout_v1'
+    expected_mos,expected_wells,expected_devices=(94,47,235) if profile=='aoi4' else (102,51,255)
+    if profile=='aoi4':
+        from make_pcie_pfd102_local_v2 import profile_devices, SOURCES
+        sources={n:(root/'hw/soc/analog/pcie'/n).read_text() for n in SOURCES}
+        expected=profile_devices(sources,profile)
+        actual=[{k:d[k] for k in ('path','model','params','nets')} for d in generated['core_devices']]
+        if actual!=expected:raise ValueError('Generated AOI PFD differs from shared native circuit')
+    if len(generated['core_devices'])!=expected_mos or generated['substrate_contacts']!=expected_mos or generated['well_contacts']!=expected_wells:
+        raise ValueError('Generated transistor/contact census differs')
+
     pins = {Path(p): h for p, h in generated["inputs"].items()}
     pins.update({layout / name: h for name, h in generated["outputs"].items()})
     methods = [
@@ -101,6 +115,8 @@ def run(layout, out, app):
         status="RUNNING",
         inputs={str(p): h for p, h in pins.items()},
         steps={},
+        reset_profile=profile,
+        expected_native_devices=expected_devices,
         serial_phy_complete=False,
         main_chip_integrated=False,
         qualified_pex=False,
@@ -216,7 +232,7 @@ def run(layout, out, app):
                     ):
                         raise ValueError("Strict transistor comparison failed")
                     if len(result["circuits"]) != 1 or any(
-                        result["circuits"][0][key] != 255
+                        result["circuits"][0][key] != expected_devices
                         for key in (
                             "layout_devices_recursive",
                             "schematic_devices_recursive",
@@ -242,7 +258,7 @@ def run(layout, out, app):
             print(name, step["status"], flush=True)
         if any(digest(p) != h for p, h in pins.items()):
             raise ValueError("Inputs changed during verification")
-        record["status"] = "PASS_NATIVE_PFD102_DRC_LVS_AND_FAULT_CONTROLS"
+        record["status"] = "PASS_NATIVE_PFD94_AOI4_DRC_LVS_AND_FAULT_CONTROLS" if profile=="aoi4" else "PASS_NATIVE_PFD102_DRC_LVS_AND_FAULT_CONTROLS"
     except Exception as error:
         record.update(status="FAIL", error=repr(error))
         save()

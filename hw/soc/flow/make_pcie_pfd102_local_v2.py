@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""SG13G2 phase-detector component:102 core MOS devices and153 finite contacts.
+"""SG13G2 phase detector: original102MOS or94MOS AOI reset, with finite contacts.
 
 This compact development placement exposes REF/FB/reset/UP/DOWN, supply, ground and
-substrate. Ground and substrate remain separate. All51 PMOS wells have real
+substrate. Ground and substrate remain separate. All PMOS wells have real
 local contacts. Generation is not DRC/LVS, extracted timing or PLL acceptance.
 """
 
@@ -119,6 +119,27 @@ def devices(texts):
     return rows
 
 
+def aoi_reset_devices():
+    """Static six-transistor clearb = NOT(reset OR (up AND down))."""
+    rows=[('pr','sg13_hv_pmos',['xloop.aoi_p','reset','vdd','vdd'],'32u'),
+        ('pu','sg13_hv_pmos',['xloop.clearb','up','xloop.aoi_p','vdd'],'32u'),
+        ('pd','sg13_hv_pmos',['xloop.clearb','down','xloop.aoi_p','vdd'],'32u'),
+        ('nu','sg13_hv_nmos',['xloop.clearb','up','xloop.aoi_n','sub'],'16u'),
+        ('nd','sg13_hv_nmos',['xloop.aoi_n','down','vss','sub'],'16u'),
+        ('nr','sg13_hv_nmos',['xloop.clearb','reset','vss','sub'],'8u')]
+    return [dict(path='xloop.aoi_'+n,model=m,nets=nets,params={'w':w,'l':'0.45u','ng':'1','m':'1'}) for n,m,nets,w in rows]
+
+def profile_devices(texts, reset_profile='baseline'):
+    original=devices(texts)
+    if reset_profile=='baseline':return original
+    if reset_profile!='aoi4':raise ValueError('Unknown PFD reset profile')
+    dffs=[d for d in original if d['path'].startswith(('xloop.xup.','xloop.xdn.'))]
+    assert len(dffs)==88
+    rows=dffs+aoi_reset_devices()
+    assert len(rows)==94 and sum(d['model']=='sg13_hv_pmos' for d in rows)==47
+    return rows
+
+
 def use_direction(name):
     if name == "vdd":
         return "POWER", "INOUT"
@@ -177,13 +198,15 @@ def lef(pya, dbu, box, ports):
     return "\n".join(result + ["  END", "END " + TOP, "END LIBRARY", ""])
 
 
-def build(pdk, out):
+def build(pdk, out, reset_profile='baseline'):
+    global TOP
+    TOP='nssoc_pfd94_aoi4_layout_v1' if reset_profile=='aoi4' else 'nssoc_pfd102_layout_v1'
     root = Path(__file__).resolve().parents[3]
     out = out.resolve()
     if out.exists() or not out.is_relative_to(root / "hw/soc/out"):
         raise ValueError("Use a fresh project output directory")
     circuits = [root / "hw/soc/analog/pcie" / name for name in SOURCES]
-    rows = devices({p.name: p.read_text() for p in circuits})
+    rows = profile_devices({p.name: p.read_text() for p in circuits}, reset_profile)
     if any(row["model"] not in ("sg13_hv_nmos", "sg13_hv_pmos") for row in rows):
         raise ValueError("Compact row routing requires the frozen 102 MOS PFD")
     source = pdk.resolve() / "libs.tech/klayout/python"
@@ -465,8 +488,10 @@ def build(pdk, out):
                 inputs=pins,
                 outputs={p.name: pin(p) for p in out.iterdir()},
                 core_devices=records,
-                substrate_contacts=102,
-                well_contacts=51,
+                substrate_contacts=len(rows),
+                well_contacts=sum(r["model"]=="sg13_hv_pmos" for r in rows),
+                reset_profile=reset_profile,
+                top=TOP,
                 routes=routes,
                 ports={n: str(b) for n, (_, b) in ports.items()},
                 bbox_um=str(bbox),
@@ -487,8 +512,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdk", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument('--reset-profile', choices=('baseline','aoi4'), default='baseline')
     args = parser.parse_args()
-    build(args.pdk, args.out)
+    build(args.pdk, args.out, args.reset_profile)
 
 
 if __name__ == "__main__":

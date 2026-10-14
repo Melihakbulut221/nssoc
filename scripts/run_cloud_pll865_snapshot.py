@@ -660,14 +660,11 @@ def diagnose_full50():
 
 
 def pfd_aoi_devices():
-    """Static six-transistor clearb = NOT(reset OR (up AND down))."""
-    rows=[('pr','sg13_hv_pmos',['xloop.aoi_p','reset','vdd','vdd'],'32u'),
-        ('pu','sg13_hv_pmos',['xloop.clearb','up','xloop.aoi_p','vdd'],'32u'),
-        ('pd','sg13_hv_pmos',['xloop.clearb','down','xloop.aoi_p','vdd'],'32u'),
-        ('nu','sg13_hv_nmos',['xloop.clearb','up','xloop.aoi_n','sub'],'16u'),
-        ('nd','sg13_hv_nmos',['xloop.aoi_n','down','vss','sub'],'16u'),
-        ('nr','sg13_hv_nmos',['xloop.clearb','reset','vss','sub'],'8u')]
-    return [dict(path='xloop.aoi_'+n,model=m,nets=nets,params={'w':w,'l':'0.45u','ng':'1','m':'1'}) for n,m,nets,w in rows]
+    """Use the same transistor list for native simulation and actual layout."""
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('shared_pfd_geometry',ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return module.aoi_reset_devices()
 
 
 def pfd_aoi_controls():
@@ -800,9 +797,55 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
     save();print(result['status'],flush=True)
 
 
+def run_pfd_layout():
+    """Hosted actual PFD geometry, strict native DRC/LVS and physical faults."""
+    import sys
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted physical work only'
+    out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_PFD94_AOI4_PHYSICAL',adopted=False,full_phy_accepted=False,
+        scope='Actual94MOS plus94substrate/47well contacts. Requires560nativeDRC categories, strict flat/hierarchical235device LVS and five physical/reference fault controls. No new RC/electrical/PHY/chip acceptance.')
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    def run(cmd,name):
+        log=out/(name+'.log')
+        with log.open('wb') as stream:code=subprocess.call([str(x) for x in cmd],cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+        result.setdefault('commands',[]).append(dict(name=name,returncode=code,log_sha256=sha(log)));save()
+        if code:print(log.read_text(errors='replace')[-14000:],flush=True)
+        assert code==0,(name,'failed')
+    save()
+    try:
+        spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
+        packed=out/'pdk.tar.gz';fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed)
+        assert packed.stat().st_size==spec['receipt']['bytes']
+        with tarfile.open(packed) as tar:tar.extractall(ROOT,filter='data')
+        packed.unlink();manifest=json.loads((ROOT/'manifest.json').read_text())
+        assert len(manifest['files'])==197 and all(sha(ROOT/n)==v['sha256'] for n,v in manifest['files'].items())
+        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==spec['runtime_sha256']
+        generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
+        checker=ROOT/'hw/soc/flow/check_pcie_pfd102_v1.py'
+        result['source_bindings']=dict(pdk_archive=spec['receipt'],native_runtime_sha256=sha(app),generator_sha256=sha(generator),checker_sha256=sha(checker))
+        save()
+        run([app,'python',generator,'--pdk',ROOT/'pdk','--out',out/'layout','--reset-profile','aoi4'],'generate')
+        generated=json.loads((out/'layout/result.json').read_text())
+        assert generated['reset_profile']=='aoi4' and len(generated['core_devices'])==94
+        result['layout']=generated;save()
+        run([sys.executable,checker,'--layout',out/'layout','--out',out/'physical','--app',app],'physical')
+        physical=json.loads((out/'physical/result.json').read_text())
+        assert physical['status']=='PASS_NATIVE_PFD94_AOI4_DRC_LVS_AND_FAULT_CONTROLS'
+        result['physical']={k:v for k,v in physical.items() if k!='inputs'}
+        assert all(sha(ROOT/n)==v['sha256'] for n,v in manifest['files'].items())
+        result['status']='PASS_PFD94_AOI4_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
+    except BaseException as error:
+        result.update(status='FAILED_PFD94_AOI4_PHYSICAL',error=repr(error))
+        if (out/'physical/result.json').exists():result['physical']=json.loads((out/'physical/result.json').read_text())
+        result['diagnostic_logs']={str(p.relative_to(out)):p.read_text(errors='replace')[-14000:] for p in out.rglob('*.log') if p.is_file()}
+        save();raise
+    save();print(result['status'],flush=True)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
+    parser.add_argument('--pfd-layout',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4'))
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
@@ -810,6 +853,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.pfd_layout:
+        assert not (args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
+        run_pfd_layout();return
     if args.diagnose_pfd_topology:
         assert not (args.acquisition or args.self_test or args.review_acquisition or args.diagnose_acquisition or args.diagnose_full50)
         diagnose_pfd_topology();return

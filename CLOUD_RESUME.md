@@ -7,6 +7,18 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Actual AOI reset PFD layout/verification prepared on hosted runner.**
+Generator now has explicitaoi4 profile:94original-schematic MOS,94substrate
+and47well contacts, topnssoc_pfd94_aoi4_layout_v1. Same AOI transistor list
+is shared with native simulation; first88DFFdevices unchanged. Physical gate
+requires source-record equality,235actualdevices,560nativeDRC categories,
+flat/hierarchical transistor LVS and existing wrong-width/missing-well/open/
+rail-short/offgrid controls. No deck/acceptance waiver. New pll_pfd_layout
+input restores exact197PDK/deck files and pinned AppImage on GitHub.
+This is a physical candidate; new RC/fullnative/PVT/1us acceptance still open.
+Paired schematic38602623171 and route38598795406 retained; no local files.
+
+
 **Live native comparison38602623171; retain exact cloud handles.**
 Sourcefaebb437ef2a3cc7010b46202ae731f7e76d4f59; observed2026-10-14T16:59:44.325223+00:00:
 paired baseline_schematic/aoi4 jobs in_progress/None.
