@@ -50,8 +50,9 @@ TAPPED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice'
 GUARDED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice'
 MARGIN_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice'
 PRE_BIASES = {'baseline':.0005,'plus10':.00055,'plus20':.0006}
-PRE_BIAS_MODES = (*PRE_BIASES, 'native_res')
+PRE_BIAS_MODES = (*PRE_BIASES, 'native_res', 'output_feedback')
 PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
+PRE_FEEDBACK = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc'
 CLOCK_FEED = ROOT / 'hw/soc/analog/pcie/tx_clock_bias_feed_v1.inc'
 OUTPUT_FEEDS = ROOT / 'hw/soc/analog/pcie/tx_output_bias_feeds_v1.inc'
 CLOCK_REFERENCES = {'baseline': BIAS, 'offset75': ROOT / 'hw/soc/analog/pcie/tx_clock_common_bias_v2.spice',
@@ -269,8 +270,8 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         ('MOShv', c['hv_corner'], frontend / 'models')]:
         lines.append(f'.lib "{directory / ("corner" + kind + ".lib")}" {corner}')
     lines += [f'.include "{p}"' for p in (PRE, FRONT, TX, final, frontend / 'buf16.inc')]
-    if pre_bias=='native_res':
-        lines.append(f'.include "{PRE_FEED}"')
+    if pre_bias in ('native_res','output_feedback'):
+        lines.append(f'.include "{PRE_FEEDBACK if pre_bias=="output_feedback" else PRE_FEED}"')
     if clock_bias!='ideal':
         lines.append(f'.include "{bias_path}"')
     if clock_bias=='native_res':
@@ -354,11 +355,17 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             lines += ['Vfinal_feed avdd finalfeed 0',
                       'XFINALFEED finalfeed mr 0 nssoc_tx_final_bias_feed_v1']
             continue
-        if pre_bias=='native_res' and reference in references:
+        if pre_bias in ('native_res','output_feedback') and reference in references:
             # Zero-volt source is only a current probe, not a bias generator.
-            lines.append(f'Vprebias_{reference} avdd prefeed_{reference} 0')
+            if pre_bias=='native_res':
+                lines.append(f'Vprebias_{reference} avdd prefeed_{reference} 0')
+                feed=f'prefeed_{reference} {reference} 0 nssoc_tx_pre_bias_res_v1'
+            else:
+                node=next(n for n in plan['nodes'] if n['reference']==reference)
+                lines.append(f'Vprebias_{reference} prefeed_{reference} {reference} 0')
+                feed=f'{node["label"]}p {node["label"]}n prefeed_{reference} 0 nssoc_tx_pre_bias_feedback_v1'
             if not (fault=='disable_pre_b_bias' and reference=='rb'):
-                lines.append(f'XPREBIAS_{reference} prefeed_{reference} {reference} 0 nssoc_tx_pre_bias_res_v1')
+                lines.append(f'XPREBIAS_{reference} '+feed)
             continue
         bias = 0 if fault == 'disable_pre_b_bias' and reference == 'rb' else .0005
         if reference in references and not (fault=='disable_pre_b_bias' and reference=='rb'):
@@ -385,7 +392,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     nodes.update(node for _,_,ports in stages for node in ports if node!='0')
     nodes.update(f'd{i}{suffix}0' for i in range(streams) for suffix in ('p','n'))
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
-    if pre_bias=='native_res':
+    if pre_bias in ('native_res','output_feedback'):
         vectors += [f'i(vprebias_{reference})' for reference in references]
         vectors += [f'v(prefeed_{reference})' for reference in references]
     if clock_bias=='native_res':
@@ -436,9 +443,10 @@ def review(run, contract):
             assert np.max(np.abs(volt(ref['feed'])-volt('avdd'))) < 1e-12
             current=values['i('+ref['probe']+')'][active]
             bias_current[ref['node']]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
-    if contract.get('pre_bias')=='native_res':
+    if contract.get('pre_bias') in ('native_res','output_feedback'):
         for reference in contract.get('references',['ra','rb']):
-            assert np.max(np.abs(volt('prefeed_'+reference)-volt('avdd'))) < 1e-12
+            other='avdd' if contract['pre_bias']=='native_res' else reference
+            assert np.max(np.abs(volt('prefeed_'+reference)-volt(other))) < 1e-12
             current=values[f'i(vprebias_{reference})'][active]
             bias_current[reference]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
     devices = {}
@@ -559,12 +567,16 @@ def main():
                 intermacro_connections_ideal=True,assembled_tree_gds=False,
                 qualified_substrate_resistance=False,qualified_rf_distribution=False)
         result['output_bias']=args.output_bias
+        if args.pre_bias=='output_feedback':
+            result['pre_bias_feedback_scope']=dict(source=str(PRE_FEEDBACK.relative_to(ROOT)),
+                sha256=sha(PRE_FEEDBACK),native_resistors_per_stage=2,layout_integrated=False,
+                hypothesis='Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged.')
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference)
 
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,CLOCK_FEEDS[args.clock_reference],OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
+        paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,PRE_FEEDBACK,CLOCK_FEEDS[args.clock_reference],OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
                ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}

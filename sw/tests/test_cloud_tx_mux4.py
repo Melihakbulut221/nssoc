@@ -652,3 +652,35 @@ def test_native_save_batches_preserve_every_observation_and_writer_limit(count):
 def test_native_capture_rejects_empty_duplicate_or_unwritable_census(vectors):
     with pytest.raises(AssertionError):
         mux4.native_save_commands(vectors)
+
+
+@pytest.mark.parametrize('streams',[4,32])
+def test_output_feedback_is_loaded_by_actual_stage_outputs(tmp_path,streams):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 A X VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 net1 A VDD VDD sg13_lv_pmos
+XP0 X net1 VDD VDD sg13_lv_pmos
+.ends
+""")
+    args=dict(streams=streams,clock_bias='native_res',output_bias='native_res')
+    before,old=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias='native_res',**args)
+    after,new=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias='output_feedback',**args)
+    for key in ('hbt','mos','bits','source_bits_sha256','tree_plan','rails','clock_refs','condition','vectors'):
+        assert new[key]==old[key]
+    assert not any(l.lower().startswith('i') for l in after.splitlines())
+    assert after.count('nssoc_tx_pre_bias_feedback_v1')==streams-2
+    for node in new['tree_plan']['nodes']:
+        ref,label=node['reference'],node['label']
+        assert f'XPREBIAS_{ref} {label}p {label}n prefeed_{ref} 0 nssoc_tx_pre_bias_feedback_v1' in after
+        assert f'Vprebias_{ref} prefeed_{ref} {ref} 0' in after
+        assert f'Vprebias_{ref} avdd' not in after
+    broken,c=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias='output_feedback',fault='disable_pre_b_bias',**args)
+    assert 'XPREBIAS_rb ' not in broken and c['bits']==new['bits']
+    assert broken.count('nssoc_tx_pre_bias_feedback_v1')==streams-3
+    for key in ('sap','san','sbp','sbn','sp','sn'):
+        stimulus=lambda deck:deck.split('V'+key+' ')[1].split('R'+key+' ')[0]
+        assert stimulus(before)==stimulus(after)

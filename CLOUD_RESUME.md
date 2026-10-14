@@ -7,6 +7,28 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Current concrete continuation:** native PLL snapshot experiment38503239727
+dispatched on83e3270e035f886479d475a665280bce84b55979. Keep its handle; inspect
+native evidence before assuming snapshot/KLU/OSDI compatibility. No local run.
+TX independent38496978055 is TERMINAL:24cases,19engineeringPASS,5FAIL despite
+workflowgreen. ColdresWCS CM fails in bothcompact andwire; coldHBT WCS compact
+also has12VBE failures. HotresBCS wire CMmin1.799833864V fails1.8V. HotHBTBCS
+wire has6VCE minima below.4V(worst.388441772V). Bits pass in allfive failures.
+A new output_feedback prestage feed uses two real26um/2um rppd resistors from
+actual stage outputs into its original HBT reference. Hypothesis: increase
+negative common-mode feedback instead of waiving PVT bounds. No ideal current,
+clamp, phase change, transistor deletion or changed limits. Existing19HBT stage
+and actual extractedRC retained. Added source/connection/fault controls.
+Feed itself has NOT been laid out; candidate screens are not finallayout proof.
+Use tx-tree-physical-cloud.yml study=failing_corners streams=4
+physical_profile=cascade158_kelvin_supply_direct
+physical_final_profile=v10_kelvin_low_ports_loads_shunts_series
+physical_final=matched clock_reference=stiff65 pre_bias=output_feedback.
+First inspect hosted tests; any failure remains a rejection. Remaining mainchip
+38490952579 and32:1wire38496981217 still live at last observed checkpoint.
+All three full-goal scopes remainOPEN; continue only on hosted runners.
+
+
 **New hosted PLL continuation method under test:** run_cloud_pll865_snapshot.py
 restores the exact native07 1us circuit, all32 original IHP model files and
 three exact OSDIs, and original ngspice47 executable. No circuit, source,
