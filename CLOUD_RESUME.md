@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD reset masking measured; matched static-CMOS redesign screen prepared.**
+Topology diagnosis38601440241 oncad979e3 PASS. Result641014025/563238bytes
+SHA46c256ba5cbfcca28f303ce6f02d862cd3f35af0566e43b4ddd816051587bca5.
+Exact102MOS/771metalR topology names: clearb active about22.8-29.8ns, covering
+next reference24ns and feedback27ns edges. Both outputs respond every20ns
+in this startup capture; this is not proof of late1us causal closure.
+
+New pll_pfd_candidate=true runs two matched schematic50ns native captures:
+baseline102MOS and94MOS with original88DFFdevices plus6MOS static AOI reset
+(clearb=NOT(reset OR(up AND down))). All8static input states and6wrong-gate
+controls required. Both replace original255device/771R1256C PFD only; every
+other610device and non-PFD RC line stays exact. Both lack PFD physicalRC/taps,
+so any improvement requires real GDS/DRC/LVS/newRC and original1us/PVT/safety
+validation before adoption. Original full-wire failures remain authoritative.
+Routing38598795406 retained; cloud-only/fullPHY/routing/finaltiming OPEN.
+
+
 **Full PFD terminal coverage PASS; schematic naming diagnosis prepared.**
 38600813474 on426d78cf passed with every102MOS D/G/S probe included. Result
 641004212/1054133bytes SHA

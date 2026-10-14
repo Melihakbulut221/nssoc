@@ -659,9 +659,127 @@ def diagnose_full50():
         result.update(status='FAILED_FULL50_INTERNAL_DIAGNOSIS',error=repr(error));save();raise
 
 
+def pfd_aoi_devices():
+    """Static six-transistor clearb = NOT(reset OR (up AND down))."""
+    rows=[('pr','sg13_hv_pmos',['xloop.aoi_p','reset','vdd','vdd'],'32u'),
+        ('pu','sg13_hv_pmos',['xloop.clearb','up','xloop.aoi_p','vdd'],'32u'),
+        ('pd','sg13_hv_pmos',['xloop.clearb','down','xloop.aoi_p','vdd'],'32u'),
+        ('nu','sg13_hv_nmos',['xloop.clearb','up','xloop.aoi_n','sub'],'16u'),
+        ('nd','sg13_hv_nmos',['xloop.aoi_n','down','vss','sub'],'16u'),
+        ('nr','sg13_hv_nmos',['xloop.clearb','reset','vss','sub'],'8u')]
+    return [dict(path='xloop.aoi_'+n,model=m,nets=nets,params={'w':w,'l':'0.45u','ng':'1','m':'1'}) for n,m,nets,w in rows]
+
+
+def pfd_aoi_controls():
+    import itertools
+    def verify(rows):
+        for up,down,reset in itertools.product((False,True),repeat=3):
+            gates={'up':up,'down':down,'reset':reset};links={}
+            for d in rows:
+                a,g,b,_=d['nets'];on=gates[g] if d['model'].endswith('nmos') else not gates[g]
+                if on:links.setdefault(a,set()).add(b);links.setdefault(b,set()).add(a)
+            reached={'xloop.clearb'};todo=list(reached)
+            while todo:
+                for n in links.get(todo.pop(),()):
+                    if n not in reached:reached.add(n);todo.append(n)
+            assert ('vdd' in reached)==(not (reset or up and down))
+            assert ('vss' in reached)==(reset or up and down)
+        return True
+    rows=pfd_aoi_devices();assert verify(rows)
+    faults=[]
+    for index in range(len(rows)):
+        bad=json.loads(json.dumps(rows));old=bad[index]['nets'][1]
+        bad[index]['nets'][1]={'up':'reset','down':'up','reset':'down'}[old];faults.append(bad)
+    for bad in faults:
+        try:verify(bad)
+        except AssertionError:continue
+        raise AssertionError('Wrong static AOI reset connection accepted')
+    return dict(all_input_truth_states=8,rejected_wrong_gate_controls=len(faults),scope='Static rail connectivity only; dynamic reset recovery requires native transient')
+
+
+def pfd_schematic_parent(parent, reference, profile):
+    """Matched schematic-only PFD replacement; all other parent RC stays exact."""
+    from decimal import Decimal
+    assert profile in ('baseline_schematic','aoi4') and len(reference)==102
+    unchanged=[d for d in reference if d['path'].startswith(('xloop.xup.','xloop.xdn.'))]
+    assert len(unchanged)==88
+    rows=reference if profile=='baseline_schematic' else unchanged+pfd_aoi_devices()
+    assert len(rows)==(102 if profile=='baseline_schematic' else 94)
+    aliases={p:'a_pfd_'+p for p in ('ref','fb','reset','up','down','vdd','vss','sub')}
+    def node(n):
+        if n in aliases:return aliases[n]
+        assert n.startswith('xloop.')
+        return 'pfd_candidate.'+n.removeprefix('xloop.')
+    replacement=[]
+    for i,d in enumerate(rows):
+        assert d['model'] in ('sg13_hv_nmos','sg13_hv_pmos')
+        w=d['params']['w'];l=d['params']['l'];assert w.endswith('u')
+        microns=Decimal(w[:-1]);area=microns*Decimal('.34');perimeter=microns*2+Decimal('.68')
+        replacement.append('X_pfd_candidate_'+str(i)+' '+' '.join(node(n) for n in d['nets'])+' '+d['model']+
+            f' w={w} l={l} as={area}p ad={area}p ps={perimeter}u pd={perimeter}u rfmode=0 ng=1 m=1')
+    removed={k:[] for k in ('x','r','c')};kept=[]
+    for line in parent.splitlines():
+        words=line.lower().split()
+        kind=next((k for k in removed if words and words[0].startswith(k+'_xpfd_')),None)
+        if kind:removed[kind].append(line)
+        else:kept.append(line)
+    assert {k:len(v) for k,v in removed.items()}=={'x':255,'r':771,'c':1256}
+    assert not any('xpfd.' in l.lower() for l in kept), 'Unreplaced PFD internal reference'
+    ends=[i for i,l in enumerate(kept) if l.lower().startswith('.ends')];assert len(ends)==1
+    candidate='\n'.join(kept[:ends[0]]+replacement+kept[ends[0]:])+'\n'
+    outside=[l for l in candidate.splitlines() if not l.startswith('X_pfd_candidate_')]
+    assert outside==kept, 'Non-PFD circuit changed'
+    total=sum(l.lower().startswith('x') for l in candidate.splitlines());assert total==610+len(rows)
+    return candidate,dict(profile=profile,pfd_mos_count=len(rows),total_native_instances=total,
+        original_pfd_removed={k:len(v) for k,v in removed.items()},
+        original_parent_sha256=digest(parent.encode()),candidate_parent_sha256=digest(candidate.encode()),
+        non_pfd_lines_sha256=digest(('\n'.join(kept)+'\n').encode()),
+        original88_dff_devices_preserved=profile=='aoi4',candidate_device_source=rows,
+        matched_baseline_required=True,physical_pfd=False,pfd_wire_rc_present=False,
+        scope='Matched schematic PFD screening only. Original610other devices and all non-PFD RC/ports remain byte-identical. Original255device PFD with771R1256C replaced; local body contacts and extracted PFD RC absent in BOTH schematic profiles. No layout, safety, PEX or PHY acceptance.')
+
+
+def run_pfd_candidate(executable,out,common,result,save,vectors):
+    """Bounded native50ns candidate screen; no timing/lock acceptance inferred."""
+    text='NSSOC matched schematic PFD candidate50ns\n'+common+'run candidate.raw\nquit\n.endc\n.end\n'
+    (out/'candidate.cir').write_text(text)
+    result.update(status='RUNNING_SCHEMATIC_PFD_NATIVE50_SCREEN',native_budget_s=19000,
+        native_stop_s=50e-9,comparison_stop_s=None,snapshot_stop_s=None,physical_pfd=False)
+    save();native_run(executable,out,'candidate.cir',time.monotonic()+19000,result,save)
+    raw=(out/'candidate.raw').read_bytes();names,values,meta=decode_prefix(raw)
+    assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
+    assert set(names)=={'time',*vectors} and np.isfinite(values).all() and len(values)>150000
+    t=values[:,0];assert t[0]==0 and abs(t[-1]-50e-9)<1e-15 and np.all(np.diff(t)>0)
+    assert np.max(np.diff(t))<=3.125e-13*1.00001
+    v={n:values[:,i] for i,n in enumerate(names)};stats={}
+    for n,y in v.items():
+        if n=='time':continue
+        stats[n]=dict(minimum=float(y.min()),maximum=float(y.max()),
+            rising_edges_at_1p25_v_s=rising(t,y,1.25).tolist(),falling_edges_at_1p25_v_s=rising(t,-y,-1.25).tolist())
+    clear=v['v(xloop.pfd_candidate.clearb)'];clock_events={}
+    for n in ('v(reference)','v(fb)'):
+        edge=rising(t,v[n],1.25);clock_events[n]=[dict(time_s=float(e),clearb_v=float(np.interp(e,t,clear)),
+            reset_asserted_at_1p25_v=bool(np.interp(e,t,clear)<1.25)) for e in edge if e>12e-9]
+    op_names,op,op_meta=decode_prefix((out/'op.raw').read_bytes())
+    assert op_meta['header_matches_observed'] and op_meta['payload_has_only_complete_rows']
+    assert set(op_names)==set(names) and np.isfinite(op).all()
+    op_max=float(np.max(np.abs(op[:,[i for i,n in enumerate(op_names) if n!='time']])))
+    assert op_max<1e-9, 'Nonzero startup operating point'
+    result.update(status='COMPLETE_SCHEMATIC_PFD_NATIVE50_SCREEN_NOT_PHYSICAL_OR_LOCK_ACCEPTANCE',
+        captures={'candidate.raw':dict(**meta,sha256=digest(raw),bytes=len(raw),start_s=float(t[0]),end_s=float(t[-1]))},
+        zero_source_op_max_abs_v=op_max,signals=stats,clock_events=clock_events,
+        required_followup=['Compare both matched baseline_schematic and aoi4 native results',
+            'Generate actual PFD GDS/LEF, transistor LVS/DRC and exact new RC composition',
+            'Repeat native full-device safety and original1us acquisition gates with physical candidate',
+            'Independent PVT/timestep/CDR/jitter/full serialPHY and mainchip signoff'],
+        acquisition_accepted=False,full_phy_accepted=False)
+    save();print(result['status'],flush=True)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
+    parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4'))
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
     parser.add_argument('--diagnose-full50',action='store_true')
@@ -684,6 +802,7 @@ def main():
     controls['full50_alias']=full50_alias_controls()
     controls['full50_probe_coverage']=full50_probe_controls()
     controls['pfd_topology']=pfd_topology_controls()
+    controls['pfd_aoi_truth']=pfd_aoi_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)
@@ -746,7 +865,22 @@ def main():
         for n in ['psp103.osdi','psp103_nqs.osdi']:
             setup=setup.replace(OSDI_ROOT+'/'+n,str(out/'frontend'/n))
         assert '/home/hasanmelih/' not in relocated+setup and '/dev/shm/' not in relocated+setup
-        (out/'parent865.spice').write_bytes((out/'source/parent865.spice').read_bytes())
+        if args.pfd_candidate:
+            import importlib.util
+            assert not args.acquisition
+            generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
+            spec=importlib.util.spec_from_file_location('original_pfd_generator',generator)
+            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            reference=module.devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES})
+            parent,proof=pfd_schematic_parent((out/'source/parent865.spice').read_text(),reference,args.pfd_candidate)
+            (out/'parent865.spice').write_text(parent);result['pfd_replacement']=proof
+            result['scope']=proof['scope'];result['controls']['pfd_aoi_truth']=pfd_aoi_controls()
+            relocated=relocated.replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
+            extra=['v(xloop.pfd_candidate.'+n+')' for n in ['clearb','xup.mq','xup.mqb','xup.clkb','xup.qb','xdn.mq','xdn.mqb','xdn.clkb','xdn.qb']]
+            old_save='save '+' '.join(vectors);assert setup.count(old_save)==1
+            vectors+=extra;setup=setup.replace(old_save,'save '+' '.join(vectors))
+        else:
+            (out/'parent865.spice').write_bytes((out/'source/parent865.spice').read_bytes())
         # The reusable deck is also included: its original title must be a comment.
         (out/'circuit.cir').write_text('* '+relocated+'.control\n'+setup+'\n.endc\n.end\n')
         (out/'spinit').write_text('set num_threads=1\n')
@@ -761,6 +895,8 @@ def main():
             parent_sha256=sha(out/'parent865.spice'),native_off_flags=len(alters),vectors=vectors,
             native_stop_s=1e-6,comparison_stop_s=50e-9,snapshot_stop_s=25e-9)
         save()
+        if args.pfd_candidate:
+            run_pfd_candidate(executable,out,common,result,save,vectors);return
         if args.acquisition:
             # Native run's rawfile records output during execution; retain it even
             # if the runner deadline interrupts a row. Never pad or accept it.
@@ -828,7 +964,7 @@ def main():
         save()
         assert passed, 'Snapshot transport is not equivalent under fixed diagnostic bounds'
     except BaseException as error:
-        result.update(status='FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
+        result.update(status='FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
         save();raise
 
 if __name__=='__main__':
