@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Exact timing trace identifies the next RTL repair:**38512839026 PASS, summary
+639244698 binds actual worst baseline register to advertiser.sent_data_o and
+rejected candidate to sent_data_o/header_o, preserving mapped JSON source hashes.
+New run_cloud_advert_control.py --variant static_commit replaces dynamic class
+slice writes with three explicit fixed slices under unchanged accepted-EOP
+/reset/link priority. Parent RTL/ready/valid unchanged (not rejected factoring).
+Require full-region all-state induction refresh128/0/1, wrong-grant AND corrupted
+committed-data counterexamples, plus full buffered port tests. No candidate
+adoption/timing claim. Dispatch cloud-migration-checks advert_static_commit=true;
+map only after native proof evidence. Existing route38511490580, sizing38511840985,
+PLL38507479646 and32:1wire38496981217 remain live; no duplicate dispatch. All goals
+OPEN/cloud-only. Trace and archived failed candidates retained.
+
+
 **Timing critical endpoint tracing prepared:** readback logs show worst unplaced
 PCIe setup starts at pcie_link_up_i, then a long combinational path. Baseline
 endpoint$auto$ff.cc:337:slice$1165056; rejected control endpoint$auto$ff.cc:337:slice$1678497.

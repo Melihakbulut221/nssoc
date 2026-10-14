@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Prove advertiser valid/ready reset factoring in its complete physical region."""
+import argparse
 import hashlib
 import json
 import os
@@ -148,11 +149,35 @@ def miter():
     return '\n'.join(lines)+'\n'
 
 
+def static_commit(fc):
+    """Replace dynamic class-indexed output writes with fixed class slices.
+
+    Keep the exact accepted-EOP enable, reset/link priority and all storage.
+    Avoid a variable-width write mask on the observed sent-data setup path.
+    """
+    old='sent_header_o[frame_class*8 +: 8]<=header;\n                    sent_data_o[frame_class*12 +: 12]<=data_credit;'
+    assert fc.count(old)==1
+    rows=['case(frame_class)']
+    for bank in range(3):
+        rows += [f"                        2'd{bank}: begin",
+                 f'                            sent_header_o[{bank*8} +: 8]<=header;',
+                 f'                            sent_data_o[{bank*12} +: 12]<=data_credit;',
+                 '                        end']
+    rows += ['                        default: begin end','                    endcase']
+    return fc.replace(old,'\n'.join(rows))
+
+
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--variant',choices=('control','static_commit'),default='control')
+    args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
     record=dict(status='RUNNING',adopted=False,production_rtl_modified=False,
         scope='Remove redundant combinational local_reset from internal advertiser ready; tie advertiser link high under unchanged local_reset=rst_ni&&link_up_i&&!retrain_done_i; use stored active directly for advertiser valid. No EOP-ready refinement, latency, storage, timer or constraints change. Prove complete advertiser/arbiter/registered-egress region, every state/output including invalid payload, arbitrary link/reset/clock transitions after initial reset. Buffered port tests and wrong-grant control. Candidate only; not mapped timing or production adoption.')
+    record['variant']=args.variant
+    if args.variant=='static_commit':
+        record['scope']='Exact physical idle/credit baseline. Replace two dynamic advertiser class-indexed sent-header/data writes with three fixed slices under original EOP enable/reset/link priority. No parent ready/valid factoring, timing exception, storage or latency change. Whole-region all-state induction plus wrong-grant and wrong-commit controls; buffered ports. No timing or adoption claim.'
     def save():
         (OUT/'result.json').write_text(json.dumps(record,indent=2)+'\n')
     def execute(command,label,cwd=None):
@@ -189,13 +214,19 @@ def main():
         name='soc_pcie_buffered_flow_packets.v'
         assert pins[name]['sha256']==PARENT_SHA
         assert pins['soc_pcie_fc_tx.v']['sha256']==FC_SHA
-        original=selected[name].decode();altered=candidate(original)
-        assert altered.count(NEW)==1
-        wrong=altered.replace(NEW,'    assign advert_ready=chosen && selected_ready;')
+        original=selected[name].decode();altered=candidate(original) if args.variant=='control' else original
+        ready_line=NEW if args.variant=='control' else OLD
+        assert altered.count(ready_line)==1
+        wrong=altered.replace(ready_line,'    assign advert_ready=chosen && selected_ready;')
         fc=selected['soc_pcie_fc_tx.v'].decode()
         valid='    assign tx_valid_o=rst_ni && link_up_i && active;'
         assert fc.count(valid)==1
-        candidate_fc=fc.replace(valid,'    assign tx_valid_o=active;')
+        candidate_fc=fc.replace(valid,'    assign tx_valid_o=active;') if args.variant=='control' else static_commit(fc)
+        wrong_commit_fc=candidate_fc
+        if args.variant=='static_commit':
+            commit_line='sent_data_o[0 +: 12]<=data_credit;'
+            assert candidate_fc.count(commit_line)==1
+            wrong_commit_fc=candidate_fc.replace(commit_line,"sent_data_o[0 +: 12]<=data_credit ^ 12'h001;")
         dirs={}
         for case,text in [('baseline',original),('candidate',altered),('wrong_owner',wrong)]:
             directory=OUT/(case+'-rtl');directory.mkdir()
@@ -214,13 +245,16 @@ def main():
         record['proof_method']='Whole-region SAT temporal induction, explicit clock/asynchronous reset; all actual storage and outputs equal plus ownership invariant proved jointly, not assumed. Initial reset only; arbitrary subsequent inputs/clocks. Prior cutpoint failure retained in run 38476024561.'
         record['runtime']=subprocess.check_output([yosys,'-V'],text=True).strip()
         fc=selected['soc_pcie_fc_tx.v'].decode()
-        for case,text,refresh in [('candidate',altered,128),('candidate_refresh0',altered,0),('candidate_refresh1',altered,1),('wrong_owner',wrong,128)]:
+        proof_cases=[('candidate',altered,128),('candidate_refresh0',altered,0),('candidate_refresh1',altered,1),('wrong_owner',wrong,128)]
+        if args.variant=='static_commit':
+            proof_cases.append(('wrong_commit',altered,128))
+        for case,text,refresh in proof_cases:
             directory=OUT/('proof-'+case);directory.mkdir()
             (directory/'gold.v').write_text(strengthened_region(original,fc,'gold',refresh))
-            (directory/'gate.v').write_text(strengthened_region(text,candidate_fc,'gate',refresh))
+            (directory/'gate.v').write_text(strengthened_region(text,wrong_commit_fc if case=='wrong_commit' else candidate_fc,'gate',refresh))
             (directory/'miter.v').write_text(miter())
             (directory/'crc.v').write_bytes(selected['soc_pcie_crc16_byte.v'])
-            positive=case!='wrong_owner'
+            positive=case not in ('wrong_owner','wrong_commit')
             sat=('sat -tempinduct -seq 1 -maxsteps 12' if positive else 'sat -seq 24')
             sat+=' -set-at 1 rst_ni 0 -prove proof_ok 1 -verify -timeout 120 -show-ports -dump_vcd counterexample.vcd -dump_json counterexample.json'
             (directory/'proof.ys').write_text('\n'.join([
@@ -252,8 +286,9 @@ def main():
                 assert code!=0 and failed>0 and 'AssertionError' in (out/'simulation.log').read_text(errors='replace')
             else:
                 assert code==0 and failed==0 and result['status']=='PASS_PORT_ONLY_PCIE_RX_FLOW'
-        assert all(p['passed'] for p in record['proofs'][:3]) and record['proofs'][3]['negative_rejected']
-        record['status']='PASS_ACTUAL_ADVERTISER_CONTROL_FACTORING_REGION_AND_PORTS_NOT_TIMING'
+        assert all(p['passed'] for p in record['proofs'][:3]) and all(p['negative_rejected'] for p in record['proofs'][3:])
+        record['status']=('PASS_ACTUAL_ADVERTISER_CONTROL_FACTORING_REGION_AND_PORTS_NOT_TIMING' if args.variant=='control'
+            else 'PASS_ACTUAL_ADVERTISER_STATIC_COMMIT_REGION_AND_PORTS_NOT_TIMING')
     except BaseException as error:
         record.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
