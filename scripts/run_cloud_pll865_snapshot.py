@@ -1581,7 +1581,7 @@ def extract_pfd_parent_rc():
     import sys
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING_ACTUAL_D2_PARENT_NATIVE_RC',source_run=38623406807,qualified_pex=False,full_phy_accepted=False,main_chip_integrated=False)
+    result=dict(status='RUNNING_ACTUAL_D2_PARENT_NATIVE_RC',source_run=38626309896,qualified_pex=False,full_phy_accepted=False,main_chip_integrated=False)
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(cmd,name):
         log=out/(name+'.log')
@@ -1592,9 +1592,9 @@ def extract_pfd_parent_rc():
     save()
     try:
         packed=out/'wire-source.tar.gz'
-        fetch(BASE+'cloud-results-38623406807-1-pll-pfd-layout/pfd94-layout-38623406807-1.tar.gz',
-            '001843bd6a160f987a7e8d55351a4e6cd75f07845b6684886ec93241ca4ef241',packed)
-        assert packed.stat().st_size==2465615
+        fetch(BASE+'cloud-results-38626309896-1-pll-pfd-layout/pfd94-layout-38626309896-1.tar.gz',
+            '8ffebb42b9a959ed9c6c18ed9813873c4e92a4c3c2080945e366e677680e1e2a',packed)
+        assert packed.stat().st_size==4612750
         prefix='hw/soc/out/cloud-pfd-layout/'
         with tarfile.open(packed) as tar:
             for m in tar.getmembers():
@@ -1604,11 +1604,17 @@ def extract_pfd_parent_rc():
                 if rel=='result.json':rel='wire-source-result.json'
                 p=out/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(tar.extractfile(m).read())
         packed.unlink()
-        assert sha(out/'wire-source-result.json')=='7d2b48d8abe17db8e4b8243f9ed10de36ddcf1de7862c0cde7e53ba90ad1d512'
+        assert sha(out/'wire-source-result.json')=='608b16457b8d9500d13a7b60011aa018af1c25369093b10bb50f057679b5684d'
         source=json.loads((out/'wire-source-result.json').read_text())
         assert source['status']=='PASS_ACTUAL_D2_PARENT_WIRE_BINDING_AND_FAULTS_NOT_RC'
         binding=json.loads((out/'parent-wires/result.json').read_text())
         assert binding==source['wire_binding']
+        planes=binding['reference_plane_proof']
+        assert len(set(planes['unchanged_original_parent_anchors']))==82
+        assert planes['changed_anchor']=='A_pfd_reset'
+        assert {r['port'] for r in planes['release_child_model_matches']}=={'CLK','RESET_B','RELEASE_B','VDD','VSS'}
+        assert all(r['parent_point_dbu']==[r['child_point_dbu'][0]+2580000,r['child_point_dbu'][1]+1500000] for r in planes['release_child_model_matches'])
+        result['reference_plane_proof']=planes
         assert binding['counts']==dict(components=25,anchors=83,child_macro_pins=66,parent_pins=17)
         assert all(sha(Path(p))==h for p,h in binding['inputs'].items())
         assert all(sha(out/'parent-wires'/p)==h for p,h in binding['outputs'].items())
