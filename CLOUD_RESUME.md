@@ -7,6 +7,20 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD extraction/binding source recovery38606020769 terminalPASS.**
+448migration manifests searched;15exact source/anchor/device records recovered
+without executing archived code. Summary641099130/640488bytes SHA
+61c7bcbd29f8defec1a8565b0f0e1e110591474f9a5d42e5d077c33df543acf1.
+Contains build_devices01.py/export01.py/check_binding01.py/binding-controls01.py,
+anchors01.py/locate01.py/probe01.py/run-rc01.py/run-pipeline01.py/audit-rc01.py/
+mutations02.py/compose01.py/check-compose01.py and originaldevices/anchorsJSON.
+Next inspect these bound sources, adapt to actual235device AOI94layout and run
+fresh physicalRC with original corruption/terminal-ownership checks. Never
+reuse old255deviceRC as newgeometry. Onlyroute38598795406 remains live from
+this chain; all completed native captures/physical/LEF failures and passes
+retained. FullPHY/mainchiprouting/finaltiming OPEN; allworkcloud-only.
+
+
 **Cloud continuation 2026-10-14T17:23:18.930165+00:00; exact source-recovery handle38606020769.**
 Source329cf12816831d9005773513afdb9bae99537dc3; observedcompleted/success.
 Use pll_pfd_stage=methods. EarlierdispatchHTTP422duplicateenv was corrected
