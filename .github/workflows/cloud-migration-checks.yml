@@ -17,24 +17,17 @@ on:
       - .github/workflows/cloud-migration-checks.yml
   workflow_dispatch:
     inputs:
+      pll_pfd_stage:
+        description: PFD diagnostic, native schematic, physical layout or saved LEF verification
+        type: choice
+        default: none
+        options: [none, topology, schematic, layout, lef]
       request_id:
         type: string
       verification_tag:
         type: string
       verification_manifest:
         type: string
-      pll_pfd_lef:
-        type: boolean
-        default: false
-      pll_pfd_layout:
-        type: boolean
-        default: false
-      pll_pfd_candidate:
-        type: boolean
-        default: false
-      pll_pfd_topology:
-        type: boolean
-        default: false
       pll_full50_diagnosis:
         type: boolean
         default: false
@@ -433,13 +426,13 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-prefix "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
 
   pll-snapshot:
-    if: ${{ inputs.pll_snapshot == true || inputs.pll_acquisition == true || inputs.pll_pfd_candidate == true }}
+    if: ${{ inputs.pll_snapshot == true || inputs.pll_acquisition == true || inputs.pll_pfd_stage == 'schematic' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
-        pfd_profile: ${{ fromJSON(inputs.pll_pfd_candidate && '["baseline_schematic","aoi4"]' || '["original"]') }}
+        pfd_profile: ${{ fromJSON(inputs.pll_pfd_stage == 'schematic' && '["baseline_schematic","aoi4"]' || '["original"]') }}
     permissions:
       contents: write
     steps:
@@ -461,7 +454,7 @@ jobs:
       - name: Reject mismatched, shifted, truncated and incomplete controls
         run: python scripts/run_cloud_pll865_snapshot.py --self-test
       - name: Run requested native865 capture or snapshot experiment
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_candidate && format('--pfd-candidate {0}', matrix.pfd_profile) || inputs.pll_acquisition && '--acquisition' || '' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'schematic' && format('--pfd-candidate {0}', matrix.pfd_profile) || inputs.pll_acquisition && '--acquisition' || '' }}
       - name: Preserve actual waveforms, snapshots, diagnostics and failure receipts
         if: always()
         env:
@@ -472,7 +465,7 @@ jobs:
           tar -czf "$archive" cloud-pll-snapshot
           sha256sum "$archive" > "$archive.sha256"
           cp cloud-pll-snapshot/result.json "${archive%.tar.gz}.json"
-          python scripts/publish_cloud_results.py --group '${{ inputs.pll_pfd_candidate && format('pll-pfd-{0}', matrix.pfd_profile) || 'pll-snapshot' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+          python scripts/publish_cloud_results.py --group '${{ inputs.pll_pfd_stage == 'schematic' && format('pll-pfd-{0}', matrix.pfd_profile) || 'pll-snapshot' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
       - name: Keep native evidence if permanent publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -486,7 +479,7 @@ jobs:
           retention-days: 30
 
   pll-acquisition-review:
-    if: ${{ inputs.pll_acquisition_review == true || inputs.pll_acquisition_diagnosis == true || inputs.pll_full50_diagnosis == true || inputs.pll_pfd_topology == true }}
+    if: ${{ inputs.pll_acquisition_review == true || inputs.pll_acquisition_diagnosis == true || inputs.pll_full50_diagnosis == true || inputs.pll_pfd_stage == 'topology' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -504,7 +497,7 @@ jobs:
       - name: Review exact original one-us capture without new simulation
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_topology && '--diagnose-pfd-topology' || inputs.pll_full50_diagnosis && '--diagnose-full50' || inputs.pll_acquisition_diagnosis && '--diagnose-acquisition' || '--review-acquisition' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'topology' && '--diagnose-pfd-topology' || inputs.pll_full50_diagnosis && '--diagnose-full50' || inputs.pll_acquisition_diagnosis && '--diagnose-acquisition' || '--review-acquisition' }}
       - name: Preserve complete independent review or failure
         if: always()
         env:
@@ -514,7 +507,7 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-acquisition-review cloud-pll-acquisition-review/result.json
 
   pll-pfd-layout:
-    if: ${{ inputs.pll_pfd_layout == true || inputs.pll_pfd_lef == true }}
+    if: ${{ inputs.pll_pfd_stage == 'layout' || inputs.pll_pfd_stage == 'lef' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -537,7 +530,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Generate actual PFD94 geometry and run native physical gates
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_lef && '--pfd-lef' || '--pfd-layout' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'lef' && '--pfd-lef' || '--pfd-layout' }}
       - name: Preserve actual geometry and every failed or passed native check
         if: always()
         env:

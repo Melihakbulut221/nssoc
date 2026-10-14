@@ -7,6 +7,15 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD workflow selectors consolidated; no lost native job.**
+LEF dispatch on a6bfa3d9 was rejectedHTTP422 because workflow_dispatch exceeded
+GitHub25-input limit; no run was created. Four new PFD booleans now become
+one pll_pfd_stage choice: topology/schematic/layout/lef (defaultnone). Use
+pll_pfd_stage=lef for exact saved38604234902 interface verification. Existing
+live38602623171 and38598795406 keep their original source/inputs and must not
+be restarted. Original electrical/physical gates unchanged. Allcloud-only.
+
+
 **PFD94 physical gates PASS; exact LEF native readback prepared.**
 Run38604234902 onae8659729d0ba0c7394d28318ed13b5a42459f57 passed560DRC
 categories/zero markers, hierarchical and flat235/235deviceLVS without
