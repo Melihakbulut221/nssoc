@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Direct-supply native extraction passed; publication-only failure recovery.**
+38521648860/job115712481875 completed native extraction and all13raw corruption
+controls PASS; Actions artifact11873244348 preserves516files/7118011zipbytes,
+SHAb0243b497deb490258f86b6f7ef26d07d6fe29247e345dae5aacb9837a549e46.
+Only permanent publication failed: extract group exceeds80characters. Shortened
+that one variant's group; prepared recover_direct_extraction=true to verify
+exact original run/source/step verdict/zipSHA/all layout output hashes and
+publish original evidence. No native rerun. Dispatch recovery once; only after
+published receipt bind composition. Preserve original failed run.
+Digital provenance38521650812 summary639453860 contains exact source/recipe;
+original candidate synthesislog639454282 and pre_map.v inventory are available
+for exact register binding. No RTL-bit inference from generated FF names.
+Cloud-only/full goalsOPEN; original PLL38507479646/route38511490580 remain live.
+
+
 **New actual V8 direct-load supply layout passes native physical gates.**
 38521214968 on88399e38 summary639446885:560DRC categories/zero markers,
 strict hierarchical+flat LVS and original physical fault controls PASS.

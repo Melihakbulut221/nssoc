@@ -4,6 +4,10 @@ name: tx-layout-extraction-cloud
 on:
   workflow_dispatch:
     inputs:
+      recover_direct_extraction:
+        description: Recover exact completed run38521648860 artifact without rerunning extraction
+        type: boolean
+        default: false
       circuit_profile:
         description: Proven physical circuit to extract
         type: choice
@@ -21,6 +25,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   native-extraction:
+    if: ${{ !inputs.recover_direct_extraction }}
     strategy:
       fail-fast: false
       matrix:
@@ -66,4 +71,81 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/extraction-result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group 'extract-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'extract-v8-direct-supply' || format('extract-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant) }}' "$archive" "$archive.sha256" "$summary"
+
+  recover-direct-extraction:
+    if: inputs.recover_direct_extraction
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact source-bound passing extraction artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, io, json, os, subprocess, zipfile
+          from pathlib import Path, PurePosixPath
+          assert os.environ['GITHUB_ACTIONS']=='true'
+          repo='repos/'+os.environ['GITHUB_REPOSITORY']
+          def api(path):
+              return subprocess.check_output(['gh','api',repo+'/'+path])
+          run=json.loads(api('actions/runs/38521648860'))
+          assert run['status']=='completed' and run['conclusion']=='failure'
+          assert run['head_sha']=='007001ba7a2ff1423ceb32f41c4346b65db9f21c' and run['run_attempt']==1
+          jobs=json.loads(api('actions/runs/38521648860/jobs'))['jobs']
+          assert len(jobs)==1 and jobs[0]['id']==115712481875
+          steps={s['name']:s['conclusion'] for s in jobs[0]['steps']}
+          assert steps['Extract new geometry and check every native RC edge and thirteen fault controls']=='success'
+          assert steps['Preserve complete evidence permanently']=='failure'
+          meta=json.loads(api('actions/artifacts/11873244348'))
+          assert not meta['expired'] and meta['workflow_run']['id']==38521648860
+          data=api('actions/artifacts/11873244348/zip')
+          digest=hashlib.sha256(data).hexdigest()
+          assert digest=='b0243b497deb490258f86b6f7ef26d07d6fe29247e345dae5aacb9837a549e46'
+          assert meta['digest']=='sha256:'+digest and len(data)==7118011
+          out=Path('hw/soc/out/cloud-tx-layout-repair');out.mkdir(parents=True,exist_ok=False)
+          inventory={}
+          with zipfile.ZipFile(io.BytesIO(data)) as archive:
+              assert sum(m.file_size for m in archive.infolist())<1024**3
+              for member in archive.infolist():
+                  name=PurePosixPath(member.filename)
+                  assert not name.is_absolute() and '..' not in name.parts and member.filename not in inventory
+                  if member.is_dir():
+                      continue
+                  assert member.file_size<200000000
+                  raw=archive.read(member)
+                  target=out.joinpath(*name.parts);target.parent.mkdir(parents=True,exist_ok=True)
+                  target.write_bytes(raw)
+                  inventory[member.filename]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+          assert len(inventory)==516
+          result=json.loads((out/'extraction-result.json').read_text())
+          assert result['status']=='PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
+          assert result['variant']=='critical_buses_kelvin_low_ports_loads_shunts_series_direct'
+          assert result['circuit_profile']=='final_drive_v8' and result['adopted'] is False
+          assert result['controls']['status']=='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'
+          physical=json.loads((out/'result.json').read_text())
+          assert physical['status']=='PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
+          for name,digest in physical['layout']['outputs'].items():
+              assert hashlib.sha256((out/'layout'/name).read_bytes()).hexdigest()==digest
+          receipt=dict(status='PASS_EXACT_ORIGINAL_EXTRACTION_ARTIFACT_RECOVERED_NO_NATIVE_RERUN',source_run=38521648860,source_commit=run['head_sha'],artifact_id=11873244348,artifact_zip_sha256=meta['digest'],inventory=inventory)
+          Path('direct-extraction-recovery.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print(json.dumps({k:result[k] for k in ('status','variant','audit')},indent=2))
+          PYCODE
+      - name: Permanently preserve recovered native evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-extraction-recovered-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" hw/soc/out/cloud-tx-layout-repair
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp hw/soc/out/cloud-tx-layout-repair/extraction-result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'extract-v8-direct-recovered' "$archive" "$archive.sha256" "$summary" direct-extraction-recovery.json
