@@ -95,20 +95,31 @@ def main():
     save()
     packed = ROOT/'pll-prefix-input.tar.gz'
     try:
-        source = dict(asset_id=634832275,bytes=141989022,
+        sources = [dict(asset_id=634832275,bytes=141989022,
             sha256='6021e860444f74adae386a07f85254169bb6e75ab03fd981dff8cc52c098f6ce',
-            url=BASE+'cloud-migration-20261012-000/batch-000002.tar.gz')
-        archive = fetch(source['url'],source['sha256'],packed)
-        assert len(archive) == source['bytes']
+            url=BASE+'cloud-migration-20261012-000/batch-000002.tar.gz',
+            members=[n for n in RECORDS if n != 'native07/wave.raw']),
+            dict(asset_id=634833900,bytes=121865817,
+            sha256='867100a4e8844477ae6003fa84bb7c10801099afb335b8dd3d1b56a6a99450fb',
+            url=BASE+'cloud-migration-20261012-000/batch-000003.tar.gz',
+            members=['native07/wave.raw'])]
         selected = {}
-        with tarfile.open(fileobj=io.BytesIO(archive),mode='r:gz') as tar:
-            for name,(size,sha) in RECORDS.items():
-                member = tar.getmember(PREFIX+name)
-                assert member.isfile() and member.size == size
-                data = tar.extractfile(member).read()
-                assert len(data) == size and digest(data) == sha
-                selected[name] = data
-        packed.unlink()
+        for source in sources:
+            archive = fetch(source['url'],source['sha256'],packed)
+            assert len(archive) == source['bytes']
+            with tarfile.open(fileobj=io.BytesIO(archive),mode='r:gz') as tar:
+                for name in source['members']:
+                    size,sha = RECORDS[name]
+                    matches = [m for m in tar.getmembers() if m.name == PREFIX+name]
+                    assert len(matches) == 1, 'Missing or duplicate exact archived member'
+                    member = matches[0]
+                    assert member.isfile() and member.size == size
+                    data = tar.extractfile(member).read()
+                    assert len(data) == size and digest(data) == sha
+                    assert name not in selected
+                    selected[name] = data
+            packed.unlink()
+        assert set(selected) == set(RECORDS)
         gate=json.loads(selected['gate01.json'])
         assert all(gate[k] for k in ('functional_passed','independent_electrical_passed','native_safety_passed','dispatched'))
         native=json.loads(selected['native07/result.json'])
@@ -143,7 +154,7 @@ def main():
                    for name in ['v(vctrl)','v(up)','v(down)','v(fb)','v(reference)']}
             windows.append(dict(start_ns=start,end_ns=end,edges=stats,node_ranges=rails))
         result.update(status='COMPLETE_INTERRUPTED_PREFIX_DIAGNOSIS_NOT_ACQUISITION',
-            source=source,records={n:dict(bytes=s,sha256=h) for n,(s,h) in RECORDS.items()},
+            sources=sources,records={n:dict(bytes=s,sha256=h) for n,(s,h) in RECORDS.items()},
             native_status=native['status'],cancellation=owner,capture=capture,
             captured_start_s=float(t[0]),captured_end_s=float(t[-1]),required_stop_s=1e-6,
             missing_required_windows_ns=[[800,900],[900,1000]],windows=windows,

@@ -7,6 +7,25 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Latest correction and failures (14 October):** hosted PLL prefix38500020789
+FAILED at archive member lookup, before waveform analysis. Archive002 contains
+native07 bench/control/logs; wave.raw is in archive003(asset634833900,
+121865817bytes,SHA867100a4e8844477ae6003fa84bb7c10801099afb335b8dd3d1b56a6a99450fb).
+Both archive/member hashes remain required; reader now explicitly loads both.
+Failed receipt638933688 is retained. A corrected hosted dispatch is needed;
+never treat this data-location failure as a circuit result.
+Independent TX38496978055 has two compact electrical FAILURES:
+cold_high_res_wcs final CMmax2.062756V>2.05V;
+cold_high_hbt_wcs CMmax2.056945V>2.05V and twelve HBT Vbe>1V
+(max1.023357V). Original limits unchanged; exact summaries638905051/638908223
+are preserved in the V10series receipt. Base6/6 and hot halfstep remain only
+narrow successes; full independent PVT has NOT passed. Continue existing wire
+cases and full32:1nominal38496981217; do not duplicate jobs. Full32compact
+summary638926257 passed component screen only. Mainchip38490952579 still
+running at this checkpoint. Local workspace verified empty; no local CAD.
+FullserialPHY, chiprouting and finalsetup/hold remain OPEN.
+
+
 **Current live readback and numerical evidence:** PLL865prefix diagnostic
 38500020789 dispatched on c5e1df33127620ce8d3f54b4f4ca07ed63885ed9.
 It runs ONLY on GitHub; five corruption controls before exact native prefix
