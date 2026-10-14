@@ -220,3 +220,35 @@ def test_v10_generated_reference_keeps_all_contacts_and_device_sizes():
     assert m.audit(CORE10,NATIVE10,generated,profile='v10')['generated_sha256']
     with pytest.raises(AssertionError):m.audit(CORE10,NATIVE10,generated.replace(taps[0]+'\n',''),profile='v10')
     with pytest.raises(AssertionError):m.audit(CORE10,NATIVE10,generated.replace('nx=3','nx=4',1),profile='v10')
+
+
+CORE11=(ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v11_layout_core.spice').read_text()
+NATIVE11=(ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v11.spice').read_text()
+
+
+def test_v11_reduces_only_data_bank_current_density_without_removing_devices():
+    core10=(ROOT/'hw/soc/analog/pcie/tx_mux2_final_drive_v10_layout_core.spice').read_text()
+    assert m.audit(CORE11,NATIVE11,profile='v11')['profile']=='v11'
+    changes=[(a,b) for a,b in zip(m.parse(core10),m.parse(CORE11),strict=True) if a!=b]
+    assert len(changes)==12
+    for a,b in changes:
+        assert a[:2]==b[:2] and a[0]=='npn13g2' and a[1][1] in ('ap','an','bp','bn')
+        assert a[2]['nx']=='3' and b[2]['nx']=='8'
+        assert {k:v for k,v in a[2].items() if k!='nx'}=={k:v for k,v in b[2].items() if k!='nx'}
+    with pytest.raises(AssertionError):m.audit(CORE11,NATIVE11,profile='v10')
+    with pytest.raises(AssertionError):
+        m.audit(CORE11.replace('Nx=8','Nx=3'),NATIVE11.replace('nx=8','nx=3'),profile='v11')
+    with pytest.raises(AssertionError):
+        m.audit(CORE11.replace('Nx=6','Nx=8'),NATIVE11.replace('nx=6','nx=8'),profile='v11')
+
+
+def test_v11_generated_reference_and_body_faults_stay_strict():
+    rows=['.subckt native '+' '.join(sorted(m.PORTS))]
+    for i,(model,nodes,params) in enumerate(m.parse(CORE11)):
+        nodes[-1]='BULK'
+        rows.append('X%d '%i+' '.join(nodes)+' '+model+' '+' '.join(k+'='+v for k,v in params.items()))
+    taps=[f'RPTAP{i} sub BULK ptap1 A=4p P=8u' for i in range(27)]
+    generated='\n'.join(rows+taps+['.ends native'])
+    assert m.audit(CORE11,NATIVE11,generated,profile='v11')['generated_sha256']
+    with pytest.raises(AssertionError):m.audit(CORE11,NATIVE11,generated.replace(taps[0]+'\n',''),profile='v11')
+    with pytest.raises(AssertionError):m.audit(CORE11,NATIVE11,generated.replace('A=4p','A=6p',1),profile='v11')

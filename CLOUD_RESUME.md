@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Next actual physical repair candidate:** V11 changes ONLY12final data HBTs
+Nx3 toNx8; fourselectors stayNx6, reference/tails/resistors and27bodytaps
+unchanged. ColdWCS compact VBE remained1.02229V after26um feedback lowered
+input commonmode by~60mV, pointing to data-bank current density rather than
+only input CM. V11 is a hypothesis, not acceptance; added capacitance may
+worsen original8GT/s margin. Build fresh critical_buses_kelvin_low_ports_loads_shunts_series
+layout with circuit_profile=final_drive_v11; require all unchanged native
+DRC, strict54-device LVS, source equivalence and faults BEFORE freshRC/waves.
+Never resize oldV10 RC and call it extractedV11. Added two strict source and
+body-contact tests. V10and feedback26um rejections remain preserved.
+Cloud source/license check38504338355 passed after .inc inventory correction;
+feedback source/capture suite241tests passed. PLL38503868241 remains running
+native snapshot experiment;32:1wire38496981217 and chiproute38490952579 retain
+handles. Feedback38503692385 lastwire controls remain active; do not duplicate.
+FullserialPHY,assembledrouting and finaltiming stillOPEN; cloud-only.
+
+
 **Verified live native experiment and complete TX rejection receipt:** corrected
 PLL snapshot38503868241 onab08fd71f265faca35a31c0c754516559b0b6581 has reached
 actual native continuous/restore comparison step(job115656774245). Do NOT
