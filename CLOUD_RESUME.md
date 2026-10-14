@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Direct per-bank credit commit candidate prepared.** Rejected static case mux
+is not adopted. New bank_commit starts from exact original physical21-file
+idle/credit baseline and moves only committed header/data slices into three
+separate reset processes with direct active/ready/EOP/class enables. Original
+link reset priority/storage/latency/parent arbitration/SDC unchanged. Require
+all-state region induction(refresh128/0/1), wrong-owner/wrong-commit controls,
+and ten positive buffered port tests before paired mapping. Dispatch
+cloud-migration-checks advert_bank_commit=true once, then map advert_bank_commit
+only if proof passes. New mapping profile preserves all corners, original log
+phase metrics and candidate post-run hashes. Route38511490580/PLL38507479646
+still verified live. No other study rerun; cloud-only/full goalsOPEN.
+
+
 **Hosted review controls verified PASS.** Run38515404789/job115692961239 on
 21a533c97ccfb0c06eff97fa2e2f5f3b581fa77a passed snapshot4fault controls,
 acquisition frequency/phase/missing-edge/voltage faults and truncated/nonfinite

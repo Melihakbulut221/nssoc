@@ -167,17 +167,46 @@ def static_commit(fc):
     return fc.replace(old,'\n'.join(rows))
 
 
+
+def bank_commit(fc):
+    """Give each committed credit bank one direct EOP enable and reset path.
+
+    Same original storage and cycle; no priority/ready/valid/latency change.
+    Avoid nested vector write-mask/hold muxes in the monolithic state process.
+    """
+    reset='sent_header_o<=0;sent_data_o<=0;'
+    assert fc.count(reset)==2
+    fc=fc.replace(reset,'')
+    old='sent_header_o[frame_class*8 +: 8]<=header;\n                    sent_data_o[frame_class*12 +: 12]<=data_credit;'
+    assert fc.count(old)==1
+    fc=fc.replace(old,'// Credit banks commit in independent processes below.')
+    rows=[]
+    for bank in range(3):
+        h=f'sent_header_o[{bank*8} +: 8]'
+        d=f'sent_data_o[{bank*12} +: 12]'
+        rows += ['    always @(posedge clk_i or negedge rst_ni) begin',
+            f'        if(!rst_ni) begin {h}<=0;{d}<=0; end',
+            f'        else if(!link_up_i) begin {h}<=0;{d}<=0; end',
+            f"        else if(active && tx_ready_i && index==3'd5 && frame_class==2'd{bank}) begin",
+            f'            {h}<=header;',f'            {d}<=data_credit;',
+            '        end','    end']
+    assert fc.count('\nendmodule')==1
+    return fc.replace('\nendmodule','\n'+'\n'.join(rows)+'\nendmodule')
+
+
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--variant',choices=('control','static_commit'),default='control')
+    parser.add_argument('--variant',choices=('control','static_commit','bank_commit'),default='control')
     args=parser.parse_args(argv)
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
     record=dict(status='RUNNING',adopted=False,production_rtl_modified=False,
         scope='Remove redundant combinational local_reset from internal advertiser ready; tie advertiser link high under unchanged local_reset=rst_ni&&link_up_i&&!retrain_done_i; use stored active directly for advertiser valid. No EOP-ready refinement, latency, storage, timer or constraints change. Prove complete advertiser/arbiter/registered-egress region, every state/output including invalid payload, arbitrary link/reset/clock transitions after initial reset. Buffered port tests and wrong-grant control. Candidate only; not mapped timing or production adoption.')
     record['variant']=args.variant
-    if args.variant=='static_commit':
+    if args.variant in ('static_commit','bank_commit'):
         record['scope']='Exact physical idle/credit baseline. Replace two dynamic advertiser class-indexed sent-header/data writes with three fixed slices under original EOP enable/reset/link priority. No parent ready/valid factoring, timing exception, storage or latency change. Whole-region all-state induction plus wrong-grant and wrong-commit controls; buffered ports. No timing or adoption claim.'
+    if args.variant=='bank_commit':
+        record['scope']='Exact physical idle/credit baseline. Split committed header/data banks into independent asynchronous-reset processes with direct active/ready/EOP/class enables and unchanged link reset priority. Original storage and cycle behavior; no parent ready/valid factoring or timing constraints changed. Whole-region all-state induction, wrong-grant/wrong-commit controls and buffered ports; not adoption.'
     def save():
         (OUT/'result.json').write_text(json.dumps(record,indent=2)+'\n')
     def execute(command,label,cwd=None):
@@ -221,9 +250,9 @@ def main(argv=None):
         fc=selected['soc_pcie_fc_tx.v'].decode()
         valid='    assign tx_valid_o=rst_ni && link_up_i && active;'
         assert fc.count(valid)==1
-        candidate_fc=fc.replace(valid,'    assign tx_valid_o=active;') if args.variant=='control' else static_commit(fc)
+        candidate_fc=fc.replace(valid,'    assign tx_valid_o=active;') if args.variant=='control' else (bank_commit(fc) if args.variant=='bank_commit' else static_commit(fc))
         wrong_commit_fc=candidate_fc
-        if args.variant=='static_commit':
+        if args.variant in ('static_commit','bank_commit'):
             commit_line='sent_data_o[0 +: 12]<=data_credit;'
             assert candidate_fc.count(commit_line)==1
             wrong_commit_fc=candidate_fc.replace(commit_line,"sent_data_o[0 +: 12]<=data_credit ^ 12'h001;")
@@ -246,7 +275,7 @@ def main(argv=None):
         record['runtime']=subprocess.check_output([yosys,'-V'],text=True).strip()
         fc=selected['soc_pcie_fc_tx.v'].decode()
         proof_cases=[('candidate',altered,128),('candidate_refresh0',altered,0),('candidate_refresh1',altered,1),('wrong_owner',wrong,128)]
-        if args.variant=='static_commit':
+        if args.variant in ('static_commit','bank_commit'):
             proof_cases.append(('wrong_commit',altered,128))
         for case,text,refresh in proof_cases:
             directory=OUT/('proof-'+case);directory.mkdir()
@@ -288,7 +317,7 @@ def main(argv=None):
                 assert code==0 and failed==0 and result['status']=='PASS_PORT_ONLY_PCIE_RX_FLOW'
         assert all(p['passed'] for p in record['proofs'][:3]) and all(p['negative_rejected'] for p in record['proofs'][3:])
         record['status']=('PASS_ACTUAL_ADVERTISER_CONTROL_FACTORING_REGION_AND_PORTS_NOT_TIMING' if args.variant=='control'
-            else 'PASS_ACTUAL_ADVERTISER_STATIC_COMMIT_REGION_AND_PORTS_NOT_TIMING')
+            else ('PASS_ACTUAL_ADVERTISER_BANK_COMMIT_REGION_AND_PORTS_NOT_TIMING' if args.variant=='bank_commit' else 'PASS_ACTUAL_ADVERTISER_STATIC_COMMIT_REGION_AND_PORTS_NOT_TIMING'))
     except BaseException as error:
         record.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:

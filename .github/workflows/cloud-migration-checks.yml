@@ -47,6 +47,9 @@ on:
       ack_window:
         type: boolean
         default: false
+      advert_bank_commit:
+        type: boolean
+        default: false
       advert_static_commit:
         type: boolean
         default: false
@@ -300,7 +303,7 @@ jobs:
           cp cloud-advert-eop/result.json "${archive%.tar.gz}.json"
           python3 scripts/publish_cloud_results.py --group advert-eop "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
   advert-control:
-    if: ${{ inputs.advert_control == true || inputs.advert_static_commit == true }}
+    if: ${{ inputs.advert_control == true || inputs.advert_static_commit == true || inputs.advert_bank_commit == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
@@ -324,7 +327,7 @@ jobs:
       - name: Prove actual reset factoring and all buffered state and port controls
         run: |
           hw/.venv/bin/python -m py_compile scripts/run_cloud_advert_control.py
-          hw/.venv/bin/python scripts/run_cloud_advert_control.py --variant '${{ inputs.advert_static_commit == true && 'static_commit' || 'control' }}'
+          hw/.venv/bin/python scripts/run_cloud_advert_control.py --variant '${{ inputs.advert_bank_commit == true && 'bank_commit' || inputs.advert_static_commit == true && 'static_commit' || 'control' }}'
       - name: Preserve full passing and failing candidate evidence
         if: always()
         env:
