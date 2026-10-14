@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Current live readback and numerical evidence:** PLL865prefix diagnostic
+38500020789 dispatched on c5e1df33127620ce8d3f54b4f4ca07ed63885ed9.
+It runs ONLY on GitHub; five corruption controls before exact native prefix
+analysis. Source/license tests run in the same workflow; push check38499990970
+has the same source. Read its final summary before claiming any diagnosis.
+Hot0.25ps TX38496975171 completed BOTHcasesPASS: compact232.880883552mV,
+wire103.821631612mV versus original.5ps232.866874337/103.786226760mV.
+Original768bit samples, device/interface gates, no diagnostics. Differences
+are worst-margin comparisons, NOT whole-wave convergence/PHY acceptance.
+Exact summaries638864869/638899224 and archive/raw hashes are appended as
+`hot_half_maxstep_control` to the V10series composition receipt.
+IndependentHBT/resistor38496978055 and full32:1nominal38496981217 retain their
+original handles. Main-chip halo38490952579 also remains native-running.
+Do not duplicate these jobs; inspect native engineering results individually.
+All three full-goal scopes remain OPEN; local workspace remains empty.
+
+
 **Verified latest PLL resume point and hosted diagnostic:**865PBUF10 finite50ns
 native01 PASS, independent functional/electrical PASS, zero-source startup and
 clean diagnostics. Immutable batch007(asset634874106,669884bytes,
