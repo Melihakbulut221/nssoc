@@ -12,12 +12,13 @@ on:
       source_profile:
         description: Exact failed native route to diagnose
         type: choice
-        options: [baseline, local_optimize, reserved_m5, local_optimize_buffers, local_data_endpoints, critical30_buffers, seed13_buffers]
+        options: [baseline, local_optimize, reserved_m5, local_optimize_buffers, local_data_endpoints, critical30_buffers, seed13_buffers, halo1_seed13_buffers]
         default: baseline
 permissions:
   contents: read
 jobs:
   trace:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     permissions:

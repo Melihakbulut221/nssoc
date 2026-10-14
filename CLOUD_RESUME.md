@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Mainchip route38490952579 is now TERMINAL FAIL, not live:** halo1/seed13
+finished native73/100 with GRT-0230 non-improvement then GRT-0116 congestion;
+155totaloverflow (M2=1,M3=14,M4=22,M5=104,TM1=11,TM2=3). Not a timeout.
+Compared with seed13 baseline132overflow this halo candidate is rejected.
+Exact summary639128927,archive639128646 (162878296bytes), failure ODB/guide/log
+and congestion hashes retained under halo1_terminal in seed13 failure receipt.
+Next action: dispatch newer-congestion-probe-cloud source_profile=
+halo1_seed13_buffers, which restores exact failed ODB/report and resolves every
+marker/endpoints/macro pins before another repair. Do not rerun same route,
+inflate capacity, remove OBS or waive overflow. No detailed routing acceptance.
+Timing control mapping38509087565 and V11inputR38508878110 are live; PLL1us
+38507479646 and original32:1wire38496981217 retain existing live handles.
+Other analog cases indexed in V11 receipt; all full goals remainOPEN/cloud-only.
+
+
 **Verified new timing proof; native comparison is now dispatched:** control
 factoring38508286832 PASS three full-state region induction cases(refresh128/0/1)
 and10positive ports; wrong-grant control rejected in formal and all5port tests.
