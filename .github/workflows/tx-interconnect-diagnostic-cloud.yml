@@ -7,7 +7,7 @@ on:
       study:
         description: Frozen older component or current source-bound physical tree
         type: choice
-        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area]
+        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area, v11_nx4_wire_rc]
         default: original_component
       cases:
         description: Run all cases or only failed sensitivity preparations
@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        interconnect: ${{ fromJSON(inputs.study == 'v11_hot_low_inputs' && '["low_r_inputs"]' || inputs.cases == 'mutations_only' && '["low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]' || '["actual","low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]') }}
+        interconnect: ${{ fromJSON(inputs.study == 'v11_nx4_wire_rc' && '["low_r","low_r_internal","low_r_outputs"]' || inputs.study == 'v11_hot_low_inputs' && '["low_r_inputs"]' || inputs.cases == 'mutations_only' && '["low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]' || '["actual","low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]') }}
     permissions:
       contents: write
     steps:
@@ -60,8 +60,14 @@ jobs:
       - name: Diagnose V11 hot-low final input metal contribution without physical acceptance
         if: inputs.study == 'v11_hot_low_inputs'
         run: python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition hot_low --fault none --prestage physical_wire --physical-profile cascade158_kelvin_supply_direct --physical-final physical_wire --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --diagnostic-final-r inputs
+      - name: Locate remaining Nx4 hot-wire failure with unchanged C and source bits
+        if: inputs.study == 'v11_nx4_wire_rc'
+        run: |
+          class='${{ matrix.interconnect }}'
+          if [ "$class" = low_r ]; then class=all; else class="${class#low_r_}"; fi
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition hot_low --fault none --prestage physical_wire --physical-profile cascade158_kelvin_supply_direct --physical-final physical_wire --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias output_feedback --output-bias native_res --diagnostic-final-nx 4 --diagnostic-final-r "$class"
       - name: Preserve current tree sensitivity captures and all failures
-        if: always() && (inputs.study == 'dense_wide_tree' || inputs.study == 'v11_hot_low_inputs')
+        if: always() && (inputs.study == 'dense_wide_tree' || inputs.study == 'v11_hot_low_inputs' || inputs.study == 'v11_nx4_wire_rc')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

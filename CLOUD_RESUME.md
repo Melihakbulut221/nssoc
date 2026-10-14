@@ -8,6 +8,23 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Static credit commit proof PASS / paired mapping38513559584 dispatched:**
+proof38513261561 summary639256379 passes three all-state region proofs(refresh
+128/0/1), wrong-grant and corrupt-commit counterexamples,10positive ports and
+5expectednegative failures. Parent hash unchanged459d69dd, candidateFC91d54c37.
+Mapping baseline/physical_idle_credit_static on0dd9c255 is active; do not adopt
+before actualtiming. Area study38511840985 all8terminal: fourcoldcompactPASS,
+fourhotwireFAIL, allHBTboundsPASS. Nx4 is least bad hot bitmargin0.063875817V,
+64sub100mV samples, finalCMmin1.777817100V. No sizing candidate accepted. All
+summary hashes/reviews retained in V11 receipt. Next diagnostic prepared:
+tx-interconnect-diagnostic-cloud study=v11_nx4_wire_rc compares artificial1percent
+all/internal/output final metalR, retaining allC/upstreamRC and originalbits.
+Always diagnostic; never use substitutedR as physicalfix. Dispatch once to
+identify whether real final geometry repair can address remaining hot failure.
+Route38511490580,PLL38507479646 and32:1wire38496981217 retain existing live handles.
+Cloud-only; fullPHY/routedmainchip/finaltimingOPEN.
+
+
 **Static-commit proof dispatched38513261561** on8a51acdd; do not duplicate.
 Paired map option advert_static_commit prepared, but dispatch only after proof:
 physical_idle_credit vs physical_idle_credit_static, exact21sourcebindings,

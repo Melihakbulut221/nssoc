@@ -544,7 +544,10 @@ def main():
     parser.add_argument('--diagnostic-final-nx',type=int,choices=(0,4,5,6,8),default=0)
     args=parser.parse_args()
     if args.diagnostic_final_nx:
-        assert args.diagnostic_final_r=='actual' and args.streams==4 and args.fault=='none'
+        assert args.streams==4 and args.fault=='none'
+        if args.diagnostic_final_r!='actual':
+            assert args.diagnostic_final_nx==4 and args.condition=='hot_low'
+            assert args.diagnostic_final_r in ('all','internal','outputs')
         assert args.physical_profile=='cascade158_kelvin_supply_direct'
         assert args.physical_final_profile=='v11_kelvin_low_ports_loads_shunts_series'
         assert args.prestage==args.physical_final and args.physical_final in ('physical_compact','physical_wire')
@@ -560,7 +563,12 @@ def main():
                    args.physical_final_profile == 'v11_kelvin_low_ports_loads_shunts_series' and
                    args.condition == 'hot_low' and args.diagnostic_final_r == 'inputs' and
                    args.pre_bias == 'native_res' and args.clock_reference == 'stiff65')
-        assert legacy or v11_hot, 'Only explicit source-bound diagnostic pairs are allowed'
+        v11_nx4=(args.physical_profile=='cascade158_kelvin_supply_direct' and
+            args.physical_final_profile=='v11_kelvin_low_ports_loads_shunts_series' and
+            args.diagnostic_final_nx==4 and args.condition=='hot_low' and
+            args.pre_bias=='output_feedback' and args.clock_reference=='stiff65' and
+            args.diagnostic_final_r in ('all','internal','outputs'))
+        assert legacy or v11_hot or v11_nx4, 'Only explicit source-bound diagnostic pairs are allowed'
     assert args.physical_profile=='baseline' or args.prestage.startswith('physical_')
     assert args.physical_final_profile=='power_trunks' or args.physical_final!='off'
     if args.prestage=='divider14':
@@ -662,14 +670,13 @@ def main():
         result['native_off_flags_count']=len(flags)
         result['status']='COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE'
         result['component_screen_passed']=result['review']['all_engineering_gates_passed'] and not result['diagnostics']
-        if args.diagnostic_final_r != 'actual':
-            result['diagnostic_screen_passed'] = result['component_screen_passed']
-            result['component_screen_passed'] = False
-            result['status'] = 'COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
-        if args.diagnostic_final_nx:
+        if args.diagnostic_final_r != 'actual' or args.diagnostic_final_nx:
             result['diagnostic_screen_passed']=result['component_screen_passed']
             result['component_screen_passed']=False
-            result['status']='COMPLETE_DEVICE_AREA_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
+            result['status']=('COMPLETE_DEVICE_AND_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
+                if args.diagnostic_final_r!='actual' and args.diagnostic_final_nx else
+                'COMPLETE_DEVICE_AREA_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE' if args.diagnostic_final_nx else
+                'COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE')
         if args.fault!='none':
             result['fault_rejected_by_original_bits']=not result['review']['signals']['passed']
             assert result['fault_rejected_by_original_bits'], 'Actual stage fault escaped source-bit screen'
