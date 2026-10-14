@@ -11,6 +11,11 @@ on:
       - docs/evidence/cloud-newer-postcts-input-20261013.json
   workflow_dispatch:
     inputs:
+      router_solver:
+        description: Exact same-placement native solver comparison, experimental CUGR is not signoff
+        type: choice
+        options: [fast_route, cugr]
+        default: fast_route
       grid_profile:
         description: Guide offset fixed at zero; frozen runtime does not shift the routing partition
         type: choice
@@ -70,11 +75,13 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Check controller syntax before native replay
-        run: python3 -m py_compile scripts/route_cloud_newer_postcts.py scripts/repair_cloud_macro_channels.py
+        run: |
+          python3 -m py_compile scripts/route_cloud_newer_postcts.py scripts/repair_cloud_macro_channels.py
+          python3 scripts/route_cloud_newer_postcts.py --self-test
       - name: Reproduce exact newer postCTS then route all domains
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/route_cloud_newer_postcts.py --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}' --routing-seed '${{ inputs.routing_seed || '0' }}' --grid-profile '${{ inputs.grid_profile || 'baseline' }}'
+        run: python3 scripts/route_cloud_newer_postcts.py --router-solver '${{ inputs.router_solver || 'fast_route' }}' --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}' --routing-seed '${{ inputs.routing_seed || '0' }}' --grid-profile '${{ inputs.grid_profile || 'baseline' }}'
       - name: Preserve complete source-bound routing and failures
         if: always()
         env:

@@ -5,6 +5,7 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -45,6 +46,42 @@ def execute(script, label):
     return text
 
 
+def cugr_gate(text):
+    """Independent fail-closed checks: CUGR's printed wire overflow is rounded.
+
+    Also require zero overflowing nets and nonnegative floating resource,
+    then the original full routed-net count. This is an experimental guide
+    screen only; detailed routing/DRC, connectivity and extracted STA remain.
+    """
+    nets = re.findall(r'(?m)^(\d+) / (\d+) nets have overflow\.$', text)
+    wire = re.findall(r'(?m)^total wire overflow:\s+(\S+)\s*$', text)
+    resource = re.findall(r'(?m)^min resource:\s+(\S+)\s*$', text)
+    routed = re.findall(r'\[INFO GRT-0014\] Routed nets: (\d+)', text)
+    assert nets and len(wire)==1 and len(resource)==1 and len(routed)==1, 'Incomplete CUGR report'
+    bad, total = map(int,nets[-1]); overflow=float(wire[0]); minimum=float(resource[0])
+    assert total>0 and bad==0, 'CUGR nets still overflow'
+    assert math.isfinite(overflow) and overflow==0, 'CUGR wire overflow'
+    assert math.isfinite(minimum) and minimum>=0, 'CUGR fractional resource deficit'
+    assert int(routed[0])==113556, 'Original full-chip routed-net coverage changed'
+    return dict(overflowing_nets=bad,solver_nets=total,total_wire_overflow=overflow,
+        minimum_resource=minimum,routed_nets=int(routed[0]),
+        scope='Experimental CUGR native guide screen, not detailed-route/signoff acceptance')
+
+
+def self_test():
+    good='0 / 113556 nets have overflow.\ntotal wire overflow:   0\nmin resource: 0\n[INFO GRT-0014] Routed nets: 113556\n'
+    assert cugr_gate(good)['routed_nets']==113556
+    faults=[good.replace('0 /','1 /'),good.replace('overflow:   0','overflow:   1'),
+        good.replace('resource: 0','resource: -0.000001'),good.replace('resource: 0','resource: nan'),
+        good.replace('overflow:   0','overflow:   inf'),good.replace('nets: 113556','nets: 113555')]
+    faults += ['\n'.join(good.splitlines()[:i]+good.splitlines()[i+1:])+'\n' for i in range(4)]
+    for bad in faults:
+        try: cugr_gate(bad)
+        except (AssertionError,ValueError): continue
+        raise AssertionError('Incomplete/overflowing CUGR control accepted')
+    print(json.dumps(dict(status='PASS_CUGR_FAIL_CLOSED_CONTROLS',positive=1,negative=len(faults))))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline'], default='baseline')
@@ -53,7 +90,16 @@ def main():
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5','halo1'], default='baseline')
     parser.add_argument('--critical-nets-percentage', type=int, choices=[0,30], default=0)
     parser.add_argument('--routing-seed', type=int, choices=[0,13], default=0)
+    parser.add_argument('--router-solver', choices=['fast_route','cugr'], default='fast_route')
+    parser.add_argument('--self-test', action='store_true')
     args = parser.parse_args()
+    if args.self_test:
+        self_test(); return
+    if args.router_solver=='cugr':
+        assert args.placement_profile=='local_optimize_buffers' and args.ethernet_hold_depth==2
+        assert args.macro_routing_profile=='baseline' and args.routing_seed==13
+        assert args.critical_nets_percentage==0 and args.grid_profile=='baseline'
+        self_test()
     if args.routing_seed:
         assert args.critical_nets_percentage == 0
         assert args.placement_profile in ('local_optimize_buffers','routability_data')
@@ -80,7 +126,7 @@ def main():
         ethernet_hold_depth=args.ethernet_hold_depth,
         macro_routing_profile=args.macro_routing_profile,
         critical_nets_percentage=args.critical_nets_percentage, routing_seed=args.routing_seed,
-        routing_capacity_perturbation_percentage=0,
+        routing_capacity_perturbation_percentage=0, router_solver=args.router_solver,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
     def save():
         (OUT / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
@@ -332,6 +378,13 @@ def main():
             commands += ['help set_global_routing_random',
                          f'set_global_routing_random -seed {args.routing_seed} -capacities_perturbation_percentage 0',
                          'puts NSSOC_NET_ORDER_ONLY_ZERO_CAPACITY_PERTURBATION']
+        solver_option = ' -use_cugr' if args.router_solver=='cugr' else ''
+        if solver_option:
+            result['solver_comparison']=dict(baseline_run=38448901835,
+                source='https://github.com/The-OpenROAD-Project/OpenROAD/tree/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/grt',
+                experimental_not_production=True, unchanged_layer_adjustment=rc['adjustment'],
+                scope='Exact132overflow placement, all nets and original SDC/RC. Native3D alternative; no capacity inflation, no regional adjustments ignored, no constraint waiver. Require independent zero-overflow/coverage checks; detailed route and extraction remain.')
+            save()
         priority_option = ''
         if args.critical_nets_percentage:
             commands += ['estimate_parasitics -placement',
@@ -340,7 +393,7 @@ def main():
         commands += [
                      f'set route_origin [list [expr {{round({origin_um[0]} * $route_dbu)}}] [expr {{round({origin_um[1]} * $route_dbu)}}]]',
                      'puts "NSSOC_GUIDE_OFFSET_DBU_FIXED_ZERO $route_origin"',
-                     f'if {{[catch {{global_route{priority_option} -grid_origin $route_origin -congestion_iterations 100 -congestion_report_file {{{OUT / "congestion.rpt"}}} -verbose}} route_error]}} {{',
+                     f'if {{[catch {{global_route{solver_option}{priority_option} -grid_origin $route_origin -congestion_iterations 100 -congestion_report_file {{{OUT / "congestion.rpt"}}} -verbose}} route_error]}} {{',
                      f'  write_db {{{OUT / "failed-global.odb"}}}',
                      f'  catch {{write_guides {{{OUT / "failed-route.guide"}}}}}',
                      '  puts stderr "NSSOC_FAILED_ROUTE_PARTIAL_STATE_ONLY $route_error"',
@@ -355,12 +408,15 @@ def main():
         route_script = '\n'.join(commands) + '\n'
         assert '-allow_congestion' not in route_script and '-infinite_cap' not in route_script
         routed = execute(route_script, 'global-route')
+        if args.router_solver=='cugr':
+            result['cugr_gate']=cugr_gate(routed)
         result['global_route'] = parse_phases(routed, 'CORNER')
         assert result['global_route'].keys() == replay.keys()
         for phase in replay:
             assert result['global_route'][phase]['groups'].keys() == replay[phase]['groups'].keys()
         assert all(sha(Path(p)) == digest for p, digest in protected.items())
-        result['status'] = 'COMPLETE_NEWER_CHIP_GLOBAL_ROUTE_REQUIRES_DETAILED_ROUTING_AND_EXTRACTION'
+        result['status'] = ('COMPLETE_EXPERIMENTAL_CUGR_GUIDES_REQUIRES_DETAILED_ROUTE_CONNECTIVITY_AND_EXTRACTION'
+            if args.router_solver=='cugr' else 'COMPLETE_NEWER_CHIP_GLOBAL_ROUTE_REQUIRES_DETAILED_ROUTING_AND_EXTRACTION')
         result['outputs'] = {p.name: sha(p) for p in OUT.iterdir() if p.is_file() and p.name != 'result.json'}
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR', error=repr(error))

@@ -8,6 +8,24 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Next physical candidate: exact-placement native3D solver comparison.**
+Marker diagnosis640359444 confirms persistent Ethernet SRAM4/5 region congestion;
+large combinational spread did not fix it (138vs132overflow). Frozen OpenROAD
+CUGR source applies original dbTechLayer adjustments and native obstructions.
+Prepared router_solver=cugr on exactbaseline132overflow placement:
+placement_profile=local_optimize_buffers, ethernet_hold_depth=2,
+macro_routing_profile=baseline, routing_seed=13, critical_nets_percentage=0.
+Do not combine this with new placement or relaxed capacity/SDC/RC. Native CUGR
+is explicitly experimental; original report controls require zero overflowing
+nets, zero wire overflow, nonnegative floating minresource and original113556
+routed nets. Missing/rounded fractional deficits must reject;10negativecontrols.
+Dispatch newer-postcts-cloud once with those inputs. Even a passing guide screen
+requires detailed routing, independent connectivity/DRC and extracted timing.
+No adoption or production claim. Previous goal turn made concrete progress by
+completing original PLL lock review and exact congestion diagnosis; no blocker.
+All full product goals remainOPEN and execution remainscloud-only.
+
+
 **Heartbeat final checkpoint: congestion diagnosis terminal, no old live jobs.**
 38566051147/job115858892640 PASS native geometry diagnosis and orientation tests.
 Summary640359444 SHA c3978c991f6e2e2e84d14c91b4693325deb432857b6da17e8410a5975f2526da
