@@ -7,6 +7,24 @@
 
 ### Newest state — supersedes every older live statement below
 
+**V11 composed native device/RC is ready for loaded simulation:**38506404916
+passed binding on6be7d443. Summary639089844,archive639089513; immutable receipt
+pcie-final-v11-kelvin-low-ports-loads-shunts-series-composition-20261014.json.
+Added exact v11_kelvin_low_ports_loads_shunts_series profile to loaded-tree
+runner/workflow and mismatched-archive/emitter-count controls. Dispatch matched
+4stream nominal,temperature_voltage and failing_corners using cascade158
+kelvin_supply_direct,clock_reference=stiff65,pre_bias=native_res first. This
+isolates new final devices from the rejected feedback topology; do not accept
+without actual original-bit/whole-device waveforms. No old RC scaling.
+Feedback32um38505258788 TERMINAL: all8 actual summaries/hashes retained in V10
+receipt output_feedback_32um_rejection_20261014. Candidate rejected: hot wire
+CM and selector VCE failures plus cold compact VBE and cold wire selectorVCE.
+Publication repair38506144487 now stores results in per-run releases; older
+baseline topmetal/critical variants fail RC fault controls, not asset limit.
+PLL38503868241,32:1wire38496981217,mainchiproute38490952579 retain live handles.
+All work hosted; local empty; fullPHY,mainchiprouting,finalsetup/hold OPEN.
+
+
 **V11 actual RC passed and is now bound for native composition:** hosted run
 38506058339 passed real graph validation and 13 corruption controls. Exact
 archive639080897 and summary639081033 are recorded with SHA256 in composition

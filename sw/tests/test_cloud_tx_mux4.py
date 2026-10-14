@@ -436,9 +436,9 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
 
 
-@pytest.mark.parametrize('version,geometry', [('v6','kelvin_dense_wide'),('v7','kelvin_dense_wide'),('v8','kelvin_dense_wide'),('v8','kelvin_low_critical'),('v8','kelvin_low_selects'),('v9','kelvin_low_critical'),('v10','kelvin_low_critical')])
-@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9', 'final_drive_v10'])
-@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_kelvin_low_selects', 'critical_buses_power_trunks_vias'])
+@pytest.mark.parametrize('version,geometry', [('v6','kelvin_dense_wide'),('v7','kelvin_dense_wide'),('v8','kelvin_dense_wide'),('v8','kelvin_low_critical'),('v8','kelvin_low_selects'),('v9','kelvin_low_critical'),('v10','kelvin_low_critical'),('v11','kelvin_low_ports_loads_shunts_series')])
+@pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9', 'final_drive_v10', 'final_drive_v11'])
+@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_kelvin_low_selects', 'critical_buses_power_trunks_vias', 'critical_buses_kelvin_low_ports_loads_shunts_series'])
 def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, geometry, reported_variant):
     import hashlib
     import io
@@ -449,7 +449,8 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
     profile = mux4.physical_final_circuit_profile(version+'_'+geometry)
     assert profile == 'final_drive_'+version
     assert mux4.physical_final_circuit_profile('kelvin_dense_wide') == 'final_drive_v5'
-    assert mux4.physical_final_spec_path(version+'_'+geometry).name == 'pcie-final-'+version+'-'+geometry.replace('_','-')+'-composition-20261013.json'
+    date = '20261014' if version == 'v11' else '20261013'
+    assert mux4.physical_final_spec_path(version+'_'+geometry).name == 'pcie-final-'+version+'-'+geometry.replace('_','-')+'-composition-'+date+'.json'
     with pytest.raises(AssertionError):
         mux4.physical_final_circuit_profile('unproven_geometry')
     model = (ROOT/f'hw/soc/analog/pcie/tx_mux54_passive_drive_{version}.spice').read_bytes()
@@ -477,7 +478,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
         assert bound.read_bytes() == model
 
 
-@pytest.mark.parametrize('version,changed_count,expected_nx', [('v6',16,{1:1,4:16,8:2}),('v7',12,{1:1,4:12,8:6}),('v8',16,{1:1,4:12,6:4,8:2}),('v9',16,{1:1,2:12,6:4,8:2}),('v10',16,{1:1,3:12,6:4,8:2})])
+@pytest.mark.parametrize('version,changed_count,expected_nx', [('v6',16,{1:1,4:16,8:2}),('v7',12,{1:1,4:12,8:6}),('v8',16,{1:1,4:12,6:4,8:2}),('v9',16,{1:1,2:12,6:4,8:2}),('v10',16,{1:1,3:12,6:4,8:2}),('v11',4,{1:1,6:4,8:14})])
 def test_final_override_keeps_original_oracle_and_accounts_for_actual_emitter_count(tmp_path,version,changed_count,expected_nx):
     from collections import Counter
     (tmp_path/'frontend').mkdir()
@@ -499,7 +500,7 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     assert len(changed) == changed_count and all(name.startswith('xmux.') for name in changed)
     for name in changed:
         assert old['hbt'][name]['nx'] == 8
-        expected = 6 if version in ('v8','v9','v10') and new['hbt'][name]['terminals'][1] in ('sp','sn') else {'v9':2,'v10':3}.get(version,4)
+        expected = 6 if version in ('v8','v9','v10','v11') and new['hbt'][name]['terminals'][1] in ('sp','sn') else {'v9':2,'v10':3,'v11':8}.get(version,4)
         assert new['hbt'][name]['nx'] == expected
         assert {k:v for k,v in old['hbt'][name].items() if k != 'nx'} == {k:v for k,v in new['hbt'][name].items() if k != 'nx'}
     assert Counter(row['nx'] for name,row in new['hbt'].items() if name.startswith('xmux.')) == expected_nx
