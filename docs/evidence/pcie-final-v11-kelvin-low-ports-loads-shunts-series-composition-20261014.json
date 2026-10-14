@@ -57953,5 +57953,28 @@
         }
       }
     }
+  },
+  "feedback_temperature_compensation_20261014": {
+    "run": 38516411596,
+    "source_commit": "ddf1dad15b317ee7bf3513a2ad01bdc53062bd6a",
+    "status": "RUNNING_FOUR_FIXED_GEOMETRY_NATIVE_CASES",
+    "conditions": [
+      "hot_low",
+      "hot_low_res_bcs",
+      "cold_high_hbt_wcs",
+      "cold_high_res_wcs"
+    ],
+    "data_emitters_nx": 4,
+    "artificial_metal_resistance_used": false,
+    "prestage_profile": "cascade158_kelvin_supply_direct",
+    "final_profile": "v11_kelvin_low_ports_loads_shunts_series",
+    "pre_bias": "output_feedback_tc",
+    "subcircuit_source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+    "subcircuit_source_sha256": "4641a20a7ea2175e1ba4bcfa27eef2fcbf399cb2e12bd30f9c71016a67bd3eb8",
+    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html",
+    "hypothesis": "Actual Rsil positive temperature coefficient increases hot feedback resistance relative to cold. Fixed100um/1um Rsil plus26.5um/2um Rppd per output branch; original native PDK decides, no linear substituted resistor or per-corner retuning. Original input bits, phase and electrical limits unchanged.",
+    "physical_accepted": false,
+    "feed_layout_and_rc_verified": false,
+    "resistor_contact_current_qualified": false
   }
 }

@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Live exact followups — no duplicate dispatch:** bank-commit mapping38516179454
+on94fddbcb, jobs115695382300(candidate)/115695382415(baseline), in progress.
+Native fixed-temperature-feedback study38516411596 onddf1dad1:
+hot_low115696109323, hot_low_res_bcs115696109823,
+cold_high_hbt_wcs115696109657, cold_high_res_wcs115696119210. Four native
+cases, no artificialR and no thresholds changed; geometry is a schematic
+candidate, not adopted layout. Every job runs source-bit/graph controls before
+SPICE. Original PLL38507479646 and route38511490580 confirmed live; do not
+restart. Structured proof/result bindings and next_actions updated. Local
+workspace verified empty. This turn progress: new proven digital candidate,
+paired timing dispatch, process-sourced analog compensation implementation
+and four hosted native dispatches. Full goals OPEN; no genuine blocker.
+
+
 **Bank-commit proof PASS and paired mapping active38516179454.** Proof38515965607
 summary639323020 passes3all-state induction/2counterexample controls/10positive
 ports; FCcandidate0674e68fb0e83f20cdfbaf6ed87e8eb885040a245caa24f69c946c4e414185c4.
