@@ -1566,6 +1566,89 @@ assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
     save();print(result['status'],flush=True)
 
 
+def inspect_pfd_parent_interface():
+    """Recover the exact real PLL parent and inspect replacement geometry natively."""
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted parent geometry only'
+    run_pfd_lef('aoi4_d2')
+    out=ROOT/'hw/soc/out/cloud-pfd-layout'
+    result=json.loads((out/'result.json').read_text())
+    result['status']='RUNNING_D2_PARENT_GEOMETRY_INTERFACE'
+    result['scope']='Read-only exact parent23 and D2 native GDS comparison. No parent geometry replacement, electrical acceptance, shared-bulk binding or PHY closure.'
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        parent=out/'parent';parent.mkdir()
+        packed=out/'parent-source.tar.gz'
+        fetch(BASE+'cloud-migration-20261012-000/batch-000001.tar.gz',
+            '213a563da91f2b31ba6998a5d14dbfd25972255d7941e566d8f33f7be3b500e1',packed)
+        assert packed.stat().st_size==263318296
+        wanted={
+            'nssoc_pll865_rhi140_pbuf10_development_v1.gds':(805654,'de4c0ee0a24da966de32e2d10bc75818b5c51c18f34713f5b033418b42460be3'),
+            'result.json':(115421,'7ef831a3e059e94d95ea8e28da4d621de720591b5df30fef6f542fcad70a2697'),
+            'schematic.cir':(46553,'3def78b53af0d639fc10f6cc356f4a7c48f8cd20a524237356821aa5fbf5b86f')}
+        with tarfile.open(packed) as tar:
+            for name,(size,h) in wanted.items():
+                target='hw/soc/out/pcie-feedback-pbuf10-20261012/parent23/'+name
+                items=[m for m in tar.getmembers() if m.name==target]
+                assert len(items)==1 and items[0].isfile()
+                raw=tar.extractfile(items[0]).read();assert len(raw)==size and digest(raw)==h
+                (parent/name).write_bytes(raw)
+        packed.unlink()
+        protected={str(p):sha(p) for folder in (parent,out/'layout') for p in folder.iterdir() if p.is_file()}
+        native=out/'inspect-parent.py'
+        native.write_text("""from pathlib import Path
+import pya,json,re
+O=Path(__file__).resolve().parent
+P=O/'parent';C=O/'layout'
+meta=json.loads((P/'result.json').read_text());candidate=json.loads((C/'result.json').read_text())
+L=pya.Layout();L.read(str(P/'nssoc_pll865_rhi140_pbuf10_development_v1.gds'))
+T=L.cell('nssoc_pll865_rhi140_pbuf10_development_v1');assert T is not None
+G=pya.Layout();G.read(str(C/'nssoc_pfd94_aoi4_d2_layout_v1.gds'))
+N=G.cell('nssoc_pfd94_aoi4_d2_layout_v1');assert N is not None
+assert str(N.dbbox())==candidate['bbox_um'] and G.dbu==L.dbu
+pfd=[i for i in T.each_inst() if 'pfd' in i.cell.name.lower()];assert len(pfd)==1
+I=pfd[0]
+def labels(layout,cell):
+ return [dict(layer=str(layout.get_info(li)),text=s.text.string,position=str(s.text.trans))
+  for li in layout.layer_indices() for s in cell.each_shape(li) if s.is_text()]
+reference=(P/'schematic.cir').read_text()
+instance_lines=[l for l in reference.splitlines() if l.lower().startswith('x') and I.cell.name in l.split()]
+assert len(instance_lines)==1
+subckts=[l for l in reference.splitlines() if l.lower().startswith('.subckt '+I.cell.name.lower()+' ')]
+assert len(subckts)==1
+port_order=subckts[0].split()[2:];nodes=instance_lines[0].split()[1:-1]
+assert len(nodes)==len(port_order)
+report=dict(status='PASS_NATIVE_D2_PARENT_INTERFACE_INVENTORY_NOT_INTEGRATION',parent_top=T.name,
+ parent_bbox_um=str(T.dbbox()),parent_metadata=meta,old_pfd_top=I.cell.name,
+ old_pfd_local_bbox_um=str(I.cell.dbbox()),old_pfd_placed_bbox_um=str(I.dbbox()),
+ transform=str(I.dcplx_trans),candidate_bbox_um=str(N.dbbox()),
+ candidate_at_original_transform_bbox_um=str(I.dcplx_trans*N.dbbox()),
+ same_local_bbox=I.cell.dbbox()==N.dbbox(),old_pfd_direct_labels=labels(L,I.cell),
+ candidate_direct_labels=labels(G,N),candidate_ports=candidate['ports'],
+ original_reference_pin_order=port_order,original_parent_node_by_pin=dict(zip(port_order,nodes)),
+ original_reference_instance=instance_lines[0],
+ other_parent_instances=[dict(cell=i.cell.name,transform=str(i.dcplx_trans),bbox_um=str(i.dbbox())) for i in T.each_inst() if i.cell.name!=I.cell.name],
+ unchanged_inputs=True,geometry_replaced=False,shared_bulk_bound=False,qualified_pex=False,mainchip_integrated=False)
+(O/'parent-interface.json').write_text(json.dumps(report,indent=2)+'\\n')
+print(report['status'])
+""")
+        app=Path(os.environ['CLOUD_APPIMAGE'])
+        assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+        log=out/'parent-interface.log'
+        with log.open('wb') as stream:
+            code=subprocess.call([str(app),'python',str(native)],cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+        result['parent_interface_execution']=dict(returncode=code,log_sha256=sha(log),script_sha256=sha(native))
+        if code:print(log.read_text(errors='replace')[-10000:],flush=True)
+        assert code==0,'Native parent geometry inspection failed'
+        assert all(sha(Path(p))==h for p,h in protected.items())
+        result['parent_interface']=json.loads((out/'parent-interface.json').read_text())
+        result['parent_interface_sources']=protected
+        result['status']='PASS_NATIVE_D2_PARENT_INTERFACE_INVENTORY_NOT_INTEGRATION'
+    except BaseException as error:
+        result.update(status='FAILED_D2_PARENT_INTERFACE_INVENTORY',error=repr(error));save();raise
+    save();print(result['status'],flush=True)
+
+
 def run_pfd_lef(reset_profile='aoi4'):
     """Read exact accepted-development GDS companion LEF without rerunning DRC."""
     import sys
@@ -1679,6 +1762,7 @@ def main():
     parser.add_argument('--pfd-layout-drive2',action='store_true')
     parser.add_argument('--pfd-lef',action='store_true')
     parser.add_argument('--pfd-lef-drive2',action='store_true')
+    parser.add_argument('--inspect-pfd-parent',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
@@ -1717,6 +1801,9 @@ def main():
     if args.recover_pfd_methods:
         assert not (args.pfd_layout or args.pfd_lef or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         recover_pfd_methods();return
+    if args.inspect_pfd_parent:
+        assert not any([args.pfd_lef_drive2,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition])
+        inspect_pfd_parent_interface();return
     if args.pfd_lef_drive2:
         assert not (args.pfd_lef or args.pfd_layout or args.pfd_candidate or args.self_test or args.acquisition)
         run_pfd_lef('aoi4_d2');return

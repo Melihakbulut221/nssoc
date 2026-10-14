@@ -7,6 +7,10 @@
 
 ### Newest state — supersedes every older live statement below
 
+- D2 native run38616009542 TERMINAL capture success: 50ns,160072rows,496columns,985.85s, no native diagnostics, original startup/OSDI/models/.3125ps retained. All four reference and four feedback edges after12ns have clearb>1.25V; DOWN responses occur at15.215,25.240,35.231,45.224ns. Previous24ns missed response absent in this finite nominal fixture. VCTRLmax0.593526V; no lock/PVT/full-PHY acceptance. Source summary641321586 SHA2295758b7673f6a640682a349494a0d43f100c7df22e9bb384964f154476360b; archive641320746 SHA3e26bdede22f9023cff3baaee219c391e04d87e1158b95d85d4955cf2603e292.
+- Independent D2 source/waveform/terminal review38619029764 live (source068d23e7). Fresh-CTS diagnosis38618268577 COMPLETE:122native markers,total222overflow, geometry and all congested endpoints bound; four Ethernet SRAM hotspots persist. Diagnosis summary641320687 SHAcd819ccc22a235732f03084433fe448b1f13dd741d58e84502339b672c76078b.
+- Added hosted exact parent23 GDS/reference versus D2 GDS interface inventory, prior to any actual parent replacement/shared-bulk/RC work. Pin locations and body interface must come from native data, not from the electrical fixture.
+
 - Completed D2 native LEF run38617744218 PASS: exact eight pins/outline/use/direction/seven obstruction layers plus missing-pin and blocked-pin actual faults; summary641310743 SHA c5a556c4d7ecc54422e27da990c6493eabba10bb1d36184e254e9e759c169014, archive641310447 SHA9c91dde4eb98d1cca7671efb4776dfb370948a70eeb44beb5083166de509a7b5. This is macro interface evidence only.
 - Live native handles: D2 waveform38616009542 (sourcee0bd3db2); read-only fresh-CTS congestion diagnosis38618268577 (source294ea6f0). Added independent D2 waveform review, to dispatch only after exact native completion; no repeated native simulation. Old run38598795406 remains failed222overflow.
 - Cloud-only cleanup rechecked: local project directory0entries, no project scratch in /tmp or /dev/shm, no local OpenROAD/ngspice/KLayout/Magic/Netgen/Yosys process. All new source commits and results remain on GitHub.
