@@ -7,6 +7,24 @@
 
 ### Newest state — supersedes every older live statement below
 
+**New limiting timing endpoint exactly bound; combined proof-preserving candidate.**
+PreABC trace38522829842 summary639490865 PASS reproduces original pre_map.v
+byte-for-byte (df4bc9fd42b4b5a2fd35b4a08f621501e6b7208809f738fc504d1b3535f058a4).
+Three limiting registers1176743/45/48 bind through actual generic inverters to
+u_pcie.acknowledged_sequence_o bits1/3/6. Original startpoint is ACK sequence bit0.
+Thus after dedicatedFC commit, replay ACK-window classification is the limiting
+cone. Prepared profilephysical_idle_credit_dedicated_window combines exact
+source-bound dedicated advertiser proof with prior all-input CW2..5 ACK-window
+identity/full replay equivalence, changing disjoint modules only. New combined
+buffered5/replay7 positive port tests and wrong-page replay control precede
+mapping. Compare against dedicated-only, original clocks/all corners retained.
+Dispatch pcie-ack-cloud-mapping studyadvert_dedicated_window once; no adoption
+or closure claim before original reports. Exact source and failure proof retained.
+Hot actual-layout38523202992, PLL38507479646, route38511490580 retain handles.
+All full goalsOPEN/cloud-only. Previous turn: concrete geometry/RC/composition
+progress; current turn moves from exact endpoint proof to a combined candidate.
+
+
 **Live original-gate electrical verification of the new actual layout.**
 38523202992 on28162773 studyv8_feedback_tc_direct_hot:
 hot_low job115717442756 and hot_low_res_bcs115717442977 in_progress. First job
