@@ -7,6 +7,9 @@
 
 ### Newest state — supersedes every older live statement below
 
+- Current live native continuation: parent-wire binding38623406807, source6a7227840f2d191dff713fb743a7a64bc2b5b9ac, job116056406564. Native runtime preparation confirmed in progress. Uses actual pin/parent-wire overlap for release power anchor. Do not restart from an observation timeout. All earlier D2/parent physical runs are terminal.
+- Last completed engineering result remains actual845-device PLL parent physical PASS38622111375 (560DRC categories; hierarchical9Match; flat845/845; two real faults rejected). Next: consume38623406807; if binding passes, extract fresh parent-only Magic RC, audit native R multiset/each pointC/mutual attachment against physical conductor ownership, retain raw fault controls, then compose D2child RC with actual parent and explicit shared substrate reference. Full serial PHY, RF/substrate qualification, acquisition/PVT and mainchip routing/finalSTA remain OPEN. All computation and archives stay on hosted runners; local project remains empty.
+
 - Parent-wire export38622802741 TERMINAL failed at A_release_VDD anchor: declared pin center is not on parent-only wire geometry, although native parent DRC/LVS passed. No RC extraction ran. Retained summary641398468 SHAfc39bb1a79ace5e96c6b0e922f078f4d1868d6872592f331b1a1125e1e5cd43b and archive641398233 SHAe4a2daa15c55249fe80c2b4ff13f32bb966c18df17c6967e0f7f2f63030b9a61.
 - Fixed read-only anchor selection: preserve usable preferred points, otherwise require actual intersection of declared macro pin rectangle with native parent metal; choose native5nm-grid point inside intersection, bind to both parent-only and full845-device native net. Record each moved reference point and require child-model reference-plane rebinding before RC composition. No geometry or connectivity edits, no nearby-point guessing, no relaxed LVS.
 
