@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Actual PFD235 extraction completed; review original saved bytes next.**
+38608812756 passed235device binding/eight faults,658terminal physical ownership,
+new53conductor graph,716R1178C native extraction and per-point/collapsedC audit.
+Raw fault harness failed selecting a non-bridge: actual exported R graph is a
+forest. Correct control selects a real two-anchor bridge, removes exactly one
+R, proves both real terminals isolated, requires the original open rejection.
+No rawR/C/gate change. Use pll_pfd_stage=rc_review on exact savedarchive641150842
+SHAddc9539a72d8b9f40f3c544c4e2ad09536c0440062944b28d582d4a17a578704;
+do not rerun native extraction. Summary641151072 SHA617c3b3eb02d7256c1aecd62091f0546d49f6553f2b9857292645bc04defbeaf.
+After13rawfaults/sixcompositionfaults, evaluate newRC in nativePLL. FullPHY,
+routing/finaltiming remainOPEN; route38598795406 retained; allcloud-only.
+
+
 **PFD235 RC38608389008 stopped safely before native execution.**
 Strict source adaptation expected renamed diagnostic Complete235 but the
 original literal is Complete255; corrected exact match without changing any

@@ -972,21 +972,20 @@ def run_pfd_rc():
                 source,n=re.subn(r'\b57\b','component_count',source)
                 assert n>0;changes.append(dict(before='integer57',after='actual geometry component_count',count=n))
             if name=='mutations02.py':
-                # Select a real non-bridge, preserving all components so the
-                # intended raw edge-multiset check must independently reject.
+                # Select an actual two-anchor bridge. Removing it produces
+                # two isolated real terminals, so the independent open gate
+                # must reject without relying on edge-record comparison.
                 replace('cases=[\n',"""resistor_rows=[(i,line.split()) for i,line in enumerate(rows) if re.fullmatch(r'R\\d+ \\S+ \\S+ \\S+',line)]
-from collections import Counter
-counts=Counter(frozenset((f[1],f[2])) for i,f in resistor_rows)
-bridges={frozenset(e) for e in nx.bridges(graph)}
-drop_index,drop_fields=next((i,f) for i,f in resistor_rows if counts[frozenset((f[1],f[2]))]>1 or frozenset((f[1],f[2])) not in bridges)
+components={n:set(c) for c in nx.connected_components(graph) for n in c}
+drop_index,drop_fields=next((i,f) for i,f in resistor_rows if len(components[f[1]])==2 and components[f[1]]<=set(anchor))
+assert graph.number_of_edges(drop_fields[1],drop_fields[2])==1
 dropped='\\n'.join(rows[:drop_index]+rows[drop_index+1:])+'\\n'
-kept=m.rawparser.parse_spice(dropped);kg=nx.Graph();kg.add_edges_from((x,y) for x,y,v in kept['resistors'])
+kept=m.rawparser.parse_spice(dropped);kg=nx.Graph();kg.add_nodes_from(anchor);kg.add_edges_from((x,y) for x,y,v in kept['resistors'])
 assert len(kept['resistors'])==len(parsed['resistors'])-1
-assert set(kg)==set(graph) and {frozenset(c) for c in nx.connected_components(kg)}=={frozenset(c) for c in nx.connected_components(graph)}
+assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
 cases=[
 """,True)
                 replace("re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)","dropped",True)
-                replace("},'Physical wire R graph open or incomplete')","},'Native/export resistor topology/value differs')",True)
                 replace("'RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE',254","'RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE',234",True)
             if name=='compose01.py':
                 replace("and len(raw)==2029","and len(raw)==2+audit['actual_exported_resistors']+audit['actual_exported_capacitors']",True)
@@ -1048,6 +1047,124 @@ resistor_name=next(r[0] for r in rows if r[0].startswith('R'))""",True)
         result['status']='PASS_PFD235_ACTUAL_DEVICE_WIRE_COMPOSITION_AND_FAULTS_REQUIRES_NATIVE_WAVEFORMS'
     except BaseException as error:
         result.update(status='FAILED_PFD235_GEOMETRY_BOUND_RC',error=repr(error))
+        result['diagnostic_logs']={str(p.relative_to(out)):p.read_text(errors='replace')[-16000:] for p in out.glob('*.log') if p.is_file()}
+        save();raise
+    save();print(result['status'],flush=True)
+
+
+
+def review_pfd_rc():
+    """Review exact saved extraction; never rerun Magic or change raw results."""
+    import shutil
+    import sys
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted extraction review only'
+    out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_SAVED_PFD235_RC_REVIEW',full_phy_accepted=False,
+        qualified_pex=False,adopted=False,no_native_extraction_rerun=True,source_run=38608812756,
+        scope='Exact saved actual235-device/716R1178C extraction, repaired actual bridge-open control and independent composition. No RF/substrate qualification, electrical acquisition or full PHY acceptance.')
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    def run(cmd,name):
+        log=out/(name+'.log')
+        with log.open('wb') as stream:code=subprocess.call([str(x) for x in cmd],cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+        result.setdefault('commands',[]).append(dict(name=name,returncode=code,log_sha256=sha(log)));save()
+        if code:print(log.read_text(errors='replace')[-16000:],flush=True)
+        assert code==0,(name,'failed')
+    def restore(receipt,dest,label):
+        packed=out/(label+'.tar.gz');fetch(receipt['url'],receipt['sha256'],packed)
+        if 'bytes' in receipt:assert packed.stat().st_size==receipt['bytes']
+        with tarfile.open(packed) as tar:tar.extractall(dest,filter='data')
+        packed.unlink()
+    def validate_inputs(record):
+        for path,expected in record['inputs'].items():
+            p=Path(path);assert p.is_relative_to(ROOT),('Outside exact restored workspace',path)
+            assert sha(p)==(expected['sha256'] if isinstance(expected,dict) else expected),path
+            if isinstance(expected,dict) and 'bytes' in expected:assert p.stat().st_size==expected['bytes']
+    save()
+    try:
+        receipt=dict(url=BASE+'cloud-results-38608812756-1-pll-pfd-layout/pfd94-layout-38608812756-1.tar.gz',
+            sha256='ddc9539a72d8b9f40f3c544c4e2ad09536c0440062944b28d582d4a17a578704',bytes=6604094)
+        restore(receipt,ROOT,'saved-extraction')
+        prior=json.loads((out/'result.json').read_text())
+        assert prior['status']=='FAILED_PFD235_GEOMETRY_BOUND_RC' and prior['error']=="AssertionError(('raw-rc-controls', 'failed'))"
+        (out/'saved-rc-source-result.json').write_text(json.dumps(prior,indent=2)+'\n')
+        result['source_archive']=receipt;result['source_audit']=prior['audit']
+        assert prior['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
+        assert prior['audit']['actual_exported_resistors']==716 and prior['audit']['actual_exported_capacitors']==1178
+        save()
+        spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
+        restore(spec['receipt'],ROOT,'pdk-input')
+        manifest=json.loads((ROOT/'manifest.json').read_text())
+        assert all(sha(ROOT/n)==r['sha256'] for n,r in manifest['files'].items())
+        models=out/'model-inputs';manifest=json.loads((models/'manifest.json').read_text())
+        assert all(sha(models/n)==r['sha256'] for n,r in manifest['files'].items())
+        shutil.copytree(models/'models',ROOT/'pdk/libs.tech/ngspice/models')
+        rt=out/'magic-cloud';manifest=json.loads((rt/'manifest.json').read_text())
+        assert all(sha(rt/n)==r['sha256'] for n,r in manifest['files'].items())
+        rawspec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())['raw_parser']
+        raw=ROOT/'hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py'
+        raw.parent.mkdir(parents=True,exist_ok=True);fetch(rawspec['url'],rawspec['sha256'],raw)
+        wire=out/'wire';binding=out/'binding'
+        records=[binding/'devices01.json',binding/'binding01.json',binding/'binding-controls01/result.json',
+            wire/'native01/result.json',wire/'device-locations01.json',wire/'anchors01.json',
+            wire/'rc01/result.json',wire/'audit.json']
+        for p in records:validate_inputs(json.loads(p.read_text()))
+        for p in [wire/'rc01/result.json',wire/'native01/result.json']:
+            r=json.loads(p.read_text())
+            for name,expected in r['outputs'].items():
+                q=p.parent/name;assert sha(q)==expected['sha256'] and q.stat().st_size==expected['bytes']
+        binding_controls=json.loads((binding/'binding-controls01/result.json').read_text())
+        assert binding_controls['status']=='PASS_NATIVE235_BINDING_AND_EIGHT_FAULTS' and len(binding_controls['faults'])==8
+        protected={str(p):sha(p) for sub in ('layout','physical','binding','wire/native01','wire/rc01')
+            for p in (out/sub).rglob('*') if p.is_file()}
+        protected.update({str(p):sha(p) for p in [wire/'anchors01.json',wire/'device-locations01.json',wire/'audit-rc01.py']})
+        original=(out/'frozen-methods/mutations02.py').read_text()
+        assert digest(original.encode())=='1f3e5604b48112e1e7848b3d634c5012377d3c8e85ffe0d43ac4c5f802379407'
+        selector="""resistor_rows=[(i,line.split()) for i,line in enumerate(rows) if re.fullmatch(r'R\\d+ \\S+ \\S+ \\S+',line)]
+components={n:set(c) for c in nx.connected_components(graph) for n in c}
+drop_index,drop_fields=next((i,f) for i,f in resistor_rows if len(components[f[1]])==2 and components[f[1]]<=set(anchor))
+assert graph.number_of_edges(drop_fields[1],drop_fields[2])==1
+dropped='\\n'.join(rows[:drop_index]+rows[drop_index+1:])+'\\n'
+kept=m.rawparser.parse_spice(dropped);kg=nx.Graph();kg.add_nodes_from(anchor);kg.add_edges_from((x,y) for x,y,v in kept['resistors'])
+assert len(kept['resistors'])==len(parsed['resistors'])-1
+assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
+"""
+        changes=[
+            ('cases=[\n',selector+'cases=[\n'),
+            ("re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)",'dropped'),
+            ("'RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE',254","'RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE',234")]
+        revised=original
+        for before,after in changes:
+            assert revised.count(before)==1;revised=revised.replace(before,after)
+        ast.parse(revised)
+        old=wire/'mutations02.py';(wire/'mutations-source-failed.py').write_bytes(old.read_bytes());old.write_text(revised)
+        result['control_adaptation']=dict(original_sha256=digest(original.encode()),
+            revised_sha256=sha(old),changes=[dict(before=a,after=b) for a,b in changes],
+            expected_open_rejection='Physical wire R graph open or incomplete',
+            source_resistors_or_caps_changed=False)
+        save()
+        run([sys.executable,binding/'check_binding01.py','--devices',binding/'devices01.json',
+            '--native',out/'physical/lvs/extracted.cir','--compact',binding/'pfd235-compact01.spice',
+            '--technology',ROOT/'pdk/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json',
+            '--out',out/'binding-readback.json'],'exact-binding-readback')
+        run([sys.executable,wire/'audit-rc01.py',wire/'rc01',wire/'anchors01.json',wire/'review-audit.json'],'exact-raw-readback')
+        result['audit']=json.loads((wire/'review-audit.json').read_text());assert result['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
+        run([sys.executable,wire/'mutations02.py'],'corrected-raw-fault-controls')
+        run([sys.executable,wire/'compose01.py'],'compose-native-devices-and-wires')
+        run([sys.executable,wire/'check-compose01.py'],'composition-controls')
+        result['binding_controls']=binding_controls
+        for name,path in [('raw_controls',wire/'native-mutations01.json'),
+                          ('composition',wire/'composition01.json'),
+                          ('composition_controls',wire/'composition-controls01.json')]:
+            result[name]=json.loads(path.read_text())
+        assert result['raw_controls']['status']=='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'
+        assert len(result['raw_controls']['cases'])==13
+        assert len(result['composition_controls']['actual_rejected_mutants'])==6
+        assert result['composition']['wire_resistors']==716 and result['composition']['wire_capacitors']==1178
+        assert all(sha(Path(n))==v for n,v in protected.items())
+        result['protected_source_files']=protected
+        result['status']='PASS_PFD235_SAVED_NATIVE_RC_AND_27_FAULTS_REQUIRES_NATIVE_WAVEFORMS'
+    except BaseException as error:
+        result.update(status='FAILED_SAVED_PFD235_RC_REVIEW',error=repr(error))
         result['diagnostic_logs']={str(p.relative_to(out)):p.read_text(errors='replace')[-16000:] for p in out.glob('*.log') if p.is_file()}
         save();raise
     save();print(result['status'],flush=True)
@@ -1155,6 +1272,7 @@ def main():
     parser.add_argument('--pfd-layout',action='store_true')
     parser.add_argument('--pfd-lef',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
+    parser.add_argument('--pfd-rc-review',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4'))
     parser.add_argument('--review-acquisition',action='store_true')
@@ -1163,6 +1281,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.pfd_rc_review:
+        assert not any([args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
+        review_pfd_rc();return
     if args.pfd_rc:
         assert not any([args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         run_pfd_rc();return
