@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-14T04:56:10.770606+00:00",
+  "as_of": "2026-10-14T16:41:49.948312+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "df2404db44ebdd5a89b94e842a7232f8a4eb5880",
+  "head": "fae8ae84c0fb0178e8e22496b400130a60020286",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -100,10 +100,10 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Retain fresh preCTS/GRT/CTS run38596343019 onb81af739; inspect actual native placement/CTS structural and supply proofs plus original all-corner STA and final zero-overflow routing. Do not duplicate on observation timeout. Cancelled preparation38596031286 is terminal; recovery38594940366 is terminal PASS.",
-    "CUGR38591636770 is terminal failure: empty-declaration native repair PASS, overflow gate FAIL. Preserve summary640851603 and archive640850855. Do not rerun identical CUGR input or describe it as active.",
-    "Use source-bound PLL cycle diagnosis640800063 to investigate PFD/reset/pump behavior. Before reusing older full50ns wave, verify exact bench/netlist identity on a hosted runner. Existing original acquisition gates still fail.",
-    "Preserve rejected hot analog cases and digital hold regression; full serial PHY, routed mainchip and final setup/hold remain OPEN. No local checkout, simulation, CAD or artifact storage."
+    "Poll exact saved-CTS resume38598795406 on9d904ed0; inspect actual original-terminal/PG/dummy-output negative controls, all-corner STA and zero-overflow routing. Do not duplicate or restart on observation timeout.",
+    "PLL full50 diagnosis38599049135 passed as diagnosis only: asset640970260 SHA f4043124ae4d3d07d6a72b121b06e522510edb2f2ed8a15f9fb0779164478a83. Inspect internal PFD/pump voltage and native device-current records before circuit changes. This50ns capture cannot prove late1us cause or acquisition.",
+    "Preserve rejected CUGR12521wire-overflow, hot TX electrical cases and digital hold regression. Full serial PHY, routed mainchip and final setup/hold remain OPEN.",
+    "Keep all source edits, CAD, simulations, tests and durable artifacts in GitHub. Local workspace and NSSOC transient paths verified empty; do not recreate checkout or local CAD runtime."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -4173,12 +4173,14 @@
     "accepted": false
   },
   "local_cleanup_last_verification": {
-    "checked_at": "2026-10-13T13:11:20.917074+00:00",
+    "checked_at": "2026-10-14T16:41:49.948312+00:00",
     "workspace_entries": 0,
     "nssoc_tmp_entries": 0,
     "nssoc_dev_shm_entries": 0,
+    "local_cad_processes": 0,
     "retirement_receipt_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
-    "status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE"
+    "status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
+    "scope": "NSSOC project workspace and project transient files; original user Downloads and unrelated files preserved. All source edits via API and all CAD/simulation/tests on GitHub-hosted runners."
   },
   "dense_metal_diagnosis": {
     "run": 38375278729,
@@ -64459,7 +64461,7 @@
     "All work stays cloud-only; fullserial PHY/detailedchiproute/finalSTA remainOPEN."
   ],
   "current_state_20261014": {
-    "as_of": "2026-10-14T16:15:04.238037+00:00",
+    "as_of": "2026-10-14T16:41:49.948312+00:00",
     "supersedes_older_live_statuses": true,
     "full_phy": "OPEN",
     "mainchip_routing": "OPEN_BEST_FASTROUTE_OVERFLOW_132_CUGR_REJECTED",
@@ -64471,12 +64473,13 @@
     "congestion_diagnosis_run": 38566051147,
     "congestion_diagnosis": "COMPLETE_100_MARKERS_138_OVERFLOW_NOT_CLOSURE",
     "known_active_native_jobs": [
-      38596343019
+      38598795406
     ],
     "cugr": "TERMINAL_REJECTED_OVERFLOW_INPUT_REPAIR_PASS",
     "pll_cycle_diagnosis": "COMPLETE_ORIGINAL_GATES_STILL_REJECTED",
     "prects_recovery": "PASS_EXACT_NATIVE_LINEAGE_NOT_CLOSURE",
-    "fresh_placement_cts": "in_progress"
+    "fresh_placement_cts": "NATIVE_COMPLETED_SAVED_DB_PROOF_AND_ROUTE_IN_PROGRESS",
+    "pll_full50_diagnosis": "COMPLETE_SOURCE_BOUND_STARTUP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE"
   },
   "full32_wire_terminal_20261014": {
     "run": 38496981217,
@@ -101874,8 +101877,8 @@
       115963950590
     ],
     "source_head": "b81af7396d907284a63cec47306a5f905694b1de",
-    "status_at_observation": "in_progress",
-    "conclusion_at_observation": null,
+    "status_at_observation": "completed",
+    "conclusion_at_observation": "failure",
     "adopted": false,
     "cancelled_preparation_run": {
       "run": 38596031286,
@@ -101889,6 +101892,86 @@
     "ethernet_hold_depth": 0,
     "routing_seed": 13,
     "capacity_perturbation": 0,
-    "scope": "Move sequential/combinational logic from exact preCTS source, fresh original-policy CTS, original connection/supply invariants, full original corner constraints and zero-overflow final route gate. No adoption; prior hold2 ECO is not presumed valid on new CTS."
+    "scope": "Move sequential/combinational logic from exact preCTS source, fresh original-policy CTS, original connection/supply invariants, full original corner constraints and zero-overflow final route gate. No adoption; prior hold2 ECO is not presumed valid on new CTS.",
+    "native_placement_completed": true,
+    "native_cts_completed": true,
+    "placement_connectivity": "PASS_EXACT_PRECTS_PLACEMENT_CONNECTIVITY",
+    "moved_cells": 97661,
+    "moved_data_flops": 12453,
+    "failure": "Verifier compared SWIG ITerm wrappers instead of native instance/MTerm identity; no timing/routing acceptance.",
+    "saved_cts_sha256": "5b18b0607c41a9605c7252648849b21483c6a349460e995b41a16f37de0dd809",
+    "archive": {
+      "id": 640930633,
+      "bytes": 122605521,
+      "sha256": "aab7e72e2cc2d2e2f434c08dfd84e509ba8eee22b9933e408d36f1bed4a4d4f8"
+    },
+    "summary": {
+      "id": 640931131,
+      "sha256": "4315605ee0a05f234000ad04cbe37393215657f87e6613b0db894885f0187bae"
+    }
+  },
+  "fresh_cts_resume_20261014": {
+    "run": 38598795406,
+    "source_head": "9d904ed0e49ed9bdc00e767adb724d29ab6818ba",
+    "status_at_observation": "in_progress",
+    "conclusion_at_observation": null,
+    "observed_at": "2026-10-14T16:41:49.948312+00:00",
+    "adopted": false,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38598795406",
+    "resume_exact_saved_odb": true,
+    "no_placement_cts_rerun": true,
+    "prior_resume_failure": {
+      "run": 38597967217,
+      "reason": "Frozen native CTS deliberately inserts dummy inverter loads; initial verifier allowed only functional non-inverting buffer masters."
+    },
+    "proof_contract": "Every original terminal/master, buffer single-driver root, fixed macro/boundary and original PG domains retained. Dummy buf/inv allowed only named clkload with disconnected output. Actual terminal disconnect, inserted supply disconnect and dummy-output connection controls must reject. All original corner constraints and strict zero-overflow route gate remain. No acceptance before actual result."
+  },
+  "pll_full50_diagnosis_20261014": {
+    "run": 38599049135,
+    "source_head": "fae8ae84c0fb0178e8e22496b400130a60020286",
+    "status": "COMPLETE_FULL50_PFD_PUMP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE",
+    "acquisition_accepted": false,
+    "full_phy_accepted": false,
+    "no_new_native": true,
+    "source_identity": {
+      "parent_sha256": "b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48",
+      "full50_bench_sha256": "75a79f2248f9a941ff6a32bfab2d26cce8b23fa75379bb292f9952e1cf6acfd1",
+      "one_us_bench_sha256": "8d1ace49e8c2abe21be67433b1b5714f7a468790358e4ef33d4ef038b93944af",
+      "circuit_body_identical_except_stop_time": true,
+      "native_off_flags_identical": true,
+      "osdi_loads_identical": true,
+      "original_late_acquisition_passed": false
+    },
+    "wave": {
+      "raw_sha256": "ae47e97737a6d84728ba33849c67b2f760f13532567db40baced9caa4319ea53",
+      "payload_sha256": "7f20574e947bb10e7df728441acf5c030311b9e046fad9f27ba5b4698c56ba03",
+      "rows": 160072,
+      "columns": 2438,
+      "complete_header_payload_and_fifo_trailer_verified": true,
+      "header_declared_points": 0,
+      "fifo_trailer": {
+        "payload_sha256": "7f20574e947bb10e7df728441acf5c030311b9e046fad9f27ba5b4698c56ba03",
+        "trailer_ascii": "160072",
+        "payload_bytes": 3122044288
+      }
+    },
+    "interval_count": 4,
+    "asset": {
+      "id": 640970260,
+      "bytes": 326153,
+      "sha256": "f4043124ae4d3d07d6a72b121b06e522510edb2f2ed8a15f9fb0779164478a83",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38599049135-1-pll-acquisition-review/result.json"
+    },
+    "scope": "Exact full-node50ns startup observation. Voltage duty is not pump current. Actual recorded pump device currents are labeled by original vector names. No late1us internal capture, fitted phase, relaxed lock gate or causal closure.",
+    "prior_failures": [
+      {
+        "run": 38597592170,
+        "reason": "Reader included native ASCII point-count trailer in binary payload hash; exact native FIFO trailer handling fixed with truncation/trailer controls."
+      },
+      {
+        "run": 38598305939,
+        "reason": "Raw i(@device)/v(@device) names differed from canonical @device vector names; exact ordered unique source alias bijection added with four negative controls."
+      }
+    ]
   }
 }

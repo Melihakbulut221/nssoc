@@ -7,6 +7,30 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Cloud-only checkpoint — 2026-10-14T16:41:49.948312+00:00.**
+Local NSSOC workspace and NSSOC paths in /tmp and /dev/shm are empty; no
+local CAD/simulation process. Remote retirement receipt636387277 SHA
+23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd
+confirms hosted archive readback before deletion. Source/CAD/tests/artifacts
+stay on GitHub. Preserve original user Downloads and unrelated files.
+
+**PLL full50 diagnosis38599049135 completed successfully, not lock acceptance.**
+Sourcefae8ae84c0fb0178e8e22496b400130a60020286; result640970260/326153bytes SHA
+f4043124ae4d3d07d6a72b121b06e522510edb2f2ed8a15f9fb0779164478a83.
+Exact2438columns/160072rows, raw/payload/FIFO trailer and native device-current
+aliases verified. Original parent/circuit/native off flags/OSDI match1us source.
+Internal PFD/pump startup records are available; no new simulation, no late1us
+internal causal proof and original rolling acquisition gate still fails.
+
+**Routing handle38598795406: in_progress/None.**
+Source9d904ed0e49ed9bdc00e767adb724d29ab6818ba; resumes saved freshCTS5b18b060
+without rerunning placement/CTS. Inspect native original-terminal/supply and
+dummy-output negative controls before timing/routing acceptance. Earlier
+38596343019 and38597967217 are terminal verifier failures, preserved.
+Keep this exact handle, do not duplicate on observation timeout.
+Full serial PHY, routed mainchip and final setup/hold remain OPEN.
+
+
 
 **Full50 payload/trailer verified; preserve native device-current aliases.**
 38598305939 terminalFAIL after original compressed/raw/payload hashes and
