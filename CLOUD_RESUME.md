@@ -7,6 +7,29 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Verified new timing proof; native comparison is now dispatched:** control
+factoring38508286832 PASS three full-state region induction cases(refresh128/0/1)
+and10positive ports; wrong-grant control rejected in formal and all5port tests.
+Summary639147659/archive639147458 pinned in ack-window evidence document.
+Paired mapping38509087565 dispatched on149746ab: physical_idle_credit versus
+physical_idle_credit_control, unchanged clocks/corners. Candidate not adopted;
+need actual metrics before any physical ECO. Do not confuse with rejected EOP.
+Metal38508868002 finished both actual graph+geometry diagnoses: cascade158
+summary639149467 and V11summary639149461; concise measurements pinned in V11
+receipt. Final data input paths~8.5..8.9ohm; internal worstpairs15.49..18.65ohm.
+Prestage output-to-device~8..9.5ohm, internal worstpairs~23.79ohm. These are
+DC diagnosis only. Actual geometry-bound files/negative controls preserved.
+V11 artificial inputR diagnostic38508878110 still running at last check;
+never adopt its synthetic lowR as a physical fix. Combine with real hotwire
+failure38507486510 to choose new geometry/device repair. V11feedback32um
+38507831996 has3/4compactPASS; coldresCMmax2.052879127V still fails2.05V.
+Latest available actual waveform summaries indexed in V11 receipt; other
+wire cases remain live until their exact jobs say terminal.
+PLL1us38507479646,mainchiproute38490952579,original32:1wire38496981217 continue
+on their existing handles. All cloud-only; local empty. FullPHY/mainchiproute/
+finalsetup-hold remain OPEN; this turn made source/proof/diagnostic progress.
+
+
 **Cloud diagnostics dispatched and guarded timing mapping prepared:** V11 actual
 metal/geometry diagnosis38508868002 and artificial input-R sensitivity38508878110
 are dispatched on1e74f55c; do not duplicate. Source-bound actual hotwire failure
