@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Exact active handles, source verification complete:** paired static-commit
+mapping38513559584 on0dd9c255 has baselinejob115687234616 and candidate115687234836
+live. Formal38513261561 already passed3induction/2negative/10positiveports; await
+actualslacks before adoption. Combined Nx4 final-R diagnosis38513890541 dispatched
+ondf2404db withall/internal/outputs classes. Compact and wire BOTH receive same
+source-bound12data Nx4 transform before metal ownership validation; no relaxed
+model/parameter checks. Every result remains nonphysicalacceptance. Compare
+against original Nx4hotwire639239046; retain allC/upstreamRC/originalbitgates.
+Do not rerun original sizing38511840985 (all8terminal,4coldPASS4hotFAIL).
+Route38511490580,PLL1us38507479646 andoriginal32:1wire38496981217 allverifiedlive.
+All code/evidence pushed; no local files. Next: inspect mappedslacks, causalRC
+results and exact route terminalstate. All full goals remain OPEN.
+
+
 **Static credit commit proof PASS / paired mapping38513559584 dispatched:**
 proof38513261561 summary639256379 passes three all-state region proofs(refresh
 128/0/1), wrong-grant and corrupt-commit counterexamples,10positive ports and
