@@ -5,6 +5,38 @@
 
 ## Latest cloud-only checkpoint — 14 October 2026
 
+### Newest state — supersedes every older live statement below
+
+- V8series loaded38492859554/38492856902 completed all6:5pass, hotwire fails50
+  early samples, minimum88.993072473mV versus100mV. All devices/interfaces pass.
+  Receipt `docs/evidence/pcie-v8-series-loaded-rejection-20261014.json` retains
+  all6 captures and the next V10 trial. Do not repeat unchanged V8series.
+- **V10 Nx3 data-bank plus same improved series geometry:** physical38494057637
+  on05a0a4c8 passed560-category zero-marker DRC, strict hierarchical/flat54device
+  LVS and5faults. **Extraction38494852996 is live**, source
+  `1fc2599ffdbbb10714071d9b511d963e92168420`; profilefinal_drive_v10, variant
+  `critical_buses_kelvin_low_ports_loads_shunts_series`. Summary638777925 and
+  archive638777738 are pinned inpcie-tx-cloud-extraction-input-20261013.json.
+  V10 needs its own fresh RC, composition and all6loaded cases; do not reuseV8.
+- Reset-dominance38493229154 passed fullregion induction and32joint ports but
+  PCIe slow setup worsened-0.991500 to-1.260820ns;79984cells. Rejected. Evidence
+  `reset_dominance_completed_screen` inpcie-ack-window-proof-and-screen-20261014.json.
+- **ABC synthesis-target study38494637444 is live**, source
+  `0d16d91b36f0d57adc65f393a78e71149072bb47`: same best proved EOP/window RTL,
+  target-D4000 versus-D2000ps. Native help and original/modified exact command
+  are captured. No -dff/retime, changed clock period, relaxed SDC or adopted logic.
+  Profilesphysical_idle_credit_window_eop andphysical_idle_credit_window_eop_d2000.
+  Source/license checks38494640061 passed. Inspect both paired outputs.
+- **Main-chip halo38490952579 remains live**; inspect same handle, never restart
+  because a poll takes too long. Parameters and source below remain authoritative.
+- PLL broader scope was revisited: docs/evidence/pcie-pll753-parent-rounded-credit-20261010.json
+  proves parent753DRC/LVS/faults and parent86R/317C, not loaded lock or fullPEX.
+  Old delivery627947280 (26692374bytes, SHA9bd534fc389506982c6d05f3fd5a94175e8e5a3dd8c9dae00648aca459d0f4b3)
+  was read inRAM. Its historical running statements are NOT current process proof.
+  Latest migrated753/744 terminal evidence must be located before cloud replay;
+  no new PLL job was dispatched and no PLL completion is claimed.
+
+
 This section supersedes older running/pending statements below. The local
 workspace is empty. No local checkout, CAD, tests or artifacts; metadata/source
 edits stay in RAM and native work runs on GitHub. Final retirement backup:
