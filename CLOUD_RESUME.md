@@ -8,6 +8,22 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Actual Nx4 layout source located; avoid redundant generation.** Existing V8
+low_ports_loads_shunts_series composition38492591399 already contains exact
+Nx4data/Nx6selectors/all other same devices, with54native devices,
+4021R/2638C, wireSHA6153ffd201d601c05f663279e7489307d2bec63a55755713b6730ff99b1f94ac.
+560DRC/strictLVS/fault checks are preserved in its source-bound receipt. This is
+not the V11-sized geometry with edited devices. Prepared study
+v8_feedback_tc_physical uses that existing actual layout RC and new native
+TCfeedback, diagnostic-final-nx=0/no mutation. Four original independent corner
+conditions; feed itself still lacks layout/RC/contact qualification. Dispatch
+once after current v11_feedback_tc results justify it; no new layout rerun.
+Current TC cold_HBT summary639337663 and cold_res summary639337673 PASS all
+original electrical gates, finalCMmax2.028879602/2.036255106V. Hot cases pending.
+Bank-commit mapping38516179454/PLL38507479646/route38511490580 retain live handles.
+Full goalsOPEN, cloud-only. Study names in future release groups now explicit.
+
+
 **Live exact followups — no duplicate dispatch:** bank-commit mapping38516179454
 on94fddbcb, jobs115695382300(candidate)/115695382415(baseline), in progress.
 Native fixed-temperature-feedback study38516411596 onddf1dad1:
