@@ -1707,7 +1707,7 @@ def compose_pfd_actual_parent():
         # Strict hierarchy reader with model arities. Unknown directives, extra
         # instance parameters and repeated names are errors, not ignored rows.
         model_arity={'npn13g2':4,'sg13_hv_nmos':4,'sg13_hv_pmos':4,'sg13_lv_nmos':4,'sg13_lv_pmos':4,
-            'rppd':3,'rhigh':3,'cmim':3,'ntap1':2,'ptap1':2}
+            'rppd':3,'rhigh':3,'cap_cmim':2,'ntap1':2,'ptap1':2}
         def parse(text,top):
             definitions={};active=None
             for raw in statements(text):
