@@ -30,11 +30,11 @@ def main():
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
-                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
+                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10'), default='baseline')
     args = parser.parse_args()
     geometry_variant = args.variant
-    if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts'):
+    if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
         assert args.circuit_profile == 'final_drive_v8', 'Isolate selector routing on the screened v8 circuit'
         geometry_variant = 'critical_buses_kelvin_low_critical'
     if args.circuit_profile in ('cascade16','cascade158'):
@@ -415,7 +415,7 @@ def main():
                     '            assert net not in PORTS\n'
                     '            assert len(terminals[net]) == (9 if net in ("ea", "eb") else 8)\n'
                     '            y = {"qn": 1.0, "qp": 9.0, "ea": 16.0, "eb": 24.0}[net]\n'))
-            if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts'):
+            if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
                 # Native hot trace: RC adds about11ps before the final mux zero,
                 # versus0.22ps in the following TX zero crossing. Test shorter
                 # selector clock buses on unchanged v8 devices. This hypothesis
@@ -436,14 +436,14 @@ def main():
                 changes.append((
                     "half_escape = 0.5 if net == 'tail' else (0.4 if net in ['avdd','avss'] else 0.3)",
                     "half_escape = 0.5 if net in ['tail','qn','qp','ea','eb'] else (0.4 if net in ['avdd','avss'] else 0.3)"))
-            if args.variant in ('critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts'):
+            if args.variant in ('critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
                 # Wider M3 failed the hot original-bit screen. Keep low-selects
                 # widths/circuit and shorten actual vertical device-bank routes.
                 # Every PCell and its substrate tap follows the new row pitch;
                 # resistor positions and horizontal bank pitch are unchanged.
                 # Strict native DRC/LVS and fresh RC/waves decide acceptance.
                 changes.append(('30+38.4*c,30+14*r', '30+38.4*c,30+7.2*r'))
-            if args.variant in ('critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts'):
+            if args.variant in ('critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
                 # Actual short-row hot wire capture: the final mux contributes
                 # about11.28ps extra median zero-crossing delay. Its public op/on
                 # nodes join only resistor terminals below the HBT array, but
@@ -464,7 +464,7 @@ def main():
                 changes.append((
                     '            y = -32.0 if net == "op" else -24.0\n',
                     '            y = -48.0 if net == "op" else -40.0\n'))
-            if args.variant in ('critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_loads_shunts'):
+            if args.variant in ('critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
                 # The deeper output bus failed hot margin and two HBT headroom
                 # gates. Start from low_ports (all device gates passed), keeping
                 # output buses at -32/-24um. Move only the two native collector
@@ -473,7 +473,7 @@ def main():
                 # device, rescaling extracted RC or changing sample thresholds.
                 changes.append(('19:(164.4,-50),20:(126.0,-50)',
                                 '19:(164.4,-18),20:(126.0,-18)'))
-            if args.variant in ('critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts'):
+            if args.variant in ('critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
                 # Independent of the pending load-move candidate: keep low_ports
                 # collector loads at y=-50 and op/on buses at -32/-24. Place the
                 # two output shunts below their corresponding series resistors,
@@ -484,6 +484,15 @@ def main():
                                 '23:(92.4,-82),24:(54.0,-82)'))
                 changes.append(('                escape(pin, 1, n[k], x - 9.6 + 4.8 * k, name, 1 if p["w"]=="1u" else 8)',
                                 '                lane = x - 9.6 + 4.8 * k\n                if i in (23,24) and k == 1:\n                    assert n[k] == "avss"\n                    lane = 149.6 if i == 23 else 34.8\n                escape(pin, 1, n[k], lane, name, 1 if p["w"]=="1u" else 8)'))
+            if args.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series':
+                # Paired native hot diagnosis38491313386: clock-to-MUX median
+                # 17.390ps versus compact9.491ps; source-to100mV max38.278ps
+                # misses the unchanged37.5ps early sample. Keep the now-passing
+                # device bias geometry and move only R25/R26 toward qp/qn.
+                # Their y=-18 row reduces real collector-to-output detours;
+                # op/on buses and all devices/values/widths remain unchanged.
+                changes.append(('25:(87.6,-50),26:(49.2,-50)',
+                                '25:(87.6,-18),26:(49.2,-18)'))
             # loads_shunts combines the independently measured collector-feed
             # shortening with the output-shunt move. Same54devices/values;
             # headroom and original-bit margin require new native RC and PVT.

@@ -10230,5 +10230,146 @@
     "unchanged_output_limit_v": 0.1
   },
   "next": "Native paired full-wave diagnosis before another actual geometry change. Preserve original source bits and 0.3/0.5/0.7UI sampling.",
-  "scope": "Only loaded4:1 component screening. Ideal clock and intermacro portions, schematic TX driver and unqualified RF/substrate extraction remain; no full serial PHY or chip acceptance."
+  "scope": "Only loaded4:1 component screening. Ideal clock and intermacro portions, schematic TX driver and unqualified RF/substrate extraction remain; no full serial PHY or chip acceptance.",
+  "completed_hot_diagnosis": {
+    "run": 38491313386,
+    "source_head": "89634832f6057fb741f82f6564e629a59ee1e84f",
+    "summary_asset_id": 638704399,
+    "summary_bytes": 377825,
+    "summary_sha256": "91ca47044fc5adebf67a2f11e592a07270536cdec545d963c6e55a7e5e2ca575",
+    "archive": {
+      "id": 638704279,
+      "name": "tx-physical-tree-diagnosis-38491313386-1.tar.gz",
+      "size": 54087,
+      "digest": "sha256:b7a7bcd7b34f4f82f0c2bbd5cb5bb8db50b80ae276521d94293b65483841e8f1",
+      "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38491313386-1-physical-tree-diagnosis/tx-physical-tree-diagnosis-38491313386-1.tar.gz"
+    },
+    "transition_summary": {
+      "physical_compact": {
+        "summary": {
+          "clock_to_mux_zero_ps": {
+            "count": 128,
+            "minimum": 9.34302203436066,
+            "median": 9.491111200655883,
+            "maximum": 9.581434892876558
+          },
+          "mux_to_tx_zero_ps": {
+            "count": 128,
+            "minimum": 5.855782845254846,
+            "median": 5.9712200913279645,
+            "maximum": 6.09829029383962
+          },
+          "source_to_output_100mv_ps": {
+            "count": 128,
+            "minimum": 26.961707918106384,
+            "median": 27.179796408673198,
+            "maximum": 27.4264716742218
+          }
+        },
+        "ambiguous_events": 0,
+        "original_03ui_below_100mv": 0,
+        "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+      },
+      "physical_wire": {
+        "summary": {
+          "clock_to_mux_zero_ps": {
+            "count": 128,
+            "minimum": 15.278140165271472,
+            "median": 17.390345161187582,
+            "maximum": 18.84219952812426
+          },
+          "mux_to_tx_zero_ps": {
+            "count": 128,
+            "minimum": 5.812073987350856,
+            "median": 6.093179747257887,
+            "maximum": 6.457638083074928
+          },
+          "source_to_output_100mv_ps": {
+            "count": 128,
+            "minimum": 32.936795281476314,
+            "median": 35.81134625745949,
+            "maximum": 38.277868201308806
+          }
+        },
+        "ambiguous_events": 0,
+        "original_03ui_below_100mv": 50,
+        "note": "All changing original bits; complete crossing lists retained. Stage delays use only events with exactly one crossing at every node. No fitted delay or acceptance change."
+      }
+    },
+    "paired_previous_failed_devices": {
+      "xmux.xd0044": {
+        "compact_terminals": [
+          "xmux.n_19",
+          "ap",
+          "xmux.n_16",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t044_c",
+          "xmux.t044_b",
+          "xmux.t044_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.14589987012388872,
+          "base_v": -0.03056196153272661,
+          "emitter_v": -0.04264009727968565,
+          "vce_v": -0.10325977284420296,
+          "vbe_v": 0.012078135746958596,
+          "collector_current_a": -0.00031424426580179126
+        }
+      },
+      "xmux.xd0053": {
+        "compact_terminals": [
+          "xmux.n_19",
+          "ap",
+          "xmux.n_16",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t053_c",
+          "xmux.t053_b",
+          "xmux.t053_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.1458513296821662,
+          "base_v": -0.03056258159462577,
+          "emitter_v": -0.04269556726082713,
+          "vce_v": -0.10315576242133884,
+          "vbe_v": 0.012132985666201135,
+          "collector_current_a": -0.00031202703819147005
+        }
+      },
+      "xmux.xd0054": {
+        "compact_terminals": [
+          "xmux.n_19",
+          "ap",
+          "xmux.n_16",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t054_c",
+          "xmux.t054_b",
+          "xmux.t054_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.14576306081408785,
+          "base_v": -0.030563028649142954,
+          "emitter_v": -0.042804277461338636,
+          "vce_v": -0.10295878335274888,
+          "vbe_v": 0.012241248812195682,
+          "collector_current_a": -0.0003064327689004545
+        }
+      }
+    }
+  },
+  "next_geometry": {
+    "variant": "critical_buses_kelvin_low_ports_loads_shunts_series",
+    "status": "UNVERIFIED_NATIVE_PHYSICAL_TRIAL",
+    "change": "Move only series output resistorsR25/R26 fromy=-50um toy=-18um on the combined loads/shunts geometry. All device values, sizing, transistor rowpitch, bus positions and metal widths preserved.",
+    "reason": "Remaining delay is predominantly within extracted final MUX. Shorten real qp/qn-to-output series branches; compact behavior must remain identical and fresh native DRC/LVS/RC and loaded PVT must decide.",
+    "acceptance": "Unchanged source bits,0.3/0.5/0.7UI samples,100mV output,150mV interface and whole-wave device constraints. No adoption before all gates pass."
+  }
 }

@@ -5,6 +5,15 @@
 
 ## Latest cloud-only checkpoint — 14 October 2026
 
+Update: diagnosis38491313386 and source/license checks38491360348 completed
+successfully. The native wire clock-to-MUX median is17.390ps versus9.491ps
+compact; source-to100mV maximum38.278ps misses the37.5ps early sample.
+The next actual geometry trial is `critical_buses_kelvin_low_ports_loads_shunts_series`
+with onlyR25/R26 moved fromy=-50 toy=-18um. Dispatch/read the physical run on
+this commit before pinning its outputs for fresh extraction/composition/PVT.
+The exact diagnosis and proposed change are appended to the combined rejection
+receipt. No change to waveform acceptance or transistor values.
+
 This section supersedes all older running/pending statements below. Continue
 cloud-only: the local workspace is empty; no local checkout, CAD, tests or
 artifacts. Source and metadata edits may be prepared in RAM for Git Data API
