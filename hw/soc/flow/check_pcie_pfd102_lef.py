@@ -55,6 +55,7 @@ def script(pdk, lef, generated):
 
 
 def run(layout, out, pdk, app):
+    global TOP
     root = Path(__file__).resolve().parents[3]
     layout, out, pdk, app = [p.resolve() for p in (layout, out, pdk, app)]
     if (
@@ -64,6 +65,10 @@ def run(layout, out, pdk, app):
     ):
         raise ValueError("Fresh project directory and pinned tool required")
     generated = json.loads((layout / "result.json").read_text())
+    profile=generated.get('reset_profile','baseline')
+    if profile not in ('baseline','aoi4'):raise ValueError('Unknown PFD profile')
+    TOP='nssoc_pfd94_aoi4_layout_v1' if profile=='aoi4' else 'nssoc_pfd102_layout_v1'
+    if profile=='aoi4' and generated.get('top')!=TOP:raise ValueError('PFD top differs')
     lef = layout / (TOP + ".lef")
     if digest(lef) != generated["outputs"][lef.name]:
         raise ValueError("LEF changed")

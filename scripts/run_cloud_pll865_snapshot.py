@@ -797,6 +797,57 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
     save();print(result['status'],flush=True)
 
 
+def run_pfd_lef():
+    """Read exact accepted-development GDS companion LEF without rerunning DRC."""
+    import sys
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted physical-interface verification only'
+    out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_PFD94_NATIVE_LEF',adopted=False,full_phy_accepted=False,
+        scope='Exact DRC/LVS-checked candidate38604234902 LEF. Native OpenROAD pin/outline/obstruction readback and actual missing/obstructed-pin controls. Not RC, electrical, mainchip or PHY acceptance.')
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        archive=out/'physical.tar.gz'
+        fetch(BASE+'cloud-results-38604234902-1-pll-pfd-layout/pfd94-layout-38604234902-1.tar.gz',
+            '869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953',archive)
+        assert archive.stat().st_size==639953
+        layout=out/'layout';layout.mkdir()
+        names=['result.json','schematic.cir','nssoc_pfd94_aoi4_layout_v1.gds','nssoc_pfd94_aoi4_layout_v1.lef']
+        with tarfile.open(archive) as tar:
+            for name in names:
+                matches=[m for m in tar.getmembers() if m.name=='hw/soc/out/cloud-pfd-layout/layout/'+name]
+                assert len(matches)==1 and matches[0].isfile()
+                (layout/name).write_bytes(tar.extractfile(matches[0]).read())
+        archive.unlink();generated=json.loads((layout/'result.json').read_text())
+        assert generated['reset_profile']=='aoi4' and len(generated['core_devices'])==94
+        assert sha(layout/'nssoc_pfd94_aoi4_layout_v1.gds')=='5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6'
+        assert sha(layout/'nssoc_pfd94_aoi4_layout_v1.lef')=='00e00d8794e9aa98c162c804f41cd23aec1986031d1136219a799675ea5d7bea'
+        assert all(sha(layout/n)==h for n,h in generated['outputs'].items())
+        tech=ROOT/'pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef';tech.parent.mkdir(parents=True,exist_ok=True)
+        fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef',
+            'e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6',tech)
+        assert tech.stat().st_size==28396
+        app=Path(os.environ['CLOUD_APPIMAGE']);checker=ROOT/'hw/soc/flow/check_pcie_pfd102_lef.py'
+        result['source_bindings']=dict(physical_run=38604234902,physical_archive_sha256='869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953',
+            geometry_sha256=sha(layout/'nssoc_pfd94_aoi4_layout_v1.gds'),lef_sha256=sha(layout/'nssoc_pfd94_aoi4_layout_v1.lef'),technology_sha256=sha(tech),checker_sha256=sha(checker))
+        save()
+        log=out/'lef.log'
+        with log.open('wb') as stream:
+            code=subprocess.call([sys.executable,str(checker),'--layout',str(layout),'--out',str(out/'lef'),
+                '--pdk',str(ROOT/'pdk'),'--app',str(app)],stdout=stream,stderr=subprocess.STDOUT)
+        if code:print(log.read_text(errors='replace')[-10000:],flush=True)
+        assert code==0,'Native PFD LEF verification failed'
+        result['lef']=json.loads((out/'lef/result.json').read_text())
+        assert result['lef']['status']=='PASS_NATIVE_LEF_AND_TWO_PHYSICAL_FAULTS'
+        result['status']='PASS_NATIVE_PFD94_LEF_AND_TWO_PHYSICAL_FAULTS_NOT_MAINCHIP_INTEGRATION'
+    except BaseException as error:
+        result.update(status='FAILED_NATIVE_PFD94_LEF',error=repr(error))
+        if (out/'lef/result.json').exists():result['lef']=json.loads((out/'lef/result.json').read_text())
+        result['diagnostic_logs']={str(p.relative_to(out)):p.read_text(errors='replace')[-10000:] for p in out.rglob('*.log') if p.is_file()}
+        save();raise
+    save();print(result['status'],flush=True)
+
+
 def run_pfd_layout():
     """Hosted actual PFD geometry, strict native DRC/LVS and physical faults."""
     import sys
@@ -846,6 +897,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--pfd-layout',action='store_true')
+    parser.add_argument('--pfd-lef',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4'))
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
@@ -853,6 +905,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.pfd_lef:
+        assert not (args.pfd_layout or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
+        run_pfd_lef();return
     if args.pfd_layout:
         assert not (args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         run_pfd_layout();return

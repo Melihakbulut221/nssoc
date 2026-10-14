@@ -23,6 +23,9 @@ on:
         type: string
       verification_manifest:
         type: string
+      pll_pfd_lef:
+        type: boolean
+        default: false
       pll_pfd_layout:
         type: boolean
         default: false
@@ -511,7 +514,7 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-acquisition-review cloud-pll-acquisition-review/result.json
 
   pll-pfd-layout:
-    if: ${{ inputs.pll_pfd_layout == true }}
+    if: ${{ inputs.pll_pfd_layout == true || inputs.pll_pfd_lef == true }}
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -534,7 +537,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Generate actual PFD94 geometry and run native physical gates
-        run: python scripts/run_cloud_pll865_snapshot.py --pfd-layout
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_lef && '--pfd-lef' || '--pfd-layout' }}
       - name: Preserve actual geometry and every failed or passed native check
         if: always()
         env:

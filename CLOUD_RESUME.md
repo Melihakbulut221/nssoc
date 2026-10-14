@@ -7,6 +7,20 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD94 physical gates PASS; exact LEF native readback prepared.**
+Run38604234902 onae8659729d0ba0c7394d28318ed13b5a42459f57 passed560DRC
+categories/zero markers, hierarchical and flat235/235deviceLVS without
+extraction diagnostics. Allfive physical/reference faults rejected.
+Summary641068432/175711bytes SHA52a1ace9ab76efa62dbd9dcb1f8298a2931d778399b4d065988bbe426d4696e6.
+Archive641068170/639953bytes SHA869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953.
+GDS5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6;
+LEF00e00d8794e9aa98c162c804f41cd23aec1986031d1136219a799675ea5d7bea.
+Native pll_pfd_lef=true restores exact saved layout and reads all8pins, outline,
+directions/use and obstructions in OpenROAD; missing/blockedpin controls must
+reject. No DRC rerun needed, no mainchip/RC/electrical acceptance. Paired
+schematic38602623171 androuting38598795406 still retained cloud-only.
+
+
 **First actual PFD94 geometry rejected; local tie placement repaired.**
 38603616210 terminalFAIL at nativeDRC:560categories,oneLU.b marker in
 nmosHV$3. Native rule requires all N+active within20um of PWell tie; marker
