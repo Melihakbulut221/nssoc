@@ -217,21 +217,28 @@ def native():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers'), default='baseline')
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data'), default='baseline')
     args = parser.parse_args()
     url, archive_sha, odb_sha = URL, ARCHIVE_SHA, ODB_SHA
     odb_member = 'cloud-newer-postcts/inputs/postcts.odb'
     report_sha = None
     archive_bytes = None
-    if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers'):
+    if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data'):
         evidence_name = {'local_optimize': 'cloud-local-optimize-route-failure-20261013.json',
                          'reserved_m5': 'cloud-reserved-m5-route-failure-20261013.json',
                          'local_optimize_buffers': 'cloud-local-optimize-buffers-route-failure-20261013.json',
                          'local_data_endpoints': 'cloud-closure-continuation-20261013.json',
                          'critical30_buffers': 'cloud-critical30-buffers-route-failure-20261013.json',
                          'seed13_buffers': 'cloud-seed13-buffers-route-failure-20261014.json',
-                         'halo1_seed13_buffers': 'cloud-seed13-buffers-route-failure-20261014.json'}[args.source_profile]
+                         'halo1_seed13_buffers': 'cloud-seed13-buffers-route-failure-20261014.json',
+                         'routability_data': 'cloud-closure-continuation-20261013.json'}[args.source_profile]
         evidence = json.loads((ROOT / 'docs/evidence' / evidence_name).read_text())
+        if args.source_profile == 'routability_data':
+            evidence=evidence['routability_data_terminal_20261014']
+            assert evidence['run']==38511490580 and evidence['routing_seed']==13
+            assert evidence['placement_profile']=='routability_data'
+            assert evidence['macro_routing_profile']=='baseline'
+            assert evidence['routing_capacity_perturbation_percentage']==0
         if args.source_profile == 'halo1_seed13_buffers':
             evidence=evidence['halo1_terminal']
             assert evidence['run']==38490952579 and evidence['routing_seed']==13
@@ -265,6 +272,13 @@ def main():
         assert sha(packed) == archive_sha
         assert archive_bytes is None or packed.stat().st_size == archive_bytes
         with tarfile.open(packed) as tar:
+            if args.source_profile == 'routability_data':
+                raw=tar.extractfile('cloud-newer-postcts/result.json').read()
+                assert hashlib.sha256(raw).hexdigest()==evidence['summary_sha256']
+                original=json.loads(raw)
+                assert original['status']=='FAIL_OR_ERROR'
+                for key in ('placement_profile','routing_seed','macro_routing_profile','routing_capacity_perturbation_percentage','failure_outputs'):
+                    assert original[key]==evidence[key], key
             for local, member in [('postcts.odb', odb_member),
                                   ('congestion.rpt', 'cloud-newer-postcts/congestion.rpt')]:
                 item = tar.getmember(member)

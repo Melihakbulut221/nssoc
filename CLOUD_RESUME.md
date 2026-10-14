@@ -8,6 +8,31 @@
 ### Newest state — supersedes every older live statement below
 
 
+**14 October12:35UTC heartbeat: all previous captures now terminal; next reviews.**
+PLL38507479646 completed original1us continuous865device capture, summary639850959
+and521359148byte archive639850421 (SHA59470c85beab31acc7ca76c4a908a24db5be5b74d358668f2e50d016548e3af6).
+Prepared original-gate review38565392744 dispatched once; do not rerun native.
+Capture completion is not lock, complete safety or fullPHY acceptance.
+
+Direct ACK pair38526942261 completed: baseline639584274 slowPCIe-1.046260ns,
+candidate639588788-0.980501ns; fastPCIehold unchanged-0.109062ns. SlowCPUhold
+worsens-0.444253to-0.542557ns. Full original phase/path/control receipts retained
+in ACK evidence; no adoption, still unplaced only. No final timing closure.
+
+Short-prestage/direct-final hot38527211035 completed but BOTH REJECTED.
+hot639594835 bitmin0.088065717V/31below100mV, finalCMmin1.794040920V;
+hotres639596919 bitmin0.112378810V passesbits, finalCMmin1.782591361V fails,
+and four finalHBT VCE lower bounds fail (minimum0.396485640V). No waiver or
+adoption. Full summaries and hashes in the short-prestage composition receipt.
+
+Route38511490580 remains terminaloverflow138. Prepared congestion sourceprofile
+routability_data binds permanentarchive639573076, publishedsummary639573452 and
+exactfailedODB/congestion hashes; dispatch probe once, then diagnose actual
+markers before a new route. No healthy long job was stopped or duplicated.
+Authoritative localretirement636387277 was re-read: COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE.
+All work remains cloud-only; fullPHY/routedmainchip/finalsetup-hold OPEN.
+
+
 **Cloud-only checkpoint, 14 October 2026: terminal route failure and live jobs.**
 Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` remains empty,
 including hidden entries. No local source/CAD/test/artifact files were created.

@@ -100,10 +100,11 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Verify corrected dedicated commit proof38518875447; retained failed38518563421 formalPASS but Icarus declaration-order error fixed in925f83bb. Require all ports and fault controls before mapping study=advert_dedicated_commit.",
-    "All actual Nx4 TC geometry cases38517527891 completed. Two coldPASS/twohotFAIL; allHBT boundsPASS. Address hot bit margin and final-interface CM/differential without changing original oracle or thresholds. No adoption.",
-    "Original route38511490580 and PLL38507479646 retain live handles. Dispatch pll_acquisition_review only after original full1us success; no native restart.",
-    "Cloud-only; local workspace empty. FullPHY/routedmainchip/finalsetup-hold OPEN."
+    "Review original1us acquisition in38565392744; no new native simulation. Lock and full-device safety remain unaccepted until original evidence review.",
+    "Run prepared source_profile=routability_data congestion probe once and bind all138overflow markers to actual geometry before another route. Preserve originalfailedrun38511490580.",
+    "Short-prestage hot38527211035 fails both cases and introduces four HBT VCE failures in hot_low_res_bcs. Do not adopt; diagnose actual wire/electrical tradeoffs with original gates.",
+    "DirectACK+dedicatedFC improves unplaced slowPCIe from-1.046260 to-0.980501ns, but slowCPUhold worsens from-0.444253 to-0.542557ns; no adoption/finaltimingclosure. Preserve exact paired reports and inspect critical cones before another trial.",
+    "Cloud-only; verified localretirement636387277. FullPHY/routedmainchip/finalsetup-hold OPEN."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -64459,50 +64460,14 @@
     "All work stays cloud-only; fullserial PHY/detailedchiproute/finalSTA remainOPEN."
   ],
   "current_state_20261014": {
-    "authority": "This section and newest CLOUD_RESUME supersede historical live fields.",
-    "routability_run": 38511490580,
-    "routability_native_placement_passed": true,
-    "routability_global_route": "in_progress",
-    "serializer_area_run": 38511840985,
-    "serializer_area": "COMPLETE_ALL8: fourcoldcompactPASS/fourhotwireFAIL; no candidate adopted",
-    "pll_run": 38507479646,
-    "pll_status": "in_progress",
-    "full32_wire_run": 38496981217,
-    "full32_wire_status": "COMPLETE_NOMINAL_ELECTRICAL_GATES_PASS_NATIVE_MEMORY_WARNING_COMPONENT_NOT_ACCEPTED",
-    "retirement_asset": 636387277,
-    "retirement_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
-    "retirement_status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
-    "goal_status": "OPEN",
-    "static_commit_proof_run": 38513261561,
-    "static_commit_proof": "PASS three all-state induction cases, two counterexample controls, ten positive port tests",
-    "static_commit_mapping_run": 38513559584,
-    "static_commit_mapping_status": "completed_success_execution_only",
-    "combined_nx4_wire_diagnosis_run": 38513890541,
-    "combined_nx4_wire_diagnosis_status": "COMPLETE_ALL3_FAIL_ENGINEERING_GATES_NOT_ADOPTED",
-    "static_commit_readback_run": 38514837826,
-    "static_commit_readback_asset": 639294592,
-    "static_commit_candidate": "REJECTED_SLOW_SETUP_REGRESSION_NOT_ADOPTED",
-    "local_workspace_reverified_empty": true,
-    "pll_acquisition_review_prepared_commit": "21a533c97ccfb0c06eff97fa2e2f5f3b581fa77a",
-    "pll_acquisition_review_self_test_run": 38515404789,
-    "pll_acquisition_review_dispatch": "WAIT_ORIGINAL_RUN38507479646_TERMINAL_SUCCESS_AND_HOSTED_CONTROLS_PASS",
-    "bank_commit_proof_run": 38515965607,
-    "bank_commit_proof": "PASS_3_ALL_STATE_PROOFS_2_NEGATIVES_10_POSITIVE_PORTS",
-    "bank_commit_mapping_run": 38516179454,
-    "bank_commit_mapping_status": "REJECTED_SLOW_PCIE_SETUP_REGRESSION",
-    "native_feedback_tc_run": 38516411596,
-    "native_feedback_tc_status": "COMPLETE_2_COLD_PASS_2_HOT_FAIL_NOT_ADOPTED",
-    "pll_acquisition_review_self_tests": "PASS_38515404789",
-    "bank_eop_proof_run": 38517360412,
-    "bank_eop_proof": "PASS_3_ALL_STATE_2_NEGATIVES_10_POSITIVE_PORTS",
-    "bank_eop_mapping_run": 38517610171,
-    "bank_eop_mapping_status": "REJECTED_SLOW_SETUP_REGRESSION_NOT_ADOPTED",
-    "actual_nx4_feedback_tc_run": 38517527891,
-    "actual_nx4_feedback_tc_status": "COMPLETE_2COLD_PASS_2HOT_FAIL_ALL_HBT_PASS_NOT_ADOPTED",
-    "dedicated_commit_first_run": 38518563421,
-    "dedicated_commit_first_status": "FORMAL_PASS_PORT_PREPARATION_FAILURE",
-    "dedicated_commit_fixed_run": 38518875447,
-    "dedicated_commit_fixed_status": "in_progress"
+    "as_of": "2026-10-14T12:35:42Z",
+    "supersedes_older_live_statuses": true,
+    "full_phy": "OPEN",
+    "mainchip_routing": "OPEN_OVERFLOW_138",
+    "final_timing": "OPEN",
+    "pll_review_run": 38565392744,
+    "short_prestage_hot": "BOTH_REJECTED",
+    "direct_ack_timing": "UNPLACED_PARTIAL_SETUP_IMPROVEMENT_HOLD_REGRESSION_NO_ADOPTION"
   },
   "full32_wire_terminal_20261014": {
     "run": 38496981217,
@@ -74743,5 +74708,706 @@
       }
     },
     "scope": "Nominal original bits and electrical gates pass. Native approaching-max-data-size warning preserved; component_screen_passed false. No independent PVT, CDR or full PHY acceptance."
+  },
+  "routability_data_terminal_20261014": {
+    "status": "FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION",
+    "run": 38511490580,
+    "source_head": "ec864e8484c146ea204d46ce6aa2f284ca4b73f7",
+    "summary_id": 639573452,
+    "summary_sha256": "928272bfe863c02df5e90c600563d0f191aefa3b79b92596a4a2d3f8eb7fefc6",
+    "receipt": {
+      "id": 639573076,
+      "name": "newer-postcts-placement-routability_data-38511490580-1.tar.gz",
+      "bytes": 197322362,
+      "sha256": "3824566424b5f94dd3586be49981bd4238c8d01cd3cc9440cb63e70bd2c0d275",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38511490580-1-route-routability_data/newer-postcts-placement-routability_data-38511490580-1.tar.gz"
+    },
+    "failure_outputs": {
+      "global-route.log": "4fc76127cedf23c6c62dc4f6abf4995d7035002b17d3230b141203003795310f",
+      "congestion.rpt": "e91b84dcb03d3699977b124d3e698cf5f2ae224abcf30b7d953fadcab253e0f7",
+      "placement-prepare.log": "bd63d35ebb60d0b7bd873341dfe031bace455ba89fdaeafcd9101b1e80f9e8c0",
+      "placement-repair.json": "47831fc88336ad2785c3f3fc27ade0dc67a039052d649c3aa4e59defa3b70d89",
+      "reproduced-ethernet-hold.tcl": "b7566ae15ed483ea3a13aea14906229aa3842e2a9acaaee6ceb7821762a66652",
+      "reproduced-postcts.log": "9b08f4914aabc0b0237950bf830803095368a8440a72f01cdd89c40c5490a98c",
+      "reproduced-ethernet-hold.log": "c487afc33d78a34adddb8db38cdd81cdd73c185c5d8e4b2c7a60a48c49e02d1c",
+      "legalized-placement.odb": "7a4d16526bb63fd7a379a9dfe9dd598ee75082e6a2639872b98a2971cd39f863",
+      "newer-postcts-placement-routability_data-38511490580-1.pre-route.json": "0458872a4bb9e73a392b6098686d8f64125b31abaa4362b15637e5fa90984496",
+      "relocated-placement-sta.log": "f1eb8550172a28b42d2bea4d861117ca3231a2a12518825cf4b708dfaa55eac5",
+      "placement-verify.log": "0a06fc7f1c5945446bd78b6ff7c35809254be08d1f9c11a7ddfd40d0effb7a86",
+      "relocated-placement.odb": "9852cb580aa0930e8813569678121b5600bb1b78ecd4d51ce35572449acbf8b8",
+      "reproduced-previous-placement.log": "80055c3fb2022a1366d03f8a010d0c671fe603c57b3ca6ca64350b5a44668374",
+      "legalize-macro-channels.tcl": "471a13547f42456d8ea7d9bfc48c487759876b963b97b9d7d40374f30dcd131c",
+      "global-route.tcl": "9600ee696dc53d0383fd2d3a8f6b0665755c68748f17132c99a799e8d2853c90",
+      "reproduced-previous-placement.tcl": "38b248fa79c17be38a3426d38ff49f2d1b34346a00dc17517a0bbafe6d3bdb8f",
+      "placement-before.json": "739e063e33ebb68e2b808ea13e7dada46f0c68ed88e48dbf91ce49b1260998cb",
+      "failed-global.odb": "fb2e0306e85818041f49bc6032bb9e38e167ef21e293492769717113370157d5",
+      "proposed-placement.odb": "f8684659667f6610e78985d3fecc2dea7e4c38f0730a1220dab4ebb167397e61",
+      "legalize-macro-channels.log": "7643b5e9459400708b87a064e2e7f3dec38b99ff57b34c765968a02cf7164d99",
+      "endpoint-diagnosis.json": "ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b",
+      "reproduced-postcts.tcl": "ae6c7fb35aae7cf254f36269c9be1961f06b243f15c94b9849ebdd51d108c273",
+      "relocated-placement-sta.tcl": "b855abb30047ba0c719083ba858f849774227746d5624b78a8eb7fc9425574f0",
+      "failed-route.guide": "7fb5870f26512bd54cd74b3919df8187b8a98f70236c74cf57b964f97e4a2f52"
+    },
+    "overflow": 138,
+    "layer_overflow": {
+      "Metal3": 17,
+      "Metal4": 19,
+      "Metal5": 93,
+      "TopMetal1": 8,
+      "TopMetal2": 1
+    },
+    "adopted": false,
+    "placement_profile": "routability_data",
+    "routing_seed": 13,
+    "macro_routing_profile": "baseline",
+    "routing_capacity_perturbation_percentage": 0
+  },
+  "native865_one_us_capture_20261014": {
+    "run": 38507479646,
+    "summary_id": 639850959,
+    "summary_sha256": "96bebfbdabfee2efa25c90f949fa47ce3af25f2cfacffb135917b62734ca9c6f",
+    "summary": {
+      "status": "COMPLETE_ONE_US_NATIVE865_SELECTED_PROBES_REQUIRES_LOCK_AND_SAFETY_REVIEW",
+      "controls": {
+        "identical_waveform_passed": true,
+        "rejected_controls": 4
+      },
+      "full_phy_accepted": false,
+      "acquisition_accepted": false,
+      "snapshot_validated": false,
+      "reference": "https://ngspice.sourceforge.io/docs/ngspice-manual.pdf",
+      "scope": "Original865 circuit and full extracted metal RC with exact32models/3OSDIs, startup, .3125ps step, KLU and tolerances. Fresh uninterrupted1us selected24probes only. Complete capture is NOT acquisition/phase/slip, full-device safety, PVT, CDR, jitter or PHY acceptance; those reviews remain required. No cross-process snapshot is used.",
+      "mode": "fresh_time_zero_acquisition_capture",
+      "inputs": {
+        "/dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi": {
+          "hosted_path": "models/r3_cmc.osdi",
+          "bytes": 113080,
+          "sha256": "9b41facf3c49d2266e542406547ed00677304f09c1dd281f3bf90414ee053828"
+        },
+        "/dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi": {
+          "hosted_path": "frontend/psp103.osdi",
+          "bytes": 680864,
+          "sha256": "e4a50ec48e3fab3aa7af76f1d0816863c8aa06223e0efcded362ddadb49681a8"
+        },
+        "/dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi": {
+          "hosted_path": "frontend/psp103_nqs.osdi",
+          "bytes": 1001816,
+          "sha256": "523382d47f1f747c991a938b2f93cc6d9bab27ebf44f708c4e995820dc0bee88"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_svaricaphv_mod.lib": {
+          "hosted_path": "models/models/sg13g2_svaricaphv_mod.lib",
+          "bytes": 5176,
+          "sha256": "1462f67e80da7f5fa6f6b51efb0eb0e4dc7ef2da28d8bfde95a19ce2a780580a"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_stat.lib": {
+          "hosted_path": "models/models/resistors_stat.lib",
+          "bytes": 1342,
+          "sha256": "183eb9192bf711db991b8df87e031bab2ca5e559c73393edc756fa02a2720d40"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_stat.lib": {
+          "hosted_path": "models/models/sg13g2_hbt_stat.lib",
+          "bytes": 2463,
+          "sha256": "80d1893eb06a3417d05400335d8e58c8309b9c80061ca96ceff8f8fd68c9a7db"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_dschottky_nbl1_stat.lib": {
+          "hosted_path": "models/models/sg13g2_dschottky_nbl1_stat.lib",
+          "bytes": 1108,
+          "sha256": "730c857bbaabb0c7876eb21b9b60a6882955db388956d082615763559c61d262"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod_mismatch.lib": {
+          "hosted_path": "models/models/capacitors_mod_mismatch.lib",
+          "bytes": 4790,
+          "sha256": "8ebc8369966951cfec0e91d603685f1975fbf9ceff2eef493a25357ce9ae5492"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib": {
+          "hosted_path": "models/models/resistors_mod.lib",
+          "bytes": 4936,
+          "sha256": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod_mismatch.lib": {
+          "hosted_path": "models/models/resistors_mod_mismatch.lib",
+          "bytes": 5241,
+          "sha256": "f0aa7d90b6489112ed256aaf4cb0a11b9ab17ebe0c3ce092f4f8c5ecb1fd1e15"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mismatch.lib": {
+          "hosted_path": "models/models/sg13g2_moshv_mismatch.lib",
+          "bytes": 1167,
+          "sha256": "2e9612bdb8252c281f422511039dc9b3ea983892aec89f8ef3361592e68fed09"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_parm.lib": {
+          "hosted_path": "models/models/sg13g2_moslv_parm.lib",
+          "bytes": 94408,
+          "sha256": "cbf10b8453a18bb70b8ad0d6e40faa0937338e699b5460947a94900db6c92a6e"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mismatch.lib": {
+          "hosted_path": "models/models/sg13g2_moslv_mismatch.lib",
+          "bytes": 1088,
+          "sha256": "2d3251e2d42eadb0f8af152a4915fdc60a68bceb95a2d17a52f90cfb34b7e63e"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_stat.lib": {
+          "hosted_path": "models/models/sg13g2_moshv_stat.lib",
+          "bytes": 7399,
+          "sha256": "cd30f22637e41fdbbaba506ebe0f17746b8438027e4651a7a87b241a39d68903"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_stat.lib": {
+          "hosted_path": "models/models/sg13g2_moslv_stat.lib",
+          "bytes": 6077,
+          "sha256": "7f4cf8df714e327348ba3975a2630e9d7dd7ae1a7a88817df4890e82745f0f52"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerDIO.lib": {
+          "hosted_path": "models/models/cornerDIO.lib",
+          "bytes": 2584,
+          "sha256": "28e747e8f7437a3f539c5cc36f50c9d17c57c03ed463a4c9ee8f0a93a823fe0b"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod.lib": {
+          "hosted_path": "models/models/capacitors_mod.lib",
+          "bytes": 4562,
+          "sha256": "94b569e695fd8a223a5a49a5b5a6b0d8a62408820bf0c2ed9dbcb0a8ab7d957e"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_parm.lib": {
+          "hosted_path": "models/models/sg13g2_moshv_parm.lib",
+          "bytes": 64329,
+          "sha256": "eea5bbed39184cb1e2654ae29425a9ed6ee2f2341d6cb76c472591c75237bd35"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib": {
+          "hosted_path": "models/models/cornerMOSlv.lib",
+          "bytes": 21645,
+          "sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod.lib": {
+          "hosted_path": "models/models/sg13g2_moslv_mod.lib",
+          "bytes": 10452,
+          "sha256": "124c48af28aee8f4788170b50dbb4d798e7d830c6bb37516f749e16f676fa9db"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod_mismatch.lib": {
+          "hosted_path": "models/models/sg13g2_moshv_mod_mismatch.lib",
+          "bytes": 12375,
+          "sha256": "be170c9619bed19215f7f7b55141e0869344874e3fcf7f30b2d2aa37659b1a0e"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib": {
+          "hosted_path": "models/models/cornerRES.lib",
+          "bytes": 2330,
+          "sha256": "2c18502104146804444a567abfe7d00520752bf75426809f9d79f40198fe9c1e"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_dschottky_nbl1_mod.lib": {
+          "hosted_path": "models/models/sg13g2_dschottky_nbl1_mod.lib",
+          "bytes": 2532,
+          "sha256": "a5b4771593fdc6942eee9f74c58c42dd7dc777cf18a56814ad51c670c47ba351"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_esd.lib": {
+          "hosted_path": "models/models/sg13g2_esd.lib",
+          "bytes": 3460,
+          "sha256": "4a4fb26a87f64bc6ed807f161cc7b3afaeb8d5ca7230b08ebba728e805caa925"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib": {
+          "hosted_path": "models/models/cornerHBT.lib",
+          "bytes": 3975,
+          "sha256": "bae3d705445de8d6b8de4aa798a0e3e5e7cab617d6495d9c56473bc5377de462"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod_mismatch.lib": {
+          "hosted_path": "models/models/sg13g2_moslv_mod_mismatch.lib",
+          "bytes": 13455,
+          "sha256": "67672ffa1f224294a90270f687d11b804a24dbf268071c5cd98923ab1b3e2f84"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_svaricaphv_mod_mismatch.lib": {
+          "hosted_path": "models/models/sg13g2_svaricaphv_mod_mismatch.lib",
+          "bytes": 5404,
+          "sha256": "16da7669ee7e963645a604f64770d2f8d871fa8483c34e3dddaa9fcf01c51f50"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod.lib": {
+          "hosted_path": "models/models/sg13g2_moshv_mod.lib",
+          "bytes": 9279,
+          "sha256": "d4b348b494998d7057bdde6fb111c60153d8b86175fafcfc6de461737e7a644b"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_bondpad.lib": {
+          "hosted_path": "models/models/sg13g2_bondpad.lib",
+          "bytes": 919,
+          "sha256": "19b3edd62d507bfaf03633b3dc3e89b4ab4d43187a309e8fc665cc5af28a0a4f"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod_mismatch.lib": {
+          "hosted_path": "models/models/sg13g2_hbt_mod_mismatch.lib",
+          "bytes": 20486,
+          "sha256": "1e493f25150b25b64985acd3f1e7ed2eb2e6ca4b712adf45b2de2ce2ba1a0eb2"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_stat.lib": {
+          "hosted_path": "models/models/capacitors_stat.lib",
+          "bytes": 1048,
+          "sha256": "68d2ef41174bcfae5997b355c4fd3dbe4f2b8ec4be30ff79d474052b3be1715a"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/diodes.lib": {
+          "hosted_path": "models/models/diodes.lib",
+          "bytes": 7971,
+          "sha256": "66fa37819fa8a5c8af4dbb85f11208c3e38faa49c117de55c35a1538786715e8"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib": {
+          "hosted_path": "models/models/sg13g2_hbt_mod.lib",
+          "bytes": 20057,
+          "sha256": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib": {
+          "hosted_path": "models/models/cornerCAP.lib",
+          "bytes": 1949,
+          "sha256": "4fc4a0f17ca2aef66ca38c2d2e7cead3307b69508d304ed073129565ec1c3e56"
+        },
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib": {
+          "hosted_path": "models/models/cornerMOShv.lib",
+          "bytes": 24384,
+          "sha256": "5a1f862dc304fdfe2fb9758b15d54809a688d83c3ce981dad2e8473b3e93481a"
+        }
+      },
+      "executable_sha256": "eaca52dad06845779fed4f50420a6a0cf4a32776e6a572432275f350002b87b8",
+      "source_deck_sha256": "8d1ace49e8c2abe21be67433b1b5714f7a468790358e4ef33d4ef038b93944af",
+      "relocated_deck_sha256": "2aab07dcda214edae73396fa8b58dc2b727da789622f07b6bcea3796fc4ed97c",
+      "parent_sha256": "b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48",
+      "native_off_flags": 102,
+      "vectors": [
+        "v(clkp)",
+        "v(clkn)",
+        "v(qp)",
+        "v(qn)",
+        "v(xloop.qp2)",
+        "v(xloop.qn2)",
+        "v(xloop.clk)",
+        "v(xloop.count)",
+        "v(xloop.countb)",
+        "v(xloop.xcount.q0)",
+        "v(xloop.xcount.q1)",
+        "v(fb)",
+        "v(fbbar)",
+        "v(vctrl)",
+        "v(up)",
+        "v(down)",
+        "v(reference)",
+        "v(reset)",
+        "v(xloop.bp)",
+        "v(xloop.bn)",
+        "v(xloop.releaseb)",
+        "v(xloop.counter_reset_b)",
+        "v(xloop.a_release_clk)",
+        "v(xloop.a_release_reset_b)"
+      ],
+      "native_stop_s": 1e-06,
+      "comparison_stop_s": null,
+      "snapshot_stop_s": null,
+      "native_budget_s": 20800,
+      "required_capture_stop_s": 1e-06,
+      "runtime_basis": {
+        "run": 38503868241,
+        "continuous50ns_s": 994.3820633739999,
+        "linear1us_estimate_s": 19887.64126748,
+        "estimate_is_not_a_guarantee": true
+      },
+      "native_runs": [
+        {
+          "script": "acquisition.cir",
+          "returncode": 0,
+          "elapsed_s": 19856.654952019002,
+          "log_sha256": "dab4987742c246d7861329c2128b2532fe3cd6d412b244015ffb6bcf61d3a075",
+          "peak_children_rss_kib": 63432,
+          "diagnostics": []
+        }
+      ],
+      "captures": {
+        "acquisition.raw": {
+          "header_points": 3201212,
+          "observed_rows": 3201212,
+          "width": 25,
+          "header_bytes": 846,
+          "payload_sha256": "dd82da57c5236df286ac5f98305d4c6ace245d10c3c39487d633600c319e45de",
+          "header_matches_observed": true,
+          "payload_has_only_complete_rows": true,
+          "excluded_trailing_bytes": 0,
+          "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete_rows_sha256": "dd82da57c5236df286ac5f98305d4c6ace245d10c3c39487d633600c319e45de",
+          "interrupted_diagnostic": false,
+          "sha256": "17988610f4693d21c01be5cd2b69028c28b694eef2a6ed60a7d4b19c43b8986c",
+          "bytes": 640243246,
+          "start_s": 0.0,
+          "end_s": 1e-06
+        }
+      },
+      "windows": [
+        {
+          "start_ns": 0,
+          "end_ns": 50,
+          "edges": {
+            "vco": {
+              "rising_edges": 400,
+              "frequency_from_median_period_hz": 8035204148.6385,
+              "min_period_s": 8.725167263864027e-11,
+              "max_period_s": 5.930768078735395e-10
+            },
+            "feedback": {
+              "rising_edges": 4,
+              "frequency_from_median_period_hz": 100332048.80583796,
+              "min_period_s": 9.94537511920531e-09,
+              "max_period_s": 9.991925854713879e-09
+            },
+            "reference": {
+              "rising_edges": 4,
+              "frequency_from_median_period_hz": 100000000.0,
+              "min_period_s": 1e-08,
+              "max_period_s": 1.0000000000000004e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.0,
+              "maximum": 0.5938617536543309
+            },
+            "v(up)": {
+              "minimum": -0.014736090918747292,
+              "maximum": 2.5248255148040117
+            },
+            "v(down)": {
+              "minimum": -0.10772041581609865,
+              "maximum": 2.6262265565750553
+            },
+            "v(fb)": {
+              "minimum": 0.0,
+              "maximum": 2.3575982082526794
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 50,
+          "end_ns": 100,
+          "edges": {
+            "vco": {
+              "rising_edges": 401,
+              "frequency_from_median_period_hz": 8005929260.465763,
+              "min_period_s": 1.211507247541656e-10,
+              "max_period_s": 1.2736698958829047e-10
+            },
+            "feedback": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100114961.15774497,
+              "min_period_s": 9.972161721709572e-09,
+              "max_period_s": 1.000316299920577e-08
+            },
+            "reference": {
+              "rising_edges": 5,
+              "frequency_from_median_period_hz": 100000000.00000003,
+              "min_period_s": 9.99999999999999e-09,
+              "max_period_s": 1.0000000000000023e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.42313350486962664,
+              "maximum": 0.594116620830875
+            },
+            "v(up)": {
+              "minimum": -0.01441853729008953,
+              "maximum": 2.5255747317941957
+            },
+            "v(down)": {
+              "minimum": -0.10884663004950874,
+              "maximum": 2.6282413025617424
+            },
+            "v(fb)": {
+              "minimum": 0.00800881527949195,
+              "maximum": 2.3589719078613696
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 100,
+          "end_ns": 200,
+          "edges": {
+            "vco": {
+              "rising_edges": 800,
+              "frequency_from_median_period_hz": 8008358265.394232,
+              "min_period_s": 1.2121080199273691e-10,
+              "max_period_s": 1.2736011295304196e-10
+            },
+            "feedback": {
+              "rising_edges": 10,
+              "frequency_from_median_period_hz": 99966308.1364951,
+              "min_period_s": 9.977292829381758e-09,
+              "max_period_s": 1.0003801721839156e-08
+            },
+            "reference": {
+              "rising_edges": 10,
+              "frequency_from_median_period_hz": 100000000.00000003,
+              "min_period_s": 9.999999999999984e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.4251455312570548,
+              "maximum": 0.5941587126113748
+            },
+            "v(up)": {
+              "minimum": -0.01414970728986987,
+              "maximum": 2.5279487780269494
+            },
+            "v(down)": {
+              "minimum": -0.11065897265408253,
+              "maximum": 2.631507089204727
+            },
+            "v(fb)": {
+              "minimum": 0.008005192085104041,
+              "maximum": 2.359696093330272
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 200,
+          "end_ns": 400,
+          "edges": {
+            "vco": {
+              "rising_edges": 1601,
+              "frequency_from_median_period_hz": 8005001966.992391,
+              "min_period_s": 1.212753765357613e-10,
+              "max_period_s": 1.2734562736145654e-10
+            },
+            "feedback": {
+              "rising_edges": 20,
+              "frequency_from_median_period_hz": 99961185.11757699,
+              "min_period_s": 9.982519724960378e-09,
+              "max_period_s": 1.0004368539199919e-08
+            },
+            "reference": {
+              "rising_edges": 20,
+              "frequency_from_median_period_hz": 99999999.9999999,
+              "min_period_s": 9.999999999999957e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.4275776981107712,
+              "maximum": 0.5938007201079843
+            },
+            "v(up)": {
+              "minimum": -0.013799244287025222,
+              "maximum": 2.5317048495866485
+            },
+            "v(down)": {
+              "minimum": -0.11239218674764957,
+              "maximum": 2.63238492901003
+            },
+            "v(fb)": {
+              "minimum": 0.008007620195777424,
+              "maximum": 2.360365739550868
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 400,
+          "end_ns": 600,
+          "edges": {
+            "vco": {
+              "rising_edges": 1601,
+              "frequency_from_median_period_hz": 8000268328.772412,
+              "min_period_s": 1.2134934400051485e-10,
+              "max_period_s": 1.2733891165221097e-10
+            },
+            "feedback": {
+              "rising_edges": 20,
+              "frequency_from_median_period_hz": 99955973.31740801,
+              "min_period_s": 9.98848133774787e-09,
+              "max_period_s": 1.0004706211416811e-08
+            },
+            "reference": {
+              "rising_edges": 20,
+              "frequency_from_median_period_hz": 99999999.9999999,
+              "min_period_s": 9.999999999999904e-09,
+              "max_period_s": 1.0000000000000116e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.43050417795080786,
+              "maximum": 0.5930467044647032
+            },
+            "v(up)": {
+              "minimum": -0.013342295664084366,
+              "maximum": 2.5323121239105646
+            },
+            "v(down)": {
+              "minimum": -0.11292478664473041,
+              "maximum": 2.6295333165957735
+            },
+            "v(fb)": {
+              "minimum": 0.008024124186049753,
+              "maximum": 2.360650198211578
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 600,
+          "end_ns": 800,
+          "edges": {
+            "vco": {
+              "rising_edges": 1600,
+              "frequency_from_median_period_hz": 7996804157.746672,
+              "min_period_s": 1.2138601584277407e-10,
+              "max_period_s": 1.2734169066227883e-10
+            },
+            "feedback": {
+              "rising_edges": 20,
+              "frequency_from_median_period_hz": 99952734.53985737,
+              "min_period_s": 9.991490126648529e-09,
+              "max_period_s": 1.0004913477492634e-08
+            },
+            "reference": {
+              "rising_edges": 20,
+              "frequency_from_median_period_hz": 99999999.9999999,
+              "min_period_s": 9.999999999999904e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.4320112695467062,
+              "maximum": 0.5926648765957007
+            },
+            "v(up)": {
+              "minimum": -0.013091471738859911,
+              "maximum": 2.532218495803238
+            },
+            "v(down)": {
+              "minimum": -0.11306892015347643,
+              "maximum": 2.621144163419431
+            },
+            "v(fb)": {
+              "minimum": 0.008038691926426075,
+              "maximum": 2.36079485177497
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 800,
+          "end_ns": 900,
+          "edges": {
+            "vco": {
+              "rising_edges": 800,
+              "frequency_from_median_period_hz": 7996412447.607671,
+              "min_period_s": 1.2140434870381186e-10,
+              "max_period_s": 1.2734289444432764e-10
+            },
+            "feedback": {
+              "rising_edges": 10,
+              "frequency_from_median_period_hz": 99950720.77926154,
+              "min_period_s": 9.99306130455571e-09,
+              "max_period_s": 1.0004988553343436e-08
+            },
+            "reference": {
+              "rising_edges": 10,
+              "frequency_from_median_period_hz": 99999999.9999999,
+              "min_period_s": 9.999999999999904e-09,
+              "max_period_s": 1.000000000000001e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.4328026928280691,
+              "maximum": 0.5924711154397236
+            },
+            "v(up)": {
+              "minimum": -0.012956275247108384,
+              "maximum": 2.531447034544202
+            },
+            "v(down)": {
+              "minimum": -0.11310558244837995,
+              "maximum": 2.614128047996503
+            },
+            "v(fb)": {
+              "minimum": 0.008048124180081816,
+              "maximum": 2.360836709929702
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        },
+        {
+          "start_ns": 900,
+          "end_ns": 1000,
+          "edges": {
+            "vco": {
+              "rising_edges": 800,
+              "frequency_from_median_period_hz": 7996314773.519935,
+              "min_period_s": 1.2140981461811429e-10,
+              "max_period_s": 1.2734392960403363e-10
+            },
+            "feedback": {
+              "rising_edges": 10,
+              "frequency_from_median_period_hz": 99950025.13913082,
+              "min_period_s": 9.993538289647544e-09,
+              "max_period_s": 1.000503958732383e-08
+            },
+            "reference": {
+              "rising_edges": 10,
+              "frequency_from_median_period_hz": 99999999.9999999,
+              "min_period_s": 9.999999999999904e-09,
+              "max_period_s": 1.0000000000000116e-08
+            }
+          },
+          "node_ranges": {
+            "v(vctrl)": {
+              "minimum": 0.43304425590193524,
+              "maximum": 0.5924131213830799
+            },
+            "v(up)": {
+              "minimum": -0.01291458318321317,
+              "maximum": 2.5310322319879823
+            },
+            "v(down)": {
+              "minimum": -0.11313521196016785,
+              "maximum": 2.611589868150089
+            },
+            "v(fb)": {
+              "minimum": 0.008051265240873164,
+              "maximum": 2.360866963735257
+            },
+            "v(reference)": {
+              "minimum": 0.0,
+              "maximum": 2.5
+            }
+          }
+        }
+      ],
+      "phase_shift_fitted": false,
+      "required_followup": [
+        "fixed original acquisition phase/frequency/slip review",
+        "all-device1us native safety",
+        "timestep and independent PVT",
+        "PLL/CDR serialPHY integration"
+      ]
+    },
+    "archive_id": 639850421,
+    "archive_sha256": "59470c85beab31acc7ca76c4a908a24db5be5b74d358668f2e50d016548e3af6",
+    "review_run": 38565392744,
+    "review_state": "DISPATCHED_NOT_YET_ACCEPTED",
+    "full_phy_accepted": false
   }
 }
