@@ -30,10 +30,15 @@ def main():
     parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
+                                             'critical_buses_kelvin_supply_direct_low_outputs',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_direct','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     args = parser.parse_args()
     requested_variant = args.variant
+    direct_pre_outputs = requested_variant == 'critical_buses_kelvin_supply_direct_low_outputs'
+    if direct_pre_outputs:
+        assert args.circuit_profile == 'cascade158', 'Short output routes bind exact cascade158 devices'
+        args.variant = 'critical_buses_kelvin_supply_direct'
     direct_final_supply = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct'
     if direct_final_supply:
         assert args.circuit_profile == 'final_drive_v8', 'Direct supply trial binds exact actual V8 devices'
@@ -511,6 +516,30 @@ def main():
             # loads_shunts combines the independently measured collector-feed
             # shortening with the output-shunt move. Same54devices/values;
             # headroom and original-bit margin require new native RC and PVT.
+            if direct_pre_outputs:
+                # Original TC hot gates38523202992 identify the PRESTAGE outputs
+                # as the failed final-input common-mode interface. Preserve all
+                # cascade158 devices/values and direct-supply geometry. Shorten
+                # actual output buses, align shunt/series branches and move the
+                # series pair toward collectors. New DRC/LVS, RC and native waves
+                # decide acceptance; no threshold or extracted-R change.
+                changes.extend([
+                    ('        xs = []\n',
+                     '        if net in ("op", "on"):\n'
+                     '            assert net in PORTS and len(terminals[net]) == 2\n'
+                     '            y = -32.0 if net == "op" else -24.0\n'
+                     '        xs = []\n'),
+                    ('23:(279.6,-50),24:(318.0,-50)',
+                     '23:(92.4,-82),24:(54.0,-82)'),
+                    ('25:(87.6,-50),26:(49.2,-50)',
+                     '25:(87.6,-18),26:(49.2,-18)'),
+                    ('                escape(pin, 1, n[k], x - 9.6 + 4.8 * k, name, 1 if p["w"]=="1u" else 8)',
+                     '                lane = x - 9.6 + 4.8 * k\n'
+                     '                if i in (23,24) and k == 1:\n'
+                     '                    assert n[k] == "avss"\n'
+                     '                    lane = 149.6 if i == 23 else 34.8\n'
+                     '                escape(pin, 1, n[k], lane, name, 1 if p["w"]=="1u" else 8)'),
+                ])
             for before, after in changes:
                 assert source.count(before) == 1, before
                 source = source.replace(before, after)

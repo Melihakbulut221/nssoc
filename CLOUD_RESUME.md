@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Actual direct-supply hot study terminal: improvement, both cases rejected.**
+38523202992 hot summary639508462 bitmin0.095224545V (13sub100mV early samples),
+final-input diffmin0.151252448V and CMmin1.788243586V; hotres639507457 bitmin
+0.118692802V PASSbits, diffmin0.155516545V, CMmin1.773661833V FAILinterface.
+All HBT/MOS gates pass, no candidate adoption. Full original summaries/hashes
+stored in direct-supply composition receipt. The review's final interface is
+ap/an/bp/bn: PRESTAGE outputs, not final-mux op/on. Next physical candidate
+cascade158/critical_buses_kelvin_supply_direct_low_outputs preserves all54devices,
+shortens op/on buses and aligns/moves actual shunt/series resistors, keeping
+native direct-supply geometry and every original threshold. Dispatch physical
+layout once; require original DRC/LVS/faults then nativeRC/waves. No R rescaling.
+
+Combined dedicated+ACK-window mapping38524042217 on9313190a is active:
+baseline115720101470/candidate115720101724. Exact endpoint proof639490865 now in
+structured ACK evidence. Fresh joint buffered/replay positive and wrong-page
+negative ports precede mapping. Preserve run; do not start another timing trial
+until reports identify the remaining limiting path. Original route38511490580
+and PLL38507479646 retain handles. All full goalsOPEN/cloud-only.
+
+
 **New limiting timing endpoint exactly bound; combined proof-preserving candidate.**
 PreABC trace38522829842 summary639490865 PASS reproduces original pre_map.v
 byte-for-byte (df4bc9fd42b4b5a2fd35b4a08f621501e6b7208809f738fc504d1b3535f058a4).
