@@ -520,18 +520,21 @@ def test_cascade16_changes_only_two_native_output_pulldowns():
 
 
 @pytest.mark.parametrize('reported_profile', ['cascade14','cascade16','cascade158'])
+@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_direct','critical_buses_kelvin_supply_direct_low_outputs'])
 @pytest.mark.parametrize('requested,expected_profile,version,variant', [
     ('cascade16_kelvin_dense_wide','cascade16','v3','critical_buses_kelvin_dense_wide'),
     ('cascade158_kelvin_supply_direct','cascade158','v4','critical_buses_kelvin_supply_direct'),
+    ('cascade158_kelvin_supply_direct_low_outputs','cascade158','v4','critical_buses_kelvin_supply_direct_low_outputs'),
 ])
 def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, reported_profile,
-                                                       requested, expected_profile, version, variant):
+                                                       requested, expected_profile, version, variant, reported_variant):
     import hashlib
     import io
     import json
     import shutil
     import tarfile
-    assert mux4.physical_spec_path(requested).name=='pcie-'+requested.replace('_','-')+'-composition-20261013.json'
+    date='20261014' if requested.endswith('_low_outputs') else '20261013'
+    assert mux4.physical_spec_path(requested).name=='pcie-'+requested.replace('_','-')+'-composition-'+date+'.json'
     assert mux4.physical_prestage_circuit_profile(requested)==expected_profile
     assert mux4.physical_prestage_circuit_profile('kelvin_dense_wide')=='cascade14'
     with pytest.raises(AssertionError):
@@ -539,7 +542,7 @@ def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, 
     model=(ROOT/f'hw/soc/analog/pcie/tx_mux2_hbt_cascade_{version}.spice').read_bytes()
     outputs={'mux54-compact01.spice':hashlib.sha256(model).hexdigest()}
     report=json.dumps(dict(circuit_profile=reported_profile,outputs=outputs,
-                           variant=variant)).encode()
+                           variant=reported_variant)).encode()
     archive=tmp_path/'source.tar.gz'
     with tarfile.open(archive,'w:gz') as packed:
         for name,raw in [('result.json',report),('mux54-compact01.spice',model)]:
@@ -556,7 +559,7 @@ def test_new_prestage_rejects_validly_hashed_old_circuit(tmp_path, monkeypatch, 
         return spec
     monkeypatch.setattr(mux4,'physical_spec_path',selected_spec)
     monkeypatch.setattr(mux4,'fetch',lambda url,digest,path:shutil.copyfile(archive,path))
-    if reported_profile!=expected_profile:
+    if reported_profile!=expected_profile or reported_variant!=variant:
         with pytest.raises(AssertionError):
             mux4.physical_prestage(tmp_path,'physical_compact',requested)
     else:

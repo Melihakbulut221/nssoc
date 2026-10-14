@@ -7,7 +7,7 @@ on:
       study:
         description: Frozen older component or current source-bound physical tree
         type: choice
-        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area, v11_nx4_wire_rc, v11_feedback_tc, v8_feedback_tc_physical, v8_feedback_tc_compact_hot, v8_feedback_tc_direct_hot]
+        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area, v11_nx4_wire_rc, v11_feedback_tc, v8_feedback_tc_physical, v8_feedback_tc_compact_hot, v8_feedback_tc_direct_hot, v8_feedback_tc_short_pre_hot]
         default: original_component
       cases:
         description: Run all cases or only failed sensitivity preparations
@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   native-transient:
-    if: inputs.study != 'v11_data_area' && inputs.study != 'v11_feedback_tc' && inputs.study != 'v8_feedback_tc_physical' && inputs.study != 'v8_feedback_tc_compact_hot' && inputs.study != 'v8_feedback_tc_direct_hot'
+    if: inputs.study != 'v11_data_area' && inputs.study != 'v11_feedback_tc' && inputs.study != 'v8_feedback_tc_physical' && inputs.study != 'v8_feedback_tc_compact_hot' && inputs.study != 'v8_feedback_tc_direct_hot' && inputs.study != 'v8_feedback_tc_short_pre_hot'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
@@ -90,7 +90,7 @@ jobs:
           python3 scripts/publish_cloud_results.py --group 'component-rc-${{ matrix.interconnect }}' "$archive" "$archive.sha256" "$summary"
 
   data-area-sensitivity:
-    if: inputs.study == 'v11_data_area' || inputs.study == 'v11_feedback_tc' || inputs.study == 'v8_feedback_tc_physical' || inputs.study == 'v8_feedback_tc_compact_hot' || inputs.study == 'v8_feedback_tc_direct_hot'
+    if: inputs.study == 'v11_data_area' || inputs.study == 'v11_feedback_tc' || inputs.study == 'v8_feedback_tc_physical' || inputs.study == 'v8_feedback_tc_compact_hot' || inputs.study == 'v8_feedback_tc_direct_hot' || inputs.study == 'v8_feedback_tc_short_pre_hot'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -100,7 +100,7 @@ jobs:
       max-parallel: 4
       matrix:
         nx: ${{ fromJSON(startsWith(inputs.study, 'v8_feedback_tc_') && '[0]' || inputs.study == 'v11_feedback_tc' && '[4]' || '[4,5,6,8]') }}
-        condition: ${{ fromJSON((inputs.study == 'v8_feedback_tc_compact_hot' || inputs.study == 'v8_feedback_tc_direct_hot') && '["hot_low","hot_low_res_bcs"]' || (inputs.study == 'v11_feedback_tc' || inputs.study == 'v8_feedback_tc_physical') && '["hot_low","hot_low_res_bcs","cold_high_hbt_wcs","cold_high_res_wcs"]' || '["hot_low","cold_high_hbt_wcs"]') }}
+        condition: ${{ fromJSON((inputs.study == 'v8_feedback_tc_compact_hot' || inputs.study == 'v8_feedback_tc_direct_hot' || inputs.study == 'v8_feedback_tc_short_pre_hot') && '["hot_low","hot_low_res_bcs"]' || (inputs.study == 'v11_feedback_tc' || inputs.study == 'v8_feedback_tc_physical') && '["hot_low","hot_low_res_bcs","cold_high_hbt_wcs","cold_high_res_wcs"]' || '["hot_low","cold_high_hbt_wcs"]') }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -122,7 +122,7 @@ jobs:
       - name: Screen explicit circuit with unchanged bits and electrical limits
         run: |
           kind='${{ inputs.study != 'v8_feedback_tc_compact_hot' && startsWith(matrix.condition, 'hot_low') && 'physical_wire' || 'physical_compact' }}'
-          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition '${{ matrix.condition }}' --fault none --prestage "$kind" --physical-profile cascade158_kelvin_supply_direct --physical-final "$kind" --physical-final-profile '${{ inputs.study == 'v8_feedback_tc_direct_hot' && 'v8_kelvin_low_ports_loads_shunts_series_direct' || startsWith(inputs.study, 'v8_feedback_tc_') && 'v8_kelvin_low_ports_loads_shunts_series' || 'v11_kelvin_low_ports_loads_shunts_series' }}' --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias '${{ (inputs.study == 'v11_feedback_tc' || startsWith(inputs.study, 'v8_feedback_tc_')) && 'output_feedback_tc' || 'output_feedback' }}' --output-bias native_res --diagnostic-final-nx '${{ matrix.nx }}'
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition '${{ matrix.condition }}' --fault none --prestage "$kind" --physical-profile '${{ inputs.study == 'v8_feedback_tc_short_pre_hot' && 'cascade158_kelvin_supply_direct_low_outputs' || 'cascade158_kelvin_supply_direct' }}' --physical-final "$kind" --physical-final-profile '${{ (inputs.study == 'v8_feedback_tc_direct_hot' || inputs.study == 'v8_feedback_tc_short_pre_hot') && 'v8_kelvin_low_ports_loads_shunts_series_direct' || startsWith(inputs.study, 'v8_feedback_tc_') && 'v8_kelvin_low_ports_loads_shunts_series' || 'v11_kelvin_low_ports_loads_shunts_series' }}' --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias '${{ (inputs.study == 'v11_feedback_tc' || startsWith(inputs.study, 'v8_feedback_tc_')) && 'output_feedback_tc' || 'output_feedback' }}' --output-bias native_res --diagnostic-final-nx '${{ matrix.nx }}'
       - name: Preserve every candidate and unchanged-Nx8 control
         if: always()
         env:

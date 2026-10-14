@@ -7,6 +7,24 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Source-bound short-output prestage composition PASS; new hot pair prepared.**
+38526689071 summary639566149 binds54devices/3848R/2554C. Native wireSHA
+69f91103491cb38a90e2daadb0655e60bfc93dde150ac1f9804e0151f0903bb8;
+compact179199ae7f8245e24760570f3c507d61cdc3b13b5907c7d6ed9d03897ffadef6.
+New studyv8_feedback_tc_short_pre_hot combines these actual prestage wires with
+already bound direct-supply V8 final layout, original TC/nativeclock/sourcebits
+and every original hot_low/hot_low_res_bcs gate. No device or RC mutation.
+Expanded old-circuit AND wrong-geometry hashed archive controls run first.
+Dispatch hot study once; only native result determines acceptance. Full PVT and
+32:1 still required if these two hot cases pass. New receipt increases inventory
+to22579/4223inline/18356path/docs1509; LICENSES.md updated in same commit.
+
+Hosted common regressions38526686053 on240ba459 passed including inventory;
+prior red runs retained as inventory failure. Direct ACK paired mapping was
+dispatched on520fd0a9; retain latestmatching handle, no duplicate. Original
+PLL38507479646/route38511490580 remain live handles. Full goalsOPEN/cloud-only.
+
+
 **Proved direct ACK commit ready for paired native timing.**
 New studyadvert_dedicated_ack_commit compares dedicated-only against
 physical_idle_credit_dedicated_ack_commit. It requires original proof639541970
