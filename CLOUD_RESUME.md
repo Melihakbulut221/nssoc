@@ -8,6 +8,23 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Bank-EOP mapping rejected; dedicated internal commit port prepared.**
+38517610171 completed. Baseline639376752 slowPCIe-1.101756ns;
+candidate639375563 slowPCIe-1.391512ns, fastPCIehold both-0.109062ns.
+Formal equality did not remove the structural arbitration fan-in to the credit
+bank enable; direct-EOP OR still retains chosen's input cone. New
+variant=dedicated_commit gives only sent header/data bank updates an internal
+commit_ready_i bound directly to selected_ready; original tx_ready_i handshake
+and all other state remain unchanged. Joint ownership/all-state proof required,
+not assumed; same wrong-owner/corrupt-data controls and original port tests.
+Dispatch cloud-migration-checks advert_dedicated_commit=true once, then paired
+mapping study=advert_dedicated_commit only on proofPASS. No constraints waived.
+ActualNx4 coldcases639363894/639364278PASS; hot jobs38517527891 still active at
+last check. PLL38507479646/route38511490580 retain currenthandles. All goalsOPEN,
+cloud-only, no local artifacts. Previous turn verified wait then new terminal
+slacks changed next action; this source repair continues real closure work.
+
+
 **Direct EOP proof PASS; mapping38517610171 active.** Proof38517360412 summary
 639356884 passes3all-state induction/2counterexamples/10positive ports; no skips.
 No mapping/adoption claim yet. Do not rerun proved candidate or rejected bank-only

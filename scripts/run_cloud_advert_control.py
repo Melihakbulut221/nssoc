@@ -196,19 +196,21 @@ def bank_commit(fc):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--variant',choices=('control','static_commit','bank_commit','bank_eop'),default='control')
+    parser.add_argument('--variant',choices=('control','static_commit','bank_commit','bank_eop','dedicated_commit'),default='control')
     args=parser.parse_args(argv)
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
     record=dict(status='RUNNING',adopted=False,production_rtl_modified=False,
         scope='Remove redundant combinational local_reset from internal advertiser ready; tie advertiser link high under unchanged local_reset=rst_ni&&link_up_i&&!retrain_done_i; use stored active directly for advertiser valid. No EOP-ready refinement, latency, storage, timer or constraints change. Prove complete advertiser/arbiter/registered-egress region, every state/output including invalid payload, arbitrary link/reset/clock transitions after initial reset. Buffered port tests and wrong-grant control. Candidate only; not mapped timing or production adoption.')
     record['variant']=args.variant
-    if args.variant in ('static_commit','bank_commit','bank_eop'):
+    if args.variant in ('static_commit','bank_commit','bank_eop','dedicated_commit'):
         record['scope']='Exact physical idle/credit baseline. Replace two dynamic advertiser class-indexed sent-header/data writes with three fixed slices under original EOP enable/reset/link priority. No parent ready/valid factoring, timing exception, storage or latency change. Whole-region all-state induction plus wrong-grant and wrong-commit controls; buffered ports. No timing or adoption claim.'
-    if args.variant in ('bank_commit','bank_eop'):
+    if args.variant in ('bank_commit','bank_eop','dedicated_commit'):
         record['scope']='Exact physical idle/credit baseline. Split committed header/data banks into independent asynchronous-reset processes with direct active/ready/EOP/class enables and unchanged link reset priority. Original storage and cycle behavior; no parent ready/valid factoring or timing constraints changed. Whole-region all-state induction, wrong-grant/wrong-commit controls and buffered ports; not adoption.'
     if args.variant=='bank_eop':
         record['scope']+=' At active EOP, jointly prove existing packet ownership permits direct selected_ready; remove combinational arbitration on this commit path. Original SOP arbitration and parent/reset/valid remain unchanged; no timing exception.'
+    if args.variant=='dedicated_commit':
+        record['scope']+=' Dedicated internal commit_ready_i binds directly to selected_ready, bypassing the packet arbitration expression only for sent header/data banks. Original advertiser handshake and every other state transition unchanged. Prove actual ownership and equality jointly; no false-path waiver.'
     def save():
         (OUT/'result.json').write_text(json.dumps(record,indent=2)+'\n')
     def execute(command,label,cwd=None):
@@ -251,14 +253,25 @@ def main(argv=None):
             ready_line='    assign advert_ready=selected_ready && (advert_eop || (local_reset && !chosen));'
             assert altered.count(OLD)==1
             altered=altered.replace(OLD,ready_line)
+        if args.variant=='dedicated_commit':
+            anchor='.tx_valid_o(advert_valid),.tx_ready_i(advert_ready));'
+            assert altered.count(anchor)==1
+            altered=altered.replace(anchor,'.commit_ready_i(selected_ready),'+anchor)
         assert altered.count(ready_line)==1
         wrong=altered.replace(ready_line,'    assign advert_ready=chosen && selected_ready;')
         fc=selected['soc_pcie_fc_tx.v'].decode()
         valid='    assign tx_valid_o=rst_ni && link_up_i && active;'
         assert fc.count(valid)==1
-        candidate_fc=fc.replace(valid,'    assign tx_valid_o=active;') if args.variant=='control' else (bank_commit(fc) if args.variant in ('bank_commit','bank_eop') else static_commit(fc))
+        candidate_fc=fc.replace(valid,'    assign tx_valid_o=active;') if args.variant=='control' else (bank_commit(fc) if args.variant in ('bank_commit','bank_eop','dedicated_commit') else static_commit(fc))
+        if args.variant=='dedicated_commit':
+            anchor='    input wire tx_ready_i\n'
+            assert candidate_fc.count(anchor)==1
+            candidate_fc=candidate_fc.replace(anchor,'    input wire commit_ready_i,\n'+anchor)
+            enable='else if(active && tx_ready_i && index==3\'d5 && frame_class=='
+            assert candidate_fc.count(enable)==3
+            candidate_fc=candidate_fc.replace(enable,enable.replace('tx_ready_i','commit_ready_i'))
         wrong_commit_fc=candidate_fc
-        if args.variant in ('static_commit','bank_commit','bank_eop'):
+        if args.variant in ('static_commit','bank_commit','bank_eop','dedicated_commit'):
             commit_line='sent_data_o[0 +: 12]<=data_credit;'
             assert candidate_fc.count(commit_line)==1
             wrong_commit_fc=candidate_fc.replace(commit_line,"sent_data_o[0 +: 12]<=data_credit ^ 12'h001;")
@@ -281,7 +294,7 @@ def main(argv=None):
         record['runtime']=subprocess.check_output([yosys,'-V'],text=True).strip()
         fc=selected['soc_pcie_fc_tx.v'].decode()
         proof_cases=[('candidate',altered,128),('candidate_refresh0',altered,0),('candidate_refresh1',altered,1),('wrong_owner',wrong,128)]
-        if args.variant in ('static_commit','bank_commit','bank_eop'):
+        if args.variant in ('static_commit','bank_commit','bank_eop','dedicated_commit'):
             proof_cases.append(('wrong_commit',altered,128))
         for case,text,refresh in proof_cases:
             directory=OUT/('proof-'+case);directory.mkdir()
@@ -323,7 +336,7 @@ def main(argv=None):
                 assert code==0 and failed==0 and result['status']=='PASS_PORT_ONLY_PCIE_RX_FLOW'
         assert all(p['passed'] for p in record['proofs'][:3]) and all(p['negative_rejected'] for p in record['proofs'][3:])
         record['status']=('PASS_ACTUAL_ADVERTISER_CONTROL_FACTORING_REGION_AND_PORTS_NOT_TIMING' if args.variant=='control'
-            else ('PASS_ACTUAL_ADVERTISER_BANK_EOP_REGION_AND_PORTS_NOT_TIMING' if args.variant=='bank_eop' else 'PASS_ACTUAL_ADVERTISER_BANK_COMMIT_REGION_AND_PORTS_NOT_TIMING' if args.variant=='bank_commit' else 'PASS_ACTUAL_ADVERTISER_STATIC_COMMIT_REGION_AND_PORTS_NOT_TIMING'))
+            else ('PASS_ACTUAL_ADVERTISER_DEDICATED_COMMIT_REGION_AND_PORTS_NOT_TIMING' if args.variant=='dedicated_commit' else 'PASS_ACTUAL_ADVERTISER_BANK_EOP_REGION_AND_PORTS_NOT_TIMING' if args.variant=='bank_eop' else 'PASS_ACTUAL_ADVERTISER_BANK_COMMIT_REGION_AND_PORTS_NOT_TIMING' if args.variant=='bank_commit' else 'PASS_ACTUAL_ADVERTISER_STATIC_COMMIT_REGION_AND_PORTS_NOT_TIMING'))
     except BaseException as error:
         record.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
