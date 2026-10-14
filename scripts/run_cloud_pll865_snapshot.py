@@ -694,6 +694,103 @@ def pfd_aoi_controls():
     return dict(all_input_truth_states=8,rejected_wrong_gate_controls=len(faults),scope='Static rail connectivity only; dynamic reset recovery requires native transient')
 
 
+
+def pfd_physical_parent(parent, macro, reference):
+    """Flatten exact new physical PFD model into an unchanged parent test fixture."""
+    from build_pcie_local_vco_hybrid_v6 import statements
+    from collections import Counter
+    assert digest(parent.encode())=='b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48'
+    assert digest(macro.encode())=='4231a31db0b6e39bad5ba4266159a56ed3e780d8508c6bcdbb9e74cb43203f38'
+    rows=statements(macro);ports=rows[0][2:]
+    assert rows[0][:2]==['.subckt','nssoc_pfd235_wire_v1']
+    assert ports==['sub','vdd','ref','vss','up','fb','down','reset','wire_cref']
+    assert rows[-1]==['.ends','nssoc_pfd235_wire_v1']
+    mapping={p:'a_pfd_'+p for p in ports if p!='wire_cref'};mapping['wire_cref']='wire_cref'
+    def node(n):
+        if n not in mapping:mapping[n]='xpfd.'+n.lower()
+        return mapping[n]
+    replacement=[];devices=[];count=Counter();ids=set()
+    for w in rows[1:-1]:
+        kind=w[0][0].lower();assert kind in 'xrc' and w[0].lower() not in ids;ids.add(w[0].lower())
+        if kind=='x':
+            model_at=5 if len(w)>5 and w[5] in ('sg13_hv_nmos','sg13_hv_pmos') else 3
+            model=w[model_at];assert model in ('sg13_hv_nmos','sg13_hv_pmos','ntap1','ptap1')
+            count[model]+=1
+            assert all('=' in s for s in w[model_at+1:])
+            translated=[kind.upper()+'_xpfd_'+w[0].lower(),*[node(n) for n in w[1:model_at]],*w[model_at:]]
+            devices.append(dict(instance=translated[0],model=model,nodes=translated[1:model_at],source_row=w,translated_row=translated))
+        else:
+            assert len(w)==4;translated=[kind.upper()+'_xpfd_'+w[0].lower(),node(w[1]),node(w[2]),w[3]]
+            count[kind]+=1
+        replacement.append(' '.join(translated))
+    assert count==Counter(sg13_hv_nmos=47,sg13_hv_pmos=47,ptap1=94,ntap1=47,r=716,c=1178)
+    assert len(mapping)==len(set(mapping.values())) and all(re.fullmatch(r'[a-zA-Z0-9_.]+',n) for n in mapping.values())
+    inverse={v:k for k,v in mapping.items()}
+    recovered=[]
+    for original,translated in zip(rows[1:-1],replacement,strict=True):
+        w=translated.split();n=5 if w[0].lower().startswith('x') and w[5] in ('sg13_hv_nmos','sg13_hv_pmos') else 3
+        back=[w[0].split('_xpfd_',1)[1].upper(),*[inverse[v] for v in w[1:n]],*w[n:]]
+        assert back[0]==original[0].upper() and back[1:]==original[1:],'Non-reversible native component translation'
+        recovered.append(back)
+    removed=Counter();kept=[]
+    for line in parent.splitlines():
+        words=line.lower().split()
+        kind=next((k for k in 'xrc' if words and words[0].startswith(k+'_xpfd_')),None)
+        if kind:removed[kind]+=1
+        else:kept.append(line)
+    assert removed==Counter(x=255,r=771,c=1256)
+    assert not any('xpfd.' in l.lower() for l in kept)
+    ends=[i for i,l in enumerate(kept) if l.lower().startswith('.ends')];assert len(ends)==1
+    candidate='\n'.join(kept[:ends[0]]+replacement+kept[ends[0]:])+'\n'
+    assert [l for l in candidate.splitlines() if not any(l.lower().startswith(k+'_xpfd_') for k in 'xrc')]==kept
+    assert sum(l.lower().startswith('x') for l in candidate.splitlines())==845
+    topology=pfd_topology_map(candidate,reference)
+    assert topology['mos_count']==94 and topology['metal_resistors']==716
+    probes=sorted({'v(xloop.'+n.lower()+')' for d in devices for n in d['nodes']})
+    clearpoints=topology['nets']['xloop.clearb']['terminals'];assert clearpoints
+    clear=clearpoints[0]['vector'];assert clear in probes
+    return candidate,dict(profile='aoi4_rc',pfd_mos_count=94,total_native_instances=845,
+        original_pfd_removed=dict(removed),native_census=dict(count),physical_pfd=True,pfd_wire_rc_present=True,
+        original_parent_sha256=digest(parent.encode()),candidate_parent_sha256=digest(candidate.encode()),
+        native_component_sha256=digest(macro.encode()),non_pfd_lines_sha256=digest(('\n'.join(kept)+'\n').encode()),
+        reversible_terminal_and_parameter_translation=True,topology_naming=topology,
+        physical_terminal_voltage_probes=probes,clearb_vector=clear,
+        scope='Actual235device/716R1178C standalone PFD candidate in frozen parent electrical fixture; all610other devices and non-PFD RC byte-identical. This does not recompose parent geometry or shared bulk substrate. Intrinsic body/tap models retained; distributed substrate/RF/parent physical integration and full safety/acquisition/PVT remain unqualified.')
+
+def restore_pfd_physical_model(out):
+    """Restore exact native RC composition and complete provenance from hosted review."""
+    path=out/'pfd-physical-input.tar.gz'
+    fetch(BASE+'cloud-results-38609444130-1-pll-pfd-layout/pfd94-layout-38609444130-1.tar.gz',
+        '40f43ab7116303ab57a7431c7f2814045a4c1d35a42a1aedef2989626c9abedc',path)
+    assert path.stat().st_size==6813196
+    prefix='hw/soc/out/cloud-pfd-layout/'
+    names=['result.json','wire/pfd235-wire01.spice','wire/composition01.json',
+        'wire/composition-controls01.json','wire/native-mutations01.json',
+        'binding/devices01.json','layout/result.json']
+    dest=out/'pfd-physical-source';dest.mkdir()
+    with tarfile.open(path) as tar:
+        for n in names:
+            members=[m for m in tar.getmembers() if m.name==prefix+n]
+            assert len(members)==1 and members[0].isfile()
+            target=dest/n;target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_bytes(tar.extractfile(members[0]).read())
+    path.unlink()
+    assert sha(dest/'result.json')=='2f4bade844a8f5182f5cc1c4b5c75ce4c4ce753d6dbdc062c20da7548e875a82'
+    result=json.loads((dest/'result.json').read_text())
+    assert result['status']=='PASS_PFD235_SAVED_NATIVE_RC_AND_27_FAULTS_REQUIRES_NATIVE_WAVEFORMS'
+    assert len(result['raw_controls']['cases'])==13 and len(result['composition_controls']['actual_rejected_mutants'])==6
+    composition=json.loads((dest/'wire/composition01.json').read_text())
+    assert composition==result['composition'] and composition['devices']==235
+    assert json.loads((dest/'wire/composition-controls01.json').read_text())==result['composition_controls']
+    assert json.loads((dest/'wire/native-mutations01.json').read_text())==result['raw_controls']
+    for n in ('binding/devices01.json','layout/result.json'):
+        key='/home/runner/work/nssoc/nssoc/'+prefix+n
+        assert sha(dest/n)==result['protected_source_files'][key]
+    macro=(dest/'wire/pfd235-wire01.spice').read_text()
+    assert digest(macro.encode())=='4231a31db0b6e39bad5ba4266159a56ed3e780d8508c6bcdbb9e74cb43203f38'
+    return macro
+
+
 def pfd_schematic_parent(parent, reference, profile):
     """Matched schematic-only PFD replacement; all other parent RC stays exact."""
     from decimal import Decimal
@@ -766,10 +863,11 @@ def pfd_op_controls():
 
 def run_pfd_candidate(executable,out,common,result,save,vectors):
     """Bounded native50ns candidate screen; no timing/lock acceptance inferred."""
-    text='NSSOC matched schematic PFD candidate50ns\n'+common+'run candidate.raw\nquit\n.endc\n.end\n'
+    physical=result['pfd_replacement'].get('physical_pfd',False)
+    text='NSSOC source-bound PFD candidate50ns\n'+common+'run candidate.raw\nquit\n.endc\n.end\n'
     (out/'candidate.cir').write_text(text)
-    result.update(status='RUNNING_SCHEMATIC_PFD_NATIVE50_SCREEN',native_budget_s=19000,
-        native_stop_s=50e-9,comparison_stop_s=None,snapshot_stop_s=None,physical_pfd=False)
+    result.update(status='RUNNING_PHYSICAL_PFD_NATIVE50_SCREEN' if physical else 'RUNNING_SCHEMATIC_PFD_NATIVE50_SCREEN',native_budget_s=19000,
+        native_stop_s=50e-9,comparison_stop_s=None,snapshot_stop_s=None,physical_pfd=physical)
     save();native_run(executable,out,'candidate.cir',time.monotonic()+19000,result,save)
     raw=(out/'candidate.raw').read_bytes();names,values,meta=decode_prefix(raw)
     assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
@@ -781,18 +879,20 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
         if n=='time':continue
         stats[n]=dict(minimum=float(y.min()),maximum=float(y.max()),
             rising_edges_at_1p25_v_s=rising(t,y,1.25).tolist(),falling_edges_at_1p25_v_s=rising(t,-y,-1.25).tolist())
-    clear=v['v(xloop.pfd_candidate.clearb)'];clock_events={}
+    clear=v[result['pfd_replacement']['clearb_vector'] if physical else 'v(xloop.pfd_candidate.clearb)'];clock_events={}
     for n in ('v(reference)','v(fb)'):
         edge=rising(t,v[n],1.25);clock_events[n]=[dict(time_s=float(e),clearb_v=float(np.interp(e,t,clear)),
             reset_asserted_at_1p25_v=bool(np.interp(e,t,clear)<1.25)) for e in edge if e>12e-9]
     operating_point=zero_source_operating_point((out/'op.raw').read_bytes(),vectors)
-    result.update(status='COMPLETE_SCHEMATIC_PFD_NATIVE50_SCREEN_NOT_PHYSICAL_OR_LOCK_ACCEPTANCE',
+    result.update(status='COMPLETE_PHYSICAL_PFD_NATIVE50_FIXTURE_SCREEN_NOT_LOCK_OR_PARENT_LAYOUT_ACCEPTANCE' if physical else 'COMPLETE_SCHEMATIC_PFD_NATIVE50_SCREEN_NOT_PHYSICAL_OR_LOCK_ACCEPTANCE',
         captures={'candidate.raw':dict(**meta,sha256=digest(raw),bytes=len(raw),start_s=float(t[0]),end_s=float(t[-1]))},
         zero_source_operating_point=operating_point,signals=stats,clock_events=clock_events,
-        required_followup=['Compare both matched baseline_schematic and aoi4 native results',
+        required_followup=(['Full-device electrical safety and original1us acquisition with actual PFD RC',
+            'Recompose parent physical geometry and verify shared bulk/qualified substrate and RF extraction',
+            'Independent PVT/timestep/CDR/jitter/full serialPHY and mainchip signoff'] if physical else ['Compare both matched baseline_schematic and aoi4 native results',
             'Generate actual PFD GDS/LEF, transistor LVS/DRC and exact new RC composition',
             'Repeat native full-device safety and original1us acquisition gates with physical candidate',
-            'Independent PVT/timestep/CDR/jitter/full serialPHY and mainchip signoff'],
+            'Independent PVT/timestep/CDR/jitter/full serialPHY and mainchip signoff']),
         acquisition_accepted=False,full_phy_accepted=False)
     save();print(result['status'],flush=True)
 
@@ -1274,7 +1374,7 @@ def main():
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
-    parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4'))
+    parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc'))
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
     parser.add_argument('--diagnose-full50',action='store_true')
@@ -1383,13 +1483,20 @@ def main():
             spec=importlib.util.spec_from_file_location('original_pfd_generator',generator)
             module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
             reference=module.devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES})
-            parent,proof=pfd_schematic_parent((out/'source/parent865.spice').read_text(),reference,args.pfd_candidate)
+            if args.pfd_candidate=='aoi4_rc':
+                reference=[d for d in reference if d['path'].startswith(('xloop.xup.','xloop.xdn.'))]+pfd_aoi_devices()
+                macro=restore_pfd_physical_model(out)
+                parent,proof=pfd_physical_parent((out/'source/parent865.spice').read_text(),macro,reference)
+            else:
+                parent,proof=pfd_schematic_parent((out/'source/parent865.spice').read_text(),reference,args.pfd_candidate)
             (out/'parent865.spice').write_text(parent);result['pfd_replacement']=proof
             result['scope']=proof['scope'];result['controls']['pfd_aoi_truth']=pfd_aoi_controls()
             relocated=relocated.replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
             extra=['v(xloop.pfd_candidate.'+n+')' for n in ['clearb','xup.mq','xup.mqb','xup.clkb','xup.qb','xdn.mq','xdn.mqb','xdn.clkb','xdn.qb']]
+            if args.pfd_candidate=='aoi4_rc':extra=proof['physical_terminal_voltage_probes']
+            extra=[n for n in extra if n not in vectors]
             old_save='save '+' '.join(vectors);assert setup.count(old_save)==1
-            vectors+=extra;setup=setup.replace(old_save,'save '+' '.join(vectors))
+            vectors+=extra;assert len(vectors)==len(set(vectors));setup=setup.replace(old_save,'save '+' '.join(vectors))
         else:
             (out/'parent865.spice').write_bytes((out/'source/parent865.spice').read_bytes())
         # The reusable deck is also included: its original title must be a comment.
@@ -1475,7 +1582,7 @@ def main():
         save()
         assert passed, 'Snapshot transport is not equivalent under fixed diagnostic bounds'
     except BaseException as error:
-        result.update(status='FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
+        result.update(status='FAILED_PHYSICAL_PFD_NATIVE50_SCREEN' if args.pfd_candidate=='aoi4_rc' else 'FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
         save();raise
 
 if __name__=='__main__':

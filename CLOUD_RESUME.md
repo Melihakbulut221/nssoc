@@ -7,6 +7,22 @@
 
 ### Newest state — supersedes every older live statement below
 
+**PFD235 saved nativeRC review38609444130 PASS; electrical fixture screen prepared.**
+Exact235devices/716R1178C,53metal conductors,431anchors with8binding+13rawRC+
+6composition faults allpass. No native extraction rerun. Summary641161303
+SHA2f4bade844a8f5182f5cc1c4b5c75ce4c4ce753d6dbdc062c20da7548e875a82;
+archive641161060 SHA40f43ab7116303ab57a7431c7f2814045a4c1d35a42a1aedef2989626c9abedc.
+Composed macroSHA4231a31db0b6e39bad5ba4266159a56ed3e780d8508c6bcdbb9e74cb43203f38.
+
+Use pll_pfd_stage=physical_wave for actual PFD model in unchanged parent
+fixture:845native devices,610non-PFD devices/allotherRC byte-identical,
+original models/OSDIs/.3125ps/startup and50ns. Reversible nine-port translation,
+exact94MOS topology naming and every235device terminal voltage recorded.
+This is an electrical fixture, not recomposed parent physical/sharedbulk
+integration. All-device safety/original1us/PVT/RF/substrate and PHY gates open.
+Route38598795406 remains live; allcloud-only, no local durable artifacts.
+
+
 **Actual PFD235 extraction completed; review original saved bytes next.**
 38608812756 passed235device binding/eight faults,658terminal physical ownership,
 new53conductor graph,716R1178C native extraction and per-point/collapsedC audit.
