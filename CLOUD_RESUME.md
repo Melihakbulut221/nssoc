@@ -8,6 +8,23 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Dispatched cloud handles; do not duplicate:** routability_data38511490580,
+job115680796118, sourceec864e8484c146ea204d46ce6aa2f284ca4b73f7 reached native
+postCTS replay/placement/route step; syntax/runtime preparation PASS. Serializer
+area study38511840985, source43fb19cc63765c28a4a90e2474789dfe1f59cc74:
+Nx4/hot_low job115681875537 passed hosted graph/originalbit/device-area fault
+checks and entered native transient. Remaining7cases queued at latest check;
+maxparallel4, do not infer failure from parent queued status. New Nx4/5/6 and
+unchangedNx8 control are ALWAYS sizing diagnostics, not accepted extracted
+layouts. Review original bits, CM, all-device VBE/VCE/current across both
+corners; only then decide physical geometry rebuild. Current fixed feedback32um
+must also receive actual layout/RC before acceptance. PLL1us38507479646 and
+full32:1wire38496981217 confirmed live this turn. All full goalsOPEN. Prior
+turn made progress (new source-bound placement+sizing implementations, hosted
+checks and native dispatch); no genuine blocker and no restart authorization
+inferred from observation timeouts. No local project files produced.
+
+
 **Active routing and bounded serializer sizing study:** routing38511490580
 sourceec864e84 dispatched once with routability_data/hold2/seed13/baselineOBS;
 check its exact handle. New tx-interconnect-diagnostic-cloud study=v11_data_area
