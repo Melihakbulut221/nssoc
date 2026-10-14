@@ -8,6 +8,18 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Paired hot compact controls prepared for causal physical diagnosis.**
+ActualV8 wired TCfeedback38517527891 failed bothhotcases while bothcoldcompact
+passed. No same-hot compact captures exist for this exact feedback geometry;
+without them DC/bias and metalRC penalties cannot be separated. New study
+v8_feedback_tc_compact_hot runs onlyhot_low/hot_low_res_bcs using exactV8
+compact model, sameall54devices/feedback/native clocks/sourcebits/limits and
+no Nx or artificialR mutation. Pair with existing wire639381366/639379188;
+then run read-only full-wave actual-node/current/stage-delay analysis in cloud.
+Do not rerun existing wire or cold cases. Dedicated timing38519026139,
+PLL38507479646 and route38511490580 remain current livehandles/fullgoalsOPEN.
+
+
 **Corrected dedicated-commit proof PASS; paired timing38519026139 dispatched.**
 38518875447 summary639394358 passes3all-state proofs(refresh128/0/1), both
 wrong-owner/wrong-data counterexamples, baseline5/candidate5positive port tests
