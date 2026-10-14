@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Dedicated commit timing improves limiting PCIe path, closure still OPEN.**
+38519026139 completed. Candidate639409787 slowPCIe-1.046260ns versus baseline
+639407422 -1.101756ns; fastPCIe hold unchanged-0.109062ns. SlowCPU setup remains
+positive but declines1.251946->0.520503ns; no physical adoption. Crucially worst
+PCIe path now register1167360->1176745/43/48 instead of link_up->sent_data.
+Prepared hosted trace_dedicated_endpoints restores exact two immutable archives
+and binds BOTH all reported PCIe startpoints and endpoints to original mapped
+RTL net aliases; input ports explicitly distinguished. Dispatch once; no STA
+rerun or fuzzy endpoint matching. Compact hot TC controls38519483522 still
+active; read-only paired analysis awaits source-bound summary publication.
+Original route/PLL existing handles retained. All goalsOPEN/cloud-only.
+
+
 **Causal TC-feedback hot controls38519483522 active; readback prepared.**
 Only exact actualV8 hot_low/hot_low_res_bcs compact models run. Existing wire
 38517527891 captures retained. Prepared tx-physical-tree-diagnosis studies
