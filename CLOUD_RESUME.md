@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Full50 original FIFO format identified; no waveform corruption or gate waiver.**
+PLL diagnosis38597592170 terminalFAIL at payload hash comparison after full
+compressed/rawSHA checks passed. Original capture engine_parent753.py:408,460
+requires headerNo.Points=0 and exact ASCII160072 trailer after2438-wide binary
+rows. New reader incorrectly hashed that native trailer into payload digest.
+Corrected parser hashes exactlyrows*columns*8 bytes and independently requires
+exact trailer/no extra bytes; header remains0 and original raw/payload hashes
+must both match. Added1positive/5negative trailer/truncation controls. Rerun
+pll_full50_diagnosis once on corrected source; no simulator or data mutation.
+Fresh CTS saved-database proof/routing38597967217 onb0d9e2f5 remains the routing
+handle; original38596343019 terminalFAIL is preserved. Full goalsOPEN/cloud-only.
+
+
 **Fresh placement/CTS completed; verifier stopped before timing/routing.**
 38596343019 terminalFAIL, summary640931131 SHA4315605ee0a05f234000ad04cbe37393215657f87e6613b0db894885f0187bae.
 Placement exact connectivityPASS:97661cells/12453dataflops moved; source97722.

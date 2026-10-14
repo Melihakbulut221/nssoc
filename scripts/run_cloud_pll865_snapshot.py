@@ -321,6 +321,35 @@ def review_completed_acquisition(diagnose=False):
 
 
 
+
+def full50_fifo_payload(stream, rows, width):
+    """Hash complete binary rows and independently validate native FIFO trailer.
+
+    Original capture engine records No.Points=0 and an ASCII point count after
+    all binary rows. The trailer belongs to raw SHA, never payload SHA.
+    """
+    assert rows>1 and width>0
+    remaining=rows*width*8;h=hashlib.sha256()
+    while remaining:
+        part=stream.read(min(1024**2,remaining));assert part,'Truncated FIFO row payload'
+        h.update(part);remaining-=len(part)
+    trailer=stream.read()
+    assert trailer==str(rows).encode(), 'Missing/wrong/extra FIFO point-count trailer'
+    return dict(payload_sha256=h.hexdigest(),trailer_ascii=trailer.decode(),payload_bytes=rows*width*8)
+
+
+def full50_fifo_controls():
+    payload=np.asarray([[0.,1.],[1.,2.],[2.,3.]],dtype='<f8').tobytes()
+    good=payload+b'3'
+    assert full50_fifo_payload(io.BytesIO(good),3,2)['payload_sha256']==digest(payload)
+    bads=[payload,payload+b'2',payload+b'3x',payload[:-1]+b'3',good[:-9]]
+    for bad in bads:
+        try:full50_fifo_payload(io.BytesIO(bad),3,2)
+        except AssertionError:continue
+        raise AssertionError('Damaged native FIFO accepted')
+    return dict(positive=1,rejected_missing_wrong_extra_trailer_or_truncated_payload=len(bads))
+
+
 def diagnose_full50():
     """Read original full-node PBUF10 wave, not the older reset865 circuit."""
     import gzip
@@ -383,15 +412,16 @@ def diagnose_full50():
             while not header.endswith(b'Binary:\n'):
                 line=src.readline();assert line and len(header)<1048576;header+=line
             offset=len(header)
-            assert hashlib.file_digest(src,'sha256').hexdigest()==finite['payload_sha256']
+            fifo=full50_fifo_payload(src,finite['rows'],len(finite['columns']))
+            assert fifo['payload_sha256']==finite['payload_sha256']
         header=header.decode('ascii');assert 'Flags: real\n' in header
         fields={line.split(':',1)[0]:line.split(':',1)[1].strip() for line in header.splitlines() if ':' in line}
         table=[line.split() for line in header.split('Variables:\n',1)[1].split('Binary:\n',1)[0].splitlines()]
         assert table==finite['raw_table']
         names=[row[1] for row in table];assert names==finite['columns'] and names[0]=='time' and len(set(names))==len(names)
         rows,width=finite['rows'],len(names)
-        assert int(fields['No. Variables'])==width and int(fields['No. Points'])==rows
-        assert offset+8*rows*width==finite['raw_bytes']
+        assert int(fields['No. Variables'])==width and int(fields['No. Points'])==0
+        assert offset+8*rows*width+len(str(rows))==finite['raw_bytes']
         values=np.memmap(raw_path,dtype='<f8',mode='r',offset=offset,shape=(rows,width))
         for first in range(0,rows,4096):assert np.isfinite(values[first:first+4096]).all()
         t=np.asarray(values[:,0]).copy();assert t[0]==0 and abs(t[-1]-50e-9)<1e-18
@@ -404,7 +434,8 @@ def diagnose_full50():
         feedback=rising(t,data['v(fb)'],1.25)
         intervals=[(0.,50e-9),*[(float(a),float(b)) for a,b in zip(feedback[:-1],feedback[1:])]]
         result['wave']=dict(raw_sha256=finite['raw_sha256'],payload_sha256=finite['payload_sha256'],rows=rows,columns=width,
-            complete_header_payload_verified=True,selected_columns=chosen)
+            complete_header_payload_and_fifo_trailer_verified=True,header_declared_points=0,
+            fifo_trailer=fifo,selected_columns=chosen)
         records=[]
         for start,stop in intervals:
             mask=(t>start)&(t<stop);at=np.r_[start,t[mask],stop];signals={}
@@ -444,6 +475,7 @@ def main():
     controls=self_test()
     controls['acquisition_review']=acquisition_controls()
     controls['cycle_diagnosis']=acquisition_cycle_controls()
+    controls['full50_fifo']=full50_fifo_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)
