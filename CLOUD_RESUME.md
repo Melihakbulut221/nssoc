@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Hosted review controls verified PASS.** Run38515404789/job115692961239 on
+21a533c97ccfb0c06eff97fa2e2f5f3b581fa77a passed snapshot4fault controls,
+acquisition frequency/phase/missing-edge/voltage faults and truncated/nonfinite
+rejection, with positive locked-wave control. Other hosted regressions71+352PASS;
+license/SPDX/inventory checksPASS. No local tests or artifacts. Original
+PLL38507479646 and route38511490580 freshly verified in_progress; retain handles.
+Next dispatch pll_acquisition_review=true only when original PLL run completes
+successfully; do not rerun native. Completed serializer diagnostics/electrical
+results and warning recorded in5224c996. Previous turn classification: progress
+(source implementation, hosted validation, new terminal electrical evidence).
+Full PHY/routed main chip/final setup-hold remain OPEN, no genuine blocker.
+
+
 **Original PLL acceptance review prepared, not yet dispatched.** Existing
 38507479646 native1us capture remains live. New cloud-migration-checks input
 pll_acquisition_review reviews only that exact source444e78eb/run attempt1 after
