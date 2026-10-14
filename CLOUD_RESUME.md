@@ -8,6 +8,26 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Pre-CTS lineage recovered; GRT-driven placement plus fresh CTS prepared.**
+38594940366/job115959121361 PASS, summary640896159/9514534bytes SHA
+817d6b0e4839f52630caa9630c18cfbff23cca80dcd380229d692da13204e493,
+archive640895727/33604849bytes SHA
+ffe047106a1a2de8af638c0cad4651fc41c7895eb88b78e8a204726100ec4086.
+Native stages:79195preplacement,97722preCTS,113771postCTS; all20macros,
+boundary geometry/die/core identical. Recovery is not circuit/timing acceptance.
+
+Newer-postcts-cloud profileprects_grt uses exact97722-cell preCTS source,
+moves sequential and combinational cells with native GRT-guided placement,
+density0.45, unchanged routing capacities and clocks; regenerates CTS with
+original buffer/sink-clustering/half-NDR policy. Require exact placement
+connectivity, all original terminals preserved modulo inserted transparent
+CTS buffers and an actual disconnect negative control, then all-corner STA
+and zero-overflow global routing. Old hold2 ECO is not presumed valid after
+new CTS. Dispatch once with placement_profile=prects_grt, routing_seed=13,
+ethernet_hold_depth=0 and other options baseline/fast_route/critical0.
+Full goals remainOPEN/cloud-only; no local files or CAD.
+
+
 **Prepared source-bound pre-CTS recovery for a new placement/CTS repair.**
 October12 physical19 archives13-16 contain the actual preplacement ODB518b889c,
 preCTS ODB4739da22 and original postCTS ODBe4e04605. New congestion probe

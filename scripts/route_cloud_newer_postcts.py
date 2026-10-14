@@ -82,10 +82,73 @@ def self_test():
     print(json.dumps(dict(status='PASS_CUGR_FAIL_CLOSED_CONTROLS',positive=1,negative=len(faults))))
 
 
+
+def fresh_prects_trial(script, result):
+    """Move data flops before rebuilding CTS, with native GRT congestion feedback."""
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    packed=OUT/'prects-recovery.tar.gz'
+    fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38594940366-1-congestion-prects_inventory/newer-congestion-probe-38594940366-1.tar.gz',
+        'ffe047106a1a2de8af638c0cad4651fc41c7895eb88b78e8a204726100ec4086',packed)
+    with tarfile.open(packed) as tar:
+        raw=tar.extractfile('cloud-congestion-probe/diagnosis.json').read()
+        assert hashlib.sha256(raw).hexdigest()=='817d6b0e4839f52630caa9630c18cfbff23cca80dcd380229d692da13204e493'
+        source=json.loads(raw)
+        assert source['status']=='PASS_SOURCE_BOUND_PRECTS_RECOVERY_NOT_IMPLEMENTATION'
+        raw=tar.extractfile('cloud-congestion-probe/prects.odb').read()
+        assert hashlib.sha256(raw).hexdigest()=='4739da2254a80397ab82f5c70550b9215e7ac5853c0e78cd0fb7dabefece20d8'
+        (OUT/'prects.odb').write_bytes(raw)
+    packed.unlink()
+    prefix=script.split('set_wire_rc -signal')[0]
+    original_path=str(OUT/'inputs/postcts.odb');assert prefix.count(original_path)==1
+    prefix=prefix.replace(original_path,str(OUT/'prects.odb'))
+    rc=json.loads((ROOT/'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
+    settings=['set_thread_count 2','unset_propagated_clock [all_clocks]',
+        'set_cmd_units -resistance kOhm -capacitance pF -time ns']
+    for corner in ('slow','typical','fast'):
+        for layer,v in rc['layers_rc'].items():
+            settings.append(f'set_layer_rc -corner {corner} -layer {layer} -resistance {v["res"]} -capacitance {v["cap"]}')
+        for via,r in rc['vias_r'].items():
+            settings.append(f'set_layer_rc -corner {corner} -via {via} -resistance {r}')
+        settings += [f'set_wire_rc -corner {corner} -signal -layer Metal2',f'set_wire_rc -corner {corner} -clock -layer Metal4']
+    settings += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {rc["routing_layers"]}',
+        f'set_global_routing_layer_adjustment Metal1-TopMetal2 {rc["adjustment"]}']
+    setup='\n'.join(settings)+'\n'
+    execute(prefix+setup+'help global_placement\n'
+        'global_placement -routability_driven -routability_use_grt -density 0.45\n'
+        'detailed_placement -max_displacement {500 100}\ncheck_placement -verbose\n'
+        f'write_db {{{OUT/"prects-placement.odb"}}}\n','fresh-prects-placement')
+    def verify(mode):
+        with (OUT/(mode+'.log')).open('w') as log:
+            code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',
+                str(ROOT/'scripts/repair_cloud_macro_channels.py')],env=dict(os.environ,NSSOC_PLACEMENT_MODE=mode),stdout=log,stderr=subprocess.STDOUT)
+        assert code==0,(mode,(OUT/(mode+'.log')).read_text()[-6000:])
+    verify('verify_prects')
+    result['fresh_prects_placement']=json.loads((OUT/'prects-placement-proof.json').read_text())
+    # Exact original CTS buffers, sink clustering and NDR policy; newly moved
+    # sequential cells must receive a freshly synthesized clock tree.
+    cts_config=json.loads(source['bound_metadata']['hw/soc/out/pcie-rx-return-metadata-20261012/physical19/runs/metadata-postcts19/23-openroad-cts/config.json']['text'])
+    assert cts_config['CTS_ROOT_BUFFER']=='sg13g2_buf_16'
+    assert cts_config['CTS_CLK_BUFFERS']==['sg13g2_buf_8','sg13g2_buf_4','sg13g2_buf_2']
+    assert cts_config['CTS_APPLY_NDR']=='half' and cts_config['CTS_SINK_CLUSTERING_ENABLE']
+    execute(prefix.replace(str(OUT/'prects.odb'),str(OUT/'prects-placement.odb'))+setup+
+        'configure_cts_characterization\n'
+        'clock_tree_synthesis -buf_list {sg13g2_buf_8 sg13g2_buf_4 sg13g2_buf_2} -root_buf sg13g2_buf_16 -sink_clustering_enable -apply_ndr half\n'
+        'detailed_placement -max_displacement {500 100}\ncheck_placement -verbose\n'
+        'set_propagated_clock [all_clocks]\n'
+        f'write_db {{{OUT/"fresh-cts.odb"}}}\n','fresh-cts')
+    verify('verify_fresh_cts')
+    result['fresh_cts']=json.loads((OUT/'fresh-cts-proof.json').read_text())
+    result['fresh_prects_method']=dict(recovery_run=38594940366,target_density=0.45,
+        native_grt_in_placement=True,original_cts_policy=True,original_clock_periods_unchanged=True,
+        postcts_hold_eco_carried_over=False,timing_driven_logic_resize=False,
+        scope='Fresh sequential/combinational placement and rebuilt CTS from exact preCTS97,722-cell chip. PreCTS ideal clocks only; propagated clocks restored before all-corner STA. Previous postCTS hold repair cannot be assumed on new clock geometry. No adoption or timing waiver.')
+    return script.replace(original_path,str(OUT/'fresh-cts.odb'))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline'], default='baseline')
-    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints','routability_data'], default='none')
+    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints','routability_data','prects_grt'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5','halo1'], default='baseline')
     parser.add_argument('--critical-nets-percentage', type=int, choices=[0,30], default=0)
@@ -105,8 +168,8 @@ def main():
         self_test()
     if args.routing_seed:
         assert args.critical_nets_percentage == 0
-        assert args.placement_profile in ('local_optimize_buffers','routability_data')
-        assert args.ethernet_hold_depth == 2 and args.macro_routing_profile in ('baseline', 'halo1')
+        assert args.placement_profile in ('local_optimize_buffers','routability_data','prects_grt')
+        assert args.ethernet_hold_depth == (0 if args.placement_profile=='prects_grt' else 2) and args.macro_routing_profile in ('baseline', 'halo1')
     if args.critical_nets_percentage:
         assert args.placement_profile == 'local_optimize_buffers'
         assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
@@ -118,6 +181,9 @@ def main():
     if args.placement_profile == 'routability_data':
         assert args.routing_seed == 13 and args.ethernet_hold_depth == 2
         assert args.macro_routing_profile == 'baseline' and args.critical_nets_percentage == 0
+    if args.placement_profile=='prects_grt':
+        assert args.router_solver=='fast_route' and args.routing_seed==13
+        assert args.ethernet_hold_depth==0 and args.macro_routing_profile=='baseline' and args.critical_nets_percentage==0
     origin_um = (0., 0.)
     if args.macro_routing_profile == 'halo1':
         assert args.routing_seed == 13 and args.critical_nets_percentage == 0
@@ -225,7 +291,11 @@ def main():
                     assert abs(replay[phase]['groups'][group]['worst_slack_ns']-case['baseline'][phase][group])<=1e-6
             result['ethernet_hold']=dict(evidence=case,exact_placement_timing_reproduced=measured)
             save()
-        if args.placement_profile != 'none':
+        if args.placement_profile == 'prects_grt':
+            script=fresh_prects_trial(script,result)
+            result['fresh_cts_timing']=parse_phases(execute(script,'fresh-cts-sta'),'CORNER')
+            save()
+        if args.placement_profile not in ('none','prects_grt'):
             if args.placement_profile in ('local_data_endpoints','routability_data'):
                 assert args.ethernet_hold_depth==2 and args.macro_routing_profile=='baseline'
                 incremental_evidence = ('docs/evidence/cloud-seed13-buffers-route-failure-20261014.json'
@@ -309,7 +379,7 @@ def main():
                 checkpoint.write_text(json.dumps(result,indent=2)+'\n')
                 from publish_cloud_results import publish_results
                 publish_results('route-'+args.placement_profile, [checkpoint])
-        if (args.critical_nets_percentage or args.routing_seed) and args.placement_profile != 'routability_data':
+        if (args.critical_nets_percentage or args.routing_seed) and args.placement_profile not in ('routability_data','prects_grt'):
             # Resume the same135overflow candidate, not the rejected420overflow
             # endpoint move. Reject any nondeterministic placement difference.
             evidence=json.loads((ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json').read_text())

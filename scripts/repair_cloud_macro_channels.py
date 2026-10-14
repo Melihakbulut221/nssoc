@@ -291,7 +291,86 @@ def prepare_cugr_input():
     print(json.dumps(report),flush=True)
 
 
+
+def verify_fresh_prects():
+    """Exact placement graph, then transparent inserted CTS buffers only.
+
+    This structural proof covers the digital buffer insertion, not electrical
+    timing, transistor behavior or full serial PHY equivalence.
+    """
+    original_db,original=load(OUT/'prects.odb')
+    assert sha(OUT/'prects.odb')=='4739da2254a80397ab82f5c70550b9215e7ac5853c0e78cd0fb7dabefece20d8'
+    def fixed_geometry(block):
+        return (boundary_geometry(block), {i.getName():[i.getMaster().getName(),position(i)]
+            for i in block.getInsts() if i.getMaster().isBlock()},
+            [block.getDieArea().xMin(),block.getDieArea().yMin(),block.getDieArea().xMax(),block.getDieArea().yMax()])
+    gp_db,gp=load(OUT/'prects-placement.odb')
+    assert signature(gp)==signature(original),'Placement changed circuit'
+    assert fixed_geometry(gp)==fixed_geometry(original),'Placement changed fixed geometry'
+    original_instances={i.getName():i for i in original.getInsts()}
+    gp_instances={i.getName():i for i in gp.getInsts()}
+    moved=[n for n,i in gp_instances.items() if position(i)!=position(original_instances[n])]
+    moved_flops=[n for n in moved if gp_instances[n].getMaster().getName().startswith('sg13g2_df')]
+    assert moved_flops, 'New trial must actually move data flops before CTS'
+    report=dict(status='PASS_EXACT_PRECTS_PLACEMENT_CONNECTIVITY',moved_instances=len(moved),
+        moved_data_flops=len(moved_flops),source_instances=len(original_instances),
+        placement_sha256=sha(OUT/'prects-placement.odb'))
+    if os.environ['NSSOC_PLACEMENT_MODE']=='verify_prects':
+        (OUT/'prects-placement-proof.json').write_text(json.dumps(report,indent=2)+'\n');return
+    cts_db,cts=load(OUT/'fresh-cts.odb')
+    assert fixed_geometry(cts)==fixed_geometry(original),'CTS changed fixed geometry'
+    def prove():
+        actual={i.getName():i for i in cts.getInsts()}
+        assert set(original_instances)<=set(actual),'CTS removed an original instance'
+        added=set(actual)-set(original_instances)
+        assert added,'CTS inserted no clock buffers'
+        roots={}
+        for n in added:
+            inst=actual[n]
+            assert inst.getMaster().getName() in {'sg13g2_buf_2','sg13g2_buf_4','sg13g2_buf_8','sg13g2_buf_16'},('Unexpected CTS cell',n)
+            a=inst.findITerm('A');x=inst.findITerm('X')
+            assert a and x and a.getNet() and x.getNet(),('Incomplete CTS buffer',n)
+            drivers=[t for t in x.getNet().getITerms() if str(t.getIoType())=='OUTPUT']
+            assert len(drivers)==1 and drivers[0]==x,('Multiple CTS drivers',n)
+            key=x.getNet().getName();assert key not in roots
+            roots[key]=a.getNet().getName()
+        def root(net):
+            n=net.getName() if net else None;seen=set()
+            while n in roots:
+                assert n not in seen,'Cycle in inserted clock graph'
+                seen.add(n);n=roots[n]
+            return n
+        for n in roots:
+            root(cts.findNet(n))
+        checked=0
+        for n,inst in original_instances.items():
+            other=actual[n]
+            assert other.getMaster().getName()==inst.getMaster().getName(),('Original master changed',n)
+            for term in inst.getITerms():
+                pin=term.getMTerm().getName();other_term=other.findITerm(pin);assert other_term
+                expected=term.getNet().getName() if term.getNet() else None
+                assert root(other_term.getNet())==expected,('Original terminal changed',n,pin,expected,root(other_term.getNet()))
+                checked+=1
+        before={t.getName():t.getNet().getName() if t.getNet() else None for t in original.getBTerms()}
+        after={t.getName():root(t.getNet()) for t in cts.getBTerms()}
+        assert before==after,'Boundary connectivity changed'
+        return dict(inserted_transparent_buffers=len(added),original_terminals_checked=checked)
+    report['cts']=prove()
+    fault=next(t for i in cts.getInsts() if i.getName() in original_instances
+        for t in i.getITerms() if t.getNet() and str(t.getSigType()) not in ('POWER','GROUND'))
+    net=fault.getNet();fault.disconnect()
+    try:
+        try:prove()
+        except AssertionError:report['actual_terminal_disconnect_negative_control']=True
+        else:raise RuntimeError('Disconnected actual terminal accepted')
+    finally:fault.connect(net)
+    assert prove()==report['cts']
+    report.update(status='PASS_PLACEMENT_AND_TRANSPARENT_CTS_GRAPH_NOT_TIMING',
+        cts_sha256=sha(OUT/'fresh-cts.odb'),scope='Original masters and every terminal preserved modulo inserted non-inverting CTS buffer trees. Source unchanged; no timing or route acceptance.')
+    (OUT/'fresh-cts-proof.json').write_text(json.dumps(report,indent=2)+'\n')
+
 if __name__=='__main__':
-    mode=os.environ['NSSOC_PLACEMENT_MODE'];assert mode in ('prepare','verify','prepare_cugr')
-    if mode=='prepare_cugr': prepare_cugr_input()
+    mode=os.environ['NSSOC_PLACEMENT_MODE'];assert mode in ('prepare','verify','prepare_cugr','verify_prects','verify_fresh_cts')
+    if mode in ('verify_prects','verify_fresh_cts'): verify_fresh_prects()
+    elif mode=='prepare_cugr': prepare_cugr_input()
     else: prepare() if mode=='prepare' else verify()
