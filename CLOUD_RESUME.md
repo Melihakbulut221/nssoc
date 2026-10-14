@@ -8,6 +8,23 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Next concrete routing repair prepared: routability_data** in newer-postcts-cloud.
+Restores exact seed13baseline132overflow run38448901835 placement and its native
+probe38471402795 (SHA-bound). GPL skip_initial_place+routability_driven density0.55
+spreads original combinational data cells; no timing-driven resize. All sequential
+cells, clock-connected cells, macros, boundarypins, and20proven Ethernet hold ECO
+cells remain fixed. Exact all-instance/master/net checks, pin geometry, fixed
+placement and two fault controls precede three-corner STA and fresh zero-overflow
+routing seed13/capacityperturb0/normalmacroOBS. Never adopt from placement alone.
+Dispatch newer-postcts-cloud placement_profile=routability_data,
+ethernet_hold_depth=2,routing_seed=13,macro_routing_profile=baseline. Push no longer
+starts duplicate legacy route. Runtime semantics checked against exact OpenROAD
+dcf36133 sources replace.tcl/replace.cpp/placerBase.cpp/Replace.h, not assumed
+from current documentation. Prior rejected halo155overflow/controlsetupregression
+remain preserved. Existing PLL38507479646 and32:1wire38496981217 verified live.
+Cloud-only; local workspace empty; all full goalsOPEN.
+
+
 **Readback publication CLOSED, design closure still OPEN:** corrected hosted
 read_control_reports38510653124 PASS including permanent read-back-verified
 publication. Summary639191271, original baseline log639191336 and candidate

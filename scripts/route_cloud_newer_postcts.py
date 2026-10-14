@@ -48,7 +48,7 @@ def execute(script, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--grid-profile', choices=['baseline'], default='baseline')
-    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints'], default='none')
+    parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints','routability_data'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5','halo1'], default='baseline')
     parser.add_argument('--critical-nets-percentage', type=int, choices=[0,30], default=0)
@@ -56,7 +56,7 @@ def main():
     args = parser.parse_args()
     if args.routing_seed:
         assert args.critical_nets_percentage == 0
-        assert args.placement_profile == 'local_optimize_buffers'
+        assert args.placement_profile in ('local_optimize_buffers','routability_data')
         assert args.ethernet_hold_depth == 2 and args.macro_routing_profile in ('baseline', 'halo1')
     if args.critical_nets_percentage:
         assert args.placement_profile == 'local_optimize_buffers'
@@ -66,6 +66,9 @@ def main():
     # Frozen OpenROAD dcf36133 uses grid_origin only when saving guides.
     # Nonzero values did not move the routing partition (run38472175339).
     # Reject these obsolete trials through argparse rather than repeating them.
+    if args.placement_profile == 'routability_data':
+        assert args.routing_seed == 13 and args.ethernet_hold_depth == 2
+        assert args.macro_routing_profile == 'baseline' and args.critical_nets_percentage == 0
     origin_um = (0., 0.)
     if args.macro_routing_profile == 'halo1':
         assert args.routing_seed == 13 and args.critical_nets_percentage == 0
@@ -174,9 +177,11 @@ def main():
             result['ethernet_hold']=dict(evidence=case,exact_placement_timing_reproduced=measured)
             save()
         if args.placement_profile != 'none':
-            if args.placement_profile == 'local_data_endpoints':
+            if args.placement_profile in ('local_data_endpoints','routability_data'):
                 assert args.ethernet_hold_depth==2 and args.macro_routing_profile=='baseline'
-                evidence=json.loads((ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json').read_text())
+                incremental_evidence = ('docs/evidence/cloud-seed13-buffers-route-failure-20261014.json'
+                    if args.placement_profile == 'routability_data' else 'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json')
+                evidence=json.loads((ROOT/incremental_evidence).read_text())
                 assert evidence['status']=='FAILED_NATIVE_GLOBAL_ROUTE_CONGESTION'
                 packed=OUT/'previous-placement.tar.gz'
                 pin=evidence['receipt'];fetch(pin['url'],pin['sha256'],packed)
@@ -203,8 +208,12 @@ def main():
                     for group,value in row['groups'].items():
                         assert abs(value['worst_slack_ns']-expected[phase]['groups'][group]['worst_slack_ns'])<=1e-6,(phase,group)
                 result['incremental_source']=dict(failed_run=evidence['run'], source_odb_sha256=sha(placement_source), exact_placement_timing_reproduced=measured)
-                fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38392685463-1-congestion-local_optimize_buffers/newer-congestion-probe-38392685463-1.json',
-                      '962bf2b58b82799d346cb48a45a5af1d88fac6c10a2b582a2c41fc445000917f',OUT/'endpoint-diagnosis.json')
+                if args.placement_profile == 'routability_data':
+                    fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471402795-1-congestion-seed13_buffers/newer-congestion-probe-38471402795-1.json',
+                          'ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b',OUT/'endpoint-diagnosis.json')
+                else:
+                    fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38392685463-1-congestion-local_optimize_buffers/newer-congestion-probe-38392685463-1.json',
+                          '962bf2b58b82799d346cb48a45a5af1d88fac6c10a2b582a2c41fc445000917f',OUT/'endpoint-diagnosis.json')
             else:
                 fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-congestion-probe-38333836529-1.json',
                       '1d19f4d2bdf24f865144b28c57060c3cfed96ac3d0a4a79b23ce23f12c0a027c',OUT/'endpoint-diagnosis.json')
@@ -219,6 +228,21 @@ def main():
             native_placement('prepare')
             placement_command=('improve_placement -max_displacement {20 8}' if args.placement_profile in ('local_optimize','local_optimize_buffers','local_data_endpoints')
                                else 'detailed_placement -max_displacement {200 100}')
+            if args.placement_profile == 'routability_data':
+                # Frozen dcf36133 GPL: skip initial placement; RUDY-directed
+                # inflation spreads only selected combinational data cells.
+                # Timing-driven resize is OFF (native default). No circuit ECO.
+                placement_command = ('set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2\n'
+                    'set_global_routing_layer_adjustment Metal1-TopMetal2 0.2\n'
+                    'help global_placement\n'
+                    'global_placement -skip_initial_place -routability_driven -density 0.55\n'
+                    'detailed_placement')
+                result['routability_placement'] = dict(target_density=0.55,
+                    source_run=evidence['run'], clock_and_sequential_cells_fixed=True,
+                    sram_and_boundary_pins_fixed=True, proven_hold_eco_cells_fixed=True,
+                    native_timing_driven_resize=False, routing_capacity_inflated=False,
+                    native_commit='dcf36133a369abc8f3c5e5738cd4d82e4903c0e0',
+                    scope='Candidate placement only; complete native invariants, all-corner STA and zero-overflow global route required. No signoff.')
             execute(f'read_db {{{OUT/"proposed-placement.odb"}}}\n'
                     f'set_thread_count 2\n{placement_command}\n'
                     'check_placement -verbose\n'
@@ -236,7 +260,7 @@ def main():
                 checkpoint.write_text(json.dumps(result,indent=2)+'\n')
                 from publish_cloud_results import publish_results
                 publish_results('route-'+args.placement_profile, [checkpoint])
-        if args.critical_nets_percentage or args.routing_seed:
+        if (args.critical_nets_percentage or args.routing_seed) and args.placement_profile != 'routability_data':
             # Resume the same135overflow candidate, not the rejected420overflow
             # endpoint move. Reject any nondeterministic placement difference.
             evidence=json.loads((ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json').read_text())

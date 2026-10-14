@@ -29,7 +29,7 @@ on:
       placement_profile:
         description: Source-bound local placement repair selection
         type: choice
-        options: [local_optimize, local_optimize_buffers, local_data_endpoints]
+        options: [local_optimize, local_optimize_buffers, local_data_endpoints, routability_data]
         default: local_optimize
       ethernet_hold_depth:
         description: Source-bound proven GMII delay chain to include before fresh routing
@@ -45,6 +45,7 @@ permissions:
   contents: read
 jobs:
   route:
+    if: github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:
