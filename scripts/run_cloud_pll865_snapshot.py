@@ -1120,7 +1120,7 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
     save();print(result['status'],flush=True)
 
 
-def recover_parent_methods():
+def recover_parent_methods(include_planes=False):
     """Recover source-bound PLL parent layout and latest native composition methods."""
     from concurrent.futures import ThreadPoolExecutor
     from verify_cloud_output_restore import pages,download
@@ -1133,6 +1133,10 @@ def recover_parent_methods():
     exact='hw/soc/out/pcie-pll753-parent-layout-20261010/'
     required={exact+'review12.py':'acce27a0b067c51bccec41d394f974744852212f408c693484bcf5e67c5b1115',
         exact+'inputs01.json':'bd31821d709d549f2d8ed25c08e9ed9e96d66f4a994bbb97aa20eac97a4d8a0e'}
+    if include_planes:
+        required={}
+        result['scope']='Recover source-bound reset/release/rhi140/PBUF10 composition, wire-anchor metadata and original method sources. No execution or reference-plane acceptance.'
+        result['include_reference_planes']=True
     try:
         releases=pages('repos/Melihakbulut221/nssoc/releases?per_page=100');assets=[]
         for release in releases:
@@ -1147,11 +1151,14 @@ def recover_parent_methods():
                 name=record['path'];parts=Path(name).parts
                 if len(parts)<5 or parts[:3]!=('hw','soc','out'):continue
                 family=parts[3]
-                if not (name.startswith(exact) or 'parent865' in family or 'pbuf10' in family):continue
+                selected_family=(any(x in family for x in ('reset','release','rhi140','parent865','pbuf10')) if include_planes else (name.startswith(exact) or 'parent865' in family or 'pbuf10' in family))
+                if not selected_family:continue
                 leaf='/'.join(parts[4:])
                 if name.endswith(('.gds','.lef','.spice','.cir','.py')) or leaf.endswith('result.json') or leaf=='inputs01.json':
                     inventory.append(dict(path=name,bytes=record['bytes'],sha256=record['sha256']))
                 if '/' not in leaf and (leaf.endswith('.py') or leaf.startswith('inputs') and leaf.endswith('.json')):
+                    selected.append(record)
+                elif include_planes and record['bytes']<2*1024**2 and (leaf.endswith('/composition.json') or Path(leaf).name.startswith('anchors') and leaf.endswith('.json') or leaf.endswith('/result.json') and any(x in leaf for x in ('wire','model','layout','parent','binding'))):
                     selected.append(record)
                 elif leaf.startswith('layout') and leaf.endswith('/result.json'):
                     selected.append(record)
@@ -1179,6 +1186,9 @@ def recover_parent_methods():
                         manifest_url=bundle['manifest_url'],archive_url=part['url'],archive_sha256=part['sha256'])
             packed.unlink();result['recovered_sources']=sources;save()
         assert set(required)<=set(sources),('Required original methods missing',sorted(set(required)-set(sources)))
+        if include_planes:
+            assert any(p.endswith('/composition.json') for p in sources),'No original composition recovered'
+            assert any('reset' in p or 'release' in p for p in sources),'No original release methods recovered'
         result.update(status='COMPLETE_SOURCE_BOUND_PLL_PARENT_AND_865_METHOD_RECOVERY',required_source_hashes_verified=required)
         save();print(result['status'],len(sources),flush=True)
     except BaseException as error:
@@ -2047,6 +2057,7 @@ def main():
     parser.add_argument('--review-physical-pfd',action='store_true')
     parser.add_argument('--review-physical-pfd-drive2',action='store_true')
     parser.add_argument('--recover-parent-methods',action='store_true')
+    parser.add_argument('--recover-parent-planes',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc','aoi4_d2_rc'))
     parser.add_argument('--review-acquisition',action='store_true')
@@ -2061,6 +2072,9 @@ def main():
     if args.pfd_layout_drive2:
         assert not any([args.recover_parent_methods,args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         run_pfd_layout('aoi4_d2');return
+    if args.recover_parent_planes:
+        assert not any([args.recover_parent_methods,args.pfd_candidate,args.self_test,args.acquisition])
+        recover_parent_methods(True);return
     if args.recover_parent_methods:
         assert not any([args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         recover_parent_methods();return

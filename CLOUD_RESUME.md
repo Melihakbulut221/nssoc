@@ -7,6 +7,9 @@
 
 ### Newest state — supersedes every older live statement below
 
+- Fresh parent nativeRC38624211966 TERMINAL PASS:25conductors/83probes,98R242C, all native R edge/value records and per-point/mutualC attachments exact, no isolated probes, all83grid deltas0. Eight actual raw/anchor corruption controls rejected. Summary641424496/79361bytes/SHAf8877528a5fd89af965ba82fb7be8b9575158c634bca5161f3ee764a9da28d28; archive641424125/8511159bytes/SHA8c170797c9a1172126803c31a6bc05656ebe37c76dd9fdeae5638ed0e22bbec3. wires.spice14871bytes/SHAee3a3ff8124707c5c8fa80dd2b49c28a56d51cc6c6367049c3bcfdf97e7b35e7.
+- Composition must prove reference-plane matches, especially counter VDD/VSS atplacedx2580.390um and release VDD/VSS atx2580.535um. Added archived reset/release/rhi140/PBUF10 model/anchor recovery; no connecting distinct physical positions by an invented zero-ohm shortcut. Parent freshRC is unqualified metal extraction, not RF/substrate qualification or electrical/PHY acceptance.
+
 - Parent-wire binding38623406807 TERMINAL PASS:25actual conductors,83anchors (66macro+17public), all parent-only metal/via polygons bound to native845-device LVS; reset-open and wrong logical reset mapping rejected. Source summary641409182/55459bytes/SHA7d2b48d8abe17db8e4b8243f9ed10de36ddcf1de7862c0cde7e53ba90ad1d512; archive641409027/2465615bytes/SHA001843bd6a160f987a7e8d55351a4e6cd75f07845b6684886ec93241ca4ef241. Physical wires GDS06ecd9616f23ba7d2e76d28293720494d10ba73a9c9c7cdd72fe262ff0133afb.
 - Added fresh parent-only Magic extraction from that exact source with pinned runtime/raw parser; adapted recovered parent audit only for verified25conductor/83anchor census and hosted paths. All native R values/topology, individual pointC/mutual attachments, collapsedC and source ownership remain required. Eight actual raw/anchor corruptions must fail. No old parent RC reused and no electrical acceptance claimed.
 
