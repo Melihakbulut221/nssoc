@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Hosted all-input ACK-window algebra, exact physical replay and port controls."""
+import argparse
 import hashlib
 import json
 import os
@@ -55,11 +56,55 @@ def algebra(cw,wrong=False):
         'assign ok=(current_ack_allowed==original_allowed) && '
         '((ack_delta!=0)==(ack_sequence_i!=acknowledged_sequence_o));\nendmodule\n')
 
-def main():
+def direct_commit_candidate(text):
+    # On an allowed duplicate ACK, writing the equal sequence leaves the same
+    # state. A separate register process removes delta!=0 from this enable;
+    # every retirement/count/timer/NAK update retains its original conditions.
+    for assignment,count in [("acknowledged_sequence_o<=12'hfff;",2),
+                             ('acknowledged_sequence_o<=ack_sequence_i;',1)]:
+        assert text.count(assignment)==count
+        text=text.replace(assignment,'')
+    assert text.count('endmodule')==1
+    return text.replace('endmodule',"""    always @(posedge clk_i or negedge rst_ni) begin
+        if(!rst_ni) acknowledged_sequence_o<=12'hfff;
+        else if(!link_up_i) acknowledged_sequence_o<=12'hfff;
+        else if(ack_valid_i && ack_ready_o && ack_allowed)
+            acknowledged_sequence_o<=ack_sequence_i;
+    end
+endmodule""")
+
+
+def direct_commit_bad(text):
+    before='else if(ack_valid_i && ack_ready_o && ack_allowed)'
+    assert text.count(before)==1
+    return text.replace(before,'else if(ack_valid_i && ack_ready_o)')
+
+
+def direct_commit_algebra(wrong=False):
+    guard='handshake' if wrong else '(handshake && allowed)'
+    return """module ack_commit(input wire [11:0] seq,prior,
+input wire rst,link,handshake,allowed,output wire ok);
+wire [11:0] delta=seq-prior;
+wire [11:0] gold=(!rst || !link) ? 12'hfff :
+    (handshake && allowed && delta!=0) ? seq : prior;
+wire [11:0] gate=(!rst || !link) ? 12'hfff : """+guard+""" ? seq : prior;
+assign ok=gold==gate;
+endmodule
+"""
+
+
+def main(argv=None):
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--variant',choices=('window','direct_commit'),default='window')
+    args=parser.parse_args(argv)
+    negative_case='wrong_guard' if args.variant=='direct_commit' else 'wrong_page'
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
     result=dict(status='RUNNING',adopted=False,production_rtl_modified=False,
         scope='Same-source physical replay idle/credit baseline, excluding timing-rejected EOP candidate. Full modulo4096 all-input ACK-window identity for CW2..5, all replay outputs including invalid payload, complete replay/reliable port scoreboards and actual wrong-page controls. Not mapped or routed timing.')
+    result['variant']=args.variant
+    if args.variant=='direct_commit':
+        result['scope']='Exact physical replay source. Only acknowledged_sequence register uses a separate same-clock/reset process accepting equal duplicate writes. All count/head/timer/NAK logic unchanged. All-input enable identity, full replay output equivalence, baseline/candidate replay and reliable ports plus invalid-ACK negative controls. No latency/SDC change; not timing acceptance.'
     def save():
         (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def execute(cmd,label,cwd=None):
@@ -91,22 +136,22 @@ def main():
         assert len(selected)==21
         assert pins['soc_pcie_buffered_flow_packets.v']['sha256']=='459d69ddaf287004099f91edf1d0c57d35fd324edf4fa9838cb994d398dd2509'
         name='soc_pcie_replay_tx.v'
-        original=selected[name].decode();altered=candidate(original);wrong=bad_candidate(altered)
+        original=selected[name].decode();altered=(direct_commit_candidate if args.variant=='direct_commit' else candidate)(original);wrong=(direct_commit_bad if args.variant=='direct_commit' else bad_candidate)(altered)
         dirs={}
-        for case,text in [('baseline',original),('candidate',altered),('wrong_page',wrong)]:
+        for case,text in [('baseline',original),('candidate',altered),(negative_case,wrong)]:
             d=OUT/(case+'-rtl');d.mkdir()
             for filename,raw in selected.items():(d/filename).write_bytes(raw)
             (d/name).write_text(text);dirs[case]=d
         result['source_binding']=dict(archive_url=URL,archive_sha256=ARCHIVE_SHA,selected=pins,
-            source_sha256=SOURCE_SHA,candidate_sha256=sha(dirs['candidate']/name),negative_sha256=sha(dirs['wrong_page']/name))
+            source_sha256=SOURCE_SHA,candidate_sha256=sha(dirs['candidate']/name),negative_sha256=sha(dirs[negative_case]/name))
         yosys=shutil.which('yosys');iverilog=shutil.which('iverilog');assert yosys and iverilog
         result['runtime']=subprocess.check_output([yosys,'-V'],text=True).strip()
         result['algebra']=[]
-        for cw in [2,3,4,5]:
+        for cw in ([None] if args.variant=='direct_commit' else [2,3,4,5]):
             for bad in [False,True]:
-                label='algebra-cw'+str(cw)+('-wrong' if bad else '')
-                d=OUT/label;d.mkdir();(d/'miter.v').write_text(algebra(cw,bad))
-                (d/'proof.ys').write_text('read_verilog -sv miter.v\nprep -top ack_window -flatten\n'
+                label=('algebra-direct-commit' if args.variant=='direct_commit' else 'algebra-cw'+str(cw))+('-wrong' if bad else '')
+                d=OUT/label;d.mkdir();(d/'miter.v').write_text(direct_commit_algebra(bad) if args.variant=='direct_commit' else algebra(cw,bad))
+                (d/'proof.ys').write_text(('read_verilog -sv miter.v\nprep -top '+('ack_commit' if args.variant=='direct_commit' else 'ack_window')+' -flatten\n')+
                     'sat -verify -prove ok 1 -show-inputs -show-outputs -dump_json counterexample.json\n')
                 code,log=execute([yosys,'-s','proof.ys'],label,d)
                 passed=code==0 and 'SAT proof finished - no model found: SUCCESS!' in log
@@ -115,7 +160,7 @@ def main():
                     log_sha256=sha(OUT/(label+'.log')),counterexample=json.loads((d/'counterexample.json').read_text()) if rejected else None));save()
                 assert rejected if bad else passed
         result['proofs']=[]
-        for case,text in [('candidate',altered),('wrong_page',wrong)]:
+        for case,text in [('candidate',altered),(negative_case,wrong)]:
             d=OUT/('proof-'+case);d.mkdir()
             for module,source in [('gold',original),('gate',text)]:
                 declaration='module soc_pcie_replay_tx #(';assert source.count(declaration)==1
@@ -133,8 +178,8 @@ def main():
             result['proofs'].append(dict(case=case,returncode=code,counts=counts,passed=passed,
                 negative_rejected=rejected,log_sha256=sha(OUT/('proof-'+case+'.log'))));save()
         result['ports']=[]
-        for case in ['baseline','candidate','wrong_page']:
-            for top in (['soc_pcie_replay_tx'] if case=='wrong_page' else ['soc_pcie_replay_tx','soc_pcie_reliable_packets']):
+        for case in ['baseline','candidate',negative_case]:
+            for top in (['soc_pcie_replay_tx'] if case==negative_case else ['soc_pcie_replay_tx','soc_pcie_reliable_packets']):
                 out=OUT/(case+'-'+top)
                 code,log=execute([sys.executable,ROOT/'scripts/check_pcie_replay.py','--top',top,
                     '--out',out,'--rtl-dir',dirs[case],'--iverilog-dir',Path(iverilog).parent],case+'-'+top)
@@ -144,12 +189,12 @@ def main():
                 result['ports'].append(dict(case=case,top=top,returncode=code,result=record,
                     actual_tests=dict(passed=passed,failed=failed,skipped=skipped)));save()
                 assert skipped==0 and passed+failed==record['expected_tests']
-                if case=='wrong_page':
+                if case==negative_case:
                     assert code!=0 and failed>0 and 'AssertionError' in (out/'simulation.log').read_text(errors='replace')
                 else:
                     assert code==0 and failed==0 and record['status']=='PASS_PORT_ONLY_PCIE_REPLAY'
         assert result['proofs'][0]['passed'] and result['proofs'][1]['negative_rejected']
-        result['status']='PASS_ALL_INPUT_ACK_WINDOW_AND_PHYSICAL_REPLAY_CONTROLS_NOT_TIMING'
+        result['status']=('PASS_ALL_INPUT_ACK_DIRECT_COMMIT_AND_PHYSICAL_REPLAY_CONTROLS_NOT_TIMING' if args.variant=='direct_commit' else 'PASS_ALL_INPUT_ACK_WINDOW_AND_PHYSICAL_REPLAY_CONTROLS_NOT_TIMING')
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:

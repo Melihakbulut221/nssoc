@@ -44,6 +44,9 @@ on:
       credit_late_verdict:
         type: boolean
         default: false
+      ack_direct_commit:
+        type: boolean
+        default: false
       ack_window:
         type: boolean
         default: false
@@ -345,7 +348,7 @@ jobs:
           cp cloud-advert-control/result.json "${archive%.tar.gz}.json"
           python3 scripts/publish_cloud_results.py --group advert-control "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
   ack-window:
-    if: ${{ inputs.ack_window == true }}
+    if: ${{ inputs.ack_window == true || inputs.ack_direct_commit == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
@@ -369,7 +372,7 @@ jobs:
       - name: Prove bounded ACK-window identity and exact replay controls
         run: |
           hw/.venv/bin/python -m py_compile scripts/run_cloud_ack_window.py
-          hw/.venv/bin/python scripts/run_cloud_ack_window.py
+          hw/.venv/bin/python scripts/run_cloud_ack_window.py --variant '${{ inputs.ack_direct_commit && 'direct_commit' || 'window' }}'
       - name: Preserve full passing and failing candidate evidence
         if: always()
         env:
@@ -379,7 +382,7 @@ jobs:
           tar -czf "$archive" cloud-ack-window
           sha256sum "$archive" > "$archive.sha256"
           cp cloud-ack-window/result.json "${archive%.tar.gz}.json"
-          python3 scripts/publish_cloud_results.py --group ack-window "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.ack_direct_commit && 'ack-direct-commit' || 'ack-window' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
 
   pll-prefix-readback:
     if: ${{ inputs.pll_prefix_readback == true }}

@@ -7,6 +7,25 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Combined ACK-window timing rejected; direct register enable proof prepared.**
+38524042217 completed: dedicated-only639525435 slowPCIe-1.046260ns versus
+combined639521132-1.082708ns; fastPCIe hold unchanged-0.109062ns. Combined
+buffered5/replay7 positives and wrong-page rejection passed, but timing did not.
+No adoption. New direct_commit replay variant changes only the acknowledged
+sequence register: same reset/link priority, write on allowed ACK handshake
+including equal duplicate values. Original retirement/head/count/timer/NAK
+logic remains unchanged. Removing the redundant delta!=0 enable is a hypothesis;
+all-input identity/full output equivalence and complete port controls must pass.
+Wrong-guard candidate intentionally accepts invalid ACK sequence and must fail.
+Dispatch cloud-migration-checks ack_direct_commit=true once; map only after proof.
+Do not combine the rejected ACK-window rewrite into this independent candidate.
+
+Prestage short-output physical38524919925 completed success; read/bind full
+physical receipt then extract original native RC. No waveform acceptance yet.
+Original route38511490580/PLL38507479646 remain handles. All full goalsOPEN,
+cloud-only. Earlier timing/analog failures remain preserved, not waived.
+
+
 **Actual direct-supply hot study terminal: improvement, both cases rejected.**
 38523202992 hot summary639508462 bitmin0.095224545V (13sub100mV early samples),
 final-input diffmin0.151252448V and CMmin1.788243586V; hotres639507457 bitmin
