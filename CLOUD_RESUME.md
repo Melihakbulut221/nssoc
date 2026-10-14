@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Newest synthesis finding:** ABC study38494637444 completed with no improvement:
+79065cells and all6corner group minima identical, slowPCIe setup-0.991500ns,
+fastPCIe hold-0.109062ns. Native trace proves D2000 was applied; its network
+is combinational. Full native records/hashes are preserved as
+`abc_delay_completed_screen` inpcie-ack-window-proof-and-screen-20261014.json.
+Next paired study `abc_slow_corner` maps the SAME proved best RTL with the
+pinned slow standard-cell Liberty, D4000, original FF mapping and constraints;
+all3STA corners and32joint controls remain. Pending dispatch, not adoption.
+V10loaded38495318320/38495321089: all3compact jobs completed; all3wire jobs live.
+Main-chip halo38490952579 remains live. Continue cloud-only, no local files.
+Full serial PHY, main-chip routing and final setup/hold remain OPEN.
+
+
 **Latest advancement:** V10extraction38494852996 passed4017R/2636C and13faults;
 composition38495079171 passed native54device binding. Receipt:
 `docs/evidence/pcie-final-v10-kelvin-low-ports-loads-shunts-series-composition-20261013.json`.

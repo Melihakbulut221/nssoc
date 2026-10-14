@@ -2558,5 +2558,334 @@
     ],
     "decision": "PCIe slow setup worsened-0.991500 to-1.260820ns, CPU0.474044 to0.368399ns; cells79065 to79984. Full region proof and32joint tests passed. Do not adopt.",
     "scope": "Unplaced packet SoC only; no routed timing or fullPHY acceptance."
+  },
+  "abc_delay_completed_screen": {
+    "run": 38494637444,
+    "source_head": "0d16d91b36f0d57adc65f393a78e71149072bb47",
+    "status": "REJECTED_NO_TIMING_OR_CELL_COUNT_IMPROVEMENT",
+    "adopted": false,
+    "cases": [
+      {
+        "profile": "physical_idle_credit_window_eop",
+        "summary_asset_id": 638810147,
+        "summary_sha256": "214a3e9f6dfdecdc29bf8097a482c5ec06048774637c0f63dc9cdc80b8abe46a",
+        "archive_asset_id": 638809939,
+        "archive_bytes": 17152117,
+        "archive_sha256": "0e2c00712f010bed2ddf7d66b9d01611f3ec870e8c1676e08a7583e72eb4d526",
+        "mapped_cells": 79065,
+        "macros": {
+          "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+        },
+        "all_corner_group_minima_ns": {
+          "slow_max": {
+            "asynchronous": 1.378776,
+            "path delay": 2.505196,
+            "clk_i": 0.474044,
+            "eth_gtx": 4.901397,
+            "eth_rx_clk_i": 1.702392,
+            "eth_tx_clk_i": 1.672676,
+            "pcie_clk_i": -0.9915
+          },
+          "slow_min": {
+            "asynchronous": 0.35541,
+            "clk_i": -0.439722,
+            "eth_gtx": -0.43793,
+            "eth_rx_clk_i": -0.469247,
+            "eth_tx_clk_i": -0.413411,
+            "pcie_clk_i": 0.057926
+          },
+          "typical_max": {
+            "asynchronous": 1.964831,
+            "path delay": 2.754967,
+            "clk_i": 7.507642,
+            "eth_gtx": 5.012421,
+            "eth_rx_clk_i": 4.178513,
+            "eth_tx_clk_i": 4.158348,
+            "pcie_clk_i": 0.461441
+          },
+          "typical_min": {
+            "asynchronous": 0.139328,
+            "clk_i": -0.387129,
+            "eth_gtx": -0.53948,
+            "eth_rx_clk_i": -0.368327,
+            "eth_tx_clk_i": -0.36629,
+            "pcie_clk_i": -0.04421
+          },
+          "fast_max": {
+            "asynchronous": 2.294923,
+            "path delay": 2.897573,
+            "clk_i": 11.659833,
+            "eth_gtx": 5.083783,
+            "eth_rx_clk_i": 4.507247,
+            "eth_tx_clk_i": 5.491168,
+            "pcie_clk_i": 1.317098
+          },
+          "fast_min": {
+            "asynchronous": 0.013901,
+            "clk_i": -0.3678,
+            "eth_gtx": -0.601382,
+            "eth_rx_clk_i": -0.351181,
+            "eth_tx_clk_i": -0.353123,
+            "pcie_clk_i": -0.109062
+          }
+        },
+        "screen_log_sha256": "20484e7663263f6d3a5828b2b414fafcef9b90ee0a30c0badca368af23c2d940",
+        "mapped_json_sha256": "5dc0f9b5e5a262e87d34a9b7f164207d3fcaf53334569dd818f80a9480d94ebd",
+        "native_abc_tail": [
+          "ABC: + read_blif <abc-temp-dir>/input.blif ",
+          "ABC: + read_scl /tmp/yosys-liberty-scl-cache/yosys_merged_40f0b073.scl ",
+          "ABC: + read_constr -v /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop/inputs/root/hw/soc/out/pcie-replay-bank-read-20261009/map01/abc.constr ",
+          "ABC: + strash ",
+          "ABC: + &get -n ",
+          "ABC: + &fraig -x ",
+          "ABC: + &put ",
+          "ABC: + scorr ",
+          "ABC: Warning: The network is combinational (run \"fraig\" or \"fraig_sweep\").",
+          "ABC: + dc2 ",
+          "ABC: + dretime ",
+          "ABC: + retime -o -D 4000 ",
+          "ABC: + strash ",
+          "ABC: + &get -n ",
+          "ABC: + &dch -f ",
+          "ABC: + &nf -D 4000 ",
+          "ABC: + &put ",
+          "ABC: + buffer ",
+          "ABC: + upsize -D 4000 ",
+          "ABC: + dnsize -D 4000 ",
+          "ABC: + stime -p ",
+          "ABC: WireLoad = \"none\"  Gates =  65522 ( 11.6 %)   Cap =  6.8 ff (  7.6 %)   Area =   660560.81 ( 83.0 %)   Delay =  9422.11 ps  (  2.8 %)               ",
+          "ABC: + write_blif <abc-temp-dir>/output.blif "
+        ],
+        "joint_controls": [
+          {
+            "case": "baseline",
+            "top": "soc_pcie_replay_tx",
+            "actual_tests": {
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "baseline",
+            "top": "soc_pcie_reliable_packets",
+            "actual_tests": {
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "baseline",
+            "top": "soc_pcie_buffered_flow_packets",
+            "actual_tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_replay_tx",
+            "actual_tests": {
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_reliable_packets",
+            "actual_tests": {
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_buffered_flow_packets",
+            "actual_tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          }
+        ]
+      },
+      {
+        "profile": "physical_idle_credit_window_eop_d2000",
+        "summary_asset_id": 638810625,
+        "summary_sha256": "1f7aa8e3a883db35590325ec61a78032d74f5e4feae0d1ce1a7209a36dd528ee",
+        "archive_asset_id": 638810388,
+        "archive_bytes": 17163090,
+        "archive_sha256": "41ed648856ffe9420fa9221d39169e6175910c814ef201862cfa5bec630da540",
+        "mapped_cells": 79065,
+        "macros": {
+          "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+        },
+        "all_corner_group_minima_ns": {
+          "slow_max": {
+            "asynchronous": 1.378776,
+            "path delay": 2.505196,
+            "clk_i": 0.474044,
+            "eth_gtx": 4.901397,
+            "eth_rx_clk_i": 1.702392,
+            "eth_tx_clk_i": 1.672676,
+            "pcie_clk_i": -0.9915
+          },
+          "slow_min": {
+            "asynchronous": 0.35541,
+            "clk_i": -0.439722,
+            "eth_gtx": -0.43793,
+            "eth_rx_clk_i": -0.469247,
+            "eth_tx_clk_i": -0.413411,
+            "pcie_clk_i": 0.057926
+          },
+          "typical_max": {
+            "asynchronous": 1.964831,
+            "path delay": 2.754967,
+            "clk_i": 7.507642,
+            "eth_gtx": 5.012421,
+            "eth_rx_clk_i": 4.178513,
+            "eth_tx_clk_i": 4.158348,
+            "pcie_clk_i": 0.461441
+          },
+          "typical_min": {
+            "asynchronous": 0.139328,
+            "clk_i": -0.387129,
+            "eth_gtx": -0.53948,
+            "eth_rx_clk_i": -0.368327,
+            "eth_tx_clk_i": -0.36629,
+            "pcie_clk_i": -0.04421
+          },
+          "fast_max": {
+            "asynchronous": 2.294923,
+            "path delay": 2.897573,
+            "clk_i": 11.659833,
+            "eth_gtx": 5.083783,
+            "eth_rx_clk_i": 4.507247,
+            "eth_tx_clk_i": 5.491168,
+            "pcie_clk_i": 1.317098
+          },
+          "fast_min": {
+            "asynchronous": 0.013901,
+            "clk_i": -0.3678,
+            "eth_gtx": -0.601382,
+            "eth_rx_clk_i": -0.351181,
+            "eth_tx_clk_i": -0.353123,
+            "pcie_clk_i": -0.109062
+          }
+        },
+        "screen_log_sha256": "e1987830a69a15f73a1689fa0732d24482fc2d9e172e69bab4960fba6a906e37",
+        "mapped_json_sha256": "d4da1cc70c665bcddfa07546b8f78960447111fe16070c4c95407bd3fd63e336",
+        "native_abc_tail": [
+          "ABC: + read_blif <abc-temp-dir>/input.blif ",
+          "ABC: + read_scl /tmp/yosys-liberty-scl-cache/yosys_merged_2117fed6.scl ",
+          "ABC: + read_constr -v /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_d2000/inputs/root/hw/soc/out/pcie-replay-bank-read-20261009/map01/abc.constr ",
+          "ABC: + strash ",
+          "ABC: + &get -n ",
+          "ABC: + &fraig -x ",
+          "ABC: + &put ",
+          "ABC: + scorr ",
+          "ABC: Warning: The network is combinational (run \"fraig\" or \"fraig_sweep\").",
+          "ABC: + dc2 ",
+          "ABC: + dretime ",
+          "ABC: + retime -o -D 2000 ",
+          "ABC: + strash ",
+          "ABC: + &get -n ",
+          "ABC: + &dch -f ",
+          "ABC: + &nf -D 2000 ",
+          "ABC: + &put ",
+          "ABC: + buffer ",
+          "ABC: + upsize -D 2000 ",
+          "ABC: + dnsize -D 2000 ",
+          "ABC: + stime -p ",
+          "ABC: WireLoad = \"none\"  Gates =  65522 ( 11.6 %)   Cap =  6.8 ff (  7.6 %)   Area =   660560.81 ( 83.0 %)   Delay =  9422.11 ps  (  2.8 %)               ",
+          "ABC: + write_blif <abc-temp-dir>/output.blif "
+        ],
+        "joint_controls": [
+          {
+            "case": "baseline",
+            "top": "soc_pcie_replay_tx",
+            "actual_tests": {
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "baseline",
+            "top": "soc_pcie_reliable_packets",
+            "actual_tests": {
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "baseline",
+            "top": "soc_pcie_buffered_flow_packets",
+            "actual_tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_replay_tx",
+            "actual_tests": {
+              "passed": 7,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_reliable_packets",
+            "actual_tests": {
+              "passed": 4,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          },
+          {
+            "case": "combined",
+            "top": "soc_pcie_buffered_flow_packets",
+            "actual_tests": {
+              "passed": 5,
+              "failed": 0,
+              "skipped": 0
+            },
+            "returncode": 0
+          }
+        ],
+        "mapping_delay_target": {
+          "baseline_ps": 4000,
+          "candidate_ps": 2000,
+          "original_abc_command": "abc -liberty /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_d2000/inputs/pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib -constr /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_d2000/inputs/root/hw/soc/out/pcie-replay-bank-read-20261009/map01/abc.constr -D 4000",
+          "candidate_abc_command": "abc -liberty /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_d2000/inputs/pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib -constr /home/runner/work/nssoc/nssoc/cloud-ack-map/physical_idle_credit_window_eop_d2000/inputs/root/hw/soc/out/pcie-replay-bank-read-20261009/map01/abc.constr -D 2000",
+          "reference": "https://yosyshq.readthedocs.io/projects/yosys/en/0.40/cmd/abc.html",
+          "scope": "Exact EOP+ACK-window physical RTL, original FF mapping and ABC constraints. Only combinational ABC target changes. No -dff/retime, SDC exception, clock-period change, source logic modification or timing acceptance.",
+          "native_help_sha256": "ad2cf3f3cde1dc3eee7c06dfc66a6c3c2327ed542842396e06e9f8e6ac4361b5"
+        }
+      }
+    ],
+    "decision": "All six native corner group minima and mapped cell counts are unchanged. Native ABC trace confirms 2000 ps was applied to retime, nf, upsize and dnsize. No sequential cells were passed to ABC; its log explicitly calls the network combinational. Do not repeat target-only tuning unchanged.",
+    "next_hypothesis": "Map identical proved RTL with pinned slow standard-cell Liberty instead of typical; retain D4000, original FF mapping, load/drive constraints, all three STA corners and 32 joint tests. Slow setup fails while typical PCIe setup passes; this is an experiment, not adoption or closure."
   }
 }
