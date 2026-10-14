@@ -8,6 +8,17 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Live continuation handle: terminal-cardinality diagnosis38590905780.**
+Sourcec2ba59b4ec1394a336196ebbfcd905a3c2a477bd, source_profile=seed13_buffers.
+Retain this read-only native job; it was dispatched after the terminal CUGR
+failure and therefore supersedes the older no-live-job statement below.
+It preserves sourcefailedODB connectivity and does not reroute/delete nets.
+Inspect signal_net_terminal_inventory in its immutable summary before changing
+the router input or native engine. PLL cycle diagnosis640800063 is terminal;
+full sourcebound PFD/pump investigation remains next independent circuit work.
+Cloud-only/fullPHY/routedmainchip/finalsetup-hold OPEN; no blocker or completion.
+
+
 **CUGR terminal native exception; PLL cycle evidence identifies next circuit investigation.**
 38589002753/job115938555226 failed at CUGR stage1 pattern routing with
 vector::reserve. Source/placement invariants and1positive/10negative result
