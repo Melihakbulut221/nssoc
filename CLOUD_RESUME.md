@@ -7,6 +7,41 @@
 
 ### Newest state — supersedes every older live statement below
 
+
+**Cloud-only checkpoint, 14 October 2026: terminal route failure and live jobs.**
+Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` remains empty,
+including hidden entries. No local source/CAD/test/artifact files were created.
+Retirement proof asset636387277 remains the cloud handoff record.
+
+- Mainchip route38511490580/job115680796118 is now terminal FAILURE, not live.
+  Original sourceec864e8484c146ea204d46ce6aa2f284ca4b73f7. GRT-0116:
+  total overflow138 (Metal3:17, Metal4:19, Metal5:93, TopMetal1:8,
+  TopMetal2:1); total routing resource usage19.51%, routed nets113556.
+  This candidate does not improve original overflow132. Detailed routing and
+  final routed timing are NOT complete. Preserve failed partial state; diagnose
+  localized congestion before another geometry trial, do not blindly restart.
+  Permanent archive639573076,197322362bytes,
+  SHA3824566424b5f94dd3586be49981bd4238c8d01cd3cc9440cb63e70bd2c0d275;
+  summary639573452,17021763bytes,
+  SHA928272bfe863c02df5e90c600563d0f191aefa3b79b92596a4a2d3f8eb7fefc6.
+  Release tagcloud-results-38511490580-1-route-routability_data.
+- Hosted common validation38527212907 on0289caff PASS, including updated
+  tracked inventory22579. This verifies regressions, not engineering closure.
+- Direct ACK pair38526942261 on520fd0a90cb325388d52e73a14e3e8b824fd5c96:
+  baselinejob115729422349 completed success; candidate115729422079 still
+  mapping/screening. Preserve handle; inspect both original corner reports
+  and combined controls before any decision. No candidate adoption yet.
+- Short-prestage/direct-final hot study38527211035 on0289caff:
+  hot_low115730282870 and hot_low_res_bcs115730283229 passed preparation
+  and are in original-bit/electrical screening. Do not duplicate or infer PASS.
+- Original continuous PLL38507479646/job115668187421 remains in progress.
+  After capture success only, run the prepared source-bound acquisition review;
+  capture completion itself is not lock or PHY acceptance.
+
+All full serial PHY, routed mainchip and final setup/hold goals remain OPEN.
+Future edits, simulation, CAD and durable evidence stay on GitHub. Older live
+statements below are historical; the explicit statuses above supersede them.
+
 **Source-bound short-output prestage composition PASS; new hot pair prepared.**
 38526689071 summary639566149 binds54devices/3848R/2554C. Native wireSHA
 69f91103491cb38a90e2daadb0655e60bfc93dde150ac1f9804e0151f0903bb8;
