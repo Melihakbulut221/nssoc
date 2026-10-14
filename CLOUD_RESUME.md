@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Terminal cloud readbacks:** congestion38509934192 PASS exact diagnosis only:
+145markers/155overflow,1095congested nets bound to actual endpoints; exact
+four Ethernet SRAM pin/OBS geometries retained. Summary639175302/archive639175114
+pinned in halo1 failure receipt; no route closure. Control report38510367472
+native readbackPASS; candidate REJECTED: PCIe slowsetup -1.101756ns -> -1.463237ns,
+fasthold unchanged -0.109062ns. Do not adopt smaller-cell candidate. All groups
+and original logs retained in artifact11869582286. Permanent upload failed
+because runner default Python lacks hashlib.file_digest; explicitly pin3.12
+and redispatch read_control_reports ONLY (no synthesis rerun). Pending next
+repair should use original retained route and timed baseline, not these rejected
+candidates. PLL38507479646 / original32:1wire38496981217 retain live handles.
+All computations cloud-only, local directory empty, all three full goalsOPEN.
+
+
 **Cloud-only continuation:** workspace remains empty. Exact halo1 congestion
 probe38509934192 dispatched onbc43f91e; do not duplicate. Main route stays
 rejected with155overflow. Control mapping38509087565 is terminal: baseline79578
