@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-14T16:59:44.325223+00:00",
+  "as_of": "2026-10-14T17:23:18.930165+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "faebb437ef2a3cc7010b46202ae731f7e76d4f59",
+  "head": "329cf12816831d9005773513afdb9bae99537dc3",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -100,10 +100,11 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Poll exact route38598795406 and paired native PFD screen38602623171; retain handles, never duplicate/restart due observation timeout. Inspect native proofs, negative controls, original all-corner STA and strict zero-overflow route gate.",
-    "Compare baseline_schematic102MOS and aoi4 94MOS native50ns complete captures, clean startup, all selected probes and clearb overlap with reference/feedback clocks. Preserve any failure and distinguish schematic from physical evidence.",
-    "If new PFD reset improves matched native behavior, generate actual GDS/LEF, transistor LVS/DRC, full new RC and parent composition before any layout or PHY adoption. Recheck original1us rolling100ppm/50ps/no-slip/VCTRL plus all-device safety/PVT/timestep/CDR. Full serialPHY remains OPEN.",
-    "Keep local NSSOC workspace empty. All edits, CAD, simulations, tests and artifacts on GitHub-hosted infrastructure. Retain all previous rejected CUGR, TX-hot and digital hold evidence. Final mainchip routing/setup-hold remain OPEN."
+    "Poll retained route38598795406 and source-only recovery38606020769. No duplicate/restart on observation timeout. PLL schematic38602623171, physical38604234902 andLEF38605102553 are completed.",
+    "Inspect recovered original PFD methods, then adapt native terminal binding/anchors/extraction/composition from255 to235actualdevices using saved GDS5eba5849. Preserve all physical terminal ownership and rawRC corruption controls. Never scale R/C values or reuse old PFD255 parasitics as new layout.",
+    "Compare actual RC-loaded new235device PFD with original255device physical waveform, then complete all-device safety, original1us rolling100ppm/50ps/no-slip/VCTRL and independentPVT/timestep/CDR. Schematic AOI94MOS is only an intermediate candidate; both schematic profiles lack physical PFD RC/taps.",
+    "Inspect exact CTS invariants and real original all-corner STA/zero-overflow route result before timing/route adoption. Full serialPHY, mainchiprouting and finalsetup/hold remainOPEN. Preserve all failed trials.",
+    "All edits, simulations, CAD, tests and artifacts stayonGitHub. Empty localworkspace mustremainempty. PFD workflow uses single pll_pfd_stage choice: topology/schematic/layout/lef/methods."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -64461,7 +64462,7 @@
     "All work stays cloud-only; fullserial PHY/detailedchiproute/finalSTA remainOPEN."
   ],
   "current_state_20261014": {
-    "as_of": "2026-10-14T16:59:44.325223+00:00",
+    "as_of": "2026-10-14T17:23:18.930165+00:00",
     "supersedes_older_live_statuses": true,
     "full_phy": "OPEN",
     "mainchip_routing": "OPEN_BEST_FASTROUTE_OVERFLOW_132_CUGR_REJECTED",
@@ -64473,8 +64474,7 @@
     "congestion_diagnosis_run": 38566051147,
     "congestion_diagnosis": "COMPLETE_100_MARKERS_138_OVERFLOW_NOT_CLOSURE",
     "known_active_native_jobs": [
-      38598795406,
-      38602623171
+      38598795406
     ],
     "cugr": "TERMINAL_REJECTED_OVERFLOW_INPUT_REPAIR_PASS",
     "pll_cycle_diagnosis": "COMPLETE_ORIGINAL_GATES_STILL_REJECTED",
@@ -64482,7 +64482,9 @@
     "fresh_placement_cts": "NATIVE_COMPLETED_SAVED_DB_PROOF_AND_ROUTE_IN_PROGRESS",
     "pll_full50_diagnosis": "COMPLETE_SOURCE_BOUND_STARTUP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE",
     "pll_pfd_topology": "COMPLETE_UNIQUE_SOURCE_MAPPED_RESET_MASKING_OBSERVATION",
-    "pll_pfd_candidate": "in_progress"
+    "pll_pfd_candidate": "COMPLETE_MATCHED_SCHEMATIC_SCREEN_NOT_LOCK",
+    "known_active_source_recovery_jobs": [],
+    "pll_pfd94_physical": "PASS_DRC_LVS_FAULTS_LEF_NOT_RC_OR_MAINCHIP"
   },
   "full32_wire_terminal_20261014": {
     "run": 38496981217,
@@ -101918,7 +101920,7 @@
     "source_head": "9d904ed0e49ed9bdc00e767adb724d29ab6818ba",
     "status_at_observation": "in_progress",
     "conclusion_at_observation": null,
-    "observed_at": "2026-10-14T16:59:44.325223+00:00",
+    "observed_at": "2026-10-14T17:23:18.930165+00:00",
     "adopted": false,
     "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38598795406",
     "resume_exact_saved_odb": true,
@@ -102027,9 +102029,9 @@
   "pll_pfd_candidate_20261014": {
     "run": 38602623171,
     "source_head": "faebb437ef2a3cc7010b46202ae731f7e76d4f59",
-    "status_at_observation": "in_progress",
-    "conclusion_at_observation": null,
-    "observed_at": "2026-10-14T16:59:44.325223+00:00",
+    "status_at_observation": "completed",
+    "conclusion_at_observation": "success",
+    "observed_at": "2026-10-14T17:23:18.930165+00:00",
     "adopted": false,
     "profiles": [
       "baseline_schematic",
@@ -102052,6 +102054,138 @@
     "native_stop_s": 5e-08,
     "native_max_step_s": 3.125e-13,
     "design_change": "Preserve original88DFF devices; replace14MOS reset logic/delay chain with6MOS static AOI clearb=NOT(reset OR(up AND down)). PMOS32um, series NMOS16um, reset NMOS8um; all L0.45um. Matched baseline uses original102MOS schematic.",
-    "scope": "Both schematic profiles lack local PFD body contacts and extracted PFD RC. Original610other devices and all non-PFD RC are byte-identical. Not a physical fix or acquisition acceptance. Require actual candidate layout/LVS/DRC/newRC and original1us/all-device/PVT/timestep checks before adoption."
+    "scope": "Both schematic profiles lack local PFD body contacts and extracted PFD RC. Original610other devices and all non-PFD RC are byte-identical. Not a physical fix or acquisition acceptance. Require actual candidate layout/LVS/DRC/newRC and original1us/all-device/PVT/timestep checks before adoption.",
+    "result": "Both matched schematic50ns native captures completed with no native diagnostics and zero-sourceOP. Both avoid clock-edge reset overlap; original PFD parasitics are material. Shorter AOI reset is not physical/lock/safety acceptance.",
+    "measured_clearb_low_duration_ns": {
+      "baseline_schematic": 1.66535,
+      "aoi4": 0.93631
+    },
+    "aoi_selected_node_peaks_v": {
+      "up": 2.0098022146828587,
+      "xup_mq": 2.8460795377316352
+    },
+    "native_elapsed_s": {
+      "baseline_schematic": 957.1921796839999,
+      "aoi4": 719.1974085649999
+    },
+    "summaries": [
+      {
+        "profile": "baseline_schematic",
+        "id": 641079126,
+        "bytes": 78037,
+        "sha256": "87e516e30930d875838283a7e35c4ad15fa1a698728ab3a0eec377e88f415610"
+      },
+      {
+        "profile": "aoi4",
+        "id": 641067985,
+        "bytes": 74462,
+        "sha256": "fc8e3522968f1d437b24b29851f34ddecbb1aef2421c6d3dd823f7316944e7f1"
+      }
+    ],
+    "archives": [
+      {
+        "profile": "baseline_schematic",
+        "id": 641078771,
+        "bytes": 37344872,
+        "sha256": "859b8cf7e40bae01cd8b47ce89abbaf8dd35760a5bd4f1553cdec95622ebc20b"
+      },
+      {
+        "profile": "aoi4",
+        "id": 641067630,
+        "bytes": 37346629,
+        "sha256": "2eec4159f6eb966687bc98e587dad39bec5771d32ac2696350b04204a8b6e691"
+      }
+    ]
+  },
+  "pll_pfd94_layout_20261014": {
+    "run": 38604234902,
+    "source_head": "ae8659729d0ba0c7394d28318ed13b5a42459f57",
+    "status": "PASS_PFD94_AOI4_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE",
+    "adopted": false,
+    "physical_device_census": 235,
+    "mos": 94,
+    "substrate_contacts": 94,
+    "well_contacts": 47,
+    "drc": {
+      "categories": 560,
+      "markers": 0
+    },
+    "hierarchical_lvs": "235/235 MATCH, no extraction diagnostics",
+    "flat_lvs": "235/235 MATCH, no extraction diagnostics",
+    "rejected_faults": [
+      "wrong_width",
+      "missing_well",
+      "up_open",
+      "rail_short",
+      "offgrid"
+    ],
+    "outputs": {
+      "nssoc_pfd94_aoi4_layout_v1.lef": "00e00d8794e9aa98c162c804f41cd23aec1986031d1136219a799675ea5d7bea",
+      "schematic.cir": "e7063594af5ff95274a4dd955d474a344e988de6eb89e6ce2f813fd7f841940a",
+      "nssoc_pfd94_aoi4_layout_v1.gds": "5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6"
+    },
+    "summary": {
+      "id": 641068432,
+      "bytes": 175711,
+      "sha256": "52a1ace9ab76efa62dbd9dcb1f8298a2931d778399b4d065988bbe426d4696e6"
+    },
+    "archive": {
+      "id": 641068170,
+      "bytes": 639953,
+      "sha256": "869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953"
+    },
+    "prior_rejected": {
+      "run": 38603616210,
+      "drc_categories": 560,
+      "markers": 1,
+      "rule": "LU.b",
+      "reason": "Upper part of16um NMOS beyond20um PWell tie distance. Moved only two wide AOI NMOS existing substrate ties to mid-height; same circuit and original88DFFgeometry.",
+      "summary_id": 641054841,
+      "summary_sha256": "78b0a86d432a2007a2286d1260592a5eddd8de37bd4e1fd5638a8eea6aa78f8f",
+      "archive_id": 641054578,
+      "archive_sha256": "e57531ec02ba98f77633e3dba92190d64ffec1511c3ddf52c46895d7c5f3c11c"
+    },
+    "scope": "Actual94MOS plus94substrate/47well contacts. Requires560nativeDRC categories, strict flat/hierarchical235device LVS and five physical/reference fault controls. No new RC/electrical/PHY/chip acceptance."
+  },
+  "pll_pfd94_lef_20261014": {
+    "run": 38605102553,
+    "source_head": "eee9f12a6642ccee6fc1eb7a97be317876c4b3f6",
+    "status": "PASS_NATIVE_PFD94_LEF_AND_TWO_PHYSICAL_FAULTS_NOT_MAINCHIP_INTEGRATION",
+    "source_bindings": {
+      "physical_run": 38604234902,
+      "physical_archive_sha256": "869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953",
+      "geometry_sha256": "5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6",
+      "lef_sha256": "00e00d8794e9aa98c162c804f41cd23aec1986031d1136219a799675ea5d7bea",
+      "technology_sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6",
+      "checker_sha256": "571fa9265fac2dda2b2016535ab1d6770a7325bab30015c5b93f4b382ab913de"
+    },
+    "positive": true,
+    "rejected_actual_faults": [
+      "missing_pin",
+      "blocked_pin"
+    ],
+    "summary": {
+      "id": 641086027,
+      "bytes": 4159,
+      "sha256": "c154e26374fe13e7333dc60bc443e4303f6f69cc3002f9ac2df4ccca0b00a7b0"
+    },
+    "archive": {
+      "id": 641085838,
+      "bytes": 59048,
+      "sha256": "0fe41f4e5469ae15fe794a8cc28830e501ce7db79cade521e8e0addb0511a024"
+    },
+    "mainchip_integrated": false,
+    "scope": "Exact DRC/LVS-checked candidate38604234902 LEF. Native OpenROAD pin/outline/obstruction readback and actual missing/obstructed-pin controls. Not RC, electrical, mainchip or PHY acceptance."
+  },
+  "pll_pfd_method_recovery_20261014": {
+    "run": 38606020769,
+    "source_head": "329cf12816831d9005773513afdb9bae99537dc3",
+    "status_at_observation": "completed",
+    "conclusion_at_observation": "success",
+    "observed_at": "2026-10-14T17:23:18.930165+00:00",
+    "input": {
+      "pll_pfd_stage": "methods"
+    },
+    "scope": "Source-only hash-bound migration recovery of original PFD native binding, physical anchors, RC extraction/composition and fault methods. No simulation or PEX qualification."
   }
 }

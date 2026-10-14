@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Cloud continuation 2026-10-14T17:23:18.930165+00:00; exact source-recovery handle38606020769.**
+Source329cf12816831d9005773513afdb9bae99537dc3; observedcompleted/success.
+Use pll_pfd_stage=methods. EarlierdispatchHTTP422duplicateenv was corrected
+before run creation; no earliermethodrun exists. Recover exact oldsource
+methods, then adapt binding/anchors/RC to actual235device GDS5eba5849.
+
+Completed: native paired38602623171, physical38604234902, LEF38605102553.
+LEFsummary641086027 SHA c154e26374fe13e7333dc60bc443e4303f6f69cc3002f9ac2df4ccca0b00a7b0;
+archive641085838 SHA0fe41f4e5469ae15fe794a8cc28830e501ce7db79cade521e8e0addb0511a024.
+All8pins/outline/use/direction/obstruction checks and missing/blockedpin
+controls PASS. No physicalRC/electrical/PHY/mainchip acceptance yet.
+
+Retain route38598795406 observedin_progress/None; no
+observation-timeout restart. This and previous turn made concrete progress.
+Full serialPHY/routedmainchip/finalsetup-hold remainOPEN; allcloud-only.
+
+
 **Matched native50ns comparison terminalPASS as screening, not acceptance.**
 38602623171 completed both profiles cleanly withzero-sourceOP. Baseline102MOS
 clearb low about1.665ns; AOI94MOS about0.936ns. Both schematic profiles avoid
