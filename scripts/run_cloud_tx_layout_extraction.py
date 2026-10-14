@@ -108,6 +108,20 @@ def main():
                     assert source.count(before) == 1
                     source = source.replace(before, 'R_EXTRA P_op P_on 1')
                     changes.append(dict(before=before, after='R_EXTRA P_op P_on 1', count=1))
+                    # A new layout can make the first exported R a bridge.
+                    # Preserve the dedicated topology-mismatch negative control
+                    # by removing one actual non-bridge R, rather than accepting
+                    # a different early rejection or weakening the clean audit.
+                    selector = "# Select one real R whose deletion preserves every connected component.\nresistor_rows=[(i,line.split()) for i,line in enumerate(rows) if re.fullmatch(r'R\\d+ \\S+ \\S+ \\S+',line)]\nassert len(resistor_rows)==len(parsed['resistors'])\nfrom collections import Counter\nedge_counts=Counter(frozenset((f[1],f[2])) for i,f in resistor_rows)\nbridges={frozenset(e) for e in nx.bridges(graph)}\ndrop_index,drop_fields=next((i,f) for i,f in resistor_rows if edge_counts[frozenset((f[1],f[2]))]>1 or frozenset((f[1],f[2])) not in bridges)\ndropped_rows=rows[:drop_index]+rows[drop_index+1:]\ndropped_text='\\n'.join(dropped_rows)+'\\n'\ndropped_parsed=m.rawparser.parse_spice(dropped_text)\nassert len(dropped_parsed['resistors'])==len(parsed['resistors'])-1\nkept_graph=nx.Graph();kept_graph.add_edges_from((x,y) for x,y,v in dropped_parsed['resistors'])\nassert set(kept_graph)==set(graph)\nassert {frozenset(c) for c in nx.connected_components(kept_graph)}=={frozenset(c) for c in nx.connected_components(graph)}\n"
+                    before = 'cases=[\n'
+                    assert source.count(before)==1
+                    after = selector + before
+                    source=source.replace(before,after)
+                    changes.append(dict(before=before,after=after,count=1))
+                    before = "re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)"
+                    assert source.count(before)==1
+                    source=source.replace(before,'dropped_text')
+                    changes.append(dict(before=before,after='dropped_text',count=1))
                 (wire / target.name).write_text(source)
                 edits[target.name] = dict(original_sha256=digest, adapted_sha256=sha(wire / target.name), changes=changes)
         archive.unlink()
