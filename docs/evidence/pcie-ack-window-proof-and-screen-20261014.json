@@ -1771,5 +1771,14 @@
     ],
     "decision": "PCIe slow setup worsened from -0.991500ns to -1.261001ns; mapped cells increased79065 to79386. All32 joint public-port tests passed without skips; exact region proof and wrong-owner controls passed their expectations. Do not adopt.",
     "scope": "Unplaced whole packet SoC with vendor SRAM libraries; no serial PHY, routed timing or production acceptance."
+  },
+  "factored_eop_followup": {
+    "status": "UNVERIFIED_PROOF_AND_PAIRED_MAPPING_CANDIDATE",
+    "baseline": "physical_idle_credit_window_eop",
+    "candidate": "physical_idle_credit_window_factored",
+    "change": "Factor EOP ready into locked-owner OR unlocked-nonEOP-arbitration. Preserve original FC module, state width, pipeline latency, ports, SDC and proof controls.",
+    "expression": "local_reset && selected_ready && ((locked && !owner) || (!locked && !advert_eop && (!flow_valid || (advert_valid && !prefer_flow))))",
+    "rationale": "Baseline critical path pcie_link_up_i to advertiser.refresh[0] traverses nested arbitration/control terms. Algebraic factoring may change mapping depth; actual native paired timing decides. No timing or PHY acceptance assumed.",
+    "required_controls": "Whole actual FC/arbiter/egress temporal induction with complete storage and arbitrary boundary requests; wrong-owner counterexample; all frozen buffered and32joint public-port tests; unchanged allcorner STA."
   }
 }
