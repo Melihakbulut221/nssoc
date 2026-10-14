@@ -7,6 +7,30 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Actual PFD23550ns capture/review complete; reset recovery still fails functionally.**
+38610259816 nativecompleted1030.661s,496columns/160072rows/50ns, cleanlog/zeroOP.
+Summary641219321 SHA34666b2ef60d9421127d85b3e976b2babd932ca18750fc6aee9688af4ffb67eb;
+archive641217928/561331928bytes SHA2b8f86a69d6b35f810f5f364a009a4b273a245b6436c5f7f647ce996d55b4c5b.
+Independent physical_review38613111364 PASS as source/measurement validation,
+result641223184 SHAab51598adb8a20ee5cee3b228cf7611d48715508837658e89c58f4cbf4f1533f.
+All94MOS differences/141finite tap drops checked; maximum|Vgs|2.65153V,
+|Vgd|2.67173V,|Vds|2.79213V, largesttapdrop33.728mV. No safety/PVT claim.
+
+Actual clearb returns23.826ns, only0.190ns before internalfb rising24.016ns;
+DOWN masterMQ does not rise again until31.184ns. Missing24ns output response
+leavesUP asserted until nextDOWN event; nextreset36.679-40.070ns masks the
+feedback edge37.084ns. Original physical candidate not adopted or locked.
+Prepare pll_pfd_stage=layout_d2: same94MOS topology/235devices, double widths
+of88DFF MOS only; AOI6 unchanged. FreshGDS560DRC/strictLVS/fivefaults required,
+then freshRC andnativewave; no oldgeometryRC/wave reused as acceptance.
+
+Parent source recovery38612960848 PASS. Full source inventory is in
+result641221741/1464733bytes SHAa7b9bdce63bd51971e7295f571f557cbf5b1ae40df80b8529b3ad8c6ee0c1e49.
+Latest actualparent865 geometry exists inpcie-feedback-pbuf10-20261012/parent23;
+inspect parent18.py/reference23.py/parent-review28.py/compose29.py before new
+PFD parent reassembly. Route38598795406 retainedlive; allcloud-only/fullgoalsOPEN.
+
+
 **Parent physical integration source recovery prepared alongside live native capture.**
 Native38610259816 and route38598795406 are still authoritative livehandles.
 New physical-terminal review controls passed commoncheck38611528535; dispatch

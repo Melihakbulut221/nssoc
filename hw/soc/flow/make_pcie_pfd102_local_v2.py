@@ -132,9 +132,14 @@ def aoi_reset_devices():
 def profile_devices(texts, reset_profile='baseline'):
     original=devices(texts)
     if reset_profile=='baseline':return original
-    if reset_profile!='aoi4':raise ValueError('Unknown PFD reset profile')
+    if reset_profile not in ('aoi4','aoi4_d2'):raise ValueError('Unknown PFD reset profile')
     dffs=[d for d in original if d['path'].startswith(('xloop.xup.','xloop.xdn.'))]
     assert len(dffs)==88
+    if reset_profile=='aoi4_d2':
+        from decimal import Decimal
+        # Physical sizing candidate: keep every DFF net/model/L, double W.
+        # AOI reset devices remain exact; fresh GDS/RC and waveforms required.
+        dffs=[dict(d,params=dict(d['params'],w=format(2*Decimal(d['params']['w'].removesuffix('u')),'f')+'u')) for d in dffs]
     rows=dffs+aoi_reset_devices()
     assert len(rows)==94 and sum(d['model']=='sg13_hv_pmos' for d in rows)==47
     return rows
@@ -200,7 +205,7 @@ def lef(pya, dbu, box, ports):
 
 def build(pdk, out, reset_profile='baseline'):
     global TOP
-    TOP='nssoc_pfd94_aoi4_layout_v1' if reset_profile=='aoi4' else 'nssoc_pfd102_layout_v1'
+    TOP={'baseline':'nssoc_pfd102_layout_v1','aoi4':'nssoc_pfd94_aoi4_layout_v1','aoi4_d2':'nssoc_pfd94_aoi4_d2_layout_v1'}[reset_profile]
     root = Path(__file__).resolve().parents[3]
     out = out.resolve()
     if out.exists() or not out.is_relative_to(root / "hw/soc/out"):
@@ -422,7 +427,7 @@ def build(pdk, out, reset_profile='baseline'):
         )
         tap = pc("ptap1", {"w": "2u", "l": "2u"})
         tap_y = y - 8 if model == "sg13_hv_nmos" else y - 20
-        if reset_profile == 'aoi4' and model == 'sg13_hv_nmos' and float(p['w'].removesuffix('u')) >= 16:
+        if reset_profile in ('aoi4','aoi4_d2') and model == 'sg13_hv_nmos' and float(p['w'].removesuffix('u')) >= 16:
             # Native LU.b requires every N+ active point within20um of a PWell
             # tie. The old below-device tap misses the top of a16um-wide MOS.
             # Move the actual existing contact to mid-height; no extra device
@@ -520,7 +525,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdk", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument('--reset-profile', choices=('baseline','aoi4'), default='baseline')
+    parser.add_argument('--reset-profile', choices=('baseline','aoi4','aoi4_d2'), default='baseline')
     args = parser.parse_args()
     build(args.pdk, args.out, args.reset_profile)
 

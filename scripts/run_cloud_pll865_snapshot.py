@@ -1588,12 +1588,13 @@ def run_pfd_lef():
     save();print(result['status'],flush=True)
 
 
-def run_pfd_layout():
+def run_pfd_layout(reset_profile='aoi4'):
     """Hosted actual PFD geometry, strict native DRC/LVS and physical faults."""
     import sys
     assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted physical work only'
+    assert reset_profile in ('aoi4','aoi4_d2')
     out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING_PFD94_AOI4_PHYSICAL',adopted=False,full_phy_accepted=False,
+    result=dict(status='RUNNING_PFD94_AOI4_PHYSICAL',reset_profile=reset_profile,adopted=False,full_phy_accepted=False,
         scope='Actual94MOS plus94substrate/47well contacts. Requires560nativeDRC categories, strict flat/hierarchical235device LVS and five physical/reference fault controls. No new RC/electrical/PHY/chip acceptance.')
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(cmd,name):
@@ -1615,9 +1616,11 @@ def run_pfd_layout():
         checker=ROOT/'hw/soc/flow/check_pcie_pfd102_v1.py'
         result['source_bindings']=dict(pdk_archive=spec['receipt'],native_runtime_sha256=sha(app),generator_sha256=sha(generator),checker_sha256=sha(checker))
         save()
-        run([app,'python',generator,'--pdk',ROOT/'pdk','--out',out/'layout','--reset-profile','aoi4'],'generate')
+        run([app,'python',generator,'--pdk',ROOT/'pdk','--out',out/'layout','--reset-profile',reset_profile],'generate')
         generated=json.loads((out/'layout/result.json').read_text())
-        assert generated['reset_profile']=='aoi4' and len(generated['core_devices'])==94
+        assert generated['reset_profile']==reset_profile and len(generated['core_devices'])==94
+        if reset_profile=='aoi4_d2':
+            result['sizing_scope']='88DFF MOS widths doubled; original AOI reset6MOS unchanged. New physical candidate requires its own RC and native timing, no reuse of original waveform qualification.'
         result['layout']=generated;save()
         run([sys.executable,checker,'--layout',out/'layout','--out',out/'physical','--app',app],'physical')
         physical=json.loads((out/'physical/result.json').read_text())
@@ -1637,6 +1640,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--pfd-layout',action='store_true')
+    parser.add_argument('--pfd-layout-drive2',action='store_true')
     parser.add_argument('--pfd-lef',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
@@ -1650,6 +1654,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.pfd_layout_drive2:
+        assert not any([args.recover_parent_methods,args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
+        run_pfd_layout('aoi4_d2');return
     if args.recover_parent_methods:
         assert not any([args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         recover_parent_methods();return

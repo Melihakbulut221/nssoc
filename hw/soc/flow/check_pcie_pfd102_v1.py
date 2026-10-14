@@ -24,9 +24,10 @@ def reference_fault(text, name):
         raise ValueError("Reference fault must bind exactly once")
     i = matching[0]
     if name == "wrong_width":
-        if lines[i].count("w=2u l=0.45u") != 1:
-            raise ValueError("Wrong PFD transistor target")
-        lines[i] = lines[i].replace("w=2u l=0.45u", "w=2.5u l=0.45u")
+        choices=[(w,bad) for w,bad in (("2u","2.5u"),("4u","5u")) if lines[i].count("w="+w+" l=0.45u")==1]
+        if len(choices)!=1:raise ValueError("Wrong PFD transistor target")
+        width,wrong=choices[0]
+        lines[i]=lines[i].replace("w="+width+" l=0.45u","w="+wrong+" l=0.45u")
     elif name == "missing_well":
         lines[i] = ""
     else:
@@ -63,10 +64,10 @@ def run(layout, out, app):
         raise ValueError("Native tool archive changed")
     generated = json.loads((layout / "result.json").read_text())
     profile=generated.get('reset_profile','baseline')
-    if profile not in ('baseline','aoi4'):raise ValueError('Unknown PFD circuit profile')
-    TOP='nssoc_pfd94_aoi4_layout_v1' if profile=='aoi4' else 'nssoc_pfd102_layout_v1'
-    expected_mos,expected_wells,expected_devices=(94,47,235) if profile=='aoi4' else (102,51,255)
-    if profile=='aoi4':
+    if profile not in ('baseline','aoi4','aoi4_d2'):raise ValueError('Unknown PFD circuit profile')
+    TOP={'baseline':'nssoc_pfd102_layout_v1','aoi4':'nssoc_pfd94_aoi4_layout_v1','aoi4_d2':'nssoc_pfd94_aoi4_d2_layout_v1'}[profile]
+    expected_mos,expected_wells,expected_devices=(94,47,235) if profile in ('aoi4','aoi4_d2') else (102,51,255)
+    if profile in ('aoi4','aoi4_d2'):
         from make_pcie_pfd102_local_v2 import profile_devices, SOURCES
         sources={n:(root/'hw/soc/analog/pcie'/n).read_text() for n in SOURCES}
         expected=profile_devices(sources,profile)
@@ -258,7 +259,7 @@ def run(layout, out, app):
             print(name, step["status"], flush=True)
         if any(digest(p) != h for p, h in pins.items()):
             raise ValueError("Inputs changed during verification")
-        record["status"] = "PASS_NATIVE_PFD94_AOI4_DRC_LVS_AND_FAULT_CONTROLS" if profile=="aoi4" else "PASS_NATIVE_PFD102_DRC_LVS_AND_FAULT_CONTROLS"
+        record["status"] = "PASS_NATIVE_PFD94_AOI4_DRC_LVS_AND_FAULT_CONTROLS" if profile in ("aoi4","aoi4_d2") else "PASS_NATIVE_PFD102_DRC_LVS_AND_FAULT_CONTROLS"
     except Exception as error:
         record.update(status="FAIL", error=repr(error))
         save()
