@@ -5,48 +5,55 @@
 
 ## Latest cloud-only checkpoint — 14 October 2026
 
-This section supersedes older running/pending statements below. The user again
-requires all work in the cloud and no local project files. Live verification:
-`/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty and no local CAD/simulation
-process is running. Do not restore it. Final checkout and residue archives are
-preserved in release `cloud-migration-final-checkout-20261013`.
+This section supersedes all older running/pending statements below. Continue
+cloud-only: the local workspace is empty; no local checkout, CAD, tests or
+artifacts. Source and metadata edits may be prepared in RAM for Git Data API
+publication. Final local backup release: `cloud-migration-final-checkout-20261013`.
 
-Source before this checkpoint: `29f3ef09790bd8a61686236c8c80559ade9a2346`.
-Inspect existing runs before starting replacements:
+Latest engineering source: `89634832f6057fb741f82f6564e629a59ee1e84f`.
+Inspect these existing runs before dispatching replacements:
 
-- Combined actual collector-load/output-shunt geometry: native physical
-  38487899624, corrected extraction 38489084202 and composition 38489385975
-  completed successfully. Loaded nominal/PVT runs **38489754238** and
-  **38489752340** are still running on that source. Read both complete summaries;
-  workflow success alone is not electrical acceptance. Receipt:
-  `docs/evidence/pcie-final-v8-kelvin-low-ports-loads-shunts-composition-20261013.json`.
-- Non-SOP advertiser ownership proof and paired map **38488788552** completed
-  with workflow success on `92e3c437dbea1a06546cba8b6b2e1738da603723`.
-  Engineering timing comparison remains to be read before adopting the candidate.
-  Study `advert_body`, baseline `physical_idle_credit_window_eop`, candidate
-  `physical_idle_credit_window_body`.
-- Main-chip half-grid run **38472175339** is a terminal failure, not live.
-  Preserve release `cloud-results-38472175339-1-route-local_optimize_buffers`;
-  summary asset 638662952 and archive 638662621. Prior analysis recorded the same
-  132 overflow as seed13 baseline (M3=5, M4=20, M5=97, TM1=6, TM2=4).
-  Do not repeat half_x/half_y as purported routing-grid improvements.
-- Important source finding, verified against exact OpenROAD commit
-  `dcf36133a369abc8f3c5e5738cd4d82e4903c0e0`: in
-  `src/grt/src/GlobalRouter.cpp`, `setGridOrigin` only stores the offset;
-  `saveGuides` uses it, while `initGrid` starts from the die area. It does not
-  change the routing partition in this runtime. Correct old grid-profile
-  descriptions and prevent ineffective nonbaseline grid trials before further
-  route experiments. Any alternative router must first preserve the actual
-  routing capacity derates, macro obstructions and zero-overflow acceptance.
+- **Main-chip conservative macro halo:38490952579**, source
+  `a011880cdadc7f4c22cf077383382880528b1f14`, job115615743460.
+  Native runtime and Python syntax passed; exact postCTS replay/routing is live.
+  `local_optimize_buffers`, GMIIhold2, seed13, critical0, guideoffset0, halo1.
+  Exact baseline placement is enforced by hash. Native `set_macro_extension 1`
+  enlarges macro obstructions; original PDK layer derates, SDC, cells and
+  zero-overflow gate remain. Do not interpret a pre-route receipt as route closure.
+- **Combined PHY hot-wave diagnosis:38491313386**, source89634832,
+  study `v8_loads_shunts_hot`, job115616906802. Input/integration tests passed;
+  full source-bound compact/wire waveform analysis is live.
+- **Source/license/capture checks:38491360348**, source89634832. Inspect outcome.
 
-Rejected shunts-only hot-wire results and their native diagnosis are retained
-in `docs/evidence/pcie-v8-low-ports-shunts-loaded-rejection-20261014.json`.
-Rejected FC refresh/snapshot timing trials and prior ACK-window/EOP evidence
-are retained in `docs/evidence/pcie-ack-window-proof-and-screen-20261014.json`.
-Do not adopt candidates just because formal checks passed or cell count fell.
+The combined collector-load/output-shunt geometry passed native physical38487899624,
+corrected extraction38489084202 and composition38489385975. Loaded runs
+38489754238 and38489752340 completed allsix captures: five pass, hot extracted
+wire fails50original early samples, minimum88.309416767mV against100mV.
+All HBT/MOS/interface gates passed, fixing the three HBT failures of shunts-only.
+Still rejected for electrical acceptance. Full source-bound case records:
+`docs/evidence/pcie-v8-loads-shunts-loaded-rejection-20261014.json`.
+Use native diagnosis to select the next actual metal change; do not change source
+bits, sample phases, limits or model scope to manufacture a pass.
 
-Full serial PHY, main-chip routing, final setup/hold and production acceptance
-remain OPEN. Keep all original physical/electrical limits and negative controls.
+Digital non-SOP owner study38488788552 completed with exact region induction,
+expected wrong-owner counterexample and32joint public-port tests, zero skips.
+It is **rejected**: PCIe slow setup -0.991500ns to -1.261001ns, cells79065 to79386.
+Full comparison, allcorner slacks and hashes are in `body_owner_completed_screen`
+of `docs/evidence/pcie-ack-window-proof-and-screen-20261014.json`.
+The best unplaced baseline remains `physical_idle_credit_window_eop`; this is
+not routed timing acceptance. Prior FC snapshot/refresh trials also remain rejected.
+
+Half-grid main-chip run38472175339 is terminal GRT failure: the same congestion
+report and placement hashes as seed13baseline132overflow. Receipt and correction:
+`half_grid_rejected_followup` in
+`docs/evidence/cloud-seed13-buffers-route-failure-20261014.json`.
+Exact OpenROADdcf36133 source shows `grid_origin` is used for saved guides,
+not routing-grid initialization. The false partition-shift claim was withdrawn,
+nonbaseline options removed from script/workflow. Never repeat half_x/half_y.
+Any future solver must preserve actual capacity derates/OBS and zero-overflow gate.
+
+Full serial Gen3x4 PHY, main-chip PCIe/Ethernet routing, final setup/hold and
+production acceptance remain OPEN. No passing component test closes these scopes.
 
 ## Controlling request and scope
 
