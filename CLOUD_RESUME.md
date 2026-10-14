@@ -8,6 +8,24 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Native placement checkpoint available, routing still live:**38511490580
+pre-route summary639222493 passed exact connectivity/master/fixed-cell/pin
+geometry checks and both fault controls.74988combinational cells selected,
+73075moved, zero dataflops moved; all20 Ethernet hold cells retained/fixed.
+Three-corner placement estimates completed (slowPCIe setup-1.887568ns,
+fastPCIe hold-0.065139ns; CPUfast hold-0.055513ns); these are NOT routedSTA.
+Candidate ODB9852cb580aa0930e8813569678121b5600bb1b78ecd4d51ce35572449acbf8b8.
+Wait same native globalroute job115680796118. First sizing resultNx5 coldHBT
+compact38511840985 summary639226840 passes original electrical gates at fixed
+feedback32um (minimum bitmargin0.256630731V, finalCMmax2.043107421V, allHBTbounds
+pass); diagnostic ONLY, altered emitter geometry has no new layout/RC. Other
+seven cases still live/queued. Do not select from this one cold result.
+Authoritative retirementasset636387277 reread: COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE.
+Closure-continuation JSON next_actions refreshed to these actual handles;
+older physical results retained as history. PLL38507479646 and32:1wire38496981217
+still verified live. All full goalsOPEN; no local files/CAD/tests created.
+
+
 **Dispatched cloud handles; do not duplicate:** routability_data38511490580,
 job115680796118, sourceec864e8484c146ea204d46ce6aa2f284ca4b73f7 reached native
 postCTS replay/placement/route step; syntax/runtime preparation PASS. Serializer
