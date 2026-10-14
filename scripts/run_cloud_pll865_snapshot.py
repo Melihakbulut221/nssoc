@@ -980,7 +980,7 @@ def restore_pfd_physical_model(out, profile='aoi4_rc'):
     names=['result.json','wire/pfd235-wire01.spice','wire/composition01.json',
         'wire/composition-controls01.json','wire/native-mutations01.json',
         'binding/devices01.json','layout/result.json']
-    if d2:names.append('physical-source-result.json')
+    if d2:names.extend(['physical-source-result.json','wire/anchors01.json'])
     dest=out/'pfd-physical-source';dest.mkdir()
     with tarfile.open(path) as tar:
         for n in names:
@@ -1576,6 +1576,321 @@ assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
     save();print(result['status'],flush=True)
 
 
+def compose_pfd_actual_parent():
+    """Compose only source-bound actual845 geometry and separately prove its intrinsic graph."""
+    import copy
+    import importlib.util
+    import networkx as nx
+    from collections import Counter
+    from build_pcie_local_vco_hybrid_v6 import statements, number
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_ACTUAL845_PARENT_COMPOSITION',source_run=38627542372,
+        qualified_pex=False,full_phy_accepted=False,main_chip_integrated=False,
+        parent_electrical_accepted=False)
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    def require(ok,why):
+        if not ok:raise ValueError(why)
+    save()
+    try:
+        packed=out/'parent-rc-source.tar.gz'
+        fetch(BASE+'cloud-results-38627542372-1-pll-pfd-layout/pfd94-layout-38627542372-1.tar.gz',
+            'bd8cea7f0532921ee4566d6b8b8e7dc4ebe2b132b62e3ea088b8a68d9839ff09',packed)
+        require(packed.stat().st_size==10655669,'Parent RC capsule size')
+        prefix='hw/soc/out/cloud-pfd-layout/'
+        with tarfile.open(packed) as tar:
+            names=set()
+            for entry in tar.getmembers():
+                if not entry.isfile():continue
+                require(entry.name.startswith(prefix),'Unexpected archive root')
+                rel=entry.name[len(prefix):]
+                require(not Path(rel).is_absolute() and '..' not in Path(rel).parts and rel not in names,'Unsafe/duplicate archive path')
+                names.add(rel)
+                if rel=='result.json':rel='parent-rc-source-result.json'
+                target=out/rel;target.parent.mkdir(parents=True,exist_ok=True)
+                target.write_bytes(tar.extractfile(entry).read())
+        packed.unlink()
+        require(sha(out/'parent-rc-source-result.json')=='908ab5606c70576588cc74fb376cc9daa67b34bf4dd0ea10ca9c2cc519fbb0dc','Parent RC summary hash')
+        source=json.loads((out/'parent-rc-source-result.json').read_text())
+        require(source['status']=='PASS_ACTUAL845_PARENT_WIRE_RC_AND_EIGHT_FAULTS_NOT_COMPOSITION_OR_ELECTRICAL_ACCEPTANCE','Parent RC acceptance')
+        require(len(source['controls']['negative_controls'])==8,'Missing native RC corruption controls')
+        for key in ['native_export_r_edge_value_multiset_exact','geometry_conductor_ownership_exact','every_native_point_ground_capacitance_preserved','every_native_mutual_attachment_and_value_preserved']:
+            require(source['audit'][key],key)
+        for name,item in source['native']['outputs'].items():
+            require(sha(out/'parent-rc'/name)==item['sha256'],'Changed parent raw source '+name)
+        binding=json.loads((out/'parent-wires/result.json').read_text())
+        require(binding['counts']==dict(components=25,anchors=83,child_macro_pins=66,parent_pins=17),'Parent anchor census')
+        for path,h in binding['inputs'].items():require(sha(Path(path))==h,'Changed geometry binding '+path)
+        planes=binding['reference_plane_proof']
+        require(len(set(planes['unchanged_original_parent_anchors']))==82 and planes['changed_anchor']=='A_pfd_reset','Original planes')
+        require(len(planes['release_child_model_matches'])==5,'Release planes')
+        result['reference_plane_proof']=planes
+        selected={PREFIX+'native07/parent865.spice':RECORDS['native07/parent865.spice']}
+        unpack(BASE+'cloud-migration-20261012-000/batch-000002.tar.gz',SOURCE_SHA,141989022,out/'original-parent',selected)
+        original=(out/'original-parent/parent865.spice').read_text()
+        require(digest(original.encode())=='b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48','Original865 source')
+        macro=restore_pfd_physical_model(out,'aoi4_d2_rc')
+        generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
+        spec=importlib.util.spec_from_file_location('actual_parent_pfd_generator',generator)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        reference=module.profile_devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES},'aoi4_d2')
+        fixture,fixture_proof=pfd_physical_parent(original,macro,reference,'aoi4_d2_rc')
+        result['standalone_translation']=fixture_proof
+        # Compare the actual standalone RC probe coordinates to the parent pin
+        # locations. Equality of logical names alone cannot establish a plane.
+        child=json.loads((out/'pfd-physical-source/wire/anchors01.json').read_text())
+        result['pfd_anchor_source_keys']=list(child)
+        require(sha(out/'pfd-physical-source/wire/anchors01.json')=='74e52f3fe2345d7de9c1b9f74867e09c9ff5357bc1daefad6271ec43514224ef','PFD wire anchor source')
+        # The standalone native anchors carry their actual export labels. All
+        # eight physical macro pins must exist exactly once and coincide.
+        child_anchors=child['anchors']
+        pfd_planes=[]
+        for parent in binding['anchors']:
+            if not parent['label'].startswith('A_pfd_'):continue
+            port=parent['label'][6:]
+            matches=[a for a in child_anchors if a['label'].lower()=='p_'+port.lower()]
+            require(len(matches)==1,'PFD child port plane '+port)
+            anchor=matches[0]
+            require(parent['point_dbu']==[anchor['point_dbu'][0]+200000,anchor['point_dbu'][1]+100000],'PFD physical reference point '+port)
+            require(parent['metal']==anchor['metal'],'PFD reference metal '+port)
+            pfd_planes.append(dict(port=port,parent=parent['point_dbu'],child=anchor['point_dbu'],metal=parent['metal']))
+        require(len(pfd_planes)==8,'PFD8 reference planes')
+        result['pfd_reference_planes']=pfd_planes;save()
+        # Derive the single intrinsic common bulk from all native NMOS bodies
+        # and ptap WELL terminals; never alias a measured metal RC node.
+        rows=statements(macro);bulk=set()
+        for w in rows[1:-1]:
+            if w[0].lower().startswith('x') and len(w)>5 and w[5]=='sg13_hv_nmos':bulk.add(w[4])
+            elif w[0].lower().startswith('x') and len(w)>3 and w[3]=='ptap1':bulk.add(w[2])
+        require(len(bulk)==1,'PFD common intrinsic bulk census')
+        bulk=bulk.pop()
+        require(bulk not in rows[0][2:],'Bulk must be separate intrinsic reference')
+        require(all(bulk not in w[1:3] for w in rows[1:-1] if w[0][0].lower() in 'rc'),'Do not collapse substrate into measured metal')
+        old_bulk='xpfd.'+bulk.lower();new_bulk='a_count_vss'
+        bound=[];body_changes=[]
+        for line in fixture.splitlines():
+            w=line.split()
+            if w and w[0].lower().startswith('x_xpfd_'):
+                positions=[i for i,n in enumerate(w) if n==old_bulk]
+                for i in positions:
+                    require((len(w)>5 and w[5]=='sg13_hv_nmos' and i==4) or (w[3]=='ptap1' and i==2),'Unexpected bulk endpoint')
+                    w[i]=new_bulk
+                if positions:body_changes.append(dict(instance=w[0],positions=positions))
+                line=' '.join(w)
+            bound.append(line)
+        require(len(body_changes)==141,'Expected47 NMOS plus94 ptap bulk endpoints')
+        require(not any(old_bulk in line.split() for line in bound),'Private PFD bulk left behind')
+        kept=[];removed_parent=Counter()
+        for line in bound:
+            w=line.lower().split()
+            if w and any(w[0].startswith(k+'_xparent_') for k in 'rc'):
+                removed_parent[w[0][0]]+=1
+            else:kept.append(line)
+        require(all(removed_parent[k]>0 for k in 'rc'),'Original parent wire records missing')
+        require(not any(re.search(r'\bxparent\.',line.lower())for line in kept),'Old internal parent wires left behind')
+        rename=lambda n:'wire_cref' if n.lower()=='sub' else n[2:].lower() if n.startswith('P_') else n.lower()
+        added=[];counts=Counter()
+        for w in statements((out/'parent-rc/wires.spice').read_text()):
+            if w[0][0].upper() in 'RC' and not w[0].startswith('.'):
+                require(len(w)==4,'Unexpected native RC syntax')
+                kind=w[0][0].upper();counts[kind]+=1
+                added.append(' '.join([kind+'_xparent_'+w[0].lower(),rename(w[1]),rename(w[2]),w[3]]))
+            else:require(w[0].lower() in ('.subckt','.ends'),'Unknown native RC directive')
+        require(counts==Counter(R=98,C=242),'Fresh parent wire census')
+        stop=[i for i,l in enumerate(kept)if l.lower().startswith('.ends')]
+        require(len(stop)==1,'Flat composed parent scope')
+        candidate='\n'.join(kept[:stop[0]]+added+kept[stop[0]:])+'\n'
+        candidate=candidate.replace('nssoc_parent865_wire_v1','nssoc_parent845_wire_v1')
+        physical=json.loads((out/'integrated/result.json').read_text())
+        require(sha(out/'integrated/schematic.cir')=='6de9c745fa2911ce732d1f772b28ac8147b476690d97152266c3554bd02d800d','Actual845 physical reference')
+        reference_text=(out/'integrated/schematic.cir').read_text()
+        # Strict hierarchy reader with model arities. Unknown directives, extra
+        # instance parameters and repeated names are errors, not ignored rows.
+        model_arity={'npn13g2':4,'sg13_hv_nmos':4,'sg13_hv_pmos':4,'sg13_lv_nmos':4,'sg13_lv_pmos':4,
+            'rppd':3,'rhigh':3,'cmim':3,'ntap1':2,'ptap1':2}
+        def parse(text,top):
+            definitions={};active=None
+            for raw in statements(text):
+                w=[v.lower()for v in raw];op=w[0]
+                if op=='.subckt':
+                    require(active is None and w[1] not in definitions,'Duplicate/nested subckt')
+                    require(len(w[2:])==len(set(w[2:])),'Duplicate formal pin')
+                    active=w[1];definitions[active]=(w[2:],[]);continue
+                if op=='.ends':
+                    require(active is not None and (len(w)==1 or w[1]==active),'Mismatched ends')
+                    active=None;continue
+                require(active is not None and op[0] in 'xmrcq','Unknown reference statement '+str(w))
+                definitions[active][1].append(w)
+            require(active is None and top in definitions,'Unclosed/missing top')
+            devices=[];wires=[]
+            def expand(name,path,actual,stack):
+                require(name not in stack,'Recursive hierarchy')
+                formal,items=definitions[name];require(len(formal)==len(actual),'Instance arity '+name)
+                mapping=dict(zip(formal,actual))
+                node=lambda n:mapping[n]if n in mapping else path+'.'+n if path else n
+                seen=set()
+                for w in items:
+                    require(w[0] not in seen,'Duplicate instance '+path+'.'+w[0]);seen.add(w[0])
+                    instance=path+'.'+w[0] if path else w[0]
+                    if w[0][0] in 'rc' and len(w)==4 and '='not in w[3]:
+                        # Primitive numerical R/C records are measured wire
+                        # components; modeled intrinsic R/C are kept devices.
+                        try:value=number(w[3])
+                        except (ValueError,ArithmeticError):value=None
+                        if value is not None:
+                            require(value>0,'Nonpositive measured RC')
+                            wires.append(dict(path=instance,kind=w[0][0],nets=[node(n)for n in w[1:3]],value=w[3]));continue
+                    at=next((i for i,v in enumerate(w)if '='in v),len(w))-1
+                    require(at>=2,'Missing model')
+                    model=w[at];nets=[node(n)for n in w[1:at]]
+                    params={}
+                    for p in w[at+1:]:
+                        require(p.count('=')==1,'Malformed parameter')
+                        k,v=p.split('=');require(k not in params,'Duplicate parameter');number(v);params[k]=v
+                    if model in definitions:
+                        require(not params,'Unexpected hierarchical override')
+                        expand(model,instance,nets,stack+[name])
+                    else:
+                        require(model in model_arity and len(nets)==model_arity[model],'Unknown model/arity '+str(w))
+                        devices.append(dict(path=instance,model=model,nets=nets,params=params))
+            public=definitions[top][0];expand(top,'',public,[])
+            require(len({d['path']for d in devices})==len(devices),'Duplicate expanded devices')
+            require(len({w['path']for w in wires})==len(wires),'Duplicate expanded wire IDs')
+            return public,devices,wires
+        public,actual,wires=parse(candidate,'nssoc_parent845_wire_v1')
+        reference_ports,expected,no_wires=parse(reference_text,physical['top'])
+        result['parse_counts']=dict(actual=len(actual),expected=len(expected),wires=len(wires),reference_wires=len(no_wires),
+            actual_models=dict(Counter(d['model']for d in actual)),reference_models=dict(Counter(d['model']for d in expected)))
+        save()
+        require(len(actual)==len(expected)==845 and not no_wires,'845 intrinsic device census')
+        require(set(public)==set(reference_ports)|{'wire_cref'} and len(reference_ports)==17,'17 physical public ports and separate wire C reference')
+        # Token-level component preservation is independent of the collapsed
+        # graph check. No R/C removal, rescaling or changed point attachment can
+        # pass simply because the intrinsic topology is unchanged.
+        expected_rows=statements(candidate)
+        def preserved(text):
+            require(statements(text)==expected_rows,'Changed component, wire value or point attachment')
+        source_kept=[l for l in original.splitlines() if l and not l.startswith('*') and not l.lower().startswith(('.subckt','.ends')) and not any(l.lower().startswith(k+'_'+group+'_')for k in 'xrc'for group in ('xpfd','xparent'))]
+        actual_kept=[l for l in candidate.splitlines() if l and not l.startswith('*') and not l.lower().startswith(('.subckt','.ends')) and not any(l.lower().startswith(k+'_'+group+'_')for k in 'xrc'for group in ('xpfd','xparent'))]
+        require(actual_kept==source_kept,'Changed other macro line')
+        require(sum(l.lower().startswith('x')for l in source_kept)==610,'610 unchanged intrinsic devices')
+        def geometry(d):
+            p=d['params'];model=d['model']
+            if model in ('ptap1','ntap1'):
+                a=number(p['a'])if 'a'in p else number(p['w'])*number(p['l'])
+                perimeter=number(p['p'])if 'p'in p else 2*(number(p['w'])+number(p['l']))
+                return (('a',str(a.normalize())),('p',str(perimeter.normalize())))
+            keys=['nx','we','le']if model=='npn13g2'else['w','l']
+            return tuple((k,str(number(p[k]).normalize()))for k in keys)
+        def collapsed(devices,wire_rows):
+            graph=nx.Graph()
+            for w in wire_rows:
+                if w['kind']=='r':
+                    require(number(w['value'])>0,'Invalid wire R');graph.add_edge(*w['nets'])
+            rename={}
+            for component in nx.connected_components(graph):
+                fixed=component&set(reference_ports)
+                require(len(fixed)<=1,'Shorted public ports '+str(fixed))
+                target=next(iter(fixed))if fixed else min(component)
+                rename.update({n:target for n in component})
+            rows=copy.deepcopy(devices)
+            for d in rows:d['nets']=[rename.get(n,n)for n in d['nets']]
+            return rows
+        def graph(rows):
+            g=nx.Graph()
+            for d in rows:
+                dn='d:'+d['path'];g.add_node(dn,label=('device',d['model'],geometry(d)))
+                for i,n in enumerate(d['nets']):
+                    role='ds'if d['model'].startswith('sg13_') and i in (0,2)else 'ends'if d['model'] in ('rppd','rhigh') and i in (0,1)else i
+                    tn=dn+':'+str(i);nn='n:'+n
+                    g.add_node(tn,label=('terminal',role));g.add_node(nn,label=('net',n if n in reference_ports else 'internal'))
+                    g.add_edge(dn,tn);g.add_edge(tn,nn)
+            return g
+        want=graph(expected)
+        def check_graph(devices,wire_rows):
+            require(Counter((d['model'],geometry(d))for d in devices)==Counter((d['model'],geometry(d))for d in expected),'Intrinsic geometry census differs')
+            graphs=[want,graph(collapsed(devices,wire_rows))]
+            require(len(graphs[0])==len(graphs[1]),'Intrinsic graph node count differs')
+            pool={};colors=[]
+            for g in graphs:
+                c={}
+                for n in g:
+                    key=g.nodes[n]['label'];pool.setdefault(key,len(pool));c[n]=pool[key]
+                colors.append(c)
+            prior=0
+            for i in range(64):
+                new=[];pool={}
+                for g,c in zip(graphs,colors):
+                    nc={}
+                    for n in g:
+                        key=(c[n],tuple(sorted(c[v]for v in g[n])));pool.setdefault(key,len(pool));nc[n]=pool[key]
+                    new.append(nc)
+                require(Counter(new[0].values())==Counter(new[1].values()),'Intrinsic connectivity color mismatch round '+str(i))
+                colors=new
+                if len(pool)==prior:break
+                prior=len(pool)
+            for g,c in zip(graphs,colors):nx.set_node_attributes(g,c,'refined')
+            mapping=nx.vf2pp_isomorphism(*graphs,node_label='refined')
+            require(mapping is not None and set(mapping)==set(graphs[0]) and set(mapping.values())==set(graphs[1]),'No exact intrinsic graph bijection')
+            require(all(graphs[0].nodes[a]['label']==graphs[1].nodes[b]['label']for a,b in mapping.items()),'Bijection changes labels')
+            require(len(graphs[0].edges)==len(graphs[1].edges) and all(graphs[1].has_edge(mapping[a],mapping[b])for a,b in graphs[0].edges),'Bijection changes edges')
+            return mapping
+        net=out/'parent845.spice';net.write_text(candidate)
+        result['candidate_sha256']=sha(net);result['bulk_binding']=dict(from_node=old_bulk,to_node=new_bulk,terminals=body_changes,
+            scope='Common intrinsic bulk ideal reference consistent with native parent schematic; no distributed substrate/well or RF qualification')
+        result['component_preservation']=dict(unchanged_devices=610,unchanged_lines=len(source_kept),
+            unchanged_lines_sha256=digest(('\n'.join(source_kept)+'\n').encode()),
+            old_parent_wire_records=dict(removed_parent),new_parent_wire_records=dict(counts),
+            new_pfd_r=715,new_pfd_c=1177,body_binding_does_not_change_wire_records=True)
+        save()
+        mapping=check_graph(actual,wires)
+        result['exact_graph']=dict(nodes=len(mapping),devices=845,public_ports=17,mapping=mapping);save()
+        graph_faults=[]
+        for name in ('missing_device','wrong_pfd_width','wrong_hbt_nx','private_pfd_bulk','clock_polarity','reset_bypass'):
+            ds=copy.deepcopy(actual);ws=copy.deepcopy(wires)
+            if name=='missing_device':ds.pop()
+            elif name=='wrong_pfd_width':next(d for d in ds if 'xpfd_' in d['path'] and d['model']=='sg13_hv_nmos')['params']['w']='123u'
+            elif name=='wrong_hbt_nx':next(d for d in ds if d['model']=='npn13g2')['params']['nx']='123'
+            elif name=='private_pfd_bulk':
+                for d in ds:
+                    if 'xpfd_'in d['path'] and d['model']=='sg13_hv_nmos':d['nets'][3]='private_bulk_fault'
+                    elif 'xpfd_'in d['path'] and d['model']=='ptap1':d['nets'][1]='private_bulk_fault'
+            elif name=='clock_polarity':
+                for d in ds:d['nets']=[{'a_pfd_ref':'a_pfd_fb','a_pfd_fb':'a_pfd_ref'}.get(n,n)for n in d['nets']]
+                for w in ws:
+                    if 'xpfd_'in w['path']:w['nets']=[{'a_pfd_ref':'a_pfd_fb','a_pfd_fb':'a_pfd_ref'}.get(n,n)for n in w['nets']]
+            else:ws.append(dict(path='r_fault',kind='r',nets=['a_count_reset_b','clearb'],value='1e-6'))
+            try:check_graph(ds,ws)
+            except ValueError as error:graph_faults.append(dict(name=name,rejection=str(error)))
+            else:raise ValueError('Graph accepted fault '+name)
+        wire_faults=[]
+        for name in ('missing_parent_R','changed_parent_R','changed_parent_C','moved_parent_C','changed_child_R','changed_child_C','changed_kept_geometry'):
+            lines=candidate.splitlines()
+            if name=='changed_kept_geometry':
+                index=next(i for i,l in enumerate(lines)if l.lower().startswith('x') and not l.lower().startswith('x_xpfd_'))
+                lines[index]+=' m=2'
+            else:
+                kind='r'if name.endswith('_R')else'c'
+                group='xparent'if 'parent'in name else 'xpfd'
+                index=next(i for i,l in enumerate(lines)if l.lower().startswith(kind+'_'+group+'_'))
+                if name.startswith('missing'):lines.pop(index)
+                else:
+                    w=lines[index].split()
+                    if name.startswith('moved'):w[1]='wrong_point_fault'
+                    else:w[3]='12345'
+                    lines[index]=' '.join(w)
+            try:preserved('\n'.join(lines)+'\n')
+            except ValueError as error:wire_faults.append(dict(name=name,rejection=str(error)))
+            else:raise ValueError('Composition accepted fault '+name)
+        require(sha(net)==result['candidate_sha256'],'Positive model changed during faults')
+        result.update(status='PASS_ACTUAL845_PARENT_COMPONENTS_REFERENCE_PLANES_AND_EXACT_INTRINSIC_GRAPH_NOT_ELECTRICAL_ACCEPTANCE',
+            graph_faults=graph_faults,component_faults=wire_faults,counts=dict(devices=845,wires=len(wires)),
+            scope='Actual new parent geometry/source and fresh98R242C plus new235-device715R1177C PFD; all610 other devices and remaining macro RC preserved. Exact intrinsic graph checks physical reference with17 fixed pins and all model geometry/body/contact terminals. Raw C/R preservation separately proven. Common substrate is idealized; no qualified distributed substrate/RF, transient/acquisition/PVT, fullPHY or mainchip timing acceptance.')
+    except BaseException as error:
+        result.update(status='FAILED_ACTUAL845_PARENT_COMPOSITION',error=repr(error));save();raise
+    save();print(result['status'],flush=True)
+
+
 def extract_pfd_parent_rc():
     """Extract and audit fresh real845-parent wires, never reuse the old parent RC."""
     import sys
@@ -2073,6 +2388,7 @@ def main():
     parser.add_argument('--review-pfd-parent',action='store_true')
     parser.add_argument('--export-pfd-parent-wires',action='store_true')
     parser.add_argument('--extract-pfd-parent-rc',action='store_true')
+    parser.add_argument('--compose-pfd-parent',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
@@ -2115,6 +2431,9 @@ def main():
     if args.recover_pfd_methods:
         assert not (args.pfd_layout or args.pfd_lef or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         recover_pfd_methods();return
+    if args.compose_pfd_parent:
+        assert not any([args.extract_pfd_parent_rc,args.export_pfd_parent_wires,args.pfd_candidate,args.self_test,args.acquisition])
+        compose_pfd_actual_parent();return
     if args.extract_pfd_parent_rc:
         assert not any([args.export_pfd_parent_wires,args.pfd_candidate,args.self_test,args.acquisition])
         extract_pfd_parent_rc();return
