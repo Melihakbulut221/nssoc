@@ -7,6 +7,25 @@
 
 ### Newest state — supersedes every older live statement below
 
+**New hosted PLL continuation method under test:** run_cloud_pll865_snapshot.py
+restores the exact native07 1us circuit, all32 original IHP model files and
+three exact OSDIs, and original ngspice47 executable. No circuit, source,
+startup, timestep or electrical-limit changes. The ngspice manual documents
+snsave/snload across processes but warns against XSPICE devices; actual865
+compatibility remains UNPROVEN until the native experiment passes.
+Hosted workflow inputpll_snapshot=true compares continuous0-50ns with a
+25ns checkpoint, same-process resume and fresh-process restore to50ns.
+All24 original selected probes, no fitted phase; fixed1mV waveform/1psedge
+method limits and four corruption controls. This is only restart-method
+validation, never1us lock/full-device safety/PVT/PHY acceptance. Both original
+failed readers and prefix diagnosis remain preserved. Do not dispatch full
+segmented acquisition before reviewing actual native waveforms and snapshot
+proof; do not assume snsave works with KLU/OSDI from documentation alone.
+Native budget19000s leaves publication time before hosted6h hard ceiling.
+Run only on GitHub; localworkspace remains empty. Existing TX38496978055,
+32:1wire38496981217 and chiproute38490952579 retain their handles.
+
+
 **Latest verified cloud outcome:** PLL prefix38501501029 onb2242dc77f4ba386cf16582deba163393d5c06e3
 completed diagnosis and hosted source/license checks successfully. Summary
 638969192,archive638969080; exact full summary pinned in
