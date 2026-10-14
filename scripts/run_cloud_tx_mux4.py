@@ -513,9 +513,15 @@ def main():
     parser.add_argument('--diagnostic-final-r', choices=('actual','all','supply','return','inputs','internal','bias','outputs'), default='actual')
     args=parser.parse_args()
     if args.diagnostic_final_r != 'actual':
-        assert args.streams == 4 and args.condition == 'nominal' and args.fault == 'none'
+        assert args.streams == 4 and args.fault == 'none'
         assert args.prestage == args.physical_final == 'physical_wire'
-        assert args.physical_profile == 'power_trunks_vias' and args.physical_final_profile == 'kelvin_dense_wide'
+        legacy = (args.physical_profile == 'power_trunks_vias' and
+                  args.physical_final_profile == 'kelvin_dense_wide' and args.condition == 'nominal')
+        v11_hot = (args.physical_profile == 'cascade158_kelvin_supply_direct' and
+                   args.physical_final_profile == 'v11_kelvin_low_ports_loads_shunts_series' and
+                   args.condition == 'hot_low' and args.diagnostic_final_r == 'inputs' and
+                   args.pre_bias == 'native_res' and args.clock_reference == 'stiff65')
+        assert legacy or v11_hot, 'Only explicit source-bound diagnostic pairs are allowed'
     assert args.physical_profile=='baseline' or args.prestage.startswith('physical_')
     assert args.physical_final_profile=='power_trunks' or args.physical_final!='off'
     if args.prestage=='divider14':

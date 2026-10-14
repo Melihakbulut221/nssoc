@@ -7,6 +7,24 @@
 
 ### Newest state — supersedes every older live statement below
 
+**V11 hot-wire rejection drives physical diagnosis:** real hot_low wire result
+639132211 from38507486510 FAILS: originalbit margin0.011488287V, final interface
+margin0.133128903V/64sub150mV samples, CMmin1.78408764V, sixdata VCE failures
+(min0.374674096V). Cold_high wire639137215 passes (margin0.250125171V).
+Never adopt V11 from nominal/compact passes. V11feedback32um compact results:
+3/4PASS; coldresCMmax2.052879127V still fails2.05V. Wire cases remain active.
+Next hosted diagnostics prepared: tx-metal-resistance-cloud profiles=
+v11_loaded_tree,bind_geometry=true (exact cascade158 and V11 original graphs),
+and tx-interconnect-diagnostic-cloud study=v11_hot_low_inputs,cases=mutations_only.
+The latter artificially reduces ONLY final input metal R, retains all devices,
+C, actual upstreamRC and original sourcebit/device gates. ALWAYS diagnostic,
+component_screen_passed=false: never a replacement for real layout or PVT.
+Compare against actual hot_low wire38507486510 to locate geometry to repair.
+New timing proof38508286832 advertised-control remains queued at last check;
+source/license jobPASS. Existing1usPLL38507479646,route38490952579,32:1wire
+38496981217 retain live handles. All hosted, local empty, all goalsOPEN.
+
+
 **Independent setup-path candidate prepared:** run_cloud_advert_control.py uses
 exact21-file physical idle/credit source, without earlier rejected EOP-ready
 rewrite. Remove internal ready reset gate, tie advertiser link high beneath

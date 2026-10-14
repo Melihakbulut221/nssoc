@@ -394,7 +394,7 @@ def analyze(spec, circuit_profile="final_drive_v5", geometry=False):
 def main():
     assert os.environ.get('GITHUB_ACTIONS') == 'true', 'Hosted analysis only'
     parser = argparse.ArgumentParser()
-    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10', 'v8-kelvin-dense-wide', 'v8-kelvin-tail-paths', 'v8-kelvin-local-tail', 'v8-kelvin-local-return', 'v8-kelvin-local-supply', 'v8-kelvin-local-internal', 'v8-kelvin-compact-internal', 'v8-kelvin-low-internal', 'v8-kelvin-low-critical', 'v8-kelvin-low-selects', 'cascade14-kelvin-dense-wide', 'cascade14-kelvin-supply-feed', 'cascade14-kelvin-supply-direct'), required=True)
+    parser.add_argument('--profile', choices=('kelvin', 'kelvin-short', 'kelvin-short-vias', 'kelvin-dense', 'kelvin-dense-wide', 'kelvin-signal-trunks', 'kelvin-m3-10', 'v8-kelvin-dense-wide', 'v8-kelvin-tail-paths', 'v8-kelvin-local-tail', 'v8-kelvin-local-return', 'v8-kelvin-local-supply', 'v8-kelvin-local-internal', 'v8-kelvin-compact-internal', 'v8-kelvin-low-internal', 'v8-kelvin-low-critical', 'v8-kelvin-low-selects', 'cascade14-kelvin-dense-wide', 'cascade14-kelvin-supply-feed', 'cascade14-kelvin-supply-direct','cascade158-kelvin-supply-direct','v11-kelvin-low-ports-loads-shunts-series'), required=True)
     parser.add_argument('--geometry', action='store_true')
     args = parser.parse_args()
     version = 'v8' if args.profile.startswith('v8-') else 'v5'
@@ -404,6 +404,12 @@ def main():
     if args.profile.startswith('cascade14-'):
         path=ROOT/'docs/evidence'/f'pcie-{args.profile}-composition-20261013.json'
         circuit_profile='cascade14'
+    if args.profile == 'cascade158-kelvin-supply-direct':
+        path=ROOT/'docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json'
+        circuit_profile='cascade158'
+    if args.profile == 'v11-kelvin-low-ports-loads-shunts-series':
+        path=ROOT/'docs/evidence/pcie-final-v11-kelvin-low-ports-loads-shunts-series-composition-20261014.json'
+        circuit_profile='final_drive_v11'
     output = Path('cloud-metal-resistance')
     output.mkdir(exist_ok=False)
     result = dict(status='RUNNING', profile=args.profile, adopted=False,
