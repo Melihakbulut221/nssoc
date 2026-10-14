@@ -7,6 +7,9 @@
 
 ### Newest state — supersedes every older live statement below
 
+- Parent-wire export38622802741 TERMINAL failed at A_release_VDD anchor: declared pin center is not on parent-only wire geometry, although native parent DRC/LVS passed. No RC extraction ran. Retained summary641398468 SHAfc39bb1a79ace5e96c6b0e922f078f4d1868d6872592f331b1a1125e1e5cd43b and archive641398233 SHAe4a2daa15c55249fe80c2b4ff13f32bb966c18df17c6967e0f7f2f63030b9a61.
+- Fixed read-only anchor selection: preserve usable preferred points, otherwise require actual intersection of declared macro pin rectangle with native parent metal; choose native5nm-grid point inside intersection, bind to both parent-only and full845-device native net. Record each moved reference point and require child-model reference-plane rebinding before RC composition. No geometry or connectivity edits, no nearby-point guessing, no relaxed LVS.
+
 - Actual D2 PLL parent review38622111375 TERMINAL PASS. SameGDS560-category DRC preserved; new hierarchical9Match and flat845/845LVS passed with strict17parent-pin readback. Reset-open and wrong-width faults rejected; hierarchical port reader1positive+4negative controls passed. Summary641387744/171863bytes/SHA aabb9a94912402ca8ed27443fe8b380989d7724dd44d1e106140ab7e59e05f8b; archive641387561/2426976bytes/SHA7456fa988f5fd399a03e23d570ad3a11ade32f4ec7a101a7200aab382d9345fb. First wrapper failure38621210521 remains preserved.
 - This is now actual replaced PLL parent geometry, not the earlier frozen electrical fixture. It does not establish fresh parent RC, electrical acquisition, full PHY or mainchip timing. Added native parent-only wire exporter: exclude all ten child macro geometries, bind every remaining metal/via component, macro pin and public pin to actual845-device flat LVS; reject removed reset bridge and wrong logical reset mapping. Dynamic component census comes from all actual declared parent/macro nets, not old753hardcoded24.
 
