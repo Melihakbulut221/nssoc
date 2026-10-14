@@ -181,10 +181,57 @@ def acquisition_controls():
                 incomplete_and_nonfinite_rejected=True)
 
 
-def review_completed_acquisition():
+def acquisition_cycle_diagnosis(data, independent):
+    """Descriptive cycle records only. Never changes the frozen acceptance gate."""
+    names=('time','v(clkp)','v(clkn)','v(vctrl)','v(up)','v(down)')
+    assert all(n in data for n in names)
+    t=data['time']; assert len(t)>2 and np.all(np.diff(t)>0)
+    assert all(len(data[n])==len(t) and np.all(np.isfinite(data[n])) for n in names)
+    edges=np.asarray(independent['feedback_edges_s'])
+    assert len(edges)>2 and np.all(np.diff(edges)>0)
+    assert t[0]<=edges[0] and edges[-1]<=t[-1]
+    differential=data['v(clkp)']-data['v(clkn)']
+    crossings=np.flatnonzero((differential[:-1]<=0)&(differential[1:]>0))
+    clock_edges=t[crossings]-differential[crossings]*(t[crossings+1]-t[crossings])/(differential[crossings+1]-differential[crossings])
+    rows=[]
+    for ordinal,(start,end) in enumerate(zip(edges[:-1],edges[1:])):
+        lo,hi=np.searchsorted(t,[start,end]); grid=np.concatenate(([start],t[lo:hi],[end]))
+        row=dict(feedback_edge_ordinal=ordinal,interval_s=[float(start),float(end)],
+                 feedback_period_s=float(end-start),
+                 differential_clock_rising_edges=int(np.count_nonzero((clock_edges>=start)&(clock_edges<end))))
+        for name in ('v(vctrl)','v(up)','v(down)'):
+            trace=np.interp(grid,t,data[name]); mean=float(np.trapezoid(trace,grid)/(end-start))
+            row[name]=dict(minimum_v=float(trace.min()),maximum_v=float(trace.max()),mean_v=mean,
+                start_v=float(trace[0]),end_v=float(trace[-1]))
+            if name!='v(vctrl)':
+                row[name]['duty_above_1p25v']=float(np.trapezoid((trace>1.25).astype(float),grid)/(end-start))
+        rows.append(row)
+    return dict(cycles=rows,threshold_v=1.25,threshold_scope='Descriptive UP/DOWN logic duty only, not charge-pump current.',
+        scope='Exact original feedback-edge intervals, unfitted and unshifted. Clock zero-crossing counts, VCTRL ripple and UP/DOWN voltage integrals. No synthetic compensation, target fitting or acceptance decision.')
+
+
+def acquisition_cycle_controls():
+    t=np.linspace(0,40e-9,401); ramp=1+t*1e6
+    good={'time':t,'v(vctrl)':ramp,'v(up)':np.full_like(t,2.5),'v(down)':np.zeros_like(t),
+          'v(clkp)':np.sin(2*np.pi*t*1e9),'v(clkn)':-np.sin(2*np.pi*t*1e9)}
+    edges={'feedback_edges_s':[10e-9,20e-9,30e-9]}
+    rows=acquisition_cycle_diagnosis(good,edges)['cycles'];assert len(rows)==2
+    assert all(abs(r['feedback_period_s']-10e-9)<1e-20 for r in rows)
+    assert abs(rows[0]['v(vctrl)']['mean_v']-1.015)<1e-12
+    assert all(r['v(up)']['duty_above_1p25v']==1 and r['v(down)']['duty_above_1p25v']==0 for r in rows)
+    bad={k:v.copy() for k,v in good.items()};bad['v(up)'][100]=np.nan
+    for vectors,edge_record in [(bad,edges),(good,{'feedback_edges_s':[20e-9,10e-9,30e-9]})]:
+        try: acquisition_cycle_diagnosis(vectors,edge_record)
+        except AssertionError: continue
+        raise AssertionError('Invalid descriptive cycle input accepted')
+    return dict(ramp_mean_and_constant_pulse_controls=True,nonfinite_and_reversed_edges_rejected=True)
+
+
+def review_completed_acquisition(diagnose=False):
     """Hosted lossless review of one exact completed run; launches no simulator."""
     assert os.environ.get('GITHUB_ACTIONS') == 'true'
     controls = acquisition_controls()
+    if diagnose: controls['cycle_diagnosis']=acquisition_cycle_controls()
     out = ROOT/'cloud-pll-acquisition-review'; out.mkdir(exist_ok=False)
     result = dict(status='RUNNING_EXACT_NATIVE865_ACQUISITION_REVIEW',
                   source_run=ACQUISITION_RUN, controls=controls,
@@ -264,6 +311,10 @@ def review_completed_acquisition():
             selected_probe_acquisition_passed=independent['passed'], independent=independent,
             capture=meta,raw_sha256=digest(raw),phase_shift_fitted=False,
             scope='Exact original865 selected24probes/full1us. Original100ppm/50ps/no-slip/VCTRL and final800-900ns/900-1000ns gates. No full-device1us safety, timestep/PVT/CDR/jitter or PHY acceptance.')
+        if diagnose:
+            result['cycle_diagnosis']=acquisition_cycle_diagnosis(data,independent)
+            result['bound_source_netlists']=dict(bench=dict(sha256=digest(bench),text=bench.decode()),
+                parent865=dict(sha256=digest(parent),text=parent.decode()))
         save();packed.unlink(); print(result['status'],flush=True)
     except BaseException as error:
         result.update(status='FAILED_EXACT_NATIVE865_ACQUISITION_REVIEW',error=repr(error));save();raise
@@ -273,13 +324,15 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--review-acquisition',action='store_true')
+    parser.add_argument('--diagnose-acquisition',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
-    if args.review_acquisition:
+    if args.review_acquisition or args.diagnose_acquisition:
         assert not args.acquisition and not args.self_test
-        review_completed_acquisition();return
+        review_completed_acquisition(diagnose=args.diagnose_acquisition);return
     controls=self_test()
     controls['acquisition_review']=acquisition_controls()
+    controls['cycle_diagnosis']=acquisition_cycle_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)

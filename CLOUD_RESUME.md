@@ -8,6 +8,21 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Native solver run retained; original-wave PLL cycle diagnosis prepared.**
+CUGR candidate38589002753/job115938555226 onfeba4ccf is queued, not failed.
+Retain handle; no duplicate. Exact placement and independent zero-overflow
+controls are mandatory; experimental engine success never means signoff.
+
+Prepared cloud-migration-checks pll_acquisition_diagnosis=true: reuses exact
+completed1us rawcapture38507479646 with all existing source/model/hash checks
+and frozen original acquisition criteria. Adds descriptive per-feedback-cycle
+clock edge counts, VCTRL ripple, UP/DOWN voltage means/duty, plus exact bound
+bench/parent netlists. No new native simulation or acceptance change. Ramp/
+constant-pulse positive and nonfinite/reversed-edge negative controls run first.
+Dispatch once; use original cycle records to identify alternating-period/loop
+settling causes before selecting a real circuit change. Full goalsOPEN/cloud-only.
+
+
 **Next physical candidate: exact-placement native3D solver comparison.**
 Marker diagnosis640359444 confirms persistent Ethernet SRAM4/5 region congestion;
 large combinational spread did not fix it (138vs132overflow). Frozen OpenROAD
