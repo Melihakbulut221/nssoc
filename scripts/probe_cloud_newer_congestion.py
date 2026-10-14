@@ -212,6 +212,19 @@ def native():
     report['macro_pin_access_scope'] = ('Exact transformed native LEF pin and obstruction rectangles, '
         'with every pin union checked against native ITerm bbox. Track-center counts are geometric '
         'observations only, not legal via access, DRC, or routing acceptance. Obstructions remain unchanged.')
+    pin_counts=Counter(); low_degree=[]
+    for net in block.getNets():
+        if str(net.getSigType()) in ('POWER','GROUND'):
+            continue
+        iterms=list(net.getITerms()); bterms=list(net.getBTerms())
+        degree=len(iterms)+len(bterms); pin_counts[degree]+=1
+        if degree<2:
+            low_degree.append(dict(name=net.getName(),signal_type=str(net.getSigType()),
+                iterms=[dict(instance=t.getInst().getName(),pin=t.getMTerm().getName()) for t in iterms],
+                bterms=[t.getName() for t in bterms],physical_terminal_count=degree))
+    report['signal_net_terminal_inventory']=dict(count_by_degree=dict(sorted(pin_counts.items())),
+        low_degree_nets=sorted(low_degree,key=lambda row:row['name']),
+        scope='Read-only original native database terminals. No net/pin deletion, no exclusion from routing, no claim about CUGR selected access points. Tests the empty-net hypothesis for stage1 vector::reserve failure.')
     (OUT / 'diagnosis.json').write_text(json.dumps(report, indent=2) + '\n')
 
 

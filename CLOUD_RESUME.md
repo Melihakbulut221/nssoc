@@ -8,6 +8,31 @@
 ### Newest state — supersedes every older live statement below
 
 
+**CUGR terminal native exception; PLL cycle evidence identifies next circuit investigation.**
+38589002753/job115938555226 failed at CUGR stage1 pattern routing with
+vector::reserve. Source/placement invariants and1positive/10negative result
+controls passed; no routed candidate or adoption. Summary640802953 preserves
+failure inputs. Frozen PatternRoute::constructSteinerTree hasdegree1 handling,
+but no degree0 guard before reserve(2*degree-2). This is a hypothesis, not yet
+confirmed inputcause. New read-only native signal-net cardinality inventory in
+probe_cloud_newer_congestion.py counts every non-PG net/terminal and reports
+zero/one-terminal nets without deleting or excluding them. Dispatch probe
+source_profile=seed13_buffers once on this source; identical sourceplacement
+and connectivity underlie failed CUGR. Never silently skip an actual signal.
+
+PLL cycle diagnosis38589545075 summary640800063/836777bytes SHA
+02d9495f9c3b5b4f3f0d113e777712dd9f20ef162ebcc5f04768946b07bc5b66
+passes hosted controls/common regressions, original acquisition remainsfalse.
+Lastfeedback periods alternate9.993761ns/10.005040ns with80VCOedges each.
+UPduty alternatesabout0.651/0; DOWNabout0.837/0.099; VCTRLcyclemeanabout
+0.508/0.559V. These are descriptive source-bound observations, not causalproof.
+Exactoriginalbench/parent865 netlist text is preserved in that same summary.
+Next isolate PFDreset/pump modulation before another physical circuit candidate.
+No existing job from this turn remains live; do not restart terminal captures.
+All full product goalsOPEN/cloud-only. This turn changed authoritative source,
+completed native controls/diagnosis and rejected a new actualsolver trial.
+
+
 **Native solver run retained; original-wave PLL cycle diagnosis prepared.**
 CUGR candidate38589002753/job115938555226 onfeba4ccf is queued, not failed.
 Retain handle; no duplicate. Exact placement and independent zero-overflow
