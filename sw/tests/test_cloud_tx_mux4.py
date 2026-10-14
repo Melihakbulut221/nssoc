@@ -656,7 +656,8 @@ def test_native_capture_rejects_empty_duplicate_or_unwritable_census(vectors):
 
 
 @pytest.mark.parametrize('streams',[4,32])
-def test_output_feedback_is_loaded_by_actual_stage_outputs(tmp_path,streams):
+@pytest.mark.parametrize('mode',['output_feedback','output_feedback_tc'])
+def test_output_feedback_is_loaded_by_actual_stage_outputs(tmp_path,streams,mode):
     (tmp_path/'frontend').mkdir()
     (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
     (tmp_path/'frontend/buf16.inc').write_text("""
@@ -668,20 +669,21 @@ XP0 X net1 VDD VDD sg13_lv_pmos
 .ends
 """)
     args=dict(streams=streams,clock_bias='native_res',output_bias='native_res')
+    subckt='nssoc_tx_pre_bias_feedback_tc_v1' if mode=='output_feedback_tc' else 'nssoc_tx_pre_bias_feedback_v1'
     before,old=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias='native_res',**args)
-    after,new=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias='output_feedback',**args)
+    after,new=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias=mode,**args)
     for key in ('hbt','mos','bits','source_bits_sha256','tree_plan','rails','clock_refs','condition','vectors'):
         assert new[key]==old[key]
     assert not any(l.lower().startswith('i') for l in after.splitlines())
-    assert after.count('nssoc_tx_pre_bias_feedback_v1')==streams-2
+    assert after.count(subckt)==streams-2
     for node in new['tree_plan']['nodes']:
         ref,label=node['reference'],node['label']
-        assert f'XPREBIAS_{ref} {label}p {label}n prefeed_{ref} 0 nssoc_tx_pre_bias_feedback_v1' in after
+        assert f'XPREBIAS_{ref} {label}p {label}n prefeed_{ref} 0 {subckt}' in after
         assert f'Vprebias_{ref} prefeed_{ref} {ref} 0' in after
         assert f'Vprebias_{ref} avdd' not in after
-    broken,c=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias='output_feedback',fault='disable_pre_b_bias',**args)
+    broken,c=mux4.build(tmp_path,'cold_high_res_wcs',pre_bias=mode,fault='disable_pre_b_bias',**args)
     assert 'XPREBIAS_rb ' not in broken and c['bits']==new['bits']
-    assert broken.count('nssoc_tx_pre_bias_feedback_v1')==streams-3
+    assert broken.count(subckt)==streams-3
     for key in ('sap','san','sbp','sbn','sp','sn'):
         stimulus=lambda deck:deck.split('V'+key+' ')[1].split('R'+key+' ')[0]
         assert stimulus(before)==stimulus(after)

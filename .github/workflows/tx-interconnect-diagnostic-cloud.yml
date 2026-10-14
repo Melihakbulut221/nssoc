@@ -7,7 +7,7 @@ on:
       study:
         description: Frozen older component or current source-bound physical tree
         type: choice
-        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area, v11_nx4_wire_rc]
+        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area, v11_nx4_wire_rc, v11_feedback_tc]
         default: original_component
       cases:
         description: Run all cases or only failed sensitivity preparations
@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   native-transient:
-    if: inputs.study != 'v11_data_area'
+    if: inputs.study != 'v11_data_area' && inputs.study != 'v11_feedback_tc'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
@@ -90,7 +90,7 @@ jobs:
           python3 scripts/publish_cloud_results.py --group 'component-rc-${{ matrix.interconnect }}' "$archive" "$archive.sha256" "$summary"
 
   data-area-sensitivity:
-    if: inputs.study == 'v11_data_area'
+    if: inputs.study == 'v11_data_area' || inputs.study == 'v11_feedback_tc'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -99,8 +99,8 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        nx: [4, 5, 6, 8]
-        condition: [hot_low, cold_high_hbt_wcs]
+        nx: ${{ fromJSON(inputs.study == 'v11_feedback_tc' && '[4]' || '[4,5,6,8]') }}
+        condition: ${{ fromJSON(inputs.study == 'v11_feedback_tc' && '["hot_low","hot_low_res_bcs","cold_high_hbt_wcs","cold_high_res_wcs"]' || '["hot_low","cold_high_hbt_wcs"]') }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -121,8 +121,8 @@ jobs:
         run: python3 -m pytest -q sw/tests/test_cloud_metal_resistance.py sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
       - name: Screen fixed device-area candidates without claiming physical geometry
         run: |
-          kind='${{ matrix.condition == 'hot_low' && 'physical_wire' || 'physical_compact' }}'
-          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition '${{ matrix.condition }}' --fault none --prestage "$kind" --physical-profile cascade158_kelvin_supply_direct --physical-final "$kind" --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias output_feedback --output-bias native_res --diagnostic-final-nx '${{ matrix.nx }}'
+          kind='${{ startsWith(matrix.condition, 'hot_low') && 'physical_wire' || 'physical_compact' }}'
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition '${{ matrix.condition }}' --fault none --prestage "$kind" --physical-profile cascade158_kelvin_supply_direct --physical-final "$kind" --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias '${{ inputs.study == 'v11_feedback_tc' && 'output_feedback_tc' || 'output_feedback' }}' --output-bias native_res --diagnostic-final-nx '${{ matrix.nx }}'
       - name: Preserve every candidate and unchanged-Nx8 control
         if: always()
         env:

@@ -50,7 +50,7 @@ TAPPED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice'
 GUARDED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice'
 MARGIN_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice'
 PRE_BIASES = {'baseline':.0005,'plus10':.00055,'plus20':.0006}
-PRE_BIAS_MODES = (*PRE_BIASES, 'native_res', 'output_feedback')
+PRE_BIAS_MODES = (*PRE_BIASES, 'native_res', 'output_feedback', 'output_feedback_tc')
 PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
 PRE_FEEDBACK = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc'
 CLOCK_FEED = ROOT / 'hw/soc/analog/pcie/tx_clock_bias_feed_v1.inc'
@@ -272,8 +272,8 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         ('MOShv', c['hv_corner'], frontend / 'models')]:
         lines.append(f'.lib "{directory / ("corner" + kind + ".lib")}" {corner}')
     lines += [f'.include "{p}"' for p in (PRE, FRONT, TX, final, frontend / 'buf16.inc')]
-    if pre_bias in ('native_res','output_feedback'):
-        lines.append(f'.include "{PRE_FEEDBACK if pre_bias=="output_feedback" else PRE_FEED}"')
+    if pre_bias in ('native_res','output_feedback','output_feedback_tc'):
+        lines.append(f'.include "{PRE_FEEDBACK if pre_bias.startswith("output_feedback") else PRE_FEED}"')
     if clock_bias!='ideal':
         lines.append(f'.include "{bias_path}"')
     if clock_bias=='native_res':
@@ -357,7 +357,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             lines += ['Vfinal_feed avdd finalfeed 0',
                       'XFINALFEED finalfeed mr 0 nssoc_tx_final_bias_feed_v1']
             continue
-        if pre_bias in ('native_res','output_feedback') and reference in references:
+        if pre_bias in ('native_res','output_feedback','output_feedback_tc') and reference in references:
             # Zero-volt source is only a current probe, not a bias generator.
             if pre_bias=='native_res':
                 lines.append(f'Vprebias_{reference} avdd prefeed_{reference} 0')
@@ -365,7 +365,8 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             else:
                 node=next(n for n in plan['nodes'] if n['reference']==reference)
                 lines.append(f'Vprebias_{reference} prefeed_{reference} {reference} 0')
-                feed=f'{node["label"]}p {node["label"]}n prefeed_{reference} 0 nssoc_tx_pre_bias_feedback_v1'
+                feedback_subckt='nssoc_tx_pre_bias_feedback_tc_v1' if pre_bias=='output_feedback_tc' else 'nssoc_tx_pre_bias_feedback_v1'
+                feed=f'{node["label"]}p {node["label"]}n prefeed_{reference} 0 {feedback_subckt}'
             if not (fault=='disable_pre_b_bias' and reference=='rb'):
                 lines.append(f'XPREBIAS_{reference} '+feed)
             continue
@@ -394,7 +395,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     nodes.update(node for _,_,ports in stages for node in ports if node!='0')
     nodes.update(f'd{i}{suffix}0' for i in range(streams) for suffix in ('p','n'))
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
-    if pre_bias in ('native_res','output_feedback'):
+    if pre_bias in ('native_res','output_feedback','output_feedback_tc'):
         vectors += [f'i(vprebias_{reference})' for reference in references]
         vectors += [f'v(prefeed_{reference})' for reference in references]
     if clock_bias=='native_res':
@@ -445,7 +446,7 @@ def review(run, contract):
             assert np.max(np.abs(volt(ref['feed'])-volt('avdd'))) < 1e-12
             current=values['i('+ref['probe']+')'][active]
             bias_current[ref['node']]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
-    if contract.get('pre_bias') in ('native_res','output_feedback'):
+    if contract.get('pre_bias') in ('native_res','output_feedback','output_feedback_tc'):
         for reference in contract.get('references',['ra','rb']):
             other='avdd' if contract['pre_bias']=='native_res' else reference
             assert np.max(np.abs(volt('prefeed_'+reference)-volt(other))) < 1e-12
@@ -551,8 +552,13 @@ def main():
         assert args.physical_profile=='cascade158_kelvin_supply_direct'
         assert args.physical_final_profile=='v11_kelvin_low_ports_loads_shunts_series'
         assert args.prestage==args.physical_final and args.physical_final in ('physical_compact','physical_wire')
-        assert args.condition in ('hot_low','cold_high_hbt_wcs')
-        assert args.pre_bias=='output_feedback' and args.clock_reference=='stiff65'
+        if args.pre_bias=='output_feedback_tc':
+            assert args.diagnostic_final_nx==4 and args.diagnostic_final_r=='actual'
+            assert args.condition in ('hot_low','hot_low_res_bcs','cold_high_hbt_wcs','cold_high_res_wcs')
+        else:
+            assert args.condition in ('hot_low','cold_high_hbt_wcs')
+            assert args.pre_bias=='output_feedback'
+        assert args.clock_reference=='stiff65'
         assert args.clock_bias==args.output_bias=='native_res'
     if args.diagnostic_final_r != 'actual':
         assert args.streams == 4 and args.fault == 'none'
@@ -634,6 +640,10 @@ def main():
             result['pre_bias_feedback_scope']=dict(source=str(PRE_FEEDBACK.relative_to(ROOT)),
                 sha256=sha(PRE_FEEDBACK),native_resistors_per_stage=2,layout_integrated=False,
                 hypothesis='Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed32um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged.')
+        if args.pre_bias=='output_feedback_tc':
+            result['pre_bias_feedback_scope']=dict(source=str(PRE_FEEDBACK.relative_to(ROOT)),sha256=sha(PRE_FEEDBACK),native_resistors_per_stage=4,layout_integrated=False,
+                hypothesis='Fixed per-branch100um/1um Rsil plus26.5um/2um Rppd series feedback; native positive-temperature-coefficient compensation. No ideal clamp, changed oracle or per-corner retuning. Schematic only, feed RC and contact-current qualification remain open.',
+                reference='https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html')
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference)
 
         (run/'bench.cir').write_text(deck)

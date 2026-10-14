@@ -8,6 +8,22 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Bank-commit proof PASS and paired mapping active38516179454.** Proof38515965607
+summary639323020 passes3all-state induction/2counterexample controls/10positive
+ports; FCcandidate0674e68fb0e83f20cdfbaf6ed87e8eb885040a245caa24f69c946c4e414185c4.
+No timing/adoption claim. Wait paired native phases, preserve constraints.
+**Native feedback temperature compensation prepared:** study=v11_feedback_tc
+uses fixed Nx4 and physical actualR/C (no artificial-R change), hot_low and
+hot_low_res_bcs wired; cold_high_hbt_wcs and cold_high_res_wcs compact. Only
+prestage feedback switches to100um/1um Rsil +26.5um/2um Rppd per output branch,
+original feedback remains available. Source: IHP Rsil3100ppm/K, Rppd170ppm/K
+process targets; hypothesis reduces hot current without raising cold CM.
+Native frozen PDK models/unchanged source bits and all existing gates decide.
+Feed layout/RC/contact current qualification not yet implemented; no physical
+acceptance even if schematic passes. Dispatch once after hosted graph checks.
+PLL38507479646 and route38511490580 retained; cloud-only/full goalsOPEN.
+
+
 **Direct per-bank credit commit candidate prepared.** Rejected static case mux
 is not adopted. New bank_commit starts from exact original physical21-file
 idle/credit baseline and moves only committed header/data slices into three
