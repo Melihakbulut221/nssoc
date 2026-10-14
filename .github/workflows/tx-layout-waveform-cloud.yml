@@ -7,7 +7,7 @@ on:
       circuit_profile:
         description: Exact physical circuit to bind
         type: choice
-        options: [baseline, cascade14, cascade16, cascade158, final_drive_v5, final_drive_v6, final_drive_v7, final_drive_v8, final_drive_v9, final_drive_v10]
+        options: [baseline, cascade14, cascade16, cascade158, final_drive_v5, final_drive_v6, final_drive_v7, final_drive_v8, final_drive_v9, final_drive_v10, final_drive_v11]
         default: baseline
       variant:
         description: Source-bound routing geometry
@@ -116,4 +116,4 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-operating-point/result.json "$summary"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'layout-wave-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"

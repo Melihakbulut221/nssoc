@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**V11 actual RC passed and is now bound for native composition:** hosted run
+38506058339 passed real graph validation and 13 corruption controls. Exact
+archive639080897 and summary639081033 are recorded with SHA256 in composition
+input under final_drive_v11. This is unqualified wire-only RC, not RFPEX or
+waveform acceptance. Dispatch tx-layout-waveform-cloud.yml compose_only=true
+with final_drive_v11 / critical_buses_kelvin_low_ports_loads_shunts_series.
+After native device binding passes, pin its archive into loaded-tree source;
+never reuse V10 device/RC data for V11. PLL38503868241,32:1wire38496981217,
+mainchiproute38490952579 and feedback32um38505258788 retain their handles.
+Cloud result publication fix is under hosted validation in38506144487.
+No local project files; full PHY/routing/final timing all remain OPEN.
+
+
 **Cloud-only handoff verified:** local NSSOC workspace is empty. V11 fresh RC
 run 38506058339 dispatched on 6fec8f05f0ed5c67684471e4585fdece32c6f510,
 profile final_drive_v11 / critical_buses_kelvin_low_ports_loads_shunts_series.
