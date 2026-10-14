@@ -8,6 +8,22 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Direct EOP proof live38517360412/job115699056790** on1087cab6. Three all-state
+proofs and both original negative controls required before paired mapping.
+**TC feedback mixed-model sensitivity terminal:** all4cases complete; cold HBT
+639337663/coldres639337673 PASS, hot639352416 FAIL(bit0.061058441V,64sub100mV,
+finalCMmin1.784874467V, finaldiffmin0.147553398V), hotres639352027 FAIL(bit
+0.084393708V,28sub100mV,CMmin1.770927243V,4selectorVCEfail,min0.398006589V).
+No candidate adopted. Do not describe cold-only success as closure.
+Actual V8 Nx4 layout RC comparison study=v8_feedback_tc_physical dispatched
+once on1087cab6: find newest matching Actions handle. Purpose is to replace the
+V11 geometry/device-mutation approximation with real matching Nx4 geometry;
+this is diagnostic continuation of a failed candidate, not acceptance. Feed
+layout/contact/assembledRC remain open. Keep every original bit/electrical gate.
+Bank-only mapping terminalreject assets639343644/639343787 unchanged. Preserve
+original route38511490580/PLL38507479646; cloud-only/full goalsOPEN.
+
+
 **Bank-only commit timing rejected; direct EOP path prepared.** Paired mapping
 38516179454 terminal: baseline639343787/candidate639343644. SlowPCIe setup
 -1.101756 -> -1.171506ns; fastPCIe hold unchanged-0.109062ns. Candidate not
