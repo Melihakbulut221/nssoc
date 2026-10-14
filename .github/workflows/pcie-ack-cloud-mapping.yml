@@ -10,7 +10,7 @@ on:
     inputs:
       study:
         type: choice
-        options: [advert_static_commit, trace_control_endpoints, read_control_reports, advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
+        options: [read_static_reports, advert_static_commit, trace_control_endpoints, read_control_reports, advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
         default: ack
 permissions:
   contents: read
@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   map-and-screen:
-    if: github.event_name == 'workflow_dispatch' && inputs.study != 'read_control_reports' && inputs.study != 'trace_control_endpoints'
+    if: github.event_name == 'workflow_dispatch' && inputs.study != 'read_control_reports' && inputs.study != 'trace_control_endpoints' && inputs.study != 'read_static_reports'
     runs-on: ubuntu-22.04
     timeout-minutes: 360 # Hosted platform ceiling; no shorter native watchdog.
     strategy:
@@ -78,7 +78,7 @@ jobs:
           python3 scripts/publish_cloud_results.py --group 'ack-map-${{ matrix.profile }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
 
   read-control-reports:
-    if: github.event_name == 'workflow_dispatch' && (inputs.study == 'read_control_reports' || inputs.study == 'trace_control_endpoints')
+    if: github.event_name == 'workflow_dispatch' && (inputs.study == 'read_control_reports' || inputs.study == 'trace_control_endpoints' || inputs.study == 'read_static_reports')
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -102,6 +102,12 @@ jobs:
           assert os.environ['GITHUB_ACTIONS'] == 'true'
           out=Path('cloud-control-reports'); out.mkdir()
           sources=[('physical_idle_credit',639167692,16843302,'60448a4513c527f11a17463ed8871f400b8f3d381bbc4daa22d2b3a60a615ca7',639167825,'935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc'),('physical_idle_credit_control',639169881,17235476,'052f5f252e3cae645121861d190c384b270faf6dc41a7f9c37ec925c3b79ab66',639169985,'d448253d0fbb41ce68098328354b3c0467741525441eb18ebc565cd757a5853d')]
+          source_run=38509087565
+          candidate_profile='physical_idle_credit_control'
+          if os.environ['TRACE_ENDPOINTS']=='read_static_reports':
+              source_run=38513559584
+              candidate_profile='physical_idle_credit_static'
+              sources=[('physical_idle_credit',639277828,16843307,'202ef5517c9f1fc1487f5c581b5ed8a56be9f6bda002f7fa31a29cdfbbac1c54',639278022,'935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc'),('physical_idle_credit_static',639278486,17196101,'182523238f0c2935201726859334b0b8faf580a32990c0c30a32ec52880cbba5',639278671,'53fbcfce106008b2951e45bf3db1bef6bcd4910a3bff9864bf497f544c3a2d56')]
           results={}
           def fetch(i):
               return subprocess.check_output(['gh','api',f'repos/{os.environ["GITHUB_REPOSITORY"]}/releases/assets/{i}','-H','Accept: application/octet-stream'])
@@ -117,7 +123,7 @@ jobs:
                   assert len(hits)==1 and hits[0].isfile() and hits[0].size<20000000
                   log=tf.extractfile(hits[0]).read()
                   mapped_raw=None
-                  if os.environ['TRACE_ENDPOINTS']=='trace_control_endpoints':
+                  if os.environ['TRACE_ENDPOINTS'] in ('trace_control_endpoints','read_static_reports'):
                       mapping_name=f'cloud-ack-map/{profile}/map/soc_top.mapped.json'
                       members=[m for m in tf if m.name==mapping_name]
                       assert len(members)==1 and members[0].isfile() and members[0].size<300000000
@@ -153,13 +159,13 @@ jobs:
                       endpoints[name]=dict(master=cell['type'],attributes=cell.get('attributes',{}),connections=connections,bit_aliases=aliases)
                   results[profile]['reported_pcie_endpoints']=endpoints
                   results[profile]['mapped_json_sha256']=hashlib.sha256(mapped_raw).hexdigest()
-          base=results['physical_idle_credit']['phases']; cand=results['physical_idle_credit_control']['phases']
+          base=results['physical_idle_credit']['phases']; cand=results[candidate_profile]['phases']
           assert base.keys()==cand.keys()
           differences={}
           for phase in base:
               assert base[phase]['groups'].keys()==cand[phase]['groups'].keys()
               differences[phase]={g:dict(baseline_ns=base[phase]['groups'][g]['worst_slack_ns'],candidate_ns=cand[phase]['groups'][g]['worst_slack_ns'],candidate_minus_baseline_ns=cand[phase]['groups'][g]['worst_slack_ns']-base[phase]['groups'][g]['worst_slack_ns']) for g in base[phase]['groups']}
-          result=dict(status='COMPLETE_EXACT_PAIRED_REPORTED_SLACK_READBACK_NOT_SIGNOFF',source_run=38509087565,timing_accepted=False,adopted=False,scope='Original unplaced three-corner reports only; all reported groups preserved. No routing or signoff acceptance.',sources=results,differences=differences)
+          result=dict(status='COMPLETE_EXACT_PAIRED_REPORTED_SLACK_READBACK_NOT_SIGNOFF',source_run=source_run,timing_accepted=False,adopted=False,scope='Original unplaced three-corner reports only; all reported groups preserved. No routing or signoff acceptance.',sources=results,differences=differences)
           (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
           print(json.dumps(differences,indent=2))
           PYCODE
@@ -174,4 +180,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 scripts/publish_cloud_results.py --group '${{ inputs.study == 'trace_control_endpoints' && 'control-endpoints' || 'control-reports' }}' cloud-control-reports/result.json cloud-control-reports/*.log
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.study == 'read_static_reports' && 'static-reports' || inputs.study == 'trace_control_endpoints' && 'control-endpoints' || 'control-reports' }}' cloud-control-reports/result.json cloud-control-reports/*.log

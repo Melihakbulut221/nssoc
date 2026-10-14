@@ -8,6 +8,17 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Static-commit native mapping results published:**38513559584 baseline79578
+cells(summary639278022), static candidate78976(summary639278671). Original report
+hashes and archives pinned in new read_static_reports study; run this hosted
+readback once to compare all6corner/type groups and bind critical RTL endpoints.
+Do not infer timing success from602fewer cells. Future mapping controller now
+includes all original reported phases in its result, bound to native log hash,
+so follow-ups need not restore archives solely for slack readback. Current jobs
+not changed/rerun. Remaining route/PLL/serializer diagnostics preserve live
+handles; all full goalsOPEN/cloud-only.
+
+
 **Exact active handles, source verification complete:** paired static-commit
 mapping38513559584 on0dd9c255 has baselinejob115687234616 and candidate115687234836
 live. Formal38513261561 already passed3induction/2negative/10positiveports; await

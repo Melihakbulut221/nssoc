@@ -522,6 +522,13 @@ def main():
                     assert sha(Path(pin['path']))==pin['sha256']
         status['status'] = 'COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
         status['screen_result'] = result
+        from read_opensta_phase_slacks import parse_phases
+        report=output/'screen05/screen.log'
+        assert sha(report)==result['outputs']['screen.log']
+        status['reported_phases']=parse_phases(report.read_text(),'CORNER')
+        assert set(status['reported_phases'])=={c+'_'+k for c in ('slow','typical','fast') for k in ('max','min')}
+        status['reported_phases_source_sha256']=sha(report)
+        status['timing_accepted']=False
     except BaseException as error:
         status.update(status='FAIL_OR_ERROR', error=repr(error))
         raise
