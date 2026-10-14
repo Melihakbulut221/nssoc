@@ -1809,6 +1809,75 @@
       "pristine_audit": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
       "failure": "dropped_resistor rejected by 'Physical wire R graph open or incomplete', while the specific control expected 'Native/export resistor topology/value differs'",
       "repair": "Select an actual non-bridge resistor for this dedicated topology-mismatch mutation, assert exactly one R removed and unchanged node/component sets, retain the original expected rejection and all13controls. Frozen pristine audit, geometry, R/C and thresholds unchanged. No extraction acceptance until corrected cloud controls pass."
+    },
+    "corrected_extraction": {
+      "run": 38489084202,
+      "source_commit": "6573d4047e32cf3977d67508b6f322693391a53d",
+      "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+      "summary_asset_id": 638657110,
+      "summary_sha256": "2e5a28efbf294820aa707d7e1340de27fad9d66ffa0f67c28337a206aaebb24f",
+      "archive_asset_id": 638656991,
+      "archive_bytes": 6290047,
+      "archive_sha256": "21aae0eb69a70b67629d92e46f72f8bc79d40cb2f68e620cfd81d1202231c602",
+      "devices": 54,
+      "R": 4021,
+      "C": 2636,
+      "controls": [
+        {
+          "control": "dropped_actual_port",
+          "rejected_by": "Export port loss/duplication"
+        },
+        {
+          "control": "dropped_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "control": "wrong_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "control": "cross_conductor_short",
+          "rejected_by": "R network has unanchored component or cross-conductor short"
+        },
+        {
+          "control": "ground_redistribution_same_matrix",
+          "rejected_by": "Per-point ground C export changed"
+        },
+        {
+          "control": "mutual_anchor_shift_same_matrix",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "control": "dropped_cap",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "control": "changed_cap",
+          "rejected_by": "Mutual C native value changed"
+        },
+        {
+          "control": "cap_scale",
+          "rejected_by": "Source capacitance scale changed"
+        },
+        {
+          "control": "missing_native_completion",
+          "rejected_by": "Missing/duplicate native completion"
+        },
+        {
+          "control": "changed_body",
+          "rejected_by": "Original body/well identities changed"
+        },
+        {
+          "control": "missing_body",
+          "rejected_by": "Body/metal disposition changed"
+        },
+        {
+          "control": "wrong_actual_metal_point",
+          "rejected_by": "Actual metal terminal witness changed"
+        }
+      ],
+      "qualified_pex": false,
+      "scope": "Native distributed R topology and C attachment/value conservation;54body/well terminals remain without substrate R. Full RF/substrate extraction and waveform acceptance still open."
     }
   }
 }
