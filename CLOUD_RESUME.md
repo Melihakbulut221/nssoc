@@ -7,6 +7,20 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Prestage short outputs: native physical PASS, exact extraction prepared.**
+38524919925 summary639530448:560DRC categories/zero markers, strict LVS and
+physical fault controls PASS. Archive639530335382687bytes SHA4c5d0246ed2f2aed89b9bde38bf13f46b28efff5a446fa3d823fcfd05594a6f9
+is now bound in extraction input. Dispatch extraction for cascade158 and
+critical_buses_kelvin_supply_direct_low_outputs once. Native devices/values
+unchanged; electrical common-mode/bit repair not yet demonstrated.
+Direct ACK commit proof was dispatched on1249b410, find newest workflow_dispatch
+cloud-migration-checks and retain its handle. Combined-window rejected timing
+summaries639525435/639521132 and full reported phases now saved in ACK evidence.
+Original PLL38507479646/route38511490580 remain active handles/full goalsOPEN.
+Cloud-only, no local CAD/tests/artifacts; this turn makes physical and proven
+source-bound digital diagnosis progress without discarding failed candidates.
+
+
 **Combined ACK-window timing rejected; direct register enable proof prepared.**
 38524042217 completed: dedicated-only639525435 slowPCIe-1.046260ns versus
 combined639521132-1.082708ns; fastPCIe hold unchanged-0.109062ns. Combined
