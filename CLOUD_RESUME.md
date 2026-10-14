@@ -7,6 +7,20 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Live native comparison38602623171; retain exact cloud handles.**
+Sourcefaebb437ef2a3cc7010b46202ae731f7e76d4f59; observed2026-10-14T16:59:44.325223+00:00:
+paired baseline_schematic/aoi4 jobs in_progress/None.
+Native MOS counts are712/704 respectively, with610other instances and all
+non-PFD RC unchanged. Both are schematic PFD screens lacking physicalPFD
+RC/bodycontacts; no adoption. Check actual captures/controls and compare reset
+recovery before new GDS/DRC/LVS/RC work. Original1us acquisition/PVT/safety
+and fullPHY gates still required. Topology evidence641014025 confirmed.
+
+Routing38598795406 observedin_progress/None. Do not
+duplicate either handle. This and previous goal turn made source/native
+evidence progress; no completion or blocker. Work remains cloud-only.
+
+
 **PFD reset masking measured; matched static-CMOS redesign screen prepared.**
 Topology diagnosis38601440241 oncad979e3 PASS. Result641014025/563238bytes
 SHA46c256ba5cbfcca28f303ce6f02d862cd3f35af0566e43b4ddd816051587bca5.
