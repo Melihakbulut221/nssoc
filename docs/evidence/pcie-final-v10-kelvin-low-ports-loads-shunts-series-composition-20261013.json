@@ -16536,5 +16536,1059 @@
       }
     ],
     "scope": "All24 native executions completed, but five electrical failures reject broadPVT acceptance. Original100mV bit,150mV interface,1.8..2.05V commonmode and native HBT/MOS limits unchanged. Final mapped device faults include hotHBT BCS wire minimumVce.388441772V and coldHBT WCS compact maximumVbe1.023356786V. Source-linked hashes identify every summary and full native output archive; no failure waived."
+  },
+  "output_feedback_26um_rejection_20261014": {
+    "run": 38503692385,
+    "source_head": "c6d595fedca1c151de20fe0d866c17320fe4e05b",
+    "native_workflow_conclusion": "success",
+    "engineering_passes": 2,
+    "engineering_failures": 6,
+    "adopted": false,
+    "cases": [
+      {
+        "asset_id": 639023057,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_compact-cold_high_hbt_wcs-none/tx-tree-physical-4-physical_compact-cold_high_hbt_wcs-none-38503692385-1.summary.json",
+        "summary_sha256": "5725870b0cf9ed7d0d87230f3eeae73a727628a74f95152e8cb35c0b53baf037",
+        "condition": "cold_high_hbt_wcs",
+        "prestage": "physical_compact",
+        "component_screen_passed": false,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2544925700468521,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2544925700468521,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2569654279697908,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.25696152404764616,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.30531784714223775,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9616524938829323,
+              1.9782123054289569
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.3285144077862163,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.974501411596012,
+              1.9996906490366115
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0043": {
+            "min_post_vce_v": 0.698246755000443,
+            "max_post_vce_v": 1.334084513653249,
+            "max_whole_abs_vce_v": 1.334084513653249,
+            "max_whole_abs_vbe_v": 1.022290685630953,
+            "max_whole_abs_ic_per_emitter_a": 0.0022242511047688316,
+            "passed": false
+          },
+          "xmux.xd0044": {
+            "min_post_vce_v": 0.698246755000443,
+            "max_post_vce_v": 1.334084513653249,
+            "max_whole_abs_vce_v": 1.334084513653249,
+            "max_whole_abs_vbe_v": 1.022290685630953,
+            "max_whole_abs_ic_per_emitter_a": 0.0022242511047688798,
+            "passed": false
+          },
+          "xmux.xd0045": {
+            "min_post_vce_v": 0.6979149612914102,
+            "max_post_vce_v": 1.3352126181358042,
+            "max_whole_abs_vce_v": 1.3352126181358042,
+            "max_whole_abs_vbe_v": 1.02132627171159,
+            "max_whole_abs_ic_per_emitter_a": 0.0022124346556365586,
+            "passed": false
+          },
+          "xmux.xd0046": {
+            "min_post_vce_v": 0.7024352465186154,
+            "max_post_vce_v": 1.3373677028604076,
+            "max_whole_abs_vce_v": 1.3373677028604076,
+            "max_whole_abs_vbe_v": 1.0192462360843497,
+            "max_whole_abs_ic_per_emitter_a": 0.0022178765136051486,
+            "passed": false
+          },
+          "xmux.xd0047": {
+            "min_post_vce_v": 0.698246755000443,
+            "max_post_vce_v": 1.334084513653249,
+            "max_whole_abs_vce_v": 1.334084513653249,
+            "max_whole_abs_vbe_v": 1.022290685630953,
+            "max_whole_abs_ic_per_emitter_a": 0.0022242511047688178,
+            "passed": false
+          },
+          "xmux.xd0048": {
+            "min_post_vce_v": 0.6979149612914102,
+            "max_post_vce_v": 1.3352126181358042,
+            "max_whole_abs_vce_v": 1.3352126181358042,
+            "max_whole_abs_vbe_v": 1.02132627171159,
+            "max_whole_abs_ic_per_emitter_a": 0.002212434655636484,
+            "passed": false
+          },
+          "xmux.xd0049": {
+            "min_post_vce_v": 0.6986219940047378,
+            "max_post_vce_v": 1.3343720732764688,
+            "max_whole_abs_vce_v": 1.3343720732764688,
+            "max_whole_abs_vbe_v": 1.0205285292883643,
+            "max_whole_abs_ic_per_emitter_a": 0.002215445822501314,
+            "passed": false
+          },
+          "xmux.xd0050": {
+            "min_post_vce_v": 0.6979149612914102,
+            "max_post_vce_v": 1.3352126181358042,
+            "max_whole_abs_vce_v": 1.3352126181358042,
+            "max_whole_abs_vbe_v": 1.02132627171159,
+            "max_whole_abs_ic_per_emitter_a": 0.0022124346556365647,
+            "passed": false
+          },
+          "xmux.xd0051": {
+            "min_post_vce_v": 0.6986219940047378,
+            "max_post_vce_v": 1.3343720732764688,
+            "max_whole_abs_vce_v": 1.3343720732764688,
+            "max_whole_abs_vbe_v": 1.0205285292883643,
+            "max_whole_abs_ic_per_emitter_a": 0.002215445822501397,
+            "passed": false
+          },
+          "xmux.xd0052": {
+            "min_post_vce_v": 0.6986219940047378,
+            "max_post_vce_v": 1.3343720732764688,
+            "max_whole_abs_vce_v": 1.3343720732764688,
+            "max_whole_abs_vbe_v": 1.0205285292883643,
+            "max_whole_abs_ic_per_emitter_a": 0.002215445822501397,
+            "passed": false
+          },
+          "xmux.xd0053": {
+            "min_post_vce_v": 0.7024352465186154,
+            "max_post_vce_v": 1.3373677028604076,
+            "max_whole_abs_vce_v": 1.3373677028604076,
+            "max_whole_abs_vbe_v": 1.0192462360843497,
+            "max_whole_abs_ic_per_emitter_a": 0.0022178765136051464,
+            "passed": false
+          },
+          "xmux.xd0054": {
+            "min_post_vce_v": 0.7024352465186154,
+            "max_post_vce_v": 1.3373677028604076,
+            "max_whole_abs_vce_v": 1.3373677028604076,
+            "max_whole_abs_vbe_v": 1.0192462360843497,
+            "max_whole_abs_ic_per_emitter_a": 0.0022178765136051113,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0011695245235927906,
+            "median": 0.0011750620896293213,
+            "maximum": 0.0011820268348104559
+          },
+          "tx_feed": {
+            "minimum": 0.0016169996213887734,
+            "median": 0.0016357026488476906,
+            "maximum": 0.0016474255676325231
+          },
+          "clkbias": {
+            "minimum": 0.0013237419283039812,
+            "median": 0.001341871427138689,
+            "maximum": 0.001390152429780785
+          },
+          "ra": {
+            "minimum": 0.0006406446648089953,
+            "median": 0.0006978286540900019,
+            "maximum": 0.0007612852127036399
+          },
+          "rb": {
+            "minimum": 0.0006407419245005683,
+            "median": 0.0006977289892012815,
+            "maximum": 0.000760893832424097
+          }
+        },
+        "raw_wave": {
+          "bytes": 278794153,
+          "sha256": "33c862aa325932987ba39d875c37966e401d8bf7cff35f3f2ac206db511ba471"
+        },
+        "outputs": {
+          "native/run.log": "b9b91b5a31fcc3523c68aff9269d005f5d42e2bff6f3f7e7090c2679e033c226",
+          "native/wave.dat.gz": "4946a99fd96e8660b5280948539905d0acfe0b7790e19569e244c95ee187b7f5",
+          "native/contract.json": "7b92d1f18b90fd18439d35123fe7b3fe0cc9a9a3b4ea8698bd7166d96ad1ed5e",
+          "native/op.dat": "b1b26c87229e92a71f18e69ce7d1af4a22de87a46b939ebf911eaeeac1c3c199",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "5f6d6c414e4fcc423feecd07c5d6b7e81e643f1b1da6a5da84f038d96250efd1"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639024113,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_compact-cold_high_res_wcs-none/tx-tree-physical-4-physical_compact-cold_high_res_wcs-none-38503692385-1.summary.json",
+        "summary_sha256": "e432087370161feaa801f8d8fd969ee1b7e412165d49bd3bcfa45cd0c70c8cf9",
+        "condition": "cold_high_res_wcs",
+        "prestage": "physical_compact",
+        "component_screen_passed": true,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.26849497943428924,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.26849497943428924,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.270822367856804,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2709205011039857,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.3038409011178662,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9618000181823334,
+              1.9815890415755977
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.3503956275731923,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9805357068487386,
+              2.001422461666769
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0009829951281777462,
+            "median": 0.000987702204644349,
+            "maximum": 0.0009936704749973207
+          },
+          "tx_feed": {
+            "minimum": 0.0014074324692648426,
+            "median": 0.0014216758677436357,
+            "maximum": 0.0014324936848651888
+          },
+          "clkbias": {
+            "minimum": 0.0011045710916066985,
+            "median": 0.001120137845801468,
+            "maximum": 0.0011627524421587484
+          },
+          "ra": {
+            "minimum": 0.0005413883760136823,
+            "median": 0.0005908410192182693,
+            "maximum": 0.0006360039052170727
+          },
+          "rb": {
+            "minimum": 0.0005414362963018678,
+            "median": 0.000590800446243633,
+            "maximum": 0.0006356615659744644
+          }
+        },
+        "raw_wave": {
+          "bytes": 278794153,
+          "sha256": "234cb022e6245d00b32a5202cf05260d3cf2b71f9424e4021621957c85cf9210"
+        },
+        "outputs": {
+          "native/run.log": "706f3682105bbe4b01e58d529552af2c738b2fe6886e67d0441dbb61a3b39c54",
+          "native/wave.dat.gz": "d3c3bc07dae9360b239d37799b6394ce0a2b9a6425655b20e7db2803c5e594c3",
+          "native/contract.json": "a87c20a3b32bda90283808f8ccda1c3274f5991a6a2765725b0e8efbf650d749",
+          "native/op.dat": "b1b26c87229e92a71f18e69ce7d1af4a22de87a46b939ebf911eaeeac1c3c199",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "fc0bf478945cd0e3ab5fd91e8dd95d77583d574991456d4cec8dd5d003a811f6"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639023204,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_compact-hot_low_hbt_bcs-none/tx-tree-physical-4-physical_compact-hot_low_hbt_bcs-none-38503692385-1.summary.json",
+        "summary_sha256": "b804a500a8f0f7ad066d1f034304a88ccf8f8d7d89f97cf3f82215c390b78cea",
+        "condition": "hot_low_hbt_bcs",
+        "prestage": "physical_compact",
+        "component_screen_passed": false,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.30173922207694504,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.30173922207694504,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.3045978154226001,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.30455741893849053,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.18618807704585794,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.830854111496356,
+              1.840791851271034
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.29551579680872897,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.796954889695889,
+              1.812517987416664
+            ],
+            "passed": false
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0008952899697160831,
+            "median": 0.0008987276135131915,
+            "maximum": 0.0009040852638436328
+          },
+          "tx_feed": {
+            "minimum": 0.0013112108627590445,
+            "median": 0.0013213339597765734,
+            "maximum": 0.0013279359150072997
+          },
+          "clkbias": {
+            "minimum": 0.001019463567317813,
+            "median": 0.001028719731646821,
+            "maximum": 0.0010571351379511406
+          },
+          "ra": {
+            "minimum": 0.0005068146987650523,
+            "median": 0.0005508701511829691,
+            "maximum": 0.0005940601595968709
+          },
+          "rb": {
+            "minimum": 0.0005066402637233253,
+            "median": 0.0005508978024615883,
+            "maximum": 0.0005939056882176812
+          }
+        },
+        "raw_wave": {
+          "bytes": 278794153,
+          "sha256": "97b22b292d6203f35d4a2d65362e791f90ee28625d3ef2d16d6775ec82390074"
+        },
+        "outputs": {
+          "native/run.log": "70f9dc2a937e87c7778b2143e95c8bcd9f3b52d9fdf9b92a994db2e0e42e08ae",
+          "native/wave.dat.gz": "512372c0900ce70d048cca45720e8fc2be058d7b1d57ea10ac1b1f374e6e2437",
+          "native/contract.json": "7a5d4a65b57d2351527883bc376661712027d934d05f54c3555828305155b331",
+          "native/op.dat": "b1b26c87229e92a71f18e69ce7d1af4a22de87a46b939ebf911eaeeac1c3c199",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "e473ba2b53dd782cd7a8654dcd979000c104f7be1bfb1b662441cedd1a95e710"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639022560,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_compact-hot_low_res_bcs-none/tx-tree-physical-4-physical_compact-hot_low_res_bcs-none-38503692385-1.summary.json",
+        "summary_sha256": "358a4064c5fdfb3924b9447505eaa2a54d2825f2f692a25a7d94b1497a894ea5",
+        "condition": "hot_low_res_bcs",
+        "prestage": "physical_compact",
+        "component_screen_passed": false,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.24843464671481152,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.24843464671481152,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26939155890334576,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2700586148715589,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.15386425018356098,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8436055168413858,
+              1.8488829280552261
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2530549528197259,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.797685368584712,
+              1.8156694758595542
+            ],
+            "passed": false
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.00106301293576848,
+            "median": 0.001066829692375138,
+            "maximum": 0.0010727645542613956
+          },
+          "tx_feed": {
+            "minimum": 0.0015046303244490296,
+            "median": 0.0015172490338498576,
+            "maximum": 0.001523583448659142
+          },
+          "clkbias": {
+            "minimum": 0.0012432393395033678,
+            "median": 0.0012543369571376584,
+            "maximum": 0.00128451354002336
+          },
+          "ra": {
+            "minimum": 0.0006006096650858772,
+            "median": 0.0006517397180436924,
+            "maximum": 0.00071001373070558
+          },
+          "rb": {
+            "minimum": 0.0006007769006711981,
+            "median": 0.0006517724377029625,
+            "maximum": 0.0007100813473078192
+          }
+        },
+        "raw_wave": {
+          "bytes": 278794153,
+          "sha256": "d196d358f4960798526bc350cb1716ef5c249bb50f94abd6794dc9ebede741f5"
+        },
+        "outputs": {
+          "native/run.log": "f076c5f0b79146f3177281f373f2b6350bd870ea0d765eabae722203a018b0c2",
+          "native/wave.dat.gz": "7d064f7a3ae5ba2b67386577d0240306a8b5439d369a203dfb059da778b9cc7d",
+          "native/contract.json": "62aab3bb885617fd9af2ae974e459e84704dbfcd9f6965b088b7f170d0814ad4",
+          "native/op.dat": "b1b26c87229e92a71f18e69ce7d1af4a22de87a46b939ebf911eaeeac1c3c199",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "bedb3b8f50bfaf202f39eadf59a675cda0994d119fa9dff4387c38ec15aeefc0"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639038981,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_wire-cold_high_hbt_wcs-none/tx-tree-physical-4-physical_wire-cold_high_hbt_wcs-none-38503692385-1.summary.json",
+        "summary_sha256": "3e96a0c9228dac925981d84bc688d5dd9b0bf498ce666a06f9dd663cde306c77",
+        "condition": "cold_high_hbt_wcs",
+        "prestage": "physical_wire",
+        "component_screen_passed": false,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.23007571674430283,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.23007571674430283,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.25084672415260423,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.24933851225804093,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.3112440415879034,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9725842698041598,
+              1.9774864045828844
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.22251207799373818,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9430422985046398,
+              1.9672199444998597
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0001": {
+            "min_post_vce_v": 0.36944971565882945,
+            "max_post_vce_v": 0.7420493494827957,
+            "max_whole_abs_vce_v": 0.7420493494827957,
+            "max_whole_abs_vbe_v": 0.951713860697278,
+            "max_whole_abs_ic_per_emitter_a": 0.0010236196428912746,
+            "passed": false
+          },
+          "xmux.xd0002": {
+            "min_post_vce_v": 0.36856268451662233,
+            "max_post_vce_v": 0.7474881228726794,
+            "max_whole_abs_vce_v": 0.7474881228726794,
+            "max_whole_abs_vbe_v": 0.9525675907940575,
+            "max_whole_abs_ic_per_emitter_a": 0.001038321028739307,
+            "passed": false
+          },
+          "xmux.xd0003": {
+            "min_post_vce_v": 0.36851531139473503,
+            "max_post_vce_v": 0.7474310701344018,
+            "max_whole_abs_vce_v": 0.7474310701344018,
+            "max_whole_abs_vbe_v": 0.9511830881998784,
+            "max_whole_abs_ic_per_emitter_a": 0.0010170964548986154,
+            "passed": false
+          },
+          "xmux.xd0004": {
+            "min_post_vce_v": 0.3695156680033106,
+            "max_post_vce_v": 0.7421272432926891,
+            "max_whole_abs_vce_v": 0.7421272432926891,
+            "max_whole_abs_vbe_v": 0.9506293640211092,
+            "max_whole_abs_ic_per_emitter_a": 0.0010071494026094188,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0011579008837484595,
+            "median": 0.0011631898032589618,
+            "maximum": 0.0011695991704570314
+          },
+          "tx_feed": {
+            "minimum": 0.0016142944000957947,
+            "median": 0.0016355130556080255,
+            "maximum": 0.00165124248185592
+          },
+          "clkbias": {
+            "minimum": 0.0013228588377278002,
+            "median": 0.0013352255281873474,
+            "maximum": 0.001361212659118972
+          },
+          "ra": {
+            "minimum": 0.0006493010676683827,
+            "median": 0.0006778686476211528,
+            "maximum": 0.0007082064801580568
+          },
+          "rb": {
+            "minimum": 0.0006474946086316418,
+            "median": 0.0006778680879106127,
+            "maximum": 0.0007071657534871763
+          }
+        },
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "672bc355f41a3d5b11aad9787585948ecd5133d0d1b5bc287af4457498a99d15"
+        },
+        "outputs": {
+          "native/run.log": "2414b7fb8608611847bcd47ede2f201e8c77a3e874d9aa9e3f09f048a27a0734",
+          "native/wave.dat.gz": "ee1564dadf24ccf93630a057f591a167255b938bb177b73214c1c4b0b7b24827",
+          "native/contract.json": "4f740b1942d81a412aea9149819cfaceaaf4f61cc5476b27be80825305a2178c",
+          "native/op.dat": "ead8143f59b492aa5568b2e1ffa7d2bd19e87b75accc6c8c65eb59d57867b248",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "ce0b22af70e6fc3ea6c77d6fa17e5e33c4a04f6a988374e21b8e69dc327c12c5"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639045052,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_wire-cold_high_res_wcs-none/tx-tree-physical-4-physical_wire-cold_high_res_wcs-none-38503692385-1.summary.json",
+        "summary_sha256": "17d747288b43ab84d92b920f2dc6493847393954534f303f22839827deeb7f4f",
+        "condition": "cold_high_res_wcs",
+        "prestage": "physical_wire",
+        "component_screen_passed": true,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2610198350263906,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.26108756007197575,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26218227868258204,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2610198350263906,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.3159678201465639,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.97511940115253,
+              1.9783640636540165
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.21523405252043615,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9740225119369954,
+              1.9931119343807269
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0009756923039499943,
+            "median": 0.0009798377179808142,
+            "maximum": 0.0009856440794013864
+          },
+          "tx_feed": {
+            "minimum": 0.0014071940077961184,
+            "median": 0.0014216210367294726,
+            "maximum": 0.0014324948392945562
+          },
+          "clkbias": {
+            "minimum": 0.0011104670867887578,
+            "median": 0.0011190642529765784,
+            "maximum": 0.0011404412514979467
+          },
+          "ra": {
+            "minimum": 0.0005648706396680359,
+            "median": 0.0005856374220724325,
+            "maximum": 0.0006060442977070153
+          },
+          "rb": {
+            "minimum": 0.0005633891432978259,
+            "median": 0.0005855831766516089,
+            "maximum": 0.0006056414653408046
+          }
+        },
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "9d749a04ce6df1c5643d252cd1cc64656d2aae5280db709e3acd5fcfe1a649d7"
+        },
+        "outputs": {
+          "native/run.log": "ba186a5a6149291f3735ea6bf01f10c126d71a992c92aea15b632d68ec26b3d2",
+          "native/wave.dat.gz": "c83f72e63353567e6a8e431bc9982d3318762593a54836b9db2a965060114bd5",
+          "native/contract.json": "3eeffb05e05a5b1294ae221b080b719547d57ef6e4047853fbef60c51677cec0",
+          "native/op.dat": "ead8143f59b492aa5568b2e1ffa7d2bd19e87b75accc6c8c65eb59d57867b248",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "7ef1b610993c06006a02c82e55bfccc57d9eeed4a21f32b13dcdf0c683a1e2c7"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639045372,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_wire-hot_low_hbt_bcs-none/tx-tree-physical-4-physical_wire-hot_low_hbt_bcs-none-38503692385-1.summary.json",
+        "summary_sha256": "a68269cdb5b3f1498b773641b14aedca137d0ac82fc05177076124d7d78b7802",
+        "condition": "hot_low_hbt_bcs",
+        "prestage": "physical_wire",
+        "component_screen_passed": false,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.21596421806859434,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.21596421806859434,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2980268118440319,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2955759746993025,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.1885308985018752,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8373905094994458,
+              1.842435564612046
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2114546491106013,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.7651561848224322,
+              1.7871835457256893
+            ],
+            "passed": false
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0008882434051554144,
+            "median": 0.000891075759947947,
+            "maximum": 0.0008956920098282371
+          },
+          "tx_feed": {
+            "minimum": 0.0013104171770445272,
+            "median": 0.001321226984484303,
+            "maximum": 0.0013295194830647088
+          },
+          "clkbias": {
+            "minimum": 0.001015503915438831,
+            "median": 0.0010247871719823954,
+            "maximum": 0.001041637978312103
+          },
+          "ra": {
+            "minimum": 0.0005176801244885648,
+            "median": 0.0005373133146187627,
+            "maximum": 0.0005570848335028945
+          },
+          "rb": {
+            "minimum": 0.000516452641285893,
+            "median": 0.0005371997966888507,
+            "maximum": 0.0005568532999752282
+          }
+        },
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "74c2612fe88eb940db42d789f093c347f4dd9b2ed9fc6f6870c57f97670458df"
+        },
+        "outputs": {
+          "native/run.log": "95de57ad41a25ecbd8d43ff873032990ab3a329e0866b2185125a6999141957b",
+          "native/wave.dat.gz": "b2905470b460db3436764710c2faca8b057bef842d276a6988d1af3381ddbabb",
+          "native/contract.json": "2da4e7ef790ffebb56678f2bc3e54b331ab123f3d7a3c126ffb853326c84602e",
+          "native/op.dat": "ead8143f59b492aa5568b2e1ffa7d2bd19e87b75accc6c8c65eb59d57867b248",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "27dd2d5c00e92ec428067fbe2cb606ef45d3b6732584046256040f20f6762dbb"
+        },
+        "diagnostics": []
+      },
+      {
+        "asset_id": 639042719,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38503692385-1-tree-4-physical_wire-hot_low_res_bcs-none/tx-tree-physical-4-physical_wire-hot_low_res_bcs-none-38503692385-1.summary.json",
+        "summary_sha256": "df9d440565adfc285cf39c476882e92fb5b75613b7e7c33938698e9ef8af836d",
+        "condition": "hot_low_res_bcs",
+        "prestage": "physical_wire",
+        "component_screen_passed": false,
+        "feedback_scope": {
+          "source": "hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc",
+          "sha256": "d90087bcade50bd7d6a76902bcd2a2e6b7922a2f300d47d6886316a66ad15937",
+          "native_resistors_per_stage": 2,
+          "layout_integrated": false,
+          "hypothesis": "Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged."
+        },
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.12287240917593012,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.12287240917593012,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2595795189399712,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.26584549674868074,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.15755848033472586,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8468425621786342,
+              1.8529384987343969
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.1872948362535085,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.7458918423140852,
+              1.7724240314060986
+            ],
+            "passed": false
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0001": {
+            "min_post_vce_v": 0.3682396366670253,
+            "max_post_vce_v": 0.7221617402058874,
+            "max_whole_abs_vce_v": 0.7221617402058874,
+            "max_whole_abs_vbe_v": 0.8165427391026615,
+            "max_whole_abs_ic_per_emitter_a": 0.000908767961733946,
+            "passed": false
+          },
+          "xmux.xd0002": {
+            "min_post_vce_v": 0.3683179073647095,
+            "max_post_vce_v": 0.7266702925711899,
+            "max_whole_abs_vce_v": 0.7266702925711899,
+            "max_whole_abs_vbe_v": 0.8169176084818423,
+            "max_whole_abs_ic_per_emitter_a": 0.0009179046298525276,
+            "passed": false
+          },
+          "xmux.xd0003": {
+            "min_post_vce_v": 0.3680867611915233,
+            "max_post_vce_v": 0.7265774947371212,
+            "max_whole_abs_vce_v": 0.7265774947371212,
+            "max_whole_abs_vbe_v": 0.8156361596455766,
+            "max_whole_abs_ic_per_emitter_a": 0.000902325314773697,
+            "passed": false
+          },
+          "xmux.xd0004": {
+            "min_post_vce_v": 0.3681421959381179,
+            "max_post_vce_v": 0.7221930580544023,
+            "max_whole_abs_vce_v": 0.7221930580544023,
+            "max_whole_abs_vbe_v": 0.815530387610293,
+            "max_whole_abs_ic_per_emitter_a": 0.0008966724070259631,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "bias_currents": {
+          "final_feed": {
+            "minimum": 0.0010515922438281496,
+            "median": 0.0010553032729183653,
+            "maximum": 0.0010602361774263193
+          },
+          "tx_feed": {
+            "minimum": 0.0015027876400670835,
+            "median": 0.0015168957288121008,
+            "maximum": 0.0015268114105726886
+          },
+          "clkbias": {
+            "minimum": 0.0012240836852437955,
+            "median": 0.0012363716435935203,
+            "maximum": 0.001255013403411368
+          },
+          "ra": {
+            "minimum": 0.0005989764740180845,
+            "median": 0.0006245506908911947,
+            "maximum": 0.0006536962339354687
+          },
+          "rb": {
+            "minimum": 0.000597718198675757,
+            "median": 0.0006244302475645544,
+            "maximum": 0.0006539000439596231
+          }
+        },
+        "raw_wave": {
+          "bytes": 539159401,
+          "sha256": "54d32b80518e40120d6998f2d6ab98815b0162d3f1af546623b24ec5fd8c79c1"
+        },
+        "outputs": {
+          "native/run.log": "a97967d325a6bae2de2bbeb5b169e2f25feefce55489a7a563028cfbfc531f55",
+          "native/wave.dat.gz": "6fef1c03f043b8268acf3913c3189923729e942b5a78ed23e19c012721f2c271",
+          "native/contract.json": "6b42e82b7fc0f6f3e03c72055bbd1b85ff20d33a2c03cfe8010f9d3d0af27a9a",
+          "native/op.dat": "ead8143f59b492aa5568b2e1ffa7d2bd19e87b75accc6c8c65eb59d57867b248",
+          "native/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+          "native/bench.cir": "916876bdcfe740c4823afcc5a59fa2277d3557e2643ee3a1a49e2e3f16beac88"
+        },
+        "diagnostics": []
+      }
+    ],
+    "scope": "Actual two26um/2um output-fed native resistors at every prestage. FixedV10 transistor/RC/oracles and all limits. Cold resistorWCS CM recovered in bothcompact/wire, but hotwire CM drops to1.745891842V and coldHBT WCS compact Vbe stays1.022290686V; fourselector Vce failures appear in coldwire and hotreswire. Reject, preserve waveforms, no feedlayout or fullPHY acceptance."
   }
 }

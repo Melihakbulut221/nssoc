@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Newest measured feedback decision and live physical build:**26um feedback
+38503692385 is TERMINAL:8cases,2pass/6FAIL. All summaries/output hashes retained
+underoutput_feedback_26um_rejection_20261014 in V10series receipt. ColdresWCS
+CMpasses compact+wire; hotreswire CMmin1.745891842V and selectorheadroom fail.
+ColdHBTcompact VBE still1.022290686V; coldHBTwire4selector VCE fail~.3685V.
+Reject26um. Candidate feed now uses two32um/2um native resistors (was26um),
+reducing actual reference current to recover output commonmode. No limits,
+oracle, sample phase, source rails, transistor or extractedRC changed in
+this bias experiment. This does NOT claim the separate coldVBE issue solved.
+Dispatch the same8failing-corner matched4:1 study once with this source;
+original26um capture remains authoritative at its pinned c6d595fe commit.
+SeparateV11 Nx8 data-bank physical build38505016479 is queued/running on
+16ff1e202cf713dc4b50c12126c241109013377e. Do not duplicate or use oldV10 RC.
+PLL snapshot38503868241, full32:1wire38496981217 and chiproute38490952579
+remain original active handles. Everything cloud; three end goalsOPEN.
+
+
 **Next actual physical repair candidate:** V11 changes ONLY12final data HBTs
 Nx3 toNx8; fourselectors stayNx6, reference/tails/resistors and27bodytaps
 unchanged. ColdWCS compact VBE remained1.02229V after26um feedback lowered

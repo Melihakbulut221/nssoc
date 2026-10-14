@@ -570,7 +570,7 @@ def main():
         if args.pre_bias=='output_feedback':
             result['pre_bias_feedback_scope']=dict(source=str(PRE_FEEDBACK.relative_to(ROOT)),
                 sha256=sha(PRE_FEEDBACK),native_resistors_per_stage=2,layout_integrated=False,
-                hypothesis='Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed26um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged.')
+                hypothesis='Two actual output-fed native resistors supply the existing HBT reference. Negative common-mode feedback, fixed32um/2um geometry at allPVT. Feed layout/RC and completePVT remain unproven; all electrical gates unchanged.')
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference)
 
         (run/'bench.cir').write_text(deck)
