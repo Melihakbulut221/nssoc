@@ -8,6 +8,34 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Cloud-only recheck and terminal CUGR result — 14 October 2026.**
+Run38591636770/job115947747389 is completed FAILURE, not live.
+Native input repair PASS: exactly three empty declarations removed, all real
+net terminals, instances, positions and boundary geometry preserved. Cleaned
+ODB SHA21f82df4522be6353b1103f1a7923794fa50d9d87d04be8c31b38ca3fdea6cbb.
+The independent route gate rejects CUGR nets still overflow; do not adopt or
+rerun this identical input. Summary640851603 SHA
+8132273cd7de6605cb585e95996b5a6ab48e6b5fb6e3c0157251d8885d979b4c,
+archive640850855/242265502bytes SHA
+9ba259eaf582ccb47678278d7d2eda1242cbb3ae2ba981d6d6400a5280c7e9b9.
+No known native job from these trials remains live. Older live/dispatch
+instructions below are historical and superseded by this paragraph.
+
+Next physical work: inspect the current pre-CTS placement/floorplanning flow
+and source-bound Ethernet SRAM channel/PCIe endpoint congestion before a new
+geometry candidate. Do not reuse the stale September checkpoint. Independently
+investigate source-bound PLL PFD/pump alternating-cycle behavior; verify old
+full50ns source identity on a hosted runner before any reuse.
+
+Workspace /home/hasanmelih/Documents/ChatGPT/nnsoc rechecked empty, including
+hidden entries; no native CAD/simulation process observed. Cloud retirement
+receipt636387277 was re-read and confirms verified remote archive readback.
+Original user-supplied Downloads documents remain preserved. All execution,
+source changes and durable engineering artifacts stay on GitHub; do not
+recreate a local checkout or run local CAD/tests. Full serial PHY, routed
+mainchip and final setup/hold remain OPEN; migration is not product closure.
+
+
 **Live repaired-input routing handle38591636770/job115947747389.**
 Source2a5e8a5abd98e49d3dec6ca23e71a01d200c3908, CUGR with explicit
 cugr_empty_net_cleanup=true and exact originalseed13/buffer-placement/hold2.
