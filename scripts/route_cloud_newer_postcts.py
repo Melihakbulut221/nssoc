@@ -47,31 +47,30 @@ def execute(script, label):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--grid-profile', choices=['baseline', 'half_x', 'half_y', 'half_xy'], default='baseline')
+    parser.add_argument('--grid-profile', choices=['baseline'], default='baseline')
     parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
-    parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5'], default='baseline')
+    parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5','halo1'], default='baseline')
     parser.add_argument('--critical-nets-percentage', type=int, choices=[0,30], default=0)
     parser.add_argument('--routing-seed', type=int, choices=[0,13], default=0)
     args = parser.parse_args()
     if args.routing_seed:
         assert args.critical_nets_percentage == 0
         assert args.placement_profile == 'local_optimize_buffers'
-        assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
+        assert args.ethernet_hold_depth == 2 and args.macro_routing_profile in ('baseline', 'halo1')
     if args.critical_nets_percentage:
         assert args.placement_profile == 'local_optimize_buffers'
         assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
         assert args.grid_profile == 'baseline'
 
-    if args.grid_profile != 'baseline':
+    # Frozen OpenROAD dcf36133 uses grid_origin only when saving guides.
+    # Nonzero values did not move the routing partition (run38472175339).
+    # Reject these obsolete trials through argparse rather than repeating them.
+    origin_um = (0., 0.)
+    if args.macro_routing_profile == 'halo1':
         assert args.routing_seed == 13 and args.critical_nets_percentage == 0
         assert args.placement_profile == 'local_optimize_buffers'
-        assert args.ethernet_hold_depth == 2 and args.macro_routing_profile == 'baseline'
-
-    # The actual failed report has7.2um gcells. Half-cell offsets change only
-    # partition alignment, never placement, routing capacity or physical rules.
-    origin_um = {'baseline': (0., 0.), 'half_x': (3.6, 0.),
-                 'half_y': (0., 3.6), 'half_xy': (3.6, 3.6)}[args.grid_profile]
+        assert args.ethernet_hold_depth == 2
     OUT.mkdir(exist_ok=False)
     result = dict(status='RUNNING', adopted=False,
         grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
@@ -245,26 +244,7 @@ def main():
             assert sha(OUT/'relocated-placement.odb') == expected, 'Routing comparison changed placement'
             result['routing_order_source' if args.routing_seed else 'routing_priority_source'] = dict(run=evidence['run'],
                 placement_sha256=expected, source_evidence_sha256=sha(ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json'),
-                scope=('Only native net ordering seed changes; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Only native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, routing layers, capacity adjustment and zero-overflow gate. Requires actual routing and all-corner timing.')
-            save()
-        if args.grid_profile != 'baseline':
-            evidence_path=OUT/'seed13-congestion.json'
-            fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471402795-1-congestion-seed13_buffers/newer-congestion-probe-38471402795-1.json',
-                  'ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b',evidence_path)
-            diagnosis=json.loads(evidence_path.read_text())
-            assert diagnosis['status']=='PASS_EXACT_CONGESTION_CONNECTIVITY_DIAGNOSIS_NOT_ROUTE_CLOSURE'
-            source=json.loads((ROOT/'docs/evidence/cloud-seed13-buffers-route-failure-20261014.json').read_text())
-            assert diagnosis['source_odb_sha256']==source['failure_outputs']['failed-global.odb']
-            assert diagnosis['source_report_sha256']==source['failure_outputs']['congestion.rpt']
-            assert diagnosis['marker_count']==105 and diagnosis['report_overflow_sum']==132
-            for marker in diagnosis['markers']:
-                x0,y0,x1,y1=marker['bbox_um']
-                assert abs(x1-x0-7.2)<1e-6 and abs(y1-y0-7.2)<1e-6
-            assert sha(OUT/'relocated-placement.odb')==source['failure_outputs']['relocated-placement.odb']
-            result['grid_comparison']=dict(baseline_run=source['run'],
-                diagnosis_sha256=sha(evidence_path),native_gcell_um=7.2,
-                origin_um=origin_um,
-                scope='Only grid origin differs from seed13. Same exact placement, SDC, LEF obstructions, RC and layer resource-reduction settings. Native per-edge capacities are recomputed on the shifted partition, never artificially increased. No congestion waiver; fresh route and all-corner timing required.')
+                scope=('Native net ordering seed13; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, routing layers, layer adjustment and zero-overflow gate. Any conservative macro halo is recorded separately. Requires actual routing and all-corner timing.')
             save()
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]
@@ -279,6 +259,21 @@ def main():
         commands += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {rc["routing_layers"]}',
                      f'set_global_routing_layer_adjustment Metal1-TopMetal2 {rc["adjustment"]}',
                      'set route_dbu [[ord::get_db_block] getDbUnitsPerMicron]']
+        if args.macro_routing_profile == 'halo1':
+            # Exact runtime GlobalRouter.cpp:4705-4716 grows each macro OBS by
+            # one native tile in the direction perpendicular to its tracks.
+            # This only reserves more routing space, never creates capacity.
+            source=json.loads((ROOT/'docs/evidence/cloud-seed13-buffers-route-failure-20261014.json').read_text())
+            assert sha(OUT/'relocated-placement.odb') == source['failure_outputs']['relocated-placement.odb']
+            commands += ['help set_macro_extension', 'set_macro_extension 1',
+                         'puts NSSOC_MACRO_OBSTRUCTION_EXTENSION_ONE_GCELL']
+            result['macro_halo_comparison'] = dict(baseline_run=source['run'],
+                exact_placement_sha256=source['failure_outputs']['relocated-placement.odb'],
+                macro_extension_gcells=1, native_default_gcells=0,
+                runtime_commit='dcf36133a369abc8f3c5e5738cd4d82e4903c0e0',
+                source_url='https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/grt/src/GlobalRouter.cpp#L4705',
+                scope='Conservative native macro obstruction halo on exact seed13 placement. No guide offset, OBS removal, capacity inflation, port exclusion, congestion waiver or timing exception. Fresh global routing and all-corner timing required.')
+            save()
         if args.macro_routing_profile == 'reserve_m5':
             # Native diagnosis found through-nets over obstructed SRAM bodies,
             # while actual macro signal pins are on Metal2, not Metal5. Reserve
@@ -320,7 +315,7 @@ def main():
             priority_option = ' -critical_nets_percentage 30'
         commands += [
                      f'set route_origin [list [expr {{round({origin_um[0]} * $route_dbu)}}] [expr {{round({origin_um[1]} * $route_dbu)}}]]',
-                     'puts "NSSOC_ROUTING_GRID_ORIGIN_DBU $route_origin"',
+                     'puts "NSSOC_GUIDE_OFFSET_DBU_FIXED_ZERO $route_origin"',
                      f'if {{[catch {{global_route{priority_option} -grid_origin $route_origin -congestion_iterations 100 -congestion_report_file {{{OUT / "congestion.rpt"}}} -verbose}} route_error]}} {{',
                      f'  write_db {{{OUT / "failed-global.odb"}}}',
                      f'  catch {{write_guides {{{OUT / "failed-route.guide"}}}}}',

@@ -12,9 +12,9 @@ on:
   workflow_dispatch:
     inputs:
       grid_profile:
-        description: Exact seed13 placement with native half-cell grid-origin comparison
+        description: Guide offset fixed at zero; frozen runtime does not shift the routing partition
         type: choice
-        options: [baseline, half_x, half_y, half_xy]
+        options: [baseline]
         default: baseline
       routing_seed:
         description: Native net ordering only; capacity perturbation remains zero
@@ -39,7 +39,7 @@ on:
       macro_routing_profile:
         description: Conservative routing restriction from exact SRAM pin diagnosis
         type: choice
-        options: [baseline, reserve_m5]
+        options: [baseline, reserve_m5, halo1]
         default: baseline
 permissions:
   contents: read
