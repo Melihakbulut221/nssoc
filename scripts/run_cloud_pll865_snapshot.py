@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Hosted exact native865 capture and snapshot experiment; no implicit PLL acceptance."""
 import argparse
+import ast
 import hashlib
 import io
 import json
@@ -128,12 +129,157 @@ def native_run(executable, directory, script, deadline, result, save):
     assert code==0 and not errors, 'Native execution or snapshot diagnostic failure'
     return text
 
+
+ACQUISITION_REVIEW_SHA = '168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db'
+ACQUISITION_RUN = 38507479646
+ACQUISITION_SOURCE = '444e78eb4ad91b996cbcdf80d8189b2abbb62cb2'
+
+
+def acquisition_analyzer():
+    """Reuse only the three frozen pure edge/window functions, not old539 I/O."""
+    path = ROOT/'scripts/review_pcie_pll_acquisition_v1.py'
+    assert sha(path) == ACQUISITION_REVIEW_SHA, 'Frozen original acceptance criteria'
+    tree = ast.parse(path.read_text())
+    wanted = {'independent_edges', 'monotone_ordinals', 'independent_analysis'}
+    nodes = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in wanted]
+    assert len(nodes) == len(wanted)
+    def require(condition, message):
+        if not condition:
+            raise AssertionError(message)
+    namespace = {'np': np, 'require': require}
+    exec(compile(ast.Module(body=nodes, type_ignores=[]), str(path), 'exec'), namespace)
+    return namespace['independent_analysis']
+
+
+def acquisition_controls():
+    analyze = acquisition_analyzer()
+    t = np.linspace(0, 1e-6, 100001)
+    ref = 1.25 + np.sin(2*np.pi*(t-2e-9)/10e-9)
+    good = {'time': t, 'v(reference)': ref, 'v(fb)': ref.copy(),
+            'v(vctrl)': np.ones_like(t)}
+    assert analyze(good)['passed']
+    altered = {}
+    altered['frequency'] = {**good, 'v(fb)': 1.25 + np.sin(2*np.pi*(t-2e-9)*101e6)}
+    delay = np.clip((t-800e-9)/100e-9, 0, 1)*200e-12
+    altered['phase_drift'] = {**good, 'v(fb)': 1.25 + np.sin(2*np.pi*(t-delay-2e-9)/10e-9)}
+    missing = ref.copy(); missing[(t>840e-9)&(t<849e-9)] = .25
+    altered['missing_edge'] = {**good, 'v(fb)': missing}
+    altered['control_voltage'] = {**good, 'v(vctrl)': np.full_like(t, 1.6)}
+    verdicts = {name: analyze(data) for name, data in altered.items()}
+    assert all(not x['passed'] for x in verdicts.values())
+    assert any(not w['checks']['frequency_100ppm'] for w in verdicts['frequency']['rolling_windows'])
+    assert any(not w['checks']['phase_range_50ps'] for w in verdicts['phase_drift']['rolling_windows'])
+    assert not verdicts['missing_edge']['final_two_windows_no_slip']
+    assert not verdicts['control_voltage']['rolling_windows'][-1]['checks']['control_development_window']
+    for broken in [{k:v[:-1] for k,v in good.items()}, {k:v.copy() for k,v in good.items()}]:
+        if len(broken['time']) == len(t): broken['v(fb)'][50] = np.nan
+        try: analyze(broken)
+        except AssertionError: continue
+        raise AssertionError('Incomplete/nonfinite acquisition accepted')
+    return dict(original_gate_source_sha256=ACQUISITION_REVIEW_SHA,
+                identical_locked_control=True, physical_faults_rejected=list(altered),
+                incomplete_and_nonfinite_rejected=True)
+
+
+def review_completed_acquisition():
+    """Hosted lossless review of one exact completed run; launches no simulator."""
+    assert os.environ.get('GITHUB_ACTIONS') == 'true'
+    controls = acquisition_controls()
+    out = ROOT/'cloud-pll-acquisition-review'; out.mkdir(exist_ok=False)
+    result = dict(status='RUNNING_EXACT_NATIVE865_ACQUISITION_REVIEW',
+                  source_run=ACQUISITION_RUN, controls=controls,
+                  full_phy_accepted=False, full_device_safety_accepted=False,
+                  acquisition_accepted=False, no_new_native=True)
+    def save(): (out/'result.json').write_text(json.dumps(result, indent=2)+'\n')
+    def api(path):
+        return json.loads(subprocess.check_output(['gh', 'api',
+            'repos/Melihakbulut221/nssoc/'+path]))
+    save()
+    try:
+        run = api(f'actions/runs/{ACQUISITION_RUN}')
+        assert run['status']=='completed' and run['conclusion']=='success', 'Await original native completion; never restart'
+        assert run['head_sha']==ACQUISITION_SOURCE and run['run_attempt']==1
+        release = api(f'releases/tags/cloud-results-{ACQUISITION_RUN}-1-pll-snapshot')
+        stem = f'pll-snapshot-{ACQUISITION_RUN}-1'
+        def asset(name):
+            matches = [a for a in release['assets'] if a['name']==name]
+            assert len(matches)==1
+            return matches[0]
+        summary_asset, archive_asset, hash_asset = [asset(stem+suffix) for suffix in ['.json','.tar.gz','.tar.gz.sha256']]
+        def bytes_of(a):
+            raw = subprocess.check_output(['gh','api',f"repos/Melihakbulut221/nssoc/releases/assets/{a['id']}",'-H','Accept: application/octet-stream'])
+            assert len(raw)==a['size']
+            return raw
+        summary = bytes_of(summary_asset); record=json.loads(summary)
+        words=bytes_of(hash_asset).decode().split()
+        assert len(words)==2 and words[1]==stem+'.tar.gz' and re.fullmatch('[0-9a-f]{64}',words[0])
+        packed=out/'original.tar.gz';fetch(archive_asset['browser_download_url'],words[0],packed)
+        assert packed.stat().st_size==archive_asset['size']
+        result['source_assets'] = dict(summary_id=summary_asset['id'],summary_sha256=digest(summary),
+            archive_id=archive_asset['id'],archive_sha256=words[0],archive_bytes=archive_asset['size'])
+        with tarfile.open(packed) as tar:
+            def member(name):
+                assert not Path(name).is_absolute() and '..' not in Path(name).parts
+                matches=[m for m in tar.getmembers() if m.name=='cloud-pll-snapshot/'+name]
+                assert len(matches)==1 and matches[0].isfile(), 'Unique regular capture member'
+                return tar.extractfile(matches[0]).read()
+            assert member('result.json')==summary, 'Published and archived result identity'
+            assert record['status']=='COMPLETE_ONE_US_NATIVE865_SELECTED_PROBES_REQUIRES_LOCK_AND_SAFETY_REVIEW'
+            assert record['mode']=='fresh_time_zero_acquisition_capture'
+            assert len(record['inputs'])==35 and record['native_stop_s']==1e-6
+            assert record['comparison_stop_s'] is None and record['snapshot_stop_s'] is None
+            for item in record['inputs'].values():
+                data=member(item['hosted_path'])
+                assert len(data)==item['bytes'] and digest(data)==item['sha256']
+            bench=member('source/bench.cir'); parent=member('parent865.spice')
+            assert digest(bench)==RECORDS['native07/bench.cir'][1]==record['source_deck_sha256']
+            assert digest(parent)==RECORDS['native07/parent865.spice'][1]==record['parent_sha256']
+            circuit=member('circuit.cir').decode()
+            roots=set(re.findall(r'(/[^"\s]+/cloud-pll-snapshot)/models/models',circuit))
+            assert len(roots)==1
+            base=roots.pop()
+            body,control=bench.decode().split('.control\n');setup=control.split('\nop\n',1)[0]
+            expected_body=body.replace(MODEL_ROOT,base+'/models/models')
+            expected_setup=setup.replace(OSDI_ROOT+'/r3_cmc.osdi',base+'/models/r3_cmc.osdi')
+            for name in ['psp103.osdi','psp103_nqs.osdi']:
+                expected_setup=expected_setup.replace(OSDI_ROOT+'/'+name,base+'/frontend/'+name)
+            assert circuit=='* '+expected_body+'.control\n'+expected_setup+'\n.endc\n.end\n'
+            assert digest(circuit.encode())==record['relocated_deck_sha256']
+            assert member('spinit')==b'set num_threads=1\n'
+            assert member('acquisition.cir')==b'NSSOC native865 original1us continuous capture\n.include "circuit.cir"\n.control\nop\nwrite op.raw all\nrun acquisition.raw\nquit\n.endc\n.end\n'
+            runs=record['native_runs']; assert len(runs)==1 and runs[0]['script']=='acquisition.cir'
+            assert runs[0]['returncode']==0 and not runs[0]['diagnostics']
+            assert digest(member('acquisition.cir.log'))==runs[0]['log_sha256']
+            raw=member('acquisition.raw')
+        capture=record['captures']['acquisition.raw']
+        assert len(raw)==capture['bytes'] and digest(raw)==capture['sha256']
+        names,values,meta=decode_prefix(raw)
+        assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
+        assert all(capture[k]==v for k,v in meta.items())
+        assert set(names)=={'time',*record['vectors']} and len(names)==25 and len(values)>3000000
+        assert np.max(np.diff(values[:,0]))<=3.125e-13*1.00001
+        data={name:values[:,i] for i,name in enumerate(names)}
+        independent=acquisition_analyzer()(data)
+        result.update(status='COMPLETE_ORIGINAL_ACQUISITION_SCREEN_NOT_PHY_ACCEPTANCE',
+            selected_probe_acquisition_passed=independent['passed'], independent=independent,
+            capture=meta,raw_sha256=digest(raw),phase_shift_fitted=False,
+            scope='Exact original865 selected24probes/full1us. Original100ppm/50ps/no-slip/VCTRL and final800-900ns/900-1000ns gates. No full-device1us safety, timestep/PVT/CDR/jitter or PHY acceptance.')
+        save();packed.unlink(); print(result['status'],flush=True)
+    except BaseException as error:
+        result.update(status='FAILED_EXACT_NATIVE865_ACQUISITION_REVIEW',error=repr(error));save();raise
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
+    parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.review_acquisition:
+        assert not args.acquisition and not args.self_test
+        review_completed_acquisition();return
     controls=self_test()
+    controls['acquisition_review']=acquisition_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)

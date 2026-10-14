@@ -8,6 +8,22 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Original PLL acceptance review prepared, not yet dispatched.** Existing
+38507479646 native1us capture remains live. New cloud-migration-checks input
+pll_acquisition_review reviews only that exact source444e78eb/run attempt1 after
+successful completion. Restores exact published archive, original source deck,
+parent, all35model/OSDI bytes, native log and complete raw payload. Reuses frozen
+original100ppm/50ps/no-slip/VCTRL pure functions with locked/frequency/phase/missing
+edge/voltage/truncation/nonfinite controls. No new simulation or fitted phase.
+Cloud push self-tests must pass before dispatch; wait original capture completion.
+32:1wire38496981217 summary639289318 has nominal electrical gates PASS, but a
+native max-data-size warning keeps component_screen_passed=false. Preserve this
+warning; not fullPHY acceptance. Nx4 internal-R summary639293994 improves bit
+margin to0.101510901V but finalCMmin1.780957413V fails; all-R639281758 bit0.168537233V
+also fails finalCMmin1.780405857V. Output-R639290449 bit0.068951690V fails. No
+physical candidate adopted. All goalsOPEN; empty local workspace/cloud-only.
+
+
 **Cloud-only handoff reverified; static-commit timing candidate rejected.**
 Hosted readback38514837826 completed; result639294592 preserves every original
 corner/group and exact mapped RTL endpoints. Baseline/candidate slow PCIe setup
