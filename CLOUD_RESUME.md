@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Newest cloud-only cleanup and diagnostic checkpoint:** four legacy LVS `.cir`
+files outside the checkout in its parent were archived, fetched back and
+byte-for-byte verified, then ONLY those exact unchanged files removed.
+Release cloud-migration-final-checkout-20261013 holds
+parent-lvs-leftovers-20261014.tar.gz(asset638960993,14788bytes,
+SHA12ab296f0bd74fae6bb559982b43421ccd30e9f7dfd69e8200e92da499199080)
+and receipt638961046. Workspace empty; no local ngspice/OpenROAD/Yosys/KLayout/
+Magic/Netgen process. Existing 8hour heartbeat already enforces cloud-only.
+Corrected split-archive PLL run38501008048 reached waveform decoding but
+FAILED strict complete-row gate: historical cancellation truncated final row.
+Do not erase this failure or use partial data for acquisition acceptance.
+Reader now has explicit interrupted-diagnostic-only mode: excludes incomplete
+final row with byte count and hash, preserves original capture and strict
+normal decoding. Added control proves no padded/fabricated row. All five
+original corruption controls remain. Next hosted dispatch must inspect this
+partial prefix; absent800-1000ns acquisition and whole-wave safety remainOPEN.
+Independent cold TX failures and original active route/tree handles below
+remain authoritative; no new circuit acceptance or completed layout claim.
+
+
 **Latest correction and failures (14 October):** hosted PLL prefix38500020789
 FAILED at archive member lookup, before waveform analysis. Archive002 contains
 native07 bench/control/logs; wave.raw is in archive003(asset634833900,

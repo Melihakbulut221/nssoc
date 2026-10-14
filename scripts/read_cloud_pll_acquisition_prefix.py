@@ -26,7 +26,7 @@ RECORDS = {
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
-def decode_prefix(raw):
+def decode_prefix(raw, *, interrupted_diagnostic=False):
     end = raw.find(b'Binary:\n', 0, 1048576)
     assert end >= 0, 'Missing bounded native binary header'
     end += len(b'Binary:\n')
@@ -41,13 +41,22 @@ def decode_prefix(raw):
     names = [r[1] for r in table]
     assert len(set(names)) == width and names[0] == 'time'
     payload = memoryview(raw)[end:]
-    assert len(payload) % (8*width) == 0, 'Incomplete trailing native row'
-    values = np.frombuffer(payload, dtype='<f8').reshape(-1, width)
+    trailing = len(payload) % (8*width)
+    assert not trailing or interrupted_diagnostic, 'Incomplete trailing native row'
+    # A cancellation can interrupt a binary row. Never pad or synthesize it.
+    # Opt-in applies only to diagnosis; the strict default still rejects it.
+    complete = payload[:-trailing] if trailing else payload
+    excluded = payload[-trailing:] if trailing else memoryview(b'')
+    values = np.frombuffer(complete, dtype='<f8').reshape(-1, width)
     assert len(values) > 1 and np.isfinite(values).all()
     assert np.all(np.diff(values[:, 0]) > 0), 'Nonmonotonic native time'
     return names, values, dict(header_points=declared, observed_rows=len(values),
         width=width, header_bytes=end, payload_sha256=digest(payload),
-        header_matches_observed=declared == len(values))
+        header_matches_observed=declared == len(values),
+        payload_has_only_complete_rows=not trailing,
+        excluded_trailing_bytes=trailing, excluded_trailing_sha256=digest(excluded),
+        complete_rows_sha256=digest(complete),
+        interrupted_diagnostic=interrupted_diagnostic)
 
 def rising(time, signal, threshold):
     indices = np.flatnonzero((signal[:-1] < threshold) & (signal[1:] >= threshold))
@@ -71,7 +80,16 @@ def self_test():
         except (AssertionError, ValueError):
             continue
         raise AssertionError('Corruption control was not rejected')
-    return dict(valid_interrupted_header_preserved=True, negative_controls_rejected=len(cases))
+    # Explicit partial diagnosis must retain exactly two complete rows and
+    # report all 15 bytes of the third; it cannot silently round up a sample.
+    _, partial, meta = decode_prefix(raw[:-1], interrupted_diagnostic=True)
+    assert np.array_equal(partial, values[:2])
+    assert meta['excluded_trailing_bytes'] == 15
+    assert meta['excluded_trailing_sha256'] == digest(raw[-16:-1])
+    assert not meta['payload_has_only_complete_rows']
+    assert meta['observed_rows'] == 2
+    return dict(valid_interrupted_header_preserved=True,
+        negative_controls_rejected=len(cases), explicit_partial_diagnosis_control=True)
 
 def fetch(url, expected, destination):
     subprocess.run(['curl','--fail','--location','--retry','4',url,'-o',str(destination)],check=True)
@@ -130,7 +148,7 @@ def main():
         bench=selected['native07/bench.cir'].decode()
         assert '.tran 3.125e-13 1e-06 0 3.125e-13' in bench
         assert '.options reltol=1e-4 abstol=1e-12 klu' in bench
-        names,values,capture=decode_prefix(selected['native07/wave.raw'])
+        names,values,capture=decode_prefix(selected['native07/wave.raw'], interrupted_diagnostic=True)
         assert len(names)==25 and 100000 < len(values) < 4000000
         saved=next(l[5:].split() for l in bench.splitlines() if l.startswith('save '))
         assert set(names)=={'time',*saved}
@@ -158,7 +176,7 @@ def main():
             native_status=native['status'],cancellation=owner,capture=capture,
             captured_start_s=float(t[0]),captured_end_s=float(t[-1]),required_stop_s=1e-6,
             missing_required_windows_ns=[[800,900],[900,1000]],windows=windows,
-            scope='Exact historical865 native prefix only. Original bytes and cancellation retained; no simulation rerun, no phase fit, no changed thresholds. Fixed short windows diagnose direction of frequency/control-voltage evolution. They cannot substitute the missing final800-1000ns acquisition windows, full-device1us safety, timestep/PVT, PLL/CDR or fullPHY acceptance.')
+            scope='Exact historical865 native prefix only. Original bytes and cancellation retained; no simulation rerun, no phase fit, no changed electrical thresholds. Incomplete trailing row is excluded with exact byte count/hash, never padded; strict complete-capture decoding remains fail-closed. Fixed short windows diagnose direction of frequency/control-voltage evolution. They cannot substitute the missing final800-1000ns acquisition windows, full-device1us safety, timestep/PVT, PLL/CDR or fullPHY acceptance.')
         save()
         print(result['status'])
         print(json.dumps(windows,indent=2))
