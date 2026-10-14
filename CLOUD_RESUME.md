@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Live original-gate electrical verification of the new actual layout.**
+38523202992 on28162773 studyv8_feedback_tc_direct_hot:
+hot_low job115717442756 and hot_low_res_bcs115717442977 in_progress. First job
+passed hosted graph/source-bit/publication and expanded wrong-geometry/circuit
+controls before native simulation. Keep both handles; no candidate acceptance.
+Physical38521214968, extraction38521648860/recovery38522280250 and composition
+38522827216 are terminal and source-bound in the new direct-supply receipt.
+Do not rerun any of them. Full hot outputs determine next physical action;
+a hot pass would still require full original PVT/loads/faults and32:1 integration.
+
+Exact original-prefix digital provenance38522829842/job115716239787 remains
+in_progress. Read its original premapped-byte-equality and register bindings
+before changing replay RTL. Native PLL38507479646/job115668187421 and mainchip
+route38511490580/job115680796118 freshly confirmed live; preserve their handles.
+PLL review is prepared but must wait capture completion. Local workspace again
+confirmed empty. Turn classification: progress (real new layout/RC/composition,
+publication recovery without rerun, original-gate hot simulation started) and
+verified waits. No genuine blocker; full serial PHY/routed chip/final STA OPEN.
+
+
 **Direct-supply V8 device/RC composition PASS; original hot screens prepared.**
 38522827216 on691dc727 summary639482876 binds54devices/4083R/2673C; archive
 6394826726690446bytes SHA413ad0c3edbc2cc68689312e3bbe6d9e2a5689f9b7bed496cd50d34bd5401c47.
