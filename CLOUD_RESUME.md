@@ -8,6 +8,22 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Cloud-only handoff reverified; static-commit timing candidate rejected.**
+Hosted readback38514837826 completed; result639294592 preserves every original
+corner/group and exact mapped RTL endpoints. Baseline/candidate slow PCIe setup
+-1.101756/-1.180261ns; fast PCIe hold unchanged -0.109062ns. Fewer cells
+(79578/78976) did not improve the limiting setup corner. No adoption.
+The 32:1 wire run38496981217 completed execution; electrical acceptance still
+requires its published review. Combined Nx4 diagnosis38513890541 all-R and
+output-R cases completed but both fail original engineering gates (summaries
+639281758/639290449); internal-R case remains pending. Artificial R is never
+physical acceptance. Route38511490580 and PLL1us38507479646 remain on their
+existing active handles. Do not rerun completed studies or active native jobs.
+Retirement636387277 again reports COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE;
+local project directory was directly verified empty. No local artifacts created.
+All full goals OPEN. Continue source-bound repairs and acceptance checks in cloud.
+
+
 **Static-commit native mapping results published:**38513559584 baseline79578
 cells(summary639278022), static candidate78976(summary639278671). Original report
 hashes and archives pinned in new read_static_reports study; run this hosted
