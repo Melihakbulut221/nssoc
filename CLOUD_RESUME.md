@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Newest live handles — doubled-drive native capture and mainchip route only.**
+PFD native38616009542/job116031150471 (aoi4_d2_rc), sourcee0bd3db29bd0bcc3b840da4e0334419bff5c128a,
+observedin_progress at requested-native-capture step. Commonchecks116031150251
+completedPASS. Preserve exact run; no observation-timeout restart. Compare
+full50ns native reset recovery against failed originalaoi4_rc38610259816,
+then inspect all235terminal waveforms and full-device/PVT/acquisition needs.
+
+Earlier original native38610259816, terminalreview38613111364, parentmethod
+recovery38612960848, D2physical38614342619 andD2RC38615210714 are ALL terminal.
+No earlierPFD job remainslive. Their source/failure/pass evidence retained.
+Route38598795406/job115972338767 remainslive in exactpostCTS routing.
+FullserialPHY/newparentlayout/routedmainchip/finalsetuphold remainOPEN.
+All workcloud-only; no local workspace artifacts or CADprocesses.
+
+
 **Doubled-drive PFD freshRC38615210714 PASS; actual native capture prepared.**
 New235device layout yields715R1177C (not old716R1178C),53conductors/431anchors;
 all8binding+13rawRC+6composition faults passed with preservednativepoints.
