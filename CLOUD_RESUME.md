@@ -7,6 +7,30 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Latest actual native progress and exact live handles:** source444e78eb.
+PLL exact continuous1us capture38507479646/job115668187421 is running actual
+native code; sibling source/license checks PASS. Do not repeat snapshot failure
+38503868241 or restart this acquisition while its job exists/live.
+V11 corrected native nominal38507129843, PVT38507486510 and failing-corners
+38507494960 are running.355 hosted source/capture/receipt tests passed. Available
+summaries/hashes retained in V11 receipt loaded_screen_partial_20261014.
+Compact nominal passes (minimum originalbit margin0.280521955V); hot_low passes.
+Compact cold_high_hbt_wcs now passes ALL transistor limits (V10 had12VBE fails),
+but CMmax2.063234901V fails2.05V. ColdresCMmax2.076627404V also fails. HotHBT
+compact12data VCE fail, worst0.394913256V below0.4V. No waived margins.
+Combination experiment38507831996 dispatched on444e78eb: same exact V11 RC,
+4streams,matched compact/wire,failing_corners,cascade158,stiff65,pre_bias=
+output_feedback (fixed32um). This targets cold CM and hotdataVCE; selector
+headroom/whole-device/originalbit checks must still pass. Feedback circuit
+itself has no assembled layout/RC; do not call this fullphysical integration.
+OriginalV10 full32:1wire38496981217 and mainchiphalo1route38490952579 remain
+live at last observation. Check exact handles next; do not duplicate.
+Critical-route publication fix38506144487 succeeded in all6 publication steps;
+oldvariant RCfault failures remain recorded separately from archive transport.
+All work/output stored on GitHub, local workspace empty. FullserialPHY,
+assembledmainchiprouting and finalsetup/hold remain OPEN.
+
+
 **Exact1us native865 cloud continuation prepared:** cross-process snapshot run
 38503868241 segfaulted on snload/restore (-11); immutable failure summary639099695
 and archive639099391 are pinned in parent865_snapshot_failure_20261014. No
