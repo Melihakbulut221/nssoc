@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Proved direct ACK commit ready for paired native timing.**
+New studyadvert_dedicated_ack_commit compares dedicated-only against
+physical_idle_credit_dedicated_ack_commit. It requires original proof639541970
+SHA64683e3cc9eea66a81e8cf2195089c32c80a95c5158778c1817a75e6d3984799,
+all21source hashes and existing dedicatedFC all-state proof. Additional combined
+buffered/replay positives and invalid-ACK guard negative run before mapping.
+Rejected ACK-window candidate is excluded. Dispatch once on this source after
+confirming hosted inventory/regressions run on240ba459; no constraints changed.
+Prestage short-output composition was dispatched on240ba459. Find and retain
+newest corresponding Actions handle, then bind composition before new waves.
+Original PLL38507479646/route38511490580 remain handles. All goalsOPEN/cloud-only.
+
+
 **Direct ACK commit proof PASS; prestage native RC PASS.**
 38525456371 ACK job115724648567 summary639541970 passes all-input enable
 identity, full replay equivalence and baseline11/candidate11 port tests; invalid
