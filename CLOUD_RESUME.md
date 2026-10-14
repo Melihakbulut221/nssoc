@@ -7,6 +7,18 @@
 
 ### Newest state — supersedes every older live statement below
 
+**First actual PFD94 geometry rejected; local tie placement repaired.**
+38603616210 terminalFAIL at nativeDRC:560categories,oneLU.b marker in
+nmosHV$3. Native rule requires all N+active within20um of PWell tie; marker
+spans localy12.319-16um. Existing below-device substrate contact misses upper
+portion of widened16um NMOS. Move only the two aoi4 wideNMOS existing ties
+to device mid-height; same94MOS/94substrate/47wellcontacts and original88DFF
+geometry. No deck/threshold waiver. Rerun pll_pfd_layout on repaired source.
+Preserve failedsummary641054841 SHA78b0a86d432a2007a2286d1260592a5eddd8de37bd4e1fd5638a8eea6aa78f8f
+andarchive641054578 SHAe57531ec02ba98f77633e3dba92190d64ffec1511c3ddf52c46895d7c5f3c11c.
+Pairednative38602623171 androute38598795406 remain live/cloud-only.
+
+
 **Actual AOI reset PFD layout/verification prepared on hosted runner.**
 Generator now has explicitaoi4 profile:94original-schematic MOS,94substrate
 and47well contacts, topnssoc_pfd94_aoi4_layout_v1. Same AOI transistor list

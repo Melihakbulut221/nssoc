@@ -421,7 +421,15 @@ def build(pdk, out, reset_profile='baseline'):
             )
         )
         tap = pc("ptap1", {"w": "2u", "l": "2u"})
-        tt = place(tap, x + 10, y - 8 if model == "sg13_hv_nmos" else y - 20)
+        tap_y = y - 8 if model == "sg13_hv_nmos" else y - 20
+        if reset_profile == 'aoi4' and model == 'sg13_hv_nmos' and float(p['w'].removesuffix('u')) >= 16:
+            # Native LU.b requires every N+ active point within20um of a PWell
+            # tie. The old below-device tap misses the top of a16um-wide MOS.
+            # Move the actual existing contact to mid-height; no extra device
+            # or waived distance and no change to original88DFF geometry.
+            tap_y = y + float(p['w'].removesuffix('u')) / 2
+        tt = place(tap, x + 10, tap_y)
+        records[-1]['substrate_contact_position_um'] = [x + 10, tap_y]
         tp = [s.dbbox().transformed(tt) for s in tap.each_shape(layout.layer(8, 2))]
         assert len(tp) == 1
         escape(tp[0], "sub", lane + 16, name + "_ptap")
