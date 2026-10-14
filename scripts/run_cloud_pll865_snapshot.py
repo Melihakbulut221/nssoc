@@ -1629,6 +1629,37 @@ def compose_pfd_actual_parent():
         unpack(BASE+'cloud-migration-20261012-000/batch-000002.tar.gz',SOURCE_SHA,141989022,out/'original-parent',selected)
         original=(out/'original-parent/parent865.spice').read_text()
         require(digest(original.encode())=='b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48','Original865 source')
+        canonical_path='hw/soc/out/pcie-feedback-pbuf10-20261012/model29/parent865.spice'
+        unpack(BASE+'cloud-migration-20261012-000/batch-000001.tar.gz',
+            '213a563da91f2b31ba6998a5d14dbfd25972255d7941e566d8f33f7be3b500e1',263318296,out/'canonical-parent',
+            {canonical_path:(604976,'802c93c1a4ebf492133a2873f04c3f3e898323166d630328bb3864a18bfbe31a')})
+        canonical=(out/'canonical-parent/parent865.spice').read_text()
+        canonical_rows=statements(canonical);original_rows=statements(original)
+        require(canonical_rows[0]==original_rows[0] and canonical_rows[-1]==original_rows[-1],'Native fixture changes public interface')
+        def flat_records(rows):
+            records={}
+            for w in rows[1:-1]:
+                require(w[0][0].lower() in 'xrc' and w[0].lower() not in records,'Unexpected canonical row')
+                records[w[0].lower()]=w
+            return records
+        a=flat_records(canonical_rows);z=flat_records(original_rows)
+        require(set(a)==set(z) and len(a)==865+8783,'Native fixture changes original record IDs')
+        aliases={};inverse_aliases={}
+        for key,w in a.items():
+            other=z[key]
+            at=next(i for i,v in enumerate(w)if '='in v)-1 if w[0][0].lower()=='x' else 3
+            require(len(w)==len(other) and w[at:]==other[at:],'Native fixture changes component parameters '+key)
+            for old,new in zip(w[1:at],other[1:at],strict=True):
+                require(aliases.setdefault(old,new)==new,'Inconsistent native node rename '+old)
+                require(inverse_aliases.setdefault(new,old)==old,'Non-bijective native node rename '+new)
+        require(all(aliases.get(p,p)==p for p in canonical_rows[0][2:]),'Changed native public port name')
+        require(all(aliases.get('a_pfd_'+p,'a_pfd_'+p)=='a_pfd_'+p for p in ('sub','vdd','ref','vss','up','fb','down','reset')),'Unexpected PFD native alias')
+        require(aliases.get('a_count_vss','a_count_vss')=='a_count_vss','Changed common bulk reference name')
+        result['original_native_alias_proof']=dict(canonical_sha256=digest(canonical.encode()),
+            original_native_sha256=digest(original.encode()),exact_component_records=len(a),
+            all_models_parameters_wire_values_and_attachments_preserved=True,bijective=True,
+            changed_names={k:v for k,v in aliases.items()if k!=v})
+        save()
         macro=restore_pfd_physical_model(out,'aoi4_d2_rc')
         generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
         spec=importlib.util.spec_from_file_location('actual_parent_pfd_generator',generator)
@@ -1688,7 +1719,9 @@ def compose_pfd_actual_parent():
             else:kept.append(line)
         require(all(removed_parent[k]>0 for k in 'rc'),'Original parent wire records missing')
         require(not any(re.search(r'\bxparent\.',line.lower())for line in kept),'Old internal parent wires left behind')
-        rename=lambda n:'wire_cref' if n.lower()=='sub' else n[2:].lower() if n.startswith('P_') else n.lower()
+        def rename(n):
+            canonical='wire_cref' if n.lower()=='sub' else n[2:].lower() if n.startswith('P_') else n.lower()
+            return aliases.get(canonical,canonical)
         added=[];counts=Counter()
         for w in statements((out/'parent-rc/wires.spice').read_text()):
             if w[0][0].upper() in 'RC' and not w[0].startswith('.'):
