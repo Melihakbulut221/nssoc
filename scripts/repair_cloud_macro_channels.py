@@ -327,8 +327,21 @@ def verify_fresh_prects():
         roots={}; dummy_loads=[]; buffer_inputs=[]
         for n in added:
             inst=actual[n]
-            assert inst.getMaster().getName() in {'sg13g2_buf_2','sg13g2_buf_4','sg13g2_buf_8','sg13g2_buf_16'},('Unexpected CTS cell',n)
-            a=inst.findITerm('A');x=inst.findITerm('X')
+            master=inst.getMaster().getName()
+            if n.startswith('clkload'):
+                # Frozen TritonCTS.cpp:2430-2437 includes inverters as dummy
+                # candidates;2525-2528 connects only their input. Never treat
+                # an inverter driving a real net as a transparent buffer.
+                assert re.fullmatch(r'sg13g2_(?:buf|inv)_(?:1|2|4|8|16)',master),(n,master)
+                inputs=[t for t in inst.getITerms() if str(t.getIoType())=='INPUT' and str(t.getSigType()) not in ('POWER','GROUND')]
+                outputs=[t for t in inst.getITerms() if str(t.getIoType())=='OUTPUT' and str(t.getSigType()) not in ('POWER','GROUND')]
+                assert len(inputs)==len(outputs)==1,(n,master,'Dummy pin cardinality')
+                a,x=inputs[0],outputs[0]
+                assert x.getNet() is None,('Dummy output must remain unconnected',n,master)
+            else:
+                assert master in {'sg13g2_buf_2','sg13g2_buf_4','sg13g2_buf_8','sg13g2_buf_16'},('Unexpected CTS cell',n,master)
+                a=inst.findITerm('A');x=inst.findITerm('X')
+                assert x and x.getNet(),('Functional CTS buffer output missing',n)
             assert a and x and a.getNet(),('Incomplete CTS buffer input',n)
             buffer_inputs.append(a.getNet())
             if x.getNet():
@@ -394,6 +407,20 @@ def verify_fresh_prects():
         else:raise RuntimeError('Disconnected CTS supply accepted')
     finally:supply_fault.connect(supply)
     assert prove()==report['cts']
+    dummy_name=report['cts']['undriven_added_dummy_outputs'][0]
+    dummy=cts.findInst(dummy_name)
+    output=next(t for t in dummy.getITerms() if str(t.getIoType())=='OUTPUT')
+    assert output.getNet() is None
+    output.connect(net)
+    try:
+        try:prove()
+        except AssertionError:report['actual_dummy_output_drive_negative_control']=True
+        else:raise RuntimeError('Connected dummy output accepted')
+    finally:output.disconnect()
+    assert prove()==report['cts']
+    report['dummy_load_masters']={n:cts.findInst(n).getMaster().getName()
+        for n in report['cts']['undriven_added_dummy_outputs']}
+    report['dummy_implementation_source']='https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/cts/src/TritonCTS.cpp#L2430'
     report['inserted_buffer_power_and_ground_connected_to_original_domains']=True
     report.update(status='PASS_PLACEMENT_AND_TRANSPARENT_CTS_GRAPH_NOT_TIMING',
         cts_sha256=sha(OUT/'fresh-cts.odb'),scope='Original masters and every terminal preserved modulo inserted non-inverting CTS buffer trees. Source unchanged; no timing or route acceptance.')

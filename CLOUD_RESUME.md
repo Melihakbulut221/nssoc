@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Native CTS dummy-load type distinguished from functional clock buffers.**
+Resume38597967217 terminalFAIL at clkload427 master whitelist, before routing.
+Frozen native TritonCTS.cpp:2430-2437 intentionally chooses inverter dummy
+loads, and2525-2528 connects their input only. Verifier now permits only
+clkload-named single-input/single-output standard buf/inv cells with output
+strictly unconnected; functional clock buffers retain exact non-inverting
+whitelist and single-driver proof. Every input root and supply still checked.
+New actual dummy-output-to-signal connection negative must reject alongside
+actual original-terminal and inserted-supply disconnect controls. Reuse exact
+saved fresh-CTS5b18b060; no new placement/CTS simulation or acceptance waiver.
+PLL corrected FIFO readback38598305939 on730962af remains handle.
+
+
 **Full50 original FIFO format identified; no waveform corruption or gate waiver.**
 PLL diagnosis38597592170 terminalFAIL at payload hash comparison after full
 compressed/rawSHA checks passed. Original capture engine_parent753.py:408,460
