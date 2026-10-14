@@ -1843,6 +1843,33 @@ def compose_pfd_actual_parent():
             old_parent_wire_records=dict(removed_parent),new_parent_wire_records=dict(counts),
             new_pfd_r=715,new_pfd_c=1177,body_binding_does_not_change_wire_records=True)
         save()
+        actual_collapsed=collapsed(actual,wires)
+        def net_records(rows):
+            nets={}
+            for d in rows:
+                for i,n in enumerate(d['nets']):
+                    role='ds'if d['model'].startswith('sg13_') and i in (0,2)else 'ends'if d['model'] in ('rppd','rhigh') and i in (0,1)else i
+                    nets.setdefault(n,[]).append(dict(device=d['path'],model=d['model'],geometry=geometry(d),role=role,terminal=i))
+            records=[]
+            for n,terminals in nets.items():
+                signature=json.dumps(sorted([json.dumps([t['model'],t['geometry'],t['role']])for t in terminals]))
+                records.append(dict(net=n,terminals=terminals,signature=signature))
+            return records
+        expected_nets=net_records(expected);actual_nets=net_records(actual_collapsed)
+        matched=Counter(r['signature']for r in expected_nets)&Counter(r['signature']for r in actual_nets)
+        def unmatched(records):
+            remaining=matched.copy();different=[]
+            for r in records:
+                if remaining[r['signature']]:remaining[r['signature']]-=1
+                else:different.append(r)
+            return different
+        result['graph_diagnostic']=dict(expected_net_count=len(expected_nets),actual_net_count=len(actual_nets),
+            expected_graph_nodes=len(graph(expected)),actual_graph_nodes=len(graph(actual_collapsed)),
+            matched_net_signatures=sum(matched.values()),
+            unmatched_expected=unmatched(expected_nets),unmatched_actual=unmatched(actual_nets))
+        diagnostic=out/'graph-diagnostic.json'
+        diagnostic.write_text(json.dumps(dict(expected=expected,actual_collapsed=actual_collapsed,wires=wires),indent=2)+'\n')
+        result['graph_diagnostic_sha256']=sha(diagnostic);save()
         mapping=check_graph(actual,wires)
         result['exact_graph']=dict(nodes=len(mapping),devices=845,public_ports=17,mapping=mapping);save()
         graph_faults=[]
