@@ -695,6 +695,207 @@ def pfd_aoi_controls():
 
 
 
+
+def pfd_terminal_diagnosis(parent, names, values):
+    """Quantify actual terminal stress; no device qualification limits inferred."""
+    from collections import Counter
+    from build_pcie_local_vco_hybrid_v6 import statements,number
+    assert len(set(names))==len(names) and names[0]=='time'
+    assert values.ndim==2 and values.shape[1]==len(names) and len(values)>1
+    assert np.isfinite(values).all() and values[0,0]==0 and np.all(np.diff(values[:,0])>0)
+    t=values[:,0];index={n:i for i,n in enumerate(names)}
+    rows=[r for r in statements(parent) if r[0].lower().startswith('x_xpfd_')]
+    assert len(rows)==235 and len({r[0].lower() for r in rows})==235
+    census=Counter();mos=[];contacts=[];required=set()
+    def vector(node):
+        name='v(xloop.'+node.lower()+')';required.add(name)
+        assert name in index,('Missing physical terminal probe',name)
+        return values[:,index[name]]
+    def extrema(y):
+        low,high,absolute=int(np.argmin(y)),int(np.argmax(y)),int(np.argmax(abs(y)))
+        return dict(minimum=float(y[low]),minimum_time_s=float(t[low]),
+            maximum=float(y[high]),maximum_time_s=float(t[high]),
+            maximum_abs=float(abs(y[absolute])),maximum_abs_time_s=float(t[absolute]))
+    for r in rows:
+        model_at=5 if len(r)>5 and r[5] in ('sg13_hv_nmos','sg13_hv_pmos') else 3
+        model=r[model_at];assert model in ('sg13_hv_nmos','sg13_hv_pmos','ptap1','ntap1')
+        census[model]+=1
+        params={}
+        for token in r[model_at+1:]:
+            key,value=token.split('=');key=key.lower()
+            assert key not in params;params[key]=number(value)
+        nodes=r[1:model_at];vs=[vector(n) for n in nodes]
+        if model_at==5:
+            assert set(params)=={'l','w','as','ad','ps','pd','rfmode','ng','m'}
+            assert params['l']>0 and params['w']>0 and params['m']==params['ng']==1
+            d,g,s,b=vs
+            mos.append(dict(instance=r[0],model=model,
+                terminals=dict(zip(('D','G','S','B'),nodes,strict=True)),
+                terminal_ranges_v={k:extrema(y) for k,y in zip(('D','G','S','B'),vs,strict=True)},
+                differences_v={k:extrema(y) for k,y in [('Vgs',g-s),('Vgd',g-d),('Vds',d-s),('Vbs',b-s),('Vbd',b-d)]}))
+        else:
+            assert set(params)=={'r','w','l'} and params['r']>0 and params['w']>0 and params['l']>0
+            drop=vs[0]-vs[1];resistance=float(params['r'])
+            contacts.append(dict(instance=r[0],model=model,
+                terminals=dict(zip(('TIE','WELL'),nodes,strict=True)),
+                resistance_ohm=resistance,voltage_drop_v=extrema(drop),
+                derived_resistive_current_a=extrema(drop/resistance),
+                derived_resistive_power_w=extrema(drop*drop/resistance),
+                native_current_probe=False))
+    assert census==Counter(sg13_hv_nmos=47,sg13_hv_pmos=47,ptap1=94,ntap1=47)
+    assert len(mos)==94 and len(contacts)==141
+    top={key:sorted([dict(instance=r['instance'],model=r['model'],**r['differences_v'][key])
+        for r in mos],key=lambda r:r['maximum_abs'],reverse=True)[:12] for key in ('Vgs','Vgd','Vds','Vbs','Vbd')}
+    return dict(status='COMPLETE_235_DEVICE_TERMINAL_DIFFERENCES_NOT_ELECTRICAL_QUALIFICATION',
+        devices=235,mos=94,contacts=141,census=dict(census),covered_terminal_voltage_vectors=sorted(required),
+        samples=len(t),start_s=float(t[0]),end_s=float(t[-1]),mos_records=mos,contact_records=contacts,
+        largest_mos_differences_v=top,
+        largest_contact_drops_v=sorted(contacts,key=lambda r:r['voltage_drop_v']['maximum_abs'],reverse=True)[:12],
+        contact_current_method='Voltage(TIE)-Voltage(WELL) divided by exact finite compact-model R; derived only, not a simulator current probe.',
+        full_device_safety_accepted=False,qualified_pex=False,full_phy_accepted=False,
+        scope='Complete actual235 PFD terminal voltage coverage and signed differentials. This is not full845-device safety, oxide/junction/current-density/temperature qualification, spatial substrate/RF extraction, PVT or PHY acceptance.')
+
+def pfd_terminal_controls():
+    """Reject lost physical terminals and malformed native device records."""
+    names=['time','v(xloop.d)','v(xloop.g)','v(xloop.s)','v(xloop.b)']
+    t=np.array([0.,1e-9,2e-9])
+    v=np.column_stack([t,np.array([0.,.2,.4]),np.array([0.,.7,1.4]),np.zeros(3),np.array([0.,.1,.2])])
+    lines=[]
+    for i in range(94):
+        model='sg13_hv_nmos' if i<47 else 'sg13_hv_pmos'
+        lines.append(f'X_xpfd_d{i} d g s b {model} l=.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1')
+    for i in range(141):
+        lines.append(f'X_xpfd_t{i} d b '+('ptap1' if i<94 else 'ntap1')+' r=100 w=2u l=2u')
+    parent='\n'.join(lines)
+    good=pfd_terminal_diagnosis(parent,names,v)
+    assert good['mos_records'][0]['differences_v']['Vgs']['maximum']==1.4
+    assert abs(good['mos_records'][0]['differences_v']['Vgd']['maximum']-1.)<1e-15
+    assert good['contact_records'][0]['derived_resistive_current_a']['maximum']==.002
+    assert abs(good['contact_records'][0]['derived_resistive_power_w']['maximum']-.0004)<1e-18
+    nonfinite=v.copy();nonfinite[1,2]=np.nan
+    backwards=v.copy();backwards[2,0]=.5e-9
+    cases=[
+        ('missing_body_probe',parent,names[:-1],v[:,:-1]),
+        ('duplicate_probe',parent,names[:-1]+[names[1]],v),
+        ('missing_contact','\n'.join(lines[:-1]),names,v),
+        ('duplicate_device_identity',parent.replace('X_xpfd_d1 ','X_xpfd_d0 '),names,v),
+        ('invalid_model',parent.replace('sg13_hv_nmos','unknown_model',1),names,v),
+        ('negative_contact_resistance',parent.replace('r=100','r=-100',1),names,v),
+        ('duplicate_parameter',parent.replace('r=100','r=100 r=100',1),names,v),
+        ('nonfinite_terminal',parent,names,nonfinite),
+        ('backwards_time',parent,names,backwards)]
+    failures=[]
+    for label,source,columns,wave in cases:
+        try:pfd_terminal_diagnosis(source,columns,wave)
+        except (AssertionError,ValueError):failures.append(label)
+        else:raise AssertionError('Accepted malformed physical-terminal evidence: '+label)
+    return dict(positive=1,rejected=failures,qualified_pex=False)
+
+def review_physical_pfd():
+    """Read exact completed native capture, reconstruct source, quantify PFD stress."""
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted waveform analysis only'
+    out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
+    result=dict(status='RUNNING_PHYSICAL_PFD_NATIVE50_REVIEW',source_run=38610259816,
+        full_phy_accepted=False,acquisition_accepted=False,full_device_safety_accepted=False,
+        no_new_native=True,controls=pfd_terminal_controls())
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    def api(path):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
+    save()
+    try:
+        run=api('actions/runs/38610259816')
+        assert run['status']=='completed' and run['conclusion']=='success','Await exact native capture; never restart it'
+        assert run['head_sha']=='9e56ae047a0e36725bac42daa4868c092c2da261' and run['run_attempt']==1
+        release=api('releases/tags/cloud-results-38610259816-1-pll-pfd-aoi4_rc')
+        stem='pll-snapshot-aoi4_rc-38610259816-1'
+        def asset(name):
+            matches=[r for r in release['assets'] if r['name']==name];assert len(matches)==1
+            return matches[0]
+        def get(a):
+            data=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/releases/assets/'+str(a['id']),'-H','Accept: application/octet-stream'])
+            assert len(data)==a['size'] and a['digest']=='sha256:'+digest(data)
+            return data
+        sa,aa,ha=[asset(stem+suffix) for suffix in ('.json','.tar.gz','.tar.gz.sha256')]
+        summary=get(sa);capture=json.loads(summary);checksum=get(ha).decode().split()
+        assert checksum==[aa['digest'].removeprefix('sha256:'),stem+'.tar.gz']
+        packed=out/'source.tar.gz';fetch(aa['browser_download_url'],checksum[0],packed)
+        assert packed.stat().st_size==aa['size']
+        result['source_assets']=dict(summary_id=sa['id'],summary_sha256=digest(summary),
+            archive_id=aa['id'],archive_sha256=checksum[0],archive_bytes=aa['size']);save()
+        with tarfile.open(packed) as tar:
+            def member(name):
+                matches=[m for m in tar.getmembers() if m.name=='cloud-pll-snapshot/'+name]
+                assert len(matches)==1 and matches[0].isfile()
+                return tar.extractfile(matches[0]).read()
+            assert member('result.json')==summary
+            assert capture['status']=='COMPLETE_PHYSICAL_PFD_NATIVE50_FIXTURE_SCREEN_NOT_LOCK_OR_PARENT_LAYOUT_ACCEPTANCE'
+            assert capture['physical_pfd'] is True and capture['native_stop_s']==50e-9
+            assert len(capture['inputs'])==35 and capture['native_off_flags']==102
+            for item in capture['inputs'].values():
+                data=member(item['hosted_path']);assert len(data)==item['bytes'] and digest(data)==item['sha256']
+            parent=member('parent865.spice').decode();original=member('source/parent865.spice').decode()
+            macro=member('pfd-physical-source/wire/pfd235-wire01.spice').decode()
+            import importlib.util
+            generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
+            spec=importlib.util.spec_from_file_location('physical_pfd_source_generator',generator)
+            module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+            ref=module.devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES})
+            ref=[d for d in ref if d['path'].startswith(('xloop.xup.','xloop.xdn.'))]+pfd_aoi_devices()
+            expected,proof=pfd_physical_parent(original,macro,ref)
+            assert parent==expected and proof==capture['pfd_replacement']
+            assert digest(parent.encode())==capture['parent_sha256']
+            bench=member('source/bench.cir').decode()
+            assert digest(bench.encode())==capture['source_deck_sha256']=='8d1ace49e8c2abe21be67433b1b5714f7a468790358e4ef33d4ef038b93944af'
+            circuit=member('circuit.cir').decode()
+            roots=set(re.findall(r'(/[^"\s]+/cloud-pll-snapshot)/models/models',circuit));assert len(roots)==1
+            base=roots.pop();body,control=bench.split('.control\n');setup=control.split('\nop\n',1)[0]
+            body=body.replace(MODEL_ROOT,base+'/models/models').replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
+            setup=setup.replace(OSDI_ROOT+'/r3_cmc.osdi',base+'/models/r3_cmc.osdi')
+            for n in ('psp103.osdi','psp103_nqs.osdi'):setup=setup.replace(OSDI_ROOT+'/'+n,base+'/frontend/'+n)
+            original_save=next(l for l in setup.splitlines() if l.startswith('save '))
+            vectors=original_save[5:].split();assert len(vectors)==24
+            vectors += [n for n in proof['physical_terminal_voltage_probes'] if n not in vectors]
+            assert vectors==capture['vectors']
+            setup=setup.replace(original_save,'save '+' '.join(vectors))
+            assert circuit=='* '+body+'.control\n'+setup+'\n.endc\n.end\n'
+            assert digest(circuit.encode())==capture['relocated_deck_sha256']
+            assert member('spinit')==b'set num_threads=1\n'
+            assert member('candidate.cir')==b'NSSOC source-bound PFD candidate50ns\n.include "circuit.cir"\n.control\nop\nwrite op.raw all\nrun candidate.raw\nquit\n.endc\n.end\n'
+            runs=capture['native_runs'];assert len(runs)==1 and runs[0]['script']=='candidate.cir'
+            assert runs[0]['returncode']==0 and not runs[0]['diagnostics']
+            assert digest(member('candidate.cir.log'))==runs[0]['log_sha256']
+            op=zero_source_operating_point(member('op.raw'),vectors)
+            assert op==capture['zero_source_operating_point']
+            raw=member('candidate.raw')
+        packed.unlink()
+        meta_capture=capture['captures']['candidate.raw']
+        assert len(raw)==meta_capture['bytes'] and digest(raw)==meta_capture['sha256']
+        names,values,meta=decode_prefix(raw)
+        assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
+        assert all(meta_capture[k]==v for k,v in meta.items())
+        assert set(names)=={'time',*vectors} and len(names)==len(vectors)+1
+        assert len(values)>150000 and abs(values[-1,0]-50e-9)<1e-15
+        assert np.max(np.diff(values[:,0]))<=3.125e-13*1.00001
+        diagnosis=pfd_terminal_diagnosis(parent,names,values)
+        columns={n:values[:,i] for i,n in enumerate(names)};t=columns['time']
+        clear=columns[proof['clearb_vector']];events={}
+        for n in ('v(reference)','v(fb)'):
+            edges=rising(t,columns[n],1.25)
+            events[n]=[dict(time_s=float(e),clearb_v=float(np.interp(e,t,clear)),
+                reset_asserted_at_1p25_v=bool(np.interp(e,t,clear)<1.25)) for e in edges if e>12e-9]
+        assert events==capture['clock_events'],'Captured reset-mask summary disagrees with actual waveform'
+        for n in vectors:
+            assert float(columns[n].min())==capture['signals'][n]['minimum']
+            assert float(columns[n].max())==capture['signals'][n]['maximum']
+        result.update(status='COMPLETE_SOURCE_BOUND_PFD235_TERMINAL_REVIEW_NOT_SAFETY_OR_PHY_ACCEPTANCE',
+            source_parent_sha256=digest(parent.encode()),source_macro_sha256=digest(macro.encode()),
+            raw_sha256=digest(raw),capture=meta,diagnosis=diagnosis,
+            source_clock_events=capture['clock_events'],source_signals=capture['signals'],
+            source_fixture_scope=proof['scope'])
+    except BaseException as error:
+        result.update(status='FAILED_PHYSICAL_PFD_NATIVE50_REVIEW',error=repr(error));save();raise
+    save();print(result['status'],flush=True)
+
+
 def pfd_physical_parent(parent, macro, reference):
     """Flatten exact new physical PFD model into an unchanged parent test fixture."""
     from build_pcie_local_vco_hybrid_v6 import statements
@@ -1373,6 +1574,7 @@ def main():
     parser.add_argument('--pfd-lef',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
+    parser.add_argument('--review-physical-pfd',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc'))
     parser.add_argument('--review-acquisition',action='store_true')
@@ -1381,6 +1583,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.review_physical_pfd:
+        assert not any([args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
+        review_physical_pfd();return
     if args.pfd_rc_review:
         assert not any([args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         review_pfd_rc();return
@@ -1414,6 +1619,7 @@ def main():
     controls['pfd_topology']=pfd_topology_controls()
     controls['pfd_aoi_truth']=pfd_aoi_controls()
     controls['pfd_operating_point']=pfd_op_controls()
+    controls['pfd_physical_terminals']=pfd_terminal_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)

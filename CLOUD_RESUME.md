@@ -7,6 +7,19 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Physical PFD full-terminal waveform review prepared while native jobs run.**
+After38610259816 terminates successfully, dispatch pll_pfd_stage=physical_review.
+It restores that exact source9e56ae04 capture,35model/OSDI bytes, reconstructs
+845device fixture from immutable parent/PFD macro, verifies originalstartup/
+.3125ps/50ns deck and every terminal voltage. Reports Vgs/Vgd/Vds/Vbs/Vbd for
+all94MOS and exact finite-contact voltage drops/derivedR-current for141taps.
+Nine actual malformed-evidence controls plus analytic positive case required.
+Independently recomputes resetmask events and extrema from rawwaveform.
+This is quantitative diagnosis, not full845device safety/PVT/RF qualification;
+no invented limits or PHY acceptance. Do not dispatch before nativecomplete,
+restart simulation, or replace live route38598795406. Allworkcloud-only.
+
+
 **Live cloud-native continuation handles — retain exact runs.**
 Physical PFD candidate capture38610259816 on9e56ae047a0e36725bac42daa4868c092c2da261,
 job116011470430 (aoi4_rc), observedin_progress at requested-native-capture step.
