@@ -8,6 +8,19 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Both exact hot compact TC controls PASS; paired waveform diagnosis ready.**
+38519483522 hot639412001: bitmin0.222802747V, finalCMmin1.848810921V;
+hotres639411953: bitmin0.239085055V, finalCMmin1.836530301V; all original
+engineering gates/pass/no numerical warnings. Same actual Nx4 device/native
+feedback geometry as failed wire38517527891. Thus metal RC is the differentiator
+for this pair; do not retune bias blindly or relax thresholds. Both compact
+summary SHA/result bindings added under actual_geometry_followup.hot_compact_controls.
+Dispatch hosted diagnosis v8_tc_hot and v8_tc_hot_res_bcs once. Their tests and
+lossless raw verification precede actual physical-time node/current/delay
+comparison. No SPICE rerun. Dedicated endpoint trace38519890192 is active;
+PLL38507479646/route38511490580 retain handles. All goalsOPEN/cloud-only.
+
+
 **Dedicated commit timing improves limiting PCIe path, closure still OPEN.**
 38519026139 completed. Candidate639409787 slowPCIe-1.046260ns versus baseline
 639407422 -1.101756ns; fastPCIe hold unchanged-0.109062ns. SlowCPU setup remains
