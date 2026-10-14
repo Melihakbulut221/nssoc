@@ -10241,7 +10241,53 @@
     "circuit_profile": "final_drive_v10",
     "variant": "critical_buses_kelvin_low_ports_loads_shunts_series",
     "hypothesis": "Existing V10 usesNx3 data HBTs instead ofV8Nx4 while retaining selectors/tails/reference. Lower data-bank capacitance may reduce MUX delay with improved routing. Allthree V10compact cases previously passed; old V10wire geometry still failed and is not adopted. Fresh actual physical/RC and6loaded cases required.",
-    "prior_v10_receipt": "docs/evidence/pcie-final-v10-loaded-tree-20261013.json"
+    "prior_v10_receipt": "docs/evidence/pcie-final-v10-loaded-tree-20261013.json",
+    "physical_result": {
+      "run": 38494057637,
+      "source_head": "05a0a4c8dfafe7e5f9e16ff1923fb7b37f948395",
+      "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
+      "drc": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "7946663d905b8fafac7d1878ed1fdad4da4aee11909e0572d90acb309b069f45",
+        "log_sha256": "9fae8f56278a0e265cb0e06272d5ffe3e36091fdce802db9f3c33dfc88348a72"
+      },
+      "lvs": [
+        {
+          "layout": "nssoc_tx_mux2_final_drive_v10_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V10_LAYOUT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "flat_lvs": [
+        {
+          "layout": "nssoc_tx_mux2_final_drive_v10_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V10_LAYOUT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "faults": {
+        "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+        "missing_hbt": "REJECTED_EXPECTED_FAULT",
+        "q_open": "REJECTED_EXPECTED_FAULT",
+        "rail_short": "REJECTED_EXPECTED_FAULT",
+        "offgrid": "REJECTED_EXPECTED_FAULT"
+      },
+      "archive": {
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38494057637-1-layout-final_drive_v10-critical_buses_kelvin_low_ports_loads_shunts_series/tx-layout-repair-cloud-final_drive_v10-critical_buses_kelvin_low_ports_loads_shunts_series-38494057637-1.tar.gz",
+        "bytes": 396578,
+        "sha256": "07d1f8f39ac7c676ca16bce2397ceba4d91bdf49d89ed6a25c9f6e7b7781e444",
+        "summary_asset_id": 638777925,
+        "summary_sha256": "2eb89deb41bcf92268d12302d173b04790cc0c04c8c5d7c4daf766b4b4b94c28"
+      }
+    }
   },
   "scope": "Only4:1 component test with external ideal clocks/intermacro connections and schematic TX. No qualified RF/substrate PEX, assembled32:1/x4 serialPHY, CDR/PLL or chip timing acceptance."
 }
