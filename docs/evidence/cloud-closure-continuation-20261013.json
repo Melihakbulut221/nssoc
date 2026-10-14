@@ -100,7 +100,7 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Cloud only: inspect current pre-CTS placement/floorplanning flow and exact source-bound congestion markers before selecting a hierarchy/macro-channel placement repair. Preserve original constraints, routing capacities and connectivity; do not use the stale September resume checkpoint.",
+    "Retain fresh preCTS/GRT/CTS run38596343019 onb81af739; inspect actual native placement/CTS structural and supply proofs plus original all-corner STA and final zero-overflow routing. Do not duplicate on observation timeout. Cancelled preparation38596031286 is terminal; recovery38594940366 is terminal PASS.",
     "CUGR38591636770 is terminal failure: empty-declaration native repair PASS, overflow gate FAIL. Preserve summary640851603 and archive640850855. Do not rerun identical CUGR input or describe it as active.",
     "Use source-bound PLL cycle diagnosis640800063 to investigate PFD/reset/pump behavior. Before reusing older full50ns wave, verify exact bench/netlist identity on a hosted runner. Existing original acquisition gates still fail.",
     "Preserve rejected hot analog cases and digital hold regression; full serial PHY, routed mainchip and final setup/hold remain OPEN. No local checkout, simulation, CAD or artifact storage."
@@ -64459,7 +64459,7 @@
     "All work stays cloud-only; fullserial PHY/detailedchiproute/finalSTA remainOPEN."
   ],
   "current_state_20261014": {
-    "as_of": "2026-10-14T15:57:52.228013+00:00",
+    "as_of": "2026-10-14T16:15:04.238037+00:00",
     "supersedes_older_live_statuses": true,
     "full_phy": "OPEN",
     "mainchip_routing": "OPEN_BEST_FASTROUTE_OVERFLOW_132_CUGR_REJECTED",
@@ -64470,9 +64470,13 @@
     "pll_review": "FAILED_ROLLING_FREQUENCY_GATE_NO_ACQUISITION_ACCEPTANCE",
     "congestion_diagnosis_run": 38566051147,
     "congestion_diagnosis": "COMPLETE_100_MARKERS_138_OVERFLOW_NOT_CLOSURE",
-    "known_active_native_jobs": [],
+    "known_active_native_jobs": [
+      38596343019
+    ],
     "cugr": "TERMINAL_REJECTED_OVERFLOW_INPUT_REPAIR_PASS",
-    "pll_cycle_diagnosis": "COMPLETE_ORIGINAL_GATES_STILL_REJECTED"
+    "pll_cycle_diagnosis": "COMPLETE_ORIGINAL_GATES_STILL_REJECTED",
+    "prects_recovery": "PASS_EXACT_NATIVE_LINEAGE_NOT_CLOSURE",
+    "fresh_placement_cts": "in_progress"
   },
   "full32_wire_terminal_20261014": {
     "run": 38496981217,
@@ -101827,5 +101831,64 @@
     "retirement_receipt_asset": 636387277,
     "retirement_receipt_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
     "scope": "Workspace and targeted temporary/cache checks; original user-supplied Downloads documents preserved. No claim that unrelated personal files were deleted."
+  },
+  "prects_recovery_20261014": {
+    "run": 38594940366,
+    "source_head": "51f7a646858fc0a02ced8ef06dda50ff7daa701f",
+    "status": "PASS_SOURCE_BOUND_PRECTS_RECOVERY_NOT_IMPLEMENTATION",
+    "stages": {
+      "preplacement": 79195,
+      "prects": 97722,
+      "postcts": 113771
+    },
+    "macros": 20,
+    "macro_boundary_die_core_geometry_identical": true,
+    "assets": [
+      {
+        "id": 640896159,
+        "name": "newer-congestion-probe-38594940366-1.json",
+        "size": 9514534,
+        "digest": "sha256:817d6b0e4839f52630caa9630c18cfbff23cca80dcd380229d692da13204e493",
+        "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38594940366-1-congestion-prects_inventory/newer-congestion-probe-38594940366-1.json"
+      },
+      {
+        "id": 640895727,
+        "name": "newer-congestion-probe-38594940366-1.tar.gz",
+        "size": 33604849,
+        "digest": "sha256:ffe047106a1a2de8af638c0cad4651fc41c7895eb88b78e8a204726100ec4086",
+        "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38594940366-1-congestion-prects_inventory/newer-congestion-probe-38594940366-1.tar.gz"
+      },
+      {
+        "id": 640895947,
+        "name": "newer-congestion-probe-38594940366-1.tar.gz.sha256",
+        "size": 110,
+        "digest": "sha256:6f342b667ce6e9c2b98f7f7e266c4d277c8f1f0ef03b290e32015315a017de05",
+        "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38594940366-1-congestion-prects_inventory/newer-congestion-probe-38594940366-1.tar.gz.sha256"
+      }
+    ],
+    "scope": "Exact source and native geometry only, not functional equivalence or timing/routing closure."
+  },
+  "fresh_prects_grt_trial_20261014": {
+    "run": 38596343019,
+    "jobs": [
+      115963950590
+    ],
+    "source_head": "b81af7396d907284a63cec47306a5f905694b1de",
+    "status_at_observation": "in_progress",
+    "conclusion_at_observation": null,
+    "adopted": false,
+    "cancelled_preparation_run": {
+      "run": 38596031286,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "reason": "Corrected input adds explicit inserted CTS supply connectivity and actual supply-disconnect negative control before native implementation."
+    },
+    "target_density": 0.45,
+    "router": "fast_route",
+    "placement_uses_native_grt": true,
+    "ethernet_hold_depth": 0,
+    "routing_seed": 13,
+    "capacity_perturbation": 0,
+    "scope": "Move sequential/combinational logic from exact preCTS source, fresh original-policy CTS, original connection/supply invariants, full original corner constraints and zero-overflow final route gate. No adoption; prior hold2 ECO is not presumed valid on new CTS."
   }
 }

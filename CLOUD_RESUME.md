@@ -8,6 +8,17 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Live corrected fresh-placement/CTS handle:38596343019.**
+Sourceb81af7396d907284a63cec47306a5f905694b1de; jobs115963950590.
+Current API state:in_progress/None. Preserve this handle and
+inspect syntax, native placement/CTS graph plus supply proofs, original all-corner
+STA and final zero-overflow route result. Do not restart on observation timeout.
+Earlier38596031286 is terminalcancelled after corrected-input decision;
+preCTS recovery38594940366 is terminalPASS with exact source/geometry records.
+Current turn made native/source progress; no product completion or blocker.
+Cloud-only/full serial PHY/routed mainchip/finalsetup-hold OPEN.
+
+
 **Fresh CTS supply invariant added before physical execution.**
 Initial prects_grt run38596031286/job115962883096 was cancelled during native
 runtime preparation to add explicit global_connect and verification of every
