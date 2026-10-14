@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**V11 harness repair / PLL snapshot terminal failure:** V11 initial loaded runs
+38506756540/38506767529/38506778818 stop before native simulation: receipt lacked
+counts. Added exact counts from immutable native composition (54devices,
+4023R,2640C), plus supported-receipt schema integration control. Original failed
+runs retained. Dispatch corrected nominal first; inspect hosted schema tests
+and actual native start before repeating other corners.
+PLL snapshot38503868241 is TERMINAL: continuous50ns and same-process resume50ns
+finished in994/987s with complete25-column captures, but fresh-process restore
+segfaulted(return -11). Snapshot NOT validated. Summary639099695,archive639099391
+retain full failure; no cross-process acquisition chaining allowed. Reduced
+selected-probe output took~20s/ns on hosted runner; assess exact1us native run
+against hosted6h ceiling without changing sources/step/tolerances/lock gates.
+32:1wire38496981217 and mainchiproute38490952579 remain live. All cloud-only.
+
+
 **V11 composed native device/RC is ready for loaded simulation:**38506404916
 passed binding on6be7d443. Summary639089844,archive639089513; immutable receipt
 pcie-final-v11-kelvin-low-ports-loads-shunts-series-composition-20261014.json.

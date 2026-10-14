@@ -685,3 +685,21 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     for key in ('sap','san','sbp','sbn','sp','sn'):
         stimulus=lambda deck:deck.split('V'+key+' ')[1].split('R'+key+' ')[0]
         assert stimulus(before)==stimulus(after)
+
+
+def test_physical_final_receipts_supply_required_native_runtime_metadata():
+    import ast
+    import json
+    # Read the actual supported profiles rather than duplicating a second list.
+    tree = ast.parse((ROOT/'scripts/run_cloud_tx_mux4.py').read_text())
+    choices = next(keyword.value for call in ast.walk(tree)
+                   if isinstance(call, ast.Call) and call.args
+                   and isinstance(call.args[0], ast.Constant)
+                   and call.args[0].value == '--physical-final-profile'
+                   for keyword in call.keywords if keyword.arg == 'choices')
+    for profile in ast.literal_eval(choices):
+        spec = json.loads(mux4.physical_final_spec_path(profile).read_text())
+        assert spec['status'] == 'PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT'
+        assert spec['counts']['devices'] == 54
+        assert all(isinstance(spec['counts'][key], int) and spec['counts'][key] > 0 for key in ('R', 'C'))
+        assert all(len(spec['outputs'][name]) == 64 for name in ('mux54-wire01.spice','mux54-compact01.spice'))
