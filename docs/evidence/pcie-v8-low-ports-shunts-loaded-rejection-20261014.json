@@ -1647,5 +1647,127 @@
     "failed_hbts": 3
   },
   "next": "Source-bound full-wave compact/wire diagnosis before further geometry or circuit changes. Keep original sample phase and all voltage limits.",
-  "scope": "Six source-bound 4:1 macro composition cases; external ideal clocks and ideal intermacro wiring. Not32:1, assembled layout, PLL/CDR, full PHY or chip STA."
+  "scope": "Six source-bound 4:1 macro composition cases; external ideal clocks and ideal intermacro wiring. Not32:1, assembled layout, PLL/CDR, full PHY or chip STA.",
+  "completed_hot_diagnosis": {
+    "run": 38487471013,
+    "summary_asset_id": 638624589,
+    "summary_sha256": "fa4d6d6922dc9120ffb0a84976944cc58802fb1bd2383c6f714312afb116e70a",
+    "transitions": {
+      "physical_compact": {
+        "clock_to_mux_zero_ps": {
+          "count": 128,
+          "minimum": 9.34302203436066,
+          "median": 9.491111200655883,
+          "maximum": 9.581434892876558
+        },
+        "mux_to_tx_zero_ps": {
+          "count": 128,
+          "minimum": 5.855782845254846,
+          "median": 5.9712200913279645,
+          "maximum": 6.09829029383962
+        },
+        "source_to_output_100mv_ps": {
+          "count": 128,
+          "minimum": 26.961707918106384,
+          "median": 27.179796408673198,
+          "maximum": 27.4264716742218
+        }
+      },
+      "physical_wire": {
+        "clock_to_mux_zero_ps": {
+          "count": 128,
+          "minimum": 15.437348942052626,
+          "median": 17.54838624259397,
+          "maximum": 18.98749890877277
+        },
+        "mux_to_tx_zero_ps": {
+          "count": 128,
+          "minimum": 5.8094192415294605,
+          "median": 6.0888208965025274,
+          "maximum": 6.449019885761282
+        },
+        "source_to_output_100mv_ps": {
+          "count": 128,
+          "minimum": 33.07769694088524,
+          "median": 35.9420035938698,
+          "maximum": 38.37732951036276
+        }
+      }
+    },
+    "failed_bank_devices": {
+      "xmux.xd0044": {
+        "compact_terminals": [
+          "xmux.n_14",
+          "ap",
+          "xmux.n_15",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t044_c",
+          "xmux.t044_b",
+          "xmux.t044_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.1514270009376859,
+          "base_v": -0.030561656232080514,
+          "emitter_v": -0.04267352284276016,
+          "vce_v": -0.10875347809492575,
+          "vbe_v": 0.012111866610679423,
+          "collector_current_a": -0.0003142497536439678
+        }
+      },
+      "xmux.xd0053": {
+        "compact_terminals": [
+          "xmux.n_14",
+          "ap",
+          "xmux.n_15",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t053_c",
+          "xmux.t053_b",
+          "xmux.t053_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.1513784547530337,
+          "base_v": -0.030562276162977353,
+          "emitter_v": -0.04272899577841338,
+          "vce_v": -0.10864945897461986,
+          "vbe_v": 0.012166719615435917,
+          "collector_current_a": -0.00031203335547388955
+        }
+      },
+      "xmux.xd0054": {
+        "compact_terminals": [
+          "xmux.n_14",
+          "ap",
+          "xmux.n_15",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t054_c",
+          "xmux.t054_b",
+          "xmux.t054_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.15129020607376842,
+          "base_v": -0.030562723129573977,
+          "emitter_v": -0.04283770968211287,
+          "vce_v": -0.10845249639165522,
+          "vbe_v": 0.012274986552539002,
+          "collector_current_a": -0.00030643912182273727
+        }
+      }
+    },
+    "interpretation": "The actual ap data bank loses about151mV mean collector potential and109mV Vce versus compact. Original early-output57 failures remain, maximum100mV arrival38.377ps vs37.5ps sample. This motivates shortening the actual collector supply/load paths in the measured shunt geometry, not changing limits or sample times."
+  },
+  "next_geometry": {
+    "variant": "critical_buses_kelvin_low_ports_loads_shunts",
+    "changes": "Combine existing native R19/R20 y=-18um collector-load placement with R23/R24 output-shunts geometry and corrected149.6um avss lane. Same54devices,values,metal widths and bit oracle.",
+    "acceptance": "Fresh zero-marker native DRC, strict hierarchical/flat LVS and five faults, then native RC with13controls, source-bound composition and all six4:1PVT cases before32:1 or physical adoption.",
+    "adopted": false
+  }
 }
