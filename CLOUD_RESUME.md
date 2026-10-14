@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Direct EOP proof PASS; mapping38517610171 active.** Proof38517360412 summary
+639356884 passes3all-state induction/2counterexamples/10positive ports; no skips.
+No mapping/adoption claim yet. Do not rerun proved candidate or rejected bank-only
+trial. Actual native Nx4 TCfeedback study38517527891 source1087cab6 is active,
+using V8 layout's own4021R/2638C and device geometry, no Nx substitution. Four
+independent corners; previous mixed-V11geometry run38516411596 fully terminal,
+2coldPASS/2hotFAIL and retained in structured receipts. No feedback candidate
+accepted. Full exact source/results/hashes saved in ACK and V11 evidence docs.
+PLL38507479646 and route38511490580 freshly verified in_progress. All local
+workspace contents remain retired; calculations/test/layout in cloud only.
+This turn progressed via measured rejections, proved direct-EOP repair and
+actual-layout followup dispatch; no genuine blocker. All full goalsOPEN.
+
+
 **Direct EOP proof live38517360412/job115699056790** on1087cab6. Three all-state
 proofs and both original negative controls required before paired mapping.
 **TC feedback mixed-model sensitivity terminal:** all4cases complete; cold HBT
