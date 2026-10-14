@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Verified latest PLL resume point and hosted diagnostic:**865PBUF10 finite50ns
+native01 PASS, independent functional/electrical PASS, zero-source startup and
+clean diagnostics. Immutable batch007(asset634874106,669884bytes,
+SHAe59ca7de8b8f79a200b226fc7f817bc6eee415ebc563cb811ad5c0be1ae832c6).
+Finite capture took5041.802s locally. native04 acquisition failed RAM floor;
+native07 is terminalCANCELLED by parentSIGTERM,returncode-15,not currentlylive.
+Native07 log reaches233.927ns only;1us final800-1000ns criteria are unobserved.
+All exact native07 bytes are batch002(asset634832275,141989022bytes,
+SHA6021e860444f74adae386a07f85254169bb6e75ab03fd981dff8cc52c098f6ce).
+Bench already usesKLU, reltol1e-4/abstol1e-12, maxstep.3125ps; never add a
+newKLU trial or silently coarsen timestep. Current raw149771119bytes pinned
+SHA7c1f37bd9e29e794f2a33c67fe5efaa3f0c021bc907484d1d7efa60521d25ba8.
+New `read_cloud_pll_acquisition_prefix.py` diagnoses this exact saved prefix
+ON GITHUB, with five corruption controls, full archive/member hashes and
+explicitly missing final acquisition windows. Dispatch existing workflow
+cloud-migration-checks.yml withpll_prefix_readback=true. No new nativePLL
+simulation yet. Inspect frequency/VCTRL direction before expensive replay.
+FullserialPHY,assembledchiprouting,finalsetuphold remainOPEN;cloud-only.
+
+
 **PLL continuation correction:**744/753 terminal readback below is HISTORICAL.
 Later physical853(reset96) and865(PBUF10) descendants exist. Do NOT roll back
 to compact753. The latest migration roots to inspect are

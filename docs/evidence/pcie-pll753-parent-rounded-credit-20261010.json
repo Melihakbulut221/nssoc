@@ -7628,7 +7628,31 @@
         "pcie-pbuf10-native865-20261012",
         "pcie-pbuf10-acquisition-20261012"
       ],
-      "scope": "The865 gate requires original eight functional checks, independent electrical pass and native safety before a1us selected-probe acquisition diagnostic. Its source alone is not evidence of dispatch or completion."
+      "scope": "The865 gate requires original eight functional checks, independent electrical pass and native safety before a1us selected-probe acquisition diagnostic. Its source alone is not evidence of dispatch or completion.",
+      "verified_865_resume": {
+        "finite_archive_asset_id": 634874106,
+        "finite_archive_sha256": "e59ca7de8b8f79a200b226fc7f817bc6eee415ebc563cb811ad5c0be1ae832c6",
+        "native_status": "PASS_NATIVE_PARENT865_FINITE_POINT",
+        "independent_functional_passed": true,
+        "independent_electrical_passed": true,
+        "full_capture_rows": 160072,
+        "finite50ns_elapsed_s": 5041.802005061996,
+        "source_gate": "pcie-pbuf10-acquisition-20261012/gate01.json",
+        "gate_sha256": "f1c202dfc05e9210f7fb53f017cf3bf68d9f8ca63bb902a93f28bbab1b8ac861",
+        "native04_error": "AssertionError(2GiB available RAM floor)",
+        "native07_status": "FAILED_ONE_US_SELECTED_PROBE_DIAGNOSTIC",
+        "native07_owner_status": "CANCELLED",
+        "native07_reason": "Parent received SIGTERM",
+        "native07_returncode": -15,
+        "log_final_reference_time_s": 2.33927e-07,
+        "raw_prefix": {
+          "archive_asset_id": 634832275,
+          "bytes": 149771119,
+          "sha256": "7c1f37bd9e29e794f2a33c67fe5efaa3f0c021bc907484d1d7efa60521d25ba8"
+        },
+        "native_options": "reltol=1e-4 abstol=1e-12 klu; maxstep.3125ps; noVCTRLclamp",
+        "next_action": "Run pll_prefix_readback on GitHub. Inspect unchanged partial trajectory before proposing a long replay or circuit repair. Existing KLU must not be proposed as a new speedup. No partial prefix proves final800-1000ns acquisition or full-device/PVT safety."
+      }
     }
   }
 }
