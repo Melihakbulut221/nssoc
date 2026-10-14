@@ -7,6 +7,22 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Independent setup-path candidate prepared:** run_cloud_advert_control.py uses
+exact21-file physical idle/credit source, without earlier rejected EOP-ready
+rewrite. Remove internal ready reset gate, tie advertiser link high beneath
+unchanged actual local_reset, and drive advertiser valid from reset-cleared
+active state. No new latency, timer/state/clock/constraint change. Full-region
+SAT induction on all storage/output, arbitrary reset/link/clock, refresh128/0/1,
+complete buffered ports and wrong-grant counterexample required. This is an
+UNPROVEN candidate; dispatch migration workflow advert_control=true, then map
+only if proof passes. Do not adopt or reuse earlier reset/EOP timing results.
+Analog combination38507831996 first coldHBT compact result639126842 PASSES
+all original bit/device/interface gates (margin0.2560095V,CMmax2.04145454V).
+Other paired corners and physicalwire still active; no broad acceptance.
+Existing V11 baseline,1us PLL38507479646,route38490952579 and32:1wire38496981217
+retain their handles. All computations/evidence cloud-only; all full goalsOPEN.
+
+
 **Latest actual native progress and exact live handles:** source444e78eb.
 PLL exact continuous1us capture38507479646/job115668187421 is running actual
 native code; sibling source/license checks PASS. Do not repeat snapshot failure
