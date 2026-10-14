@@ -10,7 +10,7 @@ on:
     inputs:
       study:
         type: choice
-        options: [advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
+        options: [read_control_reports, advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
         default: ack
 permissions:
   contents: read
@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   map-and-screen:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && inputs.study != 'read_control_reports'
     runs-on: ubuntu-22.04
     timeout-minutes: 360 # Hosted platform ceiling; no shorter native watchdog.
     strategy:
@@ -76,3 +76,71 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           cp 'cloud-ack-map/${{ matrix.profile }}/result.json' "${archive%.tar.gz}.json"
           python3 scripts/publish_cloud_results.py --group 'ack-map-${{ matrix.profile }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+
+  read-control-reports:
+    if: github.event_name == 'workflow_dispatch' && inputs.study == 'read_control_reports'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Read exact preserved reports on hosted runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, io, json, os, re, subprocess, sys, tarfile
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from read_opensta_phase_slacks import parse_phases
+          assert os.environ['GITHUB_ACTIONS'] == 'true'
+          out=Path('cloud-control-reports'); out.mkdir()
+          sources=[('physical_idle_credit',639167692,16843302,'60448a4513c527f11a17463ed8871f400b8f3d381bbc4daa22d2b3a60a615ca7',639167825,'935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc'),('physical_idle_credit_control',639169881,17235476,'052f5f252e3cae645121861d190c384b270faf6dc41a7f9c37ec925c3b79ab66',639169985,'d448253d0fbb41ce68098328354b3c0467741525441eb18ebc565cd757a5853d')]
+          results={}
+          def fetch(i):
+              return subprocess.check_output(['gh','api',f'repos/{os.environ["GITHUB_REPOSITORY"]}/releases/assets/{i}','-H','Accept: application/octet-stream'])
+          for profile,aid,size,digest,sid,logsha in sources:
+              raw=fetch(aid)
+              assert len(raw)==size and hashlib.sha256(raw).hexdigest()==digest
+              summaryraw=fetch(sid); summary=json.loads(summaryraw)
+              assert summary['profile']==profile and summary['status']=='COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
+              assert summary['screen_result']['outputs']['screen.log']==logsha
+              name=f'cloud-ack-map/{profile}/screen05/screen.log'
+              with tarfile.open(fileobj=io.BytesIO(raw)) as tf:
+                  hits=[m for m in tf if m.name==name]
+                  assert len(hits)==1 and hits[0].isfile() and hits[0].size<20000000
+                  log=tf.extractfile(hits[0]).read()
+              assert hashlib.sha256(log).hexdigest()==logsha
+              (out/(profile+'.log')).write_bytes(log)
+              text=log.decode()
+              prefixes=[p for p in ('CORNER','PHASE') if re.search(r'^'+p+r'_\w+[ 	]*$',text,re.M)]
+              assert len(prefixes)==1, prefixes
+              phases=parse_phases(text,prefixes[0])
+              assert len(phases)>=6
+              assert {p['path_type'] for v in phases.values() for p in v['paths']}=={'min','max'}
+              assert len({p['corner'] for v in phases.values() for p in v['paths']})==3
+              results[profile]=dict(archive_asset=aid,archive_sha256=digest,summary_asset=sid,summary_sha256=hashlib.sha256(summaryraw).hexdigest(),log_sha256=logsha,mapped_cells=summary['mapped_cells'],phases=phases)
+          base=results['physical_idle_credit']['phases']; cand=results['physical_idle_credit_control']['phases']
+          assert base.keys()==cand.keys()
+          differences={}
+          for phase in base:
+              assert base[phase]['groups'].keys()==cand[phase]['groups'].keys()
+              differences[phase]={g:dict(baseline_ns=base[phase]['groups'][g]['worst_slack_ns'],candidate_ns=cand[phase]['groups'][g]['worst_slack_ns'],candidate_minus_baseline_ns=cand[phase]['groups'][g]['worst_slack_ns']-base[phase]['groups'][g]['worst_slack_ns']) for g in base[phase]['groups']}
+          result=dict(status='COMPLETE_EXACT_PAIRED_REPORTED_SLACK_READBACK_NOT_SIGNOFF',source_run=38509087565,timing_accepted=False,adopted=False,scope='Original unplaced three-corner reports only; all reported groups preserved. No routing or signoff acceptance.',sources=results,differences=differences)
+          (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(differences,indent=2))
+          PYCODE
+      - name: Retain original reports and readback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: control-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-control-reports/
+          if-no-files-found: error
+      - name: Permanently preserve readback
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/publish_cloud_results.py --group control-reports cloud-control-reports/result.json cloud-control-reports/*.log

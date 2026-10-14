@@ -7,6 +7,20 @@
 
 ### Newest state — supersedes every older live statement below
 
+
+**Cloud-only continuation:** workspace remains empty. Exact halo1 congestion
+probe38509934192 dispatched onbc43f91e; do not duplicate. Main route stays
+rejected with155overflow. Control mapping38509087565 is terminal: baseline79578
+cells, candidate79555, but no adoption or timing claim. New mapping study
+read_control_reports restores both SHA-bound original reports on hosted runner,
+parses all reported groups and compares all three corners without resynthesis.
+Dispatch this readback once. V11 input-R sensitivity38508878110 terminal FAIL
+original gates despite artificial1percent final inputR: bit margin0.020459546V,
+97sub100mV samples, six dataVCE failures, minimum0.374675481V. It cannot replace
+real RC/geometry. Summary639166681 and exact metrics pinned in V11 receipt.
+PLL1us38507479646 and original32:1wire38496981217 still live at latest check.
+FullserialPHY, routedmainchip and finalsetup/hold remain OPEN.
+
 **Mainchip route38490952579 is now TERMINAL FAIL, not live:** halo1/seed13
 finished native73/100 with GRT-0230 non-improvement then GRT-0116 congestion;
 155totaloverflow (M2=1,M3=14,M4=22,M5=104,TM1=11,TM2=3). Not a timeout.
