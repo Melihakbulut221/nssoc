@@ -26,6 +26,13 @@ def test_independent_hbt_resistor_corners_do_not_change_circuit_or_shared_studie
         assert not any(key in actual for key in ('pre_bias','final_drive','prestage','phase'))
 
 
+def test_hot_quarter_step_preserves_original_pvt_and_shared_table():
+    from run_cloud_tx_operating_point import CONDITIONS as shared
+    assert 'hot_low_quarter_step' not in shared
+    assert mux4.CONDITIONS['hot_low_quarter_step'] == dict(shared['hot_low'], step_ps=.25)
+    assert mux4.UI == 125e-12 and mux4.BITS == 256
+
+
 def points(text):
     return np.asarray([tuple(map(float,line.lstrip('+ ').split()))
                        for line in text[4:-1].splitlines() if line.strip()])

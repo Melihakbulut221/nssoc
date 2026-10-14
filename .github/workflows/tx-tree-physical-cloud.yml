@@ -12,7 +12,7 @@ on:
       study:
         description: Independent engineering checks using the same native circuit and original bit oracle
         type: choice
-        options: [nominal, temperature_voltage, independent_corners, mos_corners, quarter_step, physical_faults]
+        options: [nominal, temperature_voltage, independent_corners, mos_corners, quarter_step, hot_low_quarter_step, physical_faults]
         default: nominal
       streams:
         description: Tree size for the actual physical macro experiment
@@ -46,14 +46,16 @@ concurrency:
   cancel-in-progress: false
 jobs:
   native-transient:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix:
         streams: ${{ fromJSON(inputs.streams == '4' && '[4]' || inputs.streams == '32' && '[32]' || '[4,32]') }}
         prestage: [physical_compact, physical_wire]
-        condition: ${{ fromJSON(inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
+        condition: ${{ fromJSON(inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'hot_low_quarter_step' && '["hot_low_quarter_step"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
         fault: ${{ fromJSON(inputs.study == 'physical_faults' && '["swap_pre_a_select","disable_pre_b_bias","swap_leaf_select"]' || '["none"]') }}
     permissions:
       contents: write

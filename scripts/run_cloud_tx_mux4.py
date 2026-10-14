@@ -27,6 +27,8 @@ from run_cloud_tx_operating_point import CONDITIONS, fetch, sha
 # Independent device corners, using exactly the same circuit geometry and
 # source-bit timing. Copy the shared base table without altering other studies.
 CONDITIONS = dict(CONDITIONS)
+# Check narrow hot-wire margin at half the original maximum step.
+CONDITIONS['hot_low_quarter_step'] = dict(CONDITIONS['hot_low'], step_ps=.25)
 for _hbt in ('typ', 'bcs', 'wcs'):
     for _res in ('typ', 'bcs', 'wcs'):
         if (_hbt, _res) != ('typ', 'typ'):

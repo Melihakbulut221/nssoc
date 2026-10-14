@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Newest PHY result:** V10series loaded38495318320/38495321089 completed all6
+component cases successfully. Hot extracted-wire minimum103.786226760mV,
+0wrong-sign/0below100mV among768original samples; all native device/interface
+and diagnostic gates pass. Six captures/asset hashes are appended as
+`loaded_temperature_voltage_screen` to the V10series composition receipt.
+This does NOT close fullPHY: intermacro wiring/clocks still ideal, no fullx4.
+Dispatch next: `hot_low_quarter_step`4:1 numerical control, independent process
+corners4:1, and nominal32:1 with identical V10/cascade158/stiff65 settings.
+Study workflows require explicit dispatch to avoid unrelated default push jobs;
+physical study parallelism capped4. DefaultACK push38496573724 was cancelled
+after verifying its baseline/ack jobs; desired slow-corner mapping38496628841
+is separate. Sourcechecks38496631571 on96b1ee51.
+Main-chip halo38490952579 remains live. All full-goal scopes remain OPEN.
+
+
 **Newest synthesis finding:** ABC study38494637444 completed with no improvement:
 79065cells and all6corner group minima identical, slowPCIe setup-0.991500ns,
 fastPCIe hold-0.109062ns. Native trace proves D2000 was applied; its network
