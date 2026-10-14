@@ -7,6 +7,26 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Doubled-drive actual PFD94 layout38614342619 PASS; freshRC prepared.**
+560DRC categories/zero markers, hierarchical+flat235deviceLVS and allfive
+actual physical/reference faults passed. Same94MOS topology with88DFF W*2,
+AOI6 unchanged. GDS0451b81b8f73a8f1c4e2923e5f50d26cf3c09ad2c3a77ebd0f08acc864e1e08a;
+LEF6a94d26e4a0803f80d661b116d5df91a76b1887ee763375664f28961d5a9d89e.
+Summary641251925 SHA35841da91016821cb48937bc408bff5d70357b221da42b2ea36ef3cf2aa2ab20;
+archive641251736 SHA9e3de73d250ba223b093f44c55e91c1e7327f8487c8d185b96f2350104e45210.
+
+Run pll_pfd_stage=rc_d2 to bind actualnew235device GDS/LVS and extract itsown
+new metalRC with unchanged8binding/13rawRC/6composition faults. Geometry
+census/top/hash pinned; R/C counts derive from new extraction, never copied.
+Then source-bound native84550ns with newRC and fullterminal review before1us.
+Originalaoi4_rc still has proven reset/clock recovery failure; do notadopt it.
+
+Parent recovery641221741 contains152sources; latestparent865 actualparent23
+GDS/commonbulk source confirmed via parent18.py/reference23.py/review28.py/
+compose29.py. NewPFD parentreassembly/routing/PEX stillrequired. Mainchip
+route38598795406 live; allworkcloud-only/fullPHY/finaltimingOPEN.
+
+
 **Actual PFD23550ns capture/review complete; reset recovery still fails functionally.**
 38610259816 nativecompleted1030.661s,496columns/160072rows/50ns, cleanlog/zeroOP.
 Summary641219321 SHA34666b2ef60d9421127d85b3e976b2babd932ca18750fc6aee9688af4ffb67eb;

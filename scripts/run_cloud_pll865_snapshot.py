@@ -1222,13 +1222,14 @@ def recover_pfd_methods():
 
 
 
-def run_pfd_rc():
+def run_pfd_rc(reset_profile='aoi4'):
     """Bind actual235-device geometry and extract new wires on a hosted runner."""
     import shutil
     import sys
     assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted extraction only'
+    assert reset_profile in ('aoi4','aoi4_d2')
     out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING_PFD235_GEOMETRY_BOUND_RC',adopted=False,
+    result=dict(status='RUNNING_PFD235_GEOMETRY_BOUND_RC',reset_profile=reset_profile,adopted=False,
         full_phy_accepted=False,qualified_pex=False,
         scope='Actual AOI94 candidate235-device binding, native terminal ownership, new distributed metal RC and raw corruption controls. No spatial substrate/RF qualification, waveform, acquisition, mainchip or PHY acceptance.')
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -1252,15 +1253,21 @@ def run_pfd_rc():
     try:
         physical_receipt=dict(url=BASE+'cloud-results-38604234902-1-pll-pfd-layout/pfd94-layout-38604234902-1.tar.gz',
             sha256='869b6c076124a4773bf9a047309d49f41d0465db18456603d5c7e7e837d9b953',bytes=639953)
+        if reset_profile=='aoi4_d2':
+            physical_receipt=dict(url=BASE+'cloud-results-38614342619-1-pll-pfd-layout/pfd94-layout-38614342619-1.tar.gz',
+                sha256='9e3de73d250ba223b093f44c55e91c1e7327f8487c8d185b96f2350104e45210',bytes=654630)
         restore(physical_receipt,ROOT,'physical-input')
         physical=json.loads((out/'result.json').read_text())
         assert physical['status']=='PASS_PFD94_AOI4_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
         (out/'physical-source-result.json').write_text(json.dumps(physical,indent=2)+'\n')
         frozen={str(p):sha(p) for sub in ('layout','physical') for p in (out/sub).rglob('*') if p.is_file()}
         generated=json.loads((out/'layout/result.json').read_text())
-        assert generated['reset_profile']=='aoi4' and len(generated['core_devices'])==94
-        gds=out/'layout/nssoc_pfd94_aoi4_layout_v1.gds'
-        assert sha(gds)=='5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6'
+        assert generated['reset_profile']==reset_profile and len(generated['core_devices'])==94
+        expected_top='nssoc_pfd94_aoi4_d2_layout_v1' if reset_profile=='aoi4_d2' else 'nssoc_pfd94_aoi4_layout_v1'
+        expected_gds='0451b81b8f73a8f1c4e2923e5f50d26cf3c09ad2c3a77ebd0f08acc864e1e08a' if reset_profile=='aoi4_d2' else '5eba584933e1308a1266e6bb94f8a4f3c54b545b03a7ee5010884875c16accf6'
+        assert generated['top']==expected_top
+        gds=out/'layout'/(expected_top+'.gds')
+        assert sha(gds)==expected_gds
         assert all(sha(out/'layout'/n)==v for n,v in generated['outputs'].items())
         result['physical_source']=physical_receipt;save()
         layout_spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
@@ -1301,7 +1308,7 @@ def run_pfd_rc():
                 ('hw/soc/out/pcie-pfd102-local-layout-20261009','hw/soc/out/cloud-pfd-layout'),
                 ('hw/soc/out/pcie-pfd255-local-binding-20261009','hw/soc/out/cloud-pfd-layout/binding'),
                 ('native-controls01/','physical/'),('layout01/','layout/'),
-                ('nssoc_pfd102_layout_v1','nssoc_pfd94_aoi4_layout_v1'),
+                ('nssoc_pfd102_layout_v1',expected_top),
                 ("Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2')","R/'pdk'"),
                 ("Path('/dev/shm/nssoc-magic-area-product-v4-build/runtime/lib')","B.parent/'magic-cloud/runtime/lib'"),
                 ("Path('/dev/shm/nssoc-magic-pad-stack-tech-v1')","B.parent/'magic-cloud/tech'"),
@@ -1643,6 +1650,7 @@ def main():
     parser.add_argument('--pfd-layout-drive2',action='store_true')
     parser.add_argument('--pfd-lef',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
+    parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
     parser.add_argument('--review-physical-pfd',action='store_true')
     parser.add_argument('--recover-parent-methods',action='store_true')
@@ -1654,6 +1662,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.pfd_rc_drive2:
+        assert not any([args.pfd_layout_drive2,args.recover_parent_methods,args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
+        run_pfd_rc('aoi4_d2');return
     if args.pfd_layout_drive2:
         assert not any([args.recover_parent_methods,args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         run_pfd_layout('aoi4_d2');return
