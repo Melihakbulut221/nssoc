@@ -7,6 +7,21 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Parent physical integration source recovery prepared alongside live native capture.**
+Native38610259816 and route38598795406 are still authoritative livehandles.
+New physical-terminal review controls passed commoncheck38611528535; dispatch
+physical_review only after original native success. Quantitative terminal
+review alone cannot close full845device safety or actual parent geometry.
+
+Use pll_pfd_stage=parent_methods to recover source-bound original PLL753 parent
+physical generator/review/input manifests and latestparent865/PBUF10 composition
+methods. Record actual archived GDS/LEF/circuit inventory without executing
+archived code. Known review12.py/inputs01.json hashes must match historical
+physical evidence. This resolves how to recompose newPFD and commonbulk in the
+actual parent, rather than mistaking the frozen electrical fixture for layout.
+AllCAD/source recovery/evidence remaincloud-only; fullgoalsOPEN.
+
+
 **Physical PFD full-terminal waveform review prepared while native jobs run.**
 After38610259816 terminates successfully, dispatch pll_pfd_stage=physical_review.
 It restores that exact source9e56ae04 capture,35model/OSDI bytes, reconstructs

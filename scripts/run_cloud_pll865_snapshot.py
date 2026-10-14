@@ -1098,6 +1098,72 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
     save();print(result['status'],flush=True)
 
 
+def recover_parent_methods():
+    """Recover source-bound PLL parent layout and latest native composition methods."""
+    from concurrent.futures import ThreadPoolExecutor
+    from verify_cloud_output_restore import pages,download
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted source recovery only'
+    out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
+    result=dict(status='RUNNING_PLL_PARENT_METHOD_RECOVERY',full_phy_accepted=False,acquisition_accepted=False,no_new_native=True,
+        scope='Source-only recovery of existing PLL parent physical composition and latest865/PBUF10 methods. Records actual archived geometry inventory; does not execute source or claim candidate parent integration.')
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    exact='hw/soc/out/pcie-pll753-parent-layout-20261010/'
+    required={exact+'review12.py':'acce27a0b067c51bccec41d394f974744852212f408c693484bcf5e67c5b1115',
+        exact+'inputs01.json':'bd31821d709d549f2d8ed25c08e9ed9e96d66f4a994bbb97aa20eac97a4d8a0e'}
+    try:
+        releases=pages('repos/Melihakbulut221/nssoc/releases?per_page=100');assets=[]
+        for release in releases:
+            if release['tag_name'].startswith('cloud-migration-20261012-'):
+                assets+=pages(f'repos/Melihakbulut221/nssoc/releases/{release["id"]}/assets?per_page=100')
+        manifests=[a for a in assets if a['name'].startswith('batch-') and a['name'].endswith('.manifest.json')]
+        assert manifests,'No migration manifests'
+        def inspect(asset):
+            path=out/(str(asset['id'])+'.manifest.json');h=download(asset,path)
+            manifest=json.loads(path.read_text());path.unlink();selected=[];inventory=[]
+            for record in manifest['records']:
+                name=record['path'];parts=Path(name).parts
+                if len(parts)<5 or parts[:3]!=('hw','soc','out'):continue
+                family=parts[3]
+                if not (name.startswith(exact) or 'parent865' in family or 'pbuf10' in family):continue
+                leaf='/'.join(parts[4:])
+                if name.endswith(('.gds','.lef','.spice','.cir','.py')) or leaf.endswith('result.json') or leaf=='inputs01.json':
+                    inventory.append(dict(path=name,bytes=record['bytes'],sha256=record['sha256']))
+                if '/' not in leaf and (leaf.endswith('.py') or leaf.startswith('inputs') and leaf.endswith('.json')):
+                    selected.append(record)
+                elif leaf.startswith('layout') and leaf.endswith('/result.json'):
+                    selected.append(record)
+            return dict(manifest_url=asset['browser_download_url'],manifest_sha256=h,encoding=manifest['encoding'],
+                parts=manifest['parts'],selected=selected,physical_source_inventory=inventory) if selected or inventory else None
+        with ThreadPoolExecutor(max_workers=8) as pool:matched=[x for x in pool.map(inspect,manifests) if x]
+        result['searched_manifest_count']=len(manifests);result['matched_manifests']=matched;save()
+        sources={}
+        for bundle in matched:
+            if not bundle['selected']:continue
+            assert bundle['encoding']=='tar-gzip' and len(bundle['parts'])==1
+            part=bundle['parts'][0];packed=out/'source.tar.gz';fetch(part['url'],part['sha256'],packed)
+            assert packed.stat().st_size==part['bytes']
+            with tarfile.open(packed) as tar:
+                for record in bundle['selected']:
+                    path=record['path'];assert path not in sources and record['bytes']<2*1024**2
+                    members=[m for m in tar.getmembers() if m.name==path];assert len(members)==1
+                    member=members[0];assert member.isfile() or member.islnk()
+                    if member.islnk():
+                        assert not member.linkname.startswith('/') and '..' not in Path(member.linkname).parts
+                    content=tar.extractfile(member).read()
+                    assert len(content)==record['bytes'] and digest(content)==record['sha256']
+                    if path in required:assert digest(content)==required[path]
+                    sources[path]=dict(bytes=len(content),sha256=digest(content),text=content.decode(),
+                        manifest_url=bundle['manifest_url'],archive_url=part['url'],archive_sha256=part['sha256'])
+            packed.unlink();result['recovered_sources']=sources;save()
+        assert set(required)<=set(sources),('Required original methods missing',sorted(set(required)-set(sources)))
+        result.update(status='COMPLETE_SOURCE_BOUND_PLL_PARENT_AND_865_METHOD_RECOVERY',required_source_hashes_verified=required)
+        save();print(result['status'],len(sources),flush=True)
+    except BaseException as error:
+        result.update(status='FAILED_PLL_PARENT_METHOD_RECOVERY',error=repr(error));save();raise
+
+
+
 def recover_pfd_methods():
     """Recover archived original PFD extraction/binding sources on GitHub only."""
     from concurrent.futures import ThreadPoolExecutor
@@ -1575,6 +1641,7 @@ def main():
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
     parser.add_argument('--review-physical-pfd',action='store_true')
+    parser.add_argument('--recover-parent-methods',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc'))
     parser.add_argument('--review-acquisition',action='store_true')
@@ -1583,6 +1650,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.recover_parent_methods:
+        assert not any([args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
+        recover_parent_methods();return
     if args.review_physical_pfd:
         assert not any([args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         review_physical_pfd();return
