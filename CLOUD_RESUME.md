@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Readback publication CLOSED, design closure still OPEN:** corrected hosted
+read_control_reports38510653124 PASS including permanent read-back-verified
+publication. Summary639191271, original baseline log639191336 and candidate
+log639191430 retained; six-corner/type reports and all groups pinned in ACK
+receipt. Control factoring candidate rejected for slow PCIe setup regression
+(-1.101756ns baseline, -1.463237ns candidate), no fast hold improvement. Do not
+repeat map or readback. Exact halo congestion diagnosis38509934192 also done;
+next routing repair should address its native145markers/155overflow using
+summary639175302 and actual endpoint/pin/OBS data. V11 lowinputR diagnosis
+38508878110 rejected; do not substitute synthetic R. Existing PLL1us38507479646
+and V10 full32:1wire38496981217 remain live as last verified. Local workspace
+rechecked completely empty. All source, computations and artifacts on GitHub.
+
+
 **Terminal cloud readbacks:** congestion38509934192 PASS exact diagnosis only:
 145markers/155overflow,1095congested nets bound to actual endpoints; exact
 four Ethernet SRAM pin/OBS geometries retained. Summary639175302/archive639175114
