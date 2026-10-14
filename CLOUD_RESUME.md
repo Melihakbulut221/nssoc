@@ -8,6 +8,26 @@
 ### Newest state — supersedes every older live statement below
 
 
+**14 October heartbeat follow-up: original PLL review terminal REJECTED.**
+38565392744/job115856656627 completed source-bound original-gate review;
+summary640347167 SHA4684318385d1ac7e9a7855a7a24b73853865e482e2a0a783bf2a8656c830485b.
+Full capture verified3201212rows/25columns and complete1us; no new simulation.
+Final800-900ns and900-1000ns windows pass, but intervening rolling windows
+still fail100ppm: e.g.890-990ns feedback100013197.84012932Hz. Sustained
+passing suffix starts900ns, violating the original start-at/before800ns gate.
+Original positive/frequency/phase/missing-edge/control-voltage and truncated/
+nonfinite controls pass. Acquisition, all-device safety and fullPHY remainfalse.
+Next diagnose alternating periods/control ripple and settling using exact raw;
+do not fit phase, waive rolling windows or restart the unchanged capture.
+Full review persisted in cloud-closure-continuation evidence.
+
+Congestion diagnosis38566051147/job115858892640 launched on2f29eb41528d71322e5a92ad26ca8690c12c5c0e,
+source_profile=routability_data, exactfailed138overflowODB. This is a read-only
+native geometry diagnosis, not another global route. Retain handle, review
+marker/net/macro associations before selecting a repair. Previous hot rejection,
+directACK mixed timing result and all full product gates remain unchanged/open.
+
+
 **14 October12:35UTC heartbeat: all previous captures now terminal; next reviews.**
 PLL38507479646 completed original1us continuous865device capture, summary639850959
 and521359148byte archive639850421 (SHA59470c85beab31acc7ca76c4a908a24db5be5b74d358668f2e50d016548e3af6).
