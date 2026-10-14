@@ -7,6 +7,24 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Verified live native experiment and complete TX rejection receipt:** corrected
+PLL snapshot38503868241 onab08fd71f265faca35a31c0c754516559b0b6581 has reached
+actual native continuous/restore comparison step(job115656774245). Do NOT
+restart or duplicate; source-check job115656773931 failed only inventory:
+new .inc file is path-covered by spdx_check, not inline-classified. Inventory
+corrected to22573total,4220inline,18353path. Hosted comparison selftests passed.
+TX baseline38496978055 now has all24 final summaries and hashes recorded under
+completed_independent_corner_screen_20261014 in V10series composition receipt:
+19pass/5electricalFAIL; waveform completion is not broadPVT acceptance.
+Feedback26um candidate38503692385 compact coldresWCS now passes CM
+[1.980536,2.001422]V; coldHBT WCS CMpasses but twelveVBE failures remain.
+Two hot compact cases now fall below1.8V. Wire cases are still in progress.
+Do not adopt this candidate; examine completed paired results before choosing
+next feed geometry or final transistor current-density correction.
+Original32:1wire38496981217 and mainchiproute38490952579 remain live.
+Everything hosted; no local files or CAD; all three end goals remainOPEN.
+
+
 **Dispatch update and diagnosed harness correction:** output-feedback candidate
 38503692385 dispatched on c6d595fedca1c151de20fe0d866c17320fe4e05b; inspect tests
 then eight actual compact/wire failing-corner controls. Do not duplicate.
