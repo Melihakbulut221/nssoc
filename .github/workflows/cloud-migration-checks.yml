@@ -21,7 +21,7 @@ on:
         description: PFD diagnostic, native schematic, physical layout or saved LEF verification
         type: choice
         default: none
-        options: [none, topology, schematic, layout, lef, methods, rc, rc_review, physical_wave, physical_review, parent_methods, layout_d2, rc_d2, physical_wave_d2, lef_d2, physical_review_d2, parent_interface_d2, parent_layout_d2, parent_review_d2]
+        options: [none, topology, schematic, layout, lef, methods, rc, rc_review, physical_wave, physical_review, parent_methods, layout_d2, rc_d2, physical_wave_d2, lef_d2, physical_review_d2, parent_interface_d2, parent_layout_d2, parent_review_d2, parent_wires_d2]
       request_id:
         type: string
       verification_tag:
@@ -507,7 +507,7 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-acquisition-review cloud-pll-acquisition-review/result.json
 
   pll-pfd-layout:
-    if: ${{ inputs.pll_pfd_stage == 'layout' || inputs.pll_pfd_stage == 'lef' || inputs.pll_pfd_stage == 'rc' || inputs.pll_pfd_stage == 'rc_review' || inputs.pll_pfd_stage == 'layout_d2' || inputs.pll_pfd_stage == 'rc_d2' || inputs.pll_pfd_stage == 'lef_d2' || inputs.pll_pfd_stage == 'parent_interface_d2' || inputs.pll_pfd_stage == 'parent_layout_d2' || inputs.pll_pfd_stage == 'parent_review_d2' }}
+    if: ${{ inputs.pll_pfd_stage == 'layout' || inputs.pll_pfd_stage == 'lef' || inputs.pll_pfd_stage == 'rc' || inputs.pll_pfd_stage == 'rc_review' || inputs.pll_pfd_stage == 'layout_d2' || inputs.pll_pfd_stage == 'rc_d2' || inputs.pll_pfd_stage == 'lef_d2' || inputs.pll_pfd_stage == 'parent_interface_d2' || inputs.pll_pfd_stage == 'parent_layout_d2' || inputs.pll_pfd_stage == 'parent_review_d2' || inputs.pll_pfd_stage == 'parent_wires_d2' }}
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -530,7 +530,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Generate actual PFD94 geometry and run native physical gates
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'parent_review_d2' && '--review-pfd-parent' || inputs.pll_pfd_stage == 'parent_layout_d2' && '--integrate-pfd-parent' || inputs.pll_pfd_stage == 'parent_interface_d2' && '--inspect-pfd-parent' || inputs.pll_pfd_stage == 'lef_d2' && '--pfd-lef-drive2' || inputs.pll_pfd_stage == 'rc_d2' && '--pfd-rc-drive2' || inputs.pll_pfd_stage == 'layout_d2' && '--pfd-layout-drive2' || inputs.pll_pfd_stage == 'rc_review' && '--pfd-rc-review' || inputs.pll_pfd_stage == 'rc' && '--pfd-rc' || inputs.pll_pfd_stage == 'lef' && '--pfd-lef' || '--pfd-layout' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'parent_wires_d2' && '--export-pfd-parent-wires' || inputs.pll_pfd_stage == 'parent_review_d2' && '--review-pfd-parent' || inputs.pll_pfd_stage == 'parent_layout_d2' && '--integrate-pfd-parent' || inputs.pll_pfd_stage == 'parent_interface_d2' && '--inspect-pfd-parent' || inputs.pll_pfd_stage == 'lef_d2' && '--pfd-lef-drive2' || inputs.pll_pfd_stage == 'rc_d2' && '--pfd-rc-drive2' || inputs.pll_pfd_stage == 'layout_d2' && '--pfd-layout-drive2' || inputs.pll_pfd_stage == 'rc_review' && '--pfd-rc-review' || inputs.pll_pfd_stage == 'rc' && '--pfd-rc' || inputs.pll_pfd_stage == 'lef' && '--pfd-lef' || '--pfd-layout' }}
       - name: Preserve actual geometry and every failed or passed native check
         if: always()
         env:

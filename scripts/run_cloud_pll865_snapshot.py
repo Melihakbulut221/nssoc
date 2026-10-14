@@ -1566,6 +1566,50 @@ assert kg.degree(drop_fields[1])==kg.degree(drop_fields[2])==0
     save();print(result['status'],flush=True)
 
 
+def export_pfd_parent_wires():
+    """Export only real parent interconnect and bind every polygon/anchor to native LVS."""
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    out=ROOT/'hw/soc/out/cloud-pfd-layout';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_D2_PARENT_WIRE_BINDING',source_run=38622111375,qualified_pex=False,full_phy_accepted=False,main_chip_integrated=False)
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        packed=out/'source.tar.gz'
+        fetch(BASE+'cloud-results-38622111375-1-pll-pfd-layout/pfd94-layout-38622111375-1.tar.gz',
+            '7456fa988f5fd399a03e23d570ad3a11ade32f4ec7a101a7200aab382d9345fb',packed)
+        assert packed.stat().st_size==2426976
+        prefix='hw/soc/out/cloud-pfd-layout/'
+        with tarfile.open(packed) as tar:
+            for m in tar.getmembers():
+                if not m.isfile():continue
+                assert m.name.startswith(prefix)
+                rel=m.name[len(prefix):];assert not Path(rel).is_absolute() and '..' not in Path(rel).parts
+                if rel=='result.json':rel='physical-source-result.json'
+                p=out/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(tar.extractfile(m).read())
+        packed.unlink()
+        assert sha(out/'physical-source-result.json')=='aabb9a94912402ca8ed27443fe8b380989d7724dd44d1e106140ab7e59e05f8b'
+        source=json.loads((out/'physical-source-result.json').read_text())
+        assert source['status']=='PASS_ACTUAL_D2_PARENT_GEOMETRY_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
+        assert all(sha(out/'integrated'/n)==h for n,h in source['integrated']['outputs'].items())
+        protected={str(p):sha(p)for folder in (out/'integrated',out/'parent-physical')for p in folder.rglob('*')if p.is_file()}
+        native=out/'export-parent-wires.py';native.write_text("from pathlib import Path\nfrom collections import defaultdict\nimport pya,json,hashlib,copy\nO=Path(__file__).resolve().parent;A=O/'integrated';D=O/'parent-physical';W=O/'parent-wires';W.mkdir()\nr=json.loads((A/'result.json').read_text());audit=json.loads((D/'lvs_flat/audit.json').read_text())\nTOP=r['top'];assert audit['status']=='PASS within comparison scope' and audit['circuits'][0]['layout_devices_recursive']==845\nsha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\nDB=D/'lvs_flat/result.lvsdb';native=pya.LayoutVsSchematic();native.read(str(DB))\nmetals=[8,10,30,50,67,126,134];vias=[19,29,49,66,125,133]\ndef inspect(gds,meta,write=False):\n L=pya.Layout();L.read(str(gds));T=L.cell(TOP);assert T is not None\n macro_tops={x['top']for x in meta['instances']};regions={};mapping={}\n wire=pya.Layout();wire.dbu=L.dbu;wt=wire.create_cell('parent_wires')\n for m in metals+vias:\n  li=L.layer(m,0);reg=pya.Region(T.shapes(li))\n  for inst in T.each_inst():\n   if inst.cell.name not in macro_tops:reg+=pya.Region(inst.cell.begin_shapes_rec(li)).transformed(inst.trans)\n  reg=reg.merged();regions[m]=reg;wt.shapes(wire.layer(m,0)).insert(reg)\n  if m in metals and not reg.is_empty():\n   # Compare against the positive full-parent conductor; negative open case\n   # may remove only a parent wire and must then fail connected-net binding.\n   if write:\n    full=pya.Region(T.begin_shapes_rec(li)).merged()\n    candidates=[j for j in native.layer_indexes()if(native.layer_by_index(j)^full).is_empty()]\n   else:candidates=[positive_mapping[m]]\n   assert len(candidates)==1,(m,candidates)\n   mapping[m]=candidates[0]\n   assert(reg-native.layer_by_index(mapping[m])).is_empty()\n e=pya.LayoutToNetlist('PARENT',L.dbu)\n for m,reg in regions.items():\n  if not reg.is_empty():e.register(reg,'gds_'+str(m));e.connect(reg)\n for a,v,b in zip(metals,vias,metals[1:]):\n  if not regions[v].is_empty():e.connect(regions[a],regions[v]);e.connect(regions[v],regions[b])\n e.extract_netlist();anchors=[];groups=defaultdict(list)\n def add(label,m,x,y,net,detail):\n  point=pya.Point(round(x/L.dbu),round(y/L.dbu))\n  en=e.probe_net(e.layer_by_name('gds_'+str(m)),point);nn=native.probe_net(native.layer_by_index(mapping[m]),point)\n  assert en is not None and nn is not None,('Anchor unbound',label)\n  row=dict(label=label,metal=m,point_dbu=[point.x,point.y],wire_component=en.cluster_id,native_cluster=nn.cluster_id,logical_net=net,detail=detail)\n  anchors.append(row);groups[en.cluster_id].append(row)\n for macro in meta['instances']:\n  for pin,v in macro['ports'].items():\n   a,b,c,d=v['box_um'];x=(a+c)/2;y=(b+d)/2\n   if macro['name']=='count' and v['layer']==8:x=a+.15\n   add('A_'+macro['name']+'_'+pin,v['layer'],round(x/.005)*.005,round(y/.005)*.005,v['net'],dict(macro=macro['name'],pin=pin,reference_plane_rebinding_required=macro['name']=='count'and v['layer']==8))\n for pin,v in meta['ports'].items():\n  a,b,c,d=v['rect_um'];add('P_'+pin,v['layer'],(a+c)/2,(b+d)/2,pin,dict(parent_port=pin))\n assert len({x['label']for x in anchors})==len(anchors)\n native_nets=list(e.netlist().top_circuit().each_net())\n assert set(groups)=={n.cluster_id for n in native_nets},'Unanchored physical wire component'\n expected={v['net']for m in meta['instances']for v in m['ports'].values()}|set(meta['ports'])\n assert len(groups)==len(expected),'Physical open or short changes component census'\n summary=[]\n for cluster,rows in groups.items():\n  names={x['logical_net']for x in rows};nativeids={x['native_cluster']for x in rows}\n  assert len(names)==len(nativeids)==1,'Mixed logical or native nets in wire component'\n  q=rows[0];ref=native.probe_net(native.layer_by_index(mapping[q['metal']]),pya.Point(*q['point_dbu']))\n  en=next(n for n in native_nets if n.cluster_id==cluster)\n  for m in mapping:\n   assert(e.shapes_of_net(en,regions[m],True)-native.shapes_of_net(ref,native.layer_by_index(mapping[m]),True)).is_empty(),'Wire polygon belongs to another native net'\n  summary.append(dict(component=cluster,logical_net=next(iter(names)),native_cluster=next(iter(nativeids)),anchors=[x['label']for x in rows]))\n assert len({x['native_cluster']for x in summary})==len(groups)\n assert {x['logical_net']for x in summary}==expected\n if write:wire.write(str(W/'wires.gds'));e.write(str(W/'wires.l2n'))\n return anchors,summary,mapping\nanchors,summary,positive_mapping=inspect(A/(TOP+'.gds'),r,True)\nfaults=[]\nfor name in ['reset_bridge_open','wrong_reset_logical_net']:\n meta=copy.deepcopy(r);gds=A/(TOP+'.gds')\n if name=='reset_bridge_open':gds=A/'reset-open.gds'\n else:next(x for x in meta['instances']if x['name']=='pfd')['ports']['reset']['net']='ref'\n try:inspect(gds,meta)\n except AssertionError as error:faults.append(dict(name=name,rejection=str(error)))\n else:raise AssertionError('Accepted actual parent wire fault '+name)\nresult=dict(status='PASS_ACTUAL845_PARENT_WIRE_GEOMETRY_AND_NATIVE_NET_BINDING_WITH_FAULTS',\n anchors=anchors,wire_components=summary,counts=dict(components=len(summary),anchors=len(anchors),child_macro_pins=sum(len(x['ports'])for x in r['instances']),parent_pins=len(r['ports'])),\n negative_controls=faults,inputs={str(p):sha(p)for p in [Path(__file__),A/(TOP+'.gds'),A/'reset-open.gds',DB,A/'result.json',D/'lvs_flat/audit.json']},\n outputs={p.name:sha(p)for p in W.iterdir()},qualified_pex=False,composition_ready=False,\n scope='Only actual updated parent metal/vias, excluding all ten macro contents; every polygon and every macro/public anchor bound to accepted845-device native nets. Includes real moved-reset bridge. Native Magic RC and independent raw audit still required; intrinsic substrate remains a separate idealized model boundary until qualified.')\n(W/'result.json').write_text(json.dumps(result,indent=2)+'\\n');print(result['status'],result['counts'])\n")
+        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+        log=out/'export-parent-wires.log'
+        with log.open('wb') as stream:
+            code=subprocess.call([str(app),'python',str(native)],cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)
+        result['execution']=dict(returncode=code,script_sha256=sha(native),log_sha256=sha(log))
+        if code:print(log.read_text(errors='replace')[-14000:],flush=True)
+        assert code==0,'Native parent wire binding failed'
+        assert all(sha(Path(p))==h for p,h in protected.items())
+        result['wire_binding']=json.loads((out/'parent-wires/result.json').read_text())
+        result['status']='PASS_ACTUAL_D2_PARENT_WIRE_BINDING_AND_FAULTS_NOT_RC'
+    except BaseException as error:
+        result.update(status='FAILED_D2_PARENT_WIRE_BINDING',error=repr(error))
+        if (out/'export-parent-wires.log').exists():result['diagnostic_log']=(out/'export-parent-wires.log').read_text(errors='replace')[-14000:]
+        save();raise
+    save();print(result['status'],flush=True)
+
+
 def review_saved_pfd_parent():
     """Recheck exact saved native parent with the hierarchical port reader fixed."""
     import sys
@@ -1884,6 +1928,7 @@ def main():
     parser.add_argument('--inspect-pfd-parent',action='store_true')
     parser.add_argument('--integrate-pfd-parent',action='store_true')
     parser.add_argument('--review-pfd-parent',action='store_true')
+    parser.add_argument('--export-pfd-parent-wires',action='store_true')
     parser.add_argument('--pfd-rc',action='store_true')
     parser.add_argument('--pfd-rc-drive2',action='store_true')
     parser.add_argument('--pfd-rc-review',action='store_true')
@@ -1922,6 +1967,9 @@ def main():
     if args.recover_pfd_methods:
         assert not (args.pfd_layout or args.pfd_lef or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         recover_pfd_methods();return
+    if args.export_pfd_parent_wires:
+        assert not any([args.review_pfd_parent,args.pfd_candidate,args.self_test,args.acquisition])
+        export_pfd_parent_wires();return
     if args.review_pfd_parent:
         assert not any([args.integrate_pfd_parent,args.pfd_candidate,args.self_test,args.acquisition])
         review_saved_pfd_parent();return
