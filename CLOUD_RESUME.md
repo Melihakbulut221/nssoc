@@ -7,6 +7,24 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Matched native50ns comparison terminalPASS as screening, not acceptance.**
+38602623171 completed both profiles cleanly withzero-sourceOP. Baseline102MOS
+clearb low about1.665ns; AOI94MOS about0.936ns. Both schematic profiles avoid
+clock-edge masking; absence ofPFD RC in BOTH demonstrates original parasitics
+are material. Do not attribute all improvement solely to AOI topology. AOI
+UPpeak2.0098V and internalMQpeak2.8461V require actual full-device validation.
+Baseline summary641079126 SHA87e516e30930d875838283a7e35c4ad15fa1a698728ab3a0eec377e88f415610;
+AOI summary641067985 SHAfc8e3522968f1d437b24b29851f34ddecbb1aef2421c6d3dd823f7316944e7f1.
+Paired captures retained. LEF38605102553 completedsuccess; inspect result.
+
+Next RC work uses pll_pfd_stage=methods to recover original source-bound
+PFD255 native binding/anchor/extraction/composition methods from verified
+migration manifests on GitHub. Reads/hashes selected originals only; no
+execution or PEX qualification. Adapt to actual235device94MOS layout only
+after source review, preserving every actual terminal and rawRC fault gates.
+Routing38598795406 remains handle; allfullgoalsOPEN/cloud-only.
+
+
 **PFD workflow selectors consolidated; no lost native job.**
 LEF dispatch on a6bfa3d9 was rejectedHTTP422 because workflow_dispatch exceeded
 GitHub25-input limit; no run was created. Four new PFD booleans now become

@@ -797,6 +797,63 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
     save();print(result['status'],flush=True)
 
 
+def recover_pfd_methods():
+    """Recover archived original PFD extraction/binding sources on GitHub only."""
+    from concurrent.futures import ThreadPoolExecutor
+    from verify_cloud_output_restore import pages,download
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted source recovery only'
+    out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
+    result=dict(status='RUNNING_PFD_METHOD_RECOVERY',full_phy_accepted=False,acquisition_accepted=False,no_new_native=True,
+        scope='Source-only recovery of original PFD255 native terminal binding and wire extraction methods. Does not execute recovered code, change layout or qualify RC.')
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    prefixes=('hw/soc/out/pcie-pfd255-local-wire-20261009/','hw/soc/out/pcie-pfd255-local-binding-20261009/')
+    required={prefixes[0]+'audit-rc01.py':'2d1b07a9960e3e246c7046887886bd899e7e3571a414f93d2ad39b88d1f851cb',
+        prefixes[0]+'mutations02.py':'1f3e5604b48112e1e7848b3d634c5012377d3c8e85ffe0d43ac4c5f802379407',
+        prefixes[0]+'check-compose01.py':'f8123bf05b35db89600a56ae010b29e388caf5d462efee2b88b367d5d3cc7bf4'}
+    try:
+        releases=pages('repos/Melihakbulut221/nssoc/releases?per_page=100');assets=[]
+        for release in releases:
+            if release['tag_name'].startswith('cloud-migration-20261012-'):
+                assets+=pages(f'repos/Melihakbulut221/nssoc/releases/{release["id"]}/assets?per_page=100')
+        manifests=[a for a in assets if a['name'].startswith('batch-') and a['name'].endswith('.manifest.json')]
+        assert manifests,'No migration manifests'
+        def inspect(asset):
+            path=out/(str(asset['id'])+'.manifest.json');h=download(asset,path)
+            manifest=json.loads(path.read_text());path.unlink();selected=[]
+            for record in manifest['records']:
+                for prefix in prefixes:
+                    if record['path'].startswith(prefix):
+                        leaf=record['path'].removeprefix(prefix)
+                        if '/' not in leaf and (leaf.endswith('.py') or leaf in ('anchors01.json','devices01.json')):selected.append(record)
+            return dict(manifest_url=asset['browser_download_url'],manifest_sha256=h,encoding=manifest['encoding'],parts=manifest['parts'],selected=selected) if selected else None
+        with ThreadPoolExecutor(max_workers=8) as pool:matched=[x for x in pool.map(inspect,manifests) if x]
+        result['searched_manifest_count']=len(manifests);result['matched_manifests']=matched;save()
+        sources={}
+        for bundle in matched:
+            assert bundle['encoding']=='tar-gzip' and len(bundle['parts'])==1
+            part=bundle['parts'][0];packed=out/'source.tar.gz';fetch(part['url'],part['sha256'],packed)
+            assert packed.stat().st_size==part['bytes']
+            with tarfile.open(packed) as tar:
+                for record in bundle['selected']:
+                    path=record['path'];assert path not in sources and record['bytes']<2*1024**2
+                    members=[m for m in tar.getmembers() if m.name==path];assert len(members)==1
+                    member=members[0];assert member.isfile() or member.islnk()
+                    if member.islnk():
+                        assert not member.linkname.startswith('/') and '..' not in Path(member.linkname).parts
+                    content=tar.extractfile(member).read()
+                    assert len(content)==record['bytes'] and digest(content)==record['sha256']
+                    if path in required:assert digest(content)==required[path]
+                    sources[path]=dict(bytes=len(content),sha256=digest(content),text=content.decode(),
+                        manifest_url=bundle['manifest_url'],archive_url=part['url'],archive_sha256=part['sha256'])
+            packed.unlink();result['recovered_sources']=sources;save()
+        assert set(required)<=set(sources),('Required original methods missing',sorted(set(required)-set(sources)))
+        result.update(status='COMPLETE_SOURCE_BOUND_PFD_BINDING_AND_WIRE_METHOD_RECOVERY',required_source_hashes_verified=required)
+        save();print(result['status'],len(sources),flush=True)
+    except BaseException as error:
+        result.update(status='FAILED_PFD_METHOD_RECOVERY',error=repr(error));save();raise
+
+
 def run_pfd_lef():
     """Read exact accepted-development GDS companion LEF without rerunning DRC."""
     import sys
@@ -898,6 +955,7 @@ def main():
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--pfd-layout',action='store_true')
     parser.add_argument('--pfd-lef',action='store_true')
+    parser.add_argument('--recover-pfd-methods',action='store_true')
     parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4'))
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
@@ -905,6 +963,9 @@ def main():
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.recover_pfd_methods:
+        assert not (args.pfd_layout or args.pfd_lef or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
+        recover_pfd_methods();return
     if args.pfd_lef:
         assert not (args.pfd_layout or args.pfd_candidate or args.self_test or args.acquisition or args.diagnose_full50 or args.diagnose_pfd_topology or args.review_acquisition or args.diagnose_acquisition)
         run_pfd_lef();return
