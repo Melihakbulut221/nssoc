@@ -84,7 +84,7 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-layout-composition/result.json "$summary"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'critical-compose-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
   native-transient:
     needs: composition
     if: ${{ always() && !cancelled() }}
@@ -129,4 +129,13 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-operating-point/result.json "$summary"
-          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'critical-wave-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
+      - name: Retain full transient evidence if permanent publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-critical-wave-fallback-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-tx-operating-point/
+          compression-level: 1
+          retention-days: 30
+          if-no-files-found: warn

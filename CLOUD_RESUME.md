@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Cloud-only handoff verified:** local NSSOC workspace is empty. V11 fresh RC
+run 38506058339 dispatched on 6fec8f05f0ed5c67684471e4585fdece32c6f510,
+profile final_drive_v11 / critical_buses_kelvin_low_ports_loads_shunts_series.
+Do not duplicate. Verify extraction and all fault controls before composition.
+PLL snapshot 38503868241, feedback32um 38505258788, full32:1 wire 38496981217,
+and main-chip routing 38490952579 still have active native jobs.
+Automatic legacy critical-route run 38505551015 hit GitHub release's 1000-asset
+limit during publication to cloud-migration-20261012-000. This is an archive
+failure, not proof of electrical acceptance. Switch that workflow to existing
+source-bound per-run/group publisher; retain full transient artifact fallback.
+The old failed run and its available composition artifacts remain preserved;
+its failed native-wave publication must not be claimed permanently archived.
+Fresh push-triggered run verifies the changed publication path on hosted runners.
+All simulations, tests and persistent project artifacts stay on GitHub.
+Full serial PHY, assembled routing and final setup/hold remain OPEN.
+
+
 **V11 physical result verified and bound for fresh extraction:**38505016479 on
 16ff1e202cf713dc4b50c12126c241109013377e passed actual native geometry gates:
 560DRC categories/0markers; strict hierarchical+flat54-device LVS;5intentional
