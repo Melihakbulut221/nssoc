@@ -235,6 +235,63 @@ def verify():
     print(json.dumps({k:v for k,v in report.items() if k!='changed'}),flush=True)
 
 
+def prepare_cugr_input():
+    """Remove only three proved empty database declarations, never a terminal."""
+    source=OUT/'relocated-placement.odb'
+    assert sha(source)=='660692b3e59756186bb017a62823999db593fa9d77b6e4181be9625fa7bfb707'
+    diagnosis=OUT/'cugr-empty-net-diagnosis.json'
+    assert sha(diagnosis)=='f1d71b542a4e46f5475ee77bd4e4b7f58c5c05f6aad91e1f0151d7400c68b5b8'
+    proof=json.loads(diagnosis.read_text())
+    assert proof['source_odb_sha256']=='f10edd96a44037f3a20c48bd8cb1c61e93dee4857180fbdc1106db94d9d2fa8b'
+    inventory=proof['signal_net_terminal_inventory']
+    wanted={'u_ibex.u_ibex_core.cs_registers_i.mstack_d[2]',
+        'u_pcie.flow.packets.endpoint.endpoint.header_words[0]',
+        'u_pcie.flow.packets.endpoint.endpoint.transmit_packet.header_words[0]'}
+    assert {r['name'] for r in inventory['low_degree_nets'] if r['physical_terminal_count']==0}==wanted
+    db,block=load(source)
+    def snapshot():
+        return dict(instances={i.getName():dict(master=i.getMaster().getName(),position=position(i),
+            status=str(i.getPlacementStatus())) for i in block.getInsts()},
+            boundary=boundary_geometry(block),
+            nets={n.getName():dict(signal_type=str(n.getSigType()),
+                iterms=sorted((t.getInst().getName(),t.getMTerm().getName()) for t in n.getITerms()),
+                bterms=sorted(t.getName() for t in n.getBTerms())) for n in block.getNets()})
+    before=snapshot();counts={}
+    for row in before['nets'].values():
+        if row['signal_type'] not in ('POWER','GROUND'):
+            degree=str(len(row['iterms'])+len(row['bterms']));counts[degree]=counts.get(degree,0)+1
+    assert counts==inventory['count_by_degree']
+    def require_empty(net):
+        assert net is not None
+        assert not list(net.getITerms()) and not list(net.getBTerms()), 'A real terminal cannot be removed'
+        assert str(net.getSigType()) not in ('POWER','GROUND')
+        assert net.getWire() is None and not list(net.getSWires()) and not list(net.getGuides()), 'Routed geometry cannot be removed'
+    victim=block.findNet('can_rx_i')
+    assert victim is not None and len(list(victim.getBTerms()))==1
+    try: require_empty(victim)
+    except AssertionError: pass
+    else: raise AssertionError('Single-port net escaped empty-net guard')
+    assert snapshot()==before
+    actual_empty={name for name,row in before['nets'].items()
+        if row['signal_type'] not in ('POWER','GROUND') and not row['iterms'] and not row['bterms']}
+    assert actual_empty==wanted
+    for name in sorted(wanted):
+        net=block.findNet(name);require_empty(net);odb.dbNet.destroy(net)
+    after=snapshot();expected={**before,'nets':{n:r for n,r in before['nets'].items() if n not in wanted}}
+    assert after==expected, 'Retained terminals, nets, instances or pin geometry changed'
+    assert len(after['nets'])==len(before['nets'])-3
+    path=OUT/'cugr-input.odb';odb.write_db(db,str(path))
+    report=dict(status='PASS_EXACT_THREE_ZERO_TERMINAL_DECLARATIONS_REMOVED',
+        source_odb_sha256=sha(source),output_odb_sha256=sha(path),diagnosis_sha256=sha(diagnosis),
+        removed_empty_declarations=sorted(wanted),all_retained_net_terminals_identical=True,
+        all_instances_masters_positions_status_identical=True,boundary_pin_geometry_identical=True,
+        original_non_pg_cardinality=counts,single_port_net_rejection_control=True,
+        scope='Only three unconnected/unrouted database declarations; all302single-terminal nets retained, every real signal/clock/PG pin and instance unchanged. Not route or timing acceptance.')
+    (OUT/'cugr-input-proof.json').write_text(json.dumps(report,indent=2)+'\n')
+    print(json.dumps(report),flush=True)
+
+
 if __name__=='__main__':
-    mode=os.environ['NSSOC_PLACEMENT_MODE'];assert mode in ('prepare','verify')
-    prepare() if mode=='prepare' else verify()
+    mode=os.environ['NSSOC_PLACEMENT_MODE'];assert mode in ('prepare','verify','prepare_cugr')
+    if mode=='prepare_cugr': prepare_cugr_input()
+    else: prepare() if mode=='prepare' else verify()

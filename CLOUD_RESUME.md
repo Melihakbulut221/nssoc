@@ -8,6 +8,26 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Exact zero-terminal input repair prepared from native inventory.**
+Probe38590905780 summary640823931/3861412bytes SHA
+f1d71b542a4e46f5475ee77bd4e4b7f58c5c05f6aad91e1f0151d7400c68b5b8
+is terminalPASS. It found3zero-terminal and302single-terminal non-PG nets;
+the remaining113556 have2+terminals. CUGR originally tried all113861.
+Native input cleanup now requires exactbaselineODB660692b3..., exactinventory
+and only the3named zero-terminal/no-wire/no-guide declarations. It rejects
+can_rx_i as a negative control; all302single-terminal nets, every cell/master/
+position/status and retained net/terminal/boundary geometry must remain exact.
+Source ODB is never modified; separate cugr-input.odb and full proof are saved.
+
+Dispatch newer-postcts-cloud once with router_solver=cugr,
+cugr_empty_net_cleanup=true, placement_profile=local_optimize_buffers,
+ethernet_hold_depth=2, macro_routing_profile=baseline, routing_seed=13,
+critical_nets_percentage=0, grid_profile=baseline. Require native invariants,
+original all-corner timing and independent CUGR zero-overflow/coverage gates.
+No adopted layout, no skipped actual signal, no constraint change. Previous
+failedCUGR38589002753 retained. FullPHY/routedmainchip/finaltiming OPEN/cloud-only.
+
+
 **Live continuation handle: terminal-cardinality diagnosis38590905780.**
 Sourcec2ba59b4ec1394a336196ebbfcd905a3c2a477bd, source_profile=seed13_buffers.
 Retain this read-only native job; it was dispatched after the terminal CUGR

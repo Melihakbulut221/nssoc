@@ -92,9 +92,12 @@ def main():
     parser.add_argument('--routing-seed', type=int, choices=[0,13], default=0)
     parser.add_argument('--router-solver', choices=['fast_route','cugr'], default='fast_route')
     parser.add_argument('--self-test', action='store_true')
+    parser.add_argument('--cugr-empty-net-cleanup', action='store_true')
     args = parser.parse_args()
     if args.self_test:
         self_test(); return
+    if args.cugr_empty_net_cleanup:
+        assert args.router_solver=='cugr'
     if args.router_solver=='cugr':
         assert args.placement_profile=='local_optimize_buffers' and args.ethernet_hold_depth==2
         assert args.macro_routing_profile=='baseline' and args.routing_seed==13
@@ -315,6 +318,16 @@ def main():
             result['routing_order_source' if args.routing_seed else 'routing_priority_source'] = dict(run=evidence['run'],
                 placement_sha256=expected, source_evidence_sha256=sha(ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json'),
                 scope=('Native net ordering seed13; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, routing layers, layer adjustment and zero-overflow gate. Any conservative macro halo is recorded separately. Requires actual routing and all-corner timing.')
+            save()
+        if args.cugr_empty_net_cleanup:
+            fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38590905780-1-congestion-seed13_buffers/newer-congestion-probe-38590905780-1.json',
+                'f1d71b542a4e46f5475ee77bd4e4b7f58c5c05f6aad91e1f0151d7400c68b5b8', OUT/'cugr-empty-net-diagnosis.json')
+            native_placement('prepare_cugr')
+            result['cugr_input_cleanup']=json.loads((OUT/'cugr-input-proof.json').read_text())
+            assert result['cugr_input_cleanup']['status']=='PASS_EXACT_THREE_ZERO_TERMINAL_DECLARATIONS_REMOVED'
+            script=script.replace(str(OUT/'relocated-placement.odb'),str(OUT/'cugr-input.odb'))
+            assert str(OUT/'cugr-input.odb') in script
+            protected[str(OUT/'cugr-input.odb')]=sha(OUT/'cugr-input.odb')
             save()
         rc = json.loads((ROOT / 'docs/evidence/cloud-global-route-rc-20261013.json').read_text())
         prefix = script.split('set_wire_rc -signal')[0]
