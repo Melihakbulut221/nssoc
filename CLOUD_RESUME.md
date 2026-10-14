@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Bank-only commit timing rejected; direct EOP path prepared.** Paired mapping
+38516179454 terminal: baseline639343787/candidate639343644. SlowPCIe setup
+-1.101756 -> -1.171506ns; fastPCIe hold unchanged-0.109062ns. Candidate not
+adopted despite CPU setup improvement. Original worst path has28combostages
+fromlink_up through packet selection into sent_data. New bank_eop combines
+separate-bank update with advert_ready=selected_ready&&(advert_eop||
+(local_reset&&!chosen)). At activeEOP, existing ownership invariant must be
+proved jointly, not assumed; SOP arbitration unchanged. Require all-state3
+proofs/2corrupt controls/10positiveports before mapping. Prepared workflow
+advert_bank_eop=true then study=advert_bank_eop. No relaxed SDCS or latency.
+Analog38516411596 two coldcasesPASS; hotpending. ActualV8 TC followup prepared
+but not dispatched. Route/PLL existinghandles remain; cloud-only/full goalsOPEN.
+
+
 **Actual Nx4 layout source located; avoid redundant generation.** Existing V8
 low_ports_loads_shunts_series composition38492591399 already contains exact
 Nx4data/Nx6selectors/all other same devices, with54native devices,
