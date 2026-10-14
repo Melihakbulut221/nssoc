@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Hosted native865 snapshot portability experiment, not PLL lock acceptance."""
+"""Hosted exact native865 capture and snapshot experiment; no implicit PLL acceptance."""
 import argparse
 import hashlib
 import io
@@ -131,6 +131,7 @@ def native_run(executable, directory, script, deadline, result, save):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
+    parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
     controls=self_test()
     if args.self_test: print(json.dumps(controls));return
@@ -141,6 +142,10 @@ def main():
         reference='https://ngspice.sourceforge.io/docs/ngspice-manual.pdf',
         scope='Actual865-device circuit and full extracted metal RC, exact historical 1us deck stopped at25/50ns. Original model/runtime bytes, startup sources, .3125ps step and tolerances retained. Compares continuous vs same-process resumed vs fresh-process restored waveforms. Only bounded restart-method evidence, not1us lock, all-device safety, PVT, CDR, full serialPHY, or chip acceptance.')
     def save(): (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    if args.acquisition:
+        result.update(status='RUNNING_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE',
+            mode='fresh_time_zero_acquisition_capture',
+            scope='Original865 circuit and full extracted metal RC with exact32models/3OSDIs, startup, .3125ps step, KLU and tolerances. Fresh uninterrupted1us selected24probes only. Complete capture is NOT acquisition/phase/slip, full-device safety, PVT, CDR, jitter or PHY acceptance; those reviews remain required. No cross-process snapshot is used.')
     save()
     try:
         selected={PREFIX+n:RECORDS[n] for n in ['native07/bench.cir','native07/parent865.spice','gate01.json']}
@@ -206,6 +211,49 @@ def main():
             parent_sha256=sha(out/'parent865.spice'),native_off_flags=len(alters),vectors=vectors,
             native_stop_s=1e-6,comparison_stop_s=50e-9,snapshot_stop_s=25e-9)
         save()
+        if args.acquisition:
+            # Native run's rawfile records output during execution; retain it even
+            # if the runner deadline interrupts a row. Never pad or accept it.
+            text='NSSOC native865 original1us continuous capture\n'+common+'run acquisition.raw\nquit\n.endc\n.end\n'
+            assert 'stop when' not in text and 'snload' not in text and 'resume' not in text
+            (out/'acquisition.cir').write_text(text)
+            result.update(native_budget_s=20800,required_capture_stop_s=1e-6,
+                runtime_basis=dict(run=38503868241,continuous50ns_s=994.3820633739999,
+                    linear1us_estimate_s=19887.64126748,estimate_is_not_a_guarantee=True),
+                comparison_stop_s=None,snapshot_stop_s=None)
+            save()
+            native_run(executable,out,'acquisition.cir',time.monotonic()+20800,result,save)
+            raw=(out/'acquisition.raw').read_bytes()
+            names,values,meta=decode_prefix(raw)
+            assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
+            assert set(names)=={'time',*vectors} and len(values)>3000000
+            t=values[:,0]
+            assert t[0]==0 and 1e-6-1e-15 <= t[-1] <= 1e-6+1e-15
+            assert np.max(np.diff(t)) <= 3.125e-13*1.00001
+            result['captures']={'acquisition.raw':dict(**meta,sha256=digest(raw),bytes=len(raw),
+                start_s=float(t[0]),end_s=float(t[-1]))}
+            v={name:values[:,i] for i,name in enumerate(names)}
+            edges={name:rising(t,signal,threshold) for name,signal,threshold in [
+                ('vco',v['v(clkp)']-v['v(clkn)'],0.),
+                ('feedback',v['v(fb)'],1.25),('reference',v['v(reference)'],1.25)]}
+            windows=[]
+            for start,end in [(0,50),(50,100),(100,200),(200,400),(400,600),(600,800),(800,900),(900,1000)]:
+                a,z=start*1e-9,end*1e-9;mask=(t>=a)&(t<=z)
+                stats={}
+                for name,edge in edges.items():
+                    e=edge[(edge>=a)&(edge<=z)];periods=np.diff(e)
+                    stats[name]=dict(rising_edges=len(e),
+                        frequency_from_median_period_hz=float(1/np.median(periods)) if len(periods) else None,
+                        min_period_s=float(periods.min()) if len(periods) else None,
+                        max_period_s=float(periods.max()) if len(periods) else None)
+                windows.append(dict(start_ns=start,end_ns=end,edges=stats,
+                    node_ranges={name:dict(minimum=float(v[name][mask].min()),maximum=float(v[name][mask].max()))
+                        for name in ['v(vctrl)','v(up)','v(down)','v(fb)','v(reference)']}))
+            result.update(status='COMPLETE_ONE_US_NATIVE865_SELECTED_PROBES_REQUIRES_LOCK_AND_SAFETY_REVIEW',
+                windows=windows,phase_shift_fitted=False,
+                required_followup=['fixed original acquisition phase/frequency/slip review',
+                    'all-device1us native safety','timestep and independent PVT','PLL/CDR serialPHY integration'])
+            save();print(result['status'],flush=True);return
         deadline=time.monotonic()+19000
         captures={}
         for script,name in [('continuous.cir','continuous.raw'),('split.cir','same-process.raw'),
@@ -230,7 +278,7 @@ def main():
         save()
         assert passed, 'Snapshot transport is not equivalent under fixed diagnostic bounds'
     except BaseException as error:
-        result.update(status='FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
+        result.update(status='FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
         save();raise
 
 if __name__=='__main__':

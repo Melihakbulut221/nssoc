@@ -7,6 +7,23 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Exact1us native865 cloud continuation prepared:** cross-process snapshot run
+38503868241 segfaulted on snload/restore (-11); immutable failure summary639099695
+and archive639099391 are pinned in parent865_snapshot_failure_20261014. No
+snapshot is accepted or used. New pll_acquisition=true option in migration
+workflow runs exact historical1us deck fresh from timezero, selected24probes,
+original models/OSDIs/circuit/rails/startup/.3125ps/KLU/tolerances. Native output
+streams to acquisition.raw;20800s safety deadline leaves time to preserve
+incomplete evidence before6h hosted ceiling. Measured50ns runtime994s implies
+~19888s for1us, an estimate not a promise. Complete capture still requires
+fixed lock/slip/phase review and all-device safety/PVT; no inferred acceptance.
+Dispatch once with pll_acquisition=true after source checks. Corrected V11
+nominal38507129843 already reached native after tests; initial missing-counts
+failures retained. Other initial corner runs may finish with same harness
+failure; confirm terminal before replacing. Route38490952579 and original
+32:1wire38496981217 retain handles. Local remains empty; three goalsOPEN.
+
+
 **V11 harness repair / PLL snapshot terminal failure:** V11 initial loaded runs
 38506756540/38506767529/38506778818 stop before native simulation: receipt lacked
 counts. Added exact counts from immutable native composition (54devices,

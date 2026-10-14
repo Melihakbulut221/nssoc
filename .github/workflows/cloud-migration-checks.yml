@@ -23,6 +23,9 @@ on:
         type: string
       verification_manifest:
         type: string
+      pll_acquisition:
+        type: boolean
+        default: false
       pll_snapshot:
         type: boolean
         default: false
@@ -355,7 +358,7 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-prefix "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
 
   pll-snapshot:
-    if: ${{ inputs.pll_snapshot == true }}
+    if: ${{ inputs.pll_snapshot == true || inputs.pll_acquisition == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -378,8 +381,8 @@ jobs:
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
       - name: Reject mismatched, shifted, truncated and incomplete controls
         run: python scripts/run_cloud_pll865_snapshot.py --self-test
-      - name: Compare native865 continuous and fresh-process snapshot continuation
-        run: python scripts/run_cloud_pll865_snapshot.py
+      - name: Run requested native865 capture or snapshot experiment
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_acquisition && '--acquisition' || '' }}
       - name: Preserve actual waveforms, snapshots, diagnostics and failure receipts
         if: always()
         env:
