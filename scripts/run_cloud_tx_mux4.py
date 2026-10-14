@@ -494,6 +494,36 @@ def review(run, contract):
                                    all(r['passed'] for r in [*devices.values(),*mos.values()]))
 
 
+def diagnostic_v11_data_area(text, nx):
+    """Schematic sensitivity only: preserve every wire and non-data device.
+
+    Original input is SHA-verified by physical_macro before this transform.
+    Any non-eight candidate requires fresh geometry, LVS and RC composition.
+    """
+    assert nx in (4,5,6,8)
+    targets={f'xd{i:04d}' for i in (*range(41,47),*range(49,55))}
+    seen=set(); lines=[]
+    for line in text.splitlines(keepends=True):
+        fields=line.lower().split()
+        if fields and fields[0] in targets:
+            name=fields[0]
+            assert name not in seen, 'Duplicate data HBT'
+            assert len(fields)>6 and fields[5]=='npn13g2'
+            assert [v for v in fields[6:] if v.startswith('nx=')]==['nx=8']
+            line,count=re.subn(r'(?i)(\bnx=)8(?=\s|$)',lambda m:m[1]+str(nx),line)
+            assert count==1
+            seen.add(name)
+        lines.append(line)
+    assert seen==targets, 'Missing source-bound data HBT'
+    changed=''.join(lines)
+    return changed, dict(category='data_emitter_area',baseline_nx=8,candidate_nx=nx,
+        instances=sorted(seen),original_sha256=hashlib.sha256(text.encode()).hexdigest(),
+        mutated_sha256=hashlib.sha256(changed.encode()).hexdigest(),
+        wire_geometry_unchanged=True,device_geometry_matches_layout=(nx==8),
+        physical_accepted=False,
+        scope='Schematic device-area sensitivity on retained V11 wire graph. Not a new extracted layout or physical acceptance.')
+
+
 def main():
     global PRE, FRONT
     parser=argparse.ArgumentParser(description=__doc__)
@@ -511,7 +541,16 @@ def main():
     parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
     parser.add_argument('--diagnostic-final-r', choices=('actual','all','supply','return','inputs','internal','bias','outputs'), default='actual')
+    parser.add_argument('--diagnostic-final-nx',type=int,choices=(0,4,5,6,8),default=0)
     args=parser.parse_args()
+    if args.diagnostic_final_nx:
+        assert args.diagnostic_final_r=='actual' and args.streams==4 and args.fault=='none'
+        assert args.physical_profile=='cascade158_kelvin_supply_direct'
+        assert args.physical_final_profile=='v11_kelvin_low_ports_loads_shunts_series'
+        assert args.prestage==args.physical_final and args.physical_final in ('physical_compact','physical_wire')
+        assert args.condition in ('hot_low','cold_high_hbt_wcs')
+        assert args.pre_bias=='output_feedback' and args.clock_reference=='stiff65'
+        assert args.clock_bias==args.output_bias=='native_res'
     if args.diagnostic_final_r != 'actual':
         assert args.streams == 4 and args.fault == 'none'
         assert args.prestage == args.physical_final == 'physical_wire'
@@ -558,6 +597,9 @@ def main():
             original=physical_macro(inputs,args.physical_final,final_spec,final_circuit,'physical-final')
             final_override=original.with_name('namespaced-final.spice')
             final_text = original.read_text()
+            if args.diagnostic_final_nx:
+                final_text, mutation = diagnostic_v11_data_area(final_text,args.diagnostic_final_nx)
+                result['diagnostic_device_mutation']=mutation
             if args.diagnostic_final_r != 'actual':
                 from analyze_cloud_metal_resistance import reduce_conductor_class
                 final_text, mutation = reduce_conductor_class(
@@ -624,6 +666,10 @@ def main():
             result['diagnostic_screen_passed'] = result['component_screen_passed']
             result['component_screen_passed'] = False
             result['status'] = 'COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
+        if args.diagnostic_final_nx:
+            result['diagnostic_screen_passed']=result['component_screen_passed']
+            result['component_screen_passed']=False
+            result['status']='COMPLETE_DEVICE_AREA_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
         if args.fault!='none':
             result['fault_rejected_by_original_bits']=not result['review']['signals']['passed']
             assert result['fault_rejected_by_original_bits'], 'Actual stage fault escaped source-bit screen'

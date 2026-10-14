@@ -8,6 +8,20 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Active routing and bounded serializer sizing study:** routing38511490580
+sourceec864e84 dispatched once with routability_data/hold2/seed13/baselineOBS;
+check its exact handle. New tx-interconnect-diagnostic-cloud study=v11_data_area
+compares data HBT Nx4/5/6 against unchangedNx8 control, fixed feedback32um,
+cold_high_hbt_wcs compact and hot_low wire (8cases). This tests device-area
+tradeoff before spending on new geometry. Exact12data devices only, every
+other transistor/R/C untouched, original sourcebits/phase/device limits kept;
+contract emitter counts follow actual modified device model. Fault tests reject
+missing/duplicate/wrong-Nx/wrong-model targets. Sizing results are ALWAYS
+notphysicalacceptance: changed devices require fresh layout/LVS/RC/PVT.
+Dispatch this study once. Existing PLL38507479646 and32:1wire38496981217 still
+live. All work cloud-only; all full goals OPEN.
+
+
 **Next concrete routing repair prepared: routability_data** in newer-postcts-cloud.
 Restores exact seed13baseline132overflow run38448901835 placement and its native
 probe38471402795 (SHA-bound). GPL skip_initial_place+routability_driven density0.55

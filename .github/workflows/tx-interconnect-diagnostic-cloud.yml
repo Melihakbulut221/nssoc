@@ -7,7 +7,7 @@ on:
       study:
         description: Frozen older component or current source-bound physical tree
         type: choice
-        options: [original_component, dense_wide_tree, v11_hot_low_inputs]
+        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area]
         default: original_component
       cases:
         description: Run all cases or only failed sensitivity preparations
@@ -21,6 +21,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   native-transient:
+    if: inputs.study != 'v11_data_area'
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
@@ -81,3 +82,49 @@ jobs:
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-operating-point/result.json "$summary"
           python3 scripts/publish_cloud_results.py --group 'component-rc-${{ matrix.interconnect }}' "$archive" "$archive.sha256" "$summary"
+
+  data-area-sensitivity:
+    if: inputs.study == 'v11_data_area'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        nx: [4, 5, 6, 8]
+        condition: [hot_low, cold_high_hbt_wcs]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator with hosted dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Check graph ownership and unchanged source-bit gates
+        run: python3 -m pytest -q sw/tests/test_cloud_metal_resistance.py sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
+      - name: Screen fixed device-area candidates without claiming physical geometry
+        run: |
+          kind='${{ matrix.condition == 'hot_low' && 'physical_wire' || 'physical_compact' }}'
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition '${{ matrix.condition }}' --fault none --prestage "$kind" --physical-profile cascade158_kelvin_supply_direct --physical-final "$kind" --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias output_feedback --output-bias native_res --diagnostic-final-nx '${{ matrix.nx }}'
+      - name: Preserve every candidate and unchanged-Nx8 control
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-area-nx${{ matrix.nx }}-${{ matrix.condition }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-mux4
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-mux4/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'area-nx${{ matrix.nx }}-${{ matrix.condition }}' "$archive" "$archive.sha256" "$summary"

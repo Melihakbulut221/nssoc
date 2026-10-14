@@ -703,3 +703,22 @@ def test_physical_final_receipts_supply_required_native_runtime_metadata():
         assert spec['counts']['devices'] == 54
         assert all(isinstance(spec['counts'][key], int) and spec['counts'][key] > 0 for key in ('R', 'C'))
         assert all(len(spec['outputs'][name]) == 64 for name in ('mux54-wire01.spice','mux54-compact01.spice'))
+
+
+@pytest.mark.parametrize('nx',[4,5,6,8])
+def test_v11_data_area_binds_current_density_to_changed_emitters(tmp_path,nx):
+    names=[f'XD{i:04d}' for i in (*range(41,47),*range(49,55))]
+    text='.subckt v11 c b e s\n'+''.join(f'{name} c b e s npn13G2 Nx=8\n' for name in names)
+    text+='XD0047 c b e s npn13G2 Nx=8\nXD0001 c b e s npn13G2 Nx=6\nR1 c b 2.5\nC1 b e 2f\n.ends\n'
+    changed,receipt=mux4.diagnostic_v11_data_area(text,nx)
+    p=tmp_path/'changed.spice';p.write_text(changed)
+    _,devices=mux4.bind_devices(p,'xmux',['c','b','e','s'],{'npn13g2'})
+    assert all(devices['xmux.'+n.lower()]['nx']==nx for n in names)
+    assert devices['xmux.xd0047']['nx']==8 and devices['xmux.xd0001']['nx']==6
+    assert changed.split('XD0047')[1]==text.split('XD0047')[1]
+    assert not receipt['physical_accepted'] and receipt['device_geometry_matches_layout']==(nx==8)
+    assert (changed==text)==(nx==8)
+    for broken in (text.replace('XD0041','XD9999'),text.replace('Nx=8','Nx=7',1),
+                   text.replace('.ends','XD0041 c b e s npn13G2 Nx=8\n.ends'),
+                   text.replace('XD0041 c b e s npn13G2','XD0041 c b e s other')):
+        with pytest.raises(AssertionError):mux4.diagnostic_v11_data_area(broken,nx)
