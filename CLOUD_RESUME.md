@@ -7,6 +7,18 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Full PFD terminal coverage PASS; schematic naming diagnosis prepared.**
+38600813474 on426d78cf passed with every102MOS D/G/S probe included. Result
+641004212/1054133bytes SHA
+fef204c48418fbf8242d9dbf739f9d06ce6cac1c2b38a6412c1ff55dc181f164.
+New pll_pfd_topology workflow input maps this immutable capture onto original
+102MOS schematic through exact anchored D/G/S/model/W/L graph correspondence.
+Only for naming: extracted metal resistors are collapsed in mapping, never in
+simulation. Full RC waveform unchanged; body/tap LVS/qualifiedPEX/acquisition
+not claimed. Require unique internal-net mapping and full transistor multiset;
+wrong gate/size/missing device/port short must reject. Routing38598795406 live.
+
+
 **PFD internal-node diagnostic coverage correction prepared.**
 Successful full50 review38599049135 preserved exact raw capture and pump
 observations, but its xpfd.n_ selection only covered well nodes, not the MOS

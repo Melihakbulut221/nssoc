@@ -415,6 +415,143 @@ def full50_probe_controls():
     return dict(positive=1,negative=4)
 
 
+def pfd_topology_map(parent, reference, ports=('ref','fb','reset','up','down','vdd','vss')):
+    """Diagnostic MOS D/G/S graph correspondence; never modifies simulated RC.
+
+    Collapse ONLY extracted PFD metal resistors for this naming map. Source/drain
+    exchange is allowed, gate/model/W/L and every external port are anchored.
+    Bodies, finite taps and RC electrical behavior are not LVS-proved by this map.
+    """
+    from collections import Counter, defaultdict
+    from decimal import Decimal
+    import re
+    uf={}
+    def root(n):
+        uf.setdefault(n,n)
+        while uf[n]!=n:
+            uf[n]=uf[uf[n]];n=uf[n]
+        return n
+    def dim(value):
+        m=re.fullmatch(r'([0-9.eE+-]+)([unp]?)',value)
+        assert m, ('Unrecognized dimension',value)
+        return str((Decimal(m[1])*{'':Decimal(1),'u':Decimal('1e-6'),'n':Decimal('1e-9'),'p':Decimal('1e-12')}[m[2]]).normalize())
+    lines=[l.lower().split() for l in parent.splitlines()]
+    wires=[w for w in lines if w and w[0].startswith('r_xpfd_')]
+    assert len({w[0] for w in wires})==len(wires)
+    for w in wires:
+        assert len(w)==4 and Decimal(w[3])>0
+        uf[root(w[2])]=root(w[1])
+    native=[]
+    for w in lines:
+        if not (w and w[0].startswith('x_xpfd_') and len(w)>5 and w[5] in ('sg13_hv_nmos','sg13_hv_pmos')):continue
+        params=dict(x.split('=',1) for x in w[6:])
+        native.append(dict(path=w[0],model=w[5],params=params,nets=[root(n) for n in w[1:4]],raw_nets=w[1:4]))
+    assert len(native)==len(reference) and len({d['path'] for d in native})==len(native)
+    nports={root('a_pfd_'+p):p for p in ports};assert len(nports)==len(ports),'Shorted PFD ports'
+    def graph(devs, anchored):
+        bases={};neighbors=defaultdict(list)
+        for n,p in anchored.items():bases[('n',n)]='PORT:'+p
+        for dev in devs:
+            dn=('d',dev['path']);assert dn not in bases
+            bases[dn]='MOS:'+dev['model']+':'+dim(dev['params']['w'])+':'+dim(dev['params']['l'])
+            for role,n in zip(('ds','g','ds'),dev['nets'][:3],strict=True):
+                nn=('n',n);bases.setdefault(nn,'NET')
+                neighbors[dn].append((role,nn));neighbors[nn].append((role,dn))
+        return bases,neighbors
+    graphs=[graph(reference,{p:p for p in ports}),graph(native,nports)]
+    palette={k:i for i,k in enumerate(sorted({v for b,_ in graphs for v in b.values()}))}
+    colors=[{n:palette[v] for n,v in b.items()} for b,_ in graphs]
+    assert Counter(colors[0].values())==Counter(colors[1].values()),'MOS/port inventory differs'
+    for iteration in range(sum(len(b) for b,_ in graphs)):
+        signatures=[{n:(c[n],tuple(sorted((r,c[v]) for r,v in neighbors[n]))) for n in bases}
+            for (bases,neighbors),c in zip(graphs,colors,strict=True)]
+        palette={k:i for i,k in enumerate(sorted({v for sig in signatures for v in sig.values()}))}
+        new=[{n:palette[v] for n,v in sig.items()} for sig in signatures]
+        assert Counter(new[0].values())==Counter(new[1].values()),'PFD connectivity/gate/W/L mismatch'
+        stable=len(set(new[0].values()))==len(set(colors[0].values()));colors=new
+        if stable:break
+    else:raise AssertionError('PFD graph refinement did not converge')
+    netsets=[]
+    for c in colors:
+        groups=defaultdict(list)
+        for (kind,n),color in c.items():
+            if kind=='n':groups[color].append(n)
+        netsets.append(groups)
+    assert all(len(v)==1 for g in netsets for v in g.values()),'Ambiguous internal PFD net correspondence'
+    mapped={v[0]:netsets[1][color][0] for color,v in netsets[0].items()}
+    inverse={v:k for k,v in mapped.items()};assert len(inverse)==len(mapped)
+    def key(dev,conv):
+        d,g,s=(conv(n) for n in dev['nets'][:3])
+        return dev['model'],dim(dev['params']['w']),dim(dev['params']['l']),g,tuple(sorted((d,s)))
+    assert Counter(key(d,lambda n:n) for d in reference)==Counter(key(d,inverse.__getitem__) for d in native),'Complete MOS-edge check failed'
+    mapping={}
+    for logical,net in sorted(mapped.items()):
+        points=[]
+        for d in native:
+            for role,n,raw in zip(('d','g','s'),d['nets'],d['raw_nets'],strict=True):
+                if n==net:points.append(dict(device=d['path'],terminal=role,vector='v(xloop.'+raw+')'))
+        mapping[logical]=dict(native_component=net,terminals=points)
+    return dict(status='PASS_EXACT_MOS_DGS_TOPOLOGY_FOR_DIAGNOSTIC_NAMING_NOT_LVS',
+        mos_count=len(native),metal_resistors=len(wires),refinement_rounds=iteration+1,nets=mapping,
+        scope='Unique anchored net map and full MOS D/G/S/model/W/L multiset; DS exchange allowed. Bodies/taps/electrical RC not validated here. Original full RC circuit and waveform unchanged.')
+
+
+def pfd_topology_controls():
+    source=[dict(path='n',model='sg13_hv_nmos',params={'w':'2u','l':'.45u'},nets=['out','in','vss']),
+        dict(path='p',model='sg13_hv_pmos',params={'w':'4u','l':'.45u'},nets=['out','in','vdd'])]
+    text='\n'.join(['R_xpfd_1 n1 a_pfd_out 3','R_xpfd_2 n2 a_pfd_in 4',
+        'X_xpfd_n a_pfd_vss n2 n1 body sg13_hv_nmos w=2u l=0.45u',
+        'X_xpfd_p n1 n2 a_pfd_vdd well sg13_hv_pmos w=4u l=0.45u'])
+    ports=('in','out','vdd','vss')
+    good=pfd_topology_map(text,source,ports);assert good['mos_count']==2 and set(good['nets'])==set(ports)
+    faults=[text.replace('n2 n1 body','n1 n1 body'),text.replace('w=4u','w=5u'),
+        '\n'.join(text.splitlines()[:-1]),text.replace('n1 a_pfd_out','n1 a_pfd_in')]
+    for bad in faults:
+        try:pfd_topology_map(bad,source,ports)
+        except AssertionError:continue
+        raise AssertionError('Corrupt PFD graph accepted')
+    return dict(positive_source_drain_exchange=1,rejected_gate_size_missing_device_short=len(faults))
+
+
+def diagnose_pfd_topology():
+    """Map completed native full50 terminal observations to original schematic."""
+    import importlib.util
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted topology analysis only'
+    out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
+    result=dict(status='RUNNING_PFD_TOPOLOGY_DIAGNOSIS',full_phy_accepted=False,acquisition_accepted=False,no_new_native=True)
+    def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        source=out/'full50.json'
+        fetch(BASE+'cloud-results-38600813474-1-pll-acquisition-review/result.json',
+            'fef204c48418fbf8242d9dbf739f9d06ce6cac1c2b38a6412c1ff55dc181f164',source)
+        capture=json.loads(source.read_text())
+        assert capture['status']=='COMPLETE_FULL50_PFD_PUMP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE'
+        assert capture['pfd_terminal_coverage']['every_pfd_drain_gate_source_recorded_and_analyzed']
+        generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
+        spec=importlib.util.spec_from_file_location('pfd_original_source',generator)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        sources={name:(ROOT/'hw/soc/analog/pcie'/name).read_text() for name in module.SOURCES}
+        reference=module.devices(sources);assert len(reference)==102
+        parent='\n'.join(capture['parent_pfd_and_pump_statements'])
+        proof=pfd_topology_map(parent,reference)
+        assert proof['metal_resistors']==771 and proof['mos_count']==102
+        observations={}
+        for logical,net in proof['nets'].items():
+            vectors=sorted({x['vector'] for x in net['terminals']})
+            assert vectors,('Logical net lacks recorded terminal',logical)
+            observations[logical]=[dict(start_s=i['start_s'],stop_s=i['stop_s'],
+                terminals={v:i['signals'][v] for v in vectors}) for i in capture['intervals']]
+        result.update(status='COMPLETE_SOURCE_MAPPED_PFD_STARTUP_DIAGNOSIS_NOT_LOCK_ACCEPTANCE',
+            input=dict(run=38600813474,summary_sha256=sha(source),source_identity=capture['source_identity'],
+                generator_sha256=sha(generator),schematic_sha256=module.SOURCES),
+            mapping=proof,observations=observations,controls=pfd_topology_controls(),
+            scope='Original full RC waveform only; topology names are exact102MOS D/G/S graph correspondence, not new body/tap LVS, qualified PEX or lock. Startup50ns cannot establish late1us causal closure.')
+        save();print(result['status'],flush=True)
+    except BaseException as error:
+        result.update(status='FAILED_PFD_TOPOLOGY_DIAGNOSIS',error=repr(error));save();raise
+
+
 def diagnose_full50():
     """Read original full-node PBUF10 wave, not the older reset865 circuit."""
     import gzip
@@ -528,8 +665,12 @@ def main():
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
     parser.add_argument('--diagnose-full50',action='store_true')
+    parser.add_argument('--diagnose-pfd-topology',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    if args.diagnose_pfd_topology:
+        assert not (args.acquisition or args.self_test or args.review_acquisition or args.diagnose_acquisition or args.diagnose_full50)
+        diagnose_pfd_topology();return
     if args.diagnose_full50:
         assert not (args.acquisition or args.self_test or args.review_acquisition or args.diagnose_acquisition)
         diagnose_full50();return
@@ -542,6 +683,7 @@ def main():
     controls['full50_fifo']=full50_fifo_controls()
     controls['full50_alias']=full50_alias_controls()
     controls['full50_probe_coverage']=full50_probe_controls()
+    controls['pfd_topology']=pfd_topology_controls()
     if args.self_test: print(json.dumps(controls));return
     assert os.environ.get('GITHUB_ACTIONS')=='true', 'Hosted execution only'
     out=ROOT/'cloud-pll-snapshot';out.mkdir(exist_ok=False)

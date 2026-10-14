@@ -23,6 +23,9 @@ on:
         type: string
       verification_manifest:
         type: string
+      pll_pfd_topology:
+        type: boolean
+        default: false
       pll_full50_diagnosis:
         type: boolean
         default: false
@@ -470,7 +473,7 @@ jobs:
           retention-days: 30
 
   pll-acquisition-review:
-    if: ${{ inputs.pll_acquisition_review == true || inputs.pll_acquisition_diagnosis == true || inputs.pll_full50_diagnosis == true }}
+    if: ${{ inputs.pll_acquisition_review == true || inputs.pll_acquisition_diagnosis == true || inputs.pll_full50_diagnosis == true || inputs.pll_pfd_topology == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     permissions:
@@ -488,7 +491,7 @@ jobs:
       - name: Review exact original one-us capture without new simulation
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_full50_diagnosis && '--diagnose-full50' || inputs.pll_acquisition_diagnosis && '--diagnose-acquisition' || '--review-acquisition' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_topology && '--diagnose-pfd-topology' || inputs.pll_full50_diagnosis && '--diagnose-full50' || inputs.pll_acquisition_diagnosis && '--diagnose-acquisition' || '--review-acquisition' }}
       - name: Preserve complete independent review or failure
         if: always()
         env:
