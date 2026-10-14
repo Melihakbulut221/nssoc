@@ -8,6 +8,21 @@
 ### Newest state — supersedes every older live statement below
 
 
+**Live repaired-input routing handle38591636770/job115947747389.**
+Source2a5e8a5abd98e49d3dec6ca23e71a01d200c3908, CUGR with explicit
+cugr_empty_net_cleanup=true and exact originalseed13/buffer-placement/hold2.
+Latest observation: native route step in progress. Preserve handle; do not
+confuse this new input with terminal firstCUGR38589002753 or duplicate it.
+Inspect native cugr-input-proof (all retained nets/pins/masters/positions and
+boundary geometry unchanged) and complete route/STA results before acceptance.
+Cardinality probe38590905780 is terminal and now recorded in structured evidence:
+3empty,302single-terminal,113556two-or-more-terminal non-PG nets. Only the exact
+three empty/no-wire/no-guide declarations may disappear; every actualterminal
+remains. No timing/capacity waiver, no sourceODB overwrite, no adoption.
+Previous goal turn and this turn make concrete source/native-evidence progress;
+fullserialPHY/routedmainchip/finalsetup-hold remainOPEN and work stayscloud-only.
+
+
 **Exact zero-terminal input repair prepared from native inventory.**
 Probe38590905780 summary640823931/3861412bytes SHA
 f1d71b542a4e46f5475ee77bd4e4b7f58c5c05f6aad91e1f0151d7400c68b5b8
