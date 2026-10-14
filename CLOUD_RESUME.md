@@ -7,6 +7,22 @@
 
 ### Newest state — supersedes every older live statement below
 
+**Direct-supply V8 device/RC composition PASS; original hot screens prepared.**
+38522827216 on691dc727 summary639482876 binds54devices/4083R/2673C; archive
+6394826726690446bytes SHA413ad0c3edbc2cc68689312e3bbe6d9e2a5689f9b7bed496cd50d34bd5401c47.
+New source-bound receipt pcie-final-v8-kelvin-low-ports-loads-shunts-series-direct-
+composition-20261014.json preserves physical/extraction/recovery provenance.
+Native hot study=v8_feedback_tc_direct_hot runs hot_low/hot_low_res_bcs with
+actualnewRC, unchanged cascade158 prestages/TC feedback/native clock/bits/gates,
+no Nx/R mutation. Expanded wrong-circuit/geometry archive controls run first.
+Dispatch once; electrical acceptance remains unproven until complete wave review.
+Do not rerun original compact/hot captures. If hot passes, extend original full
+PVT/fault/load scopes before any adoption. This commit adds one evidence file;
+older inventory totals predate it and must not be described as current totals.
+Digital prefix trace38522829842 on691dc727 active. Original PLL38507479646 and
+mainchip route38511490580 retain handles; no local artifacts/full goalsOPEN.
+
+
 **Direct-supply native RC recovered and ready for exact device composition.**
 Recovery38522280250 PASS; original extraction summary639469687 retained with
 4083R/2673C and13raw-fault controls PASS. Recovery receipt639469765 verifies

@@ -436,9 +436,9 @@ def test_physical_final_profiles_use_distinct_receipt_files():
     with pytest.raises(AssertionError):mux4.physical_final_spec_path('unproven_geometry')
 
 
-@pytest.mark.parametrize('version,geometry', [('v6','kelvin_dense_wide'),('v7','kelvin_dense_wide'),('v8','kelvin_dense_wide'),('v8','kelvin_low_critical'),('v8','kelvin_low_selects'),('v9','kelvin_low_critical'),('v10','kelvin_low_critical'),('v11','kelvin_low_ports_loads_shunts_series')])
+@pytest.mark.parametrize('version,geometry', [('v6','kelvin_dense_wide'),('v7','kelvin_dense_wide'),('v8','kelvin_dense_wide'),('v8','kelvin_low_critical'),('v8','kelvin_low_selects'),('v9','kelvin_low_critical'),('v10','kelvin_low_critical'),('v11','kelvin_low_ports_loads_shunts_series'),('v8','kelvin_low_ports_loads_shunts_series_direct')])
 @pytest.mark.parametrize('reported_profile', ['final_drive_v5', 'final_drive_v6', 'final_drive_v7', 'final_drive_v8', 'final_drive_v9', 'final_drive_v10', 'final_drive_v11'])
-@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_kelvin_low_selects', 'critical_buses_power_trunks_vias', 'critical_buses_kelvin_low_ports_loads_shunts_series'])
+@pytest.mark.parametrize('reported_variant', ['critical_buses_kelvin_dense_wide', 'critical_buses_kelvin_low_critical', 'critical_buses_kelvin_low_selects', 'critical_buses_power_trunks_vias', 'critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_direct'])
 def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_path, monkeypatch, reported_profile, version, geometry, reported_variant):
     import hashlib
     import io
@@ -449,7 +449,7 @@ def test_physical_binding_rejects_a_validly_hashed_wrong_circuit_archive(tmp_pat
     profile = mux4.physical_final_circuit_profile(version+'_'+geometry)
     assert profile == 'final_drive_'+version
     assert mux4.physical_final_circuit_profile('kelvin_dense_wide') == 'final_drive_v5'
-    date = '20261014' if version == 'v11' else '20261013'
+    date = '20261014' if version == 'v11' or geometry.endswith('_series_direct') else '20261013'
     assert mux4.physical_final_spec_path(version+'_'+geometry).name == 'pcie-final-'+version+'-'+geometry.replace('_','-')+'-composition-'+date+'.json'
     with pytest.raises(AssertionError):
         mux4.physical_final_circuit_profile('unproven_geometry')
