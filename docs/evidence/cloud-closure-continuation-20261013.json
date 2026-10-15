@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-14T17:23:18.930165+00:00",
+  "as_of": "2026-10-15T18:19:10.743910+00:00",
   "turn_classification": "progress",
   "goal_status": "OPEN",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "329cf12816831d9005773513afdb9bae99537dc3",
+  "head": "1dfd4ddaf5f7059cd81353b72dc15da19eac0741",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -100,11 +100,12 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "Poll retained route38598795406 only. Source recovery38606020769 completedPASS,15source records in summary641099130. No duplicate/restart on observation timeout. PLL schematic38602623171,physical38604234902 andLEF38605102553 also completed.",
-    "Inspect recovered original PFD methods, then adapt native terminal binding/anchors/extraction/composition from255 to235actualdevices using saved GDS5eba5849. Preserve all physical terminal ownership and rawRC corruption controls. Never scale R/C values or reuse old PFD255 parasitics as new layout.",
-    "Compare actual RC-loaded new235device PFD with original255device physical waveform, then complete all-device safety, original1us rolling100ppm/50ps/no-slip/VCTRL and independentPVT/timestep/CDR. Schematic AOI94MOS is only an intermediate candidate; both schematic profiles lack physical PFD RC/taps.",
-    "Inspect exact CTS invariants and real original all-corner STA/zero-overflow route result before timing/route adoption. Full serialPHY, mainchiprouting and finalsetup/hold remainOPEN. Preserve all failed trials.",
-    "All edits, simulations, CAD, tests and artifacts stayonGitHub. Empty localworkspace mustremainempty. PFD workflow uses single pll_pfd_stage choice: topology/schematic/layout/lef/methods."
+    "All work stays on GitHub-hosted runners. Do not recreate local checkout or CAD/test artifacts. Retirement receipt is COMPLETE and hash-verified; no cleanup of other projects.",
+    "Do not poll or restart mainchip38731744914 as live: it terminated at the6h limit and relaxed NDR21times. Its partial JSON pending status is historical, not process evidence. Preserve full timeout and native failures.",
+    "Inspect exact saved failed-guide/ODB and congestion evidence before a new placement/clock-routing hypothesis. New controller rejects native NDR relaxation immediately and its process guard passed hosted tests. Do not replay rejected upper_metals/upper_three unchanged; no rule relaxation or global-guide signoff.",
+    "Diagnose named failing VBIC device with exact frozen model/geometry/corner and original recorded terminal playback; compare charge/current continuity and timestep sensitivity. Playback is diagnostic only, never a new output oracle. HBTs are VBIClevel9, TD0; distinguish subcircuit selft and unset modelSELFT.",
+    "Retain all completed factorial/refinement/backend comparisons and aborted charge capture. TSTEP and matrix backend are ruled out; finer TMAX/Gear2 did not converge. No blind full34ns rerun or startup-window removal.",
+    "Keep full PLL/CDR/RX/PCS/LTSSM, physical integration, qualified extraction, all-device/PVT, pad/ESD, SRAM/DFT, final setup/hold and real manufacturer approval requirements open until corresponding full-scope evidence proves them."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -102883,5 +102884,63 @@
       "sha256": "61c7bcbd29f8defec1a8565b0f0e1e110591474f9a5d42e5d077c33df543acf1",
       "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38606020769-1-pll-acquisition-review/result.json"
     }
+  },
+  "superseded_next_actions": [
+    {
+      "as_of": "2026-10-14T17:23:18.930165+00:00",
+      "head": "329cf12816831d9005773513afdb9bae99537dc3",
+      "next_actions": [
+        "Poll retained route38598795406 only. Source recovery38606020769 completedPASS,15source records in summary641099130. No duplicate/restart on observation timeout. PLL schematic38602623171,physical38604234902 andLEF38605102553 also completed.",
+        "Inspect recovered original PFD methods, then adapt native terminal binding/anchors/extraction/composition from255 to235actualdevices using saved GDS5eba5849. Preserve all physical terminal ownership and rawRC corruption controls. Never scale R/C values or reuse old PFD255 parasitics as new layout.",
+        "Compare actual RC-loaded new235device PFD with original255device physical waveform, then complete all-device safety, original1us rolling100ppm/50ps/no-slip/VCTRL and independentPVT/timestep/CDR. Schematic AOI94MOS is only an intermediate candidate; both schematic profiles lack physical PFD RC/taps.",
+        "Inspect exact CTS invariants and real original all-corner STA/zero-overflow route result before timing/route adoption. Full serialPHY, mainchiprouting and finalsetup/hold remainOPEN. Preserve all failed trials.",
+        "All edits, simulations, CAD, tests and artifacts stayonGitHub. Empty localworkspace mustremainempty. PFD workflow uses single pll_pfd_stage choice: topology/schematic/layout/lef/methods."
+      ]
+    }
+  ],
+  "current_closure_snapshot": {
+    "source_head": "1dfd4ddaf5f7059cd81353b72dc15da19eac0741",
+    "authoritative_resume": "CLOUD_RESUME.md",
+    "fresh_runs": [
+      {
+        "id": 38731744914,
+        "status": "completed",
+        "conclusion": "cancelled",
+        "head_sha": "486396eb95aac2c4dc9ab055ebfb996a884132f2",
+        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38731744914"
+      },
+      {
+        "id": 38782025812,
+        "status": "completed",
+        "conclusion": "failure",
+        "head_sha": "71efd894a56b18136775ab564eecc0bb91f95bae",
+        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38782025812"
+      },
+      {
+        "id": 38783522114,
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "b2c31bbb90e0ba23ced139ceb05868a274797c43",
+        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38783522114"
+      }
+    ],
+    "active_mainchip_route": null,
+    "mainchip_status": "TERMINAL_HOSTED_6H_TIMEOUT_WITH_21_NATIVE_NDR_RELAXATIONS",
+    "mainchip_evidence": "docs/evidence/pcie-mainchip-upper-three-timeout-20261015.json",
+    "phy_status": "FULL_SERIAL_PHY_OPEN_NATIVE_VBIC_CHARGE_ABORT_RETAINED",
+    "phy_evidence": "docs/evidence/pcie-timestep-charge-abort-20261015.json",
+    "validation": "600 hosted tests passed, including process-group fail-fast on native NDR violation. This is not physical acceptance.",
+    "findings": "docs/native-vbic-and-route-findings-20261015.md",
+    "retirement": {
+      "status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
+      "asset": 636387277,
+      "sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-final-checkout-20261013/retirement-progress.json",
+      "verified_this_check": true
+    },
+    "full_serial_phy_complete": false,
+    "detailed_mainchip_route_complete": false,
+    "final_extracted_setup_hold_complete": false,
+    "manufacturer_acceptance_document_obtained": false
   }
 }
