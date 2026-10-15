@@ -12,7 +12,7 @@ concurrency:
   group: control-load-eco-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  two-buffer-physical-eco:
+  three-buffer-physical-eco:
     runs-on: ubuntu-22.04
     env:
       NSSOC_CRITICAL_LOAD_PROFILE: control_three_buffer
@@ -35,7 +35,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Compile exact source-bound buffer repair controllers
-        run: python3 -m py_compile scripts/prepare_cloud_critical_load_eco.py scripts/run_cloud_critical_load_eco.py
+        run: python3 -m py_compile scripts/critical_load_targets.py scripts/prepare_cloud_critical_load_eco.py scripts/run_cloud_critical_load_eco.py
       - name: Prove three source-measured load repairs, fully reroute, reextract and compare all corners
         timeout-minutes: 330
         run: python3 scripts/run_cloud_critical_load_eco.py
@@ -67,6 +67,7 @@ jobs:
           result = json.loads(p.read_text())
           assert result.get('source_head') == os.environ['GITHUB_SHA'], 'Wrong source revision'
           assert result.get('status') == 'COMPLETE_THREE_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF', result.get('status')
+          assert result.get('profile') == 'control_three_buffer' and result.get('buffer_count') == 3
           assert result.get('protected_source_unchanged') is True
           assert result.get('native_drt_drvs') == 0
           assert result.get('routed_timing'), 'Actual routed timing missing'

@@ -32,7 +32,9 @@ def prepare():
         term=driver.findITerm(driver_pin);assert term and str(term.getIoType())=='OUTPUT';net=term.getNet();assert net and not net.getNonDefaultRule() and str(net.getSigType())=='SIGNAL'
         assert len(net.getITerms())==terminal_count and len(net.getBTerms())==0,'Measured fanout changed'
         assert sum(str(t.getIoType())=='OUTPUT' for t in net.getITerms())==1
-        assert all(t==term or str(t.getIoType())=='INPUT' for t in net.getITerms())
+        assert all(str(t.getIoType()) in ('INPUT','OUTPUT') for t in net.getITerms())
+        outputs=[t for t in net.getITerms() if str(t.getIoType())=='OUTPUT']
+        assert [(t.getInst().getName(),t.getMTerm().getName()) for t in outputs]==[(name,driver_pin)]
         added='nssoc_critical_load_buffer_'+str(index);local='nssoc_critical_load_local_'+str(index)
         local_net=odb.dbNet.create(b,local);buffer=odb.dbInst.create(b,master,added);assert buffer and local_net
         buffer.setOrient(driver.getOrient());x,y=driver.getLocation();buffer.setLocation(x+driver.getMaster().getWidth(),y);buffer.setPlacementStatus('PLACED')
