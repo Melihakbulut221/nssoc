@@ -389,7 +389,10 @@ def main():
             fresh_review={k:fresh[k]for k in ['signals','interfaces','failed_hbts','failed_mos','all_engineering_gates_passed']},
             capture={k:transport[k]for k in ['raw_sha256','columns','start_s','end_s','max_step_s','complete_unmodified_rows']})
         packed.unlink()
-        result['hosted_capture_readback']=verify_study_captures(selected,out)
+        all_studies=args.condition=='hot_low' and args.bias_profile=='native_res'
+        readback=selected if all_studies else dict(selected,loaded_studies=[dict(study,cases=[record])])
+        result['capture_readback_scope']='ALL_PINNED_STUDIES' if all_studies else 'SELECTED_SOURCE_CASE'
+        result['hosted_capture_readback']=verify_study_captures(readback,out)
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
