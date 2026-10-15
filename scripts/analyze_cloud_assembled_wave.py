@@ -302,7 +302,7 @@ def trace_rail_geometry(selected,profile):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
+    parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap'),default='baseline')
     parser.add_argument('--compare-timestep',action='store_true')
     parser.add_argument('--trace-rail-geometry',action='store_true')
     parser.add_argument('--step-pair',choices=('original','fine'),default='original')

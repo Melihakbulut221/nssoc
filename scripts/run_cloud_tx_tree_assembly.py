@@ -49,7 +49,7 @@ def flatten_reference(text,tag):
     return output
 
 def generate(profile):
-    assert profile in ('baseline','compact_vertical','compact_m5_supply','compact_edge_supply')
+    assert profile in ('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap')
     import xml.etree.ElementTree as ET
     source=ROOT/'pdk/libs.tech/klayout/python'
     sys.path[:0]=[str(source),str(source/'pycell4klayout-api/source/python')]
@@ -83,7 +83,7 @@ def generate(profile):
             assert (before^after).is_empty(), ('Frozen child physical geometry changed',kind,info.layer)
         children[kind]=(copied,data,directory)
     by,fy=(400.,150.) if profile=='baseline' else (330.,112.)
-    fx=470. if profile in ('compact_m5_supply','compact_edge_supply') else 550.
+    fx=470. if profile in ('compact_m5_supply','compact_edge_supply','compact_return_strap') else 550.
     for tag,kind,x,y,mirror in [('a','pre',353.985,0.,True),('b','pre',353.985,by,True),('f','final',fx,fy,False)]:
         child,data,directory=children[kind]
         tr=pya.DTrans(2 if mirror else 0,mirror,x,y)
@@ -115,7 +115,7 @@ def generate(profile):
         # Rectangles must cover either direction of travel, including endpoints.
         box('TopMetal2',min(px,x)-width/2,py-width/2,max(px,x)+width/2,py+width/2)
         via(x,py,width>4,bottom);return py
-    signal_x=(378.,390.,402.,414.) if profile in ('compact_m5_supply','compact_edge_supply') else (370.,382.,408.,420.)
+    signal_x=(378.,390.,402.,414.) if profile in ('compact_m5_supply','compact_edge_supply','compact_return_strap') else (370.,382.,408.,420.)
     for (tag,op,ip),x in zip([('a','op','ap'),('a','on','an'),('b','op','bp'),('b','on','bn')],signal_x,strict=True):
         y0=hstub(tag,op,x,4.);y1=hstub('f',ip,x,4.)
         box('TopMetal1',x-2,min(y0,y1)-2,x+2,max(y0,y1)+2)
@@ -131,7 +131,7 @@ def generate(profile):
         routes.append(dict(net='avdd',endpoints=[tag+'.avdd' for tag in ('a','b','f')],
             vertical_x_um=406.,width_um=96.,layer='Metal5',via_x_um=366.,native_via_arrays='4x4 each upper level',em_qualified=False))
         power_routes=[('sub',466.,4.)]
-    elif profile=='compact_edge_supply':
+    elif profile in ('compact_edge_supply','compact_return_strap'):
         # The prior M5 plane underneath the data corridor raised extracted
         # B-pair AVDD coupling from about7fF to59fF and failed hot timing.
         # Move M5 entirely to the right of data (edge416um), retain a native
@@ -155,12 +155,35 @@ def generate(profile):
         box('TopMetal1',x-16,-76.,x+16,upper+16);via(x,-60.,True)
     box('TopMetal2',-56.,-76.,ground_x+16.,-44.)
     routes.append(dict(net='avss',endpoints=['a.avss','b.avss','f.avss'],width_um=32.,bottom_bus_y_um=-60.))
+    if profile=='compact_return_strap':
+        # Actual native query38754724396: original E metal2 pads, AVSS on M3-M5,
+        # clear M6 corridor at absolute x806.875um. M7 at the lower emitter is
+        # the clock sp: never extend these landing stacks to M7.
+        x=750.875  # plus unchanged assembly translation56um
+        emitter_y=(244.230,251.435)  # plus76um; original M5 ground landing centres
+        end_y=center('f','avss')[1]
+        assert end_y==442.24 and fx==470. and fy==112.
+        def return_via(bottom,upper,x,y,params):
+            c=layout.create_cell('via_stack','SG13_dev',dict(b_layer=bottom,t_layer=upper,**params))
+            assert c is not None and not c.is_empty()
+            b=c.dbbox();tr=pya.DTrans(round((x-b.center().x)/.005)*.005,round((y-b.center().y)/.005)*.005)
+            top.insert(pya.DCellInstArray(c.cell_index(),tr))
+            return dict(bottom=bottom,top=upper,center_before_origin_translation_um=[x,y],parameters=params,bbox_before_origin_translation_um=str(b.transformed(tr)))
+        lower=dict(vn_columns=8,vn_rows=1,vt1_columns=2,vt1_rows=2)
+        landings=[return_via('Metal2','TopMetal1',x,y,lower)for y in emitter_y]
+        box('TopMetal1',x-2,emitter_y[0]-2,x+2,end_y+2)
+        landings.append(return_via('TopMetal1','TopMetal2',x,end_y,dict(vt2_columns=2,vt2_rows=2)))
+        routes.append(dict(net='avss',kind='parallel_final_emitter_return',source_geometry_query_run=38754724396,
+            target_native_devices=[6,7],target_native_terminals=['T006_E','T007_E'],layer='TopMetal1',
+            center_before_origin_translation_um=x,width_um=4.,y_before_origin_translation_um=[emitter_y[0],end_y],
+            native_via_stacks=landings,frozen_children_preserved=True,em_qualified=False,
+            qualification='New real parallel ground metal and native via arrays; needs DRC/LVS, full fresh RC and all original corner/device/transient gates.'))
     public={}
     for tag,pins in transformed.items():
         for pin,b in pins.items():
             net=MAPS[tag][pin]
             if net in PORTS and net not in public:public[net]=('TopMetal2',b)
-    assert set(public)==set(PORTS) and len(routes)==7
+    assert set(public)==set(PORTS) and len(routes)==(8 if profile=='compact_return_strap'else 7)
     for net,(layer,b) in public.items():
         top.shapes(layout.layer(layers[layer],2)).insert(b)
         top.shapes(layout.layer(layers[layer],25)).insert(pya.DText(net,b.left,b.center().y))
@@ -196,7 +219,7 @@ def generate(profile):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
-    p.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline');args=p.parse_args()
+    p.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap'),default='baseline');args=p.parse_args()
     if args.generate:generate(args.placement_profile);return
     assert os.environ.get('GITHUB_ACTIONS')=='true','CAD executes only on hosted runners'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())

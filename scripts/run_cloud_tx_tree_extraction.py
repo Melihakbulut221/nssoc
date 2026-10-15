@@ -14,7 +14,7 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
+    parser=argparse.ArgumentParser();parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap'),default='baseline')
     profile=parser.parse_args().placement_profile
     args=argparse.Namespace(variant='tree4',circuit_profile='assembly4',boundary_pins=True,
         boundary_policy='nearest_pair_tight',prepared_layout=False)
@@ -61,16 +61,22 @@ def main():
         else:
             assert physical['layout']['frozen_child_drawing_regions_equal']
             assert physical['layout']['placement']['b']['transform']=='m90 353.985,330'
-            assert physical['layout']['placement']['f']['transform']==('r0 470,112' if profile in ('compact_m5_supply','compact_edge_supply') else 'r0 550,112')
-            assert [v['length_um'] for v in physical['layout']['routes'][:4]]==[276.015 if profile in ('compact_m5_supply','compact_edge_supply') else 356.015]*4
+            assert physical['layout']['placement']['f']['transform']==('r0 470,112' if profile in ('compact_m5_supply','compact_edge_supply','compact_return_strap') else 'r0 550,112')
+            assert [v['length_um'] for v in physical['layout']['routes'][:4]]==[276.015 if profile in ('compact_m5_supply','compact_edge_supply','compact_return_strap') else 356.015]*4
             if profile=='compact_m5_supply':
                 supply=next(v for v in physical['layout']['routes']if v['net']=='avdd')
                 assert supply['layer']=='Metal5' and supply['width_um']==96. and supply['via_x_um']==366.
-            elif profile=='compact_edge_supply':
+            elif profile in ('compact_edge_supply','compact_return_strap'):
                 supply=next(v for v in physical['layout']['routes']if v['net']=='avdd')
                 assert supply['layer']=='Metal5' and supply['width_um']==36. and supply['via_x_um']==424.
                 assert supply['parallel_topmetal1_width_um']==4. and supply['parallel_topmetal1_x_um']==424.
                 assert next(v for v in physical['layout']['routes']if v['net']=='sub')['vertical_x_um']==358.
+        if profile=='compact_return_strap':
+            ground=[v for v in physical['layout']['routes']if v.get('kind')=='parallel_final_emitter_return']
+            assert len(ground)==1 and ground[0]['width_um']==4. and ground[0]['layer']=='TopMetal1'
+            assert ground[0]['target_native_devices']==[6,7] and len(ground[0]['native_via_stacks'])==3
+            assert [v['top']for v in ground[0]['native_via_stacks']]==['TopMetal1','TopMetal1','TopMetal2']
+            assert physical['layout']['origin_translation_um']==[56.,76.]
         assert physical['layout']['total_devices']==162 and len(physical['layout']['ports'])==22
         for gate in ('lvs','lvs_flat'):
             audit=physical['physical']['steps'][gate]['audit']
