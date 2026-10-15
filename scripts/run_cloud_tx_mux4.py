@@ -171,6 +171,8 @@ def physical_spec_path(profile):
 
 
 def physical_final_spec_path(profile):
+    if profile == 'v10_kelvin_low_ports_loads_shunts_series_left_outputs':
+        return ROOT/'docs/evidence/pcie-final-v10-tight-left-outputs-composition-20261015.json'
     if profile == 'v10_kelvin_low_ports_loads_shunts_series_tight':
         return ROOT/'docs/evidence/pcie-final-v10-tight-composition-20261015.json'
     if profile == 'v10_kelvin_low_ports_loads_shunts_series_nearest':
@@ -192,7 +194,7 @@ def physical_final_spec_path(profile):
 
 def physical_final_circuit_profile(profile):
     physical_final_spec_path(profile)  # Reject unknown routing/circuit bindings.
-    if profile in ('v10_kelvin_low_ports_loads_shunts_series_boundary','v10_kelvin_low_ports_loads_shunts_series_nearest','v10_kelvin_low_ports_loads_shunts_series_tight'):
+    if profile in ('v10_kelvin_low_ports_loads_shunts_series_boundary','v10_kelvin_low_ports_loads_shunts_series_nearest','v10_kelvin_low_ports_loads_shunts_series_tight','v10_kelvin_low_ports_loads_shunts_series_left_outputs'):
         return 'final_drive_v10'
     if profile in ('v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail','v8_kelvin_local_return','v8_kelvin_local_supply','v8_kelvin_local_internal','v8_kelvin_compact_internal','v8_kelvin_low_internal','v8_kelvin_low_critical','v8_kelvin_low_selects','v8_kelvin_low_selects_m3','v8_kelvin_low_selects_rows','v8_kelvin_low_ports','v8_kelvin_low_ports_deep','v8_kelvin_low_ports_loads','v8_kelvin_low_ports_shunts','v8_kelvin_low_ports_loads_shunts','v8_kelvin_low_ports_loads_shunts_series','v8_kelvin_low_ports_loads_shunts_series_direct','v9_kelvin_low_critical','v10_kelvin_low_critical','v10_kelvin_low_ports_loads_shunts_series','v11_kelvin_low_ports_loads_shunts_series'):
         return 'final_drive_'+profile.split('_',1)[0]
@@ -563,7 +565,7 @@ def main():
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
-    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail','v8_kelvin_local_return','v8_kelvin_local_supply','v8_kelvin_local_internal','v8_kelvin_compact_internal','v8_kelvin_low_internal','v8_kelvin_low_critical','v8_kelvin_low_selects','v8_kelvin_low_selects_m3','v8_kelvin_low_selects_rows','v8_kelvin_low_ports','v8_kelvin_low_ports_deep','v8_kelvin_low_ports_loads','v8_kelvin_low_ports_shunts','v8_kelvin_low_ports_loads_shunts','v8_kelvin_low_ports_loads_shunts_series','v8_kelvin_low_ports_loads_shunts_series_direct','v9_kelvin_low_critical','v10_kelvin_low_critical','v10_kelvin_low_ports_loads_shunts_series','v11_kelvin_low_ports_loads_shunts_series','v10_kelvin_low_ports_loads_shunts_series_boundary','v10_kelvin_low_ports_loads_shunts_series_nearest','v10_kelvin_low_ports_loads_shunts_series_tight'),default='power_trunks')
+    parser.add_argument('--physical-final-profile',choices=('power_trunks','interleaved','kelvin_return','kelvin_short','kelvin_short_vias','kelvin_dense','kelvin_dense_wide','kelvin_signal_trunks','kelvin_m3_10','v6_kelvin_dense_wide','v7_kelvin_dense_wide','v8_kelvin_dense_wide','v8_kelvin_tail_paths','v8_kelvin_local_tail','v8_kelvin_local_return','v8_kelvin_local_supply','v8_kelvin_local_internal','v8_kelvin_compact_internal','v8_kelvin_low_internal','v8_kelvin_low_critical','v8_kelvin_low_selects','v8_kelvin_low_selects_m3','v8_kelvin_low_selects_rows','v8_kelvin_low_ports','v8_kelvin_low_ports_deep','v8_kelvin_low_ports_loads','v8_kelvin_low_ports_shunts','v8_kelvin_low_ports_loads_shunts','v8_kelvin_low_ports_loads_shunts_series','v8_kelvin_low_ports_loads_shunts_series_direct','v9_kelvin_low_critical','v10_kelvin_low_critical','v10_kelvin_low_ports_loads_shunts_series','v11_kelvin_low_ports_loads_shunts_series','v10_kelvin_low_ports_loads_shunts_series_boundary','v10_kelvin_low_ports_loads_shunts_series_nearest','v10_kelvin_low_ports_loads_shunts_series_tight','v10_kelvin_low_ports_loads_shunts_series_left_outputs'),default='power_trunks')
     parser.add_argument('--physical-final',choices=('off','physical_compact','physical_wire'),default='off')
     parser.add_argument('--physical-profile',choices=('baseline','wide_access','supply_access','power_trunks','power_trunks_vias','kelvin_dense_wide','kelvin_supply_feed','kelvin_supply_direct','cascade16_kelvin_dense_wide','cascade158_kelvin_supply_direct','cascade158_kelvin_supply_direct_low_outputs','cascade158_kelvin_supply_direct_boundary','cascade158_kelvin_supply_direct_nearest','cascade158_kelvin_supply_direct_tight'),default='baseline')
     parser.add_argument('--frontend',choices=('direct','damped','damped_strong'),default='direct')
