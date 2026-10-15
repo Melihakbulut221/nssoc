@@ -80,7 +80,8 @@ def main():
                         extension=None
                     elif op==d.RECT:
                         assert previous is not None
-                        delta=list(d.getRect());assert len(delta)==4
+                        index=d.getJunctionId();assert index+3<wire.length()
+                        delta=[wire.getData(index+i) for i in range(4)]
                         rect=[delta[0]+previous[0],delta[1]+previous[1],delta[2]+previous[0],delta[3]+previous[1]]
                         add(layer,rect,'patch');physical_bounds.append(rect)
                     else:assert op in (d.ITERM,d.BTERM),('Unhandled native wire opcode',op)

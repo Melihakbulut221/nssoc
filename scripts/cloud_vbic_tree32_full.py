@@ -30,7 +30,19 @@ def main(backend,tmax,study_sha,study_run):
         gate=OUT/'backend-study.json';fetch(study_url(study_run),study_sha,gate);study=json.loads(gate.read_text())
         assert study['controller_sha256']==sha(Path(source.__file__)), 'Backend study controller differs'
         assert study['all_native_cases_complete'] and study['protected_inputs_unchanged'] and study['pristine_reproduces_packaged_to_1nv']
-        assert study['backend_voltage_agreement_to_1nv'],'Matched native backend proof required'
+        if backend=='klu':
+            assert study['backend_voltage_agreement_to_1nv'],'Matched native backend proof required before adopting KLU'
+        else:
+            # Preserve the original Sparse backend. A rejected KLU optimization
+            # cannot prohibit measuring the unchanged backend's full waveform.
+            # The cross-backend gate stays failed; no full engineering or
+            # timestep-convergence gate is changed by this diagnostic dispatch.
+            assert study['cases']['patched-sparse']['complete']
+            for key in ('numeric','method'):
+                assert study['cases']['patched-sparse']['native_options'][key]==study['cases']['pristine-sparse']['native_options'][key]
+            result['backend_choice']=dict(original_sparse_retained=True,klu_adopted=False,
+                cross_backend_guard_passed=study['backend_voltage_agreement_to_1nv'],
+                cross_backend_worst_voltage_difference_v=study['patched_backend_comparison']['worst_voltage_difference_v'])
         for label in ('patched-sparse','patched-klu'):
             assert study['cases'][label]['executable_sha256']==sha(paths['patched']) and not study['cases'][label].get('error')
         result['backend_prerequisite']=dict(run=study_run,summary_sha256=study_sha,measured_speed_ratio=study['sparse_over_klu_elapsed_ratio'])

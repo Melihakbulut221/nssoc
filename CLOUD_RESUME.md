@@ -1,3 +1,11 @@
+## Latest measured native results and preserved original-backend continuation
+
+32backend38803757710 is complete; all four native runs complete and inputs unchanged. Pristine/package agree exactly. Patched KLU is1.575986x faster (696.796s versus Sparse1098.141s) but differs2.5439587uV at v(xad_d0p.sink), FAILING the existing1nV backend-adoption guard. Do NOT adopt KLU or mark that guard passed. Full32 controller now allows a separate originalSparse-only full34ns measurement with identical original solver settings; KLU still requires unchanged1nV guard. This does not change original full768sample/device/interface or fullwave timestep gates. Receipt pc ie-tree32-backend-measured file in docs/evidence (actual filename pcie-tree32-backend-measured-20261016.json).
+
+PLL38805695818 complete: pristine original50ns identical, patched50ns complete/clean, maximum engine effect0.412262mV. Full1us original800–900ns126.2157ppm acquisition failure is NOT resolved by this experiment. Receipt docs/evidence/pcie-pll-vbic-paired50-20261016.json. Full1us patched acquisition and timestep/safety/load/PVT proof remain needed.
+
+Geometry38809417232 failed at another missing SWIG output typemap (getRect). Native651net/809pin antenna failures unchanged. Exact four RECT operands are now read directly from the native dbWire stream, with existing per-wire bbox guard; no patch shapes discarded. Failed capture retained. Newly launched routed-extraction-cloud uses exact route and nominalPDKRC; inspect its native run separately. Wire38801162596 remains live; never duplicate.
+
 ## Fresh extraction/STA follow-up of completed route
 
 Prepared/launching routed-extraction-cloud on exact mainchip38788529905 routedODB4ecf6f... . It restores hash-bound original physicalSDC and all nine original libraries, fresh OpenRCX extraction using pinnedPDKc4b8b4e5 nominal rules ffda02... with librelane3.0.5 native flags, validates per-net SPEF cap conservation before reading it at slow/typical/fast cell corners. No stale/estimatedSPEF reuse. The PDK provides nominalRC only: this cannot close qualifiedRCmin/RCmax, fullSRAM characterization or production signoff. Original651antenna nets and132global overflow failure remain open. Corrected geometry38809417232 is live; original38808634187 binding error is terminal/preserved.
