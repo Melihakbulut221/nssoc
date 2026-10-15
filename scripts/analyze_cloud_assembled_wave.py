@@ -34,6 +34,43 @@ def native_conductor_map(graph, anchors):
     return {node:names[index]for node,index in membership.items()}
 
 
+def verify_study_captures(selected, out):
+    """Read back every pinned capture on the hosted runner, without local archives."""
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    verified=[]
+    for study in selected['loaded_studies']:
+        for record in study['cases']:
+            packed=out/'capture-readback.tar.gz'
+            fetch(record['url'],record['sha256'],packed)
+            assert packed.stat().st_size==record['bytes']
+            hashes={};summary=None;seen=set()
+            with tarfile.open(packed,'r|gz')as tar:
+                for entry in tar:
+                    assert entry.name not in seen, 'Duplicate capture archive member'
+                    seen.add(entry.name)
+                    if entry.name=='cloud-tx-mux4/result.json':
+                        assert entry.isfile()
+                        raw=tar.extractfile(entry).read()
+                        assert hashlib.sha256(raw).hexdigest()==record['summary_sha256']
+                        summary=json.loads(raw)
+                    elif entry.name.startswith('cloud-tx-mux4/native/') and entry.isfile():
+                        hashes[entry.name[len('cloud-tx-mux4/'):]]=hashlib.file_digest(tar.extractfile(entry),'sha256').hexdigest()
+            assert summary is not None
+            assert summary['assembled_core_scope']['source']['sha256']==selected['verified_composition']['sha256']
+            assert summary['condition']==record['condition'] and summary['fault']==record['fault']
+            assert summary['assembled_core_scope']['mode']==record['mode']
+            assert summary['component_screen_passed']==record['component_screen_passed']
+            assert summary['review']['signals']==record['signals']
+            for name,h in summary['outputs'].items():
+                assert hashes[name]==h, 'Changed native capture output '+name
+            verified.append(dict(run=study['run'],mode=record['mode'],condition=record['condition'],fault=record['fault'],
+                archive_asset=record['archive_asset'],archive_sha256=sha(packed),archive_bytes=packed.stat().st_size,
+                summary_sha256=record['summary_sha256'],all_native_outputs_verified=summary['outputs'],
+                component_screen_passed=record['component_screen_passed']))
+            packed.unlink()
+    return verified
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply'),default='baseline')
@@ -171,6 +208,7 @@ def main():
             fresh_review={k:fresh[k]for k in ['signals','interfaces','failed_hbts','failed_mos','all_engineering_gates_passed']},
             capture={k:transport[k]for k in ['raw_sha256','columns','start_s','end_s','max_step_s','complete_unmodified_rows']})
         packed.unlink()
+        result['hosted_capture_readback']=verify_study_captures(selected,out)
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
