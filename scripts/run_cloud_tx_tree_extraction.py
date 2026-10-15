@@ -14,6 +14,8 @@ from run_cloud_tx_layout_repair import ROOT, fetch, sha
 
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--placement-profile',choices=('baseline','compact_vertical'),default='baseline')
+    profile=parser.parse_args().placement_profile
     args=argparse.Namespace(variant='tree4',circuit_profile='assembly4',boundary_pins=True,
         boundary_policy='nearest_pair_tight',prepared_layout=False)
     expected_boundary_policy='nearest_pair_tight'
@@ -21,13 +23,17 @@ def main():
     spec['circuits']['assembly4']={'top':'nssoc_tx_tree4_core_v1'}
     runtime=json.loads((ROOT/'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
     tree=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
-    receipt=tree['verified_hierarchical_assembly']
-    assert receipt['exact_flat_geometry_preserved'] and receipt['devices']==162 and receipt['public_ports']==22
+    selected=tree if profile=='baseline' else tree['placement_variants'][profile]
+    receipt=selected['verified_hierarchical_assembly']
+    assert receipt.get('placement_profile','baseline')==profile
+    assert receipt['devices']==162 and receipt['public_ports']==22
+    if profile=='baseline':assert receipt['exact_flat_geometry_preserved']
+    else:assert receipt['frozen_child_drawing_regions_equal'] and not receipt['exact_flat_geometry_preserved']
     out=ROOT/'hw/soc/out/cloud-tx-tree-assembly'
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'cloud-tree-extraction-input.tar.gz'
-    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, boundary_pin_policy=expected_boundary_policy, adopted=False,
+    result = dict(status='RUNNING', placement_profile=profile, variant=args.variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, boundary_pin_policy=expected_boundary_policy, adopted=False,
                   qualified_pex=False, serial_phy_complete=False,
                   scope='Actual162-device three-macro4:1core, including real intermacro wires and shared supplies. Exact native RC graph, terminal ownership and C conservation required. Intrinsic body/substrate/RF qualification, loaded waves,32:1/four-lane/fullPHY and mainchip signoff remain open.',
                   physical_source=receipt, runtime_source=runtime, method_source=spec)
@@ -50,7 +56,13 @@ def main():
             archive.unlink()
         physical = json.loads((out / 'result.json').read_text())
         assert physical['status']=='PASS_ACTUAL_TREE162_NATIVE_DRC_LVS_FAULTS_REQUIRES_PARENT_RC_AND_WAVES'
-        assert physical['layout']['exact_flat_geometry_preserved']
+        assert physical['layout'].get('placement_profile','baseline')==profile
+        if profile=='baseline':assert physical['layout']['exact_flat_geometry_preserved']
+        else:
+            assert physical['layout']['frozen_child_drawing_regions_equal']
+            assert physical['layout']['placement']['b']['transform']=='m90 353.985,330'
+            assert physical['layout']['placement']['f']['transform']=='r0 550,112'
+            assert [v['length_um'] for v in physical['layout']['routes'][:4]]==[356.015]*4
         assert physical['layout']['total_devices']==162 and len(physical['layout']['ports'])==22
         for gate in ('lvs','lvs_flat'):
             audit=physical['physical']['steps'][gate]['audit']

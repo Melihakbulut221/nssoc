@@ -6,6 +6,7 @@
 All native execution occurs on hosted Actions. No concatenation of child RC,
 ideal intermacro aliases, substrate-resistance qualification or PHY acceptance.
 """
+import argparse
 import json
 import os
 from pathlib import Path
@@ -20,19 +21,25 @@ TOP = 'nssoc_tx_tree4_core_v1'
 
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--placement-profile',choices=('baseline','compact_vertical'),default='baseline')
+    profile=parser.parse_args().placement_profile
     tree = json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
-    receipt = tree['verified_extraction']
+    selected=tree if profile=='baseline' else tree['placement_variants'][profile]
+    receipt = selected['verified_extraction']
+    assert receipt.get('placement_profile','baseline')==profile
+    expected_counts=dict(devices=162,R=receipt['resistors'],C=receipt['capacitors'])
     assert (receipt['devices'], receipt['ports'], receipt['conductors'], receipt['probes']) == (162,22,41,322)
-    assert (receipt['resistors'], receipt['capacitors']) == (11907,7847)
+    if profile=='baseline':assert expected_counts==dict(devices=162,R=11907,C=7847)
+    assert expected_counts['R']>0 and expected_counts['C']>0
     spec = json.loads((ROOT/'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     layout = json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
     out = ROOT/'hw/soc/out/cloud-tx-tree-assembly'
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive = out.parent/'tree-composition-input.tar.gz'
-    result = dict(status='RUNNING',source=receipt,qualified_pex=False,serial_phy_complete=False,
+    result = dict(status='RUNNING',placement_profile=profile,source=receipt,qualified_pex=False,serial_phy_complete=False,
                   native_transient_accepted=False,adopted=False,
-                  scope='Actual162-device four-input CML core and complete11907R7847C metal graph, including real intermacro conductors. No body spreading resistance, RF qualification, loaded transient, full32:1/four-lane PHY or mainchip acceptance.')
+                  scope='Actual162-device four-input CML core and complete source-pinned metal RC graph, including real intermacro conductors. No body spreading resistance, RF qualification, loaded transient, full32:1/four-lane PHY or mainchip acceptance.')
     adaptations = {}
 
     def restore(pin,directory):
@@ -68,6 +75,9 @@ def main():
         extraction=json.loads(extraction_path.read_text())
         assert extraction['status']=='PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
         assert extraction['native_geometry_census']==receipt['native_geometry_census']
+        assert extraction.get('placement_profile','baseline')==profile
+        assert extraction['audit']['actual_exported_resistors']==expected_counts['R']
+        assert extraction['audit']['actual_exported_capacitors']==expected_counts['C']
         protected={str(q):sha(q) for sub in ('layout','physical','wire96') for q in (out/sub).rglob('*') if q.is_file()}
         restore(layout['receipt'],ROOT)
         manifest=json.loads((ROOT/'manifest.json').read_text())
@@ -124,17 +134,17 @@ def main():
         run([sys.executable,wire/'compose-tree.py'],'compose-native-tree-wires')
         report=json.loads((wire/'composition01.json').read_text())
         assert report['status']=='SOURCE_ONLY_NATIVE162_WITH_DISTRIBUTED_METAL_RC'
-        assert report['counts']==dict(devices=162,R=11907,C=7847)
+        assert report['counts']==expected_counts
         # Independent output reparse, all device values and every source RC row,
         # plus real malformed output files. Never trust only generation counts.
         source=(wire/'check-compose98.py').read_text()
         replacements=[('mux54-wire01.spice','tree162-wire01.spice',2),
             ('nssoc_tx_mux54_wire_v1','nssoc_tx_tree162_wire_v1',2),
             ('len(devices)==54','len(devices)==162',1),
-            ('dict(devices=54,R=229,C=301)','dict(devices=162,R=11907,C=7847)',1),
+            ('dict(devices=54,R=229,C=301)',repr(expected_counts),1),
             ("assert'nx=1'in lines[i];lines[i]=lines[i].replace('nx=1','nx=2')","f=lines[i].split();j=next(j for j,v in enumerate(f) if v.startswith('nx='));f[j]='nx='+str(int(f[j].split('=')[1])+1);lines[i]=' '.join(f)+'\\n'",1),
             ("f[2]='iref'","f[2]='mr'",1),
-            ('PASS_ALL54_NATIVE_DEVICES530_WIRES_AND_SIX_COMPOSITION_FAULTS','PASS_ALL162_NATIVE_DEVICES19754_WIRES_AND_SIX_COMPOSITION_FAULTS',1)]
+            ('PASS_ALL54_NATIVE_DEVICES530_WIRES_AND_SIX_COMPOSITION_FAULTS',f"PASS_ALL162_NATIVE_DEVICES{expected_counts['R']+expected_counts['C']}_WIRES_AND_SIX_COMPOSITION_FAULTS",1)]
         adapt(source,wire/'check-tree-composition.py',replacements)
         run([sys.executable,wire/'check-tree-composition.py'],'check-tree-composition-faults')
         controls=json.loads((wire/'composition-controls98.json').read_text())
@@ -151,7 +161,7 @@ def main():
         assert len(by_terminal)==462
         records=h.statements((wire/'tree162-wire01.spice').read_text())
         devices={r[0]:r for r in records[1:-1] if r[0].startswith('X')}
-        assert len(devices)==162 and len(records[1:-1])==162+11907+7847
+        assert len(devices)==162 and len(records[1:-1])==sum(expected_counts.values())
         assert len({r[0].lower() for r in records[1:-1]})==len(records[1:-1])
         graph=nx.Graph();graph.add_edges_from((r[1],r[2]) for r in records[1:-1] if r[0].startswith('R'))
         components=list(nx.connected_components(graph));assert len(components)==41
