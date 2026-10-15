@@ -1,3 +1,7 @@
+## 2026-10-15 — full expanded capture readback now COMPLETE
+
+Hosted diagnosis **38737128747** completed: summary **643860135** proves exact archives, embedded summaries and every native output hash for **all50** original+expanded edge-supply cases. The original hot review was reproduced unchanged. All four engineering corner failures and six intended faulty-circuit failures remain failures; this is evidence integrity, not all-corner acceptance. Receipts updated in tree4evidence.expanded_hosted_readback and all50case readback statuses. Fine-step38736928007 andTC candidate38736943635/38736959438 remain verified LIVE. Current source/test/candidate/routing continuation below remains applicable. ALL CLOUD; local workspace verified empty.
+
 ## 2026-10-15 — native convergence failure retained; finer captures and fixed TC feed now running in cloud
 
 Latest turn is PROGRESS: actual paired readback completed, numerical failure retained, fixed physical-device feed candidate implemented,572 hosted tests passed, native jobs live. User override remains ALL CLOUD. Empty local workspace and cleanup receipt643812374 remain verified; no local test/CAD/artifact files. Do not mark full serial Gen3x4/mainchip/finalSTA complete or blocked.
