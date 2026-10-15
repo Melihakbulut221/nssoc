@@ -21,7 +21,7 @@ on:
         description: PFD diagnostic, native schematic, physical layout or saved LEF verification
         type: choice
         default: none
-        options: [none, topology, schematic, layout, lef, methods, rc, rc_review, physical_wave, physical_review, parent_methods, layout_d2, rc_d2, physical_wave_d2, lef_d2, physical_review_d2, parent_interface_d2, parent_layout_d2, parent_review_d2, parent_wires_d2, parent_rc_d2, parent_plane_methods, parent_compose_d2, actual_parent_wave_d2, actual_parent_review_d2]
+        options: [none, topology, schematic, layout, lef, methods, rc, rc_review, physical_wave, physical_review, parent_methods, layout_d2, rc_d2, physical_wave_d2, lef_d2, physical_review_d2, parent_interface_d2, parent_layout_d2, parent_review_d2, parent_wires_d2, parent_rc_d2, parent_plane_methods, parent_compose_d2, actual_parent_wave_d2, actual_parent_review_d2, actual_parent_acquisition_d2]
       request_id:
         type: string
       verification_tag:
@@ -426,13 +426,13 @@ jobs:
           python scripts/publish_cloud_results.py --group pll-prefix "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
 
   pll-snapshot:
-    if: ${{ inputs.pll_snapshot == true || inputs.pll_acquisition == true || inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2' }}
+    if: ${{ inputs.pll_snapshot == true || inputs.pll_acquisition == true || inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_d2' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     strategy:
       fail-fast: false
       matrix:
-        pfd_profile: ${{ fromJSON(inputs.pll_pfd_stage == 'schematic' && '["baseline_schematic","aoi4"]' || inputs.pll_pfd_stage == 'physical_wave' && '["aoi4_rc"]' || inputs.pll_pfd_stage == 'physical_wave_d2' && '["aoi4_d2_rc"]' || inputs.pll_pfd_stage == 'actual_parent_wave_d2' && '["actual_parent_d2_rc"]' || '["original"]') }}
+        pfd_profile: ${{ fromJSON(inputs.pll_pfd_stage == 'schematic' && '["baseline_schematic","aoi4"]' || inputs.pll_pfd_stage == 'physical_wave' && '["aoi4_rc"]' || inputs.pll_pfd_stage == 'physical_wave_d2' && '["aoi4_d2_rc"]' || (inputs.pll_pfd_stage == 'actual_parent_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_d2') && '["actual_parent_d2_rc"]' || '["original"]') }}
     permissions:
       contents: write
     steps:
@@ -454,7 +454,7 @@ jobs:
       - name: Reject mismatched, shifted, truncated and incomplete controls
         run: python scripts/run_cloud_pll865_snapshot.py --self-test
       - name: Run requested native865 capture or snapshot experiment
-        run: python scripts/run_cloud_pll865_snapshot.py ${{ (inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2') && format('--pfd-candidate {0}', matrix.pfd_profile) || inputs.pll_acquisition && '--acquisition' || '' }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'actual_parent_acquisition_d2' && '--pfd-candidate actual_parent_d2_rc --actual-parent-acquisition' || (inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2') && format('--pfd-candidate {0}', matrix.pfd_profile) || inputs.pll_acquisition && '--acquisition' || '' }}
       - name: Preserve actual waveforms, snapshots, diagnostics and failure receipts
         if: always()
         env:
@@ -465,7 +465,7 @@ jobs:
           tar -czf "$archive" cloud-pll-snapshot
           sha256sum "$archive" > "$archive.sha256"
           cp cloud-pll-snapshot/result.json "${archive%.tar.gz}.json"
-          python scripts/publish_cloud_results.py --group '${{ (inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2') && format('pll-pfd-{0}', matrix.pfd_profile) || 'pll-snapshot' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+          python scripts/publish_cloud_results.py --group '${{ (inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_d2') && format('pll-pfd-{0}', matrix.pfd_profile) || 'pll-snapshot' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
       - name: Keep native evidence if permanent publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

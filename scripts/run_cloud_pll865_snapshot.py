@@ -1180,6 +1180,78 @@ def pfd_op_controls():
     return dict(positive=1,negative=len(faults))
 
 
+def run_actual_parent_acquisition(executable,out,common,result,save,vectors):
+    """Uninterrupted original1us acquisition screen; selected probes, no safety claim."""
+    proof=result['pfd_replacement']
+    assert proof['actual_parent_layout_rc'] and proof['candidate_parent_sha256']=='91364a351fad4d376e6d168d85af6f63ff4076bfecd5af83192492bc514073fc'
+    assert len(vectors)==34 and len(set(vectors))==34
+    review_path=out/'actual50-review.json'
+    fetch(BASE+'cloud-results-38673633192-1-pll-acquisition-review/result.json',
+        '9289b0d21c73efc89ef0b9acac30e43ef6212d66780f5d9bf2bccfefea599003',review_path)
+    prior=json.loads(review_path.read_text())
+    assert prior['status']=='COMPLETE_ACTUAL845_SOURCE_RAW_AND_PFD235_REVIEW_NOT_LOCK_SAFETY_OR_PHY_ACCEPTANCE'
+    assert prior['source_parent_sha256']==proof['candidate_parent_sha256']
+    observed=prior['actual_parent_observations']
+    assert observed['reset_masked_clock_edges']==observed['missing_output_response_windows']==0
+    assert len(observed['pfd_response_windows'])==8
+    script='NSSOC actual845 original1us continuous capture\n'+common+'run actual-acquisition.raw\nquit\n.endc\n.end\n'
+    assert 'stop when' not in script and 'snload'not in script and 'resume'not in script
+    (out/'actual-acquisition.cir').write_text(script)
+    result.update(status='RUNNING_ACTUAL845_ORIGINAL_ONE_US_SELECTED_PROBE_CAPTURE',
+        native_stop_s=1e-6,comparison_stop_s=None,snapshot_stop_s=None,native_budget_s=20800,
+        actual_parent_acquisition=True,prior_actual50_review_sha256=sha(review_path),
+        runtime_basis=dict(actual50_run=38672412524,actual50_s=1003.714907947,
+            linear1us_estimate_s=20074.29815894,estimate_is_not_a_guarantee=True),
+        scope='Actual845 source-bound parent and all8648 physical wire records, original32models/3OSDIs/startup/.3125ps/tolerances. Fresh1us capture with original24 vectors plus9 actual PFD logic points and shared-bulk reference. Full235 PFD terminal stress was measured only in prior50ns; this selected-probe run is not full845 safety, lock/PVT, substrate/RF, CDR or PHY qualification.')
+    save()
+    native_run(executable,out,'actual-acquisition.cir',time.monotonic()+20800,result,save)
+    raw=(out/'actual-acquisition.raw').read_bytes();names,values,meta=decode_prefix(raw)
+    assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
+    assert set(names)=={'time',*vectors} and len(names)==35 and len(values)>3000000
+    assert np.isfinite(values).all()
+    t=values[:,0];assert t[0]==0 and abs(t[-1]-1e-6)<1e-15 and np.all(np.diff(t)>0)
+    assert np.max(np.diff(t))<=3.125e-13*1.00001
+    result['captures']={'actual-acquisition.raw':dict(**meta,sha256=digest(raw),bytes=len(raw),
+        start_s=float(t[0]),end_s=float(t[-1]))}
+    result['zero_source_operating_point']=zero_source_operating_point((out/'op.raw').read_bytes(),vectors)
+    save()
+    # Compare the unchanged-circuit prefix to independently reviewed actual50
+    # raw data under the pre-existing1mV/1ps transport bounds. No fitted phase.
+    unpack(BASE+'cloud-results-38672412524-1-pll-pfd-actual_parent_d2_rc/pll-snapshot-actual_parent_d2_rc-38672412524-1.tar.gz',
+        'fe8d9619f48add85c9819c86cf3f86a2efefeef9e26beec862e7ad995cb17752',563519069,out/'actual50-prefix',
+        {'cloud-pll-snapshot/candidate.raw':(635182699,'d7b7b81a0ed4c34bbaf3a51321943bf5734c43e4d23a819d045d065d180cfd43')})
+    prior_raw=(out/'actual50-prefix/candidate.raw').read_bytes()
+    pn,pv,pm=decode_prefix(prior_raw)
+    assert pm['header_matches_observed']and pm['payload_has_only_complete_rows']
+    assert set(names)<=set(pn)
+    selected=np.column_stack([pv[:,pn.index(n)]for n in names])
+    limit=np.searchsorted(t,50.001e-9,side='right')
+    result['unchanged_actual50_prefix']=compare((names,selected),(names,values[:limit]))
+    save()
+    assert result['unchanged_actual50_prefix']['passed'],'Actual1us prefix differs from accepted actual50 under unchanged fixed bounds'
+    v={n:values[:,i]for i,n in enumerate(names)}
+    edges={n:rising(t,y,threshold)for n,y,threshold in [
+        ('vco',v['v(clkp)']-v['v(clkn)'],0.),('feedback',v['v(fb)'],1.25),('reference',v['v(reference)'],1.25)]}
+    windows=[]
+    for start,end in [(0,50),(50,100),(100,200),(200,400),(400,600),(600,800),(800,900),(900,1000)]:
+        a,z=start*1e-9,end*1e-9;mask=(t>=a)&(t<=z);stats={}
+        for name,edge in edges.items():
+            e=edge[(edge>=a)&(edge<=z)];periods=np.diff(e)
+            stats[name]=dict(rising_edges=len(e),
+                frequency_from_median_period_hz=float(1/np.median(periods))if len(periods)else None,
+                min_period_s=float(periods.min())if len(periods)else None,
+                max_period_s=float(periods.max())if len(periods)else None)
+        windows.append(dict(start_ns=start,end_ns=end,edges=stats,
+            node_ranges={n:dict(minimum=float(v[n][mask].min()),maximum=float(v[n][mask].max()))
+                for n in ['v(vctrl)','v(up)','v(down)','v(fb)','v(reference)',proof['clearb_vector']]}))
+    result.update(status='COMPLETE_ACTUAL845_ONE_US_SELECTED_PROBES_REQUIRES_LOCK_AND_SAFETY_REVIEW',
+        windows=windows,phase_shift_fitted=False,acquisition_accepted=False,full_phy_accepted=False,
+        required_followup=['Independent original phase/frequency/slip/reset recovery review of complete1us raw',
+            'Full845-device safety and qualified substrate/well/RF extraction',
+            'Independent PVT/timestep, CDR/jitter/full serialPHY and mainchip routing/finalSTA'])
+    save();print(result['status'],flush=True)
+
+
 def run_pfd_candidate(executable,out,common,result,save,vectors):
     """Bounded native50ns candidate screen; no timing/lock acceptance inferred."""
     physical=result['pfd_replacement'].get('physical_pfd',False)
@@ -2615,8 +2687,10 @@ def main():
     parser.add_argument('--diagnose-acquisition',action='store_true')
     parser.add_argument('--diagnose-full50',action='store_true')
     parser.add_argument('--diagnose-pfd-topology',action='store_true')
+    parser.add_argument('--actual-parent-acquisition',action='store_true')
     parser.add_argument('--acquisition',action='store_true',help='Fresh uninterrupted original1us selected-probe capture; never restore a snapshot')
     args=parser.parse_args()
+    assert not args.actual_parent_acquisition or (args.pfd_candidate=='actual_parent_d2_rc' and not args.acquisition),'Actual1us mode requires exact actual parent profile'
     if args.pfd_rc_drive2:
         assert not any([args.pfd_layout_drive2,args.recover_parent_methods,args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         run_pfd_rc('aoi4_d2');return
@@ -2776,9 +2850,21 @@ def main():
                 parent,proof=pfd_schematic_parent((out/'source/parent865.spice').read_text(),reference,args.pfd_candidate)
             (out/'parent865.spice').write_text(parent);result['pfd_replacement']=proof
             result['scope']=proof['scope'];result['controls']['pfd_aoi_truth']=pfd_aoi_controls()
-            relocated=relocated.replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
+            if not args.actual_parent_acquisition:
+                relocated=relocated.replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
             extra=['v(xloop.pfd_candidate.'+n+')' for n in ['clearb','xup.mq','xup.mqb','xup.clkb','xup.qb','xdn.mq','xdn.mqb','xdn.clkb','xdn.qb']]
-            if proof.get('physical_pfd'):extra=proof['physical_terminal_voltage_probes']
+            if args.actual_parent_acquisition:
+                logic_names=['xloop.clearb']+['xloop.x'+side+'.'+node for side in ('up','dn')for node in ('mq','mqb','clkb','qb')]
+                probes={}
+                for name in logic_names:
+                    points=proof['topology_naming']['nets'][name]['terminals'];assert points
+                    probes[name]=points[0]['vector']
+                probes['shared_intrinsic_bulk']='v(xloop.a_count_vss)'
+                assert len(probes)==len(set(probes.values()))==10
+                assert set(probes.values())<=set(proof['physical_terminal_voltage_probes'])
+                result['selected_actual_pfd_logic_probes']=probes
+                extra=list(probes.values())
+            elif proof.get('physical_pfd'):extra=proof['physical_terminal_voltage_probes']
             extra=[n for n in extra if n not in vectors]
             old_save='save '+' '.join(vectors);assert setup.count(old_save)==1
             vectors+=extra;assert len(vectors)==len(set(vectors));setup=setup.replace(old_save,'save '+' '.join(vectors))
@@ -2799,6 +2885,8 @@ def main():
             native_stop_s=1e-6,comparison_stop_s=50e-9,snapshot_stop_s=25e-9)
         save()
         if args.pfd_candidate:
+            if args.actual_parent_acquisition:
+                run_actual_parent_acquisition(executable,out,common,result,save,vectors);return
             run_pfd_candidate(executable,out,common,result,save,vectors);return
         if args.acquisition:
             # Native run's rawfile records output during execution; retain it even
@@ -2867,7 +2955,7 @@ def main():
         save()
         assert passed, 'Snapshot transport is not equivalent under fixed diagnostic bounds'
     except BaseException as error:
-        result.update(status='FAILED_PHYSICAL_PFD_NATIVE50_SCREEN' if args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc','actual_parent_d2_rc') else 'FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
+        result.update(status='FAILED_ACTUAL845_ONE_US_SELECTED_PROBE_CAPTURE' if args.actual_parent_acquisition else 'FAILED_PHYSICAL_PFD_NATIVE50_SCREEN' if args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc','actual_parent_d2_rc') else 'FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
         save();raise
 
 if __name__=='__main__':
