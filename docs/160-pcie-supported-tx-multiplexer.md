@@ -1,4 +1,13 @@
 # 160 — Supported-device TX multiplexer and extracted layout
+
+
+## 2026-10-15: extended physical-core tests expose remaining corner and numerical limits
+
+The edge-supply162-device4:1core passes the original nominal/hot/cold loaded tests, but **does not pass all extended corners or numerical-convergence checks**. Actual wire cold_high_res_wcs reaches2.053765714V final common mode (limit2.05V); hot_low_res_bcs reaches1.785472361V (minimum1.8V) and two HBTs reach minimumVCE0.393965736/0.391471681V (minimum0.4V). Two matched compact cold corners fail too. All12MOS-corner cases pass. The six actual stage-fault cases correctly fail the original source-bit oracle. Source-bound case receipts remain in `docs/evidence/pcie-tree4-assembly-input-20261015.json`.
+
+Hosted comparison38735749704 reproduced the original0.5ps/0.25ps captures and confirmed identical circuit inputs apart from timestep. Original bit-sample differences, same-ordinal output edges and source energies pass the additional numerical bounds. However, complete-capture internal-voltage differences reach5.040244mV(compact) and4.708498mV(wire), above the frozen1mV comparison bound. Execution success is not numerical acceptance. Run38736928007 now measures0.125ps/0.0625ps with the same original electrical oracle; numerical convergence is still pending.
+
+A separate fixed native-resistor TC feed is under test in38736943635/38736959438. It uses100um/1um Rsil plus16.5um/2um Rppd in series to the existing prestage reference; all PVT points use the same geometry. The design hypothesis follows the [IHP resistor sheet-resistance and temperature-coefficient specifications](https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html#rsil-specs). Initial compact results improve cold common-mode voltage but retain cold resistor-corner and final HBT-VBE failures. Actual wired results remain pending. This feed still requires layout, native DRC/LVS, contact-current and RC qualification; it is not promoted into an accepted physicalPHY.572hosted source/control tests pass; fullPHY/PLL/CDR/RF/ESD/mainchip timing remain open.
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
