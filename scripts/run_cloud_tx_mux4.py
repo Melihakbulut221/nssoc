@@ -261,13 +261,19 @@ def rename_physical_top(text, new_name):
 
 
 
-def assembled_tree_core(inputs, mode):
+def assembled_tree_core(inputs, mode, profile='baseline'):
     """Restore only the exact complete physical core; never reuse child RC."""
     assert mode in ('compact','wire')
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
-    receipt=spec['verified_composition']
+    assert profile in ('baseline','compact_vertical')
+    selected=spec if profile=='baseline' else spec['placement_variants'][profile]
+    receipt=selected['verified_composition']
+    assert receipt.get('placement_profile','baseline')==profile
+    rc=selected['verified_extraction']
+    expected_counts=dict(devices=162,R=rc['resistors'],C=rc['capacitors'])
     assert receipt['status']=='PASS_ACTUAL_TREE162_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT'
-    assert receipt['counts']==dict(devices=162,R=11907,C=7847)
+    assert receipt['counts']==expected_counts
+    if profile=='baseline':assert expected_counts==dict(devices=162,R=11907,C=7847)
     dest=inputs/'assembled-core';dest.mkdir()
     packed=dest/'source.tar.gz';fetch(receipt['url'],receipt['sha256'],packed)
     assert packed.stat().st_size==receipt['bytes']
@@ -277,6 +283,7 @@ def assembled_tree_core(inputs, mode):
     assert sha(out/'composition-result.json')==receipt['summary_sha256']
     result=json.loads((out/'composition-result.json').read_text())
     assert result['status']==receipt['status'] and result['composition']['counts']==receipt['counts']
+    assert result.get('placement_profile','baseline')==profile and result['source']['sha256']==rc['sha256']
     assert all(sha(out/name)==digest for name,digest in result['outputs'].items())
     assert result['topology']['no_intermacro_ideal_alias'] and result['topology']['no_duplicate_child_rc']
     interface=json.loads((out/'wire96/tree-interface-probes.json').read_text())
@@ -287,10 +294,10 @@ def assembled_tree_core(inputs, mode):
     assert all(len(v)==(3 if mode=='wire' else 1) and len(v)==len(set(v)) for v in probes.values())
     core=out/('wire96/tree162-wire01.spice' if mode=='wire' else 'binding96/tree162-compact01.spice')
     assert sha(core)==receipt['outputs'][str(core.relative_to(out))]
-    return core,probes,dict(mode=mode,source=receipt,model_sha256=sha(core),interface_probes=interface,
+    return core,probes,dict(mode=mode,placement_profile=profile,source=receipt,model_sha256=sha(core),interface_probes=interface,
         assembled_tree_gds=True,intermacro_connections_ideal=(mode=='compact'),
-        actual_devices=162,substrate_contacts=81,metal_resistors=11907 if mode=='wire' else 0,
-        metal_capacitors=7847 if mode=='wire' else 0,
+        actual_devices=162,substrate_contacts=81,metal_resistors=expected_counts['R'] if mode=='wire' else 0,
+        metal_capacitors=expected_counts['C'] if mode=='wire' else 0,
         qualified_substrate_resistance=False,qualified_rf_distribution=False)
 
 def native_save_commands(vectors):
@@ -629,6 +636,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
     parser.add_argument('--assembled-core',choices=('off','compact','wire'),default='off',help='Exact whole162-device physical core and its real intermacro RC')
+    parser.add_argument('--assembled-placement',choices=('baseline','compact_vertical'),default='baseline')
     parser.add_argument('--stream-raw',action='store_true',help='Retain every native probe with immediate binary raw output, no in-simulator transient vector history')
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
@@ -676,6 +684,7 @@ def main():
             args.pre_bias=='output_feedback' and args.clock_reference=='stiff65' and
             args.diagnostic_final_r in ('all','internal','outputs'))
         assert legacy or v11_hot or v11_nx4, 'Only explicit source-bound diagnostic pairs are allowed'
+    assert args.assembled_placement=='baseline' or args.assembled_core!='off'
     assert args.physical_profile=='baseline' or args.prestage.startswith('physical_')
     assert args.physical_final_profile=='power_trunks' or args.physical_final!='off'
     if args.prestage=='divider14':
@@ -749,10 +758,10 @@ def main():
         if args.assembled_core!='off':
             assert args.streams==4 and args.prestage=='divider9' and args.physical_final=='off'
             assert args.diagnostic_final_r=='actual' and args.diagnostic_final_nx==0
-            core,interface_probes,scope=assembled_tree_core(inputs,args.assembled_core)
+            core,interface_probes,scope=assembled_tree_core(inputs,args.assembled_core,args.assembled_placement)
             result['assembled_core_scope']=scope
             result['prestage']='assembled_core_'+args.assembled_core
-            result['scope']='Actual assembled162-device four-input core, loaded by real CMOS frontends and TX;62HBT and64MOS checked. Wire mode contains all whole-core11907R7847C, including real intermacro metal; compact mode is its matched no-metal-RC control. All12final data HBT bases observed. Clocks still external; front/TX/bias layouts, substrateRF,32:1/four-lane/fullPHY and mainchip not accepted.'
+            result['scope']='Actual assembled162-device four-input core, loaded by real CMOS frontends and TX;62HBT and64MOS checked. Wire mode contains the exact source-pinned whole-core metal RC, including real intermacro metal; compact mode is its matched no-metal-RC control. All12final data HBT bases observed. Clocks still external; front/TX/bias layouts, substrateRF,32:1/four-lane/fullPHY and mainchip not accepted.'
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference,assembled_core=core,interface_probes=interface_probes)
 
         if args.stream_raw:

@@ -12,10 +12,15 @@ on:
         type: choice
         options: [nominal, temperature_voltage, physical_faults, failing_corners, independent_corners, mos_corners, quarter_step, hot_low_quarter_step]
         default: nominal
+      placement_profile:
+        description: Source-bound assembled core placement with independent physical and RC receipts
+        type: choice
+        options: [baseline, compact_vertical]
+        default: baseline
 permissions:
   contents: read
 concurrency:
-  group: tx-tree-assembled-wave-${{ github.ref }}-${{ inputs.study || 'nominal' }}
+  group: tx-tree-assembled-wave-${{ github.ref }}-${{ inputs.study || 'nominal' }}-${{ inputs.placement_profile || 'baseline' }}
   cancel-in-progress: false
 jobs:
   native-transient:
@@ -51,7 +56,7 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --assembled-placement '${{ inputs.placement_profile || 'baseline' }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
