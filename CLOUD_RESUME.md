@@ -1,3 +1,20 @@
+## 2026-10-15 — tight models bound; unchanged loaded screens running
+
+Source **01ca948f183b67ee573b5aa7ff33c415eadc4b71**. Real tight-boundary extraction38689805645/38689808641 passed original54-device,17-conductor,112-probe/100-metal-terminal audit and all13 corruption controls. RC: cascade3871R/2592C; final4018R/2648C. Exact records: `docs/evidence/pcie-tight-boundary-rc-20261015.json`. All54 body/well terminal limitations, substrateR=false, fullPEX=false, RFdistribution=false remain explicit.
+
+Fresh composition38690296309/38690299339 passed with exact matching54devices and RC counts. Permanent archive readback verified embedded result JSON and both SPICE hashes. Dedicated tight receipts: `docs/evidence/pcie-cascade158-tight-composition-20261015.json`, `docs/evidence/pcie-final-v10-tight-composition-20261015.json`. No electrical adoption yet.
+
+**LIVE loaded studies**, source01ca948f:
+- Nominal **38690816164**: compact job116276049677; wire job116276049846.
+- Temperature/voltage **38690819319**: cold wire116276070657; cold compact116276070856; hot compact116276070927; hot wire116276070947.
+- Inputs: streams4; prestagecascade158_kelvin_supply_direct_tight; matched finalv10_kelvin_low_ports_loads_shunts_series_tight; stiff65 clock; native_res; complete binary capture. All original768samples/0.3,0.5,0.7UI/100mV/device limits unchanged.
+- Source audit **38690822801 PASS**. Previous extended binding audit38690425520 verified **15 passed/465 deselected**, including stale left/nearest receipts rejected against tight policy.
+- Push-trigger38690696681 skipped by workflow's own guard; no duplicate native simulation.
+
+Next: inspect all six actual electrical summaries and original full-wave coverage, preserve any failure, do not infer electrical acceptance from job success. Nearest predecessor hot failed59samples/min79.622008mV. Only expand physical tree qualification when the new real metal passes unchanged gates. FullPHY, intermacro routing, substrate/RF/ESD and mainchip final route/STA are still open.
+
+Long jobs confirmed live before this chain: mainchip193 route38683404082; original32 full-wire38679319167; actual845 PLL1us38674687038. No reruns. PLL terminal-success triggers existing actual_parent_acquisition_review_d2. Cloud-only; local workspace empty.
+
 ## 2026-10-15 — both tight boundary macros physically pass; fresh RC started
 
 Source `9ef1b6b520414af7fdc2542d97d1fedbfc3e4c9f` binds **separate `boundary_tight_variants`** receipts. Original left/nearest receipts are unchanged; exact policy guard includes `nearest_pair_tight`.
