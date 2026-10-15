@@ -964,6 +964,53 @@ def pfd_physical_parent(parent, macro, reference, profile='aoi4_rc'):
         physical_terminal_voltage_probes=probes,clearb_vector=clear,
         scope=f'Actual235device/{expected_r}R{expected_c}C standalone PFD candidate in frozen parent electrical fixture; all610other devices and non-PFD RC byte-identical. This does not recompose parent geometry or shared bulk substrate. Intrinsic body/tap models retained; distributed substrate/RF/parent physical integration and full safety/acquisition/PVT remain unqualified.')
 
+def restore_actual_pfd_parent(out,reference):
+    """Use only the accepted actual845 composition, not the frozen fixture."""
+    from build_pcie_local_vco_hybrid_v6 import statements
+    run=38672085461
+    packed=out/'actual-parent-source.tar.gz'
+    fetch(BASE+f'cloud-results-{run}-1-pll-pfd-layout/pfd94-layout-{run}-1.tar.gz',
+        'ff8837dce9298abd8cb649eceb5b86dcd8e48454d7175002096b4b5b80a4205b',packed)
+    assert packed.stat().st_size==11295468
+    dest=out/'actual-parent-source';dest.mkdir()
+    wanted={'result.json','parent845.spice','graph-diagnostic.json','integrated/result.json','integrated/schematic.cir'}
+    found=set();prefix='hw/soc/out/cloud-pfd-layout/'
+    with tarfile.open(packed)as tar:
+        for entry in tar.getmembers():
+            if entry.name not in {prefix+n for n in wanted}:continue
+            rel=entry.name[len(prefix):];assert entry.isfile()and rel not in found;found.add(rel)
+            p=dest/rel;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(tar.extractfile(entry).read())
+    packed.unlink();assert found==wanted
+    assert sha(dest/'result.json')=='22cae097bdb7c2a3fa77abaad4ebeff772fb08c1769c1e4fc10664f90f1e6f35'
+    result=json.loads((dest/'result.json').read_text())
+    assert result['status']=='PASS_ACTUAL845_PARENT_COMPONENTS_REFERENCE_PLANES_AND_EXACT_INTRINSIC_GRAPH_NOT_ELECTRICAL_ACCEPTANCE'
+    assert result['counts']==dict(devices=845,wires=8648)
+    assert len(result['graph_faults'])==6 and len(result['component_faults'])==7
+    assert result['exact_graph']['devices']==845 and result['exact_graph']['public_ports']==17
+    assert result['original_native_alias_proof']['bijective'] and result['original_native_alias_proof']['exact_component_records']==9648
+    assert result['component_preservation']['unchanged_devices']==610
+    assert len(result['pfd_reference_planes'])==8
+    assert sha(dest/'graph-diagnostic.json')==result['graph_diagnostic_sha256']
+    parent=(dest/'parent845.spice').read_text()
+    assert digest(parent.encode())==result['candidate_sha256']=='91364a351fad4d376e6d168d85af6f63ff4076bfecd5af83192492bc514073fc'
+    rows=statements(parent);assert rows[0][1]=='nssoc_parent845_wire_v1'
+    devices=[w for w in rows if w[0].lower().startswith('x_xpfd_')]
+    assert len(devices)==235
+    probes=set()
+    for w in devices:
+        at=5 if len(w)>5 and w[5]in('sg13_hv_nmos','sg13_hv_pmos')else 3
+        probes.update('v(xloop.'+n.lower()+')'for n in w[1:at])
+    topology=pfd_topology_map(parent,reference)
+    assert topology['mos_count']==94 and topology['metal_resistors']==715
+    clear=topology['nets']['xloop.clearb']['terminals'][0]['vector'];assert clear in probes
+    return parent,dict(profile='actual_parent_d2_rc',physical_pfd=True,actual_parent_layout_rc=True,
+        source_run=run,source_summary_sha256=sha(dest/'result.json'),
+        candidate_parent_sha256=digest(parent.encode()),total_native_instances=845,
+        topology_naming=topology,physical_terminal_voltage_probes=sorted(probes),clearb_vector=clear,
+        accepted_composition_graph_nodes=result['exact_graph']['nodes'],
+        scope='Actual845 PLL parent GDS/LVS-bound composition with fresh parent98R242C, physical PFD235/715R1177C, source-proven native probe aliases, unchanged610 other devices/macro RC, and idealized shared intrinsic bulk. Capture is not qualified substrate/RF, lock/safety/PVT, fullPHY or mainchip timing acceptance.')
+
+
 def restore_pfd_physical_model(out, profile='aoi4_rc'):
     """Restore exact native RC composition and complete provenance from hosted review."""
     assert profile in ('aoi4_rc','aoi4_d2_rc')
@@ -1117,6 +1164,13 @@ def run_pfd_candidate(executable,out,common,result,save,vectors):
             'Repeat native full-device safety and original1us acquisition gates with physical candidate',
             'Independent PVT/timestep/CDR/jitter/full serialPHY and mainchip signoff']),
         acquisition_accepted=False,full_phy_accepted=False)
+    if result['pfd_replacement'].get('actual_parent_layout_rc'):
+        result['status']='COMPLETE_ACTUAL845_PARENT_NATIVE50_CAPTURE_NOT_LOCK_SAFETY_OR_PVT_ACCEPTANCE'
+        result['pfd_terminal_measurements']=pfd_terminal_diagnosis((out/'parent865.spice').read_text(),names,values)
+        result['required_followup']=[
+            'Review actual845 zero-start clock/reset/acquisition behavior and all235 measured PFD terminal differences',
+            'Full845-device electrical safety and original1us acquisition with actual parent geometry RC',
+            'Qualified substrate/well/RF extraction, independent PVT/timestep/CDR/jitter/full serialPHY and mainchip timing']
     save();print(result['status'],flush=True)
 
 
@@ -2506,7 +2560,7 @@ def main():
     parser.add_argument('--recover-parent-methods',action='store_true')
     parser.add_argument('--recover-parent-planes',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
-    parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc','aoi4_d2_rc'))
+    parser.add_argument('--pfd-candidate',choices=('baseline_schematic','aoi4','aoi4_rc','aoi4_d2_rc','actual_parent_d2_rc'))
     parser.add_argument('--review-acquisition',action='store_true')
     parser.add_argument('--diagnose-acquisition',action='store_true')
     parser.add_argument('--diagnose-full50',action='store_true')
@@ -2655,7 +2709,12 @@ def main():
             spec=importlib.util.spec_from_file_location('original_pfd_generator',generator)
             module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
             reference=module.devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES})
-            if args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc'):
+            if args.pfd_candidate=='actual_parent_d2_rc':
+                reference=module.profile_devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES},'aoi4_d2')
+                parent,proof=restore_actual_pfd_parent(out,reference)
+                assert relocated.count('nssoc_parent865_wire_v1')==1,'Native bench must instantiate the exact actual parent once'
+                relocated=relocated.replace('nssoc_parent865_wire_v1','nssoc_parent845_wire_v1')
+            elif args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc'):
                 profile='aoi4_d2' if args.pfd_candidate=='aoi4_d2_rc' else 'aoi4'
                 reference=module.profile_devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES},profile)
                 macro=restore_pfd_physical_model(out,args.pfd_candidate)
@@ -2666,7 +2725,7 @@ def main():
             result['scope']=proof['scope'];result['controls']['pfd_aoi_truth']=pfd_aoi_controls()
             relocated=relocated.replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
             extra=['v(xloop.pfd_candidate.'+n+')' for n in ['clearb','xup.mq','xup.mqb','xup.clkb','xup.qb','xdn.mq','xdn.mqb','xdn.clkb','xdn.qb']]
-            if args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc'):extra=proof['physical_terminal_voltage_probes']
+            if proof.get('physical_pfd'):extra=proof['physical_terminal_voltage_probes']
             extra=[n for n in extra if n not in vectors]
             old_save='save '+' '.join(vectors);assert setup.count(old_save)==1
             vectors+=extra;assert len(vectors)==len(set(vectors));setup=setup.replace(old_save,'save '+' '.join(vectors))
@@ -2755,7 +2814,7 @@ def main():
         save()
         assert passed, 'Snapshot transport is not equivalent under fixed diagnostic bounds'
     except BaseException as error:
-        result.update(status='FAILED_PHYSICAL_PFD_NATIVE50_SCREEN' if args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc') else 'FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
+        result.update(status='FAILED_PHYSICAL_PFD_NATIVE50_SCREEN' if args.pfd_candidate in ('aoi4_rc','aoi4_d2_rc','actual_parent_d2_rc') else 'FAILED_SCHEMATIC_PFD_NATIVE50_SCREEN' if args.pfd_candidate else 'FAILED_ONE_US_NATIVE865_SELECTED_PROBE_CAPTURE' if args.acquisition else 'FAILED_NATIVE865_SNAPSHOT_NOT_ACQUISITION',error=repr(error))
         save();raise
 
 if __name__=='__main__':
