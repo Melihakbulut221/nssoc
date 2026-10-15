@@ -1,3 +1,13 @@
+## 2026-10-15 — nearest-edge electrical rejection; cloud-only continuation
+
+All work remains cloud-only; local workspace is empty. Permanent retirement receipt: release asset 636387277; supplemental log-cache retirement receipt: 642730081.
+
+Nearest-edge runs 38687665533 / 38687675615 are complete. Compact nominal/hot/cold and wire nominal/cold pass their component gates. **Wire hot fails: 59/768 samples below 100mV; minimum 79.622008mV. Do not adopt this geometry or call PHY complete.** All exact source-summary hashes and capture coverage are in `docs/evidence/pcie-nearest-boundary-loaded-rejection-20261015.json`.
+
+New opt-in `nearest_pair_tight` experiment removes only the 20um optional perimeter margin from real public metal extensions. Existing left/nearest profiles remain unchanged. Needs its own native DRC/LVS/fault controls, fresh RC, exact binding receipts and unchanged loaded-wave gates before any adoption. No new electrical profile exists yet.
+
+Still active at this checkpoint: targeted193 mainchip route 38683404082; complete original32 wire capture 38679319167; actual845 PLL 1us 38674687038. No duplicate runs. After terminal PLL success, dispatch `actual_parent_acquisition_review_d2` as documented below. Mainchip final routing/timing and complete serial PHY remain open.
+
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 

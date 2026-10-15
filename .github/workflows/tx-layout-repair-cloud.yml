@@ -7,7 +7,7 @@ on:
       boundary_policy:
         description: Actual metal pin-access side; paired nearest edges reduce long clock and bias extensions
         type: choice
-        options: [left, nearest_pair]
+        options: [left, nearest_pair, nearest_pair_tight]
         default: left
       boundary_pins:
         description: Extend all real TM2 public pins to macro boundary; fresh physical and RC gates required
@@ -109,4 +109,4 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('layout-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('layout-boundary-{0}', inputs.circuit_profile) || format('layout-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant) }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair_tight' && format('layout-boundary-tight-{0}', inputs.circuit_profile) || inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('layout-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('layout-boundary-{0}', inputs.circuit_profile) || format('layout-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant) }}' "$archive" "$archive.sha256" "$summary"
