@@ -497,6 +497,26 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         rails=rails, vectors=vectors, interface_probes=interface_probes, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
+def interface_screen(t, volt, contract, stage):
+    samples = []
+    for i,bit in enumerate(contract['bits']):
+        prefix = ('a' if i%2==0 else 'b') if stage=='final' else (f'd{i%contract.get("streams",4)}' if stage=='cmos' else f'p{stage}_{i%stage}')
+        for phase in (.3,.5,.7):
+            at = START+(i+phase)*UI
+            mapping=contract.get('interface_probes') or {}
+            # All physical parallel input HBT bases are checked, not a
+            # chosen best terminal or a synthetic ideal intermacro alias.
+            for pnode in mapping.get(prefix+'p',[prefix+'p']):
+                for nnode in mapping.get(prefix+'n',[prefix+'n']):
+                    p,n=(np.interp(at,t,volt(node)) for node in (pnode,nnode))
+                    samples.append(((p-n)*(2*bit-1),(p+n)/2))
+    margin,cm = np.asarray(samples).T
+    return dict(samples=len(samples),minimum_margin_v=float(margin.min()),
+        wrong_sign_samples=int((margin<=0).sum()),below_150mv_samples=int((margin<.15).sum()),
+        common_mode_range_v=[float(cm.min()),float(cm.max())],
+        passed=bool((margin>=.15).all() and (cm>=1.8).all() and (cm<=2.05).all()))
+
+
 def review(run, contract):
     vectors = contract['vectors']
     op = np.loadtxt(run/'op.dat', skiprows=1)
@@ -551,29 +571,11 @@ def review(run, contract):
         limit = 2.75 if row['model'].startswith('sg13_hv_') else 1.32
         peaks = {label:float(abs(v).max()) for label,v in [('vds',d-s),('vgs',g-s),('vgd',g-d)]}
         mos[name] = dict(peaks=peaks, limit_v=limit, passed=max(peaks.values())<=limit)
-    def interface(stage):
-        samples = []
-        for i,bit in enumerate(contract['bits']):
-            prefix = ('a' if i%2==0 else 'b') if stage=='final' else (f'd{i%contract.get("streams",4)}' if stage=='cmos' else f'p{stage}_{i%stage}')
-            for phase in (.3,.5,.7):
-                at = START+(i+phase)*UI
-                mapping=contract.get('interface_probes') or {}
-                # All physical parallel input HBT bases are checked, not a
-                # chosen best terminal or a synthetic ideal intermacro alias.
-                for pnode in mapping.get(prefix+'p',[prefix+'p']):
-                    for nnode in mapping.get(prefix+'n',[prefix+'n']):
-                        p,n=(np.interp(at,t,volt(node)) for node in (pnode,nnode))
-                        samples.append(((p-n)*(2*bit-1),(p+n)/2))
-        margin,cm = np.asarray(samples).T
-        return dict(samples=len(samples),minimum_margin_v=float(margin.min()),
-            wrong_sign_samples=int((margin<=0).sum()),below_150mv_samples=int((margin<.15).sum()),
-            common_mode_range_v=[float(cm.min()),float(cm.max())],
-            passed=bool((margin>=.15).all() and (cm>=1.8).all() and (cm<=2.05).all()))
     signal = original_bit_output_screen(t,volt('op'),volt('on'),contract['bits'],START,UI)
-    interfaces = {name:interface(name) for name in ('cmos', 'final')}
+    interfaces = {name:interface_screen(t,volt,contract,name) for name in ('cmos', 'final')}
     stride=4
     while stride<contract.get('streams',4):
-        interfaces['level_'+str(stride)]=interface(stride)
+        interfaces['level_'+str(stride)]=interface_screen(t,volt,contract,stride)
         stride*=2
     clocks={name:[float(((volt(name+'p')+volt(name+'n'))/2)[active].min()),float(((volt(name+'p')+volt(name+'n'))/2)[active].max())] for name in [c['name'] for c in contract.get('tree_plan',dict(clocks=[dict(name=n) for n in ('sa','sb','s')]))['clocks']]}
     return dict(capture_transport=transport,native_bias_current_a=bias_current, prestage_native_bias_current_a={k:v for k,v in bias_current.items() if k in contract.get('references',['ra','rb'])},clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],

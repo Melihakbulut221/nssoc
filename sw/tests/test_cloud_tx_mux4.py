@@ -776,3 +776,34 @@ def test_physical_binding_rejects_old_pin_geometry_even_with_valid_hashes(
             mux4.physical_macro(tmp_path,'physical_compact',spec,'final_drive_v10','restored')
     else:
         assert mux4.physical_macro(tmp_path,'physical_compact',spec,'final_drive_v10','restored').read_bytes()==model
+
+
+@pytest.mark.parametrize('bad_node', [None,'xtree.ap2','xtree.an1','xtree.bp0','xtree.bn2'])
+def test_assembled_interface_checks_every_real_parallel_base(bad_node):
+    # A nominal pair must not conceal one failing parallel transistor terminal.
+    # All original bit times and all9 physical positive/negative pairs count.
+    bits=mux4.sequence()
+    t=np.asarray([mux4.START+(i+phase)*mux4.UI for i in range(256) for phase in (.3,.5,.7)])
+    signs=np.repeat(2*np.asarray(bits)-1,3)
+    probes={p:[f'xtree.{p}{i}'for i in range(3)]for p in ('ap','an','bp','bn')}
+    values={node:1.95+(.12 if p.endswith('p')else -.12)*signs for p,nodes in probes.items()for node in nodes}
+    if bad_node is not None:values[bad_node]=np.full_like(t,1.95)
+    contract={'bits':bits,'streams':4,'interface_probes':probes}
+    result=mux4.interface_screen(t,values.__getitem__,contract,'final')
+    assert result['samples']==768*9
+    assert result['passed']==(bad_node is None)
+    if bad_node is not None:assert result['below_150mv_samples']>0
+
+
+def test_assembled_compact_interface_remains_original_bit_screen():
+    bits=mux4.sequence()
+    t=np.asarray([mux4.START+(i+phase)*mux4.UI for i in range(256)for phase in (.3,.5,.7)])
+    signs=np.repeat(2*np.asarray(bits)-1,3)
+    probes={p:['xtree.'+p]for p in ('ap','an','bp','bn')}
+    values={nodes[0]:1.95+(.12 if p.endswith('p')else -.12)*signs for p,nodes in probes.items()}
+    contract={'bits':bits,'streams':4,'interface_probes':probes}
+    good=mux4.interface_screen(t,values.__getitem__,contract,'final')
+    assert good['samples']==768 and good['passed']
+    values['xtree.ap'],values['xtree.an']=values['xtree.an'],values['xtree.ap']
+    bad=mux4.interface_screen(t,values.__getitem__,contract,'final')
+    assert not bad['passed'] and bad['wrong_sign_samples']==384
