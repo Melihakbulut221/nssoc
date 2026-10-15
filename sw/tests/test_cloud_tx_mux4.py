@@ -909,3 +909,24 @@ def test_actual_prestage_feed_measurement_rejects_broken_probe_binding(mode):
     assert result=={ref:dict(minimum=.0004,median=.0005,maximum=.0006)for ref in ('ra','rb')}
     voltages['prefeed_rb'][1]+=.01
     with pytest.raises(AssertionError):mux4.prestage_bias_currents(t,voltages.__getitem__,currents,contract)
+
+
+@pytest.mark.parametrize('profile,method',[('tight_trap','TRAPEZOIDAL'),('tight_gear2','GEAR')])
+def test_verified_option_labels_do_not_mask_real_native_failures(profile,method):
+    rows=['Integration Method = '+method,'MaxOrder = 2','abstol (current) = 1e-13',
+          'vntol (voltage) = 1e-8','reltol (current) = 1e-6',
+          'itl4 (transient iterations) = 100','trtol = 1']
+    benign=['Truncation error correction, charge based, is selected:', 'diaggmin (stepping) = 0']
+    failure='doAnalyses: TRAN: Timestep too small; time = 3.0375e-08'
+    warning='Warning: native device exceeded limit'
+    def block(extra):
+        return 'NSSOC_SOLVER_OPTIONS_BEGIN\n'+'\n'.join(rows+extra)+'\nNSSOC_SOLVER_OPTIONS_END\n'
+    assert mux4.native_diagnostics(block(benign),profile)==[]
+    assert mux4.native_diagnostics(block(benign))==benign
+    assert mux4.native_diagnostics(block(benign+[failure,warning]),profile)==[failure,warning]
+    assert mux4.native_diagnostics(failure+'\n'+block(benign)+'\n'.join(benign+[warning]),profile)==[failure]+benign+[warning]
+    for bad in [block(benign)*2, block(benign).replace('MaxOrder = 2','MaxOrder = 3'),
+                block(benign).replace('trtol = 1\n',''), 'naked output\n'+'\n'.join(benign)]:
+        with pytest.raises(AssertionError):mux4.native_diagnostics(bad,profile)
+    changed=['Truncation error correction failed:', 'diaggmin (stepping) = 1e-3']
+    assert mux4.native_diagnostics(block(changed),profile)==changed

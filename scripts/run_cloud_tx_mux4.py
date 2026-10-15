@@ -534,6 +534,26 @@ def verify_solver_options(log,profile):
     return dict(status='PASS_NATIVE_SOLVER_OPTION_READBACK',profile=profile,numeric_options=expected,method=methods[0],native_text=block)
 
 
+def native_diagnostics(log, profile='default'):
+    """Keep real diagnostics; exempt only two labels in verified option output."""
+    if profile != 'default':
+        verify_solver_options(log, profile)
+    inside = False
+    result = []
+    benign = {'Truncation error correction, charge based, is selected:',
+              'diaggmin (stepping) = 0'}
+    for line in log.splitlines():
+        if line.strip() == 'NSSOC_SOLVER_OPTIONS_BEGIN':
+            inside = True
+        elif line.strip() == 'NSSOC_SOLVER_OPTIONS_END':
+            inside = False
+        if profile != 'default' and inside and line.strip() in benign:
+            continue
+        if any(w in line.lower() for w in ('warning','error','nan','singular','stepping','too small','jmax','vmax')):
+            result.append(line)
+    return result
+
+
 def interface_screen(t, volt, contract, stage):
     mapping=contract.get('interface_probes')
     if mapping is not None:
@@ -834,7 +854,7 @@ def main():
                                  stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits)
         log=(run/'run.log').read_text(errors='replace')
         result.update(returncode=code,elapsed_s=time.monotonic()-started,
-            diagnostics=[line for line in log.splitlines() if any(w in line.lower() for w in ('warning','error','nan','singular','stepping','too small','jmax','vmax'))])
+            diagnostics=native_diagnostics(log))
         if code or not (run/('wave.raw' if args.stream_raw else 'wave.dat')).exists():
             print(log[-12000:],flush=True)
             raise RuntimeError('Native serializer tree capture did not finish')
@@ -843,6 +863,7 @@ def main():
         assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for name,body in flags)
         if args.solver_profile!='default':
             result['native_solver_options']=verify_solver_options(log,args.solver_profile)
+            result['diagnostics']=native_diagnostics(log,args.solver_profile)
         result['review']=review(run,contract)
         assert all(sha(p)==digest for p,digest in result['inputs'].items())
         raw=run/('wave.raw' if args.stream_raw else 'wave.dat')
