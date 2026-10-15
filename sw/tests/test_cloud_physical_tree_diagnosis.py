@@ -156,3 +156,34 @@ def test_tc_feedback_pair_rejects_wrong_geometry_bias_or_corner(study):
     r=broken['feedback_temperature_compensation_20261014']['actual_geometry_followup']['hot_compact_controls']['cases'][corner]['result']
     r['pre_bias_feedback_scope']['sha256']='foreign-bias'
     with pytest.raises(AssertionError):m.feedback_tc_records(broken,study)
+
+
+@pytest.mark.parametrize('fmt', ['wrdata_text', 'native_binary'])
+def test_full_capture_reader_preserves_original_times_and_vector_identity(tmp_path, monkeypatch, fmt):
+    import gzip, hashlib
+    monkeypatch.syspath_prepend(str(path.parent))
+    t = np.array([0.0, 17e-9, 34e-9])
+    op = np.array([0.25, -0.125, 0.75])
+    on = np.array([-0.5, 0.5, 0.125])
+    contract = dict(vectors=['v(op)', 'v(on)'], condition=dict(step_ps=17000))
+    if fmt == 'native_binary':
+        header = ('Title: fixture\nDate: fixture\nPlotname: Transient Analysis\n'
+                  'Flags: real\nNo. Variables: 3\nNo. Points: 3\nVariables:\n'
+                  '0 time time\n1 v(on) voltage\n2 v(op) voltage\nBinary:\n')
+        raw = header.encode() + np.column_stack((t, on, op)).astype('<f8').tobytes()
+    else:
+        raw = ('time v(op) v(on)\n' + '\n'.join(
+            ' '.join(format(x, '.17g') for x in row) for row in zip(t, op, on)) + '\n').encode()
+    (tmp_path/'wave.dat.gz').write_bytes(gzip.compress(raw))
+    record = dict(format=fmt, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+    values = m.capture_values(tmp_path, contract, record, ['time','v(op)','v(on)'])
+    for name, expected in [('time',t),('v(op)',op),('v(on)',on)]:
+        assert np.array_equal(values[name], expected)
+    if fmt == 'native_binary':
+        # A rehashed truncated original still fails native row/column coverage.
+        (tmp_path/'wave.raw').unlink()
+        raw = raw[:-8]
+        (tmp_path/'wave.dat.gz').write_bytes(gzip.compress(raw))
+        record.update(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+        with pytest.raises(AssertionError):
+            m.capture_values(tmp_path, contract, record, ['time','v(op)','v(on)'])

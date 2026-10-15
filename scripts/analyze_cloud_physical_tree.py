@@ -48,6 +48,30 @@ def source_bits_hash(record):
     return candidates[0]
 
 
+def capture_values(directory, contract, raw_wave, names):
+    """Read original vectors from either verified legacy text or full native binary."""
+    fmt = raw_wave.get('format', 'wrdata_text')
+    if fmt == 'native_binary':
+        from cloud_tx_stream import read_streamed_wave
+        path = directory / 'wave.raw'
+        with gzip.open(directory / 'wave.dat.gz', 'rb') as src, path.open('xb') as dst:
+            shutil.copyfileobj(src, dst)
+        t, all_values, transport = read_streamed_wave(
+            path, contract['vectors'], STOP, contract['condition']['step_ps'] * 1e-12)
+        assert transport['raw_bytes'] == raw_wave['bytes']
+        assert transport['raw_sha256'] == raw_wave['sha256']
+        assert transport['complete_unmodified_rows']
+        values = {'time': t, **all_values}
+        return {name: values[name] for name in names}
+    assert fmt == 'wrdata_text', 'Unknown source capture transport'
+    with gzip.open(directory / 'wave.dat.gz', 'rt') as src:
+        header = src.readline().split()
+        assert header == ['time', *contract['vectors']]
+        data = np.loadtxt(src, usecols=[header.index(n) for n in names])
+    assert data.ndim == 2 and data.shape[1] == len(names) and np.isfinite(data).all()
+    return dict(zip(names, data.T, strict=True))
+
+
 def read_case(record, directory):
     mode = record['prestage']
     tag = record['summary_url'].split('/download/')[1].split('/')[0]
@@ -79,6 +103,9 @@ def read_case(record, directory):
     for name in ('contract.json', 'wave.dat.gz'):
         assert sha(directory / name) == result['outputs']['native/' + name]
     assert result['raw_wave'] == record['raw_wave']
+    assert result['prestage'] == mode
+    for key, profile in record.get('expected_physical_profiles', {}).items():
+        assert result[key]['profile'] == profile, 'Wrong physical geometry capture'
     assert hashlib.sha256(bytes(contract['bits'])).hexdigest() == source_bits_hash(record)
     raw_hash, size = hashlib.sha256(), 0
     with gzip.open(directory / 'wave.dat.gz', 'rb') as src:
@@ -92,12 +119,7 @@ def read_case(record, directory):
     names += ['@q.' + n + '.qnpn13g2[ic]' for n in contract['hbt']]
     names += [v for v in contract['vectors'] if v.startswith('i(v')]
     assert len(names) == len(set(names))
-    with gzip.open(directory / 'wave.dat.gz', 'rt') as src:
-        header = src.readline().split()
-        assert header == ['time', *contract['vectors']]
-        data = np.loadtxt(src, usecols=[header.index(n) for n in names])
-    assert data.ndim == 2 and data.shape[1] == len(names) and np.isfinite(data).all()
-    values = dict(zip(names, data.T, strict=True))
+    values = capture_values(directory, contract, result['raw_wave'], names)
     t = values['time']
     assert t[0] == 0 and abs(t[-1] - STOP) < 1e-18 and np.all(np.diff(t) > 0)
     zero = np.zeros_like(t)
@@ -279,11 +301,28 @@ def feedback_tc_records(evidence, study):
     return records
 
 
+BOUNDARY_STUDIES = ('tight_hot', 'shifted_outputs_hot')
+
+
+def boundary_records(evidence, study):
+    records = evidence['studies'][study]['cases']
+    assert len(records) == 2 and {r['prestage'] for r in records} == {'physical_compact','physical_wire'}
+    for r in records:
+        assert r['streams'] == 4 and r['fault'] == 'none' and r['condition'] == 'hot_low'
+        assert r['raw_wave']['format'] == 'native_binary'
+        assert r['expected_physical_profiles']['physical_prestage_scope'] == 'cascade158_kelvin_supply_direct_tight'
+        expected = ('v10_kelvin_low_ports_loads_shunts_series_tight' if study == 'tight_hot'
+                    else 'v10_kelvin_low_ports_loads_shunts_series_left_outputs')
+        assert r['expected_physical_profiles']['physical_final_scope'] == expected
+    assert len({source_bits_hash(r) for r in records}) == 1
+    return records
+
+
 def main():
     if os.environ.get('GITHUB_ACTIONS') != 'true':
         raise RuntimeError('Full native waveform analysis runs only on GitHub')
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot',*LOCAL_TAIL_STUDIES,*SUPPLY_FEED_STUDIES,*ROUTING_STUDIES,*TC_STUDIES),default='prestage_only')
+    parser.add_argument('--study',choices=('prestage_only','both_power','both_interleaved','both_kelvin','both_dense','v8_nominal','dense_v8_hot',*LOCAL_TAIL_STUDIES,*SUPPLY_FEED_STUDIES,*ROUTING_STUDIES,*TC_STUDIES,*BOUNDARY_STUDIES),default='prestage_only')
     args=parser.parse_args()
     evidence_path=ROOT/'docs/evidence'/dict(
         prestage_only='pcie-physical-prestage-tree-20261013.json',
@@ -293,6 +332,7 @@ def main():
         both_dense='pcie-kelvin-dense-loaded-tree-20261013.json',
         v8_nominal='pcie-v8-nominal-loaded-tree-20261013.json',
         dense_v8_hot='pcie-dense-v8-hot-loaded-tree-20261013.json',
+        **{key:'pcie-boundary-hot-diagnosis-input-20261015.json' for key in BOUNDARY_STUDIES},
         **{key:value[3] for key,value in ROUTING_STUDIES.items()},
         **{key:'pcie-final-v11-kelvin-low-ports-loads-shunts-series-composition-20261014.json' for key in TC_STUDIES},
         **{key:'cloud-closure-continuation-20261013.json' for key in (*LOCAL_TAIL_STUDIES,*SUPPLY_FEED_STUDIES)})[args.study]
@@ -302,7 +342,9 @@ def main():
         scope='Read-only full-wave voltage/current comparison. Intermacro connections remain ideal; the source-bound case records identify which macros include actual metal RC. TX driver remains schematic. No new acceptance or RF/substrate extraction qualification.')
     try:
         evidence = json.loads(evidence_path.read_text())
-        if args.study in TC_STUDIES:
+        if args.study in BOUNDARY_STUDIES:
+            records = boundary_records(evidence,args.study)
+        elif args.study in TC_STUDIES:
             records = feedback_tc_records(evidence,args.study)
         elif args.study in ROUTING_STUDIES:
             records = routing_records(evidence,args.study)
