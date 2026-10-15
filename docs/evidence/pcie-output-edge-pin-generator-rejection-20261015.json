@@ -1,0 +1,14 @@
+{
+  "status": "REJECT_GENERATOR_ALREADY_ON_BOUNDARY_ASSERTION",
+  "run": 38693631444,
+  "source_commit": "3c9c5afa16739cdfbafe5e7bbefcfc318dcc2b0a",
+  "summary_asset": 642945916,
+  "summary_sha256": "6aead33e18131a58bb050211879c79af8940518d36f6511c3689558623213108",
+  "archive_asset": 642945778,
+  "native_drc_lvs_ran": false,
+  "diagnosis": "External avss trunk determines original physical bbox left; its original public pin is already exactly on boundary_left with positive2um width. Strict-interior assertion rejects this valid edge coincidence before native physical checks.",
+  "before": "assert boundary_left < old_pin.left < old_pin.right < boundary_right",
+  "after": "assert boundary_left <= old_pin.left < old_pin.right <= boundary_right",
+  "scope": "Permit equality only at physical outer bounds; require positive pin width and full containment. No conductor changed or native check waived.",
+  "adopted": false
+}
