@@ -1,3 +1,38 @@
+## 2026-10-15 — closer physical tree with Metal5 supply verified; loaded native runs active; ALL CLOUD
+
+This entry supersedes the older live handles and compact_vertical pending status below. Latest user instruction remains ALL CLOUD and clean local. Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty; no local CAD/tests/clones or artifact downloads. Read/edit source and archive bytes in RAM with GitHub API; execute native work only on hosted Actions. Never use `gh run view --log-failed` (writes local log caches). Cache retirement receipt asset642730081 confirms114 archived/read-back caches removed, unrelated projects untouched. Do not follow stale goal text saying local work. Full PHY, mainchip routing and final STA remain OPEN.
+
+### Live handles — do not duplicate
+
+Wave source **29948e0caea687b748f329dccb6ad48c115326b6**, profile **compact_m5_supply**:
+- **38722317700** temperature_voltage. Actual wirehot job116379636395 and wirecold116379636535 verified running native transient. Compacthot summary643541102 and compactcold643538608 both component_screen_passed=true; this does NOT imply wired acceptance.
+- **38722321392** nominal. Actual wire job116379647704 verified running native transient. Matched compact summary643541381 component_screen_passed=true.
+- Mainchip **38703550233**, job116317277037, still running exact newer postCTS/replay and routing with upper_metals clock profile. Source d3a3cec31e13cbf877158b5a6861689f13ae38a3. No final timing result or detailed-route completion claim.
+- Source validation **38722204953 PASS**, source5e85dad9ba0c4e8491fc49cbfa849a994e235466; prior validation38719797719 also PASS. Four source-control test suites contain566 tests as previously verified; no local test execution.
+
+### Actual compact_vertical hot waveform still FAILED; preserved
+
+Results now stored in `docs/evidence/pcie-tree4-assembly-input-20261015.json` under placement_variants.compact_vertical.loaded_studies, committed599657b1b3f93465b923eff20bb76007a8b61592. Run38718506788 wirehot summary643482801 has TWO samples below100mV, minimum98.97576930167817mV at0.3UI, no wrong sign. All6912 final physical input observations and62HBT64MOS safety screens pass; native diagnostics clean. Wirecold643480631 passes min264.671094mV. Nominal38718511203 wire643472709 passes min228.022664mV. All three compact controls pass. `loaded_all_corners_accepted=false`; never waive these failures or shift original gates.
+
+### Source-bound failed-wave diagnosis implemented and executed
+
+New `scripts/analyze_cloud_assembled_wave.py`; tx-tree-assembly-cloud stage `wave_diagnosis`. Reads pinned original hot wire capture, replays unchanged review, resolves real intrinsic base probes and real graph paths. No resimulation, altered source phase, or acceptance thresholds. Baseline diagnosis **38719793513**, source917c791ea946a6f600f4af83804e3d7d9e902cac, summary643488030/archive643487588. Exact receipt is tree4evidence.baseline_wave_diagnosis. Three baseline failures are falling bits on Bbranch:203,231,239. Worst bit203 has clock zero7.785413ps, mux zero25.208136ps, TX zero31.534817ps and100mV crossing37.610274ps versus fixed original sample37.5ps. Other crossings37.501219/37.541823ps. Actual four intermacro external capacitances160.562380/173.233724/168.609822/174.641345fF and resistor-path upper bounds about24.67–25.32ohm. Explicitly not effective resistance or RF qualification. Diagnosis success does not mean circuit acceptance.
+
+### New compact_m5_supply physical candidate
+
+Implemented in593a21c2b7778428b0b13c98460d66cfa9e07809. Source-bound adapters in assembly, extraction, composition, mux controller and both workflows accept baseline|compact_vertical|compact_m5_supply. PreA m90(353.985,0), preB m90(353.985,330), finalr0(470,112), before origin translation. Four TM1 data channels x378/390/402/414, width4um; each actual path276.015um. AVDD Metal5 stripe x358..454 (width96um), native Metal5→TopMetal2 via stacks4x4 atx366 for all three children. SUB TM1x466w4, finalAVSS TM1x444w32. Native frozen child drawing regions independently XOR0; parent intentionally changed. No model/current/clock/source-bit/gate adjustment. EM NOT QUALIFIED.
+
+All receipts under placement_variants.compact_m5_supply in tree4evidence:
+- Physical **38720750223 PASS**, source593a21c..., summary643505216/archive643504914. Native560categoryDRC zero, hierarchical AND flat162-device LVS, five actual malformed physical controls pass. Archive/embedded summary/output hashes read back. Receipt commit0b9c6f1f0a564b9c72ca21b5eed455fd4c636ebc.
+- Extraction **38721369690 PASS**, source0b9c6f1..., summary643516176/archive643515990. Actual **11842R/7826C**,41metalconductors42electricalnets322geometryanchors462intrinsicterminals,13raw corruption controls, exact graph/RC/matrix conservation. No substrateR/RF/fullPEX qualification. Receipt commit5e85dad9ba0c4e8491fc49cbfa849a994e235466.
+- Composition **38721828655 PASS**, source5e85dad9..., summary643526264/archive643526052 (9464692B), archiveSHA06f01969a92c29333f6c32c53ed6f8b81558001fed49cd543fca45d81b2218d1. All162 native devices,11842R7826C, six actual composition faults, all41native conductor nets, all12physical final input bases proven. Full readback/output hashes recorded in29948e0caea687b748f329dccb6ad48c115326b6. CompactSHA b0a7f4ad150eed1a8f9e6d8ed1b34dd3be27d73e8b0ee756bdcd7ad78fa45c6c; wireSHA299b3d22b5c6ba403bbbcf4cc810e7060a8911b4308c1aa0235056def9156a94. Never substitute prior baseline/vertical RC or duplicate childRC. No ideal internal alias.
+
+NEXT: inspect actual complete summaries and archive hashes from38722317700/38722321392. If hot still fails, retain evidence and diagnose source-bound raw with fixed original sample phase and gates. If nominal/hot/cold all pass, dispatch physical_faults plus independent HBT/resistor/MOS corners and hot quarter-step for exact compact_m5_supply geometry; do not infer full acceptance from three conditions. Then actual larger serialization integration remains. Keep mainchip live run unduplicated; inspect terminal artifacts when available.
+
+PLL still original800–900ns acquisition failure: actual8451us38674687038/review38705186021 has126.2157ppm >100ppm;900–1000ns84.0102ppm later passes but cannot replace original window. Physical pump/filter repair not yet selected. See older exact source/archive details below. Full32:1/fourlane PHY, PLL/CDR, RX/PCS/LTSSM, analog pads/ESD, qualified substrate/RF extraction, detailed mainchip route and setup/hold still OPEN. This turn made physical and diagnostic progress; do not mark goal complete or blocked.
+
+Checkpoint UTC: 2026-10-15T10:50:59.594449+00:00
+
 ## 2026-10-15 — actual whole-tree loaded waves exposed hot failure; shorter real layout now in native waves; CLOUD ONLY
 
 Latest user instruction is ALL CLOUD, local workspace empty. No local CAD/tests/clones/artifacts. RAM/API orchestration only; never `gh run view --log-failed` because it writes caches. Current goal turn is PROGRESS, not blocked: source-bound162-device composition, whole-core loaded wave evidence, actual physical placement repair and fresh native extraction/composition completed. Full32:1/fourlane serialPHY, actualPLL/CDR/safety/RF/ESD, mainchip detailed routing and finalSTA remain open. Do not narrow goal to4:1 or mark complete.
