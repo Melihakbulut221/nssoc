@@ -103,7 +103,7 @@
     "All work stays on GitHub-hosted runners. Do not recreate local checkout or CAD/test artifacts. Retirement receipt is COMPLETE and hash-verified; no cleanup of other projects.",
     "Do not poll or restart mainchip38731744914 as live: it terminated at the6h limit and relaxed NDR21times. Its partial JSON pending status is historical, not process evidence. Preserve full timeout and native failures.",
     "Poll exact failed-guide DRT38788529905, job116606725290, before dispatching anything else for this route. Native preflight preserves original geometry/connectivity/NDR with fault controls; run uses exact132-overflow saved guides only for physical diagnosis. Original global gate remains failed. Require actual routed geometry, independent connectivity/geometricNDR/DRC/LVS/antenna and extractedSTA; never treat run success as closure.",
-    "Poll charge_bracket38789786404; source28783275bc837dc24d8d685616963ff6972f907c. Compare coupled chgtol1e-14/1e-16/1e-18/1e-19 at0.125/0.0625ps. Retain each native abort and unavailable comparison. Added internal probes38789110926 exactly reproduce all17original vectors and all timepoints; source-bound failure context is pinned. No accepted candidate or model defect yet.",
+    "Charge bracket38789786404 completed with preserved native failures; no charge setting fixed8.90685mV mismatch. Inspect existing-wave diagnosis38791022510 (source90a8cf86bb84c8ecdce659708c0917479e4bad93) for first divergence/native waveform shape before a causal solver/circuit change. No resimulation in this analysis and no original gate relaxed.",
     "Retain all completed factorial/refinement/backend comparisons and aborted charge capture. TSTEP and matrix backend are ruled out; finer TMAX/Gear2 did not converge. No blind full34ns rerun or startup-window removal.",
     "Keep full PLL/CDR/RX/PCS/LTSSM, physical integration, qualified extraction, all-device/PVT, pad/ESD, SRAM/DFT, final setup/hold and real manufacturer approval requirements open until corresponding full-scope evidence proves them."
   ],
@@ -103009,5 +103009,79 @@
     "final_extracted_setup_hold_complete": false,
     "evidence": "docs/evidence/pcie-vbic-internal-probes-20261015.json",
     "source_guard": "No original global-route or numerical acceptance gate waived; cloud-only."
+  },
+  "charge_bracket_terminal_20261015": {
+    "run": 38789786404,
+    "source_head": "28783275bc837dc24d8d685616963ff6972f907c",
+    "accepted": false,
+    "status": "COMPLETE_DIAGNOSIS_WITH_PRESERVED_NATIVE_FAILURES_NOT_ACCEPTANCE",
+    "summary_sha256": "d5983fd5a49ad2ba603631712505de80cb725a231dfbbadd1fc1b6b142ac3154",
+    "comparisons": {
+      "charge14_125_to_62p5": {
+        "end_s": 1.2e-09,
+        "worst_voltage_vector": "v(mr)",
+        "worst_voltage_difference_v": 0.008906847246707983,
+        "acceptance": false
+      },
+      "charge16_125_to_62p5": {
+        "end_s": 1.2e-09,
+        "worst_voltage_vector": "v(mr)",
+        "worst_voltage_difference_v": 0.008906848953198376,
+        "acceptance": false
+      },
+      "charge14_to_16_at_0.125": {
+        "end_s": 1.2e-09,
+        "worst_voltage_vector": "v(xtree.n_i49)",
+        "worst_voltage_difference_v": 1.6225477925679854e-06,
+        "acceptance": false
+      },
+      "charge14_to_16_at_0.0625": {
+        "end_s": 1.2e-09,
+        "worst_voltage_vector": "v(xtree.n_i49)",
+        "worst_voltage_difference_v": 6.223946047434481e-07,
+        "acceptance": false
+      },
+      "charge16_to_18_at_0.0625": {
+        "end_s": 1.2e-09,
+        "worst_voltage_vector": "v(xtx.tail)",
+        "worst_voltage_difference_v": 5.688507508372354e-07,
+        "acceptance": false
+      },
+      "charge18_to_19_at_0.0625": {
+        "end_s": 1.2e-09,
+        "worst_voltage_vector": "v(mp)",
+        "worst_voltage_difference_v": 5.080967708792627e-07,
+        "acceptance": false
+      }
+    },
+    "unavailable_comparisons": [
+      {
+        "name": "charge18_125_to_62p5",
+        "missing_captures": [
+          "tstep0.125-tmax0.125-charge18"
+        ]
+      },
+      {
+        "name": "charge19_125_to_62p5",
+        "missing_captures": [
+          "tstep0.125-tmax0.125-charge19"
+        ]
+      },
+      {
+        "name": "charge16_to_18_at_0.125",
+        "missing_captures": [
+          "tstep0.125-tmax0.125-charge18"
+        ]
+      },
+      {
+        "name": "charge18_to_19_at_0.125",
+        "missing_captures": [
+          "tstep0.125-tmax0.125-charge18",
+          "tstep0.125-tmax0.125-charge19"
+        ]
+      }
+    ],
+    "short_prefix_reproduces_original_to_1nv": true,
+    "conclusion": "Intermediate chgtol does not resolve the original8.90685mV TMAX mismatch. At fixed0.0625ps,1e-16 to1e-18 and1e-18 to1e-19 change peak voltage by<0.6uV. Coarse1e-18/1e-19 abort and cannot support timestep comparison. Preserve every failure and full native input; diagnose actual waveform before further solver trials."
   }
 }
