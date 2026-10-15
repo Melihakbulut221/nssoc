@@ -1,3 +1,9 @@
+## Exact latest cloud checkpoint and next physical repair
+
+See docs/evidence/cloud-current-checkpoint-20261016.json for current run/job states. Native geometry follow-up38810969514/job116683788886 is queued/running; don't duplicate. Full32 originalSparse38810158966 and38810163678 remain active; wire38801162596 remains active. No new fullPHY or timing acceptance.
+
+The saved actual timing report isolates PCIe setup critical-load targets: a22oi_1$1749936 cap0.207088pF/delay2.443390ns and nand4_1$1749937 cap0.428974pF/delay6.686792ns. Exact source/instance names in docs/evidence/cloud-routed-pcie-critical-loads-20261016.json. Repair is NOT yet applied. Next implement source-bound drive/buffering improvement, verify original functional/pin invariants, reroute and reextract; also classify1065unannotated drivers and repair651antenna nets. No clock/SDC/RC qualification waiver. Do not confuse native0DRVs with productionDRC/LVS/timing closure.
+
 ## 2026-10-16 measured routed timing and live full32 captures
 
 Actual routed extraction38809759501/job116679719057 terminalSUCCESS as a measurement, NOT signoff. Fresh nominalSPEFb0411f... has113556nets and0per-net cap inconsistencies; slow setup-11.940513ns, typical-6.233346ns, fast-2.978773ns; fast hold-0.151066ns. Native annotation report has1065unannotated drivers (0partial); classify those before any coverage/closure claim. Worst slow setup $auto$ff.cc:337:slice$1171433 -> $auto$ff.cc:337:slice$1177036; retrain_done input paths also near-11.74ns. Receipt docs/evidence/cloud-mainchip-routed-nominal-rc-20261016.json. OriginalSDC/9libraries protected unchanged, nominalRC only. No stage passes final setup/hold.
