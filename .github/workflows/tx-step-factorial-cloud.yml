@@ -1,0 +1,60 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-step-factorial-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/tx-step-factorial-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-step-factorial-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  startup-diagnosis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Reject altered analyses and corrupt waveform comparison
+        run: python3 scripts/cloud_tx_step_factorial.py --controls-only
+      - name: Isolate TSTEP and TMAX on unchanged native startup circuit
+        run: python3 scripts/cloud_tx_step_factorial.py
+      - name: Preserve all diagnostic captures and failure evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-tx-step-factorial
+          if [ ! -f cloud-tx-step-factorial/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_BEFORE_DIAGNOSIS","accepted":false}' > cloud-tx-step-factorial/result.json
+          fi
+          archive="tx-step-factorial-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-tx-step-factorial
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-tx-step-factorial/result.json "${archive%.tar.gz}.summary.json"
+          python3 scripts/publish_cloud_results.py --group tree-step-factorial "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
+      - name: Retain evidence if publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: step-factorial-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-tx-step-factorial/
+          if-no-files-found: warn
