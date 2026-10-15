@@ -80,13 +80,15 @@ def generate():
         placement[tag]=dict(kind=kind,transform=str(tr),bbox_um=str(child.dbbox().transformed(tr)),ports={k:str(v) for k,v in actual.items()})
         schematic.extend(flatten_reference((directory/'schematic.cir').read_text(),tag))
     schematic.append('.ends '+TOP)
-    # Flatten before stripping only port labels/markers. Drawing geometry stays
-    # intact; actual transistor comparison must prove all162devices and22ports.
+    # Preserve native PCell recognition annotations (including npn13g2).
+    # Only the36 macro-level public TM2 labels/pins are replaced by22 parent
+    # ports. Removing all text destroys native HBT recognition and was rejected
+    # by1002 CntB.h1 markers in run38706630710. No deck/rule is changed.
     top.flatten(-1,False)
-    for li in layout.layer_indexes():
-        for shape in list(top.shapes(li).each()):
-            if shape.is_text(): shape.delete()
-    top.shapes(layout.layer(layers['TopMetal2'],2)).clear()
+    for datatype in (2,25):
+        shapes=top.shapes(layout.layer(layers['TopMetal2'],datatype))
+        assert sum(1 for _ in shapes.each())==36
+        shapes.clear()
     routes=[]
     def box(layer,x1,y1,x2,y2):
         top.shapes(layout.layer(layers[layer],0)).insert(pya.DBox(min(x1,x2),min(y1,y2),max(x1,x2),max(y1,y2)))
