@@ -332,6 +332,70 @@ def trace_rail_geometry(selected,profile):
         (out/'rail-geometry-result.json').write_text(json.dumps(result,indent=2)+'\n')
         print(json.dumps({k:result[k]for k in ('status','placement_profile','geometry_changed')}),flush=True)
 
+def interface_sample_witnesses(t,volt,contract,stage,expected,context_nodes=()):
+    """Locate original interface extrema; no new oracle or acceptance window."""
+    mapping=contract.get('interface_probes')or{}
+    rows=[]
+    for index,bit in enumerate(contract['bits']):
+        prefix=('a'if index%2==0 else'b')if stage=='final'else f'd{index%contract.get("streams",4)}'
+        for phase in (.3,.5,.7):
+            at=mux.START+(index+phase)*mux.UI
+            for pnode in mapping.get(prefix+'p',[prefix+'p']):
+                for nnode in mapping.get(prefix+'n',[prefix+'n']):
+                    p,n=(float(np.interp(at,t,volt(node)))for node in (pnode,nnode))
+                    rows.append(dict(index=index,source_bit=bit,previous_bit=contract['bits'][index-1]if index else None,
+                        phase_ui=phase,time_s=float(at),pnode=pnode,nnode=nnode,p_v=p,n_v=n,
+                        margin_v=(p-n)*(2*bit-1),common_mode_v=(p+n)/2))
+    assert len(rows)==expected['samples']
+    assert min(x['margin_v']for x in rows)==expected['minimum_margin_v']
+    assert [min(x['common_mode_v']for x in rows),max(x['common_mode_v']for x in rows)]==expected['common_mode_range_v']
+    assert sum(x['margin_v']<=0 for x in rows)==expected['wrong_sign_samples']
+    assert sum(x['margin_v']<.15 for x in rows)==expected['below_150mv_samples']
+    def details(row):
+        row=dict(row);at=row['time_s'];right=min(int(np.searchsorted(t,at,side='right')),len(t)-1);left=max(0,right-1)
+        assert t[left]<=at<=t[right]
+        nodes=list(dict.fromkeys([row['pnode'],row['nnode'],*context_nodes]))
+        row['context_at_original_sample_v']={n:float(np.interp(at,t,volt(n)))for n in nodes}
+        row['native_bracket_indices']=[left,right]
+        row['native_neighbors']=[dict(index=i,time_s=float(t[i]),volts={n:float(volt(n)[i])for n in nodes})
+            for i in range(max(0,left-2),min(len(t),right+3))]
+        return row
+    extrema=dict(minimum_margin=details(min(rows,key=lambda x:x['margin_v'])),
+        minimum_common_mode=details(min(rows,key=lambda x:x['common_mode_v'])),
+        maximum_common_mode=details(max(rows,key=lambda x:x['common_mode_v'])))
+    failed=[x for x in rows if x['margin_v']<.15 or not 1.8<=x['common_mode_v']<=2.05]
+    return dict(original_samples=len(rows),original_review_exactly_recovered=True,extrema=extrema,
+        failure_counts=dict(below_150mv=sum(x['margin_v']<.15 for x in rows),
+            common_mode_below_1p8v=sum(x['common_mode_v']<1.8 for x in rows),
+            common_mode_above_2p05v=sum(x['common_mode_v']>2.05 for x in rows)),
+        first_failure_witnesses=[details(x)for x in failed[:12]],
+        scope='Original0.3/0.5/0.7UI samples and every parallel physical terminal pair; raw native neighbor values retained. No fitted phase, omitted terminal, changed limit or new acceptance.')
+
+
+def interface_witness_controls():
+    t=np.asarray([0.,mux.START,mux.STOP]);mapping={k:[k+str(i)for i in range(3)]for k in ('ap','an','bp','bn')}
+    contract=dict(bits=[1,1],streams=4,interface_probes=mapping)
+    vectors={n:np.full_like(t,2.1 if key.endswith('p')else 1.9)for key,names in mapping.items()for n in names}
+    vectors['ap2'][:]=2.3;vectors['bn1'][:]=1.45
+    def voltage(n):return vectors[n]
+    expected=mux.interface_screen(t,voltage,contract,'final')
+    found=interface_sample_witnesses(t,voltage,contract,'final',expected)
+    assert found['original_samples']==54 and found['failure_counts']['common_mode_above_2p05v']==9
+    assert found['failure_counts']['common_mode_below_1p8v']==9
+    assert found['extrema']['maximum_common_mode']['pnode']=='ap2'
+    low=found['extrema']['minimum_common_mode'];assert low['nnode']=='bn1'and low['index']==1
+    assert low['phase_ui']==.3 and low['time_s']==mux.START+1.3*mux.UI
+    vectors['bp0'][:]=1.6
+    expected=mux.interface_screen(t,voltage,contract,'final')
+    found=interface_sample_witnesses(t,voltage,contract,'final',expected)
+    assert found['extrema']['minimum_margin']['pnode']=='bp0'and found['extrema']['minimum_margin']['margin_v']<0
+    bad=dict(expected,samples=53)
+    try:interface_sample_witnesses(t,voltage,contract,'final',bad)
+    except AssertionError:pass
+    else:raise AssertionError('Incomplete physical terminal coverage accepted')
+    return dict(known_upper_lower_and_wrong_sign_terminal_witnesses_recovered=True,incomplete_coverage_rejected=True)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap'),default='baseline')
@@ -503,7 +567,10 @@ def main():
                 external_capacitance_by_native_conductor_f=external_native,
                 path_resistance_upper_bounds_ohm={r['wire_anchor']:nx.shortest_path_length(graph,source,r['wire_anchor'],weight='resistance')for r in sinks},
                 qualification='DC resistor path upper bounds and exact exported lumped C totals only; no RF/effective-resistance or substrate qualification.')
+        interface_witnesses={stage:interface_sample_witnesses(t,v,contract,stage,fresh['interfaces'][stage],
+            ('avdd','clkbias','mr','sp','sn','ra','rb','sap','san','sbp','sbn'))for stage in ('cmos','final')}
         result.update(status='COMPLETE_ASSEMBLED_SOURCE_BOUND_FAILURE_AND_INTERMACRO_DIAGNOSIS_NOT_ACCEPTANCE',
+            interface_witness_controls=interface_witness_controls(),interface_sample_witnesses=interface_witnesses,
             original_review_preserved=True,failed_samples=failed,failed_hbt_native_extrema=device_extrema,transition_delays=delay,intermacro=intermacro,
             supply_resistor_path_upper_bounds=power,wrong_native_conductor_control_rejected=wrong_conductor_rejected,
             supply_qualification='Path bounds only, not solved voltage drops or effective resistance. Existing captured device terminal voltages and currents retain their original review; no uncaptured rail voltage inferred.',

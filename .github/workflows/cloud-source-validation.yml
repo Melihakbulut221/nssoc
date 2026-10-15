@@ -59,7 +59,7 @@ jobs:
           python3 -m pip install numpy==2.3.3 pytest==8.4.2 networkx==3.4.2
           python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_result_publication.py
       - name: Verify numerical peak witnesses without changing convergence gates
-        run: python3 -c "import sys; sys.path.insert(0,'scripts'); from analyze_cloud_assembled_wave import step_controls; print(step_controls())"
+        run: python3 -c "import sys; sys.path.insert(0,'scripts'); from analyze_cloud_assembled_wave import step_controls,interface_witness_controls; print(step_controls()); print(interface_witness_controls())"
       - name: Verify permanent source failure survives Actions artifact expiry
         env:
           GH_TOKEN: ${{ github.token }}
