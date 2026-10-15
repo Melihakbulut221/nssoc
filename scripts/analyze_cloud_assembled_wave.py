@@ -509,6 +509,13 @@ def main():
                     trace=[dict(time_s=float(at+dt*1e-12),offset_from_original_sample_ps=dt,
                         volts={n:float(np.interp(at+dt*1e-12,t,v(n)))for n in nodes})for dt in (-10,-5,0,5,10)]))
         assert len(failed)==record['signals']['below_100mv_samples']
+        from cloud_hbt_polarity import signed_hbt_observation,polarity_controls
+        result['hbt_polarity_controls']=polarity_controls()
+        result['hbt_polarity_measurements']={}
+        for name,row in contract['hbt'].items():
+            collector,base,emitter,_=row['terminals']
+            result['hbt_polarity_measurements'][name]=signed_hbt_observation(t,v(collector),v(base),v(emitter),
+                values['@q.'+name+'.qnpn13g2[ic]'],row['nx'])
         # Full native extrema, without shifting original review/sample windows.
         device_extrema={};active=np.flatnonzero(t>=mux.START)
         for name in fresh['failed_hbts']:
