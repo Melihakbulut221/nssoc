@@ -159,7 +159,8 @@ def controls():
     return dict(four_factorial_decks_preserve_all_other_bytes=True,
         known_voltage_difference_detected=True,rejected=rejected,acceptance=False)
 
-def restore(record, out):
+def restore(record, out, mode='compact'):
+    assert mode in ('compact','wire') and record['mode']==mode
     packed=out/'source.tar.gz';fetch(record['url'],record['sha256'],packed)
     assert packed.stat().st_size==record['bytes']
     source=ROOT/'cloud-tx-mux4';assert not source.exists()
@@ -176,7 +177,7 @@ def restore(record, out):
     summary_path=source/'result.json';assert sha(summary_path)==record['summary_sha256']
     summary=json.loads(summary_path.read_text())
     assert summary['solver_profile']==PROFILE and summary['condition']=='hot_low_eighth_step'
-    assert summary['assembled_core_scope']['mode']=='compact' and summary['assembled_core_scope']['placement_profile']=='compact_edge_supply'
+    assert summary['assembled_core_scope']['mode']==mode and summary['assembled_core_scope']['placement_profile']=='compact_edge_supply'
     assert summary['component_screen_passed'] and summary['fault']=='none'
     for rel,digest in summary['outputs'].items():assert sha(source/rel)==digest,rel
     verified={}

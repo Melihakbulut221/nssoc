@@ -53,31 +53,52 @@ def references(vectors):
     packed.unlink();return result
 
 
-def main(full_window=False):
+def main(full_window=False,mode='compact',compact_summary_sha256=None):
+    assert mode in ('compact','wire') and (mode=='compact' or full_window)
     global OUT
-    if full_window:OUT=ROOT/'cloud-vbic-full-window'
+    if full_window:OUT=ROOT/('cloud-vbic-full-window' if mode=='compact' else 'cloud-vbic-full-wire')
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
     result=dict(status='RUNNING',accepted=False,source_head=os.environ['GITHUB_SHA'],cases={},
         original_circuit_changed=False,original_engineering_gates_changed=False,
-        full_window=full_window,
+        full_window=full_window,mode=mode,
         scope='Same frozen62HBT64MOS coupled compact tree startup prefix, same all native vectors, sources, PDK and original strict solver profile. Pristine source binary must reproduce packaged reference before patched cases. Engine experiment only: no full34ns/PVT/physical/fullPHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
-    if full_window:result['scope']='Full original34ns compact coupled tree; unchanged physical sources, models, bits, solver and engineering gates. Patched engine experimental; not fullPHY acceptance.'
+    if full_window:result['scope']='Full original34ns coupled tree; unchanged physical sources, models, bits, solver and engineering gates. Patched engine experimental; not fullPHY acceptance.'
     save()
     try:
         paths,provenance=restore_engines();result['runtime_provenance']=provenance;save()
+        if mode=='wire':
+            assert compact_summary_sha256 and re.fullmatch(r'[0-9a-f]{64}',compact_summary_sha256)
+            compact_path=OUT/'compact-gate.json'
+            fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38796689216-1-vbic-full-window/vbic-full-window-38796689216-1.summary.json',compact_summary_sha256,compact_path)
+            compact=json.loads(compact_path.read_text())
+            assert compact['source_head']=='d14078e2aefda63d06d03fbea9b128fe8b66d71a'
+            assert compact['full_window'] and compact['protected_inputs_unchanged'] and compact['pristine_reproduces_packaged_reference'] and compact['all_simulations_complete']
+            assert compact['compact_numerical_component_screen_passed'] and compact['comparisons']['patched-0.125-to-0.0625']['passed']
+            for label in ('patched-0.125','patched-0.0625'):
+                assert compact['cases'][label]['executable_sha256']==sha(paths['patched'])
+                assert compact['cases'][label]['engineering_review']['all_engineering_gates_passed'] and not compact['cases'][label].get('error')
+            result['compact_prerequisite']={'run':38796689216,'sha256':compact_summary_sha256,'passed':True}
         os.environ['CLOUD_NGSPICE']=str(paths['packaged'])
         spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
-        rows=[c for study in spec['placement_variants']['compact_edge_supply']['loaded_studies'] if study['run']==38763917040 for c in study['cases'] if c['mode']=='compact' and c['condition']=='hot_low_eighth_step' and c['fault']=='none']
-        assert len(rows)==1;source,original_summary,contract,protected=restore(rows[0],OUT)
+        rows=[c for study in spec['placement_variants']['compact_edge_supply']['loaded_studies'] if study['run']==38763917040 for c in study['cases'] if c['mode']==mode and c['condition']=='hot_low_eighth_step' and c['fault']=='none']
+        assert len(rows)==1;source,original_summary,contract,protected=restore(rows[0],OUT,mode)
         result['source_receipt']=rows[0];result['verified_circuit_inputs']=protected
-        original=(source/'native/bench.cir').read_text();old=references(contract['vectors']);captures={}
+        original=(source/'native/bench.cir').read_text();captures={}
+        pristine_steps=STEPS if mode=='compact' else STEPS[:1]
+        if mode=='compact':old=references(contract['vectors'])
+        else:
+            from run_cloud_tx_mux4 import STOP as source_stop
+            rt,rv,rr=read_streamed_wave(source/'native/wave.raw',contract['vectors'],source_stop,STEPS[0])
+            assert rr==original_summary['review']['capture_transport']
+            old={STEPS[0]:(rt,rv)}
+            result['original_wire_capture']=rr
         if full_window:
             from analyze_cloud_assembled_wave import step_metrics,step_controls
             from run_cloud_tx_mux4 import review,STOP as full_stop
             result['numerical_controls']=step_controls()
 
-        for variant,steps in [('pristine',STEPS),('patched',STEPS if full_window else (*STEPS,.03125e-12))]:
+        for variant,steps in [('pristine',pristine_steps),('patched',STEPS if full_window else (*STEPS,.03125e-12))]:
             if variant=='patched':assert result.get('pristine_reproduces_packaged_reference'), 'Pristine provenance control must pass before patch experiment'
             for step in steps:
                 label=variant+'-'+str(step*1e12);case=OUT/label;case.mkdir()
@@ -100,7 +121,7 @@ def main(full_window=False):
                         resource.setrlimit(resource.RLIMIT_AS,(4*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
                     start=time.monotonic()
                     with (case/'run.log').open('w') as log:
-                        proc=subprocess.run([str(paths[variant]),'-n','-b','bench.cir'],cwd=case,env=env,preexec_fn=limits,stdout=log,stderr=subprocess.STDOUT,timeout=1800)
+                        proc=subprocess.run([str(paths[variant]),'-n','-b','bench.cir'],cwd=case,env=env,preexec_fn=limits,stdout=log,stderr=subprocess.STDOUT,timeout=(8400 if full_window and mode=='wire' else 1800))
                     text=(case/'run.log').read_text(errors='replace');row.update(returncode=proc.returncode,elapsed_s=time.monotonic()-start)
                     row['solver_options']=verify_solver_options(text,PROFILE);row['diagnostics']=native_diagnostics(text,PROFILE)
                     assert proc.returncode==0 and not row['diagnostics'],'Native diagnostic/process failure'
@@ -121,9 +142,9 @@ def main(full_window=False):
                 except Exception as error:row['error']=repr(error)
                 save();print(json.dumps(dict(case=label,complete=row['complete'],error=row.get('error'))),flush=True)
             if variant=='pristine':
-                result['pristine_reproduces_packaged_reference']=all(result['cases']['pristine-'+str(step*1e12)].get('packaged_voltage_reproduced_to_1nv',False) for step in STEPS);save()
+                result['pristine_reproduces_packaged_reference']=all(result['cases']['pristine-'+str(step*1e12)].get('packaged_voltage_reproduced_to_1nv',False) for step in pristine_steps);save()
         result['comparisons']={};result['unavailable_comparisons']=[]
-        for variant,steps in [('pristine',STEPS),('patched',STEPS if full_window else (*STEPS,.03125e-12))]:
+        for variant,steps in [('pristine',pristine_steps),('patched',STEPS if full_window else (*STEPS,.03125e-12))]:
             for a,b in zip(steps,steps[1:]):
                 name=f'{variant}-{a*1e12:g}-to-{b*1e12:g}'
                 if (variant,a) in captures and (variant,b) in captures:
@@ -134,12 +155,14 @@ def main(full_window=False):
         result['protected_inputs_unchanged']=True
         result['status']='COMPLETE_PAIRED_RUNTIME_COUPLED_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE'
         if full_window:
-            result['compact_numerical_component_screen_passed']=(result['all_simulations_complete'] and not result['unavailable_comparisons'] and all(row.get('engineering_review',{}).get('all_engineering_gates_passed',False) for row in result['cases'].values() if row['variant']=='patched') and result['comparisons'].get('patched-0.125-to-0.0625',{}).get('passed',False))
-            result['status']='COMPLETE_FULL_WINDOW_COMPACT_ENGINE_EXPERIMENT_NOT_PHY_ACCEPTANCE'
+            result['numerical_component_screen_passed']=(result['all_simulations_complete'] and not result['unavailable_comparisons'] and all(row.get('engineering_review',{}).get('all_engineering_gates_passed',False) for row in result['cases'].values() if row['variant']=='patched') and result['comparisons'].get('patched-0.125-to-0.0625',{}).get('passed',False))
+            result['status']='COMPLETE_FULL_WINDOW_'+mode.upper()+'_ENGINE_EXPERIMENT_NOT_PHY_ACCEPTANCE'
+            if mode=='compact':result['compact_numerical_component_screen_passed']=result['numerical_component_screen_passed']
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--full-window',action='store_true')
-    main(parser.parse_args().full_window)
+    parser.add_argument('--mode',choices=['compact','wire'],default='compact');parser.add_argument('--compact-summary-sha256')
+    args=parser.parse_args();main(args.full_window,args.mode,args.compact_summary_sha256)

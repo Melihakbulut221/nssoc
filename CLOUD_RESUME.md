@@ -1,3 +1,7 @@
+## Prepared extracted-wire follow-up — dispatch only after actual compact pass
+
+`vbic-full-wire-cloud.yml` is manual-only. It requires the SHA256 of run38796689216's published compact summary and independently checks its source/runtime hashes, pristine controls, unchanged input receipt, original engineering gates and full-wave numerical gate. No wire job is dispatched while compact is pending. The unchanged original wire archive is run38763917040 wire/hot_low_eighth_step, strict profile; pristine startup must reproduce its original raw capture before patched full34ns at0.125/0.0625ps. Original device/bit/interface/whole-wave/edge/energy gates retained. All work remains cloud-only. Mainchip38788529905 remains live and must not be duplicated.
+
 ## Current exact cloud handles — full-window runtime validation
 
 - Full-window compact:38796689216/job116634823910, sourced14078e2aefda63d06d03fbea9b128fe8b66d71a. Dependencies/parser controls passed; native replay running. Review original34ns engineering and all numerical gates before next physical-wire replay.
