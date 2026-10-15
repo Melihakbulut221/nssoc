@@ -1,3 +1,17 @@
+## 2026-10-15 — strictcompact pair complete; actualnewground hotmargin106.98mV
+
+UTC 2026-10-15T16:12:19.681290+00:00. ALL CLOUD. Goal OPEN, authoritative newmeasurements pinned.
+
+**38763917040 breakpoint_tight_trap**: BOTHcompact0.125/0.0625ps complete/PASS, samefull34ns/originalgates. New0.0625ps546310rows,232.890245390mVmargin, no diagnostics. SAMEpartialstudy now2cases. Wire0.125ps116522064809 and0.0625ps116522064672 remainLIVE; oncecomplete append and run fullstep_comparison(profilecompact_edge_supply,solverbreakpoint_tight_trap,step_pairfine). No extrapolatedconvergence from closeoutputmargin.
+
+**38764229637 newground native_res temperature_voltage** now COMPLETE4cases/PASS. Newlypinnedwirehot:106.977256367mVmargin, finalinputCM1.802968707..1.843718782V, finalinputmargin172.591974618mV, all62HBT64MOSpass. Nativecoldwire265.267858545mVmargin. Ordinarytemperaturepass doesnotcloseindependenthotres/coldresfailures.
+
+**38765529919 newground native_res_tc temperature_voltage**: compacthot/cold complete/PASS,pinned underbias_candidates.native_res_tc.loaded_studies SAMEpartialrecord. Wirehot116527620549 andwirecold116527620239 LIVE. Retain fixed feedgeometry andalloriginalgates; candidatefeedphysicalintegration absent. Need comparewirehotmargin against106.977mVbaseline: oldedgeTC had95.66mVfailure; do notassumecombinedcandidatepass. Ifpassesordinarycorners, stillneedsindependentfailingcorners/MOS/fault/numericalfullreadback.
+
+Read-only headroomcheck: newgroundhotres finalclockHBTVCEminxd0001=0.406333221V,xd0003=0.406117596V, whiletail6/7 are0.392685020/0.390512435V. Simplyraisingclockcommonmode couldmovefailureintoclocktransistors; no suchchange made. Wholeloadeddesignneedscombinedcurrent/headroomandcommonmodecorrection, notthresholdrelaxation. Evidence originalhotres38760726764 summary retainsalldevicevalues.
+
+Mainchip38731744914/116410943697 live aslastchecked. Noadditionalmainchiprunsstarted; waitcurrentrun, inspectnativeGRT-0273 andallactualtiming beforeanyacceptance. FullPHY/mainchipdetailroute/finaltiming notclosed. Localworkspaceempty.
+
 ## 2026-10-15 — strict firstcompact PASS; ground temperature control and TC candidate LIVE
 
 UTC 2026-10-15T16:06:01.127969+00:00. ALL CLOUD; localempty. Concreteprogress: strictcompletedcapture andtemperaturecontrols nowpinned, new nativeTCtrial dispatched.
