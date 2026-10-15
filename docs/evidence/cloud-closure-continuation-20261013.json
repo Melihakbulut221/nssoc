@@ -103,7 +103,7 @@
     "All work stays on GitHub-hosted runners. Do not recreate local checkout or CAD/test artifacts. Retirement receipt is COMPLETE and hash-verified; no cleanup of other projects.",
     "Do not poll or restart mainchip38731744914 as live: it terminated at the6h limit and relaxed NDR21times. Its partial JSON pending status is historical, not process evidence. Preserve full timeout and native failures.",
     "Poll exact failed-guide DRT38788529905, job116606725290, before dispatching anything else for this route. Native preflight preserves original geometry/connectivity/NDR with fault controls; run uses exact132-overflow saved guides only for physical diagnosis. Original global gate remains failed. Require actual routed geometry, independent connectivity/geometricNDR/DRC/LVS/antenna and extractedSTA; never treat run success as closure.",
-    "Charge bracket38789786404 completed with preserved native failures; no charge setting fixed8.90685mV mismatch. Inspect existing-wave diagnosis38791022510 (source90a8cf86bb84c8ecdce659708c0917479e4bad93) for first divergence/native waveform shape before a causal solver/circuit change. No resimulation in this analysis and no original gate relaxed.",
+    "Poll newton_accuracy38791998396 (job116618638101, sourceb130698c85d61794ddbc9a4ed3261aebd52cda36) and shared-controller regression38792102745. This paired study tightens only nonlinear reltol/abstol/vntol after read-only waveform diagnosis38791022510 reproduced original smooth startup mismatch. Charge bracket is rejected; preserve all failures, original1mV/whole-wave gates and full scope.",
     "Retain all completed factorial/refinement/backend comparisons and aborted charge capture. TSTEP and matrix backend are ruled out; finer TMAX/Gear2 did not converge. No blind full34ns rerun or startup-window removal.",
     "Keep full PLL/CDR/RX/PCS/LTSSM, physical integration, qualified extraction, all-device/PVT, pad/ESD, SRAM/DFT, final setup/hold and real manufacturer approval requirements open until corresponding full-scope evidence proves them."
   ],
@@ -103083,5 +103083,39 @@
     ],
     "short_prefix_reproduces_original_to_1nv": true,
     "conclusion": "Intermediate chgtol does not resolve the original8.90685mV TMAX mismatch. At fixed0.0625ps,1e-16 to1e-18 and1e-18 to1e-19 change peak voltage by<0.6uV. Coarse1e-18/1e-19 abort and cannot support timestep comparison. Preserve every failure and full native input; diagnose actual waveform before further solver trials."
+  },
+  "startup_wave_diagnosis_20261015": {
+    "run": 38791022510,
+    "source_head": "90a8cf86bb84c8ecdce659708c0917479e4bad93",
+    "status": "COMPLETE_EXISTING_NATIVE_WAVEFORM_DIAGNOSIS_NOT_ACCEPTANCE",
+    "accepted": false,
+    "summary_sha256": "ee9e8512933db96f0f7de80c913c1c00227692dfb18ba557d2fae702b279fa53",
+    "source_drives_differences": {
+      "v(avdd)": {
+        "maximum_absolute_difference": 4.440892098500626e-16,
+        "time_s": 5.113409839497854e-10,
+        "a_native": 1.21443483688074,
+        "b_interpolated": 1.2144348368807405
+      },
+      "v(dvdd)": {
+        "maximum_absolute_difference": 2.220446049250313e-16,
+        "time_s": 5.062159839497838e-10,
+        "a_native": 0.5770862217027537,
+        "b_interpolated": 0.5770862217027535
+      },
+      "v(d0p0)": {
+        "maximum_absolute_difference": 0.0,
+        "time_s": 0.0,
+        "a_native": 0.0,
+        "b_interpolated": 0.0
+      },
+      "v(d0n0)": {
+        "maximum_absolute_difference": 2.220446049250313e-16,
+        "time_s": 5.062159839497838e-10,
+        "a_native": 0.5770862217027537,
+        "b_interpolated": 0.5770862217027535
+      }
+    },
+    "observation": "Inspected native point overlays: peak-region trajectories are smoothly separated, with source drives equal to floating-point roundoff. Earliest1mV crossing is xtree.n_i50 at0.505841ns. This motivates isolating nonlinear Newton tolerance; it does not prove model or solver causality and does not remove any startup sample from acceptance."
   }
 }

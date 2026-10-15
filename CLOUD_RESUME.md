@@ -1,3 +1,12 @@
+## Active exact handles after waveform diagnosis
+
+- Mainchip diagnostic: run38788529905, job116606725290, source266c8972cbcff17846df739de757f97f35d8fb31. Still in progress at last authoritative check; do not duplicate or infer completion from elapsed time.
+- Nonlinear-accuracy study: run38791998396, job116618638101, sourceb130698c85d61794ddbc9a4ed3261aebd52cda36. Native paired simulations in progress.
+- Shared-controller regression: run38792102745, job116619002862, same source. Confirm terminal outcome before claiming validation.
+- Read-only waveform diagnosis38791022510 completed and is pinned in `docs/evidence/pcie-startup-wave-diagnosis-20261015.json`. Charge bracket38789786404 is rejected as a fix and pinned separately.
+
+All sources, execution and results are cloud-only. Full PHY, complete physical chip routing and final extracted setup/hold remain OPEN.
+
 ## 2026-10-15 observed startup trajectories; nonlinear accuracy isolation
 
 Read-only waveform diagnosis38791022510 completed. Original coarse/fine differences reproduce exactly, first exceeding1mV at xtree.n_i50 around0.505841ns. Native supply/data drives differ only at floating-point roundoff. The plotted peak regions show smoothly separated startup trajectories; the1mV whole-wave failure is retained. No evidence here proves a PDK defect or permits discarding startup.
