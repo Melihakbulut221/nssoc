@@ -1,3 +1,12 @@
+## 2026-10-15 — tight perimeter runs dispatched (cloud only)
+
+Source `cc8a85336ef041b4be881765260a583333df5c25`:
+- Cascade158 physical DRC/LVS/fault controls: **38689140829**, job116270766622.
+- FinalV10 physical DRC/LVS/fault controls: **38689143416**, job116270774267.
+- Hosted source audit / existing eight boundary-binding rejection tests: **38689145804**, job116270782686.
+
+All three started successfully; no result accepted yet. Tight policy needs separate fresh extraction and composition bindings only after physical gates pass. Do not substitute existing nearest/left receipts. Existing long-running mainchip,32-stream and PLL jobs remain unchanged. Latest electrical failure and exact summary hashes follow below.
+
 ## 2026-10-15 — nearest-edge electrical rejection; cloud-only continuation
 
 All work remains cloud-only; local workspace is empty. Permanent retirement receipt: release asset 636387277; supplemental log-cache retirement receipt: 642730081.
