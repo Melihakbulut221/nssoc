@@ -7,6 +7,8 @@
 
 ### Newest state — supersedes every older live statement below
 
+Boundary-pin first trials38680041596 and38680055040/sourceaf836358 TERMINAL FAILED before DRC/LVS: new loop variable metal shadowed the generator metal() function. Rename only that local variable. Final-stage publication also exceeded80-character group limit; shorten new boundary groups to layout-boundary-{circuit}. Original final failure artifact11947829260 SHA929624b1906214472f59794d7ce78e6f27798881d1dbfe3e1f06337104ce089a is pinned for hosted permanent recovery before the corrected final trial. Preserve these failures; no geometry/physical acceptance. Original native PHY/route jobs remain separate and healthy as last observed.
+
 Prepared real macro boundary-pin extension for exact cascade158/direct-supply and V10/low-ports-loads-shunts-series layouts. Existing LEFs put all12 public TM2 pins inside fully obstructed macro boundaries. New opt-in boundary_pins extends only those actual TM2 conductors to a common left boundary and regenerates pin shapes/labels/LEF. Original devices, local wires and vias remain; unchanged560-category DRC, hierarchical/flat54-device LVS and allfive reference/geometry faults decide acceptance. New RC and loaded waves are mandatory before electrical use. This is a prerequisite to actual intermacro routing, not fulltree/fullPHY closure. Not yet dispatched at this checkpoint. Current full32 binary38679319167, PLL1us38674687038 and packet-route38676325412 verified live; do not restart. Cloud-only, local workspace remains empty.
 
 

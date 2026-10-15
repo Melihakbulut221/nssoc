@@ -33,6 +33,7 @@ jobs:
     timeout-minutes: 360
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -45,6 +46,35 @@ jobs:
           python3 -m pip install pytest==8.4.2
           python3 -m pytest -q sw/tests/test_tx_final_layout_source.py
           python3 -m py_compile scripts/run_cloud_tx_layout_repair.py
+      - name: Permanently retain failed boundary generator source and artifact
+        if: ${{ inputs.boundary_pins && inputs.circuit_profile == 'final_drive_v10' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, io, json, os, subprocess, zipfile
+          from pathlib import Path
+          repo='repos/'+os.environ['GITHUB_REPOSITORY']
+          def api(p):
+              return subprocess.check_output(['gh','api',repo+'/'+p])
+          source=json.loads(api('actions/runs/38680055040'))
+          assert source['status']=='completed' and source['conclusion']=='failure'
+          assert source['head_sha']=='af836358f7a85bd0c8231f1d0aa719ed150b8f1d' and source['run_attempt']==1
+          meta=json.loads(api('actions/artifacts/11947829260'))
+          assert not meta['expired'] and meta['workflow_run']['id']==38680055040
+          raw=api('actions/artifacts/11947829260/zip')
+          digest=hashlib.sha256(raw).hexdigest()
+          assert digest=='929624b1906214472f59794d7ce78e6f27798881d1dbfe3e1f06337104ce089a'
+          assert meta['digest']=='sha256:'+digest
+          with zipfile.ZipFile(io.BytesIO(raw)) as z:
+              result=json.loads(z.read('result.json'))
+              assert result['status']=='FAIL_OR_ERROR' and result['boundary_pins'] is True
+          Path('failed-boundary-38680055040.zip').write_bytes(raw)
+          Path('failed-boundary-38680055040.json').write_text(json.dumps(dict(
+              status='PRESERVED_ORIGINAL_FAILED_CAPTURE_NOT_ACCEPTED',source_run=38680055040,
+              source_head=source['head_sha'],artifact=meta,result=result),indent=2)+'\n')
+          PYCODE
+          python3 scripts/publish_cloud_results.py --group 'boundary-original-failure' failed-boundary-38680055040.zip failed-boundary-38680055040.json
       - name: Verify exact native runtime on hosted runner
         run: |
           sudo apt-get update -qq
@@ -74,4 +104,4 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group 'layout-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}${{ inputs.boundary_pins && '-boundary' || '' }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && format('layout-boundary-{0}', inputs.circuit_profile) || format('layout-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant) }}' "$archive" "$archive.sha256" "$summary"
