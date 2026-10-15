@@ -54,9 +54,9 @@ name: checks
 
 on:
   push:
-    # Storage migration tags must not launch unrelated engineering experiments.
+    # Cloud evidence and storage tags must not launch unrelated engineering experiments.
     branches: ['**']
-    tags-ignore: ['cloud-migration-*']
+    tags-ignore: ['cloud-*']
   pull_request:
   schedule:
     - cron: "17 2 * * *" # UTC; all normal hardware jobs, native boot remains opt-in
