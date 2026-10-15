@@ -396,9 +396,42 @@ def interface_witness_controls():
     return dict(known_upper_lower_and_wrong_sign_terminal_witnesses_recovered=True,incomplete_coverage_rejected=True)
 
 
+def select_diagnosis_case(selected, condition, mode, bias_profile, solver_profile):
+    assert mode in ('compact','wire')
+    cases=[(study,c) for study in selected['loaded_studies'] for c in study['cases']
+        if c['condition']==condition and c['mode']==mode and c['fault']=='none'
+        and c.get('pre_bias','native_res')==bias_profile
+        and c.get('solver_profile','default')==solver_profile]
+    assert len(cases)==1, 'Need exactly one original source capture for the requested mode'
+    return cases[0]
+
+
+def diagnosis_case_controls():
+    import copy
+    cases=[dict(condition='cold_high_hbt_wcs',mode=m,fault='none',pre_bias='native_res_tc',solver_profile='default')
+        for m in ('compact','wire')]
+    selected=dict(loaded_studies=[dict(run=123,cases=cases)])
+    for mode in ('compact','wire'):
+        study,case=select_diagnosis_case(selected,'cold_high_hbt_wcs',mode,'native_res_tc','default')
+        assert study['run']==123 and case['mode']==mode
+    rejected=[]
+    for mutation in ('missing_compact','duplicate_compact','wrong_bias','wrong_solver','fault_only'):
+        bad=copy.deepcopy(selected);rows=bad['loaded_studies'][0]['cases']
+        if mutation=='missing_compact':rows.pop(0)
+        elif mutation=='duplicate_compact':rows.append(copy.deepcopy(rows[0]))
+        elif mutation=='wrong_bias':rows[0]['pre_bias']='native_res'
+        elif mutation=='wrong_solver':rows[0]['solver_profile']='tight_gear2'
+        else:rows[0]['fault']='swap_pre_a_select'
+        try:select_diagnosis_case(bad,'cold_high_hbt_wcs','compact','native_res_tc','default')
+        except AssertionError:rejected.append(mutation)
+        else:raise AssertionError('Wrong source capture accepted: '+mutation)
+    return dict(exact_compact_and_wire_source_selection=True,rejected=rejected)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap'),default='baseline')
+    parser.add_argument('--mode',choices=('compact','wire'),default='wire')
     parser.add_argument('--compare-timestep',action='store_true')
     parser.add_argument('--trace-rail-geometry',action='store_true')
     parser.add_argument('--step-pair',choices=('original','fine'),default='original')
@@ -417,9 +450,7 @@ def main():
         selected=dict(selected,loaded_studies=selected['bias_candidates'][args.bias_profile]['loaded_studies'])
     if args.compare_timestep:
         compare_timesteps(selected,args.placement_profile,args.step_pair,args.solver_profile);return
-    cases=[(s,c) for s in selected['loaded_studies']for c in s['cases']if c['condition']==args.condition and c['mode']=='wire' and c['fault']=='none' and c.get('pre_bias','native_res')==args.bias_profile and c.get('solver_profile','default')==args.solver_profile]
-    assert len(cases)==1
-    study,record=cases[0]
+    study,record=select_diagnosis_case(selected,args.condition,args.mode,args.bias_profile,args.solver_profile)
     out=ROOT/'hw/soc/out/cloud-tx-tree-assembly';out.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',placement_profile=args.placement_profile,condition=args.condition,bias_profile=args.bias_profile,source_run=study['run'],source=record,
         native_acceptance_changed=False,qualified_pex=False,serial_phy_complete=False)
@@ -445,6 +476,7 @@ def main():
         assert sha(out/'original-summary.json')==record['summary_sha256']
         prior=json.loads((out/'original-summary.json').read_text());scope=prior['assembled_core_scope']
         assert scope.get('placement_profile','baseline')==args.placement_profile
+        assert scope['mode']==args.mode and prior['prestage']=='assembled_core_'+args.mode
         assert scope['source']['sha256']==selected['verified_composition']['sha256']
         for name in ['contract.json','wave.raw','op.dat','bench.cir']:
             assert sha(out/'native'/name)==prior['outputs']['native/'+name]
@@ -455,7 +487,7 @@ def main():
         assert sha(out/'wire96/anchors08.json')==scope['source']['controls']['inputs'][composition_anchor_key]
         contract=json.loads((out/'native/contract.json').read_text())
         assert hashlib.sha256(bytes(contract['bits'])).hexdigest()==record['signals']['source_bits_sha256']
-        assert contract['interface_probes']==scope['interface_probes']['modes']['wire']
+        assert contract['interface_probes']==scope['interface_probes']['modes'][args.mode]
         fresh=mux.review(out/'native',contract)
         # Re-review also executes the new missing/alias/coverage guards. No
         # approximation, phase fitting or changed pass/fail result is permitted.
@@ -491,6 +523,26 @@ def main():
                 volts={n:float(v(n)[index])for n in contexts},
                 nearby=[dict(time_s=float(t[j]),vce_v=float(ce[j]),vbe_v=float(be[j]),ic_per_emitter_a=float(current[j]))
                     for j in range(max(0,index-2),min(len(t),index+3))])for label,index in points.items()})
+        if args.mode=='compact':
+            # The matched no-metal-RC control must not be presented as wire geometry.
+            # Diagnose its original transient and preserve the same whole-wave limits.
+            witness={stage:interface_sample_witnesses(t,v,contract,stage,fresh['interfaces'][stage],
+                ('avdd','clkbias','mr','sp','sn','ra','rb','sap','san','sbp','sbn')) for stage in ('cmos','final')}
+            for name,events in device_extrema.items():
+                expected=fresh['failed_hbts'][name]
+                assert events['events']['minimum_post_vce']['vce_v']==expected['min_post_vce_v']
+                assert abs(events['events']['maximum_whole_abs_vbe']['vbe_v'])==expected['max_whole_abs_vbe_v']
+            result.update(status='COMPLETE_SOURCE_BOUND_COMPACT_FAILURE_DIAGNOSIS_NOT_PHYSICAL_ACCEPTANCE',
+                mode='compact',diagnosis_case_controls=diagnosis_case_controls(),
+                original_review_preserved=True,failed_samples=failed,failed_hbt_native_extrema=device_extrema,
+                interface_sample_witnesses=witness,interface_witness_controls=interface_witness_controls(),
+                fresh_review={k:fresh[k]for k in ['signals','interfaces','failed_hbts','failed_mos','all_engineering_gates_passed']},
+                capture={k:transport[k]for k in ['raw_sha256','columns','start_s','end_s','max_step_s','complete_unmodified_rows']},
+                capture_readback_scope='SELECTED_COMPACT_SOURCE_CASE',
+                scope='Original matched compact control only; no distributed metal voltage or physical repair inferred.')
+            packed.unlink()
+            result['hosted_capture_readback']=verify_study_captures(dict(selected,loaded_studies=[dict(study,cases=[record])]),out)
+            return
         # Read the actual distributed-wire capacitor burden and a physical
         # resistor-path upper bound between stage output and each final base.
         rows=statements((out/'wire96/tree162-wire01.spice').read_text())
