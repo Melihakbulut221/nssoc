@@ -15998,7 +15998,7 @@
       }
     },
     "compact_edge_supply": {
-      "status": "PHYSICAL_RC_AND162_DEVICE_COMPOSITION_PASS_REQUIRES_NATIVE_WAVES",
+      "status": "PHYSICAL_RC_COMPOSITION_AND_ORIGINAL_NOMINAL_HOT_COLD_COMPONENT_SCREENS_PASS_REQUIRES_EXPANDED_VALIDATION",
       "hypothesis": "Move M5 supply off the intermacro data corridor to reduce measured excess AVDD coupling, with a parallel TM1 supply strap. No electrical acceptance inferred.",
       "source_diagnosis_runs": [
         38724619146,
@@ -19320,7 +19320,542 @@
           }
         },
         "scope": "Actual162-device four-input CML core and complete source-pinned metal RC graph, including real intermacro conductors. No body spreading resistance, RF qualification, loaded transient, full32:1/four-lane PHY or mainchip acceptance."
-      }
+      },
+      "loaded_studies": [
+        {
+          "run": 38727906690,
+          "source_head": "370ff637ed78f18f04562f875b8d0ae354d11869",
+          "status": "completed",
+          "execution_conclusion": "success",
+          "cases": [
+            {
+              "mode": "compact",
+              "condition": "hot_low",
+              "fault": "none",
+              "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+              "component_screen_passed": true,
+              "summary_asset": 643661004,
+              "summary_sha256": "983f83c504a60e308bfb95a07adc21eb11c61eb18d7526235cf227c17e42178e",
+              "archive_asset": 643660691,
+              "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727906690-1-assembled-tree-4-compact-hot_low-none/tx-tree-assembled-4-compact-hot_low-none-38727906690-1.tar.gz",
+              "bytes": 77038722,
+              "sha256": "9aa90901582e1660bf21f86cf434d0fe5e16fe28f02df61dfd66a4e61bd079d1",
+              "elapsed_s": 106.14783606399999,
+              "diagnostics": [],
+              "signals": {
+                "samples": 768,
+                "minimum_margin_v": 0.23287800574718887,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0,
+                "phases": {
+                  "0.3": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.23287800574718887,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.5": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.26455897387914695,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.7": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.2654528630699817,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  }
+                },
+                "passed": true,
+                "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+              },
+              "interfaces": {
+                "cmos": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.18332516487868822,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.8321111062263116,
+                    1.8386402022898256
+                  ],
+                  "passed": true
+                },
+                "final": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.2411428047117783,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.866793179780033,
+                    1.883684791841723
+                  ],
+                  "passed": true
+                }
+              },
+              "failed_hbts": {},
+              "failed_mos": {},
+              "rows": 69541,
+              "native_hbt_probes": 62,
+              "native_mos_probes": 64,
+              "raw_wave": {
+                "bytes": 91799660,
+                "sha256": "373f8a220835e3c27cffde242b748374050bc2d340d8b61847aabf071d4a95f5",
+                "format": "native_binary"
+              },
+              "capture": {
+                "columns": 165,
+                "start_s": 0.0,
+                "end_s": 3.4e-08,
+                "max_step_s": 5.00000000000567e-13,
+                "complete_unmodified_rows": true
+              },
+              "archive_readback_status": "Pending full hosted archive and all native output readback"
+            },
+            {
+              "mode": "compact",
+              "condition": "cold_high",
+              "fault": "none",
+              "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+              "component_screen_passed": true,
+              "summary_asset": 643662143,
+              "summary_sha256": "5928d112186f3ae5499bd81477b51cc2e224d1161df1caac59227313f4725f9d",
+              "archive_asset": 643661705,
+              "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727906690-1-assembled-tree-4-compact-cold_high-none/tx-tree-assembled-4-compact-cold_high-none-38727906690-1.tar.gz",
+              "bytes": 77133462,
+              "sha256": "6eacb5f5bf6d9d8ee020eb6db9eec288ff54eccb8409e5ecfd26ec9ed9928cec",
+              "elapsed_s": 109.12275918400002,
+              "diagnostics": [],
+              "signals": {
+                "samples": 768,
+                "minimum_margin_v": 0.2734578300267829,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0,
+                "phases": {
+                  "0.3": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.2734578300267829,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.5": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.27493769830041614,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.7": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.2750255594221467,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  }
+                },
+                "passed": true,
+                "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+              },
+              "interfaces": {
+                "cmos": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.3012325411874539,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.9639307657613463,
+                    1.9801610422188813
+                  ],
+                  "passed": true
+                },
+                "final": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.3633381023496929,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    2.0272870142980386,
+                    2.042812301808518
+                  ],
+                  "passed": true
+                }
+              },
+              "failed_hbts": {},
+              "failed_mos": {},
+              "rows": 69541,
+              "native_hbt_probes": 62,
+              "native_mos_probes": 64,
+              "raw_wave": {
+                "bytes": 91799660,
+                "sha256": "5af76ca61ab3fb3a807bd9da4fb71246eec8b05c3ad878ba61e956ad39d4069f",
+                "format": "native_binary"
+              },
+              "capture": {
+                "columns": 165,
+                "start_s": 0.0,
+                "end_s": 3.4e-08,
+                "max_step_s": 5.00000000000567e-13,
+                "complete_unmodified_rows": true
+              },
+              "archive_readback_status": "Pending full hosted archive and all native output readback"
+            },
+            {
+              "mode": "wire",
+              "condition": "hot_low",
+              "fault": "none",
+              "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+              "component_screen_passed": true,
+              "summary_asset": 643677121,
+              "summary_sha256": "82d6b5ad67daf2d222dac9431ff2d70abea682bdd859fdccef2f4a6972a1b450",
+              "archive_asset": 643676687,
+              "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727906690-1-assembled-tree-4-wire-hot_low-none/tx-tree-assembled-4-wire-hot_low-none-38727906690-1.tar.gz",
+              "bytes": 161261189,
+              "sha256": "bc902c6c79375b3e874932f190336565fb3bd4714c2daff16347533bf9479c94",
+              "elapsed_s": 471.429431121,
+              "diagnostics": [],
+              "signals": {
+                "samples": 768,
+                "minimum_margin_v": 0.1006804731531521,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0,
+                "phases": {
+                  "0.3": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.1006804731531521,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.5": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.24809826150715963,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.7": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.25910064508344477,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  }
+                },
+                "passed": true,
+                "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+              },
+              "interfaces": {
+                "cmos": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.17787352410380208,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.8361401948318834,
+                    1.8416901919128847
+                  ],
+                  "passed": true
+                },
+                "final": {
+                  "samples": 6912,
+                  "minimum_margin_v": 0.17518573442635565,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.8042883122778912,
+                    1.8443844787174641
+                  ],
+                  "passed": true
+                }
+              },
+              "failed_hbts": {},
+              "failed_mos": {},
+              "rows": 69541,
+              "native_hbt_probes": 62,
+              "native_mos_probes": 64,
+              "raw_wave": {
+                "bytes": 176365947,
+                "sha256": "8804c6588cde68d7dc47f3c7902ec11bf43820d933ebba3e9ee3195eb3e0ff66",
+                "format": "native_binary"
+              },
+              "capture": {
+                "columns": 317,
+                "start_s": 0.0,
+                "end_s": 3.4e-08,
+                "max_step_s": 5.00000000000567e-13,
+                "complete_unmodified_rows": true
+              },
+              "archive_readback_status": "Pending full hosted archive and all native output readback"
+            },
+            {
+              "mode": "wire",
+              "condition": "cold_high",
+              "fault": "none",
+              "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+              "component_screen_passed": true,
+              "summary_asset": 643677159,
+              "summary_sha256": "0d893baba6a8702d05a77dcd6f8456eead9d1fe5d12015d22926e2e5b662e7ba",
+              "archive_asset": 643676634,
+              "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727906690-1-assembled-tree-4-wire-cold_high-none/tx-tree-assembled-4-wire-cold_high-none-38727906690-1.tar.gz",
+              "bytes": 159805164,
+              "sha256": "ba81a565ea6a2bdbc5798b8118f6b6306833ef6db98210d07076ac51fb736315",
+              "elapsed_s": 466.682676386,
+              "diagnostics": [],
+              "signals": {
+                "samples": 768,
+                "minimum_margin_v": 0.26434045079086466,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0,
+                "phases": {
+                  "0.3": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.2659216561082498,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.5": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.26524041733689274,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.7": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.26434045079086466,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  }
+                },
+                "passed": true,
+                "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+              },
+              "interfaces": {
+                "cmos": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.311174519655677,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.9732817571495196,
+                    1.976229346927657
+                  ],
+                  "passed": true
+                },
+                "final": {
+                  "samples": 6912,
+                  "minimum_margin_v": 0.22456575177474725,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.9966152952112188,
+                    2.032047445644771
+                  ],
+                  "passed": true
+                }
+              },
+              "failed_hbts": {},
+              "failed_mos": {},
+              "rows": 69541,
+              "native_hbt_probes": 62,
+              "native_mos_probes": 64,
+              "raw_wave": {
+                "bytes": 176365947,
+                "sha256": "bf7c40f654bd7811e00818fa66ade4ca4d64bbedc90c7a3422d98316b8a2c93a",
+                "format": "native_binary"
+              },
+              "capture": {
+                "columns": 317,
+                "start_s": 0.0,
+                "end_s": 3.4e-08,
+                "max_step_s": 5.00000000000567e-13,
+                "complete_unmodified_rows": true
+              },
+              "archive_readback_status": "Pending full hosted archive and all native output readback"
+            }
+          ]
+        },
+        {
+          "run": 38727922711,
+          "source_head": "370ff637ed78f18f04562f875b8d0ae354d11869",
+          "status": "completed",
+          "execution_conclusion": "success",
+          "cases": [
+            {
+              "mode": "compact",
+              "condition": "nominal",
+              "fault": "none",
+              "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+              "component_screen_passed": true,
+              "summary_asset": 643660859,
+              "summary_sha256": "c2016be4229c4afdd5e24008917a4944a615822199e104efd7d7163fa43db98b",
+              "archive_asset": 643660510,
+              "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727922711-1-assembled-tree-4-compact-nominal-none/tx-tree-assembled-4-compact-nominal-none-38727922711-1.tar.gz",
+              "bytes": 77151913,
+              "sha256": "a76a7e0e2092ba2d70716e0790ced5472492650ae03e87898d2a3b860bfa608c",
+              "elapsed_s": 84.612241668,
+              "diagnostics": [],
+              "signals": {
+                "samples": 768,
+                "minimum_margin_v": 0.280128305069995,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0,
+                "phases": {
+                  "0.3": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.280128305069995,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.5": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.281789987528001,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.7": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.281724241269409,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  }
+                },
+                "passed": true,
+                "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+              },
+              "interfaces": {
+                "cmos": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.26700663800984015,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.8875775490212439,
+                    1.8990909139116618
+                  ],
+                  "passed": true
+                },
+                "final": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.3007191237339053,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.948352449391694,
+                    1.968269811346834
+                  ],
+                  "passed": true
+                }
+              },
+              "failed_hbts": {},
+              "failed_mos": {},
+              "rows": 69541,
+              "native_hbt_probes": 62,
+              "native_mos_probes": 64,
+              "raw_wave": {
+                "bytes": 91799660,
+                "sha256": "881b7bdcc8c370c34f8933e04dc9ba379b0fc1d1288edf40f7c2556148b6ed30",
+                "format": "native_binary"
+              },
+              "capture": {
+                "columns": 165,
+                "start_s": 0.0,
+                "end_s": 3.4e-08,
+                "max_step_s": 5.00000000000567e-13,
+                "complete_unmodified_rows": true
+              },
+              "archive_readback_status": "Pending full hosted archive and all native output readback"
+            },
+            {
+              "mode": "wire",
+              "condition": "nominal",
+              "fault": "none",
+              "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+              "component_screen_passed": true,
+              "summary_asset": 643681977,
+              "summary_sha256": "7fde314f21df3105420061869cbb18fa5ebb1da49f542bcde2d639fcf69a2887",
+              "archive_asset": 643681465,
+              "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727922711-1-assembled-tree-4-wire-nominal-none/tx-tree-assembled-4-wire-nominal-none-38727922711-1.tar.gz",
+              "bytes": 160364747,
+              "sha256": "a41ca5b148c292af041ccb345ca23e7343ecfda6bfa936f56da7ad031677f74c",
+              "elapsed_s": 584.0002615450001,
+              "diagnostics": [],
+              "signals": {
+                "samples": 768,
+                "minimum_margin_v": 0.22764576229467326,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0,
+                "phases": {
+                  "0.3": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.22764576229467326,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.5": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.27497676971314133,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  },
+                  "0.7": {
+                    "samples": 256,
+                    "minimum_margin_v": 0.2728135499203854,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0
+                  }
+                },
+                "passed": true,
+                "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+              },
+              "interfaces": {
+                "cmos": {
+                  "samples": 768,
+                  "minimum_margin_v": 0.2699738124022597,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.894853207957747,
+                    1.8984969375175351
+                  ],
+                  "passed": true
+                },
+                "final": {
+                  "samples": 6912,
+                  "minimum_margin_v": 0.21493844015953623,
+                  "wrong_sign_samples": 0,
+                  "below_150mv_samples": 0,
+                  "common_mode_range_v": [
+                    1.900877868502147,
+                    1.937957223792715
+                  ],
+                  "passed": true
+                }
+              },
+              "failed_hbts": {},
+              "failed_mos": {},
+              "rows": 69541,
+              "native_hbt_probes": 62,
+              "native_mos_probes": 64,
+              "raw_wave": {
+                "bytes": 176365947,
+                "sha256": "7a2ee64234feb0639324ca9ff5fa60c40b362012bbbf6a0e91312bd22bec67d3",
+                "format": "native_binary"
+              },
+              "capture": {
+                "columns": 317,
+                "start_s": 0.0,
+                "end_s": 3.4e-08,
+                "max_step_s": 5.00000000000567e-13,
+                "complete_unmodified_rows": true
+              },
+              "archive_readback_status": "Pending full hosted archive and all native output readback"
+            }
+          ]
+        }
+      ],
+      "loaded_diagnosis": "Actual whole-core wire hot minimum100.6804731531521mV, zero failed original samples; nominal and cold also pass. All6912 final physical input observations and62HBT64MOS screens pass. Small0.680473mV hot margin requires independent corners and finer-step checks. Full archive readback delegated to hosted diagnosis; no fullPHY or mainchip acceptance."
     }
   },
   "baseline_wave_diagnosis": {
