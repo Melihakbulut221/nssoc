@@ -1,3 +1,9 @@
+## 2026-10-15 paired coupled runtime result and full-window continuation
+
+Run38795024358 completed all5native simulations and pristine controls reproduce packaged captures. Patched startup step differences are0.7671085uV and0.4873155uV, vs pristine8906.847uV. Final protected-input assertion failed because sha received str rather than Path; original failed outcome retained in docs/evidence/pcie-vbic-coupled-replay-20261015.json. Fix only the path type. New vbic-full-window-cloud.yml repeats pristine controls, checks original sources at completion, and runs the patched unchanged compact circuit for the full34ns at0.125/0.0625ps. All original768samples, devices, interfaces, whole-wave1mV, edge and energy limits stay unchanged. No acceptance from prefix alone.
+
+Mainchip38788529905/job116606725290 remains live; never duplicate. All execution and evidence stay on GitHub; local workspace empty. FullPHY, routed mainchip and final extracted setup/hold remain OPEN.
+
 ## 2026-10-15 native companion counterexample supports coupled replay
 
 Synthetic companion run38793936101 completed. All8patched cases retain DC current to<5e-16A. Packaged/pristine QCO0 controls agree exactly; all4activeQCO cases in each original binary fail to complete. Inspect native error logs before interpreting those failures; the summary's false drift-observed field means missing completed drift measurement, not a pass. Receipt: `docs/evidence/pcie-vbic-companion-20261015.json`.

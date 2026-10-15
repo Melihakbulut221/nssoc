@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Paired pristine/patched native engine on the unchanged frozen coupled tree."""
-import hashlib,json,os,re,resource,shutil,subprocess,tarfile,time
+import argparse,copy,hashlib,json,os,re,resource,shutil,subprocess,tarfile,time
 from pathlib import Path
 from cloud_tx_step_factorial import restore,replace_analysis,charge_deck,wave_difference,STEPS,STOP,PROFILE
 from cloud_tx_stream import read_streamed_wave
@@ -53,12 +53,16 @@ def references(vectors):
     packed.unlink();return result
 
 
-def main():
+def main(full_window=False):
+    global OUT
+    if full_window:OUT=ROOT/'cloud-vbic-full-window'
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
     result=dict(status='RUNNING',accepted=False,source_head=os.environ['GITHUB_SHA'],cases={},
         original_circuit_changed=False,original_engineering_gates_changed=False,
+        full_window=full_window,
         scope='Same frozen62HBT64MOS coupled compact tree startup prefix, same all native vectors, sources, PDK and original strict solver profile. Pristine source binary must reproduce packaged reference before patched cases. Engine experiment only: no full34ns/PVT/physical/fullPHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    if full_window:result['scope']='Full original34ns compact coupled tree; unchanged physical sources, models, bits, solver and engineering gates. Patched engine experimental; not fullPHY acceptance.'
     save()
     try:
         paths,provenance=restore_engines();result['runtime_provenance']=provenance;save()
@@ -68,13 +72,27 @@ def main():
         assert len(rows)==1;source,original_summary,contract,protected=restore(rows[0],OUT)
         result['source_receipt']=rows[0];result['verified_circuit_inputs']=protected
         original=(source/'native/bench.cir').read_text();old=references(contract['vectors']);captures={}
-        for variant,steps in [('pristine',STEPS),('patched',(*STEPS,.03125e-12))]:
+        if full_window:
+            from analyze_cloud_assembled_wave import step_metrics,step_controls
+            from run_cloud_tx_mux4 import review,STOP as full_stop
+            result['numerical_controls']=step_controls()
+
+        for variant,steps in [('pristine',STEPS),('patched',STEPS if full_window else (*STEPS,.03125e-12))]:
             if variant=='patched':assert result.get('pristine_reproduces_packaged_reference'), 'Pristine provenance control must pass before patch experiment'
             for step in steps:
                 label=variant+'-'+str(step*1e12);case=OUT/label;case.mkdir()
-                deck=charge_deck(replace_analysis(original,STEPS[0],step),None)
+                stop=full_stop if full_window and variant=='patched' else STOP
+                deck=replace_analysis(original,STEPS[0],step)
+                if full_window and variant=='patched':
+                    prefix_line=f'.tran {STEPS[0]:.14g} {STOP:.14g} 0 {step:.14g}'
+                    full_line=f'.tran {STEPS[0]:.14g} {full_stop:.14g} 0 {step:.14g}'
+                    assert deck.count(prefix_line)==1
+                    deck=deck.replace(prefix_line,full_line)
+                    original_line=re.findall(r'(?m)^\.tran [^\n]+$',original)
+                    assert len(original_line)==1 and deck.replace(full_line,original_line[0])==original
+                deck=charge_deck(deck,None)
                 (case/'bench.cir').write_text(deck);shutil.copyfile(source/'native/spinit',case/'spinit')
-                row=dict(variant=variant,step_s=step,executable_sha256=sha(paths[variant]),complete=False,accepted=False);result['cases'][label]=row;save()
+                row=dict(variant=variant,step_s=step,stop_s=stop,executable_sha256=sha(paths[variant]),complete=False,accepted=False);result['cases'][label]=row;save()
                 try:
                     env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
                     env.update(SPICE_SCRIPTS=str(case),OMP_NUM_THREADS='1',RAYON_NUM_THREADS='1')
@@ -91,8 +109,12 @@ def main():
                     assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for _,body in flags)
                     import numpy as np
                     op=np.loadtxt(case/'op.dat',skiprows=1);assert op.size==len(contract['vectors'])+1 and np.isfinite(op).all() and abs(op).max()<=1e-10
-                    t,v,receipt=read_streamed_wave(case/'wave.raw',contract['vectors'],STOP,step)
+                    t,v,receipt=read_streamed_wave(case/'wave.raw',contract['vectors'],stop,step)
                     captures[(variant,step)]=(t,v);row.update(complete=True,capture=receipt)
+                    if full_window and variant=='patched':
+                        case_contract=copy.deepcopy(contract);case_contract['condition']['step_ps']=step*1e12
+                        (case/'contract.json').write_text(json.dumps(case_contract,indent=2)+'\n')
+                        row['engineering_review']=review(case,case_contract)
                     if variant=='pristine':
                         comparison=wave_difference((t,v),old[step],contract['vectors']);row['packaged_reference_comparison']=comparison
                         row['packaged_voltage_reproduced_to_1nv']=comparison['worst_voltage_difference_v']<=1e-9
@@ -101,17 +123,23 @@ def main():
             if variant=='pristine':
                 result['pristine_reproduces_packaged_reference']=all(result['cases']['pristine-'+str(step*1e12)].get('packaged_voltage_reproduced_to_1nv',False) for step in STEPS);save()
         result['comparisons']={};result['unavailable_comparisons']=[]
-        for variant,steps in [('pristine',STEPS),('patched',(*STEPS,.03125e-12))]:
+        for variant,steps in [('pristine',STEPS),('patched',STEPS if full_window else (*STEPS,.03125e-12))]:
             for a,b in zip(steps,steps[1:]):
                 name=f'{variant}-{a*1e12:g}-to-{b*1e12:g}'
                 if (variant,a) in captures and (variant,b) in captures:
-                    result['comparisons'][name]=wave_difference(captures[(variant,a)],captures[(variant,b)],contract['vectors'])
+                    result['comparisons'][name]=(step_metrics(captures[(variant,a)],captures[(variant,b)],contract) if full_window and variant=='patched' else wave_difference(captures[(variant,a)],captures[(variant,b)],contract['vectors']))
                 else:result['unavailable_comparisons'].append(name)
-        assert all(sha(path)==digest for path,digest in protected.items())
+        assert all(sha(Path(path))==digest for path,digest in protected.items())
         result['all_simulations_complete']=all(c['complete'] for c in result['cases'].values())
+        result['protected_inputs_unchanged']=True
         result['status']='COMPLETE_PAIRED_RUNTIME_COUPLED_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE'
+        if full_window:
+            result['compact_numerical_component_screen_passed']=(result['all_simulations_complete'] and not result['unavailable_comparisons'] and all(row.get('engineering_review',{}).get('all_engineering_gates_passed',False) for row in result['cases'].values() if row['variant']=='patched') and result['comparisons'].get('patched-0.125-to-0.0625',{}).get('passed',False))
+            result['status']='COMPLETE_FULL_WINDOW_COMPACT_ENGINE_EXPERIMENT_NOT_PHY_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--full-window',action='store_true')
+    main(parser.parse_args().full_window)
