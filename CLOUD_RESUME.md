@@ -1,3 +1,9 @@
+## Actual845 PLL paired-engine follow-up
+
+`pll-vbic-replay-cloud.yml` restores exact original actual84550ns source38672412524: parent91364a... unchanged, all32model files/3OSDIs, all495original probes, zero-sourceOP/102OFF commands, KLU and .3125ps preserved. Pristine source engine must reproduce original packaged waveform under the original1mV/1ps comparison plus a whole0–50ns1mV bound before patched50ns. Patch only simulatorQbcx companion expression; no physical loop, source, RC, pump/filter or acceptance-window change. Preserve full native captures via ordered hash-verified parts. This independent test measures whether the engine correction affects the clock circuit; it CANNOT close original800–900ns126.2157ppm acquisition failure or full845 safety. Full1us100ppm/50ps/slip/VCTRL gates, actual clock loading, PVT/CDR/x4 integration remain required.
+
+Existing wire38801162596, corrected32backend38803757710 and mainchip38788529905 remain live; do not duplicate. All execution is GitHub-hosted and local workspace remains empty.
+
 ## Current live handles and verified full32 capture preparation
 
 - Mainchip38788529905/job116606725290: native geometry/NDR+DRT step live. Never duplicate.
