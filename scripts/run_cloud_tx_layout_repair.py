@@ -31,6 +31,7 @@ def main():
                                              'critical_buses', 'critical_buses_wide_escape',
                                              'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
                                              'critical_buses_kelvin_supply_direct_low_outputs',
+                                             'critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_direct','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     parser.add_argument("--boundary-pins", action="store_true", help="Extend real TM2 public pins to the macro boundary; requires fresh DRC/LVS and RC")
@@ -38,6 +39,11 @@ def main():
     args = parser.parse_args()
     assert args.boundary_pins or args.boundary_policy == "left", "Boundary policy requires real boundary pins"
     requested_variant = args.variant
+    left_final_outputs = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'
+    if left_final_outputs:
+        assert args.circuit_profile == 'final_drive_v10', 'Output placement trial binds exact V10 devices'
+        assert args.boundary_pins and args.boundary_policy == 'nearest_pair_tight'
+        args.variant = 'critical_buses_kelvin_low_ports_loads_shunts_series'
     direct_pre_outputs = requested_variant == 'critical_buses_kelvin_supply_direct_low_outputs'
     if direct_pre_outputs:
         assert args.circuit_profile == 'cascade158', 'Short output routes bind exact cascade158 devices'
@@ -566,10 +572,24 @@ def main():
             physical_source=physical_source.replace(before,after)
             result['physical_fault_geometry_adaptation']=dict(before=before,after=after,
                 scope='Actual avdd/avss pin-centre bridge only. Same DRC/LVS decks, expected fault verdicts and all other controls unchanged.')
+        if left_final_outputs:
+            # The original tight-edge hot waveform still fails52/768 samples.
+            # Move the actual two series and two shunt resistors by one38.4um
+            # physical column toward the output edge, preserving all dimensions,
+            # models, terminal identities, native route widths and fault gates.
+            # Regenerate every affected wire from the new real pin coordinates.
+            before = '23:(92.4,-82),24:(54.0,-82),25:(87.6,-18),26:(49.2,-18)'
+            after = '23:(54.0,-82),24:(15.6,-82),25:(49.2,-18),26:(10.8,-18)'
+            assert source.count(before) == 1
+            source = source.replace(before, after)
+            edits.append(dict(output_passive_translation_um=[-38.4,0.0],
+                generator_row_indices=[23,24,25,26], before=before, after=after,
+                scope='Physical placement/rerouting only; exact V10 schematic unchanged. Fresh native DRC/LVS, RC and loaded waves required.'))
         if args.boundary_pins:
             assert (args.circuit_profile, requested_variant) in (
                 ('cascade158','critical_buses_kelvin_supply_direct'),
-                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series'))
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series'),
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'))
             before = '    assert set(ports) == set(PORTS)\n'
             assert source.count(before) == 1
             boundary_code = '    # Real TM2 boundary access; no devices, local wires or vias removed.\n    boundary_x = round((top.dbbox().left - 20.0) / 0.005) * 0.005\n    boundary_pin_routes = []\n    for dt in (2, 25):\n        li = layout.layer(layers["TopMetal2"], dt)\n        assert sum(1 for _ in top.shapes(li).each()) == len(PORTS)\n        top.shapes(li).clear()\n    old_ports = dict(ports)\n    for net, (pin_metal, old_pin) in old_ports.items():\n        assert pin_metal == "TopMetal2" and boundary_x < old_pin.left\n        y = old_pin.center().y\n        width = 32.0 if net in ("avdd", "avss") else 4.0\n        box(7, boundary_x, y-width/2, old_pin.right, y+width/2)\n        pin = pya.DBox(boundary_x, y-0.6, boundary_x+2.0, y+0.6)\n        ports[net] = ("TopMetal2", pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 2)).insert(pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 25)).insert(\n            pya.DText(net, boundary_x, y))\n        boundary_pin_routes.append(dict(net=net, old_pin_um=str(old_pin),\n            new_pin_um=str(pin), width_um=width, layer="TopMetal2"))\n    assert len(boundary_pin_routes) == len(PORTS) == 12\n    assert abs(top.dbbox().left-boundary_x) < layout.dbu/2\n    assert len({round(b.center().y/layout.dbu) for _, b in ports.values()}) == 12\n'
