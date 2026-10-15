@@ -1,6 +1,16 @@
+## 2026-10-16 measured routed timing and live full32 captures
+
+Actual routed extraction38809759501/job116679719057 terminalSUCCESS as a measurement, NOT signoff. Fresh nominalSPEFb0411f... has113556nets and0per-net cap inconsistencies; slow setup-11.940513ns, typical-6.233346ns, fast-2.978773ns; fast hold-0.151066ns. Native annotation report has1065unannotated drivers (0partial); classify those before any coverage/closure claim. Worst slow setup $auto$ff.cc:337:slice$1171433 -> $auto$ff.cc:337:slice$1177036; retrain_done input paths also near-11.74ns. Receipt docs/evidence/cloud-mainchip-routed-nominal-rc-20261016.json. OriginalSDC/9libraries protected unchanged, nominalRC only. No stage passes final setup/hold.
+
+Full32 originalSparse0.5ps38810158966/job116681265012 and0.25ps38810163678/job116681243193 live after controls passed. Sourcef4de0a9f6cdb873916671b3f1ec7e1cf60071e87; study38803757710 summarya52a... . KLU guard remains FAILED and KLU not adopted. Do not duplicate. Wire38801162596 still live. PLL paired50ns complete; long acquisition remains open.
+
+Geometry38810141084/job116681014582 FAILED at unwrapped optional<Rect> bbox access. Failure retained in cloud-route-bbox-binding receipt. New verifier records bbox verification FALSE and checks independently exported segment/RECT geometry-length sum against native dbWire::getLength implementation. This is a limited diagnostic and must not be called complete layout shape equivalence/LVS. Native antenna651net/809pin violations remain. Subsequent job must be inspected before proceeding.
+
+Local workspace was rechecked0entries. Existing8hour heartbeat already cloud-only and ACTIVE. All source edits/payloads/evidence remain GitHub; no local checkout/build/CAD/test runs.
+
 ## Latest measured native results and preserved original-backend continuation
 
-32backend38803757710 is complete; all four native runs complete and inputs unchanged. Pristine/package agree exactly. Patched KLU is1.575986x faster (696.796s versus Sparse1098.141s) but differs2.5439587uV at v(xad_d0p.sink), FAILING the existing1nV backend-adoption guard. Do NOT adopt KLU or mark that guard passed. Full32 controller now allows a separate originalSparse-only full34ns measurement with identical original solver settings; KLU still requires unchanged1nV guard. This does not change original full768sample/device/interface or fullwave timestep gates. Receipt pc ie-tree32-backend-measured file in docs/evidence (actual filename pcie-tree32-backend-measured-20261016.json).
+32backend38803757710 is complete; all four native runs complete and inputs unchanged. Pristine/package agree exactly. Patched KLU is1.575986x faster (696.796s versus Sparse1098.141s) but differs2.5439587uV at v(xad_d0p.sink), FAILING the existing1nV backend-adoption guard. Do NOT adopt KLU or mark that guard passed. Full32 controller now allows a separate originalSparse-only full34ns measurement with identical original solver settings; KLU still requires unchanged1nV guard. This does not change original full768sample/device/interface or fullwave timestep gates. Receipt docs/evidence/pcie-tree32-backend-measured-20261016.json.
 
 PLL38805695818 complete: pristine original50ns identical, patched50ns complete/clean, maximum engine effect0.412262mV. Full1us original800–900ns126.2157ppm acquisition failure is NOT resolved by this experiment. Receipt docs/evidence/pcie-pll-vbic-paired50-20261016.json. Full1us patched acquisition and timestep/safety/load/PVT proof remain needed.
 

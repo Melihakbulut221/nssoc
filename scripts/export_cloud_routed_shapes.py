@@ -87,8 +87,13 @@ def main():
                     else:assert op in (d.ITERM,d.BTERM),('Unhandled native wire opcode',op)
                 assert physical_bounds,net.getName()
                 measured=[min(v[0] for v in physical_bounds),min(v[1] for v in physical_bounds),max(v[2] for v in physical_bounds),max(v[3] for v in physical_bounds)]
-                assert measured==box(wire.getBBox()),('Native geometric bounding box mismatch',net.getName(),measured,box(wire.getBBox()))
-                row['native_wire_bbox_verified']=True
+                # Pinned SWIG leaves optional<Rect> opaque; never claim a
+                # bounding-box comparison that the runtime cannot perform.
+                row['decoded_wire_bbox']=measured
+                row['native_wire_bbox_verified']=False
+                shape_length=sum(abs((v['box'][2]-v['box'][0])-(v['box'][3]-v['box'][1])) for v in row['shapes'] if v['kind'] in ('wire','patch'))
+                assert shape_length==wire.getLength(),('Native shape-length mismatch',net.getName(),shape_length,wire.getLength())
+                row['native_shape_length_verified']=True
                 row['decoded_centerline_length_dbu']=length
                 row['native_wire_length_dbu']=wire.getLength()
             if rule:result['ndr_nets'][net.getName()]=dict(rule=rule.getName(),segments=len(row['ndr_width_observations']),below_rule_width=sum(v['actual_width_dbu'] is not None and v['actual_width_dbu']<v['required_width_dbu'] for v in row['ndr_width_observations']))
