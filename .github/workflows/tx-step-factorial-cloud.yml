@@ -11,8 +11,8 @@ on:
       study:
         description: Separate TSTEP/TMAX or refine TMAX and compare integration methods
         type: choice
-        options: [factorial, refinement, matrix_solver, charge_tolerance]
-        default: charge_tolerance
+        options: [factorial, refinement, matrix_solver, charge_tolerance, charge_bracket]
+        default: charge_bracket
 permissions:
   contents: read
 concurrency:
@@ -54,8 +54,8 @@ jobs:
           log=p.stdout+p.stderr;(out/'run.log').write_text(log);print(log)
           assert p.returncode==0 and 'KLU' in log and 'Sparse 1.3' not in log
           PYKLU
-      - name: Isolate TSTEP and TMAX on unchanged native startup circuit
-        run: python3 scripts/cloud_tx_step_factorial.py --study '${{ inputs.study || 'charge_tolerance' }}'
+      - name: Bracket native charge tolerance on unchanged coupled startup circuit
+        run: python3 scripts/cloud_tx_step_factorial.py --study '${{ inputs.study || 'charge_bracket' }}'
       - name: Preserve all diagnostic captures and failure evidence
         if: always()
         env:

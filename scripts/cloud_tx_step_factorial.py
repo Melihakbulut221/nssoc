@@ -74,7 +74,7 @@ def charge_readback(text, expected):
 
 
 def charge_deck(deck, tolerance):
-    assert tolerance in (None,1e-20)
+    assert tolerance in (None,1e-16,1e-18,1e-19,1e-20)
     assert deck.count('quit\n.endc')==1
     assert not re.search(r'(?i)\bchgtol\s*=',deck)
     original=deck
@@ -112,6 +112,9 @@ def controls():
     assert klu.replace('.options klu\n','')==replace_analysis(solver_deck,*STEPS)
     assert charge_readback('chgtol (charge) = 1e-20\n',1e-20)['native_readback_verified']
     assert '.options chgtol=1e-20' in charge_deck(deck,1e-20)
+    for charge in (1e-16,1e-18,1e-19):
+        assert f'.options chgtol={charge:.14g}' in charge_deck(deck,charge)
+        assert charge_readback(f'chgtol (charge) = {charge:g}\n',charge)['native_readback_verified']
     for raw in (b'ASCII model',b'micro \xb5m', 'micro µm'.encode('utf-8')):
         source=model_source_record(raw,hashlib.sha256(raw).hexdigest())
         assert source['text'].encode(source['encoding'])==raw
@@ -191,7 +194,7 @@ def main(study):
         source,summary,contract,verified=restore(record,out)
         result['verified_circuit_inputs']=verified;result['source_native_outputs']=summary['outputs']
         original=(source/'native/bench.cir').read_text()
-        if study=='charge_tolerance':
+        if study in ('charge_tolerance','charge_bracket'):
             model_sources={}
             for path,digest in verified.items():
                 name=Path(path).name
@@ -211,13 +214,14 @@ def main(study):
         cases=[(*case,'sparse') for case in cases]
         if study=='matrix_solver':cases=[(STEPS[0],step,'trap',backend) for backend in ('sparse','klu') for step in STEPS]
         cases=[(*case,None) for case in cases]
-        if study=='charge_tolerance':cases=[(STEPS[0],step,'trap','sparse',charge) for charge in (None,1e-20) for step in STEPS]
+        if study in ('charge_tolerance','charge_bracket'):cases=[(STEPS[0],step,'trap','sparse',charge) for charge in (None,1e-20) for step in STEPS]
+        if study=='charge_bracket':cases=[(STEPS[0],step,'trap','sparse',charge) for charge in (None,1e-16,1e-18,1e-19) for step in STEPS]
         for a,b,method,backend,charge in cases:
-                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')+('-klu' if backend=='klu' else '')+('-charge20' if charge is not None else '')
+                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')+('-klu' if backend=='klu' else '')+(f'-charge{int(round(-np.log10(charge)))}' if charge is not None else '')
                 profile = 'tight_gear2' if method=='gear' else PROFILE
                 case=out/label;case.mkdir()
                 deck=replace_analysis(original,a,b,method,backend)
-                if study=='charge_tolerance':deck=charge_deck(deck,charge)
+                if study in ('charge_tolerance','charge_bracket'):deck=charge_deck(deck,charge)
                 (case/'bench.cir').write_text(deck)
                 shutil.copyfile(source/'native/spinit',case/'spinit')
                 env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
@@ -234,14 +238,13 @@ def main(study):
                 result['cases'][label]=row
                 log=(case/'run.log').read_text(errors='replace')
                 row['diagnostics']=native_diagnostics(log,profile)
-                assert proc.returncode==0 and not row['diagnostics'],log[-6000:]
                 row['solver_options']=verify_solver_options(log,profile)
                 assert [float(x) for x in re.findall(r'(?m)^NSSOC_NATIVE_MINBREAK (\S+)\s*$',log)]==[1e-18]
                 row['native_minbreak_s']=1e-18
                 option_text=row['solver_options']['native_text']
                 assert ('KLU' in option_text) if backend=='klu' else ('Sparse 1.3' in option_text)
                 row['matrix_solver_native_readback_verified']=True
-                if study=='charge_tolerance':
+                if study in ('charge_tolerance','charge_bracket'):
                     row['charge_tolerance']=charge_readback(option_text,charge if charge is not None else 1e-14)
                     model_dump=case/'native-models.txt'
                     assert model_dump.stat().st_size>100
@@ -254,7 +257,14 @@ def main(study):
                 row['native_off_flags_count']=len(flags)
                 op=np.loadtxt(case/'op.dat',skiprows=1)
                 assert op.size==len(contract['vectors'])+1 and np.isfinite(op).all() and abs(op).max()<=1e-10
+                if study=='charge_bracket' and (proc.returncode!=0 or row['diagnostics']):
+                    row['complete']=False
+                    row['error']='Native simulation failed; preserve partial raw/log without treating it as a complete capture'
+                    print(json.dumps(dict(case=label,complete=False,diagnostics=row['diagnostics'])),flush=True)
+                    continue
+                assert proc.returncode==0 and not row['diagnostics'],log[-6000:]
                 t,v,transport=read_streamed_wave(case/'wave.raw',contract['vectors'],STOP,b)
+                row['complete']=True
                 captures[label]=(t,v);row['capture']=transport
                 print(json.dumps(dict(case=label,rows=len(t),elapsed_s=row['elapsed_s'])),flush=True)
         original_t,original_v,transport=read_streamed_wave(source/'native/wave.raw',contract['vectors'],SOURCE_STOP,STEPS[0])
@@ -279,14 +289,24 @@ def main(study):
                 ('klu_125_to_62p5','tstep0.125-tmax0.125-klu','tstep0.125-tmax0.0625-klu'),
                 ('backend_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-klu'),
                 ('backend_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-klu')]
-        if study=='charge_tolerance':
+        if study in ('charge_tolerance','charge_bracket'):
             pairs=[('default_charge_125_to_62p5','tstep0.125-tmax0.125','tstep0.125-tmax0.0625'),
                 ('tight_charge_125_to_62p5','tstep0.125-tmax0.125-charge20','tstep0.125-tmax0.0625-charge20'),
                 ('charge_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-charge20'),
                 ('charge_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-charge20')]
-        result['comparisons']={name:wave_difference(captures[a],captures[b],contract['vectors']) for name,a,b in pairs}
+        if study=='charge_bracket':
+            pairs=[('charge'+str(c)+'_125_to_62p5','tstep0.125-tmax0.125'+('' if c==14 else '-charge'+str(c)),
+                'tstep0.125-tmax0.0625'+('' if c==14 else '-charge'+str(c))) for c in (14,16,18,19)]
+            for step in ('0.125','0.0625'):
+                for a,b in ((14,16),(16,18),(18,19)):
+                    pairs.append((f'charge{a}_to_{b}_at_{step}',f'tstep0.125-tmax{step}'+('' if a==14 else '-charge'+str(a)),
+                        f'tstep0.125-tmax{step}-charge{b}'))
+        result['comparisons']={name:wave_difference(captures[a],captures[b],contract['vectors']) for name,a,b in pairs if a in captures and b in captures}
+        result['unavailable_comparisons']=[dict(name=name,missing_captures=[k for k in (a,b) if k not in captures]) for name,a,b in pairs if a not in captures or b not in captures]
+        if study!='charge_bracket':assert not result['unavailable_comparisons']
+        result['all_simulations_complete']=len(captures)==len(cases)
         assert all(sha(path)==digest for path,digest in verified.items())
-        result['status']='COMPLETE_NATIVE_TSTEP_TMAX_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE'
+        result['status']='COMPLETE_NATIVE_TSTEP_TMAX_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE' if result['all_simulations_complete'] else 'COMPLETE_DIAGNOSIS_WITH_PRESERVED_NATIVE_FAILURES_NOT_ACCEPTANCE'
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
@@ -297,7 +317,7 @@ def main(study):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--controls-only',action='store_true')
-    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver','charge_tolerance'),default='factorial')
+    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver','charge_tolerance','charge_bracket'),default='factorial')
     args=parser.parse_args()
     if args.controls_only:print(json.dumps(controls()))
     else:main(args.study)

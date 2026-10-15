@@ -1,3 +1,11 @@
+## 2026-10-15 probe readback complete; coupled charge-tolerance bracket
+
+Internal-probe run38789110926 completed. Every native timepoint and all17original vectors exactly reproduce run38787043126 in all4cases. Tight-charge failures remain near0.726ns; last accepted steps shrink to~2.05e-19/4.18e-19s, finite qbe/qbc and internal junction voltages vary smoothly across the last samples while dynamic currents fluctuate. These are accepted samples only, not the rejected Newton state; no model defect or successful convergence is claimed. Exact evidence: `docs/evidence/pcie-vbic-internal-probes-20261015.json`.
+
+Next hosted `charge_bracket` keeps the original coupled transistor circuit and examines chgtol1e-16,1e-18,1e-19 between original1e-14 and already-failed1e-20, each at TMAX0.125/0.0625ps with fixed originalTSTEP. Original-charge captures remain paired controls. Native failures are retained independently so one abort cannot hide the remaining bracket. No source, device, startup window, original1mV comparison limit or full34ns/PVT/physical gate is relaxed. Prefix comparisons are diagnostic only.
+
+Mainchip failed-guide detailed-route run38788529905 remains authoritative live work; do not duplicate. All work stays GitHub-hosted.
+
 ## 2026-10-15 internal VBIC probes; exact reference replay required
 
 Full-chip failed-guide DRT run38788529905 (source266c8972cbcff17846df739de757f97f35d8fb31) is live; inspect its authoritative status before any dispatch. The original global-route failure remains unchanged.
