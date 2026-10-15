@@ -17,7 +17,7 @@ FIXED=re.compile(r'^([ \t]*\+ )FIXED(?= )',re.M)
 def convert_def(text):
     found=list(SECTION.finditer(text));assert len(found)==1,'Missing or duplicate NETS'
     m=found[0];body=m.group(2)
-    assert len(re.findall(r'^- ',body,re.M))==int(m.group(1)),'NETS count mismatch'
+    assert len(re.findall(r'^[ \t]*- ',body,re.M))==int(m.group(1)),'NETS count mismatch'
     assert ROUTED.search(body),'No ROUTED clauses'
     body,count=ROUTED.subn(r'\1FIXED',body)
     new_section='NETS '+m.group(1)+' ;\n'+body+'END NETS\n'
@@ -31,7 +31,7 @@ def assert_same_def(expected,actual):
     assert expected==actual,'Native full DEF changed beyond explicit route class conversion'
 
 def controls():
-    fixture='VERSION 5.8 ;\nDIVIDERCHAR "/" ;\nBUSBITCHARS "[]" ;\nDESIGN chip ;\nUNITS DISTANCE MICRONS 1000 ;\nCOMPONENTS 1 ;\n- a cell + FIXED ( 2 3 ) N ;\nEND COMPONENTS\nNETS 1 ;\n- sig ( a X )\n      + ROUTED Metal1 ( 10 20 ) ( 30 * )\n      NEW Metal2 ( 30 20 ) via\n ;\nEND NETS\nEND DESIGN\n'
+    fixture='VERSION 5.8 ;\nDIVIDERCHAR "/" ;\nBUSBITCHARS "[]" ;\nDESIGN chip ;\nUNITS DISTANCE MICRONS 1000 ;\nCOMPONENTS 1 ;\n- a cell + FIXED ( 2 3 ) N ;\nEND COMPONENTS\nNETS 1 ;\n    - sig ( a X )\n      + ROUTED Metal1 ( 10 20 ) ( 30 * )\n      NEW Metal2 ( 30 20 ) via\n ;\nEND NETS\nEND DESIGN\n'
     expected,patch,count=convert_def(fixture);assert count==1 and 'COMPONENTS' not in patch and '+ FIXED ( 2 3 )' in expected
     assert_same_def(expected,expected);rejected=[]
     for label,bad in [('coordinate',expected.replace('( 10 20 )','( 11 20 )')),('missing_route',expected.replace('      NEW Metal2 ( 30 20 ) via\n','')),('wrong_class',fixture)]:

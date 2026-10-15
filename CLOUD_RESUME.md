@@ -1,3 +1,7 @@
+## Native fixed-route control: indentation parser corrected after retained failure
+
+38826401425 failedbeforeconversion: nativeDEFnetentries have4spacesbefore dash, whilecontrolcountedcolumn0. Metadata-onlynegativecontrol passed; all113556originalroutesconfirmedencodedROUTED and1787710pathstarts. Changedonlycountparser to accept horizontalindentation, retainedexactNETScount and allgeometry/typegates. Nativefixture nowusesactualindent. Failurearchive0f1fe669123cc0c59672b2abe41bd77d26fa41d88a0fad5a74d01fff42605883 andsummary2603bd44843d998560558a51b1b02fffff6d00043e425441cdfa92f9542e86bd retained. Ownworkflowpathpush starts correctedcontrol; no adoptionyet. FiveexistingECO/analogjobsunchanged; allworkcloudonly.
+
 ## Native encoded FIXED control dispatched
 
 Run38826401425/job116734768284 source4215feec880bd52af4fedc3e2c041ba6581ffe05 live. Preserve existing five physical/analog jobs; no duplicates. Native decoder/wholeDEF/geometry proof required before use; this is not a timing/PHY closure. Primary-source parser correction recorded in cloud-native-fixed-wire-parser-control-20261016.json. Local workspace remains empty.
