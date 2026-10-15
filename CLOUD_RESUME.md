@@ -1,3 +1,17 @@
+## 2026-10-15 — strict convergence still fails; sizing study fully rejected; signed HBT diagnosis running
+
+ALL CLOUD. Local workspace is empty; keep all source, native execution, artifacts and resume state in GitHub. Full serial PHY, detailed mainchip routing and final extracted setup/hold remain OPEN.
+
+Strict full-wave comparison **38774749514** completed execution successfully but FAILED its original numerical gate. Both source-bound captures and comparison are pinned, including all peak witnesses. Compact maximum voltage difference remains **8.906847253mV** against1mV. Tight nonlinear tolerances did not repair startup discrepancy. Do not rerun those four complete captures or remove startup. Next investigate explicit TSTEP versus TMAX: current `tran step stop 0 step` changes both; this is a hypothesis, not an established cause. A bounded diagnostic must preserve sources/model/options and isolate the two parameters before another long full-wave run.
+
+Joint sizing study **38773059353** is COMPLETE with all SIX cases in the same candidate study. Three compact cases pass original electrical gates, but ALL THREE distributed-wire cases fail: hot_low has28wrong-sign samples and negative output margin; hotRES has576interface-margin failures and six data HBT low-VCE failures; coldHBT has two selector low-VCE failures. Candidate remains REJECTED and its changed device geometry is not represented by old metal. No adoption or physical acceptance.
+
+Signed HBT source validation **38775537520 /116562080343** passed597tests and polarity controls. Source **f969704bf6bf80ca6adce302367cd13250a58bf9** retains original absolute-VBE screen while measuring forward/reverse junction polarities separately. Official BVEBO process measurement is reverse emitter-base; a positive1.023V VBE is not itself evidence of reverse breakdown. Public monitor targets are not qualified SOA. See `docs/hbt-operating-limit-provenance-20261015.md`. No existing screen waived and no device safety acceptance claimed.
+
+Hosted original compact cold-HBT diagnosis **38776558304** is running on that source. Inspect its complete62-HBT signed observations, original review readback and negative controls, then pin its receipt. No new native simulation is required for this analysis.
+
+Mainchip **38731744914 /116410943697** remains live as last checked. Preserve it; inspect terminal native NDR/overflow/STA evidence. Global routing is not detailed metal or final extracted timing. Do not duplicate a live run.
+
 ## 2026-10-15 — all strict fine captures complete; joint sizing rejected by hot wire
 
 ALL CLOUD. Strict solver study **38763917040** is COMPLETE with four pinned native captures. The last wire 0.0625ps case passes original component gates at **100.722432816mV** output margin; no diagnostics. This is NOT yet numerical convergence proof. Next dispatch exactly one hosted `step_comparison`, placement `compact_edge_supply`, solver `breakpoint_tight_trap`, step_pair `fine`. Compare every original voltage/sample/edge/energy gate and preserve earlier default and breakpoint-only failures.
