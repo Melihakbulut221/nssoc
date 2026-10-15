@@ -1,3 +1,11 @@
+## Exact active handles: native companion counterexample
+
+- VBIC companion38793936101 / job116625309760 / source0045ccd17a9b9b28e11a5fb2b4bb3d438d24d123: packaged native cases executed; pristine same-version build confirmed live. Inspect reports and QCO0 controls before any claim. Investigation: `docs/vbic-transient-companion-investigation-20261015.md`.
+- Mainchip38788529905 / job116606725290: still live. No duplicate dispatch.
+- Newton study38791998396 completed but failed to close mismatch;1e-10 aborts preserved. Shared-controller regression38792102745 passed600tests. Exact receipt: `docs/evidence/pcie-newton-accuracy-20261015.json`.
+
+All three original completion requirements remain OPEN, and all execution/results remain cloud-only.
+
 ## 2026-10-15 specific native VBIC companion-equation hypothesis
 
 Newton-accuracy38791998396 also rejects tolerance tightening as a fix:1e-8 retains8.9068487mV mismatch;1e-10 aborts at1.25fs in both steps. Shared-controller regression38792102745 passed600tests. Stop repeating tolerance tightening.

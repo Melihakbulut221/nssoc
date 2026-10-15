@@ -103,7 +103,7 @@
     "All work stays on GitHub-hosted runners. Do not recreate local checkout or CAD/test artifacts. Retirement receipt is COMPLETE and hash-verified; no cleanup of other projects.",
     "Do not poll or restart mainchip38731744914 as live: it terminated at the6h limit and relaxed NDR21times. Its partial JSON pending status is historical, not process evidence. Preserve full timeout and native failures.",
     "Poll exact failed-guide DRT38788529905, job116606725290, before dispatching anything else for this route. Native preflight preserves original geometry/connectivity/NDR with fault controls; run uses exact132-overflow saved guides only for physical diagnosis. Original global gate remains failed. Require actual routed geometry, independent connectivity/geometricNDR/DRC/LVS/antenna and extractedSTA; never treat run success as closure.",
-    "Poll newton_accuracy38791998396 (job116618638101, sourceb130698c85d61794ddbc9a4ed3261aebd52cda36) and shared-controller regression38792102745. This paired study tightens only nonlinear reltol/abstol/vntol after read-only waveform diagnosis38791022510 reproduced original smooth startup mismatch. Charge bracket is rejected; preserve all failures, original1mV/whole-wave gates and full scope.",
+    "Poll native VBIC companion38793936101, job116625309760, source0045ccd17a9b9b28e11a5fb2b4bb3d438d24d123. Packaged constant-bias cases executed; pristine source build was confirmed live. Compare packaged/pristine/patched and QCO0 controls. Inspect actual results before declaring the suspected Qbcx RHS defect confirmed or adopting any runtime. If supported, replay exact full coupled input with pristine vs packaged provenance check, then patched paired steps; keep full34ns/PVT/physical gates. Do not repeat rejected tolerance studies.",
     "Retain all completed factorial/refinement/backend comparisons and aborted charge capture. TSTEP and matrix backend are ruled out; finer TMAX/Gear2 did not converge. No blind full34ns rerun or startup-window removal.",
     "Keep full PLL/CDR/RX/PCS/LTSSM, physical integration, qualified extraction, all-device/PVT, pad/ESD, SRAM/DFT, final setup/hold and real manufacturer approval requirements open until corresponding full-scope evidence proves them."
   ],
@@ -103117,5 +103117,62 @@
       }
     },
     "observation": "Inspected native point overlays: peak-region trajectories are smoothly separated, with source drives equal to floating-point roundoff. Earliest1mV crossing is xtree.n_i50 at0.505841ns. This motivates isolating nonlinear Newton tolerance; it does not prove model or solver causality and does not remove any startup sample from acceptance."
+  },
+  "newton_accuracy_terminal_20261015": {
+    "run": 38791998396,
+    "source_head": "b130698c85d61794ddbc9a4ed3261aebd52cda36",
+    "status": "COMPLETE_DIAGNOSIS_WITH_PRESERVED_NATIVE_FAILURES_NOT_ACCEPTANCE",
+    "accepted": false,
+    "summary_sha256": "6422754f231d12b368cb8bb58657dcc8effcffcb016a13b1e90698b650294e93",
+    "comparisons": {
+      "default_newton_125_to_62p5": {
+        "worst_voltage_vector": "v(mr)",
+        "worst_voltage_difference_v": 0.008906847246707983,
+        "acceptance": false
+      },
+      "newton_1e8_125_to_62p5": {
+        "worst_voltage_vector": "v(mr)",
+        "worst_voltage_difference_v": 0.00890684872284131,
+        "acceptance": false
+      },
+      "accuracy_to-newton_1e8_at_0.125": {
+        "worst_voltage_vector": "v(xtree.n_i49)",
+        "worst_voltage_difference_v": 1.5702518485483097e-06,
+        "acceptance": false
+      },
+      "accuracy_to-newton_1e8_at_0.0625": {
+        "worst_voltage_vector": "v(xtree.n_i48)",
+        "worst_voltage_difference_v": 4.569275325991447e-07,
+        "acceptance": false
+      }
+    },
+    "unavailable_comparisons": [
+      {
+        "name": "newton_1e10_125_to_62p5",
+        "missing_captures": [
+          "tstep0.125-tmax0.125-newton_1e10",
+          "tstep0.125-tmax0.0625-newton_1e10"
+        ]
+      },
+      {
+        "name": "accuracy-newton_1e8_to-newton_1e10_at_0.125",
+        "missing_captures": [
+          "tstep0.125-tmax0.125-newton_1e10"
+        ]
+      },
+      {
+        "name": "accuracy-newton_1e8_to-newton_1e10_at_0.0625",
+        "missing_captures": [
+          "tstep0.125-tmax0.0625-newton_1e10"
+        ]
+      }
+    ],
+    "validation": {
+      "run": 38792102745,
+      "job": 116619002862,
+      "conclusion": "success",
+      "pytest_passed": 600
+    },
+    "conclusion": "Newton1e-8 still leaves8.9068487mV coarse/fine mismatch;1e-10 aborts both cases at1.25fs. Tightening alone is rejected. The next source-backed hypothesis is the native VBIC Qbcx transient companion RHS, tested separately without changing the IHP parameter model."
   }
 }
