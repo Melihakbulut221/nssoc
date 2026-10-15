@@ -67,6 +67,12 @@ def generate():
         source_layout=pya.Layout();source_layout.read(str(directory/(child_top+'.gds')))
         child=source_layout.cell(child_top);assert child is not None and source_layout.dbu==layout.dbu
         copied=layout.create_cell('core_'+kind);copied.copy_tree(child)
+        # Retain the original native PCell hierarchy for exact terminal anchors.
+        # Replace only12macro-level public labels/pins before instantiation.
+        for datatype in (2,25):
+            shapes=copied.shapes(layout.layer(layers['TopMetal2'],datatype))
+            assert sum(1 for _ in shapes.each())==12
+            shapes.clear()
         children[kind]=(copied,data,directory)
     for tag,kind,x,y,mirror in [('a','pre',353.985,0.,True),('b','pre',353.985,400.,True),('f','final',550.,150.,False)]:
         child,data,directory=children[kind]
@@ -80,15 +86,7 @@ def generate():
         placement[tag]=dict(kind=kind,transform=str(tr),bbox_um=str(child.dbbox().transformed(tr)),ports={k:str(v) for k,v in actual.items()})
         schematic.extend(flatten_reference((directory/'schematic.cir').read_text(),tag))
     schematic.append('.ends '+TOP)
-    # Preserve native PCell recognition annotations (including npn13g2).
-    # Only the36 macro-level public TM2 labels/pins are replaced by22 parent
-    # ports. Removing all text destroys native HBT recognition and was rejected
-    # by1002 CntB.h1 markers in run38706630710. No deck/rule is changed.
-    top.flatten(-1,False)
-    for datatype in (2,25):
-        shapes=top.shapes(layout.layer(layers['TopMetal2'],datatype))
-        assert sum(1 for _ in shapes.each())==36
-        shapes.clear()
+    # Native PCell recognition text and hierarchy are deliberately retained.
     routes=[]
     def box(layer,x1,y1,x2,y2):
         top.shapes(layout.layer(layers[layer],0)).insert(pya.DBox(min(x1,x2),min(y1,y2),max(x1,x2),max(y1,y2)))
@@ -127,7 +125,6 @@ def generate():
     for net,(layer,b) in public.items():
         top.shapes(layout.layer(layers[layer],2)).insert(b)
         top.shapes(layout.layer(layers[layer],25)).insert(pya.DText(net,b.left,b.center().y))
-    top.flatten(-1,False)
     # Shift the whole exact assembly to a nonnegative LEF origin.
     bounds=top.dbbox();dx=-bounds.left;dy=-bounds.bottom
     top.transform(pya.Trans(round(dx/layout.dbu),round(dy/layout.dbu)))
@@ -135,6 +132,14 @@ def generate():
     for row in routes:
         if 'fault_cut_um' in row:
             b=row['fault_cut_um'];row['fault_cut_um']=[b[0]+dx,b[1]+dy,b[2]+dx,b[3]+dy]
+    previous=pya.Layout();previous.read(str(OUT/'verified-flat.gds'))
+    old=previous.cell(TOP);assert old is not None and previous.dbu==layout.dbu
+    layer_keys={(layout.get_info(i).layer,layout.get_info(i).datatype) for i in layout.layer_indexes()}
+    layer_keys|={(previous.get_info(i).layer,previous.get_info(i).datatype) for i in previous.layer_indexes()}
+    for layer,datatype in sorted(layer_keys):
+        before=pya.Region(old.begin_shapes_rec(previous.layer(layer,datatype))).merged()
+        after=pya.Region(top.begin_shapes_rec(layout.layer(layer,datatype))).merged()
+        assert (before^after).is_empty(), ('Hierarchy representation changed physical geometry',layer,datatype)
     sys.path.insert(0,str(ROOT/'hw/soc/flow'))
     import make_pcie_clock_vco_v6_local_v1 as writer
     writer.TOP=TOP;writer.PORTS=PORTS
@@ -144,7 +149,7 @@ def generate():
     (dest/'schematic.cir').write_text('\n'.join(schematic)+'\n')
     (dest/(TOP+'.lef')).write_text(writer.lef(pya,layout.dbu,top.dbbox(),public))
     assert len(schematic)==166
-    result=dict(status='GENERATED_UNVERIFIED_ACTUAL_4TO1_CORE',inputs=protected,outputs={p.name:sha(p) for p in dest.iterdir()},ports={n:str(b) for n,(l,b) in public.items()},bbox_um=str(top.dbbox()),placement=placement,routes=routes,core_devices=81,substrate_contacts=81,total_devices=162,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,scope='Actual three native cores plus four differential data wires and shared supplies/substrate. External clocks/bias, CMOS frontends and loaded TX remain outside this core. Requires native DRC/LVS then fresh intermacro RC and loaded waveform gates.')
+    result=dict(status='GENERATED_UNVERIFIED_ACTUAL_4TO1_CORE',inputs=protected,outputs={p.name:sha(p) for p in dest.iterdir()},ports={n:str(b) for n,(l,b) in public.items()},bbox_um=str(top.dbbox()),placement=placement,origin_translation_um=[dx,dy],routes=routes,exact_flat_geometry_preserved=True,core_devices=81,substrate_contacts=81,total_devices=162,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,scope='Actual three native cores plus four differential data wires and shared supplies/substrate. External clocks/bias, CMOS frontends and loaded TX remain outside this core. Requires native DRC/LVS then fresh intermacro RC and loaded waveform gates.')
     (dest/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
@@ -178,6 +183,13 @@ def main():
                     raw=tar.extractfile(prefix+name).read();target=out/'inputs'/kind/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
                     if Path(name).name in row['generated_outputs']:assert hashlib.sha256(raw).hexdigest()==row['generated_outputs'][Path(name).name]
             archive.unlink()
+        old=spec['verified_flat_assembly'];fetch(old['url'],old['sha256'],archive)
+        assert archive.stat().st_size==old['bytes']
+        with tarfile.open(archive) as tar:
+            name='hw/soc/out/cloud-tx-tree-assembly/layout/'+TOP+'.gds'
+            data=tar.extractfile(name).read();assert hashlib.sha256(data).hexdigest()==old['outputs'][TOP+'.gds']
+            (out/'verified-flat.gds').write_bytes(data)
+        archive.unlink()
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256']
         run([app,'python',Path(__file__).resolve(),'--generate'],'generate')
         generated=json.loads((out/'layout/result.json').read_text());result['layout']=generated
