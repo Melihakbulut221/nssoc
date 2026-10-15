@@ -247,6 +247,8 @@ def trace_rail_geometry(selected,profile):
         assert packed.stat().st_size==receipt['bytes']
         prefix='hw/soc/out/cloud-tx-tree-assembly/'
         inventory=[];hits={};methods={};models={};exported={};summary=None
+        source_dir=out/'rail-source';source_dir.mkdir()
+        geometry_files={'layout/nssoc_tx_tree4_core_v1.gds','layout/result.json','physical/lvs/result.lvsdb','wire96/native05/result.json','wire96/anchors08.json','wire96/device-locations01.json','wire96/rc03/pump_wires.mag','wire96/rc03/pump_wires.ext','wire96/rc03/pump_wires.res.ext'}
         patterns={s:re.compile(r'(?<![A-Za-z0-9_.])'+re.escape(s)+r'(?![A-Za-z0-9_.])',re.I)for s in native_nodes|names}
         with tarfile.open(packed,'r|gz')as archive:
             seen=set()
@@ -257,8 +259,10 @@ def trace_rail_geometry(selected,profile):
                 if rel=='composition-result.json':
                     data=archive.extractfile(item).read();assert hashlib.sha256(data).hexdigest()==receipt['summary_sha256'];summary=json.loads(data);continue
                 # Read the source package entirely on hosted runner. No geometrical or native model edits.
-                if not rel.startswith(('wire96/','binding96/','layout/')):continue
+                if not rel.startswith(('wire96/','binding96/','layout/'))and rel not in geometry_files:continue
                 data=archive.extractfile(item).read();h=hashlib.sha256(data).hexdigest()
+                if rel in geometry_files:
+                    dest=source_dir/rel;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
                 inventory.append(dict(path=rel,bytes=len(data),sha256=h))
                 if rel in receipt['outputs']:
                     assert h==receipt['outputs'][rel];exported[rel]=h
@@ -278,6 +282,13 @@ def trace_rail_geometry(selected,profile):
         assert exported==receipt['outputs'], 'Every original composition export must match'
         assert 'wire96/tree162-wire01.spice' in hits
         assert names<=set(n for m in hits['wire96/tree162-wire01.spice']['matches']for n in m['matched'])
+        assert all((source_dir/p).is_file()for p in geometry_files)
+        helper=out/'probe-native-rail-geometry.py';helper.write_text("# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport pya,json,hashlib\nfrom pathlib import Path\nB=Path(__file__).resolve().parent;S=B/'rail-source'\ng=pya.Layout();g.read(str(S/'layout/nssoc_tx_tree4_core_v1.gds'))\nl=pya.LayoutVsSchematic();l.read(str(S/'physical/lvs/result.lvsdb'))\nmeta=json.loads((S/'wire96/native05/result.json').read_text());mapping=meta['native_layer_mapping']\nanchors=json.loads((S/'wire96/anchors08.json').read_text());placement=json.loads((S/'layout/result.json').read_text())\nc=l.netlist().top_circuit();nets={n.name:n for n in c.each_net()};assert 'avss'in nets\nregions={m:{name:l.shapes_of_net(n,l.layer_by_index(int(index)),True)for name,n in nets.items()}for m,index in mapping.items()}\nfor m,index in mapping.items():\n original=pya.Region(g.top_cell().begin_shapes_rec(g.layer(int(m),0))).merged()\n recovered=pya.Region()\n for reg in regions[m].values():recovered+=reg\n assert(original^recovered.merged()).is_empty(),('Lost native layout metal',m)\ndef box(x1,y1,x2,y2):return pya.DBox(x1,y1,x2,y2).to_itype(g.dbu)\ndef nearby(area):\n q=pya.Region(area);result={}\n for m,byname in regions.items():\n  found={}\n  for name,reg in byname.items():\n   piece=(reg&q).merged()\n   if not piece.is_empty():found[name]=dict(area_dbu2=piece.area(),polygons=[str(p)for p in piece.each()])\n  result[m]=found\n return result\npoints=[]\nfor a in anchors['rows']:\n if a['device']not in(6,7)or a['terminal']!='E':continue\n assert a['native_net']=='avss'\n at=pya.Point(*a['point_dbu']);m=str(a['metal'])if 'metal'in a else '10'\n assert l.probe_net(l.layer_by_index(int(mapping['10'])),at).name=='avss'\n points.append(dict(anchor=a,window_um=[at.x*g.dbu-12,at.y*g.dbu-4,at.x*g.dbu+12,at.y*g.dbu+4],\n  surrounding_native_geometry=nearby(box(at.x*g.dbu-12,at.y*g.dbu-4,at.x*g.dbu+12,at.y*g.dbu+4))))\ncandidates=[]\nfor x in(800.4,803.0,806.875,810.0,813.0):\n for y in(320.24,327.44):\n  candidates.append(dict(x_um=x,y_um=y,one_um_square=nearby(box(x-.5,y-.5,x+.5,y+.5)),five_um_square=nearby(box(x-2.5,y-2.5,x+2.5,y+2.5))))\nheaders={}\nfor name in('pump_wires.mag','pump_wires.ext','pump_wires.res.ext'):\n headers[name]=(S/'wire96/rc03'/name).read_text().splitlines()[:14]\nresult=dict(status='PASS_UNCHANGED_GDS_NATIVE_NET_GEOMETRY_QUERY_NOT_REPAIR',dbu_um=g.dbu,placement=placement,\n native_mapping=mapping,terminal_points=points,candidate_landings=candidates,magic_headers=headers,\n return_corridor=nearby(box(790,312,820,530)),\n inputs={str(p.relative_to(B)):hashlib.sha256(p.read_bytes()).hexdigest()for p in S.rglob('*')if p.is_file()},geometry_changed=False)\n(B/'native-rail-geometry.json').write_text(json.dumps(result,indent=2)+'\\n');print(result['status'])\n")
+        import subprocess
+        with (out/'native-rail-geometry.log').open('w')as log:
+            code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'python',str(helper)],stdout=log,stderr=subprocess.STDOUT)
+        assert code==0, (out/'native-rail-geometry.log').read_text()[-6000:]
+        result['native_geometry_query']=json.loads((out/'native-rail-geometry.json').read_text())
         result.update(status='COMPLETE_SOURCE_BOUND_NATIVE_RAIL_PROVENANCE_NOT_LAYOUT_REPAIR',inventory=inventory,
             exact_matching_lines=hits,method_sources=methods,native_geometry_metadata=models,
             verified_composition_outputs=exported,
