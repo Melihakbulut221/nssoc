@@ -1,3 +1,13 @@
+## 2026-10-15 — exact VBIC terminal playback prepared on hosted runner
+
+ALL CLOUD; full goal OPEN; local workspace empty.
+
+New `tx-vbic-playback-cloud` scoped push starts a bounded diagnosis of the actual failing `xtree.xd0002` (Nx6 npn13g2, original125C/hbt_wcs). It restores exact compact strict source38763917040, preserves every original native terminal sample before1.2ns with17-digit binary64 roundtrip, and interpolates only the explicit final1.2ns endpoint. Collector/base/emitter/substrate playback is common across all four cases: TMAX0.125/0.0625ps, chgtol1e-14/1e-20C. Same original model/geometry/corner/OFF startup and source runtime; no model substitution or changed full-circuit oracle.
+
+It saves all terminal currents, native internal charges/capacitances and thermal-node voltage. All cases continue independently after native failure, retaining partial outputs and diagnostics. A green workflow is execution only; inspect `all_simulations_complete`, individual errors and comparison metrics. PWL playback introduces slope knots and removes feedback, so no physical/full-wave acceptance is possible from this isolated circuit. The next conclusion must distinguish model-local sensitivity from feedback/hidden-state effects.
+
+Mainchip38731744914 is terminal6h timeout with21NDR relaxations. Its process guard has600hosted passing tests; no expensive route restarted. Inspect exact saved guides/ODB and clock congestion before a new route hypothesis; preserve all original rule and timing gates.
+
 ## 2026-10-15 — NDR fail-fast validated; no active mainchip route
 
 ALL CLOUD. Local workspace empty. Full goal OPEN; prior turn is concrete progress, not an external blockage.
