@@ -791,17 +791,21 @@ def pfd_terminal_controls():
         else:raise AssertionError('Accepted malformed physical-terminal evidence: '+label)
     return dict(positive=1,rejected=failures,qualified_pex=False)
 
-def review_physical_pfd(profile='aoi4_rc'):
+def review_physical_pfd(profile='aoi4_rc', one_us=False):
     """Read exact completed native capture, reconstruct source, quantify PFD stress."""
     assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted waveform analysis only'
     assert profile in ('aoi4_rc','aoi4_d2_rc','actual_parent_d2_rc')
     actual_parent=profile=='actual_parent_d2_rc'
-    source_run=38672412524 if actual_parent else 38616009542 if profile=='aoi4_d2_rc' else 38610259816
-    source_head='8220cbf898d97d311b5438f2f799385d7aef7af7' if actual_parent else 'e0bd3db29bd0bcc3b840da4e0334419bff5c128a' if profile=='aoi4_d2_rc' else '9e56ae047a0e36725bac42daa4868c092c2da261'
+    assert not one_us or actual_parent
+    source_run=38674687038 if one_us else 38672412524 if actual_parent else 38616009542 if profile=='aoi4_d2_rc' else 38610259816
+    source_head='762c629d8e5124541fa40790348aad95b1a1c5b1' if one_us else '8220cbf898d97d311b5438f2f799385d7aef7af7' if actual_parent else 'e0bd3db29bd0bcc3b840da4e0334419bff5c128a' if profile=='aoi4_d2_rc' else '9e56ae047a0e36725bac42daa4868c092c2da261'
     out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
-    result=dict(status='RUNNING_PHYSICAL_PFD_NATIVE50_REVIEW',source_run=source_run,profile=profile,
+    result=dict(status='RUNNING_ACTUAL845_ONE_US_REVIEW' if one_us else 'RUNNING_PHYSICAL_PFD_NATIVE50_REVIEW',source_run=source_run,profile=profile,
         full_phy_accepted=False,acquisition_accepted=False,full_device_safety_accepted=False,
-        no_new_native=True,controls=pfd_terminal_controls())
+        no_new_native=True,controls=pfd_terminal_controls(),one_us=one_us)
+    if one_us:
+        result['controls']['acquisition']=acquisition_controls()
+        result['controls']['cycle_diagnosis']=acquisition_cycle_controls()
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def api(path):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
     save()
@@ -841,8 +845,12 @@ def review_physical_pfd(profile='aoi4_rc'):
                 assert len(matches)==1 and matches[0].isfile()
                 return tar.extractfile(matches[0]).read()
             assert member('result.json')==summary
-            assert capture['status']==('COMPLETE_ACTUAL845_PARENT_NATIVE50_CAPTURE_NOT_LOCK_SAFETY_OR_PVT_ACCEPTANCE' if actual_parent else 'COMPLETE_PHYSICAL_PFD_NATIVE50_FIXTURE_SCREEN_NOT_LOCK_OR_PARENT_LAYOUT_ACCEPTANCE')
-            assert capture['physical_pfd'] is True and capture['native_stop_s']==50e-9
+            assert capture['status']==('COMPLETE_ACTUAL845_ONE_US_SELECTED_PROBES_REQUIRES_LOCK_AND_SAFETY_REVIEW' if one_us else 'COMPLETE_ACTUAL845_PARENT_NATIVE50_CAPTURE_NOT_LOCK_SAFETY_OR_PVT_ACCEPTANCE' if actual_parent else 'COMPLETE_PHYSICAL_PFD_NATIVE50_FIXTURE_SCREEN_NOT_LOCK_OR_PARENT_LAYOUT_ACCEPTANCE')
+            if one_us:
+                assert capture['actual_parent_acquisition'] is True and capture['native_stop_s']==1e-6
+                assert capture['snapshot_stop_s'] is None and capture['comparison_stop_s'] is None
+            else:
+                assert capture['physical_pfd'] is True and capture['native_stop_s']==50e-9
             assert len(capture['inputs'])==35 and capture['native_off_flags']==102
             for item in capture['inputs'].values():
                 data=member(item['hosted_path']);assert len(data)==item['bytes'] and digest(data)==item['sha256']
@@ -868,7 +876,8 @@ def review_physical_pfd(profile='aoi4_rc'):
             circuit=member('circuit.cir').decode()
             roots=set(re.findall(r'(/[^"\s]+/cloud-pll-snapshot)/models/models',circuit));assert len(roots)==1
             base=roots.pop();body,control=bench.split('.control\n');setup=control.split('\nop\n',1)[0]
-            body=body.replace(MODEL_ROOT,base+'/models/models').replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
+            body=body.replace(MODEL_ROOT,base+'/models/models')
+            if not one_us:body=body.replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
             if actual_parent:
                 assert body.count('nssoc_parent865_wire_v1')==1
                 body=body.replace('nssoc_parent865_wire_v1','nssoc_parent845_wire_v1')
@@ -876,40 +885,86 @@ def review_physical_pfd(profile='aoi4_rc'):
             for n in ('psp103.osdi','psp103_nqs.osdi'):setup=setup.replace(OSDI_ROOT+'/'+n,base+'/frontend/'+n)
             original_save=next(l for l in setup.splitlines() if l.startswith('save '))
             vectors=original_save[5:].split();assert len(vectors)==24
-            vectors += [n for n in proof['physical_terminal_voltage_probes'] if n not in vectors]
+            if one_us:
+                logical=['xloop.clearb']+['xloop.x'+side+'.'+node
+                    for side in ('up','dn') for node in ('mq','mqb','clkb','qb')]
+                selected={n:proof['topology_naming']['nets'][n]['terminals'][0]['vector'] for n in logical}
+                selected['shared_intrinsic_bulk']='v(xloop.a_count_vss)'
+                assert selected==capture['selected_actual_pfd_logic_probes']
+                assert len(selected)==len(set(selected.values()))==10
+                assert set(selected.values())<=set(proof['physical_terminal_voltage_probes'])
+                vectors += [n for n in selected.values() if n not in vectors]
+                assert len(vectors)==34
+            else:
+                vectors += [n for n in proof['physical_terminal_voltage_probes'] if n not in vectors]
             assert vectors==capture['vectors']
             setup=setup.replace(original_save,'save '+' '.join(vectors))
             assert circuit=='* '+body+'.control\n'+setup+'\n.endc\n.end\n'
             assert digest(circuit.encode())==capture['relocated_deck_sha256']
             assert member('spinit')==b'set num_threads=1\n'
-            assert member('candidate.cir')==b'NSSOC source-bound PFD candidate50ns\n.include "circuit.cir"\n.control\nop\nwrite op.raw all\nrun candidate.raw\nquit\n.endc\n.end\n'
-            runs=capture['native_runs'];assert len(runs)==1 and runs[0]['script']=='candidate.cir'
+            capture_name='actual-acquisition' if one_us else 'candidate'
+            title='NSSOC actual845 original1us continuous capture' if one_us else 'NSSOC source-bound PFD candidate50ns'
+            assert member(capture_name+'.cir')==(title+'\n.include "circuit.cir"\n.control\nop\nwrite op.raw all\nrun '+capture_name+'.raw\nquit\n.endc\n.end\n').encode()
+            runs=capture['native_runs'];assert len(runs)==1 and runs[0]['script']==capture_name+'.cir'
             assert runs[0]['returncode']==0 and not runs[0]['diagnostics']
-            assert digest(member('candidate.cir.log'))==runs[0]['log_sha256']
+            assert digest(member(capture_name+'.cir.log'))==runs[0]['log_sha256']
             op=zero_source_operating_point(member('op.raw'),vectors)
             assert op==capture['zero_source_operating_point']
-            raw=member('candidate.raw')
+            raw=member(capture_name+'.raw')
+            if one_us:
+                assert digest(member('actual50-review.json'))=='9289b0d21c73efc89ef0b9acac30e43ef6212d66780f5d9bf2bccfefea599003'
+                prior_raw=member('actual50-prefix/candidate.raw')
+                assert len(prior_raw)==635182699 and digest(prior_raw)=='d7b7b81a0ed4c34bbaf3a51321943bf5734c43e4d23a819d045d065d180cfd43'
+                unpack(BASE+'cloud-migration-20261012-000/batch-000007.tar.gz',
+                    FINITE_SHA,669884,out/'finite-source',{FINITE_ROOT+'result.json':
+                    (943771,'ffe86baa2ddfc6a0eb47214adb03360caaeb63e2da9aec199813f01d4b8ba855')})
+                original_inputs=json.loads((out/'finite-source/result.json').read_text())['inputs']
+                expected_inputs={k:v for k,v in original_inputs.items()
+                    if k.startswith(MODEL_ROOT+'/') or k.startswith(OSDI_ROOT+'/')}
+                assert len(expected_inputs)==35 and set(expected_inputs)==set(capture['inputs'])
+                for name,row in expected_inputs.items():
+                    for key in ('sha256','bytes'):assert row[key]==capture['inputs'][name][key]
+                runtime=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-input-20261013.json').read_text())['native_runtime']
+                assert runtime['executable_sha256']==capture['executable_sha256']
         packed.unlink()
-        meta_capture=capture['captures']['candidate.raw']
+        meta_capture=capture['captures'][capture_name+'.raw']
         assert len(raw)==meta_capture['bytes'] and digest(raw)==meta_capture['sha256']
         names,values,meta=decode_prefix(raw)
         assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows']
         assert all(meta_capture[k]==v for k,v in meta.items())
         assert set(names)=={'time',*vectors} and len(names)==len(vectors)+1
-        assert len(values)>150000 and abs(values[-1,0]-50e-9)<1e-15
+        assert len(values)>(3000000 if one_us else 150000)
+        assert values[0,0]==0 and abs(values[-1,0]-(1e-6 if one_us else 50e-9))<1e-15
+        assert np.isfinite(values).all() and np.all(np.diff(values[:,0])>0)
         assert np.max(np.diff(values[:,0]))<=3.125e-13*1.00001
-        diagnosis=pfd_terminal_diagnosis(parent,names,values)
-        if actual_parent:assert diagnosis==capture['pfd_terminal_measurements']
+        diagnosis=None if one_us else pfd_terminal_diagnosis(parent,names,values)
+        if actual_parent and not one_us:assert diagnosis==capture['pfd_terminal_measurements']
         columns={n:values[:,i] for i,n in enumerate(names)};t=columns['time']
         clear=columns[proof['clearb_vector']];events={}
         for n in ('v(reference)','v(fb)'):
             edges=rising(t,columns[n],1.25)
             events[n]=[dict(time_s=float(e),clearb_v=float(np.interp(e,t,clear)),
                 reset_asserted_at_1p25_v=bool(np.interp(e,t,clear)<1.25)) for e in edges if e>12e-9]
-        assert events==capture['clock_events'],'Captured reset-mask summary disagrees with actual waveform'
-        for n in vectors:
-            assert float(columns[n].min())==capture['signals'][n]['minimum']
-            assert float(columns[n].max())==capture['signals'][n]['maximum']
+        if one_us:
+            pn,pv,pm=decode_prefix(prior_raw)
+            assert pm['header_matches_observed'] and pm['payload_has_only_complete_rows']
+            prior_selected=np.column_stack([pv[:,pn.index(n)] for n in names])
+            stop=np.searchsorted(t,50.001e-9,side='right')
+            comparison=compare((names,prior_selected),(names,values[:stop]))
+            assert comparison==capture['unchanged_actual50_prefix'] and comparison['passed']
+            independent=acquisition_analyzer()(columns)
+            result.update(independent=independent,
+                selected_probe_acquisition_passed=independent['passed'],
+                unchanged_actual50_prefix=comparison,
+                cycle_diagnosis=acquisition_cycle_diagnosis(columns,independent),
+                complete_selected_probe_ranges={n:dict(minimum_v=float(columns[n].min()),
+                    maximum_v=float(columns[n].max())) for n in vectors})
+            del prior_raw,pv,prior_selected
+        else:
+            assert events==capture['clock_events'],'Captured reset-mask summary disagrees with actual waveform'
+            for n in vectors:
+                assert float(columns[n].min())==capture['signals'][n]['minimum']
+                assert float(columns[n].max())==capture['signals'][n]['maximum']
         if actual_parent:
             response_windows=[]
             for clock,output in [('v(reference)','v(down)'),('v(fb)','v(up)')]:
@@ -921,6 +976,7 @@ def review_physical_pfd(profile='aoi4_rc'):
                     found=output_edges[(output_edges>=edge)&(output_edges<end)]
                     before=float(np.interp(max(0.,edge-3.125e-13),t,columns[output]))
                     response_windows.append(dict(clock=clock,output=output,clock_edge_s=float(edge),window_end_s=float(end),
+                        ends_at_next_clock=bool(i+1<len(clock_edges)),
                         clearb_v=float(np.interp(edge,t,clear)),output_before_edge_v=before,
                         output_already_asserted_at_1p25_v=before>=1.25,
                         next_output_rise_s=float(found[0])if len(found)else None,
@@ -931,19 +987,24 @@ def review_physical_pfd(profile='aoi4_rc'):
                 reset_masked_clock_edges=sum(e['reset_asserted_at_1p25_v']for rows in events.values()for e in rows),
                 missing_output_response_windows=sum(r['no_output_response_before_next_clock']for r in response_windows),
                 measured_window_s=[0.,float(t[-1])],logic_observation_threshold_v=1.25,
-                scope='Finite50ns observed PFD response, including already-asserted outputs; not a declared lock, recovery-margin, safety or serialPHY qualification.',
+                scope=('Full1us' if one_us else 'Finite50ns')+' observed PFD responses including already-asserted outputs. Final clock windows may be truncated at capture end. These observations alone are not lock/recovery-margin/safety or serialPHY qualification.',
                 acquisition_accepted=False,full_phy_accepted=False)
-            for n in vectors:
-                assert rising(t,columns[n],1.25).tolist()==capture['signals'][n]['rising_edges_at_1p25_v_s']
-                assert rising(t,-columns[n],-1.25).tolist()==capture['signals'][n]['falling_edges_at_1p25_v_s']
+            if not one_us:
+                for n in vectors:
+                    assert rising(t,columns[n],1.25).tolist()==capture['signals'][n]['rising_edges_at_1p25_v_s']
+                    assert rising(t,-columns[n],-1.25).tolist()==capture['signals'][n]['falling_edges_at_1p25_v_s']
         result.update(status='COMPLETE_ACTUAL845_SOURCE_RAW_AND_PFD235_REVIEW_NOT_LOCK_SAFETY_OR_PHY_ACCEPTANCE' if actual_parent else 'COMPLETE_SOURCE_BOUND_PFD235_TERMINAL_REVIEW_NOT_SAFETY_OR_PHY_ACCEPTANCE',
             source_parent_sha256=digest(parent.encode()),source_macro_sha256=None if actual_parent else digest(macro.encode()),
             actual_parent_layout_rc=actual_parent,
             raw_sha256=digest(raw),capture=meta,diagnosis=diagnosis,
-            source_clock_events=capture['clock_events'],source_signals=capture['signals'],
+            source_clock_events=events,source_signals=capture.get('signals'),
             source_fixture_scope=proof['scope'])
+        if one_us:
+            result.update(status=('PASS' if independent['passed'] else 'FAIL')+'_ACTUAL845_ORIGINAL_ONE_US_ACQUISITION_GATES_NOT_PHY_ACCEPTANCE',
+                phase_shift_fitted=False,full_device_safety_accepted=False,acquisition_accepted=False,
+                scope='Actual845 parent, complete1us34selectedprobes, source and prefix reconstructed. Frozen original100ppm/50ps/no-slip/VCTRL gates, final800-900/900-1000ns windows. Nominal selected-probe acquisition screen only; no full845-device safety, qualified substrate/RF, timestep/PVT/CDR/jitter/serialPHY or chip acceptance.')
     except BaseException as error:
-        result.update(status='FAILED_PHYSICAL_PFD_NATIVE50_REVIEW',error=repr(error));save();raise
+        result.update(status='FAILED_ACTUAL845_ONE_US_REVIEW' if one_us else 'FAILED_PHYSICAL_PFD_NATIVE50_REVIEW',error=repr(error));save();raise
     save();print(result['status'],flush=True)
 
 
@@ -2679,6 +2740,7 @@ def main():
     parser.add_argument('--review-physical-pfd',action='store_true')
     parser.add_argument('--review-physical-pfd-drive2',action='store_true')
     parser.add_argument('--review-actual-pfd-parent',action='store_true')
+    parser.add_argument('--review-actual-parent-acquisition',action='store_true')
     parser.add_argument('--recover-parent-methods',action='store_true')
     parser.add_argument('--recover-parent-planes',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
@@ -2703,6 +2765,9 @@ def main():
     if args.recover_parent_methods:
         assert not any([args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         recover_parent_methods();return
+    if args.review_actual_parent_acquisition:
+        assert not any([args.review_actual_pfd_parent,args.pfd_candidate,args.self_test,args.acquisition,args.actual_parent_acquisition])
+        review_physical_pfd('actual_parent_d2_rc',one_us=True);return
     if args.review_actual_pfd_parent:
         assert not any([args.review_physical_pfd,args.review_physical_pfd_drive2,args.pfd_candidate,args.self_test,args.acquisition])
         review_physical_pfd('actual_parent_d2_rc');return
