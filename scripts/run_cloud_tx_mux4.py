@@ -562,6 +562,17 @@ def interface_screen(t, volt, contract, stage):
         passed=bool((margin>=.15).all() and (cm>=1.8).all() and (cm<=2.05).all()))
 
 
+def prestage_bias_currents(t,volt,values,contract):
+    result={};active=t>=START
+    if contract.get('pre_bias') in ('native_res','native_res_tc','output_feedback','output_feedback_tc'):
+        for reference in contract.get('references',['ra','rb']):
+            other='avdd' if contract['pre_bias'] in ('native_res','native_res_tc') else reference
+            assert np.max(np.abs(volt('prefeed_'+reference)-volt(other))) < 1e-12
+            current=values[f'i(vprebias_{reference})'][active]
+            result[reference]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
+    return result
+
+
 def review(run, contract):
     vectors = contract['vectors']
     op = np.loadtxt(run/'op.dat', skiprows=1)
@@ -595,12 +606,7 @@ def review(run, contract):
             assert np.max(np.abs(volt(ref['feed'])-volt('avdd'))) < 1e-12
             current=values['i('+ref['probe']+')'][active]
             bias_current[ref['node']]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
-    if contract.get('pre_bias') in ('native_res','output_feedback','output_feedback_tc'):
-        for reference in contract.get('references',['ra','rb']):
-            other='avdd' if contract['pre_bias']=='native_res' else reference
-            assert np.max(np.abs(volt('prefeed_'+reference)-volt(other))) < 1e-12
-            current=values[f'i(vprebias_{reference})'][active]
-            bias_current[reference]=dict(minimum=float(current.min()),median=float(np.median(current)),maximum=float(current.max()))
+    bias_current.update(prestage_bias_currents(t,volt,values,contract))
     devices = {}
     for name, row in contract['hbt'].items():
         c,b,e,_ = (volt(n) for n in row['terminals'])

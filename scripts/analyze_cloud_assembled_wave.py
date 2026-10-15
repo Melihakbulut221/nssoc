@@ -234,17 +234,22 @@ def main():
     parser.add_argument('--compare-timestep',action='store_true')
     parser.add_argument('--step-pair',choices=('original','fine'),default='original')
     parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2'),default='default')
+    parser.add_argument('--condition',choices=('hot_low','hot_low_res_bcs','cold_high_res_wcs','cold_high_hbt_wcs'),default='hot_low')
+    parser.add_argument('--bias-profile',choices=('native_res','native_res_tc'),default='native_res')
     args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
     selected=spec if args.placement_profile=='baseline' else spec['placement_variants'][args.placement_profile]
+    if args.bias_profile!='native_res':
+        assert not args.compare_timestep
+        selected=dict(selected,loaded_studies=selected['bias_candidates'][args.bias_profile]['loaded_studies'])
     if args.compare_timestep:
         compare_timesteps(selected,args.placement_profile,args.step_pair,args.solver_profile);return
-    cases=[(s,c) for s in selected['loaded_studies']for c in s['cases']if c['condition']=='hot_low' and c['mode']=='wire' and c['fault']=='none']
+    cases=[(s,c) for s in selected['loaded_studies']for c in s['cases']if c['condition']==args.condition and c['mode']=='wire' and c['fault']=='none' and c.get('pre_bias','native_res')==args.bias_profile and c.get('solver_profile','default')==args.solver_profile]
     assert len(cases)==1
     study,record=cases[0]
     out=ROOT/'hw/soc/out/cloud-tx-tree-assembly';out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING',placement_profile=args.placement_profile,source_run=study['run'],source=record,
+    result=dict(status='RUNNING',placement_profile=args.placement_profile,condition=args.condition,bias_profile=args.bias_profile,source_run=study['run'],source=record,
         native_acceptance_changed=False,qualified_pex=False,serial_phy_complete=False)
     try:
         packed=out/'wave-source.tar.gz';fetch(record['url'],record['sha256'],packed)
@@ -285,7 +290,7 @@ def main():
         for key in ['signals','interfaces','hbt_devices','mos_devices','failed_hbts','failed_mos','all_engineering_gates_passed']:
             assert fresh[key]==prior['review'][key],key
         t,values,transport=read_streamed_wave(out/'native/wave.raw',contract['vectors'],mux.STOP,contract['condition']['step_ps']*1e-12)
-        def v(node):return values['v('+node+')']
+        def v(node):return np.zeros_like(t) if node=='0' else values['v('+node+')']
         delay=transition_table(t,v('sp')-v('sn'),v('mp')-v('mn'),v('op')-v('on'),contract['bits'])
         failed=[]
         for index,bit in enumerate(contract['bits']):
@@ -300,6 +305,20 @@ def main():
                     trace=[dict(time_s=float(at+dt*1e-12),offset_from_original_sample_ps=dt,
                         volts={n:float(np.interp(at+dt*1e-12,t,v(n)))for n in nodes})for dt in (-10,-5,0,5,10)]))
         assert len(failed)==record['signals']['below_100mv_samples']
+        # Full native extrema, without shifting original review/sample windows.
+        device_extrema={};active=np.flatnonzero(t>=mux.START)
+        for name in fresh['failed_hbts']:
+            row=contract['hbt'][name];collector,base,emitter,substrate=row['terminals']
+            ce=v(collector)-v(emitter);be=v(base)-v(emitter)
+            current=values['@q.'+name+'.qnpn13g2[ic]']/row['nx']
+            points=dict(minimum_post_vce=int(active[np.argmin(ce[active])]),
+                maximum_whole_abs_vbe=int(np.argmax(abs(be))),maximum_whole_abs_current=int(np.argmax(abs(current))))
+            contexts=list(dict.fromkeys([*row['terminals'],'avdd','clkbias','ra','rb','mr','sap','san','sbp','sbn','sp','sn']))
+            device_extrema[name]=dict(native_terminals=row['terminals'],emitters=row['nx'],events={label:dict(
+                time_s=float(t[index]),vce_v=float(ce[index]),vbe_v=float(be[index]),ic_per_emitter_a=float(current[index]),
+                volts={n:float(v(n)[index])for n in contexts},
+                nearby=[dict(time_s=float(t[j]),vce_v=float(ce[j]),vbe_v=float(be[j]),ic_per_emitter_a=float(current[j]))
+                    for j in range(max(0,index-2),min(len(t),index+3))])for label,index in points.items()})
         # Read the actual distributed-wire capacitor burden and a physical
         # resistor-path upper bound between stage output and each final base.
         rows=statements((out/'wire96/tree162-wire01.spice').read_text())
@@ -363,7 +382,7 @@ def main():
                 path_resistance_upper_bounds_ohm={r['wire_anchor']:nx.shortest_path_length(graph,source,r['wire_anchor'],weight='resistance')for r in sinks},
                 qualification='DC resistor path upper bounds and exact exported lumped C totals only; no RF/effective-resistance or substrate qualification.')
         result.update(status='COMPLETE_ASSEMBLED_SOURCE_BOUND_FAILURE_AND_INTERMACRO_DIAGNOSIS_NOT_ACCEPTANCE',
-            original_review_preserved=True,failed_samples=failed,transition_delays=delay,intermacro=intermacro,
+            original_review_preserved=True,failed_samples=failed,failed_hbt_native_extrema=device_extrema,transition_delays=delay,intermacro=intermacro,
             supply_resistor_path_upper_bounds=power,wrong_native_conductor_control_rejected=wrong_conductor_rejected,
             supply_qualification='Path bounds only, not solved voltage drops or effective resistance. Existing captured device terminal voltages and currents retain their original review; no uncaptured rail voltage inferred.',
             native_bias_current_a=fresh['native_bias_current_a'],clock_common_mode_range_v=fresh['clock_common_mode_range_v'],
