@@ -228,10 +228,72 @@ def compare_timesteps(selected, profile, step_pair='original', solver_profile='d
         print(json.dumps({k:result[k]for k in ('status','placement_profile')}),flush=True)
 
 
+
+def trace_rail_geometry(selected,profile):
+    """Recover native extraction provenance before touching any ground geometry."""
+    import re
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    out=ROOT/'hw/soc/out/cloud-tx-tree-assembly';out.mkdir(parents=True,exist_ok=False)
+    receipt=selected['verified_composition'];diagnosis=selected['ground_path_diagnosis']
+    targets=[r for r in diagnosis['supply_resistor_path_upper_bounds']['avss']if r['device']in (6,7)and r['terminal']=='E']
+    assert len(targets)==2 and diagnosis['original_review_preserved']
+    names={r['name']for t in targets for e in t['largest_native_segments']for r in e['native_resistors']}
+    nodes={n for t in targets for e in t['largest_native_segments']for n in e['nodes']}
+    native_nodes=nodes|{n.removeprefix('P_')for n in nodes}
+    result=dict(status='RUNNING',placement_profile=profile,source=receipt,source_diagnosis_run=diagnosis['run'],
+        targets=targets,accepted=False,geometry_changed=False,qualified_pex=False,serial_phy_complete=False)
+    try:
+        packed=out/'source.tar.gz';fetch(receipt['url'],receipt['sha256'],packed)
+        assert packed.stat().st_size==receipt['bytes']
+        prefix='hw/soc/out/cloud-tx-tree-assembly/'
+        inventory=[];hits={};methods={};models={};exported={};summary=None
+        patterns={s:re.compile(r'(?<![A-Za-z0-9_.])'+re.escape(s)+r'(?![A-Za-z0-9_.])',re.I)for s in native_nodes|names}
+        with tarfile.open(packed,'r|gz')as archive:
+            seen=set()
+            for item in archive:
+                assert item.name not in seen;seen.add(item.name)
+                if not item.isfile()or not item.name.startswith(prefix):continue
+                rel=item.name[len(prefix):]
+                if rel=='composition-result.json':
+                    data=archive.extractfile(item).read();assert hashlib.sha256(data).hexdigest()==receipt['summary_sha256'];summary=json.loads(data);continue
+                # Read the source package entirely on hosted runner. No geometrical or native model edits.
+                if not rel.startswith(('wire96/','binding96/','layout/')):continue
+                data=archive.extractfile(item).read();h=hashlib.sha256(data).hexdigest()
+                inventory.append(dict(path=rel,bytes=len(data),sha256=h))
+                if rel in receipt['outputs']:
+                    assert h==receipt['outputs'][rel];exported[rel]=h
+                if not rel.endswith(('.py','.tcl','.json','.ext','.spice','.sp','.cir','.res','.sim','.nodes','.coords','.txt','.log')):continue
+                try:text=data.decode('utf-8')
+                except UnicodeDecodeError:continue
+                lines=text.splitlines();matches=[]
+                for i,line in enumerate(lines):
+                    matched=[n for n,pat in patterns.items()if pat.search(line)]
+                    if matched:matches.append(dict(line=i+1,matched=matched,text=line))
+                if matches:hits[rel]=dict(sha256=h,line_count=len(lines),matches=matches)
+                if rel.endswith(('run-rc01.py','compose-tree.py','compose49.py','probe01.py')):
+                    methods[rel]=text
+                if rel in ('wire96/native05/result.json','wire96/device-locations01.json','wire96/rc03/result.json'):
+                    models[rel]=json.loads(text)
+        assert summary is not None and summary['status']==receipt['status']
+        assert exported==receipt['outputs'], 'Every original composition export must match'
+        assert 'wire96/tree162-wire01.spice' in hits
+        assert names<=set(n for m in hits['wire96/tree162-wire01.spice']['matches']for n in m['matched'])
+        result.update(status='COMPLETE_SOURCE_BOUND_NATIVE_RAIL_PROVENANCE_NOT_LAYOUT_REPAIR',inventory=inventory,
+            exact_matching_lines=hits,method_sources=methods,native_geometry_metadata=models,
+            verified_composition_outputs=exported,
+            qualification='Exact archive bytes and native resistor/node labels; coordinates/layer semantics still require interpretation and native binding checks before any geometry repair.')
+        packed.unlink()
+    except BaseException as error:
+        result.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    finally:
+        (out/'rail-geometry-result.json').write_text(json.dumps(result,indent=2)+'\n')
+        print(json.dumps({k:result[k]for k in ('status','placement_profile','geometry_changed')}),flush=True)
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
     parser.add_argument('--compare-timestep',action='store_true')
+    parser.add_argument('--trace-rail-geometry',action='store_true')
     parser.add_argument('--step-pair',choices=('original','fine'),default='original')
     parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2','breakpoint_1as'),default='default')
     parser.add_argument('--condition',choices=('hot_low','hot_low_res_bcs','cold_high_res_wcs','cold_high_hbt_wcs'),default='hot_low')
@@ -240,6 +302,9 @@ def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
     selected=spec if args.placement_profile=='baseline' else spec['placement_variants'][args.placement_profile]
+    if args.trace_rail_geometry:
+        assert not args.compare_timestep and args.bias_profile=='native_res'
+        trace_rail_geometry(selected,args.placement_profile);return
     if args.bias_profile!='native_res':
         assert not args.compare_timestep
         selected=dict(selected,loaded_studies=selected['bias_candidates'][args.bias_profile]['loaded_studies'])
