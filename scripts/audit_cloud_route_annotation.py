@@ -44,11 +44,12 @@ def native():
     import odb
     d=odb.dbDatabase.create();odb.read_db(d,str(OUT/'routed.odb'));b=d.getChip().getBlock()
     assert len(b.getInsts())==113791 and len(b.getNets())==113863
-    nets={n.getName():n for n in b.getNets()};ids={n.getId():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
+    nets={n.getName():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
     def resolve(token,name):
         assert re.fullmatch(r'\*\d+',token),('Expected native name map token',token)
-        ident=int(token[1:]);assert ident in ids,('Unknown native net id',ident)
-        net=ids[ident];chosen=net.getName();expected=spef_net_name(chosen)
+        ident=int(token[1:]);assert ident>0
+        net=odb.dbNet.getNet(b,ident);assert net,('Unknown native net id',ident)
+        chosen=net.getName();assert chosen in nets;expected=spef_net_name(chosen)
         assert name==expected,('Native net id/name mismatch',ident,chosen,name,expected)
         aliases['native_id_and_exact_writer_name']+=1;return chosen
     with (OUT/'actual-route.nominal.spef').open() as stream:

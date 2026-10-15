@@ -1,3 +1,7 @@
+## Native annotation binding follow-up
+
+Second classifier38815455579/job116698864598 failed because Python bindings omit inheriteddbObject.getId, after all five exact SPEF naming controls passed. Evidence remains in cloud-results-38815455579-1-route-annotation. Use exposed staticdbNet.getNet(block,id) from pinneddb.h to translate the actual SPEF net id, then require the same exact forward-escaped native name. This preserves both checks and does not waive any net. Own-path push launches corrected classifier. Other long native jobs remain live; no duplicates.
+
 ## Exact native SPEF name handling correction
 
 Annotation38814839951/job116696793924 failed before classifying drivers: reverse-unescaping discarded literal bracket escapes in ODB names. Failed summary69adfcbf... and all source evidence retained. Pinned native extSpef.cpp writes net ids unchanged and preserves existing escapes; classifier now matches that exact net id AND native forward-escaped name. No loaded-net exception or parasitic modification. Own-workflow push launches one corrected diagnostic; inspect completion before claiming coverage.

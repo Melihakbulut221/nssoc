@@ -34,7 +34,7 @@ jobs:
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Compile exact routed extraction controller
         run: python3 -m py_compile scripts/audit_cloud_route_annotation.py
-      - name: Extract fresh nominal RC and measure unchanged original timing constraints
+      - name: Classify native annotation against original routed ODB and SPEF
         timeout-minutes: 240
         run: python3 scripts/audit_cloud_route_annotation.py
       - name: Preserve exact sources, extracted RC and native timing observations
@@ -66,3 +66,4 @@ jobs:
           print(r['classification'])
           PYCODE
 # Exact native net ids and writer escaping preserve literal bracket names.
+# Use exposed dbNet.getNet(block,id); inherited dbObject.getId is not wrapped.
