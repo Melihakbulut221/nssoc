@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     parser.add_argument('--prepared-layout', action='store_true',
                         help='Consume the verified layout generated in this same hosted job')
+    parser.add_argument("--boundary-pins", action="store_true", help="Consume only a pinned passing boundary-pin geometry")
     args = parser.parse_args()
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())
     runtime = json.loads((ROOT / 'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
@@ -27,11 +28,11 @@ def main():
         receipt = dict(prepared_layout_result_sha256=sha(out / 'result.json'),
                        job_commit=os.environ.get('GITHUB_SHA'))
     else:
-        receipt = (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['variants'][args.variant]
+        receipt = (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['boundary_variants' if args.boundary_pins else 'variants'][args.variant]
         assert not out.exists()
     out.parent.mkdir(parents=True, exist_ok=True)
     archive = out.parent / 'cloud-extraction-input.tar.gz'
-    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, adopted=False,
+    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, adopted=False,
                   qualified_pex=False, serial_phy_complete=False,
                   scope='Real wire geometry and native distributed RC graph; electrical waveform acceptance and RF qualification remain required.',
                   physical_source=receipt, runtime_source=runtime, method_source=spec)
@@ -53,6 +54,7 @@ def main():
                 tar.extractall(ROOT, filter='data')
             archive.unlink()
         physical = json.loads((out / 'result.json').read_text())
+        assert physical.get('boundary_pins', False) is args.boundary_pins
         assert physical['variant'] == args.variant
         assert physical.get('circuit_profile','baseline') == args.circuit_profile
         assert physical['status'] == 'PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
