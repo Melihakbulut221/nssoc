@@ -1,3 +1,11 @@
+## 2026-10-15 observed startup trajectories; nonlinear accuracy isolation
+
+Read-only waveform diagnosis38791022510 completed. Original coarse/fine differences reproduce exactly, first exceeding1mV at xtree.n_i50 around0.505841ns. Native supply/data drives differ only at floating-point roundoff. The plotted peak regions show smoothly separated startup trajectories; the1mV whole-wave failure is retained. No evidence here proves a PDK defect or permits discarding startup.
+
+A new `newton_accuracy` hosted study changes only reltol/abstol/vntol (1e-8/1e-15/1e-10 and1e-10/1e-17/1e-12), with original baseline controls at both TMAX0.125/0.0625ps. Keep integration trap/order2, trtol1, itl4=100, minbreak1e-18, chgtol1e-14, all sources/devices and original comparison limits. Native option readback and changed-value negative controls are mandatory. This tests nonlinear iteration acceptance separately from the already-rejected charge refinement. Every abort is preserved; no candidate is adopted merely because the workflow succeeds.
+
+Mainchip38788529905 remains live. All work stays cloud-only and all three full-goal requirements remain OPEN.
+
 ## 2026-10-15 coupled charge bracket rejects charge tolerance as fix
 
 Run38789786404 completed diagnosis: default and1e-16 both retain~8.90685mV coarse/fine voltage difference. At0.0625ps, successive charge1e-16/1e-18/1e-19 changes are below0.6uV, while1e-18/1e-19 coarse cases abort in xtree.xd0006. Original-charge startup prefix reproduces original full capture. Thus intermediate charge tightening is not a fix; keep all aborts and failed1mV comparison.

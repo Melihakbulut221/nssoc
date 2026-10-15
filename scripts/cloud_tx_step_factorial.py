@@ -16,7 +16,7 @@ import time
 import numpy as np
 from run_cloud_tx_operating_point import fetch, sha
 from cloud_tx_stream import read_streamed_wave
-from run_cloud_tx_mux4 import verify_solver_options, native_diagnostics
+from run_cloud_tx_mux4 import verify_solver_options, native_diagnostics, solver_options, NEWTON_PROFILES
 
 ROOT = Path(__file__).resolve().parents[1]
 STOP = 1.2e-9
@@ -86,6 +86,15 @@ def charge_deck(deck, tolerance):
     return deck
 
 
+def newton_deck(deck, profile):
+    assert profile in NEWTON_PROFILES
+    original=solver_options(PROFILE);replacement=solver_options(profile)
+    assert deck.count(original)==1
+    changed=deck.replace(original,replacement)
+    assert changed.replace(replacement,original)==deck
+    return changed
+
+
 def model_source_record(raw, digest):
     assert hashlib.sha256(raw).hexdigest()==digest
     try:
@@ -118,6 +127,17 @@ def controls():
     for raw in (b'ASCII model',b'micro \xb5m', 'micro µm'.encode('utf-8')):
         source=model_source_record(raw,hashlib.sha256(raw).hexdigest())
         assert source['text'].encode(source['encoding'])==raw
+    for profile,values in NEWTON_PROFILES.items():
+        original_options=solver_options(PROFILE)
+        assert newton_deck(original_options+'\n.control\n',profile).replace(solver_options(profile),original_options)==original_options+'\n.control\n'
+        numeric=dict(maxord=2,trtol=1,itl4=100,**values)
+        log='NSSOC_SOLVER_OPTIONS_BEGIN\n'+'\n'.join(f'{k} = {v:g}' for k,v in numeric.items())+'\nmethod = trap\nNSSOC_NATIVE_MINBREAK 1e-18\nNSSOC_SOLVER_OPTIONS_END\n'
+        assert verify_solver_options(log,profile)['numeric_options']==numeric
+        for key in values:
+            bad=log.replace(f'{key} = {values[key]:g}',f'{key} = 1')
+            try:verify_solver_options(bad,profile)
+            except AssertionError:pass
+            else:raise AssertionError('Changed native Newton option accepted')
     rejected=[]
     for name,bad in [('charge_missing',''),('charge_duplicate','chgtol (charge) = 1e-20\n'*2),('charge_wrong','chgtol (charge) = 1e-14\n')]:
         try:charge_readback(bad,1e-20)
@@ -216,11 +236,15 @@ def main(study):
         cases=[(*case,None) for case in cases]
         if study in ('charge_tolerance','charge_bracket'):cases=[(STEPS[0],step,'trap','sparse',charge) for charge in (None,1e-20) for step in STEPS]
         if study=='charge_bracket':cases=[(STEPS[0],step,'trap','sparse',charge) for charge in (None,1e-16,1e-18,1e-19) for step in STEPS]
+        if study=='newton_accuracy':cases=[(STEPS[0],step,method,'sparse',None) for method in ('trap',*NEWTON_PROFILES) for step in STEPS]
         for a,b,method,backend,charge in cases:
                 label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')+('-klu' if backend=='klu' else '')+(f'-charge{int(round(-np.log10(charge)))}' if charge is not None else '')
-                profile = 'tight_gear2' if method=='gear' else PROFILE
+                if method in NEWTON_PROFILES:label+='-'+method
+                profile = method if method in NEWTON_PROFILES else ('tight_gear2' if method=='gear' else PROFILE)
+                analysis_method='trap' if method in NEWTON_PROFILES else method
                 case=out/label;case.mkdir()
-                deck=replace_analysis(original,a,b,method,backend)
+                deck=replace_analysis(original,a,b,analysis_method,backend)
+                if method in NEWTON_PROFILES:deck=newton_deck(deck,method)
                 if study in ('charge_tolerance','charge_bracket'):deck=charge_deck(deck,charge)
                 (case/'bench.cir').write_text(deck)
                 shutil.copyfile(source/'native/spinit',case/'spinit')
@@ -234,7 +258,7 @@ def main(study):
                 with (case/'run.log').open('w') as log:
                     proc=subprocess.run([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=case,env=env,
                         stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits,timeout=1800)
-                row=dict(tstep_s=a,tmax_s=b,tstop_s=STOP,method=method,matrix_solver=backend,returncode=proc.returncode,elapsed_s=time.monotonic()-started,accepted=False)
+                row=dict(tstep_s=a,tmax_s=b,tstop_s=STOP,method=analysis_method,newton_profile=(method if method in NEWTON_PROFILES else None),matrix_solver=backend,returncode=proc.returncode,elapsed_s=time.monotonic()-started,accepted=False)
                 result['cases'][label]=row
                 log=(case/'run.log').read_text(errors='replace')
                 row['diagnostics']=native_diagnostics(log,profile)
@@ -244,6 +268,7 @@ def main(study):
                 option_text=row['solver_options']['native_text']
                 assert ('KLU' in option_text) if backend=='klu' else ('Sparse 1.3' in option_text)
                 row['matrix_solver_native_readback_verified']=True
+                if study=='newton_accuracy':row['charge_tolerance']=charge_readback(option_text,1e-14)
                 if study in ('charge_tolerance','charge_bracket'):
                     row['charge_tolerance']=charge_readback(option_text,charge if charge is not None else 1e-14)
                     model_dump=case/'native-models.txt'
@@ -257,7 +282,7 @@ def main(study):
                 row['native_off_flags_count']=len(flags)
                 op=np.loadtxt(case/'op.dat',skiprows=1)
                 assert op.size==len(contract['vectors'])+1 and np.isfinite(op).all() and abs(op).max()<=1e-10
-                if study=='charge_bracket' and (proc.returncode!=0 or row['diagnostics']):
+                if study in ('charge_bracket','newton_accuracy') and (proc.returncode!=0 or row['diagnostics']):
                     row['complete']=False
                     row['error']='Native simulation failed; preserve partial raw/log without treating it as a complete capture'
                     print(json.dumps(dict(case=label,complete=False,diagnostics=row['diagnostics'])),flush=True)
@@ -301,9 +326,16 @@ def main(study):
                 for a,b in ((14,16),(16,18),(18,19)):
                     pairs.append((f'charge{a}_to_{b}_at_{step}',f'tstep0.125-tmax{step}'+('' if a==14 else '-charge'+str(a)),
                         f'tstep0.125-tmax{step}-charge{b}'))
+        if study=='newton_accuracy':
+            pairs=[('default_newton_125_to_62p5','tstep0.125-tmax0.125','tstep0.125-tmax0.0625')]
+            for profile in NEWTON_PROFILES:
+                pairs.append((profile+'_125_to_62p5','tstep0.125-tmax0.125-'+profile,'tstep0.125-tmax0.0625-'+profile))
+            for step in ('0.125','0.0625'):
+                for before,after in (('', '-newton_1e8'),('-newton_1e8','-newton_1e10')):
+                    pairs.append((f'accuracy{before}_to{after}_at_{step}',f'tstep0.125-tmax{step}'+before,f'tstep0.125-tmax{step}'+after))
         result['comparisons']={name:wave_difference(captures[a],captures[b],contract['vectors']) for name,a,b in pairs if a in captures and b in captures}
         result['unavailable_comparisons']=[dict(name=name,missing_captures=[k for k in (a,b) if k not in captures]) for name,a,b in pairs if a not in captures or b not in captures]
-        if study!='charge_bracket':assert not result['unavailable_comparisons']
+        if study not in ('charge_bracket','newton_accuracy'):assert not result['unavailable_comparisons']
         result['all_simulations_complete']=len(captures)==len(cases)
         assert all(sha(path)==digest for path,digest in verified.items())
         result['status']='COMPLETE_NATIVE_TSTEP_TMAX_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE' if result['all_simulations_complete'] else 'COMPLETE_DIAGNOSIS_WITH_PRESERVED_NATIVE_FAILURES_NOT_ACCEPTANCE'
@@ -317,7 +349,7 @@ def main(study):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--controls-only',action='store_true')
-    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver','charge_tolerance','charge_bracket'),default='factorial')
+    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver','charge_tolerance','charge_bracket','newton_accuracy'),default='factorial')
     args=parser.parse_args()
     if args.controls_only:print(json.dumps(controls()))
     else:main(args.study)

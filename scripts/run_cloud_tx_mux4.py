@@ -513,8 +513,17 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         rails=rails, vectors=vectors, interface_probes=interface_probes, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
+NEWTON_PROFILES = {
+    'newton_1e8': dict(reltol=1e-8,abstol=1e-15,vntol=1e-10),
+    'newton_1e10': dict(reltol=1e-10,abstol=1e-17,vntol=1e-12),
+}
+
+
 def solver_options(profile):
-    assert profile in ('default','tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap')
+    assert profile in ('default','tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap',*NEWTON_PROFILES)
+    if profile in NEWTON_PROFILES:
+        values=NEWTON_PROFILES[profile]
+        return '.options method=trap maxord=2 '+' '.join(f'{k}={v:g}' for k,v in values.items())+' trtol=1 itl4=100 minbreak=1e-18'
     if profile=='default':return '.options reltol=1e-4 abstol=1e-12'
     if profile=='breakpoint_1as':return '.options reltol=1e-4 abstol=1e-12 minbreak=1e-18'
     method='trap' if profile in ('tight_trap','breakpoint_tight_trap') else 'gear'
@@ -523,13 +532,14 @@ def solver_options(profile):
 
 
 def verify_solver_options(log,profile):
-    assert profile in ('tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap')
+    assert profile in ('tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap',*NEWTON_PROFILES)
     blocks=re.findall(r'(?ms)^NSSOC_SOLVER_OPTIONS_BEGIN\s*\n(.*?)^NSSOC_SOLVER_OPTIONS_END\s*$',log)
     assert len(blocks)==1, 'Missing/duplicate actual simulator option readback'
     block=blocks[0];expected=dict(maxord=2,reltol=1e-6,abstol=1e-13,vntol=1e-8,trtol=1,itl4=100)
+    if profile in NEWTON_PROFILES:expected.update(NEWTON_PROFILES[profile])
     if profile=='breakpoint_1as':
         expected=dict(maxord=2,reltol=1e-4,abstol=1e-12)
-    if profile in ('breakpoint_1as','breakpoint_tight_trap'):
+    if profile in ('breakpoint_1as','breakpoint_tight_trap',*NEWTON_PROFILES):
         matches=re.findall(r'(?m)^NSSOC_NATIVE_MINBREAK (\S+)\s*$',block)
         assert len(matches)==1 and float(matches[0])==1e-18, 'Missing or changed native minbreak variable'
     labels=dict(maxord=r'(?:maxord|maxorder)',reltol=r'reltol(?:\s+\(current\))?',
@@ -539,9 +549,9 @@ def verify_solver_options(log,profile):
         matches=re.findall(r'(?mi)^\s*'+labels[key]+r'\s*=\s*(\S+)\s*$',block)
         assert len(matches)==1 and float(matches[0])==value, ('Native solver option differs',key,matches)
     methods=re.findall(r'(?mi)^\s*(?:method|integration method)\s*=\s*(\S+)\s*$',block)
-    assert len(methods)==1 and methods[0].lower() in (('trap','trapezoidal')if profile in ('tight_trap','breakpoint_1as','breakpoint_tight_trap')else('gear',))
+    assert len(methods)==1 and methods[0].lower() in (('trap','trapezoidal')if profile in ('tight_trap','breakpoint_1as','breakpoint_tight_trap',*NEWTON_PROFILES)else('gear',))
     return dict(status='PASS_NATIVE_SOLVER_OPTION_READBACK',profile=profile,numeric_options=expected,method=methods[0],native_text=block,
-        **({'native_minbreak_variable_s':1e-18,'minbreak_readback_scope':'Native circuit option variable; CKT breakpoint effect separately tested with exact-PWL linear controls.'}if profile in ('breakpoint_1as','breakpoint_tight_trap')else{}))
+        **({'native_minbreak_variable_s':1e-18,'minbreak_readback_scope':'Native circuit option variable; CKT breakpoint effect separately tested with exact-PWL linear controls.'}if profile in ('breakpoint_1as','breakpoint_tight_trap',*NEWTON_PROFILES)else{}))
 
 
 def native_diagnostics(log, profile='default'):
