@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-15T23:42:51.360298+00:00",
+  "observed_at": "2026-10-15T23:56:38.922642+00:00",
   "cloud_only": true,
   "local_workspace_entries": 0,
   "active_or_recent": [
@@ -349,6 +349,30 @@
           "passed_steps": []
         }
       ]
+    },
+    {
+      "run": 38826401425,
+      "topic": "encoded FIXED route preservation control",
+      "status": "in_progress",
+      "conclusion": null,
+      "source_head": "4215feec880bd52af4fedc3e2c041ba6581ffe05",
+      "jobs": [
+        {
+          "id": 116734768284,
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Preserve source and all native geometry observations"
+          ],
+          "passed_steps": [
+            "Set up job",
+            "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "Restore exact native runtime",
+            "Compile controllers and reject corrupted route conversions"
+          ]
+        }
+      ]
     }
   ],
   "completed_drt": {
@@ -546,5 +570,12 @@
       "measured_load_batch"
     ],
     "full_physical_comparison_for_new_batch": "NOT_YET_RUN"
+  },
+  "encoded_fixed_route_control": {
+    "status": "LIVE_NOT_VALIDATED",
+    "run": 38826401425,
+    "source": "4215feec880bd52af4fedc3e2c041ba6581ffe05",
+    "native_parser_correction": "Use NETS-only FLOORPLAN. Incremental ignores NETS; native decoder and exact fullDEF/shape equality mandatory.",
+    "next_action": "Inspect actual cloud native control result; retain failure and repair without loosening geometric or encoded-type gates. If successful, implement physical ECO protecting unchanged encoded routes; fresh all-net RC and all endpoints still mandatory."
   }
 }
