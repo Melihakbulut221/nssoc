@@ -260,6 +260,39 @@ def rename_physical_top(text, new_name):
     return '\n'.join(lines)+'\n'
 
 
+
+def assembled_tree_core(inputs, mode):
+    """Restore only the exact complete physical core; never reuse child RC."""
+    assert mode in ('compact','wire')
+    spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
+    receipt=spec['verified_composition']
+    assert receipt['status']=='PASS_ACTUAL_TREE162_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT'
+    assert receipt['counts']==dict(devices=162,R=11907,C=7847)
+    dest=inputs/'assembled-core';dest.mkdir()
+    packed=dest/'source.tar.gz';fetch(receipt['url'],receipt['sha256'],packed)
+    assert packed.stat().st_size==receipt['bytes']
+    with tarfile.open(packed) as archive:archive.extractall(dest,filter='data')
+    packed.unlink()
+    out=dest/'hw/soc/out/cloud-tx-tree-assembly'
+    assert sha(out/'composition-result.json')==receipt['summary_sha256']
+    result=json.loads((out/'composition-result.json').read_text())
+    assert result['status']==receipt['status'] and result['composition']['counts']==receipt['counts']
+    assert all(sha(out/name)==digest for name,digest in result['outputs'].items())
+    assert result['topology']['no_intermacro_ideal_alias'] and result['topology']['no_duplicate_child_rc']
+    interface=json.loads((out/'wire96/tree-interface-probes.json').read_text())
+    assert interface==result['interface_probes']
+    assert interface['status']=='PASS_REAL_INTERMACRO_ENDPOINTS_TO_ALL_FINAL_HBT_BASES'
+    probes=interface['modes'][mode]
+    assert set(probes)=={'ap','an','bp','bn'}
+    assert all(len(v)==(3 if mode=='wire' else 1) and len(v)==len(set(v)) for v in probes.values())
+    core=out/('wire96/tree162-wire01.spice' if mode=='wire' else 'binding96/tree162-compact01.spice')
+    assert sha(core)==receipt['outputs'][str(core.relative_to(out))]
+    return core,probes,dict(mode=mode,source=receipt,model_sha256=sha(core),interface_probes=interface,
+        assembled_tree_gds=True,intermacro_connections_ideal=(mode=='compact'),
+        actual_devices=162,substrate_contacts=81,metal_resistors=11907 if mode=='wire' else 0,
+        metal_capacitors=7847 if mode=='wire' else 0,
+        qualified_substrate_resistance=False,qualified_rf_distribution=False)
+
 def native_save_commands(vectors):
     # ngspice command-table limits: save LOTS=1000; wrdata NLOTS=10000.
     # Preserve existing small-capture decks byte-for-byte. Large trees need
@@ -270,7 +303,7 @@ def native_save_commands(vectors):
     return ['save '+' '.join(vectors[i:i+size]) for i in range(0,len(vectors),size)]
 
 
-def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None, clock_reference='baseline'):
+def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None, clock_reference='baseline', assembled_core=None, interface_probes=None):
     plan=tree_plan(streams)
     assert clock_reference in CLOCK_REFERENCES
     assert clock_reference == 'baseline' or clock_bias == 'native_res'
@@ -300,7 +333,8 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         ('RES', c['resistor'], inputs / 'models'), ('MOSlv', c['lv_corner'], frontend / 'models'),
         ('MOShv', c['hv_corner'], frontend / 'models')]:
         lines.append(f'.lib "{directory / ("corner" + kind + ".lib")}" {corner}')
-    lines += [f'.include "{p}"' for p in (PRE, FRONT, TX, final, frontend / 'buf16.inc')]
+    model_files=(PRE, FRONT, TX, final, frontend/'buf16.inc') if assembled_core is None else (FRONT, TX, assembled_core, frontend/'buf16.inc')
+    lines += [f'.include "{p}"' for p in model_files]
     if pre_bias in ('native_res','output_feedback','output_feedback_tc'):
         lines.append(f'.include "{PRE_FEEDBACK if pre_bias.startswith("output_feedback") else PRE_FEED}"')
     if clock_bias!='ideal':
@@ -337,31 +371,44 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             mos.update(found)
             lines.append('XAD_'+name+' '+' '.join(ports)+' '+subckt)
     # Actual port permutations implement interleaving, not an oracle permutation.
-    stages=[]
-    pre_formal=next(line.lower().split()[2:] for line in PRE.read_text().splitlines() if line.lower().startswith('.subckt '))
-    required={'ap','an','bp','bn','sp','sn','op','on','avdd','avss','sub','iref'}
-    assert len(pre_formal)==len(set(pre_formal)) and set(pre_formal) in (required,required|{'wire_cref'})
-    for index,node in enumerate(plan['nodes']):
-        a,b=node['inputs']
-        public=dict(ap=a+'p',an=a+'n',bp=b+'p',bn=b+'n',sp=node['clock']+'p',sn=node['clock']+'n',
-                    op=node['label']+'p',on=node['label']+'n',avdd='avdd',avss='0',sub='0',iref=node['reference'],wire_cref='0')
-        if (fault=='swap_pre_a_select' and index==0) or (fault=='swap_leaf_select' and index==len(plan['nodes'])-1):
-            public['sp'],public['sn']=public['sn'],public['sp']
-        ports=[public[name] for name in pre_formal]
-        stages.append((PRE,'xpre'+node['label'],ports))
-    if fault == 'swap_leaf_select':
-        # Corrupt an actual deepest-stage selector; source bits/clock phase and
-        # output oracle remain untouched. In32:1 this is the15/31 leaf pair.
-        assert all(name.startswith('d') for name in plan['nodes'][-1]['inputs'])
-    formal = next(line.lower().split() for line in final.read_text().splitlines() if line.lower().startswith('.subckt '))
-    assert len(formal[2:])==len(set(formal[2:])) and set(formal[2:]) in (required,required|{'wire_cref'})
-    public = dict(ap='ap',an='an',bp='bp',bn='bn',sp='sp',sn='sn',op='mp',on='mn',
-                  avdd='avdd',avss='0',sub='0',iref='mr',wire_cref='0')
-    stages += [(final, 'xmux', [public[p] for p in formal[2:]]),
-               (TX, 'xtx', ['mp','mn','op','on','tvdd','0','0','tr'])]
+    if assembled_core is None:
+        stages=[]
+        pre_formal=next(line.lower().split()[2:] for line in PRE.read_text().splitlines() if line.lower().startswith('.subckt '))
+        required={'ap','an','bp','bn','sp','sn','op','on','avdd','avss','sub','iref'}
+        assert len(pre_formal)==len(set(pre_formal)) and set(pre_formal) in (required,required|{'wire_cref'})
+        for index,node in enumerate(plan['nodes']):
+            a,b=node['inputs']
+            public=dict(ap=a+'p',an=a+'n',bp=b+'p',bn=b+'n',sp=node['clock']+'p',sn=node['clock']+'n',
+                        op=node['label']+'p',on=node['label']+'n',avdd='avdd',avss='0',sub='0',iref=node['reference'],wire_cref='0')
+            if (fault=='swap_pre_a_select' and index==0) or (fault=='swap_leaf_select' and index==len(plan['nodes'])-1):
+                public['sp'],public['sn']=public['sn'],public['sp']
+            ports=[public[name] for name in pre_formal]
+            stages.append((PRE,'xpre'+node['label'],ports))
+        if fault == 'swap_leaf_select':
+            # Corrupt an actual deepest-stage selector; source bits/clock phase and
+            # output oracle remain untouched. In32:1 this is the15/31 leaf pair.
+            assert all(name.startswith('d') for name in plan['nodes'][-1]['inputs'])
+        formal = next(line.lower().split() for line in final.read_text().splitlines() if line.lower().startswith('.subckt '))
+        assert len(formal[2:])==len(set(formal[2:])) and set(formal[2:]) in (required,required|{'wire_cref'})
+        public = dict(ap='ap',an='an',bp='bp',bn='bn',sp='sp',sn='sn',op='mp',on='mn',
+                      avdd='avdd',avss='0',sub='0',iref='mr',wire_cref='0')
+        stages += [(final, 'xmux', [public[p] for p in formal[2:]]),
+                   (TX, 'xtx', ['mp','mn','op','on','tvdd','0','0','tr'])]
+    else:
+        assert streams==4 and final_override is None and final_drive=='double_taps_margin'
+        assert clock_bias==pre_bias==output_bias=='native_res' and clock_reference=='stiff65'
+        assert interface_probes is not None and set(interface_probes)=={'ap','an','bp','bn'}
+        formal=next(line.lower().split()[2:] for line in assembled_core.read_text().splitlines() if line.lower().startswith('.subckt '))
+        required=set('d0p d0n d1p d1n d2p d2n d3p d3n sap san sbp sbn sp sn mp mn avdd avss sub ra rb mr'.split())
+        assert len(formal)==len(set(formal)) and set(formal) in (required,required|{'wire_cref'})
+        public={p:p for p in required};public.update(avss='0',sub='0',wire_cref='0')
+        if fault=='swap_pre_a_select':public['sap'],public['san']=public['san'],public['sap']
+        if fault=='swap_leaf_select':public['sbp'],public['sbn']=public['sbn'],public['sbp']
+        stages=[(assembled_core,'xtree',[public[p]for p in formal]),
+                (TX,'xtx',['mp','mn','op','on','tvdd','0','0','tr'])]
     for path, instance, ports in stages:
         name, found = bind_devices(path, instance, ports, {'npn13g2'})
-        assert len(found) == (4 if instance == 'xtx' else 19)
+        assert len(found) == (4 if instance == 'xtx' else 57 if instance=='xtree' else 19)
         hbt.update(found)
         lines.append(instance+' '+' '.join(ports)+' '+name)
     assert len(hbt) == 19*(streams-1)+4 and len(mos) == 16*streams
@@ -423,6 +470,9 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
     # Save real interface voltages explicitly, not just intrinsic device nodes.
     nodes.update(node for _,_,ports in stages for node in ports if node!='0')
     nodes.update(f'd{i}{suffix}0' for i in range(streams) for suffix in ('p','n'))
+    if interface_probes is not None:
+        assert all(node in nodes for probes in interface_probes.values() for node in probes), 'Every interface probe must already be an actual bound transistor terminal'
+        assert not {'ap','an','bp','bn'} & nodes, 'No ideal intermacro aliases in assembled core'
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
     if pre_bias in ('native_res','output_feedback','output_feedback_tc'):
         vectors += [f'i(vprebias_{reference})' for reference in references]
@@ -444,7 +494,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
               f'tran {c["step_ps"]*1e-12:.14g} {STOP:.14g} 0 {c["step_ps"]*1e-12:.14g}',
               'wrdata wave.dat '+' '.join(vectors), 'quit','.endc','.end']
     return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), clock_feed_sha256=sha(clock_feed_path), clock_feed_subckt=clock_feed_subckt, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
-        rails=rails, vectors=vectors, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
+        rails=rails, vectors=vectors, interface_probes=interface_probes, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
 
 
 def review(run, contract):
@@ -507,8 +557,13 @@ def review(run, contract):
             prefix = ('a' if i%2==0 else 'b') if stage=='final' else (f'd{i%contract.get("streams",4)}' if stage=='cmos' else f'p{stage}_{i%stage}')
             for phase in (.3,.5,.7):
                 at = START+(i+phase)*UI
-                p,n = (np.interp(at,t,volt(prefix+suffix)) for suffix in ('p','n'))
-                samples.append(((p-n)*(2*bit-1),(p+n)/2))
+                mapping=contract.get('interface_probes') or {}
+                # All physical parallel input HBT bases are checked, not a
+                # chosen best terminal or a synthetic ideal intermacro alias.
+                for pnode in mapping.get(prefix+'p',[prefix+'p']):
+                    for nnode in mapping.get(prefix+'n',[prefix+'n']):
+                        p,n=(np.interp(at,t,volt(node)) for node in (pnode,nnode))
+                        samples.append(((p-n)*(2*bit-1),(p+n)/2))
         margin,cm = np.asarray(samples).T
         return dict(samples=len(samples),minimum_margin_v=float(margin.min()),
             wrong_sign_samples=int((margin<=0).sum()),below_150mv_samples=int((margin<.15).sum()),
@@ -563,6 +618,7 @@ def main():
     global PRE, FRONT
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
+    parser.add_argument('--assembled-core',choices=('off','compact','wire'),default='off',help='Exact whole162-device physical core and its real intermacro RC')
     parser.add_argument('--stream-raw',action='store_true',help='Retain every native probe with immediate binary raw output, no in-simulator transient vector history')
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
@@ -679,7 +735,15 @@ def main():
             result['pre_bias_feedback_scope']=dict(source=str(PRE_FEEDBACK.relative_to(ROOT)),sha256=sha(PRE_FEEDBACK),native_resistors_per_stage=4,layout_integrated=False,
                 hypothesis='Fixed per-branch100um/1um Rsil plus26.5um/2um Rppd series feedback; native positive-temperature-coefficient compensation. No ideal clamp, changed oracle or per-corner retuning. Schematic only, feed RC and contact-current qualification remain open.',
                 reference='https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html')
-        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference)
+        core,interface_probes=None,None
+        if args.assembled_core!='off':
+            assert args.streams==4 and args.prestage=='divider9' and args.physical_final=='off'
+            assert args.diagnostic_final_r=='actual' and args.diagnostic_final_nx==0
+            core,interface_probes,scope=assembled_tree_core(inputs,args.assembled_core)
+            result['assembled_core_scope']=scope
+            result['prestage']='assembled_core_'+args.assembled_core
+            result['scope']='Actual assembled162-device four-input core, loaded by real CMOS frontends and TX;62HBT and64MOS checked. Wire mode contains all whole-core11907R7847C, including real intermacro metal; compact mode is its matched no-metal-RC control. All12final data HBT bases observed. Clocks still external; front/TX/bias layouts, substrateRF,32:1/four-lane/fullPHY and mainchip not accepted.'
+        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference,assembled_core=core,interface_probes=interface_probes)
 
         if args.stream_raw:
             from cloud_tx_stream import streaming_deck
