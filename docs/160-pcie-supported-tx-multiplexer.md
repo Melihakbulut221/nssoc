@@ -8,41 +8,41 @@ The `compact_edge_supply` experiment now includes the real intermacro wiring
 of three native cores, not ideal connections between individually extracted
 macros. Its **162 devices** comprise 57 HBTs, 24 resistors and 81 substrate
 contacts. Native 560-category DRC has zero markers; hierarchical and flat
-transistor LVS both match all162 devices. Five actual geometry/reference
-faults reject. Fresh extraction preserves **11,913 R / 7,851 C**, all41 metal
-conductors, 322 geometric probes and 462 intrinsic terminals;13 raw corruption
+transistor LVS both match all 162 devices. Five actual geometry/reference
+faults reject. Fresh extraction preserves **11,913 R / 7,851 C**, all 41 metal
+conductors, 322 geometric probes and 462 intrinsic terminals; 13 raw corruption
 controls and six composition controls reject. These are component checks,
 not qualified substrate/RF extraction or chip signoff.
 
-The original256 source bits,0.3/0.5/0.7UI observations and100mV limit remain
+The original 256 source bits, 0.3/0.5/0.7 UI observations and 100 mV limit remain
 unchanged. The full assembled-RC model passes nominal, hot/low-supply and
 cold/high-supply screens, with minimum signed output margins **227.646,
-100.680 and264.340mV**, respectively. Each capture contains69,541 native rows;
-all768 output samples,6,912 final physical-base observations and62HBT/64MOS
-engineering screens pass. The hot margin above the limit is only0.680mV.
+100.680 and 264.340 mV**, respectively. Each capture contains 69,541 native rows;
+all 768 output samples, 6,912 final physical-base observations and 62 HBT / 64 MOS
+engineering screens pass. The hot margin above the limit is only0.680 mV.
 Independent device/resistor/CMOS corners, actual fault controls and finer
 hot timestep validation are running; all-corner acceptance remains false.
 
-| Actual assembly | Data path length | Hot minimum | Samples below100mV |
+| Actual assembly | Data path length | Hot minimum | Samples below100 mV |
 | --- | --- | --- | --- |
-| Original | 394.015/388.015µm | 98.468mV | 3 |
-| Compact vertical | 356.015µm | 98.976mV | 2 |
-| Wide M5 supply | 276.015µm | 94.479mV | 10 |
-| Edge supply with parallel TM1 strap | 276.015µm | 100.680mV | 0 |
+| Original | 394.015/388.015 µm | 98.468 mV | 3 |
+| Compact vertical | 356.015 µm | 98.976 mV | 2 |
+| Wide M5 supply | 276.015 µm | 94.479 mV | 10 |
+| Edge supply with parallel TM1 strap | 276.015 µm | 100.680 mV | 0 |
 
-The shorter wide-M5 experiment failed because the new placement also changed
-the parasitics: measured B-pair AVDD coupling rose to58.027/58.829fF. Moving
-M5 to x418..454µm, adding a4µm TM1 supply strap atx424µm and relocating the
-substrate/ground paths reduced those values to5.054/16.122fF. Total B-pair
-external C fell from197.302/204.637 to155.921/168.322fF. All child device
+The shorter wide-M5 experiment did not improve electrical behavior. Its
+measured B-pair AVDD coupling rose to 58.027/58.829 fF. Moving
+M5 to x418..454 µm, adding a 4 µm TM1 supply strap at x424 µm and relocating the
+substrate/ground paths reduced those values to 5.054/16.122 fF. Total B-pair
+external C fell from 197.302/204.637 to 155.921/168.322 fF. All child device
 geometry remained frozen; acceptance thresholds, stimulus phase and oracle
 were not adjusted. Failed geometries and their captures remain available.
 
 [The source-bound assembly record](evidence/pcie-tree4-assembly-input-20261015.json)
 contains every geometry, extraction, composition and waveform receipt.
-Hosted diagnosis38729628248 independently reread all six compact/RC archives,
+Hosted diagnosis 38729628248 independently reread all six compact/RC archives,
 embedded summaries and every native output hash, then reproduced the original
-hot waveform verdict with zero failures. This does not claim full32:1/four-lane
+hot waveform verdict with zero failures. This does not claim full 32:1/four-lane
 serialization, integrated PLL/CDR, package/channel/compliance/BER or main-chip
 routing and final setup/hold closure. External clocks, bias/front-end and
 loaded TX elements in this bench still require their complete physical
