@@ -1,3 +1,15 @@
+## 2026-10-15 — strict firstcompact PASS; ground temperature control and TC candidate LIVE
+
+UTC 2026-10-15T16:06:01.127969+00:00. ALL CLOUD; localempty. Concreteprogress: strictcompletedcapture andtemperaturecontrols nowpinned, new nativeTCtrial dispatched.
+
+**38763917040 strictfine**, compact_edge_supply/breakpoint_tight_trap/sourcea7882b...: compact0.125ps116522064741 COMPLETE,274826unmodifiedrows to34ns,232.890381538mVoriginaloutputmargin,62HBT64MOS/interfacesPASS, no diagnostics; all strictnativeoptions/minbreakreadbackverified. Partialloaded_study created with1case; append remainingcompact0.0625ps116522064101 andwire0.0625ps116522064672/wire0.125ps116522064809 when terminal. No convergenceacceptance until fullpairedhostedcomparison; oldstartupFAIL retained.
+
+**38764229637 newgroundtemperature/native_res/default/sourcea7882b...**: compacthot/cold andwirecold complete/PASS,pinned3cases inpartialstudy. Wirecoldmargin265.267858545mV,finalCM1.995138534..2.031777366V. **Wirehot116523140140 remainsLIVE**; appendreceiptwhencomplete. This ordinarytemperaturestudy doesnotcloseknownhotres/coldresfailures.
+
+**38765529919 newgroundtemperature/native_res_tc/default**, sourceba6404a7fca61de707411334f2017cd704fb9449, LIVE: compacthot116527619969,wirecold116527620239,compactcold116527620372,wirehot116527620549. Existingfixedgeometry feed100um/1umRsil+16.5um/2umRppd, noPVTretuning/idealclamp. OriginalRCmodel/gates retained. Newvariant.bias_candidates.native_res_tc initialized withactive_trial andemptyloaded_studies; append allsuccesses/failures HERE, notbaselinevariant studies. Compare newgroundhotmarginwithsameconditionnative_res oncebothcomplete; oldedgeTCfailedhotmargin95.66mV andhotresCM/VCEstillfail. Feedlayout/RCintegrationunproven; do notadoptfromonecorner. Completealloriginalindependent/MOS/fault/numericalrequirementsbeforeacceptance.
+
+ReasonforTCretest: actualnewground changedtailcurrentandheadroom, so oldTC marginfailure doesnotpredictcombinedcandidate. Do not blindlywidentheground; exactold/newbiasinteraction alreadyrecorded. CurrentnativecoldHBTwirepasses butcompactcoldHBT/VBEfailsretained. Mainchip38731744914/116410943697 continues; inspecteffectiveNDR GRT-0273 atterminal. FullPHY/mainchipdetailroute/finaltimingOPEN.
+
 ## 2026-10-15 — strict solver LIVE; newground full corner results and bias interaction preserved
 
 UTC 2026-10-15T15:57:39.759849+00:00. ALL CLOUD. Implemented **breakpoint_tight_trap** sourcea7882b4620a1600ade8020a452d4a28e25f0b7f8: exactexisting tighttrap opts(methodtrap/maxord2/reltol1e-6/abstol1e-13/vntol1e-8/trtol1/itl4=100)plusminbreak1e-18. Everyoption andnative minbreakreadback required; originalphysics/stimulus/windows/limitsunchanged. Validation **38763516085/116520675995 SUCCESS590tests** pluspeakwitnesscontrols.
