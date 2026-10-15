@@ -1,3 +1,11 @@
+## 2026-10-15 native companion counterexample supports coupled replay
+
+Synthetic companion run38793936101 completed. All8patched cases retain DC current to<5e-16A. Packaged/pristine QCO0 controls agree exactly; all4activeQCO cases in each original binary fail to complete. Inspect native error logs before interpreting those failures; the summary's false drift-observed field means missing completed drift measurement, not a pass. Receipt: `docs/evidence/pcie-vbic-companion-20261015.json`.
+
+Hosted `vbic-coupled-replay-cloud.yml` restores the exact3binaries and original synthetic reports, checks their hashes and original failure diagnostics, then restores the unchanged62HBT/64MOS coupled tree. The pristine source build must reproduce both packaged startup captures to1nV before patched runs at0.125/0.0625/0.03125ps. All original PDK/source/device/solver/zeroOP/OFF flags and complete vectors remain fixed. One expression in the simulator changed; no model parameter or physical source did. Full34ns, independentPVT, physical integration and final chip timing remain OPEN.
+
+Mainchip38788529905 remains live; no duplicate dispatch. All computation and evidence stay on GitHub.
+
 ## Exact active handles: native companion counterexample
 
 - VBIC companion38793936101 / job116625309760 / source0045ccd17a9b9b28e11a5fb2b4bb3d438d24d123: packaged native cases executed; pristine same-version build confirmed live. Inspect reports and QCO0 controls before any claim. Investigation: `docs/vbic-transient-companion-investigation-20261015.md`.
