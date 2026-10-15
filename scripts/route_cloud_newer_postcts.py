@@ -46,6 +46,15 @@ def execute(script, label):
     return text
 
 
+
+def native_ndr_screen(text):
+    """Frozen FastRoute can silently relax CTS NDR demand and restart its loop."""
+    warnings=[line for line in text.splitlines()if 'GRT-0273' in line or 'Disabled NDR (to reduce congestion)' in line]
+    names=[line.split('for net:',1)[1].strip()for line in warnings if 'for net:' in line]
+    return dict(preserved=not warnings,warning_count=len(warnings),disabled_nets=sorted(set(names)),
+        raw_warnings=warnings,
+        scope='Native effective global-route NDR demand screen; unchanged dbNet declarations alone are not proof. Detailed-route geometry and DRC remain required.')
+
 def cugr_gate(text):
     """Independent fail-closed checks: CUGR's printed wire overflow is rounded.
 
@@ -83,6 +92,14 @@ def clock_routing_layers(args, signal_layers):
 
 
 def self_test():
+    assert native_ndr_screen('[INFO GRT-0014] Routed nets: 113556')['preserved']
+    controls=['[WARNING GRT-0273] Disabled NDR (to reduce congestion) for net: clknet_0_eth_tx_clk_i_regs',
+              '[WARNING GRT-0273] unparsed future native message',
+              'Disabled NDR (to reduce congestion) for net: clk_i']
+    for bad in controls:
+        assert not native_ndr_screen(bad)['preserved']
+    assert native_ndr_screen(controls[0])['disabled_nets']==['clknet_0_eth_tx_clk_i_regs']
+    print(json.dumps(dict(status='PASS_NATIVE_NDR_DOWNGRADE_REJECTION',positive=1,negative=len(controls))))
     good='0 / 113556 nets have overflow.\ntotal wire overflow:   0\nmin resource: 0\n[INFO GRT-0014] Routed nets: 113556\n'
     assert cugr_gate(good)['routed_nets']==113556
     faults=[good.replace('0 /','1 /'),good.replace('overflow:   0','overflow:   1'),
@@ -524,7 +541,7 @@ def main():
                 runtime_commit='dcf36133a369abc8f3c5e5738cd4d82e4903c0e0',
                 source_url='https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/tcl/odb.tcl#L608',
                 scope=f'Clock routes restricted to {clock_layers} on exact132overflow placement. '
-                      'All cells, pins, CTS/NDR, SDC, physical capacity, signal layers and zero-overflow gate retained. '
+                      'All cells, pins, CTS/NDR declarations, SDC, physical capacity, signal layers and zero-overflow gate retained; effective native NDR demand separately screened. '
                       'Technology LEF top-metal RC remains unqualified. Native routing, extracted timing and DRC still required.')
             save()
         commands += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {clock_layers}',
@@ -616,6 +633,8 @@ def main():
         route_script = '\n'.join(commands) + '\n'
         assert '-allow_congestion' not in route_script and '-infinite_cap' not in route_script
         routed = execute(route_script, 'global-route')
+        result['native_ndr_screen']=native_ndr_screen(routed)
+        assert result['native_ndr_screen']['preserved'], 'Native router relaxed original NDR demand'
         if args.router_solver=='cugr':
             result['cugr_gate']=cugr_gate(routed)
         result['global_route'] = parse_phases(routed, 'CORNER')
@@ -631,6 +650,8 @@ def main():
         result['failure_outputs'] = {p.name: sha(p) for p in OUT.iterdir() if p.is_file() and p.name != 'result.json'}
         raise
     finally:
+        if (OUT/'global-route.log').exists():
+            result['native_ndr_screen']=native_ndr_screen((OUT/'global-route.log').read_text(errors='replace'))
         save()
 
 

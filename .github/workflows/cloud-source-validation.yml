@@ -52,6 +52,8 @@ jobs:
           Path('cloud-source-validation.json').write_text(json.dumps(result,indent=2)+'\n')
           print(json.dumps(result))
           PYCODE
+      - name: Reject native NDR relaxation and malformed routing reports
+        run: python3 scripts/route_cloud_newer_postcts.py --self-test
       - name: Verify original bits, physical boundaries and complete native observation contracts
         run: |
           python3 -m pip install numpy==2.3.3 pytest==8.4.2
