@@ -1,3 +1,32 @@
+## 2026-10-15 — CLOUD ONLY; direct-supply hot failure repaired at component scope; controlled routing and process tests LIVE
+
+Latest user instruction remains **all work in cloud, leave no local project files**. Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty; no local OpenROAD/ngspice/KLayout/netgen/Yosys process. API/source/summary orchestration uses RAM only; all CAD/tests/artifacts are on GitHub-hosted runners and permanent Releases. Previous cloud handoff and log-cache retirement receipts remain authoritative. Never restore local CAD or use `gh run view --log-failed` (writes local cache).
+
+**New V10 direct-supply component screens PASS**, source197c58c17c7867023c78355c851859422cc567e3. Composition38700550087 passed54devices/4080R/2683C, receipt `pcie-final-v10-tight-direct-supply-composition-20261015.json`; new final profile`v10_kelvin_low_ports_loads_shunts_series_direct_tight`, prestage`cascade158_kelvin_supply_direct_tight`. Runs38701140868nominal and38701144359temperature_voltage: all6matched compact/wire cases pass original768samples at0.3/0.5/0.7UI,100mV and all-device limits,69541rows,zeroOP,clean diagnostics. Hot wire improved52bad/83.938999mV to **0bad/102.226266mV**. Headroomonly2.226266mV: not robust all-corner acceptance. Summary643141554 SHAdfcb6df1b275f4703ab4ba48ddbe3a15e94adf40ea335928e0fc2a9910bcc891. Exact six-case summaries/hashes:`docs/evidence/pcie-v10-tight-direct-supply-loaded-pass-20261015.json`.
+
+**Original32 full streamed wire38679319167 now TERMINAL PASS**, notlive. Runtime13818.38s; all69541native rows,604HBT/512MOS,768originalsamples,minimum235.353307mV,clean diagnostics. Earlier max-data warning is absent with complete binary capture. Summary643135282, result/outputs/hashes in`docs/evidence/pcie-32-streamed-wire-nominal-20261015.json`. Its ORIGINAL interior-pin profile is different from the new tight direct-supply candidate. No cross-profile adoption. External ideal clocks/intermacro connections, missing assembled tree GDS/fullPEX/ESD/jitter/BER remain. **FullPHY still OPEN.**
+
+**LIVE new component robustness studies**, all source**d3a3cec31e13cbf877158b5a6861689f13ae38a3**, streams4, matched compact/wire, same new direct+tight profile, binary/native_res/stiff65; no gate/timing adjustment:
+-38703553931 independent_corners (12process/temperature combinations).
+-38703557182 mos_corners (6MOS combinations).
+-38703561202 hot_low_quarter_step (time-step convergence at limiting corner).
+-38703564758 physical_faults (3actual faults must be rejected, not counted as healthy passes).
+Inspect actual `component_screen_passed`, original signal margins, all-device gates, diagnostics and complete capture; workflowSUCCESS alone is not electrical acceptance. Do not duplicate these runs.
+
+**LIVE mainchip upper-clock-layer comparison38703550233**, source**d3a3cec31e13cbf877158b5a6861689f13ae38a3**, job116317277037. Hosted syntax and self-tests PASSED; native replay in progress. Exact existing132overflow placement (local_optimize_buffers, Ethernethold2,seed13) hash checked before routing; fast_route,macrobaseline,critical0. New explicit `clock_routing_profile=upper_metals` restricts clocks toTopMetal1–TopMetal2; signals remainMetal2–TopMetal2, all capacity adjustment/SDC/CTS/NDR and strictzerooverflow retained. Frozen OpenROADdcf36133 source confirms actual API in`src/odb/src/swig/tcl/odb.tcl:608-645`; native getters independently read back clock/signal ranges. Profile rejects mismatched placement/seed/solver/halo/priority etc via12negativecontrols; baseline unchanged. Existing prects193candidate FAILED188overflow; no closure claimed. Top-metal RC is technologyLEF default, still unqualified; routed timing/detailed routing/extraction required after successful GRT. Do not duplicate route.
+
+**Still live actual845PLL1us38674687038**, source762c629d8e5124541fa40790348aad95b1a1c5b1, job116225492444. After terminalSUCCESS dispatch existing`actual_parent_acquisition_review_d2` through cloud-migration-checks.yml, then inspect unchanged100ppm/50ps/no-slip/VCTRL gates and exact first50nsprefix. Do not start review early or repeat transient. Failure/timeout must be preserved, never relabeled as qualified PHY.
+
+Latest API snapshot UTC: 2026-10-15T08:11:34.865841+00:00
+-38703550233: in_progress, conclusion=None; sourced3a3cec31e13cbf877158b5a6861689f13ae38a3.
+-38703553931: queued, conclusion=None; sourced3a3cec31e13cbf877158b5a6861689f13ae38a3.
+-38703557182: queued, conclusion=None; sourced3a3cec31e13cbf877158b5a6861689f13ae38a3.
+-38703561202: in_progress, conclusion=None; sourced3a3cec31e13cbf877158b5a6861689f13ae38a3.
+-38703564758: queued, conclusion=None; sourced3a3cec31e13cbf877158b5a6861689f13ae38a3.
+-38674687038: in_progress, conclusion=None; source762c629d8e5124541fa40790348aad95b1a1c5b1.
+
+Full serialGen3x4PHY, assembled physical tree/mainchiprouting and finalsetup/hold remain OPEN. These component improvements are not production signoff.
+
 ## 2026-10-15 — waveform regression diagnosed; V10 direct supply composition LIVE; mainchip188 remains
 
 **Shifted output electrical candidate REJECTED**:38695637067/38695640569 terminal. All compact and wire nominal/cold pass. Hot wire **64/768bad,min76.338729mV** vs unshifted tight52/83.938999mV. Hot summary643012045 SHA689ef15afa57c23ac28a179d227156e3ede4435a55f80968e892f058658e34cb. Evidence:`pcie-output-passive-shift-loaded-rejection-20261015.json`. No adoption.
