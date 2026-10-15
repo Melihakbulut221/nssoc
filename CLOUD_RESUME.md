@@ -1,3 +1,9 @@
+## 2026-10-15 larger frozen-tree computational follow-up
+
+Extracted four-input wire run38799068525/job116643041356 remains live at sourcec0d82b1fcf65c5dca421bde3345ffa221b7fa452; mainchip38788529905/job116606725290 remains live. Never duplicate either.
+
+New vbic-tree32-backend-cloud runs an independent source-pinned runtime/cost diagnosis on the exact original32:1 physical-macro tree from38496981217 (source31d4d70464ed0c395ca9c4564e81e101fee849da). That old run passed electrical gates but retained a native near-memory-limit warning; its full waveform is hash-verified and remains preserved. New binary raw capture retains every original probe. Packaged/pristine startup must agree before patched Sparse/KLU4ns comparison. The already-built pinned ngspice47 engine has KLU enabled by default (configure.ac at a80f6e3e confirms); no rebuild/optimizer/model change is needed. Official manual section12.9 motivates measuring matrix cost, not assuming speedup. Compare identical original solver numbers and all native vectors; no full34ns/PVT/whole-tree physical acceptance from this study. Original intermacro wires remain ideal and are recorded as a limitation. All execution/evidence stay on GitHub.
+
 ## 2026-10-15 full compact waveform passes; extracted-wire replay next
 
 Full-window38796689216/job116634823910 SUCCESS at sourced14078e2aefda63d06d03fbea9b128fe8b66d71a. Original input hashes unchanged; pristine controls pass. Both patched34ns captures pass all original768bit samples,62HBT64MOS and interface gates. Minimum original margin232.890mV; whole-wave step maximum8.06616uV; margin difference0.640554uV; edge difference0.281fs; all original energy gates pass. Receipt: docs/evidence/pcie-vbic-full-window-20261015.json. This closes this compact numerical experiment only, NOT fullPHY.
