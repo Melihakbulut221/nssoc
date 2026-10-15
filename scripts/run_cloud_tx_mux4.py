@@ -510,11 +510,10 @@ def interface_screen(t, volt, contract, stage):
         prefix = ('a' if i%2==0 else 'b') if stage=='final' else (f'd{i%contract.get("streams",4)}' if stage=='cmos' else f'p{stage}_{i%stage}')
         for phase in (.3,.5,.7):
             at = START+(i+phase)*UI
-            mapping=contract.get('interface_probes') or {}
             # All physical parallel input HBT bases are checked, not a
             # chosen best terminal or a synthetic ideal intermacro alias.
-            for pnode in mapping.get(prefix+'p',[prefix+'p']):
-                for nnode in mapping.get(prefix+'n',[prefix+'n']):
+            for pnode in (mapping or {}).get(prefix+'p',[prefix+'p']):
+                for nnode in (mapping or {}).get(prefix+'n',[prefix+'n']):
                     p,n=(np.interp(at,t,volt(node)) for node in (pnode,nnode))
                     samples.append(((p-n)*(2*bit-1),(p+n)/2))
     parallel=len(mapping['ap']) if mapping is not None and stage=='final' else 1
