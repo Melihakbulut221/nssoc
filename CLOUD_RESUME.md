@@ -1,3 +1,13 @@
+## 2026-10-15 — signed HBT readback complete; cloud-only checkpoint
+
+All execution and evidence remain in GitHub. Local workspace is empty. Full goal remains OPEN.
+
+Signed-polarity diagnosis **38776558304 /116565617226** completed successfully. All62HBT native terminal observations, full original capture/hash readback, original engineering review and four corrupt-input controls passed. Receipt pinned under `placement_variants.compact_return_strap.bias_candidates.native_res_tc.compact_cold_hbt_polarity_diagnosis`. Original source run38767312141, compact cold_high_hbt_wcs, native_res_tc. Forward-VBE heuristic failures remain; signed observations do not grant qualified SOA or physical acceptance. No need to rerun this diagnosis.
+
+Strict comparison38774749514 FAILED: compact8.906847253mV and wire8.111543842mV versus1mV. Preserve full startup and all original gates. Investigate separate TSTEP/TMAX dependence before another long run; not yet implemented. All six joint-sizing cases38773059353 are pinned; candidate rejected because all three wire cases fail. Probe counts read from actual `hbt_devices`/`mos_devices` fields:62/64.
+
+Mainchip38731744914 remains live as last verified. Read its terminal native NDR/overflow/STA before deciding next route. Do not duplicate/cancel healthy jobs. Global route does not close detailed routing or extracted final setup/hold.
+
 ## 2026-10-15 — strict convergence still fails; sizing study fully rejected; signed HBT diagnosis running
 
 ALL CLOUD. Local workspace is empty; keep all source, native execution, artifacts and resume state in GitHub. Full serial PHY, detailed mainchip routing and final extracted setup/hold remain OPEN.
