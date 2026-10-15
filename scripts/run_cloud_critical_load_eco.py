@@ -7,7 +7,7 @@ from pathlib import Path
 from route_cloud_newer_postcts import fetch,sha,native_ndr_screen
 from read_opensta_phase_slacks import parse_phases
 from run_cloud_failed_guide_drt import guide_index
-from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS,MAX_DISPLACEMENT_UM
+from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS,MAX_DISPLACEMENT_UM,SELECTION,validate_measurements
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/DIRECTORY;SOURCE=ROOT/'cloud-routed-extraction'
 BASE='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38809759501-1-routed-extraction/'
 STEM='routed-extraction-38809759501-1'
@@ -25,7 +25,7 @@ def guide_blocks(text):
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
-    result=dict(status='RUNNING',accepted=False,profile=PROFILE,buffer_count=COUNT,new_buffer_placement_search_um=list(MAX_DISPLACEMENT_UM),source_run=38809759501,source_head=os.environ['GITHUB_SHA'],full_serial_phy_complete=False,final_timing_complete=False,
+    result=dict(status='RUNNING',accepted=False,profile=PROFILE,buffer_count=COUNT,new_buffer_placement_search_um=list(MAX_DISPLACEMENT_UM),target_selection=SELECTION,source_run=38809759501,source_head=os.environ['GITHUB_SHA'],full_serial_phy_complete=False,final_timing_complete=False,
         scope='Explicit positive buffer16 insertions on independently measured high-load PCIe combinational outputs. Preserve original cells/geometry/SDC/libraries/NDR and all protected hold repairs. Native selected-net global guides merged with all unchanged original guides; full-chip detailed reroute and fresh nominalRC/all-cell-corner STA required. Original global132overflow,651antenna, new-candidate annotation qualification, RCcorners/SRAM/LVS remain open.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(args,label,env=None,expect=True):
@@ -53,6 +53,7 @@ def main():
         packed.unlink();assert sha(SOURCE/'result.json')==SUMMARY_SHA
         for n,digest in old['outputs'].items():assert sha(SOURCE/n)==digest,n
         for n,digest in old['protected_inputs'].items():assert sha(Path(n))==digest,n
+        validate_measurements((SOURCE/'actual-routed-sta.log').read_text())
         original_script=(SOURCE/'actual-routed-sta.tcl').read_text();measured=parse_phases(tcl(original_script,'reproduce-routed-baseline'),'CORNER')
         for phase,row in old['nominal_rc_cell_corner_phases'].items():
             assert set(measured[phase]['groups'])==set(row['groups'])

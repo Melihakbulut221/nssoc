@@ -93,9 +93,10 @@ def main(args):
         original,original_proof=restore_report('routed-endpoints',38819589884,CENSUS_SHA,CENSUS_PARTS_SHA,OUT/'baseline',('native-census.json','endpoint-slacks.tsv'))
         assert original['source_unchanged'] and original['original_routed_timing_reproduced']
         before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
-        count=2 if args.profile=='two_buffer' else 3;group='critical-load-eco' if count==2 else 'control-load-eco';candidate_dir=ROOT/('cloud-'+group)
+        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH')}
+        count,group,status_prefix=profiles[args.profile];candidate_dir=ROOT/('cloud-'+group)
         candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json'))
-        expected_status='COMPLETE_'+('TWO' if count==2 else 'THREE')+'_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
+        expected_status='COMPLETE_'+status_prefix+'_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
         assert candidate['status']==expected_status and candidate['source_run']==38809759501
         assert candidate['protected_source_unchanged'] and candidate['original_routed_timing_reproduced'] and candidate['native_drt_drvs']==0
         assert candidate['logic']['status']=='PASS within scope' and candidate['inversion_control']=='REJECTED'
@@ -105,7 +106,7 @@ def main(args):
         # The frozen ECO summary embeds its complete logic receipt. Its output
         # inventory omits every basename result.json, including logic/result.json.
         # Do not pretend that omitted nested receipt has an external file hash.
-        if count==3:assert candidate['profile']=='control_three_buffer' and candidate['buffer_count']==3
+        if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         result.update(candidate=proof,baseline=original_proof);save()
         fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-route-summary.json');source=json.loads((OUT/'original-route-summary.json').read_text())
         packed=OUT/'original-route.tar.gz';fetch(BASE+'.tar.gz.part0000',ARCHIVE_SHA,packed);assert packed.stat().st_size==225682086 and not SOURCE.exists()
@@ -142,7 +143,7 @@ def main(args):
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer'])
+    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch'])
     parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))

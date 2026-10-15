@@ -1,3 +1,9 @@
+## Source-bound50-output physical load repair batch staged
+
+New measured-load-eco-cloud profile measured_load_batch targets ALL50outputs in originalsource-logSHA-verified high-load receipt7f6572696f303fda18383f7d0def5c8e583c15b9cd7cf821dc4c7aa6170341de. Selection: originalreportednegative slowpaths, weakdrive1/2,cap>=.1pF,stage>=1ns; excludessequential/delay/clockmasters. This is not allnets coverage and not a timingacceptancelimit. Everyrawmeasurement recheckedagainst exactoriginalnative logbeforephysicalmutation. Native exactdriver/master/pin/fanout/signal/noNDR/noport guards must pass for all50; no selective omission. Original113791cells remainfixed; add50positivebuf16 cells, legalize additions1000x200um, geometry/input/PG/NDR proof and negativeinversioncontrol unchanged;100changed/newguides, complete113841cellroute0DRV, freshRC/allcorners required. Independent all22544endpoint comparator now supports batchprofile; no automaticadoption.
+
+Preserve existinglive3buffer38822066992 and analog38813902351/38810158966/38810163678; do not duplicate them. Newbatch is a different source-bound hypothesis addressing remainingPCIe/Ethernet/core high-load bottlenecks instead of another single worst path. Originaltwo-buffer38813118414 remainsNOTADOPTED after fullcomparison38823446292: setup9601->9557 buthold91->94 andnewtypicalhold. Allworkcloudonly/localempty. Record newbatchandcontrol run handles afterown-pathpush.
+
 ## Two-buffer native route complete; independent allendpoint comparison rejects adoption
 
 Two-buffer38813118414/job116691024892 COMPLETE0DRV, summary4c85988b67da484caef77960d0a8b71587e10255337ea92783b7fca11dd80cdb, partsmanifest252d118ba5ac9c5fb00156af6bbcd6dd836c29b718ad389f51fb6371efed013b, archive03c6e76d88fe44b586783bfc48b8f13999bb066565ede01ccf3847dfcec0f856. Fresh113558netSPEF2034f871b5be6cd47b2f26c1d80868236b5d1939228721332b5d93977b81aa91. Worstsetup improves-11.940513->-11.731633ns; worsthold-.151066->-.132041ns. NOTADOPTED.
