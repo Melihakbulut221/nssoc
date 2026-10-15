@@ -158,6 +158,7 @@ def failed_capture_tail(path, expected_hash):
     result=dict(status='DIAGNOSTIC_OF_REJECTED_CAPTURE_ONLY',accepted=False,sha256=expected_hash,
         rows=count,columns=width,start_s=float(t[0]),end_s=float(t[-1]),
         nonincreasing_time_steps=int(np.sum(delta<=0)),min_delta_s=float(delta.min()),max_delta_s=float(delta.max()),
+        nonincreasing_events=[dict(index=int(i),previous_time_s=float(t[i]),next_time_s=float(t[i+1]),delta_s=float(delta[i]))for i in np.flatnonzero(delta<=0)[:32]],
         tail=[dict(time_s=float(t[i]),time_hex=float(t[i]).hex(),ulp_s=math.ulp(float(t[i])),
                    delta_s=float(t[i]-t[i-1])if i else None)for i in range(max(0,count-32),count)],
         last_values={name:float(matrix[-1,i])for i,(_,name,_)in enumerate(table)})
@@ -229,7 +230,7 @@ def diagnose_failed_breakpoints():
             result['cases'].append(row)
             # Remove the already verified large raw/archive. They remain in the pinned permanent release.
             (case/'wave.raw').unlink();packed.unlink()
-            linear=case/'linear';linear.mkdir();positive={s.split()[1]for s in sources};negative={s.split()[2]for s in sources}-{'0'}
+            positive={s.split()[1]for s in sources};negative={s.split()[2]for s in sources}-{'0'}
             assert not positive&negative, 'Unexpected source dependency in diagnostic reduction'
             options=[line for line in original.splitlines()if line.startswith('.options ')];trans=[line for line in original.splitlines()if line.startswith('.tran ')]
             assert len(options)==len(trans)==1
@@ -240,23 +241,31 @@ def diagnose_failed_breakpoints():
                 vectors.extend([f'v({node})',f'v(diag{i})'])
             parts.extend([options[0]+'\n',trans[0]+'\n.control\nsave '+' '.join(vectors)+'\nset filetype=binary\nrun wave.raw\nquit\n.endc\n.end\n'])
             deck=''.join(parts);assert pwl_voltage_sources(deck)==sources
-            (linear/'bench.cir').write_text(deck);(linear/'spinit').write_text('* Explicit empty init\n')
-            env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN','PYTHONPATH','PYTHONHOME','LD_PRELOAD')}
-            env.update(SPICE_SCRIPTS=str(linear),OMP_NUM_THREADS='1')
-            with (linear/'run.log').open('w')as log:
-                code=subprocess.call([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=linear,env=env,stdout=log,stderr=subprocess.STDOUT)
-            log=(linear/'run.log').read_text(errors='replace')
-            lr=dict(returncode=code,bench_sha256=digest(linear/'bench.cir'),same_original_pwl_sources=True,
-                same_original_tran_and_options=True,original_source_count=len(sources),
-                physical_circuit_preserved=False,accepted=False,diagnostics=[s for s in log.splitlines()if any(k in s.lower()for k in ('error','warning','too small','singular'))])
-            if (linear/'wave.raw').exists():
-                lr['raw_diagnosis']=failed_capture_tail(linear/'wave.raw',digest(linear/'wave.raw'))
-                lr['reached_original_stop']=abs(lr['raw_diagnosis']['end_s']-stop)<1e-18
-                if lr['reached_original_stop']:
-                    t,values,proof=read_streamed_wave(linear/'wave.raw',vectors,stop,contract['condition']['step_ps']*1e-12)
-                    lr['complete_linear_transport']=proof;del t,values
-                (linear/'wave.raw').unlink()
-            row['linear_reduction']=lr
+            row['linear_reductions']={}
+            for variant,minbreak in [('original',None),('minbreak_1as',1e-18)]:
+                linear=case/variant;linear.mkdir()
+                trial_deck=deck if minbreak is None else deck.replace(options[0],options[0]+' minbreak=1e-18')
+                assert pwl_voltage_sources(trial_deck)==sources
+                (linear/'bench.cir').write_text(trial_deck);(linear/'spinit').write_text('* Explicit empty init\n')
+                env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN','PYTHONPATH','PYTHONHOME','LD_PRELOAD')}
+                env.update(SPICE_SCRIPTS=str(linear),OMP_NUM_THREADS='1')
+                with (linear/'run.log').open('w')as log:
+                    code=subprocess.call([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=linear,env=env,stdout=log,stderr=subprocess.STDOUT)
+                log=(linear/'run.log').read_text(errors='replace')
+                lr=dict(returncode=code,bench_sha256=digest(linear/'bench.cir'),same_original_pwl_sources=True,
+                    same_original_tran=True,original_options=options[0],minbreak_override_s=minbreak,original_source_count=len(sources),
+                    physical_circuit_preserved=False,accepted=False,diagnostics=[s for s in log.splitlines()if any(k in s.lower()for k in ('error','warning','too small','singular'))])
+                if (linear/'wave.raw').exists():
+                    lr['raw_diagnosis']=failed_capture_tail(linear/'wave.raw',digest(linear/'wave.raw'))
+                    lr['reached_original_stop']=abs(lr['raw_diagnosis']['end_s']-stop)<1e-18
+                    if lr['reached_original_stop']:
+                        try:
+                            t,values,proof=read_streamed_wave(linear/'wave.raw',vectors,stop,contract['condition']['step_ps']*1e-12)
+                            lr['complete_linear_transport']=proof;del t,values
+                        except AssertionError as error:
+                            lr['strict_complete_transport_rejected']=repr(error)
+                    (linear/'wave.raw').unlink()
+                row['linear_reductions'][variant]=lr
         assert len(result['cases'])==2
         result['status']='COMPLETE_FAILED_CAPTURE_DIAGNOSIS_NOT_PHYSICAL_ACCEPTANCE'
     except BaseException as error:
