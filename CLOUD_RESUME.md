@@ -1,3 +1,17 @@
+## 2026-10-15 — strict solver LIVE; newground full corner results and bias interaction preserved
+
+UTC 2026-10-15T15:57:39.759849+00:00. ALL CLOUD. Implemented **breakpoint_tight_trap** sourcea7882b4620a1600ade8020a452d4a28e25f0b7f8: exactexisting tighttrap opts(methodtrap/maxord2/reltol1e-6/abstol1e-13/vntol1e-8/trtol1/itl4=100)plusminbreak1e-18. Everyoption andnative minbreakreadback required; originalphysics/stimulus/windows/limitsunchanged. Validation **38763516085/116520675995 SUCCESS590tests** pluspeakwitnesscontrols.
+
+**38763917040 strict fullfine captures** sourcea7882b..., compact_edge_supply/native_res/breakpoint_tight_trap: compact0.0625ps116522064101; wire0.0625ps116522064672; compact0.125ps116522064741; wire0.125ps116522064809. All4actualsolverpreflightsPASS; all4capturesLIVE. Pinnewstudy oncecomplete, then hostedstep_comparison solverbreakpoint_tight_trap/step_pairfine. Preserveoldstartupfailures; do notexclude0..1nswindow. No nativewaveacceptance yet.
+
+**Newground38760726764 COMPLETE8cases**; bothcoldwire receipts appended. WirecoldresFAIL CMmax2.053656336217V, margin262.458267942mV; wirecoldhbtPASS margin235.661349271mV, CM1.980368625..2.022497707V, noHBT/MOSfail. Compactcoldfailuresretained. WirehotresFAIL CMmin1.784024457V andtailVCE0.392685020/0.390512435V. Groundprofile notadopted.
+
+**Ground diagnosis38763079513 COMPLETE**, source1220055a..., exactfailednewwirearchive/output/reviewreadback preserved. Receipt nowvariant.ground_path_diagnosis, exactcomparison invariantseparatenativetimes undervariant.measured_return_strap_comparison. E6 oldminimumat2.38675ns vsnew2.38725ns: cannot claim exactsame sample. E7 bothat2.38725ns, emitter67.0548→55.4189mV, collector458.5265→445.9313mV, currentperemitter0.659695→0.732030mA. Thuslowergroundvoltage didnotrestoreVCE duecollector/currentinteraction. E6similardirection atitsseparate extrema. NewshortestpathboundsE6=13.439735576ohm/E7=15.768369676ohm areNOTeffectiveR. Medianfinalfeed1.040634837mA vsold1.036876374mA. Do notblindlywidenthegroundagain; bias/current/cornerrepair needsoriginalfullgates.
+
+**38764229637 temperature_voltage**, sourcea7882b..., compact_return_strap/native_res/default, LIVE. Obtain actualnewgroundhot_low/cold_high margins before choosingbiasrepair. Existingfixednative_res_tc candidate improvedoldcoldcommonmode butfailedoldhotmargin; combiningwithnewgrounduntested. Preservealloriginalqualificationrequirements.
+
+Mainchip upper_three38731744914/116410943697 live;6hourhostlimit~18:03UTC. ScreenfinalGRT-0273beforeacceptance. FullserialGen3x4/mainchipdetailroute/finalextractedsetuphold remainsOPEN. Localempty.
+
 ## 2026-10-15 — returnstrap does NOT fix hotres; numerical peak is early startup
 
 UTC 2026-10-15T15:44:51.352571+00:00. ALL CLOUD. New measured evidence preserved, no acceptance gate changes.
