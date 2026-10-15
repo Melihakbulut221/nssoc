@@ -12,11 +12,13 @@ import resource
 import subprocess
 import time
 import tempfile
+import tarfile
 import numpy as np
 from cloud_tx_step_factorial import restore, STOP, SOURCE_STOP, STEPS, PROFILE, charge_readback
 from cloud_tx_stream import read_streamed_wave
 from run_cloud_tx_mux4 import solver_options,verify_solver_options,native_diagnostics
 from run_cloud_tx_operating_point import sha
+from route_cloud_newer_postcts import fetch
 
 ROOT=Path(__file__).resolve().parents[1]
 TARGET='xtree.xd0002'
@@ -25,6 +27,8 @@ PORTS=('c','b','e','sub')
 VECTORS=[*(f'v({p})' for p in PORTS),'v(xtarget.t)',
     'i(vc)','i(vb)','i(ve)','i(vs)',
     *(f'@{DEVICE}[{p}]' for p in ('ic','ib','ie','is','qbe','qbc','cbe','cbc'))]
+ORIGINAL_VECTORS=tuple(VECTORS)
+VECTORS += [f'@{DEVICE}[{p}]' for p in ('vbe','vbc','gm','go','cbex','cbcx','cbep','cbcp')]
 
 
 def pwl(t,v):
@@ -104,8 +108,61 @@ def controls():
             assert type(capture['complete']) is bool
             assert capture['complete']==(finish==STOP)
             assert json.loads(json.dumps(capture))==capture
+    t=np.array([0.,1e-13,2e-13]);old={k:np.arange(3,dtype=float) for k in ORIGINAL_VECTORS}
+    common_capture_equal(t,old,t,dict(old))
+    broken=dict(old);broken[ORIGINAL_VECTORS[0]]=old[ORIGINAL_VECTORS[0]].copy();broken[ORIGINAL_VECTORS[0]][1]+=1e-12
+    try:common_capture_equal(t,old,t,broken)
+    except AssertionError:pass
+    else:raise AssertionError('Perturbed original vector accepted')
+    try:common_capture_equal(t,old,t+1e-18,old)
+    except AssertionError:pass
+    else:raise AssertionError('Shifted original times accepted')
     return dict(all_original_time_value_bits_preserved=True,same_stimulus_across_steps=True,
         rejected=rejected,capture_json_roundtrip=True,accepted=False)
+
+
+
+def failure_context(t,v,source_t):
+    # Preserve actual accepted samples; do not extrapolate the rejected solve.
+    assert len(t)>1 and np.all(np.diff(t)>0)
+    end=float(t[-1]);near=np.flatnonzero(t>=end-5e-12)
+    last=np.arange(max(0,len(t)-32),len(t))
+    idx=int(np.argmin(abs(source_t-end)))
+    return dict(end_s=end,minimum_accepted_step_s=float(np.min(np.diff(t))),
+        nearest_source_knot_s=float(source_t[idx]),distance_to_source_knot_s=float(abs(source_t[idx]-end)),
+        last_32_time_s=t[last].tolist(),last_32_vectors={k:a[last].tolist() for k,a in v.items()},
+        final_5ps_ranges={k:[float(a[near].min()),float(a[near].max())] for k,a in v.items()},
+        scope='Accepted native samples before stop/abort only; no values from the rejected Newton solve. Near-knot distance alone is not causality or a model defect.')
+
+
+def common_capture_equal(old_t,old_v,t,v):
+    assert np.array_equal(old_t,t),'Adding read-only probes changed native timepoints'
+    assert set(old_v)==set(ORIGINAL_VECTORS)
+    for name in ORIGINAL_VECTORS:
+        assert np.array_equal(old_v[name],v[name]),('Adding read-only probes changed original vector',name)
+    return dict(exact_native_timepoints=True,exact_original_vectors=len(ORIGINAL_VECTORS),
+        rows=len(t),no_interpolation=True,accepted=False)
+
+
+def restore_previous_playback(out):
+    evidence=json.loads((ROOT/'docs/evidence/pcie-vbic-playback-20261015.json').read_text())
+    assert evidence['run']==38787043126 and evidence['summary_sha256']=='2e317c7667d6ef2ffb77d2d184ff5ee8e7210284a489509dfd2b4a2e4277bdb3'
+    asset=next(a for a in evidence['assets'] if a['name'].endswith('.tar.gz'))
+    assert asset['digest']=='sha256:d07c66740e407b2c293130dc268d3b8a6de91d2e859e824e4583b94560443caf'
+    packed=out/'previous-playback.tar.gz';fetch(asset['browser_download_url'],asset['digest'][7:],packed)
+    assert packed.stat().st_size==asset['size']
+    previous={}
+    with tarfile.open(packed) as tar:
+        for label in evidence['summary']['cases']:
+            name=label+'/wave.dat';raw=tar.extractfile('cloud-tx-vbic-playback/'+name).read()
+            assert hashlib.sha256(raw).hexdigest()==evidence['summary']['outputs'][name]
+            target=out/'previous'/label/'wave.dat';target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
+            with target.open() as stream:
+                assert stream.readline().split()==['time',*ORIGINAL_VECTORS]
+                data=np.loadtxt(stream,ndmin=2)
+            assert data.shape[1]==len(ORIGINAL_VECTORS)+1 and np.isfinite(data).all()
+            previous[label]=(data[:,0],dict(zip(ORIGINAL_VECTORS,data[:,1:].T,strict=True)))
+    packed.unlink();return previous
 
 
 def main():
@@ -116,6 +173,8 @@ def main():
         scope='Single original Nx6 npn13g2 VBIC at original125C/hbt_wcs corner, driven by PWL of original native collector/base/emitter/substrate terminal samples from0 to1.2ns. Circuit feedback removed for diagnosis only. Source terminal sample interpolation is explicit; neither this reduction nor a successful result replaces full34ns transistor/bit/physical gates.')
     try:
         result['controls']=controls()
+        previous=restore_previous_playback(out)
+        result['probe_only_reference_run']=38787043126
         spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
         rows=[c for study in spec['placement_variants']['compact_edge_supply']['loaded_studies'] if study['run']==38763917040
             for c in study['cases'] if c['mode']=='compact' and c['condition']=='hot_low_eighth_step' and c['fault']=='none']
@@ -163,6 +222,8 @@ def main():
                     assert len(flags)==1 and flags[0][0]==DEVICE and re.findall(r'(?m)^\s*off\s+([01])\s*$',flags[0][1])==['1']
                     assert proc.returncode==0 and not info['diagnostics'],'Native playback diagnostic or process failure'
                     tc,vc,capture=parse_wave(case/'wave.dat',step)
+                    info['original_capture_exact_readback']=common_capture_equal(*previous[label],tc,vc)
+                    info['final_context']=failure_context(tc,vc,t)
                     errors={port:float(np.max(abs(vc['v('+port+')']-np.interp(tc,t,terminal_values[port])))) for port in PORTS}
                     assert max(errors.values())<1e-9,'Native forced terminal differs from recorded waveform'
                     info.update(complete=True,capture=capture,terminal_playback_error_v=errors,
@@ -176,7 +237,11 @@ def main():
                 except Exception as error:
                     info['error']=repr(error)
                     if (case/'wave.dat').exists():
-                        try:info['partial_capture']=parse_wave(case/'wave.dat',step,False)[2]
+                        try:
+                            tc,vc,cap=parse_wave(case/'wave.dat',step,False)
+                            info['partial_capture']=cap
+                            info['original_capture_exact_readback']=common_capture_equal(*previous[label],tc,vc)
+                            info['failure_context']=failure_context(tc,vc,t)
                         except Exception as tail_error:info['partial_capture_error']=repr(tail_error)
                 print(json.dumps(dict(case=label,complete=info['complete'],error=info.get('error'))),flush=True)
         result['comparisons']={}
@@ -185,6 +250,7 @@ def main():
             if a in captures and b in captures:result['comparisons'][f'charge{charge:g}']=compare(captures[a],captures[b])
         assert all(sha(path)==digest for path,digest in verified.items())
         result['all_simulations_complete']=all(row['complete'] for row in result['cases'].values())
+        assert all(row.get('original_capture_exact_readback',{}).get('exact_native_timepoints') for row in result['cases'].values()),'Probe-only capture changed or missing'
         result['status']='COMPLETE_SOURCE_BOUND_VBIC_PLAYBACK_DIAGNOSIS_NOT_ACCEPTANCE'
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR',error=repr(error));raise

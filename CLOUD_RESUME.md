@@ -1,3 +1,9 @@
+## 2026-10-15 internal VBIC probes; exact reference replay required
+
+Full-chip failed-guide DRT run38788529905 (source266c8972cbcff17846df739de757f97f35d8fb31) is live; inspect its authoritative status before any dispatch. The original global-route failure remains unchanged.
+
+A separate small hosted playback diagnosis adds native internal vbe/vbc, gm/go and four additional junction capacitances. It preserves the same frozen circuit, PWL, source corner, tolerances and steps. All four prior full/aborted recordings from run38787043126 are restored with archive and per-wave hashes. Every original timepoint and all17original vectors must be exactly equal, with no interpolation. Complete and partial captures retain their final32native samples, final5ps ranges and distance to original PWL knots. These probes may locate a charge/voltage transition but cannot by themselves establish model defects, full-circuit convergence or PHY acceptance.
+
 ## 2026-10-15 exact failed-guide full-chip detailed-route diagnosis
 
 A new hosted-only diagnostic uses the preserved run38448901835 placement (113791 instances, 132 global overflow) and original saved guides. It does not rerun FastRoute or waive its failed gate. Before routing, native readback must preserve exact cell/master/placement, pin connectivity, boundary geometry and per-net NDR width/spacing/hard-spacing declarations; native fault controls remove an NDR, disconnect a pin and move a cell. The complete guide file must match native loaded guide counts per net.

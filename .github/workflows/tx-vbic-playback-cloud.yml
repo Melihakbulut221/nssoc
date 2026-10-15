@@ -33,9 +33,9 @@ jobs:
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
-      - name: Reject corrupted playback and verify complete/partial capture JSON
+      - name: Reject altered original vectors and shifted probe timepoints
         run: python3 scripts/cloud_tx_vbic_playback.py --controls-only
-      - name: Isolate exact failing device using original native terminal voltages
+      - name: Record internal junction probes and prove original captures unchanged
         run: python3 scripts/cloud_tx_vbic_playback.py
       - name: Preserve every completed and failed isolated capture
         if: always()
