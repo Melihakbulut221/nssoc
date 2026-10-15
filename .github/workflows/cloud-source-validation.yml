@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: cloud-source-validation
 on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths: ['.github/workflows/cloud-source-validation.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,6 +31,8 @@ jobs:
           import yaml
           spec=json.loads(Path('docs/evidence/cloud-storage-tag-filter-fix-20261015.json').read_text())
           assert len(spec['workflows'])==70
+          if subprocess.run(['git','cat-file','-e',spec['baseline_commit']],capture_output=True).returncode:
+              subprocess.run(['git','fetch','--depth=1','origin',spec['baseline_commit']],check=True)
           for item in spec['workflows']:
               path=item['path']
               before=subprocess.check_output(['git','show',spec['baseline_commit']+':'+path])
