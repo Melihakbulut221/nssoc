@@ -1,3 +1,9 @@
+## Patched native PLL full1us acquisition measurement prepared
+
+New pll-vbic-acquisition-cloud restores exact original actual845 run38674687038 and requires paired-engine50ns evidence38805695818. Physical parent91364a..., all35 model/OSDI inputs, original34 probes, startup, KLU/.3125ps and full1us stay unchanged. Only proven native VBIC companion correction changes. Reproduce original acquisition rejection before the new run; apply frozen original800-900ns and900-1000ns100ppm/50ps/no-slip/control gates. No phase fit/window shift. Full raw stored in cloud ordered parts, including failure. Native progress logs report elapsed time/bytes every60seconds. Full845 safety, timestep/PVT/load/CDR/x4 still need proof regardless of this result. Own-path push starts one run; do not duplicate.
+
+Corrected physical critical-load38813118414/job116691024892 is live on3b41d9e; original wire/full32 captures remain live. All execution and artifacts stay on GitHub; local workspace remains empty.
+
 ## Cloud-only continuation and corrected physical experiment entry point
 
 Local workspace verified empty (0 entries), no local CAD/simulation processes. All source and results stay on GitHub. Existing full-wire38801162596 and originalSparse full32 runs38810158966/38810163678 remain active; do not duplicate.
