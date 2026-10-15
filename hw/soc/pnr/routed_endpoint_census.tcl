@@ -3,13 +3,23 @@
 # Read only; caller has loaded immutable real routed SPEF, libraries and SDC.
 nssoc_hold_assert_units [sta::unit_scale time]
 set corners [nssoc_hold_corners]
-set census {}
+set census {};set mapping {}
 set expected [sta::endpoint_path_count]
 foreach pin [sta::endpoints] {
     set name [nssoc_hold_field [get_property $pin full_name]]
     if {[dict exists $census $name]} {error "Duplicate native endpoint"}
     set vertices [$pin vertices]
     if {[llength $vertices]!=1 || [[lindex $vertices 0] is_bidirect_driver]} {error "Ambiguous endpoint vertex $name"}
+    # Exact pinned dbSta.i identity conversion; never strip or guess escaping.
+    set iterm [sta::sta_to_db_pin $pin]
+    if {$iterm ne "NULL"} {
+        set mapped [dict create kind [nssoc_hold_jstr instance] instance [nssoc_hold_jstr [[$iterm getInst] getName]] pin [nssoc_hold_jstr [[$iterm getMTerm] getName]]]
+    } else {
+        set bterm [sta::sta_to_db_port [sta::sta_pin_to_port $pin]]
+        if {$bterm eq "NULL"} {error "Endpoint has no native physical terminal: $name"}
+        set mapped [dict create kind [nssoc_hold_jstr boundary] port [nssoc_hold_jstr [$bterm getName]]]
+    }
+    dict set mapping $name [nssoc_hold_jobject $mapped]
     dict set census $name [lindex $vertices 0]
 }
 set ordered [lsort [dict keys $census]]
@@ -57,6 +67,6 @@ foreach delay {min max} {
 close $stream
 set names {};foreach name $ordered {lappend names [nssoc_hold_jstr $name]}
 set corner_names {};foreach name [lsort [dict keys $corners]] {lappend corner_names [nssoc_hold_jstr $name]}
-set result [dict create engine_endpoint_count $expected native_time_unit_seconds [nssoc_hold_number [sta::unit_scale time]] value_units [nssoc_hold_jstr seconds] negative_endpoint_count [nssoc_hold_jobject $counts] native_wns_seconds [nssoc_hold_jobject $wns] corners "\[[join $corner_names ,]\]" endpoints "\[[join $names ,]\]"]
+set result [dict create native_pin_mapping [nssoc_hold_jobject $mapping] engine_endpoint_count $expected native_time_unit_seconds [nssoc_hold_number [sta::unit_scale time]] value_units [nssoc_hold_jstr seconds] negative_endpoint_count [nssoc_hold_jobject $counts] native_wns_seconds [nssoc_hold_jobject $wns] corners "\[[join $corner_names ,]\]" endpoints "\[[join $names ,]\]"]
 nssoc_hold_write_json [file join $nssoc_endpoint_out native-census.json] [nssoc_hold_jobject $result]
 puts NSSOC_ACTUAL_ROUTED_CENSUS_COMPLETE

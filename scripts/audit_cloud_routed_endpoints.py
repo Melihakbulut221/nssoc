@@ -47,19 +47,22 @@ def native_topology():
     import odb
     db=odb.dbDatabase.create();odb.read_db(db,str(SOURCE/'source/routed.odb'));block=db.getChip().getBlock()
     rows=json.loads((OUT/'negative-hold-targets.json').read_text());details=[]
+    mapping=json.loads((OUT/'native-census.json').read_text())['native_pin_mapping']
+    assert len({json.dumps(v,sort_keys=True) for v in mapping.values()})==len(mapping),'Native physical endpoint aliases'
     for row in rows:
-        name=row['endpoint'];port=block.findBTerm(name)
-        if port:term=port;kind='boundary';master=None
+        name=row['endpoint'];identity=mapping[name];kind=identity['kind']
+        if kind=='boundary':
+            term=block.findBTerm(identity['port']);assert term,name;master=None
         else:
-            inst,pin=name.rsplit('/',1);cell=block.findInst(inst);assert cell,name
-            term=cell.findITerm(pin);assert term,name
-            kind='instance';master=cell.getMaster().getName()
+            assert kind=='instance';cell=block.findInst(identity['instance']);assert cell,name
+            term=cell.findITerm(identity['pin']);assert term,name
+            master=cell.getMaster().getName()
         net=term.getNet();assert net,('Unconnected constrained endpoint',name)
         terms=[dict(name=t.getInst().getName()+'/'+t.getMTerm().getName(),kind='instance',io=str(t.getIoType()),master=t.getInst().getMaster().getName(),location=list(t.getInst().getLocation())) for t in net.getITerms()]
         terms += [dict(name=t.getName(),kind='boundary',io=str(t.getIoType())) for t in net.getBTerms()]
         drivers=[t for t in terms if t['io'] in (('OUTPUT','INOUT') if t['kind']=='instance' else ('INPUT','INOUT'))]
         wire=net.getWire();rule=net.getNonDefaultRule()
-        details.append(dict(**row,kind=kind,master=master,pin_direction=str(term.getIoType()),net=net.getName(),net_type=str(net.getSigType()),ndr=rule.getName() if rule else None,drivers=drivers,terminals=terms,wire_length_dbu=wire.getLength() if wire else None))
+        details.append(dict(**row,native_identity=identity,kind=kind,master=master,pin_direction=str(term.getIoType()),net=net.getName(),net_type=str(net.getSigType()),ndr=rule.getName() if rule else None,drivers=drivers,terminals=terms,wire_length_dbu=wire.getLength() if wire else None))
     (OUT/'hold-target-topology.json').write_text(json.dumps(details,indent=2)+'\n')
     print('SOURCE_BOUND_HOLD_TOPOLOGY',len(details),flush=True)
 
