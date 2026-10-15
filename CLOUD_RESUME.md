@@ -1,3 +1,11 @@
+## 2026-10-15 coupled charge bracket rejects charge tolerance as fix
+
+Run38789786404 completed diagnosis: default and1e-16 both retain~8.90685mV coarse/fine voltage difference. At0.0625ps, successive charge1e-16/1e-18/1e-19 changes are below0.6uV, while1e-18/1e-19 coarse cases abort in xtree.xd0006. Original-charge startup prefix reproduces original full capture. Thus intermediate charge tightening is not a fix; keep all aborts and failed1mV comparison.
+
+A hosted read-only analysis (`startup-wave-diagnosis-cloud.yml`) now restores the existing hash-pinned bracket archive, reproduces the exact worst difference, locates first native divergence and plots native samples around four relevant nodes. No new simulation, source smoothing or acceptance-window change. Use the observed waveform shape to choose the next causal hypothesis, not another blind tighter-tolerance run.
+
+Mainchip38788529905 remains live; do not duplicate or treat its original failed global gate as passed. Local workspace remains empty.
+
 ## 2026-10-15 probe readback complete; coupled charge-tolerance bracket
 
 Internal-probe run38789110926 completed. Every native timepoint and all17original vectors exactly reproduce run38787043126 in all4cases. Tight-charge failures remain near0.726ns; last accepted steps shrink to~2.05e-19/4.18e-19s, finite qbe/qbc and internal junction voltages vary smoothly across the last samples while dynamic currents fluctuate. These are accepted samples only, not the rejected Newton state; no model defect or successful convergence is claimed. Exact evidence: `docs/evidence/pcie-vbic-internal-probes-20261015.json`.
