@@ -702,6 +702,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
     parser.add_argument('--assembled-core',choices=('off','compact','wire'),default='off',help='Exact whole162-device physical core and its real intermacro RC')
+    parser.add_argument('--assembled-sizing',choices=('baseline','data8_select10'),default='baseline')
     parser.add_argument('--assembled-placement',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply','compact_return_strap'),default='baseline')
     parser.add_argument('--stream-raw',action='store_true',help='Retain every native probe with immediate binary raw output, no in-simulator transient vector history')
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
@@ -752,6 +753,11 @@ def main():
             args.diagnostic_final_r in ('all','internal','outputs'))
         assert legacy or v11_hot or v11_nx4, 'Only explicit source-bound diagnostic pairs are allowed'
     assert args.assembled_placement=='baseline' or args.assembled_core!='off'
+    if args.assembled_sizing!='baseline':
+        assert args.assembled_core in ('compact','wire') and args.assembled_placement=='compact_return_strap'
+        assert args.streams==4 and args.fault=='none' and args.solver_profile=='default'
+        assert args.pre_bias=='native_res_tc' and args.clock_reference=='stiff65'
+        assert args.condition in ('hot_low','hot_low_res_bcs','cold_high_hbt_wcs')
     assert args.physical_profile=='baseline' or args.prestage.startswith('physical_')
     assert args.physical_final_profile=='power_trunks' or args.physical_final!='off'
     if args.prestage=='divider14':
@@ -831,6 +837,16 @@ def main():
             assert args.streams==4 and args.prestage=='divider9' and args.physical_final=='off'
             assert args.diagnostic_final_r=='actual' and args.diagnostic_final_nx==0
             core,interface_probes,scope=assembled_tree_core(inputs,args.assembled_core,args.assembled_placement)
+            if args.assembled_sizing!='baseline':
+                from cloud_tx_assembled_sizing import resize_final
+                original=core
+                candidate,change=resize_final(original.read_text(),args.assembled_sizing)
+                core=original.with_name(original.stem+'-'+args.assembled_sizing+original.suffix)
+                core.write_text(candidate)
+                result['assembled_sizing_diagnostic']=change
+                scope=dict(scope,source_geometry_matches_devices=False,original_model_sha256=scope['model_sha256'],
+                    model_sha256=sha(core),assembled_tree_gds=False,
+                    candidate_layout_integrated=False,metal_from_original_device_geometry=True)
             result['assembled_core_scope']=scope
             result['prestage']='assembled_core_'+args.assembled_core
             result['scope']='Actual assembled162-device four-input core, loaded by real CMOS frontends and TX;62HBT and64MOS checked. Wire mode contains the exact source-pinned whole-core metal RC, including real intermacro metal; compact mode is its matched no-metal-RC control. All12final data HBT bases observed. Clocks still external; front/TX/bias layouts, substrateRF,32:1/four-lane/fullPHY and mainchip not accepted.'
@@ -846,7 +862,7 @@ def main():
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
         paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,PRE_FEEDBACK,CLOCK_FEEDS[args.clock_reference],OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
-               ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',ROOT/'scripts/cloud_tx_stream.py',Path(os.environ['CLOUD_NGSPICE']),
+               ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',ROOT/'scripts/cloud_tx_stream.py',ROOT/'scripts/cloud_tx_assembled_sizing.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
         def limits():
@@ -893,6 +909,11 @@ def main():
                 if args.diagnostic_final_r!='actual' and args.diagnostic_final_nx else
                 'COMPLETE_DEVICE_AREA_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE' if args.diagnostic_final_nx else
                 'COMPLETE_ARTIFICIAL_R_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE')
+        if args.assembled_sizing!='baseline':
+            result['diagnostic_screen_passed']=result['component_screen_passed']
+            result['component_screen_passed']=False
+            result['status']='COMPLETE_ASSEMBLED_DEVICE_SIZING_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
+            result['scope']=result['assembled_sizing_diagnostic']['scope']
         if args.fault!='none':
             result['fault_rejected_by_original_bits']=not result['review']['signals']['passed']
             assert result['fault_rejected_by_original_bits'], 'Actual stage fault escaped source-bit screen'

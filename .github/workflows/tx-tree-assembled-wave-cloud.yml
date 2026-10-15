@@ -10,8 +10,13 @@ on:
       study:
         description: Original gates on complete assembled physical core and matched compact control
         type: choice
-        options: [breakpoint_diagnosis, nominal, temperature_voltage, physical_faults, failing_corners, independent_corners, mos_corners, quarter_step, hot_low_quarter_step, hot_low_fine_steps]
+        options: [headroom_corners, breakpoint_diagnosis, nominal, temperature_voltage, physical_faults, failing_corners, independent_corners, mos_corners, quarter_step, hot_low_quarter_step, hot_low_fine_steps]
         default: nominal
+      assembled_sizing:
+        description: Schematic sizing sensitivity only; requires new matching layout and RC
+        type: choice
+        options: [baseline, data8_select10]
+        default: baseline
       solver_profile:
         description: Native default or tight trap/Gear2, unchanged electrical gates
         type: choice
@@ -30,7 +35,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-tree-assembled-wave-${{ github.ref }}-${{ inputs.study || 'nominal' }}-${{ inputs.placement_profile || 'baseline' }}-${{ inputs.pre_bias || 'native_res' }}-${{ inputs.solver_profile || 'default' }}
+  group: tx-tree-assembled-wave-${{ github.ref }}-${{ inputs.study || 'nominal' }}-${{ inputs.placement_profile || 'baseline' }}-${{ inputs.pre_bias || 'native_res' }}-${{ inputs.solver_profile || 'default' }}-${{ inputs.assembled_sizing || 'baseline' }}
   cancel-in-progress: false
 jobs:
   native-transient:
@@ -43,7 +48,7 @@ jobs:
       matrix:
         streams: [4]
         prestage: [compact, wire]
-        condition: ${{ fromJSON(inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'failing_corners' && '["hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'hot_low_fine_steps' && '["hot_low_eighth_step","hot_low_sixteenth_step"]' || inputs.study == 'hot_low_quarter_step' && '["hot_low_quarter_step"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
+        condition: ${{ fromJSON(inputs.study == 'headroom_corners' && '["hot_low","hot_low_res_bcs","cold_high_hbt_wcs"]' || inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'failing_corners' && '["hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'hot_low_fine_steps' && '["hot_low_eighth_step","hot_low_sixteenth_step"]' || inputs.study == 'hot_low_quarter_step' && '["hot_low_quarter_step"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
         fault: ${{ fromJSON(inputs.study == 'physical_faults' && '["swap_pre_a_select","disable_pre_b_bias","swap_leaf_select"]' || '["none"]') }}
     permissions:
       contents: write
@@ -64,7 +69,7 @@ jobs:
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
       - name: Reject source-bit corruption and incomplete output captures
-        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py
+        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_tx_assembled_sizing.py
       - name: Check actual native solver options before long capture
         if: inputs.solver_profile == 'tight_trap' || inputs.solver_profile == 'tight_gear2' || inputs.solver_profile == 'breakpoint_1as' || inputs.solver_profile == 'breakpoint_tight_trap'
         env:
@@ -92,7 +97,7 @@ jobs:
           print(json.dumps(result))
           PYSMOKE
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --assembled-placement '${{ inputs.placement_profile || 'baseline' }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --solver-profile '${{ inputs.solver_profile || 'default' }}' --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --assembled-placement '${{ inputs.placement_profile || 'baseline' }}' --assembled-sizing '${{ inputs.assembled_sizing || 'baseline' }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --solver-profile '${{ inputs.solver_profile || 'default' }}' --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
@@ -112,7 +117,7 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-mux4/result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group 'assembled-tree-${{ matrix.streams }}-${{ matrix.prestage }}-${{ matrix.condition }}-${{ matrix.fault }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'assembled-tree-${{ matrix.streams }}-${{ matrix.prestage }}-${{ matrix.condition }}-${{ matrix.fault }}${{ inputs.assembled_sizing == 'data8_select10' && '-data8-select10' || '' }}' "$archive" "$archive.sha256" "$summary"
       - name: Retain capture if permanent publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -145,7 +150,7 @@ jobs:
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
       - name: Reject corrupt and incomplete captures without weakening complete reader
-        run: python3 -m pytest -q sw/tests/test_cloud_tx_stream.py
+        run: python3 -m pytest -q sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_tx_assembled_sizing.py
       - name: Inspect hash-bound failed tails and run exact PWL linear reduction
         run: python3 scripts/cloud_tx_stream.py --diagnose-failed-breakpoints
       - name: Permanently preserve diagnostic success or failure
