@@ -582,6 +582,17 @@ def main():
             after = '23:(54.0,-82),24:(15.6,-82),25:(49.2,-18),26:(10.8,-18)'
             assert source.count(before) == 1
             source = source.replace(before, after)
+            # Actual native LVS38692269967 found avss|sub: moved row24's
+            # tap escape is15.6+19.2=34.8um, exactly the old avss lane.
+            # Move both ground escape lanes with their passive column.
+            # Keep all original taps, device terminals and physical gates.
+            ground_before = 'lane = 149.6 if i == 23 else 34.8'
+            ground_after = 'lane = 111.2 if i == 23 else -3.6'
+            assert source.count(ground_before) == 1
+            source = source.replace(ground_before, ground_after)
+            edits.append(dict(output_ground_escape_translation_um=-38.4,
+                before=ground_before, after=ground_after,
+                reason='Remove real avss/sub collision at x34.8 after passive translation; native DRC/LVS must verify.'))
             edits.append(dict(output_passive_translation_um=[-38.4,0.0],
                 generator_row_indices=[23,24,25,26], before=before, after=after,
                 scope='Physical placement/rerouting only; exact V10 schematic unchanged. Fresh native DRC/LVS, RC and loaded waves required.'))

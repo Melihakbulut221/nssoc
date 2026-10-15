@@ -1,0 +1,118 @@
+{
+  "status": "REJECT_OUTPUT_PASSIVE_TRANSLATION_AVSS_SUB_SHORT",
+  "run": 38692269967,
+  "source_commit": "481cf09352d2949802382dfd47f835a5d2b8706e",
+  "summary_asset": 642918281,
+  "summary_sha256": "ab27a69c0bc899ed9c589bb9745bf29943ecf71da4262e7c04401177b06ec7d2",
+  "archive_asset": 642918062,
+  "archive_bytes": 124590,
+  "archive_sha256": "d8b73b2bc53e9f922b7646dbc971e74ebcdeddc6225a738792a1b542810b1adf",
+  "physical_status": "FAIL",
+  "drc": {
+    "status": "PASS",
+    "process_returncode": 0,
+    "markers": 0,
+    "categories": {},
+    "category_count": 560,
+    "report_sha256": "7946663d905b8fafac7d1878ed1fdad4da4aee11909e0572d90acb309b069f45",
+    "log_sha256": "4ee9b321e6939e32918c60d1e5f263f64c1c3557fc30318c74ad24d93fadce93"
+  },
+  "lvs": {
+    "execution": {
+      "command": [
+        "/home/runner/work/_temp/librelane.AppImage",
+        "klayout",
+        "-b",
+        "-zz",
+        "-r",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+        "-rd",
+        "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_final_drive_v10_layout_v1.gds",
+        "-rd",
+        "topcell=nssoc_tx_mux2_final_drive_v10_layout_v1",
+        "-rd",
+        "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+        "-rd",
+        "run_mode=deep",
+        "-rd",
+        "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+        "-rd",
+        "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+        "-rd",
+        "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/extracted.cir",
+        "-rd",
+        "thr=2",
+        "-rd",
+        "no_simplify=true",
+        "-rd",
+        "top_lvl_pins=true"
+      ],
+      "returncode": 0,
+      "seconds": 4.527271587000001,
+      "memory_limit_bytes": 2147483648,
+      "elapsed_watchdog": null,
+      "log_sha256": "a6d5de2944d9d009986159a186b583400a56fbbc242a6f8675ebbc9e085fad8a"
+    },
+    "audit_execution": {
+      "command": [
+        "/home/runner/work/_temp/librelane.AppImage",
+        "python",
+        "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+        "--top",
+        "nssoc_tx_mux2_final_drive_v10_layout_v1",
+        "--deck-log",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+        "--output",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/audit.json"
+      ],
+      "returncode": 1,
+      "seconds": 0.8824975219999942,
+      "memory_limit_bytes": 2147483648,
+      "elapsed_watchdog": null,
+      "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+    },
+    "audit": {
+      "status": "FAIL",
+      "top": "nssoc_tx_mux2_final_drive_v10_layout_v1",
+      "reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "NoMatch": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_mux2_final_drive_v10_layout_v1",
+          "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V10_LAYOUT_V1",
+          "status": "NoMatch",
+          "layout_devices_recursive": 54,
+          "schematic_devices_recursive": 54
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+          "bytes": 375932,
+          "sha256": "3714967e6083a9f0b9935b33b7f0a7df8bf751e4d87ddfd7e3bcd4f9badaf8a8"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+          "bytes": 37159,
+          "sha256": "1948eccf82af2f487276439f9ecdde026b23780d520dee3c71bdbadc7986e2c6"
+        }
+      }
+    }
+  },
+  "failure_reports": {
+    "physical/lvs/extracted.cir": {
+      "sha256": "8138c6b81e0a4d1a8420b53bbc31b00b865d8f6d3365b66856e97e169d88f0e8",
+      "bytes": 2555,
+      "text": "* Extracted by KLayout with SG13G2 LVS runset on : 15/10/2026 06:27\n\n.SUBCKT nssoc_tx_mux2_final_drive_v10_layout_v1 avss|sub op on avdd ap an bp bn\n+ sp sn iref\nQ$1 \\$9 sp \\$85 \\$1 npn13G2 we=70n le=900n Nx=6 m=1\nQ$2 \\$8 sn \\$85 \\$1 npn13G2 we=70n le=900n Nx=6 m=1\nQ$3 \\$8 sn \\$85 \\$1 npn13G2 we=70n le=900n Nx=6 m=1\nQ$4 \\$9 sp \\$85 \\$1 npn13G2 we=70n le=900n Nx=6 m=1\nQ$5 iref iref avss|sub \\$1 npn13G2 we=70n le=900n Nx=1 m=1\nQ$6 \\$85 iref avss|sub \\$1 npn13G2 we=70n le=900n Nx=8 m=1\nQ$7 \\$85 iref avss|sub \\$1 npn13G2 we=70n le=900n Nx=8 m=1\nR$8 \\$8 avss|sub \\$1 rppd w=2u l=38.4u ps=0u b=0 m=1\nR$9 \\$9 avss|sub \\$1 rppd w=2u l=38.4u ps=0u b=0 m=1\nR$10 avdd \\$25 \\$1 rppd w=18u l=1.1u ps=0u b=0 m=1\nR$11 avdd \\$21 \\$1 rppd w=18u l=1.1u ps=0u b=0 m=1\nR$12 \\$25 op \\$1 rppd w=8u l=1.8u ps=0u b=0 m=1\nR$13 \\$21 on \\$1 rppd w=8u l=1.8u ps=0u b=0 m=1\nR$14 on avss|sub \\$1 rppd w=8u l=4.5u ps=0u b=0 m=1\nR$15 op avss|sub \\$1 rppd w=8u l=4.5u ps=0u b=0 m=1\nR$16 avss|sub \\$1 ptap1 A=4p P=8u\nR$17 avss|sub \\$1 ptap1 A=4p P=8u\nR$18 avss|sub \\$1 ptap1 A=4p P=8u\nR$19 avss|sub \\$1 ptap1 A=4p P=8u\nR$20 avss|sub \\$1 ptap1 A=4p P=8u\nR$21 avss|sub \\$1 ptap1 A=4p P=8u\nR$22 avss|sub \\$1 ptap1 A=4p P=8u\nR$23 avss|sub \\$1 ptap1 A=4p P=8u\nR$24 avss|sub \\$1 ptap1 A=4p P=8u\nR$25 avss|sub \\$1 ptap1 A=4p P=8u\nR$26 avss|sub \\$1 ptap1 A=4p P=8u\nR$27 avss|sub \\$1 ptap1 A=4p P=8u\nR$28 avss|sub \\$1 ptap1 A=4p P=8u\nR$29 avss|sub \\$1 ptap1 A=4p P=8u\nR$30 avss|sub \\$1 ptap1 A=4p P=8u\nR$31 avss|sub \\$1 ptap1 A=4p P=8u\nR$32 avss|sub \\$1 ptap1 A=4p P=8u\nR$33 avss|sub \\$1 ptap1 A=4p P=8u\nR$34 avss|sub \\$1 ptap1 A=4p P=8u\nR$35 avss|sub \\$1 ptap1 A=4p P=8u\nR$36 avss|sub \\$1 ptap1 A=4p P=8u\nR$37 avss|sub \\$1 ptap1 A=4p P=8u\nR$38 avss|sub \\$1 ptap1 A=4p P=8u\nR$39 avss|sub \\$1 ptap1 A=4p P=8u\nR$40 avss|sub \\$1 ptap1 A=4p P=8u\nR$41 avss|sub \\$1 ptap1 A=4p P=8u\nR$42 avss|sub \\$1 ptap1 A=4p P=8u\nQ$43 \\$25 bn \\$8 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$44 \\$21 ap \\$9 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$45 \\$25 bn \\$8 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$46 \\$21 bp \\$8 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$47 \\$21 ap \\$9 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$48 \\$25 bn \\$8 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$49 \\$25 an \\$9 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$50 \\$21 bp \\$8 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$51 \\$25 an \\$9 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$52 \\$25 an \\$9 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$53 \\$21 bp \\$8 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\nQ$54 \\$21 ap \\$9 \\$1 npn13G2 we=70n le=900n Nx=3 m=1\n.ENDS nssoc_tx_mux2_final_drive_v10_layout_v1\n"
+    }
+  },
+  "diagnosis": "Native extracted top merges avss|sub. Relocated row24 x15.6 has tap escape x+19.2=34.8, matching unchanged old avss escape lane34.8; both use connected escape layers. New trial translates both explicit avss lanes by same38.4um to111.2/-3.6 while preserving devices and substrate taps.",
+  "adopted": false,
+  "full_phy_accepted": false
+}
