@@ -15,7 +15,7 @@ on:
       solver_profile:
         description: Native default or tight trap/Gear2, unchanged electrical gates
         type: choice
-        options: [default, tight_trap, tight_gear2]
+        options: [default, tight_trap, tight_gear2, breakpoint_1as]
         default: default
       pre_bias:
         description: Fixed native bias feed; TC candidate needs separate feed layout and RC qualification
@@ -66,7 +66,7 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py
       - name: Check actual native solver options before long capture
-        if: inputs.solver_profile == 'tight_trap' || inputs.solver_profile == 'tight_gear2'
+        if: inputs.solver_profile == 'tight_trap' || inputs.solver_profile == 'tight_gear2' || inputs.solver_profile == 'breakpoint_1as'
         env:
           NSSOC_SOLVER_PROFILE: ${{ inputs.solver_profile }}
         run: |
@@ -78,6 +78,7 @@ jobs:
           out=pathlib.Path('cloud-tx-solver-preflight').resolve()
           out.mkdir()
           deck='NSSOC native option readback preflight\nV1 a 0 1\nR1 a b 1000\nC1 b 0 1p\n'+solver_options(profile)+'\n.control\ntran 1p 1n\necho NSSOC_SOLVER_OPTIONS_BEGIN\noption\necho NSSOC_SOLVER_OPTIONS_END\nquit\n.endc\n.end\n'
+          if profile=='breakpoint_1as':deck=deck.replace('echo NSSOC_SOLVER_OPTIONS_END','echo NSSOC_NATIVE_MINBREAK $minbreak\necho NSSOC_SOLVER_OPTIONS_END')
           (out/'bench.cir').write_text(deck)
           (out/'spinit').write_text('* Explicit empty preflight init\n')
           env=dict(os.environ,SPICE_SCRIPTS=str(out))

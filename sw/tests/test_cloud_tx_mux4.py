@@ -930,3 +930,14 @@ def test_verified_option_labels_do_not_mask_real_native_failures(profile,method)
         with pytest.raises(AssertionError):mux4.native_diagnostics(bad,profile)
     changed=['Truncation error correction failed:', 'diaggmin (stepping) = 1e-3']
     assert mux4.native_diagnostics(block(changed),profile)==changed
+
+
+def test_breakpoint_profile_preserves_original_tolerances_and_requires_native_variable():
+    assert mux4.solver_options('breakpoint_1as')==mux4.solver_options('default')+' minbreak=1e-18'
+    log=('NSSOC_SOLVER_OPTIONS_BEGIN\nIntegration Method = TRAPEZOIDAL\nMaxOrder = 2\n'
+         'reltol (current) = 1e-4\nabstol (current) = 1e-12\n'
+         'NSSOC_NATIVE_MINBREAK 1E-18\nNSSOC_SOLVER_OPTIONS_END\n')
+    assert mux4.verify_solver_options(log,'breakpoint_1as')['native_minbreak_variable_s']==1e-18
+    for bad in [log.replace('1E-18','1E-12'),log.replace('NSSOC_NATIVE_MINBREAK 1E-18\n',''),
+                log.replace('1e-4','1e-3'),log.replace('NSSOC_NATIVE_MINBREAK 1E-18','NSSOC_NATIVE_MINBREAK 1E-18\nNSSOC_NATIVE_MINBREAK 1E-18')]:
+        with pytest.raises(AssertionError):mux4.verify_solver_options(bad,'breakpoint_1as')
