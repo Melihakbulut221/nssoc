@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: tx-tree-assembly-cloud
 on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/tx-tree-assembly-cloud.yml]
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,6 +13,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   native-assembly:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
