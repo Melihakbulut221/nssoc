@@ -194,7 +194,16 @@ def compare_timesteps(selected, profile):
             assert a==b,'Native contracts differ beyond timestep'
             assert benches[0]==benches[1],'Native benches differ beyond timestep'
             def circuit_inputs(summary):
-                return {k:v for k,v in summary['inputs'].items()if not k.endswith('/docs/evidence/pcie-tree4-assembly-input-20261015.json')}
+                # The two generated files have just been compared byte-for-byte
+                # after normalizing only the explicit integration timestep.
+                # Their original hashes must still match each archived capture.
+                generated=('native/bench.cir','native/contract.json')
+                for rel in generated:
+                    matches=[h for name,h in summary['inputs'].items()if name.endswith('/cloud-tx-mux4/'+rel)]
+                    assert matches==[summary['outputs'][rel]], 'Generated input/output hash mismatch'
+                return {k:v for k,v in summary['inputs'].items()
+                    if not k.endswith('/docs/evidence/pcie-tree4-assembly-input-20261015.json')
+                    and not any(k.endswith('/cloud-tx-mux4/'+rel)for rel in generated)}
             assert circuit_inputs(summaries[0])==circuit_inputs(summaries[1]),'Captured circuit/model inputs differ'
             metrics=step_metrics(*captures,contracts[0])
             result['pairs'][mode]=dict(metrics=metrics,original_reviews_passed=[s['review']['all_engineering_gates_passed']for s in summaries],
