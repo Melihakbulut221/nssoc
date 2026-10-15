@@ -359,7 +359,7 @@ def prects_inventory():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data','prects_inventory','prects_grt'), default='baseline')
+    parser.add_argument('--source-profile', choices=('baseline', 'local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data','prects_inventory','prects_grt','packet193'), default='baseline')
     args = parser.parse_args()
     if args.source_profile == 'prects_inventory':
         prects_inventory(); return
@@ -374,6 +374,14 @@ def main():
         odb_sha='9986a3170149679957242ad825a329c924aae5a151907a7db5903188d553f273'
         report_sha='a56c1d7e0a88b4eaa01f02576be97fc71fde0ae68f1edf5eda009c99fb2fc7c1'
         odb_member='cloud-newer-postcts/failed-global.odb'
+    if args.source_profile == 'packet193':
+        evidence = json.loads((ROOT/'docs/evidence/pcie-packet-cluster-targeted-rejection-20261015.json').read_text())
+        assert evidence['run'] == 38683404082
+        receipt = evidence['receipt']
+        url, archive_sha, archive_bytes = receipt['url'], receipt['sha256'], receipt['bytes']
+        odb_sha = evidence['result']['failure_outputs']['failed-global.odb']
+        report_sha = evidence['result']['failure_outputs']['congestion.rpt']
+        odb_member = 'cloud-newer-postcts/failed-global.odb'
     if args.source_profile in ('local_optimize', 'reserved_m5', 'local_optimize_buffers', 'local_data_endpoints', 'critical30_buffers', 'seed13_buffers','halo1_seed13_buffers','routability_data'):
         evidence_name = {'local_optimize': 'cloud-local-optimize-route-failure-20261013.json',
                          'reserved_m5': 'cloud-reserved-m5-route-failure-20261013.json',
@@ -436,6 +444,18 @@ def main():
                 assert original['failure_outputs']['congestion.rpt']==report_sha
                 result['source_run']=38598795406
                 result['source_summary_sha256']=hashlib.sha256(raw).hexdigest()
+            if args.source_profile == 'packet193':
+                raw = tar.extractfile('cloud-newer-postcts/result.json').read()
+                assert hashlib.sha256(raw).hexdigest() == evidence['summary_sha256']
+                original = json.loads(raw)
+                assert original == evidence['result']
+                assert original['status'] == 'FAIL_OR_ERROR' and original['packet_clusters_requested']
+                assert original['packet_cluster_guidance']['cluster_scope'] == 'diagnosed_193_only'
+                assert original['packet_cluster_guidance']['clustered_packet_bit_nets'] == 193
+                assert original['routing_capacity_perturbation_percentage'] == 0
+                assert original['fresh_cts']['status'] == 'PASS_PLACEMENT_AND_TRANSPARENT_CTS_GRAPH_NOT_TIMING'
+                result['source_run'] = evidence['run']
+                result['source_summary_sha256'] = hashlib.sha256(raw).hexdigest()
             if args.source_profile == 'routability_data':
                 raw=tar.extractfile('cloud-newer-postcts/result.json').read()
                 assert hashlib.sha256(raw).hexdigest()==evidence['summary_sha256']
