@@ -1,3 +1,20 @@
+## 2026-10-15 — repaired shifted-output model loaded screens LIVE
+
+**FreshRC38694566613 PASS**, summary642967705 SHA5701f7d3157ab35d299765b23bbbaab43c4bc1f7a74e61348a64b360614feea2; archive6295768bytes SHAc8caae9782333240493c9e4c5102ba50229ce952e8af4350826e97486eb4d88e.54devices,4018R/2649C,17conductors/112probes,all13real corruption controls; exact native Rgraph/C values and geometry ownership conserved. Explicit54body/well/substrateR/RF/fullPEX limitations unchanged. Record:`docs/evidence/pcie-output-passive-shift-rc-20261015.json`.
+
+**Composition38694954036 PASS**, sourceba1e1f2044e12e1abccd3ee9853a30732d1342cd, summary642983811 SHA369755e1dde6ecf8eb8413be68ec6d5c77fcf765acfb9fb9e87475e76b996741. Archive6675412bytes SHA771c407db5eeee9fa0fdfd4c53042979bb3c06ca81da05f1b915f5f63a1c710c. Full archive readback verified embedded resultJSON and both SPICE outputs. New exact receipt:`docs/evidence/pcie-final-v10-tight-left-outputs-composition-20261015.json`; wire20d4e7b18ac3198d3300ec5ac6a2b8764ea1569bb893fd42811e59233be7a7eb; compact88ef39f86774c3a8da6b10d6a2983dfd9e8fea0b356dfc76e18c731f9b41c661. Compact ordering changes are not an electrical pass; unchanged source circuit already passed strict layout LVS.
+
+**Loaded simulations LIVE**, source**5dbc28504fbcfc9412d47a583484daef49d537df**:
+- Nominal **38695637067**: compact116291452115; wire116291452407.
+- Temperature/voltage **38695640569**: cold compact116291463659; hot compact116291463929; hot wire116291464044; cold wire116291464081.
+- streams4; prestagecascade158_kelvin_supply_direct_tight (same proven receipt); matched final profile`v10_kelvin_low_ports_loads_shunts_series_left_outputs`; stiff65,native_res,binary. All768samples/0.3,0.5,0.7UI/100mV/device limits unchanged.
+- Source audit38695644545PASS. Prior audit38695191029 proved **60passed/465deselected**, crossing physical policy and actual old/new variant bindings with valid hashes. Same-policy old geometry is rejected.
+- Push38695637295skipped by existing guard, no duplicate transient.
+
+Inspect all6 actual summaries/capture completeness, not just workflow verdict. Previous unshifted tight hotFAIL52samples/83.938999mV remains authoritative until this new physically verified variant is electrically proven. No new geometry adopted yet. Native attached-capacitance sums from exact RC: outputs21.61007/18.237282fF ->19.10986/15.708092fF; these are physical attachment sums, not timing or effective coupling predictions.
+
+Long mainchip19338683404082, original32fullwire38679319167, actual845PLL1us38674687038 verified live this turn. Both oldchecks38633437805/38633422995 also live on GitHub-hostedubuntu24.04, NOT local; no unverified cancellation. PLL completion requires existing actual_parent_acquisition_review_d2. FullPHY/mainchiproute/finalSTA remain open. Allcloud; localworkspaceempty.
+
 ## 2026-10-15 — actual shifted output layout LVS repaired; fresh extraction live
 
 **38694073224 PASS** (source2a7438fed513171d62645e6d633d8ab4551af193): native560-category DRC0markers; hierarchical+flat54/54 transistor LVS with no extraction diagnostics; all5actual physical fault controls rejected correctly. This closes the new avss/sub short in this macro only, NOT mainchip or fullPHY LVS/acceptance. Final output passives moved38.4um left; row24 ground escapes externally at-19.2; row23 retains149.6. Original circuit dimensions/models unchanged.
