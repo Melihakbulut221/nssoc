@@ -1,3 +1,13 @@
+## 2026-10-15 — all strict fine captures complete; joint sizing rejected by hot wire
+
+ALL CLOUD. Strict solver study **38763917040** is COMPLETE with four pinned native captures. The last wire 0.0625ps case passes original component gates at **100.722432816mV** output margin; no diagnostics. This is NOT yet numerical convergence proof. Next dispatch exactly one hosted `step_comparison`, placement `compact_edge_supply`, solver `breakpoint_tight_trap`, step_pair `fine`. Compare every original voltage/sample/edge/energy gate and preserve earlier default and breakpoint-only failures.
+
+Joint sizing **38773059353 / data8_select10** is REJECTED for adoption. Its wire hot_low has **28 wrong-sign output samples**, 128 below100mV samples, minimum margin **-9.604110343mV** at unchanged0.3UI. Final interface has1161below150mV samples, CMmin1.784219876V; three data HBT VCE minima are below0.4V (worst0.397838551V). This failure and all three compact passes are pinned in the SAME candidate loaded_study (four cases so far). Remaining wire hotRES/coldHBT jobs are still running; let them finish and preserve results, but do not generate/adopt candidate layout from compact passes.
+
+The larger final input loading damages bandwidth and shifts the voltage problem. Next physical/circuit hypothesis must address stage-drive and stack headroom jointly; do not repeat this exact rejected sizing or relax source-bit sampling. Original V10 remains the source-bound physical reference with its own unresolved corner failures.
+
+Mainchip **38731744914 /116410943697** remains live. Current source-code inspection confirmed FastRoute soft-NDR modifies route edge cost and DRT independently reads database NDRs; no acceptance gate or constraint was changed. Global guidance alone is never final metal/DRC/STA evidence. Local workspace remains empty.
+
 ## 2026-10-15 — first joint-sizing native compact results pass; wire results pending
 
 ALL CLOUD; full PHY and final chip timing remain OPEN. Study **38773059353** (`data8_select10`, fixed TC feed) has initial native results pinned under the candidate's own `loaded_studies` record. Append future cases to this SAME study.
