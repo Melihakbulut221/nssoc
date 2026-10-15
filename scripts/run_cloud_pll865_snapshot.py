@@ -794,9 +794,10 @@ def pfd_terminal_controls():
 def review_physical_pfd(profile='aoi4_rc'):
     """Read exact completed native capture, reconstruct source, quantify PFD stress."""
     assert os.environ.get('GITHUB_ACTIONS')=='true','Hosted waveform analysis only'
-    assert profile in ('aoi4_rc','aoi4_d2_rc')
-    source_run=38616009542 if profile=='aoi4_d2_rc' else 38610259816
-    source_head='e0bd3db29bd0bcc3b840da4e0334419bff5c128a' if profile=='aoi4_d2_rc' else '9e56ae047a0e36725bac42daa4868c092c2da261'
+    assert profile in ('aoi4_rc','aoi4_d2_rc','actual_parent_d2_rc')
+    actual_parent=profile=='actual_parent_d2_rc'
+    source_run=38672412524 if actual_parent else 38616009542 if profile=='aoi4_d2_rc' else 38610259816
+    source_head='8220cbf898d97d311b5438f2f799385d7aef7af7' if actual_parent else 'e0bd3db29bd0bcc3b840da4e0334419bff5c128a' if profile=='aoi4_d2_rc' else '9e56ae047a0e36725bac42daa4868c092c2da261'
     out=ROOT/'cloud-pll-acquisition-review';out.mkdir(exist_ok=False)
     result=dict(status='RUNNING_PHYSICAL_PFD_NATIVE50_REVIEW',source_run=source_run,profile=profile,
         full_phy_accepted=False,acquisition_accepted=False,full_device_safety_accepted=False,
@@ -830,19 +831,26 @@ def review_physical_pfd(profile='aoi4_rc'):
                 assert len(matches)==1 and matches[0].isfile()
                 return tar.extractfile(matches[0]).read()
             assert member('result.json')==summary
-            assert capture['status']=='COMPLETE_PHYSICAL_PFD_NATIVE50_FIXTURE_SCREEN_NOT_LOCK_OR_PARENT_LAYOUT_ACCEPTANCE'
+            assert capture['status']==('COMPLETE_ACTUAL845_PARENT_NATIVE50_CAPTURE_NOT_LOCK_SAFETY_OR_PVT_ACCEPTANCE' if actual_parent else 'COMPLETE_PHYSICAL_PFD_NATIVE50_FIXTURE_SCREEN_NOT_LOCK_OR_PARENT_LAYOUT_ACCEPTANCE')
             assert capture['physical_pfd'] is True and capture['native_stop_s']==50e-9
             assert len(capture['inputs'])==35 and capture['native_off_flags']==102
             for item in capture['inputs'].values():
                 data=member(item['hosted_path']);assert len(data)==item['bytes'] and digest(data)==item['sha256']
             parent=member('parent865.spice').decode();original=member('source/parent865.spice').decode()
-            macro=member('pfd-physical-source/wire/pfd235-wire01.spice').decode()
+            macro=None if actual_parent else member('pfd-physical-source/wire/pfd235-wire01.spice').decode()
             import importlib.util
             generator=ROOT/'hw/soc/flow/make_pcie_pfd102_local_v2.py'
             spec=importlib.util.spec_from_file_location('physical_pfd_source_generator',generator)
             module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-            ref=module.profile_devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES},profile.removesuffix('_rc'))
-            expected,proof=pfd_physical_parent(original,macro,ref,profile)
+            ref=module.profile_devices({n:(ROOT/'hw/soc/analog/pcie'/n).read_text() for n in module.SOURCES},'aoi4_d2' if actual_parent else profile.removesuffix('_rc'))
+            if actual_parent:
+                assert digest(original.encode())=='b7c2b8f7328c14ff15a5798c7aaec0629104ea7ec9252d2594d3dd9db168ff48'
+                expected,proof=restore_actual_pfd_parent(out,ref)
+                source_dir=out/'actual-parent-source'
+                for p in source_dir.rglob('*'):
+                    if p.is_file():assert member('actual-parent-source/'+str(p.relative_to(source_dir)))==p.read_bytes()
+            else:
+                expected,proof=pfd_physical_parent(original,macro,ref,profile)
             assert parent==expected and proof==capture['pfd_replacement']
             assert digest(parent.encode())==capture['parent_sha256']
             bench=member('source/bench.cir').decode()
@@ -851,6 +859,9 @@ def review_physical_pfd(profile='aoi4_rc'):
             roots=set(re.findall(r'(/[^"\s]+/cloud-pll-snapshot)/models/models',circuit));assert len(roots)==1
             base=roots.pop();body,control=bench.split('.control\n');setup=control.split('\nop\n',1)[0]
             body=body.replace(MODEL_ROOT,base+'/models/models').replace('.tran 3.125e-13 1e-06 0 3.125e-13','.tran 3.125e-13 5e-08 0 3.125e-13')
+            if actual_parent:
+                assert body.count('nssoc_parent865_wire_v1')==1
+                body=body.replace('nssoc_parent865_wire_v1','nssoc_parent845_wire_v1')
             setup=setup.replace(OSDI_ROOT+'/r3_cmc.osdi',base+'/models/r3_cmc.osdi')
             for n in ('psp103.osdi','psp103_nqs.osdi'):setup=setup.replace(OSDI_ROOT+'/'+n,base+'/frontend/'+n)
             original_save=next(l for l in setup.splitlines() if l.startswith('save '))
@@ -878,6 +889,7 @@ def review_physical_pfd(profile='aoi4_rc'):
         assert len(values)>150000 and abs(values[-1,0]-50e-9)<1e-15
         assert np.max(np.diff(values[:,0]))<=3.125e-13*1.00001
         diagnosis=pfd_terminal_diagnosis(parent,names,values)
+        if actual_parent:assert diagnosis==capture['pfd_terminal_measurements']
         columns={n:values[:,i] for i,n in enumerate(names)};t=columns['time']
         clear=columns[proof['clearb_vector']];events={}
         for n in ('v(reference)','v(fb)'):
@@ -888,8 +900,35 @@ def review_physical_pfd(profile='aoi4_rc'):
         for n in vectors:
             assert float(columns[n].min())==capture['signals'][n]['minimum']
             assert float(columns[n].max())==capture['signals'][n]['maximum']
-        result.update(status='COMPLETE_SOURCE_BOUND_PFD235_TERMINAL_REVIEW_NOT_SAFETY_OR_PHY_ACCEPTANCE',
-            source_parent_sha256=digest(parent.encode()),source_macro_sha256=digest(macro.encode()),
+        if actual_parent:
+            response_windows=[]
+            for clock,output in [('v(reference)','v(down)'),('v(fb)','v(up)')]:
+                clock_edges=rising(t,columns[clock],1.25)
+                output_edges=rising(t,columns[output],1.25)
+                for i,edge in enumerate(clock_edges):
+                    if edge<=12e-9:continue
+                    end=clock_edges[i+1] if i+1<len(clock_edges) else t[-1]
+                    found=output_edges[(output_edges>=edge)&(output_edges<end)]
+                    before=float(np.interp(max(0.,edge-3.125e-13),t,columns[output]))
+                    response_windows.append(dict(clock=clock,output=output,clock_edge_s=float(edge),window_end_s=float(end),
+                        clearb_v=float(np.interp(edge,t,clear)),output_before_edge_v=before,
+                        output_already_asserted_at_1p25_v=before>=1.25,
+                        next_output_rise_s=float(found[0])if len(found)else None,
+                        next_output_rise_delay_s=float(found[0]-edge)if len(found)else None,
+                        no_output_response_before_next_clock=bool(before<1.25 and len(found)==0)))
+            result['actual_parent_observations']=dict(
+                pfd_response_windows=response_windows,
+                reset_masked_clock_edges=sum(e['reset_asserted_at_1p25_v']for rows in events.values()for e in rows),
+                missing_output_response_windows=sum(r['no_output_response_before_next_clock']for r in response_windows),
+                measured_window_s=[0.,float(t[-1])],logic_observation_threshold_v=1.25,
+                scope='Finite50ns observed PFD response, including already-asserted outputs; not a declared lock, recovery-margin, safety or serialPHY qualification.',
+                acquisition_accepted=False,full_phy_accepted=False)
+            for n in vectors:
+                assert rising(t,columns[n],1.25).tolist()==capture['signals'][n]['rising_edges_at_1p25_v_s']
+                assert rising(t,-columns[n],-1.25).tolist()==capture['signals'][n]['falling_edges_at_1p25_v_s']
+        result.update(status='COMPLETE_ACTUAL845_SOURCE_RAW_AND_PFD235_REVIEW_NOT_LOCK_SAFETY_OR_PHY_ACCEPTANCE' if actual_parent else 'COMPLETE_SOURCE_BOUND_PFD235_TERMINAL_REVIEW_NOT_SAFETY_OR_PHY_ACCEPTANCE',
+            source_parent_sha256=digest(parent.encode()),source_macro_sha256=None if actual_parent else digest(macro.encode()),
+            actual_parent_layout_rc=actual_parent,
             raw_sha256=digest(raw),capture=meta,diagnosis=diagnosis,
             source_clock_events=capture['clock_events'],source_signals=capture['signals'],
             source_fixture_scope=proof['scope'])
@@ -2557,6 +2596,7 @@ def main():
     parser.add_argument('--pfd-rc-review',action='store_true')
     parser.add_argument('--review-physical-pfd',action='store_true')
     parser.add_argument('--review-physical-pfd-drive2',action='store_true')
+    parser.add_argument('--review-actual-pfd-parent',action='store_true')
     parser.add_argument('--recover-parent-methods',action='store_true')
     parser.add_argument('--recover-parent-planes',action='store_true')
     parser.add_argument('--recover-pfd-methods',action='store_true')
@@ -2579,6 +2619,9 @@ def main():
     if args.recover_parent_methods:
         assert not any([args.review_physical_pfd,args.pfd_rc_review,args.pfd_rc,args.pfd_layout,args.pfd_lef,args.pfd_candidate,args.self_test,args.acquisition,args.diagnose_full50,args.diagnose_pfd_topology,args.review_acquisition,args.diagnose_acquisition,args.recover_pfd_methods])
         recover_parent_methods();return
+    if args.review_actual_pfd_parent:
+        assert not any([args.review_physical_pfd,args.review_physical_pfd_drive2,args.pfd_candidate,args.self_test,args.acquisition])
+        review_physical_pfd('actual_parent_d2_rc');return
     if args.review_physical_pfd_drive2:
         assert not any([args.review_physical_pfd,args.pfd_candidate,args.self_test,args.acquisition])
         review_physical_pfd('aoi4_d2_rc');return
