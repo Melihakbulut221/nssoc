@@ -1,3 +1,13 @@
+## 2026-10-15 — cold VBE failure is a real data-transition peak; joint sizing candidate prepared
+
+ALL CLOUD; fullgoal OPEN. Nativecompactdiagnosis38771786806 PASS exactoriginalreadback, notcircuitacceptance. Twelve finalNx3 data HBTVBE peaks occur after2ns in actualdata transitions: worst1.023395260872V at3.27075ns,2.230071699649mA/emitter, base2.157906922V/emitter1.134511661V. Otherbankpeaks2.39575ns,3.39625ns,7.02075ns. Startup-window removal would not fix this. Complete evidence under newground.bias_candidates.native_res_tc.compact_cold_hbt_diagnosis.
+
+Source997977262e643a88b50c37f0189f76d4f703a88c prepares bounded `assembled_sizing=data8_select10`/`study=headroom_corners`: dataNx3->8 andselectorsNx6->10 together, allotherdevices/metal/bitsequence/gates unchanged. Candidate canonicalV12 source saved for futurematchingphysicalgeneration. This is distinctly NOT existing V11 data-only sizing. Oldphysicalmetal is explicitly marked mismatchingcandidategeometry, and component_screen_passed forcedfalse; only diagnostic_screen_passed canpass. Every original source/mutateddeck is hash-bound. Six corruptsource tests plus exact16devicechange test added.
+
+Validation38772760436 isLIVE. AfterPASS inspect logs then dispatch tx-tree-assembled-wave-cloud once: studyheadroom_corners,placementcompact_return_strap,pre_biasnative_res_tc,assembled_sizingdata8_select10,solverdefault. Sixcases=compact/wire byhot_low/hot_low_res_bcs/cold_high_hbt_wcs. Keepresults undersizing_candidates, notphysicalvariant acceptedstudies. If anygatefails retain it; noautomaticadoption.
+
+Strictfinewire0.0625ps38763917040/116522064672 and mainchip38731744914/116410943697 remainlive aslastchecked. Do notduplicate. Whenstrictpaircompletepin4thcase andrun fullstrictfinecomparison. Localempty; noCAD/tests/artifacts writtenlocally.
+
 ## 2026-10-15 — compact VBE event diagnosis running; frozen HBT sources verified
 
 ALL CLOUD. Source audit38771062868/job116546679607 PASS,197frozenfiles verified; receipt `docs/evidence/pcie-hbt-geometry-source-20261015.json`. Exact npn13G2PCell has Nx1..10,le0.9um,we0.07um; avoid arbitrary emitter-length change. Current V10 dataNx3/selectorsNx6/tailsNx8. Historical Nx4..6 experiments and actualV8 geometry already failed hotcases; inspect earlierrecords before selecting newgeometry.
