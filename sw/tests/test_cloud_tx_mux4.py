@@ -899,7 +899,7 @@ def test_actual_ngspice47_option_label_format(profile,method):
 
 @pytest.mark.parametrize('mode',['native_res','native_res_tc','output_feedback','output_feedback_tc'])
 def test_actual_prestage_feed_measurement_rejects_broken_probe_binding(mode):
-    t=np.array([0.,mux.START,mux.STOP])
+    t=np.array([0.,mux4.START,mux4.STOP])
     voltages={'avdd':np.array([0.,2.5,2.5]),'ra':np.array([0.,.7,.71]),'rb':np.array([0.,.72,.73])}
     expected='avdd' if mode in ('native_res','native_res_tc')else None
     for ref in ('ra','rb'):voltages['prefeed_'+ref]=voltages[expected or ref].copy()
