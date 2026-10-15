@@ -21,3 +21,7 @@ Run38778734039 failed to show convergence: successive trap differences are8.9068
 ## Matrix backend result
 
 Run38780011601 completed the actual Sparse/KLU comparison. Native backend readbacks and all original startup controls passed. Backend differences were2.21823e-13V and3.39395e-13V at the two TMAX values; both backends retained8.906847247mV coarse/fine disagreement. Backend choice is ruled out as the significant source of this discrepancy. All three diagnostic receipts preserve original data and explicitly deny full-wave or physical acceptance. Next work must investigate frozen model evaluation and charge/bypass behavior with measured evidence, rather than repeat tighter timesteps or another backend.
+
+## Charge-tolerance diagnosis
+
+The captured strict native options retain chgtol1e-14C. The next experiment changes only this numerical tolerance to1e-20C at both original TMAX values. It also saves the exact frozen HBT/resistor model sources and native model parameter printout, for evaluation of active model features. Both requested and actual native tolerance are checked; source/device/geometry and full-wave acceptance remain unchanged. This is a hypothesis test, not a claim that the default caused the discrepancy.

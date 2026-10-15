@@ -1,3 +1,13 @@
+## 2026-10-15 — source-bound charge tolerance and frozen model audit prepared
+
+ALL CLOUD. Full PHY/mainchip detailed routing/final timing OPEN. Local workspace remains empty.
+
+Three completed startup diagnostics ruled out TSTEP and matrix backend; finer TMAX and Gear2 did not converge. Native option readback shows charge tolerance still1e-14C despite strict Newton tolerances. New hosted `charge_tolerance` study tests that distinct numerical hypothesis at fixed original circuit/model inputs: baseline and chgtol1e-20C, each atTMAX0.125/0.0625ps, fixedTSTEP0.125ps, trap/Sparse. It retains all original flags/solver settings/zeroOP and native raw rows. Actual native charge-tolerance readback is required, with missing/duplicate/wrong-value controls. Both short baselines must still reproduce original full capture prefix; no full-wave or physical acceptance.
+
+The same hosted restore also preserves the exact hash-bound HBT/resistor source text and native `showmod` output for parameter investigation. No device/model/geometry changes or bypass mutation are implemented. This avoids reasoning from a different PDK revision or assuming which model switches are active. Scoped workflow push starts the diagnostic once; record its run ID and inspect original source model/case outputs on completion.
+
+Mainchip38731744914 /116410943697 remains live as last checked; preserve it. On terminal state inspect native NDR, overflow and timing with manualGRT0273screen for this older controller. No detailed routing/extracted signoff inferred from global guides.
+
 ## 2026-10-15 — native matrix backend ruled out; all three startup studies complete
 
 ALL CLOUD. Local workspace remains empty. Full serialPCIePHY, detailed mainchip routing and final extracted setup/hold remain OPEN. Prior turn made concrete progress through three completed hosted diagnostics and source-bound receipts; this is not an external blocker.

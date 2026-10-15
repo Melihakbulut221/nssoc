@@ -67,6 +67,25 @@ def wave_difference(a, b, vectors, end=STOP):
         worst_voltage_difference_v=voltage[worst]['maximum_absolute_difference'],
         interpolation_for_comparison_only=True, acceptance=False)
 
+def charge_readback(text, expected):
+    values=re.findall(r'(?mi)^\s*chgtol\s+\(charge\)\s*=\s*(\S+)\s*$',text)
+    assert len(values)==1 and float(values[0])==expected
+    return dict(native_charge_tolerance_c=float(values[0]),native_readback_verified=True)
+
+
+def charge_deck(deck, tolerance):
+    assert tolerance in (None,1e-20)
+    assert deck.count('quit\n.endc')==1
+    assert not re.search(r'(?i)\bchgtol\s*=',deck)
+    original=deck
+    if tolerance is not None:deck=deck.replace('.control\n',f'.options chgtol={tolerance:.14g}\n.control\n')
+    deck=deck.replace('quit\n.endc','showmod > native-models.txt\nquit\n.endc')
+    normalized=deck.replace('showmod > native-models.txt\n','')
+    if tolerance is not None:normalized=normalized.replace(f'.options chgtol={tolerance:.14g}\n','')
+    assert normalized==original
+    return deck
+
+
 def controls():
     deck='title\nV1 a 0 PWL(0 0 1n 2)\n.tran 1.25e-13 3.4e-08 0 1.25e-13\n.control\nrun wave.raw\nquit\n.endc\n.end\n'
     for a in STEPS:
@@ -81,7 +100,13 @@ def controls():
     assert 'method=gear' in gear and 'method=trap' not in gear
     klu=replace_analysis(solver_deck,*STEPS,backend='klu')
     assert klu.replace('.options klu\n','')==replace_analysis(solver_deck,*STEPS)
+    assert charge_readback('chgtol (charge) = 1e-20\n',1e-20)['native_readback_verified']
+    assert '.options chgtol=1e-20' in charge_deck(deck,1e-20)
     rejected=[]
+    for name,bad in [('charge_missing',''),('charge_duplicate','chgtol (charge) = 1e-20\n'*2),('charge_wrong','chgtol (charge) = 1e-14\n')]:
+        try:charge_readback(bad,1e-20)
+        except AssertionError:rejected.append(name)
+        else:raise AssertionError('Bad charge readback accepted: '+name)
     for name,bad in [('missing',deck.replace('.tran ','.ac ')),('duplicate',deck+deck),
                      ('uic',deck.replace('0 1.25e-13','0 1.25e-13 uic')),
                      ('wrong_source_step',deck.replace('1.25e-13','2.5e-13'))]:
@@ -153,6 +178,18 @@ def main(study):
         source,summary,contract,verified=restore(record,out)
         result['verified_circuit_inputs']=verified;result['source_native_outputs']=summary['outputs']
         original=(source/'native/bench.cir').read_text()
+        if study=='charge_tolerance':
+            model_sources={}
+            for path,digest in verified.items():
+                name=Path(path).name
+                if name in ('r3_cmc.va','r3_cmc_macros.include') or (name.endswith('.lib') and ('hbt' in name or 'resistor' in name)):
+                    content=Path(path).read_text()
+                    model_sources[path]=dict(sha256=digest,text=content)
+            assert any(Path(path).name=='sg13g2_hbt_mod.lib' for path in model_sources)
+            assert any(Path(path).name=='r3_cmc.va' for path in model_sources)
+            (out/'frozen-model-sources.json').write_text(json.dumps(model_sources,indent=2)+'\n')
+            result['frozen_model_sources']={path:row['sha256'] for path,row in model_sources.items()}
+
         shutil.copyfile(source/'native/bench.cir',out/'original-bench.cir')
         shutil.copyfile(source/'native/contract.json',out/'original-contract.json')
         captures={}
@@ -161,11 +198,15 @@ def main(study):
             (STEPS[0],b,'gear') for b in STEPS]
         cases=[(*case,'sparse') for case in cases]
         if study=='matrix_solver':cases=[(STEPS[0],step,'trap',backend) for backend in ('sparse','klu') for step in STEPS]
-        for a,b,method,backend in cases:
-                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')+('-klu' if backend=='klu' else '')
+        cases=[(*case,None) for case in cases]
+        if study=='charge_tolerance':cases=[(STEPS[0],step,'trap','sparse',charge) for charge in (None,1e-20) for step in STEPS]
+        for a,b,method,backend,charge in cases:
+                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')+('-klu' if backend=='klu' else '')+('-charge20' if charge is not None else '')
                 profile = 'tight_gear2' if method=='gear' else PROFILE
                 case=out/label;case.mkdir()
-                (case/'bench.cir').write_text(replace_analysis(original,a,b,method,backend))
+                deck=replace_analysis(original,a,b,method,backend)
+                if study=='charge_tolerance':deck=charge_deck(deck,charge)
+                (case/'bench.cir').write_text(deck)
                 shutil.copyfile(source/'native/spinit',case/'spinit')
                 env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
                 env.update(SPICE_SCRIPTS=str(case),RAYON_NUM_THREADS='1',OMP_NUM_THREADS='1')
@@ -188,6 +229,11 @@ def main(study):
                 option_text=row['solver_options']['native_text']
                 assert ('KLU' in option_text) if backend=='klu' else ('Sparse 1.3' in option_text)
                 row['matrix_solver_native_readback_verified']=True
+                if study=='charge_tolerance':
+                    row['charge_tolerance']=charge_readback(option_text,charge if charge is not None else 1e-14)
+                    model_dump=case/'native-models.txt'
+                    assert model_dump.stat().st_size>100
+                    row['native_model_parameter_dump_sha256']=sha(model_dump)
                 flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
                 assert [x[0] for x in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
                 assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for _,body in flags)
@@ -219,6 +265,11 @@ def main(study):
                 ('klu_125_to_62p5','tstep0.125-tmax0.125-klu','tstep0.125-tmax0.0625-klu'),
                 ('backend_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-klu'),
                 ('backend_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-klu')]
+        if study=='charge_tolerance':
+            pairs=[('default_charge_125_to_62p5','tstep0.125-tmax0.125','tstep0.125-tmax0.0625'),
+                ('tight_charge_125_to_62p5','tstep0.125-tmax0.125-charge20','tstep0.125-tmax0.0625-charge20'),
+                ('charge_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-charge20'),
+                ('charge_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-charge20')]
         result['comparisons']={name:wave_difference(captures[a],captures[b],contract['vectors']) for name,a,b in pairs}
         assert all(sha(path)==digest for path,digest in verified.items())
         result['status']='COMPLETE_NATIVE_TSTEP_TMAX_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE'
@@ -232,7 +283,7 @@ def main(study):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--controls-only',action='store_true')
-    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver'),default='factorial')
+    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver','charge_tolerance'),default='factorial')
     args=parser.parse_args()
     if args.controls_only:print(json.dumps(controls()))
     else:main(args.study)
