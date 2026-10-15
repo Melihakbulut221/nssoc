@@ -1,0 +1,115 @@
+{
+  "status": "PASS_FRESH_V10_DIRECT_SUPPLY_NATIVE_RC_WITH13_CONTROLS",
+  "receipt": {
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38699732467-1-extract-boundary-tight-final_drive_v10/tx-layout-extraction-cloud-final_drive_v10-critical_buses_kelvin_low_ports_loads_shunts_series_direct-38699732467-1.tar.gz",
+    "bytes": 6300668,
+    "sha256": "705b7b89c98b103d96e2648bb03265b9e71312c27ce113e707ae05534ed7ff9d",
+    "source_run": 38699732467,
+    "source_head": "ecb145d3fe79ef675b2f67db6b19b3618487f2a4",
+    "summary_asset_id": 643086160,
+    "summary_sha256": "823a3766ac9161598117928edb2489a0535ce68d0f0699fe250fb9516c2401e1",
+    "boundary_pins": true,
+    "boundary_pin_policy": "nearest_pair_tight"
+  },
+  "variant": "critical_buses_kelvin_low_ports_loads_shunts_series_direct",
+  "audit": {
+    "status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+    "original_devices": 54,
+    "public_ports": 12,
+    "physical_wire_components": 17,
+    "geometry_probes": 112,
+    "logical_metal_references": 100,
+    "metal_device_terminals": 100,
+    "unmodeled_body_well_terminals": 54,
+    "shared_diffusion_terminals": 0,
+    "actual_exported_resistors": 4080,
+    "actual_exported_capacitors": 2683,
+    "resistor_components": 17,
+    "connected_wire_components": 17,
+    "disconnected_probes": [],
+    "disconnected_by_kind": {},
+    "native_export_r_edge_value_multiset_exact": true,
+    "geometry_conductor_ownership_exact": true,
+    "every_native_point_ground_capacitance_preserved": true,
+    "every_native_mutual_attachment_and_value_preserved": true,
+    "collapsed_capacitance_edge_count": 87,
+    "collapsed_matrix_entries": 324,
+    "complete_collapsed_capacitance_conserved": true,
+    "per_conductor_intrinsic_ground_c_conserved": true,
+    "wrong_native_branch_witnesses": [],
+    "missing_capacitance_edges": [],
+    "extra_capacitance_edges": [],
+    "wrong_capacitance_values": [],
+    "wrong_intrinsic_ground_values": [],
+    "original_retained_node_subtractions": 17,
+    "original_node_deletions": 0,
+    "capacitor_ground_reference": "sub: extractor reference, not mapped to any intrinsic body or supply",
+    "original_port_short_warnings": 285,
+    "all_short_warnings_same_geometry_conductor": true,
+    "probes_native_grid_delta_nm_counts": {
+      "[0, 0]": 93,
+      "[0, -2]": 19
+    },
+    "no_intrinsic_alias_edges_inserted_in_resistance_graph": true,
+    "substrate_r_modeled": false,
+    "full_pex_qualified": false,
+    "point_attachment_or_rf_distribution_qualified": false
+  },
+  "controls": [
+    {
+      "control": "dropped_actual_port",
+      "rejected_by": "Export port loss/duplication"
+    },
+    {
+      "control": "dropped_resistor",
+      "rejected_by": "Native/export resistor topology/value differs"
+    },
+    {
+      "control": "wrong_resistor",
+      "rejected_by": "Native/export resistor topology/value differs"
+    },
+    {
+      "control": "cross_conductor_short",
+      "rejected_by": "R network has unanchored component or cross-conductor short"
+    },
+    {
+      "control": "ground_redistribution_same_matrix",
+      "rejected_by": "Per-point ground C export changed"
+    },
+    {
+      "control": "mutual_anchor_shift_same_matrix",
+      "rejected_by": "Mutual C native attachment changed"
+    },
+    {
+      "control": "dropped_cap",
+      "rejected_by": "Mutual C native attachment changed"
+    },
+    {
+      "control": "changed_cap",
+      "rejected_by": "Mutual C native value changed"
+    },
+    {
+      "control": "cap_scale",
+      "rejected_by": "Source capacitance scale changed"
+    },
+    {
+      "control": "missing_native_completion",
+      "rejected_by": "Missing/duplicate native completion"
+    },
+    {
+      "control": "changed_body",
+      "rejected_by": "Original body/well identities changed"
+    },
+    {
+      "control": "missing_body",
+      "rejected_by": "Body/metal disposition changed"
+    },
+    {
+      "control": "wrong_actual_metal_point",
+      "rejected_by": "Actual metal terminal witness changed"
+    }
+  ],
+  "adopted": false,
+  "electrical_accepted": false,
+  "scope": "Exact physically verified unshifted V10 with actual direct load-supply straps and fresh native wireRC.54body/well/substrateR/RF/fullPEX limitations unchanged. Original loaded gates still mandatory."
+}
