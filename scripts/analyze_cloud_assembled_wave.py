@@ -338,7 +338,7 @@ def main():
     parser.add_argument('--compare-timestep',action='store_true')
     parser.add_argument('--trace-rail-geometry',action='store_true')
     parser.add_argument('--step-pair',choices=('original','fine'),default='original')
-    parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2','breakpoint_1as'),default='default')
+    parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap'),default='default')
     parser.add_argument('--condition',choices=('hot_low','hot_low_res_bcs','cold_high_res_wcs','cold_high_hbt_wcs'),default='hot_low')
     parser.add_argument('--bias-profile',choices=('native_res','native_res_tc'),default='native_res')
     args=parser.parse_args()

@@ -506,7 +506,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
               'wrdata wave.dat '+' '.join(vectors)]
     if solver_profile!='default':
         lines += ['echo NSSOC_SOLVER_OPTIONS_BEGIN','option']
-        if solver_profile=='breakpoint_1as':lines.append('echo NSSOC_NATIVE_MINBREAK $minbreak')
+        if solver_profile in ('breakpoint_1as','breakpoint_tight_trap'):lines.append('echo NSSOC_NATIVE_MINBREAK $minbreak')
         lines.append('echo NSSOC_SOLVER_OPTIONS_END')
     lines += ['quit','.endc','.end']
     return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, solver_profile=solver_profile, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), clock_feed_sha256=sha(clock_feed_path), clock_feed_subckt=clock_feed_subckt, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
@@ -514,20 +514,22 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
 
 
 def solver_options(profile):
-    assert profile in ('default','tight_trap','tight_gear2','breakpoint_1as')
+    assert profile in ('default','tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap')
     if profile=='default':return '.options reltol=1e-4 abstol=1e-12'
     if profile=='breakpoint_1as':return '.options reltol=1e-4 abstol=1e-12 minbreak=1e-18'
-    method='trap' if profile=='tight_trap' else 'gear'
-    return f'.options method={method} maxord=2 reltol=1e-6 abstol=1e-13 vntol=1e-8 trtol=1 itl4=100'
+    method='trap' if profile in ('tight_trap','breakpoint_tight_trap') else 'gear'
+    options=f'.options method={method} maxord=2 reltol=1e-6 abstol=1e-13 vntol=1e-8 trtol=1 itl4=100'
+    return options+(' minbreak=1e-18' if profile=='breakpoint_tight_trap' else '')
 
 
 def verify_solver_options(log,profile):
-    assert profile in ('tight_trap','tight_gear2','breakpoint_1as')
+    assert profile in ('tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap')
     blocks=re.findall(r'(?ms)^NSSOC_SOLVER_OPTIONS_BEGIN\s*\n(.*?)^NSSOC_SOLVER_OPTIONS_END\s*$',log)
     assert len(blocks)==1, 'Missing/duplicate actual simulator option readback'
     block=blocks[0];expected=dict(maxord=2,reltol=1e-6,abstol=1e-13,vntol=1e-8,trtol=1,itl4=100)
     if profile=='breakpoint_1as':
         expected=dict(maxord=2,reltol=1e-4,abstol=1e-12)
+    if profile in ('breakpoint_1as','breakpoint_tight_trap'):
         matches=re.findall(r'(?m)^NSSOC_NATIVE_MINBREAK (\S+)\s*$',block)
         assert len(matches)==1 and float(matches[0])==1e-18, 'Missing or changed native minbreak variable'
     labels=dict(maxord=r'(?:maxord|maxorder)',reltol=r'reltol(?:\s+\(current\))?',
@@ -537,9 +539,9 @@ def verify_solver_options(log,profile):
         matches=re.findall(r'(?mi)^\s*'+labels[key]+r'\s*=\s*(\S+)\s*$',block)
         assert len(matches)==1 and float(matches[0])==value, ('Native solver option differs',key,matches)
     methods=re.findall(r'(?mi)^\s*(?:method|integration method)\s*=\s*(\S+)\s*$',block)
-    assert len(methods)==1 and methods[0].lower() in (('trap','trapezoidal')if profile in ('tight_trap','breakpoint_1as')else('gear',))
+    assert len(methods)==1 and methods[0].lower() in (('trap','trapezoidal')if profile in ('tight_trap','breakpoint_1as','breakpoint_tight_trap')else('gear',))
     return dict(status='PASS_NATIVE_SOLVER_OPTION_READBACK',profile=profile,numeric_options=expected,method=methods[0],native_text=block,
-        **({'native_minbreak_variable_s':1e-18,'minbreak_readback_scope':'Native circuit option variable; CKT breakpoint effect separately tested with exact-PWL linear controls.'}if profile=='breakpoint_1as'else{}))
+        **({'native_minbreak_variable_s':1e-18,'minbreak_readback_scope':'Native circuit option variable; CKT breakpoint effect separately tested with exact-PWL linear controls.'}if profile in ('breakpoint_1as','breakpoint_tight_trap')else{}))
 
 
 def native_diagnostics(log, profile='default'):
@@ -713,7 +715,7 @@ def main():
     parser.add_argument('--clock-reference',choices=tuple(CLOCK_REFERENCES),default='baseline')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
     parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
-    parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2','breakpoint_1as'),default='default')
+    parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap'),default='default')
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
     parser.add_argument('--diagnostic-final-r', choices=('actual','all','supply','return','inputs','internal','bias','outputs'), default='actual')
     parser.add_argument('--diagnostic-final-nx',type=int,choices=(0,4,5,6,8),default=0)

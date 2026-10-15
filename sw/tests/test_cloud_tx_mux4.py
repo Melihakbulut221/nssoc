@@ -861,7 +861,7 @@ def test_solver_readback_requires_every_native_option(profile,method):
         with pytest.raises(AssertionError):mux4.verify_solver_options(log(bad),profile)
 
 
-@pytest.mark.parametrize('profile',['tight_trap','tight_gear2','breakpoint_1as'])
+@pytest.mark.parametrize('profile',['tight_trap','tight_gear2','breakpoint_1as','breakpoint_tight_trap'])
 def test_tight_solver_keeps_original_physics_and_stimulus(tmp_path,profile):
     (tmp_path/'frontend').mkdir()
     (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
@@ -941,3 +941,20 @@ def test_breakpoint_profile_preserves_original_tolerances_and_requires_native_va
     for bad in [log.replace('1E-18','1E-12'),log.replace('NSSOC_NATIVE_MINBREAK 1E-18\n',''),
                 log.replace('1e-4','1e-3'),log.replace('NSSOC_NATIVE_MINBREAK 1E-18','NSSOC_NATIVE_MINBREAK 1E-18\nNSSOC_NATIVE_MINBREAK 1E-18')]:
         with pytest.raises(AssertionError):mux4.verify_solver_options(bad,'breakpoint_1as')
+
+
+def test_tight_breakpoint_combines_strict_tolerances_and_native_breakpoint_readback():
+    profile='breakpoint_tight_trap'
+    assert mux4.solver_options(profile)==mux4.solver_options('tight_trap')+' minbreak=1e-18'
+    rows=['Integration Method = TRAPEZOIDAL','MaxOrder = 2','reltol (current) = 1e-6',
+          'abstol (current) = 1e-13','vntol (voltage) = 1e-8','trtol = 1',
+          'itl4 (transient iterations) = 100','NSSOC_NATIVE_MINBREAK 1E-18']
+    def log(xs):return 'NSSOC_SOLVER_OPTIONS_BEGIN\n'+'\n'.join(xs)+'\nNSSOC_SOLVER_OPTIONS_END\n'
+    result=mux4.verify_solver_options(log(rows),profile)
+    assert result['native_minbreak_variable_s']==1e-18 and result['numeric_options']['reltol']==1e-6
+    for i in range(len(rows)):
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(rows[:i]+rows[i+1:]),profile)
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(rows+[rows[i]]),profile)
+    for field,value in [('1e-6','1e-4'),('1E-18','1E-12'),('TRAPEZOIDAL','GEAR'),('1e-8','1e-6'),('trtol = 1','trtol = 7')]:
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(rows).replace(field,value),profile)
+    assert mux4.native_diagnostics(log(rows)+'Warning: genuine simulator warning\n',profile)==['Warning: genuine simulator warning']
