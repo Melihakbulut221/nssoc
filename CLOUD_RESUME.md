@@ -1,3 +1,13 @@
+## 2026-10-15 — NDR fail-fast validated; no active mainchip route
+
+ALL CLOUD. Local workspace empty. Full goal OPEN; prior turn is concrete progress, not an external blockage.
+
+Source **b2c31bbb90e0ba23ced139ceb05868a274797c43** validated by **38783522114 /116589542268 SUCCESS600tests**. New NDR rejection actually kills launched descendants; healthy global-route output and unrelated phases survive. Original gate self-tests and all startup diagnostic/encoding controls also passed. No expensive native route was restarted.
+
+Read `docs/native-vbic-and-route-findings-20261015.md` before continuing. Mainchip38731744914 is TERMINAL6h timeout with21NDR relaxations, not running. Charge study38782025812 is TERMINALnative VBIC abort; two baselines complete, tight-charge capture incomplete, fourthcase absent. Both receipts and raw failure archives are pinned. Model audit establishes VBIClevel9, TD0; distinguish subcircuit selft from unset modelSELFT. No claim of a simulator/model bug yet.
+
+Next available work: isolate the specifically failing VBIC device with exact frozen model/geometry/corner and original terminal playback to test charge/current continuity; retain original full-wave oracle and all failures. Separately inspect saved complete failed guides/ODB and clock congestion before selecting a new physical routing experiment. Do not re-run rejected upper_metals/upper_three unchanged or finer full-wave simulations without new evidence.
+
 ## 2026-10-15 — mainchip timeout is terminal; native charge study exposes VBIC failure
 
 ALL CLOUD. Full goal OPEN. No live mainchip route remains; do not describe the old handle as running.
