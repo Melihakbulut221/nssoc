@@ -427,13 +427,18 @@ def review(run, contract):
     vectors = contract['vectors']
     op = np.loadtxt(run/'op.dat', skiprows=1)
     assert op.size == len(vectors)+1 and np.isfinite(op).all() and abs(op).max() <= 1e-10
-    with (run/'wave.dat').open() as stream:
-        assert stream.readline().split() == ['time', *vectors]
-        data = np.loadtxt(stream)
-    assert data.shape[1] == len(vectors)+1 and np.isfinite(data).all()
-    t = data[:,0]
-    assert t[0] == 0 and abs(t[-1]-STOP) < 1e-18 and np.all(np.diff(t)>0)
-    values = dict(zip(vectors, data[:,1:].T, strict=True))
+    transport=None
+    if (run/'wave.raw').exists():
+        from cloud_tx_stream import read_streamed_wave
+        t,values,transport=read_streamed_wave(run/'wave.raw',vectors,STOP,contract['condition']['step_ps']*1e-12)
+    else:
+        with (run/'wave.dat').open() as stream:
+            assert stream.readline().split() == ['time', *vectors]
+            data = np.loadtxt(stream)
+        assert data.shape[1] == len(vectors)+1 and np.isfinite(data).all()
+        t = data[:,0]
+        assert t[0] == 0 and abs(t[-1]-STOP) < 1e-18 and np.all(np.diff(t)>0)
+        values = dict(zip(vectors, data[:,1:].T, strict=True))
     zeros = np.zeros_like(t)
     def volt(node):
         return zeros if node == '0' else values['v('+node+')']
@@ -492,7 +497,7 @@ def review(run, contract):
         interfaces['level_'+str(stride)]=interface(stride)
         stride*=2
     clocks={name:[float(((volt(name+'p')+volt(name+'n'))/2)[active].min()),float(((volt(name+'p')+volt(name+'n'))/2)[active].max())] for name in [c['name'] for c in contract.get('tree_plan',dict(clocks=[dict(name=n) for n in ('sa','sb','s')]))['clocks']]}
-    return dict(native_bias_current_a=bias_current, prestage_native_bias_current_a={k:v for k,v in bias_current.items() if k in contract.get('references',['ra','rb'])},clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
+    return dict(capture_transport=transport,native_bias_current_a=bias_current, prestage_native_bias_current_a={k:v for k,v in bias_current.items() if k in contract.get('references',['ra','rb'])},clock_common_mode_range_v=clocks,zero_source_op=True,rows=len(t),coverage_s=[float(t[0]),float(t[-1])],
         signals=signal,hbt_devices=devices,mos_devices=mos,interfaces=interfaces,
         failed_hbts={n:r for n,r in devices.items() if not r['passed']},
         failed_mos={n:r for n,r in mos.items() if not r['passed']},
@@ -534,6 +539,7 @@ def main():
     global PRE, FRONT
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
+    parser.add_argument('--stream-raw',action='store_true',help='Retain every native probe with immediate binary raw output, no in-simulator transient vector history')
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')
     parser.add_argument('--prestage',choices=('divider9','divider14','physical_compact','physical_wire'),default='divider9')
@@ -651,11 +657,17 @@ def main():
                 reference='https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html')
         deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference)
 
+        if args.stream_raw:
+            from cloud_tx_stream import streaming_deck
+            deck=streaming_deck(deck,contract)
+            result['capture_mode']='streamed_complete_binary_raw'
+        else:
+            result['capture_mode']='legacy_in_memory_wrdata'
         (run/'bench.cir').write_text(deck)
         (run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
         paths=[PRE,FRONT,TX,BIAS,CLOCK_REFERENCES[args.clock_reference],FAST_FINAL,TAPPED_FINAL,GUARDED_FINAL,MARGIN_FINAL,PRE_FEED,PRE_FEEDBACK,CLOCK_FEEDS[args.clock_reference],OUTPUT_FEEDS,Path(__file__),ROOT/'scripts/cloud_tx_data_driver.py',
-               ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',Path(os.environ['CLOUD_NGSPICE']),
+               ROOT/'scripts/run_cloud_tx_operating_point.py',ROOT/'scripts/analyze_cloud_metal_resistance.py',ROOT/'scripts/cloud_tx_stream.py',Path(os.environ['CLOUD_NGSPICE']),
                *[p for p in inputs.rglob('*') if p.is_file()],run/'bench.cir',run/'contract.json',run/'spinit']
         result['inputs']={str(p):sha(p) for p in paths}
         def limits():
@@ -674,7 +686,7 @@ def main():
         log=(run/'run.log').read_text(errors='replace')
         result.update(returncode=code,elapsed_s=time.monotonic()-started,
             diagnostics=[line for line in log.splitlines() if any(w in line.lower() for w in ('warning','error','nan','singular','stepping','too small','jmax','vmax'))])
-        if code or not (run/'wave.dat').exists():
+        if code or not (run/('wave.raw' if args.stream_raw else 'wave.dat')).exists():
             print(log[-12000:],flush=True)
             raise RuntimeError('Native serializer tree capture did not finish')
         flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
@@ -682,11 +694,13 @@ def main():
         assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for name,body in flags)
         result['review']=review(run,contract)
         assert all(sha(p)==digest for p,digest in result['inputs'].items())
-        raw=run/'wave.dat';packed=run/'wave.dat.gz'
-        result['raw_wave']=dict(bytes=raw.stat().st_size,sha256=sha(raw))
-        with raw.open('rb') as src,gzip.open(packed,'xb',compresslevel=1) as dst: shutil.copyfileobj(src,dst)
-        with gzip.open(packed,'rb') as src: assert hashlib.file_digest(src,'sha256').hexdigest()==result['raw_wave']['sha256']
-        raw.unlink()
+        raw=run/('wave.raw' if args.stream_raw else 'wave.dat')
+        result['raw_wave']=dict(bytes=raw.stat().st_size,sha256=sha(raw),format='native_binary' if args.stream_raw else 'wrdata_text')
+        if not args.stream_raw:
+            packed=run/'wave.dat.gz'
+            with raw.open('rb') as src,gzip.open(packed,'xb',compresslevel=1) as dst: shutil.copyfileobj(src,dst)
+            with gzip.open(packed,'rb') as src: assert hashlib.file_digest(src,'sha256').hexdigest()==result['raw_wave']['sha256']
+            raw.unlink()
         result['native_off_flags_count']=len(flags)
         result['status']='COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE'
         result['component_screen_passed']=result['review']['all_engineering_gates_passed'] and not result['diagnostics']

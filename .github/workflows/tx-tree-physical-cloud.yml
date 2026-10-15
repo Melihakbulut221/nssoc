@@ -9,6 +9,11 @@ on:
       - docs/evidence/pcie-cascade14-composition-20261013.json
   workflow_dispatch:
     inputs:
+      capture_transport:
+        description: Binary streaming keeps all probes; control compares every sample against original wrdata on the same four-input circuit
+        type: choice
+        options: [legacy, binary, control]
+        default: legacy
       study:
         description: Independent engineering checks using the same native circuit and original bit oracle
         type: choice
@@ -81,9 +86,9 @@ jobs:
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
       - name: Reject source-bit corruption and incomplete output captures
-        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
+        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage '${{ matrix.prestage }}' --physical-profile '${{ inputs.physical_profile || 'baseline' }}' --physical-final-profile '${{ inputs.physical_final_profile || 'power_trunks' }}' --physical-final '${{ inputs.physical_final == 'matched' && matrix.prestage || inputs.physical_final || 'off' }}' --frontend damped_strong --clock-bias native_res --clock-reference '${{ inputs.clock_reference || 'baseline' }}' --final-drive '${{ inputs.physical_final && inputs.physical_final != 'off' && 'double_taps_margin' || 'double_taps_guard' }}' --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
+        run: python3 scripts/${{ inputs.capture_transport == 'control' && 'cloud_tx_stream.py' || 'run_cloud_tx_mux4.py' }} ${{ inputs.capture_transport == 'control' && '--' || inputs.capture_transport == 'binary' && '--stream-raw' || '' }} --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage '${{ matrix.prestage }}' --physical-profile '${{ inputs.physical_profile || 'baseline' }}' --physical-final-profile '${{ inputs.physical_final_profile || 'power_trunks' }}' --physical-final '${{ inputs.physical_final == 'matched' && matrix.prestage || inputs.physical_final || 'off' }}' --frontend damped_strong --clock-bias native_res --clock-reference '${{ inputs.clock_reference || 'baseline' }}' --final-drive '${{ inputs.physical_final && inputs.physical_final != 'off' && 'double_taps_margin' || 'double_taps_guard' }}' --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
