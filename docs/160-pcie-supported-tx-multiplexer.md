@@ -2,6 +2,53 @@
 <!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 
+## 15 October: actual assembled 4:1 core passes initial loaded conditions
+
+The `compact_edge_supply` experiment now includes the real intermacro wiring
+of three native cores, not ideal connections between individually extracted
+macros. Its **162 devices** comprise 57 HBTs, 24 resistors and 81 substrate
+contacts. Native 560-category DRC has zero markers; hierarchical and flat
+transistor LVS both match all162 devices. Five actual geometry/reference
+faults reject. Fresh extraction preserves **11,913 R / 7,851 C**, all41 metal
+conductors, 322 geometric probes and 462 intrinsic terminals;13 raw corruption
+controls and six composition controls reject. These are component checks,
+not qualified substrate/RF extraction or chip signoff.
+
+The original256 source bits,0.3/0.5/0.7UI observations and100mV limit remain
+unchanged. The full assembled-RC model passes nominal, hot/low-supply and
+cold/high-supply screens, with minimum signed output margins **227.646,
+100.680 and264.340mV**, respectively. Each capture contains69,541 native rows;
+all768 output samples,6,912 final physical-base observations and62HBT/64MOS
+engineering screens pass. The hot margin above the limit is only0.680mV.
+Independent device/resistor/CMOS corners, actual fault controls and finer
+hot timestep validation are running; all-corner acceptance remains false.
+
+| Actual assembly | Data path length | Hot minimum | Samples below100mV |
+| --- | --- | --- | --- |
+| Original | 394.015/388.015µm | 98.468mV | 3 |
+| Compact vertical | 356.015µm | 98.976mV | 2 |
+| Wide M5 supply | 276.015µm | 94.479mV | 10 |
+| Edge supply with parallel TM1 strap | 276.015µm | 100.680mV | 0 |
+
+The shorter wide-M5 experiment failed because the new placement also changed
+the parasitics: measured B-pair AVDD coupling rose to58.027/58.829fF. Moving
+M5 to x418..454µm, adding a4µm TM1 supply strap atx424µm and relocating the
+substrate/ground paths reduced those values to5.054/16.122fF. Total B-pair
+external C fell from197.302/204.637 to155.921/168.322fF. All child device
+geometry remained frozen; acceptance thresholds, stimulus phase and oracle
+were not adjusted. Failed geometries and their captures remain available.
+
+[The source-bound assembly record](evidence/pcie-tree4-assembly-input-20261015.json)
+contains every geometry, extraction, composition and waveform receipt.
+Hosted diagnosis38729628248 independently reread all six compact/RC archives,
+embedded summaries and every native output hash, then reproduced the original
+hot waveform verdict with zero failures. This does not claim full32:1/four-lane
+serialization, integrated PLL/CDR, package/channel/compliance/BER or main-chip
+routing and final setup/hold closure. External clocks, bias/front-end and
+loaded TX elements in this bench still require their complete physical
+integration. Older results below retain their original scope and chronology.
+
+
 The replacement final 2:1 TX multiplexer uses separate native HBT instances
 within the foundry's `Nx=1…10` range. It passes three schematic operating
 points, independent signal/device checks and standalone layout verification.
