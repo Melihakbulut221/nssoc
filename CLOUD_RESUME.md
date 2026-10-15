@@ -1,3 +1,15 @@
+## 2026-10-15 — output-passive shift real LVS short diagnosed and repaired
+
+Original placement run**38692269967 FAILED**: native560-category DRC0markers but transistor LVS merges **avss|sub**. All54 devices/source reference preserved; physical acceptance denied and no extraction dispatched. Permanent failed summary642918281 SHAab27a69c0bc899ed9c589bb9745bf29943ecf71da4262e7c04401177b06ec7d2; archive642918062 SHAd8b73b2bc53e9f922b7646dbc971e74ebcdeddc6225a738792a1b542810b1adf. Failure details: `docs/evidence/pcie-output-passive-shift-lvs-rejection-20261015.json`.
+
+Cause: moving row24 to x15.6 also moves its substrate escape to34.8 (=x+19.2), exactly the old explicit avss lane. **Source c007fda6e7f3e19c2cb0a83a0f6438cf4a0b3cdc** keeps row23's proven avss lane149.6 and moves row24 avss lane to-19.2, outside the wide avdd riser atx-10. Actual conductor rebuilt from native pins; no logical shorts waived, no models/taps removed. Intermediate c533ed proposal111.2/-3.6 was never dispatched and is superseded.
+
+**New native physical run38693022160**, **source audit38693025410** (queued at last read). Same finalV10, variantcritical_buses_kelvin_low_ports_loads_shunts_series_left_outputs, boundarynearest_pair_tight. Inspect actual native560-category DRC, both54/54LVS, all5fault controls before binding extraction. Neither shifted geometry has electrical acceptance or a receipt/profile yet. FullPHY/mainchip/STA stay open.
+
+Tight predecessor hot rejection52samples/83.938999mV remains authoritative. Previous physical layout receipt tables must NOT be overwritten by unverified shifted geometry. Once physical gates pass, add independent variant key and workflow extraction/composition choices, then freshRC/loaded waves.
+
+Long mainchip19338683404082, original32wire38679319167 and actual845PLL38674687038 were verified live this turn; no reruns. Cloud-only, no local design/test files.
+
 ## 2026-10-15 — tight hot REJECTED; real output-passive placement trial
 
 **Tight allcorners electrical results are terminal and reviewed:**38690816164/38690819319. Nominal wire minimum219.359807mV and cold wire263.601867mV pass. All compact controls pass. **Hot wire FAILS52/768samples, minimum83.938999mV** (previous nearest59/79.622008mV). No failed devices/diagnostics; all captures69541rows. Never adopt this geometry as electrically qualified. Full six-source evidence and hashes: `docs/evidence/pcie-tight-boundary-loaded-rejection-20261015.json`. Hot summary642898461, SHAe8f0a760ea24b3d2542577517b2e5e3f8d4c822090e5674f8c204229f00732fa.
