@@ -68,6 +68,20 @@ def cugr_gate(text):
         scope='Experimental CUGR native guide screen, not detailed-route/signoff acceptance')
 
 
+def clock_routing_layers(args, signal_layers):
+    """Change only clock layer eligibility on the exact seed13 comparison."""
+    if args.clock_routing_profile == 'baseline':
+        return signal_layers
+    assert args.clock_routing_profile == 'upper_metals'
+    assert signal_layers == 'Metal2-TopMetal2'
+    assert args.placement_profile == 'local_optimize_buffers'
+    assert args.ethernet_hold_depth == 2 and args.routing_seed == 13
+    assert args.router_solver == 'fast_route' and args.macro_routing_profile == 'baseline'
+    assert args.critical_nets_percentage == 0 and args.grid_profile == 'baseline'
+    assert not args.packet_clusters and not args.resume_fresh_cts and not args.cugr_empty_net_cleanup
+    return 'TopMetal1-TopMetal2'
+
+
 def self_test():
     good='0 / 113556 nets have overflow.\ntotal wire overflow:   0\nmin resource: 0\n[INFO GRT-0014] Routed nets: 113556\n'
     assert cugr_gate(good)['routed_nets']==113556
@@ -80,6 +94,25 @@ def self_test():
         except (AssertionError,ValueError): continue
         raise AssertionError('Incomplete/overflowing CUGR control accepted')
     print(json.dumps(dict(status='PASS_CUGR_FAIL_CLOSED_CONTROLS',positive=1,negative=len(faults))))
+    comparison = dict(clock_routing_profile='upper_metals', placement_profile='local_optimize_buffers',
+        ethernet_hold_depth=2, routing_seed=13, router_solver='fast_route', macro_routing_profile='baseline',
+        critical_nets_percentage=0, grid_profile='baseline', packet_clusters=False,
+        resume_fresh_cts=False, cugr_empty_net_cleanup=False)
+    assert clock_routing_layers(argparse.Namespace(**comparison), 'Metal2-TopMetal2') == 'TopMetal1-TopMetal2'
+    assert clock_routing_layers(argparse.Namespace(clock_routing_profile='baseline'), 'Metal2-TopMetal2') == 'Metal2-TopMetal2'
+    rejected = 0
+    for key, bad in dict(clock_routing_profile='unknown', placement_profile='prects_grt',
+            ethernet_hold_depth=0, routing_seed=0, router_solver='cugr', macro_routing_profile='halo1',
+            critical_nets_percentage=30, grid_profile='offset', packet_clusters=True,
+            resume_fresh_cts=True, cugr_empty_net_cleanup=True).items():
+        try: clock_routing_layers(argparse.Namespace(**dict(comparison, **{key:bad})), 'Metal2-TopMetal2')
+        except AssertionError: rejected += 1; continue
+        raise AssertionError('Clock routing comparison accepted mismatched '+key)
+    try: clock_routing_layers(argparse.Namespace(**comparison), 'Metal2-Metal5')
+    except AssertionError: rejected += 1
+    else: raise AssertionError('Clock profile accepted changed signal layers')
+    print(json.dumps(dict(status='PASS_CLOCK_LAYER_COMPARISON_CONTROLS', positive=2, negative=rejected)))
+
 
 
 
@@ -211,6 +244,7 @@ def main():
     parser.add_argument('--placement-profile', choices=['none','left_compact','left_spread','local_optimize','local_optimize_buffers','local_data_endpoints','routability_data','prects_grt'], default='none')
     parser.add_argument('--ethernet-hold-depth', type=int, choices=[0,2], default=0)
     parser.add_argument('--macro-routing-profile', choices=['baseline','reserve_m5','halo1'], default='baseline')
+    parser.add_argument('--clock-routing-profile', choices=['baseline','upper_metals'], default='baseline')
     parser.add_argument('--critical-nets-percentage', type=int, choices=[0,30], default=0)
     parser.add_argument('--routing-seed', type=int, choices=[0,13], default=0)
     parser.add_argument('--router-solver', choices=['fast_route','cugr'], default='fast_route')
@@ -221,6 +255,7 @@ def main():
     args = parser.parse_args()
     if args.self_test:
         self_test(); return
+    clock_routing_layers(args, 'Metal2-TopMetal2')
     if args.packet_clusters:
         assert args.placement_profile=='prects_grt' and not args.resume_fresh_cts
     if args.resume_fresh_cts:
@@ -259,7 +294,7 @@ def main():
     result = dict(status='RUNNING', adopted=False, packet_clusters_requested=args.packet_clusters,
         grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
         ethernet_hold_depth=args.ethernet_hold_depth,
-        macro_routing_profile=args.macro_routing_profile,
+        macro_routing_profile=args.macro_routing_profile, clock_routing_profile=args.clock_routing_profile,
         critical_nets_percentage=args.critical_nets_percentage, routing_seed=args.routing_seed,
         routing_capacity_perturbation_percentage=0, router_solver=args.router_solver,
         scope='Newer packet-interface chip with Ethernet cross-read pipeline, replay successor and RX-return metadata. Exact saved postCTS readback precedes fresh global routing. No full serial PHY, detailed route, extracted signoff or adoption.')
@@ -453,7 +488,7 @@ def main():
             assert sha(OUT/'relocated-placement.odb') == expected, 'Routing comparison changed placement'
             result['routing_order_source' if args.routing_seed else 'routing_priority_source'] = dict(run=evidence['run'],
                 placement_sha256=expected, source_evidence_sha256=sha(ROOT/'docs/evidence/cloud-local-optimize-buffers-route-failure-20261013.json'),
-                scope=('Native net ordering seed13; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, routing layers, layer adjustment and zero-overflow gate. Any conservative macro halo is recorded separately. Requires actual routing and all-corner timing.')
+                scope=('Native net ordering seed13; capacity perturbation is explicitly zero. ' if args.routing_seed else 'Native timing-critical net preference changes. ')+'Same cells, placement, SDC, PDK RC, signal routing layers, layer adjustment and zero-overflow gate. Any clock layer restriction or conservative macro halo is recorded separately. Requires actual routing and all-corner timing.')
             save()
         if args.cugr_empty_net_cleanup:
             fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38590905780-1-congestion-seed13_buffers/newer-congestion-probe-38590905780-1.json',
@@ -475,9 +510,30 @@ def main():
             for via, resistance in rc['vias_r'].items():
                 commands.append(f'set_layer_rc -corner {corner} -via {via} -resistance {resistance}')
             commands += [f'set_wire_rc -corner {corner} -signal -layer Metal2', f'set_wire_rc -corner {corner} -clock -layer Metal4']
-        commands += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {rc["routing_layers"]}',
+        clock_layers = clock_routing_layers(args, rc['routing_layers'])
+        if args.clock_routing_profile == 'upper_metals':
+            source = json.loads((ROOT/'docs/evidence/cloud-seed13-buffers-route-failure-20261014.json').read_text())
+            assert sha(OUT/'relocated-placement.odb') == source['failure_outputs']['relocated-placement.odb']
+            result['clock_layer_comparison'] = dict(baseline_run=source['run'],
+                placement_sha256=source['failure_outputs']['relocated-placement.odb'],
+                signal_layers=rc['routing_layers'], clock_layers=clock_layers,
+                unchanged_layer_adjustment=rc['adjustment'], capacity_perturbation_percentage=0,
+                runtime_commit='dcf36133a369abc8f3c5e5738cd4d82e4903c0e0',
+                source_url='https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/tcl/odb.tcl#L608',
+                scope='Clock routes restricted to the two existing top metals on exact132overflow placement. '
+                      'All cells, pins, CTS/NDR, SDC, physical capacity, signal layers and zero-overflow gate retained. '
+                      'Technology LEF top-metal RC remains unqualified. Native routing, extracted timing and DRC still required.')
+            save()
+        commands += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {clock_layers}',
                      f'set_global_routing_layer_adjustment Metal1-TopMetal2 {rc["adjustment"]}',
                      'set route_dbu [[ord::get_db_block] getDbUnitsPerMicron]']
+        if args.clock_routing_profile == 'upper_metals':
+            commands += ['set clock_block [ord::get_db_block]', 'set clock_tech [ord::get_db_tech]',
+                'if {[$clock_block getMinLayerForClock] != [[$clock_tech findLayer TopMetal1] getRoutingLevel]} {error "Clock minimum layer readback mismatch"}',
+                'if {[$clock_block getMaxLayerForClock] != [[$clock_tech findLayer TopMetal2] getRoutingLevel]} {error "Clock maximum layer readback mismatch"}',
+                'if {[$clock_block getMinRoutingLayer] != [[$clock_tech findLayer Metal2] getRoutingLevel]} {error "Signal minimum layer changed"}',
+                'if {[$clock_block getMaxRoutingLayer] != [[$clock_tech findLayer TopMetal2] getRoutingLevel]} {error "Signal maximum layer changed"}',
+                'puts NSSOC_CLOCK_TOP_TWO_METALS_NATIVE_READBACK_SIGNAL_LAYERS_UNCHANGED']
         if args.macro_routing_profile == 'halo1':
             # Exact runtime GlobalRouter.cpp:4705-4716 grows each macro OBS by
             # one native tile in the direction perpendicular to its tracks.
