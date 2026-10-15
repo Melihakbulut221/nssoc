@@ -807,6 +807,16 @@ def review_physical_pfd(profile='aoi4_rc'):
     save()
     try:
         run=api(f'actions/runs/{source_run}')
+        wait_deadline=time.monotonic()+2700
+        while actual_parent and run['status']!='completed':
+            assert run['head_sha']==source_head and run['run_attempt']==1,'Source changed while awaiting capture'
+            result['waiting_for_source']=dict(run=source_run,status=run['status'],observed_epoch=time.time())
+            save();print(json.dumps(result['waiting_for_source']),flush=True)
+            if time.monotonic()>wait_deadline:
+                raise TimeoutError('Source capture remains live; review wait expired without accepting partial data or restarting capture')
+            time.sleep(60)
+            run=api(f'actions/runs/{source_run}')
+        result.pop('waiting_for_source',None)
         assert run['status']=='completed' and run['conclusion']=='success','Await exact native capture; never restart it'
         assert run['head_sha']==source_head and run['run_attempt']==1
         release=api(f'releases/tags/cloud-results-{source_run}-1-pll-pfd-{profile}')
