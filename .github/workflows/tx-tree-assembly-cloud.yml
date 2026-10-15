@@ -10,7 +10,7 @@ on:
       stage:
         description: Native physical assembly, complete wire extraction or162-device composition
         type: choice
-        options: [physical, extraction, composition, wave_diagnosis]
+        options: [physical, extraction, composition, wave_diagnosis, step_comparison]
         default: physical
       placement_profile:
         description: Physical parent placement; compact_vertical preserves all child device geometry and shortens actual intermacro wires
@@ -47,7 +47,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Assemble real GDS conductors and compare all162devices including81substrate contacts
-        run: python3 scripts/${{ inputs.stage == 'wave_diagnosis' && 'analyze_cloud_assembled_wave.py' || inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }} --placement-profile '${{ inputs.placement_profile || 'baseline' }}'
+        run: python3 scripts/${{ (inputs.stage == 'wave_diagnosis' || inputs.stage == 'step_comparison') && 'analyze_cloud_assembled_wave.py' || inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }} --placement-profile '${{ inputs.placement_profile || 'baseline' }}' ${{ inputs.stage == 'step_comparison' && '--compare-timestep' || '' }}
       - name: Preserve all physical successes and failures
         if: always()
         env:
@@ -59,13 +59,15 @@ jobs:
           summary_source=hw/soc/out/cloud-tx-tree-assembly/result.json
           if [ '${{ inputs.stage }}' = extraction ]; then
             summary_source=hw/soc/out/cloud-tx-tree-assembly/extraction-result.json
+          elif [ '${{ inputs.stage }}' = step_comparison ]; then
+            summary_source=hw/soc/out/cloud-tx-tree-assembly/step-comparison-result.json
           elif [ '${{ inputs.stage }}' = wave_diagnosis ]; then
             summary_source=hw/soc/out/cloud-tx-tree-assembly/diagnosis-result.json
           elif [ '${{ inputs.stage }}' = composition ]; then
             summary_source=hw/soc/out/cloud-tx-tree-assembly/composition-result.json
           fi
           cp "$summary_source" "${archive%.tar.gz}.summary.json"
-          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'wave_diagnosis' && '-wave-diagnosis' || inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}${{ inputs.placement_profile == 'compact_edge_supply' && '-compact-edge-supply' || inputs.placement_profile == 'compact_m5_supply' && '-compact-m5-supply' || inputs.placement_profile == 'compact_vertical' && '-compact-vertical' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
+          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'step_comparison' && '-step-comparison' || inputs.stage == 'wave_diagnosis' && '-wave-diagnosis' || inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}${{ inputs.placement_profile == 'compact_edge_supply' && '-compact-edge-supply' || inputs.placement_profile == 'compact_m5_supply' && '-compact-m5-supply' || inputs.placement_profile == 'compact_vertical' && '-compact-vertical' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
       - name: Retain outputs if publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

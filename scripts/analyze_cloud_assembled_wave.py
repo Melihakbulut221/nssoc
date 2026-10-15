@@ -71,13 +71,158 @@ def verify_study_captures(selected, out):
     return verified
 
 
+# Additional numerical-transport bounds; these do not replace original
+# 100mV/150mV/device gates or constitute PCIe electrical qualification.
+STEP_LIMITS=dict(voltage_v=1e-3,original_sample_margin_v=1e-4,edge_s=1e-13,source_energy_relative=.01)
+
+
+def step_metrics(coarse, fine, contract):
+    ta,va=coarse;tb,vb=fine
+    assert ta[0]==tb[0]==0 and abs(ta[-1]-mux.STOP)<1e-15 and abs(tb[-1]-mux.STOP)<1e-15
+    assert np.all(np.diff(ta)>0) and np.all(np.diff(tb)>0)
+    assert set(va)==set(vb)==set(contract['vectors'])
+    voltage={};current={}
+    for name in contract['vectors']:
+        assert len(va[name])==len(ta) and len(vb[name])==len(tb)
+        assert np.isfinite(va[name]).all() and np.isfinite(vb[name]).all()
+        delta=float(np.max(abs(va[name]-np.interp(ta,tb,vb[name]))))
+        (voltage if name.startswith('v(') else current)[name]=delta
+    assert voltage and current
+    times=np.asarray([mux.START+(i+p)*mux.UI for i in range(len(contract['bits']))for p in (.3,.5,.7)])
+    signs=np.repeat(np.asarray(contract['bits'])*2-1,3)
+    ya=va['v(op)']-va['v(on)'];yb=vb['v(op)']-vb['v(on)']
+    ma=np.interp(times,ta,ya)*signs;mb=np.interp(times,tb,yb)*signs
+    margin_error=float(np.max(abs(ma-mb)))
+    edges={};edge_counts_equal=True;max_edge=0.
+    for direction,sign in [('rising',1),('falling',-1)]:
+        def cross(t,y):
+            y=y*sign;k=np.flatnonzero((y[:-1]<0)&(y[1:]>=0))
+            e=t[k]-y[k]*(t[k+1]-t[k])/(y[k+1]-y[k])
+            return e[(e>mux.START+.5*mux.UI)&(e<mux.STOP-.5*mux.UI)]
+        a,b=cross(ta,ya),cross(tb,yb);same=len(a)==len(b) and len(a)>0
+        edge_counts_equal &= same
+        delta=float(np.max(abs(a-b)))if same else None
+        if delta is not None:max_edge=max(max_edge,delta)
+        edges[direction]=dict(coarse_count=len(a),fine_count=len(b),maximum_absolute_difference_s=delta)
+    energies={}
+    for rail in contract['rails']:
+        def energy(t,v):return float(np.trapezoid(-v['v('+rail+')']*v['i(v'+rail+')'],t))
+        a,b=energy(ta,va),energy(tb,vb);assert a>0 and b>0
+        energies[rail]=dict(coarse_j=a,fine_j=b,relative_difference=abs(a-b)/max(abs(a),abs(b)))
+    gates=dict(all_voltage_vectors=max(voltage.values())<=STEP_LIMITS['voltage_v'],
+        original_sample_margins=margin_error<=STEP_LIMITS['original_sample_margin_v'],
+        identical_output_crossing_count=bool(edge_counts_equal),
+        output_edge_times=bool(edge_counts_equal and max_edge<=STEP_LIMITS['edge_s']),
+        source_energy=all(x['relative_difference']<=STEP_LIMITS['source_energy_relative']for x in energies.values()))
+    return dict(limits=STEP_LIMITS,voltage_max_absolute_difference_v=voltage,current_max_absolute_difference_a=current,
+        original_samples=len(times),original_sample_margin_max_absolute_difference_v=margin_error,
+        coarse_minimum_original_margin_v=float(ma.min()),fine_minimum_original_margin_v=float(mb.min()),
+        output_edges=edges,source_energy=energies,gates=gates,passed=all(gates.values()),
+        fitted_phase=False,fitted_latency=False,comparison_grid='Every original coarse native timestamp; fine data linearly interpolated only for transport comparison. Original engineering reviews use each unmodified native capture.',
+        edge_window_s=[mux.START+.5*mux.UI,mux.STOP-.5*mux.UI])
+
+
+def step_controls():
+    ta=np.linspace(0,mux.STOP,68001);tb=np.linspace(0,mux.STOP,136001)
+    def values(t,shift=0.,offset=0.):
+        y=.25*np.sin(2*np.pi*4e9*(t+shift))
+        return {'v(op)':y+offset,'v(on)':-y,'v(avdd)':np.full_like(t,2.5),'i(vavdd)':np.full_like(t,-.001)}
+    contract=dict(vectors=list(values(ta)),bits=[i%2 for i in range(256)],rails=['avdd'])
+    assert step_metrics((ta,values(ta)),(tb,values(tb)),contract)['passed']
+    bads=[(tb,values(tb,offset=.01)),(tb,values(tb,shift=2e-12)),(tb,dict(values(tb),**{'i(vavdd)':np.full_like(tb,-.002)})),
+        (tb[:-1],{k:v[:-1]for k,v in values(tb).items()}),(tb,{k:v for k,v in values(tb).items()if k!='v(on)'})]
+    for bad in bads:
+        try: passed=step_metrics((ta,values(ta)),bad,contract)['passed']
+        except (AssertionError,KeyError):passed=False
+        assert not passed,'Malformed/shifted numerical control accepted'
+    return dict(positive=1,negative=len(bads),voltage_offset_time_shift_energy_truncation_and_missing_vector_rejected=True)
+
+
+def compare_timesteps(selected, profile):
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    out=ROOT/'hw/soc/out/cloud-tx-tree-assembly';out.mkdir(parents=True,exist_ok=False)
+    result=dict(status='RUNNING_SOURCE_BOUND_STEP_COMPARISON',placement_profile=profile,limits=STEP_LIMITS,
+        full_phy_accepted=False,original_engineering_gates_changed=False,qualified_pex=False)
+    try:
+        result['controls']=step_controls();result['pairs']={}
+        for mode in ('compact','wire'):
+            captures=[];contracts=[];summaries=[];benches=[]
+            for condition,step in [('hot_low',.5),('hot_low_quarter_step',.25)]:
+                cases=[(study,c)for study in selected['loaded_studies']for c in study['cases']if c['mode']==mode and c['condition']==condition and c['fault']=='none']
+                assert len(cases)==1
+                study,record=cases[0];directory=out/(mode+'-'+condition);directory.mkdir()
+                packed=out/'step-source.tar.gz';fetch(record['url'],record['sha256'],packed)
+                assert packed.stat().st_size==record['bytes']
+                prefix='cloud-tx-mux4/'
+                modelrel='wire96/tree162-wire01.spice'if mode=='wire'else'binding96/tree162-compact01.spice'
+                modelname=prefix+'inputs/assembled-core/hw/soc/out/cloud-tx-tree-assembly/'+modelrel
+                seen=set();model_hash=None
+                with tarfile.open(packed,'r|gz')as tar:
+                    for entry in tar:
+                        assert entry.name not in seen;seen.add(entry.name)
+                        if entry.name==prefix+'result.json':
+                            assert entry.isfile();raw=tar.extractfile(entry).read()
+                            assert hashlib.sha256(raw).hexdigest()==record['summary_sha256']
+                            (directory/'original-summary.json').write_bytes(raw)
+                        elif entry.name==modelname:
+                            assert entry.isfile();model_hash=hashlib.file_digest(tar.extractfile(entry),'sha256').hexdigest()
+                        elif entry.name.startswith(prefix+'native/')and entry.isfile():
+                            rel=Path(entry.name[len(prefix):]);assert not rel.is_absolute()and '..'not in rel.parts
+                            dest=directory/rel;dest.parent.mkdir(parents=True,exist_ok=True)
+                            with tar.extractfile(entry)as src,dest.open('xb')as dst:
+                                import shutil
+                                shutil.copyfileobj(src,dst)
+                packed.unlink();summary=json.loads((directory/'original-summary.json').read_text())
+                scope=summary['assembled_core_scope']
+                assert scope['placement_profile']==profile and scope['source']['sha256']==selected['verified_composition']['sha256']
+                assert scope['mode']==mode and model_hash==selected['verified_composition']['outputs'][modelrel]
+                for name,h in summary['outputs'].items():assert sha(directory/name)==h
+                contract=json.loads((directory/'native/contract.json').read_text())
+                assert contract['condition']['step_ps']==step and contract['streams']==4 and contract['fault']=='none'
+                assert contract['source_bits_sha256']==record['signals']['source_bits_sha256']
+                fresh=mux.review(directory/'native',contract)
+                for key in ('signals','interfaces','hbt_devices','mos_devices','failed_hbts','failed_mos','all_engineering_gates_passed'):
+                    assert fresh[key]==summary['review'][key],key
+                t,v,transport=read_streamed_wave(directory/'native/wave.raw',contract['vectors'],mux.STOP,step*1e-12)
+                captures.append((t,{name:v[name]for name in contract['vectors']}));contracts.append(contract);summaries.append(summary)
+                bench=(directory/'native/bench.cir').read_text()
+                tran=f'tran {step*1e-12:.14g} {mux.STOP:.14g} 0 {step*1e-12:.14g}'
+                assert bench.count(tran)==1;benches.append(bench.replace(tran,'SAME_NATIVE_END_START_ONLY_STEP_DIFFERS'))
+            import copy
+            a,b=copy.deepcopy(contracts)
+            a['condition']['step_ps']=b['condition']['step_ps']=None
+            assert a==b,'Native contracts differ beyond timestep'
+            assert benches[0]==benches[1],'Native benches differ beyond timestep'
+            def circuit_inputs(summary):
+                return {k:v for k,v in summary['inputs'].items()if not k.endswith('/docs/evidence/pcie-tree4-assembly-input-20261015.json')}
+            assert circuit_inputs(summaries[0])==circuit_inputs(summaries[1]),'Captured circuit/model inputs differ'
+            metrics=step_metrics(*captures,contracts[0])
+            result['pairs'][mode]=dict(metrics=metrics,original_reviews_passed=[s['review']['all_engineering_gates_passed']for s in summaries],
+                original_native_outputs=[s['outputs']for s in summaries],same_model_source_sha256=selected['verified_composition']['sha256'],
+                contract_equal_except_step=True,bench_equal_except_step=True,circuit_model_inputs_equal=True)
+            del captures,contracts,summaries
+            import gc
+            gc.collect()
+        result['numerical_component_screen_passed']=all(p['metrics']['passed']and all(p['original_reviews_passed'])for p in result['pairs'].values())
+        result['status']='COMPLETE_SOURCE_BOUND_TIMESTEP_COMPARISON_NOT_PHY_ACCEPTANCE'
+    except BaseException as error:
+        result.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    finally:
+        result['outputs']={str(p.relative_to(out)):sha(p)for p in out.rglob('*')if p.is_file()}
+        (out/'step-comparison-result.json').write_text(json.dumps(result,indent=2)+'\n')
+        print(json.dumps({k:result[k]for k in ('status','placement_profile')}),flush=True)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
+    parser.add_argument('--compare-timestep',action='store_true')
     args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
     selected=spec if args.placement_profile=='baseline' else spec['placement_variants'][args.placement_profile]
+    if args.compare_timestep:
+        compare_timesteps(selected,args.placement_profile);return
     cases=[(s,c) for s in selected['loaded_studies']for c in s['cases']if c['condition']=='hot_low' and c['mode']=='wire' and c['fault']=='none']
     assert len(cases)==1
     study,record=cases[0]
