@@ -329,7 +329,9 @@ def main():
             # Parallel edges use conductance addition; the resulting shortest
             # path remains a path bound, NOT a full network effective resistance.
             previous=graph.get_edge_data(x,y,{}).get('resistance')
-            graph.add_edge(x,y,resistance=res if previous is None else 1/(1/res+1/previous))
+            originals=list(graph.get_edge_data(x,y,{}).get('native_resistors',[]))
+            originals.append(dict(name=row[0],ohms=res))
+            graph.add_edge(x,y,resistance=res if previous is None else 1/(1/res+1/previous),native_resistors=originals)
         binding=json.loads((out/'binding96/binding01.json').read_text())
         anchors=json.loads((out/'wire96/anchors08.json').read_text());by={(r['device'],r['terminal']):r for r in anchors['rows']}
         refs=json.loads((out/'wire96/tree-interface-probes.json').read_text())['references']
@@ -350,8 +352,20 @@ def main():
         for rail in ('avdd','avss','sub'):
             terminals=[r for r in anchors['rows']if r['native_net']==rail and r['disposition']=='ACTUAL_TERMINAL_METAL_POINT_REFERENCE']
             assert terminals
-            power[rail]=[dict(device=r['device'],model=r['model'],terminal=r['terminal'],point_dbu=r['point_dbu'],
-                wire_anchor=r['wire_anchor'],resistance_path_upper_bound_ohm=nx.shortest_path_length(graph,rail,r['wire_anchor'],weight='resistance'))for r in terminals]
+            power[rail]=[]
+            for r in terminals:
+                path=nx.shortest_path(graph,rail,r['wire_anchor'],weight='resistance')
+                segments=[dict(nodes=[x,y],effective_parallel_edge_ohms=graph[x][y]['resistance'],
+                    native_resistors=graph[x][y]['native_resistors'])for x,y in zip(path,path[1:])]
+                for edge in segments:
+                    assert all(p['ohms']>0 for p in edge['native_resistors'])
+                    assert np.isclose(edge['effective_parallel_edge_ohms'],1/sum(1/p['ohms']for p in edge['native_resistors']),rtol=1e-12,atol=1e-15)
+                total=sum(edge['effective_parallel_edge_ohms']for edge in segments)
+                assert np.isclose(total,nx.shortest_path_length(graph,rail,r['wire_anchor'],weight='resistance'),rtol=1e-12,atol=1e-15)
+                power[rail].append(dict(device=r['device'],model=r['model'],terminal=r['terminal'],point_dbu=r['point_dbu'],
+                    wire_anchor=r['wire_anchor'],resistance_path_upper_bound_ohm=total,path_nodes=path,
+                    segment_count=len(segments),largest_native_segments=sorted(segments,key=lambda e:e['effective_parallel_edge_ohms'],reverse=True)[:12],
+                    segment_provenance='Exact exported native resistor names/values; parallel edges combined by conductance. Path bound only, not solved IR or effective rail resistance.'))
         intermacro={}
         for label,ref in refs.items():
             net=ref['endpoints'][0]['native_net'];sinks=ref['intrinsic_terminals'];group=nx.node_connected_component(graph,sinks[0]['wire_anchor'])
