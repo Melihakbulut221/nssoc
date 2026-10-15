@@ -15998,7 +15998,7 @@
       }
     },
     "compact_edge_supply": {
-      "status": "PHYSICAL_PASS_REQUIRES_FRESH_RC_AND_WAVES",
+      "status": "PHYSICAL_AND_NATIVE_RC_PASS_REQUIRES_COMPOSITION_AND_WAVES",
       "hypothesis": "Move M5 supply off the intermacro data corridor to reduce measured excess AVDD coupling, with a parallel TM1 supply strap. No electrical acceptance inferred.",
       "source_diagnosis_runs": [
         38724619146,
@@ -16148,6 +16148,2726 @@
           "schematic.cir": "7021a4bde29efcc0f225b2e97b2d6154de3a2cafa5d0ff5599b7629ade2f3659"
         },
         "scope": "Original frozen native children, same276.015um data paths. M5 supply moved outside data corridor with4um parallelTM1strap, native4x4via arrays, relocated SUB and AVSS. Native560categoryDRC zero and both162deviceLVS passed with original physical fault controls. Requires freshRC and original-gate native waves; no EM/RF/fullPHY or mainchip acceptance."
+      },
+      "verified_extraction": {
+        "run": 38726858271,
+        "source_head": "4c10dbefb77ab1f7e31796ab46bf5b4afb036717",
+        "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38726858271-1-tree-assembly-4-extraction-compact-edge-supply/tx-tree-assembly-38726858271-1.tar.gz",
+        "bytes": 7942669,
+        "sha256": "f003d32c55ecf38ca82786f57819c0a7ae391ff1488c62e8d6d488d6ed6f4959",
+        "summary_asset": 643638526,
+        "summary_sha256": "3a3a2ae3eab324d0b29b10fc1cb2a44e3d8213bea5f2eb3a12acb88d283858ed",
+        "placement_profile": "compact_edge_supply",
+        "devices": 162,
+        "ports": 22,
+        "conductors": 41,
+        "probes": 322,
+        "resistors": 11913,
+        "capacitors": 7851,
+        "native_geometry_census": {
+          "wire_component_count": 41,
+          "native_electrical_net_count": 42,
+          "native_device_count": 162,
+          "native_terminal_count": 462
+        },
+        "audit": {
+          "status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+          "original_devices": 162,
+          "public_ports": 22,
+          "physical_wire_components": 41,
+          "geometry_probes": 322,
+          "logical_metal_references": 300,
+          "metal_device_terminals": 300,
+          "unmodeled_body_well_terminals": 162,
+          "shared_diffusion_terminals": 0,
+          "actual_exported_resistors": 11913,
+          "actual_exported_capacitors": 7851,
+          "resistor_components": 41,
+          "connected_wire_components": 41,
+          "disconnected_probes": [],
+          "disconnected_by_kind": {},
+          "native_export_r_edge_value_multiset_exact": true,
+          "geometry_conductor_ownership_exact": true,
+          "every_native_point_ground_capacitance_preserved": true,
+          "every_native_mutual_attachment_and_value_preserved": true,
+          "collapsed_capacitance_edge_count": 270,
+          "collapsed_matrix_entries": 1764,
+          "complete_collapsed_capacitance_conserved": true,
+          "per_conductor_intrinsic_ground_c_conserved": true,
+          "wrong_native_branch_witnesses": [],
+          "missing_capacitance_edges": [],
+          "extra_capacitance_edges": [],
+          "wrong_capacitance_values": [],
+          "wrong_intrinsic_ground_values": [],
+          "original_retained_node_subtractions": 41,
+          "original_node_deletions": 0,
+          "capacitor_ground_reference": "sub: extractor reference, not mapped to any intrinsic body or supply",
+          "original_port_short_warnings": 843,
+          "all_short_warnings_same_geometry_conductor": true,
+          "probes_native_grid_delta_nm_counts": {
+            "[0, 0]": 265,
+            "[0, -2]": 57
+          },
+          "no_intrinsic_alias_edges_inserted_in_resistance_graph": true,
+          "substrate_r_modeled": false,
+          "full_pex_qualified": false,
+          "point_attachment_or_rf_distribution_qualified": false,
+          "components": [
+            {
+              "component": 19,
+              "nodes": 199,
+              "probes": [
+                "T001_C",
+                "T003_C",
+                "T008_rppd_1",
+                "T046_E",
+                "T047_E",
+                "T050_E",
+                "T051_E",
+                "T052_E",
+                "T053_E"
+              ]
+            },
+            {
+              "component": 27,
+              "nodes": 58,
+              "probes": [
+                "P_sn",
+                "T001_B",
+                "T003_B"
+              ]
+            },
+            {
+              "component": 29,
+              "nodes": 184,
+              "probes": [
+                "T001_E",
+                "T002_E",
+                "T003_E",
+                "T004_E",
+                "T006_C",
+                "T007_C"
+              ]
+            },
+            {
+              "component": 18,
+              "nodes": 199,
+              "probes": [
+                "T002_C",
+                "T004_C",
+                "T009_rppd_1",
+                "T043_E",
+                "T044_E",
+                "T045_E",
+                "T048_E",
+                "T049_E",
+                "T054_E"
+              ]
+            },
+            {
+              "component": 26,
+              "nodes": 58,
+              "probes": [
+                "P_sp",
+                "T002_B",
+                "T004_B"
+              ]
+            },
+            {
+              "component": 28,
+              "nodes": 116,
+              "probes": [
+                "P_mr",
+                "T005_B",
+                "T005_C",
+                "T006_B",
+                "T007_B"
+              ]
+            },
+            {
+              "component": 10,
+              "nodes": 696,
+              "probes": [
+                "P_avss",
+                "T005_E",
+                "T006_E",
+                "T007_E",
+                "T008_rppd_2",
+                "T009_rppd_2",
+                "T012_rppd_2",
+                "T013_rppd_2",
+                "T055_rppd_2",
+                "T056_rppd_2",
+                "T057_rppd_2",
+                "T058_rppd_2",
+                "T059_rppd_2",
+                "T060_rppd_2",
+                "T061_rppd_2",
+                "T062_rppd_2",
+                "T063_E",
+                "T064_E",
+                "T127_E",
+                "T130_E",
+                "T145_E",
+                "T148_E"
+              ]
+            },
+            {
+              "component": 2,
+              "nodes": 369,
+              "probes": [
+                "P_avdd",
+                "T010_rppd_1",
+                "T011_rppd_1",
+                "T159_rppd_1",
+                "T160_rppd_1",
+                "T161_rppd_1",
+                "T162_rppd_1"
+              ]
+            },
+            {
+              "component": 20,
+              "nodes": 230,
+              "probes": [
+                "T010_rppd_2",
+                "T015_rppd_1",
+                "T047_C",
+                "T048_C",
+                "T049_C",
+                "T050_C",
+                "T053_C",
+                "T054_C"
+              ]
+            },
+            {
+              "component": 21,
+              "nodes": 230,
+              "probes": [
+                "T011_rppd_2",
+                "T014_rppd_1",
+                "T043_C",
+                "T044_C",
+                "T045_C",
+                "T046_C",
+                "T051_C",
+                "T052_C"
+              ]
+            },
+            {
+              "component": 16,
+              "nodes": 58,
+              "probes": [
+                "P_mn",
+                "T012_rppd_1",
+                "T015_rppd_2"
+              ]
+            },
+            {
+              "component": 17,
+              "nodes": 58,
+              "probes": [
+                "P_mp",
+                "T013_rppd_1",
+                "T014_rppd_2"
+              ]
+            },
+            {
+              "component": 1,
+              "nodes": 1538,
+              "probes": [
+                "P_sub",
+                "T016_TIE",
+                "T017_TIE",
+                "T018_TIE",
+                "T019_TIE",
+                "T020_TIE",
+                "T021_TIE",
+                "T022_TIE",
+                "T023_TIE",
+                "T024_TIE",
+                "T025_TIE",
+                "T026_TIE",
+                "T027_TIE",
+                "T028_TIE",
+                "T029_TIE",
+                "T030_TIE",
+                "T031_TIE",
+                "T032_TIE",
+                "T033_TIE",
+                "T034_TIE",
+                "T035_TIE",
+                "T036_TIE",
+                "T037_TIE",
+                "T038_TIE",
+                "T039_TIE",
+                "T040_TIE",
+                "T041_TIE",
+                "T042_TIE",
+                "T069_TIE",
+                "T070_TIE",
+                "T071_TIE",
+                "T072_TIE",
+                "T073_TIE",
+                "T074_TIE",
+                "T075_TIE",
+                "T076_TIE",
+                "T077_TIE",
+                "T078_TIE",
+                "T079_TIE",
+                "T080_TIE",
+                "T081_TIE",
+                "T082_TIE",
+                "T083_TIE",
+                "T084_TIE",
+                "T085_TIE",
+                "T086_TIE",
+                "T087_TIE",
+                "T088_TIE",
+                "T089_TIE",
+                "T090_TIE",
+                "T091_TIE",
+                "T092_TIE",
+                "T093_TIE",
+                "T094_TIE",
+                "T095_TIE",
+                "T096_TIE",
+                "T097_TIE",
+                "T098_TIE",
+                "T099_TIE",
+                "T100_TIE",
+                "T101_TIE",
+                "T102_TIE",
+                "T103_TIE",
+                "T104_TIE",
+                "T105_TIE",
+                "T106_TIE",
+                "T107_TIE",
+                "T108_TIE",
+                "T109_TIE",
+                "T110_TIE",
+                "T111_TIE",
+                "T112_TIE",
+                "T113_TIE",
+                "T114_TIE",
+                "T115_TIE",
+                "T116_TIE",
+                "T117_TIE",
+                "T118_TIE",
+                "T119_TIE",
+                "T120_TIE",
+                "T121_TIE",
+                "T122_TIE"
+              ]
+            },
+            {
+              "component": 23,
+              "nodes": 143,
+              "probes": [
+                "T043_B",
+                "T044_B",
+                "T045_B",
+                "T055_rppd_1",
+                "T065_rppd_2"
+              ]
+            },
+            {
+              "component": 25,
+              "nodes": 143,
+              "probes": [
+                "T046_B",
+                "T051_B",
+                "T052_B",
+                "T057_rppd_1",
+                "T067_rppd_2"
+              ]
+            },
+            {
+              "component": 24,
+              "nodes": 143,
+              "probes": [
+                "T047_B",
+                "T050_B",
+                "T053_B",
+                "T058_rppd_1",
+                "T068_rppd_2"
+              ]
+            },
+            {
+              "component": 22,
+              "nodes": 143,
+              "probes": [
+                "T048_B",
+                "T049_B",
+                "T054_B",
+                "T056_rppd_1",
+                "T066_rppd_2"
+              ]
+            },
+            {
+              "component": 13,
+              "nodes": 189,
+              "probes": [
+                "T059_rppd_1",
+                "T123_E",
+                "T124_E",
+                "T125_C",
+                "T126_E",
+                "T131_E",
+                "T132_E",
+                "T133_C",
+                "T140_E"
+              ]
+            },
+            {
+              "component": 12,
+              "nodes": 189,
+              "probes": [
+                "T060_rppd_1",
+                "T128_C",
+                "T129_C",
+                "T134_E",
+                "T135_E",
+                "T136_E",
+                "T137_E",
+                "T138_E",
+                "T139_E"
+              ]
+            },
+            {
+              "component": 39,
+              "nodes": 189,
+              "probes": [
+                "T061_rppd_1",
+                "T141_E",
+                "T142_E",
+                "T143_C",
+                "T144_E",
+                "T149_E",
+                "T150_E",
+                "T151_C",
+                "T158_E"
+              ]
+            },
+            {
+              "component": 38,
+              "nodes": 189,
+              "probes": [
+                "T062_rppd_1",
+                "T146_C",
+                "T147_C",
+                "T152_E",
+                "T153_E",
+                "T154_E",
+                "T155_E",
+                "T156_E",
+                "T157_E"
+              ]
+            },
+            {
+              "component": 3,
+              "nodes": 116,
+              "probes": [
+                "P_ra",
+                "T063_B",
+                "T063_C",
+                "T127_B",
+                "T130_B"
+              ]
+            },
+            {
+              "component": 30,
+              "nodes": 116,
+              "probes": [
+                "P_rb",
+                "T064_B",
+                "T064_C",
+                "T145_B",
+                "T148_B"
+              ]
+            },
+            {
+              "component": 15,
+              "nodes": 230,
+              "probes": [
+                "T065_rppd_1",
+                "T131_C",
+                "T132_C",
+                "T136_C",
+                "T138_C",
+                "T139_C",
+                "T140_C",
+                "T159_rppd_2"
+              ]
+            },
+            {
+              "component": 14,
+              "nodes": 230,
+              "probes": [
+                "T066_rppd_1",
+                "T123_C",
+                "T124_C",
+                "T126_C",
+                "T134_C",
+                "T135_C",
+                "T137_C",
+                "T160_rppd_2"
+              ]
+            },
+            {
+              "component": 41,
+              "nodes": 230,
+              "probes": [
+                "T067_rppd_1",
+                "T149_C",
+                "T150_C",
+                "T154_C",
+                "T156_C",
+                "T157_C",
+                "T158_C",
+                "T161_rppd_2"
+              ]
+            },
+            {
+              "component": 40,
+              "nodes": 230,
+              "probes": [
+                "T068_rppd_1",
+                "T141_C",
+                "T142_C",
+                "T144_C",
+                "T152_C",
+                "T153_C",
+                "T155_C",
+                "T162_rppd_2"
+              ]
+            },
+            {
+              "component": 8,
+              "nodes": 87,
+              "probes": [
+                "P_d0n",
+                "T123_B",
+                "T124_B",
+                "T126_B"
+              ]
+            },
+            {
+              "component": 5,
+              "nodes": 58,
+              "probes": [
+                "P_sap",
+                "T125_B",
+                "T133_B"
+              ]
+            },
+            {
+              "component": 11,
+              "nodes": 132,
+              "probes": [
+                "T125_E",
+                "T127_C",
+                "T128_E",
+                "T129_E",
+                "T130_C",
+                "T133_E"
+              ]
+            },
+            {
+              "component": 4,
+              "nodes": 58,
+              "probes": [
+                "P_san",
+                "T128_B",
+                "T129_B"
+              ]
+            },
+            {
+              "component": 9,
+              "nodes": 87,
+              "probes": [
+                "P_d0p",
+                "T131_B",
+                "T132_B",
+                "T140_B"
+              ]
+            },
+            {
+              "component": 6,
+              "nodes": 87,
+              "probes": [
+                "P_d2n",
+                "T134_B",
+                "T135_B",
+                "T137_B"
+              ]
+            },
+            {
+              "component": 7,
+              "nodes": 87,
+              "probes": [
+                "P_d2p",
+                "T136_B",
+                "T138_B",
+                "T139_B"
+              ]
+            },
+            {
+              "component": 32,
+              "nodes": 87,
+              "probes": [
+                "P_d1n",
+                "T141_B",
+                "T142_B",
+                "T144_B"
+              ]
+            },
+            {
+              "component": 35,
+              "nodes": 58,
+              "probes": [
+                "P_sbp",
+                "T143_B",
+                "T151_B"
+              ]
+            },
+            {
+              "component": 37,
+              "nodes": 132,
+              "probes": [
+                "T143_E",
+                "T145_C",
+                "T146_E",
+                "T147_E",
+                "T148_C",
+                "T151_E"
+              ]
+            },
+            {
+              "component": 34,
+              "nodes": 58,
+              "probes": [
+                "P_sbn",
+                "T146_B",
+                "T147_B"
+              ]
+            },
+            {
+              "component": 33,
+              "nodes": 87,
+              "probes": [
+                "P_d1p",
+                "T149_B",
+                "T150_B",
+                "T158_B"
+              ]
+            },
+            {
+              "component": 36,
+              "nodes": 87,
+              "probes": [
+                "P_d3n",
+                "T152_B",
+                "T153_B",
+                "T155_B"
+              ]
+            },
+            {
+              "component": 31,
+              "nodes": 87,
+              "probes": [
+                "P_d3p",
+                "T154_B",
+                "T156_B",
+                "T157_B"
+              ]
+            }
+          ],
+          "capacitance_edges_af": [
+            {
+              "a": 0,
+              "b": 1,
+              "source": 1030600.0,
+              "baseline": 1030600.0000000001,
+              "distributed": 1030600.0168457031
+            },
+            {
+              "a": 0,
+              "b": 2,
+              "source": 433533.0,
+              "baseline": 433533.00000000006,
+              "distributed": 433533.0042896271
+            },
+            {
+              "a": 0,
+              "b": 3,
+              "source": 26752.3,
+              "baseline": 26752.300781250004,
+              "distributed": 26752.300820350647
+            },
+            {
+              "a": 0,
+              "b": 4,
+              "source": 12005.4,
+              "baseline": 12005.400390625,
+              "distributed": 12005.399857521057
+            },
+            {
+              "a": 0,
+              "b": 5,
+              "source": 14134.8,
+              "baseline": 14134.7998046875,
+              "distributed": 14134.799978733063
+            },
+            {
+              "a": 0,
+              "b": 6,
+              "source": 20603.6,
+              "baseline": 20603.599609375,
+              "distributed": 20603.600160360336
+            },
+            {
+              "a": 0,
+              "b": 7,
+              "source": 15712.5,
+              "baseline": 15712.500000000002,
+              "distributed": 15712.499915361404
+            },
+            {
+              "a": 0,
+              "b": 8,
+              "source": 14691.7,
+              "baseline": 14691.700195312502,
+              "distributed": 14691.699971199036
+            },
+            {
+              "a": 0,
+              "b": 9,
+              "source": 14975.5,
+              "baseline": 14975.500000000002,
+              "distributed": 14975.500042438509
+            },
+            {
+              "a": 0,
+              "b": 10,
+              "source": 755997.0,
+              "baseline": 755997.0,
+              "distributed": 755997.0074940398
+            },
+            {
+              "a": 0,
+              "b": 11,
+              "source": 24659.2,
+              "baseline": 24659.19921875,
+              "distributed": 24659.199655532837
+            },
+            {
+              "a": 0,
+              "b": 12,
+              "source": 40832.5,
+              "baseline": 40832.50000000001,
+              "distributed": 40832.49976682663
+            },
+            {
+              "a": 0,
+              "b": 13,
+              "source": 43095.8,
+              "baseline": 43095.80078125,
+              "distributed": 43095.80072879791
+            },
+            {
+              "a": 0,
+              "b": 14,
+              "source": 37103.8,
+              "baseline": 37103.80078125001,
+              "distributed": 37103.79989004135
+            },
+            {
+              "a": 0,
+              "b": 15,
+              "source": 43365.3,
+              "baseline": 43365.30078125,
+              "distributed": 43365.300666332245
+            },
+            {
+              "a": 0,
+              "b": 16,
+              "source": 12171.5,
+              "baseline": 12171.500000000002,
+              "distributed": 12171.499907016756
+            },
+            {
+              "a": 0,
+              "b": 17,
+              "source": 15172.3,
+              "baseline": 15172.2998046875,
+              "distributed": 15172.300108432772
+            },
+            {
+              "a": 0,
+              "b": 18,
+              "source": 27939.3,
+              "baseline": 27939.300781250004,
+              "distributed": 27939.300285816193
+            },
+            {
+              "a": 0,
+              "b": 19,
+              "source": 25194.0,
+              "baseline": 25194.0,
+              "distributed": 25193.999897956848
+            },
+            {
+              "a": 0,
+              "b": 20,
+              "source": 27408.0,
+              "baseline": 27408.000000000004,
+              "distributed": 27407.999882221222
+            },
+            {
+              "a": 0,
+              "b": 21,
+              "source": 25382.7,
+              "baseline": 25382.69921875,
+              "distributed": 25382.69912958145
+            },
+            {
+              "a": 0,
+              "b": 22,
+              "source": 63899.4,
+              "baseline": 63899.39843750001,
+              "distributed": 63899.39826464653
+            },
+            {
+              "a": 0,
+              "b": 23,
+              "source": 63825.1,
+              "baseline": 63825.10156250001,
+              "distributed": 63825.10338640213
+            },
+            {
+              "a": 0,
+              "b": 24,
+              "source": 60539.3,
+              "baseline": 60539.30078125,
+              "distributed": 60539.30071270466
+            },
+            {
+              "a": 0,
+              "b": 25,
+              "source": 66100.8,
+              "baseline": 66100.79687500001,
+              "distributed": 66100.79628002644
+            },
+            {
+              "a": 0,
+              "b": 26,
+              "source": 9648.05,
+              "baseline": 9648.0498046875,
+              "distributed": 9648.04957842827
+            },
+            {
+              "a": 0,
+              "b": 27,
+              "source": 8979.34,
+              "baseline": 8979.33984375,
+              "distributed": 8979.339882612228
+            },
+            {
+              "a": 0,
+              "b": 28,
+              "source": 24581.2,
+              "baseline": 24581.199218750004,
+              "distributed": 24581.1993765831
+            },
+            {
+              "a": 0,
+              "b": 29,
+              "source": 39369.2,
+              "baseline": 39369.19921875,
+              "distributed": 39369.19925701618
+            },
+            {
+              "a": 0,
+              "b": 30,
+              "source": 26752.3,
+              "baseline": 26752.300781250004,
+              "distributed": 26752.300820350647
+            },
+            {
+              "a": 0,
+              "b": 31,
+              "source": 15693.3,
+              "baseline": 15693.299804687502,
+              "distributed": 15693.29950928688
+            },
+            {
+              "a": 0,
+              "b": 32,
+              "source": 14672.5,
+              "baseline": 14672.5,
+              "distributed": 14672.5001475811
+            },
+            {
+              "a": 0,
+              "b": 33,
+              "source": 14956.3,
+              "baseline": 14956.2998046875,
+              "distributed": 14956.300055980682
+            },
+            {
+              "a": 0,
+              "b": 34,
+              "source": 12005.4,
+              "baseline": 12005.400390625,
+              "distributed": 12005.399857521057
+            },
+            {
+              "a": 0,
+              "b": 35,
+              "source": 14134.8,
+              "baseline": 14134.7998046875,
+              "distributed": 14134.799978733063
+            },
+            {
+              "a": 0,
+              "b": 36,
+              "source": 20584.4,
+              "baseline": 20584.400390625004,
+              "distributed": 20584.399926900864
+            },
+            {
+              "a": 0,
+              "b": 37,
+              "source": 24659.2,
+              "baseline": 24659.19921875,
+              "distributed": 24659.199655532837
+            },
+            {
+              "a": 0,
+              "b": 38,
+              "source": 40832.5,
+              "baseline": 40832.50000000001,
+              "distributed": 40832.49976682663
+            },
+            {
+              "a": 0,
+              "b": 39,
+              "source": 43095.8,
+              "baseline": 43095.80078125,
+              "distributed": 43095.80072879791
+            },
+            {
+              "a": 0,
+              "b": 40,
+              "source": 37103.8,
+              "baseline": 37103.80078125001,
+              "distributed": 37103.79989004135
+            },
+            {
+              "a": 0,
+              "b": 41,
+              "source": 43365.3,
+              "baseline": 43365.30078125,
+              "distributed": 43365.300666332245
+            },
+            {
+              "a": 1,
+              "b": 2,
+              "source": 124255.0,
+              "baseline": 124255.00000000001,
+              "distributed": 124255.00000000001
+            },
+            {
+              "a": 1,
+              "b": 3,
+              "source": 9848.98,
+              "baseline": 9848.98046875,
+              "distributed": 9848.98046875
+            },
+            {
+              "a": 1,
+              "b": 4,
+              "source": 3085.98,
+              "baseline": 3085.9799804687505,
+              "distributed": 3085.9799804687505
+            },
+            {
+              "a": 1,
+              "b": 5,
+              "source": 3638.92,
+              "baseline": 3638.9199218750005,
+              "distributed": 3638.9199218750005
+            },
+            {
+              "a": 1,
+              "b": 6,
+              "source": 4910.05,
+              "baseline": 4910.0498046875,
+              "distributed": 4910.0498046875
+            },
+            {
+              "a": 1,
+              "b": 7,
+              "source": 4002.08,
+              "baseline": 4002.0800781250005,
+              "distributed": 4002.0800781250005
+            },
+            {
+              "a": 1,
+              "b": 8,
+              "source": 3036.71,
+              "baseline": 3036.7099609375,
+              "distributed": 3036.7099609375
+            },
+            {
+              "a": 1,
+              "b": 9,
+              "source": 41.8858,
+              "baseline": 41.88579940795899,
+              "distributed": 41.88579940795899
+            },
+            {
+              "a": 1,
+              "b": 10,
+              "source": 307473.0,
+              "baseline": 307473.0,
+              "distributed": 307473.0
+            },
+            {
+              "a": 1,
+              "b": 11,
+              "source": 12667.4,
+              "baseline": 12667.400390625002,
+              "distributed": 12667.400390625002
+            },
+            {
+              "a": 1,
+              "b": 12,
+              "source": 16078.6,
+              "baseline": 16078.599609375002,
+              "distributed": 16078.599609375002
+            },
+            {
+              "a": 1,
+              "b": 13,
+              "source": 12003.8,
+              "baseline": 12003.7998046875,
+              "distributed": 12003.7998046875
+            },
+            {
+              "a": 1,
+              "b": 14,
+              "source": 14193.1,
+              "baseline": 14193.099609375,
+              "distributed": 14193.099609375
+            },
+            {
+              "a": 1,
+              "b": 15,
+              "source": 7441.38,
+              "baseline": 7441.379882812501,
+              "distributed": 7441.379882812501
+            },
+            {
+              "a": 1,
+              "b": 17,
+              "source": 1992.96,
+              "baseline": 1992.9599609375,
+              "distributed": 1992.9599609375
+            },
+            {
+              "a": 1,
+              "b": 18,
+              "source": 8089.17,
+              "baseline": 8089.169921875001,
+              "distributed": 8089.169921875001
+            },
+            {
+              "a": 1,
+              "b": 19,
+              "source": 8207.35,
+              "baseline": 8207.349609375,
+              "distributed": 8207.349609375
+            },
+            {
+              "a": 1,
+              "b": 20,
+              "source": 3378.69,
+              "baseline": 3378.68994140625,
+              "distributed": 3378.68994140625
+            },
+            {
+              "a": 1,
+              "b": 21,
+              "source": 7793.88,
+              "baseline": 7793.8798828125,
+              "distributed": 7793.8798828125
+            },
+            {
+              "a": 1,
+              "b": 22,
+              "source": 13281.6,
+              "baseline": 13281.599609375002,
+              "distributed": 13281.599609375002
+            },
+            {
+              "a": 1,
+              "b": 23,
+              "source": 19020.9,
+              "baseline": 19020.900390625,
+              "distributed": 19020.900390625
+            },
+            {
+              "a": 1,
+              "b": 24,
+              "source": 20307.4,
+              "baseline": 20307.400390625,
+              "distributed": 20307.400390625
+            },
+            {
+              "a": 1,
+              "b": 25,
+              "source": 22714.6,
+              "baseline": 22714.599609375004,
+              "distributed": 22714.599609375004
+            },
+            {
+              "a": 1,
+              "b": 26,
+              "source": 2306.5,
+              "baseline": 2306.5000000000005,
+              "distributed": 2306.5000000000005
+            },
+            {
+              "a": 1,
+              "b": 27,
+              "source": 1762.94,
+              "baseline": 1762.9399414062502,
+              "distributed": 1762.9399414062502
+            },
+            {
+              "a": 1,
+              "b": 28,
+              "source": 9022.15,
+              "baseline": 9022.150390625002,
+              "distributed": 9022.150390625002
+            },
+            {
+              "a": 1,
+              "b": 29,
+              "source": 16505.1,
+              "baseline": 16505.099609375004,
+              "distributed": 16505.099609375004
+            },
+            {
+              "a": 1,
+              "b": 30,
+              "source": 9848.98,
+              "baseline": 9848.98046875,
+              "distributed": 9848.98046875
+            },
+            {
+              "a": 1,
+              "b": 31,
+              "source": 4061.22,
+              "baseline": 4061.2199707031255,
+              "distributed": 4061.2199707031255
+            },
+            {
+              "a": 1,
+              "b": 32,
+              "source": 3095.85,
+              "baseline": 3095.8500976562505,
+              "distributed": 3095.8500976562505
+            },
+            {
+              "a": 1,
+              "b": 33,
+              "source": 101.028,
+              "baseline": 101.02799987792969,
+              "distributed": 101.02799987792969
+            },
+            {
+              "a": 1,
+              "b": 34,
+              "source": 3085.98,
+              "baseline": 3085.9799804687505,
+              "distributed": 3085.9799804687505
+            },
+            {
+              "a": 1,
+              "b": 35,
+              "source": 3638.92,
+              "baseline": 3638.9199218750005,
+              "distributed": 3638.9199218750005
+            },
+            {
+              "a": 1,
+              "b": 36,
+              "source": 4969.19,
+              "baseline": 4969.18994140625,
+              "distributed": 4969.18994140625
+            },
+            {
+              "a": 1,
+              "b": 37,
+              "source": 12667.4,
+              "baseline": 12667.400390625002,
+              "distributed": 12667.400390625002
+            },
+            {
+              "a": 1,
+              "b": 38,
+              "source": 16078.6,
+              "baseline": 16078.599609375002,
+              "distributed": 16078.599609375002
+            },
+            {
+              "a": 1,
+              "b": 39,
+              "source": 12003.8,
+              "baseline": 12003.7998046875,
+              "distributed": 12003.7998046875
+            },
+            {
+              "a": 1,
+              "b": 40,
+              "source": 14193.1,
+              "baseline": 14193.099609375,
+              "distributed": 14193.099609375
+            },
+            {
+              "a": 1,
+              "b": 41,
+              "source": 7441.38,
+              "baseline": 7441.379882812501,
+              "distributed": 7441.379882812501
+            },
+            {
+              "a": 2,
+              "b": 6,
+              "source": 1629.47,
+              "baseline": 1629.4699707031252,
+              "distributed": 1629.4699707031252
+            },
+            {
+              "a": 2,
+              "b": 7,
+              "source": 963.773,
+              "baseline": 963.7730102539062,
+              "distributed": 963.7730102539062
+            },
+            {
+              "a": 2,
+              "b": 8,
+              "source": 810.573,
+              "baseline": 810.5729980468751,
+              "distributed": 810.5729980468751
+            },
+            {
+              "a": 2,
+              "b": 9,
+              "source": 810.573,
+              "baseline": 810.5729980468751,
+              "distributed": 810.5729980468751
+            },
+            {
+              "a": 2,
+              "b": 10,
+              "source": 262673.0,
+              "baseline": 262673.00000000006,
+              "distributed": 262673.00000000006
+            },
+            {
+              "a": 2,
+              "b": 12,
+              "source": 1979.31,
+              "baseline": 1979.3100585937502,
+              "distributed": 1979.3100585937502
+            },
+            {
+              "a": 2,
+              "b": 13,
+              "source": 949.52,
+              "baseline": 949.5200195312501,
+              "distributed": 949.5200195312501
+            },
+            {
+              "a": 2,
+              "b": 14,
+              "source": 12694.7,
+              "baseline": 12694.7001953125,
+              "distributed": 12694.7001953125
+            },
+            {
+              "a": 2,
+              "b": 15,
+              "source": 11796.7,
+              "baseline": 11796.7001953125,
+              "distributed": 11796.7001953125
+            },
+            {
+              "a": 2,
+              "b": 16,
+              "source": 205.022,
+              "baseline": 205.02200317382812,
+              "distributed": 205.02200317382812
+            },
+            {
+              "a": 2,
+              "b": 17,
+              "source": 205.022,
+              "baseline": 205.02200317382812,
+              "distributed": 205.02200317382812
+            },
+            {
+              "a": 2,
+              "b": 18,
+              "source": 879.825,
+              "baseline": 879.8250122070314,
+              "distributed": 879.8250122070314
+            },
+            {
+              "a": 2,
+              "b": 19,
+              "source": 1012.28,
+              "baseline": 1012.280029296875,
+              "distributed": 1012.280029296875
+            },
+            {
+              "a": 2,
+              "b": 20,
+              "source": 8269.89,
+              "baseline": 8269.8896484375,
+              "distributed": 8269.8896484375
+            },
+            {
+              "a": 2,
+              "b": 21,
+              "source": 5532.74,
+              "baseline": 5532.740234375001,
+              "distributed": 5532.740234375001
+            },
+            {
+              "a": 2,
+              "b": 22,
+              "source": 8303.19,
+              "baseline": 8303.1904296875,
+              "distributed": 8303.1904296875
+            },
+            {
+              "a": 2,
+              "b": 23,
+              "source": 7918.35,
+              "baseline": 7918.350097656252,
+              "distributed": 7918.350097656252
+            },
+            {
+              "a": 2,
+              "b": 24,
+              "source": 5054.44,
+              "baseline": 5054.43994140625,
+              "distributed": 5054.43994140625
+            },
+            {
+              "a": 2,
+              "b": 25,
+              "source": 16121.5,
+              "baseline": 16121.500000000004,
+              "distributed": 16121.500000000004
+            },
+            {
+              "a": 2,
+              "b": 31,
+              "source": 963.773,
+              "baseline": 963.7730102539062,
+              "distributed": 963.7730102539062
+            },
+            {
+              "a": 2,
+              "b": 32,
+              "source": 810.573,
+              "baseline": 810.5729980468751,
+              "distributed": 810.5729980468751
+            },
+            {
+              "a": 2,
+              "b": 33,
+              "source": 810.573,
+              "baseline": 810.5729980468751,
+              "distributed": 810.5729980468751
+            },
+            {
+              "a": 2,
+              "b": 36,
+              "source": 1629.47,
+              "baseline": 1629.4699707031252,
+              "distributed": 1629.4699707031252
+            },
+            {
+              "a": 2,
+              "b": 38,
+              "source": 1979.31,
+              "baseline": 1979.3100585937502,
+              "distributed": 1979.3100585937502
+            },
+            {
+              "a": 2,
+              "b": 39,
+              "source": 949.52,
+              "baseline": 949.5200195312501,
+              "distributed": 949.5200195312501
+            },
+            {
+              "a": 2,
+              "b": 40,
+              "source": 12694.7,
+              "baseline": 12694.7001953125,
+              "distributed": 12694.7001953125
+            },
+            {
+              "a": 2,
+              "b": 41,
+              "source": 11796.7,
+              "baseline": 11796.7001953125,
+              "distributed": 11796.7001953125
+            },
+            {
+              "a": 3,
+              "b": 4,
+              "source": 842.991,
+              "baseline": 842.9910278320314,
+              "distributed": 842.9910278320314
+            },
+            {
+              "a": 3,
+              "b": 5,
+              "source": 864.497,
+              "baseline": 864.4970092773439,
+              "distributed": 864.4970092773439
+            },
+            {
+              "a": 3,
+              "b": 10,
+              "source": 30422.8,
+              "baseline": 30422.800781250007,
+              "distributed": 30422.800781250007
+            },
+            {
+              "a": 3,
+              "b": 11,
+              "source": 4378.93,
+              "baseline": 4378.930175781251,
+              "distributed": 4378.930175781251
+            },
+            {
+              "a": 3,
+              "b": 22,
+              "source": 344.028,
+              "baseline": 344.0280151367188,
+              "distributed": 344.0280151367188
+            },
+            {
+              "a": 3,
+              "b": 23,
+              "source": 909.38,
+              "baseline": 909.3800048828125,
+              "distributed": 909.3800048828125
+            },
+            {
+              "a": 4,
+              "b": 5,
+              "source": 6500.61,
+              "baseline": 6500.60986328125,
+              "distributed": 6500.60986328125
+            },
+            {
+              "a": 4,
+              "b": 10,
+              "source": 2129.45,
+              "baseline": 2129.4499511718755,
+              "distributed": 2129.4499511718755
+            },
+            {
+              "a": 4,
+              "b": 11,
+              "source": 11082.1,
+              "baseline": 11082.099609375,
+              "distributed": 11082.099609375
+            },
+            {
+              "a": 4,
+              "b": 12,
+              "source": 4374.83,
+              "baseline": 4374.830078125,
+              "distributed": 4374.830078125
+            },
+            {
+              "a": 4,
+              "b": 22,
+              "source": 3257.79,
+              "baseline": 3257.7900390625,
+              "distributed": 3257.7900390625
+            },
+            {
+              "a": 4,
+              "b": 23,
+              "source": 308.525,
+              "baseline": 308.5249938964844,
+              "distributed": 308.5249938964844
+            },
+            {
+              "a": 5,
+              "b": 10,
+              "source": 2648.09,
+              "baseline": 2648.090087890625,
+              "distributed": 2648.090087890625
+            },
+            {
+              "a": 5,
+              "b": 11,
+              "source": 14391.6,
+              "baseline": 14391.599609375002,
+              "distributed": 14391.599609375002
+            },
+            {
+              "a": 5,
+              "b": 12,
+              "source": 307.029,
+              "baseline": 307.0289916992188,
+              "distributed": 307.0289916992188
+            },
+            {
+              "a": 5,
+              "b": 13,
+              "source": 4050.49,
+              "baseline": 4050.4899902343755,
+              "distributed": 4050.4899902343755
+            },
+            {
+              "a": 5,
+              "b": 22,
+              "source": 308.525,
+              "baseline": 308.5249938964844,
+              "distributed": 308.5249938964844
+            },
+            {
+              "a": 5,
+              "b": 23,
+              "source": 308.525,
+              "baseline": 308.5249938964844,
+              "distributed": 308.5249938964844
+            },
+            {
+              "a": 6,
+              "b": 7,
+              "source": 5228.35,
+              "baseline": 5228.350097656251,
+              "distributed": 5228.350097656251
+            },
+            {
+              "a": 6,
+              "b": 12,
+              "source": 14389.7,
+              "baseline": 14389.7001953125,
+              "distributed": 14389.7001953125
+            },
+            {
+              "a": 6,
+              "b": 13,
+              "source": 298.899,
+              "baseline": 298.8989868164063,
+              "distributed": 298.8989868164063
+            },
+            {
+              "a": 6,
+              "b": 14,
+              "source": 4111.09,
+              "baseline": 4111.089843750001,
+              "distributed": 4111.089843750001
+            },
+            {
+              "a": 6,
+              "b": 22,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 6,
+              "b": 23,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 7,
+              "b": 8,
+              "source": 3443.23,
+              "baseline": 3443.22998046875,
+              "distributed": 3443.22998046875
+            },
+            {
+              "a": 7,
+              "b": 12,
+              "source": 14249.9,
+              "baseline": 14249.900390625002,
+              "distributed": 14249.900390625002
+            },
+            {
+              "a": 7,
+              "b": 13,
+              "source": 307.029,
+              "baseline": 307.0289916992188,
+              "distributed": 307.0289916992188
+            },
+            {
+              "a": 7,
+              "b": 14,
+              "source": 298.899,
+              "baseline": 298.8989868164063,
+              "distributed": 298.8989868164063
+            },
+            {
+              "a": 7,
+              "b": 15,
+              "source": 3786.75,
+              "baseline": 3786.7500000000005,
+              "distributed": 3786.7500000000005
+            },
+            {
+              "a": 7,
+              "b": 22,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 7,
+              "b": 23,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 8,
+              "b": 9,
+              "source": 1658.12,
+              "baseline": 1658.1199951171877,
+              "distributed": 1658.1199951171877
+            },
+            {
+              "a": 8,
+              "b": 13,
+              "source": 14065.3,
+              "baseline": 14065.2998046875,
+              "distributed": 14065.2998046875
+            },
+            {
+              "a": 8,
+              "b": 14,
+              "source": 4163.93,
+              "baseline": 4163.93017578125,
+              "distributed": 4163.93017578125
+            },
+            {
+              "a": 8,
+              "b": 15,
+              "source": 283.926,
+              "baseline": 283.9259948730469,
+              "distributed": 283.9259948730469
+            },
+            {
+              "a": 8,
+              "b": 22,
+              "source": 375.293,
+              "baseline": 375.2929992675782,
+              "distributed": 375.2929992675782
+            },
+            {
+              "a": 8,
+              "b": 23,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 9,
+              "b": 13,
+              "source": 13959.4,
+              "baseline": 13959.400390625,
+              "distributed": 13959.400390625
+            },
+            {
+              "a": 9,
+              "b": 15,
+              "source": 3882.75,
+              "baseline": 3882.7500000000005,
+              "distributed": 3882.7500000000005
+            },
+            {
+              "a": 9,
+              "b": 22,
+              "source": 357.215,
+              "baseline": 357.2149963378906,
+              "distributed": 357.2149963378906
+            },
+            {
+              "a": 9,
+              "b": 23,
+              "source": 2001.47,
+              "baseline": 2001.4699707031252,
+              "distributed": 2001.4699707031252
+            },
+            {
+              "a": 10,
+              "b": 11,
+              "source": 7380.94,
+              "baseline": 7380.939941406251,
+              "distributed": 7380.939941406251
+            },
+            {
+              "a": 10,
+              "b": 12,
+              "source": 7347.5,
+              "baseline": 7347.5,
+              "distributed": 7347.5
+            },
+            {
+              "a": 10,
+              "b": 13,
+              "source": 6436.92,
+              "baseline": 6436.919921875001,
+              "distributed": 6436.919921875001
+            },
+            {
+              "a": 10,
+              "b": 16,
+              "source": 2238.29,
+              "baseline": 2238.2900390625005,
+              "distributed": 2238.2900390625005
+            },
+            {
+              "a": 10,
+              "b": 17,
+              "source": 712.836,
+              "baseline": 712.8359985351562,
+              "distributed": 712.8359985351562
+            },
+            {
+              "a": 10,
+              "b": 18,
+              "source": 3754.25,
+              "baseline": 3754.25,
+              "distributed": 3754.25
+            },
+            {
+              "a": 10,
+              "b": 19,
+              "source": 3524.22,
+              "baseline": 3524.2199707031255,
+              "distributed": 3524.2199707031255
+            },
+            {
+              "a": 10,
+              "b": 20,
+              "source": 2011.16,
+              "baseline": 2011.1600341796873,
+              "distributed": 2011.1600341796873
+            },
+            {
+              "a": 10,
+              "b": 21,
+              "source": 552.96,
+              "baseline": 552.9600219726562,
+              "distributed": 552.9600219726562
+            },
+            {
+              "a": 10,
+              "b": 22,
+              "source": 15616.7,
+              "baseline": 15616.700195312502,
+              "distributed": 15616.700195312502
+            },
+            {
+              "a": 10,
+              "b": 23,
+              "source": 16411.4,
+              "baseline": 16411.400390625004,
+              "distributed": 16411.400390625004
+            },
+            {
+              "a": 10,
+              "b": 24,
+              "source": 15554.9,
+              "baseline": 15554.900390625002,
+              "distributed": 15554.900390625002
+            },
+            {
+              "a": 10,
+              "b": 25,
+              "source": 16957.3,
+              "baseline": 16957.30078125,
+              "distributed": 16957.30078125
+            },
+            {
+              "a": 10,
+              "b": 26,
+              "source": 2403.21,
+              "baseline": 2403.2099609375005,
+              "distributed": 2403.2099609375005
+            },
+            {
+              "a": 10,
+              "b": 27,
+              "source": 1970.93,
+              "baseline": 1970.9300537109377,
+              "distributed": 1970.9300537109377
+            },
+            {
+              "a": 10,
+              "b": 28,
+              "source": 30618.3,
+              "baseline": 30618.300781250004,
+              "distributed": 30618.300781250004
+            },
+            {
+              "a": 10,
+              "b": 29,
+              "source": 9997.86,
+              "baseline": 9997.8603515625,
+              "distributed": 9997.8603515625
+            },
+            {
+              "a": 10,
+              "b": 30,
+              "source": 30422.8,
+              "baseline": 30422.800781250007,
+              "distributed": 30422.800781250007
+            },
+            {
+              "a": 10,
+              "b": 34,
+              "source": 2129.45,
+              "baseline": 2129.4499511718755,
+              "distributed": 2129.4499511718755
+            },
+            {
+              "a": 10,
+              "b": 35,
+              "source": 2648.09,
+              "baseline": 2648.090087890625,
+              "distributed": 2648.090087890625
+            },
+            {
+              "a": 10,
+              "b": 37,
+              "source": 7380.94,
+              "baseline": 7380.939941406251,
+              "distributed": 7380.939941406251
+            },
+            {
+              "a": 10,
+              "b": 38,
+              "source": 7347.5,
+              "baseline": 7347.5,
+              "distributed": 7347.5
+            },
+            {
+              "a": 10,
+              "b": 39,
+              "source": 6436.92,
+              "baseline": 6436.919921875001,
+              "distributed": 6436.919921875001
+            },
+            {
+              "a": 11,
+              "b": 12,
+              "source": 9315.03,
+              "baseline": 9315.030273437502,
+              "distributed": 9315.030273437502
+            },
+            {
+              "a": 11,
+              "b": 13,
+              "source": 6288.86,
+              "baseline": 6288.85986328125,
+              "distributed": 6288.85986328125
+            },
+            {
+              "a": 11,
+              "b": 22,
+              "source": 65.0879,
+              "baseline": 65.08789825439453,
+              "distributed": 65.08789825439453
+            },
+            {
+              "a": 12,
+              "b": 13,
+              "source": 5073.7,
+              "baseline": 5073.700195312501,
+              "distributed": 5073.700195312501
+            },
+            {
+              "a": 12,
+              "b": 14,
+              "source": 9315.64,
+              "baseline": 9315.639648437502,
+              "distributed": 9315.639648437502
+            },
+            {
+              "a": 12,
+              "b": 15,
+              "source": 9053.22,
+              "baseline": 9053.2197265625,
+              "distributed": 9053.2197265625
+            },
+            {
+              "a": 13,
+              "b": 14,
+              "source": 14537.2,
+              "baseline": 14537.200195312504,
+              "distributed": 14537.200195312504
+            },
+            {
+              "a": 13,
+              "b": 15,
+              "source": 9676.46,
+              "baseline": 9676.4599609375,
+              "distributed": 9676.4599609375
+            },
+            {
+              "a": 13,
+              "b": 22,
+              "source": 428.39,
+              "baseline": 428.3900146484375,
+              "distributed": 428.3900146484375
+            },
+            {
+              "a": 13,
+              "b": 23,
+              "source": 449.896,
+              "baseline": 449.89599609375006,
+              "distributed": 449.89599609375006
+            },
+            {
+              "a": 14,
+              "b": 15,
+              "source": 4053.41,
+              "baseline": 4053.409912109375,
+              "distributed": 4053.409912109375
+            },
+            {
+              "a": 14,
+              "b": 22,
+              "source": 7023.49,
+              "baseline": 7023.490234375001,
+              "distributed": 7023.490234375001
+            },
+            {
+              "a": 14,
+              "b": 23,
+              "source": 28.0312,
+              "baseline": 28.031200408935547,
+              "distributed": 28.031200408935547
+            },
+            {
+              "a": 15,
+              "b": 22,
+              "source": 291.795,
+              "baseline": 291.79501342773443,
+              "distributed": 291.79501342773443
+            },
+            {
+              "a": 15,
+              "b": 23,
+              "source": 6742.16,
+              "baseline": 6742.16015625,
+              "distributed": 6742.16015625
+            },
+            {
+              "a": 16,
+              "b": 17,
+              "source": 2653.63,
+              "baseline": 2653.6298828125005,
+              "distributed": 2653.6298828125005
+            },
+            {
+              "a": 16,
+              "b": 20,
+              "source": 1014.03,
+              "baseline": 1014.0300292968751,
+              "distributed": 1014.0300292968751
+            },
+            {
+              "a": 17,
+              "b": 21,
+              "source": 918.514,
+              "baseline": 918.5139770507815,
+              "distributed": 918.5139770507815
+            },
+            {
+              "a": 18,
+              "b": 19,
+              "source": 4112.22,
+              "baseline": 4112.22021484375,
+              "distributed": 4112.22021484375
+            },
+            {
+              "a": 18,
+              "b": 20,
+              "source": 5902.1,
+              "baseline": 5902.10009765625,
+              "distributed": 5902.10009765625
+            },
+            {
+              "a": 18,
+              "b": 21,
+              "source": 11371.2,
+              "baseline": 11371.200195312502,
+              "distributed": 11371.200195312502
+            },
+            {
+              "a": 18,
+              "b": 22,
+              "source": 8167.47,
+              "baseline": 8167.47021484375,
+              "distributed": 8167.47021484375
+            },
+            {
+              "a": 18,
+              "b": 23,
+              "source": 8148.33,
+              "baseline": 8148.330078125,
+              "distributed": 8148.330078125
+            },
+            {
+              "a": 18,
+              "b": 26,
+              "source": 1807.83,
+              "baseline": 1807.8299560546877,
+              "distributed": 1807.8299560546877
+            },
+            {
+              "a": 18,
+              "b": 29,
+              "source": 5634.43,
+              "baseline": 5634.43017578125,
+              "distributed": 5634.43017578125
+            },
+            {
+              "a": 19,
+              "b": 20,
+              "source": 5418.25,
+              "baseline": 5418.25,
+              "distributed": 5418.25
+            },
+            {
+              "a": 19,
+              "b": 21,
+              "source": 5717.05,
+              "baseline": 5717.049804687501,
+              "distributed": 5717.049804687501
+            },
+            {
+              "a": 19,
+              "b": 24,
+              "source": 8236.22,
+              "baseline": 8236.2197265625,
+              "distributed": 8236.2197265625
+            },
+            {
+              "a": 19,
+              "b": 25,
+              "source": 8277.32,
+              "baseline": 8277.320312500002,
+              "distributed": 8277.320312500002
+            },
+            {
+              "a": 19,
+              "b": 26,
+              "source": 3046.15,
+              "baseline": 3046.1499023437505,
+              "distributed": 3046.1499023437505
+            },
+            {
+              "a": 19,
+              "b": 27,
+              "source": 1996.75,
+              "baseline": 1996.7500000000005,
+              "distributed": 1996.7500000000005
+            },
+            {
+              "a": 19,
+              "b": 29,
+              "source": 5754.76,
+              "baseline": 5754.759765625,
+              "distributed": 5754.759765625
+            },
+            {
+              "a": 20,
+              "b": 21,
+              "source": 3492.13,
+              "baseline": 3492.1298828125,
+              "distributed": 3492.1298828125
+            },
+            {
+              "a": 20,
+              "b": 22,
+              "source": 2417.93,
+              "baseline": 2417.9299316406255,
+              "distributed": 2417.9299316406255
+            },
+            {
+              "a": 20,
+              "b": 24,
+              "source": 2417.91,
+              "baseline": 2417.9099121093755,
+              "distributed": 2417.9099121093755
+            },
+            {
+              "a": 21,
+              "b": 23,
+              "source": 2417.91,
+              "baseline": 2417.9099121093755,
+              "distributed": 2417.9099121093755
+            },
+            {
+              "a": 21,
+              "b": 25,
+              "source": 2417.91,
+              "baseline": 2417.9099121093755,
+              "distributed": 2417.9099121093755
+            },
+            {
+              "a": 22,
+              "b": 23,
+              "source": 21474.4,
+              "baseline": 21474.400390625004,
+              "distributed": 21474.400390625004
+            },
+            {
+              "a": 23,
+              "b": 24,
+              "source": 6731.55,
+              "baseline": 6731.5498046875,
+              "distributed": 6731.5498046875
+            },
+            {
+              "a": 24,
+              "b": 25,
+              "source": 23914.2,
+              "baseline": 23914.19921875,
+              "distributed": 23914.19921875
+            },
+            {
+              "a": 24,
+              "b": 30,
+              "source": 344.028,
+              "baseline": 344.0280151367188,
+              "distributed": 344.0280151367188
+            },
+            {
+              "a": 24,
+              "b": 31,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 24,
+              "b": 32,
+              "source": 375.293,
+              "baseline": 375.2929992675782,
+              "distributed": 375.2929992675782
+            },
+            {
+              "a": 24,
+              "b": 33,
+              "source": 357.215,
+              "baseline": 357.2149963378906,
+              "distributed": 357.2149963378906
+            },
+            {
+              "a": 24,
+              "b": 34,
+              "source": 3257.79,
+              "baseline": 3257.7900390625,
+              "distributed": 3257.7900390625
+            },
+            {
+              "a": 24,
+              "b": 35,
+              "source": 308.525,
+              "baseline": 308.5249938964844,
+              "distributed": 308.5249938964844
+            },
+            {
+              "a": 24,
+              "b": 36,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 24,
+              "b": 37,
+              "source": 65.0879,
+              "baseline": 65.08789825439453,
+              "distributed": 65.08789825439453
+            },
+            {
+              "a": 24,
+              "b": 39,
+              "source": 428.39,
+              "baseline": 428.3900146484375,
+              "distributed": 428.3900146484375
+            },
+            {
+              "a": 24,
+              "b": 40,
+              "source": 7023.49,
+              "baseline": 7023.490234375001,
+              "distributed": 7023.490234375001
+            },
+            {
+              "a": 24,
+              "b": 41,
+              "source": 291.795,
+              "baseline": 291.79501342773443,
+              "distributed": 291.79501342773443
+            },
+            {
+              "a": 25,
+              "b": 30,
+              "source": 909.38,
+              "baseline": 909.3800048828125,
+              "distributed": 909.3800048828125
+            },
+            {
+              "a": 25,
+              "b": 31,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 25,
+              "b": 32,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 25,
+              "b": 33,
+              "source": 2001.47,
+              "baseline": 2001.4699707031252,
+              "distributed": 2001.4699707031252
+            },
+            {
+              "a": 25,
+              "b": 34,
+              "source": 308.525,
+              "baseline": 308.5249938964844,
+              "distributed": 308.5249938964844
+            },
+            {
+              "a": 25,
+              "b": 35,
+              "source": 308.525,
+              "baseline": 308.5249938964844,
+              "distributed": 308.5249938964844
+            },
+            {
+              "a": 25,
+              "b": 36,
+              "source": 356.884,
+              "baseline": 356.8840026855469,
+              "distributed": 356.8840026855469
+            },
+            {
+              "a": 25,
+              "b": 39,
+              "source": 449.896,
+              "baseline": 449.89599609375006,
+              "distributed": 449.89599609375006
+            },
+            {
+              "a": 25,
+              "b": 40,
+              "source": 28.0312,
+              "baseline": 28.031200408935547,
+              "distributed": 28.031200408935547
+            },
+            {
+              "a": 25,
+              "b": 41,
+              "source": 6742.16,
+              "baseline": 6742.16015625,
+              "distributed": 6742.16015625
+            },
+            {
+              "a": 26,
+              "b": 27,
+              "source": 4746.58,
+              "baseline": 4746.580078125,
+              "distributed": 4746.580078125
+            },
+            {
+              "a": 26,
+              "b": 28,
+              "source": 993.631,
+              "baseline": 993.6309814453126,
+              "distributed": 993.6309814453126
+            },
+            {
+              "a": 26,
+              "b": 29,
+              "source": 9172.64,
+              "baseline": 9172.6396484375,
+              "distributed": 9172.6396484375
+            },
+            {
+              "a": 27,
+              "b": 28,
+              "source": 892.85,
+              "baseline": 892.8499755859376,
+              "distributed": 892.8499755859376
+            },
+            {
+              "a": 27,
+              "b": 29,
+              "source": 8956.15,
+              "baseline": 8956.150390625002,
+              "distributed": 8956.150390625002
+            },
+            {
+              "a": 28,
+              "b": 29,
+              "source": 5793.2,
+              "baseline": 5793.2001953125,
+              "distributed": 5793.2001953125
+            },
+            {
+              "a": 30,
+              "b": 34,
+              "source": 842.991,
+              "baseline": 842.9910278320314,
+              "distributed": 842.9910278320314
+            },
+            {
+              "a": 30,
+              "b": 35,
+              "source": 864.497,
+              "baseline": 864.4970092773439,
+              "distributed": 864.4970092773439
+            },
+            {
+              "a": 30,
+              "b": 37,
+              "source": 4378.93,
+              "baseline": 4378.930175781251,
+              "distributed": 4378.930175781251
+            },
+            {
+              "a": 31,
+              "b": 32,
+              "source": 3443.23,
+              "baseline": 3443.22998046875,
+              "distributed": 3443.22998046875
+            },
+            {
+              "a": 31,
+              "b": 36,
+              "source": 5228.35,
+              "baseline": 5228.350097656251,
+              "distributed": 5228.350097656251
+            },
+            {
+              "a": 31,
+              "b": 38,
+              "source": 14249.9,
+              "baseline": 14249.900390625002,
+              "distributed": 14249.900390625002
+            },
+            {
+              "a": 31,
+              "b": 39,
+              "source": 307.029,
+              "baseline": 307.0289916992188,
+              "distributed": 307.0289916992188
+            },
+            {
+              "a": 31,
+              "b": 40,
+              "source": 298.899,
+              "baseline": 298.8989868164063,
+              "distributed": 298.8989868164063
+            },
+            {
+              "a": 31,
+              "b": 41,
+              "source": 3786.75,
+              "baseline": 3786.7500000000005,
+              "distributed": 3786.7500000000005
+            },
+            {
+              "a": 32,
+              "b": 33,
+              "source": 1658.12,
+              "baseline": 1658.1199951171877,
+              "distributed": 1658.1199951171877
+            },
+            {
+              "a": 32,
+              "b": 39,
+              "source": 14065.3,
+              "baseline": 14065.2998046875,
+              "distributed": 14065.2998046875
+            },
+            {
+              "a": 32,
+              "b": 40,
+              "source": 4163.93,
+              "baseline": 4163.93017578125,
+              "distributed": 4163.93017578125
+            },
+            {
+              "a": 32,
+              "b": 41,
+              "source": 283.926,
+              "baseline": 283.9259948730469,
+              "distributed": 283.9259948730469
+            },
+            {
+              "a": 33,
+              "b": 39,
+              "source": 13959.4,
+              "baseline": 13959.400390625,
+              "distributed": 13959.400390625
+            },
+            {
+              "a": 33,
+              "b": 41,
+              "source": 3882.75,
+              "baseline": 3882.7500000000005,
+              "distributed": 3882.7500000000005
+            },
+            {
+              "a": 34,
+              "b": 35,
+              "source": 6500.61,
+              "baseline": 6500.60986328125,
+              "distributed": 6500.60986328125
+            },
+            {
+              "a": 34,
+              "b": 37,
+              "source": 11082.1,
+              "baseline": 11082.099609375,
+              "distributed": 11082.099609375
+            },
+            {
+              "a": 34,
+              "b": 38,
+              "source": 4374.83,
+              "baseline": 4374.830078125,
+              "distributed": 4374.830078125
+            },
+            {
+              "a": 35,
+              "b": 37,
+              "source": 14391.6,
+              "baseline": 14391.599609375002,
+              "distributed": 14391.599609375002
+            },
+            {
+              "a": 35,
+              "b": 38,
+              "source": 307.029,
+              "baseline": 307.0289916992188,
+              "distributed": 307.0289916992188
+            },
+            {
+              "a": 35,
+              "b": 39,
+              "source": 4050.49,
+              "baseline": 4050.4899902343755,
+              "distributed": 4050.4899902343755
+            },
+            {
+              "a": 36,
+              "b": 38,
+              "source": 14389.7,
+              "baseline": 14389.7001953125,
+              "distributed": 14389.7001953125
+            },
+            {
+              "a": 36,
+              "b": 39,
+              "source": 298.899,
+              "baseline": 298.8989868164063,
+              "distributed": 298.8989868164063
+            },
+            {
+              "a": 36,
+              "b": 40,
+              "source": 4111.09,
+              "baseline": 4111.089843750001,
+              "distributed": 4111.089843750001
+            },
+            {
+              "a": 37,
+              "b": 38,
+              "source": 9315.03,
+              "baseline": 9315.030273437502,
+              "distributed": 9315.030273437502
+            },
+            {
+              "a": 37,
+              "b": 39,
+              "source": 6288.86,
+              "baseline": 6288.85986328125,
+              "distributed": 6288.85986328125
+            },
+            {
+              "a": 38,
+              "b": 39,
+              "source": 5073.7,
+              "baseline": 5073.700195312501,
+              "distributed": 5073.700195312501
+            },
+            {
+              "a": 38,
+              "b": 40,
+              "source": 9315.64,
+              "baseline": 9315.639648437502,
+              "distributed": 9315.639648437502
+            },
+            {
+              "a": 38,
+              "b": 41,
+              "source": 9053.22,
+              "baseline": 9053.2197265625,
+              "distributed": 9053.2197265625
+            },
+            {
+              "a": 39,
+              "b": 40,
+              "source": 14537.2,
+              "baseline": 14537.200195312504,
+              "distributed": 14537.200195312504
+            },
+            {
+              "a": 39,
+              "b": 41,
+              "source": 9676.46,
+              "baseline": 9676.4599609375,
+              "distributed": 9676.4599609375
+            },
+            {
+              "a": 40,
+              "b": 41,
+              "source": 4053.41,
+              "baseline": 4053.409912109375,
+              "distributed": 4053.409912109375
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/audit-rc48.py": {
+              "bytes": 12489,
+              "sha256": "0338002567a5ee008ddbd93e849c84503d2ac694425c7c9497416311f6b9d602"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py": {
+              "bytes": 8291,
+              "sha256": "f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/anchors08.json": {
+              "bytes": 525032,
+              "sha256": "747d8a24afb6f66a7ae9a6122b1e23e377d935ba1c4ad85f0828588c0034ae4c"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/pump_wires.ext": {
+              "bytes": 36063,
+              "sha256": "463454098dedbba3d6d3c08292d9c5012d6fa6e06cf63db953f7ecd59afb84c9"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/pump_wires.res.ext": {
+              "bytes": 928164,
+              "sha256": "26fb46439aa19afe330a0e78bb0de23fee042692f8f5f454639ca8d69b72cbea"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/native.log": {
+              "bytes": 66195,
+              "sha256": "0db428cb4f5d9fee32f63d040210731bf58a7d6b03f39ac3549455e257d998cd"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/wires.spice": {
+              "bytes": 798881,
+              "sha256": "a38fff1552c17698167a7ac867584af1be49727304cc6a94f3c53395a1a5908d"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/baseline.spice": {
+              "bytes": 11089,
+              "sha256": "5af40505df9fca9dfcd6f5255bcb5ed3e78c2b295fbc508cce5d21eb0a359095"
+            }
+          }
+        },
+        "controls": {
+          "status": "PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS",
+          "positive_status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+          "cases": [
+            {
+              "control": "dropped_actual_port",
+              "rejected_by": "Export port loss/duplication",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "80694ca5fa71b5877a78c9de155813032ccca6372bb296fb5915405f6eea0a48",
+                  "diff": "--- \n+++ \n@@ -1,6 +1,6 @@\n * NGSPICE file created from pump_wires.ext - technology: ihp-sg13g2\n \n-.subckt pump_wires T001_C T001_B T001_E T002_C T002_B T002_E T003_C T003_B T003_E\n+.subckt pump_wires T001_B T001_E T002_C T002_B T002_E T003_C T003_B T003_E\n + T004_C T004_B T004_E T005_C T005_B T005_E T006_C T006_B T006_E T007_C T007_B T007_E\n + T008_rppd_1 T008_rppd_2 T009_rppd_1 T009_rppd_2 T010_rppd_1 T010_rppd_2 T011_rppd_1\n + T011_rppd_2 T012_rppd_1 T012_rppd_2 T013_rppd_1 T013_rppd_2 T014_rppd_1 T014_rppd_2\n"
+                }
+              }
+            },
+            {
+              "control": "dropped_resistor",
+              "rejected_by": "Native/export resistor topology/value differs",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "dd09dfd28b5bae8681f6c4ae08c1ae79b9ae37a5931361f9409f9a812a11652e",
+                  "diff": "--- \n+++ \n@@ -35,7 +35,6 @@\n R0 P_sap.n27 P_sap.n0 1.1\n R1 P_sap.n28 P_sap.n27 1.25366\n R2 P_sap.n27 P_sap 2.31157\n-R3 P_sap.n31 P_sap.n30 0.0275982\n R4 P_sap.n32 P_sap.n33 4.5\n R5 P_sap.n34 P_sap.n35 4.5\n R6 P_sap.n36 P_sap.n37 4.5\n"
+                }
+              }
+            },
+            {
+              "control": "wrong_resistor",
+              "rejected_by": "Native/export resistor topology/value differs",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "74873e0c59d7158779d1f6c2f27ee86c8cd2fa7e806427e8b1c056220e1918ef",
+                  "diff": "--- \n+++ \n@@ -32,7 +32,7 @@\n + T158_E T159_rppd_1 T159_rppd_2 T160_rppd_1 T160_rppd_2 T161_rppd_1 T161_rppd_2 T162_rppd_1\n + T162_rppd_2 P_avdd P_avss P_d0n P_d0p P_d1n P_d1p P_d2n P_d2p P_d3n P_d3p P_mn P_mp\n + P_mr P_ra P_rb P_san P_sap P_sbn P_sbp P_sn P_sp P_sub\n-R0 P_sap.n27 P_sap.n0 1.1\n+R0 P_sap.n27 P_sap.n0 12345\n R1 P_sap.n28 P_sap.n27 1.25366\n R2 P_sap.n27 P_sap 2.31157\n R3 P_sap.n31 P_sap.n30 0.0275982\n"
+                }
+              }
+            },
+            {
+              "control": "cross_conductor_short",
+              "rejected_by": "R network has unanchored component or cross-conductor short",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "e2c9d880a976aee76749ef05e4f084f776cf0297c8d01121e44082a44b684606",
+                  "diff": "--- \n+++ \n@@ -19796,5 +19796,6 @@\n C7848 P_sap.n52 sub 3.1697068214416506e-18\n C7849 P_sap.n53 sub 2.6948368072509769e-17\n C7850 P_sap.n54 sub 1.7677237987518314e-18\n+R_EXTRA P_mp P_mn 1\n .ends\n \n"
+                }
+              }
+            },
+            {
+              "control": "ground_redistribution_same_matrix",
+              "rejected_by": "Per-point ground C export changed",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "95939410b78363f5188872e5240b560564e470e79ad136c9061d623bcf0407c1",
+                  "diff": "--- \n+++ \n@@ -12174,8 +12174,8 @@\n C226 P_sub P_avdd 1.2425500000000001e-13\n C227 T158_E T068_rppd_2 4.2839001464843752e-16\n C228 P_d1n P_sub 3.0958500976562505e-15\n-C229 P_sap sub 1.0216e-14\n-C230 T133_B sub 2.7984235763549806e-17\n+C229 P_sap sub 1.02229960589408874515E-14\n+C230 T133_B sub 2.09881768226623545E-17\n C231 T125_B sub 2.7984235763549806e-17\n C232 P_san sub 8.3584414062499997e-15\n C233 T129_B sub 2.8359020233154297e-17\n"
+                }
+              }
+            },
+            {
+              "control": "mutual_anchor_shift_same_matrix",
+              "rejected_by": "Mutual C native attachment changed",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "e17cb3a54ee2c71855919e68a7697acf10ec0d795da38062622098fa44b1a790",
+                  "diff": "--- \n+++ \n@@ -11945,7 +11945,7 @@\n R11910 T153_C T162_rppd_2.n50 0.06\n R11911 T162_rppd_2.n51 T162_rppd_2.n50 0.12\n R11912 T162_rppd_2.n52 T162_rppd_2.n51 4.61418\n-C0 T065_rppd_2 P_d2p 3.568840026855469e-16\n+C0 T043_B P_d2p 3.568840026855469e-16\n C1 P_d1p T067_rppd_2 2.0014699707031253e-15\n C2 P_d1p P_avdd 8.1057299804687509e-16\n C3 T066_rppd_2 P_ra 3.4402801513671882e-16\n"
+                }
+              }
+            },
+            {
+              "control": "dropped_cap",
+              "rejected_by": "Mutual C native attachment changed",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "b1b789b747a593933db7bd3f7faf96f655b2fb5df65394ab5288203507b4857f",
+                  "diff": "--- \n+++ \n@@ -11945,7 +11945,6 @@\n R11910 T153_C T162_rppd_2.n50 0.06\n R11911 T162_rppd_2.n51 T162_rppd_2.n50 0.12\n R11912 T162_rppd_2.n52 T162_rppd_2.n51 4.61418\n-C0 T065_rppd_2 P_d2p 3.568840026855469e-16\n C1 P_d1p T067_rppd_2 2.0014699707031253e-15\n C2 P_d1p P_avdd 8.1057299804687509e-16\n C3 T066_rppd_2 P_ra 3.4402801513671882e-16\n"
+                }
+              }
+            },
+            {
+              "control": "changed_cap",
+              "rejected_by": "Mutual C native value changed",
+              "mutated_outputs": {
+                "wires.spice": {
+                  "sha256": "1bf71cb3ec02e9c8ec9448a5317b6803322d1f8747c887c91afd38ad43dfd8b4",
+                  "diff": "--- \n+++ \n@@ -11945,7 +11945,7 @@\n R11910 T153_C T162_rppd_2.n50 0.06\n R11911 T162_rppd_2.n51 T162_rppd_2.n50 0.12\n R11912 T162_rppd_2.n52 T162_rppd_2.n51 4.61418\n-C0 T065_rppd_2 P_d2p 3.568840026855469e-16\n+C0 T065_rppd_2 P_d2p 1e-12\n C1 P_d1p T067_rppd_2 2.0014699707031253e-15\n C2 P_d1p P_avdd 8.1057299804687509e-16\n C3 T066_rppd_2 P_ra 3.4402801513671882e-16\n"
+                }
+              }
+            },
+            {
+              "control": "cap_scale",
+              "rejected_by": "Source capacitance scale changed",
+              "mutated_outputs": {
+                "pump_wires.ext": {
+                  "sha256": "c7331dcc79fbdd5a278d6b9dd605135f52809060eb699266b31753617ab4e2ad",
+                  "diff": "--- \n+++ \n@@ -2,7 +2,7 @@\n version 8.3\n tech ihp-sg13g2\n style ngspice()\n-scale 1000 1 0.5\n+scale 1000 2 0.5\n resistclasses 3000000 67000 110 88 88 88 88 18 11 7000 260000 1360000\n port \"P_sap\" 317 11400 51648 11400 51648 m7\n port \"T133_B\" 216 41182 35020 41182 35020 m1\n"
+                }
+              }
+            },
+            {
+              "control": "missing_native_completion",
+              "rejected_by": "Missing/duplicate native completion",
+              "mutated_outputs": {
+                "native.log": {
+                  "sha256": "150bc2dc316c412399709017c3685949e24d8fa520bf6f42e1f2449a0978228e",
+                  "diff": "--- \n+++ \n@@ -1007,4 +1007,4 @@\n Nets extracted: 41 (0.976190)\n Nets output: 41 (0.976190)\n exttospice finished.\n-NSSOC_WIRE_RC_COMPLETE\n+REMOVED\n"
+                }
+              }
+            },
+            {
+              "control": "changed_body",
+              "rejected_by": "Original body/well identities changed"
+            },
+            {
+              "control": "missing_body",
+              "rejected_by": "Body/metal disposition changed"
+            },
+            {
+              "control": "wrong_actual_metal_point",
+              "rejected_by": "Actual metal terminal witness changed"
+            }
+          ],
+          "seconds": 6.936978569000075,
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/mutations48.py": {
+              "bytes": 6007,
+              "sha256": "59b9928655154ef0ccf7312eaa5cc639808fd3dd9d8f5e1aa22f225a24274cb8"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/audit-rc48.py": {
+              "bytes": 12489,
+              "sha256": "0338002567a5ee008ddbd93e849c84503d2ac694425c7c9497416311f6b9d602"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py": {
+              "bytes": 8291,
+              "sha256": "f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/anchors08.json": {
+              "bytes": 525032,
+              "sha256": "747d8a24afb6f66a7ae9a6122b1e23e377d935ba1c4ad85f0828588c0034ae4c"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/pump_wires.ext": {
+              "bytes": 36063,
+              "sha256": "463454098dedbba3d6d3c08292d9c5012d6fa6e06cf63db953f7ecd59afb84c9"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/pump_wires.res.ext": {
+              "bytes": 928164,
+              "sha256": "26fb46439aa19afe330a0e78bb0de23fee042692f8f5f454639ca8d69b72cbea"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/native.log": {
+              "bytes": 66195,
+              "sha256": "0db428cb4f5d9fee32f63d040210731bf58a7d6b03f39ac3549455e257d998cd"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/wires.spice": {
+              "bytes": 798881,
+              "sha256": "a38fff1552c17698167a7ac867584af1be49727304cc6a94f3c53395a1a5908d"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/baseline.spice": {
+              "bytes": 11089,
+              "sha256": "5af40505df9fca9dfcd6f5255bcb5ed3e78c2b295fbc508cce5d21eb0a359095"
+            }
+          }
+        },
+        "scope": "Actual162-device three-macro4:1core, including real intermacro wires and shared supplies. Exact native RC graph, terminal ownership and C conservation required. Intrinsic body/substrate/RF qualification, loaded waves,32:1/four-lane/fullPHY and mainchip signoff remain open."
       }
     }
   },
