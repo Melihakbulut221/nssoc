@@ -205,6 +205,8 @@ def physical_macro(inputs, mode, spec_path, circuit_profile, folder):
         report=json.loads(raw)
         assert report['circuit_profile']==circuit_profile and report['outputs']==spec['outputs']
         assert report.get('boundary_pins',False) is spec.get('boundary_pins',False)
+        legacy_policy = 'left' if spec.get('boundary_pins',False) else 'none'
+        assert report.get('boundary_pin_policy',legacy_policy) == spec.get('boundary_pin_policy',legacy_policy), 'Physical boundary policy differs from pinned waveform source'
         if 'variant' in spec:
             assert report['variant']==spec['variant']
         (destination/'result.json').write_bytes(raw)
