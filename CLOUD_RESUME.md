@@ -1,3 +1,25 @@
+## 2026-10-15 — joint headroom candidate is running in six hosted native cases
+
+All work remains in GitHub; the local workspace is empty. Full serial PHY, mainchip detailed routing and final extracted setup/hold remain OPEN.
+
+Source validation **38772760436 / 116552566371** passed **597 tests**, including exact 16-device sizing changes and rejection of missing, duplicate, wrong-model, wrong-Nx, duplicate-Nx and unknown-profile inputs. This validates the implementation, not the candidate circuit.
+
+Native study **38773059353**, source **1e67372eaf1105c0b48fe2f54943695c2b3563f5**, is now running: `headroom_corners`, `compact_return_strap`, `native_res_tc`, `data8_select10`, default solver. Do not dispatch again. Jobs:
+- compact hot_low: 116553595814
+- compact hot_low_res_bcs: 116553595825
+- compact cold_high_hbt_wcs: 116553595969
+- wire hot_low: 116553595994
+- wire hot_low_res_bcs: 116553596016
+- wire cold_high_hbt_wcs: 116553595595
+
+Publisher release groups append `-data8-select10`. Store successes AND failures under `placement_variants.compact_return_strap.sizing_candidates.data8_select10.loaded_studies`. Evaluate `diagnostic_screen_passed` and full original review: `component_screen_passed` is intentionally false because the changed device geometry does not yet have matching layout/RC. Actual candidate parameters are twelve final data Nx8 and four selectors Nx10; tails/reference and all R/C remain unchanged. New physical generation, DRC/LVS and extracted corner verification are still mandatory if it improves all diagnostic gates. Earlier V11/data-only failures remain evidence.
+
+The compact cold VBE analysis **38771786806** is COMPLETE and pinned. It located real data-transition peaks rather than a removable startup transient. Original 1V bound stays unchanged.
+
+Strict numerical study **38763917040** still has wire 0.0625ps job **116522064672** running; other three source-bound cases are pinned. Append its terminal receipt to the same study, then run hosted `step_comparison`, `compact_edge_supply`, `breakpoint_tight_trap`, `fine`. No convergence claim until all original full-wave gates pass.
+
+Mainchip **38731744914 / 116410943697** remains running. Preserve the job and inspect native NDR relaxation, overflow and actual final reports when terminal. Its global route cannot stand in for detailed routing or extracted final STA.
+
 ## 2026-10-15 — cold VBE failure is a real data-transition peak; joint sizing candidate prepared
 
 ALL CLOUD; fullgoal OPEN. Nativecompactdiagnosis38771786806 PASS exactoriginalreadback, notcircuitacceptance. Twelve finalNx3 data HBTVBE peaks occur after2ns in actualdata transitions: worst1.023395260872V at3.27075ns,2.230071699649mA/emitter, base2.157906922V/emitter1.134511661V. Otherbankpeaks2.39575ns,3.39625ns,7.02075ns. Startup-window removal would not fix this. Complete evidence under newground.bias_candidates.native_res_tc.compact_cold_hbt_diagnosis.
