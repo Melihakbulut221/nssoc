@@ -592,6 +592,15 @@ def main():
             ground_after = 'lane = 149.6 if i == 23 else -19.2'
             assert source.count(ground_before) == 1
             source = source.replace(ground_before, ground_after)
+            # Preserve the original8um centre-spacing exclusion around the
+            # 8um-wide supply riser, now allowing conductors on either side.
+            clearance_before = 'assert riser_x + 4 < min(x for ts in terminals.values() for x,sy in ts) - 4'
+            clearance_after = 'assert all(abs(x-riser_x) > 8.0 for ts in terminals.values() for x,sy in ts)'
+            assert source.count(clearance_before) == 1
+            source = source.replace(clearance_before, clearance_after)
+            edits.append(dict(supply_riser_center_clearance_um=8.0,
+                before=clearance_before, after=clearance_after,
+                scope='Same minimum exclusion distance on both sides; new external ground lane is9.2um from riser centre. Native DRC/LVS unchanged.'))
             edits.append(dict(output_ground_escape_lanes_um=[149.6,-19.2],
                 before=ground_before, after=ground_after,
                 reason='Remove real avss/sub collision at x34.8 after passive translation; native DRC/LVS must verify.'))
