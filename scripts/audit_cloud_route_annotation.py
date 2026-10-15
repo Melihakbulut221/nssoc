@@ -27,15 +27,30 @@ def controls():
         raise AssertionError('Malformed native annotation accepted')
     return dict(positive=1,negative=len(faults))
 
+def spef_net_name(name):
+    # Exact extSpef::addEscChar(name, false), pinned OpenROAD dcf36133.
+    # Already escaped literal brackets must not be unescaped into bus indexes.
+    assert name.isascii()
+    return ''.join(('\\' if not ch.isalnum() and ch not in '_\\/[]' and (i==0 or name[i-1]!='\\') else '')+ch for i,ch in enumerate(name))
+
+def name_controls():
+    pairs=[('bus[2]','bus[2]'),(r'bus\[2\]',r'bus\[2\]'),('$a.b:c',r'\$a\.b\:c'),('path/a','path/a'),(r'\$a',r'\$a')]
+    # Literal escaped brackets and true bus indexes remain distinct.
+    for source,expected in pairs:assert spef_net_name(source)==expected,(source,expected,spef_net_name(source))
+    assert spef_net_name(pairs[0][0])!=spef_net_name(pairs[1][0])
+    return dict(exact_native_writer_cases=len(pairs),literal_brackets_distinct=True)
+
 def native():
     import odb
     d=odb.dbDatabase.create();odb.read_db(d,str(OUT/'routed.odb'));b=d.getChip().getBlock()
     assert len(b.getInsts())==113791 and len(b.getNets())==113863
-    nets={n.getName():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
-    def resolve(name):
-        candidates={name,re.sub(r'\\(.)',r'\1',name)}
-        found=candidates & nets.keys();assert len(found)==1,('SPEF name cannot resolve uniquely',name,sorted(found))
-        chosen=next(iter(found));aliases['exact' if chosen==name else 'spef_escape_removed']+=1;return chosen
+    nets={n.getName():n for n in b.getNets()};ids={n.getId():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
+    def resolve(token,name):
+        assert re.fullmatch(r'\*\d+',token),('Expected native name map token',token)
+        ident=int(token[1:]);assert ident in ids,('Unknown native net id',ident)
+        net=ids[ident];chosen=net.getName();expected=spef_net_name(chosen)
+        assert name==expected,('Native net id/name mismatch',ident,chosen,name,expected)
+        aliases['native_id_and_exact_writer_name']+=1;return chosen
     with (OUT/'actual-route.nominal.spef').open() as stream:
         for line in stream:
             row=line.strip()
@@ -46,7 +61,7 @@ def native():
                 if row.startswith('*'):inmap=False
             if row.startswith('*D_NET '):
                 fields=row.split();assert len(fields)==3
-                token=fields[1];n=resolve(namemap.get(token,token));assert n not in caps;caps[n]=float(fields[2]);assert caps[n]>=0
+                token=fields[1];n=resolve(token,namemap[token]);assert n not in caps;caps[n]=float(fields[2]);assert caps[n]>=0
     assert len(caps)==113556
     names=drivers((OUT/'actual-routed-sta.log').read_text());assert len(names)==1065
     rows=[]
@@ -80,7 +95,7 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
-        result['controls']=controls();fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-summary.json');old=json.loads((OUT/'original-summary.json').read_text())
+        result['controls']=dict(annotation=controls(),spef_names=name_controls());fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-summary.json');old=json.loads((OUT/'original-summary.json').read_text())
         packed=OUT/'source.tar.gz';fetch(BASE+'.tar.gz.part0000',ARCHIVE_SHA,packed);assert packed.stat().st_size==225682086
         selected={'source/routed.odb':'routed.odb','actual-route.nominal.spef':'actual-route.nominal.spef','actual-routed-sta.log':'actual-routed-sta.log'}
         protected={}

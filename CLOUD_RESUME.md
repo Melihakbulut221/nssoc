@@ -1,3 +1,9 @@
+## Exact native SPEF name handling correction
+
+Annotation38814839951/job116696793924 failed before classifying drivers: reverse-unescaping discarded literal bracket escapes in ODB names. Failed summary69adfcbf... and all source evidence retained. Pinned native extSpef.cpp writes net ids unchanged and preserves existing escapes; classifier now matches that exact net id AND native forward-escaped name. No loaded-net exception or parasitic modification. Own-workflow push launches one corrected diagnostic; inspect completion before claiming coverage.
+
+Verified live: physical ECO38813118414, patched PLL full1us38813902351, full32Sparse38810158966/38810163678. Full-wire38801162596 complete componentPASS as recorded. Everything remains cloud-only.
+
 ## Completed full-wire component; actual annotation diagnosis launched
 
 Full-wire38801162596/job116650255071 is COMPLETE, do not duplicate. Summaryc0e91d7ef51054fa07a79d06f407e96f7af3743c40259d6b99ddfee419baae0b: all original768samples/device/interface gates pass at .125/.0625ps through full34ns, same physical sources and limits. Min margins100.723619mV/100.725578mV, numerical comparison PASS. This is assembled4:1 only and margin above100mV is narrow. Full32 per-macro captures38810158966/38810163678 still live; actual32physical/x4 remains unproven. Detailed receipt pcie-vbic-full-wire-20261016.json.

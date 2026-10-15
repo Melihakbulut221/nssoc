@@ -103350,27 +103350,27 @@
     "scope": "Transport/control proof only; not physical, numerical waveform or PHY acceptance."
   },
   "latest_cloud_checkpoint_20261016": {
-    "observed_at": "2026-10-15T21:37:28.590212+00:00",
+    "observed_at": "2026-10-15T22:11:43.198407+00:00",
     "cloud_only": true,
     "local_workspace_entries": 0,
     "active_or_recent": [
       {
         "run": 38801162596,
-        "topic": "original full-wire replay",
-        "status": "in_progress",
-        "conclusion": null,
+        "topic": "completed full-wire component",
+        "status": "completed",
+        "conclusion": "success",
         "source_head": "175d801b53b53c939dcf72088216a0ede7521553",
         "jobs": [
           {
             "id": 116650255071,
-            "status": "in_progress",
-            "conclusion": null
+            "status": "completed",
+            "conclusion": "success"
           }
         ]
       },
       {
         "run": 38810158966,
-        "topic": "full32 original Sparse 0.5ps",
+        "topic": "full32 original Sparse0.5ps",
         "status": "in_progress",
         "conclusion": null,
         "source_head": "f4de0a9f6cdb873916671b3f1ec7e1cf60071e87",
@@ -103389,7 +103389,7 @@
       },
       {
         "run": 38810163678,
-        "topic": "full32 original Sparse 0.25ps",
+        "topic": "full32 original Sparse0.25ps",
         "status": "in_progress",
         "conclusion": null,
         "source_head": "f4de0a9f6cdb873916671b3f1ec7e1cf60071e87",
@@ -103408,15 +103408,57 @@
       },
       {
         "run": 38810969514,
-        "topic": "native signal geometry/antenna diagnosis",
-        "status": "in_progress",
-        "conclusion": null,
+        "topic": "completed signal geometry diagnostic",
+        "status": "completed",
+        "conclusion": "success",
         "source_head": "1b1ed22eac62977c6a23be260c38747f37b1b660",
         "jobs": [
           {
             "id": 116683788886,
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "run": 38813118414,
+        "topic": "physical buffer ECO",
+        "status": "in_progress",
+        "conclusion": null,
+        "source_head": "3b41d9ecccac9f403644a9c7bcab883cf184fe40",
+        "jobs": [
+          {
+            "id": 116691024892,
             "status": "in_progress",
             "conclusion": null
+          }
+        ]
+      },
+      {
+        "run": 38813902351,
+        "topic": "patched PLL full1us",
+        "status": "in_progress",
+        "conclusion": null,
+        "source_head": "be12960ed8a6249fb33764f5730b68192452a5d5",
+        "jobs": [
+          {
+            "id": 116693663825,
+            "status": "in_progress",
+            "conclusion": null
+          }
+        ]
+      },
+      {
+        "run": 38814839951,
+        "topic": "failed diagnostic SPEF name parser; preserved",
+        "status": "completed",
+        "conclusion": "failure",
+        "source_head": "b46b53a8ec790b09eb1af649f57c40a84d072c2e",
+        "jobs": [
+          {
+            "id": 116696793924,
+            "status": "completed",
+            "conclusion": "failure"
           }
         ]
       }
@@ -103441,6 +103483,23 @@
     },
     "full_serial_phy_complete": false,
     "final_timing_complete": false,
-    "heartbeat": "Existing ACTIVE eight-hour cloud-only heartbeat unchanged"
+    "heartbeat": "Existing ACTIVE eight-hour cloud-only heartbeat unchanged",
+    "completed_full_wire": {
+      "run": 38801162596,
+      "summary_sha256": "c0e91d7ef51054fa07a79d06f407e96f7af3743c40259d6b99ddfee419baae0b",
+      "full34ns_component_passed": true,
+      "original_samples": 768,
+      "minimum_margin_v": 0.10072361887419297,
+      "timestep_comparison_passed": true,
+      "full_phy_accepted": false
+    },
+    "completed_signal_continuity": {
+      "run": 38810969514,
+      "nets": 113556,
+      "failed": 0,
+      "full_lvs": false,
+      "inter_net_shorts_checked": false
+    },
+    "annotation_followup": "Own-path push now launches corrected exact native net-id/writer-name classifier; never waive missing loaded nets"
   }
 }
