@@ -174,7 +174,10 @@ def test_full_capture_reader_preserves_original_times_and_vector_identity(tmp_pa
     else:
         raw = ('time v(op) v(on)\n' + '\n'.join(
             ' '.join(format(x, '.17g') for x in row) for row in zip(t, op, on)) + '\n').encode()
-    (tmp_path/'wave.dat.gz').write_bytes(gzip.compress(raw))
+    if fmt == 'native_binary':
+        (tmp_path/'wave.raw').write_bytes(raw)
+    else:
+        (tmp_path/'wave.dat.gz').write_bytes(gzip.compress(raw))
     record = dict(format=fmt, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
     values = m.capture_values(tmp_path, contract, record, ['time','v(op)','v(on)'])
     for name, expected in [('time',t),('v(op)',op),('v(on)',on)]:
@@ -183,7 +186,21 @@ def test_full_capture_reader_preserves_original_times_and_vector_identity(tmp_pa
         # A rehashed truncated original still fails native row/column coverage.
         (tmp_path/'wave.raw').unlink()
         raw = raw[:-8]
-        (tmp_path/'wave.dat.gz').write_bytes(gzip.compress(raw))
+        (tmp_path/'wave.raw').write_bytes(raw)
         record.update(bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
         with pytest.raises(AssertionError):
             m.capture_values(tmp_path, contract, record, ['time','v(op)','v(on)'])
+
+
+@pytest.mark.parametrize('record,expected', [
+    ({}, 'wave.dat.gz'),
+    ({'format':'wrdata_text'}, 'wave.dat.gz'),
+    ({'format':'native_binary'}, 'wave.raw'),
+])
+def test_actual_archive_capture_names(record, expected):
+    assert m.capture_filename(record) == expected
+
+
+def test_unknown_capture_transport_is_not_read_as_legacy():
+    with pytest.raises(AssertionError):
+        m.capture_filename({'format':'unknown'})

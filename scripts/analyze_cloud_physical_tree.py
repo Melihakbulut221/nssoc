@@ -48,14 +48,18 @@ def source_bits_hash(record):
     return candidates[0]
 
 
+def capture_filename(raw_wave):
+    fmt = raw_wave.get('format', 'wrdata_text')
+    assert fmt in ('wrdata_text', 'native_binary'), 'Unknown source capture transport'
+    return 'wave.raw' if fmt == 'native_binary' else 'wave.dat.gz'
+
+
 def capture_values(directory, contract, raw_wave, names):
     """Read original vectors from either verified legacy text or full native binary."""
     fmt = raw_wave.get('format', 'wrdata_text')
     if fmt == 'native_binary':
         from cloud_tx_stream import read_streamed_wave
-        path = directory / 'wave.raw'
-        with gzip.open(directory / 'wave.dat.gz', 'rb') as src, path.open('xb') as dst:
-            shutil.copyfileobj(src, dst)
+        path = directory / capture_filename(raw_wave)
         t, all_values, transport = read_streamed_wave(
             path, contract['vectors'], STOP, contract['condition']['step_ps'] * 1e-12)
         assert transport['raw_bytes'] == raw_wave['bytes']
@@ -84,8 +88,9 @@ def read_case(record, directory):
                     '--show-error', asset['browser_download_url'], '-o', str(packed)], check=True)
     assert packed.stat().st_size == asset['size']
     assert asset['digest'] == 'sha256:' + sha(packed)
+    wave_name = capture_filename(record['raw_wave'])
     wanted = {f'cloud-tx-mux4/{prefix}{name}': name for prefix, name in (
-        ('', 'result.json'), ('native/', 'contract.json'), ('native/', 'wave.dat.gz'))}
+        ('', 'result.json'), ('native/', 'contract.json'), ('native/', wave_name))}
     found = set()
     with tarfile.open(packed, 'r|gz') as archive:
         for member in archive:
@@ -100,7 +105,7 @@ def read_case(record, directory):
     result = json.loads((directory / 'result.json').read_text())
     contract = json.loads((directory / 'contract.json').read_text())
     assert contract['streams'] == 4 and contract['fault'] == 'none'
-    for name in ('contract.json', 'wave.dat.gz'):
+    for name in ('contract.json', wave_name):
         assert sha(directory / name) == result['outputs']['native/' + name]
     assert result['raw_wave'] == record['raw_wave']
     assert result['prestage'] == mode
@@ -108,7 +113,8 @@ def read_case(record, directory):
         assert result[key]['profile'] == profile, 'Wrong physical geometry capture'
     assert hashlib.sha256(bytes(contract['bits'])).hexdigest() == source_bits_hash(record)
     raw_hash, size = hashlib.sha256(), 0
-    with gzip.open(directory / 'wave.dat.gz', 'rb') as src:
+    with ((directory / wave_name).open('rb') if wave_name == 'wave.raw'
+          else gzip.open(directory / wave_name, 'rb')) as src:
         while block := src.read(1024**2):
             raw_hash.update(block)
             size += len(block)
