@@ -1,3 +1,13 @@
+## 2026-10-15 — both tight boundary macros physically pass; fresh RC started
+
+Source `9ef1b6b520414af7fdc2542d97d1fedbfc3e4c9f` binds **separate `boundary_tight_variants`** receipts. Original left/nearest receipts are unchanged; exact policy guard includes `nearest_pair_tight`.
+
+Both physical runs38689140829/38689143416 passed native560-category DRC with0markers, hierarchical+flat54/54-device LVS with no extraction diagnostics, and all five real fault controls. Exact archive and summary hashes and measurements are committed in `docs/evidence/pcie-tight-boundary-layout-20261015.json`. This is macro physical evidence, not electrical or fullPHY acceptance.
+
+Fresh cloud extraction: cascade158 **38689805645**; finalV10 **38689808641**. Source audit **38689811421**. On successful completion, inspect actual extraction summaries (topology, R/C conservation, fault controls, explicit substrate limitations); bind these exact archives under `boundary_tight_variants` in composition-input JSON; then dispatch tx-layout-waveform-cloud with compose_only=true and nearest_pair_tight for each macro. Add distinct tight profiles/receipt files for loaded tree and run unchanged nominal+hot/cold four-stream screens before considering32-stream or any adoption. Never inherit nearest geometry acceptance: its hot wire FAILED59samples/79.622008mV.
+
+Rechecked live long native jobs: mainchip193 route38683404082/job116252752695; complete32wire38679319167/job116240001143; actual845 PLL1us38674687038/job116225492444. Do not duplicate. When PLL completes successfully, run existing actual_parent_acquisition_review_d2. All work cloud-only; local workspace remains empty.
+
 ## 2026-10-15 — tight perimeter runs dispatched (cloud only)
 
 Source `cc8a85336ef041b4be881765260a583333df5c25`:
