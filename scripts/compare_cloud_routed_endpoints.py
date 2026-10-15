@@ -94,13 +94,17 @@ def main(args):
         assert original['source_unchanged'] and original['original_routed_timing_reproduced']
         before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
         count=2 if args.profile=='two_buffer' else 3;group='critical-load-eco' if count==2 else 'control-load-eco';candidate_dir=ROOT/('cloud-'+group)
-        candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json','logic/result.json'))
+        candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json'))
         expected_status='COMPLETE_'+('TWO' if count==2 else 'THREE')+'_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
         assert candidate['status']==expected_status and candidate['source_run']==38809759501
         assert candidate['protected_source_unchanged'] and candidate['original_routed_timing_reproduced'] and candidate['native_drt_drvs']==0
         assert candidate['logic']['status']=='PASS within scope' and candidate['inversion_control']=='REJECTED'
         assert candidate['spef_integrity']['inconsistent_nets']==0
         assert len(candidate['geometry']['added'])==len(candidate['geometry']['changes'])==count
+        assert json.loads((candidate_dir/'geometry-proof.json').read_text())==candidate['geometry']
+        # The frozen ECO summary embeds its complete logic receipt. Its output
+        # inventory omits every basename result.json, including logic/result.json.
+        # Do not pretend that omitted nested receipt has an external file hash.
         if count==3:assert candidate['profile']=='control_three_buffer' and candidate['buffer_count']==3
         result.update(candidate=proof,baseline=original_proof);save()
         fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-route-summary.json');source=json.loads((OUT/'original-route-summary.json').read_text())
