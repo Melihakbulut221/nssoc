@@ -1873,7 +1873,40 @@ def compose_pfd_actual_parent():
                 prior=len(pool)
             for g,c in zip(graphs,colors):nx.set_node_attributes(g,c,'refined')
             print('EXACT_GRAPH_SEARCH',len(graphs[0]),len(pool),'classes',flush=True)
-            mapping=nx.vf2pp_isomorphism(*graphs,node_label='refined')
+            import igraph as ig
+            require(ig.__version__=='0.11.9','Unexpected graph solver version')
+            if 'bliss_adapter_controls' not in result:
+                cycle=ig.Graph.Ring(6);triangles=ig.Graph(n=6,edges=[(0,1),(1,2),(2,0),(3,4),(4,5),(5,3)])
+                require(not cycle.isomorphic_bliss(triangles),'Accepted equal-degree nonisomorphic graphs')
+                star=ig.Graph.Star(129,mode='undirected',center=0)
+                perm=list(range(128,-1,-1));renamed=star.permute_vertices(perm)
+                ok,forward,reverse=star.isomorphic_bliss(renamed,return_mapping_12=True,return_mapping_21=True)
+                require(ok and set(forward)==set(range(129)) and all(reverse[forward[i]]==i for i in range(129)),'Symmetric graph mapping is not bijective')
+                require(all(renamed.are_adjacent(forward[a],forward[b])for a,b in star.get_edgelist()),'Symmetric graph mapping changes edges')
+                require(not cycle.isomorphic_bliss(cycle,color1=[1,0,0,0,0,0],color2=[0]*6),'Solver ignored vertex colors')
+                result['bliss_adapter_controls']=dict(symmetric_relabelled_positive_vertices=129,
+                    equal_degree_nonisomorphic_rejected=True,wrong_vertex_color_rejected=True,
+                    version=ig.__version__,core_version=ig.__igraph_version__,
+                    extension_sha256=sha(Path(ig._igraph.__file__)),
+                    reference='https://python.igraph.org/en/0.11.9/api/igraph.GraphBase.html#isomorphic_bliss')
+                save()
+            node_lists=[list(g)for g in graphs];native=[]
+            for g,nodes in zip(graphs,node_lists):
+                ids={n:i for i,n in enumerate(nodes)}
+                converted=ig.Graph(n=len(nodes),edges=[(ids[a],ids[b])for a,b in g.edges],directed=False)
+                require(converted.is_simple() and converted.vcount()==len(g) and converted.ecount()==len(g.edges),'Graph adapter changes input')
+                native.append(converted)
+            started=time.monotonic()
+            ok,forward,reverse=native[0].isomorphic_bliss(native[1],return_mapping_12=True,return_mapping_21=True,
+                color1=[graphs[0].nodes[n]['refined']for n in node_lists[0]],
+                color2=[graphs[1].nodes[n]['refined']for n in node_lists[1]])
+            elapsed=time.monotonic()-started
+            result.setdefault('exact_solver_calls',[]).append(dict(method='BLISS',seconds=elapsed,isomorphic=ok,
+                vertices=len(graphs[0]),edges=len(graphs[0].edges),colors=len(pool)))
+            save()
+            require(ok and forward is not None and reverse is not None,'No exact intrinsic graph bijection')
+            require(set(forward)==set(range(len(graphs[1]))) and all(reverse[forward[i]]==i for i in range(len(graphs[0]))),'Invalid forward/reverse graph mapping')
+            mapping={node_lists[0][i]:node_lists[1][j]for i,j in enumerate(forward)}
             require(mapping is not None and set(mapping)==set(graphs[0]) and set(mapping.values())==set(graphs[1]),'No exact intrinsic graph bijection')
             require(all(graphs[0].nodes[a]['label']==graphs[1].nodes[b]['label']for a,b in mapping.items()),'Bijection changes labels')
             require(len(graphs[0].edges)==len(graphs[1].edges) and all(graphs[1].has_edge(mapping[a],mapping[b])for a,b in graphs[0].edges),'Bijection changes edges')
