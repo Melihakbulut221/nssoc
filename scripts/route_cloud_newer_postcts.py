@@ -113,7 +113,22 @@ def fresh_prects_trial(script, result):
     settings += [f'set_routing_layers -signal {rc["routing_layers"]} -clock {rc["routing_layers"]}',
         f'set_global_routing_layer_adjustment Metal1-TopMetal2 {rc["adjustment"]}']
     setup='\n'.join(settings)+'\n'
-    execute(prefix+setup+'help global_placement\n'
+    cluster_setup=''
+    if result.get('packet_clusters_requested'):
+        fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38471402795-1-congestion-seed13_buffers/newer-congestion-probe-38471402795-1.json',
+            'ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b',OUT/'packet-endpoint-diagnosis.json')
+        def packet_native(mode):
+            with (OUT/(mode+'.log')).open('w') as log:
+                code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',
+                    str(ROOT/'scripts/repair_cloud_macro_channels.py')],
+                    env=dict(os.environ,NSSOC_PLACEMENT_MODE=mode),stdout=log,stderr=subprocess.STDOUT)
+            assert code==0,(mode,(OUT/(mode+'.log')).read_text()[-6000:])
+        packet_native('prepare_packet_clusters')
+        proof=json.loads((OUT/'packet-clusters.json').read_text())
+        assert proof['status']=='PASS_EXACT_PRECTS_PACKET_CLUSTER_GUIDANCE_NOT_IMPLEMENTATION'
+        result['packet_cluster_guidance']={k:v for k,v in proof.items() if k not in ('source_net_endpoints','clusters','excluded_direct_sinks')}
+        cluster_setup=(OUT/'packet-clusters.tcl').read_text()
+    execute(prefix+setup+cluster_setup+'help global_placement\n'
         'global_placement -routability_driven -routability_use_grt -density 0.45\n'
         'detailed_placement -max_displacement {500 100}\ncheck_placement -verbose\n'
         f'write_db {{{OUT/"prects-placement.odb"}}}\n','fresh-prects-placement')
@@ -123,6 +138,10 @@ def fresh_prects_trial(script, result):
                 str(ROOT/'scripts/repair_cloud_macro_channels.py')],env=dict(os.environ,NSSOC_PLACEMENT_MODE=mode),stdout=log,stderr=subprocess.STDOUT)
         assert code==0,(mode,(OUT/(mode+'.log')).read_text()[-6000:])
     verify('verify_prects')
+    if result.get('packet_clusters_requested'):
+        packet_native('measure_packet_clusters')
+        measurement=json.loads((OUT/'packet-cluster-placement.json').read_text())
+        result['packet_cluster_placement']={k:v for k,v in measurement.items() if k!='candidate_net_endpoints'}
     result['fresh_prects_placement']=json.loads((OUT/'prects-placement-proof.json').read_text())
     # Exact original CTS buffers, sink clustering and NDR policy; newly moved
     # sequential cells must receive a freshly synthesized clock tree.
@@ -198,9 +217,12 @@ def main():
     parser.add_argument('--self-test', action='store_true')
     parser.add_argument('--cugr-empty-net-cleanup', action='store_true')
     parser.add_argument('--resume-fresh-cts', action='store_true')
+    parser.add_argument('--packet-clusters', action='store_true')
     args = parser.parse_args()
     if args.self_test:
         self_test(); return
+    if args.packet_clusters:
+        assert args.placement_profile=='prects_grt' and not args.resume_fresh_cts
     if args.resume_fresh_cts:
         assert args.placement_profile=='prects_grt'
     if args.cugr_empty_net_cleanup:
@@ -234,7 +256,7 @@ def main():
         assert args.placement_profile == 'local_optimize_buffers'
         assert args.ethernet_hold_depth == 2
     OUT.mkdir(exist_ok=False)
-    result = dict(status='RUNNING', adopted=False,
+    result = dict(status='RUNNING', adopted=False, packet_clusters_requested=args.packet_clusters,
         grid_profile=args.grid_profile, grid_origin_um=origin_um, placement_profile=args.placement_profile,
         ethernet_hold_depth=args.ethernet_hold_depth,
         macro_routing_profile=args.macro_routing_profile,

@@ -11,6 +11,10 @@ on:
       - docs/evidence/cloud-newer-postcts-input-20261013.json
   workflow_dispatch:
     inputs:
+      packet_clusters:
+        description: Group source-bound small PCIe packet read cones before fresh placement and CTS
+        type: boolean
+        default: false
       resume_fresh_cts:
         description: Verify exact saved fresh CTS after native identity check correction; do not rerun placement
         type: boolean
@@ -89,7 +93,7 @@ jobs:
       - name: Reproduce exact newer postCTS then route all domains
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/route_cloud_newer_postcts.py ${{ inputs.resume_fresh_cts && '--resume-fresh-cts' || '' }} ${{ inputs.cugr_empty_net_cleanup && '--cugr-empty-net-cleanup' || '' }} --router-solver '${{ inputs.router_solver || 'fast_route' }}' --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}' --routing-seed '${{ inputs.routing_seed || '0' }}' --grid-profile '${{ inputs.grid_profile || 'baseline' }}'
+        run: python3 scripts/route_cloud_newer_postcts.py ${{ inputs.packet_clusters && '--packet-clusters' || '' }} ${{ inputs.resume_fresh_cts && '--resume-fresh-cts' || '' }} ${{ inputs.cugr_empty_net_cleanup && '--cugr-empty-net-cleanup' || '' }} --router-solver '${{ inputs.router_solver || 'fast_route' }}' --placement-profile '${{ matrix.placement_profile }}' --ethernet-hold-depth '${{ inputs.ethernet_hold_depth || '0' }}' --macro-routing-profile '${{ inputs.macro_routing_profile || 'baseline' }}' --critical-nets-percentage '${{ inputs.critical_nets_percentage || '0' }}' --routing-seed '${{ inputs.routing_seed || '0' }}' --grid-profile '${{ inputs.grid_profile || 'baseline' }}'
       - name: Preserve complete source-bound routing and failures
         if: always()
         env:

@@ -426,8 +426,148 @@ def verify_fresh_prects():
         cts_sha256=sha(OUT/'fresh-cts.odb'),scope='Original masters and every terminal preserved modulo inserted non-inverting CTS buffer trees. Source unchanged; no timing or route acceptance.')
     (OUT/'fresh-cts-proof.json').write_text(json.dumps(report,indent=2)+'\n')
 
+
+def packet_net_records(block):
+    """Exact output-net endpoints of the original physical packet flops."""
+    scale=block.getDbUnitsPerMicron()
+    rows={}
+    for net in block.getNets():
+        name=net.getName()
+        rendered=re.sub(r'\\([\[\]])',r'\1',name)
+        if not re.fullmatch(r'u_pcie\.receive_ownership\.packets\[\d+\]\[\d+\]',rendered):
+            continue
+        assert str(net.getSigType())=='SIGNAL' and not list(net.getBTerms())
+        terms=list(net.getITerms())
+        drivers=[t for t in terms if str(t.getIoType())=='OUTPUT']
+        assert len(drivers)==1 and drivers[0].getMTerm().getName()=='Q'
+        assert drivers[0].getInst().getMaster().getName()=='sg13g2_dfrbpq_1'
+        pins=[]
+        for term in terms:
+            inst=term.getInst();r=term.getBBox()
+            assert not inst.getMaster().isBlock()
+            pins.append(dict(instance=inst.getName(),pin=term.getMTerm().getName(),
+                direction=str(term.getIoType()),master=inst.getMaster().getName(),
+                center_um=[(r.xMin()+r.xMax())/(2*scale),(r.yMin()+r.yMax())/(2*scale)]))
+        xs=[p['center_um'][0] for p in pins];ys=[p['center_um'][1] for p in pins]
+        rows[name]=dict(driver=drivers[0].getInst().getName(),pins=pins,
+            endpoint_hpwl_um=max(xs)-min(xs)+max(ys)-min(ys),
+            endpoint_envelope_um=[min(xs),min(ys),max(xs),max(ys)])
+    assert len(rows)==1216,'Original packet-bit net census changed'
+    assert len({r['driver'] for r in rows.values()})==1216
+    return rows
+
+
+def prepare_packet_clusters():
+    """Group small connected first-level packet read cones before fresh CTS.
+
+    Placement clusters add only optimization guidance. They never replace
+    cells, merge logical nets, omit route endpoints or alter clock constraints.
+    """
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    path=OUT/'prects.odb'
+    assert sha(path)=='4739da2254a80397ab82f5c70550b9215e7ac5853c0e78cd0fb7dabefece20d8'
+    db,block=load(path);before=signature(block)
+    rows=packet_net_records(block)
+    diagnostic=OUT/'packet-endpoint-diagnosis.json'
+    assert sha(diagnostic)=='ca29ac20363e4f419ee3577dbd91085e48b541f91ca8d89f48e4bae72d46f01b'
+    diagnosis=json.loads(diagnostic.read_text())
+    assert diagnosis['report_overflow_sum']==132
+    diagnosed={n:r for n,r in diagnosis['all_congested_net_endpoints'].items()
+               if 'u_pcie.receive_ownership.packets' in n}
+    assert len(diagnosed)==193
+    for name,row in diagnosed.items():
+        drivers=[t for t in row['terminals'] if t['direction']=='OUTPUT']
+        assert len(drivers)==1
+        assert rows[name]['driver']==drivers[0]['instance']
+        assert drivers[0]['pin']=='Q' and drivers[0]['master']=='sg13g2_dfrbpq_1'
+    instances={i.getName():i for i in block.getInsts()}
+    allowed=re.compile(r'sg13g2_(?:a[0-9]+o?i?|o[0-9]+a?i?|and[0-9]+|nand[0-9]+b?|or[0-9]+|nor[0-9]+b?|xor[0-9]+|xnor[0-9]+|inv|buf|mux[0-9]+)_[0-9]+')
+    parents={}
+    def root(n):
+        parents.setdefault(n,n)
+        if parents[n]!=n:parents[n]=root(parents[n])
+        return parents[n]
+    def union(a,b):
+        a,b=root(a),root(b)
+        if a!=b:parents[max(a,b)]=min(a,b)
+    excluded=[]
+    for name,row in rows.items():
+        driver=row['driver'];root(driver)
+        for pin in row['pins']:
+            if pin['instance']==driver:continue
+            inst=instances[pin['instance']]
+            eligible=pin['direction']=='INPUT' and bool(allowed.fullmatch(pin['master']))
+            eligible=eligible and str(inst.getPlacementStatus())=='PLACED'
+            eligible=eligible and not any(t.getNet() and
+                (str(t.getNet().getSigType())=='CLOCK' or t.getNet().getName().startswith('clknet_'))
+                for t in inst.getITerms())
+            if eligible:union(driver,pin['instance'])
+            else:excluded.append(dict(net=name,**pin))
+    grouped={}
+    for name in sorted(parents):grouped.setdefault(root(name),[]).append(name)
+    groups=sorted(grouped.values())
+    sizes=[len(g) for g in groups]
+    preliminary=dict(status='SOURCE_BOUND_CLUSTER_INVENTORY_NOT_YET_PLACED',
+        source_odb_sha256=sha(path),connectivity_sha256=before,packet_bit_nets=len(rows),
+        diagnosed_congested_packet_nets=len(diagnosed),cluster_sizes=sizes,
+        clusters=groups,excluded_direct_sinks=excluded,source_net_endpoints=rows)
+    (OUT/'packet-clusters.json').write_text(json.dumps(preliminary,indent=2)+'\n')
+    assert groups and min(sizes)>=2 and max(sizes)<=32,('Not small disjoint cones',min(sizes),max(sizes))
+    assert len({n for g in groups for n in g})==sum(sizes)
+    assert all(str(instances[n].getPlacementStatus())=='PLACED' and
+        not instances[n].getMaster().isBlock() for g in groups for n in g)
+    assert {r['driver'] for r in rows.values()} <= set(parents)
+    # Native findInst resolves exact names; get_cells wildcard interpretation
+    # is deliberately avoided for Yosys dollar/bracket instance identifiers.
+    tcl=['set packet_block [ord::get_db_block]']
+    for group in groups:
+        tcl.append('set packet_cluster {}')
+        for name in group:
+            assert not any(c in name for c in '{}\\\n\r')
+            tcl += ['set packet_inst [$packet_block findInst {'+name+'}]',
+                'if {$packet_inst == "NULL"} {error "Packet cluster instance absent"}',
+                'lappend packet_cluster $packet_inst']
+        tcl += [f'if {{[llength $packet_cluster] != {len(group)}}} {{error "Packet cluster cardinality"}}',
+                'gpl::placement_cluster_cmd $packet_cluster']
+    tcl.append(f'puts NSSOC_PACKET_CLUSTERS_{len(groups)}_INSTANCES_{sum(sizes)}')
+    (OUT/'packet-clusters.tcl').write_text('\n'.join(tcl)+'\n')
+    assert signature(block)==before and sha(path)==preliminary['source_odb_sha256']
+    preliminary.update(status='PASS_EXACT_PRECTS_PACKET_CLUSTER_GUIDANCE_NOT_IMPLEMENTATION',
+        source_diagnosis_sha256=sha(diagnostic),guidance_sha256=sha(OUT/'packet-clusters.tcl'),
+        native_command_source='https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/gpl/src/replace.i',
+        scope='Small disjoint first-level packet data cones only. All cells and nets remain; placement connectivity, rebuilt CTS, strict routing, all-corner timing and detailed-route signoff are still required.')
+    (OUT/'packet-clusters.json').write_text(json.dumps(preliminary,indent=2)+'\n')
+
+
+def measure_packet_cluster_placement():
+    proof=json.loads((OUT/'packet-clusters.json').read_text())
+    assert proof['status']=='PASS_EXACT_PRECTS_PACKET_CLUSTER_GUIDANCE_NOT_IMPLEMENTATION'
+    db,block=load(OUT/'prects-placement.odb')
+    assert signature(block)==proof['connectivity_sha256']
+    after=packet_net_records(block);before=proof['source_net_endpoints']
+    assert set(after)==set(before)
+    for name,row in before.items():
+        key=lambda p:(p['instance'],p['pin'],p['direction'],p['master'])
+        assert sorted(map(key,row['pins']))==sorted(map(key,after[name]['pins']))
+    stats={}
+    congested=json.loads((OUT/'packet-endpoint-diagnosis.json').read_text())['all_congested_net_endpoints']
+    for label,names in [('all_packet_bits',sorted(before)),
+                        ('previously_congested_packet_bits',sorted(n for n in before
+                         if n in congested))]:
+        stats[label]=dict(nets=len(names),
+            original_endpoint_hpwl_um=sum(before[n]['endpoint_hpwl_um'] for n in names),
+            candidate_endpoint_hpwl_um=sum(after[n]['endpoint_hpwl_um'] for n in names))
+    (OUT/'packet-cluster-placement.json').write_text(json.dumps(dict(
+        status='COMPLETE_PACKET_ENDPOINT_GEOMETRY_NOT_ROUTE_OR_TIMING_ACCEPTANCE',
+        candidate_odb_sha256=sha(OUT/'prects-placement.odb'),
+        statistics=stats,source_guidance_sha256=proof['guidance_sha256'],
+        candidate_net_endpoints=after),indent=2)+'\n')
+
+
 if __name__=='__main__':
-    mode=os.environ['NSSOC_PLACEMENT_MODE'];assert mode in ('prepare','verify','prepare_cugr','verify_prects','verify_fresh_cts')
+    mode=os.environ['NSSOC_PLACEMENT_MODE'];assert mode in ('prepare','verify','prepare_cugr','verify_prects','verify_fresh_cts','prepare_packet_clusters','measure_packet_clusters')
     if mode in ('verify_prects','verify_fresh_cts'): verify_fresh_prects()
     elif mode=='prepare_cugr': prepare_cugr_input()
+    elif mode=='prepare_packet_clusters': prepare_packet_clusters()
+    elif mode=='measure_packet_clusters': measure_packet_cluster_placement()
     else: prepare() if mode=='prepare' else verify()
