@@ -861,7 +861,7 @@ def test_solver_readback_requires_every_native_option(profile,method):
         with pytest.raises(AssertionError):mux4.verify_solver_options(log(bad),profile)
 
 
-@pytest.mark.parametrize('profile',['tight_trap','tight_gear2'])
+@pytest.mark.parametrize('profile',['tight_trap','tight_gear2','breakpoint_1as'])
 def test_tight_solver_keeps_original_physics_and_stimulus(tmp_path,profile):
     (tmp_path/'frontend').mkdir()
     (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
@@ -876,7 +876,7 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     before,a=mux4.build(tmp_path,'hot_low_eighth_step')
     after,b=mux4.build(tmp_path,'hot_low_eighth_step',solver_profile=profile)
     assert {k:v for k,v in a.items()if k!='solver_profile'}=={k:v for k,v in b.items()if k!='solver_profile'}
-    def circuit(text):return '\n'.join(line for line in text.splitlines()if not line.startswith(('.options ','echo NSSOC_SOLVER_OPTIONS_'))and line!='option')
+    def circuit(text):return '\n'.join(line for line in text.splitlines()if not line.startswith(('.options ','echo NSSOC_SOLVER_OPTIONS_','echo NSSOC_NATIVE_MINBREAK '))and line!='option')
     assert circuit(before)==circuit(after)
     from cloud_tx_stream import streaming_deck
     streamed=streaming_deck(after,b)
