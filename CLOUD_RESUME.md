@@ -1,3 +1,9 @@
+## 2026-10-16 complete native mainchip DRT; independent verification starts
+
+38788529905/job116606725290 is now terminalSUCCESS, not live: native detailed-route DRVs0;113556wired nets;113791original instances and55NDR declarations preserved. Receipt docs/evidence/cloud-native-drt-complete-20261016.json pins permanent archive104854492bytes and routedODB4ecf6f... . Original global132overflow/NDR relaxation failure remains; this is not final acceptance. Do not rerun DRT. New routed-geometry-cloud restores this exact route for native antenna and actual metal/via/placedLEF-pin continuity screening. It excludes power/inter-net shorts, NDR spacing and transistorLVS; source is immutable. Qualified extracted STA remains next work.
+
+Full32 comparison registration38807225461: native evidence restore fault controls and original stream/data tests passed; full-comparison skipped as intended because no full32 pair yet. Current wire38801162596, backend38803757710 and PLL38805695818 remain live. All work/cloud artifacts stay on GitHub, local workspace empty.
+
 ## Cloud-only continuation: exact PLL handle and prepared full32 comparison
 
 PLL paired-engine38805695818/job116665834742/sourceb81fdfea7dec035e9d7bccda461b2fd51a6f1104 is live in native50ns step. Existing mainchip38788529905, wire38801162596 and backend38803757710 remain live; never duplicate. Local workspace is empty and no local native work is authorized.
