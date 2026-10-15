@@ -1,3 +1,13 @@
+## 2026-10-15 specific native VBIC companion-equation hypothesis
+
+Newton-accuracy38791998396 also rejects tolerance tightening as a fix:1e-8 retains8.9068487mV mismatch;1e-10 aborts at1.25fs in both steps. Shared-controller regression38792102745 passed600tests. Stop repeating tolerance tightening.
+
+Pinned ngspice47 source a80f6e3e95d51534905b1f23410a951802666656, vbicload.c SHA256ae2fca22ca7178bce26f31b4e433307945cafa9d8661d55007eed8fc096ff866, sets gbcx=geq and cbcx=integratedchargecurrent at886-887, then stamps gbcx into the matrix but stamps -cbcx/+cbcx without subtracting gbcx*Vbcx at1095-1100. Adjacent overlap-capacitor stamps explicitly subtract G*V. This is a concrete potential timestep-dependent artificial conductance, not yet a demonstrated fix in this circuit.
+
+New hosted `vbic-companion-cloud.yml` tests constant-bias synthetic NPN/PNP at two timesteps with QCO=0 negative controls. It compares exact packaged binary, freshly compiled pristine same-version source, and an otherwise identical build with ONLY `cbcx = type*(cqbcx - gbcx*Vbcx)`. Preserve all sources/binaries/build flags/decks/logs and failures. No IHP model parameter or source changed; no runtime adoption or PHY signoff until actual coupled/full34ns/PVT/physical evidence passes. Missing transient cross-charge Jacobian terms are a separate observation, not changed by this one-expression test.
+
+Mainchip38788529905 remains live. All work is GitHub-hosted.
+
 ## Active exact handles after waveform diagnosis
 
 - Mainchip diagnostic: run38788529905, job116606725290, source266c8972cbcff17846df739de757f97f35d8fb31. Still in progress at last authoritative check; do not duplicate or infer completion from elapsed time.
