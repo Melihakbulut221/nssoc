@@ -1,3 +1,15 @@
+## 2026-10-15 — tight hot REJECTED; real output-passive placement trial
+
+**Tight allcorners electrical results are terminal and reviewed:**38690816164/38690819319. Nominal wire minimum219.359807mV and cold wire263.601867mV pass. All compact controls pass. **Hot wire FAILS52/768samples, minimum83.938999mV** (previous nearest59/79.622008mV). No failed devices/diagnostics; all captures69541rows. Never adopt this geometry as electrically qualified. Full six-source evidence and hashes: `docs/evidence/pcie-tight-boundary-loaded-rejection-20261015.json`. Hot summary642898461, SHAe8f0a760ea24b3d2542577517b2e5e3f8d4c822090e5674f8c204229f00732fa.
+
+Capacitance comparison is separately recorded in `docs/evidence/pcie-tight-boundary-capacitance-comparison-20261015.json`: real native attachment sum falls1.7545fF for each output; this is NOT an effective switching-load/delay model or acceptance.
+
+New physical source **481cf09352d2949802382dfd47f835a5d2b8706e** adds opt-in variant `critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs`, exact finalV10 + nearest_pair_tight only. Translates actual generator resistor rows23/24/25/26 by[-38.4,0]um; all device models/dimensions, schematic and route widths remain unchanged; affected wiring regenerated from real new coordinates. Physical geometry may fail; no acceptance assumed.
+
+**New native physical run38692269967** (tx-layout-repair-cloud), **source audit38692273367**. Inspect actual DRC560categories, hierarchical/flat54/54LVS, all five real fault controls. On physical PASS, add exact source receipt under existing `boundary_tight_variants` with the NEW variant key and add that variant to extraction/waveform workflow choices; old tight geometry must remain pinned independently. Then fresh extraction/composition/loaded original gates. No new extraction receipt/profile exists yet. Publication group remains layout-boundary-tight-final_drive_v10; runID distinguishes it.
+
+Three long runs verified live this turn: mainchip193 route38683404082; original32 fullwire38679319167; actual845 PLL1us38674687038. No duplicate dispatch. PLL successful completion still requires existing actual_parent_acquisition_review_d2. FullPHY/mainchip route/finalSTA remain open; cloud-only and empty local workspace.
+
 ## 2026-10-15 — tight models bound; unchanged loaded screens running
 
 Source **01ca948f183b67ee573b5aa7ff33c415eadc4b71**. Real tight-boundary extraction38689805645/38689808641 passed original54-device,17-conductor,112-probe/100-metal-terminal audit and all13 corruption controls. RC: cascade3871R/2592C; final4018R/2648C. Exact records: `docs/evidence/pcie-tight-boundary-rc-20261015.json`. All54 body/well terminal limitations, substrateR=false, fullPEX=false, RFdistribution=false remain explicit.
