@@ -1,3 +1,15 @@
+## 2026-10-15 — original cold failures preserved; new wire trials and peak diagnosis LIVE
+
+UTC 2026-10-15T15:41:04.425761+00:00. ALL CLOUD. Diagnostic source2b43250da0da0c3453fa128ca6519c2b4725c4f4 now reports exact maximum-error native time/index/value, native neighbors, fine interpolation bracket and full-window violation span. All original limits/windows unchanged. Validation38760959809/116511783482 SUCCESS:588tests,1positive/5negative comparison controls, injected peak time/value recovered.
+
+**38761402814/116513324545** source-bound readback/comparison of oldcompact_edge_supply fourfine captures is LIVE. No repeated native transient. Inspect maximum_difference_witnesses for v(mr)/v(xtree.t007_b), preserve8.907/8.111mVFAIL. Tighttrap/Gear withoutminbreak previouslyfailed PWLbreakpoints; combining tighter tolerances with verifiedminbreak is a possible next tested profile, not implemented yet. Do not relax1mVgate.
+
+Newreturnstrap sourceaa05c3ea44b87e733b978a76a7a8d6ef0f717c89 native studies:
+-38760721744 nominal: compact116510976096 complete/PASS, wire116510975999 LIVE.
+-38760726764 failing_corners: fourcompact cases complete, receipts now in SAMEpartialstudy. Coldres finalCMmax2.062747320702VFAIL; coldhbt CMmax2.056969639746V and12HBTmaxVBEup to1.023386990617VFAIL. Groundmetal changes do not affect compact control. Wire hot_hbt116510995390/hot_res116510995555/cold_hbt116510995594/cold_res116510995729 LIVE. Append nextresults to existingstudies; do not duplicate. Full independent/MOS/tempvoltage/fault/numerical qualification remains required.
+
+Mainchip upper_three38731744914/116410943697 live; screen finalnativeGRT-0273 for effective NDRdowngrades. Localworkspace empty. Full serialGen3x4, mainchipdetailroute, finalextractedsetuphold remainOPEN.
+
 ## 2026-10-15 — numerical FAIL preserved; new actual ground model ready for native corner trials
 
 UTC 2026-10-15T15:28:50.529382+00:00. ALL CLOUD. Comparison38758906733 COMPLETE, source7cf000..., all4original source archives/native hashes and reviews independently matched. Original electrical gates pass, sample margin/edges/energy convergence pass, but **all-voltage1mVgate FAIL**: compactv(mr)8.906956733mV; wirev(xtree.t007_b)8.111490836mV. Original0.125/0.0625ps captures preserved; no tolerances/window/phase waiver. Receipt appended to timestep_comparisons. Next add exact maximum-error time and native neighbor witnesses to diagnose numerical root before further simulator changes.
