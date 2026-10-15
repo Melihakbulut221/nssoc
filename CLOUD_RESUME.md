@@ -1,3 +1,10 @@
+## 2026-10-15 isolated VBIC diagnostic reporting repair
+
+All execution remains GitHub-hosted; the local project directory is empty.
+Run 38786338230 completed the two original-charge playback cases and retained two tight-charge native failures, but summary serialization failed on a NumPy boolean. The archived logs/waves remain in release `cloud-results-38786338230-1-tx-vbic-playback` (archive SHA256 `adcbda6f93db5ca047e9ea24e61357a312d069c6b9ea6aa35e6dc528eb606834`). Its fallback summary incorrectly says failure before playback; the native job log disproves that label.
+
+The capture completion flag now explicitly uses a Python boolean, with hosted controls checking actual complete and partial capture JSON serialization. The fallback label now states missing summary without guessing execution stage. One fresh hosted diagnostic run will verify reporting end to end. Physics, source voltages, original solver tolerances and acceptance gates are unchanged; no PHY completion is claimed.
+
 ## 2026-10-15 — exact VBIC terminal playback prepared on hosted runner
 
 ALL CLOUD; full goal OPEN; local workspace empty.

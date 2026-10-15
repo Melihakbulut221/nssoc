@@ -11,6 +11,7 @@ import re
 import resource
 import subprocess
 import time
+import tempfile
 import numpy as np
 from cloud_tx_step_factorial import restore, STOP, SOURCE_STOP, STEPS, PROFILE, charge_readback
 from cloud_tx_stream import read_streamed_wave
@@ -63,7 +64,7 @@ def parse_wave(path,step,require_complete=True):
     assert data.shape[1]==len(VECTORS)+1 and len(data)>1 and np.isfinite(data).all()
     t=data[:,0];assert t[0]==0 and np.all(np.diff(t)>0)
     assert np.max(np.diff(t))<=step*1.00001
-    complete=abs(t[-1]-STOP)<1e-18
+    complete=bool(abs(t[-1]-STOP)<1e-18)
     if require_complete:assert complete,'Incomplete native playback'
     return t,dict(zip(VECTORS,data[:,1:].T,strict=True)),dict(rows=len(t),end_s=float(t[-1]),
         complete=complete,sha256=sha(path),all_rows_retained=True)
@@ -92,8 +93,19 @@ def controls():
     a=deck('/frozen/cornerHBT.lib',dict(hbt='hbt_wcs',temperature_c=125),row,t,{p:v for p in PORTS},STEPS[0],1e-14)
     b=deck('/frozen/cornerHBT.lib',dict(hbt='hbt_wcs',temperature_c=125),row,t,{p:v for p in PORTS},STEPS[1],1e-14)
     assert a.replace('0 1.25e-13\n','0 STEP\n')==b.replace('0 6.25e-14\n','0 STEP\n')
+    # Exercise the actual capture schema: NumPy comparison scalars are not JSON booleans.
+    with tempfile.TemporaryDirectory() as directory:
+        path=Path(directory)/'wave.dat'
+        for finish in (STOP,STOP/2):
+            times=np.linspace(0,finish,20001)
+            np.savetxt(path,np.column_stack([times,*[np.zeros_like(times) for _ in VECTORS]]),
+                fmt='%.17g',header='time '+' '.join(VECTORS),comments='')
+            capture=parse_wave(path,STEPS[0],False)[2]
+            assert type(capture['complete']) is bool
+            assert capture['complete']==(finish==STOP)
+            assert json.loads(json.dumps(capture))==capture
     return dict(all_original_time_value_bits_preserved=True,same_stimulus_across_steps=True,
-        rejected=rejected,accepted=False)
+        rejected=rejected,capture_json_roundtrip=True,accepted=False)
 
 
 def main():

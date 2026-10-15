@@ -33,7 +33,7 @@ jobs:
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
-      - name: Reject corrupted and shifted terminal playback
+      - name: Reject corrupted playback and verify complete/partial capture JSON
         run: python3 scripts/cloud_tx_vbic_playback.py --controls-only
       - name: Isolate exact failing device using original native terminal voltages
         run: python3 scripts/cloud_tx_vbic_playback.py
@@ -44,7 +44,7 @@ jobs:
         run: |
           mkdir -p cloud-tx-vbic-playback
           if [ ! -f cloud-tx-vbic-playback/result.json ]; then
-            printf '%s\n' '{"status":"FAIL_BEFORE_NATIVE_PLAYBACK","accepted":false}' > cloud-tx-vbic-playback/result.json
+            printf '%s\n' '{"status":"FAIL_MISSING_SUMMARY_INSPECT_PRESERVED_NATIVE_LOGS","accepted":false}' > cloud-tx-vbic-playback/result.json
           fi
           archive="tx-vbic-playback-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
           tar -czf "$archive" cloud-tx-vbic-playback
