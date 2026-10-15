@@ -33,10 +33,10 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Compile exact source-bound buffer repair controllers
-        run: python3 -m py_compile scripts/run_cloud_routed_extraction.py
+        run: python3 -m py_compile scripts/prepare_cloud_critical_load_eco.py scripts/run_cloud_critical_load_eco.py
       - name: Prove restricted buffer insertion, reroute full chip, reextract and measure
         timeout-minutes: 330
-        run: python3 scripts/run_cloud_routed_extraction.py
+        run: python3 scripts/run_cloud_critical_load_eco.py
       - name: Preserve exact sources, extracted RC and native timing observations
         if: always()
         env:
@@ -53,4 +53,20 @@ jobs:
           import json,subprocess,sys
           stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
           subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','critical-load-eco',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Require the physical experiment report after preserving evidence
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          p = Path('cloud-critical-load-eco/result.json')
+          assert p.is_file(), 'Physical experiment report missing'
+          result = json.loads(p.read_text())
+          assert result.get('source_head') == os.environ['GITHUB_SHA'], 'Wrong source revision'
+          assert result.get('status') == 'COMPLETE_TWO_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF', result.get('status')
+          assert result.get('protected_source_unchanged') is True
+          assert result.get('native_drt_drvs') == 0
+          assert result.get('routed_timing'), 'Actual routed timing missing'
+          print('Experiment completed; this is not timing or production acceptance.')
           PYCODE

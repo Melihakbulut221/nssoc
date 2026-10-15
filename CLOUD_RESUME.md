@@ -1,3 +1,11 @@
+## Cloud-only continuation and corrected physical experiment entry point
+
+Local workspace verified empty (0 entries), no local CAD/simulation processes. All source and results stay on GitHub. Existing full-wire38801162596 and originalSparse full32 runs38810158966/38810163678 remain active; do not duplicate.
+
+Critical-load38812329280/job116688346427 was green but did NOT run the new ECO: its workflow accidentally invoked the old extraction controller. Its saved summary is FAIL_MISSING_REPORT, SHA256 a9785bbf7d09950e725587de53c0cc1735669c29288a8ba6e3c62d9765a2ff3b. No buffer repair or timing improvement occurred. Workflow now invokes/compiles the actual new controller and fails after evidence publication unless the source-bound complete physical report exists. The own-path push starts one corrected run; inspect it before claiming any repair.
+
+Original geometry38810969514 summary3236d5446abdff3b8f8bab9731d38d1f850061d59a5058a37d2f940423b21936 verifies113556 signal nets/3323078 shapes, zero continuity failures and zero below-NDR-width segments. This excludes inter-net shorts, power, transistorLVS and spacing. Antenna651net/809pin failures and setup-11.940513ns/hold-0.151066ns remain open. Full serialPHY is not complete.
+
 ## Actual two-buffer PCIe critical-load repair launched in cloud
 
 critical-load-eco-cloud is a source-bound physical candidate from actual routed extraction38809759501. It first reproduces original actual timing to1e-6ns, then adds two sg13g2_buf_16 cells after measureda22oi/nand4 outputs, keeping all113791originalcell placements/masters/inputpins/PG/55NDRs and physicalSDC unchanged. Only added cells are legalized. Original/modified netlists require positive buffer-contraction proof and inverter fault rejection. Four changed/new nets receive native GRT guides; every other original guide remains byte-identical. Full113793cell DRT then fresh nominalRC/three-cell-corner timing must be measured; original132globaloverflow and antenna/RCqualification/LVS remain open. Do not count this candidate as repaired until actual outputs pass. No original-source ODB or SPEF is mutated/reused after netlist change.
