@@ -12,12 +12,29 @@ CENSUS='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results
 CENSUS_SHA='54a23354fc53eb4811b574a1c1bbd70aa413d83463e5165f240b8925c10e00ff'
 CENSUS_ARCHIVE_SHA='14883e2c8766210fddfaccb1d2a121a3e9a3bb308fd795029d5897a362bb636a'
 
+def native_report_ns(value):
+    # OpenSTA857316ff liberty/Units.cc:174-185 uses float32(value/scale),
+    # zeroes abs(scaled)<1e-6, then printf("%.*f",digits,scaled). This is
+    # report representation only; raw SI values and acceptance stay unchanged.
+    import struct
+    f32=lambda x:struct.unpack('!f',struct.pack('!f',x))[0]
+    scaled=f32(f32(value)/f32(1e-9))
+    if abs(scaled)<1e-6:scaled=0.0
+    return float(format(scaled,'.9f'))
+
+def rendering_controls():
+    assert native_report_ns(2.9761593189903124e-10)==0.297615945
+    assert native_report_ns(0.0)==native_report_ns(1e-16)==native_report_ns(-1e-16)==0.0
+    assert native_report_ns(-2.9761593189903124e-10)==-0.297615945
+    return dict(native_observed_positive=1,sign_symmetry=1,zero_threshold_cases=3,acceptance_tolerance_changed=False)
+
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
     result=dict(status='RUNNING',accepted=False,source_head=os.environ['GITHUB_SHA'],source_run=38809759501,census_run=38819589884,final_timing_complete=False,scope='All91 actual-route negative hold endpoints, with min/max reports at each original cell corner. Identify shared slow/fast path causes before delay insertion;90endpoints already fail setup. No constraints/RC/layout changed; not timing acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
+        result['rendering_controls']=rendering_controls()
         fetch(CENSUS+'.summary.json',CENSUS_SHA,OUT/'census-summary.json');census=json.loads((OUT/'census-summary.json').read_text())
         assert census['status']=='COMPLETE_ACTUAL_ROUTED_ENDPOINT_CENSUS_NOT_TIMING_ACCEPTANCE'
         assert census['source_unchanged'] and census['original_routed_timing_reproduced'] and census['negative_hold_endpoints']==91
@@ -54,16 +71,13 @@ def main():
         baseline,detail=log.split('NSSOC_CONFLICT_START\n');phases=parse_phases(baseline,'CORNER')
         for p,row in old['nominal_rc_cell_corner_phases'].items():assert phases[p]['groups']==row['groups']
         phases=parse_phases(detail,'PHASE');assert len(phases)==6*len(targets)
-        # Compare report precision against exact raw SI slack; UI scale is the
-        # native library's IEEE754 binary32 nanosecond scale, not literal1e-9.
-        import struct
-        unit=struct.unpack('!f',struct.pack('!f',1e-9))[0]
+        result.update(hold_targets=targets,all_corner_paths=phases);save()
         for i,row in enumerate(targets):
             for c in ('slow','typical','fast'):
                 for d,k in (('min','hold_seconds'),('max','setup_seconds')):
                     value=row[k][c];assert value is not None
                     observed=phases[f'target_{i}_{c}_{d}']['worst_slack_ns']
-                    assert abs(value/unit-observed)<=1e-9,(i,c,d,value,observed)
+                    assert native_report_ns(value)==observed,(i,c,d,value,native_report_ns(value),observed)
         result.update(status='COMPLETE_SOURCE_BOUND_CONFLICT_PATHS_NOT_TIMING_ACCEPTANCE',hold_targets=targets,all_corner_paths=phases,original_routed_timing_reproduced=True)
         assert all(sha(SOURCE/n)==v for n,v in old['outputs'].items())
         assert all(sha(Path(n))==v for n,v in old['protected_inputs'].items());result['source_unchanged']=True
