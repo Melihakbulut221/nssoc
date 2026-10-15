@@ -737,6 +737,11 @@
       "run": 38706630710,
       "summary_asset": 643240858,
       "reason": "Removing every text annotation erased native HBT identification;1002 CntB.h1 markers. Corrected by replacing only36public TM2labels/pins and preserving native PCell annotations. No deck exception added."
+    },
+    {
+      "run": 38709136819,
+      "summary_asset": 643293456,
+      "reason": "Native full-tree extraction completed but standalone audit retained17/18native conductor counts. GDS/LVS independently proved41metal conductors and42electrical nets; all fixed cardinality gates adapted explicitly. No graph or C tolerance changed."
     }
   ],
   "verified_hierarchical_assembly": {
@@ -1437,5 +1442,228 @@
       "main_chip_integrated": false,
       "qualified_pex": false
     }
+  },
+  "verified_extraction": {
+    "run": 38709725650,
+    "source_head": "dcde9dab0f14b0c5782be48bf2805f9804545134",
+    "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38709725650-1-tree-assembly-4-extraction/tx-tree-assembly-38709725650-1.tar.gz",
+    "bytes": 7856526,
+    "sha256": "ea456af2ea37f29503f1f42bf559f30a9dd9a474938cea89c2f9d5d9ca708a0c",
+    "summary_asset": 643306585,
+    "summary_sha256": "17c72c539b40f1b29077be84269db5f4b8c249101b7249d505d80319e832522e",
+    "devices": 162,
+    "ports": 22,
+    "conductors": 41,
+    "probes": 322,
+    "resistors": 11907,
+    "capacitors": 7847,
+    "native_geometry_census": {
+      "wire_component_count": 41,
+      "native_electrical_net_count": 42,
+      "native_device_count": 162,
+      "native_terminal_count": 462
+    },
+    "audit": {
+      "status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+      "original_devices": 162,
+      "public_ports": 22,
+      "physical_wire_components": 41,
+      "geometry_probes": 322,
+      "logical_metal_references": 300,
+      "metal_device_terminals": 300,
+      "unmodeled_body_well_terminals": 162,
+      "shared_diffusion_terminals": 0,
+      "actual_exported_resistors": 11907,
+      "actual_exported_capacitors": 7847,
+      "resistor_components": 41,
+      "connected_wire_components": 41,
+      "disconnected_probes": [],
+      "disconnected_by_kind": {},
+      "native_export_r_edge_value_multiset_exact": true,
+      "geometry_conductor_ownership_exact": true,
+      "every_native_point_ground_capacitance_preserved": true,
+      "every_native_mutual_attachment_and_value_preserved": true,
+      "collapsed_capacitance_edge_count": 270,
+      "collapsed_matrix_entries": 1764,
+      "complete_collapsed_capacitance_conserved": true,
+      "per_conductor_intrinsic_ground_c_conserved": true,
+      "wrong_native_branch_witnesses": [],
+      "missing_capacitance_edges": [],
+      "extra_capacitance_edges": [],
+      "wrong_capacitance_values": [],
+      "wrong_intrinsic_ground_values": [],
+      "original_retained_node_subtractions": 41,
+      "original_node_deletions": 0,
+      "capacitor_ground_reference": "sub: extractor reference, not mapped to any intrinsic body or supply",
+      "original_port_short_warnings": 843,
+      "all_short_warnings_same_geometry_conductor": true,
+      "probes_native_grid_delta_nm_counts": {
+        "[0, 0]": 265,
+        "[0, -2]": 57
+      },
+      "no_intrinsic_alias_edges_inserted_in_resistance_graph": true,
+      "substrate_r_modeled": false,
+      "full_pex_qualified": false,
+      "point_attachment_or_rf_distribution_qualified": false
+    },
+    "controls": {
+      "status": "PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS",
+      "positive_status": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+      "cases": [
+        {
+          "control": "dropped_actual_port",
+          "rejected_by": "Export port loss/duplication",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "0095bd7fa2b199ebf92293cd0d09ce2da33286eb6b6bac66866dfc6a39b74ec0",
+              "diff": "--- \n+++ \n@@ -1,6 +1,6 @@\n * NGSPICE file created from pump_wires.ext - technology: ihp-sg13g2\n \n-.subckt pump_wires T001_C T001_B T001_E T002_C T002_B T002_E T003_C T003_B T003_E\n+.subckt pump_wires T001_B T001_E T002_C T002_B T002_E T003_C T003_B T003_E\n + T004_C T004_B T004_E T005_C T005_B T005_E T006_C T006_B T006_E T007_C T007_B T007_E\n + T008_rppd_1 T008_rppd_2 T009_rppd_1 T009_rppd_2 T010_rppd_1 T010_rppd_2 T011_rppd_1\n + T011_rppd_2 T012_rppd_1 T012_rppd_2 T013_rppd_1 T013_rppd_2 T014_rppd_1 T014_rppd_2\n"
+            }
+          }
+        },
+        {
+          "control": "dropped_resistor",
+          "rejected_by": "Native/export resistor topology/value differs",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "0e00b416798c6874be798a0ba31b511ff2095d878377de13050f8491c2da4137",
+              "diff": "--- \n+++ \n@@ -35,7 +35,6 @@\n R0 P_sap.n27 P_sap.n0 1.1\n R1 P_sap.n28 P_sap.n27 1.25366\n R2 P_sap.n27 P_sap 2.31157\n-R3 P_sap.n31 P_sap.n30 0.0275982\n R4 P_sap.n32 P_sap.n33 4.5\n R5 P_sap.n34 P_sap.n35 4.5\n R6 P_sap.n36 P_sap.n37 4.5\n"
+            }
+          }
+        },
+        {
+          "control": "wrong_resistor",
+          "rejected_by": "Native/export resistor topology/value differs",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "25b940c36fe69cbb8aa3ebdb98e0ac11c449ce2b64f3d11cba6c2bd2f588f684",
+              "diff": "--- \n+++ \n@@ -32,7 +32,7 @@\n + T158_E T159_rppd_1 T159_rppd_2 T160_rppd_1 T160_rppd_2 T161_rppd_1 T161_rppd_2 T162_rppd_1\n + T162_rppd_2 P_avdd P_avss P_d0n P_d0p P_d1n P_d1p P_d2n P_d2p P_d3n P_d3p P_mn P_mp\n + P_mr P_ra P_rb P_san P_sap P_sbn P_sbp P_sn P_sp P_sub\n-R0 P_sap.n27 P_sap.n0 1.1\n+R0 P_sap.n27 P_sap.n0 12345\n R1 P_sap.n28 P_sap.n27 1.25366\n R2 P_sap.n27 P_sap 2.31157\n R3 P_sap.n31 P_sap.n30 0.0275982\n"
+            }
+          }
+        },
+        {
+          "control": "cross_conductor_short",
+          "rejected_by": "R network has unanchored component or cross-conductor short",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "cd6edcff1a3822f8b1016462bee8ca45b867638d330d33fd00055aee15107af5",
+              "diff": "--- \n+++ \n@@ -19786,5 +19786,6 @@\n C7844 P_sap.n52 sub 3.1697068214416506e-18\n C7845 P_sap.n53 sub 2.6948368072509769e-17\n C7846 P_sap.n54 sub 1.7677237987518314e-18\n+R_EXTRA P_mp P_mn 1\n .ends\n \n"
+            }
+          }
+        },
+        {
+          "control": "ground_redistribution_same_matrix",
+          "rejected_by": "Per-point ground C export changed",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "704072e8dc101fc6916c3dedca9afd57381448a60521020bf3188b37d2f19356",
+              "diff": "--- \n+++ \n@@ -12168,8 +12168,8 @@\n C226 T054_C T066_rppd_2 2.4179299316406254e-15\n C227 P_avss T054_C 2.0111600341796873e-15\n C228 T140_E P_d2p 3.0702899169921878e-16\n-C229 P_sap sub 1.0216e-14\n-C230 T133_B sub 2.7984235763549806e-17\n+C229 P_sap sub 1.02229960589408874515E-14\n+C230 T133_B sub 2.09881768226623545E-17\n C231 T125_B sub 2.7984235763549806e-17\n C232 P_san sub 8.3584414062499997e-15\n C233 T129_B sub 2.8359020233154297e-17\n"
+            }
+          }
+        },
+        {
+          "control": "mutual_anchor_shift_same_matrix",
+          "rejected_by": "Mutual C native attachment changed",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "abe48cb4f48b25034ae07f83f9ff18ad465e38a6a3d4e1e88a74327ac4922a79",
+              "diff": "--- \n+++ \n@@ -11939,7 +11939,7 @@\n R11904 T153_C T162_rppd_2.n50 0.06\n R11905 T162_rppd_2.n51 T162_rppd_2.n50 0.12\n R11906 T162_rppd_2.n52 T162_rppd_2.n51 4.61418\n-C0 T151_E P_rb 4.3789301757812511e-15\n+C0 T143_E P_rb 4.3789301757812511e-15\n C1 T140_E T133_E 6.2888598632812498e-15\n C2 P_avdd T160_rppd_2 1.26947001953125e-14\n C3 T054_E T007_C 5.6344301757812503e-15\n"
+            }
+          }
+        },
+        {
+          "control": "dropped_cap",
+          "rejected_by": "Mutual C native attachment changed",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "bb3b085ca8271db5d278b19f6cfd3547bc965c37780374a8443ca0d480f5b9b1",
+              "diff": "--- \n+++ \n@@ -11939,7 +11939,6 @@\n R11904 T153_C T162_rppd_2.n50 0.06\n R11905 T162_rppd_2.n51 T162_rppd_2.n50 0.12\n R11906 T162_rppd_2.n52 T162_rppd_2.n51 4.61418\n-C0 T151_E P_rb 4.3789301757812511e-15\n C1 T140_E T133_E 6.2888598632812498e-15\n C2 P_avdd T160_rppd_2 1.26947001953125e-14\n C3 T054_E T007_C 5.6344301757812503e-15\n"
+            }
+          }
+        },
+        {
+          "control": "changed_cap",
+          "rejected_by": "Mutual C native value changed",
+          "mutated_outputs": {
+            "wires.spice": {
+              "sha256": "9b26544f1fb12b5c395458f6bfede4b1942ca484b52edaa898362587688bbb4d",
+              "diff": "--- \n+++ \n@@ -11939,7 +11939,7 @@\n R11904 T153_C T162_rppd_2.n50 0.06\n R11905 T162_rppd_2.n51 T162_rppd_2.n50 0.12\n R11906 T162_rppd_2.n52 T162_rppd_2.n51 4.61418\n-C0 T151_E P_rb 4.3789301757812511e-15\n+C0 T151_E P_rb 1e-12\n C1 T140_E T133_E 6.2888598632812498e-15\n C2 P_avdd T160_rppd_2 1.26947001953125e-14\n C3 T054_E T007_C 5.6344301757812503e-15\n"
+            }
+          }
+        },
+        {
+          "control": "cap_scale",
+          "rejected_by": "Source capacitance scale changed",
+          "mutated_outputs": {
+            "pump_wires.ext": {
+              "sha256": "859f1883ba56d49b202ca977e9ed5242c786ff874a81b68518767d0e14bad0f8",
+              "diff": "--- \n+++ \n@@ -2,7 +2,7 @@\n version 8.3\n tech ihp-sg13g2\n style ngspice()\n-scale 1000 1 0.5\n+scale 1000 2 0.5\n resistclasses 3000000 67000 110 88 88 88 88 18 11 7000 260000 1360000\n port \"P_sap\" 317 11400 51648 11400 51648 m7\n port \"T133_B\" 216 41182 35020 41182 35020 m1\n"
+            }
+          }
+        },
+        {
+          "control": "missing_native_completion",
+          "rejected_by": "Missing/duplicate native completion",
+          "mutated_outputs": {
+            "native.log": {
+              "sha256": "d22f129acda1f98d631512a6ce18ddd637c6787204e778d587069a770dbc503f",
+              "diff": "--- \n+++ \n@@ -1007,4 +1007,4 @@\n Nets extracted: 41 (0.976190)\n Nets output: 41 (0.976190)\n exttospice finished.\n-NSSOC_WIRE_RC_COMPLETE\n+REMOVED\n"
+            }
+          }
+        },
+        {
+          "control": "changed_body",
+          "rejected_by": "Original body/well identities changed"
+        },
+        {
+          "control": "missing_body",
+          "rejected_by": "Body/metal disposition changed"
+        },
+        {
+          "control": "wrong_actual_metal_point",
+          "rejected_by": "Actual metal terminal witness changed"
+        }
+      ],
+      "seconds": 5.392978546000009,
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/mutations48.py": {
+          "bytes": 6007,
+          "sha256": "59b9928655154ef0ccf7312eaa5cc639808fd3dd9d8f5e1aa22f225a24274cb8"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/audit-rc48.py": {
+          "bytes": 12489,
+          "sha256": "0338002567a5ee008ddbd93e849c84503d2ac694425c7c9497416311f6b9d602"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py": {
+          "bytes": 8291,
+          "sha256": "f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/anchors08.json": {
+          "bytes": 525032,
+          "sha256": "3bdf9de309bd064fb31914ab2c5cf2e9b53673dface2be5fe62ccf777886f09a"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/pump_wires.ext": {
+          "bytes": 36084,
+          "sha256": "d04ff0cb6bd5bffd7895fe7a7bd71780113b901e24cbdf33180616e7dc06b901"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/pump_wires.res.ext": {
+          "bytes": 927804,
+          "sha256": "f35adf6b6e1ddb8fde84def5ded0d004c4073c61dbb429abbc8298d72e0bdd26"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/native.log": {
+          "bytes": 66194,
+          "sha256": "5ec6e8ad0b6e020e37d30b29beefbe94cbe38b3f6a1304092e5b4905689c45c1"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/wires.spice": {
+          "bytes": 798413,
+          "sha256": "d031f5879d097d70b9b504e2eb1377f37fd208b07abbd3c1eecce9570b6b846e"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/baseline.spice": {
+          "bytes": 11092,
+          "sha256": "c7a1fa3de35ae42b72432b71e24f4ffe0517f4f679bf40110f087627fccfad21"
+        }
+      }
+    },
+    "scope": "Complete actual3macro tree including intermacro metal, all intrinsic terminals and22public ports. Graph/R values, geometry ownership and ground/mutual C conserved;13native corruption controls. Explicit162unmodeled body/well terminals; no substrateR/RF/fullPEX qualification or electrical acceptance. Next compose all162devices with this exact11907R7847C graph, then unchanged loaded native waves. Never sum child RC and new whole-tree RC (would double count)."
   }
 }
