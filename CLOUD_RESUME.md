@@ -1,3 +1,7 @@
+## Fresh extraction/STA follow-up of completed route
+
+Prepared/launching routed-extraction-cloud on exact mainchip38788529905 routedODB4ecf6f... . It restores hash-bound original physicalSDC and all nine original libraries, fresh OpenRCX extraction using pinnedPDKc4b8b4e5 nominal rules ffda02... with librelane3.0.5 native flags, validates per-net SPEF cap conservation before reading it at slow/typical/fast cell corners. No stale/estimatedSPEF reuse. The PDK provides nominalRC only: this cannot close qualifiedRCmin/RCmax, fullSRAM characterization or production signoff. Original651antenna nets and132global overflow failure remain open. Corrected geometry38809417232 is live; original38808634187 binding error is terminal/preserved.
+
 ## Native antenna failures measured; pinned decoder correction
 
 routed-geometry38808634187/job116675907550 FAILED after completed antenna measurement:651net/809pin violations. Exact failed capture/summary retained in docs/evidence/cloud-routed-antenna-initial-20261016.json. Geometry never ran: pinned dcf36133 Python does not expose dbWirePathItr/dbShape/dbITermShapeItr. Updated export uses supported dbWireDecoder and native transformed dbITerm.getGeometries, actual segment end extensions/via boxes/RECT patches, and checks each native wire bounding box. Corrected workflow launch is a verifier fix, no physical circuit change; do not mark geometric continuity passed before actual readback.
