@@ -1,3 +1,11 @@
+## 2026-10-15 — numerical FAIL preserved; new actual ground model ready for native corner trials
+
+UTC 2026-10-15T15:28:50.529382+00:00. ALL CLOUD. Comparison38758906733 COMPLETE, source7cf000..., all4original source archives/native hashes and reviews independently matched. Original electrical gates pass, sample margin/edges/energy convergence pass, but **all-voltage1mVgate FAIL**: compactv(mr)8.906956733mV; wirev(xtree.t007_b)8.111490836mV. Original0.125/0.0625ps captures preserved; no tolerances/window/phase waiver. Receipt appended to timestep_comparisons. Next add exact maximum-error time and native neighbor witnesses to diagnose numerical root before further simulator changes.
+
+New returnstrap composition38758988798 COMPLETE:162models(57HBT24rppd81contacts),11936R7863C,41native conductors/22ports, no intermacro ideal alias/duplicateRC;6composition corruption controls rejected. Source extraction full archive/hash verified by hosted composition. Fresh composition receipt now compact_return_strap.verified_composition; archive publisher hash pinned for next capture full readback. Next native studies nominal and failing_corners on compact_return_strap with original native_res bias. Other all-corner/MOS/fault/timestep requirements retained; this is NOT full serialPHY or mainchip acceptance.
+
+Mainchip upper_three38731744914 remains live, no final timing. Local workspace empty. Full goal OPEN.
+
 ## 2026-10-15 — cloud continuation handles after native RC and four fine captures
 
 Checked UTC 2026-10-15T15:23:27.295590+00:00. Progress: authoritative receipts committed7cf000d11deab20e56d1edc87c9799acd1fa69de for all4fine captures and actual newreturnstrap11936R7863C extraction. No local files.
