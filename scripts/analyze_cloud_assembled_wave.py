@@ -81,12 +81,32 @@ def step_metrics(coarse, fine, contract):
     assert ta[0]==tb[0]==0 and abs(ta[-1]-mux.STOP)<1e-15 and abs(tb[-1]-mux.STOP)<1e-15
     assert np.all(np.diff(ta)>0) and np.all(np.diff(tb)>0)
     assert set(va)==set(vb)==set(contract['vectors'])
-    voltage={};current={}
+    voltage={};current={};peak_witnesses={}
     for name in contract['vectors']:
         assert len(va[name])==len(ta) and len(vb[name])==len(tb)
         assert np.isfinite(va[name]).all() and np.isfinite(vb[name]).all()
-        delta=float(np.max(abs(va[name]-np.interp(ta,tb,vb[name]))))
+        interpolated=np.interp(ta,tb,vb[name])
+        differences=abs(va[name]-interpolated)
+        peak=int(np.argmax(differences));delta=float(differences[peak])
         (voltage if name.startswith('v(') else current)[name]=delta
+        right=min(int(np.searchsorted(tb,ta[peak],side='right')),len(tb)-1)
+        left=max(0,right-1)
+        def native_neighbors(t,y,index):
+            return [dict(index=i,time_s=float(t[i]),value=float(y[i]))
+                    for i in range(max(0,index-3),min(len(t),index+4))]
+        witness=dict(coarse_index=peak,time_s=float(ta[peak]),
+            coarse_native_value=float(va[name][peak]),fine_interpolated_value=float(interpolated[peak]),
+            signed_difference=float(va[name][peak]-interpolated[peak]),absolute_difference=delta,
+            fine_bracket_indices=[left,right],fine_bracket_times_s=[float(tb[left]),float(tb[right])],
+            coarse_native_neighbors=native_neighbors(ta,va[name],peak),
+            fine_native_neighbors=native_neighbors(tb,vb[name],left))
+        assert tb[left]<=ta[peak]<=tb[right]
+        if name.startswith('v('):
+            violations=np.flatnonzero(differences>STEP_LIMITS['voltage_v'])
+            witness['over_original_voltage_limit_samples']=int(len(violations))
+            witness['first_over_limit_time_s']=float(ta[violations[0]])if len(violations)else None
+            witness['last_over_limit_time_s']=float(ta[violations[-1]])if len(violations)else None
+        peak_witnesses[name]=witness
     assert voltage and current
     times=np.asarray([mux.START+(i+p)*mux.UI for i in range(len(contract['bits']))for p in (.3,.5,.7)])
     signs=np.repeat(np.asarray(contract['bits'])*2-1,3)
@@ -115,6 +135,8 @@ def step_metrics(coarse, fine, contract):
         output_edge_times=bool(edge_counts_equal and max_edge<=STEP_LIMITS['edge_s']),
         source_energy=all(x['relative_difference']<=STEP_LIMITS['source_energy_relative']for x in energies.values()))
     return dict(limits=STEP_LIMITS,voltage_max_absolute_difference_v=voltage,current_max_absolute_difference_a=current,
+        maximum_difference_witnesses=peak_witnesses,
+        witness_scope='Unmodified native timestamps and neighboring values; fine interpolation only for the existing comparison. Full original time window and every acceptance limit unchanged.',
         original_samples=len(times),original_sample_margin_max_absolute_difference_v=margin_error,
         coarse_minimum_original_margin_v=float(ma.min()),fine_minimum_original_margin_v=float(mb.min()),
         output_edges=edges,source_energy=energies,gates=gates,passed=all(gates.values()),
@@ -135,7 +157,17 @@ def step_controls():
         try: passed=step_metrics((ta,values(ta)),bad,contract)['passed']
         except (AssertionError,KeyError):passed=False
         assert not passed,'Malformed/shifted numerical control accepted'
-    return dict(positive=1,negative=len(bads),voltage_offset_time_shift_energy_truncation_and_missing_vector_rejected=True)
+    # A known isolated native anomaly must be reported at its actual time/value.
+    injected=values(ta);index=1200;injected['v(op)'][index]+=.01
+    observed=step_metrics((ta,injected),(tb,values(tb)),contract)
+    witness=observed['maximum_difference_witnesses']['v(op)']
+    assert not observed['passed'] and witness['coarse_index']==index
+    assert witness['time_s']==float(ta[index]) and abs(witness['absolute_difference']-.01)<1e-12
+    assert witness['coarse_native_value']==float(injected['v(op)'][index])
+    assert witness['fine_bracket_times_s'][0]<=ta[index]<=witness['fine_bracket_times_s'][1]
+    assert any(row['index']==index and row['value']==float(injected['v(op)'][index])for row in witness['coarse_native_neighbors'])
+    return dict(positive=1,negative=len(bads),voltage_offset_time_shift_energy_truncation_and_missing_vector_rejected=True,
+                injected_peak_time_and_native_value_recovered=True)
 
 
 def compare_timesteps(selected, profile, step_pair='original', solver_profile='default'):
