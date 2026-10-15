@@ -1,3 +1,17 @@
+## 2026-10-15 — actual shifted output layout LVS repaired; fresh extraction live
+
+**38694073224 PASS** (source2a7438fed513171d62645e6d633d8ab4551af193): native560-category DRC0markers; hierarchical+flat54/54 transistor LVS with no extraction diagnostics; all5actual physical fault controls rejected correctly. This closes the new avss/sub short in this macro only, NOT mainchip or fullPHY LVS/acceptance. Final output passives moved38.4um left; row24 ground escapes externally at-19.2; row23 retains149.6. Original circuit dimensions/models unchanged.
+
+Exact physical record `docs/evidence/pcie-output-passive-shift-layout-20261015.json`; summary642958509 SHA1b9d8765e923eeae70bee8fa3de932a046276b2397ca24aa786c4a2ad3ba346a; archive399364bytes SHA8d8ffbab8eadc8e3fa35b6165f0d9bed12a129cc019e4978aa4bbd0faee23548. Source audit38694076042 alsoPASS.
+
+**Fresh extraction38694566613 IN_PROGRESS**, source**de076c2d82f8f2afe204393baa8368ccc4f8a3a0**. circuitfinal_drive_v10; variant`critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs`; boundarynearest_pair_tight. Separate exact variant key added under `boundary_tight_variants` in extraction-input. Existing tight sources retained. Extraction and composition workflows now accept this explicit variant (71004a8).
+
+Next: inspect exact nativeRC topology/C conservation/13controls; ifPASS bind NEW variant key in composition-input and compose_only via tx-layout-waveform-cloud. Then add distinct final shifted-output profile+receipt in mux4/tree workflow. Keep prestage existing tight receipt. Run unchanged4-stream nominal+hot/cold matched compact/wire; preserve any failure. Tight predecessor hot FAIL52/83.938999mV remains until new electrically proven result. No shifted electrical profile or composition receipt exists yet.
+
+Rejected intermediate native38692269967 avss|sub short and generator-only38693022160/38693631444 failures are all preserved with dedicated evidence. Generator guard changes retain8um supply-riser centre exclusion on either side and permit positive-width pins already exactly at macro boundary. No native DRC/LVS rule weakened. Intermediate c533ed111.2/-3.6 ground proposal never ran.
+
+Long mainchip19338683404082, original32fullwire38679319167 and actual845PLL1us38674687038 rechecked live at this checkpoint. No duplicates. PLL terminalSUCCESS requires actual_parent_acquisition_review_d2. FullserialPHY, complete mainchip routing and finalSTA remain OPEN. Allwork cloud-only; local workspace empty.
+
 ## 2026-10-15 — output-passive shift real LVS short diagnosed and repaired
 
 Original placement run**38692269967 FAILED**: native560-category DRC0markers but transistor LVS merges **avss|sub**. All54 devices/source reference preserved; physical acceptance denied and no extraction dispatched. Permanent failed summary642918281 SHAab27a69c0bc899ed9c589bb9745bf29943ecf71da4262e7c04401177b06ec7d2; archive642918062 SHAd8b73b2bc53e9f922b7646dbc971e74ebcdeddc6225a738792a1b542810b1adf. Failure details: `docs/evidence/pcie-output-passive-shift-lvs-rejection-20261015.json`.
