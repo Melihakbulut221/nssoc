@@ -15998,7 +15998,7 @@
       }
     },
     "compact_edge_supply": {
-      "status": "PHYSICAL_AND_NATIVE_RC_PASS_REQUIRES_COMPOSITION_AND_WAVES",
+      "status": "PHYSICAL_RC_AND162_DEVICE_COMPOSITION_PASS_REQUIRES_NATIVE_WAVES",
       "hypothesis": "Move M5 supply off the intermacro data corridor to reduce measured excess AVDD coupling, with a parallel TM1 supply strap. No electrical acceptance inferred.",
       "source_diagnosis_runs": [
         38724619146,
@@ -18868,6 +18868,458 @@
           }
         },
         "scope": "Actual162-device three-macro4:1core, including real intermacro wires and shared supplies. Exact native RC graph, terminal ownership and C conservation required. Intrinsic body/substrate/RF qualification, loaded waves,32:1/four-lane/fullPHY and mainchip signoff remain open."
+      },
+      "verified_composition": {
+        "run": 38727463991,
+        "source_head": "d3b9c64f8fb7398ed2ebe460c3c63056289f8bb6",
+        "status": "PASS_ACTUAL_TREE162_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38727463991-1-tree-assembly-4-composition-compact-edge-supply/tx-tree-assembly-38727463991-1.tar.gz",
+        "bytes": 9521958,
+        "sha256": "63874b04764c0b809146a87392de28e1d20ea0ae60b99cef6592f3ebf1cc333b",
+        "summary_asset": 643648040,
+        "summary_sha256": "28459612600642d13b8f16fc8e44df5189d77ba8784c8bf212f06f21ad5988bc",
+        "placement_profile": "compact_edge_supply",
+        "counts": {
+          "devices": 162,
+          "R": 11913,
+          "C": 7851
+        },
+        "outputs": {
+          "binding96/tree162-compact01.spice": "b0a7f4ad150eed1a8f9e6d8ed1b34dd3be27d73e8b0ee756bdcd7ad78fa45c6c",
+          "wire96/tree162-wire01.spice": "6e85c60f734ecf36866ed67dbf8fed58c1c706f75fdec7110a4b4aacc1ca525a",
+          "binding96/binding01.json": "73ee69354d8765330164844d1174bb699d57544445c5e23500dc66f54f4c599c",
+          "wire96/tree-topology-check.json": "ad980b40f1a000551c386807acae8c1836f57ffa8b34ec0e5abe1b46dda7e07b",
+          "wire96/tree-interface-probes.json": "cef5094cd49f1ad43b2fdaa5c190bd47565b96f81c1606beb94c0382476b1563"
+        },
+        "topology": {
+          "status": "PASS_ALL_PHYSICAL_RESISTOR_COMPONENTS_RECOVER_NATIVE_SCHEMATIC_NETS",
+          "components": 41,
+          "public_ports": 22,
+          "terminal_counts": {
+            "ACTUAL_TERMINAL_METAL_POINT_REFERENCE": 300,
+            "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE": 162
+          },
+          "component_native_net": {
+            "20": "$I46",
+            "15": "sn",
+            "17": "$I50",
+            "21": "$I47",
+            "16": "sp",
+            "14": "mr",
+            "31": "avss",
+            "24": "avdd",
+            "23": "$I48",
+            "22": "$I49",
+            "13": "mn",
+            "12": "mp",
+            "27": "sub",
+            "18": "$26",
+            "25": "$28",
+            "26": "$27",
+            "19": "$25",
+            "8": "$I53",
+            "9": "$I51",
+            "37": "$I58",
+            "38": "$I56",
+            "2": "ra",
+            "30": "rb",
+            "10": "$I52",
+            "11": "$I54",
+            "39": "$I57",
+            "40": "$I59",
+            "5": "d0n",
+            "0": "sap",
+            "3": "$I55",
+            "1": "san",
+            "4": "d0p",
+            "7": "d2n",
+            "6": "d2p",
+            "34": "d1n",
+            "28": "sbp",
+            "32": "$I60",
+            "29": "sbn",
+            "33": "d1p",
+            "36": "d3n",
+            "35": "d3p"
+          },
+          "no_intermacro_ideal_alias": true,
+          "no_duplicate_child_rc": true
+        },
+        "controls": {
+          "status": "PASS_ALL162_NATIVE_DEVICES19764_WIRES_AND_SIX_COMPOSITION_FAULTS",
+          "counts": {
+            "devices": 162,
+            "R": 11913,
+            "C": 7851
+          },
+          "controls": [
+            {
+              "case": "missing_contact",
+              "sha256": "76058742e6ad1d18a82b087b867c6d827467a0da2dd1fb2e94dff4dae601610f"
+            },
+            {
+              "case": "wrong_hbt_size",
+              "sha256": "305396bd92964ab8de53d32be6d085a17ca167d554d6becf3a175a07e93db2b8"
+            },
+            {
+              "case": "bypassed_terminal_rc",
+              "sha256": "769bf6d627324f7fc24f6b702ed47f8afe68c27d3c243ee567a184712e9e776c"
+            },
+            {
+              "case": "wrong_cap_reference",
+              "sha256": "d8c8c572cd8e8647046b3c8ccfc21737927bc5a65e5bc3db61763de38d20e0f4"
+            },
+            {
+              "case": "missing_wire_resistor",
+              "sha256": "e98167d1128c07a6fbb294237c12c8f785ff1d80c206d0af7c0aa9da1988d287"
+            },
+            {
+              "case": "changed_wire_cap",
+              "sha256": "a985d1e594ec7590c9086668b45acba3355661fc81ca0e4de086f22c5e9f8fe0"
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/check-tree-composition.py": "2f036b3356e7d259287f863afba9a77e13b68738bfdbc7712062115d7eda3eaf",
+            "/home/runner/work/nssoc/nssoc/scripts/build_pcie_local_vco_hybrid_v6.py": "ab2962f0c47cc89029866761992bfdd87ab1d5649920b8bc8edaa1c54bbe5a3f",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/binding96/binding01.json": "73ee69354d8765330164844d1174bb699d57544445c5e23500dc66f54f4c599c",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/anchors08.json": "747d8a24afb6f66a7ae9a6122b1e23e377d935ba1c4ad85f0828588c0034ae4c",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/wires.spice": "a38fff1552c17698167a7ac867584af1be49727304cc6a94f3c53395a1a5908d",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/tree162-wire01.spice": "6e85c60f734ecf36866ed67dbf8fed58c1c706f75fdec7110a4b4aacc1ca525a"
+          },
+          "native_transient_accepted": false,
+          "qualified_pex": false
+        },
+        "interface_probes": {
+          "status": "PASS_REAL_INTERMACRO_ENDPOINTS_TO_ALL_FINAL_HBT_BASES",
+          "modes": {
+            "compact": {
+              "ap": [
+                "xtree.n_25"
+              ],
+              "an": [
+                "xtree.n_26"
+              ],
+              "bp": [
+                "xtree.n_27"
+              ],
+              "bn": [
+                "xtree.n_28"
+              ]
+            },
+            "wire": {
+              "ap": [
+                "xtree.t048_b",
+                "xtree.t049_b",
+                "xtree.t054_b"
+              ],
+              "an": [
+                "xtree.t043_b",
+                "xtree.t044_b",
+                "xtree.t045_b"
+              ],
+              "bp": [
+                "xtree.t047_b",
+                "xtree.t050_b",
+                "xtree.t053_b"
+              ],
+              "bn": [
+                "xtree.t046_b",
+                "xtree.t051_b",
+                "xtree.t052_b"
+              ]
+            }
+          },
+          "references": {
+            "ap": {
+              "endpoints": [
+                {
+                  "endpoint": "a.op",
+                  "point_dbu": [
+                    408985,
+                    272240
+                  ],
+                  "native_net": "$25",
+                  "native_cluster": 24
+                },
+                {
+                  "endpoint": "f.ap",
+                  "point_dbu": [
+                    527000,
+                    430240
+                  ],
+                  "native_net": "$25",
+                  "native_cluster": 24
+                }
+              ],
+              "intrinsic_terminals": [
+                {
+                  "device": 48,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 24,
+                  "native_net": "$25",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    571850,
+                    333500
+                  ],
+                  "wire_component": 22,
+                  "wire_anchor": "T048_B"
+                },
+                {
+                  "device": 49,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 24,
+                  "native_net": "$25",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    571850,
+                    326300
+                  ],
+                  "wire_component": 22,
+                  "wire_anchor": "T049_B"
+                },
+                {
+                  "device": 54,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 24,
+                  "native_net": "$25",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    571850,
+                    319100
+                  ],
+                  "wire_component": 22,
+                  "wire_anchor": "T054_B"
+                }
+              ]
+            },
+            "an": {
+              "endpoints": [
+                {
+                  "endpoint": "a.on",
+                  "point_dbu": [
+                    408985,
+                    279240
+                  ],
+                  "native_net": "$26",
+                  "native_cluster": 25
+                },
+                {
+                  "endpoint": "f.an",
+                  "point_dbu": [
+                    527000,
+                    437240
+                  ],
+                  "native_net": "$26",
+                  "native_cluster": 25
+                }
+              ],
+              "intrinsic_terminals": [
+                {
+                  "device": 43,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 25,
+                  "native_net": "$26",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    610250,
+                    319100
+                  ],
+                  "wire_component": 23,
+                  "wire_anchor": "T043_B"
+                },
+                {
+                  "device": 44,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 25,
+                  "native_net": "$26",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    610250,
+                    326300
+                  ],
+                  "wire_component": 23,
+                  "wire_anchor": "T044_B"
+                },
+                {
+                  "device": 45,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 25,
+                  "native_net": "$26",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    610250,
+                    333500
+                  ],
+                  "wire_component": 23,
+                  "wire_anchor": "T045_B"
+                }
+              ]
+            },
+            "bp": {
+              "endpoints": [
+                {
+                  "endpoint": "b.op",
+                  "point_dbu": [
+                    408985,
+                    602240
+                  ],
+                  "native_net": "$27",
+                  "native_cluster": 26
+                },
+                {
+                  "endpoint": "f.bp",
+                  "point_dbu": [
+                    527000,
+                    444240
+                  ],
+                  "native_net": "$27",
+                  "native_cluster": 26
+                }
+              ],
+              "intrinsic_terminals": [
+                {
+                  "device": 47,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 26,
+                  "native_net": "$27",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    648650,
+                    326300
+                  ],
+                  "wire_component": 24,
+                  "wire_anchor": "T047_B"
+                },
+                {
+                  "device": 50,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 26,
+                  "native_net": "$27",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    648650,
+                    319100
+                  ],
+                  "wire_component": 24,
+                  "wire_anchor": "T050_B"
+                },
+                {
+                  "device": 53,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 26,
+                  "native_net": "$27",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    648650,
+                    333500
+                  ],
+                  "wire_component": 24,
+                  "wire_anchor": "T053_B"
+                }
+              ]
+            },
+            "bn": {
+              "endpoints": [
+                {
+                  "endpoint": "b.on",
+                  "point_dbu": [
+                    408985,
+                    609240
+                  ],
+                  "native_net": "$28",
+                  "native_cluster": 27
+                },
+                {
+                  "endpoint": "f.bn",
+                  "point_dbu": [
+                    527000,
+                    451240
+                  ],
+                  "native_net": "$28",
+                  "native_cluster": 27
+                }
+              ],
+              "intrinsic_terminals": [
+                {
+                  "device": 46,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 27,
+                  "native_net": "$28",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    687050,
+                    319100
+                  ],
+                  "wire_component": 25,
+                  "wire_anchor": "T046_B"
+                },
+                {
+                  "device": 51,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 27,
+                  "native_net": "$28",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    687050,
+                    326300
+                  ],
+                  "wire_component": 25,
+                  "wire_anchor": "T051_B"
+                },
+                {
+                  "device": 52,
+                  "model": "npn13G2",
+                  "terminal": "B",
+                  "native_cluster": 27,
+                  "native_net": "$28",
+                  "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+                  "metal": 8,
+                  "point_dbu": [
+                    687050,
+                    333500
+                  ],
+                  "wire_component": 25,
+                  "wire_anchor": "T052_B"
+                }
+              ]
+            }
+          },
+          "ideal_aliases_inserted": false,
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/bind-tree-interface.py": "18f7aa43e7ddbe01bdee515560b29f8fe5b1b17b7f6fe5a1f65de91d9252b4ad",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/layout/result.json": "9425cc1f6af0c433fa8fbea8ba3dad50ac38d83f67b73ac0a5fdf9d49ebf1797",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/layout/nssoc_tx_tree4_core_v1.gds": "ce2d43a1c064a5bc39d4d71eb9a288ee7ed95294785b66bc63ba8ef792c67a65",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/physical/lvs/result.lvsdb": "bed3a51abb08672aed832d67bd03b0aef4bac8cead068f469f253ae66370e3a5",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/native05/result.json": "3f543d87c1c902802d8f4b9440b2e7620765187b62f353ca7ba18d3517b731da",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/device-locations01.json": "460e3fde625ff26f8682ee18f54a06b52fbb4b7a794bd2aefe33edb89256e7bd",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/anchors08.json": "747d8a24afb6f66a7ae9a6122b1e23e377d935ba1c4ad85f0828588c0034ae4c",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/binding96/binding01.json": "73ee69354d8765330164844d1174bb699d57544445c5e23500dc66f54f4c599c"
+          }
+        },
+        "scope": "Actual162-device four-input CML core and complete source-pinned metal RC graph, including real intermacro conductors. No body spreading resistance, RF qualification, loaded transient, full32:1/four-lane PHY or mainchip acceptance."
       }
     }
   },
