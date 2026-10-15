@@ -1,3 +1,9 @@
+## Cloud-only continuation: exact PLL handle and prepared full32 comparison
+
+PLL paired-engine38805695818/job116665834742/sourceb81fdfea7dec035e9d7bccda461b2fd51a6f1104 is live in native50ns step. Existing mainchip38788529905, wire38801162596 and backend38803757710 remain live; never duplicate. Local workspace is empty and no local native work is authorized.
+
+Prepared tree32-step-compare-cloud runs integrity/parser controls on registration push ONLY. Full comparison must wait for successful full34ns0.5ps and0.25ps captures and requires both summary and ordered-part-manifest SHA256 values. It verifies every archive part and combined ordering before restoring complete native waveforms, checks identical physical/runtime/source/bit provenance, then uses original full-window step_metrics without changing thresholds or removing startup samples. Memory-mapped native readers retain every vector. This is still per-macroRC with imposed clocks/ideal intermacro wires, not a whole-tree or PHY pass.
+
 ## Actual845 PLL paired-engine follow-up
 
 `pll-vbic-replay-cloud.yml` restores exact original actual84550ns source38672412524: parent91364a... unchanged, all32model files/3OSDIs, all495original probes, zero-sourceOP/102OFF commands, KLU and .3125ps preserved. Pristine source engine must reproduce original packaged waveform under the original1mV/1ps comparison plus a whole0–50ns1mV bound before patched50ns. Patch only simulatorQbcx companion expression; no physical loop, source, RC, pump/filter or acceptance-window change. Preserve full native captures via ordered hash-verified parts. This independent test measures whether the engine correction affects the clock circuit; it CANNOT close original800–900ns126.2157ppm acquisition failure or full845 safety. Full1us100ppm/50ps/slip/VCTRL gates, actual clock loading, PVT/CDR/x4 integration remain required.
