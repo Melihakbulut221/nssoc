@@ -21,7 +21,7 @@ TOP = 'nssoc_tx_tree4_core_v1'
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply'),default='baseline')
+    parser=argparse.ArgumentParser();parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
     profile=parser.parse_args().placement_profile
     tree = json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
     selected=tree if profile=='baseline' else tree['placement_variants'][profile]

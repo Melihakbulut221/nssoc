@@ -265,7 +265,7 @@ def assembled_tree_core(inputs, mode, profile='baseline'):
     """Restore only the exact complete physical core; never reuse child RC."""
     assert mode in ('compact','wire')
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
-    assert profile in ('baseline','compact_vertical','compact_m5_supply')
+    assert profile in ('baseline','compact_vertical','compact_m5_supply','compact_edge_supply')
     selected=spec if profile=='baseline' else spec['placement_variants'][profile]
     receipt=selected['verified_composition']
     assert receipt.get('placement_profile','baseline')==profile
@@ -636,7 +636,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--streams',type=int,choices=(4,8,16,32),default=4)
     parser.add_argument('--assembled-core',choices=('off','compact','wire'),default='off',help='Exact whole162-device physical core and its real intermacro RC')
-    parser.add_argument('--assembled-placement',choices=('baseline','compact_vertical','compact_m5_supply'),default='baseline')
+    parser.add_argument('--assembled-placement',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
     parser.add_argument('--stream-raw',action='store_true',help='Retain every native probe with immediate binary raw output, no in-simulator transient vector history')
     parser.add_argument('--condition',choices=tuple(CONDITIONS),default='nominal')
     parser.add_argument('--fault',choices=('none','swap_pre_a_select','disable_pre_b_bias','swap_leaf_select'),default='none')

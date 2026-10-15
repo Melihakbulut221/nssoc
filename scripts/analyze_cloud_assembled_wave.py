@@ -73,7 +73,7 @@ def verify_study_captures(selected, out):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply'),default='baseline')
+    parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
     args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())

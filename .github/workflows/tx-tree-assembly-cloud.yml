@@ -15,7 +15,7 @@ on:
       placement_profile:
         description: Physical parent placement; compact_vertical preserves all child device geometry and shortens actual intermacro wires
         type: choice
-        options: [baseline, compact_vertical, compact_m5_supply]
+        options: [baseline, compact_vertical, compact_m5_supply, compact_edge_supply]
         default: baseline
 permissions:
   contents: read
@@ -65,7 +65,7 @@ jobs:
             summary_source=hw/soc/out/cloud-tx-tree-assembly/composition-result.json
           fi
           cp "$summary_source" "${archive%.tar.gz}.summary.json"
-          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'wave_diagnosis' && '-wave-diagnosis' || inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}${{ inputs.placement_profile == 'compact_m5_supply' && '-compact-m5-supply' || inputs.placement_profile == 'compact_vertical' && '-compact-vertical' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
+          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'wave_diagnosis' && '-wave-diagnosis' || inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}${{ inputs.placement_profile == 'compact_edge_supply' && '-compact-edge-supply' || inputs.placement_profile == 'compact_m5_supply' && '-compact-m5-supply' || inputs.placement_profile == 'compact_vertical' && '-compact-vertical' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
       - name: Retain outputs if publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
