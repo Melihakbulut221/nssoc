@@ -32,7 +32,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Geometry checker and fault controls
+      - name: Pinned decoder geometry checker and fault controls
         run: |
           python3 -m pip install shapely==2.1.2
           python3 -m py_compile scripts/run_cloud_routed_geometry.py scripts/export_cloud_routed_shapes.py scripts/check_cloud_routed_shapes.py

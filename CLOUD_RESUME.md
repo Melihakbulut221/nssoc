@@ -1,3 +1,7 @@
+## Native antenna failures measured; pinned decoder correction
+
+routed-geometry38808634187/job116675907550 FAILED after completed antenna measurement:651net/809pin violations. Exact failed capture/summary retained in docs/evidence/cloud-routed-antenna-initial-20261016.json. Geometry never ran: pinned dcf36133 Python does not expose dbWirePathItr/dbShape/dbITermShapeItr. Updated export uses supported dbWireDecoder and native transformed dbITerm.getGeometries, actual segment end extensions/via boxes/RECT patches, and checks each native wire bounding box. Corrected workflow launch is a verifier fix, no physical circuit change; do not mark geometric continuity passed before actual readback.
+
 ## 2026-10-16 complete native mainchip DRT; independent verification starts
 
 38788529905/job116606725290 is now terminalSUCCESS, not live: native detailed-route DRVs0;113556wired nets;113791original instances and55NDR declarations preserved. Receipt docs/evidence/cloud-native-drt-complete-20261016.json pins permanent archive104854492bytes and routedODB4ecf6f... . Original global132overflow/NDR relaxation failure remains; this is not final acceptance. Do not rerun DRT. New routed-geometry-cloud restores this exact route for native antenna and actual metal/via/placedLEF-pin continuity screening. It excludes power/inter-net shorts, NDR spacing and transistorLVS; source is immutable. Qualified extracted STA remains next work.
