@@ -1,3 +1,11 @@
+## 2026-10-15 exact failed-guide full-chip detailed-route diagnosis
+
+A new hosted-only diagnostic uses the preserved run38448901835 placement (113791 instances, 132 global overflow) and original saved guides. It does not rerun FastRoute or waive its failed gate. Before routing, native readback must preserve exact cell/master/placement, pin connectivity, boundary geometry and per-net NDR width/spacing/hard-spacing declarations; native fault controls remove an NDR, disconnect a pin and move a cell. The complete guide file must match native loaded guide counts per net.
+
+Only after those checks does native detailed routing run with original database technology, default full iteration schedule and 2 threads. It retains native DRC/coverage and output ODB/DEF; after routing, the same logical/placement/NDR invariant is checked. Native DRV counts and wire existence are diagnostic evidence only: independent connectivity, geometric NDR, full DRC/LVS/antenna, qualified extraction and final original timing remain required. Full serial PHY remains separate and OPEN.
+
+Workflow `.github/workflows/failed-guide-drt-cloud.yml` runs on the scoped push. Do not duplicate while live. Source scripts and runtime/guide/source hashes are retained; all computation stays on GitHub.
+
 ## 2026-10-15 cloud-only handoff verified; isolated VBIC result retained
 
 Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` has zero entries, no native CAD processes were observed, and no project-named entries were present in `/tmp` or `~/.cache`. Original user documents and unrelated files are preserved. Retirement receipt asset 636387277 was downloaded into memory and SHA256-verified as `23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd`, status `COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE`. All source edits, CAD, simulations, tests and retained artifacts remain on GitHub; do not recreate a local checkout.
