@@ -1,3 +1,11 @@
+## 2026-10-15 — all4fine captures complete; new ground native RC passes
+
+UTC 2026-10-15T15:16:31.546477+00:00. ALL CLOUD. Source-bound receipts updated. Old compact_edge_supply fine run38750168595 now COMPLETE with4cases; final wire0.0625ps has545541rows to34ns, minimum margin100.729365286434mV, all original62HBT64MOS/interface gates pass, zero diagnostics. Summary644244334, archive644242621, publisherSHAdc6797cbff225651a65ad29af7a86e03b556521e2b443af365a27e1a3d6600ad. No numerical convergence claim until hosted pairwise comparison. Next step_comparison: compact_edge_supply/breakpoint_1as/fine.
+
+New compact_return_strap extraction38758132775 source2fb52e511ad39fff4bbdb025bb85c311fe6c2648 passed original graph/ownership/Cconservation and13native corruption controls. Actual11936R/7863C,162devices/22ports/41conductors/322probes. Summary644251994, archive644251725, SHA81cc6546dd641b5eedae697b8ca0fa2f6ea6c475314fa71da7dc625d931d7d7f. Receipt pinned. Physical archive verified by hosted extractor; this extraction archive publisher hash pinned and full readback required by next hosted composition. Next composition compact_return_strap then all original electrical gates/corners including preserved failures. No qualified substrate/RF/EM/fullPHY or mainchip acceptance.
+
+Mainchip upper_three38731744914/116410943697 remains live. Preserve runtime; inspect effectiveNDR GRT-0273 before route acceptance. Full serial PHY/mainchip route/final timing goal OPEN.
+
 ## 2026-10-15 — actual return-strap native DRC/LVS passed; next fresh cloud extraction
 
 Checkpoint UTC 2026-10-15T15:11:18.585028+00:00. ALL CLOUD; local workspace verified empty. Native physical **38756076217** source8c6ce7b61ed5e8f96fcf02ce44fea5eb3ed03424 completed: **560categoryDRC zero**, hierarchical and flat **162deviceLVS match**, all5physical fault controls reject. New ground geometry receipt pinned in compact_return_strap. Summary644218630 hash8e1f2d5a525668bfcf1e4a2b3db5a14c137a939c0bcaa813e59529f05bbf8151 independently read back; archive644218282 publisherSHAa8aaf072fc63b78c34f939a8a35e0d2211a66ad1f6ad65f4217b7635f733714e,1364744bytes. Full archive/native output hash readback delegated to next hosted extraction. Source validation38756082156 SUCCESS.
