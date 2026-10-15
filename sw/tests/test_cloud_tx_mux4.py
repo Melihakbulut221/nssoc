@@ -729,6 +729,12 @@ def test_v11_data_area_binds_current_density_to_changed_emitters(tmp_path,nx):
         with pytest.raises(AssertionError):mux4.diagnostic_v11_data_area(broken,nx)
 
 
+@pytest.mark.parametrize('reported_variant,expected_variant', [
+    ('critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series'),
+    ('critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'),
+    ('critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs','critical_buses_kelvin_low_ports_loads_shunts_series'),
+    ('critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs','critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'),
+])
 @pytest.mark.parametrize('reported_boundary,reported_policy,expected_policy', [
     (None,None,'left'), (False,None,'left'), (True,None,'left'),
     (True,'left','left'), (True,'nearest_pair','nearest_pair'),
@@ -740,12 +746,13 @@ def test_v11_data_area_binds_current_density_to_changed_emitters(tmp_path,nx):
     (True,'nearest_pair_tight','nearest_pair'), (True,'nearest_pair_tight','left'),
 ])
 def test_physical_binding_rejects_old_pin_geometry_even_with_valid_hashes(
-        tmp_path, monkeypatch, reported_boundary, reported_policy, expected_policy):
+        tmp_path, monkeypatch, reported_boundary, reported_policy, expected_policy,
+        reported_variant, expected_variant):
     import hashlib, io, json, shutil, tarfile
     model = (ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v10.spice').read_bytes()
     outputs = {'mux54-compact01.spice': hashlib.sha256(model).hexdigest()}
     report = dict(circuit_profile='final_drive_v10', outputs=outputs,
-                  variant='critical_buses_kelvin_low_ports_loads_shunts_series')
+                  variant=reported_variant)
     if reported_boundary is not None:
         report['boundary_pins'] = reported_boundary
     if reported_policy is not None:
@@ -761,9 +768,10 @@ def test_physical_binding_rejects_old_pin_geometry_even_with_valid_hashes(
         status='PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT',
         receipt=dict(url='unused',sha256=hashlib.sha256(archive.read_bytes()).hexdigest(),bytes=archive.stat().st_size),
         summary_sha256=hashlib.sha256(raw_report).hexdigest(),outputs=outputs,
-        variant=report['variant'],boundary_pins=True,boundary_pin_policy=expected_policy)))
+        variant=expected_variant,boundary_pins=True,boundary_pin_policy=expected_policy)))
     monkeypatch.setattr(mux4,'fetch',lambda url,digest,path:shutil.copyfile(archive,path))
-    if reported_boundary is not True or (reported_policy or 'left') != expected_policy:
+    if (reported_boundary is not True or (reported_policy or 'left') != expected_policy
+            or reported_variant != expected_variant):
         with pytest.raises(AssertionError):
             mux4.physical_macro(tmp_path,'physical_compact',spec,'final_drive_v10','restored')
     else:
