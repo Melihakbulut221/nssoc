@@ -1,3 +1,17 @@
+## 2026-10-15 — returnstrap does NOT fix hotres; numerical peak is early startup
+
+UTC 2026-10-15T15:44:51.352571+00:00. ALL CLOUD. New measured evidence preserved, no acceptance gate changes.
+
+New **compact_return_strap** nominal wire38760721744/116510975999 COMPLETE: componentPASS, minmargin241.303595309mV, finalCM1.899492141..1.937652154V, all62HBT64MOSpass, zero diagnostics. Study nowcomplete2cases. Hotwire38760726764 cases pinned into SAMEpartialstudy:
+- hot_low_res_bcs116510995555 remains **FAIL**: margin133.097640691mVpasses, finalCMmin**1.784024457099V**fails1.8Vfloor; xd0006VCEmin**0.392685020224V**, xd0007**0.390512435002V**fail0.4Vfloor. Slightly worse than oldedgegeometry0.393965736/0.391471681V. Real groundstrap is NOT adopted as successfulrepair, despite nativephysicalRCpass. Need exact emitter/collector currents/voltages and nativepath comparison before more geometry.
+- hot_low_hbt_bcs116510995390 componentPASS, margin222.040388714mV, CM1.808307639..1.844095203V.
+- coldwire jobs116510995594/116510995729 remainLIVE lastcheck. Append their terminal receipts; preserve compactcoldfailures alreadypinned.
+Next dispatch wave_diagnosis compact_return_strap/conditionhot_low_res_bcs/native_res/default. It reads exact failednewwirecapture and computes actual groundpaths for comparison with old ground_path_diagnosis38751904886; no alteredRsubstitution or acceptance.
+
+**Peak diagnostic38761402814/116513324545 COMPLETE**, source2b43250..., full4sourcecapturesreadback and allnativeoutput/review matches. Failure unchanged: compactv(mr)**8.906956733mV at0.595785ns**, wirev(xtree.t007_b)**8.111490836mV at0.714410ns**. Compactmr above1mV from0.512285..0.788410ns; wiret007b from0.586410..0.917660ns. Originalnative neighbors show sustainedstartupoffset, not just isolated interpolationpoint. Other internalpeaknodes around0.686..0.689ns. Fullwitnesses pinned in newtimestep_comparisonsreceipt. Do NOT discardstartupwindow. Nextnumericalcandidate: combine existing tight_trap tolerances with verified minbreak1e-18; earlier tighttraponly failedPWLbreakpoints whereas minbreakalone fixesendtime butnotstartupconvergence. This combinedprofile is NOTyet implemented. Add actualnative optionreadback/invariancechecks and cloudtests before fullpairedcaptures; preservealloldfailures.
+
+Mainchip upper_three38731744914/116410943697 still running; no detailedroute/extractedtiming or fullPHYclaim. GoalOPEN; localempty.
+
 ## 2026-10-15 — original cold failures preserved; new wire trials and peak diagnosis LIVE
 
 UTC 2026-10-15T15:41:04.425761+00:00. ALL CLOUD. Diagnostic source2b43250da0da0c3453fa128ca6519c2b4725c4f4 now reports exact maximum-error native time/index/value, native neighbors, fine interpolation bracket and full-window violation span. All original limits/windows unchanged. Validation38760959809/116511783482 SUCCESS:588tests,1positive/5negative comparison controls, injected peak time/value recovered.
