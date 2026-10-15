@@ -21,7 +21,11 @@ def main():
     p.add_argument('--prepared-extraction', action='store_true',
                    help='Consume source-bound native extraction from this same hosted job')
     p.add_argument("--boundary-pins", action="store_true", help="Bind only the exact fresh boundary-pin extraction")
+    p.add_argument("--boundary-policy", choices=("left", "nearest_pair"), default="left")
     args = p.parse_args()
+    assert args.boundary_pins or args.boundary_policy == "left", "Boundary policy requires boundary pins"
+    boundary_key = ("boundary_nearest_variants" if args.boundary_policy == "nearest_pair" else "boundary_variants") if args.boundary_pins else "variants"
+    expected_boundary_policy = args.boundary_policy if args.boundary_pins else "none"
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
     dest = ROOT / 'cloud-tx-layout-composition'
@@ -29,8 +33,8 @@ def main():
     archive = dest / 'input.tar.gz'
     source = (dict(prepared_extraction_result_sha256=sha(out / 'extraction-result.json'),
                    job_commit=os.environ.get('GITHUB_SHA')) if args.prepared_extraction else
-              (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['boundary_variants' if args.boundary_pins else 'variants'][args.variant])
-    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, adopted=False, source=source)
+              (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])[boundary_key][args.variant])
+    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, boundary_pin_policy=expected_boundary_policy, adopted=False, source=source)
 
     def restore(receipt, directory):
         fetch(receipt['url'], receipt['sha256'], archive)
@@ -52,6 +56,7 @@ def main():
             restore(result['source'], ROOT)
         extraction = json.loads((out / 'extraction-result.json').read_text())
         assert extraction.get('boundary_pins', False) is args.boundary_pins
+        assert extraction.get('boundary_pin_policy', 'left' if args.boundary_pins else 'none') == expected_boundary_policy, 'Physical pin policy mismatch; fresh source-bound geometry/RC required'
         assert extraction['variant'] == args.variant
         assert extraction.get('circuit_profile','baseline') == args.circuit_profile
         assert extraction['status'] == 'PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'

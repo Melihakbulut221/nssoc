@@ -4,6 +4,11 @@ name: tx-layout-waveform-cloud
 on:
   workflow_dispatch:
     inputs:
+      boundary_policy:
+        description: Exact physical boundary access policy; nearest_pair requires its own verified source receipt
+        type: choice
+        options: [left, nearest_pair]
+        default: left
       boundary_pins:
         description: Bind only the exact fresh boundary-pin extraction
         type: boolean
@@ -25,7 +30,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-layout-waveform-cloud-${{ github.ref }}-${{ inputs.circuit_profile }}-${{ inputs.boundary_pins }}
+  group: tx-layout-waveform-cloud-${{ github.ref }}-${{ inputs.circuit_profile }}-${{ inputs.boundary_pins }}-${{ inputs.boundary_policy }}
   cancel-in-progress: false
 jobs:
   composition:
@@ -53,7 +58,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Bind native devices and actual candidate parasitics
-        run: python3 scripts/run_cloud_tx_layout_composition.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}' ${{ inputs.boundary_pins && '--boundary-pins' || '' }}
+        run: python3 scripts/run_cloud_tx_layout_composition.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}' ${{ inputs.boundary_pins && '--boundary-pins' || '' }} --boundary-policy '${{ inputs.boundary_policy || 'left' }}'
       - name: Keep composition for hosted transient job
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -75,7 +80,7 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-layout-composition/result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && format('compose-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'compose-v8-direct-supply' || format('compose-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('compose-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('compose-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'compose-v8-direct-supply' || format('compose-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
   native-transient:
     if: ${{ !inputs.compose_only && (inputs.circuit_profile == 'baseline' || inputs.circuit_profile == '') }}
     needs: composition

@@ -8,6 +8,11 @@ on:
         description: Recover exact completed run38521648860 artifact without rerunning extraction
         type: boolean
         default: false
+      boundary_policy:
+        description: Exact physical boundary access policy; nearest_pair requires its own verified source receipt
+        type: choice
+        options: [left, nearest_pair]
+        default: left
       boundary_pins:
         description: Extract only the pinned physically verified boundary-pin geometry
         type: boolean
@@ -25,7 +30,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-layout-extraction-cloud-${{ github.ref }}-${{ inputs.circuit_profile }}-${{ inputs.boundary_pins }}
+  group: tx-layout-extraction-cloud-${{ github.ref }}-${{ inputs.circuit_profile }}-${{ inputs.boundary_pins }}-${{ inputs.boundary_policy }}
   cancel-in-progress: false
 jobs:
   native-extraction:
@@ -55,7 +60,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Extract new geometry and check every native RC edge and thirteen fault controls
-        run: python3 scripts/run_cloud_tx_layout_extraction.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}' ${{ inputs.boundary_pins && '--boundary-pins' || '' }}
+        run: python3 scripts/run_cloud_tx_layout_extraction.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}' ${{ inputs.boundary_pins && '--boundary-pins' || '' }} --boundary-policy '${{ inputs.boundary_policy || 'left' }}'
       - name: Keep full geometry, timing, proof and failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -75,7 +80,7 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/extraction-result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && format('extract-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'extract-v8-direct-supply' || format('extract-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('extract-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('extract-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'extract-v8-direct-supply' || format('extract-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
 
   recover-direct-extraction:
     if: inputs.recover_direct_extraction

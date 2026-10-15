@@ -7,6 +7,8 @@
 
 ### Newest state — supersedes every older live statement below
 
+Nearest-pair physical trials dispatched: cascade15838685490747 and V1038685502717, both exact source9abea4390d045dae5987513f81e0f27cad6a07b3, boundary_pins=true,boundary_policy=nearest_pair and original circuit/variant. These are NOT passed yet. Extraction/composition now carry explicit boundary_pin_policy and separate boundary_nearest_variants receipt tables. Old left-pin receipts cannot satisfy nearest_pair, including prepared same-job sources. Populate new exact receipts ONLY after native physical/RC acceptance, then dispatch with matching boundary_policy. No native extraction dispatch until receipts exist. Original left recipes remain unchanged and usable for control. All execution remains hosted; fullPHY/mainchiproute/finalSTA remainOPEN.
+
 Prepared opt-in boundary_policy=nearest_pair for both exact cascade158/direct-supply and V10/low-ports-loads-shunts-series macros. Current all-left clock pins shift about204/242um; new generator selects left/right by minimum pair-total pin displacement, keeps differential pairs on one side and original local devices/metal/vias intact. Actual native generator asserts12 unique public ports, both bounding edges and reduced total displacement. Original left policy remains available byte-for-byte in generated geometry. No electrical adoption: run native560-category DRC, hier/flat54-device LVS and allfive fault controls, then fresh policy-bound RC/composition/full original loaded waveform gates. Crossed isolation38684711897/38684722524 and other original livejobs remain unchanged. All operations cloud-only. FullPHY/mainchiproute/finalSTA remainOPEN.
 
 2026-10-15T05:04:06.958906+00:00 — Cloud-only continuation:
