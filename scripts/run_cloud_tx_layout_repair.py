@@ -50,7 +50,7 @@ def main():
         args.variant = 'critical_buses_kelvin_supply_direct'
     direct_final_supply = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct'
     if direct_final_supply:
-        assert args.circuit_profile == 'final_drive_v8', 'Direct supply trial binds exact actual V8 devices'
+        assert args.circuit_profile in ('final_drive_v8','final_drive_v10'), 'Direct supply binds an explicit unchanged V8/V10 circuit'
         args.variant = 'critical_buses_kelvin_low_ports_loads_shunts_series'
     geometry_variant = args.variant
     if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
@@ -611,7 +611,8 @@ def main():
             assert (args.circuit_profile, requested_variant) in (
                 ('cascade158','critical_buses_kelvin_supply_direct'),
                 ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series'),
-                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'))
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'),
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series_direct'))
             before = '    assert set(ports) == set(PORTS)\n'
             assert source.count(before) == 1
             boundary_code = '    # Real TM2 boundary access; no devices, local wires or vias removed.\n    boundary_x = round((top.dbbox().left - 20.0) / 0.005) * 0.005\n    boundary_pin_routes = []\n    for dt in (2, 25):\n        li = layout.layer(layers["TopMetal2"], dt)\n        assert sum(1 for _ in top.shapes(li).each()) == len(PORTS)\n        top.shapes(li).clear()\n    old_ports = dict(ports)\n    for net, (pin_metal, old_pin) in old_ports.items():\n        assert pin_metal == "TopMetal2" and boundary_x < old_pin.left\n        y = old_pin.center().y\n        width = 32.0 if net in ("avdd", "avss") else 4.0\n        box(7, boundary_x, y-width/2, old_pin.right, y+width/2)\n        pin = pya.DBox(boundary_x, y-0.6, boundary_x+2.0, y+0.6)\n        ports[net] = ("TopMetal2", pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 2)).insert(pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 25)).insert(\n            pya.DText(net, boundary_x, y))\n        boundary_pin_routes.append(dict(net=net, old_pin_um=str(old_pin),\n            new_pin_um=str(pin), width_um=width, layer="TopMetal2"))\n    assert len(boundary_pin_routes) == len(PORTS) == 12\n    assert abs(top.dbbox().left-boundary_x) < layout.dbu/2\n    assert len({round(b.center().y/layout.dbu) for _, b in ports.values()}) == 12\n'
