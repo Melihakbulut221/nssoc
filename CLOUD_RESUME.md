@@ -1,3 +1,9 @@
+## Live handles after complete setup/hold diagnosis
+
+Current corrected three-buffer physical run38821357967/job116718426829, source9a137967882c3e00a8cb6980ff84b300fdfaa3dc. Originaltwo-buffer38813118414/job116691024892 stilllive. Actual845patched1us38813902351/job116693663825 and full32Sparse38810158966/job116681265012,38810163678/job116681243193 live. No duplicates. Unsafeproxy-identity predecessor38821022638 is terminalCANCELLED; correctedvariant checks exactnative(instance,pin)tuple.
+
+Completedcensus38819589884 andall546conflictreports38820661033 establish22544endpoints,91holdfailures and90ofthosealsofailsetup;68sharedworstslowpaths startpcie_retrain_done_i. Newthirdbuffer targets that common loadedroot, with fullreroute/freshRC/unchangedallcornerSTA gates; notadopted. Originalsetup-11.940513ns/hold-.151066ns remain latest completedphysicaltiming. Compare final2/3bufferresults, then repeat completeendpointcensus/geometry/antenna/annotation before anyacceptance. FullserialPHY andfinaltimingstillopen. SmallJSON/source/log inspection inRAM only; no localprojectfiles orCAD. Authoritative machinecheckpointupdatedwithcurrenthandles.
+
 ## Verified all91hold/setup conflict targets; physical candidate preparation hardened
 
 Conflict38820661033/job116716178309 COMPLETE, sourcee11dd50fbffa0d797190906c4538795a2e34cb23; summaryaf4c313bfafbfa842d4cc071d37ec549e069823a98ed8ddd3afe722dc8ca21cf, archived849f5d0d0d20671862351984561487171358ab0dea9b72623ecc63b24a90ee2. All546corner-delay reports exactly match pinned float32 native rendering of rawSI; original source unchanged and baseline reproduced.91target topology is available directly in summary.hold_targets.68worstslowpaths startpcie_retrain_done_i; verified smallbuf2 drives0.424pF. Three-buffer profile is aligned to that common cause.

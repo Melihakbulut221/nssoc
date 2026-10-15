@@ -103350,7 +103350,7 @@
     "scope": "Transport/control proof only; not physical, numerical waveform or PHY acceptance."
   },
   "latest_cloud_checkpoint_20261016": {
-    "observed_at": "2026-10-15T22:19:53.086088+00:00",
+    "observed_at": "2026-10-15T23:06:44.974248+00:00",
     "cloud_only": true,
     "local_workspace_entries": 0,
     "active_or_recent": [
@@ -103371,7 +103371,7 @@
       },
       {
         "run": 38810158966,
-        "topic": "full32 original Sparse0.5ps",
+        "topic": "full32 Sparse0.5ps",
         "status": "in_progress",
         "conclusion": null,
         "source_head": "f4de0a9f6cdb873916671b3f1ec7e1cf60071e87",
@@ -103394,7 +103394,7 @@
       },
       {
         "run": 38810163678,
-        "topic": "full32 original Sparse0.25ps",
+        "topic": "full32 Sparse0.25ps",
         "status": "in_progress",
         "conclusion": null,
         "source_head": "f4de0a9f6cdb873916671b3f1ec7e1cf60071e87",
@@ -103432,7 +103432,7 @@
       },
       {
         "run": 38813118414,
-        "topic": "physical buffer ECO",
+        "topic": "original two-buffer physical ECO",
         "status": "in_progress",
         "conclusion": null,
         "source_head": "3b41d9ecccac9f403644a9c7bcab883cf184fe40",
@@ -103449,7 +103449,7 @@
       },
       {
         "run": 38813902351,
-        "topic": "patched PLL full1us",
+        "topic": "actual845 patched PLL full1us",
         "status": "in_progress",
         "conclusion": null,
         "source_head": "be12960ed8a6249fb33764f5730b68192452a5d5",
@@ -103475,6 +103475,68 @@
             "id": 116700606177,
             "status": "completed",
             "conclusion": "success",
+            "active_steps": []
+          }
+        ]
+      },
+      {
+        "run": 38821357967,
+        "topic": "three-buffer PCIe control-load physical ECO",
+        "status": "in_progress",
+        "conclusion": null,
+        "source_head": "9a137967882c3e00a8cb6980ff84b300fdfaa3dc",
+        "jobs": [
+          {
+            "id": 116718426829,
+            "status": "in_progress",
+            "conclusion": null,
+            "active_steps": [
+              "Prove three source-measured load repairs, fully reroute, reextract and compare all corners"
+            ]
+          }
+        ]
+      },
+      {
+        "run": 38819589884,
+        "topic": "complete actual-route endpoint census",
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "02344a922a5c04c4e2230fe1f425a3b4670e4c83",
+        "jobs": [
+          {
+            "id": 116712626062,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          }
+        ]
+      },
+      {
+        "run": 38820661033,
+        "topic": "complete all91setup-hold conflict reports",
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "e11dd50fbffa0d797190906c4538795a2e34cb23",
+        "jobs": [
+          {
+            "id": 116716178309,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          }
+        ]
+      },
+      {
+        "run": 38821022638,
+        "topic": "cancelled unsafe proxy-identity predecessor",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "source_head": "e4733ef43ee48d048462479ece785b30f2bb0f43",
+        "jobs": [
+          {
+            "id": 116717355203,
+            "status": "completed",
+            "conclusion": "cancelled",
             "active_steps": []
           }
         ]
@@ -103581,6 +103643,37 @@
       "full_phy_accepted": false,
       "final_timing_complete": false,
       "meaning": "All1065 reported drivers classified:302connected without sinks and763disconnected; none drives an unannotated load. Exact113556SPEF net-id/name mappings verified. This resolves this annotation uncertainty for the original route only, not functional interface completeness or final STA/RC qualification."
-    }
+    },
+    "observed_branch_head": "9a137967882c3e00a8cb6980ff84b300fdfaa3dc",
+    "actual_route_endpoint_census": {
+      "run": 38819589884,
+      "summary_sha256": "54a23354fc53eb4811b574a1c1bbd70aa413d83463e5165f240b8925c10e00ff",
+      "endpoints": 22544,
+      "corner_delay_pairs": 135264,
+      "hold_negative_fast": 91,
+      "setup_negative_slow": 9601,
+      "setup_negative_typical": 1285,
+      "setup_negative_fast": 53,
+      "unconstrained_hold": 1117,
+      "unconstrained_setup": 1072,
+      "negative_hold_also_negative_setup": 90,
+      "exact_native_identity_verified": true,
+      "source_unchanged": true
+    },
+    "setup_hold_conflict_paths": {
+      "run": 38820661033,
+      "summary_sha256": "af4c313bfafbfa842d4cc071d37ec549e069823a98ed8ddd3afe722dc8ca21cf",
+      "targets": 91,
+      "reports": 546,
+      "source_unchanged": true,
+      "all_raw_SI_to_native_report_representations_exact": true,
+      "pcie_retrain_done_worst_slow_startpoints": 68
+    },
+    "next_actions_20261016": [
+      "Observe original2buffer38813118414 and corrected3buffer38821357967; do not duplicate live runs. Require completed0DRV freshnominalRC/allcorner reports, then compare all endpoint setup/hold changes and independently geometry/antenna/annotation before any adoption.",
+      "91holdtargets include90setupviolations. Use complete source-bound topology and all546reports; do not blindly insertdelaycells, relaxclocks or call1endpointfix fullholdclosure.",
+      "Observe live actual845patched1us38813902351 and full32Sparse38810158966/38810163678; only launch saved full-stepcomparison after both full32captures pass unchangedgates.",
+      "Keep all work cloud-only; no local checkout/CAD/tests/archive downloads. FullserialPHY,x4,qualifiedRC/SRAM/padESD/mainchipLVS/finaltiming remain unproven."
+    ]
   }
 }
