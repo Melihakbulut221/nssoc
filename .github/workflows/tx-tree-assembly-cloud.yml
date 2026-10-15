@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: Native physical assembly or exact source-bound complete wire extraction
+        description: Native physical assembly, complete wire extraction or162-device composition
         type: choice
-        options: [physical, extraction]
+        options: [physical, extraction, composition]
         default: physical
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
           python-version: '3.12'
       - name: Verify native runtime and controller syntax
         run: |
-          python3 -m py_compile scripts/run_cloud_tx_tree_assembly.py scripts/run_cloud_tx_tree_extraction.py
+          python3 -m py_compile scripts/run_cloud_tx_tree_assembly.py scripts/run_cloud_tx_tree_extraction.py scripts/run_cloud_tx_tree_composition.py
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
           python3 -m pip install networkx==3.4.2
@@ -42,7 +42,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Assemble real GDS conductors and compare all162devices including81substrate contacts
-        run: python3 scripts/${{ inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }}
+        run: python3 scripts/${{ inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }}
       - name: Preserve all physical successes and failures
         if: always()
         env:
@@ -54,9 +54,11 @@ jobs:
           summary_source=hw/soc/out/cloud-tx-tree-assembly/result.json
           if [ '${{ inputs.stage }}' = extraction ]; then
             summary_source=hw/soc/out/cloud-tx-tree-assembly/extraction-result.json
+          elif [ '${{ inputs.stage }}' = composition ]; then
+            summary_source=hw/soc/out/cloud-tx-tree-assembly/composition-result.json
           fi
           cp "$summary_source" "${archive%.tar.gz}.summary.json"
-          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'extraction' && '-extraction' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
+          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
       - name: Retain outputs if publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
