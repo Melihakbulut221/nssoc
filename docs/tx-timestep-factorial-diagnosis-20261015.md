@@ -17,3 +17,7 @@ The refinement study holds TSTEP fixed, halves trap TMAX twice more, and compare
 ## Refinement result
 
 Run38778734039 failed to show convergence: successive trap differences are8.906847247,9.891831193 and12.234292598mV. Gear2 coarse/fine difference is8.317086327mV. No new long full-wave run is justified by this result. The native solver output says Sparse1.3. A separate KLU comparison now tests backend dependence with original circuit and tolerances, explicit availability preflight and actual native backend readback. [Official ngspice documentation](https://ngspice.sourceforge.io/applic.html) describes KLU as an optional alternative; its availability and numerical behavior in this executable must be measured.
+
+## Matrix backend result
+
+Run38780011601 completed the actual Sparse/KLU comparison. Native backend readbacks and all original startup controls passed. Backend differences were2.21823e-13V and3.39395e-13V at the two TMAX values; both backends retained8.906847247mV coarse/fine disagreement. Backend choice is ruled out as the significant source of this discrepancy. All three diagnostic receipts preserve original data and explicitly deny full-wave or physical acceptance. Next work must investigate frozen model evaluation and charge/bypass behavior with measured evidence, rather than repeat tighter timesteps or another backend.

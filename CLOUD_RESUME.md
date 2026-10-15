@@ -1,3 +1,15 @@
+## 2026-10-15 — native matrix backend ruled out; all three startup studies complete
+
+ALL CLOUD. Local workspace remains empty. Full serialPCIePHY, detailed mainchip routing and final extracted setup/hold remain OPEN. Prior turn made concrete progress through three completed hosted diagnostics and source-bound receipts; this is not an external blocker.
+
+Matrix study **38780011601 /116577469224** COMPLETE: KLU native availability, actual per-case backend readback, all62OFF flags, original circuit/model hashes, solver settings and zero operating point verified. Four complete native prefixes preserved. Receipt `docs/evidence/pcie-timestep-matrix-solver-20261015.json`. Sparse/KLU voltage differences are only2.21823e-13V at0.125ps and3.39395e-13V at0.0625ps. Both retain the same8.906847247mV TMAX difference. Therefore backend choice does not explain the discrepancy. Do not repeat this study or adopt KLU as a convergence fix.
+
+Earlier factorial38777870655 ruled out TSTEP (37.6368nV); refinement38778734039 worsened trap discrepancies8.9068->9.8918->12.2343mV and Gear2 remained8.3171mV. All original0–34ns failures remain. No shifted startup/window/gate, no physical acceptance. Shortened baseline reproduces original prefix exactly through1.1ns.
+
+Next investigate the frozen device/model transient evaluation and bypass/charge handling rather than another blind finer full-wave run. Native47 option readback has chgtol1e-14C, Sparse1.3 baseline, no conductance shunt. Exploratory source read of ngspice47 HICUM2 shows bypass disabled under selfheating and a CKTterr charge list; this does not yet establish which model settings are active or a bug. Verify frozen model parameters and actual option readback before any new hypothesis. A labelled isolated component diagnostic can identify the source without changing full-circuit acceptance. No bypass/model change implemented yet.
+
+Mainchip **38731744914 /116410943697** remains in_progress as live-verified when this checkpoint was written; started12:03UTC. Preserve it. On terminal completion inspect complete native NDR/overflow/STA and failure artifacts. Its older controller needs manual GRT0273 screen. Global guides never close detailed metal or final extracted timing. Do not duplicate healthy jobs.
+
 ## 2026-10-15 — finer trap and Gear2 do not converge; matrix backend diagnosis prepared
 
 ALL CLOUD, local workspace empty. Full goal OPEN.
