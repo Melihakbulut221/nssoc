@@ -1,3 +1,13 @@
+## Two-buffer native route complete; independent allendpoint comparison rejects adoption
+
+Two-buffer38813118414/job116691024892 COMPLETE0DRV, summary4c85988b67da484caef77960d0a8b71587e10255337ea92783b7fca11dd80cdb, partsmanifest252d118ba5ac9c5fb00156af6bbcd6dd836c29b718ad389f51fb6371efed013b, archive03c6e76d88fe44b586783bfc48b8f13999bb066565ede01ccf3847dfcec0f856. Fresh113558netSPEF2034f871b5be6cd47b2f26c1d80868236b5d1939228721332b5d93977b81aa91. Worstsetup improves-11.940513->-11.731633ns; worsthold-.151066->-.132041ns. NOTADOPTED.
+
+Independent22544endpoint/135264row comparison38823446292/job116725381178 COMPLETE, summary1b267369d5035e3d4a27dafa4650e62a7f48e32849b0e5afde0f549a60eb5b16; archive781abb86ba8d9ed64324659acc1a7bc90292a0f1250493c6e1514f4279e47e6b. Slowsetup9601->9557; typicalsetup1285->1070; fastsetup53->59; fasthold91->94; typicalhold0->1. Nolostconstraints; manyendpointregressions. Geometry/antenna/annotationstillrequireindependentcandidatechecks beforeadoption. FullPHY/finaltimingnotclosed.
+
+Actualworstremainingpath startsretrain_done, butdominant7.397814ns stageisnor3_1$1741541/Y driving0.541558pF (inputcontrolrootonly~0.76ns). Source-logSHA-verified scan found50original weak heavilyloaded outputs acrossreportednegativepaths, 43aftertwo-buffer route; detailedreceipt cloud-routed-high-load-targets-20261016.json retains everymeasuredline. This is a candidatehypothesis, not exhaustiveallnets nor nativeconnectivityapproval. Next consider batchrepairwithexactnativefanout/master/pin/signal/NDR checks and allsameproof/freshRC/endpointgates; don't blindlyinsertdelaycells on90setup-failingholdtargets.
+
+Three-buffer expandedplacement38822066992/job116720743634 stilllive; PLL38813902351 andfull32Sparse38810158966/38810163678 stilllive. Do not duplicate. Fullcomparison workflowcontrols latest38823160385 passed; use it for completed3buffer too. Allworkcloudonly; local0entries.
+
 ## Comparison controls passed; preserve original archive inventory semantics
 
 Registration38822999217/sourceee407ff552f0802aed6f9e13605e0f3329f78720 controlsjob116723794430 PASS; fullcomparisoncorrectlySKIPPED until completedphysicalsourcepins available. Refined selection uses frozenECOsummary's embeddedlogicreceipt because originaloutputs excludesALLbasenamesresult.json (includinglogic/result.json); never inventa nestedhash. Geometryproofselectedhash additionallymustmatchembeddedgeometry. Own-pathpush rerunscontrols for finalsource. FullnativeECOcomparison stillpending original38813118414/control38822066992; bothlive, no duplicates. No finaltiming/fullPHYclaim.
