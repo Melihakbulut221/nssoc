@@ -1,3 +1,11 @@
+## Wire provenance endpoint failure preserved; matched-duration replay required
+
+Wire38799068525/job116643041356 FAILED before any patched simulation. Pristine native capture completed, but its final1.2ns sample differs by3.26226nV from the interpolated original34ns packaged capture (1nV guard). Receipt: docs/evidence/pcie-vbic-wire-endpoint-20261015.json. Do not call it a physical pass or ignore the failed guard.
+
+Controller now first runs the SAME packaged binary at identical1.2ns TSTOP. Retain its entire comparison to the original full capture; require original native times/values to match until within two native steps of the endpoint. Then require pristine versus packaged identical-duration captures to pass the unchanged1nV guard before patched full34ns cases. No original engineering threshold or full-wave window changed. Dispatch one corrected wire job only; previous job is terminal.
+
+Independent32:1 source/runtime/backend study38800540477 was queued at last check; source09e6e23d6f6c6b041ef6eb0589c96b5910e984c2. Mainchip38788529905/job116606725290 remains live, never duplicate. Full goal remains OPEN; all work stays cloud-only.
+
 ## 2026-10-15 larger frozen-tree computational follow-up
 
 Extracted four-input wire run38799068525/job116643041356 remains live at sourcec0d82b1fcf65c5dca421bde3345ffa221b7fa452; mainchip38788529905/job116606725290 remains live. Never duplicate either.

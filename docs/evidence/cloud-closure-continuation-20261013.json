@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-15T20:04:39.837286+00:00",
+  "as_of": "2026-10-15T20:19:51.239880+00:00",
   "turn_classification": "progress",
   "goal_status": "active",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
@@ -102,7 +102,7 @@
   "next_actions": [
     "All work stays on GitHub-hosted runners. Local workspace remains empty; no local checkout, CAD, tests or downloaded archives. Preserve unrelated files.",
     "Poll mainchip38788529905/job116606725290. Never duplicate a live run. Exact132-overflow guides feed only physical diagnosis; retain original failed global-route gate. Require routed geometry, independent connectivity/NDR/DRC/LVS/antenna and extractedSTA before closure.",
-    "Find vbic-full-wire-cloud run at latest own-workflow push. Initial manual dispatch returned404 and started nothing; own-path push now registers and starts it with pinned passing compact summary SHA d0ea24db033fa1f5964b5cae3f12ed2831af3fbd241074638a7d38073534c6f4. Require pristine original-wire playback then both full34ns original engineering and numerical gates. Keep all native failures.",
+    "Wire38799068525 is terminal failure at1nV provenance gate (3.26226nV at forced1.2ns endpoint). Corrected controller must run packaged and pristine with identical short TSTOP, preserve the original-full mismatch and verify exact common native prefix. Dispatch once at current source, record handle, then require original full34ns engineering/numerical gates. Never weaken1nV or original acceptance gates.",
     "Compact full-window38796689216 passed all original engineering/numerical gates, source hashes unchanged; receipt docs/evidence/pcie-vbic-full-window-20261015.json. Shared-controller38797659530 passed600tests. Retain earlier failed final sha(str) report as history, fixed Path check now passed.",
     "If compact full-window original gates and numerical comparison pass, run same paired patched engine with pristine controls on unchanged extracted-wire full34ns model, then independent original corners and larger serializer tree. Preserve actual geometry and device/source/model hashes. No fullPHY claim from compact serializer evidence.",
     "If any native or engineering gate fails, diagnose actual evidence without changing limits, dropping startup or resampling source phases. Do not repeat rejected blind tolerance refinement.",
@@ -103199,5 +103199,37 @@
     "compact_numerical_component_screen_passed": true,
     "summary_sha256": "d0ea24db033fa1f5964b5cae3f12ed2831af3fbd241074638a7d38073534c6f4",
     "evidence": "docs/evidence/pcie-vbic-full-window-20261015.json"
+  },
+  "wire_endpoint_provenance_failure_20261015": {
+    "run": 38799068525,
+    "job": 116643041356,
+    "source_head": "c0d82b1fcf65c5dca421bde3345ffa221b7fa452",
+    "status": "FAIL_OR_ERROR",
+    "error": "AssertionError('Pristine provenance control must pass before patch experiment')",
+    "accepted": false,
+    "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38799068525-1-vbic-full-wire/vbic-full-wire-38799068525-1.summary.json",
+    "summary_sha256": "a0a7e63bf08808e8d32824c4de90d4aa16c8b3407e2c45889e66e40f0b8a268a",
+    "pristine_simulation_complete": true,
+    "patched_simulations_started": false,
+    "comparison": {
+      "end_s": 1.2e-09,
+      "worst_voltage_vector": "v(xtree.t007_e)",
+      "worst_voltage_difference_v": 3.262262376901859e-09,
+      "interpolation_for_comparison_only": true,
+      "acceptance": false
+    },
+    "worst_native_witness": {
+      "maximum_absolute_difference": 3.262262376901859e-09,
+      "time_s": 1.2e-09,
+      "a_native": 0.05888939670872465,
+      "b_interpolated": 0.05888939997098703
+    },
+    "interpretation": "Original1nV engine-provenance gate failed at forced endpoint1.2ns while comparing shortened pristine capture against original34ns packaged capture. Endpoint hypothesis requires matched packaged/pristine TSTOP proof; do not waive failure or loosen threshold. Preserve original whole-prefix comparison, independently check common exact timestamps to within two original steps of endpoint, and require full identical-duration pristine/packaged comparison at original1nV."
+  },
+  "tree32_backend_study_20261015": {
+    "run": 38800540477,
+    "source_head": "09e6e23d6f6c6b041ef6eb0589c96b5910e984c2",
+    "accepted": false,
+    "scope": "Matched full32:1 source startup provenance and4ns patched Sparse/KLU comparison; original per-macro RC, ideal intermacro wires retained. No full-wave/PHY acceptance."
   }
 }
