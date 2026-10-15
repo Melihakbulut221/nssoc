@@ -881,3 +881,17 @@ XP0 X net1 VDD VDD sg13_lv_pmos
     from cloud_tx_stream import streaming_deck
     streamed=streaming_deck(after,b)
     assert 'option\n' in streamed and 'run wave.raw' in streamed
+
+
+@pytest.mark.parametrize('profile,method',[('tight_trap','TRAPEZOIDAL'),('tight_gear2','GEAR')])
+def test_actual_ngspice47_option_label_format(profile,method):
+    # Native hosted job116439092483 uses descriptive labels, not netlist names.
+    rows=['Integration Method = '+method,'MaxOrder = 2','abstol      (current) = 1e-13',
+        'vntol       (voltage) = 1e-08','reltol      (current) = 1e-06',
+        'itl4 (transient iterations) = 100','trtol = 1.000000']
+    def log(xs):return 'NSSOC_SOLVER_OPTIONS_BEGIN\n'+'\n'.join(xs)+'\nNSSOC_SOLVER_OPTIONS_END\n'
+    assert mux4.verify_solver_options(log(rows),profile)['method']==method
+    for i in range(len(rows)):
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(rows[:i]+rows[i+1:]),profile)
+    with pytest.raises(AssertionError):mux4.verify_solver_options(log(rows+['maxord = 2']),profile)
+    with pytest.raises(AssertionError):mux4.verify_solver_options(log(rows+['method = '+method]),profile)

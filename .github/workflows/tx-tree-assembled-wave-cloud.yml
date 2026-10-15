@@ -75,15 +75,20 @@ jobs:
           sys.path.insert(0,'scripts')
           from run_cloud_tx_mux4 import solver_options,verify_solver_options
           profile=os.environ['NSSOC_SOLVER_PROFILE']
-          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'nssoc-solver-smoke'
+          out=pathlib.Path('cloud-tx-solver-preflight').resolve()
           out.mkdir()
           deck='NSSOC native option readback preflight\nV1 a 0 1\nR1 a b 1000\nC1 b 0 1p\n'+solver_options(profile)+'\n.control\ntran 1p 1n\necho NSSOC_SOLVER_OPTIONS_BEGIN\noption\necho NSSOC_SOLVER_OPTIONS_END\nquit\n.endc\n.end\n'
           (out/'bench.cir').write_text(deck)
-          p=subprocess.run([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=out,text=True,capture_output=True)
+          (out/'spinit').write_text('* Explicit empty preflight init\n')
+          env=dict(os.environ,SPICE_SCRIPTS=str(out))
+          p=subprocess.run([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=out,env=env,text=True,capture_output=True)
           log=p.stdout+p.stderr
+          (out/'run.log').write_text(log)
           print(log)
           assert p.returncode==0
-          print(json.dumps(verify_solver_options(log,profile)))
+          result=verify_solver_options(log,profile)
+          (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result))
           PYSMOKE
       - name: Run actual complete tree and full-wave engineering screen
         run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --assembled-placement '${{ inputs.placement_profile || 'baseline' }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --solver-profile '${{ inputs.solver_profile || 'default' }}' --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
@@ -93,6 +98,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           archive='tx-tree-assembled-${{ matrix.streams }}-${{ matrix.prestage }}-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          python3 - <<'PYPRESERVE'
+          import pathlib,json,shutil,os
+          out=pathlib.Path('cloud-tx-mux4')
+          out.mkdir(exist_ok=True)
+          pre=pathlib.Path('cloud-tx-solver-preflight')
+          if pre.exists():shutil.copytree(pre,out/'solver-preflight')
+          if not (out/'result.json').exists():
+              (out/'result.json').write_text(json.dumps(dict(status='FAIL_BEFORE_NATIVE_CAPTURE',component_screen_passed=False,accepted=False,run=os.environ['GITHUB_RUN_ID'],source_head=os.environ['GITHUB_SHA'],scope='No transistor waveform or PHY acceptance; preserve available preflight failures.'),indent=2)+'\n')
+          PYPRESERVE
           tar -czf "$archive" cloud-tx-mux4
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"

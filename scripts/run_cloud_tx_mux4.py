@@ -523,10 +523,13 @@ def verify_solver_options(log,profile):
     blocks=re.findall(r'(?ms)^NSSOC_SOLVER_OPTIONS_BEGIN\s*\n(.*?)^NSSOC_SOLVER_OPTIONS_END\s*$',log)
     assert len(blocks)==1, 'Missing/duplicate actual simulator option readback'
     block=blocks[0];expected=dict(maxord=2,reltol=1e-6,abstol=1e-13,vntol=1e-8,trtol=1,itl4=100)
+    labels=dict(maxord=r'(?:maxord|maxorder)',reltol=r'reltol(?:\s+\(current\))?',
+        abstol=r'abstol(?:\s+\(current\))?',vntol=r'vntol(?:\s+\(voltage\))?',
+        trtol='trtol',itl4=r'itl4(?:\s+\(transient iterations\))?')
     for key,value in expected.items():
-        matches=re.findall(r'(?mi)^\s*'+key+r'\s*=\s*(\S+)\s*$',block)
+        matches=re.findall(r'(?mi)^\s*'+labels[key]+r'\s*=\s*(\S+)\s*$',block)
         assert len(matches)==1 and float(matches[0])==value, ('Native solver option differs',key,matches)
-    methods=re.findall(r'(?mi)^\s*method\s*=\s*(\S+)\s*$',block)
+    methods=re.findall(r'(?mi)^\s*(?:method|integration method)\s*=\s*(\S+)\s*$',block)
     assert len(methods)==1 and methods[0].lower() in (('trap','trapezoidal')if profile=='tight_trap'else('gear',))
     return dict(status='PASS_NATIVE_SOLVER_OPTION_READBACK',profile=profile,numeric_options=expected,method=methods[0],native_text=block)
 
