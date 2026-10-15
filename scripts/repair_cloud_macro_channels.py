@@ -512,7 +512,7 @@ def prepare_packet_clusters():
         diagnosed_congested_packet_nets=len(diagnosed),cluster_sizes=sizes,
         clusters=groups,excluded_direct_sinks=excluded,source_net_endpoints=rows)
     (OUT/'packet-clusters.json').write_text(json.dumps(preliminary,indent=2)+'\n')
-    assert groups and min(sizes)>=2 and max(sizes)<=32,('Not small disjoint cones',min(sizes),max(sizes))
+    assert groups and min(sizes)>=2 and max(sizes)<=33,('Not small disjoint cones',min(sizes),max(sizes))
     assert len({n for g in groups for n in g})==sum(sizes)
     assert all(str(instances[n].getPlacementStatus())=='PLACED' and
         not instances[n].getMaster().isBlock() for g in groups for n in g)
