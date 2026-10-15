@@ -20,6 +20,7 @@ def main():
     p.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     p.add_argument('--prepared-extraction', action='store_true',
                    help='Consume source-bound native extraction from this same hosted job')
+    p.add_argument("--boundary-pins", action="store_true", help="Bind only the exact fresh boundary-pin extraction")
     args = p.parse_args()
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
@@ -28,8 +29,8 @@ def main():
     archive = dest / 'input.tar.gz'
     source = (dict(prepared_extraction_result_sha256=sha(out / 'extraction-result.json'),
                    job_commit=os.environ.get('GITHUB_SHA')) if args.prepared_extraction else
-              (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['variants'][args.variant])
-    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, adopted=False, source=source)
+              (spec if args.circuit_profile=='baseline' else spec['circuits'][args.circuit_profile])['boundary_variants' if args.boundary_pins else 'variants'][args.variant])
+    result = dict(status='RUNNING', variant=args.variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, adopted=False, source=source)
 
     def restore(receipt, directory):
         fetch(receipt['url'], receipt['sha256'], archive)
@@ -50,6 +51,7 @@ def main():
             assert not out.exists()
             restore(result['source'], ROOT)
         extraction = json.loads((out / 'extraction-result.json').read_text())
+        assert extraction.get('boundary_pins', False) is args.boundary_pins
         assert extraction['variant'] == args.variant
         assert extraction.get('circuit_profile','baseline') == args.circuit_profile
         assert extraction['status'] == 'PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
