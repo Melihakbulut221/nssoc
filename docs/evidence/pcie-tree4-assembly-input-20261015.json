@@ -26093,7 +26093,7 @@
       ],
       "bias_candidates": {
         "native_res_tc": {
-          "status": "INCOMPLETE_NATIVE_CANDIDATE_RETAIN_FAILED_CORNERS",
+          "status": "REJECTED_ELECTRICAL_FAILURES_RETAINED",
           "implementation_head": "fda41b234ff6388d913060411f031345ad610bdb",
           "layout_integrated": false,
           "all_corners_accepted": false,
@@ -26102,8 +26102,8 @@
             {
               "run": 38736943635,
               "source_head": "fda41b234ff6388d913060411f031345ad610bdb",
-              "status": "in_progress",
-              "execution_conclusion": null,
+              "status": "completed",
+              "execution_conclusion": "success",
               "cases": [
                 {
                   "condition": "hot_low_res_bcs",
@@ -26545,14 +26545,375 @@
                     }
                   },
                   "failed_mos": {}
+                },
+                {
+                  "condition": "hot_low_res_bcs",
+                  "fault": "none",
+                  "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+                  "component_screen_passed": false,
+                  "pre_bias": "native_res_tc",
+                  "pre_bias_tc_scope": {
+                    "source": "hw/soc/analog/pcie/tx_pre_bias_res_v1.inc",
+                    "sha256": "fa880382a12bc9b4889a31fb482326934acca952a2e741912e0b78352190bab2",
+                    "native_resistors_per_stage": 2,
+                    "layout_integrated": false,
+                    "qualified_contact_current": false,
+                    "hypothesis": "Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.",
+                    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html"
+                  },
+                  "diagnostics": [],
+                  "elapsed_s": 464.54723941599997,
+                  "raw_wave": {
+                    "bytes": 176365947,
+                    "sha256": "42037bdc8d71d1383f5ebba7ce2efcf74d0aa52a0639ad05fd0f98112c77fb2d",
+                    "format": "native_binary"
+                  },
+                  "mode": "wire",
+                  "summary_asset": 643873922,
+                  "summary_sha256": "6226a3555540165955724465521ab66299aa1116e215914d5b61b85d88e3d0c7",
+                  "archive_asset": 643873281,
+                  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38736943635-1-assembled-tree-4-wire-hot_low_res_bcs-none/tx-tree-assembled-4-wire-hot_low_res_bcs-none-38736943635-1.tar.gz",
+                  "bytes": 161091067,
+                  "sha256": "ddb2fc2f429ac0bf174c15edb445ba0c1b4e18850ce6493601476bc6060a0bc4",
+                  "archive_readback_status": "PUBLISHER_HASH_PINNED_HOSTED_FULL_ARCHIVE_READBACK_PENDING",
+                  "signals": {
+                    "samples": 768,
+                    "minimum_margin_v": 0.12437360978262135,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0,
+                    "phases": {
+                      "0.3": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.12437360978262135,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.5": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2520750756320269,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.7": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2615621682878928,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      }
+                    },
+                    "passed": true,
+                    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+                  },
+                  "interfaces": {
+                    "cmos": {
+                      "samples": 768,
+                      "minimum_margin_v": 0.1551476025822116,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.8476861322012603,
+                        1.8515824643661045
+                      ],
+                      "passed": true
+                    },
+                    "final": {
+                      "samples": 6912,
+                      "minimum_margin_v": 0.17666115543649474,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.7912492014488621,
+                        1.8312055950047625
+                      ],
+                      "passed": false
+                    }
+                  },
+                  "failed_hbts": {
+                    "xtree.xd0006": {
+                      "min_post_vce_v": 0.39478070132564924,
+                      "max_post_vce_v": 0.43403539761217896,
+                      "max_whole_abs_vce_v": 0.44551167503819294,
+                      "max_whole_abs_vbe_v": 0.8009760583786932,
+                      "max_whole_abs_ic_per_emitter_a": 0.000732404178777919,
+                      "passed": false
+                    },
+                    "xtree.xd0007": {
+                      "min_post_vce_v": 0.39228575486870987,
+                      "max_post_vce_v": 0.43177532932984203,
+                      "max_whole_abs_vce_v": 0.4432767733787986,
+                      "max_whole_abs_vbe_v": 0.7994159347468303,
+                      "max_whole_abs_ic_per_emitter_a": 0.0007155813034949056,
+                      "passed": false
+                    }
+                  },
+                  "failed_mos": {}
+                },
+                {
+                  "condition": "hot_low_hbt_bcs",
+                  "fault": "none",
+                  "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+                  "component_screen_passed": true,
+                  "pre_bias": "native_res_tc",
+                  "pre_bias_tc_scope": {
+                    "source": "hw/soc/analog/pcie/tx_pre_bias_res_v1.inc",
+                    "sha256": "fa880382a12bc9b4889a31fb482326934acca952a2e741912e0b78352190bab2",
+                    "native_resistors_per_stage": 2,
+                    "layout_integrated": false,
+                    "qualified_contact_current": false,
+                    "hypothesis": "Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.",
+                    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html"
+                  },
+                  "diagnostics": [],
+                  "elapsed_s": 325.758788676,
+                  "raw_wave": {
+                    "bytes": 176365947,
+                    "sha256": "7c145858eb36e42a7e661f1d05702c498efd77f974c2d902e5c06e13cd2d1152",
+                    "format": "native_binary"
+                  },
+                  "mode": "wire",
+                  "summary_asset": 643868225,
+                  "summary_sha256": "99a1e09547bd3a06719ab08bcd573980350269592fb9a276d5157b6c3605f21b",
+                  "archive_asset": 643867809,
+                  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38736943635-1-assembled-tree-4-wire-hot_low_hbt_bcs-none/tx-tree-assembled-4-wire-hot_low_hbt_bcs-none-38736943635-1.tar.gz",
+                  "bytes": 160702050,
+                  "sha256": "a5e8a4e13c4c34e8eac3a0f3fa37391025b09abeca9b69d7ad20e013d86cb91a",
+                  "archive_readback_status": "PUBLISHER_HASH_PINNED_HOSTED_FULL_ARCHIVE_READBACK_PENDING",
+                  "signals": {
+                    "samples": 768,
+                    "minimum_margin_v": 0.20476781774967723,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0,
+                    "phases": {
+                      "0.3": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.20476781774967723,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.5": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.29347189315442246,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.7": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.29445234621668437,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      }
+                    },
+                    "passed": true,
+                    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+                  },
+                  "interfaces": {
+                    "cmos": {
+                      "samples": 768,
+                      "minimum_margin_v": 0.1857409600022355,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.8376018543064334,
+                        1.8415521184576487
+                      ],
+                      "passed": true
+                    },
+                    "final": {
+                      "samples": 6912,
+                      "minimum_margin_v": 0.18772852766060222,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.817686697908775,
+                        1.8518346225588298
+                      ],
+                      "passed": true
+                    }
+                  },
+                  "failed_hbts": {},
+                  "failed_mos": {}
+                },
+                {
+                  "condition": "cold_high_res_wcs",
+                  "fault": "none",
+                  "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+                  "component_screen_passed": true,
+                  "pre_bias": "native_res_tc",
+                  "pre_bias_tc_scope": {
+                    "source": "hw/soc/analog/pcie/tx_pre_bias_res_v1.inc",
+                    "sha256": "fa880382a12bc9b4889a31fb482326934acca952a2e741912e0b78352190bab2",
+                    "native_resistors_per_stage": 2,
+                    "layout_integrated": false,
+                    "qualified_contact_current": false,
+                    "hypothesis": "Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.",
+                    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html"
+                  },
+                  "diagnostics": [],
+                  "elapsed_s": 470.83050373900005,
+                  "raw_wave": {
+                    "bytes": 176365947,
+                    "sha256": "e12542b2e3c0e9ca839fa8bfd251cb3dcc1510a26628a62c9df9fc6dd0410ba3",
+                    "format": "native_binary"
+                  },
+                  "mode": "wire",
+                  "summary_asset": 643875290,
+                  "summary_sha256": "e98d0eab930f60385474e6498c9e40beb400b61382693e534aeb1b46e96b1251",
+                  "archive_asset": 643874946,
+                  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38736943635-1-assembled-tree-4-wire-cold_high_res_wcs-none/tx-tree-assembled-4-wire-cold_high_res_wcs-none-38736943635-1.tar.gz",
+                  "bytes": 159931037,
+                  "sha256": "89e5752d97ce27fac7b5611907bfd0d0c458aae2bdfbf13c57e01d0f8407c51a",
+                  "archive_readback_status": "PUBLISHER_HASH_PINNED_HOSTED_FULL_ARCHIVE_READBACK_PENDING",
+                  "signals": {
+                    "samples": 768,
+                    "minimum_margin_v": 0.25787893576891996,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0,
+                    "phases": {
+                      "0.3": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.25787893576891996,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.5": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.26313055380415684,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.7": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2620543143381555,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      }
+                    },
+                    "passed": true,
+                    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+                  },
+                  "interfaces": {
+                    "cmos": {
+                      "samples": 768,
+                      "minimum_margin_v": 0.3133399773044687,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.9750471853262286,
+                        1.9785454096621096
+                      ],
+                      "passed": true
+                    },
+                    "final": {
+                      "samples": 6912,
+                      "minimum_margin_v": 0.21711776513691206,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        2.013455029529471,
+                        2.0487261640058225
+                      ],
+                      "passed": true
+                    }
+                  },
+                  "failed_hbts": {},
+                  "failed_mos": {}
+                },
+                {
+                  "condition": "cold_high_hbt_wcs",
+                  "fault": "none",
+                  "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+                  "component_screen_passed": true,
+                  "pre_bias": "native_res_tc",
+                  "pre_bias_tc_scope": {
+                    "source": "hw/soc/analog/pcie/tx_pre_bias_res_v1.inc",
+                    "sha256": "fa880382a12bc9b4889a31fb482326934acca952a2e741912e0b78352190bab2",
+                    "native_resistors_per_stage": 2,
+                    "layout_integrated": false,
+                    "qualified_contact_current": false,
+                    "hypothesis": "Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.",
+                    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html"
+                  },
+                  "diagnostics": [],
+                  "elapsed_s": 306.142097243,
+                  "raw_wave": {
+                    "bytes": 176365947,
+                    "sha256": "1d0e0123657854f5e531cd69e49143d7138e09e00ad3b2dc14fe75b69c41b075",
+                    "format": "native_binary"
+                  },
+                  "mode": "wire",
+                  "summary_asset": 643868245,
+                  "summary_sha256": "20732fad7b8c26b2d3b994fa222070a4b4bf98a5f62ac407f7f4a2b8d53fee01",
+                  "archive_asset": 643867875,
+                  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38736943635-1-assembled-tree-4-wire-cold_high_hbt_wcs-none/tx-tree-assembled-4-wire-cold_high_hbt_wcs-none-38736943635-1.tar.gz",
+                  "bytes": 160518698,
+                  "sha256": "098db4ffe41810573896544613926cdca1ed525829340933dfb36d3d0fbdb63d",
+                  "archive_readback_status": "PUBLISHER_HASH_PINNED_HOSTED_FULL_ARCHIVE_READBACK_PENDING",
+                  "signals": {
+                    "samples": 768,
+                    "minimum_margin_v": 0.22523594846327977,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0,
+                    "phases": {
+                      "0.3": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.22523594846327977,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.5": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2519035074375038,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.7": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.24930249098340207,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      }
+                    },
+                    "passed": true,
+                    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+                  },
+                  "interfaces": {
+                    "cmos": {
+                      "samples": 768,
+                      "minimum_margin_v": 0.30922599379779503,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.973254878079542,
+                        1.9763813544595714
+                      ],
+                      "passed": true
+                    },
+                    "final": {
+                      "samples": 6912,
+                      "minimum_margin_v": 0.24073407962745752,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.9733598553456733,
+                        2.0150253488983023
+                      ],
+                      "passed": true
+                    }
+                  },
+                  "failed_hbts": {},
+                  "failed_mos": {}
                 }
               ]
             },
             {
               "run": 38736959438,
               "source_head": "fda41b234ff6388d913060411f031345ad610bdb",
-              "status": "in_progress",
-              "execution_conclusion": null,
+              "status": "completed",
+              "execution_conclusion": "success",
               "cases": [
                 {
                   "condition": "hot_low",
@@ -26725,6 +27086,178 @@
                   },
                   "failed_hbts": {},
                   "failed_mos": {}
+                },
+                {
+                  "condition": "hot_low",
+                  "fault": "none",
+                  "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+                  "component_screen_passed": false,
+                  "pre_bias": "native_res_tc",
+                  "pre_bias_tc_scope": {
+                    "source": "hw/soc/analog/pcie/tx_pre_bias_res_v1.inc",
+                    "sha256": "fa880382a12bc9b4889a31fb482326934acca952a2e741912e0b78352190bab2",
+                    "native_resistors_per_stage": 2,
+                    "layout_integrated": false,
+                    "qualified_contact_current": false,
+                    "hypothesis": "Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.",
+                    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html"
+                  },
+                  "diagnostics": [],
+                  "elapsed_s": 488.72943801900004,
+                  "raw_wave": {
+                    "bytes": 176365947,
+                    "sha256": "c9e58df6acb24ceca94fe24e678b2507f477adf71c909773f59874fe3fdc5212",
+                    "format": "native_binary"
+                  },
+                  "mode": "wire",
+                  "summary_asset": 643873276,
+                  "summary_sha256": "562d6a6a542d6a0bfb69261a284a65a98763319cc32f4a2d1fd64fe625f86231",
+                  "archive_asset": 643872812,
+                  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38736959438-1-assembled-tree-4-wire-hot_low-none/tx-tree-assembled-4-wire-hot_low-none-38736959438-1.tar.gz",
+                  "bytes": 161237720,
+                  "sha256": "2705a48e52584cfa977f5dbd6e0b943a89bbc6af9cbc2448347345ee32be4591",
+                  "archive_readback_status": "PUBLISHER_HASH_PINNED_HOSTED_FULL_ARCHIVE_READBACK_PENDING",
+                  "signals": {
+                    "samples": 768,
+                    "minimum_margin_v": 0.09566267951183915,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 15,
+                    "phases": {
+                      "0.3": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.09566267951183915,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 15
+                      },
+                      "0.5": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2450886877727736,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.7": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2575619725802847,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      }
+                    },
+                    "passed": false,
+                    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+                  },
+                  "interfaces": {
+                    "cmos": {
+                      "samples": 768,
+                      "minimum_margin_v": 0.178958091140194,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.8363147320743884,
+                        1.8416993852659378
+                      ],
+                      "passed": true
+                    },
+                    "final": {
+                      "samples": 6912,
+                      "minimum_margin_v": 0.1656961410808111,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.8125343711774766,
+                        1.8517798867011035
+                      ],
+                      "passed": true
+                    }
+                  },
+                  "failed_hbts": {},
+                  "failed_mos": {}
+                },
+                {
+                  "condition": "cold_high",
+                  "fault": "none",
+                  "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+                  "component_screen_passed": true,
+                  "pre_bias": "native_res_tc",
+                  "pre_bias_tc_scope": {
+                    "source": "hw/soc/analog/pcie/tx_pre_bias_res_v1.inc",
+                    "sha256": "fa880382a12bc9b4889a31fb482326934acca952a2e741912e0b78352190bab2",
+                    "native_resistors_per_stage": 2,
+                    "layout_integrated": false,
+                    "qualified_contact_current": false,
+                    "hypothesis": "Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.",
+                    "reference": "https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html"
+                  },
+                  "diagnostics": [],
+                  "elapsed_s": 460.212940384,
+                  "raw_wave": {
+                    "bytes": 176365947,
+                    "sha256": "f7222e0ad80316729ad29b25d2ef52a1d29d7a9c7056befc59fec4b93d3d66fc",
+                    "format": "native_binary"
+                  },
+                  "mode": "wire",
+                  "summary_asset": 643868744,
+                  "summary_sha256": "953b3f5fd5cf998b14dd97739a8ecd2200c0c35a39d09763d767c1be0d7fce34",
+                  "archive_asset": 643868233,
+                  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38736959438-1-assembled-tree-4-wire-cold_high-none/tx-tree-assembled-4-wire-cold_high-none-38736959438-1.tar.gz",
+                  "bytes": 159830845,
+                  "sha256": "c7bf5c3985f69f466aba50227f2598f6b24fbbd06b1e9c868934831877261d29",
+                  "archive_readback_status": "PUBLISHER_HASH_PINNED_HOSTED_FULL_ARCHIVE_READBACK_PENDING",
+                  "signals": {
+                    "samples": 768,
+                    "minimum_margin_v": 0.2642763639745562,
+                    "wrong_sign_samples": 0,
+                    "below_100mv_samples": 0,
+                    "phases": {
+                      "0.3": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.26595694618798826,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.5": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2652381621872566,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      },
+                      "0.7": {
+                        "samples": 256,
+                        "minimum_margin_v": 0.2642763639745562,
+                        "wrong_sign_samples": 0,
+                        "below_100mv_samples": 0
+                      }
+                    },
+                    "passed": true,
+                    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+                    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+                  },
+                  "interfaces": {
+                    "cmos": {
+                      "samples": 768,
+                      "minimum_margin_v": 0.3110214221958214,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.9732278310972962,
+                        1.976225933394045
+                      ],
+                      "passed": true
+                    },
+                    "final": {
+                      "samples": 6912,
+                      "minimum_margin_v": 0.23718151184934255,
+                      "wrong_sign_samples": 0,
+                      "below_150mv_samples": 0,
+                      "common_mode_range_v": [
+                        1.9888769636554475,
+                        2.025249771924324
+                      ],
+                      "passed": true
+                    }
+                  },
+                  "failed_hbts": {},
+                  "failed_mos": {}
                 }
               ]
             }
@@ -26732,7 +27265,8 @@
           "hosted_source_validation": {
             "job": 116428545209,
             "passed": 572
-          }
+          },
+          "review_followup": "Original captures include feed voltage/current vectors, but initial reviewer omitted native_res_tc prestage current summaries and zero-voltage source rail check. Fresh source-bound hosted review must add these observations; original HBT/MOS/interface/output failures remain failures."
         }
       },
       "expanded_hosted_readback": {
