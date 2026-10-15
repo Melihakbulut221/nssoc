@@ -49,7 +49,7 @@ def flatten_reference(text,tag):
     return output
 
 def generate(profile):
-    assert profile in ('baseline','compact_vertical')
+    assert profile in ('baseline','compact_vertical','compact_m5_supply')
     import xml.etree.ElementTree as ET
     source=ROOT/'pdk/libs.tech/klayout/python'
     sys.path[:0]=[str(source),str(source/'pycell4klayout-api/source/python')]
@@ -83,7 +83,8 @@ def generate(profile):
             assert (before^after).is_empty(), ('Frozen child physical geometry changed',kind,info.layer)
         children[kind]=(copied,data,directory)
     by,fy=(400.,150.) if profile=='baseline' else (330.,112.)
-    for tag,kind,x,y,mirror in [('a','pre',353.985,0.,True),('b','pre',353.985,by,True),('f','final',550.,fy,False)]:
+    fx=470. if profile=='compact_m5_supply' else 550.
+    for tag,kind,x,y,mirror in [('a','pre',353.985,0.,True),('b','pre',353.985,by,True),('f','final',fx,fy,False)]:
         child,data,directory=children[kind]
         tr=pya.DTrans(2 if mirror else 0,mirror,x,y)
         top.insert(pya.DCellInstArray(child.cell_index(),tr))
@@ -99,31 +100,47 @@ def generate(profile):
     routes=[]
     def box(layer,x1,y1,x2,y2):
         top.shapes(layout.layer(layers[layer],0)).insert(pya.DBox(min(x1,x2),min(y1,y2),max(x1,x2),max(y1,y2)))
-    def via(x,y,power=False):
-        c=layout.create_cell('via_stack','SG13_dev',dict(b_layer='TopMetal1',t_layer='TopMetal2',vn_columns=2,vn_rows=1,vt1_rows=1,vt2_columns=4 if power else 2,vt2_rows=4 if power else 1))
+    def via(x,y,power=False,bottom='TopMetal1'):
+        params=dict(b_layer=bottom,t_layer='TopMetal2',vn_columns=2,vn_rows=1,vt1_rows=1,vt2_columns=4 if power else 2,vt2_rows=4 if power else 1)
+        if bottom=='Metal5':
+            assert power
+            params.update(vt1_columns=4,vt1_rows=4)
+        c=layout.create_cell('via_stack','SG13_dev',params)
         assert c is not None and not c.is_empty()
         b=c.dbbox();top.insert(pya.DCellInstArray(c.cell_index(),pya.DTrans(round((x-b.center().x)/.005)*.005,round((y-b.center().y)/.005)*.005)))
     def center(tag,pin):
         q=transformed[tag][pin].center();return q.x,q.y
-    def hstub(tag,pin,x,width):
+    def hstub(tag,pin,x,width,bottom='TopMetal1'):
         px,py=center(tag,pin)
         # Rectangles must cover either direction of travel, including endpoints.
         box('TopMetal2',min(px,x)-width/2,py-width/2,max(px,x)+width/2,py+width/2)
-        via(x,py,width>4);return py
-    for tag,op,ip,x in [('a','op','ap',370.),('a','on','an',382.),('b','op','bp',408.),('b','on','bn',420.)]:
+        via(x,py,width>4,bottom);return py
+    signal_x=(378.,390.,402.,414.) if profile=='compact_m5_supply' else (370.,382.,408.,420.)
+    for (tag,op,ip),x in zip([('a','op','ap'),('a','on','an'),('b','op','bp'),('b','on','bn')],signal_x,strict=True):
         y0=hstub(tag,op,x,4.);y1=hstub('f',ip,x,4.)
         box('TopMetal1',x-2,min(y0,y1)-2,x+2,max(y0,y1)+2)
         routes.append(dict(net=MAPS[tag][op],endpoints=[tag+'.'+op,'f.'+ip],vertical_x_um=x,width_um=4.,length_um=abs(y0-y1)+abs(center(tag,op)[0]-x)+abs(center('f',ip)[0]-x),fault_cut_um=[x-3,(y0+y1)/2-.5,x+3,(y0+y1)/2+.5]))
     # Shared actual power and substrate conductors, all outside macro bodies.
-    for net,x,width in [('avdd',490.,32.),('sub',530.,4.)]:
+    power_routes=[('avdd',490.,32.),('sub',530.,4.)]
+    if profile=='compact_m5_supply':
+        # Separate the wide supply stripe from TM1 data channels. W=96um
+        # avoids replacing the old32um thick-metal trunk with a narrow M5 wire.
+        # Native 4x4via arrays connect M5 through TM1 to TM2 only at x366.
+        ys=[hstub(tag,'avdd',366.,32.,'Metal5') for tag in ('a','b','f')]
+        box('Metal5',358.,min(ys)-16.,454.,max(ys)+16.)
+        routes.append(dict(net='avdd',endpoints=[tag+'.avdd' for tag in ('a','b','f')],
+            vertical_x_um=406.,width_um=96.,layer='Metal5',via_x_um=366.,native_via_arrays='4x4 each upper level',em_qualified=False))
+        power_routes=[('sub',466.,4.)]
+    for net,x,width in power_routes:
         ys=[hstub(tag,net,x,width) for tag in ('a','b','f')]
         box('TopMetal1',x-width/2,min(ys)-width/2,x+width/2,max(ys)+width/2)
         routes.append(dict(net=net,endpoints=[tag+'.'+net for tag in ('a','b','f')],vertical_x_um=x,width_um=width))
     ys=[hstub(tag,'avss',-40.,32.) for tag in ('a','b')]
-    yf=hstub('f','avss',450.,32.)
-    for x,upper in [(-40.,max(ys)),(450.,yf)]:
+    ground_x=444. if profile=='compact_m5_supply' else 450.
+    yf=hstub('f','avss',ground_x,32.)
+    for x,upper in [(-40.,max(ys)),(ground_x,yf)]:
         box('TopMetal1',x-16,-76.,x+16,upper+16);via(x,-60.,True)
-    box('TopMetal2',-56.,-76.,466.,-44.)
+    box('TopMetal2',-56.,-76.,ground_x+16.,-44.)
     routes.append(dict(net='avss',endpoints=['a.avss','b.avss','f.avss'],width_um=32.,bottom_bus_y_um=-60.))
     public={}
     for tag,pins in transformed.items():
@@ -166,7 +183,7 @@ def generate(profile):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
-    p.add_argument('--placement-profile',choices=('baseline','compact_vertical'),default='baseline');args=p.parse_args()
+    p.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply'),default='baseline');args=p.parse_args()
     if args.generate:generate(args.placement_profile);return
     assert os.environ.get('GITHUB_ACTIONS')=='true','CAD executes only on hosted runners'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
