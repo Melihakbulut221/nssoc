@@ -1,3 +1,15 @@
+## 2026-10-15 — TC corner results and exact interface failures pinned
+
+ALL CLOUD; full PHY, mainchip route and final setup/hold remain OPEN. Local workspace stays empty.
+
+TC candidate run38767312141 is complete: all8 original compact/wire cases pinned without dropping failures. Wire cold resistor corner now passes: CMmax2.048618029V, outputmargin262.449760347mV. Wire hot resistor corner still fails CMmin1.789821675V and tail HBT VCE0.393495720/0.391323273V. Compact cold resistor CM and cold HBT VBE failures persist. Feed layout/RC remains unintegrated; candidate NOT adopted.
+
+Interface diagnosis38769063249 (sourcec904a7...) verifies exactoriginal6912physical final interface samples. Originalbias hotres has1539below1.8V CM samples; minimum1.784024457V at bit41, phase0.3UI,7.1625ns, physicalt053_b/t046_b. Signedmarginthere249.614mV. No wrongsign or below150mVinterface sample. Complete original capture readback and injected witness controls passed; new `interface_failure_diagnosis` supplements original ground diagnosis.
+
+Strictnumeric run38763917040: compactpair andwire0.125ps complete/componentPASS; samepartialstudy now3cases. Wire0.0625ps job116522064672 remainslive aslastchecked. Appenditwhencomplete then dispatch hostedstep_comparison, profilecompact_edge_supply,solverbreakpoint_tight_trap,step_pairfine. Prior startupvoltagefailure remainsopen untilcompletepairedcomparison.
+
+Mainchip38731744914 job116410943697 stilllive aslastchecked. Preserve actualNDR; inspectGRT-0273 beforeacceptance. No detailroute/finalSTA claim.
+
 ## 2026-10-15 — newground TC ordinarycorners PASS; exact interface witness analysis LIVE
 
 UTC 2026-10-15T16:28:49.144119+00:00. ALL CLOUD; goalOPEN. TCnativefeed remains schematic, notphysicalintegration.
