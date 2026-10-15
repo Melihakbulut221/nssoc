@@ -56,6 +56,22 @@ jobs:
         run: |
           python3 -m pip install numpy==2.3.3 pytest==8.4.2
           python3 -m pytest -q sw/tests/test_cloud_tx_mux4.py -k physical_binding_rejects_old_pin_geometry
+      - name: Verify permanent source failure survives Actions artifact expiry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/restore_cloud_boundary_failure.py
+          python3 - <<'PYCODE'
+          import hashlib,json
+          from pathlib import Path
+          p=Path('cloud-source-validation.json')
+          result=json.loads(p.read_text())
+          result['permanent_failed_capture']={
+              name:hashlib.sha256(Path(name).read_bytes()).hexdigest()
+              for name in ['failed-boundary-38680055040.zip','failed-boundary-38680055040.json']}
+          result['actions_artifact_download_required']=False
+          p.write_text(json.dumps(result,indent=2)+'\n')
+          PYCODE
       - name: Preserve exact readback evidence
         env:
           GH_TOKEN: ${{ github.token }}
