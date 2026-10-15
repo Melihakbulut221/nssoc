@@ -12,6 +12,11 @@ on:
         type: choice
         options: [physical, extraction, composition, wave_diagnosis, step_comparison]
         default: physical
+      solver_profile:
+        description: Select exact pinned numerical profile
+        type: choice
+        options: [default, tight_trap, tight_gear2]
+        default: default
       step_pair:
         description: Only timestep differs; original0.5/0.25ps or fine0.125/0.0625ps
         type: choice
@@ -52,7 +57,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Assemble real GDS conductors and compare all162devices including81substrate contacts
-        run: python3 scripts/${{ (inputs.stage == 'wave_diagnosis' || inputs.stage == 'step_comparison') && 'analyze_cloud_assembled_wave.py' || inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }} --placement-profile '${{ inputs.placement_profile || 'baseline' }}' ${{ inputs.stage == 'step_comparison' && '--compare-timestep' || '' }} ${{ (inputs.stage == 'wave_diagnosis' || inputs.stage == 'step_comparison') && format('--step-pair {0}', inputs.step_pair || 'original') || '' }}
+        run: python3 scripts/${{ (inputs.stage == 'wave_diagnosis' || inputs.stage == 'step_comparison') && 'analyze_cloud_assembled_wave.py' || inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }} --placement-profile '${{ inputs.placement_profile || 'baseline' }}' ${{ inputs.stage == 'step_comparison' && '--compare-timestep' || '' }} ${{ (inputs.stage == 'wave_diagnosis' || inputs.stage == 'step_comparison') && format('--step-pair {0} --solver-profile {1}', inputs.step_pair || 'original', inputs.solver_profile || 'default') || '' }}
       - name: Preserve all physical successes and failures
         if: always()
         env:

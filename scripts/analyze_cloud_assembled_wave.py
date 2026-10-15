@@ -138,19 +138,19 @@ def step_controls():
     return dict(positive=1,negative=len(bads),voltage_offset_time_shift_energy_truncation_and_missing_vector_rejected=True)
 
 
-def compare_timesteps(selected, profile, step_pair='original'):
+def compare_timesteps(selected, profile, step_pair='original', solver_profile='default'):
     assert step_pair in ('original','fine')
     conditions=[('hot_low',.5),('hot_low_quarter_step',.25)] if step_pair=='original' else [('hot_low_eighth_step',.125),('hot_low_sixteenth_step',.0625)]
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/'hw/soc/out/cloud-tx-tree-assembly';out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING_SOURCE_BOUND_STEP_COMPARISON',placement_profile=profile,step_pair=step_pair,limits=STEP_LIMITS,
+    result=dict(status='RUNNING_SOURCE_BOUND_STEP_COMPARISON',placement_profile=profile,step_pair=step_pair,solver_profile=solver_profile,limits=STEP_LIMITS,
         full_phy_accepted=False,original_engineering_gates_changed=False,qualified_pex=False)
     try:
         result['controls']=step_controls();result['pairs']={}
         for mode in ('compact','wire'):
             captures=[];contracts=[];summaries=[];benches=[]
             for condition,step in conditions:
-                cases=[(study,c)for study in selected['loaded_studies']for c in study['cases']if c['mode']==mode and c['condition']==condition and c['fault']=='none' and c.get('pre_bias','native_res')=='native_res']
+                cases=[(study,c)for study in selected['loaded_studies']for c in study['cases']if c['mode']==mode and c['condition']==condition and c['fault']=='none' and c.get('pre_bias','native_res')=='native_res' and c.get('solver_profile','default')==solver_profile]
                 assert len(cases)==1
                 study,record=cases[0];directory=out/(mode+'-'+condition);directory.mkdir()
                 packed=out/'step-source.tar.gz';fetch(record['url'],record['sha256'],packed)
@@ -233,12 +233,13 @@ def main():
     parser.add_argument('--placement-profile',choices=('baseline','compact_vertical','compact_m5_supply','compact_edge_supply'),default='baseline')
     parser.add_argument('--compare-timestep',action='store_true')
     parser.add_argument('--step-pair',choices=('original','fine'),default='original')
+    parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2'),default='default')
     args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
     selected=spec if args.placement_profile=='baseline' else spec['placement_variants'][args.placement_profile]
     if args.compare_timestep:
-        compare_timesteps(selected,args.placement_profile,args.step_pair);return
+        compare_timesteps(selected,args.placement_profile,args.step_pair,args.solver_profile);return
     cases=[(s,c) for s in selected['loaded_studies']for c in s['cases']if c['condition']=='hot_low' and c['mode']=='wire' and c['fault']=='none']
     assert len(cases)==1
     study,record=cases[0]

@@ -312,7 +312,7 @@ def native_save_commands(vectors):
     return ['save '+' '.join(vectors[i:i+size]) for i in range(0,len(vectors),size)]
 
 
-def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None, clock_reference='baseline', assembled_core=None, interface_probes=None):
+def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='baseline', pre_bias='baseline', output_bias='ideal', streams=4, final_override=None, clock_reference='baseline', assembled_core=None, interface_probes=None, solver_profile='default'):
     plan=tree_plan(streams)
     assert clock_reference in CLOCK_REFERENCES
     assert clock_reference == 'baseline' or clock_bias == 'native_res'
@@ -352,7 +352,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         lines.append(f'.include "{clock_feed_path}"')
     if output_bias=='native_res':
         lines.append(f'.include "{OUTPUT_FEEDS}"')
-    lines += [f'.temp {c["temperature_c"]}', '.options reltol=1e-4 abstol=1e-12']
+    lines += [f'.temp {c["temperature_c"]}', solver_options(solver_profile)]
     rails = {'avdd': 2.5*c['supply_scale'], 'tvdd': 1.8*c['supply_scale'], 'dvdd': 1.2*c['core_scale']}
     lines += [f'V{name} {name} 0 PWL(0 0 1n {v:.12g})' for name, v in rails.items()]
     hbt, mos = {}, {}
@@ -503,9 +503,32 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
                   'show '+device+' : off', 'echo NSSOC_NATIVE_FLAG_END']
     lines += ['op','wrdata op.dat '+' '.join(vectors),
               f'tran {c["step_ps"]*1e-12:.14g} {STOP:.14g} 0 {c["step_ps"]*1e-12:.14g}',
-              'wrdata wave.dat '+' '.join(vectors), 'quit','.endc','.end']
-    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), clock_feed_sha256=sha(clock_feed_path), clock_feed_subckt=clock_feed_subckt, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
+              'wrdata wave.dat '+' '.join(vectors)]
+    if solver_profile!='default':
+        lines += ['echo NSSOC_SOLVER_OPTIONS_BEGIN','option','echo NSSOC_SOLVER_OPTIONS_END']
+    lines += ['quit','.endc','.end']
+    return '\n'.join(lines)+'\n', dict(condition=c, fault=fault, streams=streams, solver_profile=solver_profile, tree_plan=plan, references=references, clock_refs=clock_refs, clock_bias=clock_bias, clock_reference=clock_reference, clock_reference_sha256=sha(bias_path), clock_feed_sha256=sha(clock_feed_path), clock_feed_subckt=clock_feed_subckt, final_drive=final_drive, pre_bias=pre_bias, output_bias=output_bias, bits=bits, hbt=hbt, mos=mos,
         rails=rails, vectors=vectors, interface_probes=interface_probes, source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest())
+
+
+def solver_options(profile):
+    assert profile in ('default','tight_trap','tight_gear2')
+    if profile=='default':return '.options reltol=1e-4 abstol=1e-12'
+    method='trap' if profile=='tight_trap' else 'gear'
+    return f'.options method={method} maxord=2 reltol=1e-6 abstol=1e-13 vntol=1e-8 trtol=1 itl4=100'
+
+
+def verify_solver_options(log,profile):
+    assert profile in ('tight_trap','tight_gear2')
+    blocks=re.findall(r'(?ms)^NSSOC_SOLVER_OPTIONS_BEGIN\s*\n(.*?)^NSSOC_SOLVER_OPTIONS_END\s*$',log)
+    assert len(blocks)==1, 'Missing/duplicate actual simulator option readback'
+    block=blocks[0];expected=dict(maxord=2,reltol=1e-6,abstol=1e-13,vntol=1e-8,trtol=1,itl4=100)
+    for key,value in expected.items():
+        matches=re.findall(r'(?mi)^\s*'+key+r'\s*=\s*(\S+)\s*$',block)
+        assert len(matches)==1 and float(matches[0])==value, ('Native solver option differs',key,matches)
+    methods=re.findall(r'(?mi)^\s*method\s*=\s*(\S+)\s*$',block)
+    assert len(methods)==1 and methods[0].lower() in (('trap','trapezoidal')if profile=='tight_trap'else('gear',))
+    return dict(status='PASS_NATIVE_SOLVER_OPTION_READBACK',profile=profile,numeric_options=expected,method=methods[0],native_text=block)
 
 
 def interface_screen(t, volt, contract, stage):
@@ -653,6 +676,7 @@ def main():
     parser.add_argument('--clock-reference',choices=tuple(CLOCK_REFERENCES),default='baseline')
     parser.add_argument('--final-drive',choices=('baseline','double','double_taps','double_taps_guard','double_taps_margin'),default='baseline')
     parser.add_argument('--pre-bias',choices=PRE_BIAS_MODES,default='baseline')
+    parser.add_argument('--solver-profile',choices=('default','tight_trap','tight_gear2'),default='default')
     parser.add_argument('--output-bias',choices=('ideal','native_res'),default='ideal')
     parser.add_argument('--diagnostic-final-r', choices=('actual','all','supply','return','inputs','internal','bias','outputs'), default='actual')
     parser.add_argument('--diagnostic-final-nx',type=int,choices=(0,4,5,6,8),default=0)
@@ -700,7 +724,7 @@ def main():
     out=ROOT/'cloud-tx-mux4';out.mkdir(exist_ok=False)
     inputs=out/'inputs';inputs.mkdir()
     run=out/'native';run.mkdir()
-    result=dict(status='RUNNING',streams=args.streams,condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,clock_reference=args.clock_reference,final_drive=args.final_drive,pre_bias=args.pre_bias,accepted=False,
+    result=dict(status='RUNNING',streams=args.streams,condition=args.condition,fault=args.fault,prestage=args.prestage,frontend=args.frontend,clock_bias=args.clock_bias,clock_reference=args.clock_reference,final_drive=args.final_drive,pre_bias=args.pre_bias,solver_profile=args.solver_profile,accepted=False,
         scope='Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.')
     try:
         prepare_inputs(inputs)
@@ -771,7 +795,7 @@ def main():
             result['assembled_core_scope']=scope
             result['prestage']='assembled_core_'+args.assembled_core
             result['scope']='Actual assembled162-device four-input core, loaded by real CMOS frontends and TX;62HBT and64MOS checked. Wire mode contains the exact source-pinned whole-core metal RC, including real intermacro metal; compact mode is its matched no-metal-RC control. All12final data HBT bases observed. Clocks still external; front/TX/bias layouts, substrateRF,32:1/four-lane/fullPHY and mainchip not accepted.'
-        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference,assembled_core=core,interface_probes=interface_probes)
+        deck,contract=build(inputs,args.condition,args.fault,args.clock_bias,args.final_drive,args.pre_bias,args.output_bias,args.streams,final_override,clock_reference=args.clock_reference,assembled_core=core,interface_probes=interface_probes,solver_profile=args.solver_profile)
 
         if args.stream_raw:
             from cloud_tx_stream import streaming_deck
@@ -808,6 +832,8 @@ def main():
         flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
         assert [x[0] for x in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
         assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for name,body in flags)
+        if args.solver_profile!='default':
+            result['native_solver_options']=verify_solver_options(log,args.solver_profile)
         result['review']=review(run,contract)
         assert all(sha(p)==digest for p,digest in result['inputs'].items())
         raw=run/('wave.raw' if args.stream_raw else 'wave.dat')

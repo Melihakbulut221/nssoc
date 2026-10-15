@@ -846,3 +846,38 @@ XP0 X net1 VDD VDD sg13_lv_pmos
 @pytest.mark.parametrize('name,step',[('hot_low_eighth_step',.125),('hot_low_sixteenth_step',.0625)])
 def test_finer_hot_steps_preserve_original_pvt(name,step):
     assert mux4.CONDITIONS[name]==dict(mux4.CONDITIONS['hot_low'],step_ps=step)
+
+
+@pytest.mark.parametrize('profile,method',[('tight_trap','trap'),('tight_gear2','gear')])
+def test_solver_readback_requires_every_native_option(profile,method):
+    lines=['maxord = 2','reltol = 1e-6','abstol = 1e-13','vntol = 1e-8','trtol = 1','itl4 = 100','method = '+method]
+    def log(rows):return 'NSSOC_SOLVER_OPTIONS_BEGIN\n'+'\n'.join(rows)+'\nNSSOC_SOLVER_OPTIONS_END\n'
+    assert mux4.verify_solver_options(log(lines),profile)['status']=='PASS_NATIVE_SOLVER_OPTION_READBACK'
+    for i in range(len(lines)):
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(lines[:i]+lines[i+1:]),profile)
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(lines+[lines[i]]),profile)
+    for field in ['reltol','abstol','vntol','trtol','maxord','itl4']:
+        bad=[field+' = 123'if line.startswith(field+' ')else line for line in lines]
+        with pytest.raises(AssertionError):mux4.verify_solver_options(log(bad),profile)
+
+
+@pytest.mark.parametrize('profile',['tight_trap','tight_gear2'])
+def test_tight_solver_keeps_original_physics_and_stimulus(tmp_path,profile):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 A X VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 net1 A VDD VDD sg13_lv_pmos
+XP0 X net1 VDD VDD sg13_lv_pmos
+.ends
+""")
+    before,a=mux4.build(tmp_path,'hot_low_eighth_step')
+    after,b=mux4.build(tmp_path,'hot_low_eighth_step',solver_profile=profile)
+    assert {k:v for k,v in a.items()if k!='solver_profile'}=={k:v for k,v in b.items()if k!='solver_profile'}
+    def circuit(text):return '\n'.join(line for line in text.splitlines()if not line.startswith(('.options ','echo NSSOC_SOLVER_OPTIONS_'))and line!='option')
+    assert circuit(before)==circuit(after)
+    from cloud_tx_stream import streaming_deck
+    streamed=streaming_deck(after,b)
+    assert 'option\n' in streamed and 'run wave.raw' in streamed
