@@ -498,6 +498,13 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
 
 
 def interface_screen(t, volt, contract, stage):
+    mapping=contract.get('interface_probes')
+    if mapping is not None:
+        assert set(mapping)=={'ap','an','bp','bn'}, 'Incomplete physical interface mapping'
+        arities={len(nodes) for nodes in mapping.values()}
+        assert arities in ({1},{3}), 'All parallel physical inputs must be observed'
+        flattened=[node for nodes in mapping.values() for node in nodes]
+        assert len(flattened)==len(set(flattened)), 'Aliased physical interface probes'
     samples = []
     for i,bit in enumerate(contract['bits']):
         prefix = ('a' if i%2==0 else 'b') if stage=='final' else (f'd{i%contract.get("streams",4)}' if stage=='cmos' else f'p{stage}_{i%stage}')
@@ -510,6 +517,8 @@ def interface_screen(t, volt, contract, stage):
                 for nnode in mapping.get(prefix+'n',[prefix+'n']):
                     p,n=(np.interp(at,t,volt(node)) for node in (pnode,nnode))
                     samples.append(((p-n)*(2*bit-1),(p+n)/2))
+    parallel=len(mapping['ap']) if mapping is not None and stage=='final' else 1
+    assert len(samples)==len(contract['bits'])*3*parallel**2, 'Incomplete original-phase coverage'
     margin,cm = np.asarray(samples).T
     return dict(samples=len(samples),minimum_margin_v=float(margin.min()),
         wrong_sign_samples=int((margin<=0).sum()),below_150mv_samples=int((margin<.15).sum()),

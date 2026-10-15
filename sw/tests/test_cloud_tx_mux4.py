@@ -807,3 +807,15 @@ def test_assembled_compact_interface_remains_original_bit_screen():
     values['xtree.ap'],values['xtree.an']=values['xtree.an'],values['xtree.ap']
     bad=mux4.interface_screen(t,values.__getitem__,contract,'final')
     assert not bad['passed'] and bad['wrong_sign_samples']==384
+
+
+@pytest.mark.parametrize('fault',['missing','empty','one_of_three','alias'])
+def test_interface_review_rejects_lost_physical_observations(fault):
+    probes={p:[f'xtree.{p}{i}'for i in range(3)]for p in ('ap','an','bp','bn')}
+    if fault=='missing':del probes['ap']
+    elif fault=='empty':probes['ap']=[]
+    elif fault=='one_of_three':probes['ap']=probes['ap'][:1]
+    else:probes['ap'][0]=probes['an'][0]
+    with pytest.raises(AssertionError):
+        mux4.interface_screen(np.asarray([0.]),lambda n:np.asarray([1.95]),
+            {'bits':mux4.sequence(),'streams':4,'interface_probes':probes},'final')
