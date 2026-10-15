@@ -12,6 +12,11 @@ on:
         type: choice
         options: [physical, extraction, composition]
         default: physical
+      placement_profile:
+        description: Physical parent placement; compact_vertical preserves all child device geometry and shortens actual intermacro wires
+        type: choice
+        options: [baseline, compact_vertical]
+        default: baseline
 permissions:
   contents: read
 concurrency:
@@ -42,7 +47,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Assemble real GDS conductors and compare all162devices including81substrate contacts
-        run: python3 scripts/${{ inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }}
+        run: python3 scripts/${{ inputs.stage == 'composition' && 'run_cloud_tx_tree_composition.py' || inputs.stage == 'extraction' && 'run_cloud_tx_tree_extraction.py' || 'run_cloud_tx_tree_assembly.py' }} ${{ inputs.stage == 'physical' && format('--placement-profile {0}', inputs.placement_profile || 'baseline') || '' }}
       - name: Preserve all physical successes and failures
         if: always()
         env:
@@ -58,7 +63,7 @@ jobs:
             summary_source=hw/soc/out/cloud-tx-tree-assembly/composition-result.json
           fi
           cp "$summary_source" "${archive%.tar.gz}.summary.json"
-          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
+          python3 scripts/publish_cloud_results.py --group 'tree-assembly-4${{ inputs.stage == 'composition' && '-composition' || inputs.stage == 'extraction' && '-extraction' || '' }}${{ inputs.placement_profile == 'compact_vertical' && '-compact-vertical' || '' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"
       - name: Retain outputs if publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

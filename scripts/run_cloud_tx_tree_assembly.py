@@ -48,7 +48,8 @@ def flatten_reference(text,tag):
     assert sum(x.startswith('Q') for x in output)==19
     return output
 
-def generate():
+def generate(profile):
+    assert profile in ('baseline','compact_vertical')
     import xml.etree.ElementTree as ET
     source=ROOT/'pdk/libs.tech/klayout/python'
     sys.path[:0]=[str(source),str(source/'pycell4klayout-api/source/python')]
@@ -73,8 +74,16 @@ def generate():
             shapes=copied.shapes(layout.layer(layers['TopMetal2'],datatype))
             assert sum(1 for _ in shapes.each())==12
             shapes.clear()
+        # Independent physical drawing-region equality against each frozen child.
+        for idx in source_layout.layer_indexes():
+            info=source_layout.get_info(idx)
+            if info.datatype!=0:continue
+            before=pya.Region(child.begin_shapes_rec(idx)).merged()
+            after=pya.Region(copied.begin_shapes_rec(layout.layer(info.layer,info.datatype))).merged()
+            assert (before^after).is_empty(), ('Frozen child physical geometry changed',kind,info.layer)
         children[kind]=(copied,data,directory)
-    for tag,kind,x,y,mirror in [('a','pre',353.985,0.,True),('b','pre',353.985,400.,True),('f','final',550.,150.,False)]:
+    by,fy=(400.,150.) if profile=='baseline' else (330.,112.)
+    for tag,kind,x,y,mirror in [('a','pre',353.985,0.,True),('b','pre',353.985,by,True),('f','final',550.,fy,False)]:
         child,data,directory=children[kind]
         tr=pya.DTrans(2 if mirror else 0,mirror,x,y)
         top.insert(pya.DCellInstArray(child.cell_index(),tr))
@@ -136,10 +145,13 @@ def generate():
     old=previous.cell(TOP);assert old is not None and previous.dbu==layout.dbu
     layer_keys={(layout.get_info(i).layer,layout.get_info(i).datatype) for i in layout.layer_indexes()}
     layer_keys|={(previous.get_info(i).layer,previous.get_info(i).datatype) for i in previous.layer_indexes()}
+    changed_layers=[]
     for layer,datatype in sorted(layer_keys):
         before=pya.Region(old.begin_shapes_rec(previous.layer(layer,datatype))).merged()
         after=pya.Region(top.begin_shapes_rec(layout.layer(layer,datatype))).merged()
-        assert (before^after).is_empty(), ('Hierarchy representation changed physical geometry',layer,datatype)
+        if not (before^after).is_empty():changed_layers.append([layer,datatype])
+    if profile=='baseline':assert not changed_layers, ('Hierarchy representation changed physical geometry',changed_layers)
+    else:assert changed_layers, 'An intended physical placement change must not reuse baseline geometry'
     sys.path.insert(0,str(ROOT/'hw/soc/flow'))
     import make_pcie_clock_vco_v6_local_v1 as writer
     writer.TOP=TOP;writer.PORTS=PORTS
@@ -149,16 +161,17 @@ def generate():
     (dest/'schematic.cir').write_text('\n'.join(schematic)+'\n')
     (dest/(TOP+'.lef')).write_text(writer.lef(pya,layout.dbu,top.dbbox(),public))
     assert len(schematic)==166
-    result=dict(status='GENERATED_UNVERIFIED_ACTUAL_4TO1_CORE',inputs=protected,outputs={p.name:sha(p) for p in dest.iterdir()},ports={n:str(b) for n,(l,b) in public.items()},bbox_um=str(top.dbbox()),placement=placement,origin_translation_um=[dx,dy],routes=routes,exact_flat_geometry_preserved=True,core_devices=81,substrate_contacts=81,total_devices=162,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,scope='Actual three native cores plus four differential data wires and shared supplies/substrate. External clocks/bias, CMOS frontends and loaded TX remain outside this core. Requires native DRC/LVS then fresh intermacro RC and loaded waveform gates.')
+    result=dict(status='GENERATED_UNVERIFIED_ACTUAL_4TO1_CORE',inputs=protected,outputs={p.name:sha(p) for p in dest.iterdir()},ports={n:str(b) for n,(l,b) in public.items()},bbox_um=str(top.dbbox()),placement=placement,origin_translation_um=[dx,dy],routes=routes,exact_flat_geometry_preserved=not changed_layers,placement_profile=profile,frozen_child_drawing_regions_equal=True,baseline_geometry_changed_layers=changed_layers,core_devices=81,substrate_contacts=81,total_devices=162,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,scope='Actual three native cores plus four differential data wires and shared supplies/substrate. External clocks/bias, CMOS frontends and loaded TX remain outside this core. Requires native DRC/LVS then fresh intermacro RC and loaded waveform gates.')
     (dest/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true');args=p.parse_args()
-    if args.generate:generate();return
+    p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
+    p.add_argument('--placement-profile',choices=('baseline','compact_vertical'),default='baseline');args=p.parse_args()
+    if args.generate:generate(args.placement_profile);return
     assert os.environ.get('GITHUB_ACTIONS')=='true','CAD executes only on hosted runners'
     spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
     out=OUT;out.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING',inputs=spec,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False)
+    result=dict(status='RUNNING',placement_profile=args.placement_profile,inputs=spec,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False)
     def run(command,label):
         log=out/(label+'.log')
         with log.open('w') as stream:code=subprocess.call([str(x) for x in command],stdout=stream,stderr=subprocess.STDOUT)
@@ -191,7 +204,7 @@ def main():
             (out/'verified-flat.gds').write_bytes(data)
         archive.unlink()
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256']
-        run([app,'python',Path(__file__).resolve(),'--generate'],'generate')
+        run([app,'python',Path(__file__).resolve(),'--generate','--placement-profile',args.placement_profile],'generate')
         generated=json.loads((out/'layout/result.json').read_text());result['layout']=generated
         method=(out/'inputs/pre/verify-physical.py').read_text()
         before='TOP = "nssoc_tx_mux2_cascade158_layout_v1"';assert method.count(before)==1;method=method.replace(before,'TOP = '+repr(TOP))
