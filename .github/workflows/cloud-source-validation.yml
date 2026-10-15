@@ -72,10 +72,22 @@ jobs:
           result['actions_artifact_download_required']=False
           p.write_text(json.dumps(result,indent=2)+'\n')
           PYCODE
+      - name: Generate source-bound licence inventory candidate on hosted runner
+        run: |
+          python3 scripts/licence_inventory.py --write
+          python3 scripts/licence_inventory.py --check
+          cp LICENSES.md cloud-LICENSES-candidate.md
+          python3 - <<'PYCODE'
+          import hashlib,json,os
+          from pathlib import Path
+          p=Path('cloud-source-validation.json');d=json.loads(p.read_text())
+          d['licence_inventory_candidate']={'source_head':os.environ['GITHUB_SHA'],'sha256':hashlib.sha256(Path('cloud-LICENSES-candidate.md').read_bytes()).hexdigest(),'path':'LICENSES.md','adopted':False}
+          p.write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
       - name: Preserve exact readback evidence
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/publish_cloud_results.py --group storage-tag-filter cloud-source-validation.json
+        run: python3 scripts/publish_cloud_results.py --group storage-tag-filter cloud-source-validation.json cloud-LICENSES-candidate.md
       - name: Preserve source check result if publication fails
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

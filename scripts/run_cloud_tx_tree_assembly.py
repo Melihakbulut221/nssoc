@@ -35,8 +35,12 @@ def flatten_reference(text,tag):
     for line in lines:
         if not line.strip() or line.startswith(('*','.')): continue
         row=line.split();kind=row[0][0]
-        count={'Q':4,'R':3}[kind]
-        assert row[count+1] in ('npn13G2','rppd','ptap1')
+        if kind=='Q': count,model=4,'npn13G2'
+        elif row[0].startswith('RPTAP'): count,model=2,'ptap1'
+        elif row[0].startswith('RD'): count,model=3,'rppd'
+        else: raise ValueError('Unknown native device card: '+row[0])
+        assert row[count+1]==model, 'Native model/terminal arity mismatch'
+        assert all('=' not in node for node in row[1:count+1])
         row[0]=kind+tag+'_'+row[0][1:]
         row[1:count+1]=[MAPS[tag].get(n,'BULK' if n=='BULK' else tag+'_'+n) for n in row[1:count+1]]
         output.append(' '.join(row))
