@@ -1,3 +1,17 @@
+## 2026-10-15 — newground TC ordinarycorners PASS; exact interface witness analysis LIVE
+
+UTC 2026-10-15T16:28:49.144119+00:00. ALL CLOUD; goalOPEN. TCnativefeed remains schematic, notphysicalintegration.
+
+**38765529919 newgroundnative_res_tc temperature_voltage COMPLETE4cases**: wirehotmargin**101.179299331mV**, finalCM1.811236808..1.851114723V, all62HBT64MOS/interfacesPASS, no diagnostics; wirecoldmargin265.199365834mV,finalCM1.987401859..2.024985750V. Only1.179mVoveroutputlimit; not robustfullPHYacceptance. SAMEbiascandidate study nowcomplete. **Nominal38767316386 COMPLETE2cases**, receiptsadded undernewvariant.bias_candidates.native_res_tc.loaded_studies.
+
+**TC independentfailingcorners38767312141 source12b3d1847d2713cbc9e96555099788b64092ab2e** LIVEwirejobs: hotHBT116533783556,coldRES116533783939,hotRES116533784096,coldHBT116533784247. Fourcompactreceiptsnowpinned: coldRES CMmax2.054162684VFAIL; coldHBT CMmax2.045853876Vnowwithinlimitbut12dataHBTVBE up to1.023395261VstillFAIL. Hotcompactpass. Appendwireterminalresults to SAMEpartialstudy, preserveallfailures. Noadoption/physicalfeedclaim.
+
+**Interface diagnostic sourcec904a7f2c65ea94582875823077b6279fdf75f4e** adds `interface_sample_witnesses`: actualbit/index/phase/time andp/nphysicalterminal pair atminimumsignedmargin/minimumCM/maximumCM, exactnativebrackets/neighborsandclock/biascontext, first12failedpairspluscompletecounts. Reconstructs exactoriginal6912final/768CMOSsamplereviews, nooracle/phase/window/thresholdchange. Cloudvalidation**38768007863/116536177949 SUCCESS590tests**, plusinjectedupper/lower/wrongsignsourcewitnessandmissingcoveragecontrols.
+
+**38769063249** wave_diagnosis compact_return_strap/hot_low_res_bcs/native_res/default isLIVE, sourcec904a7... . It reads existingfailednativecapture, doesnot rerunsimulation. Inspect `interface_sample_witnesses` and deriveactual commonmode-failure timing/bit/physicalnet beforebias/geometrychanges. Keep previousgrounddiagnosis38763079513; newreceiptshouldbeadditionalinterface diagnosis ratherthan erasepriorproof.
+
+Strictsolverrun38763917040 oldedge/breakpoint_tight_trap:2compactcapturesPASS,pinned;2wirecaptures116522064672/116522064809LIVE. Oncecompleteappendthenfullhostedstep_comparison withstrictprofile/finepair. Previous8.9/8.1mVstartupfailure stillnotclosed. Mainchip38731744914/116410943697LIVE;6hourlimit~18:03UTC. NoNDRwaiver/detailroute/finalSTAclaim. Localempty.
+
 ## 2026-10-15 — strictcompact pair complete; actualnewground hotmargin106.98mV
 
 UTC 2026-10-15T16:12:19.681290+00:00. ALL CLOUD. Goal OPEN, authoritative newmeasurements pinned.
