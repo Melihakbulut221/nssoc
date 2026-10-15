@@ -1,3 +1,9 @@
+## Completed full-wire component; actual annotation diagnosis launched
+
+Full-wire38801162596/job116650255071 is COMPLETE, do not duplicate. Summaryc0e91d7ef51054fa07a79d06f407e96f7af3743c40259d6b99ddfee419baae0b: all original768samples/device/interface gates pass at .125/.0625ps through full34ns, same physical sources and limits. Min margins100.723619mV/100.725578mV, numerical comparison PASS. This is assembled4:1 only and margin above100mV is narrow. Full32 per-macro captures38810158966/38810163678 still live; actual32physical/x4 remains unproven. Detailed receipt pcie-vbic-full-wire-20261016.json.
+
+Patched PLL full1us38813902351/job116693663825 is live on be12960e. Physical buffer repair38813118414/job116691024892 remains live. New route-annotation-cloud diagnoses all1065original unannotated drivers against exact original ODB/nominalSPEF; report categories preserve every loaded missing/failed binding as open, no waivers. Native diagnostic runs only in cloud. Local workspace remains empty.
+
 ## Patched native PLL full1us acquisition measurement prepared
 
 New pll-vbic-acquisition-cloud restores exact original actual845 run38674687038 and requires paired-engine50ns evidence38805695818. Physical parent91364a..., all35 model/OSDI inputs, original34 probes, startup, KLU/.3125ps and full1us stay unchanged. Only proven native VBIC companion correction changes. Reproduce original acquisition rejection before the new run; apply frozen original800-900ns and900-1000ns100ppm/50ps/no-slip/control gates. No phase fit/window shift. Full raw stored in cloud ordered parts, including failure. Native progress logs report elapsed time/bytes every60seconds. Full845 safety, timestep/PVT/load/CDR/x4 still need proof regardless of this result. Own-path push starts one run; do not duplicate.
