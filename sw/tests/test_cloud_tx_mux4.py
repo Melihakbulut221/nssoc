@@ -819,3 +819,30 @@ def test_interface_review_rejects_lost_physical_observations(fault):
     with pytest.raises(AssertionError):
         mux4.interface_screen(np.asarray([0.]),lambda n:np.asarray([1.95]),
             {'bits':mux4.sequence(),'streams':4,'interface_probes':probes},'final')
+
+
+@pytest.mark.parametrize('condition',['nominal','hot_low_res_bcs','cold_high_res_wcs','cold_high_hbt_wcs'])
+def test_fixed_native_tc_feed_preserves_bits_clocks_and_all_device_observations(tmp_path,condition):
+    (tmp_path/'frontend').mkdir()
+    (tmp_path/'mux54-compact01.spice').write_text(mux4.PRE.read_text())
+    (tmp_path/'frontend/buf16.inc').write_text("""
+.subckt sg13g2_buf_16 A X VDD VSS
+XN1 net1 A VSS VSS sg13_lv_nmos
+XN0 X net1 VSS VSS sg13_lv_nmos
+XP1 net1 A VDD VDD sg13_lv_pmos
+XP0 X net1 VDD VDD sg13_lv_pmos
+.ends
+""")
+    args=dict(clock_bias='native_res',clock_reference='stiff65',output_bias='native_res')
+    baseline,b=mux4.build(tmp_path,condition,pre_bias='native_res',**args)
+    candidate,c=mux4.build(tmp_path,condition,pre_bias='native_res_tc',**args)
+    assert baseline.replace('nssoc_tx_pre_bias_res_v1','nssoc_tx_pre_bias_res_tc_v1')==candidate
+    assert {k:v for k,v in b.items()if k!='pre_bias'}=={k:v for k,v in c.items()if k!='pre_bias'}
+    assert not any(line.startswith(('Ira ','Irb '))for line in candidate.splitlines())
+    broken,f=mux4.build(tmp_path,condition,pre_bias='native_res_tc',fault='disable_pre_b_bias',**args)
+    assert 'XPREBIAS_rb 'not in broken and f['bits']==c['bits']
+
+
+@pytest.mark.parametrize('name,step',[('hot_low_eighth_step',.125),('hot_low_sixteenth_step',.0625)])
+def test_finer_hot_steps_preserve_original_pvt(name,step):
+    assert mux4.CONDITIONS[name]==dict(mux4.CONDITIONS['hot_low'],step_ps=step)

@@ -29,6 +29,8 @@ from run_cloud_tx_operating_point import CONDITIONS, fetch, sha
 CONDITIONS = dict(CONDITIONS)
 # Check narrow hot-wire margin at half the original maximum step.
 CONDITIONS['hot_low_quarter_step'] = dict(CONDITIONS['hot_low'], step_ps=.25)
+CONDITIONS['hot_low_eighth_step'] = dict(CONDITIONS['hot_low'], step_ps=.125)
+CONDITIONS['hot_low_sixteenth_step'] = dict(CONDITIONS['hot_low'], step_ps=.0625)
 for _hbt in ('typ', 'bcs', 'wcs'):
     for _res in ('typ', 'bcs', 'wcs'):
         if (_hbt, _res) != ('typ', 'typ'):
@@ -50,7 +52,7 @@ TAPPED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v3.spice'
 GUARDED_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v4.spice'
 MARGIN_FINAL = ROOT / 'hw/soc/analog/pcie/tx_mux54_passive_drive_v5.spice'
 PRE_BIASES = {'baseline':.0005,'plus10':.00055,'plus20':.0006}
-PRE_BIAS_MODES = (*PRE_BIASES, 'native_res', 'output_feedback', 'output_feedback_tc')
+PRE_BIAS_MODES = (*PRE_BIASES, 'native_res', 'native_res_tc', 'output_feedback', 'output_feedback_tc')
 PRE_FEED = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_res_v1.inc'
 PRE_FEEDBACK = ROOT / 'hw/soc/analog/pcie/tx_pre_bias_feedback_v1.inc'
 CLOCK_FEED = ROOT / 'hw/soc/analog/pcie/tx_clock_bias_feed_v1.inc'
@@ -342,7 +344,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         lines.append(f'.lib "{directory / ("corner" + kind + ".lib")}" {corner}')
     model_files=(PRE, FRONT, TX, final, frontend/'buf16.inc') if assembled_core is None else (FRONT, TX, assembled_core, frontend/'buf16.inc')
     lines += [f'.include "{p}"' for p in model_files]
-    if pre_bias in ('native_res','output_feedback','output_feedback_tc'):
+    if pre_bias in ('native_res','native_res_tc','output_feedback','output_feedback_tc'):
         lines.append(f'.include "{PRE_FEEDBACK if pre_bias.startswith("output_feedback") else PRE_FEED}"')
     if clock_bias!='ideal':
         lines.append(f'.include "{bias_path}"')
@@ -403,7 +405,8 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
                    (TX, 'xtx', ['mp','mn','op','on','tvdd','0','0','tr'])]
     else:
         assert streams==4 and final_override is None and final_drive=='double_taps_margin'
-        assert clock_bias==pre_bias==output_bias=='native_res' and clock_reference=='stiff65'
+        assert clock_bias==output_bias=='native_res' and clock_reference=='stiff65'
+        assert pre_bias in ('native_res','native_res_tc')
         assert interface_probes is not None and set(interface_probes)=={'ap','an','bp','bn'}
         formal=next(line.lower().split()[2:] for line in assembled_core.read_text().splitlines() if line.lower().startswith('.subckt '))
         required=set('d0p d0n d1p d1n d2p d2n d3p d3n sap san sbp sbn sp sn mp mn avdd avss sub ra rb mr'.split())
@@ -440,11 +443,12 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             lines += ['Vfinal_feed avdd finalfeed 0',
                       'XFINALFEED finalfeed mr 0 nssoc_tx_final_bias_feed_v1']
             continue
-        if pre_bias in ('native_res','output_feedback','output_feedback_tc') and reference in references:
+        if pre_bias in ('native_res','native_res_tc','output_feedback','output_feedback_tc') and reference in references:
             # Zero-volt source is only a current probe, not a bias generator.
-            if pre_bias=='native_res':
+            if pre_bias in ('native_res','native_res_tc'):
                 lines.append(f'Vprebias_{reference} avdd prefeed_{reference} 0')
-                feed=f'prefeed_{reference} {reference} 0 nssoc_tx_pre_bias_res_v1'
+                subckt='nssoc_tx_pre_bias_res_tc_v1' if pre_bias=='native_res_tc' else 'nssoc_tx_pre_bias_res_v1'
+                feed=f'prefeed_{reference} {reference} 0 {subckt}'
             else:
                 node=next(n for n in plan['nodes'] if n['reference']==reference)
                 lines.append(f'Vprebias_{reference} prefeed_{reference} {reference} 0')
@@ -481,7 +485,7 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         assert all(node in nodes for probes in interface_probes.values() for node in probes), 'Every interface probe must already be an actual bound transistor terminal'
         assert not {'ap','an','bp','bn'} & nodes, 'No ideal intermacro aliases in assembled core'
     vectors = ['v('+n+')' for n in sorted(nodes)] + ['i(v'+n+')' for n in rails]
-    if pre_bias in ('native_res','output_feedback','output_feedback_tc'):
+    if pre_bias in ('native_res','native_res_tc','output_feedback','output_feedback_tc'):
         vectors += [f'i(vprebias_{reference})' for reference in references]
         vectors += [f'v(prefeed_{reference})' for reference in references]
     if clock_bias=='native_res':
@@ -746,6 +750,11 @@ def main():
                 intermacro_connections_ideal=True,assembled_tree_gds=False,
                 qualified_substrate_resistance=False,qualified_rf_distribution=False)
         result['output_bias']=args.output_bias
+        if args.pre_bias=='native_res_tc':
+            result['pre_bias_tc_scope']=dict(source=str(PRE_FEED.relative_to(ROOT)),sha256=sha(PRE_FEED),
+                native_resistors_per_stage=2,layout_integrated=False,qualified_contact_current=False,
+                hypothesis='Fixed100um/1um Rsil plus16.5um/2um Rppd in series from AVDD to existing reference; higher positive TC lowers hot bias and raises cold bias. Native models, no per-corner retuning or ideal clamp. Actual core physical/RC remains unchanged; added feed layout/RC still required.',
+                reference='https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html')
         if args.pre_bias=='output_feedback':
             result['pre_bias_feedback_scope']=dict(source=str(PRE_FEEDBACK.relative_to(ROOT)),
                 sha256=sha(PRE_FEEDBACK),native_resistors_per_stage=2,layout_integrated=False,

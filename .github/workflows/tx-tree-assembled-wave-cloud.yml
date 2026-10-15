@@ -10,8 +10,13 @@ on:
       study:
         description: Original gates on complete assembled physical core and matched compact control
         type: choice
-        options: [nominal, temperature_voltage, physical_faults, failing_corners, independent_corners, mos_corners, quarter_step, hot_low_quarter_step]
+        options: [nominal, temperature_voltage, physical_faults, failing_corners, independent_corners, mos_corners, quarter_step, hot_low_quarter_step, hot_low_fine_steps]
         default: nominal
+      pre_bias:
+        description: Fixed native bias feed; TC candidate needs separate feed layout and RC qualification
+        type: choice
+        options: [native_res, native_res_tc]
+        default: native_res
       placement_profile:
         description: Source-bound assembled core placement with independent physical and RC receipts
         type: choice
@@ -20,7 +25,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-tree-assembled-wave-${{ github.ref }}-${{ inputs.study || 'nominal' }}-${{ inputs.placement_profile || 'baseline' }}
+  group: tx-tree-assembled-wave-${{ github.ref }}-${{ inputs.study || 'nominal' }}-${{ inputs.placement_profile || 'baseline' }}-${{ inputs.pre_bias || 'native_res' }}
   cancel-in-progress: false
 jobs:
   native-transient:
@@ -33,7 +38,7 @@ jobs:
       matrix:
         streams: [4]
         prestage: [compact, wire]
-        condition: ${{ fromJSON(inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'failing_corners' && '["hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'hot_low_quarter_step' && '["hot_low_quarter_step"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
+        condition: ${{ fromJSON(inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'failing_corners' && '["hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'hot_low_fine_steps' && '["hot_low_eighth_step","hot_low_sixteenth_step"]' || inputs.study == 'hot_low_quarter_step' && '["hot_low_quarter_step"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
         fault: ${{ fromJSON(inputs.study == 'physical_faults' && '["swap_pre_a_select","disable_pre_b_bias","swap_leaf_select"]' || '["none"]') }}
     permissions:
       contents: write
@@ -56,7 +61,7 @@ jobs:
       - name: Reject source-bit corruption and incomplete output captures
         run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py
       - name: Run actual complete tree and full-wave engineering screen
-        run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --assembled-placement '${{ inputs.placement_profile || 'baseline' }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --fault '${{ matrix.fault }}'
+        run: python3 scripts/run_cloud_tx_mux4.py --assembled-core '${{ matrix.prestage }}' --assembled-placement '${{ inputs.placement_profile || 'baseline' }}' --stream-raw --condition '${{ matrix.condition }}' --streams 4 --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
       - name: Preserve all successful and failed native captures permanently
         if: always()
         env:
