@@ -1,3 +1,7 @@
+## Independent full-endpoint comparison staged for completed physical ECOs
+
+New eco-endpoint-compare-cloud workflow controls validate orderedarchive integrity, completeidentitycoverage, regressions, newnegativepaths, and lostconstraints. Fullnativecomparison is manualdispatch ONLYafter a physicalECO has a complete0DRV/freshRC/STA report; inputs profile(two_buffer/control_three_buffer),run,summary_sha,parts_sha must be pinned. Restore allcandidateparts with completehashverification; exactcandidateSTA must equal originalfrozencontract with onlyODB/SPEFpaths changed. Independently rerun native22544endpoints/all135264corner-delay rows and compare each rise/fall/worst rawSI against38819589884. Report everyregression/constraintloss; no automaticadoption/signoff. Nativefullcomparison not yet run because physicaljobs stilllive. Allworkcloudonly. Observe control38822066992 andoriginal38813118414; no duplicate reroutes.
+
 ## Corrected placement candidate live; live log snapshots may be partial
 
 Three-buffer expanded-placement run38822066992/job116720743634 source651cf62686a0d7ba5dff95039f7e3790e5167460 is active in nativephysicalexperiment aftercompilepass. Previous38821357967 terminalDPL-0036 buffer2 failure retained; wider1000x200um searchONLYforadditions, original113791cellsremainfixed. Originaltwo-buffer38813118414,PLL38813902351,full32Sparse38810158966/38810163678 remainlive. Do not duplicate.

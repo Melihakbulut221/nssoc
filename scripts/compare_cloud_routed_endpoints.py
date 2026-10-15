@@ -1,0 +1,145 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Independently remeasure every actual-route ECO endpoint, preserving all failures."""
+import argparse,copy,json,math,os,re,struct,subprocess,tarfile
+from pathlib import Path
+from audit_cloud_route_annotation import BASE,SUMMARY_SHA,ARCHIVE_SHA
+from audit_cloud_routed_endpoints import parse_table,controls as table_controls,HELPER_SHA
+from cloud_verified_parts import extract_verified,controls as archive_controls
+from route_cloud_newer_postcts import fetch,sha
+from read_opensta_phase_slacks import parse_phases
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-eco-endpoint-compare';SOURCE=ROOT/'cloud-routed-extraction'
+CENSUS_SHA='54a23354fc53eb4811b574a1c1bbd70aa413d83463e5165f240b8925c10e00ff'
+CENSUS_PARTS_SHA='c9d985717b22590d621bc12e7b3c5a9881ed214a48209587887f1c700d650ac8'
+CENSUS_METHOD_SHA='7ffa4fbf12b48eb8a918199439c464e342f236f99f20f5060c8567583feea4b2'
+
+def compare_rows(before,after):
+    assert set(before)==set(after),'Endpoint/corner/delay identities changed'
+    summaries={}
+    for c,d,n in sorted(before):
+        phase=c+'_'+d
+        if phase not in summaries:
+            summaries[phase]={edge:dict(improved=0,regressed=0,unchanged=0,became_unconstrained=0,became_constrained=0,new_negative=0,resolved_negative=0,negative_before=0,negative_after=0,unconstrained_before=0,unconstrained_after=0,worst_before_seconds=None,worst_after_seconds=None) for edge in ('rise','fall','worst')}
+        for edge,a,b in zip(('rise','fall','worst'),before[(c,d,n)],after[(c,d,n)]):
+            row=summaries[phase][edge]
+            for side,value in (('before',a),('after',b)):
+                if value is None:row['unconstrained_'+side]+=1
+                else:
+                    assert math.isfinite(value)
+                    row['negative_'+side]+=value<0
+                    key='worst_'+side+'_seconds';row[key]=value if row[key] is None else min(row[key],value)
+            row['new_negative']+=b is not None and b<0 and a is not None and a>=0
+            row['resolved_negative']+=a is not None and a<0 and b is not None and b>=0
+            if a==b:row['unchanged']+=1
+            elif a is None:row['became_constrained']+=1
+            elif b is None:row['became_unconstrained']+=1
+            else:row['improved' if b>a else 'regressed']+=1
+    return summaries
+
+def controls():
+    before={(c,d,n):[1e-10,2e-10,1e-10] for c in ('fast','slow','typical') for d in ('min','max') for n in ('a/D','b/D')}
+    after=copy.deepcopy(before);after[('fast','min','a/D')]=[-1e-10,2e-10,-1e-10];after[('slow','max','b/D')]=[None,None,None]
+    r=compare_rows(before,after);assert r['fast_min']['worst']['new_negative']==1 and r['fast_min']['fall']['unchanged']==2
+    assert r['slow_max']['worst']['became_unconstrained']==1 and r['slow_max']['worst']['resolved_negative']==0
+    reverse=compare_rows(after,before);assert reverse['fast_min']['worst']['resolved_negative']==1 and reverse['slow_max']['worst']['became_constrained']==1
+    assert all(v['worst']['unchanged']==2 for v in compare_rows(before,before).values())
+    malformed=copy.deepcopy(after);malformed.pop(('fast','min','a/D'))
+    try:compare_rows(before,malformed)
+    except AssertionError:pass
+    else:raise AssertionError('Missing endpoint accepted')
+    return dict(archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
+
+def restore_report(group,run,summary_sha,parts_sha,destination,selected):
+    for v in (summary_sha,parts_sha):assert re.fullmatch(r'[0-9a-f]{64}',v)
+    assert run>0 and re.fullmatch(r'[a-z0-9-]+',group)
+    stem=f'{group}-{run}-1';base=f'https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-{run}-1-{group}/'
+    folder=OUT/(group+'-source');folder.mkdir()
+    fetch(base+stem+'.summary.json',summary_sha,folder/'summary.json');result=json.loads((folder/'summary.json').read_text())
+    fetch(base+stem+'.parts.json',parts_sha,folder/'parts.json');manifest=json.loads((folder/'parts.json').read_text())
+    assert manifest['stem']==stem
+    expected={n:result['outputs'][n] for n in selected};expected['result.json']=summary_sha
+    for i,part in enumerate(manifest['parts']):
+        assert part['index']==i and part['name']==stem+'.tar.gz.part'+str(i).zfill(4)
+        fetch(base+part['name'],part['sha256'],folder/part['name'])
+    proof=extract_verified(manifest,folder,destination,expected)
+    for part in manifest['parts']:(folder/part['name']).unlink()
+    return result,dict(run=run,summary_sha256=summary_sha,manifest_sha256=parts_sha,restore=proof)
+
+def load_census(directory):
+    record=json.loads((directory/'native-census.json').read_text());rows=parse_table((directory/'endpoint-slacks.tsv').read_text())
+    names=record['endpoints'];corners=record['corners']
+    assert len(set(names))==len(names)==record['engine_endpoint_count'] and set(corners)=={'slow','typical','fast'}
+    assert record['value_units']=='seconds' and record['native_time_unit_seconds']==struct.unpack('!f',struct.pack('!f',1e-9))[0]
+    assert set(rows)=={(c,d,n) for c in corners for d in ('min','max') for n in names}
+    assert set(record['native_pin_mapping'])==set(names)
+    assert len({json.dumps(v,sort_keys=True) for v in record['native_pin_mapping'].values()})==len(names)
+    for d in ('min','max'):
+        negative=sum(any(rows[(c,d,n)][2] is not None and rows[(c,d,n)][2]<0 for c in corners) for n in names)
+        assert negative==record['negative_endpoint_count'][d]
+        for c in corners:
+            values=[rows[(c,d,n)][2] for n in names if rows[(c,d,n)][2] is not None];assert values
+            assert min(values)==record['native_wns_seconds'][c+'_'+d]
+    return record,rows
+
+def main(args):
+    assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
+    result=dict(status='RUNNING',accepted=False,source_head=os.environ['GITHUB_SHA'],final_timing_complete=False,scope='Independent all22544endpoint/3cellcorner/rise-fall/min-max comparison using source-bound fresh routed nominalRC. Unconstrained endpoints and regressions stay visible. No estimate, relaxed SDC, qualified RC, geometry/LVS/antenna or fullPHY acceptance.')
+    def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+    save()
+    try:
+        helper=ROOT/'hw/soc/pnr/timing_hold_reproducibility.tcl';method=ROOT/'hw/soc/pnr/routed_endpoint_census.tcl'
+        assert sha(helper)==HELPER_SHA and sha(method)==CENSUS_METHOD_SHA
+        original,original_proof=restore_report('routed-endpoints',38819589884,CENSUS_SHA,CENSUS_PARTS_SHA,OUT/'baseline',('native-census.json','endpoint-slacks.tsv'))
+        assert original['source_unchanged'] and original['original_routed_timing_reproduced']
+        before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
+        count=2 if args.profile=='two_buffer' else 3;group='critical-load-eco' if count==2 else 'control-load-eco';candidate_dir=ROOT/('cloud-'+group)
+        candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json','logic/result.json'))
+        expected_status='COMPLETE_'+('TWO' if count==2 else 'THREE')+'_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
+        assert candidate['status']==expected_status and candidate['source_run']==38809759501
+        assert candidate['protected_source_unchanged'] and candidate['original_routed_timing_reproduced'] and candidate['native_drt_drvs']==0
+        assert candidate['logic']['status']=='PASS within scope' and candidate['inversion_control']=='REJECTED'
+        assert candidate['spef_integrity']['inconsistent_nets']==0
+        assert len(candidate['geometry']['added'])==len(candidate['geometry']['changes'])==count
+        if count==3:assert candidate['profile']=='control_three_buffer' and candidate['buffer_count']==3
+        result.update(candidate=proof,baseline=original_proof);save()
+        fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-route-summary.json');source=json.loads((OUT/'original-route-summary.json').read_text())
+        packed=OUT/'original-route.tar.gz';fetch(BASE+'.tar.gz.part0000',ARCHIVE_SHA,packed);assert packed.stat().st_size==225682086 and not SOURCE.exists()
+        with tarfile.open(packed) as archive:
+            for member in archive:
+                p=Path(member.name);assert not p.is_absolute() and '..'not in p.parts and p.parts[0]=='cloud-routed-extraction'
+                assert member.isfile() or member.isdir();archive.extract(member,ROOT,filter='data')
+        packed.unlink();assert sha(SOURCE/'result.json')==SUMMARY_SHA
+        for n,digest in source['outputs'].items():assert sha(SOURCE/n)==digest
+        for n,digest in source['protected_inputs'].items():assert sha(Path(n))==digest
+        baseline_script=(SOURCE/'actual-routed-sta.tcl').read_text()
+        assert baseline_script.count(str(SOURCE/'source/routed.odb'))==1 and baseline_script.count(str(SOURCE/'actual-route.nominal.spef'))==3
+        expected=baseline_script.replace(str(SOURCE/'source/routed.odb'),str(candidate_dir/'routed.odb')).replace(str(SOURCE/'actual-route.nominal.spef'),str(candidate_dir/'candidate.nominal.spef'))
+        assert (candidate_dir/'fresh-routed-sta.tcl').read_text()==expected,'Candidate changed original STA contract'
+        script=OUT/'candidate-census.tcl';script.write_text(expected+f'\nsource {{{helper}}}\nset nssoc_endpoint_out {{{OUT}}}\nsource {{{method}}}\n')
+        with (OUT/'candidate-census.log').open('w') as log:
+            proc=subprocess.Popen([os.environ['CLOUD_APPIMAGE'],'openroad','-exit',str(script)],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+            for line in proc.stdout:log.write(line);log.flush();print(line,end='',flush=True)
+            code=proc.wait()
+        text=(OUT/'candidate-census.log').read_text(errors='replace');assert code==0 and not re.search(r'(?m)^\[ERROR|^Error:',text)
+        phases=parse_phases(text,'CORNER')
+        for phase,row in candidate['routed_timing'].items():assert phases[phase]['groups']==row['groups']
+        after,new_rows=load_census(OUT);assert before['native_pin_mapping']==after['native_pin_mapping'],'Physical endpoint identities changed'
+        comparison=compare_rows(old_rows,new_rows);result['comparison']=comparison
+        result['all_constrained_endpoint_slacks_nonnegative']=all(v['worst']['negative_after']==0 for v in comparison.values())
+        result['any_endpoint_regression']=any(v[e]['regressed'] for v in comparison.values() for e in ('rise','fall','worst'))
+        result['any_loss_of_constraints']=any(v[e]['became_unconstrained'] for v in comparison.values() for e in ('rise','fall','worst'))
+        result['endpoint_count']=len(after['endpoints']);result['endpoint_corner_delay_rows']=len(new_rows)
+        for name,pin in proof['restore']['selected_files'].items():assert sha(candidate_dir/name)==pin['sha256']
+        assert all(sha(SOURCE/n)==v for n,v in source['outputs'].items()) and all(sha(Path(n))==v for n,v in source['protected_inputs'].items())
+        result.update(status='COMPLETE_ALL_ENDPOINT_ROUTED_ECO_COMPARISON_NOT_SIGNOFF',source_unchanged=True,candidate_routed_timing_reproduced=True)
+    except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    finally:
+        result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer'])
+    parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
+    if args.controls_only:
+        assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))
+    else:main(args)
