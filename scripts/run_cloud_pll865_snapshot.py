@@ -1962,7 +1962,13 @@ def compose_pfd_actual_parent():
                 for d in ds:d['nets']=[{'a_pfd_ref':'a_pfd_fb','a_pfd_fb':'a_pfd_ref'}.get(n,n)for n in d['nets']]
                 for w in ws:
                     if 'xpfd_'in w['path']:w['nets']=[{'a_pfd_ref':'a_pfd_fb','a_pfd_fb':'a_pfd_ref'}.get(n,n)for n in w['nets']]
-            else:ws.append(dict(path='r_fault',kind='r',nets=['a_count_reset_b','clearb'],value='1e-6'))
+            else:
+                reset_node=aliases['a_count_reset_b'];endpoints=[reset_node,'clearb']
+                existing={n for w in wires for n in w['nets']}|{n for d in actual for n in d['nets']}
+                require(all(n in existing for n in endpoints),'Reset fault must touch actual existing nodes')
+                metal=nx.Graph([tuple(w['nets'])for w in wires if w['kind']=='r'])
+                require(not nx.has_path(metal,*endpoints),'Reset fault must short two previously separate conductors')
+                ws.append(dict(path='r_fault',kind='r',nets=endpoints,value='1e-6'))
             try:check_graph(ds,ws)
             except ValueError as error:graph_faults.append(dict(name=name,rejection=str(error)))
             else:raise ValueError('Graph accepted fault '+name)
