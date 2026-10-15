@@ -61,3 +61,22 @@ def test_analysis_parameters_and_native_sources_preserved():
     assert transformed=='Example\nR1 in out 25\n.options reltol=1e-4\n.tran 5e-13 34e-9 0 5e-13\n.control\nsave v(out)\nalter @q.x[off] = 1\nop\nwrdata op.dat v(out)\nset filetype=binary\nrun wave.raw\nquit\n.endc\n.end\n'
     for bad in [deck.replace('tran 5e-13','tran 5e-13\ntran 5e-13'),deck.replace('wrdata wave.dat v(out)','wrdata wave.dat v(other)')]:
         with pytest.raises(AssertionError):m.streaming_deck(bad,{'vectors':vectors})
+
+
+def test_pwl_reduction_keeps_exact_source_text():
+    sources=['V1 in 0 PWL(0 0 1n 1)\n','Vs s ref PWL(\n+ 0 0\n+ 2e-9 .08)\n']
+    deck='Title\n'+''.join(sources)+'.tran 1p 34n\n.control\nquit\n.endc\n.end\n'
+    assert m.pwl_voltage_sources(deck)==sources
+    with pytest.raises(AssertionError):m.pwl_voltage_sources('No source\nR1 a 0 1\n')
+    with pytest.raises(AssertionError):m.pwl_voltage_sources('Title\n'+sources[0]*2)
+
+
+def test_failed_tail_never_relabels_partial_capture_as_complete(tmp_path):
+    path=tmp_path/'wave.raw';path.write_bytes(raw())
+    result=m.failed_capture_tail(path,m.digest(path))
+    assert result['accepted']is False and result['end_s']==2e-12
+    assert result['tail'][-1]['time_hex']==float(2e-12).hex()
+    with pytest.raises(AssertionError):m.read_streamed_wave(path,VECTORS,34e-9,1e-12)
+    with pytest.raises(AssertionError):m.failed_capture_tail(path,'0'*64)
+    path.write_bytes(raw()[:-1])
+    with pytest.raises(AssertionError):m.failed_capture_tail(path,m.digest(path))

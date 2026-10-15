@@ -111,7 +111,164 @@ def compare_complete(legacy, time, values, vectors):
         interpolation=False,fitted_phase=False,omitted_vectors=False)
 
 
+
+def pwl_voltage_sources(deck):
+    """Keep every original PWL source byte-for-byte for a labelled linear reduction."""
+    body=deck.split('.control\n')[0]
+    statements=[]
+    for line in body.splitlines(keepends=True):
+        if line.startswith('+'):
+            assert statements
+            statements[-1]+=line
+        else:
+            statements.append(line)
+    sources=[s for s in statements if s[:1].lower()=='v' and 'pwl(' in s.lower()]
+    assert sources and len({s.split()[0].lower() for s in sources})==len(sources)
+    return sources
+
+
+def failed_capture_tail(path, expected_hash):
+    """Inspect rejected raw data only; never relax the complete-capture reader."""
+    import math
+    path=Path(path)
+    assert digest(path)==expected_hash, 'Changed failed native capture'
+    with path.open('rb') as stream:
+        rows=[]
+        while True:
+            row=stream.readline(1048576)
+            assert row and row.endswith(b'\n')
+            rows.append(row)
+            assert sum(map(len,rows))<=1048576
+            if row==b'Binary:\n':break
+        offset=stream.tell()
+    header=b''.join(rows).decode('ascii')
+    def field(key):
+        values=[line.split(':',1)[1].strip()for line in header.splitlines()if line.startswith(key+':')]
+        assert len(values)==1
+        return values[0]
+    assert field('Flags')=='real' and field('Plotname')=='Transient Analysis'
+    count=int(field('No. Points'));width=int(field('No. Variables'))
+    assert count>1 and width>1 and path.stat().st_size-offset==count*width*8
+    table=[row.split()for row in header.split('Variables:\n')[1].split('Binary:\n')[0].splitlines()]
+    assert len(table)==width and [r[0]for r in table]==list(map(str,range(width)))
+    assert table[0]==['0','time','time']
+    matrix=np.memmap(path,mode='r',dtype='<f8',offset=offset,shape=(count,width))
+    for first in range(0,count,1024):assert np.isfinite(matrix[first:first+1024]).all()
+    t=matrix[:,0];delta=np.diff(t)
+    result=dict(status='DIAGNOSTIC_OF_REJECTED_CAPTURE_ONLY',accepted=False,sha256=expected_hash,
+        rows=count,columns=width,start_s=float(t[0]),end_s=float(t[-1]),
+        nonincreasing_time_steps=int(np.sum(delta<=0)),min_delta_s=float(delta.min()),max_delta_s=float(delta.max()),
+        tail=[dict(time_s=float(t[i]),time_hex=float(t[i]).hex(),ulp_s=math.ulp(float(t[i])),
+                   delta_s=float(t[i]-t[i-1])if i else None)for i in range(max(0,count-32),count)],
+        last_values={name:float(matrix[-1,i])for i,(_,name,_)in enumerate(table)})
+    del matrix,t,delta
+    return result
+
+
+def diagnose_failed_breakpoints():
+    import re, math, tarfile, shutil
+    from run_cloud_tx_operating_point import fetch
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    root=Path(__file__).resolve().parents[1]
+    out=root/'cloud-tx-breakpoint-diagnosis';out.mkdir(exist_ok=False)
+    spec=json.loads((root/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text())
+    selected=spec['placement_variants']['compact_edge_supply']['failed_numerical_captures']
+    runtime=json.loads((root/'docs/evidence/pcie-tx-cloud-input-20261013.json').read_text())['native_runtime']
+    assert digest(os.environ['CLOUD_NGSPICE'])==runtime['executable_sha256']
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],source_run=selected['run'],
+        accepted=False,serial_phy_complete=False,native_runtime=runtime,cases=[],
+        scope='Source-bound rejected-wave tail and exact-PWL linear RC reduction only; no original physical circuit or acceptance gate changed.')
+    try:
+        for record in selected['cases']:
+            if record['mode']!='compact':continue
+            case=out/record['condition'];case.mkdir();packed=case/'source.tar.gz'
+            fetch(record['url'],record['sha256'],packed)
+            assert packed.stat().st_size==record['bytes']
+            hashes={};summary=None;seen=set()
+            with tarfile.open(packed,'r|gz')as archive:
+                for item in archive:
+                    assert item.name not in seen;seen.add(item.name)
+                    if not item.isfile():continue
+                    if item.name=='cloud-tx-mux4/result.json':
+                        raw=archive.extractfile(item).read()
+                        assert hashlib.sha256(raw).hexdigest()==record['summary_sha256']
+                        summary=json.loads(raw);(case/'original-summary.json').write_bytes(raw)
+                    elif item.name.startswith('cloud-tx-mux4/native/'):
+                        relative=item.name[len('cloud-tx-mux4/'):]
+                        raw=archive.extractfile(item)
+                        if relative in ('native/wave.raw','native/bench.cir','native/contract.json','native/run.log'):
+                            dest=case/Path(relative).name
+                            with dest.open('wb')as stream:shutil.copyfileobj(raw,stream)
+                            hashes[relative]=digest(dest)
+                        else:hashes[relative]=hashlib.file_digest(raw,'sha256').hexdigest()
+            assert summary is not None and summary['status']=='FAIL_OR_ERROR' and not summary['accepted']
+            assert hashes==summary['outputs']==record['native_outputs']
+            assert summary['condition']==record['condition'] and summary['assembled_core_scope']['mode']=='compact'
+            contract=json.loads((case/'contract.json').read_text());original=(case/'bench.cir').read_text()
+            tail=failed_capture_tail(case/'wave.raw',hashes['native/wave.raw'])
+            stop=34e-9;assert tail['end_s']<stop
+            failure=[line for line in summary['diagnostics']if 'Timestep too small' in line]
+            assert len(failure)==1
+            failed_at=float(re.search(r'time = ([^,]+)',failure[0])[1])
+            sources=pwl_voltage_sources(original)
+            knots=[]
+            units={'n':1e-9,'p':1e-12,'u':1e-6}
+            def time_value(text):
+                return float(text[:-1])*units[text[-1].lower()]if text[-1].lower()in units else float(text)
+            for source in sources:
+                pairs=re.search(r'(?is)pwl\((.*)\)',source)[1].replace('\n+',' ').split()
+                assert len(pairs)%2==0
+                times=[time_value(pairs[i])for i in range(0,len(pairs),2)]
+                assert all(y>x for x,y in zip(times,times[1:]))
+                nearby=sorted(times,key=lambda t:abs(t-failed_at))[:3]
+                knots.append(dict(source=source.split()[0],sha256=hashlib.sha256(source.encode()).hexdigest(),
+                    nearest=[dict(time_s=t,time_hex=t.hex(),delta_to_failure_s=t-failed_at,ulp_s=math.ulp(t))for t in nearby]))
+            row=dict(condition=record['condition'],original_summary_sha256=record['summary_sha256'],
+                archive_sha256=record['sha256'],all_native_outputs_verified=hashes,original_diagnostics=summary['diagnostics'],
+                failed_capture=tail,pwl_sources=knots,linear_reduction=None)
+            result['cases'].append(row)
+            # Remove the already verified large raw/archive. They remain in the pinned permanent release.
+            (case/'wave.raw').unlink();packed.unlink()
+            linear=case/'linear';linear.mkdir();positive={s.split()[1]for s in sources};negative={s.split()[2]for s in sources}-{'0'}
+            assert not positive&negative, 'Unexpected source dependency in diagnostic reduction'
+            options=[line for line in original.splitlines()if line.startswith('.options ')];trans=[line for line in original.splitlines()if line.startswith('.tran ')]
+            assert len(options)==len(trans)==1
+            vectors=[];parts=['NSSOC DIAGNOSTIC ONLY: original PWL sources with linear RC loads\n',*sources]
+            for i,node in enumerate(sorted(negative)):parts.append(f'VREF{i} {node} 0 0\n')
+            for i,node in enumerate(sorted(positive)):
+                parts.append(f'RDIAG{i} {node} diag{i} 1000\nCDIAG{i} diag{i} 0 1f\n')
+                vectors.extend([f'v({node})',f'v(diag{i})'])
+            parts.extend([options[0]+'\n',trans[0]+'\n.control\nsave '+' '.join(vectors)+'\nset filetype=binary\nrun wave.raw\nquit\n.endc\n.end\n'])
+            deck=''.join(parts);assert pwl_voltage_sources(deck)==sources
+            (linear/'bench.cir').write_text(deck);(linear/'spinit').write_text('* Explicit empty init\n')
+            env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN','PYTHONPATH','PYTHONHOME','LD_PRELOAD')}
+            env.update(SPICE_SCRIPTS=str(linear),OMP_NUM_THREADS='1')
+            with (linear/'run.log').open('w')as log:
+                code=subprocess.call([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=linear,env=env,stdout=log,stderr=subprocess.STDOUT)
+            log=(linear/'run.log').read_text(errors='replace')
+            lr=dict(returncode=code,bench_sha256=digest(linear/'bench.cir'),same_original_pwl_sources=True,
+                same_original_tran_and_options=True,original_source_count=len(sources),
+                physical_circuit_preserved=False,accepted=False,diagnostics=[s for s in log.splitlines()if any(k in s.lower()for k in ('error','warning','too small','singular'))])
+            if (linear/'wave.raw').exists():
+                lr['raw_diagnosis']=failed_capture_tail(linear/'wave.raw',digest(linear/'wave.raw'))
+                lr['reached_original_stop']=abs(lr['raw_diagnosis']['end_s']-stop)<1e-18
+                if lr['reached_original_stop']:
+                    t,values,proof=read_streamed_wave(linear/'wave.raw',vectors,stop,contract['condition']['step_ps']*1e-12)
+                    lr['complete_linear_transport']=proof;del t,values
+                (linear/'wave.raw').unlink()
+            row['linear_reduction']=lr
+        assert len(result['cases'])==2
+        result['status']='COMPLETE_FAILED_CAPTURE_DIAGNOSIS_NOT_PHYSICAL_ACCEPTANCE'
+    except BaseException as error:
+        result.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    finally:
+        result['outputs']={str(p.relative_to(out)):digest(p)for p in out.rglob('*')if p.is_file()and p.name not in ('wave.raw','source.tar.gz')}
+        (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+        print(json.dumps({k:result[k]for k in ('status','source_head','accepted')}),flush=True)
+
 def main():
+    if sys.argv[1:]==['--diagnose-failed-breakpoints']:
+        diagnose_failed_breakpoints();return
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('native_args',nargs=argparse.REMAINDER)
     args=parser.parse_args().native_args
