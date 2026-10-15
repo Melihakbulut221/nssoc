@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-10-15T18:19:10.743910+00:00",
+  "as_of": "2026-10-15T19:49:58.274928+00:00",
   "turn_classification": "progress",
-  "goal_status": "OPEN",
+  "goal_status": "active",
   "execution_policy": "Cloud-only: source changes through GitHub API; all CAD, simulations and tests on GitHub-hosted runners. Local NSSOC workspace and temporary paths are empty. Do not recreate a local checkout.",
-  "head": "1dfd4ddaf5f7059cd81353b72dc15da19eac0741",
+  "head": "d14078e2aefda63d06d03fbea9b128fe8b66d71a",
   "global_route": {
     "run": 38307868589,
     "result": "Both profiles completed; native full source-bound geometry and logic checks inherited from38306421942. Fresh same-PDK global routing estimates; no detailed route or signoff.",
@@ -100,12 +100,13 @@
     "uploaded_bytes": 142907112571
   },
   "next_actions": [
-    "All work stays on GitHub-hosted runners. Do not recreate local checkout or CAD/test artifacts. Retirement receipt is COMPLETE and hash-verified; no cleanup of other projects.",
-    "Do not poll or restart mainchip38731744914 as live: it terminated at the6h limit and relaxed NDR21times. Its partial JSON pending status is historical, not process evidence. Preserve full timeout and native failures.",
-    "Poll exact failed-guide DRT38788529905, job116606725290, before dispatching anything else for this route. Native preflight preserves original geometry/connectivity/NDR with fault controls; run uses exact132-overflow saved guides only for physical diagnosis. Original global gate remains failed. Require actual routed geometry, independent connectivity/geometricNDR/DRC/LVS/antenna and extractedSTA; never treat run success as closure.",
-    "Poll native VBIC companion38793936101, job116625309760, source0045ccd17a9b9b28e11a5fb2b4bb3d438d24d123. Packaged constant-bias cases executed; pristine source build was confirmed live. Compare packaged/pristine/patched and QCO0 controls. Inspect actual results before declaring the suspected Qbcx RHS defect confirmed or adopting any runtime. If supported, replay exact full coupled input with pristine vs packaged provenance check, then patched paired steps; keep full34ns/PVT/physical gates. Do not repeat rejected tolerance studies.",
-    "Retain all completed factorial/refinement/backend comparisons and aborted charge capture. TSTEP and matrix backend are ruled out; finer TMAX/Gear2 did not converge. No blind full34ns rerun or startup-window removal.",
-    "Keep full PLL/CDR/RX/PCS/LTSSM, physical integration, qualified extraction, all-device/PVT, pad/ESD, SRAM/DFT, final setup/hold and real manufacturer approval requirements open until corresponding full-scope evidence proves them."
+    "All work stays on GitHub-hosted runners. Local workspace remains empty; no local checkout, CAD, tests or downloaded archives. Preserve unrelated files.",
+    "Poll mainchip38788529905/job116606725290. Never duplicate a live run. Exact132-overflow guides feed only physical diagnosis; retain original failed global-route gate. Require routed geometry, independent connectivity/NDR/DRC/LVS/antenna and extractedSTA before closure.",
+    "Poll full-window compact38796689216/job116634823910 at sourced14078e2aefda63d06d03fbea9b128fe8b66d71a. Check terminal native summary and protected-input hashes, full34ns original engineering review and all step_metrics gates. Do not infer pass from workflow success.",
+    "Prior coupled38795024358 completed5native cases: pristine8906.847uV step mismatch versus patched0.767109uV/0.487315uV. Pristine reproduces packaged. Job failed in final sha(str) input check; retained failed receipt. Path conversion fixed; full-window job rechecks input integrity. Never silently label failed job as success.",
+    "If compact full-window original gates and numerical comparison pass, run same paired patched engine with pristine controls on unchanged extracted-wire full34ns model, then independent original corners and larger serializer tree. Preserve actual geometry and device/source/model hashes. No fullPHY claim from compact serializer evidence.",
+    "If any native or engineering gate fails, diagnose actual evidence without changing limits, dropping startup or resampling source phases. Do not repeat rejected blind tolerance refinement.",
+    "Full serial PHY/CDR/PLL/RX/PCS/LTSSM, qualifiedparasitics/padESD, complete mainchip route and final extracted setup/hold remain OPEN. Continue substantive work; do not mark goal complete based on component results."
   ],
   "extraction_source_inspection": {
     "runs": [
@@ -102899,38 +102900,38 @@
     }
   ],
   "current_closure_snapshot": {
-    "source_head": "1dfd4ddaf5f7059cd81353b72dc15da19eac0741",
+    "source_head": "d14078e2aefda63d06d03fbea9b128fe8b66d71a",
     "authoritative_resume": "CLOUD_RESUME.md",
     "fresh_runs": [
       {
-        "id": 38731744914,
-        "status": "completed",
-        "conclusion": "cancelled",
-        "head_sha": "486396eb95aac2c4dc9ab055ebfb996a884132f2",
-        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38731744914"
+        "id": 38788529905,
+        "status": "in_progress",
+        "conclusion": null,
+        "head_sha": "266c8972cbcff17846df739de757f97f35d8fb31",
+        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38788529905"
       },
       {
-        "id": 38782025812,
+        "id": 38795024358,
         "status": "completed",
         "conclusion": "failure",
-        "head_sha": "71efd894a56b18136775ab564eecc0bb91f95bae",
-        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38782025812"
+        "head_sha": "96217e84722fc5f41fb9a703c81060fcf3adf5ba",
+        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38795024358"
       },
       {
-        "id": 38783522114,
-        "status": "completed",
-        "conclusion": "success",
-        "head_sha": "b2c31bbb90e0ba23ced139ceb05868a274797c43",
-        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38783522114"
+        "id": 38796689216,
+        "status": "in_progress",
+        "conclusion": null,
+        "head_sha": "d14078e2aefda63d06d03fbea9b128fe8b66d71a",
+        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38796689216"
       }
     ],
-    "active_mainchip_route": null,
-    "mainchip_status": "TERMINAL_HOSTED_6H_TIMEOUT_WITH_21_NATIVE_NDR_RELAXATIONS",
-    "mainchip_evidence": "docs/evidence/pcie-mainchip-upper-three-timeout-20261015.json",
-    "phy_status": "FULL_SERIAL_PHY_OPEN_NATIVE_VBIC_CHARGE_ABORT_RETAINED",
-    "phy_evidence": "docs/evidence/pcie-timestep-charge-abort-20261015.json",
+    "active_mainchip_route": 38788529905,
+    "mainchip_status": "HOSTED_FAILED_GUIDE_DRT_DIAGNOSTIC_IN_PROGRESS_ORIGINAL_GLOBAL_FAILURE_RETAINED",
+    "mainchip_evidence": "docs/failed-guide-drt-diagnosis-20261015.md",
+    "phy_status": "PATCHED_VBIC_STARTUP_MISMATCH_REDUCED_FULL_WINDOW_EXPERIMENT_RUNNING",
+    "phy_evidence": "docs/evidence/pcie-vbic-coupled-replay-20261015.json",
     "validation": "600 hosted tests passed, including process-group fail-fast on native NDR violation. This is not physical acceptance.",
-    "findings": "docs/native-vbic-and-route-findings-20261015.md",
+    "findings": "docs/vbic-transient-companion-investigation-20261015.md",
     "retirement": {
       "status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
       "asset": 636387277,
@@ -102975,11 +102976,12 @@
     "interpretation": "Both original-charge isolated cases complete. Both tighter-charge cases fail at about 0.726ns even without full-circuit feedback. This shows the tight-charge failure does not require the complete coupled tree; PWL forcing, internal thermal states and native integration remain possible causes. It does not establish a defect in the qualified model, full-circuit convergence, complete PHY or physical acceptance."
   },
   "latest_cloud_only_verification": {
-    "observed_at": "2026-10-15T18:39:31.775541+00:00",
+    "observed_at": "2026-10-15T19:49:58.274928+00:00",
     "workspace_entries": 0,
     "native_cad_processes": 0,
     "retirement_receipt_sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
-    "execution_policy": "GitHub-hosted only; local workspace stays empty; preserve unrelated user files."
+    "execution_policy": "GitHub-hosted only; local workspace stays empty; preserve unrelated user files.",
+    "project_named_tmp_and_cache_entries": 0
   },
   "failed_guide_and_charge_bracket_20261015": {
     "observed_at": "2026-10-15T18:58:39.206598+00:00",
@@ -103174,5 +103176,19 @@
       "pytest_passed": 600
     },
     "conclusion": "Newton1e-8 still leaves8.9068487mV coarse/fine mismatch;1e-10 aborts both cases at1.25fs. Tightening alone is rejected. The next source-backed hypothesis is the native VBIC Qbcx transient companion RHS, tested separately without changing the IHP parameter model."
+  },
+  "vbic_full_window_followup_20261015": {
+    "run": 38796689216,
+    "job": 116634823910,
+    "source_head": "d14078e2aefda63d06d03fbea9b128fe8b66d71a",
+    "status_at_observation": "in_progress",
+    "pristine_prefix_controls_required": true,
+    "full_original_window_s": 3.4e-08,
+    "patched_tmax_s": [
+      1.25e-13,
+      6.25e-14
+    ],
+    "all_original_gates_preserved": true,
+    "accepted": false
   }
 }

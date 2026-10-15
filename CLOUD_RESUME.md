@@ -1,3 +1,10 @@
+## Current exact cloud handles — full-window runtime validation
+
+- Full-window compact:38796689216/job116634823910, sourced14078e2aefda63d06d03fbea9b128fe8b66d71a. Dependencies/parser controls passed; native replay running. Review original34ns engineering and all numerical gates before next physical-wire replay.
+- Mainchip failed-guide DRT:38788529905/job116606725290 remains live; never duplicate.
+- Coupled prefix38795024358 failed only its final sha(str) check after all5native cases completed. Original failure retained; corrected Path conversion is in the full-window source.
+- Local workspace empty, no native CAD processes and no project-named top-level/tmp or~/.cache entries on recheck. All work/results remain GitHub-hosted. Full goal remains OPEN.
+
 ## 2026-10-15 paired coupled runtime result and full-window continuation
 
 Run38795024358 completed all5native simulations and pristine controls reproduce packaged captures. Patched startup step differences are0.7671085uV and0.4873155uV, vs pristine8906.847uV. Final protected-input assertion failed because sha received str rather than Path; original failed outcome retained in docs/evidence/pcie-vbic-coupled-replay-20261015.json. Fix only the path type. New vbic-full-window-cloud.yml repeats pristine controls, checks original sources at completion, and runs the patched unchanged compact circuit for the full34ns at0.125/0.0625ps. All original768samples, devices, interfaces, whole-wave1mV, edge and energy limits stay unchanged. No acceptance from prefix alone.
