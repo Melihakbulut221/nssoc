@@ -1,3 +1,9 @@
+## Prepared gated full32 native replay and lossless large-evidence transport
+
+`vbic-tree32-full-cloud.yml` runs only controller/archive integrity controls on its registration push. Full simulations require manual dispatch with the hash of passing study38800540477, backend choice, and0.5/0.25ps TMAX. The controller independently requires source-pinned pristine/packaged and patched Sparse/KLU agreement before restoring the exact original32:1 macro-RC inputs and running full34ns/all768original samples/devices/interfaces. Native clocks and intermacro wiring still retain the recorded ideal assumptions; no PHY/physical signoff claim. Do not dispatch before the actual measured study gates pass.
+
+Full waveforms are archived as ordered1GiB parts with per-part and whole-archive SHA256; no waveform decimation. Hosted controls verify exact payload roundtrip and reject corrupt/missing/reordered/path-traversal manifests. This avoids the2GiB-per-release-asset limit without losing native samples. Current wire38801162596, backend38800540477 and mainchip38788529905 are live; never duplicate. Cloud-only policy remains.
+
 ## Exact live cloud handles after matched-endpoint correction
 
 - Wire38801162596 / job116650255071 / source175d801b53b53c939dcf72088216a0ede7521553: native matched-endpoint provenance/full-wire step confirmed in progress. Never duplicate. Prior38799068525 remains a failed endpoint-control attempt; its3.26226nV final-sample difference is preserved.

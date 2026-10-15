@@ -1,0 +1,88 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: vbic-tree32-full-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/vbic-tree32-full-cloud.yml]
+  workflow_dispatch:
+    inputs:
+      study_sha256:
+        description: SHA256 of passing source-bound backend study38800540477
+        type: string
+        required: true
+      backend:
+        description: Select only after matched native backend and runtime evidence
+        type: choice
+        options: [klu, sparse]
+        default: klu
+      tmax_ps:
+        description: Full original34ns capture at original0.5ps or refined0.25ps maximum step
+        type: choice
+        options: ['0.5', '0.25']
+        default: '0.5'
+permissions:
+  contents: read
+concurrency:
+  group: vbic-tree32-full-${{ github.ref }}-${{ inputs.backend }}-${{ inputs.tmax_ps }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile native controller and verify lossless chunked evidence with corrupt/missing/order controls
+        run: |
+          python3 -m py_compile scripts/cloud_vbic_tree32_full.py scripts/cloud_chunked_results.py
+          python3 scripts/cloud_chunked_results.py --self-test
+  full-native:
+    if: github.event_name == 'workflow_dispatch'
+    needs: controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Runtime dependencies and original data/stream controls
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_tx_mux4.py
+      - name: Require measured engine proof and run every original full-window gate
+        env:
+          STUDY_SHA256: ${{ inputs.study_sha256 }}
+          NATIVE_BACKEND: ${{ inputs.backend }}
+          TMAX_PS: ${{ inputs.tmax_ps }}
+        run: python3 scripts/cloud_vbic_tree32_full.py --backend "$NATIVE_BACKEND" --tmax-ps "$TMAX_PS" --study-sha256 "$STUDY_SHA256"
+      - name: Preserve full native waveform in ordered hash-verified release parts
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NATIVE_BACKEND: ${{ inputs.backend }}
+          TMAX_PS: ${{ inputs.tmax_ps }}
+        run: |
+          mkdir -p cloud-vbic-tree32-full
+          if [ ! -f cloud-vbic-tree32-full/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > cloud-vbic-tree32-full/result.json
+          fi
+          stem="vbic-tree32-full-$NATIVE_BACKEND-$TMAX_PS-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-vbic-tree32-full/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-vbic-tree32-full --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,os,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          group='vbic-tree32-full-'+os.environ['NATIVE_BACKEND']+'-'+os.environ['TMAX_PS']
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
