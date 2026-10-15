@@ -490,8 +490,12 @@ def prepare_packet_clusters():
     def union(a,b):
         a,b=root(a),root(b)
         if a!=b:parents[max(a,b)]=min(a,b)
+    # Only the193 source-diagnosed congested packet drivers receive guidance.
+    # The complete1216-net census remains in the independent geometry audit.
+    cluster_rows={name:rows[name] for name in sorted(diagnosed)}
+    assert len(cluster_rows)==193 and len(rows)==1216
     excluded=[]
-    for name,row in rows.items():
+    for name,row in cluster_rows.items():
         driver=row['driver'];root(driver)
         for pin in row['pins']:
             if pin['instance']==driver:continue
@@ -510,13 +514,15 @@ def prepare_packet_clusters():
     preliminary=dict(status='SOURCE_BOUND_CLUSTER_INVENTORY_NOT_YET_PLACED',
         source_odb_sha256=sha(path),connectivity_sha256=before,packet_bit_nets=len(rows),
         diagnosed_congested_packet_nets=len(diagnosed),cluster_sizes=sizes,
+        cluster_scope="diagnosed_193_only",clustered_packet_bit_nets=len(cluster_rows),
         clusters=groups,excluded_direct_sinks=excluded,source_net_endpoints=rows)
     (OUT/'packet-clusters.json').write_text(json.dumps(preliminary,indent=2)+'\n')
     assert groups and min(sizes)>=2 and max(sizes)<=33,('Not small disjoint cones',min(sizes),max(sizes))
     assert len({n for g in groups for n in g})==sum(sizes)
     assert all(str(instances[n].getPlacementStatus())=='PLACED' and
         not instances[n].getMaster().isBlock() for g in groups for n in g)
-    assert {r['driver'] for r in rows.values()} <= set(parents)
+    assert {r['driver'] for r in cluster_rows.values()} <= set(parents)
+    assert set(parents) & {r['driver'] for r in rows.values()} == {r['driver'] for r in cluster_rows.values()}
     # Native findInst resolves exact names; get_cells wildcard interpretation
     # is deliberately avoided for Yosys dollar/bracket instance identifiers.
     tcl=['set packet_block [ord::get_db_block]']
