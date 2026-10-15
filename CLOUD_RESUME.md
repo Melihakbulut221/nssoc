@@ -1,3 +1,12 @@
+## Current live handles and verified full32 capture preparation
+
+- Mainchip38788529905/job116606725290: native geometry/NDR+DRT step live. Never duplicate.
+- Wire38801162596/job116650255071/source175d801b53b53c939dcf72088216a0ede7521553: native matched-endpoint+full-wire step live. Original1nV runtime controls and full34ns engineering/numerical gates unchanged.
+- Corrected32:1 backend38803757710/job116659178611/sourcee90497f89e33fe6db9f1962b14d6d9ed3ced52df: native source/runtime step live. Readback and original observation controls passed. Previous38800540477 is terminal failure, NOT live; exact original waves/error retained in docs/evidence/pcie-tree32-readback-failure-20261015.json.
+- Full32 preparation38803757497/job116659177471: controller syntax and exact payload roundtrip+6negative archive controls passed. Full-native correctly skipped on push. Receipt: docs/evidence/pcie-full32-archive-controls-20261015.json. Do not dispatch full simulations until actual backend proof passes; then pass study_run+summarySHA with matching current controller hash. Large native files remain complete, split only as hash-verified transport parts.
+
+Current turn is progress: full32 runtime-gated capture path implemented and tested; native readback defect fixed and corrected study launched. Full serialPHY, actual whole-chip routing and final extracted setup/hold remain OPEN. Local workspace rechecked empty; all execution/artifacts stay on GitHub.
+
 ## 32:1 readback error corrected; original failed native captures retained
 
 Backend38800540477/job116648093878 FAILED before patched cases. Packaged/pristine each returned0 after395/387s, but `option > file` produced empty files and emitted two normal headings into the log. Diagnostic scanner correctly refused its unscoped error/stepping words. Receipt: docs/evidence/pcie-tree32-readback-failure-20261015.json. Preserve both original raw captures and failed report; do not claim runtime agreement from them.
