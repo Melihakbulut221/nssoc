@@ -1,3 +1,11 @@
+## 2026-10-15 cloud-only handoff verified; isolated VBIC result retained
+
+Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` has zero entries, no native CAD processes were observed, and no project-named entries were present in `/tmp` or `~/.cache`. Original user documents and unrelated files are preserved. Retirement receipt asset 636387277 was downloaded into memory and SHA256-verified as `23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd`, status `COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE`. All source edits, CAD, simulations, tests and retained artifacts remain on GitHub; do not recreate a local checkout.
+
+Hosted diagnostic 38787043126 completed and published a valid report after the JSON repair. Two original-charge cases complete; both 1e-20 charge-tolerance cases abort near 0.726ns in the isolated VBIC. Green workflow means diagnosis/reporting completed, not engineering acceptance. Exact source-bound result is `docs/evidence/pcie-vbic-playback-20261015.json`. Do not repeat this same experiment unchanged.
+
+Next: inspect native charge/current continuity around the isolated abort and compare original coupled failure without weakening source, startup, bit or PVT gates. Mainchip 38731744914 is terminal (6h limit, 21 native NDR relaxations); preserve its failed route evidence and inspect exact guides/ODB before a new routing hypothesis. Full serial PHY, mainchip detailed routing and final extracted setup/hold remain OPEN.
+
 ## 2026-10-15 isolated VBIC diagnostic reporting repair
 
 All execution remains GitHub-hosted; the local project directory is empty.
