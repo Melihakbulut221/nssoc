@@ -7,7 +7,7 @@ on:
       boundary_policy:
         description: Exact physical boundary access policy; nearest_pair requires its own verified source receipt
         type: choice
-        options: [left, nearest_pair]
+        options: [left, nearest_pair, nearest_pair_tight]
         default: left
       boundary_pins:
         description: Bind only the exact fresh boundary-pin extraction
@@ -80,7 +80,7 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp cloud-tx-layout-composition/result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('compose-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('compose-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'compose-v8-direct-supply' || format('compose-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair_tight' && format('compose-boundary-tight-{0}', inputs.circuit_profile) || inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('compose-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('compose-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'compose-v8-direct-supply' || format('compose-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
   native-transient:
     if: ${{ !inputs.compose_only && (inputs.circuit_profile == 'baseline' || inputs.circuit_profile == '') }}
     needs: composition

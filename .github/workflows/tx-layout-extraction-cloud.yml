@@ -11,7 +11,7 @@ on:
       boundary_policy:
         description: Exact physical boundary access policy; nearest_pair requires its own verified source receipt
         type: choice
-        options: [left, nearest_pair]
+        options: [left, nearest_pair, nearest_pair_tight]
         default: left
       boundary_pins:
         description: Extract only the pinned physically verified boundary-pin geometry
@@ -80,7 +80,7 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/extraction-result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('extract-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('extract-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'extract-v8-direct-supply' || format('extract-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair_tight' && format('extract-boundary-tight-{0}', inputs.circuit_profile) || inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('extract-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('extract-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'extract-v8-direct-supply' || format('extract-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
 
   recover-direct-extraction:
     if: inputs.recover_direct_extraction

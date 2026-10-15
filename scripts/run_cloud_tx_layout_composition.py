@@ -21,10 +21,10 @@ def main():
     p.add_argument('--prepared-extraction', action='store_true',
                    help='Consume source-bound native extraction from this same hosted job')
     p.add_argument("--boundary-pins", action="store_true", help="Bind only the exact fresh boundary-pin extraction")
-    p.add_argument("--boundary-policy", choices=("left", "nearest_pair"), default="left")
+    p.add_argument("--boundary-policy", choices=("left", "nearest_pair", "nearest_pair_tight"), default="left")
     args = p.parse_args()
     assert args.boundary_pins or args.boundary_policy == "left", "Boundary policy requires boundary pins"
-    boundary_key = ("boundary_nearest_variants" if args.boundary_policy == "nearest_pair" else "boundary_variants") if args.boundary_pins else "variants"
+    boundary_key = {"left": "boundary_variants", "nearest_pair": "boundary_nearest_variants", "nearest_pair_tight": "boundary_tight_variants"}[args.boundary_policy] if args.boundary_pins else "variants"
     expected_boundary_policy = args.boundary_policy if args.boundary_pins else "none"
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'

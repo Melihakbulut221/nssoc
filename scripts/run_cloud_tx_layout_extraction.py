@@ -20,10 +20,10 @@ def main():
     parser.add_argument('--prepared-layout', action='store_true',
                         help='Consume the verified layout generated in this same hosted job')
     parser.add_argument("--boundary-pins", action="store_true", help="Consume only a pinned passing boundary-pin geometry")
-    parser.add_argument("--boundary-policy", choices=("left", "nearest_pair"), default="left")
+    parser.add_argument("--boundary-policy", choices=("left", "nearest_pair", "nearest_pair_tight"), default="left")
     args = parser.parse_args()
     assert args.boundary_pins or args.boundary_policy == "left", "Boundary policy requires boundary pins"
-    boundary_key = ("boundary_nearest_variants" if args.boundary_policy == "nearest_pair" else "boundary_variants") if args.boundary_pins else "variants"
+    boundary_key = {"left": "boundary_variants", "nearest_pair": "boundary_nearest_variants", "nearest_pair_tight": "boundary_tight_variants"}[args.boundary_policy] if args.boundary_pins else "variants"
     expected_boundary_policy = args.boundary_policy if args.boundary_pins else "none"
     spec = json.loads((ROOT / 'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())
     runtime = json.loads((ROOT / 'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
