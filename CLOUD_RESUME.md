@@ -7,6 +7,8 @@
 
 ### Newest state — supersedes every older live statement below
 
+Prepared opt-in boundary_policy=nearest_pair for both exact cascade158/direct-supply and V10/low-ports-loads-shunts-series macros. Current all-left clock pins shift about204/242um; new generator selects left/right by minimum pair-total pin displacement, keeps differential pairs on one side and original local devices/metal/vias intact. Actual native generator asserts12 unique public ports, both bounding edges and reduced total displacement. Original left policy remains available byte-for-byte in generated geometry. No electrical adoption: run native560-category DRC, hier/flat54-device LVS and allfive fault controls, then fresh policy-bound RC/composition/full original loaded waveform gates. Crossed isolation38684711897/38684722524 and other original livejobs remain unchanged. All operations cloud-only. FullPHY/mainchiproute/finalSTA remainOPEN.
+
 2026-10-15T05:04:06.958906+00:00 — Cloud-only continuation:
 
 - Crossed boundary geometry isolation dispatched from b5e5eef858192bd578da6992af038936b54e7d1b. Run38684711897 uses original cascade158 pre-stage and boundary V10 final; run38684722524 uses boundary cascade158 pre-stage and original V10 final. Both use streams4,temperature_voltage,matched compact/wire,stiff65,native_res,complete binary capture. All original bit/phase/device thresholds unchanged. Inspect actual hot_low electrical summaries to localize the64-sample boundary regression before changing physical geometry. Green workflow alone is insufficient.
