@@ -1,3 +1,13 @@
+## 2026-10-15 — compact VBE event diagnosis running; frozen HBT sources verified
+
+ALL CLOUD. Source audit38771062868/job116546679607 PASS,197frozenfiles verified; receipt `docs/evidence/pcie-hbt-geometry-source-20261015.json`. Exact npn13G2PCell has Nx1..10,le0.9um,we0.07um; avoid arbitrary emitter-length change. Current V10 dataNx3/selectorsNx6/tailsNx8. Historical Nx4..6 experiments and actualV8 geometry already failed hotcases; inspect earlierrecords before selecting newgeometry.
+
+New analyzer sourceff6fb0fee1444f1a764c4735e2c7bb35cd04d630 adds exact `mode=compact` diagnosis, retains originalfullwave gates and skips inappropriate distributed-wire inference. Hosted validation38771602581/116548545517 SUCCESS590tests plus5missing/duplicate/wrongbias/wrongsolver/faultsource controls. No altered threshold, phase, oracle or transient.
+
+Native analysis38771786806/job116549186902 LIVE: wave_diagnosis,compact_return_strap,cold_high_hbt_wcs,native_res_tc,modecompact. Inspect exact maxVBE events to determine startup versus data transition before changing physical transistor sizing. Uses original38767312141 compactcapture, no SPICE rerun. Release group has `-compact` suffix. Source scope must be compact and all original review fields match exactly. Pin full event evidence on completion; retain wire failures.
+
+Strictfine38763917040 wire0.0625ps116522064672 andmainchip38731744914/116410943697 remainLIVE. No duplicate/restart. Appendfinalfinecase then hostedstrictpairedstepcomparison before anynumericalpass. FullPHY/mainchipdetailedroute/extractedsetuphold OPEN.
+
 ## 2026-10-15 — TC corner results and exact interface failures pinned
 
 ALL CLOUD; full PHY, mainchip route and final setup/hold remain OPEN. Local workspace stays empty.
