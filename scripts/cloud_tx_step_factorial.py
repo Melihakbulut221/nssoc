@@ -86,6 +86,16 @@ def charge_deck(deck, tolerance):
     return deck
 
 
+def model_source_record(raw, digest):
+    assert hashlib.sha256(raw).hexdigest()==digest
+    try:
+        text=raw.decode('utf-8');encoding='utf-8'
+    except UnicodeDecodeError:
+        text=raw.decode('latin-1');encoding='latin-1'
+    assert text.encode(encoding)==raw
+    return dict(sha256=digest,encoding=encoding,byte_roundtrip_verified=True,text=text)
+
+
 def controls():
     deck='title\nV1 a 0 PWL(0 0 1n 2)\n.tran 1.25e-13 3.4e-08 0 1.25e-13\n.control\nrun wave.raw\nquit\n.endc\n.end\n'
     for a in STEPS:
@@ -102,6 +112,9 @@ def controls():
     assert klu.replace('.options klu\n','')==replace_analysis(solver_deck,*STEPS)
     assert charge_readback('chgtol (charge) = 1e-20\n',1e-20)['native_readback_verified']
     assert '.options chgtol=1e-20' in charge_deck(deck,1e-20)
+    for raw in (b'ASCII model',b'micro \xb5m', 'micro µm'.encode('utf-8')):
+        source=model_source_record(raw,hashlib.sha256(raw).hexdigest())
+        assert source['text'].encode(source['encoding'])==raw
     rejected=[]
     for name,bad in [('charge_missing',''),('charge_duplicate','chgtol (charge) = 1e-20\n'*2),('charge_wrong','chgtol (charge) = 1e-14\n')]:
         try:charge_readback(bad,1e-20)
@@ -183,12 +196,11 @@ def main(study):
             for path,digest in verified.items():
                 name=Path(path).name
                 if name in ('r3_cmc.va','r3_cmc_macros.include') or (name.endswith('.lib') and ('hbt' in name or 'resistor' in name)):
-                    content=Path(path).read_text()
-                    model_sources[path]=dict(sha256=digest,text=content)
+                    model_sources[path]=model_source_record(Path(path).read_bytes(),digest)
             assert any(Path(path).name=='sg13g2_hbt_mod.lib' for path in model_sources)
             assert any(Path(path).name=='r3_cmc.va' for path in model_sources)
             (out/'frozen-model-sources.json').write_text(json.dumps(model_sources,indent=2)+'\n')
-            result['frozen_model_sources']={path:row['sha256'] for path,row in model_sources.items()}
+            result['frozen_model_sources']=model_sources
 
         shutil.copyfile(source/'native/bench.cir',out/'original-bench.cir')
         shutil.copyfile(source/'native/contract.json',out/'original-contract.json')
@@ -234,6 +246,8 @@ def main(study):
                     model_dump=case/'native-models.txt'
                     assert model_dump.stat().st_size>100
                     row['native_model_parameter_dump_sha256']=sha(model_dump)
+                    if label=='tstep0.125-tmax0.125':
+                        result['baseline_native_model_parameters']=model_source_record(model_dump.read_bytes(),sha(model_dump))
                 flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
                 assert [x[0] for x in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
                 assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for _,body in flags)

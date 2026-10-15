@@ -1,3 +1,11 @@
+## 2026-10-15 — repair byte-preserving model audit before charge study
+
+ALL CLOUD; full goal OPEN. Native source/capture hashes restored successfully in38781466652, but the new source-text audit stopped BEFORE any simulation on a non-UTF8 micro-sign byte0xb5. This is a controller preflight failure, not device behavior. Receipt `docs/evidence/pcie-charge-model-audit-failure-20261015.json` retains its exact error and zero cases.
+
+`model_source_record` now records UTF8 or lossless Latin1 with byte-for-byte roundtrip and SHA validation. ASCII, Latin1-micro and UTF8-micro controls cover this actual failure. No model bytes are rewritten, decoded text is only diagnostic evidence. Frozen HBT/resistor sources and first baseline native model parameter dump will be included in the summary, enabling RAM-only source inspection without local artifact downloads. Scoped workflow push retries charge_tolerance once; record the new run and inspect native charge readback/convergence before any full-wave retry.
+
+Mainchip38731744914 remains live as last verified. Preserve it; it approaches its hosted6h limit around18:03UTC. Terminal timeout is not routing success. Inspect retained NDR/overflow/partial reports before another run.
+
 ## 2026-10-15 — source-bound charge tolerance and frozen model audit prepared
 
 ALL CLOUD. Full PHY/mainchip detailed routing/final timing OPEN. Local workspace remains empty.
