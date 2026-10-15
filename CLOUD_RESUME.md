@@ -1,3 +1,9 @@
+## Actual two-buffer PCIe critical-load repair launched in cloud
+
+critical-load-eco-cloud is a source-bound physical candidate from actual routed extraction38809759501. It first reproduces original actual timing to1e-6ns, then adds two sg13g2_buf_16 cells after measureda22oi/nand4 outputs, keeping all113791originalcell placements/masters/inputpins/PG/55NDRs and physicalSDC unchanged. Only added cells are legalized. Original/modified netlists require positive buffer-contraction proof and inverter fault rejection. Four changed/new nets receive native GRT guides; every other original guide remains byte-identical. Full113793cell DRT then fresh nominalRC/three-cell-corner timing must be measured; original132globaloverflow and antenna/RCqualification/LVS remain open. Do not count this candidate as repaired until actual outputs pass. No original-source ODB or SPEF is mutated/reused after netlist change.
+
+Independent original geometry38810969514 returnedsuccess; inspect its saved summary3236d544... before claiming continuity. Full32 Sparse0.5/0.25 and full-wire replay remain live, no duplicates. Everything executes on GitHub; local workspace stays empty.
+
 ## Exact latest cloud checkpoint and next physical repair
 
 See docs/evidence/cloud-current-checkpoint-20261016.json for current run/job states. Native geometry follow-up38810969514/job116683788886 is queued/running; don't duplicate. Full32 originalSparse38810158966 and38810163678 remain active; wire38801162596 remains active. No new fullPHY or timing acceptance.
