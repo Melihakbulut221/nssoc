@@ -7,7 +7,8 @@ from pathlib import Path
 from route_cloud_newer_postcts import fetch,sha,native_ndr_screen
 from read_opensta_phase_slacks import parse_phases
 from run_cloud_failed_guide_drt import guide_index
-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-critical-load-eco';SOURCE=ROOT/'cloud-routed-extraction'
+from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/DIRECTORY;SOURCE=ROOT/'cloud-routed-extraction'
 BASE='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38809759501-1-routed-extraction/'
 STEM='routed-extraction-38809759501-1'
 SUMMARY_SHA='aa721c7ccd04c30ed97af33dac632eb0cfdd99fd27232a46819299d12f62e583'
@@ -24,8 +25,8 @@ def guide_blocks(text):
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
-    result=dict(status='RUNNING',accepted=False,source_run=38809759501,source_head=os.environ['GITHUB_SHA'],full_serial_phy_complete=False,final_timing_complete=False,
-        scope='Two positive buffer16 insertions on independently measured high-load PCIe combinational outputs. Preserve original cells/geometry/SDC/libraries/NDR and all protected hold repairs. Native four-net global guides merged with all unchanged original guides; full-chip detailed reroute and fresh nominalRC/all-cell-corner STA required. Original global132overflow,651antenna, unannotated-driver qualification, RCcorners/SRAM/LVS remain open.')
+    result=dict(status='RUNNING',accepted=False,profile=PROFILE,buffer_count=COUNT,source_run=38809759501,source_head=os.environ['GITHUB_SHA'],full_serial_phy_complete=False,final_timing_complete=False,
+        scope='Explicit positive buffer16 insertions on independently measured high-load PCIe combinational outputs. Preserve original cells/geometry/SDC/libraries/NDR and all protected hold repairs. Native selected-net global guides merged with all unchanged original guides; full-chip detailed reroute and fresh nominalRC/all-cell-corner STA required. Original global132overflow,651antenna, new-candidate annotation qualification, RCcorners/SRAM/LVS remain open.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(args,label,env=None,expect=True):
         with (OUT/(label+'.log')).open('w') as log:
@@ -77,15 +78,15 @@ def main():
         with tarfile.open(packed) as archive:raw=archive.extractfile('cloud-failed-guide-drt/inputs/failed-route.guide').read()
         assert hashlib.sha256(raw).hexdigest()=='fc6efcd026c6b2040fdb636376c2ab0a38f959d0ae4ee3acdbe381bcf3412e1b';packed.unlink();(OUT/'original.guide').write_bytes(raw)
         original=guide_blocks(raw.decode());assert len(original)==113556
-        selected=[r[k] for r in geometry['changes'] for k in ('original_net','local_net')];assert len(set(selected))==4
+        selected=[r[k] for r in geometry['changes'] for k in ('original_net','local_net')];assert len(set(selected))==2*COUNT
         commands=[f'read_db {{{OUT/"candidate.odb"}}}','set_thread_count 2','set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2','set_global_routing_layer_adjustment Metal1-TopMetal2 0.2']
         for n in selected:
             assert not any(c in n for c in '{}\n')
             commands += [f'set n [[ord::get_db_block] findNet {{{n}}}]','if {$n == "NULL"} {error "Missing selected ECO net"}','grt::add_net_to_route $n']
         commands += [f'global_route -guide_file {{{OUT/"changed.guide"}}} -congestion_iterations 50 -verbose']
-        log=tcl('\n'.join(commands)+'\n','four-net-native-guides');assert native_ndr_screen(log)['preserved']
+        log=tcl('\n'.join(commands)+'\n','selected-net-native-guides');assert native_ndr_screen(log)['preserved']
         changed=guide_blocks((OUT/'changed.guide').read_text());assert set(changed)==set(selected)
-        merged=dict(original);merged.update(changed);assert len(merged)==113558
+        merged=dict(original);merged.update(changed);assert len(merged)==113556+COUNT
         assert all(merged[n]==b for n,b in original.items() if n not in selected)
         (OUT/'candidate.guide').write_text(''.join(merged[n] for n in sorted(merged)))
         result['guide_provenance']=dict(original_guided_nets=len(original),selected_native_nets=selected,merged_guided_nets=len(merged),all_unmodified_guides_byte_identical=True,global_capacity_accepted=False);save()
@@ -100,7 +101,7 @@ def main():
         script=original_script.replace(str(baseline),str(OUT/'routed.odb')).replace(str(SOURCE/'actual-route.nominal.spef'),str(spef))
         candidate=parse_phases(tcl(script,'fresh-routed-sta'),'CORNER');result['routed_timing']=candidate
         result['group_deltas']={p:{g:dict(before_ns=v['worst_slack_ns'],after_ns=candidate[p]['groups'][g]['worst_slack_ns'],delta_ns=candidate[p]['groups'][g]['worst_slack_ns']-v['worst_slack_ns']) for g,v in row['groups'].items()} for p,row in old['nominal_rc_cell_corner_phases'].items()}
-        result['status']='COMPLETE_TWO_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
+        result['status']=COMPLETE_STATUS
         assert all(sha(Path(n))==v for n,v in old['protected_inputs'].items());result['protected_source_unchanged']=True
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
