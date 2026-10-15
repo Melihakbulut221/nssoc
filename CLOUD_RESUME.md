@@ -1,3 +1,9 @@
+## Encoded FIXED route preservation control staged in cloud
+
+New fixed-wire-control-cloud workflow restores exact original113791-instance route (38788529905, ODB4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493). It converts only NETS ROUTED clauses to FIXED, using a NETS-only DEF with read_def -floorplan_initialize. Pinned OpenROAD INCREMENTAL mode does not register NETS callbacks (definReader.cpp1932-1943), so incremental mode must not be used. Native before/after decoder must see113556ROUTED->113556FIXED; metadata-only negative control must remain encodedROUTED. Exact fullDEF except intended classes, all nativecell/connectivity/PG/port/NDR signatures, and independent decoded shapes must remain identical. Failure is retained; no ECO or route adoption, no freshRC/timing/fullPHY claim. Subsequent repair may protect unchanged routes only after control passes, and still requires route/geometry/freshRC/allendpoint checks.
+
+Existing50output38824521607,3buffer38822066992,PLL38813902351 andfull32Sparse38810158966/38810163678 are live; no duplicates. All execution cloud-only; local project empty.
+
 ## Fifty-output physical batch live; all-profile comparator controls passed
 
 Batch38824521607/job116728720146 sourceabd15b539ece968c7396d3137130ba0f67faddd4 islive. Exact50targetrecipe and legacy2/3profile contracts passed cloudstep; nativephysicalexperiment executing. Expected113841instances/113606guidednets, alloriginal113791cellsfixed; everytarget exactnativeconnectivity mustvalidate beforeadditions areadopted. All-profile independentcomparatorcontrols38824521597/job116728720053 PASS; actualbatch endpointcomparison NOTYETRUN. Existing3buffer38822066992,PLL38813902351,full32Sparse38810158966/38810163678 live; no duplicates.
