@@ -1,3 +1,13 @@
+## 2026-10-15 — TSTEP hypothesis ruled out; TMAX refinement prepared
+
+ALL CLOUD. Full serial PHY, detailed mainchip routing and final extracted setup/hold remain OPEN. Local workspace remains empty.
+
+Hosted factorial **38777870655 /116570107593** completed all four native captures, exact source/circuit hashes,62OFF flags, solver readback, zero operating point and six negative controls. Receipt `docs/evidence/pcie-timestep-factorial-20261015.json`. The1.2ns prefix matches the original full capture exactly through1.1ns (zero voltage difference). Changing TSTEP alone gives only37.6368nV. Changing TMAX alone reproduces8.906847247mV atv(mr),0.595716ns. Therefore TSTEP is not the significant cause; original convergence failure remains.
+
+New hosted `tx-step-factorial-cloud` source prepares study `refinement` (automatic scoped push). FixedTSTEP0.125ps; trap TMAX0.125/0.0625/0.03125/0.015625ps plus Gear2 TMAX0.125/0.0625ps. Same source capture/models/options/minbreak except explicitly recorded integration method and TMAX. Same1.2ns diagnostic only, no full34ns acceptance; preserve every raw row and failure. Inspect native option/flag readback, baseline prefix reproduction, successive-step and cross-method differences before selecting a full-wave rerun. Do not repeat old factorial.
+
+Mainchip38731744914 /116410943697 still live as last verified. Preserve it and inspect terminal NDR/overflow/STA evidence. Do not infer detailed routing or final timing from global guides.
+
 ## 2026-10-15 — signed HBT readback complete; cloud-only checkpoint
 
 All execution and evidence remain in GitHub. Local workspace is empty. Full goal remains OPEN.

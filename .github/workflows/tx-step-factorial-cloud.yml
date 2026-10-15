@@ -6,6 +6,12 @@ on:
     branches: [codex/complete-open-work]
     paths: [.github/workflows/tx-step-factorial-cloud.yml]
   workflow_dispatch:
+    inputs:
+      study:
+        description: Separate TSTEP/TMAX or refine TMAX and compare integration methods
+        type: choice
+        options: [factorial, refinement]
+        default: refinement
 permissions:
   contents: read
 concurrency:
@@ -36,7 +42,7 @@ jobs:
       - name: Reject altered analyses and corrupt waveform comparison
         run: python3 scripts/cloud_tx_step_factorial.py --controls-only
       - name: Isolate TSTEP and TMAX on unchanged native startup circuit
-        run: python3 scripts/cloud_tx_step_factorial.py
+        run: python3 scripts/cloud_tx_step_factorial.py --study '${{ inputs.study || 'refinement' }}'
       - name: Preserve all diagnostic captures and failure evidence
         if: always()
         env:

@@ -24,8 +24,9 @@ SOURCE_STOP = 34e-9
 PROFILE = 'breakpoint_tight_trap'
 STEPS = (.125e-12, .0625e-12)
 
-def replace_analysis(deck, tstep, tmax):
-    assert tstep in STEPS and tmax in STEPS
+def replace_analysis(deck, tstep, tmax, method="trap"):
+    assert tstep in STEPS and tmax in (*STEPS, .03125e-12, .015625e-12)
+    assert method in ("trap", "gear")
     rows = re.findall(r'(?m)^\.tran ([^\n]+)$', deck)
     assert len(rows) == 1 and not re.search(r'(?m)^tran ', deck)
     fields = rows[0].split()
@@ -34,6 +35,10 @@ def replace_analysis(deck, tstep, tmax):
     replacement = f'.tran {tstep:.14g} {STOP:.14g} 0 {tmax:.14g}'
     changed = deck.replace(line, replacement)
     assert changed.replace(replacement, line) == deck
+    if method == 'gear':
+        assert changed.count('method=trap') == 1
+        changed = changed.replace('method=trap', 'method=gear')
+        assert changed.replace(replacement, line).replace('method=gear','method=trap') == deck
     return changed
 
 def wave_difference(a, b, vectors, end=STOP):
@@ -65,6 +70,11 @@ def controls():
             changed=replace_analysis(deck,a,b)
             assert changed.split('.tran ')[0]==deck.split('.tran ')[0]
             assert changed.split('.control')[1]==deck.split('.control')[1]
+    solver_deck=deck.replace('.control', '.options method=trap maxord=2 minbreak=1e-18\n.control')
+    for step in (.03125e-12,.015625e-12):
+        assert f'{step:.14g}' in replace_analysis(solver_deck,STEPS[0],step)
+    gear=replace_analysis(solver_deck,*STEPS,method='gear')
+    assert 'method=gear' in gear and 'method=trap' not in gear
     rejected=[]
     for name,bad in [('missing',deck.replace('.tran ','.ac ')),('duplicate',deck+deck),
                      ('uic',deck.replace('0 1.25e-13','0 1.25e-13 uic')),
@@ -119,10 +129,10 @@ def restore(record, out):
     assert hashlib.sha256(bytes(contract['bits'])).hexdigest()==record['signals']['source_bits_sha256']
     return source,summary,contract,verified
 
-def main():
+def main(study):
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/'cloud-tx-step-factorial';out.mkdir(exist_ok=False)
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,
+    result=dict(status='RUNNING',study=study,source_head=os.environ['GITHUB_SHA'],accepted=False,
         serial_phy_complete=False,original_engineering_gates_changed=False,cases={},
         scope='Unchanged native circuit startup prefix only. TSTEP and TMAX varied independently; TSTOP shortened to1.2ns for diagnosis only. Does not replace full34ns waveform, original bit/device gates, physical validation or qualified SOA.',
         manual='https://ngspice.sourceforge.io/docs/ngspice-manual.pdf')
@@ -140,11 +150,14 @@ def main():
         shutil.copyfile(source/'native/bench.cir',out/'original-bench.cir')
         shutil.copyfile(source/'native/contract.json',out/'original-contract.json')
         captures={}
-        for a in STEPS:
-            for b in STEPS:
-                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'
+        cases = [(a,b,'trap') for a in STEPS for b in STEPS] if study=='factorial' else [
+            (STEPS[0],b,'trap') for b in (*STEPS,.03125e-12,.015625e-12)] + [
+            (STEPS[0],b,'gear') for b in STEPS]
+        for a,b,method in cases:
+                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')
+                profile = 'tight_gear2' if method=='gear' else PROFILE
                 case=out/label;case.mkdir()
-                (case/'bench.cir').write_text(replace_analysis(original,a,b))
+                (case/'bench.cir').write_text(replace_analysis(original,a,b,method))
                 shutil.copyfile(source/'native/spinit',case/'spinit')
                 env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
                 env.update(SPICE_SCRIPTS=str(case),RAYON_NUM_THREADS='1',OMP_NUM_THREADS='1')
@@ -156,12 +169,14 @@ def main():
                 with (case/'run.log').open('w') as log:
                     proc=subprocess.run([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=case,env=env,
                         stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits,timeout=1800)
-                row=dict(tstep_s=a,tmax_s=b,tstop_s=STOP,returncode=proc.returncode,elapsed_s=time.monotonic()-started,accepted=False)
+                row=dict(tstep_s=a,tmax_s=b,tstop_s=STOP,method=method,returncode=proc.returncode,elapsed_s=time.monotonic()-started,accepted=False)
                 result['cases'][label]=row
                 log=(case/'run.log').read_text(errors='replace')
-                row['diagnostics']=native_diagnostics(log,PROFILE)
+                row['diagnostics']=native_diagnostics(log,profile)
                 assert proc.returncode==0 and not row['diagnostics'],log[-6000:]
-                row['solver_options']=verify_solver_options(log,PROFILE)
+                row['solver_options']=verify_solver_options(log,profile)
+                assert [float(x) for x in re.findall(r'(?m)^NSSOC_NATIVE_MINBREAK (\S+)\s*$',log)]==[1e-18]
+                row['native_minbreak_s']=1e-18
                 flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
                 assert [x[0] for x in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
                 assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for _,body in flags)
@@ -181,6 +196,13 @@ def main():
             ('change_tmax_fixed_tstep_coarse','tstep0.125-tmax0.125','tstep0.125-tmax0.0625'),
             ('change_tmax_fixed_tstep_fine','tstep0.0625-tmax0.125','tstep0.0625-tmax0.0625'),
             ('original_diagonal','tstep0.125-tmax0.125','tstep0.0625-tmax0.0625')]
+        if study=='refinement':
+            pairs=[('trap_125_to_62p5','tstep0.125-tmax0.125','tstep0.125-tmax0.0625'),
+                ('trap_62p5_to_31p25','tstep0.125-tmax0.0625','tstep0.125-tmax0.03125'),
+                ('trap_31p25_to_15p625','tstep0.125-tmax0.03125','tstep0.125-tmax0.015625'),
+                ('gear_125_to_62p5','tstep0.125-tmax0.125-gear','tstep0.125-tmax0.0625-gear'),
+                ('method_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-gear'),
+                ('method_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-gear')]
         result['comparisons']={name:wave_difference(captures[a],captures[b],contract['vectors']) for name,a,b in pairs}
         assert all(sha(path)==digest for path,digest in verified.items())
         result['status']='COMPLETE_NATIVE_TSTEP_TMAX_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE'
@@ -194,5 +216,7 @@ def main():
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--controls-only',action='store_true')
-    if parser.parse_args().controls_only:print(json.dumps(controls()))
-    else:main()
+    parser.add_argument('--study',choices=('factorial','refinement'),default='factorial')
+    args=parser.parse_args()
+    if args.controls_only:print(json.dumps(controls()))
+    else:main(args.study)

@@ -7,3 +7,9 @@ The original `.tran step stop 0 step` changes both TSTEP and TMAX. The [ngspice 
 The hosted controller restores the exact strict compact0.125ps source capture38763917040, hashes every archived input and repository circuit file, verifies the executable, and changes only the `.tran` parameters. It runs all four combinations of TSTEP/TMAX0.125ps and0.0625ps through1.2ns. All original models, sources, startup OFF flags, saves, solver options and zero operating point remain. Native raw files and logs are retained. The coarse diagonal is also compared with its original full capture through1.1ns to detect effects of shortening TSTOP.
 
 This is a bounded startup diagnosis, never numerical or physical acceptance. The original0–34ns comparison remains failed until a valid full-capture rerun demonstrates otherwise. No startup removal, fitted timing, redefined oracle or passing substitute is permitted.
+
+## Native result and next experiment
+
+Run38777870655 reproduced the original prefix exactly through1.1ns. TSTEP alone changes at most37.6368nV, while TMAX alone reproduces8.906847247mV atv(mr). This rules out the TSTEP explanation for the millivolt discrepancy. All62startup flags and actual native option readbacks passed.
+
+The refinement study holds TSTEP fixed, halves trap TMAX twice more, and compares trap with Gear2 at the original two TMAX values. Gear2 is a labelled numerical diagnostic: no device/source changes, minbreak remains1as, and no physical or full-wave acceptance follows from a short result. The next action depends on whether the differences converge, diverge or remain method-dependent.
