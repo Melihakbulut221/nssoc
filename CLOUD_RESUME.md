@@ -7,6 +7,8 @@
 
 ### Newest state — supersedes every older live statement below
 
+Prepared real macro boundary-pin extension for exact cascade158/direct-supply and V10/low-ports-loads-shunts-series layouts. Existing LEFs put all12 public TM2 pins inside fully obstructed macro boundaries. New opt-in boundary_pins extends only those actual TM2 conductors to a common left boundary and regenerates pin shapes/labels/LEF. Original devices, local wires and vias remain; unchanged560-category DRC, hierarchical/flat54-device LVS and allfive reference/geometry faults decide acceptance. New RC and loaded waves are mandatory before electrical use. This is a prerequisite to actual intermacro routing, not fulltree/fullPHY closure. Not yet dispatched at this checkpoint. Current full32 binary38679319167, PLL1us38674687038 and packet-route38676325412 verified live; do not restart. Cloud-only, local workspace remains empty.
+
 
 2026-10-15 cloud-only verification: local workspace has zero entries; no matching project scratch in /tmp or /dev/shm and no native CAD processes. Retirement receipt636387277 is COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE with all nine hosted archive-member proofs PASS. Do not restore a local checkout or run local CAD/tests.
 

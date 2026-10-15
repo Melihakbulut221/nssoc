@@ -33,6 +33,7 @@ def main():
                                              'critical_buses_kelvin_supply_direct_low_outputs',
                                              'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_direct','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
+    parser.add_argument("--boundary-pins", action="store_true", help="Extend real TM2 public pins to the macro boundary; requires fresh DRC/LVS and RC")
     args = parser.parse_args()
     requested_variant = args.variant
     direct_pre_outputs = requested_variant == 'critical_buses_kelvin_supply_direct_low_outputs'
@@ -67,7 +68,7 @@ def main():
     spec = json.loads(spec_path.read_text())
     out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
     out.mkdir(parents=True, exist_ok=False)
-    result = dict(status='RUNNING', variant=requested_variant, circuit_profile=args.circuit_profile, adopted=False,
+    result = dict(status='RUNNING', variant=requested_variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, adopted=False,
         scope='Real generated layout with54native devices. DRC/LVS and physical fault controls only; new native RC extraction and full waveform validation still required before any electrical adoption. No main-chip or full serial PHY acceptance.')
 
     def run(command, name):
@@ -563,6 +564,17 @@ def main():
             physical_source=physical_source.replace(before,after)
             result['physical_fault_geometry_adaptation']=dict(before=before,after=after,
                 scope='Actual avdd/avss pin-centre bridge only. Same DRC/LVS decks, expected fault verdicts and all other controls unchanged.')
+        if args.boundary_pins:
+            assert (args.circuit_profile, requested_variant) in (
+                ('cascade158','critical_buses_kelvin_supply_direct'),
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series'))
+            before = '    assert set(ports) == set(PORTS)\n'
+            assert source.count(before) == 1
+            source = source.replace(before, '    # Real TM2 boundary access; no devices, local wires or vias removed.\n    boundary_x = round((top.dbbox().left - 20.0) / 0.005) * 0.005\n    boundary_pin_routes = []\n    for dt in (2, 25):\n        li = layout.layer(layers["TopMetal2"], dt)\n        assert sum(1 for _ in top.shapes(li).each()) == len(PORTS)\n        top.shapes(li).clear()\n    old_ports = dict(ports)\n    for net, (metal, old_pin) in old_ports.items():\n        assert metal == "TopMetal2" and boundary_x < old_pin.left\n        y = old_pin.center().y\n        width = 32.0 if net in ("avdd", "avss") else 4.0\n        box(7, boundary_x, y-width/2, old_pin.right, y+width/2)\n        pin = pya.DBox(boundary_x, y-0.6, boundary_x+2.0, y+0.6)\n        ports[net] = ("TopMetal2", pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 2)).insert(pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 25)).insert(\n            pya.DText(net, boundary_x, y))\n        boundary_pin_routes.append(dict(net=net, old_pin_um=str(old_pin),\n            new_pin_um=str(pin), width_um=width, layer="TopMetal2"))\n    assert len(boundary_pin_routes) == len(PORTS) == 12\n    assert abs(top.dbbox().left-boundary_x) < layout.dbu/2\n    assert len({round(b.center().y/layout.dbu) for _, b in ports.values()}) == 12\n' + before)
+            before = '                ports={n: str(b) for n, (_, b) in ports.items()},\n'
+            assert source.count(before) == 1
+            source = source.replace(before, before + '                boundary_pin_routes=boundary_pin_routes,\n')
+            edits.append('Extend all12 actual TopMetal2 public conductors to common left boundary; retain original devices/local routes and unchanged native physical gates. Fresh RC and loaded waves required.')
         generator = out / 'generate.py'
         generator.write_text(source)
         physical_method=out/'verify-physical.py'

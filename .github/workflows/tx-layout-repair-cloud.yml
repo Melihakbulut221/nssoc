@@ -4,6 +4,10 @@ name: tx-layout-repair-cloud
 on:
   workflow_dispatch:
     inputs:
+      boundary_pins:
+        description: Extend all real TM2 public pins to macro boundary; fresh physical and RC gates required
+        type: boolean
+        default: false
       circuit_profile:
         description: Exact circuit to realize with native PCells
         type: choice
@@ -17,7 +21,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-layout-repair-cloud-${{ github.ref }}
+  group: tx-layout-repair-cloud-${{ github.ref }}-${{ inputs.circuit_profile }}-${{ inputs.boundary_pins }}
   cancel-in-progress: false
 jobs:
   physical-repair:
@@ -50,7 +54,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Generate actual layout and apply unchanged DRC LVS and physical fault controls
-        run: python3 scripts/run_cloud_tx_layout_repair.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}'
+        run: python3 scripts/run_cloud_tx_layout_repair.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}' ${{ inputs.boundary_pins && '--boundary-pins' || '' }}
       - name: Keep full geometry, timing, proof and failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -70,4 +74,4 @@ jobs:
           sha256sum "$archive" > "$archive.sha256"
           summary="${archive%.tar.gz}.summary.json"
           cp hw/soc/out/cloud-tx-layout-repair/result.json "$summary"
-          python3 scripts/publish_cloud_results.py --group 'layout-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}' "$archive" "$archive.sha256" "$summary"
+          python3 scripts/publish_cloud_results.py --group 'layout-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}${{ inputs.boundary_pins && '-boundary' || '' }}' "$archive" "$archive.sha256" "$summary"
