@@ -734,6 +734,10 @@ def test_v11_data_area_binds_current_density_to_changed_emitters(tmp_path,nx):
     (True,'left','left'), (True,'nearest_pair','nearest_pair'),
     (True,None,'nearest_pair'), (True,'left','nearest_pair'),
     (True,'nearest_pair','left'),
+    (True,'nearest_pair_tight','nearest_pair_tight'),
+    (True,None,'nearest_pair_tight'), (False,None,'nearest_pair_tight'),
+    (True,'left','nearest_pair_tight'), (True,'nearest_pair','nearest_pair_tight'),
+    (True,'nearest_pair_tight','nearest_pair'), (True,'nearest_pair_tight','left'),
 ])
 def test_physical_binding_rejects_old_pin_geometry_even_with_valid_hashes(
         tmp_path, monkeypatch, reported_boundary, reported_policy, expected_policy):
