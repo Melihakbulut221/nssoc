@@ -1,3 +1,9 @@
+## 2026-10-15 full compact waveform passes; extracted-wire replay next
+
+Full-window38796689216/job116634823910 SUCCESS at sourced14078e2aefda63d06d03fbea9b128fe8b66d71a. Original input hashes unchanged; pristine controls pass. Both patched34ns captures pass all original768bit samples,62HBT64MOS and interface gates. Minimum original margin232.890mV; whole-wave step maximum8.06616uV; margin difference0.640554uV; edge difference0.281fs; all original energy gates pass. Receipt: docs/evidence/pcie-vbic-full-window-20261015.json. This closes this compact numerical experiment only, NOT fullPHY.
+
+Prepared wire workflow's manual dispatch returned404 because it was not yet registered on the default branch; no job started. Add an own-path push trigger with the now-verified compact summarySHA fallback, retaining runtime/summary/gate validation before wire simulation. Find its exact new run by source SHA/name; never duplicate. Source regression38797659530/job116638188484 passed600tests and preserved original failed-capture controls at source3c288ba7a0b6bc842ab2031cd6f0d0471cdb661e. Mainchip38788529905/job116606725290 remains live. All work/evidence remain GitHub-hosted, local checkout empty.
+
 ## Prepared extracted-wire follow-up — dispatch only after actual compact pass
 
 `vbic-full-wire-cloud.yml` is manual-only. It requires the SHA256 of run38796689216's published compact summary and independently checks its source/runtime hashes, pristine controls, unchanged input receipt, original engineering gates and full-wave numerical gate. No wire job is dispatched while compact is pending. The unchanged original wire archive is run38763917040 wire/hot_low_eighth_step, strict profile; pristine startup must reproduce its original raw capture before patched full34ns at0.125/0.0625ps. Original device/bit/interface/whole-wave/edge/energy gates retained. All work remains cloud-only. Mainchip38788529905 remains live and must not be duplicated.

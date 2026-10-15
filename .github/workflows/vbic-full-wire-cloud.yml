@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: vbic-full-wire-cloud
 on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/vbic-full-wire-cloud.yml]
   workflow_dispatch:
     inputs:
       compact_summary_sha256:
@@ -34,7 +37,7 @@ jobs:
           python3 scripts/cloud_tx_step_factorial.py --controls-only
       - name: Require passing compact capture then replay pristine and patched physical wire model
         env:
-          COMPACT_SUMMARY_SHA256: ${{ inputs.compact_summary_sha256 }}
+          COMPACT_SUMMARY_SHA256: ${{ inputs.compact_summary_sha256 || 'd0ea24db033fa1f5964b5cae3f12ed2831af3fbd241074638a7d38073534c6f4' }}
         run: python3 scripts/cloud_tx_companion_replay.py --full-window --mode wire --compact-summary-sha256 "$COMPACT_SUMMARY_SHA256"
       - name: Preserve all runtime, circuit and waveform evidence
         if: always()
