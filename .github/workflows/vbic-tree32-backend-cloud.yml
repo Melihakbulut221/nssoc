@@ -30,6 +30,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
           python3 -m pip install numpy==2.3.3 pytest==8.4.2
           python3 -m py_compile scripts/cloud_vbic_tree32_backend.py
+          python3 scripts/cloud_vbic_tree32_backend.py --controls-only
           python3 -m pytest -q sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_tx_original_bits.py
       - name: Verify old failure and complete source then measure native backends
         run: python3 scripts/cloud_vbic_tree32_backend.py

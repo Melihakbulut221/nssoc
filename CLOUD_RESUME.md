@@ -1,3 +1,11 @@
+## 32:1 readback error corrected; original failed native captures retained
+
+Backend38800540477/job116648093878 FAILED before patched cases. Packaged/pristine each returned0 after395/387s, but `option > file` produced empty files and emitted two normal headings into the log. Diagnostic scanner correctly refused its unscoped error/stepping words. Receipt: docs/evidence/pcie-tree32-readback-failure-20261015.json. Preserve both original raw captures and failed report; do not claim runtime agreement from them.
+
+New backend source uses explicit native option markers, verifies actual numeric/matrix/method readback, and exempts only the two known labels INSIDE the verified block. Seven negative controls retain outside labels, real inside warnings, changed/missing options and malformed scopes. Own-workflow push starts one corrected study; prior study is terminal. Full32 workflow now requires the successful study run+SHA and exact current backend-controller hash, not the failed oldrun. Full32 simulations remain unlaunched until measured proof passes. Full32 registration38802993109 passed archive integrity controls and controller syntax only; native full job skipped as intended.
+
+Wire38801162596/job116650255071 and mainchip38788529905/job116606725290 remain live; never duplicate. All execution/evidence remain cloud-only.
+
 ## Prepared gated full32 native replay and lossless large-evidence transport
 
 `vbic-tree32-full-cloud.yml` runs only controller/archive integrity controls on its registration push. Full simulations require manual dispatch with the hash of passing study38800540477, backend choice, and0.5/0.25ps TMAX. The controller independently requires source-pinned pristine/packaged and patched Sparse/KLU agreement before restoring the exact original32:1 macro-RC inputs and running full34ns/all768original samples/devices/interfaces. Native clocks and intermacro wiring still retain the recorded ideal assumptions; no PHY/physical signoff claim. Do not dispatch before the actual measured study gates pass.

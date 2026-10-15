@@ -6,7 +6,7 @@
 This measures complete native startup/early data captures, NOT full-wave or
 whole-tree physical acceptance. Original intermacro wires are still ideal.
 """
-import hashlib,json,os,re,resource,shutil,subprocess,tarfile,time
+import argparse,hashlib,json,os,re,resource,shutil,subprocess,tarfile,time
 from pathlib import Path
 import numpy as np
 import cloud_tx_companion_replay as runtime
@@ -78,25 +78,55 @@ def make_deck(original,contract,stop,backend):
         assert not re.search(r'(?im)^\.options? .*\bklu\b',changed)
         changed=changed.replace('.control\n','.options klu\n.control\n')
     assert changed.count('quit\n.endc')==1
-    changed=changed.replace('quit\n.endc','option > native-options.txt\nrusage > native-resources.txt\nquit\n.endc')
+    changed=changed.replace('quit\n.endc','echo NSSOC_BACKEND_OPTIONS_BEGIN\noption\necho NSSOC_BACKEND_OPTIONS_END\nrusage > native-resources.txt\nquit\n.endc')
     return changed
 
-def options(path,backend):
-    text=path.read_text();assert ('KLU' in text) if backend=='klu' else ('Sparse 1.3' in text)
+def option_values(text,backend):
+    assert ('KLU' in text) if backend=='klu' else ('Sparse 1.3' in text)
     numeric={}
     for label,pattern in {'reltol':r'reltol(?:\s+\(current\))?','abstol':r'abstol(?:\s+\(current\))?','vntol':r'vntol(?:\s+\(voltage\))?','trtol':'trtol','maxord':r'(?:maxord|maxorder)','itl4':r'itl4(?:\s+\(transient iterations\))?'}.items():
         values=re.findall(r'(?mi)^\s*'+pattern+r'\s*=\s*(\S+)\s*$',text);assert len(values)==1,(label,values);numeric[label]=float(values[0])
     assert numeric['reltol']==1e-4 and numeric['abstol']==1e-12
     method=re.findall(r'(?mi)^\s*(?:method|integration method)\s*=\s*(\S+)\s*$',text);assert len(method)==1
-    return dict(backend=backend,numeric=numeric,method=method[0],native_readback_sha256=sha(path))
+    return dict(backend=backend,numeric=numeric,method=method[0],native_readback_sha256=hashlib.sha256(text.encode()).hexdigest())
+
+def options(path,backend):
+    return option_values(path.read_text(),backend)
+
+def backend_readback(log,backend):
+    blocks=re.findall(r'(?ms)^NSSOC_BACKEND_OPTIONS_BEGIN\s*\n(.*?)^NSSOC_BACKEND_OPTIONS_END\s*$',log)
+    assert len(blocks)==1 and log.count('NSSOC_BACKEND_OPTIONS_BEGIN')==log.count('NSSOC_BACKEND_OPTIONS_END')==1,'Missing/duplicate native readback scope'
+    block=blocks[0];parsed=option_values(block,backend)
+    benign={'Truncation error correction, charge based, is selected:','diaggmin (stepping) = 0'}
+    inside=False;scoped=[]
+    for line in log.splitlines():
+        if line.strip()=='NSSOC_BACKEND_OPTIONS_BEGIN':inside=True
+        elif line.strip()=='NSSOC_BACKEND_OPTIONS_END':inside=False
+        if inside and line.strip() in benign:continue
+        scoped.append(line)
+    return parsed,native_diagnostics('\n'.join(scoped)),block
+
+def readback_controls():
+    block='Sparse 1.3\nreltol (current) = 0.0001\nabstol (current) = 1e-12\nvntol (voltage) = 1e-6\ntrtol = 7\nmaxorder = 2\nitl4 (transient iterations) = 10\nIntegration method = trapezoidal\nTruncation error correction, charge based, is selected:\ndiaggmin (stepping) = 0\n'
+    good='NSSOC_BACKEND_OPTIONS_BEGIN\n'+block+'NSSOC_BACKEND_OPTIONS_END\n'
+    assert not backend_readback(good,'sparse')[1]
+    assert not backend_readback(good.replace('Sparse 1.3','KLU'),'klu')[1]
+    rejected=[]
+    for name,bad in [('outside_label','diaggmin (stepping) = 0\n'+good),('inside_warning',good.replace('Sparse 1.3','Sparse 1.3\nWarning: genuine failure')),('changed_tolerance',good.replace('0.0001','0.01')),('duplicate',good+good),('missing_marker',good.replace('NSSOC_BACKEND_OPTIONS_END','')),('wrong_backend',good.replace('Sparse 1.3','KLU')),('missing_numeric',good.replace('trtol = 7\n',''))]:
+        try:failed=bool(backend_readback(bad,'sparse')[1])
+        except AssertionError:failed=True
+        assert failed,name;rejected.append(name)
+    return dict(positive=2,negative=rejected,only_verified_option_labels_exempted=True)
+
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
-    result=dict(status='RUNNING',accepted=False,source_head=os.environ['GITHUB_SHA'],cases={},
+    result=dict(status='RUNNING',accepted=False,source_head=os.environ['GITHUB_SHA'],controller_sha256=sha(Path(__file__)),cases={},
         scope='Source-pinned32:1 tree with actual per-macro RC and original ideal intermacro wires; startup provenance and4ns backend cost comparison only. No full34ns, all-corner, actual whole-tree routing, PLL/CDR, four-lane or PHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
+        result['readback_controls']=readback_controls()
         runtime.OUT=OUT;paths,provenance=runtime.restore_engines();result['runtime_provenance']=provenance
         gate=OUT/'compact-gate.json';fetch('https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38796689216-1-vbic-full-window/vbic-full-window-38796689216-1.summary.json',COMPACT_SHA,gate)
         compact=json.loads(gate.read_text());assert compact['compact_numerical_component_screen_passed'] and compact['protected_inputs_unchanged']
@@ -115,7 +145,9 @@ def main():
                 started=time.monotonic()
                 with (directory/'run.log').open('w') as log:proc=subprocess.run([str(paths[variant]),'-n','-b','bench.cir'],cwd=directory,env=env,preexec_fn=limits,stdout=log,stderr=subprocess.STDOUT,timeout=8400)
                 row.update(elapsed_s=time.monotonic()-started,returncode=proc.returncode)
-                text=(directory/'run.log').read_text(errors='replace');row['diagnostics']=native_diagnostics(text)
+                text=(directory/'run.log').read_text(errors='replace')
+                row['native_options'],row['diagnostics'],option_block=backend_readback(text,backend)
+                (directory/'native-options.txt').write_text(option_block)
                 assert proc.returncode==0 and not row['diagnostics'],'Native process/diagnostic failure'
                 flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',text)
                 assert [a for a,b in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
@@ -141,4 +173,7 @@ def main():
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--controls-only',action='store_true');a=p.parse_args()
+    if a.controls_only:print(json.dumps(readback_controls()))
+    else:main()

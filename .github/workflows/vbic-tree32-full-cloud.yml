@@ -7,8 +7,12 @@ on:
     paths: [.github/workflows/vbic-tree32-full-cloud.yml]
   workflow_dispatch:
     inputs:
+      study_run:
+        description: Passing source-bound backend study run ID
+        type: string
+        required: true
       study_sha256:
-        description: SHA256 of passing source-bound backend study38800540477
+        description: SHA256 of the passing source-bound backend study summary
         type: string
         required: true
       backend:
@@ -63,9 +67,10 @@ jobs:
       - name: Require measured engine proof and run every original full-window gate
         env:
           STUDY_SHA256: ${{ inputs.study_sha256 }}
+          STUDY_RUN: ${{ inputs.study_run }}
           NATIVE_BACKEND: ${{ inputs.backend }}
           TMAX_PS: ${{ inputs.tmax_ps }}
-        run: python3 scripts/cloud_vbic_tree32_full.py --backend "$NATIVE_BACKEND" --tmax-ps "$TMAX_PS" --study-sha256 "$STUDY_SHA256"
+        run: python3 scripts/cloud_vbic_tree32_full.py --backend "$NATIVE_BACKEND" --tmax-ps "$TMAX_PS" --study-sha256 "$STUDY_SHA256" --study-run "$STUDY_RUN"
       - name: Preserve full native waveform in ordered hash-verified release parts
         if: always()
         env:
