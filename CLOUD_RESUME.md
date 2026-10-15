@@ -1,3 +1,11 @@
+## Exact live cloud handles after matched-endpoint correction
+
+- Wire38801162596 / job116650255071 / source175d801b53b53c939dcf72088216a0ede7521553: native matched-endpoint provenance/full-wire step confirmed in progress. Never duplicate. Prior38799068525 remains a failed endpoint-control attempt; its3.26226nV final-sample difference is preserved.
+-32:1 backend38800540477 / job116648093878 / source09e6e23d6f6c6b041ef6eb0589c96b5910e984c2: native source/runtime study confirmed in progress. Original near-memory-limit full capture remains a failure; streaming retains all probes. Inspect actual option equality/native vectors before speed or adoption claims.
+- Mainchip38788529905 / job116606725290 remains live in geometry/NDR+DRT step. No duplicate. Original global-route132overflow failure remains open independently.
+
+All execution and native evidence are on GitHub; local workspace rechecked empty. Current turn is progress: source-bound32:1 experiment implemented/launched and wire endpoint-control defect isolated/repaired/launched. FullPHY/routedchip/final setup-hold remain OPEN.
+
 ## Wire provenance endpoint failure preserved; matched-duration replay required
 
 Wire38799068525/job116643041356 FAILED before any patched simulation. Pristine native capture completed, but its final1.2ns sample differs by3.26226nV from the interpolated original34ns packaged capture (1nV guard). Receipt: docs/evidence/pcie-vbic-wire-endpoint-20261015.json. Do not call it a physical pass or ignore the failed guard.
