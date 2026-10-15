@@ -57,7 +57,9 @@ jobs:
       - name: Verify original bits, physical boundaries and complete native observation contracts
         run: |
           python3 -m pip install numpy==2.3.3 pytest==8.4.2 networkx==3.4.2
-          python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_assembled_sizing.py
+          python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_assembled_sizing.py sw/tests/test_cloud_route_ndr_process.py
+      - name: Verify native startup diagnostic controls and lossless model source decoding
+        run: python3 scripts/cloud_tx_step_factorial.py --controls-only
       - name: Verify numerical peak witnesses without changing convergence gates
         run: python3 -c "import sys; sys.path.insert(0,'scripts'); from analyze_cloud_assembled_wave import step_controls,interface_witness_controls,diagnosis_case_controls; print(step_controls()); print(interface_witness_controls()); print(diagnosis_case_controls())"
       - name: Distinguish forward VBE from reverse emitter-base breakdown without changing gates

@@ -9,6 +9,7 @@ import math
 import os
 from pathlib import Path
 import re
+import signal
 import subprocess
 import tarfile
 from read_opensta_phase_slacks import parse_phases
@@ -33,11 +34,29 @@ def execute(script, label):
     log = OUT / (label + '.log')
     with log.open('w') as stream:
         process = subprocess.Popen([os.environ['CLOUD_APPIMAGE'], 'openroad', '-exit', str(tcl)],
-                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+                                   start_new_session=True)
         for line in process.stdout:
             stream.write(line)
             stream.flush()
             print(f'[{label}] {line}', end='', flush=True)
+            if label=='global-route' and not native_ndr_screen(line)['preserved']:
+                # A native constraint violation already rejects this trial. Do
+                # not spend another five hours after FastRoute resets its loop.
+                event=dict(status='STOPPED_AT_NATIVE_NDR_RELAXATION',accepted=False,
+                    cause=native_ndr_screen(line),process_group=process.pid,
+                    scope='Invalid global-route trial only; original DB/source constraints and pre-route checkpoint retained.')
+                (OUT/'global-route-rejected.json').write_text(json.dumps(event,indent=2)+'\n')
+                try:
+                    os.killpg(process.pid,signal.SIGTERM)
+                    try:process.wait(timeout=15)
+                    except subprocess.TimeoutExpired:pass
+                finally:
+                    # Also terminate descendants if the AppImage leader exits first.
+                    try:os.killpg(process.pid,signal.SIGKILL)
+                    except ProcessLookupError:pass
+                    process.wait()
+                break
         code = process.wait()
     text = log.read_text(errors='replace')
     if code or re.search(r'(?m)^(Error:|\[ERROR)', text):

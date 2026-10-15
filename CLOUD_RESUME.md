@@ -1,3 +1,15 @@
+## 2026-10-15 — mainchip timeout is terminal; native charge study exposes VBIC failure
+
+ALL CLOUD. Full goal OPEN. No live mainchip route remains; do not describe the old handle as running.
+
+Mainchip **38731744914 /116410943697** TERMINAL cancelled at6h. GitHub annotation explicitly says maximum execution time6h0m0s. The publisher preserved the138,996,116-byte archive and335,777-byte partial JSON. Receipt `docs/evidence/pcie-mainchip-upper-three-timeout-20261015.json`. Native log has21GRT0273NDR relaxations; first12:38:23UTC (clk_i/PCIe/ETH), then repeated iteration resets. Final global route and extracted timing are not complete. Partial JSON still says pending and is not a live-process signal.
+
+Controller now stops NEW global-route trials immediately on native NDR relaxation, preserving rejection JSON/log/Tcl and killing the entire launched process group. It retains pre-route checkpoints and source constraints. Three real hosted subprocess tests cover rejected descendants, healthy routing and unrelated phases. Source-validation workflow push runs these before reuse. Do not replay upper_metals or upper_three unchanged; their constraint failures are established. Next mainchip hypothesis must address placement/clock congestion using saved exact state, not disable NDR or claim a guide pass.
+
+Charge experiment **38782025812 /116584407140** restored source successfully and completed both baseline prefixes. Native chgtol1e-20C then aborts around0.54333ns atxtree.xd0002:npn13g2_nx_vbic; returncode0 did NOT mean a successful transient. Receipt `docs/evidence/pcie-timestep-charge-abort-20261015.json` preserves the native diagnostic and incomplete capture. Fourth case never ran. Do not adopt this charge tolerance or rerun full34ns.
+
+The exact frozen source/native model audit proves active HBT model is VBIC, not HICUM. Native RTH/CTH are nonzero. Earlier exploratory HICUM source reading is not evidence about this circuit. Frozen model text and native parameters are included in the charge receipt with source SHA and lossless encoding. Inspect ngspice47 VBIC load/truncation/thermal/excess-phase code against these exact settings. No bypass or model change has been made. All original physical/device/bit/numerical gates remain unchanged.
+
 ## 2026-10-15 — repair byte-preserving model audit before charge study
 
 ALL CLOUD; full goal OPEN. Native source/capture hashes restored successfully in38781466652, but the new source-text audit stopped BEFORE any simulation on a non-UTF8 micro-sign byte0xb5. This is a controller preflight failure, not device behavior. Receipt `docs/evidence/pcie-charge-model-audit-failure-20261015.json` retains its exact error and zero cases.
