@@ -1,3 +1,13 @@
+## 2026-10-15 — first joint-sizing native compact results pass; wire results pending
+
+ALL CLOUD; full PHY and final chip timing remain OPEN. Study **38773059353** (`data8_select10`, fixed TC feed) has initial native results pinned under the candidate's own `loaded_studies` record. Append future cases to this SAME study.
+
+The compact cold-HBT case now passes all original electrical gates: all twelve previous data-HBT VBE violations are absent, output margin **255.873662589mV**. Final interface CMmax **2.049776663087V**, only 0.223337mV below its 2.05V bound; do not infer robust PVT coverage. Compact hot_low also passes with output margin **186.396133923mV** and no HBT/MOS failure. The remaining source-bound cases must decide whether increased loading is acceptable. No layout integration or extracted candidate acceptance is claimed.
+
+Wire jobs retain their existing handles from the prior checkpoint; do not duplicate. Changed devices still use original metal as a diagnostic control and `component_screen_passed=false` by construction. Require successful original-gate sensitivity evidence before new matching physical layout/extraction, and all independent corners/numerical/fault checks before acceptance.
+
+Strict fine-step wire job **116522064672** and mainchip job **116410943697** remain running as last verified; preserve them. Local workspace verified zero entries.
+
 ## 2026-10-15 — joint headroom candidate is running in six hosted native cases
 
 All work remains in GitHub; the local workspace is empty. Full serial PHY, mainchip detailed routing and final extracted setup/hold remain OPEN.
