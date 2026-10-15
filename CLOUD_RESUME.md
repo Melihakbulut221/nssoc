@@ -1,3 +1,9 @@
+## 2026-10-15 — actual162-device whole-tree composition PASS; cloud only
+
+Source45a44c2cf06628cc04c89da90b57bc64bd6e78e6, hosted composition38713029536 passed. Full readback of archive643366508 and embedded summary643366682 verified every exported model hash. `verified_composition` added to`docs/evidence/pcie-tree4-assembly-input-20261015.json`.162native devices,11907R7847C preserved exactly;6actual model/connection/RC corruption controls rejected. Independent resistor-only component collapse recovers all41native metal nets,300intrinsic metal terminals,162body/well terminals and22publicports. No ideal intermacro alias or childRC doublecounting. Native loaded transient NOT yet accepted. Next bind final input observations to actual physical HBT base terminals and run unchanged original-bit loaded bench against compact and full assembledRC.
+
+Independent corner run38703553931 now terminal24/24published. Lastwirecold_high_hbt_wcs summary643319518 passes its component screens; earlier compact and resistorWCS failures remain. All-corner acceptance staysFALSE. Source inventory candidate from hosted38713077170 applied with exactSHA and same source path set. Mainchip38703550233 still verifiedlive; no duplicate.
+
 ## 2026-10-15 — ACTUAL4:1core assembled and nativeRC PASS; PLL original1us acquisition FAIL; cloud only
 
 Latest user execution override is **CLOUD ONLY**, not the stale local-work phrase in the goal. Workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` empty. No local CAD/tests/clones/artifacts. Use GitHub API/RAM for sources and summaries; hosted Actions for all native work. Never `gh run view --log-failed` (local cache). Do not mark fullPHY/mainchip/finalSTA complete.

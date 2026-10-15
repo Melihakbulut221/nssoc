@@ -1665,5 +1665,125 @@
       }
     },
     "scope": "Complete actual3macro tree including intermacro metal, all intrinsic terminals and22public ports. Graph/R values, geometry ownership and ground/mutual C conserved;13native corruption controls. Explicit162unmodeled body/well terminals; no substrateR/RF/fullPEX qualification or electrical acceptance. Next compose all162devices with this exact11907R7847C graph, then unchanged loaded native waves. Never sum child RC and new whole-tree RC (would double count)."
+  },
+  "verified_composition": {
+    "run": 38713029536,
+    "source_head": "45a44c2cf06628cc04c89da90b57bc64bd6e78e6",
+    "status": "PASS_ACTUAL_TREE162_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38713029536-1-tree-assembly-4-composition/tx-tree-assembly-38713029536-1.tar.gz",
+    "bytes": 9422185,
+    "sha256": "29796d13100a75a7937595df62d2bc8a7af91832b5b8f9529738c92b73d48876",
+    "summary_asset": 643366682,
+    "summary_sha256": "aeda0694942c26d8add7707098194fe497a13d8dd006159cfc26b87aa6e8bece",
+    "counts": {
+      "devices": 162,
+      "R": 11907,
+      "C": 7847
+    },
+    "outputs": {
+      "binding96/tree162-compact01.spice": "12551a3baa9f7e7e33c706fa4368a3d935494ae2c9b5cf16b0cc5632df78aecf",
+      "wire96/tree162-wire01.spice": "16b48eb3fe2c1c3fa14071533d086419c7c014213d58abfdd4ae0ac8b0adb745",
+      "binding96/binding01.json": "9b6be4beb472a4f63aaeca121b8010dba45645c3fd96fdd31d0983be26fda34c",
+      "wire96/tree-topology-check.json": "51469e7877ebc9c7753bd2041cde4042a7531d8e5d19f0c81d029809691b7d40"
+    },
+    "topology": {
+      "status": "PASS_ALL_PHYSICAL_RESISTOR_COMPONENTS_RECOVER_NATIVE_SCHEMATIC_NETS",
+      "components": 41,
+      "public_ports": 22,
+      "terminal_counts": {
+        "ACTUAL_TERMINAL_METAL_POINT_REFERENCE": 300,
+        "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE": 162
+      },
+      "component_native_net": {
+        "20": "$I48",
+        "15": "sn",
+        "17": "$I52",
+        "21": "$I49",
+        "16": "sp",
+        "14": "mr",
+        "31": "avss",
+        "24": "avdd",
+        "23": "$I50",
+        "22": "$I51",
+        "13": "mn",
+        "12": "mp",
+        "27": "sub",
+        "18": "$25",
+        "25": "$27",
+        "26": "$26",
+        "19": "$24",
+        "8": "$I55",
+        "9": "$I53",
+        "37": "$I60",
+        "38": "$I58",
+        "2": "ra",
+        "30": "rb",
+        "10": "$I54",
+        "11": "$I56",
+        "39": "$I59",
+        "40": "$I61",
+        "5": "d0n",
+        "0": "sap",
+        "3": "$I57",
+        "1": "san",
+        "4": "d0p",
+        "7": "d2n",
+        "6": "d2p",
+        "34": "d1n",
+        "28": "sbp",
+        "32": "$I62",
+        "29": "sbn",
+        "33": "d1p",
+        "36": "d3n",
+        "35": "d3p"
+      },
+      "no_intermacro_ideal_alias": true,
+      "no_duplicate_child_rc": true
+    },
+    "controls": {
+      "status": "PASS_ALL162_NATIVE_DEVICES19754_WIRES_AND_SIX_COMPOSITION_FAULTS",
+      "counts": {
+        "devices": 162,
+        "R": 11907,
+        "C": 7847
+      },
+      "controls": [
+        {
+          "case": "missing_contact",
+          "sha256": "4ade1b5384f3cb83a89221156444202709c5bdaf7f7d6b12626cbbaae44b6a0b"
+        },
+        {
+          "case": "wrong_hbt_size",
+          "sha256": "3e81f75f2171db8a537ad5524286a6c1f48f82012aac166de7f2f8b1f9977cb4"
+        },
+        {
+          "case": "bypassed_terminal_rc",
+          "sha256": "7463ace65d14143c0e4cbdd8a24c14968aaa1fe5feae86bc4149534515bc3528"
+        },
+        {
+          "case": "wrong_cap_reference",
+          "sha256": "a8825d0fca8c7745e9e26266a21751b3302d38026524fead7a6769979b7c483d"
+        },
+        {
+          "case": "missing_wire_resistor",
+          "sha256": "43ed8c023487bcf443062596aad06072658d2338e586a5acf8c2035aa5a3b245"
+        },
+        {
+          "case": "changed_wire_cap",
+          "sha256": "62adf61e143468f5f76fbb11ec5f01b66db6c3fcf199c693a945c3bfb26ca550"
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/check-tree-composition.py": "e36b77c6d5d90e506b3a2ad9599fc47dc5178b5cc66a765db1c816bf753072e0",
+        "/home/runner/work/nssoc/nssoc/scripts/build_pcie_local_vco_hybrid_v6.py": "ab2962f0c47cc89029866761992bfdd87ab1d5649920b8bc8edaa1c54bbe5a3f",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/binding96/binding01.json": "9b6be4beb472a4f63aaeca121b8010dba45645c3fd96fdd31d0983be26fda34c",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/anchors08.json": "3bdf9de309bd064fb31914ab2c5cf2e9b53673dface2be5fe62ccf777886f09a",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/rc03/wires.spice": "d031f5879d097d70b9b504e2eb1377f37fd208b07abbd3c1eecce9570b6b846e",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree-assembly/wire96/tree162-wire01.spice": "16b48eb3fe2c1c3fa14071533d086419c7c014213d58abfdd4ae0ac8b0adb745"
+      },
+      "native_transient_accepted": false,
+      "qualified_pex": false
+    },
+    "scope": "Actual162-device four-input CML core and complete11907R7847C metal graph, including real intermacro conductors. No body spreading resistance, RF qualification, loaded transient, full32:1/four-lane PHY or mainchip acceptance."
   }
 }
