@@ -1,3 +1,13 @@
+## 2026-10-15 — finer trap and Gear2 do not converge; matrix backend diagnosis prepared
+
+ALL CLOUD, local workspace empty. Full goal OPEN.
+
+Refinement **38778734039 /116573062910** completed all six1.2ns native captures with verified model hashes, options,62OFF flags and zero operating point. Baseline prefix exactly reproduces original through1.1ns. Receipt `docs/evidence/pcie-timestep-refinement-20261015.json`. Trap successive maximum voltage differences WORSEN:8.906847247mV (0.125->0.0625ps),9.891831193mV (0.0625->0.03125ps),12.234292598mV (0.03125->0.015625ps). Gear2 coarse/fine difference8.317086327mV; cross-method differences3.251660917/3.841691824mV. Neither finer TMAX nor Gear2 repairs this. Do NOT run expensive full-wave versions merely from these failed prefixes.
+
+Actual native option readback identifies Sparse1.3 matrix backend. Next bounded hosted `matrix_solver` study compares Sparse and KLU at fixedTSTEP0.125ps and TMAX0.125/0.0625ps, original circuit/models/flags/tolerances. Scoped workflow push starts once. Native KLU availability preflight must pass; each real case must show intended backend in native option output. This tests a numerical hypothesis, not a proven root cause or acceptance. Preserve all failed captures. Original complete34ns gates remain required.
+
+Mainchip38731744914 remains live as last verified; retain it. Detailed metal/extracted timing and full serialPHY are not complete.
+
 ## 2026-10-15 — TSTEP hypothesis ruled out; TMAX refinement prepared
 
 ALL CLOUD. Full serial PHY, detailed mainchip routing and final extracted setup/hold remain OPEN. Local workspace remains empty.

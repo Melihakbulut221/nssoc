@@ -13,3 +13,7 @@ This is a bounded startup diagnosis, never numerical or physical acceptance. The
 Run38777870655 reproduced the original prefix exactly through1.1ns. TSTEP alone changes at most37.6368nV, while TMAX alone reproduces8.906847247mV atv(mr). This rules out the TSTEP explanation for the millivolt discrepancy. All62startup flags and actual native option readbacks passed.
 
 The refinement study holds TSTEP fixed, halves trap TMAX twice more, and compares trap with Gear2 at the original two TMAX values. Gear2 is a labelled numerical diagnostic: no device/source changes, minbreak remains1as, and no physical or full-wave acceptance follows from a short result. The next action depends on whether the differences converge, diverge or remain method-dependent.
+
+## Refinement result
+
+Run38778734039 failed to show convergence: successive trap differences are8.906847247,9.891831193 and12.234292598mV. Gear2 coarse/fine difference is8.317086327mV. No new long full-wave run is justified by this result. The native solver output says Sparse1.3. A separate KLU comparison now tests backend dependence with original circuit and tolerances, explicit availability preflight and actual native backend readback. [Official ngspice documentation](https://ngspice.sourceforge.io/applic.html) describes KLU as an optional alternative; its availability and numerical behavior in this executable must be measured.

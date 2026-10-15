@@ -24,9 +24,10 @@ SOURCE_STOP = 34e-9
 PROFILE = 'breakpoint_tight_trap'
 STEPS = (.125e-12, .0625e-12)
 
-def replace_analysis(deck, tstep, tmax, method="trap"):
+def replace_analysis(deck, tstep, tmax, method="trap", backend="sparse"):
     assert tstep in STEPS and tmax in (*STEPS, .03125e-12, .015625e-12)
     assert method in ("trap", "gear")
+    assert backend in ("sparse", "klu")
     rows = re.findall(r'(?m)^\.tran ([^\n]+)$', deck)
     assert len(rows) == 1 and not re.search(r'(?m)^tran ', deck)
     fields = rows[0].split()
@@ -39,6 +40,9 @@ def replace_analysis(deck, tstep, tmax, method="trap"):
         assert changed.count('method=trap') == 1
         changed = changed.replace('method=trap', 'method=gear')
         assert changed.replace(replacement, line).replace('method=gear','method=trap') == deck
+    if backend=='klu':
+        assert changed.count('.control\n')==1 and not re.search(r'(?im)^\.options? .*\bklu\b',changed)
+        changed=changed.replace('.control\n','.options klu\n.control\n')
     return changed
 
 def wave_difference(a, b, vectors, end=STOP):
@@ -75,6 +79,8 @@ def controls():
         assert f'{step:.14g}' in replace_analysis(solver_deck,STEPS[0],step)
     gear=replace_analysis(solver_deck,*STEPS,method='gear')
     assert 'method=gear' in gear and 'method=trap' not in gear
+    klu=replace_analysis(solver_deck,*STEPS,backend='klu')
+    assert klu.replace('.options klu\n','')==replace_analysis(solver_deck,*STEPS)
     rejected=[]
     for name,bad in [('missing',deck.replace('.tran ','.ac ')),('duplicate',deck+deck),
                      ('uic',deck.replace('0 1.25e-13','0 1.25e-13 uic')),
@@ -153,11 +159,13 @@ def main(study):
         cases = [(a,b,'trap') for a in STEPS for b in STEPS] if study=='factorial' else [
             (STEPS[0],b,'trap') for b in (*STEPS,.03125e-12,.015625e-12)] + [
             (STEPS[0],b,'gear') for b in STEPS]
-        for a,b,method in cases:
-                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')
+        cases=[(*case,'sparse') for case in cases]
+        if study=='matrix_solver':cases=[(STEPS[0],step,'trap',backend) for backend in ('sparse','klu') for step in STEPS]
+        for a,b,method,backend in cases:
+                label=f'tstep{a*1e12:g}-tmax{b*1e12:g}'+('-gear' if method=='gear' else '')+('-klu' if backend=='klu' else '')
                 profile = 'tight_gear2' if method=='gear' else PROFILE
                 case=out/label;case.mkdir()
-                (case/'bench.cir').write_text(replace_analysis(original,a,b,method))
+                (case/'bench.cir').write_text(replace_analysis(original,a,b,method,backend))
                 shutil.copyfile(source/'native/spinit',case/'spinit')
                 env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
                 env.update(SPICE_SCRIPTS=str(case),RAYON_NUM_THREADS='1',OMP_NUM_THREADS='1')
@@ -169,7 +177,7 @@ def main(study):
                 with (case/'run.log').open('w') as log:
                     proc=subprocess.run([os.environ['CLOUD_NGSPICE'],'-n','-b','bench.cir'],cwd=case,env=env,
                         stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits,timeout=1800)
-                row=dict(tstep_s=a,tmax_s=b,tstop_s=STOP,method=method,returncode=proc.returncode,elapsed_s=time.monotonic()-started,accepted=False)
+                row=dict(tstep_s=a,tmax_s=b,tstop_s=STOP,method=method,matrix_solver=backend,returncode=proc.returncode,elapsed_s=time.monotonic()-started,accepted=False)
                 result['cases'][label]=row
                 log=(case/'run.log').read_text(errors='replace')
                 row['diagnostics']=native_diagnostics(log,profile)
@@ -177,6 +185,9 @@ def main(study):
                 row['solver_options']=verify_solver_options(log,profile)
                 assert [float(x) for x in re.findall(r'(?m)^NSSOC_NATIVE_MINBREAK (\S+)\s*$',log)]==[1e-18]
                 row['native_minbreak_s']=1e-18
+                option_text=row['solver_options']['native_text']
+                assert ('KLU' in option_text) if backend=='klu' else ('Sparse 1.3' in option_text)
+                row['matrix_solver_native_readback_verified']=True
                 flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
                 assert [x[0] for x in flags]==['q.'+n+'.qnpn13g2' for n in contract['hbt']]
                 assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1'] for _,body in flags)
@@ -203,6 +214,11 @@ def main(study):
                 ('gear_125_to_62p5','tstep0.125-tmax0.125-gear','tstep0.125-tmax0.0625-gear'),
                 ('method_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-gear'),
                 ('method_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-gear')]
+        if study=='matrix_solver':
+            pairs=[('sparse_125_to_62p5','tstep0.125-tmax0.125','tstep0.125-tmax0.0625'),
+                ('klu_125_to_62p5','tstep0.125-tmax0.125-klu','tstep0.125-tmax0.0625-klu'),
+                ('backend_at_125','tstep0.125-tmax0.125','tstep0.125-tmax0.125-klu'),
+                ('backend_at_62p5','tstep0.125-tmax0.0625','tstep0.125-tmax0.0625-klu')]
         result['comparisons']={name:wave_difference(captures[a],captures[b],contract['vectors']) for name,a,b in pairs}
         assert all(sha(path)==digest for path,digest in verified.items())
         result['status']='COMPLETE_NATIVE_TSTEP_TMAX_STARTUP_DIAGNOSIS_NOT_ACCEPTANCE'
@@ -216,7 +232,7 @@ def main(study):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--controls-only',action='store_true')
-    parser.add_argument('--study',choices=('factorial','refinement'),default='factorial')
+    parser.add_argument('--study',choices=('factorial','refinement','matrix_solver'),default='factorial')
     args=parser.parse_args()
     if args.controls_only:print(json.dumps(controls()))
     else:main(args.study)
