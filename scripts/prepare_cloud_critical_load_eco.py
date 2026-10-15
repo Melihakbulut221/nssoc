@@ -43,7 +43,7 @@ def prepare():
             kind=str(p.getSigType())
             if kind in ('POWER','GROUND'):
                 peers=[t for t in driver.getITerms() if str(t.getSigType())==kind];assert len(peers)==1 and peers[0].getNet();p.connect(peers[0].getNet())
-        changes.append(dict(driver=name,driver_pin=driver_pin,original_terminal_count=terminal_count,original_net=net.getName(),local_net=local,buffer=added,buffer_master=master.getName()))
+        changes.append(dict(driver=name,driver_pin=driver_pin,original_terminal_count=terminal_count,initial_buffer_location_dbu=list(buffer.getLocation()),original_net=net.getName(),local_net=local,buffer=added,buffer_master=master.getName()))
     for n in b.getNets():
         if str(n.getSigType()) in ('POWER','GROUND'):continue
         assert not n.getSWires() and n.getRSegCount()==n.getCapNodeCount()==0
@@ -71,7 +71,7 @@ def audit():
         i=b.findInst(r['buffer']);assert i.getMaster().getName()=='sg13g2_buf_16'
         assert i.findITerm('A').getNet().getName()==r['local_net'] and i.findITerm('X').getNet().getName()==r['original_net']
         assert len(b.findNet(r['local_net']).getITerms())==2 and len(b.findNet(r['original_net']).getITerms())==r['original_terminal_count']
-        additions.append(dict(name=i.getName(),signature=signature(i)))
+        additions.append(dict(name=i.getName(),signature=signature(i),initial_buffer_location_dbu=r['initial_buffer_location_dbu'],displacement_dbu=[abs(a-b) for a,b in zip(i.getLocation(),r['initial_buffer_location_dbu'])]))
     for n in b.getNets():
         if str(n.getSigType()) not in ('POWER','GROUND'):assert not n.getWire() and not n.getGuides() and not n.getGlobalWire()
     assert fixed_data(db)==old['fixed_data_sha256']

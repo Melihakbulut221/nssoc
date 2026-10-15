@@ -1,3 +1,7 @@
+## Three-buffer placement failure retained; expand only added-cell search
+
+Three-buffer38821357967/job116718426829 failed nativeDPL-0036 on ONLYnewbuffer2 at input37806; originalroutedtiming replay matched exactly and preparationchecks passed. Summary30bea5780e81883382f63a4c3828a5c88355233dbdfbf351e6abf5ffe46b5725; archive968d1191a15bced2417668ddfb15076d87d470524b0135e158165d54711d15ab retained. PinnedOpendp.tcl:44-48 confirms max_displacement unitsmicrons; originalsearch100x20um. Corrected control_three_buffer search1000x200um appliesONLYto3additions; alloriginal113791cellsstillFIRM/exactgeometryaudited. Recordinitial/finalcoordinatesanddisplacementDBU for everynewbuffer. No timingthreshold,netrule,placementlegality orlogiccheckrelaxed. Defaulttwo_buffer profile retains100x20um. Newown-pathworkflowlaunch; observe before reuse. Originaltwo-buffer38813118414,PLL38813902351,full32Sparse38810158966/38810163678 live unchanged. Allcloudonly.
+
 ## Live handles after complete setup/hold diagnosis
 
 Current corrected three-buffer physical run38821357967/job116718426829, source9a137967882c3e00a8cb6980ff84b300fdfaa3dc. Originaltwo-buffer38813118414/job116691024892 stilllive. Actual845patched1us38813902351/job116693663825 and full32Sparse38810158966/job116681265012,38810163678/job116681243193 live. No duplicates. Unsafeproxy-identity predecessor38821022638 is terminalCANCELLED; correctedvariant checks exactnative(instance,pin)tuple.

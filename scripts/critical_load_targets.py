@@ -17,3 +17,7 @@ if PROFILE=='control_three_buffer':
 COUNT=len(TARGETS)
 DIRECTORY='cloud-critical-load-eco' if PROFILE=='two_buffer' else 'cloud-control-load-eco'
 COMPLETE_STATUS='COMPLETE_TWO_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF' if PROFILE=='two_buffer' else 'COMPLETE_THREE_BUFFER_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
+
+# Native Opendp.tcl displacement units are microns, not routing rules.
+# Three-buffer predecessor failed only the added input-root buffer within100x20um.
+MAX_DISPLACEMENT_UM=(100,20) if PROFILE=='two_buffer' else (1000,200)

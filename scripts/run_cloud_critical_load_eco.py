@@ -7,7 +7,7 @@ from pathlib import Path
 from route_cloud_newer_postcts import fetch,sha,native_ndr_screen
 from read_opensta_phase_slacks import parse_phases
 from run_cloud_failed_guide_drt import guide_index
-from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS
+from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS,MAX_DISPLACEMENT_UM
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/DIRECTORY;SOURCE=ROOT/'cloud-routed-extraction'
 BASE='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38809759501-1-routed-extraction/'
 STEM='routed-extraction-38809759501-1'
@@ -25,7 +25,7 @@ def guide_blocks(text):
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
-    result=dict(status='RUNNING',accepted=False,profile=PROFILE,buffer_count=COUNT,source_run=38809759501,source_head=os.environ['GITHUB_SHA'],full_serial_phy_complete=False,final_timing_complete=False,
+    result=dict(status='RUNNING',accepted=False,profile=PROFILE,buffer_count=COUNT,new_buffer_placement_search_um=list(MAX_DISPLACEMENT_UM),source_run=38809759501,source_head=os.environ['GITHUB_SHA'],full_serial_phy_complete=False,final_timing_complete=False,
         scope='Explicit positive buffer16 insertions on independently measured high-load PCIe combinational outputs. Preserve original cells/geometry/SDC/libraries/NDR and all protected hold repairs. Native selected-net global guides merged with all unchanged original guides; full-chip detailed reroute and fresh nominalRC/all-cell-corner STA required. Original global132overflow,651antenna, new-candidate annotation qualification, RCcorners/SRAM/LVS remain open.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(args,label,env=None,expect=True):
@@ -61,7 +61,8 @@ def main():
         baseline=SOURCE/'source/routed.odb'
         tcl(f'read_db {{{baseline}}}\nwrite_verilog {{{OUT/"before.v"}}}\n','baseline-netlist')
         native('prepare')
-        tcl(f'read_db {{{OUT/"proposed.odb"}}}\nset_thread_count 2\ndetailed_placement -max_displacement {{100 20}}\ncheck_placement -verbose\nwrite_db {{{OUT/"legalized.odb"}}}\n','legalize-only-new-buffers')
+        dpl_limits=' '.join(map(str,MAX_DISPLACEMENT_UM))
+        tcl(f'read_db {{{OUT/"proposed.odb"}}}\nset_thread_count 2\ndetailed_placement -max_displacement {{{dpl_limits}}}\ncheck_placement -verbose\nwrite_db {{{OUT/"legalized.odb"}}}\n','legalize-only-new-buffers')
         native('audit');geometry=json.loads((OUT/'geometry-proof.json').read_text());result['geometry']=geometry
         tcl(f'read_db {{{OUT/"candidate.odb"}}}\nwrite_verilog {{{OUT/"after.v"}}}\n','candidate-netlist')
         libs=[Path(n) for n in old['protected_inputs'] if n.endswith('_typ_1p20V_25C.lib')];standard=next(p for p in libs if 'stdcell' in str(p))
