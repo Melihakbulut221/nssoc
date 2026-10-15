@@ -98,7 +98,17 @@ def main():
                     'anchors01.py': [('len(rows)==154 and len(anchors)==112','len(rows)==462 and len(anchors)==322'),
                         ('PASS_154_NATIVE_TERMINALS_WITH_100_METAL_AND_54_BODY_REFERENCES','PASS_462_NATIVE_TERMINALS_WITH_300_METAL_AND_162_BODY_REFERENCES'),('public_ports=12','public_ports=22')],
                     'dedup01.py': [('len(anchors)>12','len(anchors)>22')],
-                    'audit-rc48.py': [('len(a)==112','len(a)==322'),
+                    'audit-rc48.py': [
+                        ("==['18']","==['42']"), ("==['17']","==['41']"),
+                        ('len(nodes)==17','len(nodes)==41'),
+                        ('set(range(1,18))','set(range(1,42))',2),
+                        ("len(before['ports'])==17","len(before['ports'])==41"),
+                        ("len(connected)==17 and len({c['component'] for c in connected})==17",
+                         "len(connected)==41 and len({c['component'] for c in connected})==41"),
+                        ('len(retire)==17','len(retire)==41'),('len(markers)==17','len(markers)==41'),
+                        ('connected_wire_components=17','connected_wire_components=41'),
+                        ('collapsed_matrix_entries=18**2','collapsed_matrix_entries=42**2'),
+                        ('len(a)==112','len(a)==322'),
                         ('ACTUAL_TERMINAL_METAL_POINT_REFERENCE=100,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=54','ACTUAL_TERMINAL_METAL_POINT_REFERENCE=300,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=162'),
                         ('len(native_rows)==154','len(native_rows)==462'),('len(ports)==112','len(ports)==322'),
                         ("len(after['ports'])==112","len(after['ports'])==322"),
@@ -106,9 +116,10 @@ def main():
                          'original_devices=162,public_ports=22,physical_wire_components=41,geometry_probes=322,logical_metal_references=300,metal_device_terminals=300'),
                         ('unmodeled_body_well_terminals=54','unmodeled_body_well_terminals=162')],
                 }
-                for before,after in replacements.get(target.name,[]):
-                    assert source.count(before)==1,(target.name,before)
-                    source=source.replace(before,after);changes.append(dict(before=before,after=after,count=1))
+                for replacement in replacements.get(target.name,[]):
+                    before,after,*count=replacement;expected=count[0] if count else 1
+                    assert source.count(before)==expected,(target.name,before)
+                    source=source.replace(before,after);changes.append(dict(before=before,after=after,count=expected))
                 if args.circuit_profile!='baseline':
                     before='nssoc_tx_mux2_passive_topmetal_layout_v1'
                     after=spec['circuits'][args.circuit_profile]['top']
@@ -152,6 +163,12 @@ def main():
         assert sha(app) == 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
         for method in ('probe01.py', 'locate01.py', 'anchors01.py', 'dedup01.py'):
             run([app, 'python', wire / method], method)
+        graph=json.loads((wire/'native05/result.json').read_text())
+        assert graph['wire_component_count']==41 and graph['native_electrical_net_count']==42
+        assert graph['native_device_count']==162 and graph['native_terminal_count']==462
+        # This census is independently established from actual GDS/LVS ownership,
+        # not inferred from whatever number the resistor exporter prints.
+        result['native_geometry_census']={k:graph[k] for k in ('wire_component_count','native_electrical_net_count','native_device_count','native_terminal_count')}
         run([sys.executable, wire / 'run-rc01.py'], 'native-extraction')
         capture = json.loads((wire / 'rc03/result.json').read_text())
         result['capture'] = capture
