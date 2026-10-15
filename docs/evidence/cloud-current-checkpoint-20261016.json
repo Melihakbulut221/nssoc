@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-15T22:11:43.198407+00:00",
+  "observed_at": "2026-10-15T22:19:53.086088+00:00",
   "cloud_only": true,
   "local_workspace_entries": 0,
   "active_or_recent": [
@@ -13,7 +13,8 @@
         {
           "id": 116650255071,
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
@@ -27,12 +28,16 @@
         {
           "id": 116681079756,
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 116681265012,
           "status": "in_progress",
-          "conclusion": null
+          "conclusion": null,
+          "active_steps": [
+            "Require measured engine proof and run every original full-window gate"
+          ]
         }
       ]
     },
@@ -46,12 +51,16 @@
         {
           "id": 116681095478,
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 116681243193,
           "status": "in_progress",
-          "conclusion": null
+          "conclusion": null,
+          "active_steps": [
+            "Require measured engine proof and run every original full-window gate"
+          ]
         }
       ]
     },
@@ -65,7 +74,8 @@
         {
           "id": 116683788886,
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
@@ -79,7 +89,10 @@
         {
           "id": 116691024892,
           "status": "in_progress",
-          "conclusion": null
+          "conclusion": null,
+          "active_steps": [
+            "Prove restricted buffer insertion, reroute full chip, reextract and measure"
+          ]
         }
       ]
     },
@@ -93,21 +106,25 @@
         {
           "id": 116693663825,
           "status": "in_progress",
-          "conclusion": null
+          "conclusion": null,
+          "active_steps": [
+            "Frozen actual845 full1us acquisition under measured companion engine"
+          ]
         }
       ]
     },
     {
-      "run": 38814839951,
-      "topic": "failed diagnostic SPEF name parser; preserved",
+      "run": 38815972613,
+      "topic": "completed unannotated driver classification",
       "status": "completed",
-      "conclusion": "failure",
-      "source_head": "b46b53a8ec790b09eb1af649f57c40a84d072c2e",
+      "conclusion": "success",
+      "source_head": "3e2a3495bb1e66f99c8af055f0bb7784863e4209",
       "jobs": [
         {
-          "id": 116696793924,
+          "id": 116700606177,
           "status": "completed",
-          "conclusion": "failure"
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     }
@@ -149,5 +166,69 @@
     "full_lvs": false,
     "inter_net_shorts_checked": false
   },
-  "annotation_followup": "Own-path push now launches corrected exact native net-id/writer-name classifier; never waive missing loaded nets"
+  "annotation_followup": "Completed original-route classification: no loaded unannotated driver; repeat on repaired route before adoption",
+  "completed_annotation": {
+    "run": 38815972613,
+    "job": 116700606177,
+    "summary_sha256": "4cb6e74ce878f7bcd208b30afacf3edbb4062b9bea31fb380e153f90c334ea58",
+    "source_head": "3e2a3495bb1e66f99c8af055f0bb7784863e4209",
+    "source_run": 38809759501,
+    "source_files": {
+      "routed.odb": "4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493",
+      "actual-route.nominal.spef": "b0411fdee1ba6ba9dda858296e4fb14a335917a63c57b62872e844fe1883d7a3",
+      "actual-routed-sta.log": "b14e8271541ef2e78859b8c3b30296691c67c3d648b0dc3afc5187b3455d9188"
+    },
+    "classification": {
+      "status": "COMPLETE_SOURCE_BOUND_ANNOTATION_DIAGNOSIS_NOT_COVERAGE_ACCEPTANCE",
+      "accepted": false,
+      "checked": 1065,
+      "counts": {
+        "CONNECTED_NO_SINK": 302,
+        "DISCONNECTED_DRIVER": 763
+      },
+      "loaded_unannotated_drivers": 0,
+      "spef_nets": 113556,
+      "spef_name_resolution": {
+        "native_id_and_exact_writer_name": 113556
+      },
+      "scope": "Descriptive native OpenSTA driver classification against exact routed ODB terminals and extracted SPEF D_NET inventory. No missing loaded net is waived. Disconnected outputs alone do not prove unused functional interfaces or complete timing coverage."
+    },
+    "controls": {
+      "annotation": {
+        "positive": 1,
+        "negative": 4
+      },
+      "spef_names": {
+        "exact_native_writer_cases": 5,
+        "literal_brackets_distinct": true
+      }
+    },
+    "source_unchanged": true,
+    "assets": [
+      {
+        "id": 645339972,
+        "name": "route-annotation-38815972613-1.parts.json",
+        "size": 835,
+        "digest": "sha256:b378038a56848b95862187f27d8244e00094cfb9e357a9c25e21038af6126750",
+        "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38815972613-1-route-annotation/route-annotation-38815972613-1.parts.json"
+      },
+      {
+        "id": 645339880,
+        "name": "route-annotation-38815972613-1.summary.json",
+        "size": 2113,
+        "digest": "sha256:4cb6e74ce878f7bcd208b30afacf3edbb4062b9bea31fb380e153f90c334ea58",
+        "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38815972613-1-route-annotation/route-annotation-38815972613-1.summary.json"
+      },
+      {
+        "id": 645340079,
+        "name": "route-annotation-38815972613-1.tar.gz.part0000",
+        "size": 66143849,
+        "digest": "sha256:5691739e4226969223928b0a1bf1ad8d1b7cf9388539328098ce9e3be3642d16",
+        "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38815972613-1-route-annotation/route-annotation-38815972613-1.tar.gz.part0000"
+      }
+    ],
+    "full_phy_accepted": false,
+    "final_timing_complete": false,
+    "meaning": "All1065 reported drivers classified:302connected without sinks and763disconnected; none drives an unannotated load. Exact113556SPEF net-id/name mappings verified. This resolves this annotation uncertainty for the original route only, not functional interface completeness or final STA/RC qualification."
+  }
 }

@@ -1,3 +1,9 @@
+## Original-route annotation uncertainty resolved from native evidence
+
+Annotation38815972613/job116700606177 complete: summary4cb6e74ce878f7bcd208b30afacf3edbb4062b9bea31fb380e153f90c334ea58. All1065unannotated drivers classified as302connected-without-sinks and763disconnected; ZERO loaded unannotated drivers. All113556SPEF nets match exact native ids and writer names. Original routedODB/SPEF/STA source unchanged. Receipt docs/evidence/cloud-route-annotation-classified-20261016.json. This resolves original-route annotation uncertainty only; repeat for new physical candidate and don't infer functional interface completeness or qualifiedRC/finalSTA acceptance.
+
+Live handles verified: actual two-buffer ECO38813118414/job116691024892; patched actual845 full1us38813902351/job116693663825; originalSparse full32 .5ps38810158966/job116681265012 and .25ps38810163678/job116681243193. Do not duplicate. Full-wire38801162596 is complete componentPASS; mainchip baseline setup-11.940513ns/hold-0.151066ns and651antenna nets remain open. All work is cloud-only, local workspace0entries.
+
 ## Native annotation binding follow-up
 
 Second classifier38815455579/job116698864598 failed because Python bindings omit inheriteddbObject.getId, after all five exact SPEF naming controls passed. Evidence remains in cloud-results-38815455579-1-route-annotation. Use exposed staticdbNet.getNet(block,id) from pinneddb.h to translate the actual SPEF net id, then require the same exact forward-escaped native name. This preserves both checks and does not waive any net. Own-path push launches corrected classifier. Other long native jobs remain live; no duplicates.
