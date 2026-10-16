@@ -10,7 +10,8 @@ import cloud_tx_companion_replay as engines
 import cloud_pll_filter_physical_acquisition as physical
 import run_cloud_pll865_snapshot as pll
 from cloud_vbic_tree32_backend import backend_readback
-from route_cloud_newer_postcts import fetch,sha
+from route_cloud_newer_postcts import fetch,sha as _file_sha
+def sha(path):return _file_sha(Path(path))
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-native-checkpoint-probe';SOURCE=ROOT/'cloud-pll-snapshot'
 STOP=4e-9
 ENGINE_SHA='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'
