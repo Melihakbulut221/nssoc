@@ -11,6 +11,7 @@ from run_cloud_tx_layout_repair import fetch,sha
 from run_cloud_pll_filter_rc import unpack
 ROOT=physical.ROOT;OUT=ROOT/'hw/soc/out/cloud-tx-driver-localpins-rc'
 SOURCES={
+ 'l2p4-series-l6p2':dict(run=38945153543,summary='599c4e9260ff04ba4f608d32dc5184d0143b4cf9009bceb6f193bef0adf06d2d',parts='c4618adff94af1b4e075b3f0851fe744a2c69b33a3405ea71149a7cd79d8d397'),
  'l2p7':dict(summary='ea9041bfe2dc5b75341d978c6b7135e7fce7550f49ec749aee9842cb15f54404',parts='9ff1da22c2a9f4806af2d67003f268f83f05c5f2c2ebd6dcc5d15e5431613435'),
  'l2p4':dict(summary='52e20fdc7fc3f473d9662598043159675aa96e11d6b2586008bdbdcd58c05ae7',parts='6a0e203d7a1f3c918bea39a1108f66a72a467be7e6c718157593f1e705a478ab'),
 }
@@ -18,7 +19,7 @@ def main():
     global OUT
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);args=parser.parse_args()
     OUT=ROOT/('hw/soc/out/cloud-tx-driver-pullup-rc-'+args.variant)
-    SOURCE=SOURCES[args.variant]|dict(run=38934298533,group='tx-driver-pullup-wires-'+args.variant)
+    SOURCE=dict(run=38934298533,group='tx-driver-pullup-wires-'+args.variant)|SOURCES[args.variant]
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],source=SOURCE,qualified_pex=False,qualified_substrate=False,qualified_timing=False,serial_phy_complete=False,mainchip_integrated=False,full_driver_composed=False,electrical_passed=False)
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
