@@ -134,7 +134,7 @@ def main():
                 'thr=2','no_simplify=true','top_lvl_pins=true','combine_devices='+str(combine).lower()]
             command=[app,'klayout','-b','-zz','-r',entry]
             for option in options:command+=['-rd',option]
-            step=dict(execution=execute(command,d,'native'),combine_devices=combine,no_simplify=True);r['steps'][name]=step;save()
+            step=dict(execution=execute(command,d,'run'),combine_devices=combine,no_simplify=True);r['steps'][name]=step;save()
             assert step['execution']['returncode']==0
             positive=name in ('raw_lvs','aggregate_lvs','flat_aggregate_lvs','drc')
             if drc:
@@ -143,7 +143,7 @@ def main():
                 if not positive:ok=ok and any('metal2_drw_Offgrid' in c for c in step['measurement']['categories'])
             else:
                 step['audit_execution']=execute([app,'python',ROOT/'hw/soc/flow/audit_klayout_lvs.py',d/'result.lvsdb','--top',TOP,'--deck-log',d/'deck.log','--output',d/'audit.json'],d,'audit')
-                audit=json.loads((d/'audit.json').read_text());step['audit']=audit;verdict=audit['status']
+                audit=json.loads((d/'audit.json').read_text());step['audit']=audit;step['extracted_netlist']=(d/'extracted.cir').read_text();verdict=audit['status']
                 ok=verdict==('PASS within comparison scope' if positive else 'FAIL') and step['audit_execution']['returncode']==(0 if positive else 1)
                 if positive:
                     census=11 if name=='raw_lvs' else 2
