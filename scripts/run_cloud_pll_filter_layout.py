@@ -60,6 +60,8 @@ def main():
         packed.unlink();manifest=json.loads((ROOT/'manifest.json').read_text())
         assert all(sha(ROOT/n)==v['sha256'] for n,v in manifest['files'].items())
         assert all(sha(Path(n))==v for n,v in pinned.items())
+        from run_cloud_pll_filter_lef import restore_technology
+        tech=restore_technology();pinned[str(tech)]=sha(tech)
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==spec['runtime_sha256']
         result['runtime_sha256']=sha(app);result['input_bundle']=spec['receipt'];save()
         run([app,'python',Path(__file__).resolve(),'--generate','--size-um',args.size_um],'generate')
