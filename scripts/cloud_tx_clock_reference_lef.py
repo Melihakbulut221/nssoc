@@ -37,7 +37,7 @@ def main():
         from check_pcie_rx_cell import execute
         from check_pcie_tx_clock_reference_lef import run
         native=out/'inspect-gds.py'
-        native.write_text("""import pya,json,sys
+        native.write_text(r"""import pya,json,sys
 from pathlib import Path
 source=Path(sys.argv[1]);target=Path(sys.argv[2]);topname='nssoc_tx_clock_reference_layout_v1'
 L=pya.Layout();L.read(str(source/(topname+'.gds')));top=L.cell(topname)
@@ -63,6 +63,7 @@ record=dict(status='PASS_NATIVE_GDS_FOUR_PORTS_OUTLINE_AND_PIN_CONDUCTOR_COVERAG
 target.write_text(json.dumps(record,indent=2)+'\n')
 print(record['status'])
 """)
+        compile(native.read_text(),str(native),'exec')
         result['gds_execution']=execute([app,'python',native,source/'layout',out/'gds.json'],out,'gds')
         assert result['gds_execution']['returncode']==0,(out/'gds.log').read_text()
         result['gds_audit']=json.loads((out/'gds.json').read_text());save()
