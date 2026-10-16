@@ -27,3 +27,21 @@ it is a schematic sensitivity, explicitly not a physical candidate. A useful
 result requires a new physical resistor/driver layout, native DRC/LVS, fresh
 terminal binding/RC/composition and full loaded/PVT tests before adoption.
 Neither variant closes32:1/four-lane SERDES, PLL/CDR or mainchip timing.
+
+## Physical realizability experiment
+
+The shared localpins generator now accepts explicit l2p7/l2p4 pullup variants.
+The default original geometry remains available. Each variant starts with the
+SHA-pinned original schematic and proves that the parsed device census differs
+in exactly one XUP length field; all other rows and source text are unchanged.
+Actual native rppd PCells use the new length, and access geometry is recomputed
+from their actual conductor pin boxes. The effective schematic, raw and aggregate
+physical references, geometry and complete source-change audit are preserved.
+
+The tx-input-driver-pullup-cloud workflow generates both physical candidates in
+GitHub runners. Each must pass the original native DRC and four deep/flat,
+raw/combined LVS comparisons with 100 raw devices, plus every original physical
+fault. An additional actual wrong-length schematic (original3.08um against the
+new GDS) must fail LVS. Neither frozen-wire sensitivity nor these physical gates
+qualifies the new interconnect: fresh native extraction, terminal mapping,
+wire RC, composed loaded capture and PVT remain mandatory before adoption.

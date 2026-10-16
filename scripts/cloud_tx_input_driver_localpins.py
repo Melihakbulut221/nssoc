@@ -14,6 +14,8 @@ ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-input-dri
 TOP='nssoc_tx_input_driver_v7_physical_localpins_v1'
 PORTS=['din','dout','avdd','dvdd','avss','sub']
 DRIVER_SHA='de22ecc19975aab5b35cf441f0c4b0ee289ae2dae9f1727625b22e2ae595f135'
+PULLUP_LENGTH='original'
+PULLUP_VALUES={'l2p7':'2.7u','l2p4':'2.4u'}
 SOURCES=[dict(run=38866034515,group='tx-hv-fingers',bytes=152865,sha='3dd698fa73de68204da704c9148c6861cdfb3f5e2eeb2299aabc4dfcad530c7f',summary='c7b896892fa001eb427769ce08e449a874bc0e6bbf3de0de7d1c4692be878c49',root='cloud-tx-hv-fingers'),
  dict(run=38863174519,group='tx-driver-geometry',bytes=140672,sha='377fbedfa70ad5101f35ce095a7a19597ad909eee5a645dc7b2f45e758f84374',summary='9b83b5376a1c2768e2fc2c1aeefbcde12378757cbcd46c11ec198e20fa46cee2',root='cloud-tx-driver-geometry')]
 
@@ -42,10 +44,28 @@ def generate(fault):
     stdroot=OUT/'inputs/tx-driver-geometry/cloud-tx-driver-geometry'
     assert sha(hvroot/'base/layout.gds')=='d84cfd74705b832370fb91ca9e6c00096316a7c0a0b430a350662883af8738bb'
     driver=ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc';assert sha(driver)==DRIVER_SHA
-    texts={'driver':driver.read_text(),'buffer':(stdroot/'native/buf16.spice').read_text()}
+    original_driver=driver.read_text();effective_driver=original_driver
+    original_pullup='XUP avdd dout sub rppd w=4u l=3.08u b=0 sw_et=1'
+    assert original_driver.splitlines().count(original_pullup)==1
+    if PULLUP_LENGTH!='original':
+        changed_pullup=original_pullup.replace('l=3.08u','l='+PULLUP_VALUES[PULLUP_LENGTH])
+        effective_driver=original_driver.replace(original_pullup,changed_pullup)
+        assert effective_driver.replace(changed_pullup,original_pullup)==original_driver
+    texts={'driver':effective_driver,'buffer':(stdroot/'native/buf16.spice').read_text()}
     parser.MODELS.update(sg13_lv_nmos=4,sg13_lv_pmos=4)
     rows,wires=parser.expand(parser.definitions(texts),['nssoc_tx_cmos_hv_resistive_input_v7','xdriver',PORTS])
     assert not wires and len(rows)==12
+    original_rows,original_wires=parser.expand(parser.definitions(texts|{'driver':original_driver}),['nssoc_tx_cmos_hv_resistive_input_v7','xdriver',PORTS])
+    assert not original_wires and len(original_rows)==len(rows)
+    changed=[]
+    for index,(prior,current) in enumerate(zip(original_rows,rows)):
+        if prior==current:continue
+        assert PULLUP_LENGTH!='original' and prior['model']=='rppd'
+        assert prior['params']['w']=='4u' and prior['params']['l']=='3.08u'
+        expected=prior|{'params':prior['params']|{'l':PULLUP_VALUES[PULLUP_LENGTH]}}
+        assert current==expected,'Undeclared source-device change'
+        changed.append(dict(index=index,path=prior['path'],original=prior,physical=current))
+    assert len(changed)==(0 if PULLUP_LENGTH=='original' else 1)
     for row in rows:row['nets']=[n.removeprefix('xdriver.') for n in row['nets']]
     hv=[r for r in rows if r['model']=='sg13_hv_nmos'];lv=[r for r in rows if r['model'].startswith('sg13_lv_')];res=[r for r in rows if r['model']=='rppd']
     assert len(hv)==len(lv)==len(res)==4
@@ -174,6 +194,7 @@ def generate(fault):
     assert set(port_boxes)==set(PORTS) and len(taprefs)==12
     assert before=={c.name:drawing_digest(c) for c in (hvcell,buf)}
     d=OUT/fault;d.mkdir();layout.write(str(d/'layout.gds'))
+    (d/'effective-driver.inc').write_text(effective_driver)
     mapping=[];aggregate=['* Physical common substrate and explicit finite contacts','.subckt '+TOP+' '+' '.join(PORTS)]
     raw=aggregate.copy();mos_fingers=0
     for i,row in enumerate(rows):
@@ -196,14 +217,25 @@ def generate(fault):
         substrate_mapping=mapping,common_substrate_model_qualified=False,original_junction_parameters_retained_in_aggregate_reference=True,
         raw_reference_not_simulation_substitute=True,imported_material_and_pin_geometry_unchanged=before,buffer_substrate_annotation='cell-local Substrate rectangle and sub! labels, absent only in missing_body_marker fault',placements=placements,routes=routes,ports=port_boxes,
         full_driver_accepted=False,qualified_pex=False,serial_phy_complete=False)
+    result['pullup_variant']=PULLUP_LENGTH
+    result['declared_source_device_changes']=changed
+    result['effective_driver_source_sha256']=hashlib.sha256(effective_driver.encode()).hexdigest()
+    result['physical_resistor_length_um']=3.08 if PULLUP_LENGTH=='original' else float(PULLUP_VALUES[PULLUP_LENGTH][:-1])
     (d/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--generate',choices=['base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid']);args=parser.parse_args()
+    global OUT,TOP,PULLUP_LENGTH
+    parser=argparse.ArgumentParser();parser.add_argument('--generate',choices=['base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid'])
+    parser.add_argument('--pullup-length',choices=['original',*PULLUP_VALUES],default='original');args=parser.parse_args()
+    PULLUP_LENGTH=args.pullup_length
+    if PULLUP_LENGTH!='original':
+        OUT=ROOT/('hw/soc/out/cloud-tx-input-driver-pullup-'+PULLUP_LENGTH)
+        TOP='nssoc_tx_input_driver_v7_physical_pullup_'+PULLUP_LENGTH+'_v1'
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     if args.generate:generate(args.generate);return
     OUT.mkdir(parents=True,exist_ok=False)
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],routing_profile='compact_placement_local_public_pins',failed_parent_run=38892907391,wire_metrics_run=38892907583,rejected_wider_supply_run=38901377382,steps={},accepted=False,serial_phy_complete=False,qualified_pex=False)
+    r['pullup_variant']=PULLUP_LENGTH
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
@@ -225,7 +257,7 @@ def main():
             for row in lock['files']:
                 p=ROOT/f'hw/soc/tools/ihp-{typ}-5e6d592'/row['path'];verify(p.read_bytes(),row);protected[str(p)]=row['sha256']
         for name in ('base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid'):
-            x=execute([app,'python',Path(__file__).resolve(),'--generate',name],OUT,'generate-'+name);r['steps']['generate-'+name]=x;save()
+            x=execute([app,'python',Path(__file__).resolve(),'--generate',name,'--pullup-length',PULLUP_LENGTH],OUT,'generate-'+name);r['steps']['generate-'+name]=x;save()
             if x['returncode']:
                 print((OUT/('generate-'+name+'.log')).read_text(errors='replace')[-12000:]);raise RuntimeError('Native assembly failed: '+name)
         r['geometry']=json.loads((OUT/'base/result.json').read_text())
@@ -236,6 +268,11 @@ def main():
             ('wrong_width','base','wrong_width.cir','deep',True),('hv_gate_open','hv_gate_open','aggregate.cir','deep',True),
             ('input_open','input_open','aggregate.cir','deep',True),('missing_well_tap','missing_well_tap','aggregate.cir','deep',True),
             ('missing_body_marker','missing_body_marker','aggregate.cir','deep',True),('body_short','body_short','aggregate.cir','deep',True),('drc','base',None,'deep',False),('offgrid','offgrid',None,'deep',False)]
+        if PULLUP_LENGTH!='original':
+            key='rppd w=4u l='+PULLUP_VALUES[PULLUP_LENGTH]+' b=0 m=1'
+            assert text.count(key)==1
+            (OUT/'base/wrong_pullup.cir').write_text(text.replace(key,'rppd w=4u l=3.08u b=0 m=1'))
+            jobs.append(('wrong_pullup','base','wrong_pullup.cir','deep',True))
         verdicts=[]
         for name,geometry,reference,mode,combine in jobs:
             d=OUT/('check-'+name);d.mkdir();drc=reference is None;typ='drc' if drc else 'lvs'
