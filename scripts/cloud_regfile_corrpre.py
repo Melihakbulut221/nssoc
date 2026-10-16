@@ -4,11 +4,16 @@
 # Actual RTL candidate; all results are standalone pre-layout, not mainchip closure.
 import hashlib,json,os,re,shutil,subprocess,xml.etree.ElementTree as ET
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-regfile-corrpre'
+PHASE=os.environ.get('CORRPRE_PHASE','all')
+assert PHASE in ('all','measure')
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/('cloud-regfile-corrpre'+('-measure'if PHASE=='measure'else ''))
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,mainchip_timing_closed=False,scope='Actual RTL CORRPRE=1 versus unchanged default CORRPRE=0. Clock-step equivalence after explicit async2sync, native asynchronous-reset stored-bit fault campaign with scrub on/off, mapped area and read-path timing. No whole-core or routed acceptance.')
+    r['phase']=PHASE
+    r['formal_proof_in_this_run']=PHASE=='all'
+    if PHASE=='measure':r['scope']='Actual CORRPRE component native fault campaigns and paired mapped three-corner timing only. Separate live formal run remains required; no formal, mainchip or routed acceptance.'
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     def run(tag,cmd,cwd=ROOT,env=None,bad=False):
         with (OUT/(tag+'.log')).open('w')as f:rc=subprocess.call(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
@@ -22,20 +27,21 @@ def main():
         for f in [src,enc,dec,ROOT/'hw/soc/tb/cocotb/test_ibex_regfile_secded.py',ROOT/'hw/soc/sta/ibex.sdc.in']:shutil.copy2(f,inputs/f.name)
         r['input_hashes']={str(p.relative_to(ROOT)):sha(p)for p in [src,enc,dec]}
         run('yosys-version',['yosys','-V']);run('iverilog-version',['iverilog','-V'])
-        mutant=OUT/'inverted-read.v';text=src.read_text();a='assign rdata_a_o = rf_corrected[raddr_a_i];'
-        assert text.count(a)==1
-        mutant.write_text(text.replace(a,"assign rdata_a_o = rf_corrected[raddr_a_i] ^ 32'h1;"))
-        # Every matched node obligation must be proved; no valid-codeword assumptions.
-        for scrub in [1,0]:
-            for bad in [False,True]:
-                tag=f'equiv-s{scrub}'+('-inverted'if bad else '');commands=[]
-                for name,corr,file in [('gold',0,src),('gate',1,mutant if bad else src)]:
-                    commands += [f'read_verilog {enc} {dec} {file}',f'chparam -set CORRPRE {corr} -set SCRUB {scrub} ibex_register_file_ff','hierarchy -check -top ibex_register_file_ff','proc','flatten','async2sync','memory_map','opt_clean',f'rename ibex_register_file_ff {name}',f'design -stash {name}']
-                commands += ['design -copy-from gold -as gold gold','design -copy-from gate -as gate gate','equiv_make gold gate equiv','hierarchy -top equiv','equiv_simple -seq 1','equiv_induct -seq 4','equiv_status -assert']
-                ys=OUT/(tag+'.ys');ys.write_text('\n'.join(commands)+'\n')
-                log=run(tag,['yosys','-s',str(ys)],bad=bad)
-                assert ('unproven $equiv cells'in log)if bad else ('Equivalence successfully proven!'in log)
-        r['sequential_equivalence']=dict(scrub_variants=[1,0],output_inversion_controls_rejected=2);save()
+        if PHASE=='all':
+            mutant=OUT/'inverted-read.v';text=src.read_text();a='assign rdata_a_o = rf_corrected[raddr_a_i];'
+            assert text.count(a)==1
+            mutant.write_text(text.replace(a,"assign rdata_a_o = rf_corrected[raddr_a_i] ^ 32'h1;"))
+            # Every matched node obligation must be proved; no valid-codeword assumptions.
+            for scrub in [1,0]:
+                for bad in [False,True]:
+                    tag=f'equiv-s{scrub}'+('-inverted'if bad else '');commands=[]
+                    for name,corr,file in [('gold',0,src),('gate',1,mutant if bad else src)]:
+                        commands += [f'read_verilog {enc} {dec} {file}',f'chparam -set CORRPRE {corr} -set SCRUB {scrub} ibex_register_file_ff','hierarchy -check -top ibex_register_file_ff','proc','flatten','async2sync','memory_map','opt_clean',f'rename ibex_register_file_ff {name}',f'design -stash {name}']
+                    commands += ['design -copy-from gold -as gold gold','design -copy-from gate -as gate gate','equiv_make gold gate equiv','hierarchy -top equiv','equiv_simple -seq 1','equiv_induct -seq 4','equiv_status -assert']
+                    ys=OUT/(tag+'.ys');ys.write_text('\n'.join(commands)+'\n')
+                    log=run(tag,['yosys','-s',str(ys)],bad=bad)
+                    assert ('unproven $equiv cells'in log)if bad else ('Equivalence successfully proven!'in log)
+            r['sequential_equivalence']=dict(scrub_variants=[1,0],output_inversion_controls_rejected=2);save()
         tb=ROOT/'hw/soc/tb/cocotb'
         for corr,scrub in [(0,1),(1,1),(1,0)]:
             tag=f'cocotb-c{corr}-s{scrub}';xml=OUT/(tag+'.xml');build=OUT/(tag+'-build')
@@ -95,7 +101,7 @@ exit
                     assert arrivals,(tag,corner,section);paths[section]=dict(arrival_ns=arrivals,worst_arrival_ns=max(arrivals))
                 r.setdefault('prelayout_timing',{})[tag+'-'+corner]=paths;save()
         assert all(sha(ROOT/p)==h for p,h in r['input_hashes'].items())
-        r['status']='COMPLETE_CORRPRE_COMPONENT_VALIDATION_NOT_MAINCHIP_TIMING_CLOSURE'
+        r['status']=('COMPLETE_CORRPRE_COMPONENT_VALIDATION_NOT_MAINCHIP_TIMING_CLOSURE'if PHASE=='all'else 'COMPLETE_CORRPRE_COMPONENT_MEASUREMENTS_FORMAL_AND_MAINCHIP_ACCEPTANCE_STILL_REQUIRED')
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
