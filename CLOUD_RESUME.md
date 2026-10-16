@@ -1,3 +1,15 @@
+## TX actual-model corner study dispatched; existing PLL and route preserved (2026-10-17)
+
+Cloud-only continues; local workspace empty. Previous goal turn was PROGRESS (new physical PLL1us native run); this turn adds actual-corner electrical verification toward PHY closure.
+
+New run38983807650 sourcec98d08565172f321fd45972a4dcb723e97761939, workflow `tx-clock-corner-loaded-cloud.yml`, producer `scripts/cloud_tx_clock_corner_loaded.py`, two jobs hot_low/cold_high. These use the exact physically extracted5p7clock, repaired raw100driver and routed162tree from passing nominal38963616666. Nominal final-interface margin was under1mV, so corners require actual measurement before assuming robustness. Preserve original34ns/256bits/62HBT/672MOS/allphases/native readback/electrical gates. Corner validator compares each actual deck against a freshly generated nominal deck: only explicit model corners, temperature and expected supply/input amplitude scaling allowed; all17PWL source identities/edge times and all remaining deck bytes/contract fields unchanged. Four actual mutations must reject before simulation. WireRC stays nominal geometry; this is not qualified process-correlatedRC/fullPVT/full32:1/x4/PLL-CDR/ESD/mainchip acceptance.
+
+Output roots `hw/soc/out/cloud-tx-clock-corner-loaded-l2p4-series-l6p2-{hot_low,cold_high}` and corresponding release groups `tx-clock-corner-loaded-l2p4-series-l6p2-{hot_low,cold_high}`. Inspect reports independently even if workflow is green: `component_screen_passed` and device/interface diagnostics determine scoped electrical outcome. If failed, retain all raw captures and diagnose actual offending devices/phase samples before a physically realized repair. Do not loosen margins.
+
+PLL38982797234 initialjob117247407978 remains in original full1us native step; Ethernet38978702458 job117234218352 remains in actual routing/freshRC/all-endpoint step. No restarts/duplicates. Exact live snapshots and corner requirements in `docs/evidence/tx-clock-actual-corners-started-20261017.json`. Complete full goal remains OPEN. Existing prepared independent Ethernet review follows its terminal producer report.
+
+---
+
 ## Active new physical PLL full1us acquisition (2026-10-17)
 
 Cloud-only; local workspace remains empty. New workflow `pll-v2-native-acquisition-cloud.yml` run38982797234, source ae5d3668d130616a49e0f9592ae49f4f1c98ffc9: controls PASSED, initial job117247407978 active. New controller `scripts/cloud_pll_v2_native_acquisition.py` starts a separate original-duration1us trajectory on exact physical-v2 model d86f4716070f22b36f3fafb9b5d789f2dd029552aefafbedbab8aebdfb0cb85b. Original completed failed waveform remains intact. Native engine/image/model library/portable cross-host proof are restored and verified through original preparation. Only model and graph-proven102HBT ID references change; stimuli/34probes/.3125ps/KLU/zeroOP and original final100ns gates stay fixed. Four actual deck mutations must be rejected, all102nativeOFF readbacks checked. FreshRC/full845graph receipt is pinned, and all input files protected across native checkpoints.
