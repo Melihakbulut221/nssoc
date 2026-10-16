@@ -6,7 +6,7 @@
 No ECO, timing closure, route acceptance or serial PHY claim. This control is
 needed before unchanged routes can be protected in a subsequent physical ECO.
 """
-import hashlib,json,os,re,subprocess,sys,tarfile,gzip
+import hashlib,json,os,re,subprocess,sys,tarfile,gzip,itertools
 from pathlib import Path
 from route_cloud_newer_postcts import fetch,sha
 from run_cloud_routed_geometry import BASE,STEM,SUMMARY_SHA,ARCHIVE_SHA
@@ -86,7 +86,14 @@ def main():
         assert result['after']['wire_type_net_counts']=={'FIXED':113556},'Decoder did not see FIXED routes'
         for key in ('instances_sha256','nets_sha256','fixed_data_sha256','counts'):
             assert result['before'][key]==result['after'][key],('Native design changed',key)
-        assert_same_def(expected,(OUT/'after.def').read_text());result['full_def_exact_expected']=True;save()
+        actual=(OUT/'after.def').read_text();result['full_def_exact_expected']=expected==actual
+        mismatches=[];mismatch_count=0
+        for index,(a,z) in enumerate(itertools.zip_longest(expected.splitlines(),actual.splitlines()),1):
+            if a!=z:
+                mismatch_count+=1
+                if len(mismatches)<12:mismatches.append(dict(line=index,expected=a,actual=z))
+        result['def_difference']=dict(differing_lines=mismatch_count,first_lines=mismatches,expected_bytes=len(expected.encode()),actual_bytes=len(actual.encode()))
+        print('DEF_DIFFERENCE',json.dumps(result['def_difference']),flush=True);save()
         # Separate existing native shape decoder includes every wire segment,
         # NDR width, patch rectangle, physical via routing box and LEF pin.
         for label,path in [('baseline',original),('fixed',OUT/'fixed.odb')]:
@@ -99,7 +106,9 @@ def main():
                 while chunk:=stream.read(1024**2):h.update(chunk)
             return h.hexdigest()
         result['decoded_shapes_sha256']={'before':digest(left),'after':digest(right)}
-        assert len(set(result['decoded_shapes_sha256'].values()))==1,'Native decoded shapes changed'
+        result['decoded_shapes_identical']=len(set(result['decoded_shapes_sha256'].values()))==1;save()
+        assert_same_def(expected,actual)
+        assert result['decoded_shapes_identical'],'Native decoded shapes changed'
         assert sha(original)==original_sha;result['source_unchanged']=True
         result['status']='COMPLETE_ENCODED_FIXED_ROUTE_PRESERVATION_CONTROL_NOT_ECO_NOT_SIGNOFF'
     except BaseException as e:result.update(status='FAIL_OR_ERROR',error=repr(e));raise
