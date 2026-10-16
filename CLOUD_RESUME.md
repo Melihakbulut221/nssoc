@@ -1,3 +1,15 @@
+## 2026-10-16 — Cloud-only continuation: actual cross-CPU restore passed; local-pin extraction starts
+
+Latest user instruction controls: all CAD, simulations, tests, checkouts and retained artifacts stay in GitHub cloud. Local project directory was checked empty. Remote edits use Git Data API; no local artifact archives. Do not resume the old local-work wording in the goal.
+
+Native masked separate-job run38906315749 passed actual AVX512-source to non-AVX512 destination continuation: all12818rows/34probes and complete native raw bytes equal, single entrypoint and three corruption controls passed. Exact evidence: docs/evidence/native-masked-cross-job-proof-20261016.json, summary647396896. This is bounded4ns portability, NOT full1us acquisition or PHY acceptance. Next implement full original1us from time zero with the validated process-start GLIBC mask and genuine process checkpoint between cloud jobs, leaving original solver/physical845 model/102OFF/zeroOP/probes/late acquisition gates intact. Never splice or restart partial trajectories. Previous full1us stopped at861.516ns without a restartable checkpoint.
+
+Power loaded run38901377382 completed and FAILED original electrical gates: output minimum38.648mV with28below100mV; CMOS137.804mV/64below150mV; final90.575mV/576below150mV;12HBT failures. No diagnostics; full34ns78516rows. Retain rejection and do not adopt its lower static supplyR as acceptance. Exact receipt: docs/evidence/tx-driver-power-loaded-rejection-20261016.json.
+
+Local-public-pin physical38905613449 passed original560categoryDRC, raw100 and aggregate LVS and seven faults. Exact GDS6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62; summary647381411. New localpins LEF/junction/wire workflows consume the immutable source. Public pin probing is derived from actual GDS/geometry records, not old x=0 rail assumptions. Wait for actual results, then fresh anchors/intrinsic/RC/composition/full34ns loaded test. Do not assume old260R300C or electrical success.
+
+Mainchip234route38896397749/job116957794230 remains running at this observation; do not cancel healthy computation. Independent234review controls passed38901849776/38901849927/38901849768. On completion use actual child hashes for every22544endpoint/135264row comparison, geometry/antenna and annotation. Preserve the known obsolete final workflow-only assertion failure if present and independently validate the report. FullPHY/finaltiming/signoff remain open.
+
 ## 2026-10-16 — Full loaded power test and native fault capture live;234review controls ready
 
 Cloud-only policy remains controlling; local workspace is empty. Current handles: power loaded full34ns38901377382; mainchip234physical route38896397749/job116957794230; native actual SIGILL trap38902312181/job116977287704. Re-read exact live/terminal states in docs/evidence/cloud-live-checkpoint-20261016.json and GitHub before acting. Do not restart a healthy job because an observation timed out.
