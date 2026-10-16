@@ -5,6 +5,7 @@
 import argparse,json,os,re,subprocess,sys
 from pathlib import Path
 from refined_hold_targets import validate_child as validate_refined_hold,CHILD_FILES as REFINED_HOLD_FILES,TARGETS as REFINED_HOLD_TARGETS
+from branch_hold_targets import validate_child as validate_branch_hold,CHILD_FILES as BRANCH_HOLD_FILES,TARGETS as BRANCH_HOLD_TARGETS
 from cloud_contact_release import validate_route_proof
 from expanded_load_targets import validate_candidate as validate_expanded,EXTRA_FILES
 from refined_load_targets import validate_candidate as validate_refined
@@ -12,7 +13,7 @@ from measured_hold_targets import validate_child,CHILD_FILES
 import compare_cloud_routed_endpoints as source_reports
 from route_cloud_newer_postcts import sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-candidate-geometry'
-PROFILES={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH'),'expanded_load_batch':(110,'expanded-load-eco','EXPANDED_LOAD_BATCH'),'refined_load_batch':(141,'refined-load-eco','REFINED_LOAD_BATCH'),'refined_hold_batch':(146,'refined-hold-eco','REFINED_HOLD_BATCH')}
+PROFILES={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH'),'expanded_load_batch':(110,'expanded-load-eco','EXPANDED_LOAD_BATCH'),'refined_load_batch':(141,'refined-load-eco','REFINED_LOAD_BATCH'),'refined_hold_batch':(146,'refined-hold-eco','REFINED_HOLD_BATCH'),'branch_hold_batch':(234,'branch-hold-eco','BRANCH_HOLD_BATCH')}
 
 def main(args):
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False);source_reports.OUT=OUT
@@ -34,6 +35,7 @@ def main(args):
         if args.profile=='protected_load_batch':selection+=('protected-route-proof.json','fixed-source-summary.json')
         if args.profile=='measured_hold_batch':selection+=CHILD_FILES
         if args.profile=='refined_hold_batch':selection+=REFINED_HOLD_FILES
+        if args.profile=='branch_hold_batch':selection+=BRANCH_HOLD_FILES
         if args.profile=='expanded_load_batch':selection+=EXTRA_FILES
         if args.profile=='refined_load_batch':selection+=EXTRA_FILES+('refined-driver-review-summary.json',)
         candidate,proof=source_reports.restore_report(group,args.run,args.summary_sha,args.parts_sha,OUT/'source',selection)
@@ -46,6 +48,7 @@ def main(args):
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='measured_hold_batch':validate_child(candidate,OUT/'source')
         if args.profile=='refined_hold_batch':validate_refined_hold(candidate,OUT/'source')
+        if args.profile=='branch_hold_batch':validate_branch_hold(candidate,OUT/'source')
         if args.profile=='expanded_load_batch':validate_expanded(candidate,OUT/'source')
         if args.profile=='refined_load_batch':validate_refined(candidate,OUT/'source')
         if args.profile=='protected_load_batch':

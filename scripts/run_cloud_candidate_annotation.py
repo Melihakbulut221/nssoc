@@ -5,6 +5,7 @@
 import argparse,json,os,re,subprocess
 from pathlib import Path
 from refined_hold_targets import validate_child as validate_refined_hold,CHILD_FILES as REFINED_HOLD_FILES,TARGETS as REFINED_HOLD_TARGETS
+from branch_hold_targets import validate_child as validate_branch_hold,CHILD_FILES as BRANCH_HOLD_FILES,TARGETS as BRANCH_HOLD_TARGETS
 from cloud_contact_release import validate_route_proof
 from expanded_load_targets import validate_candidate as validate_expanded,EXTRA_FILES
 from refined_load_targets import validate_candidate as validate_refined
@@ -25,6 +26,7 @@ def main(args):
         if args.profile=='protected_load_batch':selected+=('protected-route-proof.json','fixed-source-summary.json')
         if args.profile=='measured_hold_batch':selected+=CHILD_FILES
         if args.profile=='refined_hold_batch':selected+=REFINED_HOLD_FILES
+        if args.profile=='branch_hold_batch':selected+=BRANCH_HOLD_FILES
         if args.profile=='expanded_load_batch':selected+=EXTRA_FILES
         if args.profile=='refined_load_batch':selected+=EXTRA_FILES+('refined-driver-review-summary.json',)
         candidate,proof=source_reports.restore_report(group,args.run,args.summary_sha,args.parts_sha,OUT/'source',selected)
@@ -38,6 +40,7 @@ def main(args):
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='measured_hold_batch':validate_child(candidate,OUT/'source')
         if args.profile=='refined_hold_batch':validate_refined_hold(candidate,OUT/'source')
+        if args.profile=='branch_hold_batch':validate_branch_hold(candidate,OUT/'source')
         if args.profile=='expanded_load_batch':validate_expanded(candidate,OUT/'source')
         if args.profile=='refined_load_batch':validate_refined(candidate,OUT/'source')
         if args.profile=='protected_load_batch':

@@ -10,7 +10,7 @@ on:
       profile:
         description: Completed physical candidate profile
         type: choice
-        options: [two_buffer, control_three_buffer, measured_load_batch, protected_load_batch, measured_hold_batch, expanded_load_batch, refined_load_batch, refined_hold_batch]
+        options: [two_buffer, control_three_buffer, measured_load_batch, protected_load_batch, measured_hold_batch, expanded_load_batch, refined_load_batch, refined_hold_batch, branch_hold_batch]
         required: true
       run:
         description: Completed physical ECO run ID
@@ -47,6 +47,7 @@ jobs:
         run: |
           python3 scripts/refined_load_targets.py --verify-published
           python3 scripts/refined_hold_targets.py
+          python3 scripts/branch_hold_targets.py
           python3 - <<'PYCODE'
           import importlib.util,os,sys
           sys.path.insert(0,'scripts')
