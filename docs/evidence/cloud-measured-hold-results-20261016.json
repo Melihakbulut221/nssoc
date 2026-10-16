@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-16T04:22:26.476463+00:00",
+  "observed_at": "2026-10-16T04:44:37.606845+00:00",
   "run": 38837758293,
   "source_head": "3340a780106fc391adccd2d58f60ffdd6301e3a7",
   "summary_asset": 646106426,
@@ -25,7 +25,7 @@
     "geometry_contacts_antenna": 38850062082,
     "rc_annotation": 38850064087
   },
-  "next": "Read all independent results and four targeted allcorner setup/hold verdicts. Preserve remaining conflicts/regressions; choose next physical repair from complete endpoint evidence.",
+  "next": "Resolve the one exact native slack mismatch before full endpoint comparison. The independent signal-geometry screen passed, but 628 net / 788 pin antenna violations remain. Setup and typical hold regressions still reject this candidate.",
   "annotation_result": {
     "run": 38850064087,
     "summary_asset": 646118648,
@@ -37,5 +37,273 @@
     "exact_native_spef_net_names": 113610,
     "source_unchanged": true,
     "accepted": false
+  },
+  "geometry_result": {
+    "run": 38850062082,
+    "summary_asset": 646125605,
+    "summary_sha256": "9de5272337d2c81ecb7fd4b63d125f8d52e5ab611162131e1b4bd2f877d826f3",
+    "status": "COMPLETE_ROUTED_CANDIDATE_SIGNAL_GEOMETRY_AND_ANTENNA_SCREEN_NOT_SIGNOFF",
+    "shapes": 3318866,
+    "signal_nets": 113610,
+    "continuity_failures": 0,
+    "cross_net_contact_pairs": 0,
+    "antenna_net_violations": 628,
+    "antenna_pin_violations": 788,
+    "scope": "Actual completed candidateODB: native placement/antenna, all exported signal geometry, native-width/length guards, continuity and cross-net same-layer contacts. NoPG/CUT/internalmacro/spacing/ESD/transistorLVS/qualifiedRC or fullPHY acceptance. Fullendpointtiming remains separate.",
+    "accepted": false
+  },
+  "endpoint_review_failure": {
+    "run": 38850059650,
+    "conclusion": "failure",
+    "reason": [
+      {
+        "delay": "max",
+        "error": "Unsupported native vertex-versus-PathEnd slack semantics: $auto$ff.cc:337:slice$1183756/D"
+      }
+    ],
+    "complete_endpoint_comparison": false
+  },
+  "native_semantics_diagnosis": {
+    "run": 38851027534,
+    "summary_asset": 646145417,
+    "summary_sha256": "0b9896f97c5abdbf728a667963dd8e2d19e6b5a20a2d609f0849d3fe60940e97",
+    "status": "COMPLETE_NATIVE_SEMANTICS_DIAGNOSIS_NOT_CENSUS_ACCEPTANCE",
+    "diagnosis": {
+      "status": "COMPLETE_NATIVE_SEMANTICS_DIAGNOSIS_NOT_CENSUS_ACCEPTANCE",
+      "accepted": false,
+      "mismatch_count": 1,
+      "mismatches": [
+        {
+          "endpoint": "$auto$ff.cc:337:slice$1183756/D",
+          "delay": "max",
+          "vertex_before": "1.438214791704695e-08",
+          "path_minimum": "1.4382139035262753e-08",
+          "vertex_after_census": "1.438214791704695e-08",
+          "vertex_after_targeted": "1.438214791704695e-08",
+          "targeted_queries": [
+            {
+              "corner": "fast",
+              "transition": "rise",
+              "endpoint_path_limit": 1,
+              "path_slacks_seconds": [
+                1.7548694941638132e-08
+              ]
+            },
+            {
+              "corner": "fast",
+              "transition": "rise",
+              "endpoint_path_limit": 20,
+              "path_slacks_seconds": [
+                1.7548694941638132e-08,
+                1.7548694941638132e-08,
+                1.7548694941638132e-08,
+                1.7548694941638132e-08,
+                1.755051215468484e-08,
+                1.755051215468484e-08,
+                1.755098466560412e-08,
+                1.755098466560412e-08,
+                1.756220235904493e-08,
+                1.756220235904493e-08,
+                1.756220235904493e-08,
+                1.756220235904493e-08,
+                1.7564019572091638e-08,
+                1.7564019572091638e-08,
+                1.756449208301092e-08,
+                1.756449208301092e-08,
+                1.757038425864721e-08,
+                1.757038425864721e-08,
+                1.757038425864721e-08,
+                1.757038425864721e-08
+              ]
+            },
+            {
+              "corner": "fast",
+              "transition": "fall",
+              "endpoint_path_limit": 1,
+              "path_slacks_seconds": [
+                1.7559557363711065e-08
+              ]
+            },
+            {
+              "corner": "fast",
+              "transition": "fall",
+              "endpoint_path_limit": 20,
+              "path_slacks_seconds": [
+                1.7559557363711065e-08,
+                1.7559557363711065e-08,
+                1.7559557363711065e-08,
+                1.7559557363711065e-08,
+                1.7570014776424614e-08,
+                1.7570014776424614e-08,
+                1.7570014776424614e-08,
+                1.7570014776424614e-08,
+                1.758281875652301e-08,
+                1.758281875652301e-08,
+                1.758281875652301e-08,
+                1.758281875652301e-08,
+                1.7665984231030052e-08,
+                1.7665984231030052e-08,
+                1.7665984231030052e-08,
+                1.7665984231030052e-08,
+                1.7669981033918702e-08,
+                1.7669981033918702e-08,
+                1.7669981033918702e-08,
+                1.7669981033918702e-08
+              ]
+            },
+            {
+              "corner": "slow",
+              "transition": "rise",
+              "endpoint_path_limit": 1,
+              "path_slacks_seconds": [
+                1.438214791704695e-08
+              ]
+            },
+            {
+              "corner": "slow",
+              "transition": "rise",
+              "endpoint_path_limit": 20,
+              "path_slacks_seconds": [
+                1.438214791704695e-08,
+                1.438214791704695e-08,
+                1.438214791704695e-08,
+                1.438214791704695e-08,
+                1.43846072830911e-08,
+                1.43846072830911e-08,
+                1.4384781366061361e-08,
+                1.4384781366061361e-08,
+                1.4418453098130612e-08,
+                1.4418453098130612e-08,
+                1.4418453098130612e-08,
+                1.4418453098130612e-08,
+                1.4420912464174762e-08,
+                1.4420912464174762e-08,
+                1.4421086547145023e-08,
+                1.4421086547145023e-08,
+                1.4436330353362337e-08,
+                1.4436330353362337e-08,
+                1.4436330353362337e-08,
+                1.4436330353362337e-08
+              ]
+            },
+            {
+              "corner": "slow",
+              "transition": "fall",
+              "endpoint_path_limit": 1,
+              "path_slacks_seconds": [
+                1.4382139035262753e-08
+              ]
+            },
+            {
+              "corner": "slow",
+              "transition": "fall",
+              "endpoint_path_limit": 20,
+              "path_slacks_seconds": [
+                1.4382139035262753e-08,
+                1.4382139035262753e-08,
+                1.4382139035262753e-08,
+                1.4382139035262753e-08,
+                1.440104480110449e-08,
+                1.440104480110449e-08,
+                1.4408736426219093e-08,
+                1.4408736426219093e-08,
+                1.4408736426219093e-08,
+                1.4408736426219093e-08,
+                1.442764219206083e-08,
+                1.442764219206083e-08,
+                1.4436126072325806e-08,
+                1.4436126072325806e-08,
+                1.4436126072325806e-08,
+                1.4436126072325806e-08,
+                1.4455032726345962e-08,
+                1.4455032726345962e-08,
+                1.4565654460341193e-08,
+                1.4592250963119113e-08
+              ]
+            },
+            {
+              "corner": "typical",
+              "transition": "rise",
+              "endpoint_path_limit": 1,
+              "path_slacks_seconds": [
+                1.639085844828969e-08
+              ]
+            },
+            {
+              "corner": "typical",
+              "transition": "rise",
+              "endpoint_path_limit": 20,
+              "path_slacks_seconds": [
+                1.639085844828969e-08,
+                1.639085844828969e-08,
+                1.639085844828969e-08,
+                1.639085844828969e-08,
+                1.6392801782671995e-08,
+                1.6392801782671995e-08,
+                1.6393073565268423e-08,
+                1.6393073565268423e-08,
+                1.6412769809903693e-08,
+                1.6412769809903693e-08,
+                1.6412769809903693e-08,
+                1.6412769809903693e-08,
+                1.6414713144285997e-08,
+                1.6414713144285997e-08,
+                1.6414986703239265e-08,
+                1.6414986703239265e-08,
+                1.6425639515205148e-08,
+                1.6425639515205148e-08,
+                1.6425639515205148e-08,
+                1.6425639515205148e-08
+              ]
+            },
+            {
+              "corner": "typical",
+              "transition": "fall",
+              "endpoint_path_limit": 1,
+              "path_slacks_seconds": [
+                1.6412236902851873e-08
+              ]
+            },
+            {
+              "corner": "typical",
+              "transition": "fall",
+              "endpoint_path_limit": 20,
+              "path_slacks_seconds": [
+                1.6412236902851873e-08,
+                1.6412236902851873e-08,
+                1.6412236902851873e-08,
+                1.6412236902851873e-08,
+                1.642874103424674e-08,
+                1.642874103424674e-08,
+                1.642874103424674e-08,
+                1.642874103424674e-08,
+                1.6446140449488666e-08,
+                1.6446140449488666e-08,
+                1.6446140449488666e-08,
+                1.6446140449488666e-08,
+                1.65730469348091e-08,
+                1.65730469348091e-08,
+                1.65730469348091e-08,
+                1.65730469348091e-08,
+                1.6581285677830238e-08,
+                1.6581285677830238e-08,
+                1.6581285677830238e-08,
+                1.6581285677830238e-08
+              ]
+            }
+          ]
+        }
+      ],
+      "original_guard_failures": [
+        {
+          "delay": "max",
+          "error": "Unsupported native vertex-versus-PathEnd slack semantics: $auto$ff.cc:337:slice$1183756/D"
+        }
+      ],
+      "value_units": "seconds"
+    },
+    "original_strict_guard_unchanged": true,
+    "accepted": false,
+    "next": "Resolve exact native Vertex and PathEnd selection semantics from pinned OpenSTA code and native observations. Do not replace the failed guard with an unexplained tolerance or adopt the route."
   }
 }

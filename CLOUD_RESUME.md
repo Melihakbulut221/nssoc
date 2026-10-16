@@ -1,3 +1,15 @@
+## 2026-10-16 — Cloud-only workspace verified; independent hold-route results preserved
+
+The local project directory has zero entries and no local CAD/simulation process was found. Checkout, CAD, simulations, tests and artifacts remain on GitHub-hosted runners. Small API text/JSON orchestration uses RAM only. Original user-supplied Downloads documents are preserved.
+
+The four-branch hold candidate remains **not adopted**. Independent geometry run **38850062082** checked 3,318,866 signal shapes across 113,610 nets: zero continuity failures and zero cross-net same-layer contacts. Antenna violations remain **628 nets / 788 pins**. This is not full foundry DRC or transistor LVS. Annotation run **38850064087** found zero loaded unannotated drivers; final timing remains open.
+
+Endpoint comparison **38850059650** failed its strict native slack equality guard at `$auto$ff.cc:337:slice$1183756/D`. Diagnosis **38851027534** retained that failure and isolated one max-delay mismatch: Vertex slack `1.438214791704695e-08` seconds versus PathEnd minimum `1.4382139035262753e-08`. Targeted slow-rise and slow-fall queries reproduce the two values at path limits 1 and 20. The guard is unchanged; this diagnostic run is not an accepted census. Resolve native selection semantics before retrying full comparison. Do not hide the mismatch with an unexplained tolerance.
+
+Pump-method recovery **38851306875** completed with source hashes. It recovers the original native binding, anchor, RC and composition methods, not new extraction. Next adapt them to the actual verified 9 um pump and 845-device parent, then replay the complete physically matched electrical model. See `docs/evidence/cloud-pll-pump-method-recovery-20261016.json`.
+
+At this observation, expanded setup repair **38843068297**, full32 coarse capture **38834025040**, strict compiler study **38845036374**, and both electrical filter jobs in **38847729630** are still running. Do not duplicate them. Exact latest observations are in `docs/evidence/cloud-current-checkpoint-20261016.json`. Full serial PHY and final timing remain open.
+
 ## 2026-10-16 — Actual PLL parent physical checks passed; routed hold candidate is not adopted
 
 Run **38849617327**, job **116807705939**, passed DRC with 560 categories, hierarchical and flat LVS covering all 845 devices, and rejection of the wrong capacitor reference and actual VCTRL open circuit. Source: `f0907ca755f2e15a767dbe849da865260bd93190`. The 9 x 9 um capacitor candidate is physically installed in the PLL parent. All other macro geometry, parent conductors, seven pump ports, placement and bounding box are unchanged. This does not establish full serial PHY or mainchip acceptance. The next analog work is actual candidate pump RC extraction and native terminal binding, composition of the complete physical model, then full acquisition and refinement/load/PVT/device checks. Frozen baseline wire estimates must not be called candidate extraction.
