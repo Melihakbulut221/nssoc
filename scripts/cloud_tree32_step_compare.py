@@ -30,7 +30,8 @@ def restore(run,summary_sha,manifest_sha,backend,step):
     assert run>0 and backend in ('sparse','klu') and step in ('0.5','0.25')
     for value in (summary_sha,manifest_sha):assert re.fullmatch(r'[a-f0-9]{64}',value)
     stem=f'vbic-tree32-full-{backend}-{step}-{run}-1'
-    base=f'https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-{run}-1-vbic-tree32-full-{backend}-{step}/'
+    release_step=step.replace('.', 'p')
+    base=f'https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-{run}-1-vbic-tree32-full-{backend}-{release_step}/'
     directory=OUT/step;directory.mkdir();summary_path=directory/'summary.json';manifest_path=directory/'parts.json'
     fetch(base+stem+'.summary.json',summary_sha,summary_path);result=json.loads(summary_path.read_text())
     fetch(base+stem+'.parts.json',manifest_sha,manifest_path);manifest=json.loads(manifest_path.read_text())

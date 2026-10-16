@@ -44,6 +44,24 @@ jobs:
         run: |
           python3 -m py_compile scripts/cloud_vbic_tree32_full.py scripts/cloud_chunked_results.py
           python3 scripts/cloud_chunked_results.py --self-test
+          python3 - <<'PYCONTROL'
+          import sys
+          sys.path.insert(0, 'scripts')
+          from publish_cloud_results import result_tag
+          env = dict(GITHUB_ACTIONS='true', GITHUB_RUN_ID='123', GITHUB_RUN_ATTEMPT='1')
+          for backend in ('sparse', 'klu'):
+              for step in ('0.5', '0.25'):
+                  group = 'vbic-tree32-full-' + backend + '-' + step.replace('.', 'p')
+                  assert result_tag(group, env) == 'cloud-results-123-1-' + group
+          for group in ('vbic-tree32-full-sparse-0.5', '../escape', 'bad/group'):
+              try:
+                  result_tag(group, env)
+              except ValueError:
+                  pass
+              else:
+                  raise AssertionError('Invalid publication group accepted')
+          print('All four actual publication groups pass; invalid groups remain rejected')
+          PYCONTROL
   full-native:
     if: github.event_name == 'workflow_dispatch'
     needs: controls
@@ -88,6 +106,6 @@ jobs:
           python3 - "$stem" <<'PYCODE'
           import json,os,subprocess,sys
           stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
-          group='vbic-tree32-full-'+os.environ['NATIVE_BACKEND']+'-'+os.environ['TMAX_PS']
+          group='vbic-tree32-full-'+os.environ['NATIVE_BACKEND']+'-'+os.environ['TMAX_PS'].replace('.', 'p')
           subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
           PYCODE

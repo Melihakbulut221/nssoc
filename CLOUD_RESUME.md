@@ -1,3 +1,11 @@
+## 2026-10-16 — Cloud publication failure diagnosed and corrected
+
+Run 38810158966 (Sparse 0.5 ps) ended with failure solely in the publication step: its group `vbic-tree32-full-sparse-0.5` violates the existing strict publisher group syntax. The native step exited successfully, but its detailed component result and waveform were not published; do not infer gate acceptance. The job log records the 1,445,509,953-byte archive SHA256 `74afb596098d79b13245612425bc2c1c7390895839ca8a4418051502f022c759`; these bytes are not recoverable from a hash alone.
+
+The workflow now encodes the decimal point as `p` in the release group only, with all four backend/step publication combinations checked before native execution. Original filenames, simulation inputs, acceptance gates and the strict publisher validator are unchanged. The step-comparison downloader uses the same release encoding. Push runs controls only. After controls pass, dispatch a replacement 0.5 ps run with the original Sparse source study and unchanged inputs; do not repeat the old source revision. The already-running 0.25 ps run uses the old workflow and may encounter the same publication failure; do not duplicate or interrupt it, inspect its terminal result first.
+
+Other five jobs were still in progress at this check: 38830273683, 38824521607, 38822066992, 38813902351 and 38810163678. Local workspace remains empty. All computation and artifacts stay on GitHub. Full serial PHY and final timing remain open.
+
 ## 2026-10-16 — Candidate RC annotation diagnosis completed
 
 The independent annotation run **38832826137**, native job **116755292822**, completed on the two-buffer candidate from run **38813118414**. Source commit: `aace2ad0375333cf86eaf5232bdc830e54a5a6b2`.
