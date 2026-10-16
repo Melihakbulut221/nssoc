@@ -1,3 +1,15 @@
+## 2026-10-16 — Complete110buffer reviews preserved;141buffer repair running
+
+All three independent110candidate reviews completed. Endpoint **38857906862** verified22544endpoints/135264corner-delay rows and45088exact graph-minimum checks, without loss of constraints. Negative setup endpoints are9342slow,455typical,3fast; hold endpoints0slow,0typical,92fast. Compared with the50buffer parent, typical setup fell1311to455 and fastsetup30to3, but regressions and new violations remain. The candidate is **not adopted**. All92hold targets have552originalcorner conflict paths.
+
+Geometry **38857909487** checked3323228signal shapes on113666nets:0continuity failures and0cross-net contacts; antenna violations626nets/784pins remain. Annotation **38857912410** found0loaded unannotated drivers;1065others are302without sinks plus763disconnected. These checks do not establish fullfoundryDRC/LVS/coverage acceptance. Exact hashes and scopes: `docs/evidence/cloud-expanded-independent-results-20261016.json`.
+
+Driver diagnosis **38858730197** retained complete native paths and isolated29weak loaded slowsetup outputs plus2additional weak stages on remainingfastsetup paths. **141buffer repair38859276266/job116837622276**, source`d235bd4d29483d8755d245e9034e200791e63220`, adds31source-measured repairs to the prior110. RecipeSHA `5b04799e41747fc0c732ae113b4df5909020e23d69165ff2c5f9030220af2a6c`; all native pin/master/fanout, Boolean/inversion, original placement/PG/NDR, fullreroute/freshRC/allcorner proofs remain required. Native stage is running. Do not duplicate it.
+
+Future independent workflows now support `refined_load_batch` and compare against the completed110parent census, preserving both regressions and missing constraints. Controls **38859640546**, **38859640563**, **38859640523** passed; their full jobs are intentionally skipped onpush. Dispatch full reviews only after141physical evidence exists, with exact summary/parts hashes andhold_paths=true for endpoints.
+
+Physical C9PLL1us **38857745157** and separateoldwire9/11trials **38847729630** remain live at this observation. Check authoritative state before acting. Everything remains cloud-only; local project has zero entries. Full serialGen3x4, mainchip physical acceptance and final setup/hold remain open.
+
 ## 2026-10-16 — Physical C9 PLL845 model verified; full acquisition and expanded-route reviews running
 
 The real9um pump is now bound to the actual845-device PLL parent. **38856750838** verified every parent-only conductor, all83native reference planes and all7pump ports; fresh parent extraction has98R242C, with2geometry faults and8raw RC corruptions rejected. **38857275591** composed845devices and8648wire records, preserving815other devices and proving exact3906-node intrinsic graph equivalence against the native-LVS-passed physical reference. All6graph and7component fault controls passed. ModelSHA256 `8147a7cbae9d1a43b362733a3b52c218c5d04ef519cedf9abf35cd17ff27911e`. Receipts: `docs/evidence/cloud-pll-filter-parent-rc-results-20261016.json` and `docs/evidence/cloud-pll-filter-parent-model-results-20261016.json`.
