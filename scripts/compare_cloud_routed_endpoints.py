@@ -97,7 +97,7 @@ def controls():
 
 def restore_report(group,run,summary_sha,parts_sha,destination,selected):
     for v in (summary_sha,parts_sha):assert re.fullmatch(r'[0-9a-f]{64}',v)
-    assert run>0 and re.fullmatch(r'[a-z0-9-]+',group)
+    assert run>0 and re.fullmatch(r'[a-z0-9_-]+',group)  # Published sensitivity groups include underscores.
     stem=f'{group}-{run}-1';base=f'https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-{run}-1-{group}/'
     folder=OUT/(group+'-source');folder.mkdir()
     fetch(base+stem+'.summary.json',summary_sha,folder/'summary.json');result=json.loads((folder/'summary.json').read_text())

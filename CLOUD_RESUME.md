@@ -1,3 +1,15 @@
+## Headroom replay restoration correction
+
+First replay38929031066: intrinsic and actual physical cases PASSED full-field
+reproduction and missing-current-probe rejection. HalfR/halfC failed BEFORE
+reading their source because the shared archive group-name guard excluded
+underscores present in the already-published wire_half_r/wire_half_c groups.
+The guard now accepts only ASCII letters/digits/hyphen/underscore; path
+separators and traversal remain disallowed, all SHA/part/selected-file checks
+unchanged. The next push retries only the two failed restores; preserve the
+passed intrinsic/physical cases from38929031066 and both initial failures.
+No waveform or engineering criterion changes.
+
 ## 2026-10-16 — Five buffer feasibility passed; separate R/C experiments expose HBT headroom
 
 All work remains cloud-only. Current source-bound receipts are in

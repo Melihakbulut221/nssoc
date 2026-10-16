@@ -18,7 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        case: [intrinsic, physical, half_r, half_c]
+        # Intrinsic and physical replay already passed in38929031066; retry only failed restores.
+        case: [half_r, half_c]
     permissions:
       contents: write
     steps:
