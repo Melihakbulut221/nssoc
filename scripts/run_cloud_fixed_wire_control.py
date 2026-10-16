@@ -14,6 +14,21 @@ ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-fixed-wire-control'
 SECTION=re.compile(r'^NETS ([0-9]+) ;\n(.*?)^END NETS[ \t]*\n',re.M|re.S)
 ROUTED=re.compile(r'^([ \t]*\+ )ROUTED(?= )',re.M)
 FIXED=re.compile(r'^([ \t]*\+ )FIXED(?= )',re.M)
+def omit_patch_connections(body):
+    # Update only wire encoding on existing native nets. Reconnecting an
+    # already connected ITerm changes dbSet iteration order in this runtime.
+    entries=re.split(r'(?m)^(?=[ \t]*- )',body)
+    assert not entries[0].strip();out=[];removed=0
+    for entry in entries[1:]:
+        header=re.match(r'([ \t]*- \S+)(.*?)(?=[ \t]*\+ |[ \t]*;)',entry,re.S)
+        assert header,'Unsupported NETS header'
+        middle=header.group(2)
+        empty,count=re.subn(r'\(\s+(\S+)\s+(\S+)\s+\)','',middle)
+        assert not empty.strip(),'Unsupported connection syntax; do not rewrite'
+        removed+=count
+        out.append(header.group(1)+'\n'+entry[header.end():])
+    return ''.join(out),removed
+
 def convert_def(text):
     found=list(SECTION.finditer(text));assert len(found)==1,'Missing or duplicate NETS'
     m=found[0];body=m.group(2)
@@ -25,20 +40,23 @@ def convert_def(text):
     header=[]
     for key in ('VERSION','DIVIDERCHAR','BUSBITCHARS','DESIGN','UNITS DISTANCE MICRONS'):
         rows=re.findall(r'^'+key+r' [^\n]+ ;$',text,re.M);assert len(rows)==1,(key,rows);header+=rows
-    return full,'\n'.join(header)+'\n'+new_section+'END DESIGN\n',count
+    patch_body,removed=omit_patch_connections(body)
+    assert removed>0,'No existing connections verified'
+    patch_section='NETS '+m.group(1)+' ;\n'+patch_body+'END NETS\n'
+    return full,'\n'.join(header)+'\n'+patch_section+'END DESIGN\n',count
 
 def assert_same_def(expected,actual):
     assert expected==actual,'Native full DEF changed beyond explicit route class conversion'
 
 def controls():
     fixture='VERSION 5.8 ;\nDIVIDERCHAR "/" ;\nBUSBITCHARS "[]" ;\nDESIGN chip ;\nUNITS DISTANCE MICRONS 1000 ;\nCOMPONENTS 1 ;\n- a cell + FIXED ( 2 3 ) N ;\nEND COMPONENTS\nNETS 1 ;\n    - sig ( a X )\n      + ROUTED Metal1 ( 10 20 ) ( 30 * )\n      NEW Metal2 ( 30 20 ) via\n ;\nEND NETS\nEND DESIGN\n'
-    expected,patch,count=convert_def(fixture);assert count==1 and 'COMPONENTS' not in patch and '+ FIXED ( 2 3 )' in expected
+    expected,patch,count=convert_def(fixture);assert count==1 and 'COMPONENTS' not in patch and '+ FIXED ( 2 3 )' in expected and '( a X )' not in patch and '( a X )' in expected
     assert_same_def(expected,expected);rejected=[]
     for label,bad in [('coordinate',expected.replace('( 10 20 )','( 11 20 )')),('missing_route',expected.replace('      NEW Metal2 ( 30 20 ) via\n','')),('wrong_class',fixture)]:
         try:assert_same_def(expected,bad)
         except AssertionError:rejected.append(label)
         else:raise AssertionError(label+' accepted')
-    for label,bad in [('missing_nets',fixture.replace('NETS 1 ;','XNETS 1 ;')),('count',fixture.replace('NETS 1 ;','NETS 2 ;')),('duplicate_nets',fixture+fixture)]:
+    for label,bad in [('missing_nets',fixture.replace('NETS 1 ;','XNETS 1 ;')),('count',fixture.replace('NETS 1 ;','NETS 2 ;')),('duplicate_nets',fixture+fixture),('broken_connection',fixture.replace('( a X )','( a X'))]:
         try:convert_def(bad)
         except AssertionError:rejected.append(label)
         else:raise AssertionError(label+' accepted')
