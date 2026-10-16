@@ -103350,7 +103350,7 @@
     "scope": "Transport/control proof only; not physical, numerical waveform or PHY acceptance."
   },
   "latest_cloud_checkpoint_20261016": {
-    "observed_at": "2026-10-16T00:25:14.318992+00:00",
+    "observed_at": "2026-10-16T00:28:33.709697+00:00",
     "cloud_only": true,
     "local_workspace_entries": 0,
     "active_or_recent": [
@@ -103821,23 +103821,59 @@
       },
       {
         "run": 38829185736,
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "failure",
         "source_head": "57f5ee9b3d0b8603e7e299b83a3bafce3bb8adc5",
         "jobs": [
           {
             "id": 116743711129,
-            "status": "in_progress",
-            "conclusion": null,
-            "active_steps": [
-              "Restore exact native runtime"
-            ],
+            "name": "protected-load-batch-physical-eco",
+            "status": "completed",
+            "conclusion": "failure",
+            "active_steps": [],
             "passed_steps": [
               "Set up job",
               "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
               "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
-              "Verify source-bound50target recipe and all legacy profile contracts"
+              "Verify source-bound50target recipe and all legacy profile contracts",
+              "Restore exact native runtime",
+              "Compile exact source-bound buffer repair controllers",
+              "Preserve exact sources, extracted RC and native timing observations",
+              "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "Complete job"
             ]
+          }
+        ]
+      },
+      {
+        "run": 38829407756,
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "9aea6ddf7eb6be4544e121aa5da8a8b6284044a3",
+        "jobs": [
+          {
+            "id": 116744433096,
+            "name": "controls",
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": [],
+            "passed_steps": [
+              "Set up job",
+              "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "Reject missing evidence, changed endpoints and hidden regressions",
+              "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+              "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+              "Complete job"
+            ]
+          },
+          {
+            "id": 116744737911,
+            "name": "full-comparison",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active_steps": [],
+            "passed_steps": []
           }
         ]
       }
@@ -104057,7 +104093,13 @@
       "protected_wired_nets": 113506,
       "changed_new_nets": 100,
       "next_action": "Inspect terminal native run and retain failures; source-bound raw opcode/data preservation afterplacementandDRT +0DRVs+freshRC required. Ifcomplete dispatch independent22544endpointcomparison using protected_load_batch profile with exact summary/manifest pins. Separategeometry/antenna/annotation/qualifiedRC/LVS remain required before anyadoption.",
-      "comparator": "protected_load_batch support added in this commit; await controlrun beforefullcomparison."
+      "comparator": {
+        "controls_run": 38829407756,
+        "status": "PASS",
+        "full_comparison": "NOT_YET_RUN_CORRECTLY_SKIPPED_ON_PUSH",
+        "profile": "protected_load_batch",
+        "next": "Dispatch with exact candidate summary/partsmanifest SHA only after completed physical proof."
+      }
     }
   }
 }
