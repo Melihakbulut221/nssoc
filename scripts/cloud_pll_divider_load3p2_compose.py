@@ -91,7 +91,7 @@ def main():
         caps=(models/'libs.tech/ngspice/models/capacitors_mod.lib').read_text()
         assert len(re.findall(r'^\.subckt\s+npn13G2\s+c\s+b\s+e\s+bn\s*$',hbt,re.M|re.I))==1
         assert len(re.findall(r'^\.subckt\s+rppd\s+1\s+2\s+bn\s*$',res,re.M|re.I))==1
-        assert len(re.findall(r'^\.subckt\s+cap_cmim\s+1\s+2\s*$',caps,re.M|re.I))==1
+        assert len(re.findall(r'^\.subckt\s+cap_cmim\s+PLUS\s+MINUS\s*$',caps,re.M|re.I))==1
         tap=re.search(r'^\.subckt\s+ptap1\s+1\s+2\s*\n(.*?)^\.ends\s+ptap1',res,re.M|re.S|re.I);assert tap
         assert [line.strip()for line in re.findall(r'^R\S+\s+1\s+2\s+R=R\s*$',tap[1],re.M)]==['R1 1 2 R=R']
         tech=json.loads((models/'libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json').read_text())['techParams']

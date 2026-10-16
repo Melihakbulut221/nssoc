@@ -1,0 +1,92 @@
+{
+  "status": "VERIFIED_BOUNDED_CLOCK_STEP_EQUIVALENCE_FROM_PRESERVED_FAILED_WORKFLOW",
+  "formal_run": 38967093235,
+  "original_workflow_conclusion": "failure",
+  "original_failure": "After both equivalence proofs and both inversion controls passed, baseline six native cocotb tests passed but obsolete postcheck incorrectly required seven. Original failure is retained.",
+  "summary_sha256": "de1cde6f48408fc5a61c457675512151d1aba765cbf7aaad093417490283797b",
+  "parts_sha256": "358f3a7ecc69fb9987fb5b09d51d5600e837f13e990596929f4a89bab0fac7be",
+  "archive_sha256": "0e0d1a89622c1f247fe3c068cfe322cdcb8e7ff3e232f464d333f5733c173423",
+  "input_hashes": {
+    "hw/soc/rtl/ibex_regfile_secded.v": "03dcebbe5c5cd9e08868b210b00afe30fba020c516fffec07cc35d162eaa2a44",
+    "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+    "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+  },
+  "proofs": [
+    {
+      "scrub": 1,
+      "output_inversion": false,
+      "equiv_cells": 5513,
+      "proven": 5513,
+      "unproven": 0,
+      "exitcode": 0,
+      "log": "equiv-s1.log",
+      "sha256": "49445be5d0896211331e3fab8a14303d05880dea82a8afd052973b09505b9851"
+    },
+    {
+      "scrub": 1,
+      "output_inversion": true,
+      "equiv_cells": 5513,
+      "proven": 5512,
+      "unproven": 1,
+      "exitcode": 1,
+      "log": "equiv-s1-inverted.log",
+      "sha256": "3d56a5f9236cee0e6ff04044c753760b5ea9a434c9b19a5226536ef6e3122ab0"
+    },
+    {
+      "scrub": 0,
+      "output_inversion": false,
+      "equiv_cells": 4661,
+      "proven": 4661,
+      "unproven": 0,
+      "exitcode": 0,
+      "log": "equiv-s0.log",
+      "sha256": "94ef28cbecb768367647297c1a974320db27bde509d7930602a4362a7101f3f9"
+    },
+    {
+      "scrub": 0,
+      "output_inversion": true,
+      "equiv_cells": 4661,
+      "proven": 4660,
+      "unproven": 1,
+      "exitcode": 1,
+      "log": "equiv-s0-inverted.log",
+      "sha256": "152613b300a1f75e4f2929cd38461a75b3d2e0a6640d75a99abf2a4d41d9dd88"
+    }
+  ],
+  "semantics": "Explicit async2sync clock-step equivalence, SCRUB1 and SCRUB0. Does not establish arbitrary between-clock reset waveform equivalence. Native asynchronous RTL fault campaigns are separate evidence.",
+  "measurement_run": 38969854899,
+  "measurement_input_hashes_match": true,
+  "fault_campaigns": [
+    {
+      "corrpre": 0,
+      "scrub": 1,
+      "testcases": 6,
+      "failed": 0,
+      "skipped": 0,
+      "elaboration_verified": true
+    },
+    {
+      "corrpre": 1,
+      "scrub": 1,
+      "testcases": 6,
+      "failed": 0,
+      "skipped": 0,
+      "elaboration_verified": true
+    },
+    {
+      "corrpre": 1,
+      "scrub": 0,
+      "testcases": 6,
+      "failed": 0,
+      "skipped": 0,
+      "elaboration_verified": true
+    }
+  ],
+  "source_scripts": {
+    "equiv-s1.ys": "888ab1775c4e462d35d78af18033ffd2b25555dd7f6f7868a2aa3e5b7b485953",
+    "equiv-s0.ys": "7ceaa954ff7319b3e23afebb00608ebb035e51f288fdbaca88978cebcc587703"
+  },
+  "full_soc_boot_verified": false,
+  "mainchip_timing_closed": false,
+  "default_adoption": false
+}
