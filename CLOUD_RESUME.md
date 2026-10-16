@@ -1,3 +1,11 @@
+## 2026-10-16 — All96candidate hold conflicts measured; next repair targets identified
+
+Native trace **38836226947** completed successfully on the actual50-buffer routed candidate38824521607. All **96hold endpoints /576original-corner min-max paths** exactly reproduce native raw-SI timing; no missing requests, no changed constraints, no source drift. Summary SHA256 `9bd5d1a86cb83d83d8df5505e1a7cf47c1fc086ef45431274798083749709348`. Full trace and exact native pin mappings are in `docs/evidence/cloud-measured-load-hold-conflicts-20261016.json`.
+
+**92targets also fail setup.** Do not insert indiscriminate endpoint delays. The four positive-setup targets are Ethernet RX SRAM bank4 A_MEN (slow setup+1.664060ns/fast hold-0.082131ns), bank6 A_ADDR[5] (+3.049428ns/-0.180218ns), bank7 A_ADDR[5] (+3.044847ns/-0.176063ns), and bank7 A_MEN (+2.161792ns/-0.077772ns). These are measured opportunities for targeted branch delay experiments, not proven repairs. Use native mapped instance names (including their real escapes), not textual escape stripping. Preserve allothercells/pins/PG/NDR, prove logic including a negative control, then legalize/reroute/reextract and measure all endpoints/corners. The other92targets need setup/hold repair together; fullPHY/finaltiming remain open.
+
+The108-net contact repair38835470494, full1usPLL38813902351 and full32captures38810163678/38834025040 remain the existing live jobs; inspect before duplicating. All completed3/50-buffer candidate independent results are preserved. Cloud-only; local workspace empty.
+
 ## 2026-10-16 — Both unprotected reroute candidates independently measured
 
 Physical50-buffer **38824521607** and3-buffer **38822066992** completed. Their allendpoint/geometry/RC-annotation checks also completed: respectively **38835900898/38835903867/38835906929** and **38835909902/38835913004/38835915870**. Full receipts, summaries and immutable archive hashes are in `docs/evidence/cloud-unprotected-load-candidates-20261016.json`.
