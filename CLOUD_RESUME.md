@@ -1,3 +1,35 @@
+## Latest — actual fresh-RC loaded failures measured; three repairs dispatched
+
+Cloud-only observation: 2026-10-16T17:34:21.058263+00:00. Local project directory is empty. No local
+checkout, CAD/simulation, archive download or result files were created.
+
+Actual new-layout/new-RC run38936139904 completed both variants. Workflow
+success means the measurements completed; both electrical screens FAILED.
+Both retain full34ns, zero-sourceOP, all62HBT/672MOS and zero solver diagnostics.
+l2p4: output177.607481mV, CMOS158.449132mV, final135.912543mV with261
+samples below150mV. Final selectors XD0001/XD0003 have minimumVCE
+0.393131217/0.393142646V against0.4V; twoHBTfail, zeroMOSfail.
+l2p7: output171.248904mV, CMOS163.403028mV, final133.802350mV with288
+samples below150mV; twelveHBTfail, zeroMOSfail. These are actual fresh-RC
+results, distinct from the older frozen-wire parameter sensitivity.
+Receipts and complete failed-device measurements are recorded in
+`docs/evidence/tx-driver-pullup-loaded-results-20261016.json`.
+
+The verified l2p4 summary SHA35ac8412aebccfceeb6b115c3bbf1ebbd820341bdfd00b97ed58af99c4bcadd2
+was supplied to the prepared repair workflow exactly once. New run38940564417,
+sourcef384f3ac1d2862c6e2fd098351e957fc36c48766, runs separate series,clock,and
+combined sensitivities. Inspect this run before dispatching anything else.
+Keep original full capture, gates and failure evidence. These altered resistor
+geometries have no matching new layout/RC yet; even a diagnostic pass is not
+physical acceptance. If useful, implement actual matching geometry and repeat
+native LVS/DRC/extraction and full loaded/PVT checks before integration.
+
+Mainchip full-signal routing38930352215 and native full1usPLL38910378266 were
+still in_progress at this observation. Preserve healthy jobs. Follow the exact
+independent geometry/all-endpoint timing review and native PLL continuation
+instructions below after actual completion. Full serial Gen3x4, mainchip routing
+and final setup/hold remain open; no production acceptance is claimed.
+
 ## Latest — final-selector identity proved; repair experiments prepared behind live parent
 
 Cloud-only observation: 2026-10-16T17:24:38.631113+00:00. Actual loaded38936139904, nine-size
