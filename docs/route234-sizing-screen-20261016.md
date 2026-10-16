@@ -1,0 +1,9 @@
+# Fourteen-driver sizing experiment on the actual234 routed source
+
+The234child has7fast hold failures,0typical and0slow, but9359/470/1setup failures at slow/typical/fast. It is not accepted. The15overloaded output drivers previously measured on146are only hypotheses until remeasured on this child.
+
+The new cloud experiment restores the exact234ODB/SPEF and independent22544endpoint/135264row census, verifies the parent/child recipe, reproduces every published endpoint value, then queries min/max through all15outputs in all3corners. The initial14-driver recipe excludes place27767/X, whose146hold margin was148ps. All14selected outputs must still have positive reachable hold margin on234before substitution. Positive margin is not proof that acceleration is safe.
+
+Each selected real PDK master is doubled1→2or2→4only when its physical master exists and terminal names/directions/types agree. All114025cell anchors, allunselectedmasters, allpin/net membership and114097nets remain unchanged. Actual wholechip netlists are checked using the existing restricted Liberty-backed logic proof; inversion of place29858must fail. All22544endpoints are then compared with exact graph coverage and unchanged original SDC, cell corners and234SPEF. Unconstrained endpoints and every new negative slack stay visible.
+
+This is explicitly a frozen-RC ranking experiment. The output is named unlegalized-frozen-wire.odb. Wider cells and moved pins invalidate its route geometry, so it cannot replace the routed234candidate. A promising result requires legal placement, actual route repair, fresh parasitic extraction, allendpoint remeasurement and independent geometry/annotation/antenna/LVS checks before adoption. No clock relaxation, false-path insertion, changed endpoint scope or electrical waiver is used.
