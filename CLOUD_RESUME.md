@@ -1,3 +1,17 @@
+## Latest verified cloud-only handoff (2026-10-17)
+
+The user's latest instruction is to perform all NSSOC engineering in the cloud and leave no local project files. This supersedes the old goal wording requesting local execution. The local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified EMPTY; no local CAD processes or NSSOC-named files in /tmp or Downloads were found. Do not recreate a checkout or download reports to local disk. Use GitHub APIs in memory and GitHub-hosted Actions for CAD, simulation and tests. Existing cloud jobs must continue.
+
+Fresh parent RC run38981391546 completed successfully after the preserved top-binding failure38981059521. Full physical composition38981800336 also completed successfully. Its exact status is `PASS_NEW_PHYSICAL845_DIVIDER_PARENT_MODEL_EXACT_GRAPH_AND_COMPONENT_FAULTS_NOT_ELECTRICAL_ACCEPTANCE`; candidate model SHA256 `d86f4716070f22b36f3fafb9b5d789f2dd029552aefafbedbab8aebdfb0cb85b`. It preserves845devices and has8660wire elements, including freshly extracted98parentR/242parentC. Fresh parent wire records are NOT byte-identical to the previous model, so the prior50ns waveform cannot qualify this new model.
+
+Composition summary asset648939650 SHA256 `a17fde2bd57f2710327bd84156ee8c9354187ae997f27ff93dd332d84f6a62a3`; parts asset648939719 SHA256 `9b861472d9c80e4c6c7e43bb5c22a5eafd8e82a0202e51c770c2a2052f72c861`. This is physical graph/component verification, NOT electrical acquisition, qualified PEX, full PHY or mainchip acceptance.
+
+Next: use this exact new model in the original1us acquisition flow, rebind all102native HBT startup targets using the proven divider mapping, preserve original34probes/.3125ps and100ppm/50ps/no-slip acceptance gates. Keep real native process checkpoint continuation; never concatenate cold restarts. The earlier50ns diagnostic38980258617 completed with feedback restored but does not prove lock or transistor safety.
+
+Ethernet physical route38978702458 was freshly checked: in_progress, conclusion=None. Do not duplicate or restart it. On terminal completion inspect exact summary/parts, then run prepared `ethernet-delay-independent-review-cloud.yml` with pinned hashes. Final setup/hold, full serialGen3x4 and actual mainchip integration remain OPEN. Earlier evidence and instructions below remain applicable unless superseded here.
+
+---
+
 ## Latest: actual845 PLL divider GDS integration passed; fresh parentRC dispatched (2026-10-17)
 
 Cloud only; workspace empty. This supersedes the layout-running state immediately below.
