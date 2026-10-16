@@ -1,0 +1,7 @@
+# Full TX driver native junction binding
+
+The original full driver physical assembly passed native DRC and raw/combined, flat/deep LVS in run38869466336. Its six-pin LEF passed run38870205745. The native MOS reference reader checks W/L and does not compare junction area/perimeter. Therefore these physical results alone do not establish an electrically equivalent extracted driver.
+
+`scripts/cloud_tx_driver_junctions.py` restores the exact hashed full-driver proof in GitHub Actions. It exports both raw100-device and combined12-device native databases, probes actual M3/M5 conductors to establish logical nets, and keeps finite bulk/well contact nodes distinct from rails. All84MOS fingers must bind to the original8MOS devices with unchanged total width, length, finger count and topology. The four equivalent HV devices are separated by their actual GDS instance bounding boxes. Every native terminal shape, parameter and D/S direction is retained.
+
+Junction sums are normalized by physical drain/source nets, not extractor device orientation. The audit compares those sums with the separately combined database and with the original cell parameters. A disagreement is recorded as a disagreement, never waived or represented as electrical acceptance. Five actual exported-record corruptions must fail structural binding. No electrical model is emitted: full interconnect RC, correct compact-model junction handling, substrate qualification and electrical/PVT/loaded tree simulations still follow. All work and artifacts remain cloud-only.
