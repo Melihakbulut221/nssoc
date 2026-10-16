@@ -1,3 +1,58 @@
+## Latest — combined repair passes full nominal sensitivity; actual driver geometry running
+
+Cloud-only observation: 2026-10-16T18:03:48.125931+00:00. Concrete progress: measured both individual
+repairs, combined all-gate nominal sensitivity, native clock physical and LEF
+verification. This is not full PHY or signoff completion. Local workspace empty.
+
+Repair run38940564417 is complete. Samefull34ns/256bits/0.3,0.5,0.7UI/zeroOP,
+62HBT/672MOS, unchanged limits and zero solver diagnostics for all three cases:
+- series-only: final interface150.911949mV, no below150mV samples; two selector
+  HBTs still failVCE(0.395836902/0.395848687V vs0.4V). Output206.002188mV.
+- clock-only: zeroHBT/MOSfail; final135.839234mV with261below150mV samples.
+- combined: all original engineering gates PASS. Output205.965768mV,
+  CMOS175.745974mV, final150.815274mV withzero wrong-sign/below-limit samples,
+  zeroHBT/MOSfail,77643rows. The final margin is only0.815274mV above its gate;
+  this is a measured nominal sensitivity, not PVT or robust physical acceptance.
+  Summary648144529 SHA41f61b9af953ca21a2ce387c5a63728be64fa98d2bef3905247e721efa217dbc;
+  parts648144681 SHAc7d0c9f3f910ac99c6f0b82a0199b0c44485a80fd4a0a4b52c13da0874e67968.
+Changed driver geometry still uses old wires in these sensitivities. Never
+relabel component_screen_passed=false or adopt frozen wires as extracted RC.
+All measured results/receipts: docs/evidence/tx-stage-repair-results-20261016.json.
+
+Actual new driver geometry run38944147428, source4f17848a3ac042528fb92d978697808c0584ad22,
+is running. Generator now supports --series-length l6p2 ONLY with --pullup-length
+l2p4; all old defaults remain. Exactly XUP3.08to2.4um and XIN6.92to6.2um
+changes are source-proved; other devices/gate damping unchanged. Actual resistor
+PCell and pin accesses are regenerated. Requires all original four raw/aggregate
+LVS deep/flat gates, DRC and faults plus old pullup/old series length mismatches.
+Output/group: tx-input-driver-pullup-l2p4-series-l6p2, directory
+hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2. Do not rerun a healthyjob.
+After physical success, derive new native raw junctions/resistor bindings,
+terminal graph/anchors, intrinsic model and fresh wireRC/composition from THIS
+actual GDS. Reuse established audited methods, pin the new receipts, preserve
+all corruption controls, and run unchanged full loaded gates with actual clock
+macro extraction. The older l2p4 RC is not the new series geometry's RC.
+
+Clock reference physical run38941785196 BOTH variants passed native six-device
+DRC/LVS and six faults. Independent GDS/LEF run38943586211 BOTH passed:
+exact126x89.63um outline, four pins avdd/cm/avss/sub, actual metal coverage,
+OpenROAD geometry/types/obstructions, and three actualLEF mutations rejected.
+Sourcea33610c0fb0030916d2a09b04aca331f00912547. First LEF run38942680498 failed
+embedded-script syntax; second38942982120 passed GDS but lacked techLEF.
+Both failures preserved. Exact upstream techLEF c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c,
+28396bytes SHAe3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6,
+is now fetched in cloud and hash-checked. No geometry or rule waiver.
+Clock LEF receipts and prior errors also recorded in the stage-repair evidence.
+Clock raw terminal/body binding, physicalRC, loaded/PVT and actual mainchip
+connections still required; LEF compatibility does not establish them.
+
+Mainchip full-signal route38930352215 remains live. NativePLL38910378266 is in
+continuation job117113404119 after a saved actual initial process (latest initial
+summaryb4efbc1507bbcb670dce059bd9e043e82cf3eabd1bcc11126570fc7da6c71471).
+Inspect exact handles and next-stage capsule before action. Full32:1/four-lane
+serial PHY, full1us acquisition acceptance, mainchip route and finalsetup/hold
+remain open. Keep all scopes and original checks intact.
+
 ## Latest — both clock reference layouts pass native physical gates; LEF audit retry live
 
 Cloud-only observation: 2026-10-16T17:53:36.670133+00:00. Local workspace remains empty. Native physical
