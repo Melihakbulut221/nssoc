@@ -16,8 +16,8 @@ for r in requests:
     d=block.findInst(driver);s=block.findInst(sink);assert d and s
     dp=d.findITerm(pin);assert dp and str(dp.getIoType())=='OUTPUT';net=dp.getNet();assert net
     assert str(net.getSigType())=='SIGNAL' and not net.getBTerms() and not net.getNonDefaultRule()
-    outputs=[t for t in net.getITerms()if str(t.getIoType())=='OUTPUT'];assert len(outputs)==1 and outputs[0].getId()==dp.getId()
-    pins=[t for t in s.getITerms()if str(t.getIoType())=='INPUT'and t.getNet()and t.getNet().getId()==net.getId()]
+    outputs=[t for t in net.getITerms()if str(t.getIoType())=='OUTPUT'];assert len(outputs)==1 and outputs[0].getInst().getName()==driver and outputs[0].getMTerm().getName()==pin
+    pins=[t for t in s.getITerms()if str(t.getIoType())=='INPUT'and t.getNet()and t.getNet().getName()==net.getName()]
     row=dict(r,driver_master=d.getMaster().getName(),sink_master=s.getMaster().getName(),net=net.getName(),net_iterm_count=len(net.getITerms()),matching_input_pins=[t.getMTerm().getName()for t in pins])
     assert pins,('Native timing edge has no physical input connection',r)
     if len(pins)==1:row['branch_pin']=sink+'/'+pins[0].getMTerm().getName()
