@@ -22,7 +22,11 @@ def intrinsic(row):
     words=row[k+1:];params={s.split('=',1)[0]:h.number(s.split('=',1)[1])for s in words};assert len(params)==len(words)
     return row[1:k],model,params
 def boundary(group):
-    return {p:'a_'+group[1:]+'_'+p for p in PORTS[:-1]}|{'wire_cref':'wire_cref','bulk':'a_count_vss'}
+    assert group in ('xdiv1','xdiv2')
+    ports={p:'a_'+group[1:]+'_'+p for p in PORTS[:-1]}|{'wire_cref':'wire_cref','bulk':'a_count_vss'}
+    # Actual frozen parent exposes second-divider outputs directly to RX.
+    if group=='xdiv2':ports.update(qp='qp2',qn='qn2')
+    return ports
 def grouped(rows,group):
     return [r for r in rows if any(r[0].lower().startswith(k+'_'+group+'_')for k in 'xrc')]
 def graph(rows,group,normalize_candidate):
@@ -63,12 +67,20 @@ def prepare(original,model):
     for group in ['xdiv1','xdiv2']:
         prior=grouped(old[1:-1],group);assert Counter(r[0][0].upper()for r in prior)==dict(X=91,R=379,C=646)
         ext=boundary(group)
+        def public_nodes(records):
+            nodes=set()
+            for r in records:
+                terminals=intrinsic(r)[0]if r[0].lower().startswith('x')else r[1:3]
+                nodes.update(n.lower()for n in terminals if not n.lower().startswith(group+'.'))
+            return nodes
+        assert public_nodes(prior)==set(ext.values()),'Boundary mapping does not match actual parent divider terminals'
         def rename(n):return ext[n.lower()]if n.lower()in ext else group+'.'+n.lower()
         new=[]
         for row in child[1:-1]:
             k=next(i for i,s in enumerate(row)if '='in s)-1 if row[0].startswith('X')else 3
             name='X_'+group+'_xd'+str(int(row[0][2:])).zfill(4)if row[0].startswith('XD')else row[0][0]+'_'+group+'_'+row[0].lower()
             new.append([name,*map(rename,row[1:k]),*row[k:]])
+        assert public_nodes(new)==public_nodes(prior),'Replacement changed native divider external boundary'
         assert len({r[0].lower()for r in new})==1122
         assert not any(n.lower().startswith(group+'.')for r in retained for n in r[1:]),'External reference into replaced divider interior'
         a,_=graph(prior,group,False);b,changes=graph(new,group,True)
@@ -125,7 +137,7 @@ def main():
         text,kept,added,proof=prepare(original,model);target=OUT/'parent845.spice';target.write_text(text)
         result['positive']=verify(target.read_text(),original,kept,added);result['intrinsic_graphs']=proof;save()
         controls=[]
-        for fault in ['missing_new_HBT','wrong_new_load','wrong_new_wire','private_body','swapped_input','wrong_retained_wire']:
+        for fault in ['missing_new_HBT','wrong_new_load','wrong_new_wire','private_body','swapped_input','wrong_retained_wire','disconnected_second_output']:
             rows=h.statements(text);q=next(i for i,r in enumerate(rows)if r[0].startswith('X_xdiv1_')and 'npn13G2'in r)
             rr=next(i for i,r in enumerate(rows)if r[0].startswith('R_xdiv1_'))
             if fault=='missing_new_HBT':rows.pop(q)
@@ -136,15 +148,17 @@ def main():
             elif fault=='private_body':rows[q][4]='xdiv1.private_body'
             elif fault=='swapped_input':
                 rows=[[('a_div1_clkn'if s=='a_div1_clkp'else'a_div1_clkp'if s=='a_div1_clkn'else s)for s in r]if r[0].startswith(('R_xdiv1_','C_xdiv1_'))else r for r in rows]
+            elif fault=='disconnected_second_output':
+                rows=[[('a_div2_qp'if s=='qp2'else s)for s in r]if r[0].startswith(('R_xdiv2_','C_xdiv2_'))else r for r in rows]
             else:
                 i=next(i for i,r in enumerate(rows)if r[0].startswith('R_')and not r[0].startswith(('R_xdiv1_','R_xdiv2_')));rows[i][-1]='999'
             bad='\n'.join(' '.join(r)for r in rows)+'\n';assert bad!=text;(OUT/(fault+'.spice')).write_text(bad)
             try:verify(bad,original,kept,added)
             except AssertionError as e:controls.append(dict(fault=fault,rejected=True,reason=str(e)))
             else:raise AssertionError('Accepted modified parent: '+fault)
-        assert len(controls)==6
+        assert len(controls)==7
         assert sha(OUT/'parent/parent845.spice')==PARENT_SHA and sha(OUT/'divider/divider91-wire.spice')==MODEL_SHA
-        result.update(status='PASS_BOTH_DIVIDER_RC_MODELS_IN_PARENT_WITH_INTRINSIC_GRAPH_AND_SIX_FAULTS_REQUIRES_PARENT_GEOMETRY_AND_ACQUISITION',
+        result.update(status='PASS_BOTH_DIVIDER_RC_MODELS_IN_PARENT_WITH_INTRINSIC_GRAPH_AND_SEVEN_FAULTS_REQUIRES_PARENT_GEOMETRY_AND_ACQUISITION',
             model_sha256=sha(target),controls=controls,source_unchanged=True,
             scope='Both divider blocks replaced entirely by newly extracted native91/382R649C models. All other parent records retained exactly. Eight declared W8 L2.12->3.2um loads normalized only for separate intrinsic graph proof. Parent intermacro geometry/RC is retained, not yet revalidated for new macro placement. Common body a_count_vss and independent wire_cref boundaries remain explicit. Full1us acquisition and all102HBT controls must be rebuilt from actual new instance IDs.')
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
