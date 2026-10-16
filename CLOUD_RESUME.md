@@ -1,3 +1,11 @@
+## 2026-10-16 — Fine full32 capture timed out; strict compiler speed study staged
+
+Fine Sparse0.25ps run **38810163678/job116681243193** is terminal FAILURE: native process exceeded19800seconds, then the old decimal publication group failed. The2,338,517,744-byte combined archive hash `9af2e907298a44ba17c1b395d9a99e1101e3fec635519ebc23a3683c1fd64f26` appears in logs but archive bytes were not published; a hash does not recover them. Do not claim full fine waveform or any component pass. Coarse predecessor native step took3h28m; simply repeating the fine run with the same budget has no evidence-based benefit.
+
+New tree32-compiler-cloud keeps exact Sparse/source patch/PDK/models/decks/allvectors/tolerances and0.25ps step, and benchmarks the frozen reference versus strict O3 (`-fno-fast-math -ffp-contract=off`) on the same4ns prefix and CPU. It verifies the original synthetic NPN/PNP controls, exact native options, every native vector, bidirectional1nV voltage comparison, and measured CPU/wall cost. This is a runtime optimization experiment, not full34ns/fullPHY acceptance. Do not adopt the new runtime without those checks and subsequent full-window validation. GitHub-hosted jobs have a6h ceiling: https://docs.github.com/en/actions/reference/limits . Compiler option semantics: https://gcc.gnu.org/onlinedocs/gcc-13.4.0/gcc/Optimize-Options.html .
+
+Existing expanded110repair38843068297, fourbranch38837758293, PLL38813902351 and correctedcoarse38834025040 stay independent; do not duplicate live jobs. Cloud-only.
+
 ## 2026-10-16 — Expanded110 repair LIVE with complete source preflight
 
 Physical run **38843068297/job116787326928**, source **76b58f13a83f30dab52a68c4d3af7ad94bac1607**, is **in_progress**. Last observed active step: Prove110source-measured load repairs, fully reroute, reextract and compare all corners. Source recipe, complete published-driver diagnosis, all legacy profiles, twelve malformed target/phase controls, changed-source-byte rejection, and controller compilation passed. No physical/timing completion is claimed.
