@@ -5,6 +5,7 @@
 import argparse,copy,json,math,os,re,struct,subprocess,tarfile
 from pathlib import Path
 from cloud_contact_release import validate_route_proof
+from expanded_load_targets import validate_candidate as validate_expanded,EXTRA_FILES
 from measured_hold_targets import validate_child,CHILD_FILES,TARGETS as HOLD_TARGETS
 from candidate_hold_conflicts import controls as conflict_controls,measure as measure_conflicts
 from audit_cloud_route_annotation import BASE,SUMMARY_SHA,ARCHIVE_SHA
@@ -134,11 +135,12 @@ def main(args):
         original,original_proof=restore_report('routed-endpoints',38819589884,CENSUS_SHA,CENSUS_PARTS_SHA,OUT/'baseline',('native-census.json','endpoint-slacks.tsv'))
         assert original['source_unchanged'] and original['original_routed_timing_reproduced']
         before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
-        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH')}
+        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH'),'expanded_load_batch':(110,'expanded-load-eco','EXPANDED_LOAD_BATCH')}
         count,group,status_prefix=profiles[args.profile];candidate_dir=ROOT/('cloud-'+group)
         selection=('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json')
         if args.profile=='protected_load_batch':selection+=('protected-route-proof.json','fixed-source-summary.json')
         if args.profile=='measured_hold_batch':selection+=CHILD_FILES
+        if args.profile=='expanded_load_batch':selection+=EXTRA_FILES
         candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,selection)
         if args.profile=='protected_load_batch':
             protected=json.loads((candidate_dir/'protected-route-proof.json').read_text())
@@ -158,6 +160,7 @@ def main(args):
         # Do not pretend that omitted nested receipt has an external file hash.
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='measured_hold_batch':validate_child(candidate,candidate_dir)
+        if args.profile=='expanded_load_batch':validate_expanded(candidate,candidate_dir)
         result.update(candidate=proof,baseline=original_proof);save()
         fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-route-summary.json');source=json.loads((OUT/'original-route-summary.json').read_text())
         packed=OUT/'original-route.tar.gz';fetch(BASE+'.tar.gz.part0000',ARCHIVE_SHA,packed);assert packed.stat().st_size==225682086 and not SOURCE.exists()
@@ -182,15 +185,16 @@ def main(args):
         for phase,row in candidate['routed_timing'].items():assert phases[phase]['groups']==row['groups']
         after,new_rows=load_census(OUT);assert before['native_pin_mapping']==after['native_pin_mapping'],'Physical endpoint identities changed'
         comparison=compare_rows(old_rows,new_rows);result['comparison']=comparison
-        if args.profile=='measured_hold_batch':
+        if args.profile in ('measured_hold_batch','expanded_load_batch'):
             parent_report,parent_proof=restore_report('eco-endpoint-compare',38835900898,'ade9895f247c39b9439a169934bdf986b80be897bbd53b3259832b694ec9a450','36a4be4c1a5267a5cd971095579ac261cb39a6ef31df06ee8f70028894423fd3',OUT/'parent-census',('native-census.json','endpoint-slacks.tsv'))
             assert parent_report['source_unchanged'] and parent_report['candidate_routed_timing_reproduced']
             assert parent_report['candidate']['run']==38824521607 and parent_report['candidate']['summary_sha256']=='2567e3e86159187b5f6db0df8a1c2be663c3d66df9e20d4fc650f98fe9ad2db5'
             parent_meta,parent_rows=load_census(OUT/'parent-census');assert parent_meta['native_pin_mapping']==after['native_pin_mapping']
             result['parent_census']=parent_proof
             result['parent_endpoint_comparison']=compare_rows(parent_rows,new_rows)
-            result['targeted_hold_changes']=targeted_hold_changes(parent_rows,new_rows)
-            result['all_four_target_timing_passed']=all(r['target_timing_passed'] for r in result['targeted_hold_changes'])
+            if args.profile=='measured_hold_batch':
+                result['targeted_hold_changes']=targeted_hold_changes(parent_rows,new_rows)
+                result['all_four_target_timing_passed']=all(r['target_timing_passed'] for r in result['targeted_hold_changes'])
             result['parent_new_violations']={phase:{edge:values['new_negative'] for edge,values in edges.items()} for phase,edges in result['parent_endpoint_comparison'].items()}
             save()
 
@@ -208,7 +212,7 @@ def main(args):
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch','measured_hold_batch'])
+    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch','measured_hold_batch','expanded_load_batch'])
     parser.add_argument('--hold-paths',action='store_true');parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))

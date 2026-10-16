@@ -11,7 +11,7 @@ def main():
     db=odb.dbDatabase.create();odb.read_db(db,str(OUT/'source/routed.odb'));block=db.getChip().getBlock()
     result=dict(status='RUNNING',accepted=False,instances=len(block.getInsts()),nets=len(block.getNets()),exported_nets=0,shapes=0,ndr_nets={},power_geometry_in_scope=False)
     added=int(os.environ.get('NSSOC_GEOMETRY_ADDED_BUFFERS','0'))
-    assert added in (0,2,3,50,54),'Unsupported source-verified ECO size'
+    assert added in (0,2,3,50,54,110),'Unsupported source-verified ECO size'
     assert result['instances']==113791+added and result['nets']==113863+added
     (OUT/'native-capabilities.json').write_text(json.dumps({n:dir(getattr(odb,n)) for n in ('dbWireDecoder','dbITerm','dbWire')},indent=2)+'\n')
     with gzip.open(OUT/'signal-geometry.jsonl.gz','wt') as output:

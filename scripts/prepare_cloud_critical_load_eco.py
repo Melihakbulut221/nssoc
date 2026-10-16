@@ -94,5 +94,5 @@ def audit_routed():
     (OUT/'post-route-geometry.json').write_text(json.dumps(proof,indent=2)+'\n')
 
 if os.environ.get('NSSOC_CRITICAL_ECO_MODE')=='audit_routed':audit_routed()
-elf os.environ.get('NSSOC_CRITICAL_ECO_MODE')=='audit':audit()
+elif os.environ.get('NSSOC_CRITICAL_ECO_MODE')=='audit':audit()
 else:prepare()
