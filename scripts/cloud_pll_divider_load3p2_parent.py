@@ -72,6 +72,12 @@ def prepare(original,model):
         assert len({r[0].lower()for r in new})==1122
         assert not any(n.lower().startswith(group+'.')for r in retained for n in r[1:]),'External reference into replaced divider interior'
         a,_=graph(prior,group,False);b,changes=graph(new,group,True)
+        ca=Counter(repr(d['color'])for _,d in a.nodes(data=True));cb=Counter(repr(d['color'])for _,d in b.nodes(data=True))
+        diagnosis=dict(group=group,old_nodes=len(a),new_nodes=len(b),old_edges=a.number_of_edges(),new_edges=b.number_of_edges(),
+            only_old_colors=dict(ca-cb),only_new_colors=dict(cb-ca),
+            old_graph=dict(nodes=[dict(id=n,**d)for n,d in a.nodes(data=True)],edges=list(a.edges())),
+            new_graph=dict(nodes=[dict(id=n,**d)for n,d in b.nodes(data=True)],edges=list(b.edges())))
+        (OUT/(group+'-graph-diagnosis.json')).write_text(json.dumps(diagnosis,indent=2)+'\n')
         match=nx.algorithms.isomorphism.GraphMatcher(a,b,node_match=lambda x,y:x['color']==y['color'])
         assert match.is_isomorphic(),'Native divider intrinsic topology changed beyond four declared loads'
         device_map={k[1]:v[1]for k,v in match.mapping.items()if k[0]=='D'};assert len(device_map)==91
