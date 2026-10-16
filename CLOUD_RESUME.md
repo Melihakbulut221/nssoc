@@ -1,3 +1,15 @@
+## 2026-10-16 — Both unprotected reroute candidates independently measured
+
+Physical50-buffer **38824521607** and3-buffer **38822066992** completed. Their allendpoint/geometry/RC-annotation checks also completed: respectively **38835900898/38835903867/38835906929** and **38835909902/38835913004/38835915870**. Full receipts, summaries and immutable archive hashes are in `docs/evidence/cloud-unprotected-load-candidates-20261016.json`.
+
+Both have zero signal continuity failures, zero cross-net signal shape contacts and zero loaded unannotated drivers. The50-buffer route has3,317,801shapes/113,606exportednets and antenna644nets/805pins; the3-buffer route has3,323,261shapes/113,559nets and antenna620nets/781pins. This does not establish PG/CUT/internalmacro/spacing/LVS/qualifiedRC or production acceptance.
+
+Neither is adopted. Fifty-buffer worst slow setup=-7.694043ns, fast hold=-0.180218ns: fast hold91→96 (7new/2resolved), typical setup1285→1311 (50new/24resolved). Three-buffer worst slow setup=-11.085521ns, fast hold=-0.130130ns: fast hold91→87 (0new/4resolved), typical setup1285→503 (24new/806resolved), slow setup9601→9377 (8new/232resolved), fast setup53→55. No loss of constraints; all per-edge/per-corner regressions remain saved.
+
+New all-candidate hold-conflict reporting passed controls **38836124406**. Native trace **38836226947**, source **6895e40f0777d79f04acc19100b4fe2d12ecfcd7**, is running on the50-buffer candidate. It reports every negative-hold endpoint's min/max paths at all original cell corners, preserves missing constraints, and requires exact raw-SI/native-report agreement plus full original candidate timing reproduction. Use this evidence for joint setup/hold repair; never mask failures by shifting constraints.
+
+The108-net contact repair **38835470494** remains a separate live experiment; do not duplicate it. Full1us PLL and full32 Sparse captures remain active (see current JSON snapshots). FullPHY/finaltiming are open. All work is cloud-only; local directory remains empty.
+
 ## 2026-10-16 — 108-net contact repair is LIVE after controls
 
 Run **38835470494**, job **116763502825**, source **376793a946b712d1b25e5919af165ba65647b70b** is in the native repair step. Source recipe/legacy profiles, runtime, compilation, archive alias checks, and five contact-release corruption controls passed. Do not duplicate or interrupt this live job. It releases the exact eight independently measured intersecting original nets, routes108nets and requires113,498other routednets to remain byte-identical. This is an experiment, not acceptance. After completion obtain new exact summary/manifest SHA256 and run all three independent candidate workflows.
