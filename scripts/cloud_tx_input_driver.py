@@ -53,11 +53,12 @@ def generate(fault):
     layout=pya.Layout();layout.read(str(stdroot/'upstream/gds/sg13g2_stdcell.gds'));layout.read(str(hvroot/'base/layout.gds'))
     hvcell=layout.cell('nssoc_tx_hv_ng10_v1');buf=layout.cell('sg13g2_buf_16');assert hvcell is not None and buf is not None
     # Remove only imported port text, preserving pin shapes, every drawing layer and device-recognition label.
+    layers={p.findtext('name')[:-8]:int(p.findtext('source').split('/')[0]) for p in ET.parse(pdk.parent/'tech/sg13g2.lyp').getroot().iter('properties') if p.findtext('name','').endswith('.drawing')}
     def drawing_digest(cell):
         result={}
         for index in layout.layer_indexes():
             info=layout.get_info(index)
-            if info.datatype==25:continue
+            if info.datatype==25 or (cell.name==buf.name and info.layer==layers['Substrate']):continue
             region=pya.Region(cell.begin_shapes_rec(index)).merged()
             if not region.is_empty():result[str(info)]=[str(p) for p in region.each()]
         return hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest()
@@ -67,7 +68,6 @@ def generate(fault):
             if layout.get_info(index).datatype==25:cell.shapes(index).clear()
     assert before=={c.name:drawing_digest(c) for c in (hvcell,buf)}
     top=layout.create_cell(TOP)
-    layers={p.findtext('name')[:-8]:int(p.findtext('source').split('/')[0]) for p in ET.parse(pdk.parent/'tech/sg13g2.lyp').getroot().iter('properties') if p.findtext('name','').endswith('.drawing')}
     placements=[];connections={};routes=[];taprefs=[]
     def pc(name,params):
         c=layout.create_cell(name,'SG13_dev',params);assert c is not None and not c.is_empty();return c
@@ -108,11 +108,14 @@ def generate(fault):
         if model=='ptap1' and fault!='missing_body_marker':
             # Use the same native Substrate/sub! recognition convention as ptap1.
             # No implant, active, contact, gate or metal geometry is changed.
-            marker=polygon.bbox().to_dtype(layout.dbu).transformed(bt)
-            top.shapes(layout.layer(layers['Substrate'],0)).insert(marker)
+            # The locked native deck extracts taps cell-locally in deep mode.
+            # Keep the recognition marker in the same cell as its actual tie.
+            marker=polygon.bbox().to_dtype(layout.dbu)
+            assert pya.Region(buf.begin_shapes_rec(layout.layer(layers['Substrate'],0))).is_empty()
+            buf.shapes(layout.layer(layers['Substrate'],0)).insert(marker)
             q=marker.center()
-            top.shapes(layout.layer(layers['TEXT'],0)).insert(pya.DText('sub!',q.x,q.y))
-            top.shapes(layout.layer(layers['Substrate'],0)).insert(pya.DText('sub!',q.x,q.y))
+            buf.shapes(layout.layer(layers['TEXT'],0)).insert(pya.DText('sub!',q.x,q.y))
+            buf.shapes(layout.layer(layers['Substrate'],0)).insert(pya.DText('sub!',q.x,q.y))
     # Chosen access points are inside the original pinned LEF conductor rectangles.
     pins=[('drv',202.,31.68,38.,220),('gate',210.85,31.68,40.,224),('dvdd',200.4,33.78,42.,228),('avss',206.,30.,44.,232)]
     for net,x,y,escape_y,lane in pins:
@@ -176,7 +179,7 @@ def generate(fault):
     result=dict(status='GENERATED_UNVERIFIED_FULL_DRIVER',fault=fault,original_source_sha256=DRIVER_SHA,original_core_rows=rows,
         core_devices=12,raw_mos_fingers=84,finite_taps=12,explicit_added_taps=10,intrinsic_buf_ties=intrinsic_ties,raw_reference_devices=100,aggregate_reference_devices_before_combination=24,
         substrate_mapping=mapping,common_substrate_model_qualified=False,original_junction_parameters_retained_in_aggregate_reference=True,
-        raw_reference_not_simulation_substitute=True,imported_drawing_geometry_unchanged=before,placements=placements,routes=routes,ports=port_boxes,
+        raw_reference_not_simulation_substitute=True,imported_material_and_pin_geometry_unchanged=before,buffer_substrate_annotation='cell-local Substrate rectangle and sub! labels, absent only in missing_body_marker fault',placements=placements,routes=routes,ports=port_boxes,
         full_driver_accepted=False,qualified_pex=False,serial_phy_complete=False)
     (d/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 

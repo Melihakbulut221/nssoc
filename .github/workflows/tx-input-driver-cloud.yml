@@ -35,7 +35,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Derive intrinsic buffer contacts from GDS and prove full finite-body topology
+      - name: Bind finite body marker at native cell level and require deep and flat agreement
         run: python3 scripts/cloud_tx_input_driver.py
       - name: Preserve every physical gate and fault including failed geometry
         if: always()
