@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: pll-native-acquisition-cloud
 on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/pll-native-acquisition-cloud.yml]
   workflow_dispatch:
     inputs:
       seconds:
@@ -71,7 +74,7 @@ jobs:
       - name: Start original full1us or continue exact requested native capsule
         env:
           SOURCE_CHECKPOINT: ${{ inputs.source_checkpoint }}
-          NATIVE_SECONDS: ${{ inputs.seconds }}
+          NATIVE_SECONDS: ${{ inputs.seconds || '60' }}
         run: python3 scripts/cloud_pll_native_acquisition.py --stage initial --seconds "$NATIVE_SECONDS"
       - name: Publish every native byte and durable next-stage descriptor
         if: always()
@@ -150,7 +153,7 @@ jobs:
       - name: Restore exact published process on the next hosted runner
         env:
           SOURCE_CHECKPOINT: ${{ needs.initial.outputs.checkpoint }}
-          NATIVE_SECONDS: ${{ inputs.seconds }}
+          NATIVE_SECONDS: ${{ inputs.seconds || '60' }}
         run: python3 scripts/cloud_pll_native_acquisition.py --stage continuation --seconds "$NATIVE_SECONDS"
       - name: Publish every native byte and durable next-stage descriptor
         if: always()
