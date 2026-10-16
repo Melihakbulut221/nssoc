@@ -6,7 +6,7 @@ import hashlib,json,os,re,subprocess,sys,tarfile
 from pathlib import Path
 from route_cloud_newer_postcts import fetch,sha,native_ndr_screen
 from read_opensta_phase_slacks import parse_phases
-from cloud_verified_parts import extract_verified
+from cloud_verified_alias_payload import restore as restore_alias_payload
 from run_cloud_failed_guide_drt import guide_index
 from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS,MAX_DISPLACEMENT_UM,SELECTION,validate_measurements
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/DIRECTORY;SOURCE=ROOT/'cloud-routed-extraction'
@@ -73,7 +73,7 @@ def main():
         fetch(fixed_base+fixed_stem+'.parts.json','6f583bfd284758af853b0049b7697a1c00ac2f739a06f0c94b8866c6fe4635c0',OUT/'fixed-source-parts.json')
         parts=json.loads((OUT/'fixed-source-parts.json').read_text());packed=OUT/'fixed-parts';packed.mkdir()
         for part in parts['parts']:fetch(fixed_base+part['name'],part['sha256'],packed/part['name'])
-        result['fixed_source_restoration']=extract_verified(parts,packed,OUT/'fixed-source',{'fixed.odb':fixed['outputs']['fixed.odb']})
+        result['fixed_source_restoration']=restore_alias_payload(parts,packed,OUT/'fixed-source',{'fixed.odb':fixed['outputs']['fixed.odb']},fixed['outputs'])
         assert sha(OUT/'fixed-source/fixed.odb')=='f5fd7f871b585df0d76e42ba19c44c0eb51e25959003b707ed5ee95ce3cf0707'
         for part in packed.iterdir():part.unlink()
         packed.rmdir();result['fixed_conversion_receipt']=fixed;save()

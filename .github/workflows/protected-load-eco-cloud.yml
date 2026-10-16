@@ -45,7 +45,9 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Compile exact source-bound buffer repair controllers
-        run: python3 -m py_compile scripts/critical_load_targets.py scripts/prepare_cloud_protected_load_eco.py scripts/run_cloud_protected_load_eco.py
+        run: |
+          python3 -m py_compile scripts/critical_load_targets.py scripts/prepare_cloud_protected_load_eco.py scripts/run_cloud_protected_load_eco.py scripts/cloud_verified_alias_payload.py
+          python3 scripts/cloud_verified_alias_payload.py
       - name: Prove50source-measured load repairs, preserve unchanged routes, reextract and compare all corners
         timeout-minutes: 330
         run: python3 scripts/run_cloud_protected_load_eco.py
