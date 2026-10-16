@@ -1,3 +1,11 @@
+## 2026-10-16 — Current cloud-only handoff and local cleanup verification
+
+Local project `/home/hasanmelih/Documents/ChatGPT/nnsoc` has **zero entries**; no local CAD/simulation process was found. All checkout, CAD, simulations, tests and build evidence stay on GitHub-hosted runners. Small API text/JSON orchestration uses RAM only. Original user documents in Downloads are preserved. The detailed current snapshot and next actions are in `docs/evidence/cloud-current-checkpoint-20261016.json`; older entries below are historical snapshots.
+
+Live calculations at this observation: expanded110 setup repair **38843068297**, four SRAM hold branches **38837758293**, full32 coarse capture **38834025040**, strict compiler comparison **38845036374**. Do not duplicate them. Native progress/timeout controls **38845676491** passed; its native capture job was intentionally skipped.
+
+PLL **38813902351** completed the full1us measurement, but **the original acquisition gate failed**. Passing900–1000ns does not replace the failed required800–900ns window. Source inventory **38846227092/job116797262225** failed its device/wire/port cardinality assertion at `review_cloud_pll_loop.py:45`; inspect exact actual counts on a hosted runner before changing the source-bound contract. This is not a repaired or accepted PLL. Fine full32 **38810163678** timed out and has no published waveform bytes; its failure evidence remains recorded. Full serialPHY and final timing remain open.
+
 ## 2026-10-16 — Future full32 captures retain native progress and publication fallback
 
 The full32 controller now records diagnostic native raw-file progress every5minutes and on exit/timeout: actual file bytes, complete written binary rows and sampled latest time. It never labels a prefix complete or accepted and never substitutes it for the strict full-wave reader. Invalid/missing/partial timestamps are preserved as diagnostic errors. Timeout remains19800seconds; circuit/solver/step/engineering gates are unchanged. Hosted controls cover partial headers/rows, nonfinite/nonmonotonic time, column mismatch and false completion.
