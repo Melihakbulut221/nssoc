@@ -1,3 +1,13 @@
+## 2026-10-16 — Source port error repaired; real PLL filter experiments dispatched
+
+Source review **38847244994** completed:845devices,8648wire records,17physical ports plus separate `wire_cref`. Exact summarySHA256 `89899b2b091046c12b3fd24105e074028a4c68e4eed8fd9cc2320aef9b050422`; source `c595dcaa756633e606adfacfe5346ab9004ecc61`. The predecessor38846227092 count assertion was a parser contract error, now fixed with native source/reference binding and malformed-pin controls. Original mandatory window errors remain126.215885ppm and84.003666ppm; acquisition stillfails.
+
+**Electrical candidates38847729630**, source`beb087ef2714d1a45aa146e9a2975c6038ac48fd`, jobs116801945074/116801945297, test9um/11um square filter capacitors. Both passed initial controls and reached their full1us measurement steps. Only exact `X_xpump_xd0001` width/length changes; baseline845devices/8648wire records otherwise unchanged. Existing wire RC is NOT candidate PEX. Original1us/.3125ps/all34probes/zeroOP/102OFF/PDK/native engine/100ppm/50ps/no-slip/control gates stay unchanged. Passing measurements alone cannot adopt a candidate.
+
+**Physical candidates38848309907**, source`8380558b46bbc150b7d3e459e8f47be2fd260313`, jobs116803722971/116803723148, generate actual native SG13G2 capacitor geometries and verify full pump DRC,30device deep/flat transistor LVS, changed-capacitor reference/missing-well/open/short/offgrid faults and real LEF checks. Initiallyqueued; use authoritative Actions status before retries. This isolates the actual pump macro; parent replacement, fullfreshRC and physicallymatched full acquisition remain mandatory before acceptance. See `docs/pcie-pll-filter-experiments-20261016.md`.
+
+Separate expanded110setup38843068297, fourbranchhold38837758293, full32coarse38834025040 and strictcompiler38845036374 remain active at this snapshot. All work and evidence remain cloud-only. Do not duplicate live orqueuedjobs. FullserialPHY/mainchip/finaltiming remain open.
+
 ## 2026-10-16 — Current cloud-only handoff and local cleanup verification
 
 Local project `/home/hasanmelih/Documents/ChatGPT/nnsoc` has **zero entries**; no local CAD/simulation process was found. All checkout, CAD, simulations, tests and build evidence stay on GitHub-hosted runners. Small API text/JSON orchestration uses RAM only. Original user documents in Downloads are preserved. The detailed current snapshot and next actions are in `docs/evidence/cloud-current-checkpoint-20261016.json`; older entries below are historical snapshots.
