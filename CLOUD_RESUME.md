@@ -1,3 +1,23 @@
+## Current cloud-only checkpoint — 2026-10-16T16:29:36.989450+00:00
+
+The user's cloud-only instruction overrides the older local-work wording in the
+active goal. The local project directory is empty; no local OpenROAD, ngspice,
+KLayout, Magic, Netgen, Yosys or Verilator process was observed. No local checkout,
+artifact download or CAD run is needed to continue. Read source and small receipts
+through GitHub API; download/extract large evidence only inside cloud runners.
+
+- Full-signal nine-size reroute: 38930352215, source ad487eee3895b1312d86d8ce0b97d4064fc26d08.
+- Native full1us PLL continuation: 38910378266, source 892ebb2be94a654b0ff31b79d87604ff8a21bc1c.
+- New pullup sensitivity: 38931374696, source e26b0270f2f9a90aaf591cdc2b879d65000e78e4. Both pullup_l2p4 and pullup_l2p7 are running. These change only the source-bound XUP resistor length with old wires frozen; they are diagnostic experiments, never physical acceptance. Inspect full original engineering gates before choosing a real new layout. See docs/tx-driver-pullup-hypothesis-20261016.md.
+
+All three were in_progress at this observation. Recheck exact handles before
+retrying; preserve healthy jobs and every failed result. On routed completion,
+require fresh extraction and all endpoints, then dispatch the prepared independent
+geometry/annotation reviews using the actual producer receipt hashes. For a useful
+pullup result, build and check actual new physical geometry before claiming an
+improvement. Preserve the PLL native continuation capsule; do not cold restart it.
+Full serial PHY, mainchip routing and final setup/hold closure remain incomplete.
+
 Active full-signal reroute: **38930352215**, source **ad487eee3895b1312d86d8ce0b97d4064fc26d08**. NativePLL38910378266 remains live. All four headroom replays are complete (physical/intrinsic38929031066,halfR/halfC38929589227); five-buffer feasibility38927514720 passed but remains unrouted/untimed. Local workspace has zero files. Recheck exact live handles before repeating jobs.
 
 ## Latest — actual nine-size DRT failed; rebuild signal routing from clean input
