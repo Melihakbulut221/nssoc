@@ -43,7 +43,7 @@ def rebind_flags(original,old_hbts,new_hbts,proof):
 
 def main():
     spec=json.loads(os.environ['PARENT_REPORT'])
-    assert set(spec)=={'run','head','summary','parts','model'}and spec['run']==38978829291 and spec['head']=='136f4665ab0ded356563444e15e0a35bd3cc252e'
+    assert set(spec)=={'run','head','summary','parts','model'}and spec['run']==38979710689 and spec['head']=='c4ffc5239b2967fe3c383ade1604c91bab68da7b'
     assert all(re.fullmatch('[0-9a-f]{64}',spec[k])for k in ['summary','parts','model'])
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False);reports.OUT=OUT
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False,acquisition_accepted=False,new_bounded_diagnostic=True,original_completed_run_restarted=False,divider_matches_geometry=True,parent_geometry_updated=False,parent_interconnect_rc_revalidated=False,scope='Both corrected v2 native91/382R649C divider blocks replace old models, bound by parent intrinsic graph proof. All other parent records and parent interconnect RC retained; actual assembled parent geometry/RC still unvalidated. Original supplies/reset/reference/engine/PDK/.3125ps and50ns all102HBT terminal/current probes. OFF/readback102targets rebound by proved device bijection. No1us acquisition, full-device safety/PVT or PHY acceptance.')
@@ -61,8 +61,8 @@ def main():
         assert sha(case/'parent865.spice')=='8147a7cbae9d1a43b362733a3b52c218c5d04ef519cedf9abf35cd17ff27911e'
         replacement,receipt=reports.restore_report('pll-divider-load3p2v2-parent',spec['run'],spec['summary'],spec['parts'],OUT/'new-parent',('parent845.spice','parent/parent845.spice'))
         assert replacement['source_head']==spec['head']and replacement['source_unchanged']
-        assert replacement['status']=='PASS_BOTH_DIVIDER_RC_MODELS_IN_PARENT_WITH_INTRINSIC_GRAPH_AND_SIX_FAULTS_REQUIRES_PARENT_GEOMETRY_AND_ACQUISITION'
-        assert len(replacement['controls'])==6 and all(c['rejected']for c in replacement['controls'])
+        assert replacement['status']=='PASS_BOTH_DIVIDER_RC_MODELS_IN_PARENT_WITH_INTRINSIC_GRAPH_AND_SEVEN_FAULTS_REQUIRES_PARENT_GEOMETRY_AND_ACQUISITION'
+        assert len(replacement['controls'])==7 and all(c['rejected']for c in replacement['controls'])
         assert sha(OUT/'new-parent/parent845.spice')==replacement['model_sha256']==spec['model']
         assert (OUT/'new-parent/parent/parent845.spice').read_text()==parent
         candidate=(OUT/'new-parent/parent845.spice').read_text();old_hbts=hbts_of(parent);hbts=hbts_of(candidate)
