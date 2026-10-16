@@ -71,6 +71,36 @@ def verify(text,rows,tech):
             assert abs(params['R']*conductance-1)<=Decimal('1e-26'),'Finite contact conductance changed'
     return dict(devices=len(native),mos_fingers=84,physical_resistors=4,finite_contacts=12,ports=PORTS)
 
+def negative_controls(text,rows,tech,output):
+    controls=[]
+    for fault in ['missing_MOS','wrong_junction','swap_drain_source','body_short','missing_contact','changed_contact_R','missing_rfmode']:
+        lines=text.splitlines();mos=next(i for i,s in enumerate(lines) if ' sg13_lv_nmos ' in s);contact=next(i for i,s in enumerate(lines) if ' ptap1 ' in s)
+        if fault=='missing_MOS':del lines[mos]
+        elif fault=='missing_contact':del lines[contact]
+        elif fault=='changed_contact_R':lines[contact]=re.sub(r'R=\S+','R=1',lines[contact])
+        elif fault=='wrong_junction':lines[mos]=re.sub(r'ad=\S+','ad=99p',lines[mos])
+        elif fault=='missing_rfmode':lines[mos]=re.sub(r' rfmode=\S+','',lines[mos])
+        else:
+            words=lines[mos].split()
+            if fault=='body_short':words[4]=words[3]
+            else:words[1],words[3]=words[3],words[1]
+            lines[mos]=' '.join(words)
+        bad='\n'.join(lines)+'\n';(output/(fault+'.spice')).write_text(bad)
+        try:verify(bad,rows,tech)
+        except AssertionError as error:controls.append(dict(fault=fault,rejected=True,reason=str(error)))
+        else:raise AssertionError('Accepted actual model corruption '+fault)
+    return controls
+
+def validate_model_libraries(models):
+    # Pin the unmodified model declarations, including MOS order and contact R law.
+    for path,model in [('sg13g2_moslv_mod.lib','sg13_lv_nmos'),('sg13g2_moslv_mod.lib','sg13_lv_pmos'),('sg13g2_moshv_mod.lib','sg13_hv_nmos')]:
+        lib=(models/'libs.tech/ngspice/models'/path).read_text()
+        assert len(re.findall(r'^\.subckt\s+'+model+r'\s+d\s+g\s+s\s+b\s*$',lib,re.M|re.I))==1
+    lib=(models/'libs.tech/ngspice/models/resistors_mod.lib').read_text()
+    for model in ('ptap1','ntap1'):
+        match=re.search(r'^\.subckt\s+'+model+r'\s+1\s+2\s*\n(.*?)^\.ends\s+'+model,lib,re.M|re.S|re.I);assert match
+        assert [line.strip() for line in re.findall(r'^R\S+\s+1\s+2\s+R=R\s*$',match[1],re.M)]==['R1 1 2 R=R']
+
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],source=SOURCE,qualified_pex=False,qualified_substrate=False,qualified_timing=False,serial_phy_complete=False,mainchip_integrated=False,wire_parasitics_included=False,simulator_checked=False)
@@ -89,33 +119,10 @@ def main():
             fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/'+PDK+'/ihp-sg13g2/'+path,digest,target)
         result['models']=dict(commit=PDK,hashes=PINS)
         tech=json.loads((models/'libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json').read_text())['techParams']
-        # Pin the unmodified model declarations, including MOS order and contact R law.
-        for path,model in [('sg13g2_moslv_mod.lib','sg13_lv_nmos'),('sg13g2_moslv_mod.lib','sg13_lv_pmos'),('sg13g2_moshv_mod.lib','sg13_hv_nmos')]:
-            lib=(models/'libs.tech/ngspice/models'/path).read_text()
-            assert len(re.findall(r'^\.subckt\s+'+model+r'\s+d\s+g\s+s\s+b\s*$',lib,re.M|re.I))==1
-        lib=(models/'libs.tech/ngspice/models/resistors_mod.lib').read_text()
-        for model in ('ptap1','ntap1'):
-            match=re.search(r'^\.subckt\s+'+model+r'\s+1\s+2\s*\n(.*?)^\.ends\s+'+model,lib,re.M|re.S|re.I);assert match
-            assert [line.strip() for line in re.findall(r'^R\S+\s+1\s+2\s+R=R\s*$',match[1],re.M)]==['R1 1 2 R=R']
+        validate_model_libraries(models)
         text,bindings=build(rows,tech);model=OUT/'driver100.spice';model.write_text(text)
         result['positive']=verify(model.read_text(),rows,tech);result['bindings']=bindings
-        controls=[]
-        for fault in ['missing_MOS','wrong_junction','swap_drain_source','body_short','missing_contact','changed_contact_R','missing_rfmode']:
-            lines=text.splitlines();mos=next(i for i,s in enumerate(lines) if ' sg13_lv_nmos ' in s);contact=next(i for i,s in enumerate(lines) if ' ptap1 ' in s)
-            if fault=='missing_MOS':del lines[mos]
-            elif fault=='missing_contact':del lines[contact]
-            elif fault=='changed_contact_R':lines[contact]=re.sub(r'R=\S+','R=1',lines[contact])
-            elif fault=='wrong_junction':lines[mos]=re.sub(r'ad=\S+','ad=99p',lines[mos])
-            elif fault=='missing_rfmode':lines[mos]=re.sub(r' rfmode=\S+','',lines[mos])
-            else:
-                words=lines[mos].split()
-                if fault=='body_short':words[4]=words[3]
-                else:words[1],words[3]=words[3],words[1]
-                lines[mos]=' '.join(words)
-            bad='\n'.join(lines)+'\n';(OUT/(fault+'.spice')).write_text(bad)
-            try:verify(bad,rows,tech)
-            except AssertionError as error:controls.append(dict(fault=fault,rejected=True,reason=str(error)))
-            else:raise AssertionError('Accepted actual model corruption '+fault)
+        controls=negative_controls(text,rows,tech,OUT)
         result['controls']=controls;result['model_sha256']=sha(model)
         assert all(sha(source/p)==v for p,v in prior['outputs'].items()) and all(sha(models/p)==v for p,v in PINS.items())
         result['status']='PASS_RAW100_NAMED_MOS_JUNCTIONS_AND_FINITE_CONTACT_MODEL_WITH_SEVEN_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
