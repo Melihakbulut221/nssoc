@@ -106,8 +106,9 @@ def main():
             code='printf "native-entrypoint\\n" >> boots.log; exec "'+str(engine)+'" -n -b actual-acquisition.cir'
             return ['docker','create'if create else'run',*([]if create else['-d']),'--name',name,'--network','host','--security-opt','seccomp=unconfined','--cpuset-cpus',cpu,'--mount','type=bind,src='+str(ROOT)+',dst='+str(ROOT)+',readonly','--mount','type=bind,src='+str(case)+',dst='+str(case),'-w',str(case),'-e','SPICE_SCRIPTS='+str(case),'-e','OMP_NUM_THREADS=1','-e','RAYON_NUM_THREADS=1','--entrypoint','/bin/dash',result['image_id'],'-c',code]
         reference='nssoc-native-reference';original='nssoc-native-original';clone='nssoc-native-restored';owned=[reference,original,clone]
-        run('start-reference',command(reference,cases['reference']));assert run('wait-reference',['docker','wait',reference]).stdout.strip()=='0'
-        run('reference-log',['docker','logs',reference]);ref_log=(OUT/'reference-log.log').read_text()
+        run('start-reference',command(reference,cases['reference']));reference_exit=run('wait-reference',['docker','wait',reference]).stdout.strip()
+        run('reference-log',['docker','logs',reference],False);ref_log=(OUT/'reference-log.log').read_text()
+        assert reference_exit=='0',('Native reference exit',reference_exit,ref_log[-6000:])
         rn,rv,rr=inspect_capture(cases['reference'],vectors,ref_log);result['reference']=rr
         result['host_container_equivalence']=verify((hn,hv),(rn,rv),(cases['reference']/'boots.log').read_text().splitlines());save()
         run('start-native',command(original,cases['resumed']));raw=cases['resumed']/'actual-acquisition.raw';deadline=time.monotonic()+180
@@ -128,8 +129,9 @@ def main():
         restored=run('restore-native',['docker','start','--checkpoint','state',clone],False)
         if restored.returncode:
             run('restore-native-detail',['sudo','cat','/run/containerd/io.containerd.runtime.v2.task/moby/'+clone_id+'/work/restore.log'],False);raise RuntimeError('Native restore failed')
-        assert run('wait-native-clone',['docker','wait',clone]).stdout.strip()=='0'
-        run('restored-native-log',['docker','logs',clone]);resumed_log=original_log+(OUT/'restored-native-log.log').read_text()
+        clone_exit=run('wait-native-clone',['docker','wait',clone]).stdout.strip()
+        run('restored-native-log',['docker','logs',clone],False);resumed_log=original_log+(OUT/'restored-native-log.log').read_text()
+        assert clone_exit=='0',('Restored native exit',clone_exit,resumed_log[-6000:])
         sn,sv,sr=inspect_capture(cases['resumed'],vectors,resumed_log);result['restored']=sr
         assert raw.read_bytes().split(marker,1)[1].startswith(payload),'Native pre-checkpoint payload changed'
         result['positive']=verify((rn,rv),(sn,sv),(cases['resumed']/'boots.log').read_text().splitlines());controls=[]
@@ -145,7 +147,9 @@ def main():
         result.update(status='PASS_NATIVE_PHYSICAL845_CHECKPOINT_BIT_EXACT_BOUNDED4NS_NOT_CROSS_JOB_OR_ACQUISITION',native_checkpoint_proven=True)
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
-        for name in owned:run('cleanup-'+name,['docker','rm','-f',name],False)
+        for name in owned:
+            run('final-log-'+name,['docker','logs',name],False)
+            run('cleanup-'+name,['docker','rm','-f',name],False)
         if (OUT/'checkpoints').exists():run('readable-checkpoints',['sudo','chown','-R',str(os.getuid())+':'+str(os.getgid()),str(OUT/'checkpoints')],False)
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
         print(json.dumps({k:result[k]for k in ('status','error','native_checkpoint_proven')if k in result}),flush=True)

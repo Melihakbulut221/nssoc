@@ -38,7 +38,7 @@ jobs:
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Compile exact source-bound buffer repair controllers
         run: python3 -m py_compile scripts/branch_hold_targets.py scripts/prepare_cloud_branch_hold_eco.py scripts/run_cloud_branch_hold_eco.py
-      - name: Insert eighty-eight measured SRAM hold branches, prove full logic, reroute and reextract all corners
+      - name: Insert eighty-eight measured short-only input branches, prove full logic, reroute and reextract all corners
         run: python3 scripts/run_cloud_branch_hold_eco.py
       - name: Preserve exact sources, extracted RC and native timing observations
         if: always()
@@ -67,9 +67,9 @@ jobs:
           assert p.is_file(), 'Physical experiment report missing'
           result = json.loads(p.read_text())
           assert result.get('source_head') == os.environ['GITHUB_SHA'], 'Wrong source revision'
-          assert result.get('status') == 'COMPLETE_REFINED_HOLD_BATCH_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF', result.get('status')
-          assert result.get('profile') == 'branch_hold_batch' and result.get('buffer_count') == 146
-          assert result['stage_added_cells']==5 and result['parent_added_cells']==146
+          assert result.get('status') == 'COMPLETE_BRANCH_HOLD_BATCH_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF', result.get('status')
+          assert result.get('profile') == 'branch_hold_batch' and result.get('buffer_count') == 234
+          assert result['stage_added_cells']==88 and result['parent_added_cells']==146
           import sys
           sys.path.insert(0,'scripts')
           from branch_hold_targets import validate_child
