@@ -16,8 +16,15 @@ def pins(text):
     assert 'data arrival time' in text
     rows=re.findall(r'(?m)^[^\n]* [\^v] (\S+) \(([^()\n]+)\)\s*$',text.split('data arrival time')[0])
     clocks=[i for i,(name,master) in enumerate(rows) if name.endswith('/CLK')]
-    assert len(clocks)==1, 'Expected a single register launch clock'
-    result=[name for name,master in rows[clocks[0]+1:]]
+    if clocks:
+        assert len(clocks)==1, 'Multiple register launch clocks'
+        result=[name for name,master in rows[clocks[0]+1:]]
+    else:
+        # An external input launch has no register CLK row. Require explicit
+        # native input-port provenance and exact first-row identity.
+        launch=re.match(r'Startpoint: (\S+) \(input port clocked by [^\n]+\)',text)
+        assert launch and rows and rows[0]==(launch.group(1),'in')
+        result=[name for name,master in rows]
     assert len(result)>=3 and not any(n.endswith('/CLK')for n in result)
     return result
 def main():
