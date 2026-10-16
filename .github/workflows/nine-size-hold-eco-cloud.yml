@@ -3,9 +3,6 @@
 # Selected GRT uses a guarded copy; full DRT rebuilds every signal wire from merged guides.
 name: nine-size-hold-eco-cloud
 on:
-  push:
-    branches: [codex/complete-open-work]
-    paths: [.github/workflows/nine-size-hold-eco-cloud.yml]
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,7 +10,7 @@ concurrency:
   group: nine-size-hold-eco-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  nine-cell-physical-eco:
+  six-branch-physical-eco:
     runs-on: ubuntu-22.04
     timeout-minutes: 350
     permissions:
@@ -34,7 +31,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Legalize exactly9 sizes, route all signals, extract fresh RC and compare every endpoint
+      - name: Legalize exactly six new delays, route all signals, extract fresh RC and compare every endpoint
         run: |
           python3 -m py_compile scripts/run_cloud_nine_size_hold_eco.py scripts/prepare_nine_size_hold_eco.py
           python3 scripts/run_cloud_nine_size_hold_eco.py
@@ -70,9 +67,9 @@ jobs:
           import json,os
           r=json.load(open('cloud-nine-size-hold-eco/result.json'))
           assert r['source_head']==os.environ['GITHUB_SHA']
-          assert r['status']=='COMPLETE_NINE_SIZED_CELLS_ROUTED_FRESH_NOMINAL_RC_ALL_ENDPOINTS_NOT_SIGNOFF',r.get('error')
+          assert r['status']=='COMPLETE_SIX_SHORT_BRANCH_DELAYS_ROUTED_FRESH_RC_ALL_ENDPOINTS_NOT_SIGNOFF',r.get('error')
           assert r['source_unchanged'] and r['parent_timing_reproduced']
-          assert r['native_drt_drvs']==0 and r['sized_cells']==9 and r['added_cells']==0
+          assert r['native_drt_drvs']==0 and r['sized_cells']==0 and r['added_cells']==6
           assert r['logic']['status']=='PASS within scope' and r['inversion_control']=='REJECTED'
           assert r['endpoint_count']==22544 and r['endpoint_corner_delay_rows']==135264
           assert not r['accepted'] and not r['final_timing_complete']
