@@ -58,3 +58,24 @@ the needed authenticated native GDS/LVS/reference files. It exports fresh raw
 and combined junction records, retains all original five MOS binding controls,
 independently binds all four physical resistors, and rejects a changed resistor
 length or body. This is still not wire RC or loaded electrical acceptance.
+
+## Actual pullup layouts and fresh RC complete; loaded studies active
+
+Cloud-only checkpoint: 2026-10-16T17:01:43.813343+00:00. The local project directory remains empty.
+This goal turn made physical/model progress; it is not blocked. Do not restart
+healthy runs. Full serial Gen3x4 PHY, mainchip routing and final timing are open.
+
+- **Actual fresh-RC loaded run38936139904**, source9e6679b30a0f31556d0ea32097cefd1c480dc47e, is active for both l2p7/l2p4. It uses the actual new GDS-derived100-device models and new260R295C wire extraction, unchanged full34ns/256bits/0.3,0.5,0.7UI/672MOS/62HBT gates, same physical downstream162-device tree. Inspect both results and retain failures; do not confuse them with frozen-wire sensitivity38931374696. External clocks/supplies/intermacro boundaries, four-lane32:1 PHY and qualification remain open.
+- **Native physical38932966041 passed both variants**: four raw/aggregate/deep/flat LVS comparisons, DRC, all original faults and an added actual wrong-pullup-length LVS mismatch. Only XUP length3.08um becomes2.7/2.4um; gate damping12um and other devices preserved. Generator scripts/cloud_tx_input_driver_localpins.py has explicit --pullup-length; default original unchanged.
+- **Junction38933670094, wire/contact38934298533, intrinsic38934646634, freshRC38935036370 and composition38935779019 all passed both variants.** Each has100devices,372terminals(272metal/100body),164referenceplanes,10wirecomponents,260R295C; five original MOS binding faults+two resistor faults, four contact faults, eight intrinsic faults,13nativeRC faults and10composition faults were rejected. Three combined/raw MOS junction disagreements remain recorded; actual raw fingers supply the models. Native extraction scope is not qualified substrate/poly-diffusion/RF/PEX.
+- First composition38935616068 failed before composition with KeyError source_unchanged because the RC producer does not publish that flag. Fixd5e2c134de853818424bb2e999b13db495938cb2 validates every restored output hash for both schemas, retains the intrinsic flag check and all physical/model controls. Corrected38935779019 passed. Preserve the initial failure; no circuit or engineering limit changed.
+- **Frozen-wire sensitivity38931374696 is complete, both electrically FAIL** despite successful workflow execution. l2p7: output171.306mV,CMOS163.418mV,final133.826mV/288below150mV;12HBTfail,0MOSfail. l2p4: output177.705mV,CMOS158.474mV,final135.955mV/261below150mV;2HBTfail(xd0001/xd0003 VCE0.393142/0.393154V vs0.4Vlimit),0MOSfail. Both full34ns,zeroOP,0wrongoutput/0below100mV,0solverdiagnostics. This narrows the next correction to the remaining first-stage headroom and final interface margin; never lower limits or adopt frozen wires.
+- **Nine-size full-signal route38930352215** and **native full1usPLL38910378266** are still active at this observation. Follow the prior exact native continuation and independent route review instructions below.
+
+All source/receipt hashes and measured failures are in
+`docs/evidence/tx-driver-pullup-results-20261016.json`. New controllers are
+cloud_tx_driver_pullup_{junctions,wires,intrinsic,rc,compose,loaded}.py.
+No new archive or CAD output exists locally. After loaded results, use actual
+waveform/device failures to choose the next source/geometry repair; fullPVT,
+32:1/four-lane integration, clocks/CDR and mainchip acceptance remain required.
+
