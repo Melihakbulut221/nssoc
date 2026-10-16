@@ -31,8 +31,10 @@ def reference_fault(text, name):
         assert lines[i].count("Nx=1") == 1
         lines[i] = lines[i].replace("Nx=1", "Nx=2")
     elif name == "wrong_offset_length":
-        assert ("l=6.5u" in lines[i]) != ("l=6.2u" in lines[i])
-        lines[i] = re.sub(r"l=6\.[25]u", "l=7u", lines[i])
+        lengths = re.findall(r"(?<!\S)l=(\S+)", lines[i])
+        assert len(lengths) == 1 and lengths[0] in ("6.5u", "6.2u", "5.9u", "5.7u")
+        lines[i], count = re.subn(r"(?<!\S)l=\S+", "l=7u", lines[i])
+        assert count == 1
     elif name == "missing_hbt":
         lines[i] = ""
     else:

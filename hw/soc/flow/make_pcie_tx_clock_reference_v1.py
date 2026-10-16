@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 
 PORTS = ["avdd", "cm", "avss", "sub"]
 TOP = "nssoc_tx_clock_reference_layout_v1"
+OFFSET_LENGTHS = {"l6p5": "6.5u", "l6p2": "6.2u", "l5p9": "5.9u", "l5p7": "5.7u"}
 CIRCUIT = "hw/soc/analog/pcie/tx_clock_common_bias_v3.spice"
 CIRCUIT_SHA256 = "da579518bd5140afc4e68545020524c3877a0119e2786c04833bc2e3e26ff199"
 FEED = "hw/soc/analog/pcie/tx_clock_bias_feed_v2.spice"
@@ -43,8 +44,8 @@ def devices(reference, feed, variant):
         row = dict(path="xclock." + fields[0].lower(), model=fields[count+1].lower(),
                    nets=fields[1:count+1],
                    params={k.lower(): v for k,v in (p.split("=") for p in fields[count+2:])})
-        if fields[0] == "XOFFSET" and variant == "l6p2":
-            row["params"]["l"] = "6.2u"
+        if fields[0] == "XOFFSET":
+            row["params"]["l"] = OFFSET_LENGTHS[variant]
         rows.append(row)
     assert len(rows) == 3
     return rows
@@ -54,7 +55,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("pdk", "out"):
         parser.add_argument("--" + name, type=Path, required=True)
-    parser.add_argument("--variant", choices=["l6p5", "l6p2"], required=True)
+    parser.add_argument("--variant", choices=list(OFFSET_LENGTHS), required=True)
     args = parser.parse_args()
     R = Path(__file__).resolve().parents[3]
     out = args.out.resolve()
@@ -247,7 +248,7 @@ def main():
                 substrate_contacts=3,
                 variant=args.variant,
                 source_topology="reference_v3_plus_feed_v2",
-                declared_changes=[] if args.variant == "l6p5" else [dict(device="XOFFSET", parameter="l", before="6.5u", after="6.2u")],
+                declared_changes=[] if args.variant == "l6p5" else [dict(device="XOFFSET", parameter="l", before="6.5u", after=OFFSET_LENGTHS[args.variant])],
                 native_body_mapping="All three device bodies connect to BULK through three explicit finite ptap1 contacts; sub and avss stay distinct",
                 routes=routes,
                 ports={n: str(b) for n, (_, b) in ports.items()},

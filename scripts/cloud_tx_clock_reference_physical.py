@@ -7,7 +7,7 @@ from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=['l6p5','l6p2'],required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=['l6p5','l6p2','l5p9','l5p7'],required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('hw/soc/out/cloud-tx-clock-reference-'+args.variant);out.mkdir(parents=True,exist_ok=False)
     record=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,accepted=False,qualified_pex=False,electrically_validated=False,serial_phy_complete=False,mainchip_integrated=False)
