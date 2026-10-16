@@ -103350,7 +103350,7 @@
     "scope": "Transport/control proof only; not physical, numerical waveform or PHY acceptance."
   },
   "latest_cloud_checkpoint_20261016": {
-    "observed_at": "2026-10-16T01:47:53.806023+00:00",
+    "observed_at": "2026-10-16T02:08:37.767585+00:00",
     "cloud_only": true,
     "local_workspace_entries": 0,
     "active_or_recent": [
@@ -104145,17 +104145,15 @@
       {
         "run": 38835470494,
         "topic": "protected-contact-eco-cloud",
-        "status": "in_progress",
-        "conclusion": null,
+        "status": "completed",
+        "conclusion": "success",
         "source_head": "376793a946b712d1b25e5919af165ba65647b70b",
         "jobs": [
           {
             "id": 116763502825,
-            "status": "in_progress",
-            "conclusion": null,
-            "active_steps": [
-              "Release eight measured intersecting nets, reroute108nets and recheck all original timing corners"
-            ]
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
           }
         ]
       },
@@ -104305,6 +104303,107 @@
             "active_steps": []
           }
         ]
+      },
+      {
+        "run": 38838026271,
+        "topic": "eco-endpoint-compare-cloud",
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "3340a780106fc391adccd2d58f60ffdd6301e3a7",
+        "jobs": [
+          {
+            "id": 116771426931,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          },
+          {
+            "id": 116771522540,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          }
+        ]
+      },
+      {
+        "run": 38838028482,
+        "topic": "candidate-geometry-cloud",
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "3340a780106fc391adccd2d58f60ffdd6301e3a7",
+        "jobs": [
+          {
+            "id": 116771434357,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          },
+          {
+            "id": 116771640152,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          }
+        ]
+      },
+      {
+        "run": 38838030769,
+        "topic": "candidate-annotation-cloud",
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "3340a780106fc391adccd2d58f60ffdd6301e3a7",
+        "jobs": [
+          {
+            "id": 116771442412,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          },
+          {
+            "id": 116771579359,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          }
+        ]
+      },
+      {
+        "run": 38837758293,
+        "topic": "measured-hold-eco-cloud",
+        "status": "in_progress",
+        "conclusion": null,
+        "source_head": "3340a780106fc391adccd2d58f60ffdd6301e3a7",
+        "jobs": [
+          {
+            "id": 116770585137,
+            "status": "in_progress",
+            "conclusion": null,
+            "active_steps": [
+              "Insert four measured SRAM hold branches, prove full logic, reroute and reextract all corners"
+            ]
+          }
+        ]
+      },
+      {
+        "run": 38838421565,
+        "topic": "eco-endpoint-compare-cloud",
+        "status": "completed",
+        "conclusion": "success",
+        "source_head": "0b464ebf8179bee2f526477981a590d8cf1df267",
+        "jobs": [
+          {
+            "id": 116772650977,
+            "status": "completed",
+            "conclusion": "success",
+            "active_steps": []
+          },
+          {
+            "id": 116772738312,
+            "status": "completed",
+            "conclusion": "skipped",
+            "active_steps": []
+          }
+        ]
       }
     ],
     "completed_drt": {
@@ -104409,7 +104508,7 @@
       "final_timing_complete": false,
       "meaning": "All1065 reported drivers classified:302connected without sinks and763disconnected; none drives an unannotated load. Exact113556SPEF net-id/name mappings verified. This resolves this annotation uncertainty for the original route only, not functional interface completeness or final STA/RC qualification."
     },
-    "observed_branch_head": "309ca1e61b58d37cd8b05c4fa5d2bde5d232ba68",
+    "observed_branch_head": "0b464ebf8179bee2f526477981a590d8cf1df267",
     "actual_route_endpoint_census": {
       "run": 38819589884,
       "summary_sha256": "54a23354fc53eb4811b574a1c1bbd70aa413d83463e5165f240b8925c10e00ff",
@@ -104435,10 +104534,11 @@
       "pcie_retrain_done_worst_slow_startpoints": 68
     },
     "next_actions_20261016": [
-      "Inspect live108-net contact repair38835470494 before any duplicate; once terminal run all3independent checks with exact new SHA256. Original protected50 was rejected for25crossnetcontacts.",
-      "Candidate hold-conflict trace38836226947 is COMPLETE:96targets/576paths exactly reproduce native allcornerSI slack.92alsofailsetup; four Ethernet SRAM sinks have positive setupallcorners. Implement source-bound joint repair without relaxingconstraints; use exact nativepinmapping in cloud-measured-load-hold-conflicts-20261016.json.",
-      "Both unprotected50 and3buffer candidates and their endpoint/geometry/annotation checks are complete. Do not rerun them. All results are in cloud-unprotected-load-candidates-20261016.json; neither is adopted.",
-      "Inspect live full1us PLL38813902351 and full32coarse38834025040/fine38810163678. Fine oldworkflow may fail decimalgroup publication; wait for terminal state before replacement. FullPHY still open."
+      "Check live four-SRAM-branch hold repair38837758293/job116770585137 before duplicate. Native recipe/corruption/runtime/compile controls passed; fullphysical work is live. After terminal completion run all3independent workflows with measured_hold_batch profile and exact output hashes.",
+      "The endpoint reviewer now compares child54cell candidate to both original and exact50cell parent, including four-target allcorner hold AND setup verdicts. Source0b464ebf controls38838421565 passed newsetupfailure,unconstrainedhold,missingtarget,changedparent negative controls. Do not judge fourtarget repair only from group minima.",
+      "Contact repair38835470494 and its3independent reviews are complete:25prior contacts->0,113498fixed wires unchanged. Antenna645/801 and setup/hold still open, candidate not adopted. No need to rerun completed diagnostics.",
+      "92other hold targets alsofailsetup; keep their complete trace and pursue joint setup/hold fixes. FullserialPHY requires completed nativeanalog captures and actualphysical integration.",
+      "Inspect live PLL38813902351 and full32 Sparse38810163678/38834025040; do not restart until terminal. Fine oldworkflow may hit decimalgroup publication failure."
     ],
     "control_load_placement_followup": {
       "failed_run": 38821357967,
@@ -104649,7 +104749,19 @@
       "selected_nets": 108,
       "required_unchanged_wired_nets": 113498,
       "acceptance": false,
-      "followup": "After terminal completion, run independent endpoint, geometry/antenna and RC annotation workflows using exact new summary/manifest SHA256. Zero native DRT is insufficient; all25previouscontacts must be absent and the whole exportedgeometry screen must have zero cross-net contacts. Setup andhold remain independently open."
+      "followup": "After terminal completion, run independent endpoint, geometry/antenna and RC annotation workflows using exact new summary/manifest SHA256. Zero native DRT is insufficient; all25previouscontacts must be absent and the whole exportedgeometry screen must have zero cross-net contacts. Setup andhold remain independently open.",
+      "status": "CROSS_NET_CONTACT_REPAIR_VERIFIED_TIMING_AND_ANTENNA_STILL_OPEN",
+      "receipt": "docs/evidence/cloud-protected-contact-repair-results-20261016.json",
+      "source_summary_sha256": "708d40a1393c5caab514ee5491c10f55b7e84d34d18b910eb1db913d321a8038",
+      "source_manifest_sha256": "31cc294a29eb3d9d39a70ba308ff2891737112c21ce518b28f787e9d7bd32bb6",
+      "independent_runs": [
+        38838026271,
+        38838028482,
+        38838030769
+      ],
+      "cross_net_shape_contacts": 0,
+      "previous_cross_net_shape_contacts": 25,
+      "accepted": false
     },
     "unprotected_candidates_completed_not_adopted": {
       "receipt": "docs/evidence/cloud-unprotected-load-candidates-20261016.json",
@@ -104697,6 +104809,23 @@
       "all_corner_positive_setup_targets": 4,
       "summary_sha256": "9bd5d1a86cb83d83d8df5505e1a7cf47c1fc086ef45431274798083749709348",
       "manifest_sha256": "322542ac971732fa73fe13cddc157ef63962d611d19b9a28e4e541942359bb8f"
+    },
+    "measured_sram_hold_repair": {
+      "run": 38837758293,
+      "job": 116770585137,
+      "source_head": "3340a780106fc391adccd2d58f60ffdd6301e3a7",
+      "profile": "measured_hold_batch",
+      "parent_run": 38824521607,
+      "parent_summary_sha256": "2567e3e86159187b5f6db0df8a1c2be663c3d66df9e20d4fc650f98fe9ad2db5",
+      "parent_manifest_sha256": "cbf6cb0b3c6cb3962ff6d410739926146901f731229f2cb915d656bf786eafb5",
+      "stage_added_cells": 4,
+      "cumulative_added_cells": 54,
+      "master": "sg13g2_dlygate4sd3_1",
+      "recipe_sha256": "55046b17b57dc82eeecbd26783ac62241bde725fce3eab21f9f271dd9a76565b",
+      "scope": "Exactfour SRAM sink branches from completed96target/576path trace. All113841parentcellgeometry and nonselectedpins preserved. Original-to-final54cell logic proof/inversionnegative, fullreroute andfreshRC/originalcornerSTA required. No implied hold or setup pass.",
+      "independent_parent_comparison_source": "0b464ebf8179bee2f526477981a590d8cf1df267",
+      "parent_comparison_controls": 38838421565,
+      "accepted": false
     }
   }
 }
