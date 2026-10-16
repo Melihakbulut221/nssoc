@@ -1,3 +1,21 @@
+## Cloud continuation: fresh-clock screen passed; PLL geometry and RF setup repair (2026-10-17)
+
+Latest instruction remains cloud-only. Local workspace is empty. Full serialGen3x4, mainchip integration and final setup/hold remain OPEN.
+
+- Actual5p7 clock + fresh13R28C + actual drivers/tree **38963616666** completed the original34ns loaded capture: all768 output samples pass100mV (minimum205.919997mV), all62HBT/672MOS screens pass; weakest monitored HBT409.559mV. Final interface6912samples minimum150.931795mV, still under1mV margin. This closes the prior nominal clock-related component failure, not PVT/fullPHY/mainchip acceptance. Summary648606819/parts648606925 are hash-pinned in the evidence record below.
+- PLL load hypotheses **38962945591** both restore divider/feedback transitions. Select3p2 for actual geometry: last10ns VCEmin450.904mV versus4p2's387.062mV. Neither is lock or physical evidence; they retain oldRC. New generator/checker explicitly change four named second-toggle loads W8/L2.12->3.2 per divider, preserve original native DRC/deep+flatLVS/LEF/faults, add reverted-load fault. The old one-tail delta audit does not describe this new design; full candidate circuit comparison and extracted W/L remain mandatory. New physical producer needs to finish before fresh RC and full acquisition.
+- New **CORRPRE** RTL candidate corrects each RF word before selecting read address. Defaults0; same storage/scrub/reporting/cycles. Component workflow proves clock-step equivalence, checks inverted-output controls, runs actual stored-bit fault campaigns SCRUB1/0, and prices mapped area and three-corner address/storage read timing. Initial38966653325 failed on unsupported asyncFF SAT model; repaired explicitly with async2sync. This is NOT a passing result or whole-core adoption. Do not wire/default it into mainchip until evidence supports the tradeoff.
+- Preserve physical startup failures38967898472 (fault tuple serialization) and38968144826 (actual geometry generated, technology LEF omitted). Latest repair restores exact PDKc4b8b4e... technologyLEF with SHAe3470344...; no design or acceptance gate waived.
+
+Specific live handles at this checkpoint:
+- **38967093235** source7f392d9484cf31b20e306739d69c82eb51abce6d: in_progress, conclusion=None. Inspect this same run; do not restart a healthy job.
+- **38968477345** sourceeb724afd292f991ba504e1486bd52188c8c2d8aa: in_progress, conclusion=None. Inspect this same run; do not restart a healthy job.
+- **38957249404** source2a3f6a2cac51640809c2e40aba8d685927229520: in_progress, conclusion=None. Inspect this same run; do not restart a healthy job.
+
+Full receipts and scope: `docs/evidence/cloud-clock-pass-pll-geometry-corrpre-progress-20261017.json`. Next inspect those runs, repair genuine failures, then carry candidate extraction/functional/timing work into the complete PHY and routed mainchip. Do not call the three top-level objectives complete.
+
+---
+
 ## Cloud continuation: actual5p7 clock extracted; PLL load repairs running (2026-10-16)
 
 Latest human cloud-only instruction overrides the old goal text about local execution. Workspace remains empty; original downloaded review documents were archived and removed with verified readback. No local CAD, checkout or output artifacts. Full serialGen3x4, mainchip integration and final setup/hold are still OPEN.
