@@ -45,3 +45,16 @@ fault. An additional actual wrong-length schematic (original3.08um against the
 new GDS) must fail LVS. Neither frozen-wire sensitivity nor these physical gates
 qualifies the new interconnect: fresh native extraction, terminal mapping,
 wire RC, composed loaded capture and PVT remain mandatory before adoption.
+
+## Physical results and next native extraction
+
+Cloud run38932966041 (sourceabe4789b219810eb893bc5f2dd85dbea5713ddee)
+completed both variants successfully. Each passed four native LVS comparisons,
+full DRC and all eight negative cases, including the wrong3.08um pullup length.
+The actual100-device physical references contain exactly one changed source row.
+GDS hashes and both source summary/parts hashes are frozen in
+scripts/cloud_tx_driver_pullup_junctions.py, whose cloud workflow restores only
+the needed authenticated native GDS/LVS/reference files. It exports fresh raw
+and combined junction records, retains all original five MOS binding controls,
+independently binds all four physical resistors, and rejects a changed resistor
+length or body. This is still not wire RC or loaded electrical acceptance.

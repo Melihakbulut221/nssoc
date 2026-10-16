@@ -15,9 +15,9 @@ from cloud_tx_driver_localpins_lef import SOURCE
 from run_cloud_tx_layout_repair import sha
 ROOT=physical.ROOT;TOP=physical.TOP;OUT=ROOT/'hw/soc/out/cloud-tx-driver-localpins-junctions'
 
-def export():
+def export(source=None):
     import pya
-    source=OUT/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'
+    source=Path(source) if source is not None else OUT/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'
     prior=json.loads((source/'result.json').read_text());geometry=prior['geometry']
     layout=pya.Layout();layout.read(str(source/'base/layout.gds'));top=layout.cell(TOP)
     assert top is not None
