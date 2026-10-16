@@ -40,7 +40,7 @@ def name_controls():
     assert spef_net_name(pairs[0][0])!=spef_net_name(pairs[1][0])
     return dict(exact_native_writer_cases=len(pairs),literal_brackets_distinct=True)
 
-SUPPORTED_ADDED_COUNTS = frozenset((0,2,3,50,54,110,141,146,234))
+SUPPORTED_ADDED_COUNTS = frozenset((0,2,3,50,54,110,141,146,234,240))
 
 def native(added=0,spef_name='actual-route.nominal.spef',log_name='actual-routed-sta.log'):
     import odb
