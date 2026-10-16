@@ -36,11 +36,12 @@ def main():
         run('experimental',['sudo','python3','-c',code]);run('daemon-restart',['sudo','systemctl','restart','docker'])
         run('docker-version',['docker','version']);run('pull',['docker','pull','python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1'],timeout=300)
         info=json.loads(run('image',['docker','image','inspect','python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1']).stdout)[0]
+        result['network_mode']='host: Docker28 restore namespace workaround; fixture opens no sockets'
         result['image_id']=info['Id'];result['image_repo_digests']=info['RepoDigests'];assert result['image_repo_digests']
         worker=ROOT/'scripts/cloud_checkpoint_state_worker.py';result['worker_sha256']=sha(worker)
         data=OUT/'data';data.mkdir();checkpoints=OUT/'checkpoints';checkpoints.mkdir()
         original='nssoc-checkpoint-original';clone='nssoc-checkpoint-restored';owned=[original,clone]
-        common=['--network','none','--security-opt','seccomp=unconfined','-e','PYTHONDONTWRITEBYTECODE=1','--mount','type=bind,src='+str(worker)+',dst=/probe/worker.py,readonly','--mount','type=bind,src='+str(data)+',dst=/data']
+        common=['--network','host','--security-opt','seccomp=unconfined','-e','PYTHONDONTWRITEBYTECODE=1','--mount','type=bind,src='+str(worker)+',dst=/probe/worker.py,readonly','--mount','type=bind,src='+str(data)+',dst=/data']
         command=[result['image_id'],'python','/probe/worker.py']
         run('start',['docker','run','-d','--name',original,*common,*command])
         deadline=time.monotonic()+45
@@ -65,7 +66,8 @@ def main():
         restored=run('restore',['docker','start','--checkpoint','state',clone],False)
         if restored.returncode:
             log=Path('/run/containerd/io.containerd.runtime.v2.task/moby')/clone_id/'work/restore.log'
-            run('restore-native-log',['sudo','cat',str(log)],False)
+            native_log=run('restore-native-log',['sudo','cat',str(log)],False)
+            print((restored.stdout+restored.stderr+native_log.stdout+native_log.stderr)[-14000:],flush=True)
             raise RuntimeError('Default-directory restore failed')
         p=run('wait',['docker','wait',clone],timeout=120);assert p.stdout.strip()=='0'
         raw=(data/'wave.bin').read_bytes();assert raw.startswith(prefix),'Pre-checkpoint output changed'
