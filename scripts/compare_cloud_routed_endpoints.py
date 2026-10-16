@@ -5,6 +5,7 @@
 import argparse,copy,json,math,os,re,struct,subprocess,tarfile
 from pathlib import Path
 from cloud_contact_release import validate_route_proof
+from measured_hold_targets import validate_child,CHILD_FILES
 from candidate_hold_conflicts import controls as conflict_controls,measure as measure_conflicts
 from audit_cloud_route_annotation import BASE,SUMMARY_SHA,ARCHIVE_SHA
 from audit_cloud_routed_endpoints import parse_table,controls as table_controls,HELPER_SHA
@@ -95,10 +96,11 @@ def main(args):
         original,original_proof=restore_report('routed-endpoints',38819589884,CENSUS_SHA,CENSUS_PARTS_SHA,OUT/'baseline',('native-census.json','endpoint-slacks.tsv'))
         assert original['source_unchanged'] and original['original_routed_timing_reproduced']
         before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
-        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH')}
+        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH')}
         count,group,status_prefix=profiles[args.profile];candidate_dir=ROOT/('cloud-'+group)
         selection=('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json')
         if args.profile=='protected_load_batch':selection+=('protected-route-proof.json','fixed-source-summary.json')
+        if args.profile=='measured_hold_batch':selection+=CHILD_FILES
         candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,selection)
         if args.profile=='protected_load_batch':
             protected=json.loads((candidate_dir/'protected-route-proof.json').read_text())
@@ -117,6 +119,7 @@ def main(args):
         # inventory omits every basename result.json, including logic/result.json.
         # Do not pretend that omitted nested receipt has an external file hash.
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
+        if args.profile=='measured_hold_batch':validate_child(candidate,candidate_dir)
         result.update(candidate=proof,baseline=original_proof);save()
         fetch(BASE+'.summary.json',SUMMARY_SHA,OUT/'original-route-summary.json');source=json.loads((OUT/'original-route-summary.json').read_text())
         packed=OUT/'original-route.tar.gz';fetch(BASE+'.tar.gz.part0000',ARCHIVE_SHA,packed);assert packed.stat().st_size==225682086 and not SOURCE.exists()
@@ -155,7 +158,7 @@ def main(args):
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch'])
+    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch','measured_hold_batch'])
     parser.add_argument('--hold-paths',action='store_true');parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))

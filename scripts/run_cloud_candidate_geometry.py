@@ -5,10 +5,11 @@
 import argparse,json,os,re,subprocess,sys
 from pathlib import Path
 from cloud_contact_release import validate_route_proof
+from measured_hold_targets import validate_child,CHILD_FILES
 import compare_cloud_routed_endpoints as source_reports
 from route_cloud_newer_postcts import sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-candidate-geometry'
-PROFILES={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH')}
+PROFILES={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH')}
 
 def main(args):
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False);source_reports.OUT=OUT
@@ -28,6 +29,7 @@ def main(args):
     try:
         selection=('routed.odb','geometry-proof.json')
         if args.profile=='protected_load_batch':selection+=('protected-route-proof.json','fixed-source-summary.json')
+        if args.profile=='measured_hold_batch':selection+=CHILD_FILES
         candidate,proof=source_reports.restore_report(group,args.run,args.summary_sha,args.parts_sha,OUT/'source',selection)
         assert candidate['status']=='COMPLETE_'+status+'_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
         assert candidate['source_run']==38809759501 and candidate['native_drt_drvs']==0
@@ -36,6 +38,7 @@ def main(args):
         assert len(candidate['geometry']['added'])==len(candidate['geometry']['changes'])==count
         assert json.loads((OUT/'source/geometry-proof.json').read_text())==candidate['geometry']
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
+        if args.profile=='measured_hold_batch':validate_child(candidate,OUT/'source')
         if args.profile=='protected_load_batch':
             protected=json.loads((OUT/'source/protected-route-proof.json').read_text());assert protected==candidate['protected_route_proof']
             validate_route_proof(protected,candidate)

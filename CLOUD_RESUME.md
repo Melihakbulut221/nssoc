@@ -1,3 +1,7 @@
+## 2026-10-16 — Four measured SRAM hold branches staged on the exact50-buffer parent
+
+New measured-hold-eco workflow inserts four sg13g2_dlygate4sd3_1 cells only at the native mapped SRAM input branches from completed96target/576path trace38836226947. Parent is exact38824521607 (50addedcells), with independently verified zero signal contacts/continuity failures. The new candidate contains54cumulative addedcells and4stage additions; all113841parentcells/PG/NDR and allotherpins remain exact. Reproduce both original baseline and parent STA, prove original-to-final Boolean equivalence plus inversion rejection, full reroute, post-route geometry/pin proof, freshallnetRC and unchanged originalcornerSTA. The candidate is NOT accepted by experiment completion; allendpoint/geometry/annotation profiles now support this cumulative54-cell candidate only with pinned parent and post-route proofs. All92other hold/setup conflicts stay open. Do not duplicate the push-triggered physical job. Cloud-only; no local checkout.
+
 ## 2026-10-16 — All96candidate hold conflicts measured; next repair targets identified
 
 Native trace **38836226947** completed successfully on the actual50-buffer routed candidate38824521607. All **96hold endpoints /576original-corner min-max paths** exactly reproduce native raw-SI timing; no missing requests, no changed constraints, no source drift. Summary SHA256 `9bd5d1a86cb83d83d8df5505e1a7cf47c1fc086ef45431274798083749709348`. Full trace and exact native pin mappings are in `docs/evidence/cloud-measured-load-hold-conflicts-20261016.json`.

@@ -43,7 +43,7 @@ def name_controls():
 def native(added=0,spef_name='actual-route.nominal.spef',log_name='actual-routed-sta.log'):
     import odb
     d=odb.dbDatabase.create();odb.read_db(d,str(OUT/'routed.odb'));b=d.getChip().getBlock()
-    assert added in (0,2,3,50)
+    assert added in (0,2,3,50,54)
     assert Path(spef_name).name==spef_name and Path(log_name).name==log_name
     assert len(b.getInsts())==113791+added and len(b.getNets())==113863+added
     nets={n.getName():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
