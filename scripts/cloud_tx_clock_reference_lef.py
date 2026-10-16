@@ -32,6 +32,13 @@ def main():
         fetch(fixture['receipt']['url'],fixture['receipt']['sha256'],packed);assert packed.stat().st_size==fixture['receipt']['bytes']
         with tarfile.open(packed)as tar:tar.extractall(ROOT,filter='data')
         packed.unlink();manifest=json.loads((ROOT/'manifest.json').read_text());assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())
+        tech=ROOT/'pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef'
+        assert not tech.exists(),'Fixture unexpectedly supplies a technology LEF; reconcile provenance first'
+        tech.parent.mkdir(parents=True,exist_ok=True)
+        tech_url='https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef'
+        fetch(tech_url,'e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6',tech)
+        assert tech.stat().st_size==28396
+        result['technology_lef']=dict(url=tech_url,bytes=28396,sha256=sha(tech),upstream_git_blob='0b3558d0277a80e6ca91bd8fd6b82e610f416aa9')
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==fixture['runtime_sha256']
         sys.path.insert(0,str(ROOT/'hw/soc/flow'))
         from check_pcie_rx_cell import execute
