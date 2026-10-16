@@ -29,7 +29,8 @@ jobs:
       - name: Verify source-bound110target recipe and all legacy profile contracts
         run: |
           python3 - <<'PYCODE'
-          import importlib.util,os
+          import importlib.util,os,sys
+          sys.path.insert(0,'scripts')
           for profile,count,directory in [('two_buffer',2,'cloud-critical-load-eco'),('control_three_buffer',3,'cloud-control-load-eco'),('measured_load_batch',50,'cloud-measured-load-eco'),('protected_load_batch',50,'cloud-protected-load-eco'),('expanded_load_batch',110,'cloud-expanded-load-eco')]:
               os.environ['NSSOC_CRITICAL_LOAD_PROFILE']=profile
               spec=importlib.util.spec_from_file_location('targets','scripts/critical_load_targets.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)

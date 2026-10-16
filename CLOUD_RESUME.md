@@ -1,3 +1,7 @@
+## 2026-10-16 — Expanded repair controller checks passed; workflow import corrected
+
+Independent expanded-profile controls completed successfully: endpoint38842441618 (including native-controller compilation and six new-target rejection controls), geometry38842441677 and annotation38842441584. Full native candidate verification has not run yet. Two physical-workflow predecessors38842199036 and38842441662 stopped at profile import (`ModuleNotFoundError: expanded_load_targets`), before CAD. Their failure reports remain published. Add the scripts directory to the inline profile-loader path; the corrected push starts the replacement only after the previous run is terminal. The separate mode-dispatch syntax issue is corrected and passed cloud compilation. No simulation thresholds or constraints changed.
+
 ## 2026-10-16 — Expanded110-buffer setup experiment staged
 
 Completed driver diagnosis38839736674 identifies60new weak loaded outputs, all disjoint from the original50recipe, with consistent reported fanout and explicit combinational masters. The new `expanded_load_batch` inserts110positive buffer16cells on the exact original baseline; the extra60measurements are bound to diagnosisSHA256 `a7b7c9ec447475af9dc7dc5e2a08f7552a4aab2b0404471166edef331244eea8`. Native originalpin/master/fanout/SIGNAL/noNDR checks remain mandatory; diagnostic min-path absence is not a hold safety proof.
