@@ -4,7 +4,7 @@
 """Classify every native unannotated driver against actual routes and exact SPEF."""
 import collections,hashlib,json,os,re,subprocess,sys,tarfile
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-route-annotation'
+ROOT=Path(__file__).resolve().parents[1];OUT=Path(os.environ.get('NSSOC_ANNOTATION_AUDIT_OUT',str(ROOT/'cloud-route-annotation')))
 SUMMARY_SHA='aa721c7ccd04c30ed97af33dac632eb0cfdd99fd27232a46819299d12f62e583'
 ARCHIVE_SHA='131bc44b4dc4d26f9ba1fa6a34b17742aa0ccf65e8c3075dca91dfe5dc5c1d4a'
 BASE='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38809759501-1-routed-extraction/routed-extraction-38809759501-1'
@@ -40,10 +40,12 @@ def name_controls():
     assert spef_net_name(pairs[0][0])!=spef_net_name(pairs[1][0])
     return dict(exact_native_writer_cases=len(pairs),literal_brackets_distinct=True)
 
-def native():
+def native(added=0,spef_name='actual-route.nominal.spef',log_name='actual-routed-sta.log'):
     import odb
     d=odb.dbDatabase.create();odb.read_db(d,str(OUT/'routed.odb'));b=d.getChip().getBlock()
-    assert len(b.getInsts())==113791 and len(b.getNets())==113863
+    assert added in (0,2,3,50)
+    assert Path(spef_name).name==spef_name and Path(log_name).name==log_name
+    assert len(b.getInsts())==113791+added and len(b.getNets())==113863+added
     nets={n.getName():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
     def resolve(token,name):
         assert re.fullmatch(r'\*\d+',token),('Expected native name map token',token)
@@ -52,7 +54,7 @@ def native():
         chosen=net.getName();assert chosen in nets;expected=spef_net_name(chosen)
         assert name==expected,('Native net id/name mismatch',ident,chosen,name,expected)
         aliases['native_id_and_exact_writer_name']+=1;return chosen
-    with (OUT/'actual-route.nominal.spef').open() as stream:
+    with (OUT/spef_name).open() as stream:
         for line in stream:
             row=line.strip()
             if row=='*NAME_MAP':inmap=True;continue
@@ -63,8 +65,9 @@ def native():
             if row.startswith('*D_NET '):
                 fields=row.split();assert len(fields)==3
                 token=fields[1];n=resolve(token,namemap[token]);assert n not in caps;caps[n]=float(fields[2]);assert caps[n]>=0
-    assert len(caps)==113556
-    names=drivers((OUT/'actual-routed-sta.log').read_text());assert len(names)==1065
+    assert len(caps)==113556+added
+    names=drivers((OUT/log_name).read_text())
+    if added==0:assert len(names)==1065
     rows=[]
     for name in names:
         term=b.findBTerm(name)
@@ -117,5 +120,5 @@ def main():
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 if __name__=='__main__':
-    if os.environ.get('NSSOC_ANNOTATION_NATIVE')=='1':native()
+    if os.environ.get('NSSOC_ANNOTATION_NATIVE')=='1':native(int(os.environ.get('NSSOC_ANNOTATION_ADDED_BUFFERS','0')),os.environ.get('NSSOC_ANNOTATION_SPEF','actual-route.nominal.spef'),os.environ.get('NSSOC_ANNOTATION_STA_LOG','actual-routed-sta.log'))
     else:main()
