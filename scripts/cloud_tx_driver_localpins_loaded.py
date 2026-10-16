@@ -93,7 +93,7 @@ def diagnostic_wires(original,mode):
             replacement=[*row[:3],str(number(row[3])*Decimal('.5'))]
             changed.append(dict(original=row,replacement=replacement));rows.append(replacement)
         else:rows.append(row)
-    assert len(changed)==(260 if prefix=='R'else295)
+    assert len(changed)==(260 if prefix=='R'else 295)
     assert len(rows)==len(before)
     def verify(candidate):
         assert len(candidate)==len(before)
