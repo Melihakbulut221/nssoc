@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Resume only missing LEF checks from immutable successful native pump proofs."""
-import json,os,sys,tarfile
+import argparse,json,os,sys,tarfile
 from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
@@ -16,28 +16,28 @@ def restore_technology():
     return tech
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--size-um',type=int,choices=(9,11),default=9);args=parser.parse_args();size=args.size_um
+    sources={9:('ae90bac4182e79be42f41aedea9605ade46d2f80b5a127c7f38f7b25534ba0ad','f52d7d03da41475095a6067b958c99d629a959da9829e58e6915148d297e525b','2a8e067beb6b2598a3eab4bc88d79acf0b5a5e8cb4a2f26a214a36c0629297cf',248708),11:('33bcd4d18264feb6c6cf4f4002dd615e744c71dce5e17c522842d7def66bb39f','e9c0f67362476450881d062a03857bd9d81a96897e21ab70374b0a973dd303a0','2443eff85ab07eb1c112828fefd78bb71a57c0fcf27e616492026a92579413c7',249678)}
+    summary_sha,parts_sha,archive_sha,archive_bytes=sources[size]
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
-    r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],physical_source_run=38848309907,size_um=9,accepted=False,parent_integrated=False,qualified_pex=False,serial_phy_complete=False,
-        scope='Restore exact published9um pump GDS/LEF and successful native DRC/deep+flat LVS/fault evidence. Execute only previously missing native LEF positive/missing-pin/blocked-pin checks. No repeated electrical capture or parent/PHY acceptance.')
+    r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],physical_source_run=38848309907,size_um=size,accepted=False,parent_integrated=False,qualified_pex=False,serial_phy_complete=False,
+        scope='Restore exact published selected pump GDS/LEF and successful native DRC/deep+flat LVS/fault evidence. Execute only previously missing native LEF positive/missing-pin/blocked-pin checks. No repeated electrical capture or parent/PHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        base='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38848309907-1-pll-filter-layout-9/'
-        stem='pll-filter-layout-9-38848309907-1'
-        summary_sha='ae90bac4182e79be42f41aedea9605ade46d2f80b5a127c7f38f7b25534ba0ad'
-        parts_sha='f52d7d03da41475095a6067b958c99d629a959da9829e58e6915148d297e525b'
-        archive_sha='2a8e067beb6b2598a3eab4bc88d79acf0b5a5e8cb4a2f26a214a36c0629297cf'
+        base=f'https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38848309907-1-pll-filter-layout-{size}/'
+        stem=f'pll-filter-layout-{size}-38848309907-1'
         fetch(base+stem+'.summary.json',summary_sha,OUT/'source-summary.json')
         fetch(base+stem+'.parts.json',parts_sha,OUT/'source-parts.json')
         prior=json.loads((OUT/'source-summary.json').read_text());manifest=json.loads((OUT/'source-parts.json').read_text())
-        assert prior['source_head']=='8380558b46bbc150b7d3e459e8f47be2fd260313' and prior['size_um']==9
+        assert prior['source_head']=='8380558b46bbc150b7d3e459e8f47be2fd260313' and prior['size_um']==size
         assert prior['status']=='FAIL_OR_ERROR' and prior['error'].startswith('FileNotFoundError(')
         assert prior['physical']['status']=='PASS_NATIVE_PUMP_FILTER_DRC_LVS_AND_FAULT_CONTROLS'
         assert {k:v['status'] for k,v in prior['physical']['steps'].items()}=={k:('PASS' if k in ('drc','lvs','lvs_flat') else 'REJECTED_EXPECTED_FAULT') for k in ('drc','lvs','lvs_flat','wrong_width','missing_well','vctrl_open','rail_short','offgrid')}
-        expected=dict(index=0,name=stem+'.tar.gz.part0000',bytes=248708,sha256=archive_sha)
+        expected=dict(index=0,name=stem+'.tar.gz.part0000',bytes=archive_bytes,sha256=archive_sha)
         assert manifest['format']=='ordered-tar-gzip-parts-v1' and manifest['parts']==[expected]
-        assert manifest['bytes']==248708 and manifest['sha256']==archive_sha
-        packed=OUT/'source.tar.gz';fetch(base+expected['name'],archive_sha,packed);assert packed.stat().st_size==248708
+        assert manifest['bytes']==archive_bytes and manifest['sha256']==archive_sha
+        packed=OUT/'source.tar.gz';fetch(base+expected['name'],archive_sha,packed);assert packed.stat().st_size==archive_bytes
         dest=OUT/'restored';dest.mkdir()
         with tarfile.open(packed) as tar:
             members=tar.getmembers();assert len(members)==len({m.name for m in members})
@@ -54,7 +54,7 @@ def main():
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==prior['runtime_sha256'];r['runtime_sha256']=sha(app)
         sys.path.insert(0,str(ROOT/'hw/soc/flow'))
         import check_pcie_pump_filter13_lef as checker
-        checker.TOP='nssoc_pump_filter13_rhi140_c9_v1'
+        checker.TOP=f'nssoc_pump_filter13_rhi140_c{size}_v1'
         checker.run(source/'layout',OUT/'lef',ROOT/'pdk',app)
         r['lef']=json.loads((OUT/'lef/result.json').read_text());assert r['lef']['status']=='PASS_NATIVE_LEF_AND_TWO_PHYSICAL_FAULTS'
         assert all(sha(source/n)==v for n,v in prior['outputs'].items()) and sha(tech)==TECH_SHA

@@ -6,13 +6,18 @@ on:
     branches: [codex/complete-open-work]
     paths: [.github/workflows/pll-filter-lef-cloud.yml]
   workflow_dispatch:
+    inputs:
+      size:
+        type: choice
+        options: ['9', '11']
+        default: '11'
 permissions:
   contents: read
 concurrency:
   group: pll-filter-lef-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  verify-published-nine-um-lef:
+  verify-published-pump-lef:
     runs-on: ubuntu-22.04
     timeout-minutes: 30
     permissions:
@@ -34,7 +39,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
       - name: Verify missing LEF gates on exact published DRC and LVS geometry
-        run: python3 scripts/run_cloud_pll_filter_lef.py
+        run: python3 scripts/run_cloud_pll_filter_lef.py --size-um ${{ inputs.size || '11' }}
       - name: Publish physical success or failure evidence
         if: always()
         id: publish
@@ -45,18 +50,18 @@ jobs:
           if [ ! -f hw/soc/out/cloud-pll-filter-lef/result.json ]; then
             printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > hw/soc/out/cloud-pll-filter-lef/result.json
           fi
-          stem="pll-filter-lef-9-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          stem="pll-filter-lef-${{ inputs.size || '11' }}-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           cp hw/soc/out/cloud-pll-filter-lef/result.json "$stem.summary.json"
           python3 scripts/cloud_chunked_results.py --directory hw/soc/out/cloud-pll-filter-lef --stem "$stem"
           python3 - "$stem" <<'PYCODE'
           import json,subprocess,sys
           stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
-          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-filter-lef-9',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-filter-lef-${{ inputs.size || '11' }}',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
           PYCODE
       - name: Retain evidence after publication failure
         if: always() && steps.publish.outcome == 'failure'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: pll-filter-lef-9-${{ github.run_id }}
+          name: pll-filter-lef-${{ inputs.size || '11' }}-${{ github.run_id }}
           retention-days: 30
           path: hw/soc/out/cloud-pll-filter-lef/
