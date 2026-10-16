@@ -1,3 +1,17 @@
+## Cloud-only continuation checkpoint: corrected divider RC and Ethernet screen (2026-10-17)
+
+All design, CAD, simulation and test execution remains in GitHub Actions. The local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty; no local CAD processes were found. Do not recreate a checkout or download artifacts locally. Read remote reports in memory and commit through GitHub APIs. Preserve healthy running jobs. This checkpoint supersedes earlier live-state entries below.
+
+- Corrected v2 physical38975762261, raw91/wires38976590097, anchors38977128892 and freshRC38977380697 all completed successfully. Fresh actual v2 RC has382R649C,91native devices,198metal+85body terminals;13raw corruptions rejected. This remains wire-only unqualified extraction, not electrical/fullPHY acceptance. New GDS265d5245f5b406aa20c20647afbe9d87ad9e8f1493cfe3cae3fed9d64885a71b. Next build native91 intrinsic/composition from THIS v2 report, then repeat unchanged parent graph proof. Restore first-stageW8/L2.8; only intended second-stageW8/L2.12->3.2 normalization is allowed. Never reuse v1 physical RC or waive failed v1 parent graphs.
+- Independent actual six-hold review38977048618 completed both geometry and annotation screens. These are scoped engineering checks, not full-chip signoff. Preserve scope/limitations and antenna627nets/783pins; final timing remains open.
+- Exact Ethernet screen38976347463 completed. Existing nssoc_refined_hold_delay_2 sd1->sd2 gives target fast hold+46.643022777ps and slow setup+113.123732604ps on frozen RC; zero hold-negative endpoints across three corners, no new setup-negative endpoints, all22544 endpoints compared. sd2 width3840DBU equals original3840DBU. sd3 width4320DBU creates new negative slow setup(-245.4729753ps) and is rejected. Next perform actual sd2 physical ECO, native placement/pin-geometry/route validation, freshRC and complete all-endpoint timing plus independent geometry checks. Frozen-RC screen is NOT routed acceptance. Preserve all114030 other cells, all six previously added delays, connectivity and constraints; don't assume equal width means identical pin geometry.
+- Current routed six-hold baseline still has slow setup-5.793440394ns/9351negative endpoints and fast hold-0.79081186044ps/1negative endpoint. No final timing closure claim.
+- CORRPRE whole-SoC boot38970744432 remains a separate candidate; inspect its latest terminal evidence before adoption. Bounded formal proofs and18tests were documented earlier; no default/layout adoption inferred.
+
+Hash-bound current receipts: `docs/evidence/cloud-only-continuation-20261017.json`. All previous source/results remain in GitHub history and Releases. Full serial Gen3x4, mainchip integration and final setup/hold remain OPEN.
+
+---
+
 ## Cloud continuation: real first-stage regression found; corrected v2 geometry running (2026-10-17)
 
 Cloud-only; local workspace verified empty. Full serial Gen3x4, mainchip PCIe/Ethernet integration and final timing remain OPEN. This checkpoint supersedes the v1 parent-integration next step below.
