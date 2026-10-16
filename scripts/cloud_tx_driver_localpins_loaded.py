@@ -81,27 +81,36 @@ def adapt(deck,contract,model):
     return deck,contract,dict(driver_instances=8,raw_devices=800,raw_mos=672,wire_cref_boundary='external ideal ground, separate from intrinsic substrate node',controls=controls)
 
 def diagnostic_wires(original,mode):
-    assert mode in ('wire_no_c','wire_low_r')
-    before=statements(original);assert len([r for r in before if r[0].startswith('R')])==260
+    assert mode in ('wire_half_r','wire_half_c')
+    before=statements(original)
+    assert len([r for r in before if r[0].startswith('R')])==260
     assert len([r for r in before if r[0].startswith('C')])==295
+    prefix='R'if mode=='wire_half_r'else'C'
     rows=[];changed=[]
     for row in before:
-        if mode=='wire_no_c'and row[0].startswith('C'):
-            changed.append(dict(original=row,replacement=None));continue
-        if mode=='wire_low_r'and row[0].startswith('R'):
-            new=[*row[:3],str(number(row[3])*Decimal('.001'))]
-            changed.append(dict(original=row,replacement=new));rows.append(new)
+        if row[0].startswith(prefix):
+            assert len(row)==4 and number(row[3])>0
+            replacement=[*row[:3],str(number(row[3])*Decimal('.5'))]
+            changed.append(dict(original=row,replacement=replacement));rows.append(replacement)
         else:rows.append(row)
-    assert len(changed)==(295 if mode=='wire_no_c'else 260)
-    assert [r for r in rows if r[0].startswith('XD')]==[r for r in before if r[0].startswith('XD')]
-    assert len([r for r in rows if r[0].startswith('XD')])==100
-    assert rows[0]==before[0]and rows[-1]==before[-1]
-    if mode=='wire_no_c':assert [r for r in rows if r[0].startswith('R')]==[r for r in before if r[0].startswith('R')]
-    else:assert [r for r in rows if r[0].startswith('C')]==[r for r in before if r[0].startswith('C')]
-    return '* DIAGNOSTIC ONLY: artificial wire sensitivity, never physical acceptance.\n'+'\n'.join(' '.join(r)for r in rows)+'\n',dict(mode=mode,changed=changed,wire_nodes_or_intrinsic_devices_changed=False,physically_realized=False)
+    assert len(changed)==(260 if prefix=='R'else295)
+    assert len(rows)==len(before)
+    def verify(candidate):
+        assert len(candidate)==len(before)
+        for original,row in zip(before,candidate,strict=True):
+            if original[0].startswith(prefix):
+                assert row[:3]==original[:3]and len(row)==4 and number(row[3])==number(original[3])*Decimal('.5')
+            else:assert row==original,'Intrinsic device, finite contact, other wire element or port changed'
+        assert len([r for r in candidate if r[0].startswith('XD')])==100
+    verify(rows)
+    bad=[list(r)for r in rows];victim=next(i for i,r in enumerate(bad)if r[0].startswith('XD'));bad[victim][1]='diagnostic_fault'
+    try:verify(bad)
+    except AssertionError as error:assert 'Intrinsic device'in str(error)
+    else:raise AssertionError('Intrinsic terminal corruption escaped sensitivity audit')
+    return '* DIAGNOSTIC ONLY: nonphysical half-wire sensitivity; never acceptance.\n'+'\n'.join(' '.join(r)for r in rows)+'\n',dict(mode=mode,changed=changed,scale='0.5',wire_nodes_or_intrinsic_devices_changed=False,physically_realized=False,intrinsic_terminal_fault='REJECTED')
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=('intrinsic','wire'),required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=('intrinsic','wire','wire_half_r','wire_half_c'),required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode=args.mode,source=SOURCE,serial_phy_complete=False,qualified_timing=False,mainchip_integrated=False,qualified_pex=False,component_screen_passed=False,
         scope='Eight actual100-device drivers with raw junctions/finite contacts, loaded by the actual162-device routed four-input tree. Driver wire case includes each260R295C. Full34ns256-bit8GT/s oracle unchanged. Tree-to-driver external connections, clocks and supplies remain ideal; no32:1/x4/CDR/PLL/ESD/mainchip acceptance.')
@@ -115,11 +124,17 @@ def main():
         model=source/'driver100-wire.spice'if args.mode!='intrinsic'else base/'driver100.spice'
         assert sha(model)==('c624e9d1597ac8b68a2fb4772673ad0ffade0c35a21a027cbd449de1e2acf3d6'if args.mode!='intrinsic'else'f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5')
         result['original_driver_model_sha256']=sha(model)
-        diagnostic=args.mode in ('wire_no_c','wire_low_r')
+        diagnostic=args.mode in ('wire_half_r','wire_half_c')
         if diagnostic:
+            url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38910247036-1-tx-driver-localpins-loaded-wire/tx-driver-localpins-loaded-wire-38910247036-1.summary.json'
+            fetch(url,'0ba488d996b9cd251bf9ec457a22cb78fbe425aa4927f3af6e15c85ee9f0a5f8',OUT/'measured-parent.json')
+            measured=json.loads((OUT/'measured-parent.json').read_text())
+            assert measured['status']=='COMPLETE_RAW_DRIVER_LOADED_PHYSICAL_TREE_STUDY_NOT_PHY_ACCEPTANCE'and not measured['component_screen_passed']
+            assert measured['original_driver_model_sha256']==sha(model)and measured['mode']=='wire'
+            result['measured_parent']=dict(run=38910247036,summary_sha256='0ba488d996b9cd251bf9ec457a22cb78fbe425aa4927f3af6e15c85ee9f0a5f8',component_screen_passed=False)
             text,change=diagnostic_wires(model.read_text(),args.mode)
             model=OUT/'diagnostic-driver.spice';model.write_text(text);result['wire_sensitivity']=change
-            result['scope']='Artificial wire sensitivity on the unchanged failed raw-driver/routed-tree study. Only all295wireC removed or all260wireR scaled0.001; every intrinsic device, finite contact, source bit, clock, load, probe and gate unchanged. Neither variant is a realizable physical model or an acceptance candidate.'
+            result['scope']='Artificial wire sensitivity on the unchanged failed raw-driver/routed-tree study. Only all295wireC or all260wireR scaled0.5; every intrinsic device, finite contact, source bit, clock, load, probe and gate unchanged. Neither variant is a realizable physical model or an acceptance candidate.'
         engines.OUT=OUT;paths,provenance=engines.restore_engines();result['runtime_provenance']=provenance
         assert sha(paths['patched'])=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'
         inputs=OUT/'fixtures';fixtures(inputs)
