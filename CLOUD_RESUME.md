@@ -1,3 +1,15 @@
+## 2026-10-16 — Cloud-only handoff verified; branch234 and localpins results inspected
+
+Local workspace is empty and no local CAD processes were observed. Migration Release `cloud-migration-final-checkout-20261013`, receipt asset636387277, confirms COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. All further CAD, simulation, extraction and tests stay in GitHub runners; do not recreate a local checkout or download archives locally.
+
+This observation supersedes the earlier active-state text below: mainchip234 route38896397749 and localpins loaded38910247036 have completed. Exact results and current jobs are in `docs/evidence/cloud-branch234-localpins-results-20261016.json`.
+
+- Route234: actual physical controller completed, with88 new cells on146parent and0native detailed-router DRVs. Workflow remains FAILURE because its obsolete final inline assertion expected the older146profile. Do not rewrite that failure or infer signoff. Exact summary647525143 SHA765b113220ba12b3267ee50cd1ff02bfac7eb89a336c41ba77632c7ccd401e6e. Routed ODB4a044ffdb4d92ec3e9150cb4a9696ed7dbfacc05361e64bc6b278259e6c3eeb4. Independent full-endpoint38914920637 (including negative hold paths), geometry/antenna38914926858, and annotation38914934453 now run against exact summary/parts identities. Inspect these before accepting or modifying this child; parent146 sizing hypothesis remains untested and must be rebound to actual234.
+- Localpins full34ns:77607unmodified rows, no solver diagnostics. Output minimum161.702mV (all100mV gates pass); CMOS interface167.974mV (all150mV gates pass). Final interface minimum130.597mV,288samples below150mV;12HBT device gates fail,0MOS failures. Component_screen_passed is FALSE. It improves on compact/power variants but is not accepted. Next analog work must diagnose final-tree loading/headroom from actual raw device evidence without relaxing thresholds, phases or device limits.
+- Full original1us PLL38910378266 is still active and must continue its saved native process. Do not restart a healthy stage; preserve existing continuation capsule instructions below.
+
+Full serialPHY, qualifiedRC/memory, finalsetup/hold and manufacturing acceptance remain open. Local cleanup is complete; cloud work continues.
+
 ## 2026-10-16 — Actual146setup bottlenecks and all-reachable margins measured while long jobs run
 
 Cloud-only remains controlling; local workspace is empty. Full native PLL38910378266 (initial job117004666682), localpins loaded38910247036 (job117003968990), mainchip234route38896397749 (job116957794230) remain active at this observation. Exact last states are docs/evidence/cloud-live-driver-margins-20261016.json. Do not restart any healthy job. Previous native continuation and localpins source handles below remain authoritative.
