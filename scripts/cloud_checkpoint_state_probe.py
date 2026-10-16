@@ -27,6 +27,8 @@ def main():
     save();owned=[]
     try:
         assert not run('existing-containers',['docker','ps','-aq']).stdout.strip(),'Fresh runner required'
+        result['criu_build']=json.loads((Path(os.environ['RUNNER_TEMP'])/'criu-build.json').read_text())
+        assert sha('/usr/sbin/criu')==result['criu_build']['binary_sha256']
         run('kernel',['uname','-a']);run('criu-version',['criu','--version'])
         run('kernel-capabilities',['sudo','criu','check','--all'],False)
         # Merge experimental option; do not replace any runner Docker settings.
