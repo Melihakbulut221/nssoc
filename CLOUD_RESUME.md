@@ -1,3 +1,9 @@
+## 2026-10-16 — Fine timeout evidence retained; strict compiler study LIVE
+
+Runtime study **38844301748/job116791209162**, source **71d38e57e86ea62c03e21be43e47f77df6254f58**, is **in_progress**. Last active step: Build same patched upstream with strict O3 and no floating contraction. Native-controller compilation, original data transport/bit tests and numerical guard controls passed. This study measures the exact original Sparse engine against strict O3 at0.25ps over4ns, on the same CPU, with all original vectors and unchanged PDK/options. Require bidirectional1nV agreement and measured CPU/wall speedup before considering a full-window replay. No fullPHY or full34ns acceptance is claimed.
+
+Fine failedrun **38810163678** is now terminal with0Actionsartifacts. Exact timeout/publication log excerpt and all logged archive/part hashes are in `docs/evidence/cloud-tree32-fine-timeout-20261016.json`; the unpublished waveform bytes are unavailable. Do not restart it with the same budget and expect progress. Corrected coarse38834025040, PLL38813902351, expanded110repair38843068297 and fourbranch38837758293 remain separate live calculations at this snapshot. Continue cloud-only; localproject0entries.
+
 ## 2026-10-16 — Fine full32 capture timed out; strict compiler speed study staged
 
 Fine Sparse0.25ps run **38810163678/job116681243193** is terminal FAILURE: native process exceeded19800seconds, then the old decimal publication group failed. The2,338,517,744-byte combined archive hash `9af2e907298a44ba17c1b395d9a99e1101e3fec635519ebc23a3683c1fd64f26` appears in logs but archive bytes were not published; a hash does not recover them. Do not claim full fine waveform or any component pass. Coarse predecessor native step took3h28m; simply repeating the fine run with the same budget has no evidence-based benefit.
