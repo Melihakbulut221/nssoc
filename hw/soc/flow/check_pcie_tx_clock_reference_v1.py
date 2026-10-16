@@ -184,6 +184,8 @@ def run(layout, out, app):
             for option in options:
                 command += ["-rd", option]
             step["execution"] = execute(command, directory, "run")
+            step["native_log_tail"] = (directory / "run.log").read_text(errors="replace")[-6000:]
+            save()
             if step["execution"]["returncode"] != 0:
                 raise ValueError("Native deck did not complete")
             if drc:

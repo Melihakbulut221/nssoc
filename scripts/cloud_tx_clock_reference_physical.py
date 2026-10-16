@@ -14,6 +14,20 @@ def main():
     def save():(out/'result.json').write_text(json.dumps(record,indent=2)+'\n')
     save()
     try:
+        # Recover the exact native launch failure in the cloud, without downloading
+        # result archives to the user's machine or changing the physical source.
+        import compare_cloud_routed_endpoints as reports
+        reports.OUT=out
+        failed,proof=reports.restore_report('tx-clock-reference-l6p2',38941349787,
+            '3c710802b068b4595cbdd4d07a80c56cbd979eccdb765c8362d8f52e9a622052',
+            'd97e5576b5e14caf235700740b08c1b282d7c85d4739a94c3f97be8fd4c30936',
+            out/'failed-launch',('check/drc/run.log',))
+        assert failed['status']=='FAIL_OR_ERROR'
+        assert failed['physical_checks']['steps']['drc']['execution']['returncode']==127
+        record['failed_launch_recovery']=proof
+        record['failed_native_launch_log']=(out/'failed-launch/check/drc/run.log').read_text()
+        print('PRESERVED ORIGINAL NATIVE LAUNCH FAILURE:',record['failed_native_launch_log'],flush=True)
+        save()
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text());packed=out/'fixture.tar.gz'
         fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed);assert packed.stat().st_size==spec['receipt']['bytes']
         with tarfile.open(packed) as tar:tar.extractall(ROOT,filter='data')
@@ -28,7 +42,7 @@ def main():
         record['generation']=execute([app,'python',generator,'--pdk',ROOT/'pdk','--out',out/'layout','--variant',args.variant],out,'generate');save()
         assert record['generation']['returncode']==0,(out/'generate.log').read_text()[-8000:]
         record['geometry']=json.loads((out/'layout/result.json').read_text());save()
-        record['verification']=execute([app,'python',checker,'--layout',out/'layout','--out',out/'check','--app',app],out,'verify')
+        record['verification']=execute([sys.executable,checker,'--layout',out/'layout','--out',out/'check','--app',app],out,'verify')
         if (out/'check/result.json').exists():record['physical_checks']=json.loads((out/'check/result.json').read_text())
         save();assert record['verification']['returncode']==0,(out/'verify.log').read_text()[-8000:]
         assert record['physical_checks']['status']=='PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_FIVE_FAULTS_NOT_ELECTRICAL_ACCEPTANCE'
