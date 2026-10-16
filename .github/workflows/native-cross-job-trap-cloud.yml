@@ -45,7 +45,9 @@ jobs:
           PYCODE
           python3 -m pip install numpy==2.3.3
           python3 -m py_compile scripts/cloud_native_cross_job_trap.py
-      - name: Restore exact native physical845 solver state in a separate cloud job
+      - name: Catch the original saved process fault on an AMD destination
+        env:
+          NATIVE_TRAP_REQUIRE_VENDOR: AuthenticAMD
         run: python3 scripts/cloud_native_cross_job_trap.py
       - name: Preserve capability failures and complete checkpoint evidence
         if: always()

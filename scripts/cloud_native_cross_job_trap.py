@@ -35,6 +35,11 @@ def main():
         (OUT/'destination-cpuinfo.txt').write_text(Path('/proc/cpuinfo').read_text())
         result['destination_cpu']=json.loads((OUT/'destination-lscpu.log').read_text())
         result['destination_cpuinfo_sha256']=sha(OUT/'destination-cpuinfo.txt')
+        required_vendor=os.environ.get('NATIVE_TRAP_REQUIRE_VENDOR')
+        if required_vendor:
+            vendor=next(row['data']for row in result['destination_cpu']['lscpu']if row['field']=='Vendor ID:')
+            result['requested_destination_vendor']=required_vendor;save()
+            assert vendor==required_vendor,('Diagnostic runner vendor mismatch; no source process restored',vendor,required_vendor)
         physical.OUT=OUT;restored,prior=physical.restore(SOURCE)
         assert prior['native_checkpoint_proven']and prior['status']=='PASS_NATIVE_PHYSICAL845_CHECKPOINT_BIT_EXACT_BOUNDED4NS_NOT_CROSS_JOB_OR_ACQUISITION'
         assert len(prior['controls'])==3 and all(x['rejected']for x in prior['controls'])
