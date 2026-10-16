@@ -14,7 +14,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);parser.add_argument('--anchors',action='store_true');args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     spec=SOURCES[args.variant];out=ROOT/('hw/soc/out/cloud-tx-driver-pullup-wires-'+args.variant);source=out/'source'
-    top='nssoc_tx_input_driver_v7_physical_pullup_'+args.variant+'_v1'
+    top=spec.get('top','nssoc_tx_input_driver_v7_physical_pullup_'+args.variant+'_v1')
     if args.anchors:
         anchors.OUT=out;anchors.physical.TOP=top;anchors.generate(source=out,physical_source=source);return
     out.mkdir(parents=True,exist_ok=False);reports.OUT=out
@@ -25,7 +25,10 @@ def main():
         selected=SELECTED+('check-raw_flat_lvs/audit.json',)
         prior,proof=reports.restore_report('tx-input-driver-pullup-'+args.variant,spec['run'],spec['summary'],spec['parts'],source,selected);result['restore']=proof
         assert prior['status']=='PASS_FULL_DRIVER_NATIVE_PHYSICAL_GATES_NOT_EXTRACTED_ELECTRICAL_OR_PHY_ACCEPTANCE'
-        assert prior['pullup_variant']==args.variant and sha(source/'base/layout.gds')==spec['gds']
+        assert prior['pullup_variant']==spec.get('pullup',args.variant) and sha(source/'base/layout.gds')==spec['gds']
+        if 'series' in spec:
+            assert prior['series_variant']==spec['series'] and prior['geometry']['physical_series_length_um']==spec['series_length']
+            assert prior['source_head']==spec['source_head'] and prior['steps']['wrong_series']['expected_verdict_observed']
         assert all(v['expected_verdict_observed'] for v in prior['steps'].values() if 'expected_verdict_observed' in v)
         assert prior['steps']['wrong_pullup']['expected_verdict_observed']
         method=ROOT/'scripts/tx_driver_localpins_wire_native.py';assert sha(method)==METHOD_SHA
