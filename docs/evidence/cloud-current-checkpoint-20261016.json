@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-16T00:28:33.709697+00:00",
+  "observed_at": "2026-10-16T00:37:54.000142+00:00",
   "cloud_only": true,
   "local_workspace_entries": 0,
   "active_or_recent": [
@@ -525,6 +525,54 @@
           "passed_steps": []
         }
       ]
+    },
+    {
+      "run": 38830085032,
+      "status": "completed",
+      "conclusion": "failure",
+      "source_head": "0e3b6885d16f18c4d9c9d2b4c6bc66f59df7bb1b",
+      "jobs": [
+        {
+          "id": 116746617665,
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": [],
+          "passed_steps": [
+            "Set up job",
+            "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "Verify source-bound50target recipe and all legacy profile contracts",
+            "Restore exact native runtime",
+            "Preserve exact sources, extracted RC and native timing observations",
+            "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "Complete job"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 38830273683,
+      "status": "in_progress",
+      "conclusion": null,
+      "source_head": "5393c86a523555b688d98457d9b55e5b48b0a8c9",
+      "jobs": [
+        {
+          "id": 116747226072,
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Prove50source-measured load repairs, preserve unchanged routes, reextract and compare all corners"
+          ],
+          "passed_steps": [
+            "Set up job",
+            "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+            "Verify source-bound50target recipe and all legacy profile contracts",
+            "Restore exact native runtime",
+            "Compile exact source-bound buffer repair controllers"
+          ]
+        }
+      ]
     }
   ],
   "completed_drt": {
@@ -734,14 +782,14 @@
     "method": "Two identical connection-free NETS-only FLOORPLAN imports compensate pinned unconditional dbNetITerm list reversal; original order, all native geometry/terminals/PG/NDR preserved without tolerance/normalization."
   },
   "protected_load_batch": {
-    "run": 38829185736,
-    "source": "57f5ee9b3d0b8603e7e299b83a3bafce3bb8adc5",
+    "run": 38830273683,
+    "source": "5393c86a523555b688d98457d9b55e5b48b0a8c9",
     "profile": "protected_load_batch",
-    "status": "FAILED_SOURCE_RESTORE_CORRECTED_REPLACEMENT_PENDING",
+    "status": "in_progress",
     "target_count": 50,
     "protected_wired_nets": 113506,
     "changed_new_nets": 100,
-    "next_action": "Find own-path newrun from latestsource; verify alias controls then nativeprotectedrepair. Previous38829185736 terminalfailedbeforephysicaledit; safely supersede, do notduplicateotherlivejobs.",
+    "next_action": "Poll specific116747226072 native job. Requireactualprotectedwireproof/DRT0/freshRC, then independentlycompareall22544endpoints usingreadyprotected_load_batch profile. No newduplicate whilelive. Preserveandrepairanyterminalfailurewithoutrelaxinggates.",
     "comparator": {
       "controls_run": 38829407756,
       "status": "PASS",
@@ -749,6 +797,12 @@
       "profile": "protected_load_batch",
       "next": "Dispatch with exact candidate summary/partsmanifest SHA only after completed physical proof."
     },
-    "failure_receipt": "docs/evidence/cloud-protected-source-alias-failure-20261016.json"
+    "failure_receipt": "docs/evidence/cloud-protected-source-alias-failure-20261016.json",
+    "job": 116747226072,
+    "archive_alias_controls": "PASS exactregularpayload plus7negativecontrols",
+    "failed_predecessors": [
+      38829185736,
+      38830085032
+    ]
   }
 }
