@@ -49,7 +49,7 @@ def controls():
     with tempfile.TemporaryDirectory() as temp:
         root=Path(temp);payload=b'exact original native payload';digest=hashlib.sha256(payload).hexdigest()
         def fixture(label,kind=tarfile.LNKTYPE,target='evidence/payload',duplicate=False):
-            path=root/(label+'.tar.gz')
+            path=root/(label+'.tar.gz.part0000')
             with tarfile.open(path,'w:gz') as a:
                 item=tarfile.TarInfo('evidence/payload');item.size=len(payload);a.addfile(item,io.BytesIO(payload))
                 link=tarfile.TarInfo('evidence/alias');link.type=kind;link.linkname=target;a.addfile(link)
