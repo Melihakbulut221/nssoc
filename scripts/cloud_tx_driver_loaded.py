@@ -7,12 +7,13 @@ Paired driver intrinsic/wire cases retain the same routed downstream tree,
 original source bits and full34ns gates. Not x4/PLL/CDR/mainchip acceptance.
 """
 import argparse,copy,json,os,re,resource,subprocess,tarfile,time
+from decimal import Decimal
 from pathlib import Path
 import cloud_tx_input_driver as physical
 import cloud_tx_companion_replay as engines
 import run_cloud_tx_mux4 as tree
 from cloud_tx_stream import streaming_deck,pwl_voltage_sources
-from build_pcie_local_vco_hybrid_v6 import statements
+from build_pcie_local_vco_hybrid_v6 import statements,number
 from run_cloud_tx_operating_point import fetch,sha
 ROOT=physical.ROOT;OUT=ROOT/'hw/soc/out/cloud-tx-driver-loaded'
 SOURCE=dict(run=38876864912,group='tx-driver-compose',root='cloud-tx-driver-compose',bytes=8351085,sha='e963365560c3096f2127c9a8052dfe8c182f6fb96aae200de3c46cf5e1764afc',summary='088b313a9cdf0d1803842b3ae0eefda12af07d75c36cd4c7bd79b126d2b71cf7')
@@ -79,8 +80,28 @@ def adapt(deck,contract,model):
         else:raise AssertionError('Adapter corruption escaped: '+fault)
     return deck,contract,dict(driver_instances=8,raw_devices=800,raw_mos=672,wire_cref_boundary='external ideal ground, separate from intrinsic substrate node',controls=controls)
 
+def diagnostic_wires(original,mode):
+    assert mode in ('wire_no_c','wire_low_r')
+    before=statements(original);assert len([r for r in before if r[0].startswith('R')])==251
+    assert len([r for r in before if r[0].startswith('C')])==294
+    rows=[];changed=[]
+    for row in before:
+        if mode=='wire_no_c'and row[0].startswith('C'):
+            changed.append(dict(original=row,replacement=None));continue
+        if mode=='wire_low_r'and row[0].startswith('R'):
+            new=[*row[:3],str(number(row[3])*Decimal('.001'))]
+            changed.append(dict(original=row,replacement=new));rows.append(new)
+        else:rows.append(row)
+    assert len(changed)==(294 if mode=='wire_no_c'else 251)
+    assert [r for r in rows if r[0].startswith('XD')]==[r for r in before if r[0].startswith('XD')]
+    assert len([r for r in rows if r[0].startswith('XD')])==100
+    assert rows[0]==before[0]and rows[-1]==before[-1]
+    if mode=='wire_no_c':assert [r for r in rows if r[0].startswith('R')]==[r for r in before if r[0].startswith('R')]
+    else:assert [r for r in rows if r[0].startswith('C')]==[r for r in before if r[0].startswith('C')]
+    return '* DIAGNOSTIC ONLY: artificial wire sensitivity, never physical acceptance.\n'+'\n'.join(' '.join(r)for r in rows)+'\n',dict(mode=mode,changed=changed,wire_nodes_or_intrinsic_devices_changed=False,physically_realized=False)
+
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=('intrinsic','wire'),required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=('intrinsic','wire','wire_no_c','wire_low_r'),required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode=args.mode,source=SOURCE,serial_phy_complete=False,qualified_timing=False,mainchip_integrated=False,qualified_pex=False,component_screen_passed=False,
         scope='Eight actual100-device drivers with raw junctions/finite contacts, loaded by the actual162-device routed four-input tree. Driver wire case includes each251R294C. Full34ns256-bit8GT/s oracle unchanged. Tree-to-driver external connections, clocks and supplies remain ideal; no32:1/x4/CDR/PLL/ESD/mainchip acceptance.')
@@ -91,8 +112,14 @@ def main():
         assert prior['status']=='PASS_RAW100_AND_ALL251R294C_EXACT_PHYSICAL_COMPOSITION_WITH10_FAULTS_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE'
         assert len(prior['controls'])==10
         base=source/'inputs/tx-driver-intrinsic/cloud-tx-driver-intrinsic'
-        model=source/'driver100-wire.spice'if args.mode=='wire'else base/'driver100.spice'
-        assert sha(model)==('e0219a2c161fdf5b522be533010432a3f7fd472112ae4cfbb6ee82490702c408'if args.mode=='wire'else'f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5')
+        model=source/'driver100-wire.spice'if args.mode!='intrinsic'else base/'driver100.spice'
+        assert sha(model)==('e0219a2c161fdf5b522be533010432a3f7fd472112ae4cfbb6ee82490702c408'if args.mode!='intrinsic'else'f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5')
+        result['original_driver_model_sha256']=sha(model)
+        diagnostic=args.mode in ('wire_no_c','wire_low_r')
+        if diagnostic:
+            text,change=diagnostic_wires(model.read_text(),args.mode)
+            model=OUT/'diagnostic-driver.spice';model.write_text(text);result['wire_sensitivity']=change
+            result['scope']='Artificial wire sensitivity on the unchanged failed raw-driver/routed-tree study. Only all294wireC removed or all251wireR scaled0.001; every intrinsic device, finite contact, source bit, clock, load, probe and gate unchanged. Neither variant is a realizable physical model or an acceptance candidate.'
         engines.OUT=OUT;paths,provenance=engines.restore_engines();result['runtime_provenance']=provenance
         assert sha(paths['patched'])=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'
         inputs=OUT/'fixtures';fixtures(inputs)
@@ -131,6 +158,9 @@ def main():
         assert all(sha(p)==s for p,s in result['protected_inputs'].items())
         result['component_screen_passed']=result['review']['all_engineering_gates_passed']and not result['diagnostics']
         result['status']='COMPLETE_RAW_DRIVER_LOADED_PHYSICAL_TREE_STUDY_NOT_PHY_ACCEPTANCE'
+        if diagnostic:
+            result['diagnostic_screen_passed']=result['component_screen_passed'];result['component_screen_passed']=False
+            result['status']='COMPLETE_ARTIFICIAL_DRIVER_WIRE_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
