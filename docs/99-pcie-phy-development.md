@@ -1,5 +1,13 @@
 # 99 — Custom PCIe Gen3 x4 PHY development
 
+## Latest development — 16 October 2026
+
+The actual nine-micrometer pump candidate is physically installed in the845-device PLL parent. Native DRC/deep+flatLVS and physical faults passed in38849617327. Fresh pump84R155C and parent98R242C extraction, all83parent reference planes and all7pump ports passed. The combined845-device/8648-wire model preserves815other devices and has an exact3906-node intrinsic graph bijection to the native-LVS-passed reference; all6graph and7component corruption controls passed in38857275591. [The physical model record](evidence/cloud-pll-filter-parent-model-results-20261016.json) states its idealized substrate and unqualifiedRF extraction limits. Full1us acquisition38857745157 remains in progress; no locked-PLL orPHY acceptance follows yet.
+
+The patched native-engine full32coarse capture38834025040 passed its nominal limited gates:768original-bit samples, zero wrong signs, minimum235.352636mV and all604HBT/512MOS checks. It still uses per-macroRC, ideal intermacro connections and imposed differential clocks. Full34ns fine0.25ps validation remains incomplete. The strictO3 prefix experiment was about2percent slower; it is not adopted. [The new strictPGO/LTO experiment](tree32-pgo-experiment-20261016.md) trains on the actual tree then compares all3060vectors against the frozen native reference at unchanged numerical gates. It cannot establish fullcapture, physically routed serializer, CDR or four-lane integration by itself.
+
+Mainchip110buffer independent review completed22544endpoints and135264corner-delay rows. It still has9342slow/455typical/3fast setup violations and92fast hold violations, plus626antenna net violations. A further31source-measured load repairs are running in141buffer candidate38859276266. [The exact endpoint/geometry/annotation record](evidence/cloud-expanded-independent-results-20261016.json) preserves all regressions and scope limits. No mainchip production or finaltiming acceptance is claimed. All computation, tests and artifacts stay in GitHub; [CLOUD_RESUME.md](../CLOUD_RESUME.md) is the latest execution checkpoint. Older dated sections below are historical.
+
 ## Latest development — 13 October 2026
 
 The [hosted serializer study](evidence/pcie-serializer-expanded-tree-20261013.json)

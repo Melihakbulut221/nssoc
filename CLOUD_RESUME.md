@@ -1,3 +1,11 @@
+## 2026-10-16 — Strict PGO/LTO experiment running; no numerical or physical gate relaxed
+
+**38860616186/job116841815426**, source`fd82ac7d0da3bcf9c39fe4f3f9337497815001dc`, passed numerical/transport controls and compiled the exact upstream plus frozen single-expression VBIC patch with profile instrumentation and strict floating-point options. It has entered actual32stream tree training at1.2ns/0.25ps. This is a new performance experiment after the strictO3 trial proved slower; no speedup is claimed yet.
+
+Training retains3060voltage vectors,604HBT OFF flags,512MOS devices, zero-sourceOP, originalPDK/OSDI/source, Sparse options and source hashes. Nativegcda data are preserved, hotVBIC/Sparse profile presence is mandatory, profile mismatch remains fatal and source/build paths stay fixed. The feedback build usesLTO, nofast-math and contractionoff. A fresh sameCPU reference-versus-candidate4ns capture must pass the original1nV comparison in both directions and the original1nA NPN/PNP invariant. Candidate selection additionally requires>=1.25wall andCPU speed ratios. See `docs/tree32-pgo-experiment-20261016.md`. Neither training nor the short comparison replaces the incomplete34ns fine capture.
+
+**141buffer route38859276266**, **physical C9PLL8451us38857745157**, and separate **oldwire9/11trials38847729630** remain active at this observation. Do not duplicate them. Check terminal status before any retry. All work/artifacts remain cloud-only and the local project remains empty. FullserialGen3x4, actual intermacro clock/data wiring/CDR/x4 integration and finalmainchip timing are not accepted.
+
 ## 2026-10-16 — Complete110buffer reviews preserved;141buffer repair running
 
 All three independent110candidate reviews completed. Endpoint **38857906862** verified22544endpoints/135264corner-delay rows and45088exact graph-minimum checks, without loss of constraints. Negative setup endpoints are9342slow,455typical,3fast; hold endpoints0slow,0typical,92fast. Compared with the50buffer parent, typical setup fell1311to455 and fastsetup30to3, but regressions and new violations remain. The candidate is **not adopted**. All92hold targets have552originalcorner conflict paths.
