@@ -29,7 +29,7 @@ def export():
         lvs=pya.LayoutVsSchematic();lvs.read(str(path));c=lvs.netlist().circuit_by_name(TOP)
         assert c is not None and c.pin_count()==6
         layer_map={}
-        for metal in [50,67]:
+        for metal in [30,67]:
             conductor=pya.Region(top.begin_shapes_rec(layout.layer(metal,0))).merged()
             candidates=[i for i in lvs.layer_indexes() if (lvs.layer_by_index(i)^conductor).is_empty()]
             assert len(candidates)==1,(metal,candidates)
@@ -43,7 +43,7 @@ def export():
             assert identity not in names or names[identity]==name,('Logical short',name,names.get(identity))
             names[identity]=name;probes.append(dict(logical_net=name,cluster=identity,metal=metal,point_dbu=[xy.x,xy.y]))
         for r in geometry['routes']:
-            assert r['connection_present'];probe(r['net'],50,r['source_um'])
+            assert r['connection_present'];probe(r['net'],30,r['source_um'])
         for name,s in geometry['ports'].items():
             box=pya.DBox.from_s(s);q=box.center();probe(name,67,[q.x,q.y])
         rows=[]
