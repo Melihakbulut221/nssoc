@@ -1,3 +1,16 @@
+## 2026-10-16 — Actual146setup bottlenecks and all-reachable margins measured while long jobs run
+
+Cloud-only remains controlling; local workspace is empty. Full native PLL38910378266 (initial job117004666682), localpins loaded38910247036 (job117003968990), mainchip234route38896397749 (job116957794230) remain active at this observation. Exact last states are docs/evidence/cloud-live-driver-margins-20261016.json. Do not restart any healthy job. Previous native continuation and localpins source handles below remain authoritative.
+
+New read-only cloud work completed:
+
+1. Parent146driver review38911721184 / summary647500302 SHA9207f1a03fa9f22564a6041a5e4c9d12c4e6fbcf4313ab2b496610a0d001c938 binds1050reported global paths plus540hold-target corner paths. It finds15weak loaded outputs. The remaining fast setup path is ff1171433→ff1177037 at−0.006851ns. Its nand4_1 ...1750008/Y has3.116141ns slow stage delay and0.212391pF fast observed load; nand2_1 ...1749223/Y is on the same path. Do not call the15-output subset a full endpoint census or assume absent hold-target intersections prove safety.
+2. Native all-reachable driver query38912503737 / summary647524959 SHAbd6f332308b7864a19edc30caa805fa3bd5c19ac0847201f6a845ce51e4ed269 resolves actual146ODB pins, masters, nets and sinks; reproduces original timing; queries90through-output min/max corner phases across all constrained reachable groups. All15have positive pre-change hold margin. place27767/X is only0.148377091ns; the other14range0.829207182..1.535946369ns. Exact rows are docs/evidence/parent146-driver-margins-20261016.json.
+
+Next useful independent work: source-bound conservative sizing screen for14larger-margin outputs, excluding place27767/X. Proposed doubling recipe in docs/evidence/parent146-sizing-hypothesis-20261016.json is UNTESTED, no implementation or safe acceleration claim. Verify masters in actual PDK, full-chip restricted logic+deliberate input-fault control, and all22544endpoint135264row comparison under unchanged constraints. A frozen-SPEF screen is only a ranking estimate because resizing moves physical pins. Before an actual chip ECO, bind/revalidate the completed234child, legalize/reroute/reextract and independently review full endpoints, geometry/antenna/LVS; no stale146recipe blindly applied. Preserve active234route and source failures.
+
+The slowest reported Ethernet stages include SRAM read outputs near5.9ns; weak-gate sizing alone may not close those or the CPU worst−5.744925ns. Full serialPHY, finaltiming, qualifiedRC/memories and signoff remain open.
+
 ## 2026-10-16 — Full original1us native continuation live; local-pin loaded electrical test live
 
 Cloud-only remains controlling. Local workspace checked empty. Latest concrete state:
