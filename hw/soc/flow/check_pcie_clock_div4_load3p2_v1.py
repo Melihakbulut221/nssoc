@@ -166,7 +166,8 @@ def execute(command, directory, label):
 
 
 APP_SHA = "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
-REFERENCE_FAULTS = (\n    "collector_load_reverted",
+REFERENCE_FAULTS = (
+    "collector_load_reverted",
     "limiter_load",
     "feedback",
     "limiter_nx",
