@@ -31,7 +31,7 @@ def capture(path,vectors):
     assert np.max(np.diff(t))<=3.125e-13*1.00001
     return names,values,dict(**meta,raw_sha256=hashlib.sha256(raw).hexdigest(),start_s=float(t[0]),end_s=float(t[-1]),native_max_step_s=float(np.diff(t).max()))
 
-def main(filter_cap_um=None):
+def main(filter_cap_um=None,physical_parent=False):
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,acquisition_accepted=False,full_phy_accepted=False,full_device_safety_accepted=False,
         original_run=38674687038,paired_engine_run=38805695818,
@@ -40,6 +40,10 @@ def main(filter_cap_um=None):
         assert type(filter_cap_um) is int and filter_cap_um in (9,11)
         result.update(filter_cap_um=filter_cap_um,physical_candidate_accepted=False,
             scope='Pre-layout filter-capacitor design experiment on frozen actual845 source. Only one cap_cmim width/length changes. Same8648baseline wire records are estimates, NOT candidate extracted parasitics. Same original1us/.3125ps/34probes/zeroOP/102OFF/engine/PDK and mandatory100ppm/50ps/no-slip/control gates. Passing requires new physical geometry, fresh RC, full device safety and PVT/load/refinement before acceptance.')
+    assert type(physical_parent) is bool and not (physical_parent and filter_cap_um is not None)
+    if physical_parent:
+        result.update(physical_candidate_accepted=False,physically_matched_c9_parent=True,
+            scope='Physically matched C9 actual845 PLL: validated30-device pump with fresh84R155C and fresh98R242C parent wiring, all815other devices and remaining RC unchanged. Exact full intrinsic graph/physical reference planes already passed. Same original1us/.3125ps/34probes/zeroOP/102OFF/engine/PDK and mandatory100ppm/50ps/no-slip/control gates. Wire-only extraction is unqualified for RF/substrate; full-device safety, refinement/PVT/load/CDR/x4 and mainchip remain separate.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
@@ -92,10 +96,15 @@ def main(filter_cap_um=None):
             candidate,receipt=prepare((case/'parent865.spice').read_text(),filter_cap_um,OUT)
             (case/'parent865.spice').write_text(candidate)
             result['filter_experiment']=receipt;save()
+        if physical_parent:
+            from cloud_pll_filter_physical_acquisition import prepare
+            candidate,receipt=prepare((case/'parent865.spice').read_text(),OUT)
+            (case/'parent865.spice').write_text(candidate)
+            result['physical_parent_source']=receipt;save()
         readback='echo NSSOC_BACKEND_OPTIONS_BEGIN\noption\necho NSSOC_BACKEND_OPTIONS_END\n'
         deck=expected.replace('quit\n.endc',readback+'quit\n.endc');assert deck.replace(readback,'')==expected
         (case/'actual-acquisition.cir').write_text(deck)
-        result['native_started_epoch']=time.time();result['status']='RUNNING_FILTER_CANDIDATE_ONE_US' if filter_cap_um is not None else 'RUNNING_PATCHED_ACTUAL845_ONE_US';save()
+        result['native_started_epoch']=time.time();result['status']='RUNNING_PHYSICAL_C9_ACTUAL845_ONE_US' if physical_parent else 'RUNNING_FILTER_CANDIDATE_ONE_US' if filter_cap_um is not None else 'RUNNING_PATCHED_ACTUAL845_ONE_US';save()
         env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')};env.update(SPICE_SCRIPTS=str(case),OMP_NUM_THREADS='1',RAYON_NUM_THREADS='1')
         def limits():
             resource.setrlimit(resource.RLIMIT_AS,(8*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
@@ -127,7 +136,11 @@ def main(filter_cap_um=None):
             from cloud_pll_filter_experiment import validate_delta
             validate_delta((SOURCE/'parent865.spice').read_text(),(case/'parent865.spice').read_text(),filter_cap_um)
             result['candidate_gate_passed']=result['original_gate_passed']
-        result['status']='COMPLETE_FILTER_CANDIDATE_ONE_US_NOT_PHYSICAL_ACCEPTANCE' if filter_cap_um is not None else 'COMPLETE_PATCHED_ACTUAL845_ONE_US_MEASUREMENT_NOT_PHY_ACCEPTANCE'
+        if physical_parent:
+            from cloud_pll_filter_physical_acquisition import verify_prepared
+            verify_prepared(OUT,result['physical_parent_source'],(case/'parent865.spice').read_text())
+            result['candidate_gate_passed']=result['original_gate_passed']
+        result['status']='COMPLETE_PHYSICAL_C9_ACTUAL845_ONE_US_MEASUREMENT_NOT_PHY_ACCEPTANCE' if physical_parent else 'COMPLETE_FILTER_CANDIDATE_ONE_US_NOT_PHYSICAL_ACCEPTANCE' if filter_cap_um is not None else 'COMPLETE_PATCHED_ACTUAL845_ONE_US_MEASUREMENT_NOT_PHY_ACCEPTANCE' 
         print(json.dumps(dict(status=result['status'],original_gate_passed=result['original_gate_passed'],elapsed_s=result['elapsed_s'])),flush=True)
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
