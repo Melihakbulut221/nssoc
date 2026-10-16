@@ -31,11 +31,15 @@ def capture(path,vectors):
     assert np.max(np.diff(t))<=3.125e-13*1.00001
     return names,values,dict(**meta,raw_sha256=hashlib.sha256(raw).hexdigest(),start_s=float(t[0]),end_s=float(t[-1]),native_max_step_s=float(np.diff(t).max()))
 
-def main():
+def main(filter_cap_um=None):
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,acquisition_accepted=False,full_phy_accepted=False,full_device_safety_accepted=False,
         original_run=38674687038,paired_engine_run=38805695818,
         scope='Original actual845 parent/all8648wire records, same32models/3OSDIs, zero-sourceOP/102OFF commands, KLU/.3125ps/1us from timezero and all34original voltage probes. Only native VBIC companion engine changes. Original final800-900ns/900-1000ns100ppm/50ps/no-slip/control gates are frozen. Selected-probe measurement cannot establish full845safety, timestep/PVT/load/CDR/x4 or fullPHY acceptance.')
+    if filter_cap_um is not None:
+        assert type(filter_cap_um) is int and filter_cap_um in (9,11)
+        result.update(filter_cap_um=filter_cap_um,physical_candidate_accepted=False,
+            scope='Pre-layout filter-capacitor design experiment on frozen actual845 source. Only one cap_cmim width/length changes. Same8648baseline wire records are estimates, NOT candidate extracted parasitics. Same original1us/.3125ps/34probes/zeroOP/102OFF/engine/PDK and mandatory100ppm/50ps/no-slip/control gates. Passing requires new physical geometry, fresh RC, full device safety and PVT/load/refinement before acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
@@ -83,10 +87,15 @@ def main():
         del old
         case=OUT/'patched';case.mkdir()
         for rel in ('circuit.cir','parent865.spice','spinit'):shutil.copyfile(SOURCE/rel,case/rel)
+        if filter_cap_um is not None:
+            from cloud_pll_filter_experiment import prepare
+            candidate,receipt=prepare((case/'parent865.spice').read_text(),filter_cap_um,OUT)
+            (case/'parent865.spice').write_text(candidate)
+            result['filter_experiment']=receipt;save()
         readback='echo NSSOC_BACKEND_OPTIONS_BEGIN\noption\necho NSSOC_BACKEND_OPTIONS_END\n'
         deck=expected.replace('quit\n.endc',readback+'quit\n.endc');assert deck.replace(readback,'')==expected
         (case/'actual-acquisition.cir').write_text(deck)
-        result['native_started_epoch']=time.time();result['status']='RUNNING_PATCHED_ACTUAL845_ONE_US';save()
+        result['native_started_epoch']=time.time();result['status']='RUNNING_FILTER_CANDIDATE_ONE_US' if filter_cap_um is not None else 'RUNNING_PATCHED_ACTUAL845_ONE_US';save()
         env={k:v for k,v in os.environ.items() if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')};env.update(SPICE_SCRIPTS=str(case),OMP_NUM_THREADS='1',RAYON_NUM_THREADS='1')
         def limits():
             resource.setrlimit(resource.RLIMIT_AS,(8*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
@@ -114,7 +123,11 @@ def main():
         result['cycle_diagnosis']=pll.acquisition_cycle_diagnosis(columns,result['independent_acquisition'])
         result['original_gate_passed']=bool(result['independent_acquisition']['passed'])
         assert all(sha(Path(p))==d for p,d in protected.items());result['protected_inputs_unchanged']=True
-        result['status']='COMPLETE_PATCHED_ACTUAL845_ONE_US_MEASUREMENT_NOT_PHY_ACCEPTANCE'
+        if filter_cap_um is not None:
+            from cloud_pll_filter_experiment import validate_delta
+            validate_delta((SOURCE/'parent865.spice').read_text(),(case/'parent865.spice').read_text(),filter_cap_um)
+            result['candidate_gate_passed']=result['original_gate_passed']
+        result['status']='COMPLETE_FILTER_CANDIDATE_ONE_US_NOT_PHYSICAL_ACCEPTANCE' if filter_cap_um is not None else 'COMPLETE_PATCHED_ACTUAL845_ONE_US_MEASUREMENT_NOT_PHY_ACCEPTANCE'
         print(json.dumps(dict(status=result['status'],original_gate_passed=result['original_gate_passed'],elapsed_s=result['elapsed_s'])),flush=True)
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
