@@ -97,6 +97,8 @@ def verify(text,expected,wires,mapping,native,planes):
     assert count==16
     return dict(devices=6,wire_resistors=13,wire_capacitors=28,terminals=count,wire_components=5,body_nodes=1,ports=PORTS)
 
+INPUTS['l5p7']=[dict(run=38962062682,group='tx-clock-reference-intrinsic-l5p7',head='1c804f1faca16917fade3ed7d5371098bdae86be',summary='c2b4f6ece07c28178a788059c7e2f444bdf23de93532d0d684c4dc302f35538a',parts='a817e81c588165aadeb3912b976a868e187374f2b5a985f0e4618df8a4764364',model='07314432a9efb4d37cb1c1cde2aa9429d060750517d01063036a22a6e1e8461b'),dict(run=38962725630,group='tx-clock-reference-rc-l5p7',head='aee605d5ecbe2ae4cdbb84e532fc7a160d9af29b',summary='a9441ba286414e1dd008517a4ccb8afb80057f74c253ce6f53e4c300969547a5',parts='44a153f7ec874f72fa5d0c6e68fd7c7a65161e63ca40f0bec0637a6a72a5372f')]
+
 def main():
     global OUT,TOP,INTRINSIC_TOP
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(INPUTS),required=True);args=parser.parse_args()
@@ -111,7 +113,7 @@ def main():
     try:
         restored=[restore(s)for s in SOURCES];(i,ir),(w,wr)=restored
         assert ir['variant']==wr['variant']==args.variant and ir['source_unchanged'];result['variant']=args.variant
-        assert ir['source_head']=='8d1fde01d81e4a6d282fb498094a0f76f4ae51fa' and wr['source_head']=='e775fc822e4587e520f37078f95a5b42f913375e'and wr['source_unchanged']
+        assert ir['source_head']==SOURCES[0].get('head','8d1fde01d81e4a6d282fb498094a0f76f4ae51fa') and wr['source_head']==SOURCES[1].get('head','e775fc822e4587e520f37078f95a5b42f913375e')and wr['source_unchanged']
         assert ir['status']=='PASS_NATIVE_CLOCK6_INTRINSIC_FINITE_CONTACTS_AND_EIGHT_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
         assert wr['status']=='PASS_FRESH_ACTUAL_CLOCK_WIRE_RC_AND13_RAW_CORRUPTIONS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE'
         assert len(ir['controls'])==8 and all(c['rejected']for c in ir['controls'])and len(wr['controls']['cases'])==13 and all(c['rejected_by']for c in wr['controls']['cases'])
