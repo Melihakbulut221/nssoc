@@ -391,6 +391,11 @@ module ibex_register_file_ff (
   // hw/soc/flow/syn_regfile.sh measures it, sw/tests checks that no
   // build sets it, and it is not a feature.
   parameter integer SYNPRE = 0;
+  // Experimental setup repair: correct every word before the read mux.
+  // No extra cycle or stored copy; scrub and error reports are unchanged.
+  // Default OFF pending whole-core and routed validation. CORRPRE takes
+  // precedence over FASTCORR and cannot be combined with SYNPRE.
+  parameter integer CORRPRE = 0;
 
   input  wire                  clk_i;
   input  wire                  rst_ni;
@@ -422,6 +427,10 @@ module ibex_register_file_ff (
   // exist, so the build stops with the reason in the message instead of
   // silently producing a register file that is not the one asked for.
   generate
+    if ((CORRPRE != 0 && CORRPRE != 1) ||
+        (CORRPRE != 0 && (HARDEN == 0 || SYNPRE != 0))) begin : g_bad_corrpre
+      ERROR_ibex_regfile_CORRPRE_requires_hardening_and_SYNPRE_zero guard ();
+    end
     if (BaseIsa != 32'sd0) begin : g_no_cheriot
       ERROR_ibex_regfile_secded_does_not_implement_the_CHERIoT_file guard ();
     end
@@ -589,7 +598,24 @@ module ibex_register_file_ff (
       // The columns are the pilot encoder's own, evaluated on the unit
       // vectors. Nothing here writes H down a second time; if
       // hw/rtl/secded_enc.v changed, these would change with it.
-      if (FASTCORR != 0) begin : g_fast
+      if (CORRPRE != 0) begin : g_corrpre
+        wire [31:0] rf_corrected [0:NUM_WORDS-1];
+        for (gj = 0; gj < NUM_WORDS; gj = gj + 1) begin : g_word
+          wire [63:0] corrected;
+          wire [7:0] unused_syn;
+          wire unused_sec, unused_ded;
+          secded_dec u_correct (
+              .code_in ({rf_chk[gj], 32'h0, rf_data[gj]}),
+              .data_out (corrected), .syndrome (unused_syn),
+              .sec (unused_sec), .ded (unused_ded));
+          assign rf_corrected[gj] = corrected[31:0];
+          wire unused_correction;
+          assign unused_correction = ^{corrected[63:32], unused_syn,
+                                       unused_sec, unused_ded};
+        end
+        assign rdata_a_o = rf_corrected[raddr_a_i];
+        assign rdata_b_o = rf_corrected[raddr_b_i];
+      end else if (FASTCORR != 0) begin : g_fast
         wire [CHK_W-1:0] h_col [0:31];
         wire [31:0]      mask_a, mask_b;
 
