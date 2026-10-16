@@ -1,3 +1,11 @@
+## 2026-10-16 — Protected candidate rejected by independent contact screen; repair staged
+
+Protected50 candidate38830273683 has **25 area intersections across8different-net pairs**, despite nativeDRT0. Independent geometry38834266592 measures3,322,536shapes/113,606nets, zero continuity failures, but the contact screen fails. Antenna remains645nets/801pins. All endpoints38834263964: slow setup9601→9539, typical1285→972, fast53→31, no new setup violations; fast hold91→96 with5new failing endpoints, no lost constraints. It is NOT accepted.
+
+Cloud diagnosis38835042687 reproduced all25intersection rectangles from exact shape records and identified8protected wires touching6changed/new routes, allwire/via contacts (no pin-contact waiver). Exact diagnostic bytes are pinned in `cloud-protected-contact-diagnosis-20261016.json`. New protected-contact-eco workflow releases only those8additional originalnets and reroutes108nets, requiring exact preservation of113,498remaining encodedfixedroutes, alloriginalcells/pins/PG/NDR, logic/inversion controls, freshRC and unchangedSTA. Original protected50 mode remains the default. Independent validators accept the108-net variant only with the exact eight-net diagnosis and matching proof; five corruption/omission controls precede native execution. This is a repair experiment, not signoff; run allendpoint/geometry/annotation checks after completion. Do not duplicate its push-triggered run.
+
+Other live analog/unprotected experiments continue. FullPHY/finaltiming remain open. Cloud-only; local workspace empty.
+
 ## 2026-10-16 — Protected 50-buffer routing completed; independent checks running
 
 Run **38830273683** completed with zero native detailed-route violations and exact preservation of **113,506 encoded FIXED nets**; 100 changed/new nets were routed and all 113,606 nets received fresh nominal extraction. Logic equivalence within its recorded scope passed and the inversion negative control was rejected. The candidate is **not adopted**.

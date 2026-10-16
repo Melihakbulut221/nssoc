@@ -4,6 +4,7 @@
 """Independently remeasure every actual-route ECO endpoint, preserving all failures."""
 import argparse,copy,json,math,os,re,struct,subprocess,tarfile
 from pathlib import Path
+from cloud_contact_release import validate_route_proof
 from audit_cloud_route_annotation import BASE,SUMMARY_SHA,ARCHIVE_SHA
 from audit_cloud_routed_endpoints import parse_table,controls as table_controls,HELPER_SHA
 from cloud_verified_parts import extract_verified,controls as archive_controls
@@ -101,8 +102,7 @@ def main(args):
         if args.profile=='protected_load_batch':
             protected=json.loads((candidate_dir/'protected-route-proof.json').read_text())
             assert protected==candidate['protected_route_proof']
-            assert protected['status']=='PASS_UNCHANGED_NATIVE_FIXED_WIRES_AFTER_DETAILED_ROUTE'
-            assert protected['protected_wired_nets']==113506 and protected['selected_routed_nets']==100
+            validate_route_proof(protected,candidate)
             assert sha(candidate_dir/'fixed-source-summary.json')=='029d754af843cf83c4dfe6753e43ab0eec228d2d42db0e07f1a910bebcc73e75'
             assert json.loads((candidate_dir/'fixed-source-summary.json').read_text())==candidate['fixed_conversion_receipt']
         expected_status='COMPLETE_'+status_prefix+'_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'

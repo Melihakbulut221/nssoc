@@ -4,6 +4,7 @@
 """Independent geometry/continuity/contact/antenna screen of completed routed ECO."""
 import argparse,json,os,re,subprocess,sys
 from pathlib import Path
+from cloud_contact_release import validate_route_proof
 import compare_cloud_routed_endpoints as source_reports
 from route_cloud_newer_postcts import sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-candidate-geometry'
@@ -37,7 +38,7 @@ def main(args):
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='protected_load_batch':
             protected=json.loads((OUT/'source/protected-route-proof.json').read_text());assert protected==candidate['protected_route_proof']
-            assert protected['status']=='PASS_UNCHANGED_NATIVE_FIXED_WIRES_AFTER_DETAILED_ROUTE' and protected['protected_wired_nets']==113506 and protected['selected_routed_nets']==100
+            validate_route_proof(protected,candidate)
             assert sha(OUT/'source/fixed-source-summary.json')=='029d754af843cf83c4dfe6753e43ab0eec228d2d42db0e07f1a910bebcc73e75'
         result['restoration']=proof;result['routed_odb_sha256']=sha(OUT/'source/routed.odb');save()
         tcl=OUT/'placement-antenna.tcl';tcl.write_text(f'read_db {{{OUT/"source/routed.odb"}}}\nset_thread_count 2\ncheck_placement -verbose\nset n [check_antennas -verbose -report_file {{{OUT/"antenna.rpt"}}}]\nputs "NSSOC_ANTENNA_RETURN $n"\n')

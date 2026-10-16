@@ -4,6 +4,7 @@
 """Source-bound native RC annotation diagnosis for completed physical candidates."""
 import argparse,json,os,re,subprocess
 from pathlib import Path
+from cloud_contact_release import validate_route_proof
 import compare_cloud_routed_endpoints as source_reports
 from run_cloud_candidate_geometry import PROFILES
 from route_cloud_newer_postcts import sha
@@ -29,7 +30,7 @@ def main(args):
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='protected_load_batch':
             protected=json.loads((OUT/'source/protected-route-proof.json').read_text());assert protected==candidate['protected_route_proof']
-            assert protected['status']=='PASS_UNCHANGED_NATIVE_FIXED_WIRES_AFTER_DETAILED_ROUTE' and protected['protected_wired_nets']==113506 and protected['selected_routed_nets']==100
+            validate_route_proof(protected,candidate)
             assert sha(OUT/'source/fixed-source-summary.json')=='029d754af843cf83c4dfe6753e43ab0eec228d2d42db0e07f1a910bebcc73e75'
         result['restoration']=proof;save()
         env=dict(os.environ,NSSOC_ANNOTATION_NATIVE='1',NSSOC_ANNOTATION_AUDIT_OUT=str(OUT/'source'),NSSOC_ANNOTATION_ADDED_BUFFERS=str(count),NSSOC_ANNOTATION_SPEF='candidate.nominal.spef',NSSOC_ANNOTATION_STA_LOG='fresh-routed-sta.log')

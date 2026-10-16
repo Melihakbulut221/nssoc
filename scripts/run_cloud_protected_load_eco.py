@@ -8,11 +8,13 @@ from route_cloud_newer_postcts import fetch,sha,native_ndr_screen
 from read_opensta_phase_slacks import parse_phases
 from cloud_verified_alias_payload import restore as restore_alias_payload
 from run_cloud_failed_guide_drt import guide_index
+from cloud_contact_release import configured_nets,REVIEW_SHA,validate_route_proof
 from critical_load_targets import COUNT,DIRECTORY,PROFILE,COMPLETE_STATUS,MAX_DISPLACEMENT_UM,SELECTION,validate_measurements
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/DIRECTORY;SOURCE=ROOT/'cloud-routed-extraction'
 BASE='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38809759501-1-routed-extraction/'
 STEM='routed-extraction-38809759501-1'
 assert PROFILE=='protected_load_batch' and COUNT==50
+RELEASED=configured_nets()
 SUMMARY_SHA='aa721c7ccd04c30ed97af33dac632eb0cfdd99fd27232a46819299d12f62e583'
 ARCHIVE_SHA='131bc44b4dc4d26f9ba1fa6a34b17742aa0ccf65e8c3075dca91dfe5dc5c1d4a'
 
@@ -60,7 +62,10 @@ def main():
         for phase,row in old['nominal_rc_cell_corner_phases'].items():
             assert set(measured[phase]['groups'])==set(row['groups'])
             for group,v in row['groups'].items():assert abs(measured[phase]['groups'][group]['worst_slack_ns']-v['worst_slack_ns'])<=1e-6
-        result['original_routed_timing_reproduced']=True;save()
+        result['original_routed_timing_reproduced']=True
+        result['released_contact_nets']=RELEASED;result['contact_diagnosis_sha256']=REVIEW_SHA if RELEASED else None
+        result['scope']+=' Contact followup releases only independently diagnosed fixed nets: '+repr(RELEASED)+'. Remaining protected wires must be byte-identical; all contact and timing failures stay open.'
+        save()
         baseline=SOURCE/'source/routed.odb'
         tcl(f'read_db {{{baseline}}}\nwrite_verilog {{{OUT/"before.v"}}}\n','baseline-netlist')
         fixed_base='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38828562698-1-fixed-wire-control/'
@@ -97,6 +102,8 @@ def main():
         assert hashlib.sha256(raw).hexdigest()=='fc6efcd026c6b2040fdb636376c2ab0a38f959d0ae4ee3acdbe381bcf3412e1b';packed.unlink();(OUT/'original.guide').write_bytes(raw)
         original=guide_blocks(raw.decode());assert len(original)==113556
         selected=[r[k] for r in geometry['changes'] for k in ('original_net','local_net')];assert len(set(selected))==2*COUNT
+        assert not (set(RELEASED)&set(selected));selected+=RELEASED
+        assert len(set(selected))==2*COUNT+len(RELEASED)
         commands=[f'read_db {{{OUT/"candidate.odb"}}}','set_thread_count 2','set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2','set_global_routing_layer_adjustment Metal1-TopMetal2 0.2']
         for n in selected:
             assert not any(c in n for c in '{}\n')
@@ -112,6 +119,7 @@ def main():
         matches=re.findall(r'^NSSOC_ECO_DRVS (\d+)\s*$',log,re.M);assert len(matches)==1;result['native_drt_drvs']=int(matches[0]);save()
         assert result['native_drt_drvs']==0,'Failed physical route retained; no STA adoption'
         native('audit-routed');result['protected_route_proof']=json.loads((OUT/'protected-route-proof.json').read_text());save()
+        validate_route_proof(result['protected_route_proof'],result)
         rules=SOURCE/'source/IHP_rcx_patterns.rules';spef=OUT/'candidate.nominal.spef'
         tcl(f'read_db {{{OUT/"routed.odb"}}}\nset_thread_count 2\ndefine_process_corner -ext_model_index 0 nominal\nextract_parasitics -ext_model_file {{{rules}}} -lef_res\nwrite_spef {{{spef}}}\n','fresh-nominal-extraction')
         sys.path.insert(0,str(ROOT/'hw/soc/flow'));from audit_estimated_spef import audit

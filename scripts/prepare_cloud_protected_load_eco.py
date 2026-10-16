@@ -6,6 +6,8 @@ import hashlib,json,os,struct
 from pathlib import Path
 import odb
 from critical_load_targets import TARGETS,COUNT,DIRECTORY,PROFILE
+from cloud_contact_release import configured_nets,REVIEW_SHA
+RELEASED=configured_nets()
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/DIRECTORY
 assert PROFILE=='protected_load_batch' and COUNT==50
 SOURCE=OUT/'fixed-source/fixed.odb'
@@ -36,7 +38,7 @@ def protected_wires(block,excluded):
             code=wire.getOpcode(i);code=ord(code) if isinstance(code,str) else int(code)
             h.update(struct.pack('<Bq',code,int(wire.getData(i))))
         rows[n.getName()]=dict(length=wire.length(),sha256=h.hexdigest())
-    assert sum(v is not None for v in rows.values())==113556-COUNT
+    assert sum(v is not None for v in rows.values())==113556-COUNT-len(RELEASED)
     return rows
 
 def prepare():
@@ -62,6 +64,11 @@ def prepare():
                 peers=[t for t in driver.getITerms() if str(t.getSigType())==kind];assert len(peers)==1 and peers[0].getNet();p.connect(peers[0].getNet())
         changes.append(dict(driver=name,driver_pin=driver_pin,original_terminal_count=terminal_count,initial_buffer_location_dbu=list(buffer.getLocation()),original_net=net.getName(),local_net=local,buffer=added,buffer_master=master.getName()))
     excluded={r[k] for r in changes for k in ('original_net','local_net')}
+    assert not (set(RELEASED)&excluded)
+    for name in RELEASED:
+        net=b.findNet(name)
+        assert net and net.getWire() and str(net.getSigType())=='SIGNAL' and not net.getNonDefaultRule()
+    excluded.update(RELEASED)
     protected=protected_wires(b,excluded)
     for n in b.getNets():
         if str(n.getSigType()) in ('POWER','GROUND'):continue
@@ -72,7 +79,7 @@ def prepare():
         n.clearGuides();n.clearTracks()
     assert protected_wires(b,excluded)==protected
     assert fixed_data(db)==fixed
-    (OUT/'preparation.json').write_text(json.dumps(dict(original=original,fixed_data_sha256=fixed,changes=changes,protected_wires=protected,accepted=False),indent=2)+'\n')
+    (OUT/'preparation.json').write_text(json.dumps(dict(original=original,fixed_data_sha256=fixed,changes=changes,protected_wires=protected,released_contact_nets=RELEASED,accepted=False),indent=2)+'\n')
     odb.write_db(db,str(OUT/'proposed.odb'))
 
 def audit():
@@ -92,7 +99,8 @@ def audit():
         assert i.findITerm('A').getNet().getName()==r['local_net'] and i.findITerm('X').getNet().getName()==r['original_net']
         assert len(b.findNet(r['local_net']).getITerms())==2 and len(b.findNet(r['original_net']).getITerms())==r['original_terminal_count']
         additions.append(dict(name=i.getName(),signature=signature(i),initial_buffer_location_dbu=r['initial_buffer_location_dbu'],displacement_dbu=[abs(a-b) for a,b in zip(i.getLocation(),r['initial_buffer_location_dbu'])]))
-    excluded={r[k] for r in old['changes'] for k in ('original_net','local_net')}
+    excluded={r[k] for r in old['changes'] for k in ('original_net','local_net')}|set(RELEASED)
+    assert old.get('released_contact_nets',[])==RELEASED
     for n in b.getNets():
         if str(n.getSigType()) not in ('POWER','GROUND'):
             if n.getName() in excluded:assert not n.getWire()
@@ -105,7 +113,8 @@ def audit():
 def audit_routed():
     old=json.loads((OUT/'preparation.json').read_text());db=load(OUT/'routed.odb');b=db.getChip().getBlock()
     assert len(b.getInsts())==113791+COUNT and len(b.getNets())==113863+COUNT
-    excluded={r[k] for r in old['changes'] for k in ('original_net','local_net')}
+    excluded={r[k] for r in old['changes'] for k in ('original_net','local_net')}|set(RELEASED)
+    assert old.get('released_contact_nets',[])==RELEASED
     current=protected_wires(b,excluded)
     assert current==old['protected_wires'],'Detailed router changed protected wire encoding'
     assert all(b.findNet(name).getWire() for name in excluded),'Selected route missing'
@@ -117,7 +126,7 @@ def audit_routed():
         if name in changes:expected['pins'][changes[name]['driver_pin']]=changes[name]['local_net']
         assert signature(b.findInst(name))==expected,('Original cell changed after route',name)
     for row in geometry['added']:assert signature(b.findInst(row['name']))==row['signature']
-    result=dict(status='PASS_UNCHANGED_NATIVE_FIXED_WIRES_AFTER_DETAILED_ROUTE',accepted=False,protected_wired_nets=113556-COUNT,selected_routed_nets=len(excluded),wire_signatures_sha256=hashlib.sha256(json.dumps(current,sort_keys=True).encode()).hexdigest(),scope='Exact raw encoded native wires including every opcode/data index, all original cell/input connections and all added buffer geometry. Does not prove inter-net/ESD/antenna/qualifiedRC or timing closure.')
+    result=dict(status='PASS_UNCHANGED_NATIVE_FIXED_WIRES_AFTER_DETAILED_ROUTE',accepted=False,protected_wired_nets=113556-COUNT-len(RELEASED),selected_routed_nets=len(excluded),released_contact_nets=RELEASED,contact_diagnosis_sha256=REVIEW_SHA if RELEASED else None,wire_signatures_sha256=hashlib.sha256(json.dumps(current,sort_keys=True).encode()).hexdigest(),scope='Exact raw encoded native wires including every opcode/data index, all original cell/input connections and all added buffer geometry. Does not prove inter-net/ESD/antenna/qualifiedRC or timing closure.')
     (OUT/'protected-route-proof.json').write_text(json.dumps(result,indent=2)+'\n')
 
 mode=os.environ.get('NSSOC_CRITICAL_ECO_MODE')
