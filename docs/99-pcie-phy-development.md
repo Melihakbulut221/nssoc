@@ -1,3 +1,7 @@
+## 16 October 2026: physical input-driver prerequisite verified
+
+The actual10-finger HV transistor routing now passes native raw and aggregated transistor LVS, both deep and flat aggregate comparison, all560mainDRC categories withzero markers andfive actual fault controls (run38866034515). This closes one physical building block only. Four such devices still need integration with the originalbuf16 andfourrppd resistors, finite body/well contacts, full-driver extraction and electrical checks. Fullserializer/CDR/x4/mainchip and finaltiming acceptance remain open. See[physical evidence](evidence/cloud-tx-hv-finger-physical-results-20261016.json) and[the native routing record](tx-hv-finger-routing-20261016.md).
+
 # 99 — Custom PCIe Gen3 x4 PHY development
 
 ## Latest development — 16 October 2026

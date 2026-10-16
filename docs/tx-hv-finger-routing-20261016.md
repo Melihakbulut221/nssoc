@@ -16,3 +16,14 @@ Run 38864608050 retained all failed raw/aggregate comparisons and physical contr
 The producer had called `pya.DTrans(30,30)` and `pya.DTrans(45,20)` with integers, selecting the rotation/mirror overload. It now explicitly converts both coordinates to floats and verifies the transformed unit rectangle for every placement before inserting the instance. Actual transforms are recorded. The LVS reference, finger widths/counts, finite tap reference, native decks and faults remain unchanged. The DRC reader also now receives its required `run.log` name; original DRC markers were retained even when the first report parser classified the missing-log problem as ERROR.
 
 A new full native run is required before accepting this repair. Source/reference/implant edits that merely make the failed topology match are not used.
+
+
+## Verified physical result
+
+Run **38866034515**, source `1815e480106b18b63daa2c207ac075ea662fdf20`, passed every required gate after the placement fix. All 560 native main DRC categories ran with **zero markers**. Raw LVS matched 11 devices (ten gate fingers plus the finite substrate contact). Both deep and flat aggregated LVS matched 2 devices and the original total width 10um/length0.45um reference. All extraction diagnostics were empty. Wrong-width, missing-last-gate-contact, open-drain-route, physical short and off-grid controls were rejected by the intended native checks.
+
+The final extracted body is an internal node connected through the explicit tap to `sub`; it is no longer shorted to `source`. Native combined junction areas are AS=AD=2.05p and perimeters PS=PD=15.1u. These geometry outputs must be retained when composing an electrical model; the raw-finger LVS reference is not an electrical substitute.
+
+Published GDS SHA256: `d84cfd74705b832370fb91ca9e6c00096316a7c0a0b430a350662883af8738bb`. Summary SHA256: `c7b896892fa001eb427769ce08e449a874bc0e6bbf3de0de7d1c4692be878c49`. Release: `cloud-results-38866034515-1-tx-hv-fingers`. Exact archives, checks and failed-trial links are in `docs/evidence/cloud-tx-hv-finger-physical-results-20261016.json`.
+
+The next task is the complete original input-driver assembly: four of these HV devices, the exact buf16 cell and four rppd resistors, with explicit well/substrate contacts, all six external ports and correct internal nets. Preserve actual common-substrate connectivity and document finite-contact additions; do not silently short body/source or replace the original junction model. Require full assembled native DRC/LVS and actual open/short/missing-finger faults before fresh extraction and the unchanged electrical measurements. The full driver, serializer tree, PHY and mainchip remain unaccepted.
