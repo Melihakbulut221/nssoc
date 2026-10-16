@@ -41,7 +41,13 @@ def main():
         body=(case/'circuit.cir').read_text();save_lines=[l for l in body.splitlines()if l.startswith('save ')];assert len(save_lines)==1;vectors=save_lines[0].split()[1:];assert len(vectors)==old['probe_count']==442
         original=(OUT/'source/source/case/circuit.cir').read_text()
         assert body.replace(save_lines[0],'save '+' '.join(base)).replace('.tran 3.125e-13 5e-08 0 3.125e-13','.tran 3.125e-13 1e-06 0 3.125e-13')==original
-        r['zero_source_op']=inspect_op((case/'op.raw').read_bytes(),base,vectors);save()
+        op_raw=(case/'op.raw').read_bytes();mark=op_raw.find(b'Binary:\n',0,1048576);assert mark>=0
+        r['operating_point_transport']=dict(raw_sha256=sha(case/'op.raw'),bytes=len(op_raw),header=op_raw[:mark+8].decode('ascii'),binary_bytes=len(op_raw)-mark-8)
+        save()
+        try:r['zero_source_op']=inspect_op(op_raw,base,vectors)
+        except AssertionError as error:
+            r['zero_source_op']=dict(status='UNVERIFIED_NATIVE_OP_FORMAT',diagnostic_zero_op_verified=False,error=repr(error),scope='Do not accept startup or device safety. Preserve failure and inspect recorded header; transient measurements are independent descriptions only.')
+        save()
         r['reader_controls']=pll.self_test();r['original_op_reader_controls']=pll.pfd_op_controls()
         raw=(case/'actual-acquisition.raw').read_bytes();names,values,meta=pll.decode_prefix(raw)
         assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows'] and np.isfinite(values).all()
