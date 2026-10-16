@@ -175,12 +175,19 @@ def main(args):
         assert baseline_script.count(str(SOURCE/'source/routed.odb'))==1 and baseline_script.count(str(SOURCE/'actual-route.nominal.spef'))==3
         expected=baseline_script.replace(str(SOURCE/'source/routed.odb'),str(candidate_dir/'routed.odb')).replace(str(SOURCE/'actual-route.nominal.spef'),str(candidate_dir/'candidate.nominal.spef'))
         assert (candidate_dir/'fresh-routed-sta.tcl').read_text()==expected,'Candidate changed original STA contract'
+        assert not (args.diagnose_semantics and args.verify_graph_minima)
         diagnostic_before=diagnostic_after=''
         if args.diagnose_semantics:
             diagnostic_method=ROOT/'hw/soc/pnr/native_path_semantics_diagnosis.tcl'
             diagnostic_before=f'\nsource {{{diagnostic_method}}}\n'
             diagnostic_after=f'\nnssoc_semantics_finish {{{OUT/"native-semantics.json"}}}\n'
             result.update(diagnostic_mode=True,diagnostic_method_sha256=sha(diagnostic_method),scope='Native Vertex versus PathEnd diagnosis only. Original strict guard errors retained, endpoint counts and targeted1/20path probes observed; not an accepted complete census, timing repair or signoff.')
+            save()
+        if args.verify_graph_minima:
+            graph_method=ROOT/'hw/soc/pnr/native_graph_path_coverage.tcl'
+            diagnostic_before=f'\nsource {{{graph_method}}}\n'
+            diagnostic_after=f'\nnssoc_graph_finish {{{OUT/"native-graph-coverage.json"}}}\n'
+            result.update(graph_minima_mode=True,graph_method_sha256=sha(graph_method))
             save()
         script=OUT/'candidate-census.tcl';script.write_text(expected+f'\nsource {{{helper}}}\n'+diagnostic_before+f'set nssoc_endpoint_out {{{OUT}}}\nsource {{{method}}}\n'+diagnostic_after)
         with (OUT/'candidate-census.log').open('w') as log:
@@ -200,6 +207,9 @@ def main(args):
             result.update(status='COMPLETE_NATIVE_SEMANTICS_DIAGNOSIS_NOT_CENSUS_ACCEPTANCE',diagnosis=diagnosis,source_unchanged=True,candidate_routed_timing_reproduced=True)
             return
         after,new_rows=load_census(OUT);assert before['native_pin_mapping']==after['native_pin_mapping'],'Physical endpoint identities changed'
+        if args.verify_graph_minima:
+            from native_graph_path_coverage import verify
+            result['exact_graph_coverage']=verify(OUT,after);save()
         comparison=compare_rows(old_rows,new_rows);result['comparison']=comparison
         if args.profile in ('measured_hold_batch','expanded_load_batch'):
             parent_report,parent_proof=restore_report('eco-endpoint-compare',38835900898,'ade9895f247c39b9439a169934bdf986b80be897bbd53b3259832b694ec9a450','36a4be4c1a5267a5cd971095579ac261cb39a6ef31df06ee8f70028894423fd3',OUT/'parent-census',('native-census.json','endpoint-slacks.tsv'))
@@ -229,7 +239,7 @@ def main(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch','measured_hold_batch','expanded_load_batch'])
-    parser.add_argument('--hold-paths',action='store_true');parser.add_argument('--diagnose-semantics',action='store_true');parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
+    parser.add_argument('--hold-paths',action='store_true');parser.add_argument('--diagnose-semantics',action='store_true');parser.add_argument('--verify-graph-minima',action='store_true');parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))
     else:main(args)
