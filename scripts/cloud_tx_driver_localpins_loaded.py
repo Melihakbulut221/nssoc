@@ -109,8 +109,66 @@ def diagnostic_wires(original,mode):
     else:raise AssertionError('Intrinsic terminal corruption escaped sensitivity audit')
     return '* DIAGNOSTIC ONLY: nonphysical half-wire sensitivity; never acceptance.\n'+'\n'.join(' '.join(r)for r in rows)+'\n',dict(mode=mode,changed=changed,scale='0.5',wire_nodes_or_intrinsic_devices_changed=False,physically_realized=False,intrinsic_terminal_fault='REJECTED')
 
+def diagnostic_pullup(original, mode, intrinsic, composition):
+    """Change one source-bound resistor geometry parameter, not wire RC or test limits."""
+    lengths = {'pullup_l2p7': '2.7u', 'pullup_l2p4': '2.4u'}
+    assert mode in lengths
+    before = statements(original)
+    assert sum(row[0].startswith('R') for row in before) == 260
+    assert sum(row[0].startswith('C') for row in before) == 295
+    assert sum(row[0].startswith('XD') for row in before) == 100
+    native = [row for row in intrinsic['bindings'] if row['instance'] == 'XD87']
+    assert len(native) == 1
+    native = native[0]
+    assert native['model'] == 'rppd' and native['nodes'] == ['avdd', 'dout', 'BULK']
+    assert native['native_parameters'] == {'w': 4.0, 'l': 3.08, 'ps': 0.0, 'b': 0.0, 'm': 1.0}
+    wired = [row for row in composition['bindings'] if row['instance'] == 'XD87']
+    assert len(wired) == 1 and wired[0]['native_id'] == 87
+    nodes = {row['terminal']: row['node'] for row in wired[0]['bindings']}
+    index = next(i for i, row in enumerate(before) if row[0] == 'XD87')
+    old = before[index]
+    assert old[1:4] == [nodes[n] for n in native['named_terminal_order']]
+    assert old[4] == 'rppd'
+    params = dict(word.split('=', 1) for word in old[5:])
+    assert len(params) == len(old[5:]) and set(params) == set(native['compact_parameters'])
+    assert all(number(params[k]) == number(v) for k,v in native['compact_parameters'].items())
+    rows = [list(row) for row in before]
+    position = next(i for i, word in enumerate(old) if word.startswith('l='))
+    rows[index][position] = 'l=' + lengths[mode]
+    def verify(candidate):
+        assert len(candidate) == len(before)
+        for i, (a, b) in enumerate(zip(before, candidate, strict=True)):
+            expected = list(a)
+            if i == index:
+                expected[position] = 'l=' + lengths[mode]
+            assert b == expected, 'Undeclared device, terminal or wire change'
+    verify(rows)
+    controls = []
+    for fault in ('gate_damping_changed', 'pullup_terminal_changed'):
+        bad = [list(row) for row in rows]
+        if fault == 'gate_damping_changed':
+            gate = next(i for i,row in enumerate(bad) if row[0] == 'XD85')
+            length = next(i for i,word in enumerate(bad[gate]) if word.startswith('l='))
+            bad[gate][length] = 'l=6u'
+        else:
+            bad[index][1] = 'corrupted_pullup_terminal'
+        try:
+            verify(bad)
+        except AssertionError as error:
+            assert 'Undeclared' in str(error)
+            controls.append(dict(fault=fault, rejected=True))
+        else:
+            raise AssertionError('Pullup sensitivity corruption escaped')
+    return '* SCHEMATIC SENSITIVITY ONLY: new pullup length with frozen old wires.\n' + '\n'.join(' '.join(row) for row in rows) + '\n', dict(
+        mode=mode, instance='XD87', native_id=87, original_length='3.08u',
+        candidate_length=lengths[mode], original_row=old, candidate_row=rows[index],
+        native_logical_nodes=native['nodes'], controls=controls,
+        all260_wire_resistors_and295_capacitors_unchanged=True,
+        gate_damping_and_all_other99_devices_unchanged=True,
+        physically_realized=False, fresh_geometry_and_extraction_required=True)
+
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=('intrinsic','wire','wire_half_r','wire_half_c'),required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--mode',choices=('intrinsic','wire','wire_half_r','wire_half_c','pullup_l2p7','pullup_l2p4'),required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode=args.mode,source=SOURCE,serial_phy_complete=False,qualified_timing=False,mainchip_integrated=False,qualified_pex=False,component_screen_passed=False,
         scope='Eight actual100-device drivers with raw junctions/finite contacts, loaded by the actual162-device routed four-input tree. Driver wire case includes each260R295C. Full34ns256-bit8GT/s oracle unchanged. Tree-to-driver external connections, clocks and supplies remain ideal; no32:1/x4/CDR/PLL/ESD/mainchip acceptance.')
@@ -124,7 +182,8 @@ def main():
         model=source/'driver100-wire.spice'if args.mode!='intrinsic'else base/'driver100.spice'
         assert sha(model)==('c624e9d1597ac8b68a2fb4772673ad0ffade0c35a21a027cbd449de1e2acf3d6'if args.mode!='intrinsic'else'f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5')
         result['original_driver_model_sha256']=sha(model)
-        diagnostic=args.mode in ('wire_half_r','wire_half_c')
+        pullup=args.mode in ('pullup_l2p7','pullup_l2p4')
+        diagnostic=pullup or args.mode in ('wire_half_r','wire_half_c')
         if diagnostic:
             url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38910247036-1-tx-driver-localpins-loaded-wire/tx-driver-localpins-loaded-wire-38910247036-1.summary.json'
             fetch(url,'0ba488d996b9cd251bf9ec457a22cb78fbe425aa4927f3af6e15c85ee9f0a5f8',OUT/'measured-parent.json')
@@ -132,9 +191,15 @@ def main():
             assert measured['status']=='COMPLETE_RAW_DRIVER_LOADED_PHYSICAL_TREE_STUDY_NOT_PHY_ACCEPTANCE'and not measured['component_screen_passed']
             assert measured['original_driver_model_sha256']==sha(model)and measured['mode']=='wire'
             result['measured_parent']=dict(run=38910247036,summary_sha256='0ba488d996b9cd251bf9ec457a22cb78fbe425aa4927f3af6e15c85ee9f0a5f8',component_screen_passed=False)
-            text,change=diagnostic_wires(model.read_text(),args.mode)
-            model=OUT/'diagnostic-driver.spice';model.write_text(text);result['wire_sensitivity']=change
-            result['scope']='Artificial wire sensitivity on the unchanged failed raw-driver/routed-tree study. Only all295wireC or all260wireR scaled0.5; every intrinsic device, finite contact, source bit, clock, load, probe and gate unchanged. Neither variant is a realizable physical model or an acceptance candidate.'
+            if pullup:
+                text,change=diagnostic_pullup(model.read_text(),args.mode,json.loads((base/'result.json').read_text()),prior)
+                result['pullup_sensitivity']=change
+                result['scope']='Source-bound pullup resistor XD87 length3.08um to2.7um or2.4um, width4um retained. All260R295C wire elements, gate damping and99other intrinsic devices, full34ns/256bits/originalphases/672MOS/62HBT and limits unchanged. Frozen old wires do not match the proposed new resistor geometry. This schematic sensitivity can guide a fresh physical candidate but never supplies layout, PVT, qualifiedPEX or fullPHY acceptance.'
+            else:
+                text,change=diagnostic_wires(model.read_text(),args.mode)
+                result['wire_sensitivity']=change
+                result['scope']='Artificial wire sensitivity on the unchanged failed raw-driver/routed-tree study. Only all295wireC or all260wireR scaled0.5; every intrinsic device, finite contact, source bit, clock, load, probe and gate unchanged. Neither variant is a realizable physical model or an acceptance candidate.'
+            model=OUT/'diagnostic-driver.spice';model.write_text(text)
         engines.OUT=OUT;paths,provenance=engines.restore_engines();result['runtime_provenance']=provenance
         assert sha(paths['patched'])=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'
         inputs=OUT/'fixtures';fixtures(inputs)
@@ -175,7 +240,7 @@ def main():
         result['status']='COMPLETE_RAW_DRIVER_LOADED_PHYSICAL_TREE_STUDY_NOT_PHY_ACCEPTANCE'
         if diagnostic:
             result['diagnostic_screen_passed']=result['component_screen_passed'];result['component_screen_passed']=False
-            result['status']='COMPLETE_ARTIFICIAL_DRIVER_WIRE_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
+            result['status']='COMPLETE_PULLUP_DEVICE_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE' if pullup else 'COMPLETE_ARTIFICIAL_DRIVER_WIRE_SENSITIVITY_NOT_PHYSICAL_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
