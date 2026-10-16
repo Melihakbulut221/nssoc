@@ -1,3 +1,32 @@
+## Latest handoff — actual repaired driver physical gates passed
+
+Observation: 2026-10-16T18:06:00.821878+00:00. Actual run38944147428 completed successfully, source
+4f17848a3ac042528fb92d978697808c0584ad22. The new100-device driver with
+XUP2.4um andXIN6.2um passed allfour raw/aggregate deep/flat LVS comparisons,
+full560-category DRC(0markers) and nine native fault controls, including the
+wrong original pullup and series lengths. This is physical correctness only.
+Summary648150666 SHA05b76749dd3bf044096a98724e4bc2fb37d261849871e002d9be69b823c36b7b;
+parts648150739 SHA08b4af56bd30b4124e1c0dda572cc5498ce3148b1f67389de34004fb02ba4b0f.
+Actual GDS SHAa151458075fc0ae554b34151bc785525a87e336d0e6df3ddecd3d59189654262.
+All checked reference/raw native reports are in
+`docs/evidence/tx-driver-series-physical-results-20261016.json` and the release.
+
+NEXT: restore this exact group tx-input-driver-pullup-l2p4-series-l6p2 and
+bind raw100 native devices/junctions and allfour resistor parameters against
+base/effective-driver.inc, then actual metalgraph/terminalanchors, intrinsic
+conversion, fresh wireRC and exactcomposition. Adapt the already-audited
+pullup pipeline source specifications; do not reuse its old l2p4 GDS/model or
+assume new parasitic counts. Preserve original mutation controls and add old
+serieslength rejection where source/model binding requires it. In parallel
+clock physical run38941785196 and LEF38943586211 are both complete; actual
+clock six-device terminal/model/RC extraction remains required. Then repeat
+the unchanged loaded fullcapture and PVT checks with matching physical models.
+Combined nominal sensitivity passed, but its frozen wires remain unaccepted.
+
+Mainchip route38930352215 and PLL continuation38910378266/job117113404119
+were verified live. No healthy job restart. No local checkout or results exist.
+Full serialGen3x4, routed mainchip and finalsetup/hold are still not complete.
+
 ## Latest — combined repair passes full nominal sensitivity; actual driver geometry running
 
 Cloud-only observation: 2026-10-16T18:03:48.125931+00:00. Concrete progress: measured both individual
