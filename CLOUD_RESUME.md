@@ -1,3 +1,11 @@
+## 2026-10-16 — Power RC and exact composition passed; full loaded electrical test launched in cloud
+
+Fresh power RC38900317579 passed all13raw corruption controls; actual measured260R300C, all372terminals/164planes/10conductors, complete native R and C records retained. Model wireSHA81af7d4a18e04a65995806dde8abcd87b119c083185bfd87d373067a41fa8dd2. Composition38900811721 passed raw100+all260R300C and10faults; modelSHA8189a71869008cd996a4ef21243cd4a7ae45f1725ef9fc7b19b0e30eda52872a. Exact immutable receipts are docs/evidence/tx-driver-power-composition-input-20261016.json and tx-driver-power-electrical-source-20261016.json.
+
+New tx-driver-power-loaded-cloud and tx-driver-power-wire-metrics-cloud workflows consume this exact model. The full34ns/256bit/8GT/s loaded162device-tree study retains original stimuli, native solver, probe coverage, MOS/HBT limits and voltage/timing gates. Original intrinsic model remains byte-identical, so its earlier control is retained; no result accepted in advance. Inspect actual output and every failing device, not workflow color.
+
+Native cross-job diagnostic source91ef876cbc5a4f90a4b9cef1889c93a031542124 records CPU/kernel, decodes original saved process registers/mappings with pinned CRIU, adds an independent fresh destination4ns reference, and preserves actual continued raw/OP even on failure. It never replaces or splices the saved process trajectory. Prior38898727014SIGILL remains a failed portability result; full1us not yet launched under this method. Mainchip23438896397749 remains live; preserve its computation and independently review actual route result as described below. Workspace stays empty and cloud-only policy controls.
+
 ## 2026-10-16 — Power terminal and intrinsic gates passed; fresh RC cloud workflow added
 
 Power anchors38899911037 passed all372 terminals (272metal,100body),164actual reference planes,10wire components,6ports and4faults. Power intrinsic38899911036 passed raw100named-device verification and7faults; actual modelSHA f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5 proves byte identity with the prior intrinsic model. Exact receipts are docs/evidence/tx-driver-power-rc-input-20261016.json.
