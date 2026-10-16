@@ -1,3 +1,9 @@
+## 2026-10-16 — Power terminal and intrinsic gates passed; fresh RC cloud workflow added
+
+Power anchors38899911037 passed all372 terminals (272metal,100body),164actual reference planes,10wire components,6ports and4faults. Power intrinsic38899911036 passed raw100named-device verification and7faults; actual modelSHA f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5 proves byte identity with the prior intrinsic model. Exact receipts are docs/evidence/tx-driver-power-rc-input-20261016.json.
+
+Fresh tx-driver-power-rc-cloud workflow now consumes these actual power sources. It retains the pinned native runtime, raw graph audit and all13corruption controls; no assumed260R300C. Check its actual result, then compose power RC+intrinsic and run unchanged loaded34ns gates plus wire metrics. Mainchip38896397749 remains live. Separate-host native restore38898727014 remains failed/unproven; existing sourcecheckpoint is preserved. Local project directory is empty; cloud-only policy remains controlling.
+
 ## 2026-10-16 — Cloud-only continuation; power extraction passed; separate-host native restore failed
 
 Local workspace remains empty. No local CAD, tests, checkout or archives; all persistent changes and results are on GitHub.
