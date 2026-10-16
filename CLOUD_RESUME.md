@@ -1,3 +1,49 @@
+## Current cloud-only handoff — routed candidate complete, independent reviews dispatched
+
+Local workspace /home/hasanmelih/Documents/ChatGPT/nnsoc is empty. No local
+CAD/simulation processes, checkout or downloaded result archives. The user's
+cloud-only instruction applies to all continuation. Preserve healthy cloud jobs.
+
+Mainchip run38930352215 completed. Its exact summary SHA
+e3ff94103fe3d99e1dcdf889c1d01d741d6fd6d0a29092b20aea488dab89bbd4 was checked in memory.
+Producer gates passed: nine sized cells, zero added cells, unchanged source,
+reproduced parent timing, logic comparison and rejected inversion control,
+native detailed-route DRVs zero. Fresh nominal RC and all endpoint timing
+exist; this is NOT final timing/signoff acceptance. Exact measurements are in
+`docs/evidence/nine-size-routed-results-20261016.json`.
+Independent geometry and annotation workflow was dispatched with this producer
+run and exact summary/parts hashes. Find latest workflow_dispatch run of
+nine-size-independent-review-cloud.yml; inspect before any retry.
+
+Repaired driver actual pipeline completed: junction38945153504, wire graph
+38945153543, intrinsic38945917784, fresh RC38945917870, composition38946552766.
+Composition uses actual new GDS, 100 devices, 260R/295C, 372 terminals and
+10 wire components; all ten composition fault controls rejected. Model SHA
+6e77bfdac07cd973a37b7aca558c0c4aeea64ba76b3d5cb2486562df80ebaa3b.
+Loaded run38947156051/job117129063984 is active, sourcefe2713339e93e54044a3a1a6a0cf2431748ec2fd.
+It uses actual repaired driver RC, but clock offset6.2 remains schematic.
+Do not label it full combined physical acceptance. Original full34ns/256bits,
+0.3/0.5/0.7UI, zeroOP, 672MOS/62HBT and original limits remain required.
+
+Clock native terminal binding38945593141 passed both l6p2/l6p5: six actual
+raw devices, sixteen terminals, four public pins, exact HBT/resistor/contact
+parameters and six corruption controls. Actual wire graph38946981718 passed
+both: five physical conductor components. First graph38946742476 failed the
+source transformation stage; fixed overlapping replacement order in66e9bf5
+without changing geometry/algorithm. Preserve original failure evidence.
+NEXT clock work: actual terminal planes (including native HBT C/B/E metal
+pins), finite body-contact intrinsic model, fresh physical RC and composition.
+Native pinned npn13G2 PCell source SHA
+634cda63717ab4122f15e0fef5f3e8475e90e67e043823f5b8ed208e695f1729
+at IHP Open PDK c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c matches source geometry.
+Do not substitute arbitrary contacts or alias bodies. Then use matching actual
+clock and driver models in unchanged full loaded/PVT checks.
+
+PLL38910378266 continuation job117113404119 remains active. Preserve actual
+saved native process; inspect latest continuation receipt after completion.
+Full serial Gen3x4, qualified extraction/PVT, full chip integration and final
+setup/hold remain open. No completion/production acceptance is claimed.
+
 ## Latest handoff — actual repaired driver physical gates passed
 
 Observation: 2026-10-16T18:06:00.821878+00:00. Actual run38944147428 completed successfully, source
