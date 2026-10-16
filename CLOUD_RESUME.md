@@ -1,3 +1,7 @@
+## 2026-10-16 — Branch234 annotation compatibility repair
+
+Annotation38914934453 failed before classification: native helper still allowed only the older counts up to146. The upstream branch234 restoration/recipe checks passed. Added exactly234 to supported counts, preserving instance/net/SPEF cardinalities and every source-bound check. Workflow controls now require all declared profile counts to be recognized and reject233. Rerun the annotation workflow against unchanged38896397749 summary765b113220ba12b3267ee50cd1ff02bfac7eb89a336c41ba77632c7ccd401e6e and partsed0fa830af18e5703c36e509ff3230ffe4522b106aaf764482709d5c9f2dc178. Original failed run is retained; this compatibility edit is not annotation acceptance.
+
 ## 2026-10-16 — Cloud-only handoff verified; branch234 and localpins results inspected
 
 Local workspace is empty and no local CAD processes were observed. Migration Release `cloud-migration-final-checkout-20261013`, receipt asset636387277, confirms COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. All further CAD, simulation, extraction and tests stay in GitHub runners; do not recreate a local checkout or download archives locally.

@@ -58,7 +58,10 @@ jobs:
           python3 - <<'PYCODE'
           import sys,json
           sys.path.insert(0,'scripts')
-          from audit_cloud_route_annotation import controls,name_controls
+          from audit_cloud_route_annotation import controls,name_controls,SUPPORTED_ADDED_COUNTS
+          from run_cloud_candidate_geometry import PROFILES
+          assert {v[0] for v in PROFILES.values()} <= SUPPORTED_ADDED_COUNTS
+          assert 234 in SUPPORTED_ADDED_COUNTS and 233 not in SUPPORTED_ADDED_COUNTS
           print(json.dumps(dict(annotation=controls(),spef_names=name_controls())))
           PYCODE
   full-annotation:

@@ -40,10 +40,12 @@ def name_controls():
     assert spef_net_name(pairs[0][0])!=spef_net_name(pairs[1][0])
     return dict(exact_native_writer_cases=len(pairs),literal_brackets_distinct=True)
 
+SUPPORTED_ADDED_COUNTS = frozenset((0,2,3,50,54,110,141,146,234))
+
 def native(added=0,spef_name='actual-route.nominal.spef',log_name='actual-routed-sta.log'):
     import odb
     d=odb.dbDatabase.create();odb.read_db(d,str(OUT/'routed.odb'));b=d.getChip().getBlock()
-    assert added in (0,2,3,50,54,110,141,146)
+    assert added in SUPPORTED_ADDED_COUNTS
     assert Path(spef_name).name==spef_name and Path(log_name).name==log_name
     assert len(b.getInsts())==113791+added and len(b.getNets())==113863+added
     nets={n.getName():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
