@@ -1,3 +1,15 @@
+## Latest: actual845 PLL divider GDS integration passed; fresh parentRC dispatched (2026-10-17)
+
+Cloud only; workspace empty. This supersedes the layout-running state immediately below.
+
+Actual fullPLL GDS38980553476 PASSED: main560categoryDRC, hierarchical and flat845native-device LVS, wrong-load and real QPMetal5-cut controls rejected. Both new divider GDS macros retain actual14ports, transforms and960x469.03um bboxes; all parent own wire shapes and other cell geometry unchanged. New assembled GDS4ae1faf3d673a62c8eb5d53daabbf0c3e3bf5e4a875d60073c751ed5184e256b. Summaryasset648914334 SHAdc8927be5b6826a4a8b152cb164c65063f49297cecba747466806dcd25ae73d0; parts648914403 SHAbcd136360a13814e710ee25ea4e2922f694fbd4992aed399bd0353d612a11421; archive1755293bytes SHA85ec3c58d6abadc8076bf243fd982962d89263e0755fb9f421cff95461f28059. Receipt `docs/evidence/pll-divider-v2-parent-physical-result-20261017.json`.
+
+Fresh parent reference-plane/RC run38981059521 sourcea30c823ff11f50df1309aa393924ca62aaf4992b is live. Workflow `pll-divider-v2-parent-rc-cloud.yml`, producer `scripts/cloud_pll_divider_v2_parent_rc.py`, group `pll-divider-v2-parent-rc`. It restores exact new assembled GDS/native full845 LVS, binds all83parent planes and additionally14actual transformed fresh v2 child port planes from38977128892. Actual shiftedQP plane control added; all original pump/release/wire geometry controls retained. Every parent-only metal/via polygon must equal original actual845 parent, all25components bind to new nativefullPLL nets. Existing native Magic extraction, conservation audit and8rawfault scripts copied byte-identical from pinned original source; no oldRC acceptance shortcut. Await actual report before claiming new physical composition. Next replace parent98R242C records with newly extracted audited parent wires (use measured actual counts), combine actual new divider models and rerun full845 intrinsic graph against NEW physical schematic/LVS. Only then new assembled physical electrical model is justified. Current50ns diagnostic explicitly retains prior parentRC and remains diagnostic.
+
+Other live work: Ethernet physical route38978702458 and v2 bounded102HBT diagnostic38980258617; do not duplicate. Exact source details, ready independent Ethernet review workflow, corrected parent model and all failures below. Full serialPHY, mainchip integration and final timing remain OPEN.
+
+---
+
 ## Cloud continuation: both corrected PLL divider graphs passed; actual parent GDS and Ethernet route running (2026-10-17)
 
 Cloud-only remains mandatory and overrides the stale goal text requesting local work. Workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty. No local checkout, CAD, tests, artifacts or archives. Use remote APIs in RAM and hosted Actions. Do not cancel/restart healthy jobs or loosen gates. Full serialGen3x4, actual mainchip PCIe/Ethernet integration and final timing remain OPEN.
