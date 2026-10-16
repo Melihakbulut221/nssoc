@@ -17,6 +17,9 @@ def main():
         fetch(spec['receipt']['url'],spec['receipt']['sha256'],pack);assert pack.stat().st_size==spec['receipt']['bytes']
         with tarfile.open(pack)as t:t.extractall(ROOT,filter='data')
         pack.unlink();manifest=json.loads((ROOT/'manifest.json').read_text());assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())
+        tech=ROOT/'pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef';tech.parent.mkdir(parents=True,exist_ok=True)
+        fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef','e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6',tech)
+        r['additional_tech_lef']=dict(pdk_commit='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c',sha256=sha(tech),bytes=tech.stat().st_size)
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==spec['runtime_sha256'];r['runtime_sha256']=sha(app)
         os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
         checker=ROOT/'hw/soc/flow/check_pcie_clock_div4_load3p2_v1.py'
