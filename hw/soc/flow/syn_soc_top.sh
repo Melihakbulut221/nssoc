@@ -189,9 +189,18 @@ export IBEX_REGFILE IBEX_FAULT_PORT
 # took before this knob existed, and the control in docs/49 section 3 is
 # that the netlist is byte-identical to the one docs/47 hardened.
 IBEX_RF_SYNPRE=${IBEX_RF_SYNPRE:-0}
+IBEX_RF_CORRPRE=${IBEX_RF_CORRPRE:-0}
+case "$IBEX_RF_CORRPRE" in 0|1) ;; *) echo 'IBEX_RF_CORRPRE must be 0 or 1' >&2; exit 2 ;; esac
+if [ "$IBEX_RF_CORRPRE" = 1 ] && { [ "$IBEX_REGFILE" != secded ] || [ "$IBEX_RF_SYNPRE" != 0 ]; }; then
+  echo 'CORRPRE requires the SECDED register file and SYNPRE=0' >&2; exit 2
+fi
 RF_CHPARAM="# IBEX_REGFILE=$IBEX_REGFILE: no register file chparam"
 if [ "$IBEX_REGFILE" = "secded" ] && [ "$IBEX_RF_SYNPRE" != 0 ]; then
   RF_CHPARAM="chparam -set SYNPRE $IBEX_RF_SYNPRE ibex_register_file_ff"
+fi
+if [ "$IBEX_RF_CORRPRE" = 1 ]; then
+  RF_CHPARAM="$RF_CHPARAM
+chparam -set CORRPRE 1 ibex_register_file_ff"
 fi
 
 # docs/50's knob, on soc_top's own parameter. See the header.
@@ -755,7 +764,7 @@ awk -v top=soc_top -v ge=7.2576 '
   }
 ' "$OUT/$AREA_SUMMARY"
 
-echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE"
+echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE"
 echo "  mem_rdreg=$SOC_MEM_RDREG  mem_harden=$SOC_MEM_HARDEN  rom_harden=$SOC_ROM_HARDEN  boot_harden=$SOC_BOOT_HARDEN  clkgate=$SOC_CLKGATE  wake_gnt=$SOC_WAKE_GNT  req_reg=$SOC_REQ_REG  abc -D $ABC_D"
 echo "  report: $OUT/$AREA_SUMMARY  per-module: $OUT/area_hier.rpt"
 echo "  netlist: $OUT/soc_top.netlist.v  sta: $OUT/soc_top.sta.v  log: $OUT/syn.log"
