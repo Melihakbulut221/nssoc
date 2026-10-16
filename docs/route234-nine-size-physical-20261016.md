@@ -31,3 +31,18 @@ hashes. Selected GRT must still generate exactly all23 selected net guide blocks
 The detailed router continues to use the intact `candidate.odb` with merged new
 guides, then fresh extraction and all-endpoint checks. This correction itself is
 not evidence of successful routing or timing closure.
+
+
+Cloud diagnosis38925101397 of the actual rejected38924027432 archive found
+23selected nets present,0missing, but113767extra guide nets (113790total).
+These extra blocks were not byte-identical to the saved parent guide, so none
+were accepted. Pinned native GlobalRouter::saveGuides replaces dbGuides only
+for entries in its23-net routes_ map; other existing dbGuides survive and are
+included by guide serialization. This is distinct from dbWire routes.
+
+The guide-only copy now explicitly clears all old dbGuide metadata before GRT.
+The initial113790guided-net census and removed rectangle count are retained;
+serialized guide-input.odb must have zero dbGuides. All detailed-wire, cells,
+connectivity and PG/NDR checks remain; the original candidate.odb and saved
+parent guide are unchanged. Exactly23fresh generated guide blocks remain
+mandatory, and all other merged blocks still come byte-for-byte from parent.

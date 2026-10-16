@@ -1,3 +1,16 @@
+## Latest routing correction — stale guide metadata identified
+
+Cloud diagnosis38925101397 PASSED read-only restoration of failed38924027432:
+all23selected guide nets exist,0missing,113767extra,113790total. The extra
+serialized blocks differ from the saved parent; none were accepted. Native
+saveGuides leaves untouched dbGuides for nets absent from its23-net route map.
+The guide-only preparer now clears all old dbGuide metadata (not unselected
+detailed wires), proves empty guides after serialization, and retains the
+mandatory exact23fresh-net check and byte-identical parent-guide merge.
+A new route234-sized-eco-cloud push run follows this change; find its current
+handle before any repeat. Preserve completed failures. Diagnostic details and
+original handles below remain applicable; full PHY/final timing are open.
+
 ## Latest cloud-only continuation — 2026-10-16, guide inventory and loaded-driver failure
 
 The latest user request controls: everything runs in GitHub; local workspace is empty.
