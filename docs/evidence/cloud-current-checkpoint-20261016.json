@@ -4396,5 +4396,201 @@
     "lef_run": 38870205745,
     "electrical_acceptance": false,
     "full_phy_complete": false
+  },
+  "latest_driver_intrinsic_refined_route_results": {
+    "intrinsic": {
+      "run": 38873849859,
+      "source_head": "6149ff3aae9b6d00299d4b25600963f816f0ff76",
+      "status": "PASS_RAW100_NAMED_MOS_JUNCTIONS_AND_FINITE_CONTACT_MODEL_WITH_SEVEN_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE",
+      "summary_asset": 646674453,
+      "summary_sha256": "107d70dab7cfdbf8f4fe1eb185fde5767c4dd8c6f91ce35a5a80b7f38c5d5b2d",
+      "parts_asset": 646674533,
+      "parts_sha256": "8740e010bae5c0d931c070740a74209ed89ac3a5c319a1734ac1173c1e021ccd",
+      "archive_asset": 646674654,
+      "archive_bytes": 1341801,
+      "archive_sha256": "32562fbf370ea8aa56b08828f0ee7baba701b8432e29cea54cfb5fbcdd31949d",
+      "counts": {
+        "devices": 100,
+        "mos_fingers": 84,
+        "physical_resistors": 4,
+        "finite_contacts": 12,
+        "ports": [
+          "din",
+          "dout",
+          "avdd",
+          "dvdd",
+          "avss",
+          "sub"
+        ]
+      },
+      "model_sha256": "f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5",
+      "controls": [
+        {
+          "fault": "missing_MOS",
+          "rejected": true,
+          "reason": "Device missing or duplicated"
+        },
+        {
+          "fault": "wrong_junction",
+          "rejected": true,
+          "reason": "MOS parameter or junction orientation changed"
+        },
+        {
+          "fault": "swap_drain_source",
+          "rejected": true,
+          "reason": "Named terminal binding changed"
+        },
+        {
+          "fault": "body_short",
+          "rejected": true,
+          "reason": "Named terminal binding changed"
+        },
+        {
+          "fault": "missing_contact",
+          "rejected": true,
+          "reason": "Device missing or duplicated"
+        },
+        {
+          "fault": "changed_contact_R",
+          "rejected": true,
+          "reason": "Finite contact conductance changed"
+        },
+        {
+          "fault": "missing_rfmode",
+          "rejected": true,
+          "reason": "MOS parameter missing"
+        }
+      ],
+      "failed_predecessor": 38873632011,
+      "simulator_checked": false,
+      "wire_parasitics_included": false,
+      "qualified_pex": false
+    },
+    "anchors": {
+      "run": 38874325892,
+      "source_head": "ae315dbc2829e967b8506200f0fde99682f5a258",
+      "status": "PASS_ALL372_DRIVER_TERMINALS_BOUND_WITH272_METAL100_BODY_AND_FOUR_FAULTS_NOT_RC_ACCEPTANCE",
+      "summary_asset": 646686626,
+      "summary_sha256": "a8cbfda2c09e080d72125dbb2c62277afa787241d9fa79f9af031ce3ad213e06",
+      "parts_asset": 646686692,
+      "parts_sha256": "639dea854d83fe0701bcbded7a0c790ad601488aaac9ea707469a2d4dda77a0d",
+      "archive_asset": 646686791,
+      "archive_bytes": 1345302,
+      "archive_sha256": "d7bb1471be6ef3211961b79c06299b13db58a36417fe5f47ee5ac76428708ecd",
+      "counts": {
+        "devices": 100,
+        "terminals": 372,
+        "metal_terminals": 272,
+        "body_terminals": 100,
+        "public_ports": 6,
+        "unique_reference_planes": 164,
+        "wire_components": 10
+      },
+      "controls": [
+        {
+          "fault": "missing_terminal",
+          "rejected": true,
+          "reason": "Missing or duplicate terminal"
+        },
+        {
+          "fault": "off_conductor",
+          "rejected": true,
+          "reason": "Point is not an actual contact for this terminal"
+        },
+        {
+          "fault": "wrong_reference",
+          "rejected": true,
+          "reason": "Anchor association changed"
+        },
+        {
+          "fault": "body_as_wire",
+          "rejected": true,
+          "reason": ""
+        }
+      ],
+      "poly_diffusion_resistance_included": false,
+      "substrate_spreading_included": false,
+      "wire_rc_extracted": false,
+      "qualified_pex": false
+    },
+    "route141": {
+      "run": 38859276266,
+      "source_head": "d235bd4d29483d8755d245e9034e200791e63220",
+      "status": "COMPLETE_REFINED_LOAD_BATCH_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF",
+      "summary_asset": 646679865,
+      "summary_sha256": "3786689b73b2a290f91b2cdf5414c08690f7e5a681eb8c240252b503ea38b725",
+      "parts_asset": 646679983,
+      "parts_sha256": "e3d5c7fde3593eefd7a0a3f7514c4735284aa67694f451b31482e8439a785390",
+      "archive_asset": 646680111,
+      "archive_bytes": 167926900,
+      "archive_sha256": "2ac8de60b4470da9f3e0b0f7d5de335adccd79d7b28872e092346810cc93f694",
+      "buffer_count": 141,
+      "native_drt_drvs": 0,
+      "postroute": {
+        "status": "PASS_ALL_CANDIDATE_CELLS_TOPOLOGY_PG_PORTS_NDR_PRESERVED_AFTER_ROUTE",
+        "profile": "refined_load_batch",
+        "instances": 113932,
+        "nets": 114004,
+        "all_candidate_cell_signatures_unchanged": true,
+        "all_net_memberships_unchanged": true,
+        "pg_ports_ndr_unchanged": true,
+        "candidate_odb_sha256": "dff5982c39ebfb4d061351e953786100d30cd453f9cfc7a901090f7060bc6c7f",
+        "routed_odb_sha256": "4e54050fab1ccb130d3d7484d85b428b17d050137173fe5604035c995b1a9fcc",
+        "accepted": false,
+        "scope": "Postroute exact native cell and topology preservation; no DRC/LVS/antenna/timing acceptance."
+      },
+      "worst_slack_ns": {
+        "slow_max": -5.86207,
+        "slow_min": 0.030966,
+        "typical_max": -2.046646,
+        "typical_min": -0.01625,
+        "fast_max": -0.089828,
+        "fast_min": -0.211918
+      },
+      "spef_integrity": {
+        "status": "PASS within scope",
+        "nets": 113697,
+        "inconsistent_nets": 0,
+        "declared_total_pf": 1476.464212929175,
+        "serialized_total_pf": 1476.4642269692035,
+        "coupling_entries": 2139464,
+        "allow_coupling": true,
+        "difference_pf": -1.4040028645467828e-05,
+        "examples": [],
+        "input_sha256": "0e35fe677f08e61a3ded66d52c1c7da5d3bb7f8dc3693b61235dacc0df56d800",
+        "scope": "Per-net wire-capacitance conservation only; each net includes its own coupling entries when explicitly enabled. Aggregate sums are not unique physical capacitance. Excludes RC accuracy, connectivity, coupling symmetry/model correctness, timing and manufacturing acceptance."
+      },
+      "accepted": false,
+      "independent_reviews": {
+        "endpoints": 38874773944,
+        "geometry": 38874777460,
+        "annotation": 38874781115
+      }
+    },
+    "pgo": {
+      "run": 38863635146,
+      "source_head": "0f69b333fa393ab6fef69045ca99b8aa05c5afb7",
+      "status": "COMPLETE_PAIRED_FINE_STEP_PGO_LTO_DIAGNOSIS_NOT_FULL_CAPTURE_OR_PHY_ACCEPTANCE",
+      "summary_asset": 646680987,
+      "summary_sha256": "106212ff743ca8edb7d306de32b8b938be163df4ee416b697b673aee24dbde93",
+      "parts_asset": 646681087,
+      "parts_sha256": "be462460a378eb7ba6f0d6e27e27577f7d80839e866caf5bad96d358e564d4f2",
+      "archive_asset": 646681163,
+      "archive_bytes": 778654358,
+      "archive_sha256": "df312fabd0acc5ad06d8a277ac1c7ea944f876c2ec2e81da8039e37a7f006c43",
+      "optimized_runtime_sha256": "7ed0f1b6a11d7d2cca0c20d8f899869fab277e7c405421f87331d705f0e58943",
+      "wall_speed_ratio": 0.8901564276031141,
+      "cpu_speed_ratio": 0.8901256676697386,
+      "minimum_candidate_speed_ratio": 1.25,
+      "runtime_candidate_for_full_fine_capture": false,
+      "same_native_time_grid": true,
+      "voltage_agreement_to_1nv": true,
+      "maximum_voltage_difference": 0.0,
+      "full_fine_capture_complete": false
+    },
+    "observed_utc": "2026-10-16T08:40:58.385627+00:00",
+    "full_serial_phy_complete": false,
+    "final_timing_complete": false,
+    "execution_policy": "cloud-only; local workspace empty"
   }
 }
