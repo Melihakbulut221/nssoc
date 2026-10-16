@@ -48,6 +48,16 @@ jobs:
           python3 -m py_compile scripts/compare_cloud_routed_endpoints.py scripts/critical_load_targets.py scripts/expanded_load_targets.py scripts/prepare_cloud_critical_load_eco.py scripts/run_cloud_critical_load_eco.py
           python3 scripts/expanded_load_targets.py --verify-published
           python3 scripts/compare_cloud_routed_endpoints.py --controls-only
+          python3 scripts/native_graph_path_coverage.py --controls-only
+          tclsh <<'TCL'
+          source hw/soc/pnr/timing_hold_reproducibility.tcl
+          source hw/soc/pnr/native_graph_path_coverage.tcl
+          if {[nssoc_graph_edge ^] ne "rise" || [nssoc_graph_edge v] ne "fall"} {error "Native edge mapping failed"}
+          foreach raw {rise fall unknown {}} {
+              if {![catch {nssoc_graph_edge $raw}]} {error "Unknown native edge accepted"}
+          }
+          puts NSSOC_NATIVE_EDGE_FORMAT_CONTROLS_PASS
+          TCL
   full-comparison:
     if: github.event_name == 'workflow_dispatch'
     needs: controls
@@ -80,7 +90,7 @@ jobs:
         run: |
           args=()
           if [ "$HOLD_PATHS" = "true" ]; then args+=(--hold-paths); fi
-          python3 scripts/compare_cloud_routed_endpoints.py --profile "$PROFILE" --run "$SOURCE_RUN" --summary-sha "$SUMMARY_SHA" --parts-sha "$PARTS_SHA" "${args[@]}"
+          python3 scripts/compare_cloud_routed_endpoints.py --verify-graph-minima --profile "$PROFILE" --run "$SOURCE_RUN" --summary-sha "$SUMMARY_SHA" --parts-sha "$PARTS_SHA" "${args[@]}"
       - name: Preserve all raw endpoint measurements and comparison failures
         if: always()
         env:
@@ -108,6 +118,7 @@ jobs:
           assert r['status']=='COMPLETE_ALL_ENDPOINT_ROUTED_ECO_COMPARISON_NOT_SIGNOFF',r.get('error')
           assert r['source_unchanged'] and r['candidate_routed_timing_reproduced']
           assert r['endpoint_count']==22544 and r['endpoint_corner_delay_rows']==135264
+          assert r['exact_graph_coverage']['verification']['endpoint_delay_checks']==45088
           print(r['comparison'])
           PYCODE
 # Frozen ECO outputs omit nested result.json; logic receipt is embedded in pinned summary.
