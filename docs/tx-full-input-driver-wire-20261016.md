@@ -15,3 +15,9 @@ Run38872584488 passed:10physical metal/via components,12electrical native nets,1
 This reference-plane selection leaves poly/diffusion resistance and body spreading explicit and unqualified. It does not silently claim these resistances were extracted. Fresh metal/via RC and its raw audit follow this step, before any complete-driver loaded simulation.
 
 Run38874325892 completed: all372native terminals bound,272metal terminals represented by158shared actual contact planes,100explicit body/well terminals, plus6public ports. Total164unique planes cover all10physical components. All4actual reference corruptions were rejected. Fresh native RC and its raw audit remain the next required step.
+
+## Fresh native wire RC
+
+`cloud_tx_driver_rc.py` restores the proven164planes and10actual metal/via components, then runs the pinned native Magic runtime on `full_driver_wires`. The adapted audit retains the original raw resistor multiset, per-point ground capacitance, every mutual-capacitance attachment, the full conductor-collapsed capacitance matrix and source-node retirement checks. Original tolerances are unchanged. All13actual raw-export/reference corruptions remain mandatory; aliases from the original ideal netlist are never inserted into the exported resistor graph.
+
+The exact source-method hashes and all adaptations from the earlier pump method are in `docs/evidence/tx-driver-rc-methods-20261016.json`. Source-bound paths are rebased and rehashed; the164actual reference points and372terminal identities are unchanged. This stage still excludes poly/diffusion resistance, substrate spreading and qualified RF extraction. No full-driver electrical acceptance follows until the raw100-device model is composed with these actual wires and simulated.
