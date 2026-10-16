@@ -24,10 +24,14 @@ on:
         description: Exact ordered archive manifest SHA256
         type: string
         required: true
+      hold_paths:
+        description: Also trace every negative hold endpoint and all original-corner setup conflicts
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
-  group: eco-endpoint-compare-${{ github.ref }}-${{ inputs.run }}
+  group: eco-endpoint-compare-${{ github.ref }}-${{ inputs.run }}-${{ inputs.hold_paths }}
   cancel-in-progress: false
 jobs:
   controls:
@@ -71,9 +75,11 @@ jobs:
           SOURCE_RUN: ${{ inputs.run }}
           SUMMARY_SHA: ${{ inputs.summary_sha }}
           PARTS_SHA: ${{ inputs.parts_sha }}
-        run: >-
-          python3 scripts/compare_cloud_routed_endpoints.py --profile "$PROFILE"
-          --run "$SOURCE_RUN" --summary-sha "$SUMMARY_SHA" --parts-sha "$PARTS_SHA"
+          HOLD_PATHS: ${{ inputs.hold_paths }}
+        run: |
+          args=()
+          if [ "$HOLD_PATHS" = "true" ]; then args+=(--hold-paths); fi
+          python3 scripts/compare_cloud_routed_endpoints.py --profile "$PROFILE" --run "$SOURCE_RUN" --summary-sha "$SUMMARY_SHA" --parts-sha "$PARTS_SHA" "${args[@]}"
       - name: Preserve all raw endpoint measurements and comparison failures
         if: always()
         env:

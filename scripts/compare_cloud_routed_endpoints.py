@@ -5,6 +5,7 @@
 import argparse,copy,json,math,os,re,struct,subprocess,tarfile
 from pathlib import Path
 from cloud_contact_release import validate_route_proof
+from candidate_hold_conflicts import controls as conflict_controls,measure as measure_conflicts
 from audit_cloud_route_annotation import BASE,SUMMARY_SHA,ARCHIVE_SHA
 from audit_cloud_routed_endpoints import parse_table,controls as table_controls,HELPER_SHA
 from cloud_verified_parts import extract_verified,controls as archive_controls
@@ -49,7 +50,7 @@ def controls():
     try:compare_rows(before,malformed)
     except AssertionError:pass
     else:raise AssertionError('Missing endpoint accepted')
-    return dict(archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
+    return dict(conflict_paths=conflict_controls(),archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
 
 def restore_report(group,run,summary_sha,parts_sha,destination,selected):
     for v in (summary_sha,parts_sha):assert re.fullmatch(r'[0-9a-f]{64}',v)
@@ -144,6 +145,8 @@ def main(args):
         result['any_endpoint_regression']=any(v[e]['regressed'] for v in comparison.values() for e in ('rise','fall','worst'))
         result['any_loss_of_constraints']=any(v[e]['became_unconstrained'] for v in comparison.values() for e in ('rise','fall','worst'))
         result['endpoint_count']=len(after['endpoints']);result['endpoint_corner_delay_rows']=len(new_rows)
+        if args.hold_paths:
+            result['hold_conflict_paths']=measure_conflicts(OUT,expected,after,new_rows,candidate['routed_timing'])
         for name,pin in proof['restore']['selected_files'].items():assert sha(candidate_dir/name)==pin['sha256']
         assert all(sha(SOURCE/n)==v for n,v in source['outputs'].items()) and all(sha(Path(n))==v for n,v in source['protected_inputs'].items())
         result.update(status='COMPLETE_ALL_ENDPOINT_ROUTED_ECO_COMPARISON_NOT_SIGNOFF',source_unchanged=True,candidate_routed_timing_reproduced=True)
@@ -153,7 +156,7 @@ def main(args):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch'])
-    parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
+    parser.add_argument('--hold-paths',action='store_true');parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))
     else:main(args)
