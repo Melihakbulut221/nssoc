@@ -28,3 +28,50 @@ healthy runs or repeat the previously rejected data8_select10 sizing study
 38773059353. Every original34ns/256bits/672MOS/62HBT/zeroOP/source phase and
 engineering limit remains required; a useful outcome needs new matching
 physical geometry/extraction and PVT validation.
+
+## Latest — final-selector identity proved; repair experiments prepared behind live parent
+
+Cloud-only observation: 2026-10-16T17:24:38.631113+00:00. Actual loaded38936139904, nine-size
+full-signal route38930352215 and native full1usPLL38910378266 remain live.
+This turn made concrete source/provenance progress and validated controls.
+Do not restart healthy jobs. Local project directory remains empty.
+
+Native tree inventory38937012080 proves XD0001/3 are the same final2:1 selector
+branch: C=$I50,B=sn,E=$I54,S=$4,Nx6. XD0002/4 are its sp-side pair.
+Both share the final tail, whose two Nx8 devices are biased from mr. These
+are not the first stage; the prior checkpoint's loose first-stage wording was
+incorrect and is corrected. Original binding SHA remains
+f54124fa051b49a32f0c3837ef8f771e6cda3ea9aba18417ba5cc932e856c3b9.
+Inventory summary648005147 SHA01e8c9875a5a52f3192c030219d015b01b551328e513490c49f5c3863363fa23;
+parts648005240 SHA0682c2493974518fcb66ac477e5274e7309b4ef957d3bb3b28d3dbd034d0b0c6.
+
+Source-controls38937989660 PASSED. Exact physical l2p4 parent model is pinned;
+XD86/XIN6.92to6.2um (w2um) and native clock XOFFSET6.5to6.2um (w4um)
+are two separate hypotheses. Four real undeclared changes (gate damping,
+wireR,clockHBT,missingoffset) are rejected. No electrical pass or changed
+physical layout is claimed. Summary648024877 SHAe1aaab5f517f86b905fa09e40013e0a2f53407f63563c72d1b123d5a0636780a;
+parts648025107 SHA2267f433d0900d946989188cda78385843952b44c7c3fefacaf958d0dafdc4d6.
+Helper: scripts/cloud_tx_driver_stage_repair.py.
+
+The parent-gated experiment controller and workflow are READY, not yet run:
+`scripts/cloud_tx_driver_stage_repair_loaded.py` and
+`.github/workflows/tx-stage-repair-loaded-cloud.yml`.
+Source60995212a4a0d6f3a97854a6ed51a3ffb001e5d6 compiled successfully in
+push preflight38938382706; the three native cases were intentionally skipped
+on push. Next, inspect actual l2p4 job117092015460 in38936139904. If its full
+original capture is complete with engineering failures and zero solver
+diagnostics, fetch/hash the published l2p4 summary, then dispatch exactly once
+with `parent_summary_sha` set to that verified SHA. Matrix runs series,clock,
+andcombined with the same full34ns/256bits/originalphases/672MOS/62HBT and
+all limits. Four shared method/feed files are pinned unchanged from parent
+9e6679b30a0f31556d0ea32097cefd1c480dc47e. Only selected native resistor
+geometry parameters change; old wires for altered geometry remain explicitly
+nonphysical, component_screen_passed staysfalse, diagnostic_screen_passed
+records actual original gates. No source ramp, phase fit or ideal offset added.
+If parent passes or has numerical failures, reassess instead of dispatching.
+
+Do not repeat rejected data8_select10 study38773059353: all three wire corner
+cases failed. No full32:1/four-lane PHY, qualifiedRC/PVT, clocks/CDR or final
+mainchip setup/hold closure is established. Source-bound diagnosis is saved in
+`docs/evidence/tx-stage-repair-controls-20261016.json`.
+
