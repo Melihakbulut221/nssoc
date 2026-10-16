@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 # Actual RTL candidate; all results are standalone pre-layout, not mainchip closure.
-import hashlib,json,os,re,shutil,subprocess,xml.etree.ElementTree as ET
+import ast,hashlib,json,os,re,shutil,subprocess,xml.etree.ElementTree as ET
 from pathlib import Path
 PHASE=os.environ.get('CORRPRE_PHASE','all')
 assert PHASE in ('all','measure')
@@ -46,7 +46,11 @@ def main():
         for corr,scrub in [(0,1),(1,1),(1,0)]:
             tag=f'cocotb-c{corr}-s{scrub}';xml=OUT/(tag+'.xml');build=OUT/(tag+'-build')
             run(tag,['make','-f','Makefile.ibex_regfile_secded',f'EXTRA_COMPILE_ARGS=-Pibex_register_file_ff.CORRPRE={corr} -Pibex_register_file_ff.SCRUB={scrub}',f'SIM_BUILD={build}',f'COCOTB_RESULTS_FILE={xml}'],cwd=tb,env=dict(os.environ,REGFILE_SCRUB=str(scrub)))
-            tests=list(ET.parse(xml).iter('testcase'));assert len(tests)>=7 and not any(list(t)for t in tests)
+            tests=list(ET.parse(xml).iter('testcase'))
+            test_tree=ast.parse((tb/'test_ibex_regfile_secded.py').read_text())
+            expected={n.name for n in test_tree.body if isinstance(n,ast.AsyncFunctionDef) and n.name.startswith('test_')}
+            assert len(expected)==6 and {t.attrib['name']for t in tests}==expected and len(tests)==len(expected)
+            assert not any(list(t)for t in tests)
             assert ('g_corrpre'in(build/'sim.vvp').read_text())==bool(corr),'Candidate override ignored'
             r.setdefault('fault_campaigns',[]).append(dict(corrpre=corr,scrub=scrub,testcases=len(tests),failed=0,skipped=0,elaboration_verified=True));save()
         libdir=Path(os.environ['CORRPRE_LIBDIR'])

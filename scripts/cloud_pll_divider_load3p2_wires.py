@@ -52,10 +52,10 @@ def main():
                 assert len(audit['circuits'])==1 and audit['circuits'][0]['layout_devices_recursive']==91 and audit['circuits'][0]['schematic_devices_recursive']==91
         method=ROOT/'scripts/tx_driver_localpins_wire_native.py';assert sha(method)==METHOD_SHA;original=method.read_text();adapted=original
         edits=[
+          ('nssoc_tx_input_driver_v7_physical_localpins_v1',TOP),
           ("P=B/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'","P=B/'source'"),
           ("P/'base/layout.gds'","P/'layout/"+TOP+".gds'"),
           ("P/'check-raw_flat_lvs/","B/'raw_flat/"),
-          ('nssoc_tx_input_driver_v7_physical_localpins_v1',TOP),
           ('6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62',GDS_SHA),
           ('c.pin_count()==6','c.pin_count()==7'),
           ('dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)','dict(npn13G2=34,rppd=33,cap_cmim=6,ptap1=18)'),
