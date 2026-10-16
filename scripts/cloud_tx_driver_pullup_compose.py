@@ -25,7 +25,10 @@ def restore(spec):
     summary=OUT/(spec['group']+'.json');fetch(url,spec['summary'],summary);frozen=json.loads(summary.read_text())
     destination=OUT/'inputs'/spec['group']
     prior,proof=reports.restore_report(spec['group'],spec['run'],spec['summary'],spec['parts'],destination,tuple(frozen['outputs']))
-    assert prior==frozen and prior['source_unchanged']
+    assert prior==frozen
+    # RC reports prove their inputs in the controller but have no source_unchanged field.
+    # Require every restored file hash directly, for both producer schemas.
+    assert all(sha(destination/name)==digest for name,digest in prior['outputs'].items())
     return destination,prior
 
 TOP='nssoc_tx_driver_native100_localpins_wire_v1';PORTS=intrinsic.PORTS+['wire_cref']
@@ -113,7 +116,7 @@ def main():
     save()
     try:
         restored=[restore(s)for s in SOURCES];(i,ir),(w,wr)=restored
-        assert ir['variant']==wr['variant']==args.variant;result['variant']=args.variant
+        assert ir['variant']==wr['variant']==args.variant and ir['source_unchanged'];result['variant']=args.variant
         assert ir['status']=='PASS_ACTUAL_PULLUP_NATIVE100_INTRINSIC_AND_EIGHT_FAULTS_NOT_WIRE_RC_OR_ELECTRICAL_ACCEPTANCE'
         assert wr['status']=='PASS_FRESH_ACTUAL_PULLUP_WIRE_RC_AND13_RAW_CORRUPTIONS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE'
         assert len(ir['controls'])==8 and len(wr['controls']['cases'])==13
