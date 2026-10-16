@@ -28,7 +28,7 @@ for i,line in enumerate(rows):
   alternate=next(n for n in groups[owner[f[1]]] if n!=f[1]);shifted[i]=' '.join([f[0],alternate,*f[2:]]);break
 cases=[
  ('dropped_actual_port',{'wires.spice':text.replace(' '+next(n for n in parsed['ports'] if n.startswith('A'))+' ',' ',1)},'Export port loss/duplication'),
- ('dropped_resistor',{'wires.spice':re.sub(r'^R\d+ .*\n','',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),
+ ('dropped_resistor',{'wires.spice':re.sub(r'^R\d+ .*\n','',text,count=1,flags=re.M)},'Physical wire R graph open or incomplete'),
  ('wrong_resistor',{'wires.spice':re.sub(r'^(R\d+ \S+ \S+) \S+$',r'\1 12345',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),
  ('cross_conductor_short',{'wires.spice':text.replace('.ends','R_EXTRA P_DIV_AVDD P_AVSS 1\n.ends')},'R network has unanchored component or cross-conductor short'),
  ('ground_redistribution_same_matrix',{'wires.spice':'\n'.join(redistributed)+'\n'},'Per-point ground C export changed'),

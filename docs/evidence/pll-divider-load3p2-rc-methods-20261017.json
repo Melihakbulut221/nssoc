@@ -113,7 +113,7 @@
   "mutations01.py": {
     "path": "scripts/pll_divider_load3p2_mutations01.py",
     "original_sha256": "645da880972ceceeb4e58641515d625ff97935d2d4e28430a299f845d31ec65e",
-    "adapted_sha256": "95a8d69c4812a070816d592d10b86bbb73c51d3c0f86531168fc34b567334e93",
+    "adapted_sha256": "64d409413d14cfed0760fd0c833214c001c35331cdcd4aeab16f601f01490cd2",
     "edits": [
       {
         "before": "clock_reference_wires",
@@ -129,6 +129,12 @@
         "before": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',5",
         "after": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',84",
         "count": 1
+      },
+      {
+        "before": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),",
+        "after": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Physical wire R graph open or incomplete'),",
+        "count": 1,
+        "reason": "Observed native R0 joins public CLKP to first device. Removing it opens an anchored component, rejected by the earlier connectivity gate. Same actual corruption retained; no acceptance rule changed."
       }
     ],
     "native_rc_and_conservation_algorithm_unchanged": true
