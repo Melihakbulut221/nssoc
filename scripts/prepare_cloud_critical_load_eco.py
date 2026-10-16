@@ -78,5 +78,21 @@ def audit():
     odb.write_db(db,str(OUT/'candidate.odb'))
     (OUT/'geometry-proof.json').write_text(json.dumps(dict(status='PASS_EXPLICIT_BUFFERS_ORIGINAL_GEOMETRY_PINS_NDR_POWER_PRESERVED',profile=PROFILE,accepted=False,original_instances=len(old['original']),added=additions,changes=old['changes'],scope='Original113791cells/masters/geometry and all input pins unchanged; selected driver outputs pass through positive buffers. No routed or timing acceptance.'),indent=2)+'\n')
 
-if os.environ.get('NSSOC_CRITICAL_ECO_MODE')=='audit':audit()
+
+def audit_routed():
+    before=load(OUT/'candidate.odb');after=load(OUT/'routed.odb')
+    a=before.getChip().getBlock();b=after.getChip().getBlock()
+    signatures=lambda block:{i.getName():signature(i) for i in block.getInsts()}
+    def topology(block):
+        return {n.getName():dict(signal=str(n.getSigType()),ndr=n.getNonDefaultRule().getName() if n.getNonDefaultRule() else None,iterms=sorted((t.getInst().getName(),t.getMTerm().getName()) for t in n.getITerms()),ports=sorted(t.getName() for t in n.getBTerms())) for n in block.getNets()}
+    assert len(a.getInsts())==len(b.getInsts())==113791+COUNT
+    assert len(a.getNets())==len(b.getNets())==113863+COUNT
+    assert signatures(a)==signatures(b),'Cell placement/function/pin changes after route'
+    assert topology(a)==topology(b),'Net topology changed after route'
+    assert fixed_data(before)==fixed_data(after),'PG/ports/NDR changed after route'
+    proof=dict(status='PASS_ALL_CANDIDATE_CELLS_TOPOLOGY_PG_PORTS_NDR_PRESERVED_AFTER_ROUTE',profile=PROFILE,instances=len(b.getInsts()),nets=len(b.getNets()),all_candidate_cell_signatures_unchanged=True,all_net_memberships_unchanged=True,pg_ports_ndr_unchanged=True,candidate_odb_sha256=hashlib.sha256((OUT/'candidate.odb').read_bytes()).hexdigest(),routed_odb_sha256=hashlib.sha256((OUT/'routed.odb').read_bytes()).hexdigest(),accepted=False,scope='Postroute exact native cell and topology preservation; no DRC/LVS/antenna/timing acceptance.')
+    (OUT/'post-route-geometry.json').write_text(json.dumps(proof,indent=2)+'\n')
+
+if os.environ.get('NSSOC_CRITICAL_ECO_MODE')=='audit_routed':audit_routed()
+elf os.environ.get('NSSOC_CRITICAL_ECO_MODE')=='audit':audit()
 else:prepare()

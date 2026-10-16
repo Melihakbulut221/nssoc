@@ -54,6 +54,11 @@ def main():
         for n,digest in old['outputs'].items():assert sha(SOURCE/n)==digest,n
         for n,digest in old['protected_inputs'].items():assert sha(Path(n))==digest,n
         validate_measurements((SOURCE/'actual-routed-sta.log').read_text())
+        if PROFILE=='expanded_load_batch':
+            from expanded_load_targets import REVIEW_URL,REVIEW_SHA,verify_review
+            fetch(REVIEW_URL,REVIEW_SHA,OUT/'driver-review-summary.json')
+            result['driver_review_source']=verify_review((OUT/'driver-review-summary.json').read_bytes());save()
+
         original_script=(SOURCE/'actual-routed-sta.tcl').read_text();measured=parse_phases(tcl(original_script,'reproduce-routed-baseline'),'CORNER')
         for phase,row in old['nominal_rc_cell_corner_phases'].items():
             assert set(measured[phase]['groups'])==set(row['groups'])
@@ -95,6 +100,8 @@ def main():
         log=tcl(f'read_db {{{OUT/"candidate.odb"}}}\nset_thread_count 2\nread_guides {{{OUT/"candidate.guide"}}}\ncheck_placement -verbose\ndetailed_route -output_drc {{{OUT/"drc.rpt"}}} -output_guide_coverage {{{OUT/"guide-coverage.csv"}}} -drc_report_iter_step 1 -verbose 1\nputs "NSSOC_ECO_DRVS [detailed_route_num_drvs]"\nwrite_db {{{OUT/"routed.odb"}}}\nwrite_def {{{OUT/"routed.def"}}}\n','full-detailed-route')
         matches=re.findall(r'^NSSOC_ECO_DRVS (\d+)\s*$',log,re.M);assert len(matches)==1;result['native_drt_drvs']=int(matches[0]);save()
         assert result['native_drt_drvs']==0,'Failed physical route retained; no STA adoption'
+        if PROFILE=='expanded_load_batch':
+            native('audit_routed');result['post_route_geometry']=json.loads((OUT/'post-route-geometry.json').read_text());save()
         rules=SOURCE/'source/IHP_rcx_patterns.rules';spef=OUT/'candidate.nominal.spef'
         tcl(f'read_db {{{OUT/"routed.odb"}}}\nset_thread_count 2\ndefine_process_corner -ext_model_index 0 nominal\nextract_parasitics -ext_model_file {{{rules}}} -lef_res\nwrite_spef {{{spef}}}\n','fresh-nominal-extraction')
         sys.path.insert(0,str(ROOT/'hw/soc/flow'));from audit_estimated_spef import audit
@@ -105,6 +112,9 @@ def main():
         result['group_deltas']={p:{g:dict(before_ns=v['worst_slack_ns'],after_ns=candidate[p]['groups'][g]['worst_slack_ns'],delta_ns=candidate[p]['groups'][g]['worst_slack_ns']-v['worst_slack_ns']) for g,v in row['groups'].items()} for p,row in old['nominal_rc_cell_corner_phases'].items()}
         result['status']=COMPLETE_STATUS
         assert all(sha(Path(n))==v for n,v in old['protected_inputs'].items());result['protected_source_unchanged']=True
+        if PROFILE=='expanded_load_batch':
+            from expanded_load_targets import validate_candidate
+            validate_candidate(result,OUT)
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()

@@ -1,3 +1,9 @@
+## 2026-10-16 — Expanded110-buffer setup experiment staged
+
+Completed driver diagnosis38839736674 identifies60new weak loaded outputs, all disjoint from the original50recipe, with consistent reported fanout and explicit combinational masters. The new `expanded_load_batch` inserts110positive buffer16cells on the exact original baseline; the extra60measurements are bound to diagnosisSHA256 `a7b7c9ec447475af9dc7dc5e2a08f7552a4aab2b0404471166edef331244eea8`. Native originalpin/master/fanout/SIGNAL/noNDR checks remain mandatory; diagnostic min-path absence is not a hold safety proof.
+
+The cloud workflow verifies the original50measurements and exact60source diagnosis, original-to-candidate logic plus inversion rejection, all-original-cell preservation, full detailed route, and a new postroute check of every candidate cell signature/netmembership/PG/port/NDR. Fresh nominalRC and all original STA corners/constraints remain mandatory. This experiment is not adopted by passing workflow controls or completing routing. Run independent all-endpoint comparison against original and50parent, geometry/antenna/contact and RC annotation after publication. Existing fourbranch hold/PLL/full32 jobs must not be duplicated. Cloud-only; fullPHY/finaltiming remain open.
+
 ## 2026-10-16 — Cloud-only execution verified; driver diagnosis completed
 
 The local project workspace has zero entries and no local CAD/simulation process was found. Continue all checkout, CAD, simulations, testing and artifact storage on GitHub-hosted infrastructure; API orchestration must not download archives or create a local checkout. Original user-supplied Downloads documents were preserved, not treated as generated build artifacts.
