@@ -38,7 +38,7 @@ def main():
         margins=json.loads((OUT/'branch-margins.json').read_text());assert margins['source_unchanged'] and margins['original_timing_reproduced'] and margins['positive_all_reachable_branch_count']==6
         assert len(margins['rows'])==6 and min(v for r in margins['rows']for v in r['all_reachable_setup_ns'].values())>2.7
         result['branch_measurements']=margins['rows'];result['delay_sizing_hypothesis']='Six sg13g2_dlygate4sd3_1 on measured inputs; not delay-fit or closure proof.'
-        fetch(root+'cloud-results-38948570826-1-candidate-geometry/candidate-geometry-38948570826-1.summary.json','9e09733c49258a90364fdcc2bf1538ad7c62c7cb05f8ae004eed95a017d9c1fa',OUT/'parent-geometry-summary.json')
+        fetch(root+'cloud-results-38948570826-1-nine-size-geometry/nine-size-geometry-38948570826-1.summary.json','9e09733c49258a90364fdcc2bf1538ad7c62c7cb05f8ae004eed95a017d9c1fa',OUT/'parent-geometry-summary.json')
         geometry=json.loads((OUT/'parent-geometry-summary.json').read_text())
         assert geometry['source_unchanged']and geometry['restoration']['run']==38930352215 and geometry['routed_odb_sha256']==parent['outputs']['routed.odb']
         assert geometry['continuity']['failed']==0 and geometry['contacts']['no_cross_net_contacts']
