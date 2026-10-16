@@ -56,7 +56,7 @@ jobs:
           (cd "$RUNNER_TEMP/tree32-compiler-source" && ./autogen.sh) 2>&1 | tee cloud-tree32-compiler/autogen.log
           mkdir "$RUNNER_TEMP/tree32-compiler-build"
           (cd "$RUNNER_TEMP/tree32-compiler-build" && "$RUNNER_TEMP/tree32-compiler-source/configure" --without-x --with-readline=no --disable-openmp CFLAGS='-O3 -fno-fast-math -ffp-contract=off -march=x86-64-v3 -mtune=generic') 2>&1 | tee cloud-tree32-compiler/configure.log
-          make -C "$RUNNER_TEMP/tree32-compiler-build" -j2 2>&1 | tee cloud-tree32-compiler/build.log
+          make -C "$RUNNER_TEMP/tree32-compiler-build" -j2 V=1 2>&1 | tee cloud-tree32-compiler/build.log
           cp "$RUNNER_TEMP/tree32-compiler-build/src/ngspice" cloud-tree32-compiler/build-runtime/optimized-ngspice
           cp "$RUNNER_TEMP/tree32-compiler-build/config.log" cloud-tree32-compiler/config.log
           gcc --version > cloud-tree32-compiler/compiler.txt

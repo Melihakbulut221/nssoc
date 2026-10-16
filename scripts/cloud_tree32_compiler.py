@@ -6,7 +6,7 @@
 Same Sparse solver, exact patched upstream, PDK, all vectors and original fine
 step. A four-nanosecond comparison is not a full capture or PHY acceptance.
 """
-import argparse,copy,hashlib,json,os,re,resource,shutil,subprocess,time
+import argparse,copy,hashlib,json,os,re,resource,shlex,shutil,subprocess,time
 from pathlib import Path
 import numpy as np
 import cloud_vbic_tree32_backend as source
@@ -33,6 +33,24 @@ def comparison_gate(comparison):
     assert np.isfinite(difference) and difference>=0
     return difference<=1e-9
 
+def configured_flags(config):
+    matches=re.findall(r"(?m)^CFLAGS='([^']*)'$",config)
+    assert len(matches)==1,'Missing/duplicate effective CFLAGS'
+    tokens=shlex.split(matches[0]);expected=shlex.split(FLAGS)
+    assert tokens in (expected,expected+['-std=gnu11']),'Changed optimization, floating semantics or unexpected flags'
+    return tokens
+
+def vbic_compile_flags(log):
+    rows=[line for line in log.splitlines() if 'libtool: compile:' in line and 'vbicload.c' in line]
+    assert rows,'Actual VBIC compilation command missing'
+    for row in rows:
+        tokens=shlex.split(row)
+        assert all(t in tokens for t in shlex.split(FLAGS))
+        assert [t for t in tokens if re.fullmatch(r'-O(?:[0-3sgz]|fast)',t)]==['-O3']
+        assert [t for t in tokens if t.startswith('-ffp-contract=')]==['-ffp-contract=off']
+        assert not {'-ffast-math','-funsafe-math-optimizations','-fassociative-math','-freciprocal-math','-ffinite-math-only'}&set(tokens)
+    return rows
+
 def controls():
     assert comparison_gate(dict(worst_voltage_difference_v=0.))
     assert comparison_gate(dict(worst_voltage_difference_v=1e-9))
@@ -41,6 +59,18 @@ def controls():
         try:comparison_gate(dict(worst_voltage_difference_v=value))
         except AssertionError:pass
         else:raise AssertionError('Invalid comparison accepted')
+    for suffix in ('',' -std=gnu11'):
+        assert configured_flags("CFLAGS='"+FLAGS+suffix+"'\n")==shlex.split(FLAGS+suffix)
+    for suffix in (' -O2',' -Ofast',' -ffast-math',' -ffp-contract=fast',' -std=c99'):
+        try:configured_flags("CFLAGS='"+FLAGS+suffix+"'\n")
+        except AssertionError:pass
+        else:raise AssertionError('Changed compiler options accepted')
+    command='libtool: compile: gcc '+FLAGS+' -std=gnu11 -c /source/vbicload.c -o vbicload.o'
+    assert vbic_compile_flags(command)==[command]
+    for suffix in (' -O2',' -Ofast',' -ffast-math',' -ffp-contract=fast',' -fassociative-math'):
+        try:vbic_compile_flags(command+suffix)
+        except AssertionError:pass
+        else:raise AssertionError('Changed native compile command accepted')
     source.readback_controls()
     return dict(voltage_guard_v=1e-9,above_limit_rejected=True,nonfinite_and_negative_rejected=True,original_sparse_option_controls=True)
 
@@ -59,7 +89,8 @@ def main():
         patch=json.loads((OUT/'patch.json').read_text())
         assert patch['original_sha256']==companion.SOURCE_SHA and patch['patched_sha256']=='aafdf5b06a6965c995a70321dc6edaab34ad1f0698dd42e8e15adca22088cb25'
         assert patch['one_expression_only'] and not patch['physical_model_parameters_changed']
-        config=(OUT/'config.log').read_text();assert ("CFLAGS='"+FLAGS+"'") in config
+        result['effective_cflags']=configured_flags((OUT/'config.log').read_text())
+        result['actual_vbic_compile_commands']=vbic_compile_flags((OUT/'build.log').read_text());save()
         optimized=OUT/'build-runtime/optimized-ngspice';assert sha(optimized)==build['optimized_sha256']
         result['optimized_runtime_sha256']=sha(optimized)
         # Run the existing NPN/PNP zero/nonzero-charge invariant without changing

@@ -1,3 +1,9 @@
+## 2026-10-16 — Compiler configuration check corrected before native comparison
+
+Initial runtime study **38844301748** is terminal failure before synthetic or waveform execution. Source build succeeded and preserved all artifacts, including optimizedruntimeSHA `e3b55c751583cf62a10377c695ade604dd578b22d907d5a391080c1ee6905204`. The effective CFLAGS include the upstream `-std=gnu11` addition visible in native build commands; the old exactstring check rejected it. The validator now accepts only the exact requested flag list, optionally followed by that standard flag. It rejects changed optimization, fast-math, contraction and unexpected standards.
+
+The corrected build uses verbose make so the actual VBIC compile command is retained and separately checked for exactO3/contract-off/requiredflags and no unsafe floating flags. Ten changed-configuration/command controls precede native execution. Existing1nV guard and all source/deck/PDK checks remain unchanged. Inspect the push-triggered replacement before dispatching another runtime job. No result from the failed predecessor proves motor equivalence or speed.
+
 ## 2026-10-16 — Fine timeout evidence retained; strict compiler study LIVE
 
 Runtime study **38844301748/job116791209162**, source **71d38e57e86ea62c03e21be43e47f77df6254f58**, is **in_progress**. Last active step: Build same patched upstream with strict O3 and no floating contraction. Native-controller compilation, original data transport/bit tests and numerical guard controls passed. This study measures the exact original Sparse engine against strict O3 at0.25ps over4ns, on the same CPU, with all original vectors and unchanged PDK/options. Require bidirectional1nV agreement and measured CPU/wall speedup before considering a full-window replay. No fullPHY or full34ns acceptance is claimed.
