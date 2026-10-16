@@ -22,3 +22,16 @@ There are thus12contact devices,84MOS fingers and4resistors:100raw devices. A ne
 
 
 Run 38868897617 passed complete flat raw100-device LVS and flat aggregate12-device LVS, withzeroDRC markers. Deep mode still missed the embedded substrate contact. The locked PDK tap extractor explicitly operates cell-locally (`cheat("*")` in its unchanged tap extraction rule); the recognition marker was in the parent while the real tie geometry was in buf16. The marker is now placed in the buffer cell containing that tie, matching native PCell practice. Only the Substrate recognition rectangle and `sub!` labels are added there. All original material and pin geometry remains hash-checked; this declared annotation is tracked separately. Both deep and flat modes remain required, and the missing-marker control remains mandatory. The partial flat pass is preserved and is not treated as complete physical acceptance.
+
+
+## Full physical assembly result
+
+Run **38869466336**, source `e4f1ebd1d752d7639db0693fb9129587ef164146`, passed complete raw100-device LVS in both deep and flat modes, and both aggregate comparisons with12combined devices. Native mainDRC ran560categories with0markers. All7actual fault controls passed: wrong width, missing HV gate connection, open input, missing well tap, missing body marker, body short and off-grid metal. The open-input control demonstrates why the explicit native deck verdict is required even when circuit pairs alone report Match: the strict port check rejects the open.
+
+Both original embedded ties were independently measured as3.6um² area and24.6um perimeter from the pinned buffer's material polygons. The source GDS material and pin shapes remain unchanged. The local substrate recognition annotation selects the explicitly documented finite-contact extraction model; it does not qualify substrate spreading or RF behavior.
+
+Exact source, artifact hashes, device census and fault evidence: [physical receipt](evidence/cloud-tx-full-driver-physical-results-20261016.json). Release `cloud-results-38869466336-1-tx-input-driver`; summary SHA256 `1c49833ba5d62b9f38efc4ca00dbccbd189c31a86c183d2896dced3931b715a5`.
+
+**Electrical scope remains open.** The locked [native MOS reference reader](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs) maps W,L andrfmode; successful LVS does not prove AD/AS/PD/PS equivalence to the original SPICE model. Native junction areas/perimeters and source/drain orientation must be bound explicitly when composing the electrical model. Preserve the original schematic parameters as a comparison baseline, not as proof that physical junction parasitics match. Fresh whole-driver interconnect RC, finite-body behavior, electrical/PVT limits and loaded serializer measurements are required before claiming driver electrical integration.
+
+Native six-pin LEF validation is running in **38870205745**. It restores this exact physical capsule, verifies every source member, derives pin rectangles from the actual GDS and checks OpenROAD's positive case, missing-pin rejection and blocked-pin rejection. It does not rerun or replace transistor verification.

@@ -1,3 +1,7 @@
+## 16 October 2026: full input-driver physical assembly verified
+
+The actual four-HV/buf16/four-resistor input driver now passes100-device raw LVS and12-device aggregate LVS in bothdeep/flat modes,560mainDRC categories with0markers and7actualfault controls (38869466336). Native LEF validation38870205745 follows from this exact GDS. This closes the assembled macro's stated physical comparison scope, not extracted electrical, PVT, serializer/CDR/x4 or mainchip acceptance. Junction geometry, full interconnect RC and explicit finite-body behavior still require electrical verification. See[the physical receipt](evidence/cloud-tx-full-driver-physical-results-20261016.json) and[scope and remaining work](tx-full-input-driver-physical-20261016.md).
+
 ## 16 October 2026: physical input-driver prerequisite verified
 
 The actual10-finger HV transistor routing now passes native raw and aggregated transistor LVS, both deep and flat aggregate comparison, all560mainDRC categories withzero markers andfive actual fault controls (run38866034515). This closes one physical building block only. Four such devices still need integration with the originalbuf16 andfourrppd resistors, finite body/well contacts, full-driver extraction and electrical checks. Fullserializer/CDR/x4/mainchip and finaltiming acceptance remain open. See[physical evidence](evidence/cloud-tx-hv-finger-physical-results-20261016.json) and[the native routing record](tx-hv-finger-routing-20261016.md).
