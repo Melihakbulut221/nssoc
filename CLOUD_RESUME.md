@@ -1,3 +1,23 @@
+## Cloud continuation: divider native91+freshRC passed; hold6->1 and preserved CORRPRE proofs (2026-10-17)
+
+Cloud-only remains mandatory. Local NSSOC workspace is empty; no checkout, CAD, simulator or artifacts locally. Full serial Gen3x4, actual mainchip integration and final setup/hold remain OPEN.
+
+- **Divider intrinsic+RC38973446888 PASSED** on sourceebb324816ff49e6560933cb13f69267188144875:91 primitives/283 terminals,382R649C,37metal conductors and one common body behind18finite taps. Eleven intrinsic and17composition corruptions rejected. Model4331b1e4d301d99c3f035c03a80906281e83533755c5927ceeccb6dea216e1c5. Summary08cdd360982945847f18cf452516e28e67c70744d285ce73ebec2a1e783937f7, parts0003147fa7f884184b085d4735f163fd1137eb7db86a1c681129d59f692a10c8. Original38972966356 failed strict MIM signature assumption1,2; pinned model actuallyPLUS,MINUS. Corrected expected names only, original failure retained.
+- **FreshRC38971785699 PASSED** all13raw faults after prior38971194744 correctly rejected deleted input resistor as an open, earlier than value mismatch. Summaryf3b8172501491956a3fcee1f5c0505f6e55b60f4d9b61933f79a7a2c17ba7aa3, parts94fcfaaa471e39d9b2009e038f0fd994325d23840e8b84e0ce472d7da95c5041.
+- **PLL parent integration38974243808 FAILED independent intrinsic graph equivalence**. New script removes both old91/379R646C divider blocks and inserts both actual91/382R649C blocks, preserves every other parent record, explicit seven ports/commonbody/Cref. After normalizing four declared W8 L2.12->3.2um loads per divider, topology/model graph comparison still fails. No parent candidate accepted. Diagnostic rerun38974830853 preserves old/new graphs and colored parameter differences before the unchanged gate. Inspect those reports; do not simply bypass equivalence. Parent intermacro geometry/RC must still be revalidated, even after graph proof.
+- **Six-hold actual reroute38957249404 COMPLETE**: original6 negative hold endpoints resolved; one NEW fast hold endpoint remains at-0.790811860440499ps, Ethernet rx_fifo SRAM bank6, launch$auto$ff.cc:337:slice$1166145. Slow setup WNS-5.793440394ns (worse than-5.649649637ns), negative endpoints9310->9351. Typical WNS-1.464126598ns, fastsetup+0.131757272ns. NativeDRT0; fresh nominalRC113796nets,all22544endpoints/135264corner-delayrows. Antenna627nets/783pins. ODB83beec1f190a814928dd0fcdce69a97dd0c2a9240ce55e457312060287f4a5da. Independent geometry/annotation for this actual child still required. Detailed evidence:docs/evidence/six-hold-route-result-20261017.json.
+- **Exact critical-path followup38975045033** traces that one new hold endpoint plus ten worst setup endpoints per corner on the actual six-hold ODB/freshSPEF. It reproduces all stored transition slacks and original libraries/constraints; do not insert more delay before checking all reachable setup margins. Source66cfdd784368ad7bc2d17879d8ff318a7a041919.
+- **CORRPRE38967093235 finished with preserved postcheck failure**: SCRUB1 all5513equiv cells proven, SCRUB0 all4661proven, zero unproven. Both output inversion controls fail with exactly1unproven. Original async2sync clock-step proof scope is explicit. Native baseline six tests passed; obsolete7-test postcheck failed after proofs. Separate successful38969854899 actual18tests and3-corner measurements use identical three RTL hashes. Evidence docs/evidence/regfile-corrpre-preserved-formal-proof-20261017.json binds raw logs and archive. WholeSoC native boot38970744432 still must finish before candidate adoption; no wholechip setup closure claim.
+
+Current live/terminal handles at this checkpoint:
+- {"run": 38974830853, "status": "completed", "conclusion": "failure", "source": "2e12658a95ce7f6686c5616380d143e97d8a0852"}
+- {"run": 38975045033, "status": "completed", "conclusion": "success", "source": "66cfdd784368ad7bc2d17879d8ff318a7a041919"}
+- {"run": 38970744432, "status": "in_progress", "conclusion": null, "source": "11d16ac647a2754a1e5488e5cd415f0207ccb2ec"}
+
+Next: diagnose parent graph mismatch, then rebuild actual102HBT OFF/readback targets from new native IDs before full PLL acquisition. Preserve original1us/.3125ps/100ppm/50ps/no-slip gates and source failures. The original34 voltage probes do not reference divider private nodes, so their public observables should remain exact. Inspect six-hold critical path, prepare independent child geometry/annotation and continue setup architecture evidence. All execution in Actions.
+
+---
+
 ## Cloud continuation: physical divider3p2/283 planes verified; CORRPRE measured (2026-10-17)
 
 Cloud-only remains mandatory; workspace empty. Full serialGen3x4, mainchip integration and final setup/hold are still OPEN.
