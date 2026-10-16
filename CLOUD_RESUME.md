@@ -1,3 +1,18 @@
+## Cloud continuation: exact nine-size critical-path diagnosis and short-branch study (2026-10-16)
+
+Cloud-only operation remains mandatory; the local workspace is empty. No local CAD or project artifacts were created. Verified retirement receipt remains asset 636387277, COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE.
+
+- Exact routed diagnosis **38953044374** completed successfully, source **cbd89e6c685f4072c5bb6556598f56bc2b3694fd**. Reproduced producer all-endpoint comparison and every selected native transition slack; original constraints/libraries and source ODB/SPEF unchanged. Receipt and selected targets: `docs/evidence/nine-size-path-diagnosis-results-20261016.json`.
+- All six remaining hold endpoints also violate slow setup. Do not add delay at their common endpoint. Six short-only candidate input branches were observed in both fast transitions, excluding launch/capture clock pins and all corner/transition maximum data paths. Observation is not setup safety proof.
+- **38954390700**, source **37137b15fcaf5bbfc32194bfa4239461a3f0b75f**, measures native setup/hold through these exact physical input pins, including maximum paths to every reachable endpoint in all three corners. Read-only; no delay cells inserted. Inspect its `nine-size-branch-margins` report before proposing any routed hold ECO. Positive margins permit only a candidate experiment; fresh routing/RC/all-endpoint checks are still required.
+- Preserve failed diagnosis **38952630403** (TSV delimiter quotation defect). Corrected successor changed serialization only; gates and native timing stayed unchanged.
+- Actual clock + actual driver full loaded simulation **38951500702 /117143736995** and native PLL continuation **38910378266 /117113404119** remain in progress at checkpoint. Preserve healthy jobs and native process state; do not restart.
+- Final timing and full serial PHY remain open. Current routed candidate still has slow setup WNS -5.649649637 ns, 9310/461/0 setup and 0/0/6 hold violations across slow/typical/fast, plus antenna 643 nets/798 pins. No closure or signoff claim.
+
+Next: inspect terminal branch margins and loaded physical simulation. If all-reachable setup margins are positive, size a branch-only delay candidate and then run real routing/fresh RC/full endpoint comparison without changing timing constraints. Preserve all failures. Continue PLL native state. Keep all execution, evidence, and source in GitHub.
+
+---
+
 ## Current cloud-only handoff — real clock RC complete; combined loaded simulation launched
 
 Cloud-only observation: 2026-10-16T19:01:19.758145+00:00. Local workspace remains empty. No local CAD,
