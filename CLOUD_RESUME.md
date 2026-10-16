@@ -1,3 +1,5 @@
+Active full-signal reroute: **38930352215**, source **ad487eee3895b1312d86d8ce0b97d4064fc26d08**. NativePLL38910378266 remains live. All four headroom replays are complete (physical/intrinsic38929031066,halfR/halfC38929589227); five-buffer feasibility38927514720 passed but remains unrouted/untimed. Local workspace has zero files. Recheck exact live handles before repeating jobs.
+
 ## Latest — actual nine-size DRT failed; rebuild signal routing from clean input
 
 Nine-size run38925935829 is now TERMINAL FAILURE, not still running. All23fresh
