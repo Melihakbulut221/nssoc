@@ -14,6 +14,8 @@ SOURCES={
  'l6p2':dict(summary='d8057581d29605f15cf2acecdd87bc7ad5e712aa785ea3bd797775dcdfb0c318',parts='982cd51c305f6e02843e718c2c51de511b48ca1c57ca7ebb442af02a3679730c'),
  'l6p5':dict(summary='80172d8ba3c11707c864695ddfe8d734d8b2648fb2aa46919fb623658e3af954',parts='972c1354a1d062c91ee0460385734b57e6f0d28455782704a1c2c02088245c8e')}
 
+SOURCES['l5p7']=dict(run=38962062682,head='1c804f1faca16917fade3ed7d5371098bdae86be',summary='455a655aa99d7a299e9bda320cb2a5984645a7328b89af4a5d0ec8a6916c2e74',parts='910c6069cca3047e577b6ec5002c529a9517d824514c2dd671dbc06fc2dcd845')
+
 def main():
     global OUT
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);args=parser.parse_args()
@@ -36,7 +38,7 @@ def main():
         fetch(url,SOURCE['summary'],OUT/'wire-summary.json');frozen=json.loads((OUT/'wire-summary.json').read_text())
         prior,proof=reports.restore_report(SOURCE['group'],SOURCE['run'],SOURCE['summary'],SOURCE['parts'],source,tuple(frozen['outputs']))
         assert prior==frozen and prior['variant']==args.variant and prior['source_unchanged']
-        assert prior['source_head']=='7ada157f9e3dddf83146dc2077d061931926d326'
+        assert prior['source_head']==SOURCE.get('head','7ada157f9e3dddf83146dc2077d061931926d326')
         result['variant']=args.variant;result['restore']=proof
         assert prior['status']=='PASS_ALL16_CLOCK_TERMINALS_BOUND_WITH10_METAL6_BODY_AND_SIX_FAULTS_NOT_RC_ACCEPTANCE'
         assert prior['binding']['counts']==dict(devices=6,terminals=16,metal_terminals=10,body_terminals=6,public_ports=4,unique_reference_planes=14,wire_components=5)
