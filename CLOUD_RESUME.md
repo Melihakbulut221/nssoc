@@ -1,3 +1,9 @@
+## 2026-10-16 — Exact expanded-source preflight PASSED; corrected physical experiment restarted
+
+Hosted controls **38842858175**, source **d11792b4e7242bd3ab8555ad018cff1ac23bdc71**, compiled the controllers and verified the complete pinned driver-review bytes. All60new targets and110cumulative buffers matched; twelve malformed-target/phase controls and a changed-summary-byte control were rejected. Both global slowsetup and exact target0..95 slowsetup phases are checked; fast/min/unknown phases remain rejected. The full published-source check now runs before runtime download/CAD in the physical workflow.
+
+Predecessor **38842629638** is terminal failure before baseline reproduction/physical edits: source-phase parser assumed only global names. Its failure summary asset645929817 SHA256 `5228ee812b1c23025d7bd7c5b158e3dea3372dd49f5d8ae4d26a97043d556188` and complete native failure evidence remain published. Earlier import failures38842199036/38842441662 remain preserved. No running calculation was cancelled or duplicated. Check the push-triggered replacement at this commit before dispatching anything else.
+
 ## 2026-10-16 — Expanded repair controller checks passed; workflow import corrected
 
 Independent expanded-profile controls completed successfully: endpoint38842441618 (including native-controller compilation and six new-target rejection controls), geometry38842441677 and annotation38842441584. Full native candidate verification has not run yet. Two physical-workflow predecessors38842199036 and38842441662 stopped at profile import (`ModuleNotFoundError: expanded_load_targets`), before CAD. Their failure reports remain published. Add the scripts directory to the inline profile-loader path; the corrected push starts the replacement only after the previous run is terminal. The separate mode-dispatch syntax issue is corrected and passed cloud compilation. No simulation thresholds or constraints changed.

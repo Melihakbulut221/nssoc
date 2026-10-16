@@ -38,7 +38,7 @@ jobs:
               print(profile,count,m.SELECTION)
           PYCODE
       - name: Reject overlapping, missing, sequential or malformed new targets
-        run: python3 scripts/expanded_load_targets.py
+        run: python3 scripts/expanded_load_targets.py --verify-published
       - name: Compile exact source-bound buffer repair controllers
         run: python3 -m py_compile scripts/critical_load_targets.py scripts/expanded_load_targets.py scripts/prepare_cloud_critical_load_eco.py scripts/run_cloud_critical_load_eco.py
       - name: Restore exact native runtime
