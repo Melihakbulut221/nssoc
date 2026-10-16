@@ -30,3 +30,12 @@ The active nine-size physical run38925935829 remains intact. Before combining
 these buffers with it, inspect its actual result, rebind the new source database,
 repeat topology/placement/logic proofs, reroute/reextract and check all22544
 endpoints/135264corner-delay rows plus independent geometry/annotation.
+
+## Measured feasibility38927514720
+
+Native placement and full restricted Liberty logic passed. The five actual
+input Manhattan distances are4.8775,7.505,4.605,4.615,4.615um; every original
+cell's geometry is unchanged. Real disconnected input and buffer inversion
+were rejected. Source234ODB remains unchanged. Published summary647824028
+SHA9ad5d80182689fe224cf0f49589484c58ee20d831cb0545eed00c037f2a8f0af
+binds the actual proposed database. No new timing result is claimed.
