@@ -1,3 +1,13 @@
+## 2026-10-16 — Actual845 PLL candidate physical integration passed; hold route needs independent review
+
+**Actual9um candidate integrated PLL38849617327/job116807705939 PASSED** on source`f0907ca755f2e15a767dbe849da865260bd93190`:560categoryDRC, hierarchical andflat845deviceLVS, wrongcapacitor-reference rejection andactualVCTRL-open rejection. Exactnonpump cells, parentownshapes andall7pumpports/transform/bbox areunchanged. Onlyoneintrinsic capacitor changes10x10um to9x9um. GDS SHA256`28dc06bb9c729ecca1a49e457a787d1ac367960080cfcca6a7d6695623334b40`; summary`e0b8195dc9b09a2c0825c4618b2112e0b347309ba9917fccc59aff4a429d4676`. This is actualPLL parentphysicalintegration, **not fullserialPHY/mainchip acceptance**. CandidatepumpRC/nativeanchorbinding, actualmodelcomposition andphysicallymatched fullacquisition remainmandatory.
+
+Both9um/11um standalonepumpDRC/LVS/faults passed in38848309907. That workflowlaterfailedbecause thetechnologyLEF wasmissing. The missingLEFstage alonewasresumed withtheexactpublishedgeometry:9um38848974954 and11um38849315055 bothpassed positive/missing-pin/blocked-pin controls. TechnologyLEF isnow restoredfromthepinnedPDKhash forfuturegeneration. Originalfailuresarepreserved; no physicalgatewasbypassed.
+
+**FourSRAMholdbranch38837758293 completed butisnotadopted**:nativeDRT0 andpreservation/logicchecks passed. Slowsetup-7.815488ns, typicalsetup-3.340561ns, fastsetup-.988063ns; holdslow+.021917ns,typical-.010052ns,fast-.150187ns. Somegroupsregress vs50bufferparent; aggregateholdimprovementisnotclosure. Independentendpoint+holdconflicts **38850059650**, geometry/contacts/antenna **38850062082**, annotation **38850064087** aredispatchedandtheircontrols passed. Inspecttheexactfourtargetallcornerverdictsandallendpointregressionsbeforeselectingthenextrepair.
+
+Receipts:`docs/evidence/cloud-pll-filter-physical-results-20261016.json`, `docs/evidence/cloud-measured-hold-results-20261016.json`. Electricalfiltertrials38847729630, expanded110setup38843068297, full32coarse38834025040 andcompiler38845036374 remainseparate; donotduplicatelivejobs. All execution/evidence stayscloud-only.
+
 ## 2026-10-16 — Source port error repaired; real PLL filter experiments dispatched
 
 Source review **38847244994** completed:845devices,8648wire records,17physical ports plus separate `wire_cref`. Exact summarySHA256 `89899b2b091046c12b3fd24105e074028a4c68e4eed8fd9cc2320aef9b050422`; source `c595dcaa756633e606adfacfe5346ab9004ecc61`. The predecessor38846227092 count assertion was a parser contract error, now fixed with native source/reference binding and malformed-pin controls. Original mandatory window errors remain126.215885ppm and84.003666ppm; acquisition stillfails.

@@ -1,0 +1,65 @@
+{
+  "observed_at": "2026-10-16T04:22:26.476463+00:00",
+  "cloud_only": true,
+  "accepted": false,
+  "full_serial_phy_complete": false,
+  "main_chip_integrated": false,
+  "qualified_pex": false,
+  "candidates": [
+    {
+      "size_um": 9,
+      "physical_run": 38848309907,
+      "physical_job": 116803722971,
+      "source_head": "8380558b46bbc150b7d3e459e8f47be2fd260313",
+      "summary_asset": 646078230,
+      "summary_sha256": "ae90bac4182e79be42f41aedea9605ade46d2f80b5a127c7f38f7b25534ba0ad",
+      "physical_status": "PASS_NATIVE_PUMP_FILTER_DRC_LVS_AND_FAULT_CONTROLS",
+      "original_failure": "Missing technology LEF after native physical gates passed",
+      "lef_resume_run": 38848974954,
+      "lef_summary_asset": 646090355,
+      "lef_summary_sha256": "c9063e0252331b4c7a8281784b36cb55dd470505db53bd92689dc6adc34fad24",
+      "lef_pass": true
+    },
+    {
+      "size_um": 11,
+      "physical_run": 38848309907,
+      "physical_job": 116803723148,
+      "summary_asset": 646086674,
+      "summary_sha256": "33bcd4d18264feb6c6cf4f4002dd615e744c71dce5e17c522842d7def66bb39f",
+      "physical_status": "PASS_NATIVE_PUMP_FILTER_DRC_LVS_AND_FAULT_CONTROLS",
+      "original_failure": "Missing technology LEF after native physical gates passed",
+      "lef_resume_run": 38849315055,
+      "lef_summary_asset": 646097949,
+      "lef_summary_sha256": "04ca110a61e057f5c8122b7dcc6b314db83d4c6c056e7ec65c496b876a5d5680",
+      "lef_pass": true
+    }
+  ],
+  "parent": {
+    "run": 38849617327,
+    "job": 116807705939,
+    "source_head": "f0907ca755f2e15a767dbe849da865260bd93190",
+    "summary_asset": 646107426,
+    "summary_sha256": "e0b8195dc9b09a2c0825c4618b2112e0b347309ba9917fccc59aff4a429d4676",
+    "parts_sha256": "086b36e910512fd91363d086d4ff9a966b59700a054745d7687ae4b6f49e296f",
+    "archive_sha256": "04a31bfc2e4fafa5595f3f51d265f9fc299a1d930e30ac642f7bda71ef56059d",
+    "archive_bytes": 1640383,
+    "status": "PASS_REAL_FILTER_PARENT_DRC_LVS_REQUIRES_NEW_RC_AND_WAVES",
+    "gds_sha256": "28dc06bb9c729ecca1a49e457a787d1ac367960080cfcca6a7d6695623334b40",
+    "schematic_sha256": "f3a93b23e329c38a1d2a8b5eb00afeda60c2e82c9350639166059cd21f2fb982",
+    "physical_devices": 845,
+    "drc_categories": 560,
+    "hierarchical_lvs_pass": true,
+    "flat_lvs_pass": true,
+    "wrong_capacitor_reference_rejected": true,
+    "actual_vctrl_open_rejected": true,
+    "nonpump_geometry_unchanged": true,
+    "parent_own_shapes_unchanged": true,
+    "all7pump_ports_transform_and_bbox_unchanged": true
+  },
+  "next_required": [
+    "Fresh actual candidate pump RC and verified native terminal/reference-plane binding. Parent wire reuse requires exact geometry and new native net/anchor binding; otherwise reextract parent wires.",
+    "Compose actual845 model preserving every unaffected device and wire; prove exact device/terminal graph and rejection controls.",
+    "Replay complete1us fromtimezero with original gates on physically matched candidate RC, then refinement/load/PVT/full-device checks. Existing9/11 waveform trials use frozen baseline wire estimates.",
+    "No full serial Gen3x4 or mainchip timing acceptance from these pump/PLL physical results."
+  ]
+}
