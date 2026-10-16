@@ -55,18 +55,19 @@ CHILD_FILES=('parent-source-summary.json','parent-geometry-summary.json','post-r
 def controls():
     import copy
     assert len(select(RECORD))==5
-    for kind in ('missing','wrong_parent','negative_setup','wrong_mapping'):
+    for kind in ('missing','wrong_parent','negative_setup','wrong_mapping','wrong_delay_master'):
         r=copy.deepcopy(RECORD)
         if kind=='missing':r['trace']['targets'].pop()
         elif kind=='wrong_parent':r['candidate_run']=38813118414
         elif kind=='negative_setup':
             target=next(x for x in r['trace']['targets'] if x['endpoint']==TARGETS[0]['endpoint']);target['setup_seconds']['slow']=-1e-9
-        else:
+        elif kind=='wrong_mapping':
             target=next(x for x in r['trace']['targets'] if x['endpoint']==TARGETS[0]['endpoint']);target['native_pin']['pin']='A_ADDR[4]'
+        else:r['delay_masters'][2]='sg13g2_dlygate4sd3_1'
         try:select(r)
         except AssertionError:pass
         else:raise AssertionError('Invalid target recipe accepted: '+kind)
-    return dict(exact_measured_targets=4,negative_controls=4,unchanged_native_pin_names=True)
+    return dict(exact_measured_targets=5,negative_controls=5,unchanged_native_pin_names=True)
 def verify_published():
     import urllib.request
     url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38874773944-1-eco-endpoint-compare/eco-endpoint-compare-38874773944-1.summary.json'

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Explicit positive buffers on source-measured slow-corner PCIe loads."""
+"""Sink-local positive delays on five source-measured Ethernet SRAM hold branches."""
 import hashlib,json,os
 from pathlib import Path
 import odb

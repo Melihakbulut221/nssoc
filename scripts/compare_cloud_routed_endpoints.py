@@ -4,6 +4,7 @@
 """Independently remeasure every actual-route ECO endpoint, preserving all failures."""
 import argparse,copy,json,math,os,re,struct,subprocess,tarfile
 from pathlib import Path
+from refined_hold_targets import validate_child as validate_refined_hold,CHILD_FILES as REFINED_HOLD_FILES,TARGETS as REFINED_HOLD_TARGETS
 from cloud_contact_release import validate_route_proof
 from expanded_load_targets import validate_candidate as validate_expanded,EXTRA_FILES
 from refined_load_targets import validate_candidate as validate_refined
@@ -42,9 +43,9 @@ def compare_rows(before,after):
             else:row['improved' if b>a else 'regressed']+=1
     return summaries
 
-def targeted_hold_changes(before,after):
+def targeted_hold_changes(before,after,targets=HOLD_TARGETS):
     result=[]
-    for target in HOLD_TARGETS:
+    for target in targets:
         name=target['endpoint'];item=dict(endpoint=name,native_pin=target['native_pin'])
         for delay,key in (('min','hold_seconds'),('max','setup_seconds')):
             values={c:before[(c,delay,name)][2] for c in ('slow','typical','fast')}
@@ -57,28 +58,28 @@ def targeted_hold_changes(before,after):
         result.append(item)
     return result
 
-def targeted_controls():
+def targeted_controls(targets=HOLD_TARGETS):
     before={}
-    for t in HOLD_TARGETS:
+    for t in targets:
         for d,k in (('min','hold_seconds'),('max','setup_seconds')):
             for c,v in t[k].items():before[(c,d,t['endpoint'])]=[v,v,v]
     after=copy.deepcopy(before)
-    for t in HOLD_TARGETS:
+    for t in targets:
         for c in ('slow','typical','fast'):after[(c,'min',t['endpoint'])]=[0.,0.,0.]
-    assert all(r['target_timing_passed'] for r in targeted_hold_changes(before,after))
-    name=HOLD_TARGETS[0]['endpoint']
+    assert all(r['target_timing_passed'] for r in targeted_hold_changes(before,after,targets))
+    name=targets[0]['endpoint']
     for key,value in [(('slow','max',name),[-1e-10]*3),(('fast','min',name),[None]*3)]:
         bad=copy.deepcopy(after);bad[key]=value
-        assert not targeted_hold_changes(before,bad)[0]['target_timing_passed']
+        assert not targeted_hold_changes(before,bad,targets)[0]['target_timing_passed']
     missing=copy.deepcopy(after);missing.pop(('fast','min',name))
-    try:targeted_hold_changes(before,missing)
+    try:targeted_hold_changes(before,missing,targets)
     except KeyError:pass
     else:raise AssertionError('Missing target accepted')
     changed=copy.deepcopy(before);changed[('slow','max',name)]=[0.]*3
-    try:targeted_hold_changes(changed,after)
+    try:targeted_hold_changes(changed,after,targets)
     except AssertionError:pass
     else:raise AssertionError('Changed parent measurement accepted')
-    return dict(all_four_zero_hold_pass_with_unchanged_positive_setup=True,new_setup_failure_rejected=True,unconstrained_hold_rejected=True,missing_target_rejected=True,changed_parent_rejected=True)
+    return dict(all_targets_zero_hold_pass_with_unchanged_positive_setup=True,verified_target_count=len(targets),new_setup_failure_rejected=True,unconstrained_hold_rejected=True,missing_target_rejected=True,changed_parent_rejected=True)
 
 def controls():
     before={(c,d,n):[1e-10,2e-10,1e-10] for c in ('fast','slow','typical') for d in ('min','max') for n in ('a/D','b/D')}
@@ -91,7 +92,7 @@ def controls():
     try:compare_rows(before,malformed)
     except AssertionError:pass
     else:raise AssertionError('Missing endpoint accepted')
-    return dict(targeted_hold=targeted_controls(),conflict_paths=conflict_controls(),archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
+    return dict(targeted_hold=targeted_controls(),refined_targeted_hold=targeted_controls(REFINED_HOLD_TARGETS),conflict_paths=conflict_controls(),archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
 
 def restore_report(group,run,summary_sha,parts_sha,destination,selected):
     for v in (summary_sha,parts_sha):assert re.fullmatch(r'[0-9a-f]{64}',v)
@@ -136,11 +137,12 @@ def main(args):
         original,original_proof=restore_report('routed-endpoints',38819589884,CENSUS_SHA,CENSUS_PARTS_SHA,OUT/'baseline',('native-census.json','endpoint-slacks.tsv'))
         assert original['source_unchanged'] and original['original_routed_timing_reproduced']
         before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
-        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH'),'expanded_load_batch':(110,'expanded-load-eco','EXPANDED_LOAD_BATCH'),'refined_load_batch':(141,'refined-load-eco','REFINED_LOAD_BATCH')}
+        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH'),'measured_hold_batch':(54,'measured-hold-eco','MEASURED_HOLD_BATCH'),'expanded_load_batch':(110,'expanded-load-eco','EXPANDED_LOAD_BATCH'),'refined_load_batch':(141,'refined-load-eco','REFINED_LOAD_BATCH'),'refined_hold_batch':(146,'refined-hold-eco','REFINED_HOLD_BATCH')}
         count,group,status_prefix=profiles[args.profile];candidate_dir=ROOT/('cloud-'+group)
         selection=('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json')
         if args.profile=='protected_load_batch':selection+=('protected-route-proof.json','fixed-source-summary.json')
         if args.profile=='measured_hold_batch':selection+=CHILD_FILES
+        if args.profile=='refined_hold_batch':selection+=REFINED_HOLD_FILES
         if args.profile=='expanded_load_batch':selection+=EXTRA_FILES
         if args.profile=='refined_load_batch':selection+=EXTRA_FILES+('refined-driver-review-summary.json',)
         candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,selection)
@@ -162,6 +164,7 @@ def main(args):
         # Do not pretend that omitted nested receipt has an external file hash.
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='measured_hold_batch':validate_child(candidate,candidate_dir)
+        if args.profile=='refined_hold_batch':validate_refined_hold(candidate,candidate_dir)
         if args.profile=='expanded_load_batch':validate_expanded(candidate,candidate_dir)
         if args.profile=='refined_load_batch':validate_refined(candidate,candidate_dir)
         result.update(candidate=proof,baseline=original_proof);save()
@@ -214,8 +217,11 @@ def main(args):
             from native_graph_path_coverage import verify
             result['exact_graph_coverage']=verify(OUT,after);save()
         comparison=compare_rows(old_rows,new_rows);result['comparison']=comparison
-        if args.profile in ('measured_hold_batch','expanded_load_batch','refined_load_batch'):
-            if args.profile=='refined_load_batch':
+        if args.profile in ('measured_hold_batch','expanded_load_batch','refined_load_batch','refined_hold_batch'):
+            if args.profile=='refined_hold_batch':
+                parent_spec=(38874773944,'591e7d5c7e4ed189fd2c251af0eaa81998564e1d28ad5ababfeab2896573b33d','5dab0781966f6e6e8ee26049e258b1498bef8eca62e4cc7cbb15dceed70a668c')
+                physical_parent=(38859276266,'3786689b73b2a290f91b2cdf5414c08690f7e5a681eb8c240252b503ea38b725')
+            elif args.profile=='refined_load_batch':
                 parent_spec=(38857906862,'be6f87f0431ce5154a1cf30bba16a9fabab46a04764b00d3af60644ca338512d','7146c1d132724241abc5bb9c32c97f804692a520a4a4cc2adadbae0ed66a2c60')
                 physical_parent=(38843068297,'396a74116d2c1495c5a11c820be7a47011cddb53279fa9970ece1b21b328e78b')
             else:
@@ -230,6 +236,10 @@ def main(args):
             if args.profile=='measured_hold_batch':
                 result['targeted_hold_changes']=targeted_hold_changes(parent_rows,new_rows)
                 result['all_four_target_timing_passed']=all(r['target_timing_passed'] for r in result['targeted_hold_changes'])
+            if args.profile=='refined_hold_batch':
+                result['targeted_hold_changes']=targeted_hold_changes(parent_rows,new_rows,REFINED_HOLD_TARGETS)
+                assert len(result['targeted_hold_changes'])==5
+                result['all_five_target_timing_passed']=all(r['target_timing_passed']for r in result['targeted_hold_changes'])
             result['parent_new_violations']={phase:{edge:values['new_negative'] for edge,values in edges.items()} for phase,edges in result['parent_endpoint_comparison'].items()}
             save()
 
@@ -247,7 +257,7 @@ def main(args):
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch','measured_hold_batch','expanded_load_batch','refined_load_batch'])
+    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch','measured_hold_batch','expanded_load_batch','refined_load_batch','refined_hold_batch'])
     parser.add_argument('--hold-paths',action='store_true');parser.add_argument('--diagnose-semantics',action='store_true');parser.add_argument('--verify-graph-minima',action='store_true');parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))
