@@ -22,8 +22,10 @@ def main():
         physical.OUT=OUT;source,prior=physical.restore(SOURCE)
         assert prior['status']=='PASS_SAME_HOST_PROCESS_CHECKPOINT_ONLY_NOT_SIMULATOR_OR_CROSS_HOST_PROOF'
         assert len(prior['controls'])==3 and all(c['rejected']for c in prior['controls'])
-        old_kernel=(source/'kernel.log').read_text().split();assert old_kernel[1]!=platform.node(),'Separate runner required'
-        result['runner_identity']=dict(previous=old_kernel[1],current=platform.node(),previous_kernel=old_kernel[2],current_kernel=platform.release())
+        old_kernel=(source/'kernel.log').read_text().split()
+        assert int(os.environ['GITHUB_RUN_ID'])!=SOURCE['run'],'Separate workflow execution required'
+        result['runner_identity']=dict(previous_hostname=old_kernel[1],current_hostname=platform.node(),previous_kernel=old_kernel[2],current_kernel=platform.release(),previous_run=SOURCE['run'],current_run=int(os.environ['GITHUB_RUN_ID']),current_boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),previous_boot_id=None,distinct_physical_host_proven=False)
+        result['scope']='Distinct GitHub workflow execution with an initially empty Docker store. Hostname is not a unique VM identity; prior boot ID was not captured. This tests serialized continuation across job boundaries, not distinct physical hardware.'
         assert not run('existing-containers',['docker','ps','-aq']).stdout.strip()
         build=json.loads((Path(os.environ['RUNNER_TEMP'])/'criu-build.json').read_text());assert build['source_commit']==prior['criu_build']['source_commit']
         assert sha('/usr/sbin/criu')==build['binary_sha256'];result['criu_build']=build
@@ -61,7 +63,7 @@ def main():
         assert sha(data/'wave.bin')==prior['positive']['sha256']==sha(source/'data/wave.bin'),'Cross-runner output differs from original full continuation'
         done=json.loads((data/'done.json').read_text());assert done['sha256']==sha(data/'wave.bin') and done['nonce']==nonce.hex()
         shutil.copytree(data,OUT/'data');assert all(sha(source/p)==v for p,v in prior['outputs'].items()) and sha(worker)==prior['worker_sha256']
-        result.update(status='PASS_DIFFERENT_RUNNER_PROCESS_STATE_RESTORED_EXACTLY_NOT_NATIVE_SIMULATOR_PROOF',cross_runner_restore_proven=True)
+        result.update(status='PASS_SEPARATE_JOB_PROCESS_STATE_RESTORED_EXACTLY_NOT_NATIVE_SIMULATOR_PROOF',cross_job_restore_proven=True)
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         for name in owned:run('cleanup-'+name,['docker','rm','-f',name],False)

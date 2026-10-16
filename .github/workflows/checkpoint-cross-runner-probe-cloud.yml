@@ -43,7 +43,7 @@ jobs:
           (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
           PYCODE
           python3 -m py_compile scripts/cloud_checkpoint_cross_runner_probe.py scripts/cloud_checkpoint_state_worker.py
-      - name: Restore the exact prior-job checkpoint on a different hosted runner
+      - name: Restore the exact prior-job checkpoint in a verified separate workflow execution
         run: python3 scripts/cloud_checkpoint_cross_runner_probe.py
       - name: Preserve capability failures and complete checkpoint evidence
         if: always()
