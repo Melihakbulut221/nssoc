@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Restore an immutable native845 SPICE process in a separate GitHub job."""
-import hashlib,json,os,re,shutil,subprocess,tarfile
+import hashlib,json,os,re,shutil,subprocess,tarfile,time
 from pathlib import Path
 import numpy as np
 import cloud_tx_input_driver as physical
@@ -17,7 +17,12 @@ def main():
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],source=SOURCE,cross_job_native_restore_proven=False,full_capture=False,acquisition_accepted=False,full_phy_accepted=False,scope='Restore the actual saved physical845 SPICE process from another completed job. Exact4ns native trajectory/34probes and single entrypoint, no cold restart or waveform splice. Not original1us acquisition, full-device safety, PVT or fullPHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(label,args,required=True,timeout=600):
-        p=subprocess.run(args,capture_output=True,text=True,timeout=timeout);(OUT/(label+'.log')).write_text(p.stdout+p.stderr)
+        try:p=subprocess.run(args,capture_output=True,text=True,timeout=timeout)
+        except subprocess.TimeoutExpired as error:
+            decode=lambda value:value.decode(errors='replace')if isinstance(value,bytes)else(value or '')
+            (OUT/(label+'.log')).write_text(decode(error.stdout)+decode(error.stderr))
+            result.setdefault('commands',[]).append(dict(label=label,args=args,timeout_s=timeout,sha256=sha(OUT/(label+'.log'))));save();raise
+        (OUT/(label+'.log')).write_text(p.stdout+p.stderr)
         result.setdefault('commands',[]).append(dict(label=label,args=args,returncode=p.returncode,sha256=sha(OUT/(label+'.log'))));save()
         if required and p.returncode:raise RuntimeError(label+': '+(p.stdout+p.stderr)[-7000:])
         return p
@@ -119,14 +124,36 @@ def main():
         assert re.search(r'(?m)^State:\s+T',proc_status),'Restore did not leave the actual process stopped'
         (OUT/'restored-process-maps.txt').write_text(run('restored-process-maps',['sudo','cat','/proc/'+str(pid)+'/maps']).stdout)
         commands=['set pagination off','set confirm off','set debuginfod enabled off','set sysroot /proc/'+str(pid)+'/root',
-                  'attach '+str(pid),'handle SIGSTOP nostop noprint nopass','handle SIGCONT nostop noprint pass','handle SIGILL stop print nopass',
-                  'signal SIGCONT','python','import gdb,json',
+                  'handle SIGSTOP nostop noprint nopass','handle SIGCONT nostop noprint pass','handle SIGILL stop print nopass',
+                  'attach '+str(pid),'echo NSSOC_GDB_ATTACHED\n','continue','python','import gdb,json',
                   "detail={'pc':int(gdb.parse_and_eval('$pc')),'signal':str(gdb.parse_and_eval('$_siginfo')),'instruction':gdb.execute('x/12i $pc',to_string=True),'bytes':gdb.execute('x/32bx $pc',to_string=True),'symbol':gdb.execute('info symbol $pc',to_string=True),'backtrace':gdb.execute('bt 20',to_string=True),'registers':gdb.execute('info registers',to_string=True),'library':gdb.solib_name(int(gdb.parse_and_eval('$pc')))}",
                   "print('NSSOC_NATIVE_TRAP_JSON '+json.dumps(detail))",'end','detach','quit']
         gdb_script=OUT/'capture-native-trap.gdb';gdb_script.write_text('\n'.join(commands)+'\n')
-        probe=run('native-trap-gdb',['sudo','gdb','--batch','-nx','-nh','-x',str(gdb_script)],False,timeout=300)
-        records=[l.split('NSSOC_NATIVE_TRAP_JSON ',1)[1]for l in probe.stdout.splitlines()if l.startswith('NSSOC_NATIVE_TRAP_JSON ')]
-        result['trap_probe']=dict(debugger_returncode=probe.returncode,record_count=len(records),acceptance=False)
+        # CRIU restored a job-control stop. Release it only after the kernel
+        # confirms ptrace ownership, so the native SIGILL cannot race attachment.
+        logfile=OUT/'native-trap-gdb.log';started_at=time.monotonic();released=False
+        args=['sudo','gdb','--batch','-nx','-nh','-x',str(gdb_script)]
+        with logfile.open('w')as stream:
+            process=subprocess.Popen(args,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
+            try:
+                while process.poll()is None and time.monotonic()-started_at<30:
+                    current=Path('/proc/'+str(pid)+'/status').read_text()
+                    traced=re.search(r'(?m)^TracerPid:\s+(\d+)$',current);assert traced
+                    if int(traced[1]):
+                        result['ptrace_attachment']=dict(native_pid=pid,tracer_pid=int(traced[1]),kernel_status=current)
+                        save();run('release-traced-group-stop',['sudo','kill','-CONT',str(pid)]);released=True;break
+                    time.sleep(.05)
+                assert released,'Debugger did not acquire kernel ptrace ownership'
+                process.wait(timeout=300)
+            finally:
+                if process.poll()is None:
+                    run('terminate-stalled-debugger',['sudo','kill','-TERM','--','-'+str(process.pid)],False)
+                    try:process.wait(timeout=10)
+                    except subprocess.TimeoutExpired:
+                        run('kill-stalled-debugger',['sudo','kill','-KILL','--','-'+str(process.pid)],False);process.wait(timeout=10)
+                result.setdefault('commands',[]).append(dict(label='native-trap-gdb',args=args,returncode=process.returncode,sha256=sha(logfile),kernel_ptrace_seen=released));save()
+        records=[l.split('NSSOC_NATIVE_TRAP_JSON ',1)[1]for l in logfile.read_text(errors='replace').splitlines()if l.startswith('NSSOC_NATIVE_TRAP_JSON ')]
+        result['trap_probe']=dict(debugger_returncode=process.returncode,record_count=len(records),acceptance=False)
         if records:
             assert len(records)==1;result['trap_probe']['observation']=json.loads(records[0])
         save()
