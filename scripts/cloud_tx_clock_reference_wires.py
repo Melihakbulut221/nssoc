@@ -17,8 +17,8 @@ def main():
     save()
     try:
         spec=SOURCES[args.variant];source=out/'source';selected=('layout/'+TOP+'.gds','layout/result.json','check/lvs_flat/result.lvsdb','check/lvs_flat/audit.json')
-        prior,proof=reports.restore_report('tx-clock-reference-'+args.variant,38941785196,spec['summary'],spec['parts'],source,selected);result['source']=proof
-        assert prior['source_head']=='4a6550887640d452523888967c76eb709ef60277'and prior['source_unchanged']and prior['variant']==args.variant
+        prior,proof=reports.restore_report('tx-clock-reference-'+args.variant,spec.get('run',38941785196),spec['summary'],spec['parts'],source,selected);result['source']=proof
+        assert prior['source_head']==spec.get('head','4a6550887640d452523888967c76eb709ef60277')and prior['source_unchanged']and prior['variant']==args.variant
         assert prior['status']=='PASS_NATIVE_CLOCK_REFERENCE_PHYSICAL_GATES_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE'
         assert sha(source/'layout'/(TOP+'.gds'))==spec['gds']
         method=ROOT/'scripts/tx_driver_localpins_wire_native.py';assert sha(method)==METHOD_SHA;original=method.read_text();adapted=original

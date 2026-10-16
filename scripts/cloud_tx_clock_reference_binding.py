@@ -50,7 +50,7 @@ def export(source,out):
     (out/'native.json').write_text(json.dumps(dict(status='EXPORTED_NATIVE_CLOCK_TERMINALS_NOT_RC_ACCEPTANCE',gds_sha256=sha(source/'layout'/(TOP+'.gds')),dbu=L.dbu,modes=modes),indent=2)+'\n')
 
 def bind(record,variant):
-    expected_length={'l6p2':6.2,'l6p5':6.5}[variant];bound={}
+    expected_length={'l6p2':6.2,'l6p5':6.5,'l5p7':5.7}[variant];bound={}
     for mode,data in record['modes'].items():
         rows=data['devices'];assert len(rows)==6 and len({r['id']for r in rows})==6,'Native device census changed'
         assert Counter(r['model']for r in rows)==Counter(npn13G2=1,rppd=2,ptap1=3),'Native model census changed'
@@ -90,12 +90,12 @@ def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';out=ROOT/('hw/soc/out/cloud-tx-clock-reference-binding-'+args.variant);source=out/'source'
     if args.export:export(source,out);return
     out.mkdir(parents=True,exist_ok=False);reports.OUT=out;spec=SOURCES[args.variant]
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,source_run=38941785196,qualified_pex=False,serial_phy_complete=False,wire_rc_extracted=False,simulator_checked=False)
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,source_run=SOURCES[args.variant].get('run',38941785196),qualified_pex=False,serial_phy_complete=False,wire_rc_extracted=False,simulator_checked=False)
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
-        prior,proof=reports.restore_report('tx-clock-reference-'+args.variant,38941785196,spec['summary'],spec['parts'],source,SELECTED);result['source']=proof
-        assert prior['source_head']=='4a6550887640d452523888967c76eb709ef60277' and prior['source_unchanged'] and prior['variant']==args.variant
+        prior,proof=reports.restore_report('tx-clock-reference-'+args.variant,spec.get('run',38941785196),spec['summary'],spec['parts'],source,SELECTED);result['source']=proof
+        assert prior['source_head']==spec.get('head','4a6550887640d452523888967c76eb709ef60277') and prior['source_unchanged'] and prior['variant']==args.variant
         assert prior['status']=='PASS_NATIVE_CLOCK_REFERENCE_PHYSICAL_GATES_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE'
         steps=prior['physical_checks']['steps'];assert len(steps)==9 and all(s['status']==('PASS'if n in ['drc','lvs','lvs_flat']else'REJECTED_EXPECTED_FAULT')for n,s in steps.items())
         assert sha(source/'layout'/(TOP+'.gds'))==spec['gds']

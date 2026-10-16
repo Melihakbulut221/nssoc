@@ -12,18 +12,20 @@ SOURCES={
 'l6p2':dict(summary='3f10b07ee87e5045269232ae178a5594e0c74f81874e8f06177958b9b44ca6b3',parts='1183c86c58129ebb4d83f9f11f5e97d900aa294da461ebc85e92cdbafcacf789',gds='ee1cef81afe91c1afc2257198d090ec375fbe9c6cdf1c74011e7f2e5ac8146a0'),
 'l6p5':dict(summary='6a94d45b0fe1a2d7949adcc4bb98dc0b0120652c1a7ab71efe7c93d85350b9ff',parts='df5b6494767da107340dfc03b0d54edc48805e76ed8c768f9fdc7f83e8e9bf5c',gds='bab73526a1ee84c84ee392e249b4d97ac267098de97f54938f8c0c20a4cb51a5')}
 
+SOURCES['l5p7']=dict(run=38960984672,head='39c53aa4aaf0cb88ae3690dd8234bac603538787',summary='1b822f557190c9ec42cc179006fccad98e9855bb9a3e16684f22846ad253a459',parts='e22d057646c1786a47d23ae70e84e827db3e2235423abf9061e37da6403dbc19',gds='f0235948da18025d0b6cfdd157c7389884f7d4c6478c6e86a6c44bc8b3345069')
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('hw/soc/out/cloud-tx-clock-reference-lef-'+args.variant);out.mkdir(parents=True,exist_ok=False);reports.OUT=out
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,source_run=38941785196,accepted=False,qualified_pex=False,serial_phy_complete=False,mainchip_integrated=False)
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,source_run=SOURCES[args.variant].get('run',38941785196),accepted=False,qualified_pex=False,serial_phy_complete=False,mainchip_integrated=False)
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
         spec=SOURCES[args.variant];source=out/'source'
-        prior,proof=reports.restore_report('tx-clock-reference-'+args.variant,38941785196,spec['summary'],spec['parts'],source,
+        prior,proof=reports.restore_report('tx-clock-reference-'+args.variant,spec.get('run',38941785196),spec['summary'],spec['parts'],source,
             ('layout/result.json','layout/'+TOP+'.gds','layout/'+TOP+'.lef','layout/schematic.cir'))
-        assert prior['source_head']=='4a6550887640d452523888967c76eb709ef60277' and prior['variant']==args.variant
+        assert prior['source_head']==spec.get('head','4a6550887640d452523888967c76eb709ef60277') and prior['variant']==args.variant
         assert prior['status']=='PASS_NATIVE_CLOCK_REFERENCE_PHYSICAL_GATES_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE' and prior['source_unchanged']
         checks=prior['physical_checks']['steps'];assert set(checks)=={'drc','lvs','lvs_flat','wrong_finger_count','wrong_offset_length','missing_hbt','q_open','rail_short','offgrid'}
         assert all(v['status']==('PASS' if k in ('drc','lvs','lvs_flat')else 'REJECTED_EXPECTED_FAULT')for k,v in checks.items())
