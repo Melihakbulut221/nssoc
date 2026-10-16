@@ -1,3 +1,13 @@
+## Cloud continuation: exact setup-path correlation queued (2026-10-16)
+
+- Active source **244cb08d6f0bbc60601e6a7604efbcc79cebdb16** adds read-only `nine-size-setup-map-cloud`: **38958868834** is queued at checkpoint. It binds60native maximum paths (ten endpoints per corner, rise/fall) from the already reproduced nine-size trace to exact ODB pin/net names, masters, fanout, location and retained pipeline naming. Inputs remain pinned to actual ODB72c2e2cd... and trace38953044374; no resynthesis or timing waiver. Inspect this map before selecting deep-logic/architectural setup repair.
+- The worst inspected slow path is Ibex register1182549 to RAM bank0 A_BM[0], WNS-5.649649637ns, with a deep combinational chain. Do not infer a specific REQ_REG/CORE_REQ_REG parameter merely from source defaults or missing hierarchy names.
+- Prior architecture work exists: `core-pipeline-native-boot-20260923.json` passed mapped whole-core boot in its scope, but `pipeline-completed-route-20260924.json` explicitly FAILED final timing (slow setup-11.970121233ns, fast hold-1.502508827ns). Re-enabling the same option is not a demonstrated fix. Full provenance and current run state: `docs/evidence/cloud-setup-path-correlation-plan-20261016.json`.
+- Actual six-delay full route **38957249404**, PLL all102HBT bounded diagnostic **38957588814**, and two clock-offset hypotheses **38956152752** remain live; four jobs running, setup-map queued. Do not restart/cancel healthy calculations or treat the queued analysis as finished.
+- Latest human instruction remains cloud-only; local workspace stays empty. Full serialPHY, mainchipintegration and final timing remain open.
+
+---
+
 ## Cloud continuation: six hold repairs and physical PLL/TX diagnosis (2026-10-16)
 
 All work is cloud-only. Local workspace remains empty; no local CAD, simulations, test outputs or checkout. New evidence and every failed report stay on GitHub. See `docs/evidence/cloud-six-hold-and-physical-pll-tx-results-20261016.json` for exact receipts, measurements and recorded live job state.
