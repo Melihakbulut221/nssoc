@@ -1,3 +1,9 @@
+## 2026-10-16 — Future full32 captures retain native progress and publication fallback
+
+The full32 controller now records diagnostic native raw-file progress every5minutes and on exit/timeout: actual file bytes, complete written binary rows and sampled latest time. It never labels a prefix complete or accepted and never substitutes it for the strict full-wave reader. Invalid/missing/partial timestamps are preserved as diagnostic errors. Timeout remains19800seconds; circuit/solver/step/engineering gates are unchanged. Hosted controls cover partial headers/rows, nonfinite/nonmonotonic time, column mismatch and false completion.
+
+If permanent full32 publication fails, a fallback uploads the prepared hash manifests/parts plus result/native/progress logs as a30dayActionsartifact, using the existing pinned upload action. This improves recoverability; it cannot promise recovery after a runner is forcibly terminated before the fallback executes. Changing this workflow triggers controls only, not a duplicate native capture. Current coarse/PLL/physical jobs are untouched.
+
 ## 2026-10-16 — Compiler configuration check corrected before native comparison
 
 Initial runtime study **38844301748** is terminal failure before synthetic or waveform execution. Source build succeeded and preserved all artifacts, including optimizedruntimeSHA `e3b55c751583cf62a10377c695ade604dd578b22d907d5a391080c1ee6905204`. The effective CFLAGS include the upstream `-std=gnu11` addition visible in native build commands; the old exactstring check rejected it. The validator now accepts only the exact requested flag list, optionally followed by that standard flag. It rejects changed optimization, fast-math, contraction and unexpected standards.

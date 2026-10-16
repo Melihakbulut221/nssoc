@@ -11,6 +11,7 @@ import numpy as np
 import cloud_vbic_tree32_backend as source
 import cloud_tx_companion_replay as runtime
 from cloud_tx_stream import streaming_deck,read_streamed_wave
+from cloud_native_progress import monitored_run
 from run_cloud_tx_mux4 import review,native_diagnostics
 from route_cloud_newer_postcts import fetch,sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-vbic-tree32-full'
@@ -59,7 +60,7 @@ def main(backend,tmax,study_sha,study_run):
         def limits():
             resource.setrlimit(resource.RLIMIT_AS,(12*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
         save();started=time.monotonic()
-        with (case/'run.log').open('w') as log:proc=subprocess.run([str(paths['patched']),'-n','-b','bench.cir'],cwd=case,env=env,preexec_fn=limits,stdout=log,stderr=subprocess.STDOUT,timeout=19800)
+        proc=monitored_run([str(paths['patched']),'-n','-b','bench.cir'],case,env,limits,19800,len(contract['vectors'])+1)
         result.update(elapsed_s=time.monotonic()-started,returncode=proc.returncode,executable_sha256=sha(paths['patched']))
         text=(case/'run.log').read_text(errors='replace')
         option,result['diagnostics'],option_block=source.backend_readback(text,backend)

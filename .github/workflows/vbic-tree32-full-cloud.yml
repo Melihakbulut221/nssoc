@@ -42,7 +42,9 @@ jobs:
           python-version: '3.12'
       - name: Compile native controller and verify lossless chunked evidence with corrupt/missing/order controls
         run: |
-          python3 -m py_compile scripts/cloud_vbic_tree32_full.py scripts/cloud_chunked_results.py
+          python3 -m pip install pytest==8.4.2
+          python3 -m py_compile scripts/cloud_vbic_tree32_full.py scripts/cloud_chunked_results.py scripts/cloud_native_progress.py
+          python3 -m pytest -q sw/tests/test_cloud_native_progress.py
           python3 scripts/cloud_chunked_results.py --self-test
           python3 - <<'PYCONTROL'
           import sys
@@ -90,6 +92,7 @@ jobs:
           TMAX_PS: ${{ inputs.tmax_ps }}
         run: python3 scripts/cloud_vbic_tree32_full.py --backend "$NATIVE_BACKEND" --tmax-ps "$TMAX_PS" --study-sha256 "$STUDY_SHA256" --study-run "$STUDY_RUN"
       - name: Preserve full native waveform in ordered hash-verified release parts
+        id: publish_evidence
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -109,3 +112,19 @@ jobs:
           group='vbic-tree32-full-'+os.environ['NATIVE_BACKEND']+'-'+os.environ['TMAX_PS'].replace('.', 'p')
           subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
           PYCODE
+
+      - name: Retain prepared evidence if permanent publication fails
+        if: ${{ always() && steps.publish_evidence.outcome == 'failure' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tree32-publication-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            vbic-tree32-full-*.summary.json
+            vbic-tree32-full-*.parts.json
+            vbic-tree32-full-*.tar.gz.part*
+            cloud-vbic-tree32-full/result.json
+            cloud-vbic-tree32-full/native/run.log
+            cloud-vbic-tree32-full/native/progress.jsonl
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
