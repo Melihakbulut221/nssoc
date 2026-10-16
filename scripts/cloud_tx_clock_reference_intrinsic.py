@@ -84,7 +84,7 @@ def main():
         pins={p:h for p,h in compact.MODEL_PINS.items()if p.endswith(('resistors_mod.lib','sg13g2_hbt_mod.lib','sg13g2_tech.json','utility_functions.py'))}
         for path,digest in pins.items():
             target=models/path;target.parent.mkdir(parents=True,exist_ok=True);fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/'+PDK+'/ihp-sg13g2/'+path,digest,target)
-        hbt=(models/'libs.tech/ngspice/models/sg13g2_hbt_mod.lib').read_text();res=(models/'libs.tech/ngspice/models/resistors_mod.lib').read_text()
+        hbt=(models/'libs.tech/ngspice/models/sg13g2_hbt_mod.lib').read_text(encoding='latin-1');res=(models/'libs.tech/ngspice/models/resistors_mod.lib').read_text()
         assert len(re.findall(r'^\.subckt\s+npn13G2\s+c\s+b\s+e\s+bn\s*$',hbt,re.M|re.I))==1
         assert len(re.findall(r'^\.subckt\s+rppd\s+1\s+2\s+bn\s*$',res,re.M|re.I))==1
         tap=re.search(r'^\.subckt\s+ptap1\s+1\s+2\s*\n(.*?)^\.ends\s+ptap1',res,re.M|re.S|re.I);assert tap
