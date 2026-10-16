@@ -5,7 +5,7 @@
 import argparse,copy,json,math,os,re,struct,subprocess,tarfile
 from pathlib import Path
 from cloud_contact_release import validate_route_proof
-from measured_hold_targets import validate_child,CHILD_FILES
+from measured_hold_targets import validate_child,CHILD_FILES,TARGETS as HOLD_TARGETS
 from candidate_hold_conflicts import controls as conflict_controls,measure as measure_conflicts
 from audit_cloud_route_annotation import BASE,SUMMARY_SHA,ARCHIVE_SHA
 from audit_cloud_routed_endpoints import parse_table,controls as table_controls,HELPER_SHA
@@ -40,6 +40,44 @@ def compare_rows(before,after):
             else:row['improved' if b>a else 'regressed']+=1
     return summaries
 
+def targeted_hold_changes(before,after):
+    result=[]
+    for target in HOLD_TARGETS:
+        name=target['endpoint'];item=dict(endpoint=name,native_pin=target['native_pin'])
+        for delay,key in (('min','hold_seconds'),('max','setup_seconds')):
+            values={c:before[(c,delay,name)][2] for c in ('slow','typical','fast')}
+            assert values==target[key],'Parent target values differ from pinned conflict trace'
+            item['before_'+key]=values
+            item['after_'+key]={c:after[(c,delay,name)][2] for c in ('slow','typical','fast')}
+        item['hold_nonnegative_all_corners']=all(v is not None and v>=0 for v in item['after_hold_seconds'].values())
+        item['setup_nonnegative_all_corners']=all(v is not None and v>=0 for v in item['after_setup_seconds'].values())
+        item['target_timing_passed']=item['hold_nonnegative_all_corners'] and item['setup_nonnegative_all_corners']
+        result.append(item)
+    return result
+
+def targeted_controls():
+    before={}
+    for t in HOLD_TARGETS:
+        for d,k in (('min','hold_seconds'),('max','setup_seconds')):
+            for c,v in t[k].items():before[(c,d,t['endpoint'])]=[v,v,v]
+    after=copy.deepcopy(before)
+    for t in HOLD_TARGETS:
+        for c in ('slow','typical','fast'):after[(c,'min',t['endpoint'])]=[0.,0.,0.]
+    assert all(r['target_timing_passed'] for r in targeted_hold_changes(before,after))
+    name=HOLD_TARGETS[0]['endpoint']
+    for key,value in [(('slow','max',name),[-1e-10]*3),(('fast','min',name),[None]*3)]:
+        bad=copy.deepcopy(after);bad[key]=value
+        assert not targeted_hold_changes(before,bad)[0]['target_timing_passed']
+    missing=copy.deepcopy(after);missing.pop(('fast','min',name))
+    try:targeted_hold_changes(before,missing)
+    except KeyError:pass
+    else:raise AssertionError('Missing target accepted')
+    changed=copy.deepcopy(before);changed[('slow','max',name)]=[0.]*3
+    try:targeted_hold_changes(changed,after)
+    except AssertionError:pass
+    else:raise AssertionError('Changed parent measurement accepted')
+    return dict(all_four_zero_hold_pass_with_unchanged_positive_setup=True,new_setup_failure_rejected=True,unconstrained_hold_rejected=True,missing_target_rejected=True,changed_parent_rejected=True)
+
 def controls():
     before={(c,d,n):[1e-10,2e-10,1e-10] for c in ('fast','slow','typical') for d in ('min','max') for n in ('a/D','b/D')}
     after=copy.deepcopy(before);after[('fast','min','a/D')]=[-1e-10,2e-10,-1e-10];after[('slow','max','b/D')]=[None,None,None]
@@ -51,7 +89,7 @@ def controls():
     try:compare_rows(before,malformed)
     except AssertionError:pass
     else:raise AssertionError('Missing endpoint accepted')
-    return dict(conflict_paths=conflict_controls(),archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
+    return dict(targeted_hold=targeted_controls(),conflict_paths=conflict_controls(),archives=archive_controls(),tables=table_controls(),comparison=dict(identity_roundtrip=True,new_violation_detected=True,resolution_detected=True,loss_of_constraint_not_passed=True,missing_identity_rejected=True))
 
 def restore_report(group,run,summary_sha,parts_sha,destination,selected):
     for v in (summary_sha,parts_sha):assert re.fullmatch(r'[0-9a-f]{64}',v)
@@ -144,6 +182,18 @@ def main(args):
         for phase,row in candidate['routed_timing'].items():assert phases[phase]['groups']==row['groups']
         after,new_rows=load_census(OUT);assert before['native_pin_mapping']==after['native_pin_mapping'],'Physical endpoint identities changed'
         comparison=compare_rows(old_rows,new_rows);result['comparison']=comparison
+        if args.profile=='measured_hold_batch':
+            parent_report,parent_proof=restore_report('eco-endpoint-compare',38835900898,'ade9895f247c39b9439a169934bdf986b80be897bbd53b3259832b694ec9a450','36a4be4c1a5267a5cd971095579ac261cb39a6ef31df06ee8f70028894423fd3',OUT/'parent-census',('native-census.json','endpoint-slacks.tsv'))
+            assert parent_report['source_unchanged'] and parent_report['candidate_routed_timing_reproduced']
+            assert parent_report['candidate']['run']==38824521607 and parent_report['candidate']['summary_sha256']=='2567e3e86159187b5f6db0df8a1c2be663c3d66df9e20d4fc650f98fe9ad2db5'
+            parent_meta,parent_rows=load_census(OUT/'parent-census');assert parent_meta['native_pin_mapping']==after['native_pin_mapping']
+            result['parent_census']=parent_proof
+            result['parent_endpoint_comparison']=compare_rows(parent_rows,new_rows)
+            result['targeted_hold_changes']=targeted_hold_changes(parent_rows,new_rows)
+            result['all_four_target_timing_passed']=all(r['target_timing_passed'] for r in result['targeted_hold_changes'])
+            result['parent_new_violations']={phase:{edge:values['new_negative'] for edge,values in edges.items()} for phase,edges in result['parent_endpoint_comparison'].items()}
+            save()
+
         result['all_constrained_endpoint_slacks_nonnegative']=all(v['worst']['negative_after']==0 for v in comparison.values())
         result['any_endpoint_regression']=any(v[e]['regressed'] for v in comparison.values() for e in ('rise','fall','worst'))
         result['any_loss_of_constraints']=any(v[e]['became_unconstrained'] for v in comparison.values() for e in ('rise','fall','worst'))
