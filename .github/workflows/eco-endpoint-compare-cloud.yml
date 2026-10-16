@@ -46,7 +46,7 @@ jobs:
       - name: Reject missing evidence, changed endpoints and hidden regressions
         run: |
           python3 -m py_compile scripts/compare_cloud_routed_endpoints.py scripts/critical_load_targets.py scripts/expanded_load_targets.py scripts/prepare_cloud_critical_load_eco.py scripts/run_cloud_critical_load_eco.py
-          python3 scripts/expanded_load_targets.py
+          python3 scripts/expanded_load_targets.py --verify-published
           python3 scripts/compare_cloud_routed_endpoints.py --controls-only
   full-comparison:
     if: github.event_name == 'workflow_dispatch'

@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Source-bound next load experiment; diagnostic absence never proves hold safety."""
-import copy,hashlib,json,os
+import copy,hashlib,json,os,re,sys,urllib.request
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 PROFILE='expanded_load_batch'
@@ -38,6 +38,15 @@ def recipe():
     assert data['parent_summary_sha256']=='2567e3e86159187b5f6db0df8a1c2be663c3d66df9e20d4fc650f98fe9ad2db5'
     validate_rows(data['targets'],base_targets());return data
 
+def validate_phase(observation):
+    origin,phase=observation['origin'],observation['phase']
+    if origin=='global':assert phase=='slow_max'
+    else:
+        assert origin=='hold_targets'
+        match=re.fullmatch(r'target_(0|[1-9][0-9]*)_slow_max',phase)
+        assert match and 0<=int(match[1])<96
+    assert observation['slack_ns']<0
+
 def verify_review(raw):
     assert digest(raw)==REVIEW_SHA,'Changed source diagnosis'
     source=json.loads(raw);data=recipe()
@@ -49,7 +58,7 @@ def verify_review(raw):
         assert r['requires_native_odb_pin_resolution'] is True and r['observations']
         fanouts=set()
         for o in r['observations']:
-            stage=o['stage'];assert o['phase']=='slow_max' and o['slack_ns']<0
+            validate_phase(o);stage=o['stage']
             assert stage['pin']==r['pin'] and stage['master']==r['master']
             assert stage['cap_pf']>=.1 and stage['delay_ns']>=.5
             values=stage['native_line'].split()
@@ -93,6 +102,18 @@ def controls():
         try:validate_rows(bad,base)
         except (AssertionError,KeyError,ValueError):rejected.append(name)
         else:raise AssertionError('Accepted altered targets: '+name)
+    for origin,phase in [('global','slow_max'),('hold_targets','target_0_slow_max'),('hold_targets','target_95_slow_max')]:
+        validate_phase(dict(origin=origin,phase=phase,slack_ns=-1))
+    for origin,phase,slack in [('global','fast_min',-1),('global','target_0_slow_max',-1),('hold_targets','target_96_slow_max',-1),('hold_targets','target_0_fast_min',-1),('hold_targets','target_01_slow_max',-1),('global','slow_max',0)]:
+        try:validate_phase(dict(origin=origin,phase=phase,slack_ns=slack))
+        except AssertionError:rejected.append('invalid_phase:'+origin+':'+phase+':'+str(slack))
+        else:raise AssertionError('Accepted non-source slow setup phase')
     return {'targets':60,'cumulative':110,'rejected':rejected,'hold_safety_proven':False}
 if __name__=='__main__':
     assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))
+    if '--verify-published' in sys.argv:
+        with urllib.request.urlopen(REVIEW_URL,timeout=120) as response:raw=response.read()
+        print(json.dumps(verify_review(raw)))
+        try:verify_review(raw+b' ')
+        except AssertionError:print('REJECTED changed source summary bytes')
+        else:raise AssertionError('Source-byte corruption accepted')
