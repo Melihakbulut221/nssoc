@@ -1,3 +1,13 @@
+## 2026-10-16 — Protected 50-buffer routing completed; independent checks running
+
+Run **38830273683** completed with zero native detailed-route violations and exact preservation of **113,506 encoded FIXED nets**; 100 changed/new nets were routed and all 113,606 nets received fresh nominal extraction. Logic equivalence within its recorded scope passed and the inversion negative control was rejected. The candidate is **not adopted**.
+
+Worst slow setup improves from **-11.940513 ns to -8.012368 ns**, but worst fast hold worsens from **-0.151066 ns to -0.172269 ns**. Typical hold stays positive at +0.005612 ns. The next setup bottleneck contains NAND4 output `$abc$1705011$auto$blifparse.cc:397:parse_blif$1750069/Y` (0.293938 pF, 4.205165 ns stage delay). The worst fast hold path reaches Ethernet RX SRAM bank6 A_ADDR[5] through added buffers46/25/39. The full native log was reconstructed byte-exact from the completed hosted job and checked against its saved SHA256; both raw paths are retained in `docs/evidence/cloud-protected-load-results-20261016.json`.
+
+Independent RC annotation **38834269406** completed: all 113,606 SPEF nets match native IDs/names; 1,065 reported drivers comprise 302 no-sink plus 763 disconnected, with zero loaded unannotated drivers. This is not interface/qualifiedRC/SRAM/signoff acceptance. Full endpoint comparison **38834263964** and geometry/antenna **38834266592** were dispatched with exact source summary/manifest hashes. Inspect their current states before starting followups.
+
+Corrected Sparse0.5ps full tree run **38834025040** is live after controls38833953558 passed. Prior38810158966 failed publication, with no retained component report; old fine0.25ps38810163678 still runs and may hit the same publication bug. Do not duplicate it. Full serial PHY and final timing remain open. Work stays cloud-only; local workspace is empty.
+
 ## 2026-10-16 — Cloud publication failure diagnosed and corrected
 
 Run 38810158966 (Sparse 0.5 ps) ended with failure solely in the publication step: its group `vbic-tree32-full-sparse-0.5` violates the existing strict publisher group syntax. The native step exited successfully, but its detailed component result and waveform were not published; do not infer gate acceptance. The job log records the 1,445,509,953-byte archive SHA256 `74afb596098d79b13245612425bc2c1c7390895839ca8a4418051502f022c759`; these bytes are not recoverable from a hash alone.
