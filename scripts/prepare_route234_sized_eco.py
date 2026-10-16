@@ -56,16 +56,16 @@ if mode=='prepare':
         i=b.findInst(name);assert original[name]['master']==row['master']and original[name]['location']==row['location_dbu']
         m=db.findMaster(row['replacement']);assert m
         assert {(t.getName(),str(t.getIoType()),str(t.getSigType()))for t in m.getMTerms()}=={(t.getName(),str(t.getIoType()),str(t.getSigType()))for t in i.getMaster().getMTerms()}
-        anchor=i.getLocation();assert i.swapMaster(m);i.setLocation(*anchor);i.setPlacementStatus('PLACED')
+        i.setPlacementStatus('PLACED');anchor=i.getLocation();assert i.swapMaster(m);i.setLocation(*anchor)
     validate(db)
     odb.write_db(db,str(OUT/'proposed.odb'))
 elif mode=='audit':
     db=load(OUT/'legalized.odb');delta=validate(db,True);b=db.getChip().getBlock()
-    control=next(i for i in b.getInsts()if i.getName()not in targets);anchor=control.getLocation();control.setLocation(anchor[0]+1000,anchor[1])
+    control=next(i for i in b.getInsts()if i.getName()not in targets);anchor=control.getLocation();saved_status=control.getPlacementStatus();control.setPlacementStatus('PLACED');control.setLocation(anchor[0]+1000,anchor[1])
     try:validate(db)
     except AssertionError as e:assert 'Unexpected retained cell change'in str(e)
     else:raise AssertionError('Unselected movement fault escaped')
-    control.setLocation(*anchor);assert validate(db)==delta
+    control.setLocation(*anchor);control.setPlacementStatus(saved_status);assert validate(db)==delta
     selected=sorted({t.getNet().getName()for name in targets for t in b.findInst(name).getITerms()if t.getNet()and str(t.getNet().getSigType())not in ('POWER','GROUND')})
     assert selected
     odb.write_db(db,str(OUT/'candidate.odb'))
