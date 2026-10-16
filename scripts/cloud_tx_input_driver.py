@@ -52,19 +52,19 @@ def generate(fault):
     assert all(r['params']==dict(w='10u',l='.45u',ng='10') and r['nets']==['sink','drv','avss','sub'] for r in hv)
     layout=pya.Layout();layout.read(str(stdroot/'upstream/gds/sg13g2_stdcell.gds'));layout.read(str(hvroot/'base/layout.gds'))
     hvcell=layout.cell('nssoc_tx_hv_ng10_v1');buf=layout.cell('sg13g2_buf_16');assert hvcell is not None and buf is not None
-    # Remove only imported port annotations, preserving every drawing layer and device-recognition label.
+    # Remove only imported port text, preserving pin shapes, every drawing layer and device-recognition label.
     def drawing_digest(cell):
         result={}
         for index in layout.layer_indexes():
             info=layout.get_info(index)
-            if info.datatype in (2,25):continue
+            if info.datatype==25:continue
             region=pya.Region(cell.begin_shapes_rec(index)).merged()
             if not region.is_empty():result[str(info)]=[str(p) for p in region.each()]
         return hashlib.sha256(json.dumps(result,sort_keys=True).encode()).hexdigest()
     before={c.name:drawing_digest(c) for c in (hvcell,buf)}
     for cell in layout.each_cell():
         for index in layout.layer_indexes():
-            if layout.get_info(index).datatype in (2,25):cell.shapes(index).clear()
+            if layout.get_info(index).datatype==25:cell.shapes(index).clear()
     assert before=={c.name:drawing_digest(c) for c in (hvcell,buf)}
     top=layout.create_cell(TOP)
     layers={p.findtext('name')[:-8]:int(p.findtext('source').split('/')[0]) for p in ET.parse(pdk.parent/'tech/sg13g2.lyp').getroot().iter('properties') if p.findtext('name','').endswith('.drawing')}
