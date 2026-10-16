@@ -1,5 +1,5 @@
 {
-  "observed_at": "2026-10-16T01:20:57.128488+00:00",
+  "observed_at": "2026-10-16T01:32:20.425767+00:00",
   "cloud_only": true,
   "local_workspace_entries": 0,
   "active_or_recent": [
@@ -741,8 +741,8 @@
     {
       "run": 38834266592,
       "topic": "candidate-geometry-cloud",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "source_head": "8cb84d04ccb488f504bc8043c0ef6452971fd2cb",
       "jobs": [
         {
@@ -753,11 +753,9 @@
         },
         {
           "id": 116759843128,
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Check every completed candidate signal shape and native antenna observation"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
@@ -779,6 +777,38 @@
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 38835042687,
+      "topic": "protected-contact-review-cloud",
+      "status": "completed",
+      "conclusion": "success",
+      "source_head": "6ebaf125952dada0cc77fd1402d664be7fff464e",
+      "jobs": [
+        {
+          "id": 116762158676,
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 38835470494,
+      "topic": "protected-contact-eco-cloud",
+      "status": "in_progress",
+      "conclusion": null,
+      "source_head": "376793a946b712d1b25e5919af165ba65647b70b",
+      "jobs": [
+        {
+          "id": 116763502825,
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Release eight measured intersecting nets, reroute108nets and recheck all original timing corners"
+          ]
         }
       ]
     }
@@ -885,7 +915,7 @@
     "final_timing_complete": false,
     "meaning": "All1065 reported drivers classified:302connected without sinks and763disconnected; none drives an unannotated load. Exact113556SPEF net-id/name mappings verified. This resolves this annotation uncertainty for the original route only, not functional interface completeness or final STA/RC qualification."
   },
-  "observed_branch_head": "8cb84d04ccb488f504bc8043c0ef6452971fd2cb",
+  "observed_branch_head": "376793a946b712d1b25e5919af165ba65647b70b",
   "actual_route_endpoint_census": {
     "run": 38819589884,
     "summary_sha256": "54a23354fc53eb4811b574a1c1bbd70aa413d83463e5165f240b8925c10e00ff",
@@ -911,6 +941,7 @@
     "pcie_retrain_done_worst_slow_startpoints": 68
   },
   "next_actions_20261016": [
+    "Check live protected-contact ECO38835470494/job116763502825 before any duplicate. Recipe/runtime/compile/alias and five contact release corruption controls passed; native108-net repair running. Prior protected50 candidate rejected by25cross-net contacts and5newholdfailures, not just pending verification.",
     "Inspect live endpoint38834263964 and geometry38834266592. Protected50 candidate is not adopted: worst fast hold regresses. Preserve exact source and every failing endpoint.",
     "Use protected50 raw paths plus allendpoint comparison to select the next joint setup/hold correction. Worst setup is new NAND4 load; worst hold is Ethernet SRAM A_ADDR[5]. Do not weaken clocks/constraints or hide antenna.",
     "Keep original3-buffer and unprotected50 physical runs live until authoritative terminal result, then compare exact same source-bound diagnostics.",
@@ -1101,5 +1132,30 @@
     "replacement_coarse_run": 38834025040,
     "fine_old_source_run": 38810163678,
     "instruction": "Do not duplicate live run; inspect fine terminal publication result and rerun only if unrecoverable. Only compare once both original full gates have retained passing reports."
+  },
+  "protected_load_independent_rejection": {
+    "receipt": "docs/evidence/cloud-protected-load-independent-results-20261016.json",
+    "setup_failures": {
+      "fast_max": 31,
+      "slow_max": 9539,
+      "typical_max": 972
+    },
+    "fast_hold_failures": 96,
+    "new_fast_hold_failures": 5,
+    "cross_net_shape_contacts": 25,
+    "cross_net_pairs": 8,
+    "antenna_nets": 645,
+    "antenna_pins": 801,
+    "accepted": false
+  },
+  "protected_contact_repair": {
+    "run": 38835470494,
+    "source_head": "376793a946b712d1b25e5919af165ba65647b70b",
+    "job": 116763502825,
+    "released_extra_original_nets": 8,
+    "selected_nets": 108,
+    "required_unchanged_wired_nets": 113498,
+    "acceptance": false,
+    "followup": "After terminal completion, run independent endpoint, geometry/antenna and RC annotation workflows using exact new summary/manifest SHA256. Zero native DRT is insufficient; all25previouscontacts must be absent and the whole exportedgeometry screen must have zero cross-net contacts. Setup andhold remain independently open."
   }
 }

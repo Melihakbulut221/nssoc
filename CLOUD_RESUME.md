@@ -1,3 +1,9 @@
+## 2026-10-16 — 108-net contact repair is LIVE after controls
+
+Run **38835470494**, job **116763502825**, source **376793a946b712d1b25e5919af165ba65647b70b** is in the native repair step. Source recipe/legacy profiles, runtime, compilation, archive alias checks, and five contact-release corruption controls passed. Do not duplicate or interrupt this live job. It releases the exact eight independently measured intersecting original nets, routes108nets and requires113,498other routednets to remain byte-identical. This is an experiment, not acceptance. After completion obtain new exact summary/manifest SHA256 and run all three independent candidate workflows.
+
+Completed independent endpoint and geometry results are archived in `docs/evidence/cloud-protected-load-independent-results-20261016.json`. Prior protected50 candidate is rejected: setup worst improves to-8.012368ns, but fast hold reaches-0.172269ns/96endpoints (5new). Contact screen finds25shape overlaps across8netpairs, and antenna645nets/801pins remains. NativeDRT0 was not sufficient; no failure was waived. Full serialPHY, routed final physical acceptance and final timing remain open. Cloud-only, local directory0entries.
+
 ## 2026-10-16 — Protected candidate rejected by independent contact screen; repair staged
 
 Protected50 candidate38830273683 has **25 area intersections across8different-net pairs**, despite nativeDRT0. Independent geometry38834266592 measures3,322,536shapes/113,606nets, zero continuity failures, but the contact screen fails. Antenna remains645nets/801pins. All endpoints38834263964: slow setup9601→9539, typical1285→972, fast53→31, no new setup violations; fast hold91→96 with5new failing endpoints, no lost constraints. It is NOT accepted.
