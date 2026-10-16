@@ -12,6 +12,8 @@ SOURCES={
  'l6p2':dict(summary='6cd0e1373c0cefaa2ca13dbfd81f258627212384b81d7c944c1a5886edcec964',parts='eff6d88b35e8eb300b8bb18cc7c097496912a6ea2afa2eb8ac47cbb7bba1bf69'),
  'l6p5':dict(summary='0053e77e0a5514901175a1cd2464038fc58b8bce0abd5ecc7204a74f27ab2997',parts='4d6a436f6cc754694ab4f4622906dad71ddc067639a44cf7697b3282244b08e5')}
 SELECTED=('native01/wires.gds','native01/wires.l2n','native01/result.json','source/layout/'+TOP+'.gds','source/layout/result.json','source/check/lvs_flat/result.lvsdb')
+SOURCES['l5p7']=dict(run=38961605786,head='9f940898df74a063c5f703acb67f6927182ab6c4',summary='fdec668ae9d829ef75f94d22fddf84dc2bf7a5d4a24bb1e9ac0531d9337dbbc0',parts='2b45dd68de63bc0f06f303501b8a02710889f418a36511d1020f2fb4b2c6143a')
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--variant',choices=sorted(SOURCES),required=True);args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true';out=ROOT/('hw/soc/out/cloud-tx-clock-reference-anchors-'+args.variant);out.mkdir(parents=True,exist_ok=False);reports.OUT=out
@@ -19,9 +21,9 @@ def main():
     def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        spec=SOURCES[args.variant];wire=out/'wire';prior,proof=reports.restore_report('tx-clock-reference-wires-'+args.variant,38946981718,spec['summary'],spec['parts'],wire,SELECTED);r['source']=proof
+        spec=SOURCES[args.variant];wire=out/'wire';prior,proof=reports.restore_report('tx-clock-reference-wires-'+args.variant,spec.get('run',38946981718),spec['summary'],spec['parts'],wire,SELECTED);r['source']=proof
         assert prior['status']=='PASS_ACTUAL_CLOCK6_WIRE_GRAPH_FIVE_COMPONENTS_NOT_TERMINAL_RC_OR_ELECTRICAL_ACCEPTANCE'and prior['source_unchanged']
-        assert prior['source_head']=='66e9bf5fd12499c2b0e03a7a3854071e41dae4f5'and prior['variant']==args.variant
+        assert prior['source_head']==spec.get('head','66e9bf5fd12499c2b0e03a7a3854071e41dae4f5')and prior['variant']==args.variant
         pcell=out/'npn13G2_code.py'
         fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/npn13G2_code.py','634cda63717ab4122f15e0fef5f3e8475e90e67e043823f5b8ed208e695f1729',pcell)
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'

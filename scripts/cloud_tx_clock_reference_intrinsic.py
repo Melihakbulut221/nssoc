@@ -69,6 +69,8 @@ def controls(text,rows,tech,top,out):
         else:raise AssertionError('Accepted actual clock model corruption '+fault)
     return result
 
+SOURCES['l5p7']=dict(run=38961605786,head='9f940898df74a063c5f703acb67f6927182ab6c4',summary='8a9ca2d7c21d438d7c8a3b8510c8fe94fd69c086daf8a5ec527498e82477b2ea',parts='28016180d088bf15715a3d96c4f7eab29eb5822b748a31d558d39cfa9d9ee427')
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--variant',choices=sorted(SOURCES),required=True);a=p.parse_args();assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('hw/soc/out/cloud-tx-clock-reference-intrinsic-'+a.variant);out.mkdir(parents=True,exist_ok=False);reports.OUT=out
@@ -76,9 +78,9 @@ def main():
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
-        spec=SOURCES[a.variant];source=out/'source';prior,proof=reports.restore_report('tx-clock-reference-binding-'+a.variant,38945593141,spec['summary'],spec['parts'],source,('native.json',));result['source']=proof
+        spec=SOURCES[a.variant];source=out/'source';prior,proof=reports.restore_report('tx-clock-reference-binding-'+a.variant,spec.get('run',38945593141),spec['summary'],spec['parts'],source,('native.json',));result['source']=proof
         assert prior['status']=='PASS_NATIVE_CLOCK6_TERMINAL_GEOMETRY_AND_SIX_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'and prior['source_unchanged']and prior['variant']==a.variant
-        assert prior['source_head']=='fbbf09c8079f8104ecb2d1ff9a158fcc236a86f0'and len(prior['controls'])==6 and all(c['rejected']for c in prior['controls'])
+        assert prior['source_head']==spec.get('head','fbbf09c8079f8104ecb2d1ff9a158fcc236a86f0')and len(prior['controls'])==6 and all(c['rejected']for c in prior['controls'])
         native=json.loads((source/'native.json').read_text());assert bind(native,a.variant)==prior['bindings']and sha(source/'native.json')==prior['native_sha256']
         rows=native['modes']['lvs_flat']['devices'];models=out/'pdk'
         pins={p:h for p,h in compact.MODEL_PINS.items()if p.endswith(('resistors_mod.lib','sg13g2_hbt_mod.lib','sg13g2_tech.json','utility_functions.py'))}

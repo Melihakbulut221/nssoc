@@ -16,14 +16,18 @@ def inspect_op(raw,base,vectors):
     table=[l.split()for l in header.split('Variables:\n',1)[1].split('Binary:\n',1)[0].splitlines()]
     assert int(fields['No. Variables'])==len(table) and all(len(r)==3 for r in table)
     assert [r[0]for r in table]==list(map(str,range(len(table))))
-    names=[r[1]for r in table];assert len(set(names))==len(names) and len(raw)-stop==8*len(names)
+    names=[r[1]for r in table];assert len(raw)-stop==8*len(names)
+    assert len(base)==34 and len(set(base))==34
+    explicit_scale_duplicate=names==[base[0],*base]
+    assert explicit_scale_duplicate or (len(set(names))==len(names) and set(names)==set(base)), 'Unexpected OP names or duplicates'
     values=np.frombuffer(raw[stop:],dtype='<f8');assert np.isfinite(values).all()
+    if explicit_scale_duplicate:assert raw[stop:stop+8]==raw[stop+8:stop+16], 'Duplicated native scale values disagree'
     records=[dict(name=row[1],unit=row[2],value=float(v))for row,v in zip(table,values,strict=True)]
     extras=set(names)-set(base);allowed_currents={n for n in vectors if n.startswith('@q.')}|{'i('+n+')'for n in vectors if n.startswith('@q.')}
     base_complete=set(base)<=set(names) and all(row['unit']=='voltage'for row in records if row['name']in base)
     scale_ok=not extras or (len(extras)==1 and names[0]in extras and names[0]in allowed_currents and table[0][2]=='current')
     all_zero=all(abs(row['value'])<({'voltage':1e-9,'current':1e-12}.get(row['unit'],0))for row in records)
-    return dict(header=header,records=records,base_voltage_probes_complete=base_complete,extra_names=sorted(extras),additional_first_scale_is_saved_hbt_current=scale_ok,all_recorded_values_zero=all_zero,diagnostic_zero_op_verified=base_complete and scale_ok and all_zero,original_strict34_voltage_reader_still_failed=len(table)!=len(base),scope='Independent description of original native operating-point bytes. Does not change the frozen 34-column reader or acquisition acceptance.')
+    return dict(explicit_first_voltage_scale_duplicate=explicit_scale_duplicate,header=header,records=records,base_voltage_probes_complete=base_complete,extra_names=sorted(extras),additional_first_scale_is_saved_hbt_current=scale_ok,all_recorded_values_zero=all_zero,diagnostic_zero_op_verified=base_complete and scale_ok and all_zero,original_strict34_voltage_reader_still_failed=len(table)!=len(base),scope='Independent description of original native operating-point bytes. Does not change the frozen 34-column reader or acquisition acceptance.')
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False);reports.OUT=OUT
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False,acquisition_accepted=False,no_new_native=True,original_failed_report_preserved=True,scope='Replay exact completed50ns442-probe physical845 diagnostic; describe original OP scale/units and all102HBT terminal ranges. Original1us acquisition remains failed. No transistor safety or PVT/fullPHY acceptance.')
@@ -48,6 +52,13 @@ def main():
         except AssertionError as error:
             r['zero_source_op']=dict(status='UNVERIFIED_NATIVE_OP_FORMAT',diagnostic_zero_op_verified=False,error=repr(error),scope='Do not accept startup or device safety. Preserve failure and inspect recorded header; transient measurements are independent descriptions only.')
         save()
+        positive=inspect_op(op_raw,base,vectors);assert positive['diagnostic_zero_op_verified'] and positive['explicit_first_voltage_scale_duplicate']
+        faults=[op_raw[:-1],op_raw+b'x',op_raw.replace(b'v(clkp)',b'v(xbad)',1),op_raw[:mark+8]+np.array([.01],dtype='<f8').tobytes()+op_raw[mark+16:]]
+        for bad in faults:
+            try:verdict=inspect_op(bad,base,vectors)
+            except AssertionError:continue
+            assert not verdict['diagnostic_zero_op_verified'],'Malformed or nonzero OP accepted'
+        r['op_duplicate_controls']=dict(actual_positive=True,negative=len(faults),duplicate_values_checked_byte_for_byte=True)
         r['reader_controls']=pll.self_test();r['original_op_reader_controls']=pll.pfd_op_controls()
         raw=(case/'actual-acquisition.raw').read_bytes();names,values,meta=pll.decode_prefix(raw)
         assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows'] and np.isfinite(values).all()
