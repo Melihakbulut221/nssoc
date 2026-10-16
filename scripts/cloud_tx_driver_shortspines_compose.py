@@ -10,7 +10,7 @@ import cloud_tx_driver_shortspines_intrinsic as intrinsic
 from run_cloud_tx_layout_repair import sha
 import build_pcie_local_vco_hybrid_v6 as helper
 ROOT=physical.ROOT;OUT=ROOT/'hw/soc/out/cloud-tx-driver-shortspines-compose'
-SOURCES=[{'run': 38918523510, 'group': 'tx-driver-shortspines-intrinsic', 'root': 'cloud-tx-driver-shortspines-intrinsic', 'bytes': 1354500, 'sha': 'e1437311034455cd88dcec3a3556e0ed92a46442db9907bf4cd45fe3188b48c0', 'summary': '8b26075608c73fe14f297d3b668f177d2fa35fa909ed484d26e57ebdc2763e20'}, {'run': 38919118235, 'group': 'tx-driver-shortspines-rc', 'root': 'cloud-tx-driver-shortspines-rc', 'bytes': 6910530, 'sha': 'b622f890701f46a77b0bc86fba9a5b5c02bec24cc222b470fb202e66c043cd7d', 'summary': '829ca5fc238aa335e54187ede3975d60600ac5076f964e11f6faed1d45f2a255'}]
+SOURCES=[{'run': 38918523510, 'group': 'tx-driver-shortspines-intrinsic', 'root': 'cloud-tx-driver-shortspines-intrinsic', 'bytes': 1354500, 'sha': 'e1437311034455cd88dcec3a3555e0ed92a46442db9907bf4cd45fe3188b48c0', 'summary': '8b26075608c73fe14f297d3b668f177d2fa35fa909ed484d26e57ebdc2763e20'}, {'run': 38919118235, 'group': 'tx-driver-shortspines-rc', 'root': 'cloud-tx-driver-shortspines-rc', 'bytes': 6910530, 'sha': 'b622f890701f46a77b0bc86fba9a5b5c02bec24cc222b470fb202e66c043cd7d', 'summary': '829ca5fc238aa335e54187ede3975d60600ac5076f964e11f6faed1d45f2a255'}]
 TOP='nssoc_tx_driver_native100_shortspines_wire_v1';PORTS=intrinsic.PORTS+['wire_cref']
 
 def prepare(compact,wire,native,planes,tech):
