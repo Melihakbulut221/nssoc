@@ -15,6 +15,7 @@ TOP='nssoc_tx_input_driver_v7_physical_localpins_v1'
 PORTS=['din','dout','avdd','dvdd','avss','sub']
 DRIVER_SHA='de22ecc19975aab5b35cf441f0c4b0ee289ae2dae9f1727625b22e2ae595f135'
 PULLUP_LENGTH='original'
+SERIES_LENGTH='original'
 PULLUP_VALUES={'l2p7':'2.7u','l2p4':'2.4u'}
 SOURCES=[dict(run=38866034515,group='tx-hv-fingers',bytes=152865,sha='3dd698fa73de68204da704c9148c6861cdfb3f5e2eeb2299aabc4dfcad530c7f',summary='c7b896892fa001eb427769ce08e449a874bc0e6bbf3de0de7d1c4692be878c49',root='cloud-tx-hv-fingers'),
  dict(run=38863174519,group='tx-driver-geometry',bytes=140672,sha='377fbedfa70ad5101f35ce095a7a19597ad909eee5a645dc7b2f45e758f84374',summary='9b83b5376a1c2768e2fc2c1aeefbcde12378757cbcd46c11ec198e20fa46cee2',root='cloud-tx-driver-geometry')]
@@ -51,6 +52,13 @@ def generate(fault):
         changed_pullup=original_pullup.replace('l=3.08u','l='+PULLUP_VALUES[PULLUP_LENGTH])
         effective_driver=original_driver.replace(original_pullup,changed_pullup)
         assert effective_driver.replace(changed_pullup,original_pullup)==original_driver
+    original_series='XIN sink dout sub rppd w=2u l=6.92u b=0 sw_et=1'
+    assert original_driver.splitlines().count(original_series)==1
+    if SERIES_LENGTH!='original':
+        assert SERIES_LENGTH=='l6p2' and PULLUP_LENGTH=='l2p4'
+        changed_series=original_series.replace('l=6.92u','l=6.2u')
+        effective_driver=effective_driver.replace(original_series,changed_series)
+        assert effective_driver.replace(changed_series,original_series).replace(changed_pullup,original_pullup)==original_driver
     texts={'driver':effective_driver,'buffer':(stdroot/'native/buf16.spice').read_text()}
     parser.MODELS.update(sg13_lv_nmos=4,sg13_lv_pmos=4)
     rows,wires=parser.expand(parser.definitions(texts),['nssoc_tx_cmos_hv_resistive_input_v7','xdriver',PORTS])
@@ -60,12 +68,18 @@ def generate(fault):
     changed=[]
     for index,(prior,current) in enumerate(zip(original_rows,rows)):
         if prior==current:continue
-        assert PULLUP_LENGTH!='original' and prior['model']=='rppd'
-        assert prior['params']['w']=='4u' and prior['params']['l']=='3.08u'
-        expected=prior|{'params':prior['params']|{'l':PULLUP_VALUES[PULLUP_LENGTH]}}
+        assert prior['model']=='rppd'
+        if prior['params']['w']=='4u' and prior['params']['l']=='3.08u':
+            assert PULLUP_LENGTH!='original'
+            length=PULLUP_VALUES[PULLUP_LENGTH]
+        elif prior['params']['w']=='2u' and prior['params']['l']=='6.92u':
+            assert SERIES_LENGTH=='l6p2' and PULLUP_LENGTH=='l2p4'
+            length='6.2u'
+        else:raise AssertionError('Undeclared source-device change')
+        expected=prior|{'params':prior['params']|{'l':length}}
         assert current==expected,'Undeclared source-device change'
         changed.append(dict(index=index,path=prior['path'],original=prior,physical=current))
-    assert len(changed)==(0 if PULLUP_LENGTH=='original' else 1)
+    assert len(changed)==int(PULLUP_LENGTH!='original')+int(SERIES_LENGTH!='original')
     for row in rows:row['nets']=[n.removeprefix('xdriver.') for n in row['nets']]
     hv=[r for r in rows if r['model']=='sg13_hv_nmos'];lv=[r for r in rows if r['model'].startswith('sg13_lv_')];res=[r for r in rows if r['model']=='rppd']
     assert len(hv)==len(lv)==len(res)==4
@@ -218,24 +232,32 @@ def generate(fault):
         raw_reference_not_simulation_substitute=True,imported_material_and_pin_geometry_unchanged=before,buffer_substrate_annotation='cell-local Substrate rectangle and sub! labels, absent only in missing_body_marker fault',placements=placements,routes=routes,ports=port_boxes,
         full_driver_accepted=False,qualified_pex=False,serial_phy_complete=False)
     result['pullup_variant']=PULLUP_LENGTH
+    result['series_variant']=SERIES_LENGTH
+    result['physical_series_length_um']=6.92 if SERIES_LENGTH=='original' else 6.2
     result['declared_source_device_changes']=changed
     result['effective_driver_source_sha256']=hashlib.sha256(effective_driver.encode()).hexdigest()
     result['physical_resistor_length_um']=3.08 if PULLUP_LENGTH=='original' else float(PULLUP_VALUES[PULLUP_LENGTH][:-1])
     (d/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
-    global OUT,TOP,PULLUP_LENGTH
+    global OUT,TOP,PULLUP_LENGTH,SERIES_LENGTH
     parser=argparse.ArgumentParser();parser.add_argument('--generate',choices=['base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid'])
-    parser.add_argument('--pullup-length',choices=['original',*PULLUP_VALUES],default='original');args=parser.parse_args()
-    PULLUP_LENGTH=args.pullup_length
+    parser.add_argument('--pullup-length',choices=['original',*PULLUP_VALUES],default='original')
+    parser.add_argument('--series-length',choices=['original','l6p2'],default='original');args=parser.parse_args()
+    PULLUP_LENGTH=args.pullup_length;SERIES_LENGTH=args.series_length
+    assert SERIES_LENGTH=='original' or PULLUP_LENGTH=='l2p4'
     if PULLUP_LENGTH!='original':
         OUT=ROOT/('hw/soc/out/cloud-tx-input-driver-pullup-'+PULLUP_LENGTH)
         TOP='nssoc_tx_input_driver_v7_physical_pullup_'+PULLUP_LENGTH+'_v1'
+    if SERIES_LENGTH!='original':
+        OUT=Path(str(OUT)+'-series-'+SERIES_LENGTH)
+        TOP=TOP.removesuffix('_v1')+'_series_'+SERIES_LENGTH+'_v1'
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     if args.generate:generate(args.generate);return
     OUT.mkdir(parents=True,exist_ok=False)
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],routing_profile='compact_placement_local_public_pins',failed_parent_run=38892907391,wire_metrics_run=38892907583,rejected_wider_supply_run=38901377382,steps={},accepted=False,serial_phy_complete=False,qualified_pex=False)
     r['pullup_variant']=PULLUP_LENGTH
+    r['series_variant']=SERIES_LENGTH
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
@@ -257,7 +279,7 @@ def main():
             for row in lock['files']:
                 p=ROOT/f'hw/soc/tools/ihp-{typ}-5e6d592'/row['path'];verify(p.read_bytes(),row);protected[str(p)]=row['sha256']
         for name in ('base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid'):
-            x=execute([app,'python',Path(__file__).resolve(),'--generate',name,'--pullup-length',PULLUP_LENGTH],OUT,'generate-'+name);r['steps']['generate-'+name]=x;save()
+            x=execute([app,'python',Path(__file__).resolve(),'--generate',name,'--pullup-length',PULLUP_LENGTH,'--series-length',SERIES_LENGTH],OUT,'generate-'+name);r['steps']['generate-'+name]=x;save()
             if x['returncode']:
                 print((OUT/('generate-'+name+'.log')).read_text(errors='replace')[-12000:]);raise RuntimeError('Native assembly failed: '+name)
         r['geometry']=json.loads((OUT/'base/result.json').read_text())
@@ -273,6 +295,11 @@ def main():
             assert text.count(key)==1
             (OUT/'base/wrong_pullup.cir').write_text(text.replace(key,'rppd w=4u l=3.08u b=0 m=1'))
             jobs.append(('wrong_pullup','base','wrong_pullup.cir','deep',True))
+        if SERIES_LENGTH!='original':
+            key='rppd w=2u l=6.2u b=0 m=1';assert text.count(key)==1
+            (OUT/'base/wrong_series.cir').write_text(text.replace(key,'rppd w=2u l=6.92u b=0 m=1'))
+            jobs.append(('wrong_series','base','wrong_series.cir','deep',True))
+
         verdicts=[]
         for name,geometry,reference,mode,combine in jobs:
             d=OUT/('check-'+name);d.mkdir();drc=reference is None;typ='drc' if drc else 'lvs'
