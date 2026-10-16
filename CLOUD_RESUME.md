@@ -1,3 +1,7 @@
+## 2026-10-16 — Nine-size source-orientation guard corrected before routing
+
+Physical38920736711 failed in preparation before any route: the new helper incorrectly assumed all existing selectedcells wereR0/MX; sourceplace35278alreadyuses another horizontal orientation. Preparation now strictly requires each unchanged sourceorientation, and after native legalization onlyR0/MX/MY/R180horizontal transforms are allowed with nativecheck_placement retained. Allunselectedgeometry remains exact; the actual nine source signatures are published. This is a helper correction, not a placement/timing waiver. Dispatch the new nine-size run; preserve38919760246(FIRMmovement)and38920736711(incorrectorientationassumption). Loaded38920723791 andfull1usPLL38910378266 remain healthy and must not restart.
+
 ## 2026-10-16 — Actual nine-size physical ECO and short-spine loaded driver live
 
 Cloud-only is controlling; local workspace is empty. New live jobs at this observation: route234-sized-eco38920736711, shortspines loaded38920723791, and original1usPLL38910378266. Exact run/job states: docs/evidence/cloud-nine-size-shortspines-live-20261016.json. Never restart a healthy job; inspect its current handle. These are not closure claims.

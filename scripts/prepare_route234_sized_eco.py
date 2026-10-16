@@ -31,6 +31,7 @@ assert screen['status']=='COMPLETE_AVAILABLE_DRIVER_FROZEN_RC_SIZING_SCREEN_NOT_
 changes=screen['preparation']['changes'];assert len(changes)==9 and [r['index']for r in changes]==[2,5,7,8,9,10,11,12,13]
 targets={r['pin'].rsplit('/',1)[0]:r for r in changes}
 mode=os.environ['NSSOC_SIZED_ECO_MODE']
+(OUT/'source-targets.json').write_text(json.dumps({n:original[n]for n in targets},indent=2)+'\n')
 def validate(db,restore_status=False):
     b=db.getChip().getBlock();assert len(b.getInsts())==114025 and len(b.getNets())==114097 and {i.getName()for i in b.getInsts()}==set(original)
     delta=[];limit=200*db.getTech().getDbUnitsPerMicron()
@@ -41,7 +42,12 @@ def validate(db,restore_status=False):
             displacement=[observed['location'][k]-expected['location'][k]for k in (0,1)]
             assert max(map(abs,displacement))<=limit,('Selected move outside200um',name)
             expected['location']=observed['location']
-            assert observed['orientation'] in ('R0','MX'),('Unsupported cell row orientation',name)
+            if mode=='prepare':
+                assert observed['orientation']==original[name]['orientation'],('Preparation changed source orientation',name)
+            else:
+                # Horizontal site rotations/reflections; native check_placement
+                # is authoritative for actual row and master symmetry legality.
+                assert observed['orientation'] in ('R0','MX','MY','R180'),('Non-horizontal cell orientation',name,observed['orientation'])
             expected['orientation']=observed['orientation']
             delta.append(dict(instance=name,before=original[name],after=dict(observed,status=original[name]['status']),displacement_dbu=displacement))
         observed['status']=expected['status']
