@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-regfile-corrpre'
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
-    r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,mainchip_timing_closed=False,scope='Actual RTL CORRPRE=1 versus unchanged default CORRPRE=0. Sequential equivalence, stored-bit fault campaign with scrub on/off, mapped area and read-path timing. No whole-core or routed acceptance.')
+    r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,mainchip_timing_closed=False,scope='Actual RTL CORRPRE=1 versus unchanged default CORRPRE=0. Clock-step equivalence after explicit async2sync, native asynchronous-reset stored-bit fault campaign with scrub on/off, mapped area and read-path timing. No whole-core or routed acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     def run(tag,cmd,cwd=ROOT,env=None,bad=False):
         with (OUT/(tag+'.log')).open('w')as f:rc=subprocess.call(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
@@ -30,7 +30,7 @@ def main():
             for bad in [False,True]:
                 tag=f'equiv-s{scrub}'+('-inverted'if bad else '');commands=[]
                 for name,corr,file in [('gold',0,src),('gate',1,mutant if bad else src)]:
-                    commands += [f'read_verilog {enc} {dec} {file}',f'chparam -set CORRPRE {corr} -set SCRUB {scrub} ibex_register_file_ff','hierarchy -check -top ibex_register_file_ff','proc','flatten','memory_map','opt_clean',f'rename ibex_register_file_ff {name}',f'design -stash {name}']
+                    commands += [f'read_verilog {enc} {dec} {file}',f'chparam -set CORRPRE {corr} -set SCRUB {scrub} ibex_register_file_ff','hierarchy -check -top ibex_register_file_ff','proc','flatten','async2sync','memory_map','opt_clean',f'rename ibex_register_file_ff {name}',f'design -stash {name}']
                 commands += ['design -copy-from gold -as gold gold','design -copy-from gate -as gate gate','equiv_make gold gate equiv','hierarchy -top equiv','equiv_simple -seq 1','equiv_induct -seq 4','equiv_status -assert']
                 ys=OUT/(tag+'.ys');ys.write_text('\n'.join(commands)+'\n')
                 log=run(tag,['yosys','-s',str(ys)],bad=bad)
