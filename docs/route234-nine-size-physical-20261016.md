@@ -46,3 +46,26 @@ serialized guide-input.odb must have zero dbGuides. All detailed-wire, cells,
 connectivity and PG/NDR checks remain; the original candidate.odb and saved
 parent guide are unchanged. Exactly23fresh generated guide blocks remain
 mandatory, and all other merged blocks still come byte-for-byte from parent.
+
+
+## Full DRT input correction after38925935829
+
+The exact23fresh-guide check and byte-identical unselected guide merge passed.
+However, detailed routing on candidate.odb retained old signal wires from before
+the cell-size changes. Native DRT stopped with checkConnectivity errorDRT-0206
+on net29578 and net32232; its final reported violation count was239. No routed
+ODB or timing result was accepted. Summary647851639 SHA
+1d42467079a290c85e61f4d8b3fc0fa56683699ea9ade682a9c781b6d0e8edee and
+parts647851732 SHA627dcfcb75a9941b5e7d94d481d267f89afe8b313cf18e1d6ee22af300ee075c
+preserve the failed attempt.
+
+A separate detailed-route-input.odb now removes all113790signal dbWires,
+any distinct signal global wires and inherited signal guides. The preparer
+records every removed wire's opcode/data hash and re-reads the serialized copy
+with zero remaining signal wires. All cell geometry, logical net membership,
+PG geometry, NDR and top pins must remain unchanged; candidate.odb remains
+intact. Full DRT starts from this genuinely unrouted signal copy and the exact
+merged guide file. This matches the full reroute requirement and avoids using
+old route geometry as fixed input around newly sized pins. Native zeroDRV,
+connectivity, independent signal geometry, freshRC and all endpoints remain
+required; resetting input wires does not prove those gates will pass.

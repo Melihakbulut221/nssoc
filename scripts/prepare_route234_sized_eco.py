@@ -126,6 +126,36 @@ elif mode=='guide-input':
     db=load(OUT/'guide-input.odb');b=db.getChip().getBlock();verify_guide_copy()
     assert sha(candidate)==candidate_sha
     (OUT/'guide-input-proof.json').write_text(json.dumps(dict(status='PASS_EXACT_23_SIGNAL_WIRES_REMOVED_ONLY_FROM_GUIDE_COPY',accepted=False,candidate_odb_sha256=candidate_sha,guide_input_odb_sha256=sha(OUT/'guide-input.odb'),selected_nets=sorted(selected),removed_wire_sha256={n:before[n]['wire_sha256']for n in sorted(selected)},unselected_wire_count=sum(v['wire_sha256']is not None for n,v in before.items()if n not in selected),all_unselected_wire_opcodes_and_data_unchanged=True,all_cells_and_net_membership_unchanged=True,all_special_wires_and_pg_ndr_ports_unchanged=True,unselected_wire_loss_control='REJECTED',candidate_odb_unchanged=True,old_guide_nets_cleared=sum(v>0 for v in old_guides.values()),old_guide_rectangles_cleared=sum(old_guides.values()),guide_metadata_empty_before_grt=True),indent=2)+'\n')
+elif mode=='route-input':
+    # Full DRT must reconstruct all signal routes against the new cell geometry.
+    # Retaining old dbWires as pre-routed geometry left two selected nets broken
+    # in38925935829. Keep the original candidate and all merged guide bytes.
+    candidate=OUT/'candidate.odb';candidate_sha=sha(candidate)
+    db=load(candidate);validate(db);b=db.getChip().getBlock()
+    expected_cells={i.getName():signature(i)for i in b.getInsts()}
+    removed=[];global_removed=[];guide_count=0
+    for n in b.getNets():
+        if str(n.getSigType())in ('POWER','GROUND'):continue
+        assert not n.getSWires()and n.getRSegCount()==n.getCapNodeCount()==0
+        w,g=n.getWire(),n.getGlobalWire()
+        if g and (not w or g.getId()!=w.getId()):
+            global_removed.append(n.getName());odb.dbWire.destroy(g)
+        if w:
+            payload=[(str(w.getOpcode(k)),w.getData(k))for k in range(w.length())]
+            removed.append(dict(net=n.getName(),sha256=hashlib.sha256(json.dumps(payload,separators=(',',':')).encode()).hexdigest()))
+            odb.dbWire.destroy(w)
+        guide_count+=len(list(n.getGuides()));n.clearGuides()
+    assert len(removed)==113790
+    def verify_unrouted():
+        assert {i.getName():signature(i)for i in b.getInsts()}==expected_cells
+        assert fixed(db)==fixed_hash,'Net membership, PG, NDR or boundary changed while clearing signal routes'
+        for n in b.getNets():
+            if str(n.getSigType())not in ('POWER','GROUND'):
+                assert n.getWire()is None and n.getGlobalWire()is None and not n.getGuides()
+    verify_unrouted();odb.write_db(db,str(OUT/'detailed-route-input.odb'))
+    db=load(OUT/'detailed-route-input.odb');b=db.getChip().getBlock();verify_unrouted()
+    assert sha(candidate)==candidate_sha
+    (OUT/'route-input-proof.json').write_text(json.dumps(dict(status='PASS_ALL_SIGNAL_ROUTES_CLEARED_FOR_FULL_DRT_ONLY',accepted=False,candidate_odb_sha256=candidate_sha,route_input_odb_sha256=sha(OUT/'detailed-route-input.odb'),removed_detailed_wire_count=len(removed),removed_detailed_wires=removed,removed_global_wires=global_removed,cleared_signal_guides=guide_count,all_cells_net_membership_pg_ndr_ports_unchanged=True,candidate_odb_unchanged=True,all_signal_routes_must_be_rebuilt=True),indent=2)+'\n')
 elif mode=='audit-routed':
     db=load(OUT/'routed.odb');validate(db);b=db.getChip().getBlock();reference=load(OUT/'candidate.odb')
     assert {i.getName():signature(i)for i in b.getInsts()}=={i.getName():signature(i)for i in reference.getChip().getBlock().getInsts()}

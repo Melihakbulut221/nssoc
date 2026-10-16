@@ -90,7 +90,8 @@ def main():
         merged=dict(guides);merged.update(changed);assert len(merged)==113790 and all(merged[n]==v for n,v in guides.items()if n not in selected)
         (OUT/'candidate.guide').write_text(''.join(merged[n]for n in sorted(merged)))
         result['guide_provenance']=dict(selected_nets=selected,all_other_guides_byte_identical=True,global_capacity_accepted=False);save()
-        text=tcl(f'read_db {{{OUT/"candidate.odb"}}}\nset_thread_count 2\nread_guides {{{OUT/"candidate.guide"}}}\ncheck_placement -verbose\ndetailed_route -output_drc {{{OUT/"drc.rpt"}}} -output_guide_coverage {{{OUT/"guide-coverage.csv"}}} -drc_report_iter_step 1 -verbose 1\nputs "NSSOC_SIZED_DRVS [detailed_route_num_drvs]"\nwrite_db {{{OUT/"routed.odb"}}}\nwrite_def {{{OUT/"routed.def"}}}\n','full-detailed-route')
+        native('route-input');result['route_input']=json.loads((OUT/'route-input-proof.json').read_text());save()
+        text=tcl(f'read_db {{{OUT/"detailed-route-input.odb"}}}\nset_thread_count 2\nread_guides {{{OUT/"candidate.guide"}}}\ncheck_placement -verbose\ndetailed_route -output_drc {{{OUT/"drc.rpt"}}} -output_guide_coverage {{{OUT/"guide-coverage.csv"}}} -drc_report_iter_step 1 -verbose 1\nputs "NSSOC_SIZED_DRVS [detailed_route_num_drvs]"\nwrite_db {{{OUT/"routed.odb"}}}\nwrite_def {{{OUT/"routed.def"}}}\n','full-detailed-route')
         values=re.findall(r'^NSSOC_SIZED_DRVS (\d+)\s*$',text,re.M);assert len(values)==1;result['native_drt_drvs']=int(values[0]);save();assert result['native_drt_drvs']==0
         native('audit-routed');result['post_route_geometry']=json.loads((OUT/'post-route-geometry.json').read_text());save()
         rules=SOURCE/'source/IHP_rcx_patterns.rules';spef=OUT/'candidate.nominal.spef'

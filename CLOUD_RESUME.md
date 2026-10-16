@@ -1,3 +1,31 @@
+## Latest — actual nine-size DRT failed; rebuild signal routing from clean input
+
+Nine-size run38925935829 is now TERMINAL FAILURE, not still running. All23fresh
+selected guides and the exact unselected parent-guide merge passed. Full DRT
+retained stale pre-size dbWires, ended at239reported violations, and failed
+checkConnectivity onnet29578/net32232 (DRT-0206). No completed route or fresh
+STA exists. Failed release summary647851639 SHA1d42467079a290c85e61f4d8b3fc0fa56683699ea9ade682a9c781b6d0e8edee;
+parts647851732 SHA627dcfcb75a9941b5e7d94d481d267f89afe8b313cf18e1d6ee22af300ee075c.
+
+The new native route-input mode clears all113790signal detailed wires, any
+signal global wires and signal guides on a separate serialized copy, while
+all candidate cells/net membership/PG/NDR/boundary stay exact. Full DRT now
+uses this fully unrouted signal copy and the previously validated merged
+guides, rather than reusing old detailed geometry. The workflow-path change
+starts a new run; inspect its live handle. Do not reuse the failed output or
+waive connectivity/zeroDRV/full endpoint/independent geometry checks.
+
+Headroom replays are now ALL verified: intrinsic+physical38929031066 passed;
+corrected halfR+halfC38929589227 passed full-field reproduction and missing
+current probe rejection. The initial underscore-name restore failures remain.
+Physical xd0125 minimum snapshot: time24.409808ns,C0.957976V,B1.458206V,
+E0.620758V,VCE0.337218V. Intrinsic control's own minimum hasC1.043257V,
+E0.620705V,VCE0.422551V. These are distinct native sample times, not an aligned
+causal comparison. Actual d0p/d0n at the physical minimum are1.811197/1.792500V;
+next analog work should trace the real selector collector/data transition and
+physically improve its headroom, retaining original limits and full captures.
+Full nativePLL38910378266 remains active; no healthy process restart.
+
 ## Headroom replay restoration correction
 
 First replay38929031066: intrinsic and actual physical cases PASSED full-field
