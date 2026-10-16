@@ -96,7 +96,7 @@ def main():
         lib=(models/'libs.tech/ngspice/models/resistors_mod.lib').read_text()
         for model in ('ptap1','ntap1'):
             match=re.search(r'^\.subckt\s+'+model+r'\s+1\s+2\s*\n(.*?)^\.ends\s+'+model,lib,re.M|re.S|re.I);assert match
-            assert re.findall(r'^R\S+\s+1\s+2\s+R=R\s*$',match[1],re.M)==['R1 1 2 R=R']
+            assert [line.strip() for line in re.findall(r'^R\S+\s+1\s+2\s+R=R\s*$',match[1],re.M)]==['R1 1 2 R=R']
         text,bindings=build(rows,tech);model=OUT/'driver100.spice';model.write_text(text)
         result['positive']=verify(model.read_text(),rows,tech);result['bindings']=bindings
         controls=[]
