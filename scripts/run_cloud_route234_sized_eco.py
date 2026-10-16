@@ -77,8 +77,10 @@ def main():
         (OUT/'inverted.v').write_text(bad);negative=proof_cmd.copy();negative[negative.index(str(OUT/'after.v'))]=str(OUT/'inverted.v');negative[negative.index(str(OUT/'logic'))]=str(OUT/'logic-negative')
         rc,text=run(negative,'negative-inversion',expect=False);assert rc!=0 and 'Non-buffer instance added or removed'in text
         result['inversion_control']='REJECTED';save()
+        native('guide-input');result['guide_input']=json.loads((OUT/'guide-input-proof.json').read_text());save()
+        assert result['guide_input']['status']=='PASS_EXACT_23_SIGNAL_WIRES_REMOVED_ONLY_FROM_GUIDE_COPY'
         guides=guide_blocks((OUT/'parent/candidate.guide').read_text());assert len(guides)==113790
-        selected=result['geometry']['selected_nets'];commands=[f'read_db {{{OUT/"candidate.odb"}}}','set_thread_count 2','set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2','set_global_routing_layer_adjustment Metal1-TopMetal2 0.2']
+        selected=result['geometry']['selected_nets'];commands=[f'read_db {{{OUT/"guide-input.odb"}}}','set_thread_count 2','set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2','set_global_routing_layer_adjustment Metal1-TopMetal2 0.2']
         for n in selected:
             assert not any(c in n for c in '{}\n')
             commands += [f'set n [[ord::get_db_block] findNet {{{n}}}]','if {$n == "NULL"} {error "Missing resized-cell net"}','grt::add_net_to_route $n']

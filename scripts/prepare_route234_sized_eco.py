@@ -76,6 +76,48 @@ elif mode=='audit':
     assert selected
     odb.write_db(db,str(OUT/'candidate.odb'))
     (OUT/'geometry-proof.json').write_text(json.dumps(dict(status='PASS_EXACT_NINE_SIZES_ONLY_SELECTED_LEGAL_MOVEMENT',parent_odb_sha256=SOURCE_SHA,instances=114025,nets=114097,changes=delta,selected_nets=selected,fixed_net_pg_ndr_pin_sha256=fixed_hash,unselected_movement_control='REJECTED',accepted=False),indent=2)+'\n')
+elif mode=='guide-input':
+    # GRT excludes nets already carrying detailed dbWire routes. Remove only
+    # the23 resized-cell nets on a separate copy; keep candidate.odb intact.
+    candidate=OUT/'candidate.odb';candidate_sha=sha(candidate)
+    db=load(candidate);validate(db);b=db.getChip().getBlock()
+    candidate_cells={i.getName():signature(i)for i in b.getInsts()}
+    receipt=json.loads((OUT/'geometry-proof.json').read_text())
+    selected=set(receipt['selected_nets'])
+    actual={t.getNet().getName()for name in targets for t in b.findInst(name).getITerms()if t.getNet()and str(t.getNet().getSigType())not in ('POWER','GROUND')}
+    assert selected==actual and len(selected)==23
+    def wires():
+        result={}
+        for n in b.getNets():
+            w=n.getWire()
+            payload=None if w is None else [(str(w.getOpcode(k)),w.getData(k))for k in range(w.length())]
+            special=[(str(sw.getWireType()),[(x.isVia(),x.getTechVia().getName()if x.isVia()and x.getTechVia()else None,x.getBlockVia().getName()if x.isVia()and x.getBlockVia()else None,x.getTechLayer().getName()if not x.isVia()else None,x.xMin(),x.yMin(),x.xMax(),x.yMax())for x in sw.getWires()])for sw in n.getSWires()]
+            result[n.getName()]=dict(wire_sha256=None if payload is None else hashlib.sha256(json.dumps(payload,separators=(',',':')).encode()).hexdigest(),wire_type=str(n.getWireType()),special=n.isSpecial(),special_wires_sha256=hashlib.sha256(json.dumps(special,separators=(',',':')).encode()).hexdigest())
+        return result
+    before=wires()
+    expected={name:dict(row,wire_sha256=None)if name in selected else row for name,row in before.items()}
+    for name in sorted(selected):
+        n=b.findNet(name)
+        assert str(n.getSigType())not in ('POWER','GROUND')and not n.isSpecial()and not list(n.getSWires())
+        assert n.getWire()is not None and before[name]['wire_sha256']is not None
+        odb.dbWire.destroy(n.getWire())
+    def verify_guide_copy():
+        assert wires()==expected,'Unexpected wire removal or route mutation'
+        assert {i.getName():signature(i)for i in b.getInsts()}==candidate_cells
+        assert fixed(db)==fixed_hash
+    verify_guide_copy()
+    # A real unselected wire loss must be detected by the same full census.
+    victim=next(n for n in b.getNets()if n.getName()not in selected and n.getWire()and str(n.getSigType())=='SIGNAL')
+    held=victim.getWire();held.detach()
+    try:verify_guide_copy()
+    except AssertionError as error:assert 'Unexpected wire removal'in str(error)
+    else:raise AssertionError('Unselected wire removal escaped')
+    held.attach(victim);verify_guide_copy()
+    odb.write_db(db,str(OUT/'guide-input.odb'))
+    # Re-read the published database, so serialization is also covered.
+    db=load(OUT/'guide-input.odb');b=db.getChip().getBlock();verify_guide_copy()
+    assert sha(candidate)==candidate_sha
+    (OUT/'guide-input-proof.json').write_text(json.dumps(dict(status='PASS_EXACT_23_SIGNAL_WIRES_REMOVED_ONLY_FROM_GUIDE_COPY',accepted=False,candidate_odb_sha256=candidate_sha,guide_input_odb_sha256=sha(OUT/'guide-input.odb'),selected_nets=sorted(selected),removed_wire_sha256={n:before[n]['wire_sha256']for n in sorted(selected)},unselected_wire_count=sum(v['wire_sha256']is not None for n,v in before.items()if n not in selected),all_unselected_wire_opcodes_and_data_unchanged=True,all_cells_and_net_membership_unchanged=True,all_special_wires_and_pg_ndr_ports_unchanged=True,unselected_wire_loss_control='REJECTED',candidate_odb_unchanged=True),indent=2)+'\n')
 elif mode=='audit-routed':
     db=load(OUT/'routed.odb');validate(db);b=db.getChip().getBlock();reference=load(OUT/'candidate.odb')
     assert {i.getName():signature(i)for i in b.getInsts()}=={i.getName():signature(i)for i in reference.getChip().getBlock().getInsts()}

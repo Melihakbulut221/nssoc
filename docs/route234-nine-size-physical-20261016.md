@@ -9,3 +9,25 @@ The physical controller restores the exact parent, applies exactlythose9masterch
 All signal pins touching the resized cells receive fresh native global guides; all other guide blocks are byte-identical to the parent. Full detailed routing follows. Only a zero native-router-DRV result proceeds to fresh nominalRC extraction and all22544endpoint/135264row measurement with unchanged originalSDC and cellcorner libraries, including exact graph coverage. Antenna results remain visible. The job preserves every failure and does not adopt the child as signed off.
 
 After completion, independent signal geometry/annotation checks must bind the new output, and any setup/hold regressions must be evaluated. QualifiedRC, SRAM/PVT, fullchip transistorLVS, antenna repair and full serialPHY remain outside this candidate's acceptance. This is real placement/routing, not the prior unlegalized frozen-wireODB.
+
+
+## Selected-guide correction after run38921431431
+
+The actual nine replacements passed native legalization, unchanged-cell/net/PG/NDR
+checks, and wholechip restricted Liberty logic proof (real inversion rejected).
+The run then failed because selected GRT produced zero guide nets. Existing
+`dbWire` routes were still attached to all23 selected nets. Pinned OpenROAD
+`dcf36133a369abc8f3c5e5738cd4d82e4903c0e0` records those nets as already wired.
+The empty guide was rejected; it was never adopted or silently replaced by the
+parent guide.
+
+The repair creates `guide-input.odb` from the intact legal `candidate.odb`.
+Only the23 actual signal nets attached to resized cells lose their detailed wires
+on this temporary copy. Every unselected dbWire opcode and data entry, all special
+wires, all cells, net connectivity, PG, NDR and ports must remain identical.
+A real unselected-wire detach is rejected and restored; the saved database is
+re-read and verified. `guide-input-proof.json` retains source and removed-wire
+hashes. Selected GRT must still generate exactly all23 selected net guide blocks.
+The detailed router continues to use the intact `candidate.odb` with merged new
+guides, then fresh extraction and all-endpoint checks. This correction itself is
+not evidence of successful routing or timing closure.
