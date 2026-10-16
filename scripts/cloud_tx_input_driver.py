@@ -91,6 +91,28 @@ def generate(fault):
             escape(net,dx+53,y,dx+lane,omit=fault=='hv_gate_open' and i==3 and port=='gate')
         taprefs.append(f'RHV_TAP{i} sub BULK ptap1 A=4p P=8u')
     bt=place(buf,200,30)
+    # Derive the two intrinsic ties from original material geometry before LVS.
+    # These are not inferred from an extracted netlist or tuned to a verdict.
+    def native_region(layer):return pya.Region(buf.begin_shapes_rec(layout.layer(layers[layer],0))).merged()
+    activ=native_region('Activ');psd=native_region('pSD');well=native_region('NWell');poly=native_region('GatPoly')
+    ties={'ntap1':((activ&well)-psd-poly).merged(),'ptap1':((activ&psd)-well-poly).merged()}
+    intrinsic_ties={}
+    for model,region in ties.items():
+        polygons=list(region.each());assert len(polygons)==1
+        polygon=polygons[0];area=polygon.area()*layout.dbu**2;perimeter=polygon.perimeter()*layout.dbu
+        assert area>0 and perimeter>0
+        intrinsic_ties[model]=dict(area_um2=area,perimeter_um=perimeter,polygon_dbu=str(polygon),
+            derivation='Activ intersect NWell minus pSD and GatPoly' if model=='ntap1' else 'Activ intersect pSD minus NWell and GatPoly')
+        tie='dvdd' if model=='ntap1' else 'avss';bulk='NWELL' if model=='ntap1' else 'BULK'
+        taprefs.append(f'RBUF_EMBEDDED_{model} {tie} {bulk} {model} A={area:.12g}p P={perimeter:.12g}u')
+        if model=='ptap1' and fault!='missing_body_marker':
+            # Use the same native Substrate/sub! recognition convention as ptap1.
+            # No implant, active, contact, gate or metal geometry is changed.
+            marker=polygon.bbox().to_dtype(layout.dbu).transformed(bt)
+            top.shapes(layout.layer(layers['Substrate'],0)).insert(marker)
+            q=marker.center()
+            top.shapes(layout.layer(layers['TEXT'],0)).insert(pya.DText('sub!',q.x,q.y))
+            top.shapes(layout.layer(layers['Substrate'],0)).insert(pya.DText('sub!',q.x,q.y))
     # Chosen access points are inside the original pinned LEF conductor rectangles.
     pins=[('drv',202.,31.68,38.,220),('gate',210.85,31.68,40.,224),('dvdd',200.4,33.78,42.,228),('avss',206.,30.,44.,232)]
     for net,x,y,escape_y,lane in pins:
@@ -131,7 +153,8 @@ def generate(fault):
     if fault=='body_short':box('Metal5',.5,ys['avss'],1.5,ys['sub'])
     if fault=='offgrid':
         s=next(s for s in top.each_shape(layout.layer(layers['Metal3'],0)) if s.is_box());s.transform(pya.Trans(1,0))
-    assert set(port_boxes)==set(PORTS) and len(taprefs)==10
+    assert set(port_boxes)==set(PORTS) and len(taprefs)==12
+    assert before=={c.name:drawing_digest(c) for c in (hvcell,buf)}
     d=OUT/fault;d.mkdir();layout.write(str(d/'layout.gds'))
     mapping=[];aggregate=['* Physical common substrate and explicit finite contacts','.subckt '+TOP+' '+' '.join(PORTS)]
     raw=aggregate.copy();mos_fingers=0
@@ -151,14 +174,14 @@ def generate(fault):
     for text,name in [(aggregate,'aggregate.cir'),(raw,'raw.cir')]:
         text+=taprefs+['.ends '+TOP,''];(d/name).write_text('\n'.join(text))
     result=dict(status='GENERATED_UNVERIFIED_FULL_DRIVER',fault=fault,original_source_sha256=DRIVER_SHA,original_core_rows=rows,
-        core_devices=12,raw_mos_fingers=84,finite_taps=10,raw_reference_devices=98,aggregate_reference_devices_before_combination=22,
+        core_devices=12,raw_mos_fingers=84,finite_taps=12,explicit_added_taps=10,intrinsic_buf_ties=intrinsic_ties,raw_reference_devices=100,aggregate_reference_devices_before_combination=24,
         substrate_mapping=mapping,common_substrate_model_qualified=False,original_junction_parameters_retained_in_aggregate_reference=True,
         raw_reference_not_simulation_substitute=True,imported_drawing_geometry_unchanged=before,placements=placements,routes=routes,ports=port_boxes,
         full_driver_accepted=False,qualified_pex=False,serial_phy_complete=False)
     (d/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--generate',choices=['base','hv_gate_open','input_open','missing_well_tap','body_short','offgrid']);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--generate',choices=['base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid']);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     if args.generate:generate(args.generate);return
     OUT.mkdir(parents=True,exist_ok=False)
@@ -183,7 +206,7 @@ def main():
             lock=json.loads((ROOT/f'hw/soc/pnr/ihp-{typ}.lock.json').read_text());validate_lock(lock);assert lock['commit']=='5e6d592e4002946a4616f798c357f0f3c06cf3b6'
             for row in lock['files']:
                 p=ROOT/f'hw/soc/tools/ihp-{typ}-5e6d592'/row['path'];verify(p.read_bytes(),row);protected[str(p)]=row['sha256']
-        for name in ('base','hv_gate_open','input_open','missing_well_tap','body_short','offgrid'):
+        for name in ('base','hv_gate_open','input_open','missing_well_tap','missing_body_marker','body_short','offgrid'):
             x=execute([app,'python',Path(__file__).resolve(),'--generate',name],OUT,'generate-'+name);r['steps']['generate-'+name]=x;save()
             if x['returncode']:
                 print((OUT/('generate-'+name+'.log')).read_text(errors='replace')[-12000:]);raise RuntimeError('Native assembly failed: '+name)
@@ -194,7 +217,7 @@ def main():
             ('aggregate_lvs','base','aggregate.cir','deep',True),('aggregate_flat_lvs','base','aggregate.cir','flat',True),
             ('wrong_width','base','wrong_width.cir','deep',True),('hv_gate_open','hv_gate_open','aggregate.cir','deep',True),
             ('input_open','input_open','aggregate.cir','deep',True),('missing_well_tap','missing_well_tap','aggregate.cir','deep',True),
-            ('body_short','body_short','aggregate.cir','deep',True),('drc','base',None,'deep',False),('offgrid','offgrid',None,'deep',False)]
+            ('missing_body_marker','missing_body_marker','aggregate.cir','deep',True),('body_short','body_short','aggregate.cir','deep',True),('drc','base',None,'deep',False),('offgrid','offgrid',None,'deep',False)]
         verdicts=[]
         for name,geometry,reference,mode,combine in jobs:
             d=OUT/('check-'+name);d.mkdir();drc=reference is None;typ='drc' if drc else 'lvs'
@@ -217,7 +240,7 @@ def main():
                 ok=verdict==('PASS within comparison scope' if positive else 'FAIL') and step['audit_execution']['returncode']==(0 if positive else 1)
                 if positive:
                     tops=[c for c in audit['circuits'] if c['layout']==TOP];ok=ok and len(tops)==1 and not audit['extraction_diagnostics']
-                    if not combine:ok=ok and all(tops[0][k]==98 for k in ('layout_devices_recursive','schematic_devices_recursive'))
+                    if not combine:ok=ok and all(tops[0][k]==100 for k in ('layout_devices_recursive','schematic_devices_recursive'))
                 else:ok=ok and 'Deck explicitly reported a mismatch' in audit['reasons']
             step['expected_verdict_observed']=bool(ok);verdicts.append(bool(ok));save();print(name,verdict,'expected',ok,flush=True)
         assert all(sha(Path(p))==v for p,v in protected.items()) and all(sha(ROOT/n)==v['sha256'] for n,v in manifest['files'].items())
