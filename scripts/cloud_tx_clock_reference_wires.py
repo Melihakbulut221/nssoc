@@ -23,11 +23,11 @@ def main():
         assert sha(source/'layout'/(TOP+'.gds'))==spec['gds']
         method=ROOT/'scripts/tx_driver_localpins_wire_native.py';assert sha(method)==METHOD_SHA;original=method.read_text();adapted=original
         edits=[
+          ('nssoc_tx_input_driver_v7_physical_localpins_v1',TOP),
           ("P=B/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'","P=B/'source'"),
           ("P/'base/layout.gds'","P/'layout/nssoc_tx_clock_reference_layout_v1.gds'"),
           ('check-raw_flat_lvs','check/lvs_flat'),
           ('6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62',spec['gds']),
-          ('nssoc_tx_input_driver_v7_physical_localpins_v1',TOP),
           ('c.pin_count()==6','c.pin_count()==4'),
           ('dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)','dict(npn13G2=1,rppd=2,ptap1=3)'),
           ("'full_driver_wires'","'clock_reference_wires'"),
