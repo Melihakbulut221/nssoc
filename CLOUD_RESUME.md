@@ -1,3 +1,15 @@
+## 2026-10-16 — Cloud-only handoff verified; wider driver passes physical gates
+
+The local task workspace is empty; do not recreate a checkout or run local CAD, simulation or tests. Migration receipt asset636387277 was read back and reports COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. Its actual SHA256 is 23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd. Existing eight-hour heartbeat is ACTIVE and already mandates GitHub-hosted execution and cloud evidence. Other projects and original user attachments remain outside this cleanup.
+
+Wide routing run38883604446, sourceeab9f79b27a104a65bdc236138700f57ed65da41, completed successfully. Actual M3/M4/M5 widening and upper 2x2 vias preserve the original raw100 devices and finite contacts. Full DRC: zero markers across560categories. Raw100 and aggregate12 deep/flat LVS pass; seven real fault controls are rejected. This is physical component evidence only: accepted=false, qualified_pex=false and serial_phy_complete=false. Summaryasset646898513 SHA5c34ba872f712f2e0764661fb46c88b4d261949abe0e6a8e471fef33e1362fd9; archive1284475bytes SHA90af68991e628655c749d9411feb9786bff717ff355463836fc1a0496abd210f. Release cloud-results-38883604446-1-tx-input-driver-wide; root cloud-tx-input-driver-wide; top nssoc_tx_input_driver_v7_physical_wide_v1.
+
+Next: derive fresh native junction/device identities, wire graph, terminal planes, RC and composed raw100 model from this exact wide GDS, then repeat the unchanged loaded electrical tests. Do not substitute old251R294C for new geometry. Old actual wire-loaded failure remains authoritative until a new complete test passes. Wire metrics run38882988155 measured avdd55.4577ohm and internal maximum137.5562ohm; this motivated actual geometry repair, not fitted electrical values.
+
+Artificial low-R diagnostic job116911232372 in38882163369 failed: native TRAN timestep too small at1.44308ns, xtree.xd0001.s1. It is not an electrical pass and cannot be adopted. Summaryasset646880486 SHA5cf11614441efa65bb8d4b7601f6583331101c9a2b90c7d7bbce3991b04ced15. The no-wire-C sibling, mainchip146 hold routing and physical C9 PLL must be checked using the timestamped observation below; do not restart healthy jobs. Full PHY, mainchip final routing/signoff and setup/hold remain open.
+
+Latest exact receipts and active job handles: docs/evidence/cloud-wide-driver-handoff-20261016.json. Continue the detailed instructions below, superseding only stale status observations.
+
 ## 2026-10-16 — Real TX wiring rejected by full electrical gates; sink-local hold trial and RC diagnosis live
 
 **Driver loaded38878882117 completed**, source548b55580a17f75f3ddf418530272c59cd973c6a. Intrinsic raw100 drivers pass all original nominal gates (768source samples,minimum241.974mV,672MOS/62HBT,no diagnostics). Actual251R294C driver model **fails**:32wrong-sign output samples at0.3UI,50below100mV;minimum-198.497mV. CMOSinterface96.297mV and1.75578–1.76596Vcommon-mode fail;finalinterface13.231mV;12HBTfailVCE;all672MOSpass. Both full34ns captures complete and source/runtime/probe controls pass. Green workflow means measurement completed, not physical acceptance.
