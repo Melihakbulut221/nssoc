@@ -9,9 +9,10 @@ import cloud_tx_input_driver_localpins as physical
 from run_cloud_tx_layout_repair import sha
 ROOT=physical.ROOT;OUT=ROOT/'hw/soc/out/cloud-tx-driver-localpins-anchors'
 SOURCE={'run': 38907722289, 'group': 'tx-driver-localpins-wires', 'root': 'cloud-tx-driver-localpins-wires', 'bytes': 1332151, 'sha': '7c486c7139da80cc7016ac9d33506a37fbf79ec4a2146caa23afcbcbc265926a', 'summary': '07f41c7a6cdb07e36a1b439735a86d5937e9c9fce200b6b149119c3d44487ebf'}
-def generate():
+def generate(source=None,physical_source=None):
     import pya
-    source=OUT/'inputs/tx-driver-localpins-wires/cloud-tx-driver-localpins-wires';physical_source=source/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'
+    source=Path(source) if source is not None else OUT/'inputs/tx-driver-localpins-wires/cloud-tx-driver-localpins-wires'
+    physical_source=Path(physical_source) if physical_source is not None else source/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'
     gds=physical_source/'base/layout.gds';db=physical_source/'check-raw_flat_lvs/result.lvsdb'
     layout=pya.Layout();layout.read(str(gds));top=layout.cell(physical.TOP);assert top is not None
     native=pya.LayoutVsSchematic();native.read(str(db));c=native.netlist().circuit_by_name(physical.TOP)
