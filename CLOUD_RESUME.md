@@ -1,3 +1,27 @@
+## 2026-10-16 — Actual nine-size physical ECO and short-spine loaded driver live
+
+Cloud-only is controlling; local workspace is empty. New live jobs at this observation: route234-sized-eco38920736711, shortspines loaded38920723791, and original1usPLL38910378266. Exact run/job states: docs/evidence/cloud-nine-size-shortspines-live-20261016.json. Never restart a healthy job; inspect its current handle. These are not closure claims.
+
+### Mainchip timing
+
+Completed234candidate: full endpoint38914920637 measured9359/470/1setup and0/0/7hold failures atslow/typical/fast. Fast hold90→7 versus146parent includes3new/86resolved failures. All22544endpoints/135264rows and unchanged constraint coverage checked. Signal geometry38916042143 passed113790nets/3328891shapes with0disconnectednets and0crossnetcontacts;639antenna nets/791pins remain. Annotation38915581365 classified1065drivers=302connectednosink+763disconnected,0loadedunannotated. First geometry38914926858/annotation38914934453failures were obsolete146size guards, corrected with shared234count and declared-profile controls; failures retained.
+
+Sizing screen38917800540 reproduced every234endpoint row, measured all15through-driver corner margins, and tested9available sizes from14requests. Five requested nand4/nand3/a22oi doubled masters do not exist in actualODB; they remain unchanged/open. place27767/X (~144pshold) remains excluded. FrozenRC estimate: fastsetup1→0,WNS+127.767ps;slowsetup9359→9357;typical470unchanged;hold0/0/7unchanged; no newnegative endpoints, no constraint loss. Actual Liberty-backed logic passed and a real buffer inversion failed. Summary647639731 SHAd8b43beae0667c6eaa64f5cd80c9c8466eb20734bfc7d0aa6822e66d8513f751. This estimate is not valid routed geometry.
+
+Physical9size job38920736711, source4bc06e20a60a70da055f5dc2ad3788323659ea6b, now applies those exact9sizes, legalizes ONLYthose9within200um, protects every othercell/net/PG/NDR/toppin, rejects a deliberate unselected move, rechecks logic+inversion, regenerates selected-pin guides, fully routes, freshly extracts nominalRC and measures all22544endpoints. Controller scripts/run_cloud_route234_sized_eco.py, native scripts/prepare_route234_sized_eco.py. First physical38919760246aborted at ODB-0359 because selectedcells were stillFIRM during setLocation; fixed by making exactlythosecellsPLACEDbefore swap/location. The failed run remains. Inspect new job before starting another; if completed, bind independent geometry/annotation reviewers to the new nine-size recipe and output hashes (do NOT run old branch234validator unchanged on resized cells). Antenna/qualifiedRC/fullLVS/memory/SDC completeness remain open.
+
+### Actual physical TX driver
+
+New shortspines layout packs separate Metal5rails into five rows: avss50,sub57;drv/gate/dout64;sink/avdd71;din/dvdd78um. Devices/placements/widths/contact models unchanged. Native physical38917470904 passed560categoryDRC, raw100deep/flat andaggregateLVS plus7faults. ExactGDS4e4637cfd37de14b4cc464dc69f1c1b8b1447ef8fc1d05da3d592d5d640eb01e. FreshLEF38918166127,wires38918166521,junctions38918166400,anchors38918523471 andintrinsic38918523510 passed. All372terminals/164planes bound. Intrinsicf0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5 is byte-identical to priorpassing control;3combinedjunction disagreements retained and raw100used.
+
+FreshRC38919118235passed13rawfaults andnativeR/mutual+groundCconservation, actual260R296C (NOTlocalpins295C). WireSHA670390d99bf9b1f88b1e9fd1681cc5e15b99c0b019d45ff22a4bb433b8f15a21. Composition38920165920passed10faults, model1f595175ecd39f924650f7c6ec82316fa67a4f064eda1beeab6a3dab486fc211. Firstcomposition38919983408failed anarchivehash after a broadcount edit touched a digest; exactsource restored from receipt, failedrun preserved. Allsourcehandles in docs/evidence/tx-driver-shortspines-*.json.
+
+Fulloriginal34ns256bit8GT/s loadedstudy38920723791runs all8actual100drivers/672MOS andactual162tree/62HBT with originalzeroOP/OFF/solver/phases/limits. Noelectricalpassyet. Inspect component_screen_passed,allengineeringgates,allMOS/HBT minima,finalinterface150mV andoutput100mV,diagnostics andfullcapture beforeacceptance. Staticmetrics38920723815 summary647680465 SHA94a1dc7eae5f444b100ed21241c1edcf4888c45e0647028a60c257a0c672c816: avssmaxpair44.853ohm,sub23.295,dout20.747,dvdd36.910; drv50.630increased. Geometry/resistance alone does not establish an improvement. Localpinsloaded38910247036 stillfailed12HBT/288finalinterface samples, preserved.
+
+### PLL and remaining work
+
+Original1usnativePLL38910378266 stillcontinues savedpilot state; preserve existing capsule/14400hostsecond continuation instructions below. Do notstartfromzero orchangeoriginalacquisitiongates. Even passedTXcomponent+PLLacquisition will not establish full32:1/x4/CDR/ESD/PVT/qualifiedPEX/mainchip integration. Goalremainsactive.
+
 ## 2026-10-16 — All234 endpoints measured; geometry count compatibility fixed
 
 Endpoint38914920637 completed actual22544endpoints/135264rows with unchanged constraint coverage. Parent146→child234 negative hold: fast90→7, typical1→0, slow0→0. Fast worst−154.820→−46.026ps. There are3new fast hold failures and4remaining old ones; do not call closed. Setup counts: slow9330→9359, typical481→470, fast1→1; slowworst−5.558064ns,typical−1.999653ns,fast−0.065581ns. Selected88targets do not all pass setup or hold. Exact summary asset647575725 SHA7b4cebace5eb8e52071fb3a19eafcf5a10ea4b63cd0d032d34d99af66050940b includes all comparisons and7remaining hold paths.
