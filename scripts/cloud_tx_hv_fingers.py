@@ -25,8 +25,15 @@ def generate(fault):
     layout=pya.Layout();top=layout.create_cell(TOP)
     def pc(name,params):
         cell=layout.create_cell(name,'SG13_dev',params);assert cell is not None and not cell.is_empty();return cell
+    placements=[]
     def place(cell,x,y):
-        t=pya.DTrans(x,y);top.insert(pya.DCellInstArray(cell.cell_index(),t));return t
+        # DTrans(int, int) selects rotation/mirror, not translation.
+        t=pya.DTrans(float(x),float(y))
+        b=pya.DBox(0.,0.,1.,2.).transformed(t)
+        assert [b.left,b.bottom,b.right,b.top]==[float(x),float(y),float(x)+1.,float(y)+2.]
+        top.insert(pya.DCellInstArray(cell.cell_index(),t))
+        placements.append(dict(cell=cell.name,x_um=float(x),y_um=float(y),native_transform=str(t)))
+        return t
     def box(layer,x1,y1,x2,y2):
         b=pya.DBox(min(x1,x2),min(y1,y2),max(x1,x2),max(y1,y2));top.shapes(layout.layer(layers[layer],0)).insert(b);return b
     def via(x,y):
@@ -83,7 +90,7 @@ def generate(fault):
     fingers += ['RTAP sub BULK ptap1 A=4p P=8u','.ends '+TOP,'']
     (directory/'fingers.cir').write_text('\n'.join(fingers))
     result=dict(status='GENERATED_UNVERIFIED_NG10_ROUTING',fault=fault,source_geometry=dict(width_um=10,length_um=.45,ng=10),
-        routes=routes,ports=positions,bbox_um=str(top.dbbox()),raw_finger_reference_is_not_simulation_substitute=True,
+        routes=routes,placements=placements,ports=positions,bbox_um=str(top.dbbox()),raw_finger_reference_is_not_simulation_substitute=True,
         original_aggregate_reference_preserved=True,finite_contact_to_bulk_added=True,substrate_spreading_qualified=False,
         driver_complete=False,serial_phy_complete=False)
     (directory/'result.json').write_text(json.dumps(result,indent=2)+'\n')
