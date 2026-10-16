@@ -1,3 +1,9 @@
+## Original contact screen COMPLETE0; candidate geometry workflow staged
+
+38831097775/job116749810923 sourcea757f8a37a8b3bb9f059c0464ebd6e68c8c55925 COMPLETE: all3323078exportedshapes/113556nets/7metalayers,0crossnetareaoverlap/0boundarytouch. Exact84pairintegeroracle across3chunksizes/layers/ownerspassed. summary734aba3ffcced475256854fbfe90fad6a541e1890bedf7b7d5733eabd581bc71; fullreceipt cloud-routed-signal-contacts-20261016.json. NOTPG/CUT/internalmacro/spacing/foundryDRC/LVS; antenna651andfinaltimingstillopen.
+
+Newcandidate-geometry-cloud controlsrunonpush, fullnativegeometryonlydispatchaftercompletedcandidatepins. Supports2/3/50/protected50 with exactsummary/parts, source/logic/inversion/0DRVgates; protectedcandidate additionallyrequiresunchanged113506wireproof+pinnedconversionreceipt. Nativeexport sizeconfiguredonly0/2/3/50, originaldefaultunchanged; all55NDR andnativewidth/lengthguardsretained. Newcandidate nativeplacement+antenna, exhaustivecontinuity/contactscreens preserveallfailures. Noadoption. Existing6ECO/analogjobscontinueunchanged/cloudonly.
+
 ## Independent signal-metal contact baseline staged
 
 Existing6nativeECO/analogjobs were verifiedlive; no duplicateorinterruption. Newrouted-contacts-cloud restores exact38810969514geometry export (3323078shapes/113556nets) and checksall same-layerintersections betweendifferentnetrectangles, includingwire/patch/via-metal/LEFpins. Exactintegertouch/areaoverlap, no spacingtolerance; allpairsretained. PerlayerSTRtree queriesboundmemory; randomizedindependentintegeroracle+chunk/layer/ownercontrols required. This preparesindependentphysicalchecking of fixedroute/newbufferinteractions; nativeDRT0alone notsufficient. It isNOTPG/CUT/internalmacro/foundryspacing/ESD/transistorLVS orproductionacceptance. SourceShapely2.1.2STRtreedocs https://shapely.readthedocs.io/en/2.1.2/strtree.html . AllrunsonGitHub; localempty.
