@@ -16,7 +16,8 @@ ROUTED=re.compile(r'^([ \t]*\+ )ROUTED(?= )',re.M)
 FIXED=re.compile(r'^([ \t]*\+ )FIXED(?= )',re.M)
 def omit_patch_connections(body):
     # Update only wire encoding on existing native nets. Reconnecting an
-    # already connected ITerm changes dbSet iteration order in this runtime.
+    # already connected ITerm is unnecessary; native end() also reverses its
+    # list unconditionally. The caller uses two identical imports to restore it.
     entries=re.split(r'(?m)^(?=[ \t]*- )',body)
     assert not entries[0].strip();out=[];removed=0
     for entry in entries[1:]:
@@ -99,7 +100,11 @@ def main():
         # Pinned OpenROAD INCREMENTAL mode does NOT register NETS callbacks.
         # FLOORPLAN mode updates existing nets; this patch contains no cell,
         # port, power, via-definition, grid, row or NDR-definition sections.
-        tcl(f'read_db {{{original}}}\nread_def -floorplan_initialize {{{OUT/"fixed-nets.def"}}}\nwrite_def {{{OUT/"after.def"}}}\nwrite_db {{{OUT/"fixed.odb"}}}\n','encode-fixed')
+        # Pinned definNet::end always reverses native ITerms. Two identical
+        # imports restore the original list order; no tolerance or normalization
+        # is permitted in the following exact DEF and geometry comparisons.
+        tcl(f'read_db {{{original}}}\nread_def -floorplan_initialize {{{OUT/"fixed-nets.def"}}}\nwrite_def {{{OUT/"single-pass.def"}}}\nread_def -floorplan_initialize {{{OUT/"fixed-nets.def"}}}\nwrite_def {{{OUT/"after.def"}}}\nwrite_db {{{OUT/"fixed.odb"}}}\n','encode-fixed')
+        result['native_route_patch_passes']=2
         result['after']=snapshot(OUT/'fixed.odb','after')
         assert result['after']['wire_type_net_counts']=={'FIXED':113556},'Decoder did not see FIXED routes'
         for key in ('instances_sha256','nets_sha256','fixed_data_sha256','counts'):
