@@ -24,8 +24,29 @@ def records(text):
     assert all(r[0][0].lower() in ('x','r','c') for r in rows[1:-1])
     return rows
 
-def inventory(text):
+def validate_ports(ports, reference_ports):
+    assert len(reference_ports)==17 and len(set(reference_ports))==17
+    assert 'wire_cref' not in reference_ports
+    assert len(ports)==18 and len(set(ports))==18
+    assert set(ports)==set(reference_ports)|{'wire_cref'}, (ports,reference_ports)
+
+
+def reference_ports(text, top):
+    rows=[]
+    for raw in text.splitlines():
+        line=raw.strip().lower()
+        if not line or line.startswith('*'):continue
+        if line.startswith('+'):
+            assert rows;rows[-1]+=line[1:].split()
+        else:rows.append(line.split())
+    tops=[r for r in rows if r[:2]==['.subckt',top.lower()]]
+    assert len(tops)==1
+    return tops[0][2:]
+
+
+def inventory(text, physical_ports):
     rows=records(text);ports=rows[0][2:];devices=[];wires=[];uf={}
+    validate_ports(ports, physical_ports)
     def root(n):
         uf.setdefault(n,n)
         while uf[n]!=n:uf[n]=uf[uf[n]];n=uf[n]
@@ -42,7 +63,7 @@ def inventory(text):
             wires.append(dict(instance=row[0],kind=row[0][0].upper(),nodes=row[1:3],value=value,record=' '.join(row)))
             for n in row[1:3]:root(n)
             if row[0][0].lower()=='r':uf[root(row[1])]=root(row[2])
-    assert len(devices)==845 and len(wires)==8648 and len(ports)==17
+    assert len(devices)==845 and len(wires)==8648, (len(devices),len(wires))
     for n in ports:root(n)
     components=collections.defaultdict(list)
     for n in uf:components[root(n)].append(n)
@@ -54,7 +75,7 @@ def inventory(text):
         d['public_ports_by_terminal']=[public[by_node[n]] for n in d['nodes']]
     for c in wires:
         c['resistor_components']=[by_node[n] for n in c['nodes']]
-    return dict(top=rows[0][1],ports=ports,device_count=len(devices),wire_count=len(wires),device_models=dict(collections.Counter(d['model'] for d in devices)),device_name_groups=dict(collections.Counter('_'.join(d['instance'].split('_')[:2]) for d in devices)),wire_kinds=dict(collections.Counter(w['kind'] for w in wires)),devices=devices,public_port_components={p:by_node[p] for p in ports},resistor_components=[dict(index=i,nodes=ns,public_ports=public[i]) for i,ns in enumerate(groups)],wire_inventory_sha256=hashlib.sha256(json.dumps(wires,sort_keys=True).encode()).hexdigest())
+    return dict(top=rows[0][1],ports=ports,physical_ports=physical_ports,wire_capacitance_reference='wire_cref',device_count=len(devices),wire_count=len(wires),device_models=dict(collections.Counter(d['model'] for d in devices)),device_name_groups=dict(collections.Counter('_'.join(d['instance'].split('_')[:2]) for d in devices)),wire_kinds=dict(collections.Counter(w['kind'] for w in wires)),devices=devices,public_port_components={p:by_node[p] for p in ports},resistor_components=[dict(index=i,nodes=ns,public_ports=public[i]) for i,ns in enumerate(groups)],wire_inventory_sha256=hashlib.sha256(json.dumps(wires,sort_keys=True).encode()).hexdigest())
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)
@@ -89,7 +110,10 @@ def main():
         assert sha(OUT/'source/parent845.spice')==PARENT_SHA
         assert sha(OUT/'source/graph-diagnostic.json')==parent['graph_diagnostic_sha256']
         result['parent_source']=dict(run=38672085461,archive_sha256=archive_sha,summary_sha256=sha(OUT/'source/result.json'),parent_sha256=PARENT_SHA)
-        result['inventory']=inventory((OUT/'source/parent845.spice').read_text())
+        assert sha(OUT/'source/integrated/schematic.cir')=='6de9c745fa2911ce732d1f772b28ac8147b476690d97152266c3554bd02d800d'
+        physical=json.loads((OUT/'source/integrated/result.json').read_text())
+        ports=reference_ports((OUT/'source/integrated/schematic.cir').read_text(),physical['top'])
+        result['inventory']=inventory((OUT/'source/parent845.spice').read_text(),ports)
         result['native_composition_evidence']={k:parent[k] for k in ('counts','component_preservation','exact_graph','pfd_reference_planes')}
         assert sha(OUT/'source/parent845.spice')==PARENT_SHA
         result['status']='COMPLETE_EXACT_PLL_DEVICE_AND_RESISTOR_COMPONENT_DIAGNOSIS_NOT_REPAIR'

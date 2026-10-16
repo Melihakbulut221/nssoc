@@ -26,6 +26,7 @@ jobs:
           python-version: '3.12'
       - name: Inspect exact physical devices and failing original acquisition windows
         run: |
+          python3 sw/tests/test_cloud_pll_loop_ports.py
           python3 -m py_compile scripts/review_cloud_pll_loop.py
           python3 scripts/review_cloud_pll_loop.py
       - name: Preserve exact source and diagnosis or failure
