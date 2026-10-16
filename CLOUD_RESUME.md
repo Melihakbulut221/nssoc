@@ -1,3 +1,9 @@
+## 2026-10-16 — All234 endpoints measured; geometry count compatibility fixed
+
+Endpoint38914920637 completed actual22544endpoints/135264rows with unchanged constraint coverage. Parent146→child234 negative hold: fast90→7, typical1→0, slow0→0. Fast worst−154.820→−46.026ps. There are3new fast hold failures and4remaining old ones; do not call closed. Setup counts: slow9330→9359, typical481→470, fast1→1; slowworst−5.558064ns,typical−1.999653ns,fast−0.065581ns. Selected88targets do not all pass setup or hold. Exact summary asset647575725 SHA7b4cebace5eb8e52071fb3a19eafcf5a10ea4b63cd0d032d34d99af66050940b includes all comparisons and7remaining hold paths.
+
+Geometry38914926858 failed before export because its helper also retained the old146maximum count. Export now shares the annotation supported-count declaration (including234), with controls requiring every declared profile to be recognized and233 rejected. No geometry, threshold, cardinality or source-binding check weakened. Dispatch an independent geometry rerun on unchanged38896397749 output. Annotation rerun38915581365 is separate. Preserve both first failures.
+
 ## 2026-10-16 — Branch234 annotation compatibility repair
 
 Annotation38914934453 failed before classification: native helper still allowed only the older counts up to146. The upstream branch234 restoration/recipe checks passed. Added exactly234 to supported counts, preserving instance/net/SPEF cardinalities and every source-bound check. Workflow controls now require all declared profile counts to be recognized and reject233. Rerun the annotation workflow against unchanged38896397749 summary765b113220ba12b3267ee50cd1ff02bfac7eb89a336c41ba77632c7ccd401e6e and partsed0fa830af18e5703c36e509ff3230ffe4522b106aaf764482709d5c9f2dc178. Original failed run is retained; this compatibility edit is not annotation acceptance.
