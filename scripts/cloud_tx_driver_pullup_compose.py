@@ -12,6 +12,9 @@ from run_cloud_tx_layout_repair import fetch,sha
 import build_pcie_local_vco_hybrid_v6 as helper
 ROOT=physical.ROOT;OUT=ROOT/'hw/soc/out/cloud-tx-driver-localpins-compose'
 INPUTS={
+ 'l2p4-series-l6p2':[
+ dict(run=38945917784,group='tx-driver-pullup-intrinsic-l2p4-series-l6p2',summary='423c0ec5316f6d64c3bb8334b21efc4d82117adb50b3e530c7f1cca03c9e6042',parts='fff39c13fd71221e24eb108618824fb6c5325d3ccefbb076aec5575ea6f806f2',model='d2711cd91e3f66a553e3d05762650b551caac2dab3f38e11a330b1a85f23ebd9',intrinsic_controls=9),
+ dict(run=38945917870,group='tx-driver-pullup-rc-l2p4-series-l6p2',summary='99d61ecb6be3f5008b9ee237f45fc257fe5e702d3e00f575c7957e11cd543ea1',parts='3c64505d386d1cc488cb0afa87ee8e06587fa23748182c4d28c7269ecc821ff7')],
  'l2p7':[
  dict(run=38934646634,group='tx-driver-pullup-intrinsic-l2p7',summary='7f06391bea3e4d2c43f908f8d1473719f6a3dc19418cadca979fda1a7a9a3f11',parts='4305c0bb67a036a228a7c9024b25695d7fb53c0c55a63e7aeed8973c338ddcdf',model='cdd1f5302601fc1308cb36964f872b8de92e821de02a4381542a53bdcd696050'),
  dict(run=38935036370,group='tx-driver-pullup-rc-l2p7',summary='b162f7ba60c54827c0771ede6e341e62764d6ab978a4b444e6ca565a77f75ca6',parts='58e9af7b5fe968310ee725b7258330a13b6ea21a0cd9317bc1d748b3b994db04')],
@@ -107,8 +110,8 @@ def main():
     global OUT,TOP
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(INPUTS),required=True);args=parser.parse_args()
     SOURCES=INPUTS[args.variant];OUT=ROOT/('hw/soc/out/cloud-tx-driver-pullup-compose-'+args.variant)
-    TOP='nssoc_tx_driver_pullup_'+args.variant+'_native100_wire_v1'
-    intrinsic.TOP='nssoc_tx_driver_pullup_'+args.variant+'_native100_intrinsic_v1'
+    TOP='nssoc_tx_driver_pullup_'+args.variant.replace('-','_')+'_native100_wire_v1'
+    intrinsic.TOP='nssoc_tx_driver_pullup_'+args.variant.replace('-','_')+'_native100_intrinsic_v1'
     reports.OUT=OUT
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],sources=SOURCES,qualified_pex=False,qualified_substrate=False,poly_diffusion_resistance_included=False,simulator_checked=False,qualified_timing=False,serial_phy_complete=False,mainchip_integrated=False)
@@ -117,9 +120,10 @@ def main():
     try:
         restored=[restore(s)for s in SOURCES];(i,ir),(w,wr)=restored
         assert ir['variant']==wr['variant']==args.variant and ir['source_unchanged'];result['variant']=args.variant
-        assert ir['status']=='PASS_ACTUAL_PULLUP_NATIVE100_INTRINSIC_AND_EIGHT_FAULTS_NOT_WIRE_RC_OR_ELECTRICAL_ACCEPTANCE'
+        expected_controls=SOURCES[0].get('intrinsic_controls',8);assert expected_controls in (8,9)
+        assert ir['status']=='PASS_ACTUAL_PULLUP_NATIVE100_INTRINSIC_AND_'+('NINE'if expected_controls==9 else'EIGHT')+'_FAULTS_NOT_WIRE_RC_OR_ELECTRICAL_ACCEPTANCE'
         assert wr['status']=='PASS_FRESH_ACTUAL_PULLUP_WIRE_RC_AND13_RAW_CORRUPTIONS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE'
-        assert len(ir['controls'])==8 and len(wr['controls']['cases'])==13
+        assert len(ir['controls'])==expected_controls and all(c['rejected']for c in ir['controls']) and len(wr['controls']['cases'])==13
         compact=(i/'driver100.spice').read_text();assert sha(i/'driver100.spice')==ir['model_sha256']==SOURCES[0]['model']
         native=json.loads((i/'source/native.json').read_text())
         physical_root=w/'source/source'
