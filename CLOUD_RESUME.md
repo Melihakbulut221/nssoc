@@ -1,3 +1,24 @@
+## Cloud continuation: physical divider3p2/283 planes verified; CORRPRE measured (2026-10-17)
+
+Cloud-only remains mandatory; workspace empty. Full serialGen3x4, mainchip integration and final setup/hold are still OPEN.
+
+- **Actual divider3p2 physical38968477345 PASSED**: native mainDRC, deep+flatLVS, LEF, all original faults and added wrong-collector-load fault. GDS ee95597fc6307f2476d49d9ac5560ed6b06d4dcda956f7716e0d7ea5611731f6. This is a real4-load physical candidate, not oldRC.
+- **Unsimplified native38969703944 PASSED**:91devices/283terminals, deep+flatLVS, wrong-load/missing-tap/wrong-Nx controls;37 metal/via components bound by geometry to actual native nets. No conductor union by name or intrinsic alias. Failed38969328019 retained: native gates passed, reversible source-adaptation ordering check failed; fixed without changing geometry/extraction algorithm.
+- **Terminal planes38970375585 PASSED**:198metal+85finite-body terminals,7public ports,205actual reference points on37components; seven corruptions rejected including same-net HBT C/B swaps and MIM top/bottom swaps. Body spreading and poly/diffusionR remain unmodeled. Fresh RC producer now uses all205points and unchanged native conservation/13raw-corruption algorithms with exact census adaptations.
+- **CORRPRE measurements38969854899 PASSED in scope**:18tests across defaultSCRUB1, candidateSCRUB1 and candidateSCRUB0; actual elaboration verified, no skips. Slow address-to-read arrival8.108924866->6.781814098ns (1.327110768ns gain), storage-to-read3.548300028->3.579597473ns (slightly worse). RF area127104.4656->212020.3512um2 (+66.8%), cells8309->15860, same1214mappedFFs. Standalone pre-layout only. Timing summary arrays include the arithmetic negative arrival duplicate; the reported worst maxima are unaffected. Full-chip outcome cannot be inferred.
+- Explicit **IBEX_RF_CORRPRE/SOC_RF_CORRPRE** hooks now exist, default0, reject nonboolean/unsupported register file/SYNPRE conflicts. Simulation verifies the generated arm; synthesis parameter logged. A separate full-interface native SoC boot candidate runsCORRPRE1/SYNPRE0, CORE_REQ_REG0/CORE_WB_STAGE0, without adopting the candidate as default.
+- Preserve failed38969444697: six baseline tests passed but the postcheck incorrectly expectedseven. Current source binds all six exact test names. **Live original formal38967093235 still uses that obsolete7-test postcheck**; if it later fails after proofs, inspect and preserve its exact proof/negative logs rather than declaring the whole workflow passed or discarding evidence.
+
+Live handles at checkpoint:
+- **38971194744** source811f233da5c04d71dd862c27a310c9dad1ad50ed: queued, conclusion=None.
+- **38970744432** source11d16ac647a2754a1e5488e5cd415f0207ccb2ec: in_progress, conclusion=None.
+- **38967093235** source7f392d9484cf31b20e306739d69c82eb51abce6d: in_progress, conclusion=None.
+- **38957249404** source2a3f6a2cac51640809c2e40aba8d685927229520: in_progress, conclusion=None.
+
+Receipts and next actions: `docs/evidence/cloud-divider-planes-and-corrpre-measurements-20261017.json`. Next finish freshRC/native intrinsic composition/full acquisition, inspect native SoC candidate and formal proof, and inspect six-hold routed result. Keep all failed controls and no acceptance waivers.
+
+---
+
 ## Cloud continuation: fresh-clock screen passed; PLL geometry and RF setup repair (2026-10-17)
 
 Latest instruction remains cloud-only. Local workspace is empty. Full serialGen3x4, mainchip integration and final setup/hold remain OPEN.
