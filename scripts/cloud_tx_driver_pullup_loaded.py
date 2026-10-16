@@ -18,7 +18,10 @@ from run_cloud_tx_operating_point import fetch,sha
 ROOT=physical.ROOT;OUT=ROOT/'hw/soc/out/cloud-tx-driver-pullup-loaded'
 import compare_cloud_routed_endpoints as reports
 from cloud_tx_driver_localpins_loaded import adapt,fixtures
+from cloud_tx_driver_stage_repair import clock_candidate,CLOCK,CLOCK_SHA
+from cloud_tx_driver_stage_repair_loaded import COMMON_METHOD_PINS
 SOURCES={
+ 'l2p4-series-l6p2':dict(run=38946552766,group='tx-driver-pullup-compose-l2p4-series-l6p2',summary='1985f6e30bb729e6f02b706d5805d15b4436dd86ca508282e06a94397ede2a26',parts='85020905f7a7f7af79ed27659c151e5f5a637204afe57efbc27b510805aebbc3',model='6e77bfdac07cd973a37b7aca558c0c4aeea64ba76b3d5cb2486562df80ebaa3b',clock_offset='l6p2'),
  'l2p7':dict(run=38935779019,group='tx-driver-pullup-compose-l2p7',summary='6011d01f3a47b3fb23698d3ddcd4f59e3e23739aa700cbcf0167675117378934',parts='df3bd23312c9670e3d1840f7b685a6000afed133a2c57c8d50188d37c6b5d9ca',model='1c880df545c06617347d3bca4bce3144034cb083e11e154eb198c160a5e36963'),
  'l2p4':dict(run=38935779019,group='tx-driver-pullup-compose-l2p4',summary='cf6515591ce239ff9a482d88fb01088173a0204803c62d344da724e00cf52ffd',parts='7acd44238caaf6314ca7df89fccb4bfe780b67858b0b334b8c59d4a8a049ef79',model='8eec4846d8cef0e3367c07f8e1a0f3413f4a628684bbb1a283c6f6883b95ad79'),
 }
@@ -41,6 +44,16 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save();run=OUT/'native';run.mkdir()
     try:
+        assert all(sha(ROOT/path)==digest for path,digest in COMMON_METHOD_PINS.items()),'Shared loaded-tree method drift'
+        assert sha(CLOCK)==CLOCK_SHA
+        if SOURCE.get('clock_offset'):
+            assert SOURCE['clock_offset']=='l6p2'
+            candidate,change=clock_candidate(CLOCK.read_text());clock=OUT/'clock-candidate.spice';clock.write_text(candidate)
+            assert sha(clock)=='db8dc476c5538ce72b5a2edb65f9bc6003ed9dad03a0e00a61f7ed04b721f67c'
+            tree.CLOCK_REFERENCES=dict(tree.CLOCK_REFERENCES);tree.CLOCK_REFERENCES['stiff65']=clock
+            result['clock_change']=change
+            result.update(clock_physical_model_used=False,matched_driver_physical_model_used=True,full_combined_physical_acceptance=False)
+            result['scope']='Actual source-bound series6.2um/pullup2.4um driver GDS, raw100 devices and freshly extracted260R295C, eight instances loading unchanged actual162-device tree. Native clock offset6.2um remains schematic: new clock GDS body/terminal/RC model is not used yet. Original34ns/256bits/672MOS/62HBT/zeroOP/source phases and limits. External clock modulation, supplies and tree-driver links remain ideal. No PVT/fullPHY/mainchip acceptance.'
         source,prior,proof=restore(SOURCE);result['restore']=proof
         assert prior['variant']==args.variant
         assert prior['status']=='PASS_RAW100_AND_ALL260R295C_EXACT_PHYSICAL_COMPOSITION_WITH10_FAULTS_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE'
@@ -68,7 +81,7 @@ def main():
         (run/'original-schematic-driver-bench.cir').write_text(original)
         (run/'bench.cir').write_text(streaming_deck(deck,contract));(run/'contract.json').write_text(json.dumps(contract,indent=2)+'\n')
         (run/'spinit').write_text('set num_threads=1\n')
-        protected=[model,core,paths['patched'],run/'bench.cir',run/'contract.json',run/'spinit',tree.FRONT,tree.TX,
+        protected=[CLOCK,tree.CLOCK_REFERENCES['stiff65'],tree.CLOCK_FEEDS['stiff65'],*[ROOT/p for p in COMMON_METHOD_PINS],model,core,paths['patched'],run/'bench.cir',run/'contract.json',run/'spinit',tree.FRONT,tree.TX,
                    *inputs.rglob('*.lib'),*inputs.rglob('*.inc'),*inputs.rglob('*.osdi')]
         result['protected_inputs']={str(p):sha(p)for p in protected};save()
         def limits():
@@ -88,7 +101,7 @@ def main():
         result['component_screen_passed']=result['review']['all_engineering_gates_passed']and not result['diagnostics']
         assert all(sha(source/path)==digest for path,digest in prior['outputs'].items())
         result['source_unchanged']=True
-        result['status']='COMPLETE_ACTUAL_PULLUP_DRIVER_FRESH_RC_LOADED_TREE_STUDY_NOT_PHY_ACCEPTANCE'
+        result['status']='COMPLETE_ACTUAL_STAGE_REPAIR_DRIVER_FRESH_RC_WITH_SCHEMATIC_CLOCK_NOT_PHY_ACCEPTANCE'if SOURCE.get('clock_offset')else'COMPLETE_ACTUAL_PULLUP_DRIVER_FRESH_RC_LOADED_TREE_STUDY_NOT_PHY_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
