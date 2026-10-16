@@ -1,0 +1,11 @@
+# Strict PGO/LTO experiment for full32 fine capture
+
+The prior strictO3 compiler experiment38845036374 reproduced the4ns/0.25ps reference exactly but was about2percent slower. The full34ns fine capture remains incomplete after its hosted timeout. It must not be replaced by a shorter or coarser passing capture.
+
+This new hosted experiment trains the same patched upstream on the actual32stream macroRC tree for1.2ns with0.25ps maximum step and all3060vectors, then rebuilds with GCC profile feedback and link-time optimization. All source/PDK/OSDI/patch hashes, zero-sourceOP,604HBT OFF flags, Sparse options and numerical tolerances remain explicit. It preserves native gcda data and compiler commands. The exact same build directory avoids accidentally renaming the feedback source. Profile mismatch remains fatal; missing hotVBIC/Sparse profiles are rejected. Partial-training mode avoids assuming unexecuted functions are unimportant.
+
+The optimized engine must pass the existing NPN/PNP1nA charge invariant and a fresh paired4ns capture against the frozen reference engine on the same CPU. Every3060voltage vector is compared in both interpolation directions with the original1nV limit. No fast-math, floating contraction, solver or circuit shortcut is permitted. Candidate status additionally requires at least1.25wall and CPU speed ratios; this is an experiment selection criterion, not a claim that a future34ns capture will finish. Fullcapture, timestep qualification, real intermacroRC/clock distribution, PVT/CDR/x4 and mainchip acceptance remain open.
+
+Training success alone is never waveform-equivalence or PHY acceptance. Failed training/build/comparison logs and complete native evidence remain published. All execution and artifacts stay on GitHub; no local checkout or simulation.
+
+Primary compiler references: [GCC instrumentation](https://gcc.gnu.org/onlinedocs/gcc-14.3.0/gcc/Instrumentation-Options.html) describes collecting and consuming native profile data; [GCC optimization](https://gcc.gnu.org/onlinedocs/gcc-14.3.0/gcc/Optimize-Options.html) documents profile use, partial training and LTO. These document the mechanism; only this repository's paired measurements can establish an actual speedup or numerical agreement.
