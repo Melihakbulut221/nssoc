@@ -1,3 +1,26 @@
+## Cloud continuation: six hold repairs and physical PLL/TX diagnosis (2026-10-16)
+
+All work is cloud-only. Local workspace remains empty; no local CAD, simulations, test outputs or checkout. New evidence and every failed report stay on GitHub. See `docs/evidence/cloud-six-hold-and-physical-pll-tx-results-20261016.json` for exact receipts, measurements and recorded live job state.
+
+### Mainchip timing
+- Exact early-branch native study **38956304190** passed: all six remaining hold targets have a short-only physical input with positive setup margin to **every reachable endpoint at all three corners**. Minimum margin2.767963886ns. For targets19/21, earlier inputs1756220/A2 and1724726/B avoid the negative setup paths seen at their later gates. Original slacks/constraints reproduced; no timing waiver.
+- Actual six-delay placement/routing/freshRC/all22544endpoint job **38957249404 /117163104850**, source **2a3f6a2cac51640809c2e40aba8d685927229520**, running at checkpoint. Six sd3 delay cells on exact measured branches; all114025parent cells including nine sizes retained. Physical rerouting and all135264endpoint-corner-delay rows are mandatory before judging improvement. Separate geometry/annotation/antenna and signoff remain required.
+- Preserve failed initial **38956889296**: parent geometry URL used the wrong release group and returned404 before design edits. Corrected to the verified nine-size-geometry asset648250855 with identical hash. Final wrapper now expects six added cells/zero resized cells and its actual status. Workflow is manual dispatch to avoid duplicate expensive routes. Do not restart the healthy corrected job.
+
+### Actual physical TX clock and driver
+- **38951500702** finished the full34ns/256bit/0.3,0.5,0.7UI simulation with actual6device13R28C clock and actual100device260R295C drivers. Native exit0, no solver diagnostics, zeroOP,77628rows. All768output samples pass100mV; minimum205.987887mV. CMOS175.768523mV and final151.083983mV pass their150mV checks.
+- **Component screen FAILED**, despite workflow success: core HBTs xd0001..xd0004 have minVCE386.775/394.810/386.787/394.904mV, below original400mV gate. Their other sampled limits and all672MOS pass. Physical clock raised common mode about24mV relative to the earlier schematic reference. Preserve failed gates.
+- **38956152752**, source **6405bb537527353ae8adeca8bdd0d97b346b7297**, runs two explicit design hypotheses: clock offset XD2 length6.2um to5.9um/5.7um, width4um fixed. These retain baseline13R28C estimates; neither is candidate physical extraction. Original stimuli, engine, models, all34ns gates and three undeclared-change controls retained. If a candidate passes, generate its actual geometry and repeat nativeLVS/DRC/anchors/intrinsic/RC/composition/loaded simulation before any adoption. Do not call these fresh candidateRC.
+
+### PLL
+- Exact original1us capture review **38955883520** completed without a new simulation. Frozen independent acquisition result reproduced: FAILED, **zero feedback edges**. Original capture has3201212rows,0..1us,exit0,no solver warnings. The original descriptive cycle assertion was a separate report error on zero edges; new review explicitly reports insufficient edges without inventing cycles or passing acquisition.
+- VCO differential clock is active at8.276947610GHz over900..1000ns. First divider differential qp/qn only -42.82..24.70mV; second -13.91..10.41mV. Receiver clock stays189..216mV; fb32..54mV; DOWN high, UP low; VCTRL303..310mV. This narrows the failure to the divider/receiver feedback chain; does not yet identify a corrected transistor design.
+- Separate bounded diagnostic **38957588814 /117164244759**, source **0c035348f24f65fa6037a4752ebbc3252f57895d**, records all102HBT C/B/E/S and per-emitter current over0..50ns. Original physical845/netlist/PDK/engine/supplies/reset/reference/OFF flags/.3125ps preserved. This is an explicitly new short diagnostic, not a restart/replacement of the completed1us capture and not acquisition/safety acceptance. Use actual device headroom to select the physical divider repair.
+
+Next: inspect terminal six-delay route and both clock hypotheses; preserve healthy jobs. Inspect bounded PLL HBT data, repair the actual divider, then redo complete physical extraction and original full acquisition. Final setup/hold, full serialGen3x4, x4 lanes, fullmainchipintegration/qualifiedPEX and manufacturing signoff remain open.
+
+---
+
 ## Cloud continuation: exact nine-size critical-path diagnosis and short-branch study (2026-10-16)
 
 Cloud-only operation remains mandatory; the local workspace is empty. No local CAD or project artifacts were created. Verified retirement receipt remains asset 636387277, COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE.
