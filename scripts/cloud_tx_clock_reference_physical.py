@@ -45,7 +45,7 @@ def main():
         record['verification']=execute([sys.executable,checker,'--layout',out/'layout','--out',out/'check','--app',app],out,'verify')
         if (out/'check/result.json').exists():record['physical_checks']=json.loads((out/'check/result.json').read_text())
         save();assert record['verification']['returncode']==0,(out/'verify.log').read_text()[-8000:]
-        assert record['physical_checks']['status']=='PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_FIVE_FAULTS_NOT_ELECTRICAL_ACCEPTANCE'
+        assert record['physical_checks']['status']=='PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_SIX_FAULTS_NOT_ELECTRICAL_ACCEPTANCE'
         assert all(sha(Path(p))==v for p,v in record['inputs'].items())
         assert all(sha(ROOT/n)==v['sha256'] for n,v in manifest['files'].items())
         record.update(status='PASS_NATIVE_CLOCK_REFERENCE_PHYSICAL_GATES_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE',source_unchanged=True)

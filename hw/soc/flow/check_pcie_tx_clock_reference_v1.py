@@ -256,7 +256,7 @@ def run(layout, out, app):
             print(name, step["status"], flush=True)
         if any(digest(p) != h for p, h in pins.items()):
             raise ValueError("Inputs changed during verification")
-        record["status"] = "PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_FIVE_FAULTS_NOT_ELECTRICAL_ACCEPTANCE"
+        record["status"] = "PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_SIX_FAULTS_NOT_ELECTRICAL_ACCEPTANCE"
     except Exception as error:
         record.update(status="FAIL", error=repr(error))
         save()
