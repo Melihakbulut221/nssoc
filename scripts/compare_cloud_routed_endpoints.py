@@ -93,9 +93,18 @@ def main(args):
         original,original_proof=restore_report('routed-endpoints',38819589884,CENSUS_SHA,CENSUS_PARTS_SHA,OUT/'baseline',('native-census.json','endpoint-slacks.tsv'))
         assert original['source_unchanged'] and original['original_routed_timing_reproduced']
         before,old_rows=load_census(OUT/'baseline');assert before['engine_endpoint_count']==22544
-        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH')}
+        profiles={'two_buffer':(2,'critical-load-eco','TWO_BUFFER'),'control_three_buffer':(3,'control-load-eco','THREE_BUFFER'),'measured_load_batch':(50,'measured-load-eco','MEASURED_LOAD_BATCH'),'protected_load_batch':(50,'protected-load-eco','PROTECTED_LOAD_BATCH')}
         count,group,status_prefix=profiles[args.profile];candidate_dir=ROOT/('cloud-'+group)
-        candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json'))
+        selection=('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','fresh-routed-sta.log','geometry-proof.json')
+        if args.profile=='protected_load_batch':selection+=('protected-route-proof.json','fixed-source-summary.json')
+        candidate,proof=restore_report(group,args.run,args.summary_sha,args.parts_sha,candidate_dir,selection)
+        if args.profile=='protected_load_batch':
+            protected=json.loads((candidate_dir/'protected-route-proof.json').read_text())
+            assert protected==candidate['protected_route_proof']
+            assert protected['status']=='PASS_UNCHANGED_NATIVE_FIXED_WIRES_AFTER_DETAILED_ROUTE'
+            assert protected['protected_wired_nets']==113506 and protected['selected_routed_nets']==100
+            assert sha(candidate_dir/'fixed-source-summary.json')=='029d754af843cf83c4dfe6753e43ab0eec228d2d42db0e07f1a910bebcc73e75'
+            assert json.loads((candidate_dir/'fixed-source-summary.json').read_text())==candidate['fixed_conversion_receipt']
         expected_status='COMPLETE_'+status_prefix+'_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
         assert candidate['status']==expected_status and candidate['source_run']==38809759501
         assert candidate['protected_source_unchanged'] and candidate['original_routed_timing_reproduced'] and candidate['native_drt_drvs']==0
@@ -143,7 +152,7 @@ def main(args):
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch'])
+    parser=argparse.ArgumentParser();parser.add_argument('--controls-only',action='store_true');parser.add_argument('--profile',choices=['two_buffer','control_three_buffer','measured_load_batch','protected_load_batch'])
     parser.add_argument('--run',type=int);parser.add_argument('--summary-sha');parser.add_argument('--parts-sha');args=parser.parse_args()
     if args.controls_only:
         assert os.environ.get('GITHUB_ACTIONS')=='true';print(json.dumps(controls()))
