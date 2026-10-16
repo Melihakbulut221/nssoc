@@ -1,3 +1,13 @@
+## 2026-10-16 — Cloud-only continuation; power extraction passed; separate-host native restore failed
+
+Local workspace remains empty. No local CAD, tests, checkout or archives; all persistent changes and results are on GitHub.
+
+Power-layout junction38898250502, conductor graph38898250569 and six-pinLEF38898250496 passed their original component gates. New power-specific anchors/intrinsic workflows use exact immutable junction and wire capsules (hashes in docs/evidence/power-extraction-and-cross-job-status-20261016.json). Wait for their actual results, then derive fresh native RC, exact composition, static metrics and unchanged full34ns loaded test. Do not reuse compact260R300C counts or call component gates electrical acceptance.
+
+Native physical845 same-host4ns checkpoint38897452492 passed all12818 rows/34voltage probes bit-exact and all3 corruption controls. Separate-job restore38898727014 failed with native `internal error -- illegal instruction` after successful Docker restore; exit1. Different bootID verified, exact prefix/image/checkpoint preserved in source release. Cause is not yet proved. Record hardware/CPU and CRIU diagnostics plus partial continued capture before a justified portability fix; do not rerun unchanged full1us or claim cross-host continuation. Full original1us acquisition remains open.
+
+Mainchip234route38896397749 was still in progress at this observation. Preserve healthy computation; the stale final workflow-only assertion caveat below still applies. After completion independently validate source-bound234/88/146 counts, all22544 endpoints and geometry/annotation against146parent. Full serialPHY, actual mainchip closure and final timing remain unproved.
+
 ## 2026-10-16 — Selective supply-routing component physical gates passed
 
 38897276574 completed: zeroDRC/560categories, raw100 and aggregate deep/flatLVS, all seven original fault controls passed. GDS335bfb91a391e98737875316d139eca0e363c077033840b504fbce129582f189; summaryasset647200386 SHAfe00ed0d61d5a076e872773d8c25cdebc98b0fda489192116bcbc421c5d1fbaf. Exact archive/model placement source is docs/evidence/tx-driver-power-physical-source-20261016.json. This updates its earlier live observation only; no loaded electrical acceptance yet.
