@@ -1,3 +1,5 @@
+Current routed-candidate run: **38925935829**, source **3d62f73f6d90ac62aaf3d8019f75a20371cf6f90**. This is the stale-dbGuide correction run. Sensitivity38924911243 and nativePLL38910378266 are also active; inspect live before repeating anything. Local workspace has zero entries and no local OpenROAD/ngspice/KLayout/Magic/Netgen/Yosys/Verilator process was present at this checkpoint. All source and evidence writes are on GitHub.
+
 ## Latest routing correction — stale guide metadata identified
 
 Cloud diagnosis38925101397 PASSED read-only restoration of failed38924027432:
