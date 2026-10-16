@@ -1,0 +1,145 @@
+{
+  "run-rc01.py": {
+    "path": "scripts/pll_divider_load3p2_run_rc01.py",
+    "original_sha256": "299aac73ea4a06844653a8ff1d7f4e3ef94eacd18e4aea7c66bbb8de43c34064",
+    "adapted_sha256": "83bba85d23a7a45abfdca38dcea33f46f0d056fb79de97c2dc1c634c72bc8889",
+    "edits": [
+      {
+        "before": "clock_reference_wires",
+        "after": "divider_load3p2_wires",
+        "count": 2
+      }
+    ],
+    "native_rc_and_conservation_algorithm_unchanged": true,
+    "reused_for_v2_geometry_without_algorithm_change": true
+  },
+  "audit-rc02.py": {
+    "path": "scripts/pll_divider_load3p2_audit_rc02.py",
+    "original_sha256": "3243839ed93a1b62a1cc72ebda718a7bf5ea26c14f821bc83fc39ed445862ca4",
+    "adapted_sha256": "b6030d76994e5ad76628a0addf66463ed6a4893f85b47de0b1eb7c318d903f0a",
+    "edits": [
+      {
+        "before": "clock_reference_wires",
+        "after": "divider_load3p2_wires",
+        "count": 4
+      },
+      {
+        "before": "len(a)==14",
+        "after": "len(a)==205",
+        "count": 1
+      },
+      {
+        "before": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R=10,RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R=6",
+        "after": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R=198,RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R=85",
+        "count": 1
+      },
+      {
+        "before": "len(native_rows)==16",
+        "after": "len(native_rows)==283",
+        "count": 1
+      },
+      {
+        "before": "==['6']",
+        "after": "==['38']",
+        "count": 1
+      },
+      {
+        "before": "==['5']",
+        "after": "==['37']",
+        "count": 1
+      },
+      {
+        "before": "len(ports)==14",
+        "after": "len(ports)==205",
+        "count": 1
+      },
+      {
+        "before": "len(nodes)==5",
+        "after": "len(nodes)==37",
+        "count": 1
+      },
+      {
+        "before": "set(range(1,6))",
+        "after": "set(range(1,38))",
+        "count": 2
+      },
+      {
+        "before": "len(after['ports'])==14",
+        "after": "len(after['ports'])==205",
+        "count": 1
+      },
+      {
+        "before": "len(before['ports'])==5",
+        "after": "len(before['ports'])==37",
+        "count": 1
+      },
+      {
+        "before": "len(connected)==5 and len({c['component'] for c in connected})==5",
+        "after": "len(connected)==37 and len({c['component'] for c in connected})==37",
+        "count": 1
+      },
+      {
+        "before": "len(retire)==5",
+        "after": "len(retire)==37",
+        "count": 1
+      },
+      {
+        "before": "len(markers)==5",
+        "after": "len(markers)==37",
+        "count": 1
+      },
+      {
+        "before": "original_devices=6,public_ports=4,physical_wire_components=5,geometry_probes=14,metal_device_terminals=10",
+        "after": "original_devices=91,public_ports=7,physical_wire_components=37,geometry_probes=205,metal_device_terminals=198",
+        "count": 1
+      },
+      {
+        "before": "unmodeled_body_well_terminals=6",
+        "after": "unmodeled_body_well_terminals=85",
+        "count": 1
+      },
+      {
+        "before": "connected_wire_components=5",
+        "after": "connected_wire_components=37",
+        "count": 1
+      },
+      {
+        "before": "collapsed_matrix_entries=6**2",
+        "after": "collapsed_matrix_entries=38**2",
+        "count": 1
+      }
+    ],
+    "native_rc_and_conservation_algorithm_unchanged": true,
+    "reused_for_v2_geometry_without_algorithm_change": true
+  },
+  "mutations01.py": {
+    "path": "scripts/pll_divider_load3p2_mutations01.py",
+    "original_sha256": "645da880972ceceeb4e58641515d625ff97935d2d4e28430a299f845d31ec65e",
+    "adapted_sha256": "64d409413d14cfed0760fd0c833214c001c35331cdcd4aeab16f601f01490cd2",
+    "edits": [
+      {
+        "before": "clock_reference_wires",
+        "after": "divider_load3p2_wires",
+        "count": 4
+      },
+      {
+        "before": "R_EXTRA P_avdd P_avss 1",
+        "after": "R_EXTRA P_DIV_AVDD P_AVSS 1",
+        "count": 1
+      },
+      {
+        "before": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',5",
+        "after": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',84",
+        "count": 1
+      },
+      {
+        "before": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),",
+        "after": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Physical wire R graph open or incomplete'),",
+        "count": 1,
+        "reason": "Observed native R0 joins public CLKP to first device. Removing it opens an anchored component, rejected by the earlier connectivity gate. Same actual corruption retained; no acceptance rule changed."
+      }
+    ],
+    "native_rc_and_conservation_algorithm_unchanged": true,
+    "reused_for_v2_geometry_without_algorithm_change": true
+  }
+}
