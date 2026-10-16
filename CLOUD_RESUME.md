@@ -1,3 +1,11 @@
+## 2026-10-16 — Cloud-only execution verified; driver diagnosis completed
+
+The local project workspace has zero entries and no local CAD/simulation process was found. Continue all checkout, CAD, simulations, testing and artifact storage on GitHub-hosted infrastructure; API orchestration must not download archives or create a local checkout. Original user-supplied Downloads documents were preserved, not treated as generated build artifacts.
+
+Setup/hold driver diagnosis **38839736674** completed successfully on source **dfc9db682d460dd5f497964baefde3a2736780c0**. The published summary SHA256 is `a7b7c9ec447475af9dc7dc5e2a08f7552a4aab2b0404471166edef331244eea8`; it identifies **60 measured weak loaded outputs**. This is source-bound diagnosis, not a repair or timing acceptance. See `docs/evidence/cloud-setup-hold-driver-diagnosis-20261016.json`. Resolve native output identities and check overlap with the original fifty-buffer recipe before selecting the next physical setup experiment; absence from reported min paths is not an all-endpoint safety proof.
+
+At this observation, existing jobs **38837758293** (four SRAM hold branches), **38813902351** (PLL), **38810163678** and **38834025040** (full32 captures) remain in progress. Preserve them; do not duplicate them. When the physical repair completes, run independent all-endpoint, geometry and RC annotation checks using exact published summary and manifest hashes. Full serial PHY and final timing remain open.
+
 ## 2026-10-16 — Source-bound joint setup/hold driver diagnosis staged
 
 New setup-hold-driver-review-cloud restores exact completed fifty-buffer global STA and the96target/576path conflict trace. It ranks measured weak-driver load stages (>=0.1pF,>=0.5ns) on reported negative slowsetup paths, and records whether each stage is also on any of the96reported fasthold paths. Thresholds select diagnostic candidates only; absence from these reported min paths is not a safety proof. Exact original phase/path/slack summaries and archive hashes must match; all raw stage rows and failures remain in the result. Use the evidence to choose jointsetup/hold repairs rather than indiscriminate delay insertion. Existing fourbranch hold and PLL/full32 jobs remain live; do not duplicate them. Cloud-only.
