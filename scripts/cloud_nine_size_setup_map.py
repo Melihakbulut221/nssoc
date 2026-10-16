@@ -43,7 +43,10 @@ def native():
                 assert inst.getMaster().getName()==row['master'];net=term.getNet();assert net
                 entry=dict(kind='iterm',master=inst.getMaster().getName(),direction=str(term.getIoType()),location_dbu=list(inst.getLocation()))
             else:
-                term=block.findBTerm(name);assert term and row['master']=='in';net=term.getNet();assert net;entry=dict(kind='bterm',direction=str(term.getIoType()))
+                term=block.findBTerm(name);assert term,('Missing exact boundary pin',name)
+                direction=str(term.getIoType());expected={'INPUT':'in','OUTPUT':'out','INOUT':'inout'}
+                assert direction in expected and row['master']==expected[direction],(name,direction,row['master'])
+                net=term.getNet();assert net;entry=dict(kind='bterm',direction=direction)
             entry.update(net=net.getName(),signal_type=str(net.getSigType()),connections=[describe(t)for t in net.getITerms()],boundary_terms=[t.getName()for t in net.getBTerms()]);named[name]=entry
     inventory={}
     for prefix in ['u_ibex.','u_bus.','g_core_req_reg.','u_bus.g_req_reg.','g_core_req_direct.']:
@@ -66,7 +69,7 @@ def main():
                 i=next(i for i,t in enumerate(trace['targets'])if t['endpoint']==name)
                 for edge in ('rise','fall'):
                     key=f'{i}_{c}_max_{edge}';rows=data_rows(blocks[key]);assert rows[-1]['pin']==name
-                    paths.append(dict(marker=key,endpoint=name,corner=c,edge=edge,slack_seconds=trace['targets'][i]['transition_slacks'][c+'_max'][['rise','fall'].index(edge)],data_rows=rows,data_cell_count=sum(r['master']!='in'for r in rows),startpoint=blocks[key].splitlines()[0]))
+                    paths.append(dict(marker=key,endpoint=name,corner=c,edge=edge,slack_seconds=trace['targets'][i]['transition_slacks'][c+'_max'][['rise','fall'].index(edge)],data_rows=rows,data_cell_count=sum(r['master']not in ('in','out','inout')for r in rows),startpoint=blocks[key].splitlines()[0]))
         assert len(paths)==60;(OUT/'path-requests.json').write_text(json.dumps(paths,indent=2)+'\n');r.update(trace=tp,parent=pp,path_count=60);save()
         env=dict(os.environ,NSSOC_SETUP_MAP_NATIVE='1')
         with (OUT/'native-map.log').open('w')as f:code=subprocess.call([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',str(Path(__file__).resolve())],env=env,stdout=f,stderr=subprocess.STDOUT)
