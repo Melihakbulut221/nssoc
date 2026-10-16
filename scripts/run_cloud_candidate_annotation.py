@@ -6,6 +6,7 @@ import argparse,json,os,re,subprocess
 from pathlib import Path
 from cloud_contact_release import validate_route_proof
 from expanded_load_targets import validate_candidate as validate_expanded,EXTRA_FILES
+from refined_load_targets import validate_candidate as validate_refined
 from measured_hold_targets import validate_child,CHILD_FILES
 import compare_cloud_routed_endpoints as source_reports
 from run_cloud_candidate_geometry import PROFILES
@@ -23,6 +24,7 @@ def main(args):
         if args.profile=='protected_load_batch':selected+=('protected-route-proof.json','fixed-source-summary.json')
         if args.profile=='measured_hold_batch':selected+=CHILD_FILES
         if args.profile=='expanded_load_batch':selected+=EXTRA_FILES
+        if args.profile=='refined_load_batch':selected+=EXTRA_FILES+('refined-driver-review-summary.json',)
         candidate,proof=source_reports.restore_report(group,args.run,args.summary_sha,args.parts_sha,OUT/'source',selected)
         assert candidate['status']=='COMPLETE_'+status+'_ROUTED_NOMINAL_TIMING_EXPERIMENT_NOT_SIGNOFF'
         assert candidate['source_run']==38809759501 and candidate['native_drt_drvs']==0
@@ -34,6 +36,7 @@ def main(args):
         if count!=2:assert candidate['profile']==args.profile and candidate['buffer_count']==count
         if args.profile=='measured_hold_batch':validate_child(candidate,OUT/'source')
         if args.profile=='expanded_load_batch':validate_expanded(candidate,OUT/'source')
+        if args.profile=='refined_load_batch':validate_refined(candidate,OUT/'source')
         if args.profile=='protected_load_batch':
             protected=json.loads((OUT/'source/protected-route-proof.json').read_text());assert protected==candidate['protected_route_proof']
             validate_route_proof(protected,candidate)
