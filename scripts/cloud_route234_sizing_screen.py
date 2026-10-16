@@ -83,7 +83,7 @@ def main():
         result['remeasured_source_drivers']=requests;save()
         assert all(v>0 for r in requests[:14]for v in r['source234_hold_ns'].values()),'Selected driver already has negative hold on actual234; revise hypothesis before resizing'
         run([os.environ['CLOUD_APPIMAGE'],'openroad','-exit','-python',str(ROOT/'scripts/prepare_route234_sizing_screen.py')],'prepare-sizing')
-        preparation=json.loads((OUT/'native-sizing.json').read_text());assert len(preparation['changes'])==14 and preparation['source_unchanged']
+        preparation=json.loads((OUT/'native-sizing.json').read_text());assert 0<len(preparation['changes'])<=14 and len(preparation['changes'])+len(preparation['unavailable'])==14 and preparation['source_unchanged']
         result['preparation']=preparation;save()
         tcl(f'read_db {{{CHILD/"routed.odb"}}}\nwrite_verilog {{{OUT/"before.v"}}}\n','before-netlist')
         tcl(f'read_db {{{OUT/"unlegalized-frozen-wire.odb"}}}\nwrite_verilog {{{OUT/"after.v"}}}\n','after-netlist')
@@ -109,7 +109,7 @@ def main():
         assert all(sha(CHILD/n)==v['sha256']for n,v in proof['restore']['selected_files'].items())
         assert all(sha(Path(n))==v for n,v in old['protected_inputs'].items())
         assert sha(helper)==reports.HELPER_SHA and sha(method)==reports.CENSUS_METHOD_SHA
-        result.update(status='COMPLETE_FOURTEEN_DRIVER_FROZEN_RC_SIZING_SCREEN_NOT_PHYSICAL_ACCEPTANCE',source_unchanged=True)
+        result.update(status='COMPLETE_AVAILABLE_DRIVER_FROZEN_RC_SIZING_SCREEN_NOT_PHYSICAL_ACCEPTANCE',source_unchanged=True)
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'};save()

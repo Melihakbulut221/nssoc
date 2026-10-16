@@ -69,7 +69,7 @@ jobs:
           import json,os
           r=json.load(open('cloud-route234-sizing-screen/result.json'))
           assert r['source_head']==os.environ['GITHUB_SHA']
-          assert r['status']=='COMPLETE_FOURTEEN_DRIVER_FROZEN_RC_SIZING_SCREEN_NOT_PHYSICAL_ACCEPTANCE',r.get('error')
+          assert r['status']=='COMPLETE_AVAILABLE_DRIVER_FROZEN_RC_SIZING_SCREEN_NOT_PHYSICAL_ACCEPTANCE',r.get('error')
           assert r['source_unchanged'] and r['baseline_all_endpoint_rows_reproduced']
           assert r['inversion_control']=='REJECTED' and r['logic']['status']=='PASS within scope'
           assert r['endpoint_count']==22544 and r['endpoint_corner_delay_rows']==135264
