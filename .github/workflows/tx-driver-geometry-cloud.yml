@@ -35,7 +35,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Inspect actual ng10 geometry and exact buf16 GDS CDL SPICE and LEF
+      - name: Inspect all fingers and preserve native label transforms without API conversion
         run: python3 scripts/run_cloud_tx_driver_geometry.py
       - name: Preserve original geometry and routing requirements without claiming LVS
         if: always()

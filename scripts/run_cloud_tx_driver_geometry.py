@@ -82,7 +82,7 @@ def inspect():
         texts=[];it=cell.begin_shapes_rec(index)
         while not it.at_end():
             s=it.shape()
-            if s.is_text():texts.append(dict(text=s.text.string,position=str(s.text.trans.transformed(it.trans()))))
+            if s.is_text():texts.append(dict(text=s.text.string,local_transform=str(s.text.trans), hierarchy_transform=str(it.trans())))
             it.next()
         if not reg.is_empty() or texts:
             layers.append(dict(layer=info.layer,datatype=info.datatype,polygons=reg.count(),area_um2=reg.area()*std.dbu**2,texts=texts))
