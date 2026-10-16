@@ -27,6 +27,15 @@ jobs:
           python3 scripts/expanded_load_targets.py --verify-published
           python3 scripts/compare_cloud_routed_endpoints.py --controls-only
           python3 scripts/native_graph_path_coverage.py --controls-only
+          tclsh <<'TCL'
+          source hw/soc/pnr/timing_hold_reproducibility.tcl
+          source hw/soc/pnr/native_graph_path_coverage.tcl
+          if {[nssoc_graph_edge ^] ne "rise" || [nssoc_graph_edge v] ne "fall"} {error "Native edge mapping failed"}
+          foreach raw {rise fall unknown {}} {
+              if {![catch {nssoc_graph_edge $raw}]} {error "Unknown native edge accepted"}
+          }
+          puts NSSOC_NATIVE_EDGE_FORMAT_CONTROLS_PASS
+          TCL
   full-comparison:
     needs: controls
     runs-on: ubuntu-22.04

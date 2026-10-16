@@ -7,6 +7,14 @@ rename nssoc_hold_assert_path_coverage nssoc_original_assert_path_coverage
 set nssoc_graph_checks {}
 set nssoc_graph_failures {}
 set nssoc_graph_mismatches {}
+# Transition.hh::to_string returns short_name_; Transition.cc defines ^ and v.
+proc nssoc_graph_edge {raw} {
+    switch -- $raw {
+        ^ {return rise}
+        v {return fall}
+        default {error "Unknown native RiseFall symbol: $raw"}
+    }
+}
 proc nssoc_hold_assert_path_coverage {vertices minima} {
     set code [catch {nssoc_original_assert_path_coverage $vertices $minima} message]
     if {$code ni {0 1}} {error "Unexpected original guard completion code"}
@@ -26,7 +34,7 @@ proc nssoc_hold_assert_path_coverage {vertices minima} {
                 try {
                     while {[$iterator has_next]} {
                         set path [$iterator next]
-                        if {[get_property [$path pin] full_name] ne $name || [$path edge] ne $rf} {error "Graph path identity mismatch: $name"}
+                        if {[get_property [$path pin] full_name] ne $name || [nssoc_graph_edge [$path edge]] ne $rf} {error "Graph path identity mismatch: $name"}
                         set slack [nssoc_hold_slack [$path slack]]
                         lappend observed $slack
                         incr raw_count;incr endpoint_paths
@@ -48,7 +56,7 @@ proc nssoc_hold_assert_path_coverage {vertices minima} {
                 if {$value eq "UNCONSTRAINED" || $minimum eq "UNCONSTRAINED" || $minimum>$value || ($minimum<0)!=($value<0) || $value ni $observed} {error "Unexplained native vertex/graph difference: $name"}
                 set selected [sta::vertex_worst_slack_path $vertex $::delay]
                 if {$selected eq "NULL" || [get_property [$selected pin] full_name] ne $name || [nssoc_hold_slack [$selected slack]] ne $value} {error "Native chosen path does not reproduce vertex: $name"}
-                lappend ::nssoc_graph_mismatches [nssoc_hold_jobject [dict create endpoint [nssoc_hold_jstr $name] delay [nssoc_hold_jstr $::delay] vertex_seconds $value graph_minimum_seconds $minimum native_chosen_path_seconds [nssoc_hold_number [$selected slack]] native_chosen_path_tag [nssoc_hold_jstr [$selected tag]] native_chosen_path_transition [nssoc_hold_jstr [$selected edge]] raw_graph_paths $endpoint_paths]]
+                lappend ::nssoc_graph_mismatches [nssoc_hold_jobject [dict create endpoint [nssoc_hold_jstr $name] delay [nssoc_hold_jstr $::delay] vertex_seconds $value graph_minimum_seconds $minimum native_chosen_path_seconds [nssoc_hold_number [$selected slack]] native_chosen_path_tag [nssoc_hold_jstr [$selected tag]] native_chosen_path_transition [nssoc_hold_jstr [nssoc_graph_edge [$selected edge]]] native_chosen_path_transition_raw [nssoc_hold_jstr [$selected edge]] raw_graph_paths $endpoint_paths]]
             }
         }
     } finally {close $stream}
