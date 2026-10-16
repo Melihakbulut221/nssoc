@@ -1,3 +1,77 @@
+## Current cloud-only handoff — real clock RC complete; combined loaded simulation launched
+
+Cloud-only observation: 2026-10-16T19:01:19.758145+00:00. Local workspace remains empty. No local CAD,
+checkout or archive/result files. Previous turn is PROGRESS, not blocked.
+No healthy job was restarted. Keep the full goal open.
+
+NEW combined actual clock/driver run38951500702, source
+fc64f992c82391cff53cfc1572bf750948f14d89. Latest authoritative run state: in_progress.
+Jobs: [(117143736995, 'in_progress', None)]. Workflow tx-clock-driver-loaded-cloud.yml, group
+`tx-clock-driver-loaded-l2p4-series-l6p2`. It replaces both schematic clock
+reference and feed with the exact actual6-device/13R28C reference macro,
+keeps eight actual100-device/260R295C driver instances and actual162-device
+routed tree, and retains full34ns/256bits/0.3,0.5,0.7UI/zeroOP/672MOS/62HBT
+and original gates. Adapter proves actual HBT hierarchy/terminal/current
+probes, replaces native OFF controls, preserves source PWL/tran, rejects four
+real adapter faults. External clock modulation, supplies and connections
+between clock/driver/core blocks remain ideal; this is not PVT,32:1/x4/fullPHY
+or mainchip acceptance. Inspect result before next action; never restart a
+healthy job. Scripts cloud_tx_clock_loaded_adapter.py and
+cloud_tx_clock_driver_loaded.py. Clock model SHA
+2188c3c4c7c723f314dc6c0b8a967fdcd927ecb71a66cbbf0ebe391365ffb116.
+
+Clock pipeline BOTH l6p2/l6p5 now complete through exact physical composition:
+- anchors38949155987: native6 devices/16terminals,10metal6body,14reference
+  planes and5actualmetalcomponents; six faults rejected, including swapping
+  separate collector/base physical planes despite their common logical net.
+- intrinsic38950420186:1HBT,2rppd,3finiteptap contacts; all8faults reject.
+  Original38949547450 failed reading native HBT comments asUTF8(byte0xb5).
+  Fix11c0df2 uses losslesslatin1 for reading, leaving pinned model bytes intact.
+  Second38950077420 failed exactcontact-line match due to trailingnewline;
+  fix8d1fde0 strips whitespace while retaining exact R1 1 2 R=R law.
+  Both failures remain published. No circuit/limit relaxation.
+- RC38949849842: actual13R28C,5connectedcomponents,14probes,0disconnected;
+  exact nativeRmultiset, pointC/mutualattachments and full36-entrycollapsed
+  matrix conserved.13rawcorruptions reject.27nativeportshortwarnings all
+  same physicalconductor. No intrinsic aliases inserted. NotqualifiedPEX/RF.
+- composition38950944472: all6devices/13R28C/16terminals,1finitebody node,
+ 5ports including explicitwire_cref.11faults reject, including swappedC/B
+  planes that collapse to the same net. GDS/nativeDB sourcehashes identical.
+All receipts and detailed checks in
+`docs/evidence/tx-clock-reference-extracted-results-20261016.json`.
+
+Prior actualdriver + SCHEMATICclock simulation38947156051 completed:
+alloriginalnominalgatespass,77643rows/full34ns,zeroOP,0solverdiagnostics,
+62HBT/672MOS withnofaileddevices. Output206.055704mV,CMOS175.780950mV,
+final150.869460mV and0below150mV. Only0.869460mVfinalmargin; do not infer
+PVTrobustness. Clock physicalmodelwasfalse in that run. New combined run above
+is the first using actualclockRC/finitecontacts. Evidence:
+`docs/evidence/tx-driver-series-loaded-results-20261016.json`.
+
+Mainchip independent38948570826 completed geometry ANDannotation:
+exact114025cells114097nets,9masterschanged/114016unchanged, preservednet/PG/NDR,
+realdisconnected-inputmutationrejected. RoutedODB SHA
+72c2e2cd51be4f075b551b48ccd23a57bebf41d978a94b64f6a1164848662e87.
+All113790signalnets/3325451shapes:0continuityfailures,0cross-netmetalcontacts.
+All113790SPEFnetsresolve;0loadedunannotateddrivers.1065unannotated classify
+302connected-no-sink+763disconnected, not waived functionalcoverage.
+NativeDRT0 but antenna643nets/798pins remains (parent639/791).
+Setup endpointslow9359to9310,typ470to461,fast1to0; holdfast7to6.
+SlowsetupWNS worsened-5.558064to-5.649650ns; typicalimproved-1.999653to
+-1.509338ns; fastholdWNS-0.046168ns.1072setup/1117holdunconstrained unchanged.
+Do NOT call this candidate globally timing/antenna accepted. Preserve parent.
+Exactreports in `docs/evidence/nine-size-independent-results-20261016.json`
+and `docs/evidence/nine-size-routed-results-20261016.json`.
+Nextmainchipwork: diagnose sixfast hold endpoints and remaining slow/typical
+critical paths from this exactroutedODB/freshRC; anyfive-buffer feasibility
+was based on old234parent and must be rebased/proved/routed/re-extracted if
+combined. Never use the old frozenRC screen as physical closure.
+
+PLL38910378266 continuationjob117113404119: in_progress. Preserve native saved state;
+use its latest published continuation capsule after completion, not coldstart.
+FullserialGen3x4, PVT/qualifiedRC, remainingclock/CDR/full32:1/x4/integration,
+fullchipLVS/DRC and finalsetup/hold remain incomplete. Do not close the goal.
+
 ## Current cloud-only handoff — routed candidate complete, independent reviews dispatched
 
 Local workspace /home/hasanmelih/Documents/ChatGPT/nnsoc is empty. No local
