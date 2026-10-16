@@ -106,7 +106,7 @@ def main():
             return ['docker','create'if create else'run',*([]if create else['-d']),'--name',name,'--network','host','--security-opt','seccomp=unconfined','--cpuset-cpus',cpu,'--mount','type=bind,src='+str(ROOT)+',dst='+str(ROOT)+',readonly','--mount','type=bind,src='+str(case)+',dst='+str(case),'-w',str(case),'-e','SPICE_SCRIPTS='+str(case),'-e','OMP_NUM_THREADS=1','-e','RAYON_NUM_THREADS=1','--entrypoint','/bin/dash',result['image_id'],'-c',code]
         reference='nssoc-native-reference';original='nssoc-native-original';clone='nssoc-native-restored';owned=[reference,original,clone]
         run('start-reference',command(reference,cases['reference']));assert run('wait-reference',['docker','wait',reference]).stdout.strip()=='0'
-        ref_log=run('reference-log',['docker','logs',reference]).stdout
+        run('reference-log',['docker','logs',reference]);ref_log=(OUT/'reference-log.log').read_text()
         rn,rv,rr=inspect_capture(cases['reference'],vectors,ref_log);result['reference']=rr
         result['host_container_equivalence']=verify((hn,hv),(rn,rv),(cases['reference']/'boots.log').read_text().splitlines());save()
         run('start-native',command(original,cases['resumed']));raw=cases['resumed']/'actual-acquisition.raw';deadline=time.monotonic()+180
@@ -118,7 +118,7 @@ def main():
         prefix=raw.read_bytes();marker=b'Binary:\n';assert prefix.count(marker)==1;payload=prefix.split(marker,1)[1]
         assert len(payload)>35*8*1000 and len(payload)<rv.nbytes
         result['checkpoint_prefix']=dict(bytes=len(prefix),payload_bytes=len(payload),sha256=hashlib.sha256(prefix).hexdigest(),payload_sha256=hashlib.sha256(payload).hexdigest());(OUT/'checkpoint-prefix.raw').write_bytes(prefix);save()
-        original_log=run('original-prefix-log',['docker','logs',original]).stdout
+        run('original-prefix-log',['docker','logs',original]);original_log=(OUT/'original-prefix-log.log').read_text()
         clone_id=run('create-native-clone',command(clone,cases['resumed'],True)).stdout.strip();assert re.fullmatch('[0-9a-f]{64}',clone_id)
         docker_root=Path(run('docker-root',['docker','info','--format','{{.DockerRootDir}}']).stdout.strip());destination=docker_root/'containers'/clone_id/'checkpoints/state'
         run('native-default-dir',['sudo','mkdir','-p',str(destination.parent)]);run('native-copy',['sudo','cp','-a',str(checkpoints/'state'),str(destination)])
@@ -128,7 +128,7 @@ def main():
         if restored.returncode:
             run('restore-native-detail',['sudo','cat','/run/containerd/io.containerd.runtime.v2.task/moby/'+clone_id+'/work/restore.log'],False);raise RuntimeError('Native restore failed')
         assert run('wait-native-clone',['docker','wait',clone]).stdout.strip()=='0'
-        resumed_log=original_log+run('restored-native-log',['docker','logs',clone]).stdout
+        run('restored-native-log',['docker','logs',clone]);resumed_log=original_log+(OUT/'restored-native-log.log').read_text()
         sn,sv,sr=inspect_capture(cases['resumed'],vectors,resumed_log);result['restored']=sr
         assert raw.read_bytes().split(marker,1)[1].startswith(payload),'Native pre-checkpoint payload changed'
         result['positive']=verify((rn,rv),(sn,sv),(cases['resumed']/'boots.log').read_text().splitlines());controls=[]

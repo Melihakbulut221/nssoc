@@ -58,6 +58,10 @@ def main():
                 for delay in ('min','max'):
                     phase=f'branch_{r["index"]}_{corner}_{delay}';phases_expected.add(phase)
                     commands += ['puts PHASE_'+phase,f'report_checks -corner {corner} -through $through -to $endpoint -path_delay {delay} -group_path_count 1 -endpoint_path_count 1 -fields {{slew cap fanout}} -digits 9']
+            # Also cover every reachable endpoint, not merely the selected hold target.
+            for corner in ('slow','typical','fast'):
+                phase=f'branch_{r["index"]}_{corner}_allmax';phases_expected.add(phase)
+                commands += ['puts PHASE_'+phase,f'report_checks -corner {corner} -through $through -path_delay max -group_path_count 1 -endpoint_path_count 1 -fields {{slew cap fanout}} -digits 9']
         tcl=OUT/'branch-margins.tcl';tcl.write_text('\n'.join(commands)+'\n');native=run([os.environ['CLOUD_APPIMAGE'],'openroad','-exit',str(tcl)],'branch-margins')
         before,after=native.split('NSSOC_BRANCH_BEGIN\n');baseline=parse_phases(before,'CORNER')
         for phase,row in candidate['routed_timing'].items():assert baseline[phase]['groups']==row['groups']
@@ -68,9 +72,11 @@ def main():
             r['through_hold_ns']={c:phases[f'branch_{r["index"]}_{c}_min']['worst_slack_ns']for c in ('slow','typical','fast')}
             assert r['through_hold_ns']['fast']==native_report_ns(r['observed_fast_hold_seconds'])
             r['positive_setup_all_corners']=all(v is not None and v>0 for v in r['through_setup_ns'].values())
+            r['all_reachable_setup_ns']={c:phases[f'branch_{r["index"]}_{c}_allmax']['worst_slack_ns']for c in ('slow','typical','fast')}
+            r['positive_setup_all_reachable_endpoints']=all(v is not None and v>0 for v in r['all_reachable_setup_ns'].values())
         assert all(sha(CANDIDATE/n)==v['sha256']for n,v in proof['restore']['selected_files'].items())
         assert all(sha(Path(n))==v for n,v in old['protected_inputs'].items())
-        result.update(status='COMPLETE_SHORT_BRANCH_SETUP_HOLD_MARGINS_NOT_REPAIR_ACCEPTANCE',rows=rows,phases=phases,source_unchanged=True,original_timing_reproduced=True,positive_branch_count=sum(r.get('positive_setup_all_corners',False)for r in rows))
+        result.update(status='COMPLETE_SHORT_BRANCH_SETUP_HOLD_MARGINS_NOT_REPAIR_ACCEPTANCE',rows=rows,phases=phases,source_unchanged=True,original_timing_reproduced=True,positive_branch_count=sum(r.get('positive_setup_all_corners',False)for r in rows),positive_all_reachable_branch_count=sum(r.get('positive_setup_all_reachable_endpoints',False)for r in rows))
     except BaseException as e:result.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'};save()
