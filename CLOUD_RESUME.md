@@ -1,3 +1,15 @@
+## Active new physical PLL full1us acquisition (2026-10-17)
+
+Cloud-only; local workspace remains empty. New workflow `pll-v2-native-acquisition-cloud.yml` run38982797234, source ae5d3668d130616a49e0f9592ae49f4f1c98ffc9: controls PASSED, initial job117247407978 active. New controller `scripts/cloud_pll_v2_native_acquisition.py` starts a separate original-duration1us trajectory on exact physical-v2 model d86f4716070f22b36f3fafb9b5d789f2dd029552aefafbedbab8aebdfb0cb85b. Original completed failed waveform remains intact. Native engine/image/model library/portable cross-host proof are restored and verified through original preparation. Only model and graph-proven102HBT ID references change; stimuli/34probes/.3125ps/KLU/zeroOP and original final100ns gates stay fixed. Four actual deck mutations must be rejected, all102nativeOFF readbacks checked. FreshRC/full845graph receipt is pinned, and all input files protected across native checkpoints.
+
+Native stage14400host-seconds, automatic second job on a distinct runner only if actual process checkpoint is saved. New release groups `pll-v2-native-acquisition-initial` and `pll-v2-native-acquisition-continuation`; same checkpoint JSON schema run/attempt/stage/summary_sha256/parts_sha256. Use exact source revision for continuation. Do not restart or duplicate a live run. Inspect actual preparation/native outcome and preserve failures. PASS of controls does not establish waveform or lock acceptance.
+
+Physical composition38981800336 evidence now recorded in `docs/evidence/pll-v2-full-physical-composition-result-20261017.json`:845devices8660wire elements,3906node bijection,6graph+7component fault rejections. Parent fresh98R242C differs from old bytes. Mainchip/fullPHY/electrical acceptance remain false.
+
+Ethernet physical route38978702458 remains live; no duplicate. Independent review workflow already prepared, dispatch after exact producer terminal evidence as below. Full target remains open.
+
+---
+
 ## Latest verified cloud-only handoff (2026-10-17)
 
 The user's latest instruction is to perform all NSSOC engineering in the cloud and leave no local project files. This supersedes the old goal wording requesting local execution. The local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified EMPTY; no local CAD processes or NSSOC-named files in /tmp or Downloads were found. Do not recreate a checkout or download reports to local disk. Use GitHub APIs in memory and GitHub-hosted Actions for CAD, simulation and tests. Existing cloud jobs must continue.
