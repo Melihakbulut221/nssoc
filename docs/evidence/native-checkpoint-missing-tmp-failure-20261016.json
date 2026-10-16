@@ -1,0 +1,80 @@
+{
+  "run": 38896832088,
+  "summary_asset": 647191985,
+  "summary_sha256": "655707c70e65b82e98baf01c7db2e9a83611563903a7e18ff5cbdcccc520f2ef",
+  "error": "AssertionError(('Native reference exit', '1', 'tmpfile(): No such file or directory\\n'))",
+  "host": {
+    "capture": {
+      "header_points": 12818,
+      "observed_rows": 12818,
+      "width": 35,
+      "header_bytes": 1190,
+      "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "header_matches_observed": true,
+      "payload_has_only_complete_rows": true,
+      "excluded_trailing_bytes": 0,
+      "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "complete_rows_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "interrupted_diagnostic": false
+    },
+    "start_s": 0.0,
+    "end_s": 4e-09,
+    "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+    "native_options": {
+      "backend": "klu",
+      "numeric": {
+        "reltol": 0.0001,
+        "abstol": 1e-12,
+        "vntol": 1e-06,
+        "trtol": 7.0,
+        "maxord": 2.0,
+        "itl4": 10.0
+      },
+      "method": "TRAPEZOIDAL",
+      "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+    },
+    "zero_source_operating_point": {
+      "maximum_abs_v": 0.0,
+      "columns": [
+        "v(clkp)",
+        "v(clkn)",
+        "v(down)",
+        "v(fb)",
+        "v(fbbar)",
+        "v(qn)",
+        "v(qp)",
+        "v(reference)",
+        "v(reset)",
+        "v(up)",
+        "v(vctrl)",
+        "v(xloop.a_count_vss)",
+        "v(xloop.a_release_clk)",
+        "v(xloop.a_release_reset_b)",
+        "v(xloop.bn)",
+        "v(xloop.bp)",
+        "v(xloop.clk)",
+        "v(xloop.count)",
+        "v(xloop.countb)",
+        "v(xloop.counter_reset_b)",
+        "v(xloop.qn2)",
+        "v(xloop.qp2)",
+        "v(xloop.releaseb)",
+        "v(xloop.xcount.q0)",
+        "v(xloop.xcount.q1)",
+        "v(xloop.xpfd.t001_d)",
+        "v(xloop.xpfd.t003_d)",
+        "v(xloop.xpfd.t005_g)",
+        "v(xloop.xpfd.t007_g)",
+        "v(xloop.xpfd.t009_g)",
+        "v(xloop.xpfd.t012_d)",
+        "v(xloop.xpfd.t013_d)",
+        "v(xloop.xpfd.t014_d)",
+        "v(xloop.xpfd.t016_d)"
+      ],
+      "sha256": "79a5e47de4ad73a5efc59b0b874e9d1ebe202fe0a2c1a13f9f527d4a16a148e5"
+    },
+    "diagnostics": []
+  },
+  "fix": "Add actual mode1777 /tmp to the scratch image so native tmpfile() has its standard working directory. Preserve the exact ELF/OSDI/library/model/solver and all waveform equivalence controls.",
+  "native_checkpoint_proven": false
+}

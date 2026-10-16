@@ -91,6 +91,7 @@ def main():
         libraries['/bin/dash']=sha('/bin/dash')
         for name,digest in libraries.items():
             target=rootfs/name.lstrip('/');target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(name,target);assert sha(target)==digest
+        (rootfs/'tmp').mkdir();(rootfs/'tmp').chmod(0o1777)
         (rootfs/'Dockerfile').write_text('FROM scratch\nCOPY . /\n')
         run('build-native-root',['docker','build','--network','none','-t','nssoc-native-checkpoint',str(rootfs)],timeout=300)
         info=json.loads(run('native-image',['docker','image','inspect','nssoc-native-checkpoint']).stdout)[0];result['image_id']=info['Id'];result['runtime_libraries']=libraries
