@@ -1,3 +1,15 @@
+## 2026-10-16 — Candidate RC annotation diagnosis completed
+
+The independent annotation run **38832826137**, native job **116755292822**, completed on the two-buffer candidate from run **38813118414**. Source commit: `aace2ad0375333cf86eaf5232bdc830e54a5a6b2`.
+
+All **113,558 SPEF nets** matched their native ODB net IDs and exact escaped names. Of **1,065 unannotated drivers**, **302 have no sinks** and **763 are disconnected**. There are **zero loaded unannotated drivers**. All selected source hashes remained unchanged. The full receipt is `docs/evidence/cloud-two-buffer-annotation-results-20261016.json`; summary SHA256 is `f49d15621be8b38999efe2c6a0bfb599eb8e0771aa1c3b6e0c81de9887fc54ad`, manifest SHA256 is `3e7c37c111a6fc9ca6c237c10322cd8370b5bf3463b3fe24af43bf050576e381`, and archive SHA256 is `3fabe3f1d4b60228406f08251c9fe40a5c3de8c8aae5bf31fe56584562e8a6fc`.
+
+**The candidate remains rejected.** Its independent endpoint comparison still shows new hold/setup violations, and its geometry audit still reports **634 antenna nets / 783 pins**. This annotation diagnosis does not establish complete functional interface coverage, qualified RC corners, SRAM characterization, full serial PHY integration, or final timing acceptance.
+
+The reusable `candidate-annotation-cloud` workflow passed controls in run **38832681479** and a real native candidate measurement in **38832826137**. It supports the two-buffer, three-buffer, measured 50-buffer, and protected 50-buffer profiles. The original annotation audit keeps its original defaults; candidate mode derives the complete driver count from the native report instead of assuming that it remains 1,065.
+
+For each newly completed physical candidate, verify its exact summary/manifest hashes, then run all three independent checks: endpoint timing, candidate geometry/antenna, and candidate RC annotation. Preserve all failures. Check the six existing native jobs in `docs/evidence/cloud-current-checkpoint-20261016.json` before starting anything; do not duplicate a live job. Full PHY and final setup/hold remain open. All execution is cloud-only, and the local project directory contains zero entries.
+
 ## Completed-candidate RC annotation diagnosis staged
 
 Newcandidate-annotation-cloud uses exactsame2/3/50/protected50sourcepins andlogic/0DRV/freshRC provenancegates. ClassifiesALLnativeunannotateddriversfromarchivedfreshSTAagainstexactnativeODB/SPEF IDs+writerescapednames; no reverseescaping. Originalannotationhelperdefaultunchanged113791cells/113863nets/113556SPEFnets/1065drivers; source-verifiedECOmode supports2/3/50addedbuffers andtakesdrivercountfromstrictnativeheader, notassumed1065 (soaddedloadedfailurescannotbehidden). Everyloadedunannotateddriverretained, no coverageadoption. Controlsrunonpush; realcandidateonlydispatchafterterminalphysicalsourcepins. Sameprotectedrouteproofrequired forprotectedprofile. Other6nativejobsremainlive, cloudonly/localempty.
