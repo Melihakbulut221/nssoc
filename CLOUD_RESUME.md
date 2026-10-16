@@ -1,3 +1,11 @@
+## 2026-10-16 — Expanded110 repair LIVE with complete source preflight
+
+Physical run **38843068297/job116787326928**, source **76b58f13a83f30dab52a68c4d3af7ad94bac1607**, is **in_progress**. Last observed active step: Prove110source-measured load repairs, fully reroute, reextract and compare all corners. Source recipe, complete published-driver diagnosis, all legacy profiles, twelve malformed target/phase controls, changed-source-byte rejection, and controller compilation passed. No physical/timing completion is claimed.
+
+Receipt: `docs/evidence/cloud-expanded-load-repair-20261016.json`. All60new weak outputs are disjoint from original50. Require original-cell and postroute all-candidate topology/geometry preservation, full logic/inversion proof, rerouting/freshRC, and independent endpoint/geometry/annotation checks. The endpoint comparator supports110and compares original AND exact50parent censuses. Do not accept a result solely from aggregate slack or nativeDRT0.
+
+Existing fourbranch hold38837758293, PLL38813902351 and full32captures38810163678/38834025040 remain separate live calculations at this snapshot. Do not duplicate them. Source/import/parser failures are preserved with exact IDs in the receipt. All work remains cloud-only; localworkspace0entries. Full serialPHY and final timing remain open.
+
 ## 2026-10-16 — Exact expanded-source preflight PASSED; corrected physical experiment restarted
 
 Hosted controls **38842858175**, source **d11792b4e7242bd3ab8555ad018cff1ac23bdc71**, compiled the controllers and verified the complete pinned driver-review bytes. All60new targets and110cumulative buffers matched; twelve malformed-target/phase controls and a changed-summary-byte control were rejected. Both global slowsetup and exact target0..95 slowsetup phases are checked; fast/min/unknown phases remain rejected. The full published-source check now runs before runtime download/CAD in the physical workflow.
