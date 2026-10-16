@@ -1,3 +1,21 @@
+## Cloud continuation: real first-stage regression found; corrected v2 geometry running (2026-10-17)
+
+Cloud-only; local workspace verified empty. Full serial Gen3x4, mainchip PCIe/Ethernet integration and final timing remain OPEN. This checkpoint supersedes the v1 parent-integration next step below.
+
+**Actual cause of failed parent comparison38974830853:** node/edge counts both412/566, but parent has four W8/L2.8 resistors while v1 normalized model has four additional W8/L2.12. Parent xdiv1 XD10..13 correspond to first-toggle collector loads; new native v1 XD46..49 retained outdated frozen schematic2.12 values. Original intended second-toggle candidate is still four W8/L2.12->3.2 loads. Independent graph gate correctly prevented unintended first-stage regression. Preserve failed38974243808/38974830853. Do NOT waive graph matching or accept v1 as intended PLL integration.
+
+- **New physical v2** source9aa04e1f255aef3ccacf49b917f929761f4087ff; run38975762261. New separate generator/checker make/check_pcie_clock_div4_load3p2_v2.py explicitly restore DIV__XFIRST__XCORE__XM/XS__XRP/XRN to actual-parentL2.8 and retain DIV__XSECOND__XM/XS__XRP/XRN candidateL3.2. Original source SPICE and v1 artifacts untouched. Added native wrong-first-stage-load reference control; full native DRC/deep+flatLVS/LEF remain required. New group pll-divider-load3p2v2-physical, TOP nssoc_clock_div4_load3p2_v2_layout. Needs fresh raw91/wires/283anchors/RC/intrinsic/composition; do not reuse v1 GDS, planes or wire RC. Hash-pin each completed new producer. Then rerun original parent intrinsic graph with only four second-stage load normalizations; expected first-stage2.8 must remain in both graphs.
+- **Actual six-hold exact trace38975045033 PASSED**: summary8210704c63935a130de4194c8e556deae794acbdfa5fcc60903a2539ea72afa0, partsef24ef315f4754596a07678a001cc6a36bec3c1351c8fb44049e6c361e8be006. All selected native transition slacks exactly reproduce the routed census. Remaining negative endpoint u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_MEN; actual ODB instance spelling escapes brackets. Fast hold-0.790811860440499ps; slow setup+211.3358377187069ps. Driver nssoc_refined_hold_delay_2/X, sg13g2_dlygate4sd1_1, net nssoc_refined_hold_branch_2, exactly one SRAM input sink. This is an existing earlier delay, not one of the six newly inserted cells. Next evaluate minimal available delay-master adjustment at actual load with all-corner/all-endpoint setup checks before any new physical route. Do not round the negative slack to zero or infer that endpoint setup margin alone covers a shared upstream branch.
+- Six-hold routed physical ODB and geometry/annotation review still open. Slow setup-5.793440394ns and9351negative endpoints, antenna627nets/783pins. CORRPRE bounded proofs pass; full-SoC boot38970744432 still needs terminal evidence; no default adoption.
+
+Live handles now:
+- {"run": 38975762261, "status": "in_progress", "conclusion": null, "source": "9aa04e1f255aef3ccacf49b917f929761f4087ff"}
+- {"run": 38970744432, "status": "in_progress", "conclusion": null, "source": "11d16ac647a2754a1e5488e5cd415f0207ccb2ec"}
+
+Detailed source-bound regression record:docs/evidence/pll-divider-parent-first-stage-regression-20261017.json. Earlier component results and formal/routing evidence remain below. No healthy jobs cancelled or duplicated.
+
+---
+
 ## Cloud continuation: divider native91+freshRC passed; hold6->1 and preserved CORRPRE proofs (2026-10-17)
 
 Cloud-only remains mandatory. Local NSSOC workspace is empty; no checkout, CAD, simulator or artifacts locally. Full serial Gen3x4, actual mainchip integration and final setup/hold remain OPEN.
