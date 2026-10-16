@@ -1,3 +1,7 @@
+## Latest live handles — 2026-10-16
+
+Continue cloud-only from actual nine-size physical38921431431 (job117042054563, sourceb8cc1f5825f255739935ccd40ac6da8cca214fda), full34ns shortspinesloaded38920723791 (job117039645254, source4bc06e20a60a70da055f5dc2ad3788323659ea6b), and nativefull1usPLL38910378266 (initialjob117004666682). Latest queried states are in docs/evidence/cloud-nine-size-shortspines-live-20261016.json; inspect them live before deciding. Healthy jobs must not restart. Earlier nine-size38920736711 is terminalFAIL, not stillrunning; its source-orientation guard was fixed as explained immediatelybelow. Local workspace remains empty. FullPHY andfinaltiming remain incomplete.
+
 ## 2026-10-16 — Nine-size source-orientation guard corrected before routing
 
 Physical38920736711 failed in preparation before any route: the new helper incorrectly assumed all existing selectedcells wereR0/MX; sourceplace35278alreadyuses another horizontal orientation. Preparation now strictly requires each unchanged sourceorientation, and after native legalization onlyR0/MX/MY/R180horizontal transforms are allowed with nativecheck_placement retained. Allunselectedgeometry remains exact; the actual nine source signatures are published. This is a helper correction, not a placement/timing waiver. Dispatch the new nine-size run; preserve38919760246(FIRMmovement)and38920736711(incorrectorientationassumption). Loaded38920723791 andfull1usPLL38910378266 remain healthy and must not restart.
