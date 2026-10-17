@@ -1,3 +1,11 @@
+## Exact loaded C8 tuning diagnostic prepared in cloud (2026-10-17)
+
+RX source audit confirms rx_sampler_hbt_v2 remains externally clocked; recovered_x4 digital composition is not an analog CDR. Full CDR/x4/serial physical integration remain required. Current mainchip packet-async candidate must not be described as completed serial-PHY integration.
+
+New pll-loaded-tuning-cloud characterizes the EXACT physical C8 parent3d2dfdd6 (845devices and all wires), restored from completed hash-verified paired comparison39027779013. It does not substitute model-sources/parent865.spice91364a, which is a different historical parent. Original models/runtime restored from failed pump39029337682 through original completed C8 source hashes. Four actual50ns cases: control0.525/0.535/0.545V at0.3125ps and matched0.535V at0.15625ps. Adds EXPLICIT ideal external VTUNE clamp ramping fromzero in500ps, retains original845circuit/allloads/34probes/102OFF/supplies/resets/otherstimuli. Adds measured clampcurrent. Bench changes round-trip exactly to original source. This is an OPEN-LOOP characterization experiment to measure local loaded frequency sensitivity and pump source current, not original PLL acquisition, timestep acceptance or safety/PHY proof. No original one-us gate/window changed. Full raw/native OP/flags/diagnostics retained, original failure remains. All four fixed10ns windows measured; source-clamp/actual stopped-clock controls fail closed. Native result must be inspected before choosing any loop repair; neither voltage duty nor guessed gain substitutes for measured current/frequency.
+
+Live mainchip repair39030330882 -> logic39031081958 -> new globalroute39031588904 preserved. Return64wire39030593206/tight39025744008/mixedclock39018157113 still live. Allcloud/localempty/fullgoalOPEN. Previous turnPROGRESS via source-bound physical continuation; current source audit changes next action and adds actual tuning campaign, not product completion.
+
 ## Banked global-route continuation prepared behind actual repaired-logic proof (2026-10-17)
 
 Previous goal turn PROGRESS: completed24case cold native rejection retained and exact new banked equation proof39031081958/sourcef9eb01a2 started. It is waiting for live repair39030330882; other live waveform jobs unchanged.
