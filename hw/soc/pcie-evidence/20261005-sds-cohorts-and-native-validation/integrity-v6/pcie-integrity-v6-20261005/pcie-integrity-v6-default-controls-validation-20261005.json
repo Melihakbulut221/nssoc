@@ -1,0 +1,94 @@
+{
+  "status": "PASS_DEFAULT150_METADATA_RTL_AND_BOUNDED_MAXWIDTH_NETWORK",
+  "sources": {
+    "scripts/generate_pcie_integrity_metadata_v6.py": {
+      "bytes": 4210,
+      "sha256": "f2ae6c7b024adedfb5d474d9a431b20266899acb26b4cf77d64ff75677475ddf"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v6.py": {
+      "bytes": 11193,
+      "sha256": "97bf9f242354f77574c026a6397d6ca6c4234ba97c98be6e9a71a43f16fb31ec"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v6.v": {
+      "bytes": 187384,
+      "sha256": "66d899c6ab3791342770396893d14b97466fefab52ab7def4c5363ec9b2ab794"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v6.v": {
+      "bytes": 3308,
+      "sha256": "0b5c5520fac6a74a24bacdc03e12ea021a78e4b9d1c84b574e8ed2a64f25e59d"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v6": {
+      "bytes": 1508,
+      "sha256": "73439b334a31a6e6699a6935eb0999d54aca54b8d90d67776ecf3a0097356cce"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v6.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v6_metadata.py": {
+      "bytes": 3856,
+      "sha256": "54ba8111b93ae0916aaec4021f4685d74b2e6e0f35982407f94b888f50b6d080"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v6_metadata_wrap.py": {
+      "bytes": 2976,
+      "sha256": "bcf893a904a443e770067392cac44a431f8bca5b9399d8b50912b184e925d200"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v6_miter.py": {
+      "bytes": 6588,
+      "sha256": "6b9323cd13efd762962642898e292fc68a80c69a4427bdada14914346026293a"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v6.py": {
+      "bytes": 4787,
+      "sha256": "2873a513bcb08ee511dd5cf76a884be6867a37e3bd080b3c6f01c1a04ac1353a"
+    }
+  },
+  "pytest_executions_passed": 24,
+  "distinct_predicates_passed": 23,
+  "duplicate_predicate": "Exact inverse bridge also called from public miter suite.",
+  "logs": {
+    "metadata01.log": {
+      "bytes": 111,
+      "sha256": "e126db702f9c71fbe1b5f5b01d1abc7b9d3151edd2f685aa15900c4fee900457"
+    },
+    "metadata-wrap01.log": {
+      "bytes": 99,
+      "sha256": "02da89c82d24deb8ddffe1dd5cce137c1135128bc25d343a010139822834084a"
+    },
+    "public150-01.log": {
+      "bytes": 110,
+      "sha256": "ade447099bdd41ab3d6f3cc5354a0ea86a665ad2bb7a81d33e813e7a4c241290"
+    },
+    "miter150-01.log": {
+      "bytes": 110,
+      "sha256": "ba1fab2ebe37ac526c6c73676d1ccd613e3ae902b6afe7374ab7d05ad07e5d98"
+    },
+    "faults01.log": {
+      "bytes": 124,
+      "sha256": "a9f24c35a78a5733861701cadaa1cbae8543c7c9ab17957c7a45a05d8fe27c12"
+    }
+  },
+  "default_public_profile": 150,
+  "default_actual_public_cases": 26,
+  "modes": [
+    "13 direct serial-oracle cases",
+    "13 cycle-exact V5/V6 public-port cases"
+  ],
+  "arbitrary_prestate_full_parser_cases": 32768,
+  "compared_parser_outputs": 28,
+  "max_width_literal_network_cases": 524288,
+  "max_width_word_observations": 2097152,
+  "shared_actual_verdict_lookups": 16384,
+  "actual_mutations_rejected": {
+    "metadata_full_parser": 4,
+    "shared_read_wire": 1,
+    "max_width_network": 2,
+    "public_function": 8,
+    "cycle_miter": 2
+  },
+  "maximum_capacity_status": "MAX4118 complete public DUT simulation is still compiling; no MAX4118 whole-DUT acceptance or complete max-width sequential proof. Native SG13 mapping/timing also pending.",
+  "source_only_peer": {
+    "bytes": 2790,
+    "sha256": "31d27b9429aaaf6fb362fd41822d89226292d4c42c2da6837f6212252d67086d"
+  },
+  "scope": "Actual RTL Icarus execution and literal-source combinational network tests. Finite arbitrary-state tests are not exhaustive full-state formal proof. Default150 only for whole-DUT public comparison; no native-mapped, physical timing, full PCIe or full-PHY acceptance."
+}

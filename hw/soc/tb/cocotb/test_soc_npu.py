@@ -57,6 +57,7 @@ import os
 import sys
 from pathlib import Path
 
+from peripheral_registers import NPUCFG as _REG_OFFSETS
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
@@ -91,12 +92,12 @@ WAKE_GNT = int(os.environ.get("SOC_NPU_WAKE_GNT", "0"))
 
 NPU_BASE = REGIONS["NPU"][0]
 
-# NPUCFG's own map, hw/soc/rtl/soc_npu.v. Mirrored by
-# hw/soc/tb/sw/soc_npucfg.h, which is the program's copy.
-C_ID, C_VERSION, C_CTRL, C_STATUS = 0x000, 0x004, 0x008, 0x00C
-C_IRQCAUSE, C_IRQMASK = 0x010, 0x014
-C_EVQ_IN, C_EVQ_OUT, C_EVQ_STAT = 0x018, 0x01C, 0x020
-C_GEOM, C_CNT, C_CNT_DROP = 0x024, 0x028, 0x02C
+# NPUCFG offsets share the generated YAML definitions with firmware
+# and RTL. Reserved-offset tests below remain independent literals.
+C_ID, C_VERSION, C_CTRL, C_STATUS = _REG_OFFSETS['ID'], _REG_OFFSETS['VERSION'], _REG_OFFSETS['CTRL'], _REG_OFFSETS['STATUS']
+C_IRQCAUSE, C_IRQMASK = _REG_OFFSETS['IRQCAUSE'], _REG_OFFSETS['IRQMASK']
+C_EVQ_IN, C_EVQ_OUT, C_EVQ_STAT = _REG_OFFSETS['EVQ_IN'], _REG_OFFSETS['EVQ_OUT'], _REG_OFFSETS['EVQ_STAT']
+C_GEOM, C_CNT, C_CNT_DROP = _REG_OFFSETS['GEOM'], _REG_OFFSETS['CNT'], _REG_OFFSETS['CNT_DROP']
 C_UNIMPL = 0x800
 
 CTRL_IN_EN, CTRL_OUT_EN, CTRL_FLUSH, CTRL_SCRUB = 1, 2, 4, 8

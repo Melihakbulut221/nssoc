@@ -70,6 +70,7 @@ localparam [7:0] SOC_APBSLOT_SCRUB    = 8'h16;
 localparam [7:0] SOC_APBSLOT_BOOTREG  = 8'h17;
 localparam [7:0] SOC_APBSLOT_CLKGATE  = 8'h18;
 localparam [7:0] SOC_APBSLOT_NPUCFG   = 8'h19;
+localparam [7:0] SOC_APBSLOT_ETH      = 8'h1A;
 localparam [7:0] SOC_APBSLOT_APBPNP   = 8'hFF;
 
 // Ibex fast local interrupt index per source. This is the WIRE
@@ -89,6 +90,7 @@ localparam integer SOC_IRQLINE_QSPICTL  = 9;
 localparam integer SOC_IRQLINE_BUSSTAT  = 10;
 localparam integer SOC_IRQLINE_SCRUB    = 11;
 localparam integer SOC_IRQLINE_NPUCFG   = 12;
+localparam integer SOC_IRQLINE_ETH      = 13;
 
 // Plug-and-play interrupt SOURCE NUMBER per peripheral. A block
 // whose register map reports its own interrupt number -- GRLIB's
@@ -108,4 +110,5 @@ localparam [4:0] SOC_IRQNUM_QSPICTL  = 5'd21;
 localparam [4:0] SOC_IRQNUM_BUSSTAT  = 5'd22;
 localparam [4:0] SOC_IRQNUM_SCRUB    = 5'd23;
 localparam [4:0] SOC_IRQNUM_NPUCFG   = 5'd24;
+localparam [4:0] SOC_IRQNUM_ETH      = 5'd25;
 

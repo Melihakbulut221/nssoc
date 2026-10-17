@@ -1,0 +1,28 @@
+{
+  "status": "PASS_SOURCE_ONLY_EVQ_CALLBACK_CHAIN_AND_SETTLED_SAMPLE_SEPARATION",
+  "findings": [],
+  "sources": {
+    "scripts/run_cloud_npu_evq_trace.py": {
+      "bytes": 30798,
+      "sha256": "01bbf49336d06b173fc7c54544af5e9550231df91e4edda06b05b50862f53df4"
+    },
+    "sw/tests/test_npu_evq_trace.py": {
+      "bytes": 16430,
+      "sha256": "0e49f1bc4ac1afb78757f6d9a7311cb1d83e8b44657c0be4a6cbc4a67177e788"
+    },
+    "hw/soc/tb/npu_evq_event_trace.v": {
+      "bytes": 2595,
+      "sha256": "8b1e76dcd9e7f653c3627a8d57749f1577785c20cd359999df776eb200f00abe"
+    }
+  },
+  "changed_producer_functions": [
+    "parse"
+  ],
+  "controls_log": {
+    "bytes": 179,
+    "sha256": "973f8d1c75ebf6a905aa019e6f7d1f50da5e4d37db5e38eee519afa27c047a15"
+  },
+  "review": "Read exact git diff, complete parse function and frozen Verilog observer. Scalar record() consumes continuously assigned watched[index], but live all=signals_i is sampled later within callback. Reconvergent delta scheduling can legitimately disagree; prior->new callback chain remains strict, and all161 full settled samples must reconcile every recorded scalar. Coverage, time order, bounds, INIT, event count and summary checks unchanged. New actual 4bit buffer/XOR test checks tenevents/three samples, two live disagreements, unchanged observed/baseline DUT signatures, and three real record corruptions rejected.",
+  "limitations": "Source plus saved controls review only; no native/test rerun. Diagnostics reconstruct recorded callback history, not all simulator deltas or proof of absence of subdelta glitches. Old parser-failure receipts remain historical; no fullchip functional PASS implied.",
+  "new_native_executed": false
+}

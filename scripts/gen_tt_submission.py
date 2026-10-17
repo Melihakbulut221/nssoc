@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
+# REUSE-IgnoreStart
 
 """Generate the Tiny Tapeout submission tree (tt/) from this repository.
 
@@ -671,7 +672,19 @@ surfer tb.fst
 ```
 """
 
-# Appended to the upstream test/README.md. Recorded because it costs a
+TEST_README_PROJECT = """# nssoc pilot testbench
+
+The cocotb tests drive `tt_um_melihakbulut_nssoc` through its Tiny Tapeout pins.
+They check serial register access, reset/enable gating, and the pilot event path.
+Install `tt/test/requirements.txt` and a supported Icarus build first.
+Run the RTL tests from the repository root: `make -C tt/test`.
+For gates, place the matching hardened netlist at `tt/test/gate_level_netlist.v`
+and run `make -C tt/test GATES=yes`; the native IHP models must also be available.
+The gate run checks that supplied netlist, so retain its hash with the results.
+See the simulator compatibility and netlist provenance notes below.
+"""
+
+# Appended to the project-specific test/README.md. Recorded because it costs a
 # debugging session to rediscover.
 TEST_README_EXTRA = """
 ---
@@ -1946,7 +1959,7 @@ def build() -> "dict[str, bytes]":
         files[path] = text.encode()
 
     files[".gitignore"] = (GITIGNORE_UPSTREAM + GITIGNORE_EXTRA).encode()
-    files["test/README.md"] = (TEST_README_UPSTREAM + TEST_README_EXTRA).encode()
+    files["test/README.md"] = (TEST_README_PROJECT + TEST_README_EXTRA).encode()
     files["README.md"] = readme_md().encode()
     files.update(license_texts())
     files["info.yaml"] = info_yaml().encode()
@@ -2177,3 +2190,5 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# REUSE-IgnoreEnd

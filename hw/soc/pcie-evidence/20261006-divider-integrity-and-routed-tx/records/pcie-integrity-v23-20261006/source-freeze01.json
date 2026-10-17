@@ -1,0 +1,87 @@
+{
+  "status": "FROZEN_V23_ADJACENT_ACCEPTED_HEADER_EXPERIMENT",
+  "utc": "2026-10-06T03:54:47.514443+00:00",
+  "sources": {
+    "scripts/generate_pcie_integrity_header_v23.py": {
+      "bytes": 5987,
+      "sha256": "9893dd7cbe212beb2efa4b1ceeebd98651d1a70e9f4ba8967cc8716009e797db"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v23.v": {
+      "bytes": 197239,
+      "sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v": {
+      "bytes": 3324,
+      "sha256": "5cfd68e487881df352512575122e695076d01b538e3d38cc8d08533e61e2172a"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v23": {
+      "bytes": 1528,
+      "sha256": "6aae070d15d47010f1cd62437d8d222dc27f01a06a6367f6707905f206ff8b87"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py": {
+      "bytes": 11276,
+      "sha256": "d078650a4316f8483edb66b5ace141881af809c946028a39e9cba5808d005565"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v23.py": {
+      "bytes": 31820,
+      "sha256": "2e448831a5ea9012ace0214009dee758399649d366c41e96db9bd816c06ea26d"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v23.py": {
+      "bytes": 6540,
+      "sha256": "e099d8e2402ffe661616b689a57e62ece59cf0ab9feb4d15c029a800cc7f4492"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v23_miter.py": {
+      "bytes": 22325,
+      "sha256": "04d3c7ec65339041cf0c1812b27cc8bf906586772ec6f92518f0304689f549bb"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v23_header.py": {
+      "bytes": 5530,
+      "sha256": "81916f5ebcb85be72a83be17379139dd4d788d64617818838596b59cf95f697b"
+    }
+  },
+  "baseline": {
+    "path": "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v",
+    "bytes": 194845,
+    "sha256": "b18c84d1cd1a7db7a6681939624a96a07af8f1cda1726bde987a4b08e89ad5d6"
+  },
+  "contracts": {
+    "architecture-contract01.json": {
+      "bytes": 11640,
+      "sha256": "519f4a54ed675fcdf51af1653ed66a6d66220d3386b8d46adc358c2cff556cbe"
+    },
+    "architecture-contract02-observer.json": {
+      "bytes": 2053,
+      "sha256": "cb8a50c42857b19b84306fc810fbbd48c3e5c413ea612750b3f04ba932fa881a"
+    },
+    "architecture-source-only-peer-rx01.json": {
+      "bytes": 4240,
+      "sha256": "4a071bc62789f50e9c30862a5251e6745204c56e71500b5f9e87f8ff95c09388"
+    },
+    "measured-cone-diagnosis04.json": {
+      "bytes": 79256,
+      "sha256": "2c5c3a95ac596f139ddb31132eb9ae2b6b18ab96a0872ad3ba4f747adf031159"
+    }
+  },
+  "predicates": {
+    "public_cases": 18,
+    "original_prefix_cases": 17,
+    "public_mutants": 12,
+    "cycle_miter_positive": 1,
+    "miter_product_mutants": 12,
+    "observer_negative": 1,
+    "literal_positive": 1,
+    "literal_mutants": 5,
+    "source_inverse_checks": 2,
+    "total_pytest_selected": 35,
+    "excluded_MAX4118": 2
+  },
+  "resources": {
+    "cpu": 6,
+    "address_space_bytes": 2147483648,
+    "clock_ns": 4,
+    "maximum": 150,
+    "ring_dwords": 64,
+    "healthy_elapsed_timeout": null
+  },
+  "scope": "No HDL or physical controls yet. Fresh header relation banks from failed V22 timing baseline; V11 stable baseline unchanged. Temporal reference uses old accepted predecessor validity carried with exact bank IDs, same-edge cache write observer compares before/after because V22 andV23 caches are identical. Original cache literal4096 result reusable only for byte-identical cache body, not claimed new execution. All initial17public cases prefix exact after version normalization; added18th real line-rate/all16positions and strict predecessor/minimum-boundary witnesses. Four-state component covers557056 declared binary tuples and1440 selectedX/Z cases, not arbitrary sequentialstate equivalence."
+}

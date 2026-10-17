@@ -1,0 +1,20 @@
+{
+  "status": "PASS_EXACT_READ_BODY_SENSITIVITY_BRIDGE",
+  "utc": "2026-10-05T17:05:08.892095+00:00",
+  "source_freeze": {
+    "bytes": 2299,
+    "sha256": "48a78275df28c51417f5e318750ccc77d933ccf34fd7188cdc3158445e101dcd"
+  },
+  "delta": "Only leaf event-list and explanatory comments/version markers differ from frozen V16 read block. Full inverse restores frozen V11 framer, and existing V16 read tests are exact prefix after version rename.",
+  "leaf_read_terms": [
+    "read_address",
+    "slot_data[read_slot]",
+    "slot_keep[read_slot]",
+    "slot_sop[read_slot]",
+    "slot_eop[read_slot]",
+    "slot_dllp[read_slot]",
+    "slot_sequence[read_slot]",
+    "slot_verdict[read_slot]"
+  ],
+  "semantic_scope": "Known constant-slot genvar word for each event, all six payload fields plus verdict and computed address; no state/control/writer edits. Initial and four-state behavior still verified by actual full controls; this source comparison is not timing evidence."
+}

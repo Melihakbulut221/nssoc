@@ -1,0 +1,81 @@
+{
+  "recorded_at_utc": "2026-10-16T20:01:31.940991+00:00",
+  "cloud_only": true,
+  "accepted": false,
+  "final_timing_complete": false,
+  "serial_phy_complete": false,
+  "source_trace": {
+    "run": 38953044374,
+    "summary_asset": 648336242,
+    "summary_sha256": "5b5776d2f96e7d371a9d282ca372597b133681adc241958467be1b4447665376"
+  },
+  "hypothesis": "Actual nine-size worst slow setup path to u_ram.g_ram_2048x64_ecc.u_b0/A_BM[0] spans a deep cell chain from Ibex register1182549. Need exact ODB net-name correlation before architectural changes. No inferred parameter setting from timing names alone.",
+  "prior_pipeline_evidence": {
+    "docs/evidence/core-request-pipeline-20260923.json": {
+      "sha256": "c29b640c75a195e83d8c71f3fb31a7f4e835f4a0c49494c451ffda3bff7a752d",
+      "status": "PARTIAL: optional request pipeline block verified; whole-CPU and physical candidate pending",
+      "scope": "Request token/reset/occupancy contract only. No whole-core equivalence, physical timing, full DRC/LVS or product acceptance. Defaults remain zero; implementation entrypoint does not select the candidate."
+    },
+    "docs/evidence/core-pipeline-native-boot-20260923.json": {
+      "sha256": "ad563f0f04a80dfe2f539f2441a93e602c350ab15faf934d6069c3b864095325",
+      "status": "PASS: both interface profiles with native IHP models, within functional simulation scope",
+      "scope": "Icarus four-state mapped boot with unmodified locked IHP standard-cell and SRAM models. CORE_REQ_REG=1, CORE_WB_STAGE=1, BranchTargetALU=1. No ROM/RAM preload and no SDF; this does not establish physical timing, extracted connectivity or silicon acceptance."
+    },
+    "docs/evidence/pipeline-completed-route-20260924.json": {
+      "sha256": "88a7b8d465e7b5bdfa761a395d95ba5872e6f732a1a5b0a107bd2950cb84f989",
+      "status": "FAIL_FINAL_TIMING",
+      "scope": "Actual fresh detailed route, nominal extracted RC and three Liberty corners at unchanged20ns/8ns,0.95/1.05derates. Does not establish RC-corner/fill-aware/foundry-LVS/manufacturing qualification.",
+      "corners": {
+        "nom_fast_1p32V_m40C": {
+          "setup_ns": 3.372368701968281,
+          "hold_ns": -1.502508826550851,
+          "slew_violations": 0,
+          "capacitance_violations": 4
+        },
+        "nom_typ_1p20V_25C": {
+          "setup_ns": -0.011487700005295764,
+          "hold_ns": -0.2292184285036891,
+          "slew_violations": 5,
+          "capacitance_violations": 3
+        },
+        "nom_slow_1p08V_125C": {
+          "setup_ns": -11.970121233027049,
+          "hold_ns": 0.14139978477215837,
+          "slew_violations": 182,
+          "capacitance_violations": 3
+        }
+      }
+    }
+  },
+  "decision": "Do not blindly re-enable old CORE_REQ_REG/CORE_WB_STAGE or relax SDC. Earlier whole-core native functional boot passed within its scope, but completed earlier pipeline route failed slow setup and hold. Current source-bound setup-net map is needed to distinguish the applicable architecture from old candidates.",
+  "runs": [
+    {
+      "id": 38958868834,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "244cb08d6f0bbc60601e6a7604efbcc79cebdb16",
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38958868834"
+    },
+    {
+      "id": 38957249404,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "2a3f6a2cac51640809c2e40aba8d685927229520",
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38957249404"
+    },
+    {
+      "id": 38957588814,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "0c035348f24f65fa6037a4752ebbc3252f57895d",
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38957588814"
+    },
+    {
+      "id": 38956152752,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "6405bb537527353ae8adeca8bdd0d97b346b7297",
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38956152752"
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "status": "PASS_BOUND_FULL_CHIP_SRAM_INTEGRATION_LVS",
+  "date": "2026-09-25",
+  "scope": "Complete routed soc_top connectivity profile with 16 SP512x64 and 16 DP256x16 memories, including all SRAM transistor interiors. This core has no padframe.",
+  "timing_acceptance": false,
+  "production_acceptance": false,
+  "final_views": {
+    "nl": {
+      "sha256": "f479e960c898e26e12c7562713407441bd8fbcaf07820aebd7453285ccd1e4da",
+      "bytes": 21709413
+    },
+    "pnl": {
+      "sha256": "079ec7b25d90568241d9435c848e3d9bfb265e9e0d1ffc555b7c4f6d3ade8851",
+      "bytes": 32678853
+    },
+    "odb": {
+      "sha256": "b211c9cf5978eb85ae6e239134f1a653bdf255c9bc30b5d581587e98f164926c",
+      "bytes": 200278632
+    },
+    "klayout_gds": {
+      "sha256": "ed8320031457647da0cb1bb1b135d6f50020fdaeaa32f9aca69b2e0fd4e07a40",
+      "bytes": 104819228
+    }
+  },
+  "macro_counts": {
+    "SP6TSRAM512x64": 16,
+    "DP8TSRAMDP256x16": 16
+  },
+  "positive_lvs": {
+    "status": "PASS within comparison scope",
+    "circuit_status_counts": {
+      "Match": 130
+    },
+    "reasons": [],
+    "extraction_diagnostics": []
+  },
+  "compared_top": {
+    "layout": "soc_top",
+    "schematic": "SOC_TOP",
+    "status": "Match",
+    "layout_devices_recursive": 5129488,
+    "schematic_devices_recursive": 5129488
+  },
+  "negative_lvs": {
+    "mutation": {
+      "instance": "X401148",
+      "pins": [
+        "a[0]",
+        "a[1]"
+      ],
+      "original_nets": [
+        "n84569",
+        "n84576"
+      ]
+    },
+    "status": "FAIL",
+    "circuit_status_counts": {
+      "Match": 129,
+      "NoMatch": 1
+    }
+  },
+  "physical_metrics": {
+    "design__instance__count": 401566,
+    "route__drc_errors": 0,
+    "antenna__violating__nets": 0,
+    "antenna__violating__pins": 0,
+    "design__disconnected_pin__count": 256
+  },
+  "unused_sram_outputs": {
+    "count": 256,
+    "pins": "q1[0:15] of each of sixteen DP SRAM instances",
+    "audit_status": "PASS_EXACTLY_256_UNUSED_Q1_OUTPUTS_32_SRAM"
+  },
+  "digital_proof": {
+    "retained_cells": 67050,
+    "positive_buffers_before": 4291,
+    "positive_buffers_after": 12116,
+    "equivalent_sizes": 0,
+    "proven_tie_cells_before": 0,
+    "proven_tie_cells_after": 4767,
+    "unobserved_output_port_changes": 16,
+    "equivalent_input_permutations": 0,
+    "disconnected_clock_loads_before": 118,
+    "disconnected_clock_loads_after": 715,
+    "digital_input_only_antenna_loads_before": 0,
+    "digital_input_only_antenna_loads_after": 3465,
+    "status": "PASS within scope",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)"
+  },
+  "functional_boot": {
+    "passed_checks": 28,
+    "cycles": 647591,
+    "memory_preload": false,
+    "sdf": false,
+    "models": "Actual IHP standard-cell models and independently tested SRAM behavioral models"
+  },
+  "helper_tests": 106,
+  "power_status": "PASS_COMPLETE_FINAL_POWER_GRIDS",
+  "physical_elapsed_seconds": 25127.88179557302,
+  "effective_physical_wall_budget_seconds": 28800,
+  "archives": {
+    "methods": {
+      "file": "sram-chip-integration-20260925-methods.tar.xz",
+      "sha256": "892caaefae0d72c5772b1668b709ee296ce493f62d1f6fc0360edb4bd0d6c241",
+      "bytes": 4135336
+    },
+    "replay-inputs": {
+      "file": "sram-chip-integration-20260925-replay-inputs.tar.xz",
+      "sha256": "44bf3bb09e1ccba823a15390ad6ca30e6cf2f8dd46ee17f2a2c74508ad4b8da3",
+      "bytes": 1083620
+    },
+    "corresponding-sources": {
+      "file": "sram-chip-integration-20260925-corresponding-sources.tar.xz",
+      "sha256": "d3ab6880d1cce8162d127cad40f74981c853f50bdcb5e04cf3cfbe56837c9aca",
+      "bytes": 445256
+    },
+    "physical-views": {
+      "file": "sram-chip-integration-20260925-physical-views.tar.xz",
+      "sha256": "3d21b1de5e32d7ef2b819bfd36e7d96636f84cfab39a094b52457bdb9867f1d4",
+      "bytes": 33466864
+    },
+    "verification": {
+      "file": "sram-chip-integration-20260925-verification.tar.xz",
+      "sha256": "3ee21e8e82e5d469fea44a17527da4df6b6b3641e2725c02ed745149a4dd421b",
+      "bytes": 5890604
+    },
+    "verification-lvs-negative": {
+      "file": "sram-chip-integration-20260925-verification-lvs-negative.tar.xz",
+      "sha256": "9140680a4463bd559cf3281886dad30ccdd0259792ada58e8790e3f9a3f9c1d2",
+      "bytes": 25805592
+    },
+    "verification-lvs-positive": {
+      "file": "sram-chip-integration-20260925-verification-lvs-positive.tar.xz",
+      "sha256": "23949243f926fd8f06d8146ac3bc7f2ace449f9b505f8fbc2fda9aa1c74e9340",
+      "bytes": 32040856
+    },
+    "verification-lvs-predecessor": {
+      "file": "sram-chip-integration-20260925-verification-lvs-predecessor.tar.xz",
+      "sha256": "5d0fdc4c4aa5610c2da22860efdedcd1bf0f218e398b1e821143ae3eb27280ee",
+      "bytes": 30306312
+    },
+    "verification-digital": {
+      "file": "sram-chip-integration-20260925-verification-digital.tar.xz",
+      "sha256": "e2def6b4ef3f26f2b5d876e2f3f5fa8e9b2e789a7952c0c91a42f77d1d345238",
+      "bytes": 20039312
+    }
+  },
+  "limits": [
+    "Actual soc_top connectivity profile only; no SRAM timing Liberty/PEX qualification.",
+    "No final setup/hold/slew/capacitance, density, full-chip DRC, pad or PCIe PHY acceptance.",
+    "Functional boot uses actual IHP standard-cell models and independent tested SRAM behavioral models."
+  ],
+  "lvs_steps": [
+    {
+      "name": "build-independent-schematic",
+      "returncode": 0,
+      "elapsed_seconds": 73.87086922401795
+    },
+    {
+      "name": "positive",
+      "returncode": 0,
+      "elapsed_seconds": 3255.3842825000174
+    },
+    {
+      "name": "positive-audit",
+      "returncode": 0,
+      "elapsed_seconds": 23.381677928031422
+    },
+    {
+      "name": "wrong-address",
+      "returncode": 0,
+      "elapsed_seconds": 3198.9728545460384
+    },
+    {
+      "name": "wrong-address-audit",
+      "returncode": 1,
+      "elapsed_seconds": 19.50558600696968
+    }
+  ],
+  "source_hierarchy_normalization": {
+    "status": "PASS_INDEPENDENT_SOURCE_GRAPH_AND_TWO_MUTATIONS",
+    "changed_circuits": [
+      "SP6TReadWrite_CM4MN26L580W1R_RW26L380WS",
+      "SP6TClockWE_T",
+      "SP6TNonOvlClock_4S1R",
+      "SP6TClockGen_4S11341D1R",
+      "DP8TNonOvlClock_4S1R",
+      "DP8TClockGen_4S11341D1R",
+      "DP8TReadWrite_CM4MN26L580W1R_RW26L380WS",
+      "DP8TClockWE_T"
+    ],
+    "unchanged_definition_count": 143,
+    "removed_helper_hierarchy": [
+      "nor2_x0",
+      "nsnrlatch_x1",
+      "dff_x1",
+      "buf_x2",
+      "nand2_x0",
+      "inv_x0",
+      "inv_x3",
+      "buf_x4",
+      "buf_x1"
+    ],
+    "removed_transistors": 0,
+    "controls": [
+      {
+        "mutation": "width",
+        "status": "REJECTED"
+      },
+      {
+        "mutation": "gate",
+        "status": "REJECTED"
+      }
+    ]
+  },
+  "preserved_failed_predecessor": {
+    "name": "full-chip-lvs-v5",
+    "circuit_status_counts": {
+      "Match": 129,
+      "Skipped": 7,
+      "NoMatch": 3
+    },
+    "accepted": false
+  }
+}

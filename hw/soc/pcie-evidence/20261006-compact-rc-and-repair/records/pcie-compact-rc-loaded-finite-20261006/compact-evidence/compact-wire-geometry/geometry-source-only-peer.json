@@ -1,0 +1,183 @@
+{
+  "status": "PASS_SOURCE_ONLY_DIVIDER_V7_WIRE_GEOMETRY",
+  "freeze": {
+    "bytes": 228109,
+    "sha256": "0fe946ee97e78d53dbabab3ff37e22ab99d5202d91e7338016134ecd31578c16"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 4581,
+    "sha256": "69bb7cb0a3b309999b164422eb49fae2b77325382777424a8a98d4bc2c81b45e"
+  },
+  "source_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/run_geometry.py": {
+      "bytes": 8221,
+      "sha256": "b708a300614bc3afb6b55a8e0c8d6982e8bdba7cbe286a1f5f0fa3cfddb4d2f4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/probe_native_cells.py": {
+      "bytes": 1347,
+      "sha256": "c74b93416dd971cbfff6d539f747cb2bb798cbd00035d36092db8b4250419978"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/probe_device_locations.py": {
+      "bytes": 2927,
+      "sha256": "e6b80cd435d60de654c7e6d63d4c82723ff1dc1a947fab77a93ec546d3aeaf98"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/probe_wire_components.py": {
+      "bytes": 7099,
+      "sha256": "dd0723896adda30c4ee7b3db4f85d4ec572107fe6cda29cc80c5084ee2c674ae"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/probe_terminal_anchors.py": {
+      "bytes": 5440,
+      "sha256": "11b2fdf183a187bc577f157d64d6036604e57d7542bda7937b57ba50c3628014"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/prepare_anchors.py": {
+      "bytes": 3410,
+      "sha256": "f75ba4f907b454f2247b0f7e151963854043f0c022621d46c66962e646aed69a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/bind_source_ids.py": {
+      "bytes": 3140,
+      "sha256": "1160629597e80884e158660efe93e371ee881f83ae8256394e9e70b0446285fd"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-v1-20261006/native_unsimplified.lvs": {
+      "bytes": 758,
+      "sha256": "3d6a9afbf34be2b855edc2a89f30b0b2d7a6db287cc22a60ff7aadae1b5e055d"
+    }
+  },
+  "input_files_rehashed": 978,
+  "whole_inverse_bridges": 7,
+  "changes": [
+    {
+      "method": "run_geometry.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "W = Path('/dev/shm/nssoc-div4-v7-power-v2-wire-geometry-02')\nG = Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01')\nC = Path('/dev/shm/nssoc-div4-v7-power-v2-checks-02')\nN = Path('/dev/shm/nssoc-div4-v7-power-v2-wire-native-02')\n",
+          "after": "W = Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-geometry-01')\nG = Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\nC = Path('/dev/shm/nssoc-div4-v7-compact-v2-checks-01')\nN = Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-native-01')\n"
+        },
+        {
+          "tag": "replace",
+          "before": "        assert completed['status'] == 'PASS_DIV4_V7_POWER_V2_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\n",
+          "after": "        assert completed['status'] == 'PASS_DIV4_V7_COMPACT_V2_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\n"
+        },
+        {
+          "tag": "replace",
+          "before": "        assert completed['power_geometry_audit']['status'] == 'PASS_ACTUAL_GDS_POWER_ONLY_ADDITION_AND_FOUR_GEOMETRY_CONTROLS'\n        assert completed['power_geometry_audit']['independent_raw_gds_boundary_instances_verified'] == 47\n        native_peer = json.loads((B.parent / 'pcie-divider-v7-power-v1-20261005/native03-saved-peer-rx.json').read_text())\n        assert native_peer['status'] == 'PASS_POWER_V2_SAVED_NATIVE21_AND_GEOMETRY4' and native_peer['findings'] == []\n",
+          "after": "        assert completed['power_geometry_audit']['status'] == 'PASS_ACTUAL_COMPACT_INTRINSICS_POWER_AND_FOUR_GEOMETRY_CONTROLS'\n        assert completed['power_geometry_audit']['power_arrays'] == 47 and completed['power_geometry_audit']['physical_primitives'] == 91 and completed['power_geometry_audit']['native_vias'] == 634\n        native_peer = json.loads((B.parent / 'pcie-divider-v7-compact-v2-20261006/native-saved-peer-rx.json').read_text())\n        assert native_peer['status'] == 'PASS_INDEPENDENT_SAVED_COMPACT_V2_NATIVE_RESULT' and native_peer['findings'] == []\n"
+        },
+        {
+          "tag": "replace",
+          "before": "        assert native_peer['GDS'] == pin(G / 'nssoc_clock_div4_v7_power_v2_layout.gds')\n",
+          "after": "        assert native_peer['GDS'] == pin(G / 'nssoc_clock_div4_v7_compact_v2_layout.gds')\n"
+        },
+        {
+          "tag": "replace",
+          "before": "        options = dict(input=G / 'nssoc_clock_div4_v7_power_v2_layout.gds',\n                       topcell='nssoc_clock_div4_v7_power_v2_layout', log=N / 'deck.log',\n",
+          "after": "        options = dict(input=G / 'nssoc_clock_div4_v7_compact_v2_layout.gds',\n                       topcell='nssoc_clock_div4_v7_compact_v2_layout', log=N / 'deck.log',\n"
+        }
+      ]
+    },
+    {
+      "method": "probe_native_cells.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "l=pya.Layout();l.read('/dev/shm/nssoc-div4-v7-power-v2-layout-01/nssoc_clock_div4_v7_power_v2_layout.gds')\n",
+          "after": "l=pya.Layout();l.read('/dev/shm/nssoc-div4-v7-compact-v2-layout-01/nssoc_clock_div4_v7_compact_v2_layout.gds')\n"
+        }
+      ]
+    },
+    {
+      "method": "probe_device_locations.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "l=pya.LayoutToNetlist();l.read('/dev/shm/nssoc-div4-v7-power-v2-wire-native-02/result.l2n');c=l.netlist().top_circuit()\n",
+          "after": "l=pya.LayoutToNetlist();l.read('/dev/shm/nssoc-div4-v7-compact-v2-wire-native-01/result.l2n');c=l.netlist().top_circuit()\n"
+        },
+        {
+          "tag": "replace",
+          "before": " inputs_sha256={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [B/'native-pcell-inventory.json',Path('/dev/shm/nssoc-div4-v7-power-v2-wire-native-02/result.l2n')]},\n",
+          "after": " inputs_sha256={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [B/'native-pcell-inventory.json',Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-native-01/result.l2n')]},\n"
+        }
+      ]
+    },
+    {
+      "method": "probe_wire_components.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "GDS=Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01/nssoc_clock_div4_v7_power_v2_layout.gds')\nDB=Path('/dev/shm/nssoc-div4-v7-power-v2-wire-native-02/result.l2n')\nOUT=Path('/dev/shm/nssoc-div4-v7-power-v2-wire-geometry-02');OUT.mkdir()\n",
+          "after": "GDS=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01/nssoc_clock_div4_v7_compact_v2_layout.gds')\nDB=Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-native-01/result.l2n')\nOUT=Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-geometry-01');OUT.mkdir()\n"
+        }
+      ]
+    },
+    {
+      "method": "probe_terminal_anchors.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "GDS=Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01/nssoc_clock_div4_v7_power_v2_layout.gds')\nLVS=Path('/dev/shm/nssoc-div4-v7-power-v2-wire-native-02/result.l2n')\n",
+          "after": "GDS=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01/nssoc_clock_div4_v7_compact_v2_layout.gds')\nLVS=Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-native-01/result.l2n')\n"
+        },
+        {
+          "tag": "replace",
+          "before": "g=pya.Layout();g.read(str(GDS));top=g.top_cell();wire=pya.LayoutToNetlist();wire.read('/dev/shm/nssoc-div4-v7-power-v2-wire-geometry-02/wires.l2n')\n",
+          "after": "g=pya.Layout();g.read(str(GDS));top=g.top_cell();wire=pya.LayoutToNetlist();wire.read('/dev/shm/nssoc-div4-v7-compact-v2-wire-geometry-01/wires.l2n')\n"
+        },
+        {
+          "tag": "replace",
+          "before": " Path('/dev/shm/nssoc-div4-v7-power-v2-wire-geometry-02/wires.l2n'),\n",
+          "after": " Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-geometry-01/wires.l2n'),\n"
+        }
+      ]
+    },
+    {
+      "method": "prepare_anchors.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "W=Path('/dev/shm/nssoc-div4-v7-power-v2-wire-geometry-02')\nG=Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01')\n",
+          "after": "W=Path('/dev/shm/nssoc-div4-v7-compact-v2-wire-geometry-01')\nG=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\n"
+        },
+        {
+          "tag": "replace",
+          "before": "assert pin(G/'nssoc_clock_div4_v7_power_v2_layout.gds')['sha256']=='663b60fc14cc9c8e2b4d9a5a758aee6bcd61bdf307c6b3a69a28e63bc470340c'\n",
+          "after": "assert pin(G/'nssoc_clock_div4_v7_compact_v2_layout.gds')['sha256']=='db400e586cadbedbea9ec8aec5466c0eba4789e262c90ebd0d321a1c2cbcf579'\n"
+        },
+        {
+          "tag": "replace",
+          "before": "layout=pya.Layout();layout.read(str(G/'nssoc_clock_div4_v7_power_v2_layout.gds'));top=layout.top_cell()\n",
+          "after": "layout=pya.Layout();layout.read(str(G/'nssoc_clock_div4_v7_compact_v2_layout.gds'));top=layout.top_cell()\n"
+        },
+        {
+          "tag": "replace",
+          "before": " inputs={str(p):pin(p) for p in [Path(__file__),P/'wire-component-geometry.json',P/'terminal-reference-planes.json',G/'result.json',G/'nssoc_clock_div4_v7_power_v2_layout.gds',W/'wires.gds',W/'wires.l2n']})\n",
+          "after": " inputs={str(p):pin(p) for p in [Path(__file__),P/'wire-component-geometry.json',P/'terminal-reference-planes.json',G/'result.json',G/'nssoc_clock_div4_v7_compact_v2_layout.gds',W/'wires.gds',W/'wires.l2n']})\n"
+        }
+      ]
+    },
+    {
+      "method": "bind_source_ids.py",
+      "changes": [
+        {
+          "tag": "replace",
+          "before": "B=Path(__file__).parent;G=Path('/dev/shm/nssoc-div4-v7-power-v2-layout-01')\n",
+          "after": "B=Path(__file__).parent;G=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01')\n"
+        }
+      ]
+    }
+  ],
+  "native_peer": {
+    "bytes": 24441,
+    "sha256": "5d5667f907d41e50684d450a8834c2f8376b0d0771837efe0deea032ebd94532"
+  },
+  "checks": [
+    "Six geometry source bodies inverse exactly after paths/top/hash only. Main changes only compact native-audit status/census and exact saved-peer gate.",
+    "All seven metals and all six via layers retained; TopMetal2/TopVia2 nonempty required. Complete725/634leaf census,91devices/283terminals/205anchors/37conductors/72clusters remain strict.",
+    "Every72cluster retained:38electrical including85-body-terminal cluster,34aux require no terminal/publicport/metal. No purge.",
+    "Full actual source location/parameter/net bijection and one-to-one actual native conductor bindings unchanged.",
+    "Exact unsimplified wrapper and official deck options retain all taps and prohibit combine/simplify/purge; no LVS comparison claimed.",
+    "Private cloned owned lifecycle functions/resources/terminal guards unchanged, original CPU10/2GiB/80MiB/24MiBreserve/512MiBfloor/1GiBentry/nohealthytimeout."
+  ],
+  "scope": "Source-only peer and immutable saved-input readback. No producer, native extraction, geometry, RC or simulation executed. All future actual counts remain assertions to prove, not measured new wire results."
+}

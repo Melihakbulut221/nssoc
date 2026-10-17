@@ -1,0 +1,677 @@
+# 160 — Supported-device TX multiplexer and extracted layout
+
+
+## 2026-10-15: extended physical-core tests expose remaining corner and numerical limits
+
+The edge-supply162-device4:1core passes the original nominal/hot/cold loaded tests, but **does not pass all extended corners or numerical-convergence checks**. Actual wire cold_high_res_wcs reaches2.053765714V final common mode (limit2.05V); hot_low_res_bcs reaches1.785472361V (minimum1.8V) and two HBTs reach minimumVCE0.393965736/0.391471681V (minimum0.4V). Two matched compact cold corners fail too. All12MOS-corner cases pass. The six actual stage-fault cases correctly fail the original source-bit oracle. Source-bound case receipts remain in `docs/evidence/pcie-tree4-assembly-input-20261015.json`.
+
+Hosted comparison38735749704 reproduced the original0.5ps/0.25ps captures and confirmed identical circuit inputs apart from timestep. Original bit-sample differences, same-ordinal output edges and source energies pass the additional numerical bounds. However, complete-capture internal-voltage differences reach5.040244mV(compact) and4.708498mV(wire), above the frozen1mV comparison bound. Execution success is not numerical acceptance. Run38736928007 now measures0.125ps/0.0625ps with the same original electrical oracle; numerical convergence is still pending.
+
+A separate fixed native-resistor TC feed is under test in38736943635/38736959438. It uses100um/1um Rsil plus16.5um/2um Rppd in series to the existing prestage reference; all PVT points use the same geometry. The design hypothesis follows the [IHP resistor sheet-resistance and temperature-coefficient specifications](https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html#rsil-specs). Initial compact results improve cold common-mode voltage but retain cold resistor-corner and final HBT-VBE failures. Actual wired results remain pending. This feed still requires layout, native DRC/LVS, contact-current and RC qualification; it is not promoted into an accepted physicalPHY.572hosted source/control tests pass; fullPHY/PLL/CDR/RF/ESD/mainchip timing remain open.
+<!-- SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+
+## 15 October: actual assembled 4:1 core passes initial loaded conditions
+
+The `compact_edge_supply` experiment now includes the real intermacro wiring
+of three native cores, not ideal connections between individually extracted
+macros. Its **162 devices** comprise 57 HBTs, 24 resistors and 81 substrate
+contacts. Native 560-category DRC has zero markers; hierarchical and flat
+transistor LVS both match all 162 devices. Five actual geometry/reference
+faults reject. Fresh extraction preserves **11,913 R / 7,851 C**, all 41 metal
+conductors, 322 geometric probes and 462 intrinsic terminals; 13 raw corruption
+controls and six composition controls reject. These are component checks,
+not qualified substrate/RF extraction or chip signoff.
+
+The original 256 source bits, 0.3/0.5/0.7 UI observations and 100 mV limit remain
+unchanged. The full assembled-RC model passes nominal, hot/low-supply and
+cold/high-supply screens, with minimum signed output margins **227.646,
+100.680 and 264.340 mV**, respectively. Each capture contains 69,541 native rows;
+all 768 output samples, 6,912 final physical-base observations and 62 HBT / 64 MOS
+engineering screens pass. The hot margin above the limit is only0.680 mV.
+Independent device/resistor/CMOS corners, actual fault controls and finer
+hot timestep validation are running; all-corner acceptance remains false.
+
+| Actual assembly | Data path length | Hot minimum | Samples below100 mV |
+| --- | --- | --- | --- |
+| Original | 394.015/388.015 µm | 98.468 mV | 3 |
+| Compact vertical | 356.015 µm | 98.976 mV | 2 |
+| Wide M5 supply | 276.015 µm | 94.479 mV | 10 |
+| Edge supply with parallel TM1 strap | 276.015 µm | 100.680 mV | 0 |
+
+The shorter wide-M5 experiment did not improve electrical behavior. Its
+measured B-pair AVDD coupling rose to 58.027/58.829 fF. Moving
+M5 to x418..454 µm, adding a 4 µm TM1 supply strap at x424 µm and relocating the
+substrate/ground paths reduced those values to 5.054/16.122 fF. Total B-pair
+external C fell from 197.302/204.637 to 155.921/168.322 fF. All child device
+geometry remained frozen; acceptance thresholds, stimulus phase and oracle
+were not adjusted. Failed geometries and their captures remain available.
+
+[The source-bound assembly record](evidence/pcie-tree4-assembly-input-20261015.json)
+contains every geometry, extraction, composition and waveform receipt.
+Hosted diagnosis 38729628248 independently reread all six compact/RC archives,
+embedded summaries and every native output hash, then reproduced the original
+hot waveform verdict with zero failures. This does not claim full 32:1/four-lane
+serialization, integrated PLL/CDR, package/channel/compliance/BER or main-chip
+routing and final setup/hold closure. External clocks, bias/front-end and
+loaded TX elements in this bench still require their complete physical
+integration. Older results below retain their original scope and chronology.
+
+
+The replacement final 2:1 TX multiplexer uses separate native HBT instances
+within the foundry's `Nx=1…10` range. It passes three schematic operating
+points, independent signal/device checks and standalone layout verification.
+**Full corner coverage and post-layout electrical acceptance remain open;
+this is not a complete 32:1 serializer, Gen3 x4 PHY or main-chip integration.**
+It supersedes the out-of-domain electrical results in
+[the earlier experiment](159-pcie-native-tx-multiplexer.md).
+
+## Circuit repair and measured conditions
+
+The [new circuit](../hw/soc/analog/pcie/tx_mux2_hbt_passive_fast_v1.spice)
+contains nineteen HBTs and eight native self-heating resistors. Each data
+branch has three separate `Nx=8` devices. Each selector and the tail have two
+`Nx=8` devices; the reference uses `Nx=1`. Passive resistor dividers replace
+the previous emitter followers. The existing four-HBT TX stage connects
+directly to the outputs, giving **23 HBTs** in the schematic simulation.
+
+The fixture still uses externally synchronized two 4 Gb/s input streams and
+a 4 GHz select, giving an 8 GT/s final-stage stream. Data common mode is now
+**1.93 V**, with ±0.15 V levels; select common mode is **1.23 V**, with ±0.30 V
+levels. These are explicit requirements on an **unimplemented upstream
+driver**, not measured outputs from a complete serializer or PLL. Nominal
+supplies remain 2.5/1.8 V, references 0.5/1.5 mA, source resistance 25 Ω and
+load 100 Ω differential plus 100 fF per output. Sources ramp from zero.
+
+| Independently reviewed operating point | Minimum signed output margin |
+| --- | ---: |
+| Typical models, 27 °C, nominal supplies | 270.362 mV |
+| Typical models, −40 °C, both supplies at 95% | 250.985 mV |
+| Typical models, 125 °C, nominal supplies | 227.531 mV |
+
+Each point covers 256 bits and 768 samples derived independently from the
+actual input/select voltages. All 23 devices meet the unchanged post-settling
+VCE 0.4–1.6 V, absolute VBE 1 V and collector-current 3 mA/emitter engineering
+screens. Upper limits also pass over the complete power ramp. Native `OFF`
+initialization flags and the zero-source operating point are checked; no
+thermal model is disabled. These screens do not establish foundry SOA,
+lifetime, jitter, channel compliance or BER.
+
+The 0.5/0.25 ps comparison passes its prospective limits: maximum recorded
+terminal-voltage difference **0.2465 mV**, relative power difference
+**0.002303%**, and output-edge displacement **0.004574 ps**. Supply-power
+integration uses the exact pinned ideal 2.5 V mux source after its ramp, saved
+TX supply voltage and actual currents. Actual swapped-select and zero-bias
+faults produce wrong output samples and are rejected without simulator errors.
+
+Reducing data-bank capacitance repaired a hot-point signal-margin failure.
+Changing common-mode requirements then repaired that point's device headroom.
+Earlier supported-device failures and the original invalid-model attempts
+remain in the evidence; they are not silently replaced by the positive runs.
+
+## Physical result and remaining acceptance gates
+
+The [generator](../hw/soc/flow/make_pcie_tx_mux2_hbt_passive_v1.py) creates a
+**1,086 × 161.63 µm** macro with twelve ports, 27 core devices and 27 explicit
+substrate contacts. The [checker](../hw/soc/flow/check_pcie_tx_mux2_hbt_passive_v1.py)
+passes **560 DRC categories**, hierarchical and flat **54-device LVS**, and
+five wrong-size, missing-device, open, short and off-grid controls. Canonical
+regeneration matches every layer's polygons, labels, LEF and reference.
+The separate TX driver is not placed into this macro.
+
+Extraction preserves all 54 native devices, 154 intrinsic terminals,
+112 physical reference points and 17 metal conductors. It produces
+**173 distributed resistors and 291 capacitors**. Graph connectivity,
+capacitance conservation, thirteen raw-data faults and six composition faults
+pass. Finite native substrate contacts remain explicit. The extractor's
+capacitance reference is separate from intrinsic body connections. This is
+a development metal-RC model; substrate spreading and RF parasitics are not
+qualified. The compact 54-device model passes with **270.352 mV** signed margin.
+The distributed-RC model **fails**: minimum signed margin is **−84.941 mV**,
+with **365 wrong-sign samples out of 768** and four selector-device headroom
+failures. Both simulations complete without numerical diagnostics. The
+1,086 µm-wide layout is therefore not accepted for 8 GT/s operation. The
+706 µm-wide placement also passes DRC/LVS and fault checks but fails its
+173 R / 271 C transient: **−118.833 mV** minimum margin and **411/768**
+wrong-sign samples. Its transistor bounds pass. It is not adopted. A DC
+diagnostic measures about **220 mV** ground difference between the reference
+and tail emitters in that layout; a fresh layout widens current-carrying
+metal and adds a local shared emitter connection. The widened 706 µm repair passes native DRC/LVS and all five fault
+controls, but its 230 R / 301 C transient fails: **−283.715 mV**,
+**232/768 wrong-sign samples** and device-headroom violations. Grouping
+parallel devices reduces width to **322 µm**, with the same 54 native
+devices. This banked layout also passes 560-rule DRC, hierarchical/flat LVS
+and five fault controls; its 229 R / 301 C transient still fails:
+**−273.006 mV**, **128/768 wrong-sign samples** and device-headroom
+violations. Both compact references pass with 270.352 mV. Neither layout
+is accepted electrically. A fresh upper-metal routing trial is unverified.
+
+The 81-point HBT/resistor/temperature/common-supply matrix is complete and
+independently reviewed: **66 pass, 15 fail device bounds**. All output sample
+checks pass, including the failed **125 °C, 95%-supply typical-model point**.
+Full PVT acceptance is therefore open. Independent rail
+variation, mismatch, physical input/clock/bias drivers and full serial-chip
+integration also remain open.
+
+The [model-domain checker](../scripts/check_pcie_hbt_model_domain.py) rejects
+out-of-range or unresolved multiplicities before simulation. Four regression
+tests cover valid banks, the actual rejected historical source, invalid
+parameters and empty/wrong-terminal inputs. The physical generator also
+enforces the supported range. This domain check is not a circuit signoff.
+
+The [evidence manifest](evidence/pcie-tx-mux2-supported-20261012.json) records
+native captures, independent reviews, geometry, faults, extraction and public
+archive identity. The [481-member archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-mux2-supported-physical-20261012.tar.gz)
+is 616,153,397 bytes with SHA-256
+`135b634078a5c4e7134880163099f08b6bfb99ccce6063c2df2c74861cbd85ea`;
+all members and the complete anonymous public download are verified. Active
+full-matrix data and the later compact/extracted transient captures are
+excluded from that archive. The original compact and 1,086 µm distributed-RC captures are now in a
+[separate 122-member archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-mux2-wire-failure-and-joint-tests-20261012.tar.gz):
+102,762,559 bytes, SHA-256
+`01d7203032a7c9a22a9fd8aac58a6133bca1518675195bda29ee17ca03bd6d29`,
+with complete public byte/hash verification. It also includes the four
+positive CPU/NPU/PCIe/Ethernet tests and metadata for the failed hot PLL
+point. The 706 µm short and widened-power transient captures, new 322 µm
+physical checks, NPU wake controls and post-CTS report are now in the
+[325-member follow-up archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-layout-repairs-npu-wake-and-postcts-20261012.tar.gz):
+240,647,592 bytes, SHA-256
+`2f11ae1c69ee21a69710157475d57cccb35f4a3f7e9c7c5835169e6f181b3432`.
+Complete public download verification passes. The later 322 µm electrical
+captures and full hot-PLL waveform are excluded from that archive. The
+[updated evidence record](evidence/pcie-tx-wake-postcts-progress-20261012.json)
+binds the latest completed verdicts and their limitations.
+
+The completed 322 µm compact/distributed captures and full failed routed-core
+LVS database, extracted circuit, independent reference and logs are now in a
+[separate public archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-tx-banked-capture-and-full-core-lvs-20261012.tar.gz).
+Its 203,436,852 bytes have SHA-256
+`1044e318c216bb89b14df02fbb820629de29b3c008b4f4c9aa0ffe599e58ff22`;
+[complete public readback passes](evidence/pcie-banked-full-core-lvs-public-20261012.json).
+This also preserves the initial upper-metal spacing and subsequent connection
+failures, and the next trial's methods. The corrected upper-metal geometry
+passes DRC, hierarchical/flat LVS and five fault controls. Extraction initially
+stopped because its helper still expected Metal5 public pins; a fresh helper
+checks the actual TopMetal2 pin geometry. Its 229 R / 301 C transient completes with **−266.470 mV** minimum
+signed margin and **128/768 wrong-sign samples**, plus device-bound
+violations. Four lower ideal current references also fail the unchanged
+output test; 250 µA clears device limits but has 163 wrong-sign samples.
+These are rejected electrical trials. The completed upper-metal captures
+are in the publicly verified
+[110,364,055-byte archive](https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-topmetal-tx-and-mapped-npu-wake-20261012.tar.gz),
+SHA-256 `200190529af879819a6f2d73c77faa8a7124193ce5da4d61af73f3f220096f2f`.
+Later bias captures/PVT reviews are a separate delivery. See the
+[full latest measurement record](evidence/pcie-npu-topmetal-final-measurements-20261012.json).
+
+
+## Cloud-only continuation and cleanup (12 October 2026)
+
+At the user's request, local CAD controllers were stopped for migration. Subsequent replay proofs, mapping and timing screens run on GitHub-hosted runners. The [migration record](evidence/cloud-migration-20261012.json) distinguishes verified cloud-backed deletions, unique data still being uploaded and unfinished engineering work. Original bytes are removed only after their complete archive or file matches a GitHub release SHA-256, with a published restoration manifest. Local cleanup is not yet complete.
+
+The [paired hosted ACK measurement](evidence/cloud-ack-screen-20261012.json) reproduces all seven setup and six hold groups across three corners using the same source capsule, runtime, ports, parameters and twenty SRAM macros. Although the isolated replay/link tests and arithmetic identity proof pass, the ACK lookahead candidate worsens slow PCIe setup from −1.414698 ns to −1.558253 ns. Its CPU setup improvement does not compensate for that regression; the candidate is rejected for adoption. These are unplaced development-RC measurements, not routed timing closure or a full serial PHY result.
+
+
+## Hosted routing and native TX follow-up (13 October 2026)
+
+The [paired global-routing experiment](evidence/cloud-global-route-pair-20261013.json)
+uses the same restored design, native runtime, original SDC and PDK RC settings.
+Three resized buffers and one inserted buffer improve slow PCIe setup from
+−6.146189 ns to −5.539688 ns in this global-route estimate. The CPU slow setup
+is still −6.465747 ns; fast PCIe hold is −0.920199 ns. Other groups regress,
+and the native report still lists one unconstrained endpoint and 1,078
+unannotated drivers. This candidate is **not adopted**. The earlier routed
+ODB/SPEF result is a separate measurement and must not be combined with these
+estimates. [OpenROAD parasitics documentation](https://openroad.readthedocs.io/en/latest/main/src/est/README.html)
+describes the distinction between placement and global-routing estimates;
+neither supplies final extracted timing acceptance here.
+
+The [eight hosted TX measurements](evidence/pcie-tx-cloud-points-20261013.json)
+restore the original device and wire models with SHA-256 checks. The unchanged
+independent reviewer checks all 768 output samples and the complete startup
+and operating bounds of 23 HBTs. Input common modes and amplitudes were declared
+before simulation; the 8 GT/s rate, sample phases, 100 mV margin, loads and
+native device limits remain unchanged.
+
+| Input operating point | Compact margin (mV) | Compact device failures | Wire margin (mV) | Wire wrong signs / 768 | Wire device failures |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Original baseline | 270.352 | 0 | −266.470 | 128 | 19 |
+| Smaller input swing | 240.652 | 0 | −259.576 | 144 | 15 |
+| Lower data common mode | 240.821 | 0 | −259.519 | 144 | 7 |
+| Further common-mode reduction | 239.925 | 2 | −259.031 | 144 | 5 |
+
+The original failed wire result reproduces within 1 µV with exactly 128 wrong
+sign samples. All new wire operating points fail and are rejected. The first
+hosted review attempt mistakenly selected the unused compact input file for
+wire captures; its native waveforms and failure are preserved. The repaired
+controller binds the review to the actually simulated mux. The frozen review
+algorithm and limits are unchanged. The [metal-R/metal-C diagnostic](evidence/pcie-tx-cloud-rc-diagnostic-20261013.json)
+is complete: setting all 229 explicit metal resistors to 1 mΩ removes wrong
+signs and all device-bound failures but leaves only 96.382 mV margin, below
+the unchanged 100 mV requirement. Removing capacitance alone still produces
+96 wrong signs and 19 device failures. Removing both effects gives 270.333 mV,
+close to the compact model. These artificial parasitic mutations diagnose the
+interconnect mechanism only and cannot be used for layout or PHY acceptance.
+The [seven net-class follow-ups](evidence/pcie-tx-cloud-net-diagnostic-20261013.json)
+also complete. Reducing only internal metal resistance removes all 19 device
+bound violations but still gives −140.752 mV and 128 wrong samples. Reducing
+only supply resistance leaves six device failures; reducing return, input,
+output or bias resistance alone leaves 19. All fail the unchanged output
+requirement. Real internal interconnect and RC coverage still need repair;
+no diagnostic source is substituted for the physical design. Full serial PHY, main-chip route
+acceptance and final setup/hold remain open. All compute runs on hosted runners.
+
+
+The [hosted real-layout trial](evidence/pcie-tx-cloud-real-layout-20261013.json)
+regenerates the baseline and two actual thick-metal variants. Both variants
+move the vertical Metal4 trunks to TopMetal1, increase lane/bank spacing, and
+remove the broad Metal5 bypass that would intersect the new via stacks. One
+variant additionally narrows signal buses to 3 µm. All three pass all 560 DRC
+categories with zero markers and both hierarchical and flat 54-device native
+LVS. Wrong finger count, missing HBT, open output, supply short and off-grid
+geometry are each rejected. The first cloud attempt failed because a Python
+controller running inside the AppImage attempted a nested FUSE mount; running
+that controller outside the AppImage fixes the infrastructure without changing
+physical acceptance. The successful run is 38311705739 at a17f5e98.
+
+These layouts are not electrically adopted. The next hosted extraction uses
+the exact archived Magic area-product runtime, actual newly generated geometry,
+112 physical metal probes, the unchanged native RC graph audit, and thirteen
+corruption controls. The cross-conductor mutation explicitly uses actual TX
+ports P_op/P_on instead of inherited PLL port names. No artificial resistance
+reduction is used in these geometry candidates. Full-wave acceptance, RF PEX
+qualification, full serial PHY and final chip timing remain open.
+
+The [new hosted extraction](evidence/pcie-tx-cloud-extraction-20261013.json)
+passes for all three actual layouts (run 38312857503). The original geometry
+produces 229 resistors and 301 capacitors; both thick-metal candidates produce
+173 resistors and 267 capacitors. All 112 physical anchors remain connected
+within the 17 original conductors. Exact native/export resistor edge values,
+per-point ground capacitance, mutual capacitance attachments and the collapsed
+capacitance matrix pass the frozen audit; all thirteen corruption controls are
+rejected. These counts alone do not establish better electrical behavior.
+The source-bound native-device composition and unchanged 8 GT/s full-wave
+review completed in 38313404684; electrical adoption remains false.
+
+The [cloud restore readback](evidence/cloud-output-restore-20261013.json)
+reconstructs 49 migration batches, 32,196 original files and 36,080,201,324
+logical bytes. This includes thirteen backward archive hard links, each
+verified against an already hashed target and its own original manifest.
+Ten safety tests per group reject unsafe or incorrect restore records and
+exercise deletion/resume gates. The first reader lacked hard-link support;
+its failed run is retained. Later uploads and the remaining local files are
+outside this completed snapshot; cleanup is still in progress.
+
+The [completed actual-layout waveform comparison](evidence/pcie-tx-cloud-layout-waveforms-20261013.json)
+reproduces the baseline margin within 1 µV and its 128 wrong-sign samples.
+Both thick-metal layouts eliminate all nineteen HBT operating/startup bound
+failures and emit no native diagnostic warnings. Their signal screen still
+fails: the regular-bus variant gives −251.503 mV and the narrow-bus variant
+−253.319 mV, both with 128 wrong signs across the unchanged 768 samples.
+Successful workflow execution therefore does not mean electrical acceptance.
+Neither layout is adopted; actual interconnect delay still requires work.
+
+
+The [fixed-phase diagnosis](evidence/pcie-tx-cloud-phase-diagnostic-20261013.json)
+locates all 128 wrong signs at 0.3 UI (37.5 ps after the source bit boundary).
+For the thick-metal variant, the TX zero crossing occurs 45.06–58.40 ps
+after that boundary and reaches 100 mV in 52.01–67.23 ps. The mux contributes
+most of this delay. At 0.5 UI there are no wrong signs, but 96 samples fall
+below 100 mV. The 0.7 UI group has no failures.
+
+A [separate propagation-delay diagnosis](evidence/pcie-tx-cloud-latency-diagnostic-20261013.json)
+uses only the first 64 bits to estimate one constant delay, then freezes it.
+For the thick-metal geometry the estimate is 55.681 ps. Evaluation of bits
+64–254 gives 573 samples, no wrong signs and 249.106 mV minimum margin.
+Bit 255 is explicitly excluded because shifted samples exceed the captured
+time range. Polarity inversion creates 573 errors and a one-UI slip creates
+300. The narrow-bus variant gives 249.620 mV with the same evaluation coverage.
+The original 768-sample failed gates are preserved; no waveform, sample limit
+or adoption flag is changed. This diagnostic does not implement a CDR.
+
+This distinction matters for the requested PCIe product. The primary
+[Tektronix PCI Express measurement MOI, version 4.6](https://download.tek.com/document/PCIE_DPOJET_MOI.pdf),
+sections 5.12–5.13, measures data-dependent and uncorrelated jitter against a
+recovered data clock, using repeating compliance patterns and specified
+clock-recovery settings. Our inference is that source-referenced propagation
+delay and serial-data eye degradation require separate measurements. The
+existing short PRBS development captures and fixed-delay diagnostic implement
+neither that compliance method nor a physical CDR. They cannot establish
+PCI-SIG compliance, BER, channel/equalizer behavior, PVT coverage, or complete
+Gen3 x4 PHY acceptance. The source-referenced integration screen still fails.
+
+The next actual geometry trial prioritizes qn/qp, ea/eb, tail and selector
+buses near the devices, with a second variant increasing HBT access vias
+from four to eight columns. Both initially fail one TM2.bR marker in run
+38315004937. The unchanged PDK rule requires 5 µm next to a wide line over a
+long parallel span; the three gaps adjacent to reordered 16 µm supply buses
+are enlarged from 3 to 5 µm. Their repeated complete geometry-to-transient
+pipeline is run 38315447654. No rule is disabled and no failing result is
+replaced by the propagation-delay diagnostic.
+
+
+The [completed critical-bus trial](evidence/pcie-tx-cloud-critical-route-20261013.json)
+passes physical DRC/LVS, native wire extraction and source-bound composition
+for the paired control and both reordered geometries (run 38315447654).
+Each preserves 54 native devices. The control has 173 wire resistors and
+267 capacitors, reordered buses have 173 resistors and 270 capacitors, and
+the wider-via variant has 781 resistors and 650 capacitors. The unchanged waveform
+screen still fails with 128 wrong signs: control −251.503 mV, reordered buses
+−242.423 mV, and reordered buses with wider via access −238.701 mV minimum
+margin. All three have zero HBT bound failures and no native diagnostic
+warnings. Neither new geometry is adopted. Further validation must separate
+source latency from serial eye distortion while preserving the failed
+integration screen; these results do not close the full serializer, PLL/CDR,
+qualified RF PEX, main-chip routing or final timing.
+
+
+The [source-bound timing-path trace](evidence/cloud-timing-paths-20261013.json)
+resolves all 39 reported corner/group worst paths in the historical four-cell
+trial. Its worst CPU path runs from the Ibex register-file read address to
+a CLINT SECDED check bit; its PCIe path runs from replay read position to
+TX data. Ethernet SRAM outputs still reach cross-check addresses in the
+same cycle in that old physical database. The later source change 7ad40bde
+adds cross-read capture registers, so further old-layout-only buffering would
+miss an already implemented architectural repair.
+
+The [newer physical resume input](evidence/cloud-newer-postcts-input-20261013.json)
+therefore pins the completed `metadata-postcts19` chip database, original SDC
+and original three-corner reader. Hosted run 38317996877 first reproduces
+all reported saved slacks using nine hash-identical Liberty files, then
+performs fresh global routing with the existing pinned PDK RC model. The
+newer chip includes Ethernet cross-read capture, registered replay successor
+and RX-return metadata. This job has not yet returned at this checkpoint;
+it cannot establish detailed routing, qualified extraction or serial PHY
+acceptance. The locally queued credit-offer physical job had not started,
+so it is not represented as a completed physical checkpoint.
+
+
+The [native CMOS input-driver experiments](evidence/pcie-cmos-data-driver-20261013.json)
+replace four ideal mux data inputs with actual foundry `sg13g2_buf_16` cells
+and native resistors; the selector and bias sources remain ideal. Run
+38320024701 rejects the direct resistive level-shift candidate: the 2.5 V
+network backfeeds the 1.2 V CMOS outputs, eight of sixteen LV MOS devices
+exceed the prospective 1.32 V terminal-voltage screen, and the differential
+data become ambiguous. The supply absorbs 3.681 mW on average. This is a
+recorded circuit failure, not an accepted interface.
+
+Run 38320561121 inserts sixteen native HV NMOS devices so that the LV
+outputs drive only gates. All thirty-two MOS devices pass the engineering
+voltage screens and the CMOS supply now delivers 1.373 mW on average. The
+candidate is still rejected: 208 of 768 original input-bit samples have
+wrong signs, and four downstream HBT devices have insufficient VCE
+headroom (minima 0.201833 V and 0.303712 V versus the unchanged 0.4 V bound).
+The downstream reviewer reports zero wrong signs against the *actual mux
+inputs*; this does not prove that those inputs represent the correct source
+bits at the required time. A separate final-output comparison now uses the
+original PRBS bits at all 768 unchanged source-relative sample times and
+the original 100 mV limit. Its polarity, one-bit-delay, low-amplitude and
+incomplete-capture controls run on hosted workers. No fitted phase replaces
+the failed source-relative gate. Both supply-disconnection fault captures
+are retained. No full serializer, PLL/CDR, physical driver layout, PVT
+qualification, foundry SOA or full PHY acceptance is claimed.
+
+
+The additional original-bit screen completed in hosted run 38321423547.
+The powered HV candidate has 192 wrong signs among 768 final-output samples,
+with a minimum margin of −306.263 mV. The disconnected-pullup control has
+440 wrong signs and all 768 samples below 100 mV. All seven oracle corruption
+and coverage tests pass in both hosted jobs. These results confirm why the
+input-relative reviewer cannot stand in for the original source-bit check;
+the candidate remains rejected and no output phase or threshold is changed.
+
+
+The [paired launch-contract study](evidence/pcie-cmos-launch-contract-20261013.json)
+in run 38322832591 retains all original final-output observation times and
+limits. Its prospective external interface presents A data 125 ps before
+selection, while B launch is unchanged. This is a separately declared
+upstream data-availability requirement; it does not implement the upstream
+serializer or move the output oracle. Both coincident-launch controls retain
+192 wrong signs. With the inactive-bank launch, both candidates have zero
+wrong signs and zero samples below 100 mV. The lighter v3 driver reaches
+210.161 mV minimum output margin, but still has four HBT headroom failures
+(minimum VCE 0.262526 V) and 128 selected-input samples below 150 mV. It is
+not adopted. Legacy half-rate input observations remain recorded, including
+unselected slots in which the next value is already being prepared.
+
+The following v4 candidate connects the native HV drains directly to the
+loaded data node, removing the intermediate resistor/drain RC node. Its
+four 4 um HV branches and two native rail-setting resistors per input still
+require native transient and device checks. The v3 control is retained; no
+limits, data sequence, or final-output sample phases are relaxed.
+
+
+The [direct-drain v4 study](evidence/pcie-cmos-direct-driver-20261013.json)
+completes native captures in run 38323278847 but is rejected. With early
+A launch its final output passes all 768 samples with 154.679 mV minimum,
+yet 511 selected-input samples fall below 150 mV and the unchanged independent
+input-ambiguity guard rejects the capture. The exact current native
+transistor bindings identify four **selector** HBTs with bases on `sp/sn`
+and minimum VCE 0.256488 V. The absence of a downstream failure list after
+the input guard aborts is not a passing device review. Device IDs from older
+layout revisions cannot substitute for the current netlist bindings.
+
+The next paired study retains v3 and changes only its series resistor from
+9.08 um to 6.92 um in v5. Separately, the `clock_small` operating point
+reduces the ideal selector amplitude from 300 mV to 80 mV at the same 1.23 V
+common mode to provide more selector headroom. It does not change any
+voltage, timing or sample acceptance limit. Both changes require measured
+results; real upstream serialization and actual clock generation remain
+required even if the nominal component screen eventually passes.
+
+
+The [selector headroom comparison](evidence/pcie-cmos-selector-headroom-20261013.json)
+completed in run 38323831698. With v5 and the 80 mV selector amplitude, all
+768 original output samples pass (minimum 226.386 mV), all selected-input
+samples exceed 150 mV (minimum 150.123 mV), and the independent 23-HBT
+review and all 32 MOS engineering voltage screens pass without diagnostics.
+The input margin exceeds its gate by only 0.123 mV, so this is not yet a
+robust operating point or a layout adoption.
+
+A follow-up campaign keeps the same source bits, launch contract, sample
+times and limits. It repeats the nominal case at 0.25 ps maximum step and
+screens slow/fast/skew CMOS combinations plus hot/low-supply and cold/high-
+supply combinations. Core and analog rail waveforms are checked against the
+requested voltages; MOS corners apply to the actual native models. These
+ten diagnostic conditions are not an exhaustive foundry PVT or Monte Carlo
+qualification. Actual upstream serialization, selector clock generation,
+PLL/CDR, frontend layout/extraction and main-chip integration remain open.
+
+
+The [ten-condition follow-up](evidence/pcie-cmos-driver-corners-20261013.json)
+completed in run 38324432662. The nominal result survives halving the step:
+selected-input minimum changes from 150.122620 to 150.117650 mV. Only the
+nominal, quarter-step, fast-MOS and `mos_fs` cases pass every declared
+selected-contract gate. The circuit is rejected for PVT adoption. At
+125 C with low supplies and slow models, 64 original output samples have
+wrong signs and 192 are below 100 mV. At -40 C with high supplies and fast
+models, two tail HBTs reach only 0.361612 V VCE and sixteen LV MOS devices
+exceed the engineering voltage bound; one internal CMOS node reaches
+1.362852 V. Other slow/mixed conditions also miss the input differential
+requirement. The slow-MOS and hot/low captures complete natively, then the
+independent input-validity guard rejects them. They are not simulator
+convergence failures or passing device reviews.
+
+These results motivate moving the CMOS-to-CML boundary earlier in the
+serializer and providing more real input settling time. A native four-to-one
+CML tree with lower-rate CMOS inputs is a next design candidate, not an
+implemented fix. Actual bias/clock circuits must also address cold tail
+headroom and CMOS overshoot; per-corner ideal voltage tuning cannot replace
+those circuits. The existing 54-device physical proof covers only the final
+two-to-one mux. Any added stage requires complete new device accounting,
+startup/whole-wave checks, physical connectivity, DRC/LVS and extraction.
+
+The primary [IHP MOS documentation](https://ihp-open-pdk-docs.readthedocs.io/en/latest/contents/device_libraries/mosfets.html)
+identifies the model and corner libraries and explains how total width and
+fingers map to extraction. The [I/O architecture documentation](https://ihp-open-pdk-docs.readthedocs.io/en/latest/contents/io_library/02_drive_strength.html)
+identifies its native level shifter and output stages. The pinned local
+`sg13g2_LevelUp` SPICE subcircuit was inspected as another possible input
+interface, but it has not been measured at the required rate here. Neither
+reference constitutes a high-speed qualification or permission to relax
+our voltage gates.
+
+
+The [newer chip route](evidence/cloud-newer-route-failure-20261013.json)
+reproduces every saved placement-timing group, then fails with `GRT-0116`
+and final layer overflow 153. This is a congestion failure, not a timeout
+or out-of-memory result. No routed timing closure was obtained. The
+[native congestion probe](evidence/cloud-newer-congestion-probe-20261013.json)
+binds all 108 DRC-viewer markers and their reported nets to the exact ODB.
+Seventy-one markers lie near macros; all markers are within x=2340–3182.4,
+y=1238.4–1641.6 um, around Ethernet SRAM rows 4/5. PCIe receive-ownership
+packet/staging nets also cross this region. The marker report sums to 156;
+it is retained separately from the final layer report of 153.
+
+The next three route attempts shift the 7.2 um global-routing grid by half
+a cell along x, y, or both axes. Placement, logic, SDC, RC and the 20 percent
+capacity adjustment stay unchanged. The [OpenROAD global-routing reference](https://openroad.readthedocs.io/en/latest/main/src/grt/README.html)
+specifies the grid origin in database units; each run converts and prints
+its requested origin. Congestion remains an error. Failed partial databases
+and guides are diagnostic records, not completed routes. Native logs are
+also streamed so future long runs expose stage progress as it occurs.
+
+The first actual two-level four-to-one schematic is implemented by
+`hw/soc/analog/pcie/tx_mux2_hbt_cascade_v1.spice` and
+`scripts/run_cloud_tx_mux4.py`. Two first-stage HBT muxes drive the final
+mux data bases directly, including their native loading. Their output
+pull-down resistor length is 9.0 um instead of 4.5 um; the other 19 HBTs
+and eight-resistor topology are retained. This changes the physical divider
+network intended to supply the next mux's higher data common mode. There
+is no ideal voltage translation, gain or delay between these stages.
+
+Four 2 Gb/s CMOS input streams carry bits 0, 1, 2 and 3 modulo four.
+Prestage A selects streams 0/2 and B selects 1/3; the final mux interleaves
+A/B at 8 GT/s. The external A/B prestage clocks select each next input
+125 ps before its final selection. Each CMOS stream changes while its
+prestage input is unselected, 250 ps before its next prestage selection.
+These launch phases are explicit external source requirements, not yet
+an implemented upstream CMOS serializer or clock-distribution circuit.
+All 256 original bits are still checked at 0.3, 0.5 and 0.7 UI, without
+fitting output delay or deriving expectations from delayed internal inputs.
+
+Device accounting expands to all 61 HBTs and 64 MOS transistors in the
+actual instantiated tree. Every HBT's native startup flag is read back;
+zero-source operating point, complete waveform coverage, rail ramps,
+whole-capture upper voltage/current bounds and post-startup VCE minimum
+remain mandatory. The original 100 mV output gate and 150 mV selected-input
+gates remain unchanged. The 1.32/2.75 V MOS limits are engineering screens,
+not a foundry reliability qualification. The final-stage 54-device layout
+proof does not cover either new prestage or any CMOS frontend layout.
+
+Hosted run 38328009752 exposed a measurement implementation error: rails
+connected through resistors were absent from the saved transistor-terminal
+vector set. Completed native captures had no numerical diagnostics, but
+review raised `KeyError('v(avdd)')`; this run proves neither a passing nor a
+failing electrical candidate. Its source-bound complete captures remain
+published. Commit `cca6613b` explicitly saves all three rails and adds a
+regression control for this omission. Run 38328250971 repeats the actual
+capture with the corrected measurement contract; it does not fabricate
+missing samples or reinterpret the earlier run as passing. The campaign
+contains nominal, half-step, hot/low and cold/high cases and two actual
+circuit faults (swapped prestage-A select and disabled prestage-B bias).
+Full PHY, clock/bias integration, new layout/extraction and PVT acceptance
+remain open pending measured results.
+
+The corrected [complete 4:1 tree study](evidence/pcie-mux4-native-tree-20261013.json)
+finished in run 38328250971. Nominal and quarter-step output samples all
+pass with minima 234.611 and 234.669 mV; all 61 HBT and 64 MOS bounds also
+pass. The interstage common mode is only 1.784–1.800 V, so the complete
+component gate rejects both. Hot/low now has zero wrong output signs,
+compared with 64 in the earlier final-mux/4 Gb/s-boundary experiment, but
+its 65.209 mV output minimum fails the unchanged 100 mV gate. Four final
+selector HBTs also miss VCE. Cold/high still fails six tail HBTs and 32 LV
+MOS devices. Swapping prestage-A selection or disabling prestage-B bias
+each causes 192 wrong original output samples; both real faults are caught.
+
+A [matched divider/damping comparison](evidence/pcie-mux4-divider-damping-20261013.json)
+in run 38328968244 extends each prestage output pull-down resistor from
+9 to 14 um. Nominal and quarter-step now pass every declared source-bit,
+interface and transistor engineering gate. With the original CMOS frontend,
+nominal output minimum is 234.749 mV and interstage common mode is
+1.937–1.957 V. These are schematic component gates, not physical acceptance.
+Hot/low interstage common mode now passes (1.805–1.858 V), but output margin
+is only 70.539 mV and twelve final data HBTs reach approximately 0.396 V
+VCE. Cold/high interstage common mode reaches 2.072 V, exceeding 2.05 V;
+six tail HBTs and 32 LV MOS devices still fail. The candidate remains
+rejected for PVT adoption.
+
+The paired v6 frontend adds an actual `rppd` resistor in series with the
+buf16 input; no ideal source slew or source phase is changed. It does not
+remove the 32 cold/high MOS violations and is not accepted as that repair.
+The actual buffer gate is bound to the node after this resistor in the
+measurement contract; both that gate and the original source are captured.
+The direct v5 frontend is retained for the next isolated bias experiment.
+
+`tx_clock_common_bias_v1.spice` introduces a native diode-connected HBT
+and a substrate-connected resistor for clock common mode. An external
+650 uA reference feeds this node, and the real base-current loads of all
+three selector pairs draw from it. The prospective mechanism combines
+HBT VBE temperature tracking with a resistor voltage offset for tail
+headroom. Differential modulation still comes from external floating
+sources at the unchanged 80 mV amplitude, 10 ps edge slew and phase
+schedule. This implements a loaded common-mode circuit, not a PLL/CDR or
+complete physical clock tree. Run 38329329431 screens all 62 HBTs and 64
+MOS devices at nominal, quarter-step, hot/low and cold/high conditions.
+Its result is required before accepting even this component change.
+
+The [loaded native clock-reference study](evidence/pcie-mux4-native-clock-bias-20261013.json)
+completed in run 38329329431 with 14 source-order, binding and oracle
+controls passing on each hosted job. Nominal and quarter-step complete
+component gates pass at output minima 218.823 and 218.878 mV. At cold/high,
+all 62 HBTs now pass: the six previous tail-headroom violations are removed
+by the real reference network under the same device limits. This is a
+measured circuit improvement, but cold/high still fails the 32 LV MOS
+voltage screens and interstage common mode reaches 2.061 V.
+
+The hot/low case remains rejected: twelve final data HBTs miss the minimum
+VCE and 128 output samples fall below 100 mV. All of these signal failures
+are at 0.3 UI; the 0.5-UI minimum is 311.263 mV. The unchanged 0.3-UI
+minimum is only 48.945 mV. Actual clock common mode varies by approximately
+49 mV under the switching loads, unlike an ideal fixed reference. This
+requires a stage-by-stage transient-delay and loading diagnosis; shifting
+the output sampling phase would hide the failure and is not a repair.
+The nominal result and cold HBT improvement therefore do not close PVT,
+full serial PHY, main-chip integration or final timing.
+
+The [full-wave diagnosis](evidence/pcie-mux4-stage-diagnosis-20261013.json)
+reads the exact source-bound native archives on GitHub. All 128 changing-bit
+events have one unambiguous crossing at the clock, mux, TX and 100 mV
+threshold. At hot/low with the native clock reference, median clock-to-mux
+zero-crossing delay is 20.882 ps, versus 6.287 ps from mux to TX. The latest
+100 mV crossing is 40.100 ps after the original bit boundary, later than
+the unchanged 37.5 ps first observation. The cold buf16 internal node peaks
+at 1.362868 V during an input transition while the buffer output is still
+near ground, implicating input feedthrough. No acceptance phase is changed.
+
+The v7 frontend increases its actual input resistor length from 4.5 to
+12 um. The [first circuit comparison](evidence/pcie-mux4-drive-prototype-20261013.json)
+shows that this removes the cold/high 32-MOS voltage failures while
+preserving the original source edge and launch schedule. Independently,
+the prospective faster final mux doubles all eight resistor widths and
+its reference current (0.5 to 1 mA), preserving the intended divider and
+swing scale while lowering impedance. The first faster schematic lacked
+the compact baseline's 27 substrate taps, so it cannot establish a strictly
+matched physical-source comparison and is not adopted from that evidence.
+
+The [exact-tap repeat](evidence/pcie-mux4-drive-taps-20261013.json) in run
+38330772603 preserves all 27 native substrate taps, HBT dimensions and
+other parameters. Reversing just the eight resistor-width changes and the
+subcircuit rename reproduces the original compact netlist SHA-256 in a
+hosted control. With the v7 frontend, nominal and quarter-step complete
+component gates pass at 289.732 and 289.736 mV. The hot/low output minimum
+improves to 235.402 mV without changing observation times, and all MOS
+screens pass. Six final data HBTs still miss the 0.4 V minimum by about
+2 mV. Cold/high has no HBT or MOS failures but its interstage common mode
+reaches 2.069995 V, exceeding the unchanged 2.05 V upper gate. PVT adoption
+therefore remains rejected despite the signal-speed and MOS repairs.
+
+The next exact-native v4 candidate changes only the two final collector
+resistor widths from 16 to 17 um to create real headroom rather than round
+away a failing result. The eight-width transformation, native substrate
+network, full source-bit oracle and all device limits remain checked.
+Run 38331516818 compares fixed 0.5, 0.55 and 0.6 mA prestage reference
+choices, each across the same nominal, hot/low and cold/high conditions.
+The 0.55 mA choice also has a quarter-step case. A candidate must pass as
+one fixed circuit across corners; choosing a different bias for each
+corner is not acceptance. External references and differential clock
+modulation, new physical layout/extraction, full serialization/PLL/CDR and
+main-chip integration remain open.

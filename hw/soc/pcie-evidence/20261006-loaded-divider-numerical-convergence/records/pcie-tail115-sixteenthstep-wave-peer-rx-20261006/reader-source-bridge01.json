@@ -1,0 +1,92 @@
+{
+  "status": "FULL_BYTE_INVERSE_AND_ALL_READER_FUNCTION_ASTS_IDENTICAL",
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-eighthstep-wave-peer-rx-20261006/review01.py",
+    "bytes": 15142,
+    "sha256": "d07c9ff3edddd729d245a652c6e060283fd22a738a2f2abfeac2506b8b0861db"
+  },
+  "candidate": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-sixteenthstep-wave-peer-rx-20261006/review01.py",
+    "bytes": 15171,
+    "sha256": "335fdd75496c1edfb1515e5bd8b4b932e5b657a77a0d685dac2043d8907b8bdd"
+  },
+  "edits": [
+    {
+      "before": "E=R/'hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006'",
+      "after": "E=R/'hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006'",
+      "count": 1
+    },
+    {
+      "before": "dict(bytes=336989,sha256='dfe151383aa5c717e47124b92c32a7feb0599cf20844a1dfe0cd5f4fb37e3598')",
+      "after": "dict(bytes=421359,sha256='ece75ffa83c183ffbe4e228f899a36434345617d5566ee5fd77f4ba2f7bff15c')",
+      "count": 1
+    },
+    {
+      "before": "dict(bytes=1391,sha256='0d9594b1c44ca5d10f894cca950bc7a9074ffa990e74e1c778e474d1eced4008')",
+      "after": "dict(bytes=1392,sha256='c7f5581670129ce1b080da4a7b5f51aa989d3e7b478e5d80d4f845c69e9fb53d')",
+      "count": 1
+    },
+    {
+      "before": "dict(bytes=9611,sha256='4f3debe14000f6620784f8dc0646231700321929ff56227eabedfd9c73b98eef')",
+      "after": "dict(bytes=9837,sha256='f239033476fb46b72a073f050b2c6d4c19a93c34cff331d25a5cfdee282ddc3f')",
+      "count": 1
+    },
+    {
+      "before": "parent=R/'hw/soc/out/pcie-tail115-quarterstep-wave-peer-rx-20261006/review01.py'",
+      "after": "parent=R/'hw/soc/out/pcie-tail115-eighthstep-wave-peer-rx-20261006/review01.py'",
+      "count": 1
+    },
+    {
+      "before": "ref_native=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01/result.json')",
+      "after": "ref_native=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01/result.json')",
+      "count": 1
+    },
+    {
+      "before": "reference,rr=read_wave('quarterstep',27217,",
+      "after": "reference,rr=read_wave('eighthstep',54417,",
+      "count": 1
+    },
+    {
+      "before": "candidate,cr=read_wave('eighthstep',54417,dict(bytes=426392,sha256='03977b90f4877791934cf74b13274b3476f41ae790307f3c3005481ab6d709ff'),dict(bytes=386828885,sha256='104365fc79169ae95981e8489b1ae29cdb951258f45ae2d7c3a6a9aa9d95a88b'))",
+      "after": "candidate,cr=read_wave('sixteenthstep',108817,dict(bytes=426434,sha256='1428ee18fc41a19ff5b5a92c3cce2803f1c2fbbe29ce08c6a8c95c9610cf2ded'),dict(bytes=772725567,sha256='c8f1ccb26dddd4e7cfd639ec063bc9d46c2258057b5905a6fe27c004edb9e6fd'))",
+      "count": 1
+    },
+    {
+      "before": "policy['reference_step_s']==1.25e-12 and cr['config']['step_s']==policy['candidate_step_s']==.625e-12",
+      "after": "policy['reference_step_s']==.625e-12 and cr['config']['step_s']==policy['candidate_step_s']==.3125e-12",
+      "count": 1
+    },
+    {
+      "before": "assert [k for k,v in checks.items() if not v]==['vco_frequency_100ppm','feedback_frequency_100ppm']",
+      "after": "assert all(checks.values())",
+      "count": 1
+    },
+    {
+      "before": "assert numeric['status']=='FAIL_FINITE_OPEN_LOOP_NUMERICAL_SCREEN'",
+      "after": "assert numeric['status']=='PASS_FINITE_OPEN_LOOP_NUMERICAL_SCREEN'",
+      "count": 1
+    },
+    {
+      "before": "PASS_INDEPENDENT_SAVED_TAIL115_EIGHTHSTEP_STREAMING_RECOUNT_NUMERICAL_FAIL_RETAINED",
+      "after": "PASS_INDEPENDENT_SAVED_TAIL115_SIXTEENTHSTEP_STREAMING_RECOUNT_FINITE_NUMERICAL_PASS",
+      "count": 1
+    },
+    {
+      "before": "all78,123,738 finitevalues",
+      "after": "all156,214,938 finitevalues",
+      "count": 1
+    },
+    {
+      "before": "original finitefunctional PASS and supplementary frequency FAIL both retained.",
+      "after": "original finitefunctional PASS and supplementary adjacent-step finite numerical PASS independently reproduced; no long-duration, acquisition, PVT or full-PHY closure claim.",
+      "count": 1
+    }
+  ],
+  "functions": [
+    "pin",
+    "j",
+    "crossings",
+    "read_wave"
+  ],
+  "scope": "Only adjacent capture paths/pins, expected numerical outcome and truthful count/scope text. Fixed policies, all streaming/numeric/source binding reader functions unchanged."
+}

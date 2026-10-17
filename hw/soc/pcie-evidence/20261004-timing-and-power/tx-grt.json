@@ -1,0 +1,228 @@
+{
+  "status": "PASS_TX_V4_NATIVE_GRT_FUNCTIONS_AND_PORTS",
+  "scope": "Signal placement/CTS/global route only; estimatedRC and standalone4ns/.2nsIO/.1slew/.01pF, not detailedroute or qualifiedRC/mainchip/PHY acceptance",
+  "proof": {
+    "states": 3850,
+    "input_bits": 651,
+    "output_bits": 130,
+    "targets": 11680,
+    "canonical_nodes": 73627,
+    "mismatches": [],
+    "matched": 11680,
+    "elapsed_seconds": 5.664447361981729,
+    "logic_cell_census": {
+      "gold": {
+        "$_NOT_": 25174,
+        "$_AND_": 30349,
+        "$_OR_": 18709,
+        "$_XOR_": 4300,
+        "$_DFF_PP0_": 3850,
+        "$scopeinfo": 29722
+      },
+      "gate": {
+        "$_NOT_": 25174,
+        "$_AND_": 30349,
+        "$_OR_": 18709,
+        "$_XOR_": 4300,
+        "$_DFF_PP0_": 3850,
+        "$scopeinfo": 37861
+      }
+    },
+    "status": "PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY",
+    "scope": "Native Liberty binary Boolean functions; bijective same-instance FF state map, all D/clock/reset and all external outputs. No blackboxes, unconstrained omitted cells, new assumptions or timing equivalence.",
+    "rules": [
+      "exact primitive semantics",
+      "commutative binary operand order",
+      "double Boolean inversion",
+      "literal 0/1 negation",
+      "associative Boolean operator grouping",
+      "AND/OR idempotence",
+      "collision-free tuple interning"
+    ]
+  },
+  "proof_faults": {
+    "status": "PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS",
+    "positive": {
+      "states": 3850,
+      "input_bits": 651,
+      "output_bits": 130,
+      "targets": 11680,
+      "canonical_nodes": 73627,
+      "mismatches": [],
+      "matched": 11680
+    },
+    "controls": [
+      {
+        "kind": "invert_D",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_51790_:D"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_clock",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_51790_:C"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_reset",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "state:$flatten\\_51790_:R"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "invert_output",
+        "status": "REJECTED_ACTUAL_BOOLEAN_COMPLEMENT",
+        "mismatches": [
+          "output:word_o:0"
+        ],
+        "reason": "Direct inversion of the selected Boolean boundary differs for every input/state valuation."
+      },
+      {
+        "kind": "missing_state",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError('Exact bijective native state instance map')"
+      },
+      {
+        "kind": "unknown_function",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError()"
+      },
+      {
+        "kind": "unknown_output",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError(('unknown or combinational cycle', 'x'))"
+      },
+      {
+        "kind": "undriven_reset",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "KeyError(83036)"
+      },
+      {
+        "kind": "duplicate_driver",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError(('multiple driver', 'peer_duplicate', 655))"
+      },
+      {
+        "kind": "changed_port_census",
+        "status": "REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH",
+        "error": "AssertionError()"
+      }
+    ],
+    "scope": "Four real Boolean boundary-inversion faults and six fail-closed graph/coverage faults, including the actual failed-physical undriven-reset class on exact native-expanded candidate. No altered source netlist written."
+  },
+  "ports": {
+    "status": "PASS_EXACT_PHYSICAL_NETLIST_PORT_REPLAY",
+    "inputs": {
+      "/dev/shm/nssoc-tx-path-v4-grt-01/tx/repaired.v": {
+        "bytes": 4151673,
+        "sha256": "e40a68b00f7d31287a28cb84de4fd3404310ec6565b16e5ec3d7a6c164fc2637"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+        "bytes": 53835,
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v4.py": {
+        "bytes": 5607,
+        "sha256": "eb20d0c642668c6abbdc758055a658dcf44a6e041c214f54f1b27adc50833298"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_tx_path_v4": {
+        "bytes": 1218,
+        "sha256": "c097ed2043aec6e17d4bdc5ff34f26c06817d5eb90734eb92e56bf2ab3206c79"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tx-path-v4-20261004/grt-proof/replay_physical.py": {
+        "bytes": 2696,
+        "sha256": "03471bb3e2a1c245c3493a0134272a13476b3531a71c01a116cbfede38e6bec8"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_tx_path_v4.py": {
+        "bytes": 9917,
+        "sha256": "4383abc664cdf3bb4c0adfb39df8c361427f7ebaf56f0a3dd1e32291a2a104ed"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+        "bytes": 4628,
+        "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+        "bytes": 1383,
+        "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog": {
+        "bytes": 453,
+        "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp": {
+        "bytes": 485,
+        "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/iverilog": {
+        "bytes": 189328,
+        "sha256": "6dcb43272b8eaa31410725c3491e33da8c75241ea1b67a2fac1ab2e587258dbe"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/vvp": {
+        "bytes": 36688,
+        "sha256": "06d344b672d461fc739815abee2aae17fe85e2a08b3d6d86aa094f791488aafd"
+      }
+    },
+    "command": [
+      "make",
+      "-f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_tx_path_v4",
+      "--no-print-directory",
+      "VERILOG_SOURCES=/dev/shm/nssoc-tx-path-v4-grt-01/tx/repaired.v /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "SIM_BUILD=/dev/shm/nssoc-tx-path-v4-physical-replay-01/sim",
+      "COCOTB_RESULTS_FILE=/dev/shm/nssoc-tx-path-v4-physical-replay-01/results.xml",
+      "PCIE_NATIVE=1"
+    ],
+    "command_timeout_seconds": null,
+    "scope": "Exact post-placement/CTS/globalroute-repair netlist, original 3-case independent port oracle at4ns; native specify cell models, no SDF/route delays or full PHY acceptance",
+    "returncode": 0,
+    "tests": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "outputs": {
+      "simulation.log": {
+        "bytes": 34414,
+        "sha256": "dcd50eaff883537f1a66f6812c40e8e460fd28cb31e719db8e0f6b27ab634ef5"
+      },
+      "results.xml": {
+        "bytes": 1001,
+        "sha256": "8a7df0f69eb5be886f18e9ecd22b47ae57fd62a5f4d9fc9e80c4ea6f058e405a"
+      }
+    }
+  },
+  "global_estimated_ns": {
+    "slow": {
+      "setup": 0.096377,
+      "datahold": 0.042409,
+      "recovery": 0.152741,
+      "removal": 0.163086
+    },
+    "typical": {
+      "setup": 1.452184,
+      "datahold": 0.085771,
+      "recovery": 1.490495,
+      "removal": 0.15931
+    },
+    "fast": {
+      "setup": 2.226806,
+      "datahold": 0.115435,
+      "recovery": 2.295528,
+      "removal": 0.163655
+    }
+  },
+  "archive": {
+    "path": "/dev/shm/pcie-tx-v4-placement-grt-proof-20261004.tar.xz",
+    "bytes": 29851876,
+    "sha256": "3f7649312437c40cac7b956f564cd35cd23966d47ff9717730323aa6ce9b9570"
+  },
+  "members": 48,
+  "physical_acceptance": false
+}

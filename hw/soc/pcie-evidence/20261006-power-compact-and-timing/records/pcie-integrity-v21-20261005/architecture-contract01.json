@@ -1,0 +1,91 @@
+{
+  "status": "PROPOSED_V21_REGISTERED_RETIRE_DESCRIPTOR_CONTRACT_SOURCE_PEER_REQUIRED",
+  "baseline": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v17.v",
+    "bytes": 192776,
+    "sha256": "7aeb0b29e6b56978bed7f83a48b14e8e11a005bf16342cfd8b616225ba9d8160",
+    "choice": "V17 state and parser, not rejected V19/V20. Keep V17 seven fault-qualified ring writers and verdict/cache logic byte-identical; static balanced literal-preserving read tree stays unchanged."
+  },
+  "evidence": {
+    "critical-path-attribution.json": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/critical-path-attribution.json",
+      "bytes": 30566,
+      "sha256": "ee4a4d2f3402fa8e6755a499ed0f200587213d196eabb99c3393e95c0cb7a94e"
+    },
+    "slow-critical-path.txt": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/slow-critical-path.txt",
+      "bytes": 6039,
+      "sha256": "669922c961e49756a0722b1138e65c1f0ec2de693d0d3bd2d4af27e37804750f"
+    },
+    "timing-comparison.json": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/timing-comparison.json",
+      "bytes": 3883,
+      "sha256": "f10f3d35f623ee85befa423c07d646e6094610561802cdd0be282a89962e1e5c"
+    }
+  },
+  "measured_reason": "V20 read_ptr[1] to ending totals8.327366ns including27buffers/4.467564ns. Replace combinational read payload/eligibility feedback into ring retirement/capacity/step with a registered descriptor whose availability depends only on registered flags and ready. Need same4ns measured result; logic partition is not a timing guarantee.",
+  "new_state": {
+    "retire_valid": "One committed ring slice has been copied into descriptor. A zero-keep slice may occupy it for one cycle.",
+    "retire_has_data": "Known0/1 procedural classification of captured read_keep!=0, registered together with descriptor.",
+    "retire_data": "128 bits copied read_data",
+    "retire_keep": "16 bits copied read_keep",
+    "retire_sop": "16 bits copied read_sop",
+    "retire_eop": "16 bits copied read_eop",
+    "retire_dllp": "16 bits copied read_dllp",
+    "retire_sequence": "48 bits copied read_sequence"
+  },
+  "combinational_equations": [
+    "retire_pop = enabled && active_o && retire_valid && (!retire_has_data || !output_valid || ready_i);",
+    "retire_room = !retire_valid || retire_pop;",
+    "retire = enabled && active_o && committed!=0 && retire_room;",
+    "All existing read_count, committed/occupied and both capacity arithmetic branches unchanged; capacity uses this new retire. No read_keep/read_any/current payload in retire_room or retire_pop.",
+    "Existing public valid_o = enabled && active_o && output_valid is unchanged. It does not combinationally mask prospective fault_now. The old registered public beat may handshake on a fault edge; the edge then clears future ownership."
+  ],
+  "clock_priority": [
+    "Asynchronous reset initializes original state plus retire_valid=0, retire_has_data=0. Descriptor payload reset tozero in its separate asynchronous-reset writer for deterministic startup; it remains unobservable while retire_valid=0.",
+    "Original flush_i || stream_start_i branch clears retire_valid and retire_has_data and all original owners. Flush dominates simultaneous start exactly as V17.",
+    "Original (stream_abort_i && active_o) || fault_now branch clears retire_valid and retire_has_data along with original ring/output ownership. No next-cycle stale descriptor release is allowed.",
+    "In the existing active, nonfault branch: clear output_valid if output empty or ready; if retire_pop and retire_has_data, load existing output data/metadata from old descriptor and set output_valid.",
+    "In that same active branch: if retire_pop set retire_valid=0; if retire set retire_valid=1, default retire_has_data=0 then if(read_keep!=0) set it1. Capture wins over simultaneous pop, so old descriptor reaches output while replacement becomes owned.",
+    "Advance original read_ptr by old read_count exactly when retire. Copy all read payload fields into descriptor in a separate posedge/asynchronous-reset writer gated by retire. It may copy values on a simultaneous parser/header/capacity fault but the priority branch clears descriptor validity; those bytes cannot become visible before a fresh valid capture rewrites every field.",
+    "All original parser state/CRC/commit/verdict events, input bank state and original seven ring writes stay in their original priority positions. The original retire output-load block is the only output data source replaced.",
+    "EDS drain completion becomes original ending && read_ptr==write_ptr && !retire_valid && (!output_valid || ready_i). This prevents the last descriptor from being discarded before it reaches the output; existing stream_end pulse/active clear and output valid clear remain once-only."
+  ],
+  "latency_and_throughput": [
+    "An eligible ring slice captured at edge n can reach the public output register at edge n+1. This is one explicit internal cycle beyond V17 for a no-stall empty-pipeline stream; no cycle-equivalence claim.",
+    "Pop and capture are simultaneous when descriptor and output can progress. Therefore sustained capacity is four DWORD slots /16 byte positions perclock, same as parser and original wide interface. Capture/pop availability is independent of newly selected ring payload.",
+    "A zero-keep descriptor pops even when a nonzero public output is held with ready=0. While such empty descriptors replace one another, the ring continues freeing four slots percycle after at most one initial stage cycle; this must be witnessed under the aligned DLLP/IDL test.",
+    "One additional descriptor increases maximum buffered retirement capacity by up tofour DWORD slots. Under permanent nonempty-output stall, overflow is still required; its exact cycle may move later. Never reduce ring depth or assume incoming physical line can be backpressured.",
+    "When input epochs are accepted without overflow, CRC/verdict event order and values and accepted raw-word cadence are unchanged. Output beat grouping under stalls may change, so validate per-byte sequence and metadata plus event counts rather than old cycle timestamps.",
+    "For faulted epochs, bytes actually handshaken before or on the fault edge remain delivered; all unaccepted ring/descriptor/output bytes are canceled at that edge. This is explicit existing sampling-edge fault policy; scoreboard must model it and reject old-epoch data after restart."
+  ],
+  "invariants": [
+    "Every descriptor owned byte originated from an old-state committed ring slot with a resolved good verdict and its matching data/metadata; invalid/unknown-masked slots contribute zero keep.",
+    "A ring slot may be overwritten after read_ptr advances only because every selected descriptor field has been copied atomically. The new writer has a single owner and writes all six fields on the same edge.",
+    "Descriptor and existing output each have independent valid/has-data ownership; no nonempty descriptor is overwritten while output is stalled, and no bytes duplicate on simultaneous pop/capture.",
+    "When valid output is held under ready-low and no reset/start/flush/abort/fault edge occurs, all public beat fields remain stable.",
+    "On every control epoch boundary descriptor_valid, ring occupancy and outputvalid clear with the original priorities; invalid descriptor contents may differ but cannot escape.",
+    "Original slot_verdict invariant, tag wrap and packet quarantine apply unchanged at the read capture boundary. Unknown literal payload bits are copied through mux/register as before; no OR reduction of selected payload.",
+    "An EDS pulse is forbidden while descriptor_valid or an unconsumed public beat remains. No data appears after EDS until explicit restart."
+  ],
+  "implementation_boundaries": [
+    "Generator must provide exact full V17 source inverse for only declarations, retire equation, new payload writer, descriptor reset/flush/fault/active updates, old output load replacement and EDS guard. Do not fold in rejected V18/V19/V20 combinational changes.",
+    "Existing helper/wrapper/Makefile may derive by exact version substitution; public bench begins with unchanged original13 V17 cases, adds fault epoch and aligned empty retirement scenarios adapted explicitly to new ownership, not V19 invalidstorage equivalence counters.",
+    "A new independent transaction scoreboard replaces cycle miter for changed latency. Keep old cycle-miter results as V17/V20 history; never label them V21 proof."
+  ],
+  "actual_validation_plan": [
+    "Bounded literal sequential descriptor test exhausts oldvalid/hasdata/outputvalid/ready/capture/count combinations and priorities, includes simultaneous pop/capture, unknown selected payload X/Z, reset and pointerwrap. Compare a separately written queue-state oracle, not a duplicated generated block.",
+    "Run original13 public encoder/byte-oracle cases atMAX150; preserve all assertion semantics. Add cases that deterministically place descriptor/output in empty/valid-data/zero-keep combinations before fault/start/flush/reset/abort and every ready transition.",
+    "Sustained raw ingress and minimum packets must produce no overflow or input rejection and preserve all1024 packets. Monitor accepted block cadence and parser events; no artificial input bubbles permitted.",
+    "Run final aligned DLLP/IDL held-output case, requiring actual empty-descriptor pops while output held, ringfree progress and exact final byte/EDS scoreboard. Require full-ring replacement and actual permanentstall overflow under the new advertised extra stage capacity.",
+    "Fault controls deliberately remove descriptor flush, invert has-data, overwrite full descriptor, miswire metadata, drop simultaneous capture, premature EDS, lose zero-keep pop, advance pointer withoutcopy and duplicate output; each must fail a specific semantic assertion, not compilation.",
+    "Real direct candidate vs V17 transaction/event comparison on nonoverflow stimulus may complement independent encoded-byte oracle, but no timestamp/beat grouping equality assertion for output. Fault epochs use declared cancellation model, not arbitrary queue masking.",
+    "After independent source review and actual functional gates, sameCPU6/2GiB map, graph proof and original4ns SS/TT/FF STA. Source peer checks new register boundary is actually emitted. MAX4118 exhaustive positive simulations remain a separate declared gate; no full product acceptance fromMAX150 screen."
+  ],
+  "not_claimed": [
+    "RTL implemented yet",
+    "Controls passed",
+    "Timing closed",
+    "Full PHY orproduction signoff"
+  ]
+}

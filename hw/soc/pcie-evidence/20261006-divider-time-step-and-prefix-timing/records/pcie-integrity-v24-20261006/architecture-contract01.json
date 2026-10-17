@@ -1,0 +1,79 @@
+{
+  "status": "SOURCE_ARCHITECTURE_CONTRACT_ONLY_NOT_IMPLEMENTED",
+  "utc": "2026-10-06T04:55:47.490655+00:00",
+  "baseline": "Frozen V23; original public cycle behavior retained, stable production baseline remains V11.",
+  "inputs": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v23.v": {
+      "bytes": 197239,
+      "sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/candidate-decision.json": {
+      "bytes": 1549,
+      "sha256": "f00d05efaaa2279f3dc898698f6c1ea325486f8caed7455b9e889c03e4ef439f"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/critical-path-attribution.json": {
+      "bytes": 38512,
+      "sha256": "259aaec7f31351286db48c7795e6b9b721eba64c5af7f905b4096be975b61a37"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/measured-control-fanout01.json": {
+      "bytes": 41538,
+      "sha256": "556f289475461f44ef680f66013525c04783867305cf1d218cfbf49225a6a81e"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/native-saved-peer-vco.json": {
+      "bytes": 6039,
+      "sha256": "25cc42dd48b0eed29a9af62885e2f66b8adbb14578832a5b844c78f283a8dda2"
+    }
+  },
+  "measured_reason": {
+    "start": "remaining[4]",
+    "endpoint": "verdict[1][0]",
+    "SS_setup_ns": -3.191682,
+    "shared_late_enable_buffers": 100,
+    "shared_late_enable_leaf_loads": 697,
+    "observation": "Late carried-length comparison enters the multiword transition composition before global qualified write/hold control; shorten the data-dependent transition prefix rather than remove final fault priority."
+  },
+  "unchanged": [
+    "Every parser/write/CRC/commit/verdict/cache/output/retire statement and all public ready/valid/fault/flush/abort priorities",
+    "No extra latency or reduced accepted-input cadence",
+    "Original4ns,three corners,CPU6/2GiB/MAX150 profile and documented MAX4118 omission",
+    "Same exact token transition function and indexed one-hot destination behavior for X/Z inputs",
+    "Same two accepted512bit bank ownership, slice shifts, next promotion and same-edge incoming overwrite priority"
+  ],
+  "mathematical_basis": {
+    "M_i": "Original control_transition matrix at DWORD i. Its column1 is C_i; every other column depends only on token flags. No column other than1 can reach carried-TLP mode1. New STP uses mode4.",
+    "T_i": "Original matrix evaluated with carry_end=0. Columns0,2,3,4,5,6,7 are byte-identical to M_i; column1 is the mode1 self-loop. Initial noncarried modes never reach1 so every prefix for initial0,2,3 can be precomputed with T_i.",
+    "C_i": "Extract the three actual known-one-hot-or-zero bits from the frozen transition function column1: c_i1 at bit9, c_i2 at bit17, c_i7 at bit57. Unknown comparisons retain original indexed-write-zero semantics; do not replace them with a permissive boolean assumption.",
+    "j1_carried": "C0",
+    "j2_carried": "c02*(T1*e2) OR c07*e7 OR c01*C1",
+    "j3_carried": "c02*(T2*T1*e2) OR c07*e7 OR (c01 AND c12)*(T2*e2) OR (c01 AND c17)*e7 OR (c01 AND c11)*C2",
+    "final_modes_j": "OR of precomputed (T[j-1]...T0)*e_s gated by original initial_mode[s] for s=0,2,3, and carried_j gated by initial_mode[1]. Word0 remains original initial_mode.",
+    "logic_domain": "Original transition matrices contain known0/1 only: unknown destination index writes no1 to the initializedzero matrix. Four-state initial modes become0/1/X after bitwise gating. AND/OR distributivity is valid on these values. Candidate must prove actual HDL behavior, not only a two-state handwritten model."
+  },
+  "bank_context": {
+    "bits_per_beat": 96,
+    "beats_per_accepted_block": 4,
+    "bits_per_bank": 384,
+    "layout": [
+      "bits0..23: prefix beforeword1 columns0,2,3,8bits each",
+      "bits24..47: prefix beforeword2 columns0,2,3",
+      "bits48..71: prefix beforeword3 columns0,2,3",
+      "bits72..79: T1*e2",
+      "bits80..87: T2*T1*e2",
+      "bits88..95: T2*e2"
+    ],
+    "EDS": "When precomputing accepted fullblock, EDS is enabled only for absolute DWORD15; all other token flag bits use the same predecode. During shift current low96bits correspond to current slice.",
+    "capture": "Compute input context from exact accepted input predecode; register beside payload/predecode/headerrelation in existing quarantined bank writer. Reset and shift filler equals exact predecode semantics of zero-filled words at that slice; invalid contexts cannot authorize output.",
+    "promotion": "Copy next context at exactly existing next_valid promotion, then incoming acceptance can overwrite current or next under the unchanged original priority. Never use latest input or global tail to label an older bank."
+  },
+  "proof_gates": [
+    "Exact full product inverse showing only context declarations/function/capture and control_modes prefix assignments changed",
+    "Actual HDL complete original matrix alphabet from all4^5 token patterns and all4^2 carry flags, including unknown-index suppression",
+    "Exhaustive finite alphabet composition relation through allthree relevant prefixes with allactual initialstate patterns; literal X/Z cases and wrong-column/carry/bank/EDS mutants",
+    "Unchanged eighteen public cases and cycle miter with strict cache/retire/quarantine witnesses plus existing real block burst and mandatory context bank/shift/promotion ownership witnesses",
+    "Accepted bank0/next-bank promotion with simultaneous accept, stall, reset/flush/restart, EDS finalword15, carried TLP ending at word0/1/2/3, fresh STP header boundaries",
+    "Originalsame native mapping/import graph/registered boundary and4nsSTA only after meaningfulcontrols/sourcepeerPASS; no adoption on partial improvement"
+  ],
+  "implementation_pending": true,
+  "native_executed": false,
+  "adopted": false
+}

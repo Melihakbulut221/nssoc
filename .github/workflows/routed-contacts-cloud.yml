@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: routed-contacts-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/routed-contacts-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: routed-contacts-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  full-signal-contact-baseline:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify spatial-index contacts against independent exact integer oracle
+        run: |
+          python3 -m pip install shapely==2.1.2 numpy==2.3.3
+          python3 -m py_compile scripts/check_cloud_signal_contacts.py scripts/run_cloud_routed_contacts.py
+          python3 scripts/check_cloud_signal_contacts.py --controls-only
+      - name: Check all original exported routing shapes for cross-net contacts
+        timeout-minutes: 240
+        run: python3 scripts/run_cloud_routed_contacts.py
+      - name: Preserve source and all native geometry observations
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-routed-contacts
+          if [ ! -f cloud-routed-contacts/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > cloud-routed-contacts/result.json
+          fi
+          stem="routed-contacts-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-routed-contacts/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-routed-contacts --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','routed-contacts',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE

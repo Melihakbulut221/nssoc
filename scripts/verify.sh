@@ -224,34 +224,10 @@ fi   # SKIP_SUITES
 # checks each one is still about the code in the tree, and says how old
 # they are, which is honest about what it is checking.
 
-# docs/34 section 2.2's normalisation, verbatim: block comments, line
-# comments and whitespace runs removed, blank lines dropped.
-code_digest() {
-    sed -e ':a' -e 'N' -e '$!ba' -e 's:/\*[^*]*\*\+\([^/*][^*]*\*\+\)*/::g' \
-    | sed -e 's://.*::' -e 's:[[:space:]]\+: :g' -e 's:^ ::' -e 's: $::' \
-    | grep -v '^$' | sha256sum
-}
-
-# Compare <workdir>/src/ against the files config.sby names. sby resolves
-# a relative [files] path against the directory holding the .sby, which
-# is the workdir's parent. Prints clean, comment, stale or unchecked.
+# Use SBY's actual copy provenance: -d may put output outside the
+# invocation directory, so the output directory's parent is not a source root.
 src_state() {
-    local d=$1 parent res=clean a b dest src origin
-    parent=$(dirname "$d")
-    [ -d "$d/src" ] || { echo unchecked; return; }
-    while read -r a b; do
-        [ -n "$a" ] || continue
-        if [ -n "${b:-}" ]; then dest=$a; src=$b; else src=$a; dest=$(basename "$a"); fi
-        case "$src" in /*) origin=$src ;; *) origin="$parent/$src" ;; esac
-        if [ ! -f "$origin" ] || [ ! -f "$d/src/$dest" ]; then res=unchecked; continue; fi
-        cmp -s "$origin" "$d/src/$dest" && continue
-        if [ "$(code_digest <"$origin")" = "$(code_digest <"$d/src/$dest")" ]; then
-            [ "$res" = clean ] && res=comment
-        else
-            echo stale; return
-        fi
-    done < <(awk '/^\[files\]/{f=1;next} /^\[/{f=0} f&&NF' "$d/config.sby")
-    echo "$res"
+    "${PY:-python3}" scripts/formal_source_state.py "$1"
 }
 
 fm_pass=0; fm_fail=0; fm_err=0; fm_stop=0; fm_misc=0

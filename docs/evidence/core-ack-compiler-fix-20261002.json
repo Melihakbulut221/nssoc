@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "status": "FIXED_ASSEMBLY_ISA_SPELLING_PENDING_SAME_CLOUD_TOOLCHAIN_RETRY",
+  "original_failure": {
+    "run_id": 37007352061,
+    "source_commit": "5aad10bc74e3a3b98935440f1afeed3fc2b8c7b9",
+    "artifact_id": 11226068203,
+    "zip": {
+      "bytes": 639056,
+      "sha256": "51729896ecd00f406f8e0cdb3cfc5b28699c95bc1c8ed2bd5bdc6ea7626062eb"
+    },
+    "native_status": "FAILED_PRESERVED",
+    "native_error": "ValueError: Directed firmware did not compile",
+    "cases": {},
+    "native_cause": "GCC 10.2.0 frontend rejects -march=rv32im_zicsr: unsupported ISA subset 'z'",
+    "outputs_verified": 10,
+    "immutable_git_method_pins_verified": 8,
+    "actual_ibex_executed": false
+  },
+  "fix": {
+    "flags": [
+      "-march=rv32im",
+      "-mabi=ilp32",
+      "-Wa,-misa-spec=2.2"
+    ],
+    "explanation": "Keep RV32IM/ILP32 assembly; pass ISA version 2.2 directly to GAS rather than using the unsupported GCC 10 zicsr or misa-spec driver options. CSR instructions are retained and opcode-checked.",
+    "opcode_gate": {
+      "status": "PASS_EXACT_RV32_CSR_WFI_MRET_ENCODINGS",
+      "flags": [
+        "-march=rv32im",
+        "-mabi=ilp32",
+        "-Wa,-misa-spec=2.2"
+      ],
+      "words": [
+        "30002573",
+        "30051073",
+        "10500073",
+        "30200073"
+      ],
+      "bytes": 16,
+      "sha256": "4828e267dcb80cc4dc258a9b429985fffec1298f28a7f6da08260d22a6a08e78",
+      "compile": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/rvgcc/bin/riscv-none-elf-gcc",
+          "-march=rv32im",
+          "-mabi=ilp32",
+          "-Wa,-misa-spec=2.2",
+          "-nostdlib",
+          "-Wl,--build-id=none",
+          "-Wl,--no-relax",
+          "-Wl,-Ttext=0x80",
+          "-Wl,-e,_start",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-protocol-cloud-first/compiler-fix/opcode-gate/probe.S",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-protocol-cloud-first/compiler-fix/opcode-gate/probe.elf"
+        ],
+        "returncode": 0,
+        "log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "objcopy": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/rvgcc/bin/riscv-none-elf-objcopy",
+          "-j",
+          ".text",
+          "-O",
+          "binary",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-protocol-cloud-first/compiler-fix/opcode-gate/probe.elf",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-protocol-cloud-first/compiler-fix/opcode-gate/probe.bin"
+        ],
+        "returncode": 0,
+        "log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "firmware_binary_unchanged": {
+      "bytes": 4228,
+      "sha256": "1bd464e009adae455896632580037ce68feb7028f05aec0a6375b2df66cdcc89"
+    },
+    "original_comparison_binary": {
+      "bytes": 4228,
+      "sha256": "1bd464e009adae455896632580037ce68feb7028f05aec0a6375b2df66cdcc89"
+    },
+    "image_unchanged": {
+      "bytes": 36864,
+      "sha256": "3b577420fa0cf5bfe46bda2e8d64cfc511d20e88b0e13e0eabb16fdd0c6199e8"
+    },
+    "native_core_source_and_bench_and_firmware_unchanged": true,
+    "methods": {
+      ".github/workflows/timing-core-ack-protocol.yml": {
+        "bytes": 2117,
+        "sha256": "6a725c6e5e56f1bfec19d84bbd44b062582e5cd40cb69152cc6644a45a3887bf"
+      },
+      "scripts/run_core_ack_protocol.py": {
+        "bytes": 21927,
+        "sha256": "46c005c0d1898f90650a5cb65a89c4cdf7865bcd492b61b2b9115d290cf50aab"
+      },
+      "sw/tests/test_core_ack_protocol.py": {
+        "bytes": 6536,
+        "sha256": "efade64287f5ca19df167359a22c6bf95c6b98c22eb98a90c956e37aaf4f2845"
+      }
+    }
+  },
+  "validation": {
+    "pytest_passed": 56,
+    "skipped": 0,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "local_tools": {
+      "gcc": {
+        "bytes": 2919008,
+        "sha256": "f0aeb21d7c8aeac5dbbccbcdc2b3c80ecff615a1d7f7f3db3b507836b1c1c398"
+      },
+      "objcopy": {
+        "bytes": 1128217,
+        "sha256": "06b28bc98829a7779ffb3267a92e6aa84d8abe422c1963bbd63d01ea4c4c0763"
+      }
+    },
+    "opcode_gate_status": "PASS_EXACT_RV32_CSR_WFI_MRET_ENCODINGS",
+    "actual_ibex_executed": false,
+    "target_gcc10_and_binutils235_retry_required": true
+  },
+  "actual_core_protocol_proved": false,
+  "whole_soc_verified": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "root_review": {
+    "method_and_probe_pins": "PASS",
+    "focused_tests": 125,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "first_failure_artifact_verified": true,
+    "actual_ibex_executed": false
+  }
+}

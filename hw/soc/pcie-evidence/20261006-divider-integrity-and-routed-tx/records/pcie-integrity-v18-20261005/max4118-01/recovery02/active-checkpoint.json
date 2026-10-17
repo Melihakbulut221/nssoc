@@ -1,0 +1,94 @@
+{
+  "status": "VERIFIED_DETACHED_RECOVERY_AND_PRESERVATION_LIVE",
+  "utc": "2026-10-05T18:51:28.799214+00:00",
+  "boot_id": "e1b7ced9-2243-4340-a046-92e8b30a45bc",
+  "identities": {
+    "recovery": {
+      "pid": 105584,
+      "start_ticks": "1386708",
+      "ppid": 1,
+      "process_group": 105584,
+      "state": "S",
+      "cpu": [
+        2
+      ],
+      "argv": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python -u /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/recovery02/run.py "
+    },
+    "preservation": {
+      "pid": 108156,
+      "start_ticks": "1429254",
+      "ppid": 1,
+      "process_group": 108156,
+      "state": "S",
+      "cpu": [
+        2
+      ],
+      "argv": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python -u /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/recovery02/continue_preservation.py "
+    },
+    "direct_pytest": {
+      "pid": 94139,
+      "start_ticks": "1177739",
+      "ppid": 1,
+      "process_group": 94139,
+      "state": "S",
+      "cpu": [
+        2
+      ],
+      "argv": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python -m pytest -q -p no:cacheprovider sw/tests/test_pcie_gen3_continuous_rx_integrity_v18.py::test_actual_wide_rx_full_positive_profiles[4118] --basetemp /dev/shm/nssoc-integrity-v18-max4118-01/direct --junitxml /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/max4118-01/direct-pytest.xml "
+    },
+    "native_vvp": {
+      "pid": 94238,
+      "start_ticks": "1178669",
+      "ppid": 94168,
+      "process_group": 94141,
+      "state": "R",
+      "cpu": [
+        2
+      ],
+      "argv": "/home/hasanmelih/.local/opt/iverilog12/usr/bin/vvp -M /home/hasanmelih/.local/opt/iverilog12/usr/lib/x86_64-linux-gnu/ivl -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus /dev/shm/nssoc-integrity-v18-max4118-01/direct/test_actual_wide_rx_full_posit0/capture/sim/sim.vvp "
+    }
+  },
+  "method_pins": {
+    "run.py": {
+      "bytes": 10705,
+      "sha256": "574287f1b8aba32dd907c0176daf381254d59a8cdc3daa51da044aa6ffb91142"
+    },
+    "policy.json": {
+      "bytes": 42087,
+      "sha256": "c937d704a7a64f098cafd363c22858419e466a704dafa6b39decb081f157d519"
+    },
+    "source-peer.json": {
+      "bytes": 2803,
+      "sha256": "e43c67266e600fc5412c1ef36becd72702f3f7f716415cf85e60f7204db999cd"
+    },
+    "launch.json": {
+      "bytes": 726,
+      "sha256": "aa758855b6f968faf46a1308ff9d54b43be55b91796db1a7a682b1c8189f9bdf"
+    },
+    "seal.py": {
+      "bytes": 11187,
+      "sha256": "047131571c50331bf59f7aa4a3279c375998f4cacad6c7e13e74edeba4138b39"
+    },
+    "continue_preservation.py": {
+      "bytes": 6077,
+      "sha256": "c8870b5058f53a1636373d1579db18a83425109472cdadbe4cbdff7d7fa16efa"
+    },
+    "preservation-policy.json": {
+      "bytes": 4756,
+      "sha256": "a5cf827a511cd6361fe1cb1d97363d1c77db123a0a8e24166e5fe96500caa056"
+    },
+    "preservation-source-peer.json": {
+      "bytes": 40436,
+      "sha256": "7764f48ecc8407bdafee79e7aad576017dbfa3adbf142a9a2e3faa916c9e54fd"
+    },
+    "preservation-launch.json": {
+      "bytes": 787,
+      "sha256": "a79bc28bc10c7a5cf821f0f3fff76af05d355d4fb3863ca76cc5eecf2dd21749"
+    }
+  },
+  "original_loss": "Original controller94138 and observer96930 vanished during tool-turn interruption; surviving actual direct pytest/helper/make/VVP retained. Their historical SSD receipts are snapshots and must not be interpreted as normally complete.",
+  "next": "Observe exact recovery and preservation identities. Recovery observes existing direct13-case result with returncodeNone, then owns only unrunmiter; preservation waits terminalclosedreceipt then seals full captures and V3 dualreadbacks. Never duplicate a live MAX4118 job.",
+  "native_CPU6_profile_untouched": true,
+  "no_healthy_elapsed_timeout": true,
+  "physical_acceptance": false
+}

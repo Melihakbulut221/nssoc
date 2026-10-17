@@ -1,0 +1,95 @@
+{
+  "date": "2026-09-20",
+  "tested_head": "c1a6f7a5b72dfb37020ac022a328bd7b979bff4d",
+  "source": "Fresh remote clone with shared executables only; no ignored generated dependencies, PDK files or live physical runs copied. Committed hash-validated original snapshots and byte-replayed pinned prepared sources restore only into test scratch directories. This is historical structural verification, not a new physical run.",
+  "command": {
+    "head": "c1a6f7a5b72dfb37020ac022a328bd7b979bff4d",
+    "command": [
+      "bash",
+      "scripts/ci_local.sh",
+      "all",
+      "--record"
+    ],
+    "environment": {
+      "PY": "<repo>/.venv/bin/python",
+      "PYTEST_ADDOPTS": "-rs --junitxml=<repo>/hw/soc/out/external-review-20260919/fresh-clone-c1a6f7a-pytest.xml",
+      "REUSE": "<repo>/hw/soc/tools/reuse-env/bin/reuse"
+    },
+    "returncode": 0,
+    "elapsed_s": 429.34169157199995
+  },
+  "pytest_counts": {
+    "tests": 964,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 2,
+    "passed": 962
+  },
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "2",
+      "tests": "964",
+      "time": "411.581",
+      "timestamp": "2026-09-20T23:36:04.331916+03:00",
+      "hostname": "pop-os"
+    }
+  ],
+  "gate_counts": {
+    "passed": 18,
+    "failed": 0,
+    "skipped": 7
+  },
+  "ledger_row": "2026-09-20T20:42Z\tc1a6f7a\tall\t18\t0\t7\ttree-dirty=0,pandoc=no,tex=tectonic",
+  "skipped_tests": [
+    {
+      "test": "sw.tests.test_no_orphan_modules::test_register_file_external_entry_contract",
+      "reason": "generated Ibex absent; elaborate the prepared SoC to verify this boundary"
+    },
+    {
+      "test": "sw.tests.test_tt_submission::test_the_vendored_tooling_is_the_commit_the_documents_name",
+      "reason": "tt/tt/ is a gitignored clone of TinyTapeout/tt-support-tools and is not in this tree. Restore it with\n  git clone https://github.com/TinyTapeout/tt-support-tools tt/tt\n  git -C tt/tt checkout 01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
+    }
+  ],
+  "paper_claims": {
+    "command": [
+      "<repo>/.venv/bin/python",
+      "paper/check_claims.py"
+    ],
+    "rederived": 27,
+    "manual": 15,
+    "need_build_output": 0,
+    "wrong": 0
+  },
+  "F6_status": "ACCEPTANCE MET: one absent pinned TinyTapeout support-tool skip, zero paper claims missing build output; no current physical or transistor LVS verdict inferred. Seven front-door skips remain explicit.",
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-c1a6f7a-pytest.xml",
+      "bytes": 131487,
+      "sha256": "da066d86e0e30d5d7ebb9b61f6f00164c41155363c92e86b0dbd40f081bc8085"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-c1a6f7a-ci.log",
+      "bytes": 3674,
+      "sha256": "09ecf00f2b742dfef741813924acedf10c3cbf35b46aabff19882143e15adde1"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-c1a6f7a-clone.log",
+      "bytes": 115,
+      "sha256": "8b6399ae0ffb8d0461665ea71706b58a6493e97b0fd0a386699b1b25681ff11a"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-c1a6f7a-result.json",
+      "bytes": 528,
+      "sha256": "eb346f52993962d71bf2d07722c950cbf764eefe8b140560c29ea11ce16d97dd"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-c1a6f7a-paper-claims.log",
+      "bytes": 4798,
+      "sha256": "4bc0de3ba2645f00a9c206286106dba14380c7b03fee5efc6884195ed384b296"
+    }
+  ],
+  "path_policy": "Host checkout prefix normalized to <repo>; raw command/result/log identities remain SHA256-pinned. Executables are shared with the main workspace; ignored source/PDK/output trees are not copied."
+}

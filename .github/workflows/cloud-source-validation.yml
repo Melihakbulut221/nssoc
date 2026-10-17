@@ -1,0 +1,105 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: cloud-source-validation
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths: ['.github/workflows/cloud-source-validation.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-source-readback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact filter-only delta and compile native controller sources
+        run: |
+          python3 -m pip install PyYAML==6.0.2
+          python3 - <<'PYCODE'
+          import hashlib,json,subprocess,py_compile
+          from pathlib import Path
+          import yaml
+          spec=json.loads(Path('docs/evidence/cloud-storage-tag-filter-fix-20261015.json').read_text())
+          assert len(spec['workflows'])==70
+          if subprocess.run(['git','cat-file','-e',spec['baseline_commit']],capture_output=True).returncode:
+              subprocess.run(['git','fetch','--depth=1','origin',spec['baseline_commit']],check=True)
+          for item in spec['workflows']:
+              path=item['path']
+              before=subprocess.check_output(['git','show',spec['baseline_commit']+':'+path])
+              after=Path(path).read_bytes()
+              assert hashlib.sha256(before).hexdigest()==item['old_sha256']
+              assert hashlib.sha256(after).hexdigest()==item['new_sha256']
+              old=yaml.load(before,Loader=yaml.BaseLoader)
+              new=yaml.load(after,Loader=yaml.BaseLoader)
+              assert old['on']['push']['tags-ignore']==['cloud-migration-*']
+              old['on']['push']['tags-ignore']=['cloud-*']
+              assert new==old, 'Any other trigger, job, gate or permission changed: '+path
+          compiled=[]
+          for name in ['repair','extraction','composition']:
+              path='scripts/run_cloud_tx_layout_'+name+'.py'
+              py_compile.compile(path,doraise=True);compiled.append(path)
+          result=dict(status='PASS_EXACT_70_FILTER_ONLY_DELTAS_AND_CONTROLLER_SYNTAX',baseline_commit=spec['baseline_commit'],workflow_count=70,compiled=compiled,native_physical_acceptance=False)
+          Path('cloud-source-validation.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result))
+          PYCODE
+      - name: Reject native NDR relaxation and malformed routing reports
+        run: python3 scripts/route_cloud_newer_postcts.py --self-test
+      - name: Verify original bits, physical boundaries and complete native observation contracts
+        run: |
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2 networkx==3.4.2
+          python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_assembled_sizing.py sw/tests/test_cloud_route_ndr_process.py
+      - name: Verify native startup diagnostic controls and lossless model source decoding
+        run: python3 scripts/cloud_tx_step_factorial.py --controls-only
+      - name: Verify numerical peak witnesses without changing convergence gates
+        run: python3 -c "import sys; sys.path.insert(0,'scripts'); from analyze_cloud_assembled_wave import step_controls,interface_witness_controls,diagnosis_case_controls; print(step_controls()); print(interface_witness_controls()); print(diagnosis_case_controls())"
+      - name: Distinguish forward VBE from reverse emitter-base breakdown without changing gates
+        run: python3 -c "import sys; sys.path.insert(0,'scripts'); from cloud_hbt_polarity import polarity_controls; print(polarity_controls())"
+      - name: Verify permanent source failure survives Actions artifact expiry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/restore_cloud_boundary_failure.py
+          python3 - <<'PYCODE'
+          import hashlib,json
+          from pathlib import Path
+          p=Path('cloud-source-validation.json')
+          result=json.loads(p.read_text())
+          result['permanent_failed_capture']={
+              name:hashlib.sha256(Path(name).read_bytes()).hexdigest()
+              for name in ['failed-boundary-38680055040.zip','failed-boundary-38680055040.json']}
+          result['actions_artifact_download_required']=False
+          p.write_text(json.dumps(result,indent=2)+'\n')
+          PYCODE
+      - name: Generate source-bound licence inventory candidate on hosted runner
+        run: |
+          python3 scripts/licence_inventory.py --write
+          python3 scripts/licence_inventory.py --check
+          cp LICENSES.md cloud-LICENSES-candidate.md
+          python3 - <<'PYCODE'
+          import hashlib,json,os
+          from pathlib import Path
+          p=Path('cloud-source-validation.json');d=json.loads(p.read_text())
+          d['licence_inventory_candidate']={'source_head':os.environ['GITHUB_SHA'],'sha256':hashlib.sha256(Path('cloud-LICENSES-candidate.md').read_bytes()).hexdigest(),'path':'LICENSES.md','adopted':False}
+          p.write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
+      - name: Preserve exact readback evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish_cloud_results.py --group storage-tag-filter cloud-source-validation.json cloud-LICENSES-candidate.md
+      - name: Preserve source check result if publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cloud-source-validation
+          path: cloud-source-validation.json
+          if-no-files-found: warn

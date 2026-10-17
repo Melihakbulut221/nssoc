@@ -1,0 +1,1216 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)
+
+-- Executing script file `proof.ys' --
+
+1. Executing Verilog-2005 frontend: gold.v
+Parsing SystemVerilog input from `gold.v' to AST representation.
+Generating RTLIL representation for module `\gold'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: gate.v
+Parsing SystemVerilog input from `gate.v' to AST representation.
+Generating RTLIL representation for module `\gate'.
+Successfully finished Verilog frontend.
+
+3. Executing PROC pass (convert processes to netlists).
+
+3.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+3.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 2 switch rules as full_case in process $proc$gate.v:76$66 in module gate.
+Marked 2 switch rules as full_case in process $proc$gate.v:56$57 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:39$43 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:36$41 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:30$37 in module gate.
+Marked 1 switch rules as full_case in process $proc$gate.v:28$35 in module gate.
+Marked 2 switch rules as full_case in process $proc$gold.v:73$32 in module gold.
+Marked 2 switch rules as full_case in process $proc$gold.v:53$23 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:39$9 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:36$7 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:30$3 in module gold.
+Marked 1 switch rules as full_case in process $proc$gold.v:28$1 in module gold.
+Removed a total of 0 dead cases.
+
+3.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 8 redundant assignments.
+Promoted 0 assignments to connections.
+
+3.4. Executing PROC_INIT pass (extract init attributes).
+
+3.5. Executing PROC_ARST pass (detect async resets in processes).
+Found async reset \destination_reset_n in `\gate.$proc$gate.v:76$66'.
+Found async reset \source_reset_n in `\gate.$proc$gate.v:56$57'.
+Found async reset \destination_reset_n in `\gate.$proc$gate.v:39$43'.
+Found async reset \source_reset_n in `\gate.$proc$gate.v:36$41'.
+Found async reset \reset_ni in `\gate.$proc$gate.v:30$37'.
+Found async reset \reset_ni in `\gate.$proc$gate.v:28$35'.
+Found async reset \destination_reset_n in `\gold.$proc$gold.v:73$32'.
+Found async reset \source_reset_n in `\gold.$proc$gold.v:53$23'.
+Found async reset \destination_reset_n in `\gold.$proc$gold.v:39$9'.
+Found async reset \source_reset_n in `\gold.$proc$gold.v:36$7'.
+Found async reset \reset_ni in `\gold.$proc$gold.v:30$3'.
+Found async reset \reset_ni in `\gold.$proc$gold.v:28$1'.
+
+3.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~20 debug messages>
+
+3.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\gate.$proc$gate.v:76$66'.
+     1/7: $0\m_pwrite_o[0:0]
+     2/7: $0\response_payload[32:0]
+     3/7: $0\acknowledgement[0:0]
+     4/7: $0\destination_state[1:0]
+     5/7: $0\m_pstrb_o[3:0]
+     6/7: $0\m_pwdata_o[31:0]
+     7/7: $0\m_paddr_o[11:0]
+Creating decoders for process `\gate.$proc$gate.v:56$57'.
+     1/5: $0\served[0:0]
+     2/5: $0\source_state[1:0]
+     3/5: $0\response[32:0]
+     4/5: $0\request_payload[48:0]
+     5/5: $0\request[0:0]
+Creating decoders for process `\gate.$proc$gate.v:39$43'.
+     1/1: $0\request_sync[1:0]
+Creating decoders for process `\gate.$proc$gate.v:36$41'.
+     1/1: $0\acknowledgement_sync[1:0]
+Creating decoders for process `\gate.$proc$gate.v:30$37'.
+     1/1: $0\destination_release[1:0]
+Creating decoders for process `\gate.$proc$gate.v:28$35'.
+     1/1: $0\source_release[1:0]
+Creating decoders for process `\gold.$proc$gold.v:73$32'.
+     1/7: $0\m_pwrite_o[0:0]
+     2/7: $0\response_payload[32:0]
+     3/7: $0\acknowledgement[0:0]
+     4/7: $0\destination_state[1:0]
+     5/7: $0\m_pstrb_o[3:0]
+     6/7: $0\m_pwdata_o[31:0]
+     7/7: $0\m_paddr_o[11:0]
+Creating decoders for process `\gold.$proc$gold.v:53$23'.
+     1/5: $0\served[0:0]
+     2/5: $0\source_state[1:0]
+     3/5: $0\response[32:0]
+     4/5: $0\request_payload[48:0]
+     5/5: $0\request[0:0]
+Creating decoders for process `\gold.$proc$gold.v:39$9'.
+     1/1: $0\request_sync[1:0]
+Creating decoders for process `\gold.$proc$gold.v:36$7'.
+     1/1: $0\acknowledgement_sync[1:0]
+Creating decoders for process `\gold.$proc$gold.v:30$3'.
+     1/1: $0\destination_release[1:0]
+Creating decoders for process `\gold.$proc$gold.v:28$1'.
+     1/1: $0\source_release[1:0]
+
+3.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+3.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\gate.\m_pwrite_o' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$257' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\m_paddr_o' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$262' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\m_pwdata_o' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$267' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\m_pstrb_o' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$272' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\acknowledgement' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$277' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\response_payload' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$282' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\destination_state' using process `\gate.$proc$gate.v:76$66'.
+  created $adff cell `$procdff$287' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\request' using process `\gate.$proc$gate.v:56$57'.
+  created $adff cell `$procdff$292' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\request_payload' using process `\gate.$proc$gate.v:56$57'.
+  created $adff cell `$procdff$297' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\response' using process `\gate.$proc$gate.v:56$57'.
+  created $adff cell `$procdff$302' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\source_state' using process `\gate.$proc$gate.v:56$57'.
+  created $adff cell `$procdff$307' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\served' using process `\gate.$proc$gate.v:56$57'.
+  created $adff cell `$procdff$312' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\request_sync' using process `\gate.$proc$gate.v:39$43'.
+  created $adff cell `$procdff$317' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\acknowledgement_sync' using process `\gate.$proc$gate.v:36$41'.
+  created $adff cell `$procdff$322' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\destination_release' using process `\gate.$proc$gate.v:30$37'.
+  created $adff cell `$procdff$327' with positive edge clock and positive level reset.
+Creating register for signal `\gate.\source_release' using process `\gate.$proc$gate.v:28$35'.
+  created $adff cell `$procdff$332' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\m_pwrite_o' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$337' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\m_paddr_o' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$342' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\m_pwdata_o' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$347' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\m_pstrb_o' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$352' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\acknowledgement' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$357' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\response_payload' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$362' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\destination_state' using process `\gold.$proc$gold.v:73$32'.
+  created $adff cell `$procdff$367' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\request' using process `\gold.$proc$gold.v:53$23'.
+  created $adff cell `$procdff$372' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\request_payload' using process `\gold.$proc$gold.v:53$23'.
+  created $adff cell `$procdff$377' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\response' using process `\gold.$proc$gold.v:53$23'.
+  created $adff cell `$procdff$382' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\source_state' using process `\gold.$proc$gold.v:53$23'.
+  created $adff cell `$procdff$387' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\served' using process `\gold.$proc$gold.v:53$23'.
+  created $adff cell `$procdff$392' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\request_sync' using process `\gold.$proc$gold.v:39$9'.
+  created $adff cell `$procdff$397' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\acknowledgement_sync' using process `\gold.$proc$gold.v:36$7'.
+  created $adff cell `$procdff$402' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\destination_release' using process `\gold.$proc$gold.v:30$3'.
+  created $adff cell `$procdff$407' with positive edge clock and positive level reset.
+Creating register for signal `\gold.\source_release' using process `\gold.$proc$gold.v:28$1'.
+  created $adff cell `$procdff$412' with positive edge clock and positive level reset.
+
+3.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+3.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `\gate.$proc$gate.v:76$66'.
+Removing empty process `gate.$proc$gate.v:76$66'.
+Found and cleaned up 6 empty switches in `\gate.$proc$gate.v:56$57'.
+Removing empty process `gate.$proc$gate.v:56$57'.
+Removing empty process `gate.$proc$gate.v:39$43'.
+Removing empty process `gate.$proc$gate.v:36$41'.
+Removing empty process `gate.$proc$gate.v:30$37'.
+Removing empty process `gate.$proc$gate.v:28$35'.
+Found and cleaned up 4 empty switches in `\gold.$proc$gold.v:73$32'.
+Removing empty process `gold.$proc$gold.v:73$32'.
+Found and cleaned up 6 empty switches in `\gold.$proc$gold.v:53$23'.
+Removing empty process `gold.$proc$gold.v:53$23'.
+Removing empty process `gold.$proc$gold.v:39$9'.
+Removing empty process `gold.$proc$gold.v:36$7'.
+Removing empty process `gold.$proc$gold.v:30$3'.
+Removing empty process `gold.$proc$gold.v:28$1'.
+Cleaned up 20 empty switches.
+
+3.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+<suppressed ~43 debug messages>
+Optimizing module gold.
+<suppressed ~43 debug messages>
+
+4. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+5. Executing OPT pass (performing simple optimizations).
+
+5.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 112 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 80 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~96 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 112 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 80 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~96 debug messages>
+Removed a total of 64 cells.
+
+5.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~98 debug messages>
+
+5.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+5.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 80 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 80 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+5.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $procdff$307 ($adff) from module gate (D = $procmux$129_Y, Q = \source_state).
+Adding EN signal on $procdff$257 ($adff) from module gate (D = \request_payload [48], Q = \m_pwrite_o).
+Adding EN signal on $procdff$287 ($adff) from module gate (D = $procmux$90_Y, Q = \destination_state).
+Adding EN signal on $procdff$262 ($adff) from module gate (D = \request_payload [47:36], Q = \m_paddr_o).
+Adding EN signal on $procdff$267 ($adff) from module gate (D = \request_payload [35:4], Q = \m_pwdata_o).
+Adding EN signal on $procdff$292 ($adff) from module gate (D = $procmux$156_Y, Q = \request).
+Adding EN signal on $procdff$272 ($adff) from module gate (D = \request_payload [3:0], Q = \m_pstrb_o).
+Adding EN signal on $procdff$302 ($adff) from module gate (D = \response_payload, Q = \response).
+Adding EN signal on $procdff$277 ($adff) from module gate (D = $procmux$83_Y, Q = \acknowledgement).
+Adding EN signal on $procdff$297 ($adff) from module gate (D = { \s_pwrite_i \s_paddr_i \s_pwdata_i \s_pstrb_i }, Q = \request_payload).
+Adding EN signal on $procdff$282 ($adff) from module gate (D = { \m_pslverr_i \m_prdata_i }, Q = \response_payload).
+Adding EN signal on $procdff$387 ($adff) from module gold (D = $procmux$221_Y, Q = \source_state).
+Adding EN signal on $procdff$337 ($adff) from module gold (D = \request_payload [48], Q = \m_pwrite_o).
+Adding EN signal on $procdff$367 ($adff) from module gold (D = $procmux$182_Y, Q = \destination_state).
+Adding EN signal on $procdff$342 ($adff) from module gold (D = \request_payload [47:36], Q = \m_paddr_o).
+Adding EN signal on $procdff$347 ($adff) from module gold (D = \request_payload [35:4], Q = \m_pwdata_o).
+Adding EN signal on $procdff$372 ($adff) from module gold (D = $procmux$248_Y, Q = \request).
+Adding EN signal on $procdff$352 ($adff) from module gold (D = \request_payload [3:0], Q = \m_pstrb_o).
+Adding EN signal on $procdff$382 ($adff) from module gold (D = \response_payload, Q = \response).
+Adding EN signal on $procdff$357 ($adff) from module gold (D = $procmux$175_Y, Q = \acknowledgement).
+Adding EN signal on $procdff$377 ($adff) from module gold (D = { \s_pwrite_i \s_paddr_i \s_pwdata_i \s_pstrb_i }, Q = \request_payload).
+Adding EN signal on $procdff$362 ($adff) from module gold (D = { \m_pslverr_i \m_prdata_i }, Q = \response_payload).
+
+5.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+Removed 44 unused cells and 226 unused wires.
+<suppressed ~46 debug messages>
+
+5.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+<suppressed ~4 debug messages>
+Optimizing module gold.
+<suppressed ~4 debug messages>
+
+5.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~56 debug messages>
+
+5.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+5.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 84 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 77 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~21 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 84 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 77 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~21 debug messages>
+Removed a total of 14 cells.
+
+5.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+Removed 0 unused cells and 14 unused wires.
+<suppressed ~2 debug messages>
+
+5.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+5.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~56 debug messages>
+
+5.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+5.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 77 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 77 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+5.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+5.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+
+5.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+5.23. Finished fast OPT passes. (There is nothing left to do.)
+
+6. Executing CLK2FFLOGIC pass (convert clocked FFs to generic $ff cells).
+
+6.1. Executing PEEPOPT pass (run peephole optimizers).
+Replacing gate.$auto$ff.cc:337:slice$473 ($adffe): CLK=\destination_clk_i, D={ \m_pslverr_i \m_prdata_i }, Q=\response_payload
+Replacing gate.$procdff$327 ($adff): CLK=\destination_clk_i, D={ \destination_release [0] 1'1 }, Q=\destination_release
+Replacing gate.$auto$ff.cc:337:slice$470 ($adffe): CLK=\source_clk_i, D={ \s_pwrite_i \s_paddr_i \s_pwdata_i \s_pstrb_i }, Q=\request_payload
+Replacing gate.$auto$ff.cc:337:slice$461 ($adffe): CLK=\destination_clk_i, D=$0\acknowledgement[0:0], Q=\acknowledgement
+Replacing gate.$auto$ff.cc:337:slice$458 ($adffe): CLK=\source_clk_i, D=\response_payload, Q=\response
+Replacing gate.$auto$ff.cc:337:slice$455 ($adffe): CLK=\destination_clk_i, D=\request_payload [3:0], Q=\m_pstrb_o
+Replacing gate.$procdff$312 ($adff): CLK=\source_clk_i, D=$0\served[0:0], Q=\served
+Replacing gate.$auto$ff.cc:337:slice$446 ($adffe): CLK=\source_clk_i, D=$0\request[0:0], Q=\request
+Replacing gate.$auto$ff.cc:337:slice$443 ($adffe): CLK=\destination_clk_i, D=\request_payload [35:4], Q=\m_pwdata_o
+Replacing gate.$procdff$332 ($adff): CLK=\source_clk_i, D={ \source_release [0] 1'1 }, Q=\source_release
+Replacing gate.$procdff$322 ($adff): CLK=\source_clk_i, D={ \acknowledgement_sync [0] \acknowledgement }, Q=\acknowledgement_sync
+Replacing gate.$auto$ff.cc:337:slice$440 ($adffe): CLK=\destination_clk_i, D=\request_payload [47:36], Q=\m_paddr_o
+Replacing gate.$auto$ff.cc:337:slice$429 ($adffe): CLK=\destination_clk_i, D=$0\destination_state[1:0], Q=\destination_state
+Replacing gate.$auto$ff.cc:337:slice$426 ($adffe): CLK=\destination_clk_i, D=\request_payload [48], Q=\m_pwrite_o
+Replacing gate.$auto$ff.cc:337:slice$413 ($adffe): CLK=\source_clk_i, D=$0\source_state[1:0], Q=\source_state
+Replacing gate.$procdff$317 ($adff): CLK=\destination_clk_i, D={ \request_sync [0] \request }, Q=\request_sync
+Replacing gold.$auto$ff.cc:337:slice$536 ($adffe): CLK=\destination_clk_i, D={ \m_pslverr_i \m_prdata_i }, Q=\response_payload
+Replacing gold.$procdff$407 ($adff): CLK=\destination_clk_i, D={ \destination_release [0] 1'1 }, Q=\destination_release
+Replacing gold.$auto$ff.cc:337:slice$533 ($adffe): CLK=\source_clk_i, D={ \s_pwrite_i \s_paddr_i \s_pwdata_i \s_pstrb_i }, Q=\request_payload
+Replacing gold.$auto$ff.cc:337:slice$524 ($adffe): CLK=\destination_clk_i, D=$0\acknowledgement[0:0], Q=\acknowledgement
+Replacing gold.$auto$ff.cc:337:slice$521 ($adffe): CLK=\source_clk_i, D=\response_payload, Q=\response
+Replacing gold.$auto$ff.cc:337:slice$518 ($adffe): CLK=\destination_clk_i, D=\request_payload [3:0], Q=\m_pstrb_o
+Replacing gold.$procdff$392 ($adff): CLK=\source_clk_i, D=$0\served[0:0], Q=\served
+Replacing gold.$auto$ff.cc:337:slice$509 ($adffe): CLK=\source_clk_i, D=$0\request[0:0], Q=\request
+Replacing gold.$auto$ff.cc:337:slice$506 ($adffe): CLK=\destination_clk_i, D=\request_payload [35:4], Q=\m_pwdata_o
+Replacing gold.$procdff$412 ($adff): CLK=\source_clk_i, D={ \source_release [0] 1'1 }, Q=\source_release
+Replacing gold.$procdff$402 ($adff): CLK=\source_clk_i, D={ \acknowledgement_sync [0] \acknowledgement }, Q=\acknowledgement_sync
+Replacing gold.$auto$ff.cc:337:slice$503 ($adffe): CLK=\destination_clk_i, D=\request_payload [47:36], Q=\m_paddr_o
+Replacing gold.$auto$ff.cc:337:slice$492 ($adffe): CLK=\destination_clk_i, D=$0\destination_state[1:0], Q=\destination_state
+Replacing gold.$auto$ff.cc:337:slice$489 ($adffe): CLK=\destination_clk_i, D=\request_payload [48], Q=\m_pwrite_o
+Replacing gold.$auto$ff.cc:337:slice$476 ($adffe): CLK=\source_clk_i, D=$0\source_state[1:0], Q=\source_state
+Replacing gold.$procdff$397 ($adff): CLK=\destination_clk_i, D={ \request_sync [0] \request }, Q=\request_sync
+
+7. Executing OPT pass (performing simple optimizations).
+
+7.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+<suppressed ~16 debug messages>
+Optimizing module gold.
+<suppressed ~16 debug messages>
+
+7.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 216 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 189 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Computing hashes of 162 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+<suppressed ~162 debug messages>
+Finding identical cells in module `\gold'.
+Computing hashes of 216 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 189 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Computing hashes of 162 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+<suppressed ~162 debug messages>
+Removed a total of 108 cells.
+
+7.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~220 debug messages>
+
+7.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+7.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 162 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 162 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+7.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+Removed 0 unused cells and 140 unused wires.
+<suppressed ~2 debug messages>
+
+7.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+7.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \gate..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \gold..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~220 debug messages>
+
+7.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \gate.
+  Optimizing cells in module \gold.
+Performed a total of 0 changes.
+
+7.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\gate'.
+Computing hashes of 162 cells of `\gate'.
+Finding duplicate cells in `\gate'.
+Finding identical cells in module `\gold'.
+Computing hashes of 162 cells of `\gold'.
+Finding duplicate cells in `\gold'.
+Removed a total of 0 cells.
+
+7.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \gate..
+Finding unused cells or wires in module \gold..
+
+7.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module gate.
+Optimizing module gold.
+
+7.16. Finished fast OPT passes. (There is nothing left to do.)
+
+8. Executing EQUIV_MAKE pass (creating equiv checking module).
+Presumably equivalent wires: served_gold (\served_gold), served_gate (\served_gate) -> served
+Presumably equivalent wires: destination_state_gold (\destination_state_gold), destination_state_gate (\destination_state_gate) -> destination_state
+Presumably equivalent wires: source_state_gold (\source_state_gold), source_state_gate (\source_state_gate) -> source_state
+Presumably equivalent wires: response_gold (\response_gold), response_gate (\response_gate) -> response
+Presumably equivalent wires: response_payload_gold (\response_payload_gold), response_payload_gate (\response_payload_gate) -> response_payload
+Presumably equivalent wires: request_payload_gold (\request_payload_gold), request_payload_gate (\request_payload_gate) -> request_payload
+Presumably equivalent wires: acknowledgement_sync_gold (\acknowledgement_sync_gold), acknowledgement_sync_gate (\acknowledgement_sync_gate) -> acknowledgement_sync
+Presumably equivalent wires: request_sync_gold (\request_sync_gold), request_sync_gate (\request_sync_gate) -> request_sync
+Presumably equivalent wires: acknowledgement_gold (\acknowledgement_gold), acknowledgement_gate (\acknowledgement_gate) -> acknowledgement
+Presumably equivalent wires: request_gold (\request_gold), request_gate (\request_gate) -> request
+Presumably equivalent wires: destination_reset_n_gold (\destination_reset_n_gold), destination_reset_n_gate (\destination_reset_n_gate) -> destination_reset_n
+Presumably equivalent wires: source_reset_n_gold (\source_reset_n_gold), source_reset_n_gate (\source_reset_n_gate) -> source_reset_n
+Presumably equivalent wires: destination_release_gold (\destination_release_gold), destination_release_gate (\destination_release_gate) -> destination_release
+Presumably equivalent wires: source_release_gold (\source_release_gold), source_release_gate (\source_release_gate) -> source_release
+Presumably equivalent wires: m_prdata_i_gold (\m_prdata_i_gold), m_prdata_i_gate (\m_prdata_i_gate) -> m_prdata_i
+Presumably equivalent wires: m_pslverr_i_gold (\m_pslverr_i_gold), m_pslverr_i_gate (\m_pslverr_i_gate) -> m_pslverr_i
+Presumably equivalent wires: m_pready_i_gold (\m_pready_i_gold), m_pready_i_gate (\m_pready_i_gate) -> m_pready_i
+Presumably equivalent wires: m_pstrb_o_gold (\m_pstrb_o_gold), m_pstrb_o_gate (\m_pstrb_o_gate) -> m_pstrb_o
+Presumably equivalent wires: m_pwdata_o_gold (\m_pwdata_o_gold), m_pwdata_o_gate (\m_pwdata_o_gate) -> m_pwdata_o
+Presumably equivalent wires: m_paddr_o_gold (\m_paddr_o_gold), m_paddr_o_gate (\m_paddr_o_gate) -> m_paddr_o
+Presumably equivalent wires: m_pwrite_o_gold (\m_pwrite_o_gold), m_pwrite_o_gate (\m_pwrite_o_gate) -> m_pwrite_o
+Presumably equivalent wires: m_penable_o_gold (\m_penable_o_gold), m_penable_o_gate (\m_penable_o_gate) -> m_penable_o
+Presumably equivalent wires: m_psel_o_gold (\m_psel_o_gold), m_psel_o_gate (\m_psel_o_gate) -> m_psel_o
+Presumably equivalent wires: s_prdata_o_gold (\s_prdata_o_gold), s_prdata_o_gate (\s_prdata_o_gate) -> s_prdata_o
+Presumably equivalent wires: s_pslverr_o_gold (\s_pslverr_o_gold), s_pslverr_o_gate (\s_pslverr_o_gate) -> s_pslverr_o
+Presumably equivalent wires: s_pready_o_gold (\s_pready_o_gold), s_pready_o_gate (\s_pready_o_gate) -> s_pready_o
+Presumably equivalent wires: s_pstrb_i_gold (\s_pstrb_i_gold), s_pstrb_i_gate (\s_pstrb_i_gate) -> s_pstrb_i
+Presumably equivalent wires: s_pwdata_i_gold (\s_pwdata_i_gold), s_pwdata_i_gate (\s_pwdata_i_gate) -> s_pwdata_i
+Presumably equivalent wires: s_paddr_i_gold (\s_paddr_i_gold), s_paddr_i_gate (\s_paddr_i_gate) -> s_paddr_i
+Presumably equivalent wires: s_pwrite_i_gold (\s_pwrite_i_gold), s_pwrite_i_gate (\s_pwrite_i_gate) -> s_pwrite_i
+Presumably equivalent wires: s_penable_i_gold (\s_penable_i_gold), s_penable_i_gate (\s_penable_i_gate) -> s_penable_i
+Presumably equivalent wires: s_psel_i_gold (\s_psel_i_gold), s_psel_i_gate (\s_psel_i_gate) -> s_psel_i
+Presumably equivalent wires: reset_ni_gold (\reset_ni_gold), reset_ni_gate (\reset_ni_gate) -> reset_ni
+Presumably equivalent wires: destination_clk_i_gold (\destination_clk_i_gold), destination_clk_i_gate (\destination_clk_i_gate) -> destination_clk_i
+Presumably equivalent wires: source_clk_i_gold (\source_clk_i_gold), source_clk_i_gate (\source_clk_i_gate) -> source_clk_i
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$832_gate ($ff): \request_sync_gate -> \request_sync
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$718_gate ($ff): { \source_release_gate [0] 1'1 } -> { \source_release [0] 1'1 }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$716_gate ($ff): \source_release_gate -> \source_release
+Changing input A of cell $auto$clk2fflogic.cc:71:sample_control$841_gate ($not): \destination_reset_n_gate -> \destination_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$774_gate ($ff): \destination_state_gate -> \destination_state
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$698_gate ($ff): \m_pwdata_o_gate -> \m_pwdata_o
+Changing input B of cell $auto$ff.cc:592:unmap_ce$695_gate ($mux): \request_payload_gate [35:4] -> \request_payload [35:4]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$695_gate ($mux): \m_pwdata_o_gate -> \m_pwdata_o
+Changing input A of cell $auto$ff.cc:592:unmap_ce$771_gate ($mux): \destination_state_gate -> \destination_state
+Changing input A of cell $auto$clk2fflogic.cc:71:sample_control$823_gate ($not): \source_reset_n_gate -> \source_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$678_gate ($ff): \request_gate -> \request
+Changing input A of cell $auto$ff.cc:592:unmap_ce$675_gate ($mux): \request_gate -> \request
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$658_gate ($ff): \served_gate -> \served
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$814_gate ($ff): \source_state_gate -> \source_state
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$640_gate ($ff): \m_pstrb_o_gate -> \m_pstrb_o
+Changing input B of cell $auto$ff.cc:592:unmap_ce$637_gate ($mux): \request_payload_gate [3:0] -> \request_payload [3:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$637_gate ($mux): \m_pstrb_o_gate -> \m_pstrb_o
+Changing input A of cell $auto$ff.cc:592:unmap_ce$811_gate ($mux): \source_state_gate -> \source_state
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$754_gate ($ff): \m_paddr_o_gate -> \m_paddr_o
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$620_gate ($ff): \response_gate -> \response
+Changing input B of cell $auto$ff.cc:592:unmap_ce$617_gate ($mux): \response_payload_gate -> \response_payload
+Changing input A of cell $auto$ff.cc:592:unmap_ce$617_gate ($mux): \response_gate -> \response
+Changing input B of cell $auto$ff.cc:592:unmap_ce$751_gate ($mux): \request_payload_gate [47:36] -> \request_payload [47:36]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$751_gate ($mux): \m_paddr_o_gate -> \m_paddr_o
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$847_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$600_gate ($ff): \acknowledgement_gate -> \acknowledgement
+Changing input A of cell $auto$ff.cc:592:unmap_ce$597_gate ($mux): \acknowledgement_gate -> \acknowledgement
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$580_gate ($ff): \request_payload_gate -> \request_payload
+Changing input A of cell $auto$ff.cc:592:unmap_ce$577_gate ($mux): \request_payload_gate -> \request_payload
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$834_gate ($ff): { \request_sync_gate [0] \request_gate } -> { \request_sync [0] \request }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$736_gate ($ff): { \acknowledgement_sync_gate [0] \acknowledgement_gate } -> { \acknowledgement_sync [0] \acknowledgement }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$562_gate ($ff): { \destination_release_gate [0] 1'1 } -> { \destination_release [0] 1'1 }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$560_gate ($ff): \destination_release_gate -> \destination_release
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$734_gate ($ff): \acknowledgement_sync_gate -> \acknowledgement_sync
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$794_gate ($ff): \m_pwrite_o_gate -> \m_pwrite_o
+Changing input B of cell $auto$ff.cc:592:unmap_ce$791_gate ($mux): \request_payload_gate [48] -> \request_payload [48]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$791_gate ($mux): \m_pwrite_o_gate -> \m_pwrite_o
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$542_gate ($ff): \response_payload_gate -> \response_payload
+Changing input A of cell $auto$ff.cc:592:unmap_ce$539_gate ($mux): \response_payload_gate -> \response_payload
+Changing input S of cell $procmux$154_gate ($mux): \s_pready_o_gate -> \s_pready_o
+Changing input A of cell $auto$opt_dff.cc:337:make_patterns_logic$428_gate ($reduce_and): { $procmux$105_CMP_gate \request_sync_gate [1] } -> { $procmux$105_CMP_gate \request_sync [1] }
+Changing input A of cell $procmux$145_CMP0_gate ($eq): \source_state_gate -> \source_state
+Changing input A of cell $procmux$157_CMP0_gate ($eq): \source_state_gate -> \source_state
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$557_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input S of cell $procmux$134_gate ($mux): \acknowledgement_sync_gate [1] -> \acknowledgement_sync [1]
+Changing input S of cell $procmux$131_gate ($mux): \s_pready_o_gate -> \s_pready_o
+Changing input A of cell $procmux$130_CMP0_gate ($eq): \source_state_gate -> \source_state
+Changing input S of cell $procmux$127_gate ($mux): \acknowledgement_sync_gate [1] -> \acknowledgement_sync [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$595_gate ($mux): \source_reset_n_gate -> \source_reset_n
+Changing input S of cell $procmux$123_gate ($mux): \s_pready_o_gate -> \s_pready_o
+Changing input A of cell $procmux$120_gate ($mux): \served_gate -> \served
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$433_gate ($ne): { $procmux$105_CMP_gate \request_sync_gate [1] } -> { $procmux$105_CMP_gate \request_sync [1] }
+Changing input A of cell $procmux$119_CMP0_gate ($logic_not): \destination_state_gate -> \destination_state
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$435_gate ($ne): { $procmux$84_CMP_gate \request_sync_gate [1] } -> { $procmux$84_CMP_gate \request_sync [1] }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$615_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$419_gate ($ne): { $eq$gate.v:48$45_Y_gate \s_pready_o_gate } -> { $eq$gate.v:48$45_Y_gate \s_pready_o }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$635_gate ($mux): \source_reset_n_gate -> \source_reset_n
+Changing input S of cell $procmux$96_gate ($mux): \request_sync_gate [1] -> \request_sync [1]
+Changing input A of cell $procmux$95_CMP0_gate ($eq): \destination_state_gate -> \destination_state
+Changing input A of cell $procmux$94_CMP0_gate ($eq): \destination_state_gate -> \destination_state
+Changing input A of cell $procmux$91_CMP0_gate ($eq): \destination_state_gate -> \destination_state
+Changing input S of cell $procmux$88_gate ($mux): \request_sync_gate [1] -> \request_sync [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$655_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$673_gate ($mux): \source_reset_n_gate -> \source_reset_n
+Changing input S of cell $procmux$81_gate ($mux): \request_sync_gate [1] -> \request_sync [1]
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$417_gate ($ne): { $procmux$130_CMP_gate \acknowledgement_sync_gate [1] } -> { $procmux$130_CMP_gate \acknowledgement_sync [1] }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$693_gate ($mux): \source_reset_n_gate -> \source_reset_n
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$415_gate ($ne): { $procmux$136_CMP_gate \acknowledgement_sync_gate [1] } -> { $procmux$136_CMP_gate \acknowledgement_sync [1] }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$713_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input A of cell $procmux$160_CMP0_gate ($logic_not): \source_state_gate -> \source_state
+Changing input A of cell $auto$opt_dff.cc:337:make_patterns_logic$460_gate ($reduce_and): { $procmux$136_CMP_gate \acknowledgement_sync_gate [1] } -> { $procmux$136_CMP_gate \acknowledgement_sync [1] }
+Changing input A of cell $logic_not$gate.v:62$63_gate ($logic_not): \served_gate -> \served
+Changing input A of cell $logic_and$gate.v:55$56_gate ($logic_and): \destination_release_gate [1] -> \destination_release [1]
+Changing input A of cell $logic_and$gate.v:54$54_gate ($logic_and): \destination_release_gate [1] -> \destination_release [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$749_gate ($mux): \source_reset_n_gate -> \source_reset_n
+Changing input S of cell $ternary$gate.v:50$50_gate ($mux): \s_pready_o_gate -> \s_pready_o
+Changing input B of cell $ternary$gate.v:50$50_gate ($mux): \response_gate [31:0] -> \response [31:0]
+Changing input B of cell $logic_and$gate.v:49$49_gate ($logic_and): \response_gate [32] -> \response [32]
+Changing input A of cell $logic_and$gate.v:49$49_gate ($logic_and): \s_pready_o_gate -> \s_pready_o
+Changing input A of cell $logic_and$gate.v:48$46_gate ($logic_and): \source_reset_n_gate -> \source_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$769_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$789_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$809_gate ($mux): \destination_reset_n_gate -> \destination_reset_n
+Changing input B of cell $logic_and$gate.v:33$40_gate ($logic_and): \destination_release_gate [1] -> \destination_release [1]
+Changing input B of cell $logic_and$gate.v:32$39_gate ($logic_and): \source_release_gate [1] -> \source_release [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$829_gate ($mux): \source_reset_n_gate -> \source_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1142_gold ($ff): \request_sync_gold -> \request_sync
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1028_gold ($ff): { \source_release_gold [0] 1'1 } -> { \source_release [0] 1'1 }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1026_gold ($ff): \source_release_gold -> \source_release
+Changing input A of cell $auto$clk2fflogic.cc:71:sample_control$1151_gold ($not): \destination_reset_n_gold -> \destination_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1084_gold ($ff): \destination_state_gold -> \destination_state
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1008_gold ($ff): \m_pwdata_o_gold -> \m_pwdata_o
+Changing input B of cell $auto$ff.cc:592:unmap_ce$1005_gold ($mux): \request_payload_gold [35:4] -> \request_payload [35:4]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$1005_gold ($mux): \m_pwdata_o_gold -> \m_pwdata_o
+Changing input A of cell $auto$ff.cc:592:unmap_ce$1081_gold ($mux): \destination_state_gold -> \destination_state
+Changing input A of cell $auto$clk2fflogic.cc:71:sample_control$1133_gold ($not): \source_reset_n_gold -> \source_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$988_gold ($ff): \request_gold -> \request
+Changing input A of cell $auto$ff.cc:592:unmap_ce$985_gold ($mux): \request_gold -> \request
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$968_gold ($ff): \served_gold -> \served
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1124_gold ($ff): \source_state_gold -> \source_state
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$950_gold ($ff): \m_pstrb_o_gold -> \m_pstrb_o
+Changing input B of cell $auto$ff.cc:592:unmap_ce$947_gold ($mux): \request_payload_gold [3:0] -> \request_payload [3:0]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$947_gold ($mux): \m_pstrb_o_gold -> \m_pstrb_o
+Changing input A of cell $auto$ff.cc:592:unmap_ce$1121_gold ($mux): \source_state_gold -> \source_state
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1064_gold ($ff): \m_paddr_o_gold -> \m_paddr_o
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$930_gold ($ff): \response_gold -> \response
+Changing input B of cell $auto$ff.cc:592:unmap_ce$927_gold ($mux): \response_payload_gold -> \response_payload
+Changing input A of cell $auto$ff.cc:592:unmap_ce$927_gold ($mux): \response_gold -> \response
+Changing input B of cell $auto$ff.cc:592:unmap_ce$1061_gold ($mux): \request_payload_gold [47:36] -> \request_payload [47:36]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$1061_gold ($mux): \m_paddr_o_gold -> \m_paddr_o
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1157_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$910_gold ($ff): \acknowledgement_gold -> \acknowledgement
+Changing input A of cell $auto$ff.cc:592:unmap_ce$907_gold ($mux): \acknowledgement_gold -> \acknowledgement
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$890_gold ($ff): \request_payload_gold -> \request_payload
+Changing input A of cell $auto$ff.cc:592:unmap_ce$887_gold ($mux): \request_payload_gold -> \request_payload
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1144_gold ($ff): { \request_sync_gold [0] \request_gold } -> { \request_sync [0] \request }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1046_gold ($ff): { \acknowledgement_sync_gold [0] \acknowledgement_gold } -> { \acknowledgement_sync [0] \acknowledgement }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$872_gold ($ff): { \destination_release_gold [0] 1'1 } -> { \destination_release [0] 1'1 }
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$870_gold ($ff): \destination_release_gold -> \destination_release
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1044_gold ($ff): \acknowledgement_sync_gold -> \acknowledgement_sync
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$1104_gold ($ff): \m_pwrite_o_gold -> \m_pwrite_o
+Changing input B of cell $auto$ff.cc:592:unmap_ce$1101_gold ($mux): \request_payload_gold [48] -> \request_payload [48]
+Changing input A of cell $auto$ff.cc:592:unmap_ce$1101_gold ($mux): \m_pwrite_o_gold -> \m_pwrite_o
+Changing input D of cell $auto$clk2fflogic.cc:108:sample_data$852_gold ($ff): \response_payload_gold -> \response_payload
+Changing input A of cell $auto$ff.cc:592:unmap_ce$849_gold ($mux): \response_payload_gold -> \response_payload
+Changing input S of cell $procmux$246_gold ($mux): \s_pready_o_gold -> \s_pready_o
+Changing input A of cell $auto$opt_dff.cc:337:make_patterns_logic$491_gold ($reduce_and): { $procmux$167_CMP_gold \request_sync_gold [1] } -> { $procmux$167_CMP_gold \request_sync [1] }
+Changing input A of cell $procmux$237_CMP0_gold ($eq): \source_state_gold -> \source_state
+Changing input A of cell $procmux$249_CMP0_gold ($eq): \source_state_gold -> \source_state
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$867_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input S of cell $procmux$226_gold ($mux): \acknowledgement_sync_gold [1] -> \acknowledgement_sync [1]
+Changing input S of cell $procmux$223_gold ($mux): \s_pready_o_gold -> \s_pready_o
+Changing input A of cell $procmux$222_CMP0_gold ($eq): \source_state_gold -> \source_state
+Changing input S of cell $procmux$219_gold ($mux): \acknowledgement_sync_gold [1] -> \acknowledgement_sync [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$905_gold ($mux): \source_reset_n_gold -> \source_reset_n
+Changing input S of cell $procmux$215_gold ($mux): \s_pready_o_gold -> \s_pready_o
+Changing input A of cell $procmux$212_gold ($mux): \served_gold -> \served
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$496_gold ($ne): { $procmux$167_CMP_gold \request_sync_gold [1] } -> { $procmux$167_CMP_gold \request_sync [1] }
+Changing input A of cell $procmux$211_CMP0_gold ($logic_not): \destination_state_gold -> \destination_state
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$498_gold ($ne): { $procmux$176_CMP_gold \request_sync_gold [1] } -> { $procmux$176_CMP_gold \request_sync [1] }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$925_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$482_gold ($ne): { $eq$gold.v:48$11_Y_gold \s_pready_o_gold } -> { $eq$gold.v:48$11_Y_gold \s_pready_o }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$945_gold ($mux): \source_reset_n_gold -> \source_reset_n
+Changing input S of cell $procmux$188_gold ($mux): \request_sync_gold [1] -> \request_sync [1]
+Changing input A of cell $procmux$187_CMP0_gold ($eq): \destination_state_gold -> \destination_state
+Changing input A of cell $procmux$186_CMP0_gold ($eq): \destination_state_gold -> \destination_state
+Changing input A of cell $procmux$183_CMP0_gold ($eq): \destination_state_gold -> \destination_state
+Changing input S of cell $procmux$180_gold ($mux): \request_sync_gold [1] -> \request_sync [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$965_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$983_gold ($mux): \source_reset_n_gold -> \source_reset_n
+Changing input S of cell $procmux$173_gold ($mux): \request_sync_gold [1] -> \request_sync [1]
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$480_gold ($ne): { $procmux$222_CMP_gold \acknowledgement_sync_gold [1] } -> { $procmux$222_CMP_gold \acknowledgement_sync [1] }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1003_gold ($mux): \source_reset_n_gold -> \source_reset_n
+Changing input A of cell $auto$opt_dff.cc:320:make_patterns_logic$478_gold ($ne): { $procmux$228_CMP_gold \acknowledgement_sync_gold [1] } -> { $procmux$228_CMP_gold \acknowledgement_sync [1] }
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1023_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input A of cell $procmux$252_CMP0_gold ($logic_not): \source_state_gold -> \source_state
+Changing input A of cell $auto$opt_dff.cc:337:make_patterns_logic$523_gold ($reduce_and): { $procmux$228_CMP_gold \acknowledgement_sync_gold [1] } -> { $procmux$228_CMP_gold \acknowledgement_sync [1] }
+Changing input A of cell $logic_not$gold.v:59$29_gold ($logic_not): \served_gold -> \served
+Changing input A of cell $logic_and$gold.v:52$22_gold ($logic_and): \destination_reset_n_gold -> \destination_reset_n
+Changing input A of cell $logic_and$gold.v:51$20_gold ($logic_and): \destination_reset_n_gold -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1059_gold ($mux): \source_reset_n_gold -> \source_reset_n
+Changing input S of cell $ternary$gold.v:50$16_gold ($mux): \s_pready_o_gold -> \s_pready_o
+Changing input B of cell $ternary$gold.v:50$16_gold ($mux): \response_gold [31:0] -> \response [31:0]
+Changing input B of cell $logic_and$gold.v:49$15_gold ($logic_and): \response_gold [32] -> \response [32]
+Changing input A of cell $logic_and$gold.v:49$15_gold ($logic_and): \s_pready_o_gold -> \s_pready_o
+Changing input A of cell $logic_and$gold.v:48$12_gold ($logic_and): \source_reset_n_gold -> \source_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1079_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1099_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1119_gold ($mux): \destination_reset_n_gold -> \destination_reset_n
+Changing input B of cell $logic_and$gold.v:33$6_gold ($logic_and): \destination_release_gold [1] -> \destination_release [1]
+Changing input B of cell $logic_and$gold.v:32$5_gold ($logic_and): \source_release_gold [1] -> \source_release [1]
+Changing input S of cell $auto$clk2fflogic.cc:123:mux$1139_gold ($mux): \source_reset_n_gold -> \source_reset_n
+
+9. Executing HIERARCHY pass (managing design hierarchy).
+
+9.1. Analyzing design hierarchy..
+Top module:  \equiv
+
+9.2. Analyzing design hierarchy..
+Top module:  \equiv
+Removing unused module `\gate'.
+Removing unused module `\gold'.
+Removed 2 unused modules.
+
+10. Executing EQUIV_SIMPLE pass.
+Found 217 unproven $equiv cells (23 groups) in equiv:
+  Trying to prove $equiv for \s_pready_o:ezsat
+ success!
+  Trying to prove $equiv for \s_pslverr_o:ezsat
+ success!
+ Grouping SAT models for \s_prdata_o:
+  Trying to prove $equiv for \s_prdata_o [0]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [8]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [11]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [12]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [13]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [14]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [15]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [16]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [17]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [18]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [19]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [20]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [21]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [22]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [23]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [24]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [25]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [26]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [27]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [28]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [29]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [30]:ezsat
+ success!
+  Trying to prove $equiv for \s_prdata_o [31]:ezsat
+ success!
+  Trying to prove $equiv for \m_psel_o:ezsat
+ success!
+  Trying to prove $equiv for \m_penable_o:ezsat
+ success!
+  Trying to prove $equiv for \m_pwrite_o:ezsat
+ezsat
+ success!
+ Grouping SAT models for \m_paddr_o:
+  Trying to prove $equiv for \m_paddr_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [8]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \m_paddr_o [11]:ezsat
+ success!
+ Grouping SAT models for \m_pwdata_o:
+  Trying to prove $equiv for \m_pwdata_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [3]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [4]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [5]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [6]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [7]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [8]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [9]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [10]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [11]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [12]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [13]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [14]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [15]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [16]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [17]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [18]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [19]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [20]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [21]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [22]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [23]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [24]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [25]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [26]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [27]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [28]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [29]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [30]:ezsat
+ success!
+  Trying to prove $equiv for \m_pwdata_o [31]:ezsat
+ success!
+ Grouping SAT models for \m_pstrb_o:
+  Trying to prove $equiv for \m_pstrb_o [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \m_pstrb_o [1]:ezsat
+ success!
+  Trying to prove $equiv for \m_pstrb_o [2]:ezsat
+ success!
+  Trying to prove $equiv for \m_pstrb_o [3]:ezsat
+ success!
+ Grouping SAT models for \source_release:
+  Trying to prove $equiv for \source_release [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \source_release [1]:ezsat
+ success!
+ Grouping SAT models for \destination_release:
+  Trying to prove $equiv for \destination_release [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \destination_release [1]:ezsat
+ success!
+  Trying to prove $equiv for \source_reset_n:ezsat
+ success!
+  Trying to prove $equiv for \destination_reset_n:ezsat
+ success!
+  Trying to prove $equiv for \request:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \acknowledgement:ezsat
+ezsat
+ success!
+ Grouping SAT models for \request_sync:
+  Trying to prove $equiv for \request_sync [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \request_sync [1]:ezsat
+ success!
+ Grouping SAT models for \acknowledgement_sync:
+  Trying to prove $equiv for \acknowledgement_sync [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \acknowledgement_sync [1]:ezsat
+ success!
+ Grouping SAT models for \request_payload:
+  Trying to prove $equiv for \request_payload [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \request_payload [1]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [2]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [3]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [4]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [5]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [6]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [7]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [8]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [9]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [10]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [11]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [12]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [13]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [14]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [15]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [16]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [17]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [18]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [19]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [20]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [21]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [22]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [23]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [24]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [25]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [26]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [27]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [28]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [29]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [30]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [31]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [32]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [33]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [34]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [35]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [36]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [37]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [38]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [39]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [40]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [41]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [42]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [43]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [44]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [45]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [46]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [47]:ezsat
+ success!
+  Trying to prove $equiv for \request_payload [48]:ezsat
+ success!
+ Grouping SAT models for \response_payload:
+  Trying to prove $equiv for \response_payload [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \response_payload [1]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [2]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [3]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [4]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [5]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [6]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [7]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [8]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [9]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [10]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [11]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [12]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [13]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [14]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [15]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [16]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [17]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [18]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [19]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [20]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [21]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [22]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [23]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [24]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [25]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [26]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [27]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [28]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [29]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [30]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [31]:ezsat
+ success!
+  Trying to prove $equiv for \response_payload [32]:ezsat
+ success!
+ Grouping SAT models for \response:
+  Trying to prove $equiv for \response [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \response [1]:ezsat
+ success!
+  Trying to prove $equiv for \response [2]:ezsat
+ success!
+  Trying to prove $equiv for \response [3]:ezsat
+ success!
+  Trying to prove $equiv for \response [4]:ezsat
+ success!
+  Trying to prove $equiv for \response [5]:ezsat
+ success!
+  Trying to prove $equiv for \response [6]:ezsat
+ success!
+  Trying to prove $equiv for \response [7]:ezsat
+ success!
+  Trying to prove $equiv for \response [8]:ezsat
+ success!
+  Trying to prove $equiv for \response [9]:ezsat
+ success!
+  Trying to prove $equiv for \response [10]:ezsat
+ success!
+  Trying to prove $equiv for \response [11]:ezsat
+ success!
+  Trying to prove $equiv for \response [12]:ezsat
+ success!
+  Trying to prove $equiv for \response [13]:ezsat
+ success!
+  Trying to prove $equiv for \response [14]:ezsat
+ success!
+  Trying to prove $equiv for \response [15]:ezsat
+ success!
+  Trying to prove $equiv for \response [16]:ezsat
+ success!
+  Trying to prove $equiv for \response [17]:ezsat
+ success!
+  Trying to prove $equiv for \response [18]:ezsat
+ success!
+  Trying to prove $equiv for \response [19]:ezsat
+ success!
+  Trying to prove $equiv for \response [20]:ezsat
+ success!
+  Trying to prove $equiv for \response [21]:ezsat
+ success!
+  Trying to prove $equiv for \response [22]:ezsat
+ success!
+  Trying to prove $equiv for \response [23]:ezsat
+ success!
+  Trying to prove $equiv for \response [24]:ezsat
+ success!
+  Trying to prove $equiv for \response [25]:ezsat
+ success!
+  Trying to prove $equiv for \response [26]:ezsat
+ success!
+  Trying to prove $equiv for \response [27]:ezsat
+ success!
+  Trying to prove $equiv for \response [28]:ezsat
+ success!
+  Trying to prove $equiv for \response [29]:ezsat
+ success!
+  Trying to prove $equiv for \response [30]:ezsat
+ success!
+  Trying to prove $equiv for \response [31]:ezsat
+ success!
+  Trying to prove $equiv for \response [32]:ezsat
+ success!
+ Grouping SAT models for \source_state:
+  Trying to prove $equiv for \source_state [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \source_state [1]:ezsat
+ success!
+ Grouping SAT models for \destination_state:
+  Trying to prove $equiv for \destination_state [0]:ezsat
+ezsat
+ success!
+  Trying to prove $equiv for \destination_state [1]:ezsat
+ success!
+  Trying to prove $equiv for \served:ezsat
+ezsat
+ success!
+Proved 217 previously unproven $equiv cells.
+
+11. Executing EQUIV_INDUCT pass.
+No selected unproven $equiv cells found in equiv.
+Proved 0 previously unproven $equiv cells.
+
+12. Executing EQUIV_STATUS pass.
+Found 217 $equiv cells in equiv:
+  Of those cells 217 are proven and 0 are unproven.
+  Equivalence successfully proven!
+
+End of script. Logfile hash: 3b742eebcf, time: 0.42s, user: 0.42s, system: 0.01s, MEM: 39.58 MB peak
+Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)
+Time spent: 92% 1x equiv_simple (0 sec), 1% 5x opt_clean (0 sec), ...

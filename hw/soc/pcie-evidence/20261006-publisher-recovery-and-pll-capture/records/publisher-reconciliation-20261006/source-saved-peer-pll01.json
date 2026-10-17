@@ -1,0 +1,197 @@
+{
+  "reviewer_correction": "Initial reader expected normal reaped label for actual cancelled upload. Preserved source/log; now explicitly checks FAILURE_REAPED with exact SIGTERM returncode, owned cleanup empty-group and original birth absent. Producer and tests unchanged.",
+  "status": "PASS_PUBLISHER_V4_SOURCE_AND_15_ACTUAL_CONTROLS",
+  "freeze": {
+    "bytes": 64049,
+    "sha256": "7bc519c0fa66900a7b366fe71bb1a3d5c28b6ba93bdb303ed16dd30b20177c64"
+  },
+  "findings": [],
+  "reviewer": "PLL/integrity independent source and saved-control reader",
+  "method": {
+    "bytes": 7321,
+    "sha256": "caa22cb0bbf4b288905365ffce62c3436123321aa47119dc940ad81afcc7bf14"
+  },
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_native_capture_v4.py": {
+      "bytes": 6585,
+      "sha256": "1b73bd49b86090a6eeff1cf16af36a2a17a4885bb748ecc301435ee796b3b585"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_native_publisher_v4.py": {
+      "bytes": 9320,
+      "sha256": "6eca814205fb01c37f3d668ba1d2b8ca4789522443c72709e03da73549e396a4"
+    }
+  },
+  "input_count": 276,
+  "actual_pytest_cases": [
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_uncertain_absent_upload_is_reconciled_then_retried[timeout_absent]",
+      "time": "0.496"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_uncertain_absent_upload_is_reconciled_then_retried[transient_absent]",
+      "time": "0.195"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_upload_present_or_visibility_delay_never_reuploads[uncertain_present]",
+      "time": "0.114"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_upload_present_or_visibility_delay_never_reuploads[collision]",
+      "time": "0.096"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_upload_present_or_visibility_delay_never_reuploads[hidden]",
+      "time": "0.162"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_integrity_or_permanent_failure_never_retries_upload[corrupt]",
+      "time": "0.091"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_integrity_or_permanent_failure_never_retries_upload[duplicate]",
+      "time": "0.083"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_integrity_or_permanent_failure_never_retries_upload[unauthorized]",
+      "time": "0.089"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_upload_retry_budget_is_finite",
+      "time": "0.264"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_successful_but_missing_asset_has_bounded_metadata_only_retries",
+      "time": "0.190"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_current_capture_change_refuses_upload",
+      "time": "0.002"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_cli_retries_upload_and_requires_both_full_readbacks",
+      "time": "1.846"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_signal_stops_owned_upload_and_prevents_new_attempt[backoff]",
+      "time": "0.184"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_real_signal_stops_owned_upload_and_prevents_new_attempt[upload]",
+      "time": "0.194"
+    },
+    {
+      "classname": "sw.tests.test_pcie_native_publisher_v4",
+      "name": "test_cli_source_bridge_preserves_every_other_v3_byte",
+      "time": "0.000"
+    }
+  ],
+  "actual_owned_transport_children": 61,
+  "transport_journals": [
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_signal_stops_owned_u1/receipt.transport/attempts.json",
+      "bytes": 3494,
+      "sha256": "bbcf895fadc86639e8297c517e152b5611929cd9cb331a232bddfc304d4d0bba",
+      "attempts": 2
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_signal_stops_owned_u0/receipt.transport/attempts.json",
+      "bytes": 5186,
+      "sha256": "59dd092364f77ca213fe13cede365d35483ffffdc6e4cda757d4587c0778dc06",
+      "attempts": 3
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_cli_retries_upload_a0/receipt.transport/attempts.json",
+      "bytes": 15841,
+      "sha256": "0ac64383aa0708bb3e12f0b7c2db9fb41106bcf30e68ec263af33112d5d4772f",
+      "attempts": 8
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_successful_but_missing_as0/evidence/attempts.json",
+      "bytes": 11220,
+      "sha256": "4bd244900f5a6a467a0f89714b4d8b03db3f94a829e2258d50f8269a0b847244",
+      "attempts": 7
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_upload_retry_budget_0/evidence/attempts.json",
+      "bytes": 14904,
+      "sha256": "9f1ae090055eec423d47cba985eb8d03ac0ea5561367f39151a3f39617f38241",
+      "attempts": 9
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_integrity_or_permane2/evidence/attempts.json",
+      "bytes": 4965,
+      "sha256": "104ed9ea5f87514cd7d27731a7a253ea51c1827d5814d4dc493e25908a58ef56",
+      "attempts": 3
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_integrity_or_permane1/evidence/attempts.json",
+      "bytes": 4972,
+      "sha256": "797ba58af940f4723e013e8ac9b6b185fddfb9b0b6c8944a02413c76296a119a",
+      "attempts": 3
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_integrity_or_permane0/evidence/attempts.json",
+      "bytes": 4973,
+      "sha256": "200acf785a87d7b127fbc7fa2208ebdd4902e7da7ba251620f6683f54fa3e908",
+      "attempts": 3
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_upload_present_or_vi2/evidence/attempts.json",
+      "bytes": 8046,
+      "sha256": "93c384cc641ce3a5f59f2f900354fcc004c326ec0ac8680e60c6e0457592be79",
+      "attempts": 5
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_upload_present_or_vi1/evidence/attempts.json",
+      "bytes": 4968,
+      "sha256": "0241a79759ec51b7236837489f8cbcca6cb82b02d98c8ff2709cdb1c84ed8cce",
+      "attempts": 3
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_upload_present_or_vi0/evidence/attempts.json",
+      "bytes": 4972,
+      "sha256": "380605d2fa905440e57083d47d0db1c7c08387e85591c24d52736def8b79f984",
+      "attempts": 3
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_uncertain_absent_upl1/evidence/attempts.json",
+      "bytes": 9850,
+      "sha256": "a52e9f351f63f782194dafa04c3e2ea95129d3afa1b31e00ffa0db151d7c5059",
+      "attempts": 6
+    },
+    {
+      "path": "/dev/shm/nssoc-publisher-v4-controls02/test_real_uncertain_absent_upl0/evidence/attempts.json",
+      "bytes": 9821,
+      "sha256": "4cf9d7824fa9b5a7df611c2a39a8473c12475baf10058d729809443b919a6ada",
+      "attempts": 6
+    }
+  ],
+  "source_bridge": {
+    "replacements": 3,
+    "old_main_sha256": "61be4528fa04854782d078f3e2f1589838d861ff3facd2e732dfa6b4849adecd",
+    "new_main_sha256": "ca4a4670a0eca290b2e6d48b058e537142adb5b351861ae52ed94d9209ad9843",
+    "whole_inverse": true
+  },
+  "review_checks": [
+    "Read complete new Client and unchanged inherited V3 retry/command/API/upload/authenticated/anonymous and actual signal propagation.",
+    "Only uncertain-absent upload permits new attempt; successful-but-absent uses bounded metadata-only retries; permanent absent, ambiguous, different/incomplete assets remain fatal and never clobbered.",
+    "Actual timeout child closed with SIGTERM; retry recovered on second real child. Saved collision/visibility, integrity/permanent/no-local-source-change and budget controls rechecked.",
+    "All transport compressed stdout/stderr fully decoded and uncompressed hash checked; exact stop in upload/backoff made one upload and terminal FAIL.",
+    "Complete CLI authenticated and anonymous byte readbacks retained; no tested producer/native/GitHub operation was rerun by reviewer."
+  ],
+  "scope": "Bounded publisher transport reconciliation review only; no new numerical solver, no PHY or timing acceptance. Direct Client use assumes declared validattempts; CLI preserves1..4 and120s upper bounds."
+}

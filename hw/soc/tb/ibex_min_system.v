@@ -32,7 +32,9 @@
 
 module ibex_min_system #(
     parameter integer MEM_WORDS = 4096,   // 16 KiB
-    parameter [31:0]  BOOT_ADDR = 32'h0000_0000
+    parameter [31:0]  BOOT_ADDR = 32'h0000_0000,
+    // Test-only response latency. Requests still receive immediate grant.
+    parameter integer DATA_RESPONSE_CYCLES = 1
 ) (
     input  wire        clk_i,
     input  wire        rst_ni,
@@ -72,8 +74,41 @@ module ibex_min_system #(
   wire [3:0]  data_be;
   wire [31:0] data_addr;
   wire [31:0] data_wdata;
-  reg         data_rvalid;
-  reg  [31:0] data_rdata;
+  wire        data_rvalid;
+  wire [31:0] data_rdata;
+  reg         data_rvalid_q;
+  reg  [31:0] data_rdata_q;
+
+  // Delay both response validity and its captured data. This models a slow
+  // slave without changing the accepted request or repeating its side effects.
+  generate
+    if (DATA_RESPONSE_CYCLES == 1) begin : g_data_immediate
+      assign data_rvalid = data_rvalid_q;
+      assign data_rdata = data_rdata_q;
+    end else begin : g_data_delayed
+      reg [DATA_RESPONSE_CYCLES-2:0] valid_pipe;
+      reg [31:0] data_pipe [0:DATA_RESPONSE_CYCLES-2];
+      integer stage;
+      always @(posedge clk_i or negedge rst_ni) begin
+        if (!rst_ni) begin
+          valid_pipe <= 0;
+          for (stage=0; stage<DATA_RESPONSE_CYCLES-1; stage=stage+1)
+            data_pipe[stage] <= 0;
+        end else begin
+          valid_pipe[0] <= data_rvalid_q;
+          data_pipe[0] <= data_rdata_q;
+          for (stage=1; stage<DATA_RESPONSE_CYCLES-1; stage=stage+1) begin
+            valid_pipe[stage] <= valid_pipe[stage-1];
+            data_pipe[stage] <= data_pipe[stage-1];
+          end
+        end
+      end
+      assign data_rvalid = valid_pipe[DATA_RESPONSE_CYCLES-2];
+      assign data_rdata = data_pipe[DATA_RESPONSE_CYCLES-2];
+    end
+  endgenerate
+  initial if (DATA_RESPONSE_CYCLES < 1)
+    $fatal(1, "DATA_RESPONSE_CYCLES must be positive");
 
   wire is_putc = data_req && data_we && (data_addr == ADDR_PUTC);
   wire is_halt = data_req && data_we && (data_addr == ADDR_HALT);
@@ -85,12 +120,12 @@ module ibex_min_system #(
   integer widx;
   always @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
-      data_rvalid <= 1'b0;
-      data_rdata  <= 32'h0;
+      data_rvalid_q <= 1'b0;
+      data_rdata_q  <= 32'h0;
       halted      <= 1'b0;
       exit_code   <= 32'hFFFF_FFFF;
     end else begin
-      data_rvalid <= data_req;
+      data_rvalid_q <= data_req;
       if (is_ram) begin
         widx = data_addr[31:2] % MEM_WORDS;
         if (data_we) begin
@@ -99,7 +134,7 @@ module ibex_min_system #(
           if (data_be[2]) mem[widx][23:16] <= data_wdata[23:16];
           if (data_be[3]) mem[widx][31:24] <= data_wdata[31:24];
         end else begin
-          data_rdata <= mem[widx];
+          data_rdata_q <= mem[widx];
         end
       end
       if (is_putc) $write("%c", data_wdata[7:0]);

@@ -1,0 +1,3278 @@
+{
+  "v050-idle": {
+    "config": {
+      "case": "pump13_v050-idle",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 0)",
+        "VDOWN down 0 PWL(0 0 500p 0)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.5)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.5,
+      "state": "idle",
+      "command_levels": [
+        0.0,
+        0.0
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 0)\nVDOWN down 0 PWL(0 0 500p 0)\nVCTRL vctrl 0 PWL(0 0 500p 0.5)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v050-source": {
+    "config": {
+      "case": "pump13_v050-source",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 2.5)",
+        "VDOWN down 0 PWL(0 0 500p 0)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.5)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.5,
+      "state": "source",
+      "command_levels": [
+        2.5,
+        0.0
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 2.5)\nVDOWN down 0 PWL(0 0 500p 0)\nVCTRL vctrl 0 PWL(0 0 500p 0.5)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v050-sink": {
+    "config": {
+      "case": "pump13_v050-sink",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 0)",
+        "VDOWN down 0 PWL(0 0 500p 2.5)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.5)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.5,
+      "state": "sink",
+      "command_levels": [
+        0.0,
+        2.5
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 0)\nVDOWN down 0 PWL(0 0 500p 2.5)\nVCTRL vctrl 0 PWL(0 0 500p 0.5)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v050-both": {
+    "config": {
+      "case": "pump13_v050-both",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 2.5)",
+        "VDOWN down 0 PWL(0 0 500p 2.5)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.5)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.5,
+      "state": "both",
+      "command_levels": [
+        2.5,
+        2.5
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 2.5)\nVDOWN down 0 PWL(0 0 500p 2.5)\nVCTRL vctrl 0 PWL(0 0 500p 0.5)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v060-idle": {
+    "config": {
+      "case": "pump13_v060-idle",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 0)",
+        "VDOWN down 0 PWL(0 0 500p 0)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.6)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.6,
+      "state": "idle",
+      "command_levels": [
+        0.0,
+        0.0
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 0)\nVDOWN down 0 PWL(0 0 500p 0)\nVCTRL vctrl 0 PWL(0 0 500p 0.6)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v060-source": {
+    "config": {
+      "case": "pump13_v060-source",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 2.5)",
+        "VDOWN down 0 PWL(0 0 500p 0)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.6)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.6,
+      "state": "source",
+      "command_levels": [
+        2.5,
+        0.0
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 2.5)\nVDOWN down 0 PWL(0 0 500p 0)\nVCTRL vctrl 0 PWL(0 0 500p 0.6)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v060-sink": {
+    "config": {
+      "case": "pump13_v060-sink",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 0)",
+        "VDOWN down 0 PWL(0 0 500p 2.5)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.6)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.6,
+      "state": "sink",
+      "command_levels": [
+        0.0,
+        2.5
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 0)\nVDOWN down 0 PWL(0 0 500p 2.5)\nVCTRL vctrl 0 PWL(0 0 500p 0.6)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v060-both": {
+    "config": {
+      "case": "pump13_v060-both",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 2.5)",
+        "VDOWN down 0 PWL(0 0 500p 2.5)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.6)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.6,
+      "state": "both",
+      "command_levels": [
+        2.5,
+        2.5
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 2.5)\nVDOWN down 0 PWL(0 0 500p 2.5)\nVCTRL vctrl 0 PWL(0 0 500p 0.6)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v070-idle": {
+    "config": {
+      "case": "pump13_v070-idle",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 0)",
+        "VDOWN down 0 PWL(0 0 500p 0)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.7)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.7,
+      "state": "idle",
+      "command_levels": [
+        0.0,
+        0.0
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 0)\nVDOWN down 0 PWL(0 0 500p 0)\nVCTRL vctrl 0 PWL(0 0 500p 0.7)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v070-source": {
+    "config": {
+      "case": "pump13_v070-source",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 2.5)",
+        "VDOWN down 0 PWL(0 0 500p 0)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.7)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.7,
+      "state": "source",
+      "command_levels": [
+        2.5,
+        0.0
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 2.5)\nVDOWN down 0 PWL(0 0 500p 0)\nVCTRL vctrl 0 PWL(0 0 500p 0.7)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v070-sink": {
+    "config": {
+      "case": "pump13_v070-sink",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 0)",
+        "VDOWN down 0 PWL(0 0 500p 2.5)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.7)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.7,
+      "state": "sink",
+      "command_levels": [
+        0.0,
+        2.5
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 0)\nVDOWN down 0 PWL(0 0 500p 2.5)\nVCTRL vctrl 0 PWL(0 0 500p 0.7)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  },
+  "v070-both": {
+    "config": {
+      "case": "pump13_v070-both",
+      "sources": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/source-freeze02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/architecture-source-peer-root01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/composition01.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/force-contract02.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pump-filter13.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-source-20261006/pll_pfd_charge_pump_hv_v1.spice",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pump13-characterization-20261007/characterize_pump13_02.py"
+      ],
+      "roots": [
+        [
+          "nssoc_tail115_pump_filter13_v1",
+          "xloop",
+          [
+            "up",
+            "down",
+            "vctrl",
+            "avdd",
+            "dvdd",
+            "0",
+            "0"
+          ]
+        ]
+      ],
+      "fixture": [
+        "VDD avdd 0 PWL(0 0 500p 2.3)",
+        "VDDIV dvdd 0 PWL(0 0 500p 2.5)",
+        "VUP up 0 PWL(0 0 500p 2.5)",
+        "VDOWN down 0 PWL(0 0 500p 2.5)",
+        "VCTRL vctrl 0 PWL(0 0 500p 0.7)"
+      ],
+      "step_s": 3.125e-13,
+      "stop_s": 3.4e-08,
+      "window_s": [
+        4e-09,
+        3.4e-08
+      ],
+      "vctrl": 0.7,
+      "state": "both",
+      "command_levels": [
+        2.5,
+        2.5
+      ],
+      "fault": "",
+      "polarity_selected": false,
+      "connected_loop_acceptance": false,
+      "maximum_rows": 120000,
+      "extra_vectors": [
+        "i(vdd)",
+        "i(vddiv)",
+        "i(vup)",
+        "i(vdown)",
+        "i(vctrl)"
+      ]
+    },
+    "devices": [
+      {
+        "path": "xloop.xdet.xcp.xrbias",
+        "model": "rppd",
+        "nets": [
+          "dvdd",
+          "xloop.xdet.xcp.nb",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnref",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.nb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnbias",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpref",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.pb",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpsource",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.source",
+          "xloop.xdet.xcp.pb",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.4u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xpenable",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "vctrl",
+          "xloop.xdet.xcp.upb",
+          "xloop.xdet.xcp.source",
+          "dvdd"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnenable",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "vctrl",
+          "down",
+          "xloop.xdet.xcp.sink",
+          "0"
+        ],
+        "params": {
+          "w": "8u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xnsink",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.sink",
+          "xloop.xdet.xcp.nb",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "2u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xp",
+        "model": "sg13_hv_pmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xdet.xcp.xub.xn",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "xloop.xdet.xcp.upb",
+          "up",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "0.45u",
+          "ng": "1",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xloop.xrhi",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "80u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xrlo",
+        "model": "rppd",
+        "nets": [
+          "vctrl",
+          "0",
+          "0"
+        ],
+        "params": {
+          "w": "1u",
+          "l": "47u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xloop.xc",
+        "model": "cap_cmim",
+        "nets": [
+          "vctrl",
+          "0"
+        ],
+        "params": {
+          "w": "10u",
+          "l": "10u"
+        }
+      }
+    ],
+    "text_pins": {
+      "pll_pfd_charge_pump_hv_v1.spice": {
+        "bytes": 3740,
+        "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+      },
+      "pump-filter13.spice": {
+        "bytes": 753,
+        "sha256": "d751d6d9de61bd6bf245ab1c1655eadf44711b8beec1387b7a5de3059949a4e6"
+      }
+    },
+    "deck": "Pump13 exact subset ideal-command diagnostic; no loaded-force or loop acceptance\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib\" hbt_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib\" res_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib\" cap_typ\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib\" mos_tt\n.lib \"/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib\" mos_tt\n.include \"pll_pfd_charge_pump_hv_v1.spice\"\n.include \"pump-filter13.spice\"\n.temp 27\n.options reltol=1e-4 abstol=1e-12\nVDD avdd 0 PWL(0 0 500p 2.3)\nVDDIV dvdd 0 PWL(0 0 500p 2.5)\nVUP up 0 PWL(0 0 500p 2.5)\nVDOWN down 0 PWL(0 0 500p 2.5)\nVCTRL vctrl 0 PWL(0 0 500p 0.7)\nxloop up down vctrl avdd dvdd 0 0 nssoc_tail115_pump_filter13_v1\n.tran 3.125e-13 3.4e-08 0 3.125e-13\n.control\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi\npre_osdi /dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi\nset filetype=binary\nsave v(avdd) v(down) v(dvdd) v(up) v(vctrl) v(xloop.xdet.xcp.nb) v(xloop.xdet.xcp.pb) v(xloop.xdet.xcp.sink) v(xloop.xdet.xcp.source) v(xloop.xdet.xcp.upb) i(vdd) i(vddiv) i(vup) i(vdown) i(vctrl) v(xloop.xdet.xcp.xrbias.dt) @n.xloop.xdet.xcp.xnref.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnbias.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xpref.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpsource.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xpenable.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xnenable.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xnsink.nsg13_hv_nmos[ids] @n.xloop.xdet.xcp.xub.xp.nsg13_hv_pmos[ids] @n.xloop.xdet.xcp.xub.xn.nsg13_hv_nmos[ids] v(xloop.xrhi.dt) v(xloop.xrlo.dt)\nop\nwrite op.raw all\nrun stream.fifo\nsetplot\ndisplay\nrusage space\nquit\n.endc\n.end\n"
+  }
+}

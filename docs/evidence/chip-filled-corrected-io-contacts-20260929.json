@@ -1,0 +1,41 @@
+{
+  "status": "PASS_CORRECTED_ALL_IO_OPPOSITE_CONTACT_AUDIT_ONLY",
+  "gds_sha256": "a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff",
+  "io_instances": 314,
+  "port_windows": 10526,
+  "independent_window_inventory_matches": true,
+  "input_sha256": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/all-io-supply-windows-v3.json": "340047aaf8cdc30d00d4af3489759187d1a78366846f2030238d62d32136a109",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/supply-contacts-quarterturn-corrected.json": "54a94f32c03f386e1cc09bdf0d170c605ab5dcbbbbb60028ca1021a1d665f2d5",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/audit_supply_contacts_quarterturn.py": "1d36127be76a7b5687016922039728637836d188ba8c4d4a41d36a38ede3504d",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/supply-contacts-quarterturn.log": "168e14069c404524280cdb9ea115d0f72a0cb542b388583137f901ee7745a80a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/verify_corrected_supply_contacts.py": "cd7657c7d900c40dfac70cca528c42bfe6abc73005dbbf0a9853bd2372a66787"
+  },
+  "windows_by_rail": {
+    "iovdd": 3188,
+    "iovss": 4781,
+    "vdd": 1279,
+    "vss": 1278
+  },
+  "windows_by_layer": {
+    "Metal3": 2230,
+    "Metal4": 2230,
+    "Metal5": 2230,
+    "TopMetal1": 2230,
+    "TopMetal2": 1602,
+    "Metal2": 4
+  },
+  "opposite_contacts": 0,
+  "full_chip_lvs_accepted": false,
+  "supply_continuity_accepted": false,
+  "manufacturing_approval": false,
+  "raw_assets_manifest": "docs/evidence/chip-filled-corrected-io-contacts-assets-20260929.json",
+  "planner_method": "scripts/plan_chip_supply_probes.py",
+  "planner_method_sha256": "101a3e07b528cb2a3b3bb339753b280fdfb501820053ec5995f0cd6ed93c0038",
+  "invalidated_historical_method_results": [
+    "docs/evidence/chip-supply-inset-contact-verification-20260929.json",
+    "hw/soc/out/chip-ring-offset-20260929/supply-contacts-verified.json"
+  ],
+  "correction": "Placement quarter-turn codes require multiplication by90 before ICplxTrans degree construction. Corrected audit checks actual GDS transform for each of314instances. The earlier method remains preserved but its all-port claim is withdrawn.",
+  "scope": "Opposite-net direct contact audit and complete window inventory on filleda5c GDS only. No whole-chip continuity or transistor/substrate LVS, RC/timing or manufacturing acceptance."
+}

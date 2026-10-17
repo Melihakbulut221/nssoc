@@ -1,0 +1,151 @@
+{
+  "recorded_at": "2026-10-10T10:42:09.231035+00:00",
+  "status": "POSTCTS_HOLD_POSITIVE_SETUP_OPEN_ISOLATED_ROUTING_ACTIVE",
+  "timing": {
+    "status": "MEASURED_SETUP_THEN_HOLD_NOT_SIGNOFF",
+    "slacks_ns": {
+      "before_slow_max": -2.347469,
+      "before_slow_min": -0.464518,
+      "before_typical_max": -0.433754,
+      "before_typical_min": -0.320849,
+      "before_fast_max": 0.553305,
+      "before_fast_min": -0.237695,
+      "after_slow_max": -2.347468,
+      "after_slow_min": 0.246712,
+      "after_typical_max": -0.433754,
+      "after_typical_min": 0.149757,
+      "after_fast_max": 0.568968,
+      "after_fast_min": 0.011281
+    },
+    "original_D_slacks_ns": {
+      "before_slow_max": -2.554048,
+      "before_slow_min": -0.198767,
+      "before_typical_max": -0.740006,
+      "before_typical_min": -0.176824,
+      "before_fast_max": 0.258116,
+      "before_fast_min": -0.206581
+    },
+    "all_six_closed": false,
+    "inputs": {
+      "hw/soc/out/pcie-postcts-extended-setup-20261010/hold01/screen.log": "6745d6a10611b7e879c5e02ba5bf2797f5ced47f61b95e5e4a70b390211b4c43"
+    },
+    "scope": "Same clocks/derates/3corners placementRC; independent legal placement completed. Not routed or accepted."
+  },
+  "boolean_preservation": {
+    "status": "PASS_EXACT_BOOLEAN_STATE_GRAPH",
+    "counts": {
+      "gold": {
+        "reachable_comb_cells": 98002,
+        "resolved_nets": 98002,
+        "outputs": 37545,
+        "output_bits": 41202
+      },
+      "gate": {
+        "reachable_comb_cells": 98415,
+        "resolved_nets": 98415,
+        "outputs": 37545,
+        "output_bits": 41202
+      }
+    },
+    "state_instances": 12321,
+    "difference_count": 0,
+    "faults": [
+      {
+        "fault": "flip_data",
+        "instance": "\\$auto$ff.cc:337:slice$1150657",
+        "pin": "D",
+        "wrong_input_net": 111681,
+        "original_net": 35472,
+        "rejected": true,
+        "changed_boundaries": 1
+      },
+      {
+        "fault": "flip_clock",
+        "instance": "\\$auto$ff.cc:337:slice$1150657",
+        "pin": "CLK",
+        "wrong_input_net": 111681,
+        "original_net": 94024,
+        "rejected": true,
+        "changed_boundaries": 1
+      },
+      {
+        "fault": "flip_sram_address",
+        "instance": "u_ram.g_ram_2048x64_ecc.u_b0",
+        "pin": "A_ADDR",
+        "wrong_input_net": 111681,
+        "original_net": 107872,
+        "rejected": true,
+        "changed_boundaries": 1
+      },
+      {
+        "fault": "change_state_function",
+        "instance": "\\$auto$ff.cc:337:slice$1150657",
+        "rejected": true,
+        "reason": "State inventory/function differs"
+      }
+    ],
+    "input_binding": "PASS_REPEATED_NATIVE_EXPORTS_AND_REPAIR_INPUT_BINDING",
+    "sat_diagnostics": "SUPERSEDED_INCOMPLETE_NOT_ACCEPTED"
+  },
+  "balanced_tx": {
+    "status": "MEASURED_UNPLACED_SETUP_IMPROVEMENT_SLOW_HOLD_REGRESSION",
+    "slacks_ns": {
+      "prefetch": {
+        "slow_max": -1.952128,
+        "slow_min": -0.469247,
+        "typical_max": -0.057888,
+        "typical_min": -0.53948,
+        "fast_max": 0.880184,
+        "fast_min": -0.601382
+      },
+      "balanced": {
+        "slow_max": -1.911459,
+        "slow_min": -0.49649,
+        "typical_max": 0.140903,
+        "typical_min": -0.53948,
+        "fast_max": 0.880448,
+        "fast_min": -0.601382
+      }
+    },
+    "adopted": false,
+    "full_phy_complete": false
+  },
+  "prepared753": {
+    "status": "PREPARED_PHYSICAL753_COMPOSITION_NOT_SIMULATED",
+    "counts": {
+      "devices": 753,
+      "wire_records": 7654,
+      "HBT": 102,
+      "columns": 2136
+    },
+    "boundary_fault_status": "PASS_PREPARED753_BOUNDARY_AND_SIX_ACTUAL_FAULTS",
+    "native_started": false,
+    "driver_prepared": true,
+    "launch_requires": "Complete independent native744 and physical300 PASS; no native753 accepted"
+  },
+  "analog_retries": {
+    "feedback744": "native02 running after SSD reserve interruption; identical frozen deck and criteria independently checked",
+    "physical300": "native02 running after SSD reserve interruption; identical frozen deck and criteria independently checked"
+  },
+  "public_records": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-postcts-repair-balanced-tx-records-20261010.tar.gz",
+    "name": "nssoc-postcts-repair-balanced-tx-records-20261010.tar.gz",
+    "bytes": 76995597,
+    "sha256": "835aa224bac640bf4804b29d622dab9a9ed05b860ea85520118e381a605bac7f"
+  },
+  "full_serial_phy_complete": false,
+  "mainchip_serial_phy_integrated": false,
+  "final_chip_setup_hold_closed": false,
+  "manufacturing_approved": false,
+  "record_pins": {
+    "hw/soc/out/pcie-postcts-extended-setup-20261010/hold-comparison01.json": "34cfe1927cc4145da4dba0f60196c52a3e15ecf30668b4abbeb06cf807958309",
+    "hw/soc/out/pcie-postcts-extended-setup-20261010/equivalence01/graph-proof01.json": "970c9a4eb1047506dcda9c3aa3fa1da893780bc76933d69745b84baafec3c218",
+    "hw/soc/out/pcie-postcts-extended-setup-20261010/equivalence01/graph-faults01.json": "db2adc94ee6c6ff3b60f3949c02e1805a9a016536b4582e67df959cf259e635f",
+    "hw/soc/out/pcie-postcts-extended-setup-20261010/equivalence01/input-binding01.json": "22f0cbcdbbc9484e4843403b6fb1989936ecbe98d358a7666d28bdca7478fa3e",
+    "hw/soc/out/pcie-balanced-tx-select-20261010/comparison01.json": "9a4b6f4125547a924008feab484e04e57c2e7acfbb30b0425ad8e39cc491388c",
+    "hw/soc/out/pcie-physical-gain-feedback753-20261010/composition01.json": "e0b33df1b6303d9988342f777992d3640811922b3b3a96332d4ed99a6793495f",
+    "hw/soc/out/pcie-physical-gain-feedback753-20261010/composition-controls02.json": "1b9f95320e355540c7cadb28eaf700b79e11df5001b78c80503900dedf7c68d4",
+    "hw/soc/out/pcie-postcts-balanced-records-delivery-20261010/delivery.json": "db13fbace33da665d168ef42ca569e44038074a775171aae1b91ce6f83f80d33"
+  }
+}

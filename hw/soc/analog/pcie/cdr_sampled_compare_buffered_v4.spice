@@ -1,0 +1,45 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Native buffered sampled-comparison candidate; not a phase detector/CDR.
+* Four native HBTs per buffer: differential pair, tail and bias reference.
+* Shared native header resistor sets output common mode under actual current.
+* Sampler/XOR references500uA; buffer references1mA are bench boundaries.
+* Select load uses an actual rppd divider; no ideal interior rail.
+.subckt nssoc_cdr_data_buffer_v4 dp dn qp qn avdd avss sub iref
+XREF iref iref avss sub npn13G2 Nx=1
+XDP qn dp tail sub npn13G2 Nx=2
+XDN qp dn tail sub npn13G2 Nx=2
+XT tail iref avss sub npn13G2 Nx=4
+XHDR avdd load sub rppd w=8u l=2u b=0 sw_et=1
+XRP load qp sub rppd w=8u l=1.8u b=0 sw_et=1
+XRN load qn sub rppd w=8u l=1.8u b=0 sw_et=1
+.ends nssoc_cdr_data_buffer_v4
+.subckt nssoc_cdr_select_buffer_v4 dp dn qp qn avdd avss sub iref
+XREF iref iref avss sub npn13G2 Nx=1
+XDP qn dp tail sub npn13G2 Nx=2
+XDN qp dn tail sub npn13G2 Nx=2
+XT tail iref avss sub npn13G2 Nx=4
+XHDR avdd load sub rppd w=8u l=2u b=0 sw_et=1
+XHDN load avss sub rppd w=8u l=4.2u b=0 sw_et=1
+XRP load qp sub rppd w=8u l=1.8u b=0 sw_et=1
+XRN load qn sub rppd w=8u l=1.8u b=0 sw_et=1
+.ends nssoc_cdr_select_buffer_v4
+.subckt nssoc_cdr_sampled_compare_buffered_v4 adp adn bdp bdn cp cn op on avdd avss sub ira irb irx ird irs wire_cref
+XSA adp adn aqp aqn cp cn avdd avss sub ira nssoc_rx_sampler_hbt
+XSB bdp bdn bqp bqn cp cn avdd avss sub irb nssoc_rx_sampler_hbt
+XDAP aqp udp sub rppd w=1u l=3.6u b=0 sw_et=1
+XDAN aqn udn sub rppd w=1u l=3.6u b=0 sw_et=1
+XDGP udp avss sub rppd w=1u l=21.6u b=0 sw_et=1
+XDGN udn avss sub rppd w=1u l=21.6u b=0 sw_et=1
+XSEP bqp usp sub rppd w=1u l=6u b=0 sw_et=1
+XSEN bqn usn sub rppd w=1u l=6u b=0 sw_et=1
+XSGP usp avss sub rppd w=1u l=8.6u b=0 sw_et=1
+XSGN usn avss sub rppd w=1u l=8.6u b=0 sw_et=1
+XCFAP aqp udp cap_cmim w=3.6u l=3.6u
+XCFAN aqn udn cap_cmim w=3.6u l=3.6u
+XCFBP bqp usp cap_cmim w=3.6u l=3.6u
+XCFBN bqn usn cap_cmim w=3.6u l=3.6u
+XBD udp udn xp xn avdd avss sub ird nssoc_cdr_data_buffer_v4
+XBS usp usn yp yn avdd avss sub irs nssoc_cdr_select_buffer_v4
+XXOR op on avdd sub xp xn yp yn irx avss wire_cref nssoc_cdr_xor54_wire_v4
+.ends nssoc_cdr_sampled_compare_buffered_v4

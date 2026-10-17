@@ -1,0 +1,970 @@
+{
+  "status": "COMPLETE_ALL_EQUIVALENCE_PROVED_NEGATIVE_REJECTED",
+  "validation": {
+    "status": "PASS",
+    "tests": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "sw/tests/test_pmp_mapped_experiment.py",
+        "sw/tests/test_pmp_prefix.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.510515938000026,
+      "log_sha256": "4bba8ed4e9e13f7c29f6d701d352cbb20f37991cb04cd0e62bd822c61524ec25"
+    },
+    "ruff": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/dev-env/bin/ruff",
+        "check",
+        "scripts/run_pmp_mapped_experiment.py",
+        "sw/tests/test_pmp_mapped_experiment.py"
+      ],
+      "returncode": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "method_sha256": {
+      "scripts/run_pmp_mapped_experiment.py": "bfbdd436c39f93f37e1f5148b2f8c7283391ff969c617d594aee069cb36ec7c7",
+      "sw/tests/test_pmp_mapped_experiment.py": "0cab75f61e08eaf4108302b51c54130945bc7c96497bb5eba216e4d03cecf584",
+      "scripts/prepare_pmp_prefix.py": "8bc267084c47f90b422e0e89b7384c9e442cda84f4a7393637e9a5c6e1632c4d"
+    },
+    "native_result": "hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/result.json",
+    "native_result_sha256": "2a99c278b891b7a83b44c90fac269b6175af63631f196ad31bac1dcaf5590aea",
+    "all_inventory_files_and_input_pins_rechecked": true,
+    "measured_library_cell_area": {
+      "original": 35618.6376,
+      "candidate": 37278.7002
+    },
+    "cell_area_change_percent": 4.660657206046537,
+    "native_output_bytes": 8157969,
+    "all_pmp_experiment_native_output_bytes": 16245966,
+    "incomplete_first_attempt": "pmp-mapped-native-1 preserved; native proofs passed but first STA parser rejected the multiple endpoint reports. Final source rerun above completed all proofs and six STA cases.",
+    "candidate_adopted": false,
+    "routed_timing_accepted": false,
+    "whole_soc_validated": false,
+    "manufacturing_approval": false,
+    "local_evidence_capsule": {
+      "path": "hw/soc/out/resume-20261002-0800/pmp-mapped-validation/pmp-mapped-native.tar.xz",
+      "bytes": 265676,
+      "sha256": "7a7e78450fab3d32ffe64b025b41c6bb8de78628da413129fbed6c3bfa609dd4"
+    },
+    "notice_sha256": "081e62df8ab217e7935b3f1a33056c3fee9ae2b017162a46fb5f2a20d39b01ea",
+    "upstream_sha256": {
+      "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "NOTICE": "c1e9a919a0c950b77997dfff1878c76c6cbcc26a60e826c532f9e9513a0c5e4d",
+      "CREDITS.md": "ded79dbeb41213dbc7c4fabb15650e7efa708c50710265a969d26fb9a5c7eaed",
+      "rtl/ibex_pmp.sv": "a564fb312d5337b0875d16f434e8b69348e12c2560548fad93f9270f9c4b9176",
+      "rtl/ibex_pkg.sv": "d9bfed30b16dd77981f1850a8daf56fec5ce14043789b4a0a4506c833e9a7d5a"
+    },
+    "source_and_tests_frozen": true
+  },
+  "independent_peer_review": {
+    "status": "PASS_INDEPENDENT_BOUNDED_PMP_MAPPED_EVIDENCE_REVIEW",
+    "blockers": [],
+    "producer_result": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/result.json",
+      "bytes": 25713,
+      "sha256": "2a99c278b891b7a83b44c90fac269b6175af63631f196ad31bac1dcaf5590aea"
+    },
+    "methods": [
+      {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_pmp_mapped_experiment.py",
+        "bytes": 15825,
+        "sha256": "bfbdd436c39f93f37e1f5148b2f8c7283391ff969c617d594aee069cb36ec7c7"
+      },
+      {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pmp_mapped_experiment.py",
+        "bytes": 5820,
+        "sha256": "0cab75f61e08eaf4108302b51c54130945bc7c96497bb5eba216e4d03cecf584"
+      },
+      {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/prepare_pmp_prefix.py",
+        "bytes": 9107,
+        "sha256": "8bc267084c47f90b422e0e89b7384c9e442cda84f4a7393637e9a5c6e1632c4d"
+      }
+    ],
+    "input_and_generated_hashes_reverified": 33,
+    "output_files_sha256_bytes_and_exact_inventory_reverified": 38,
+    "profile": {
+      "PMPGranularity": 0,
+      "PMPNumRegions": 4,
+      "PMPNumChan": 3
+    },
+    "ports": {
+      "original": {
+        "csr_pmp_cfg_i": {
+          "direction": "input",
+          "width": 24,
+          "offset": 0,
+          "upto": 0
+        },
+        "csr_pmp_addr_i": {
+          "direction": "input",
+          "width": 136,
+          "offset": 0,
+          "upto": 0
+        },
+        "csr_pmp_mseccfg_i": {
+          "direction": "input",
+          "width": 3,
+          "offset": 0,
+          "upto": 0
+        },
+        "debug_mode_i": {
+          "direction": "input",
+          "width": 1,
+          "offset": 0,
+          "upto": 0
+        },
+        "priv_mode_i": {
+          "direction": "input",
+          "width": 6,
+          "offset": 0,
+          "upto": 0
+        },
+        "pmp_req_addr_i": {
+          "direction": "input",
+          "width": 102,
+          "offset": 0,
+          "upto": 0
+        },
+        "pmp_req_type_i": {
+          "direction": "input",
+          "width": 6,
+          "offset": 0,
+          "upto": 0
+        },
+        "pmp_req_err_o": {
+          "direction": "output",
+          "width": 3,
+          "offset": 0,
+          "upto": 1
+        }
+      },
+      "candidate": {
+        "csr_pmp_cfg_i": {
+          "direction": "input",
+          "width": 24,
+          "offset": 0,
+          "upto": 0
+        },
+        "csr_pmp_addr_i": {
+          "direction": "input",
+          "width": 136,
+          "offset": 0,
+          "upto": 0
+        },
+        "csr_pmp_mseccfg_i": {
+          "direction": "input",
+          "width": 3,
+          "offset": 0,
+          "upto": 0
+        },
+        "debug_mode_i": {
+          "direction": "input",
+          "width": 1,
+          "offset": 0,
+          "upto": 0
+        },
+        "priv_mode_i": {
+          "direction": "input",
+          "width": 6,
+          "offset": 0,
+          "upto": 0
+        },
+        "pmp_req_addr_i": {
+          "direction": "input",
+          "width": 102,
+          "offset": 0,
+          "upto": 0
+        },
+        "pmp_req_type_i": {
+          "direction": "input",
+          "width": 6,
+          "offset": 0,
+          "upto": 0
+        },
+        "pmp_req_err_o": {
+          "direction": "output",
+          "width": 3,
+          "offset": 0,
+          "upto": 1
+        }
+      }
+    },
+    "proofs": {
+      "original_rtl_to_mapped": {
+        "verdict": "PROVED_ALL_BINARY_INPUTS",
+        "variables": 57006,
+        "clauses": 151785,
+        "unconstrained_equation": true,
+        "script_sha256": "ea9f402d26b71fd37e146e8990177a91d6fb68b43090b17497d4c4fe7dcf2550",
+        "log_sha256": "d987c4d5390e1d554148c63be9088af0bbbd2a77c3e0324f3956d89f4f2a4941"
+      },
+      "candidate_rtl_to_mapped": {
+        "verdict": "PROVED_ALL_BINARY_INPUTS",
+        "variables": 76546,
+        "clauses": 200257,
+        "unconstrained_equation": true,
+        "script_sha256": "ae57eeed12cf84a6d9af49b388452f0c3856c7dc77d97eedb0090c64df19a6ab",
+        "log_sha256": "8ece9772bb5fec78703d0013dd44f9a18f60deeadbd0587b4bf84a70554cb39b"
+      },
+      "mapped_original_to_candidate": {
+        "verdict": "PROVED_ALL_BINARY_INPUTS",
+        "variables": 85963,
+        "clauses": 220678,
+        "unconstrained_equation": true,
+        "script_sha256": "f3ebf9f9ad3b02d83e72c376312008c5ff13bbe167afd308890b085e68c567ed",
+        "log_sha256": "6a5b93d3be081516e3dbb9e9b71d4cb7aa21baf11ece88cacbbfa1c1ff428787"
+      },
+      "wrong_comparison_control": {
+        "verdict": "COUNTEREXAMPLE",
+        "variables": 76642,
+        "clauses": 200497,
+        "unconstrained_equation": true,
+        "script_sha256": "4f53f43adbb2507de4cc131896cd4725c091e3098c9aa1185d43b21541287ec0",
+        "log_sha256": "65c9093c2de698323dd22119a078c1dafe8baada48ea37e93e1756a39b185399"
+      }
+    },
+    "negative_counterexample_all_278_input_bits_binary": true,
+    "sta_netlists_identical_to_proved_mapped_netlists": true,
+    "timing": {
+      "original": {
+        "typ": {
+          "worst_arrival_ns": 3.131191254,
+          "output_endpoints": [
+            "pmp_req_err_o[1]",
+            "pmp_req_err_o[2]",
+            "pmp_req_err_o[0]"
+          ],
+          "log_sha256": "350bfc15e87b1f8a9e5f5c376d2e88268371be467af96063c8cc8bda5cd879b3"
+        },
+        "slow": {
+          "worst_arrival_ns": 4.97328186,
+          "output_endpoints": [
+            "pmp_req_err_o[0]",
+            "pmp_req_err_o[2]",
+            "pmp_req_err_o[1]"
+          ],
+          "log_sha256": "bccc4c0dc76d53267ded38d73a383b161b6ebfb086818424e1b5d67b37a931c9"
+        },
+        "fast": {
+          "worst_arrival_ns": 2.111527205,
+          "output_endpoints": [
+            "pmp_req_err_o[0]",
+            "pmp_req_err_o[2]",
+            "pmp_req_err_o[1]"
+          ],
+          "log_sha256": "cec41d72753b74d854a414405a9e15c9cdf08a749c175a41ab6748e9791ccc46"
+        }
+      },
+      "candidate": {
+        "typ": {
+          "worst_arrival_ns": 3.025016308,
+          "output_endpoints": [
+            "pmp_req_err_o[2]",
+            "pmp_req_err_o[1]",
+            "pmp_req_err_o[0]"
+          ],
+          "log_sha256": "a2b6f2d7e15056cdb361eab764b780c6e316ec7e7b326284342a80d579486dc9"
+        },
+        "slow": {
+          "worst_arrival_ns": 4.824049473,
+          "output_endpoints": [
+            "pmp_req_err_o[1]",
+            "pmp_req_err_o[0]",
+            "pmp_req_err_o[2]"
+          ],
+          "log_sha256": "fcacbc9fed5ec737303f360a34d33351c2dcda59b3101adbfa7d4ab422c501da"
+        },
+        "fast": {
+          "worst_arrival_ns": 2.040664911,
+          "output_endpoints": [
+            "pmp_req_err_o[1]",
+            "pmp_req_err_o[0]",
+            "pmp_req_err_o[2]"
+          ],
+          "log_sha256": "c6d1cfda19fff436d89326d20cda75d43c9e24b84e39c34df976a1e9832f9828"
+        }
+      }
+    },
+    "constraints": {
+      "virtual_period_ns": 20,
+      "abc_target_ps": 20,
+      "external_delay_ns": 0,
+      "driving_cell": "sg13g2_buf_4",
+      "output_load_pf": 0.005,
+      "early_derate": 0.95,
+      "late_derate": 1.05,
+      "wire_parasitics": "ZERO_NOT_EXTRACTED"
+    },
+    "area_um2": {
+      "original": 35618.6376,
+      "candidate": 37278.7002
+    },
+    "area_increase_percent": 4.660657206046537,
+    "cell_counts": {
+      "original": 3697,
+      "candidate": 3942
+    },
+    "cell_count_increase_percent": 6.626994860697866,
+    "tests": {
+      "passed": 44,
+      "files": [
+        "sw/tests/test_pmp_mapped_experiment.py",
+        "sw/tests/test_pmp_prefix.py"
+      ],
+      "ruff": "PASS"
+    },
+    "limitations": [
+      "Only fixed granularity=0,4 regions,3 channels, binary combinational behavior; no arbitrary-profile or four-state equivalence claim.",
+      "20 ns virtual-period library-only STA uses zero wire parasitics; six positive slacks do not establish routed C10 setup/hold closure.",
+      "No hold/electrical/physical signoff or whole-SoC placement/routing; measured area and cell-count increase may offset mapped timing improvement.",
+      "ABC -D20 is a 20 ps optimization target, distinct from the 20 ns measurement clock; the harness records both explicitly."
+    ],
+    "native_mapping_or_sat_or_sta_repeated": false,
+    "source_edited": false,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "whole_soc_validated": false,
+    "manufacturing_approval": false
+  },
+  "root_rehashed_input_output_and_reparsed_all_proofs_sta": true,
+  "native_result": {
+    "status": "COMPLETE_ALL_EQUIVALENCE_PROVED_NEGATIVE_REJECTED",
+    "profile": {
+      "PMPGranularity": 0,
+      "PMPNumRegions": 4,
+      "PMPNumChan": 3
+    },
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/prepare_pmp_prefix.py": "8bc267084c47f90b422e0e89b7384c9e442cda84f4a7393637e9a5c6e1632c4d",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_stdcell.lef": "c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/pmp-prefix-final/original.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/pmp-prefix-final/candidate.v": "bd64ab21095362d2ee3dc018e1e8ce56ba75189155ed7140e6a904c4ec29df01",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/pmp-prefix-final/negative.v": "4e21eddd25cd25561bf2e868589f5d119436df5500a705980b7a87931280bbf9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_pmp_mapped_experiment.py": "bfbdd436c39f93f37e1f5148b2f8c7283391ff969c617d594aee069cb36ec7c7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/abc.constr": "4b8874f01bd53bd5836ee0539b95bae68be23edf1b9a1678e01e200a443e65bc",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/pmp.sdc": "201d1223c5f242e976ce92abe579336fa8277f6e322bb55db82ef19040983e04",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-map.ys": "ff990b4f04f98747ff4d5488b0366d8b80d3c3b3639758e5eaecad049f2a86e9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original.netlist.v": "a4d537dc94fb047498d6ab223fe0a3904e366e77a794752bdcd6d3f3cce66bb6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original.sta.v": "a4d537dc94fb047498d6ab223fe0a3904e366e77a794752bdcd6d3f3cce66bb6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original.mapped.json": "e9adaa7686397c202cdd1e92ce2e9740d39ac8d5f3da50b4f44800142e3b35ed",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original.area.rpt": "16f0dd7fc5d8bf09ce94928dfecc6cccfc0d45fd5dcf0027a084f92eb98be890",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-map.ys": "bd07bf37f51164d465830ac3ee2dd670c7ff61fd871eacb0b0b3538e3ccc011d",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate.netlist.v": "ae40cbe6210044c7d8c08a103626b6cbbe1ea5d1a4c74f9e8038fda3ab626f21",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate.sta.v": "ae40cbe6210044c7d8c08a103626b6cbbe1ea5d1a4c74f9e8038fda3ab626f21",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate.mapped.json": "d6509afa4f2e3b5f89019df553d78b469dd4850bfa363b370c8830a43342ee03",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate.area.rpt": "ebd4b4366542f6dabef3942dcef863c481489acf7fe902a26fe905201ac11eb8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original_rtl_to_mapped.ys": "ea9f402d26b71fd37e146e8990177a91d6fb68b43090b17497d4c4fe7dcf2550",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate_rtl_to_mapped.ys": "ae57eeed12cf84a6d9af49b388452f0c3856c7dc77d97eedb0090c64df19a6ab",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/mapped_original_to_candidate.ys": "f3ebf9f9ad3b02d83e72c376312008c5ff13bbe167afd308890b085e68c567ed",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/wrong_comparison_control.ys": "4f53f43adbb2507de4cc131896cd4725c091e3098c9aa1185d43b21541287ec0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-typ.tcl": "c053f98bf5db7a688672a545b41e1a8ddf7def4d27e636b74ed91cb951a9eae5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-slow.tcl": "c56327f57a236b54b9214c5f304edf080dfeaf80c157d3ec1a58e058a9230bee",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-fast.tcl": "ffbda07456241ef5c44487ab2ef5fab7980ef73153a760d5e4ba0a9264256943",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-typ.tcl": "cbc142e5681947cc78d26e195ae8de8a9375a5221c446a032950dda07cb5566b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-slow.tcl": "64da5a42cd8e799af48acf1a59a60874f316b623f5e655ff3c78d1be85967085",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-fast.tcl": "288681bab73f9479f75d8ce23117d73642ae12b85ca04cca97d2131e1d5b586d"
+    },
+    "steps": [
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-V"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.20252822800102876,
+        "log_sha256": "76e506cbb7d03bec5a2d7083d6c4b1a6e99eae2efdbfc0b499710840c232c5dd",
+        "name": "yosys-version"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-version"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.6033494059993245,
+        "log_sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+        "name": "openroad-version"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-map.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 2.308680940001068,
+        "log_sha256": "e8dd16a797900fdc6b5d35675e9dca7f0b97a8201530579bef92f290183b9345",
+        "name": "original-map"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-map.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 8.128629456001363,
+        "log_sha256": "d86ccb8bd0f9978f9c3aae919877643c6f445edae0b167f6d97f12d29cb13cbc",
+        "name": "candidate-map"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original_rtl_to_mapped.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 6.826954610998655,
+        "log_sha256": "d987c4d5390e1d554148c63be9088af0bbbd2a77c3e0324f3956d89f4f2a4941",
+        "name": "original_rtl_to_mapped"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate_rtl_to_mapped.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 12.243847941997956,
+        "log_sha256": "8ece9772bb5fec78703d0013dd44f9a18f60deeadbd0587b4bf84a70554cb39b",
+        "name": "candidate_rtl_to_mapped"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/mapped_original_to_candidate.ys"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 6.82480085700081,
+        "log_sha256": "6a5b93d3be081516e3dbb9e9b71d4cb7aa21baf11ece88cacbbfa1c1ff428787",
+        "name": "mapped_original_to_candidate"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/wrong_comparison_control.ys"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 8.128464133998932,
+        "log_sha256": "65c9093c2de698323dd22119a078c1dafe8baada48ea37e93e1756a39b185399",
+        "name": "wrong_comparison_control"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_init",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-typ.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.0057412470014242,
+        "log_sha256": "350bfc15e87b1f8a9e5f5c376d2e88268371be467af96063c8cc8bda5cd879b3",
+        "name": "original-typ"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_init",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-slow.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.0054085020019556,
+        "log_sha256": "bccc4c0dc76d53267ded38d73a383b161b6ebfb086818424e1b5d67b37a931c9",
+        "name": "original-slow"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_init",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/original-fast.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.0069758919999003,
+        "log_sha256": "cec41d72753b74d854a414405a9e15c9cdf08a749c175a41ab6748e9791ccc46",
+        "name": "original-fast"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_init",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-typ.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.0065603250004642,
+        "log_sha256": "a2b6f2d7e15056cdb361eab764b780c6e316ec7e7b326284342a80d579486dc9",
+        "name": "candidate-typ"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_init",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-slow.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 1.0076776109999628,
+        "log_sha256": "fcacbc9fed5ec737303f360a34d33351c2dcda59b3101adbfa7d4ab422c501da",
+        "name": "candidate-slow"
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "openroad",
+          "-no_init",
+          "-exit",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/pmp-mapped-native-final/candidate-fast.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.9049322080027196,
+        "log_sha256": "c6d1cfda19fff436d89326d20cda75d43c9e24b84e39c34df976a1e9832f9828",
+        "name": "candidate-fast"
+      }
+    ],
+    "mapping": {
+      "original": {
+        "input_bits": 278,
+        "output_bits": 3,
+        "cell_count": 3697,
+        "cell_types": [
+          "sg13g2_a21o_1",
+          "sg13g2_a21oi_1",
+          "sg13g2_a21oi_2",
+          "sg13g2_a221oi_1",
+          "sg13g2_a22oi_1",
+          "sg13g2_and2_1",
+          "sg13g2_and3_1",
+          "sg13g2_and4_1",
+          "sg13g2_and4_2",
+          "sg13g2_buf_1",
+          "sg13g2_inv_1",
+          "sg13g2_mux2_1",
+          "sg13g2_mux4_1",
+          "sg13g2_nand2_1",
+          "sg13g2_nand2b_1",
+          "sg13g2_nand3_1",
+          "sg13g2_nand3b_1",
+          "sg13g2_nand4_1",
+          "sg13g2_nor2_1",
+          "sg13g2_nor2b_1",
+          "sg13g2_nor3_1",
+          "sg13g2_nor4_1",
+          "sg13g2_nor4_2",
+          "sg13g2_o21ai_1",
+          "sg13g2_or2_1",
+          "sg13g2_or3_1",
+          "sg13g2_or4_1",
+          "sg13g2_xnor2_1",
+          "sg13g2_xor2_1"
+        ]
+      },
+      "candidate": {
+        "input_bits": 278,
+        "output_bits": 3,
+        "cell_count": 3942,
+        "cell_types": [
+          "sg13g2_a21o_1",
+          "sg13g2_a21oi_1",
+          "sg13g2_a221oi_1",
+          "sg13g2_a22oi_1",
+          "sg13g2_and2_1",
+          "sg13g2_and3_1",
+          "sg13g2_and4_1",
+          "sg13g2_and4_2",
+          "sg13g2_buf_1",
+          "sg13g2_buf_2",
+          "sg13g2_buf_4",
+          "sg13g2_inv_1",
+          "sg13g2_mux2_1",
+          "sg13g2_nand2_1",
+          "sg13g2_nand2b_1",
+          "sg13g2_nand3_1",
+          "sg13g2_nand3b_1",
+          "sg13g2_nand4_1",
+          "sg13g2_nor2_1",
+          "sg13g2_nor2b_1",
+          "sg13g2_nor3_1",
+          "sg13g2_nor4_1",
+          "sg13g2_nor4_2",
+          "sg13g2_o21ai_1",
+          "sg13g2_or2_1",
+          "sg13g2_or3_1",
+          "sg13g2_or4_1",
+          "sg13g2_xnor2_1",
+          "sg13g2_xor2_1"
+        ]
+      }
+    },
+    "proofs": {
+      "original_rtl_to_mapped": {
+        "verdict": "PROVED_ALL_BINARY_INPUTS",
+        "counterexamples": {}
+      },
+      "candidate_rtl_to_mapped": {
+        "verdict": "PROVED_ALL_BINARY_INPUTS",
+        "counterexamples": {}
+      },
+      "mapped_original_to_candidate": {
+        "verdict": "PROVED_ALL_BINARY_INPUTS",
+        "counterexamples": {}
+      },
+      "wrong_comparison_control": {
+        "verdict": "COUNTEREXAMPLE",
+        "counterexamples": {
+          "wrong_comparison_control-counterexample.json": "fc5615e7fe20be8b2667b947598ec84ca8ab5bd6c1c321091474174411d4d6b5",
+          "wrong_comparison_control-counterexample.vcd": "8d1954cb46674fb12dd503c9c587ebd4c3d097914c66ed30b0934c500ccf9fb6"
+        }
+      }
+    },
+    "timing": {
+      "original": {
+        "typ": {
+          "worst_setup_slack_ns": 16.868808746,
+          "worst_arrival_ns": 3.131191254,
+          "outputs": {
+            "pmp_req_err_o[1]": {
+              "arrival_ns": 3.104909182,
+              "slack_ns": 16.89509201
+            },
+            "pmp_req_err_o[2]": {
+              "arrival_ns": 3.131191254,
+              "slack_ns": 16.868808746
+            },
+            "pmp_req_err_o[0]": {
+              "arrival_ns": 3.12394309,
+              "slack_ns": 16.876056671
+            }
+          }
+        },
+        "slow": {
+          "worst_setup_slack_ns": 15.02671814,
+          "worst_arrival_ns": 4.97328186,
+          "outputs": {
+            "pmp_req_err_o[0]": {
+              "arrival_ns": 4.967470169,
+              "slack_ns": 15.032530785
+            },
+            "pmp_req_err_o[2]": {
+              "arrival_ns": 4.97328186,
+              "slack_ns": 15.02671814
+            },
+            "pmp_req_err_o[1]": {
+              "arrival_ns": 4.952450275,
+              "slack_ns": 15.047551155
+            }
+          }
+        },
+        "fast": {
+          "worst_setup_slack_ns": 17.888473511,
+          "worst_arrival_ns": 2.111527205,
+          "outputs": {
+            "pmp_req_err_o[0]": {
+              "arrival_ns": 2.102852583,
+              "slack_ns": 17.897148132
+            },
+            "pmp_req_err_o[2]": {
+              "arrival_ns": 2.111527205,
+              "slack_ns": 17.888473511
+            },
+            "pmp_req_err_o[1]": {
+              "arrival_ns": 2.077209234,
+              "slack_ns": 17.922790527
+            }
+          }
+        }
+      },
+      "candidate": {
+        "typ": {
+          "worst_setup_slack_ns": 16.974983215,
+          "worst_arrival_ns": 3.025016308,
+          "outputs": {
+            "pmp_req_err_o[2]": {
+              "arrival_ns": 3.007606745,
+              "slack_ns": 16.992393494
+            },
+            "pmp_req_err_o[1]": {
+              "arrival_ns": 3.025016308,
+              "slack_ns": 16.974983215
+            },
+            "pmp_req_err_o[0]": {
+              "arrival_ns": 2.973302603,
+              "slack_ns": 17.026697159
+            }
+          }
+        },
+        "slow": {
+          "worst_setup_slack_ns": 15.175951958,
+          "worst_arrival_ns": 4.824049473,
+          "outputs": {
+            "pmp_req_err_o[1]": {
+              "arrival_ns": 4.824049473,
+              "slack_ns": 15.175951958
+            },
+            "pmp_req_err_o[0]": {
+              "arrival_ns": 4.739666462,
+              "slack_ns": 15.260334015
+            },
+            "pmp_req_err_o[2]": {
+              "arrival_ns": 4.801889896,
+              "slack_ns": 15.198109627
+            }
+          }
+        },
+        "fast": {
+          "worst_setup_slack_ns": 17.959335327,
+          "worst_arrival_ns": 2.040664911,
+          "outputs": {
+            "pmp_req_err_o[1]": {
+              "arrival_ns": 2.040664911,
+              "slack_ns": 17.959335327
+            },
+            "pmp_req_err_o[0]": {
+              "arrival_ns": 1.987116337,
+              "slack_ns": 18.01288414
+            },
+            "pmp_req_err_o[2]": {
+              "arrival_ns": 2.032465458,
+              "slack_ns": 17.967535019
+            }
+          }
+        }
+      }
+    },
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "whole_soc_validated": false,
+    "manufacturing_approval": false,
+    "constraints": {
+      "virtual_period_ns": 20,
+      "abc_target_ps": 20,
+      "external_delay_ns": 0,
+      "driving_cell": "sg13g2_buf_4",
+      "output_load_pf": 0.005,
+      "early_derate": 0.95,
+      "late_derate": 1.05,
+      "wire_parasitics": "ZERO_NOT_EXTRACTED"
+    },
+    "limits": {
+      "address_space_bytes": 2147483648,
+      "output_bytes": 31457280
+    },
+    "scope": "Isolated current-profile PMP, all binary inputs without assumptions; AppImage Yosys 0.62 mapping, not full-C10 synthesis. Library-only STA, no placement, extraction or physical acceptance.",
+    "comparison": {
+      "typ": {
+        "arrival_change_ns": -0.10617494599999988,
+        "slack_change_ns": 0.1061744690000026
+      },
+      "slow": {
+        "arrival_change_ns": -0.14923238700000052,
+        "slack_change_ns": 0.1492338180000008
+      },
+      "fast": {
+        "arrival_change_ns": -0.07086229399999988,
+        "slack_change_ns": 0.07086181600000074
+      }
+    },
+    "input_and_generated_source_pins_unchanged": true,
+    "output_bytes_before_receipt": 8152045,
+    "output_inventory": {
+      "abc.constr": {
+        "bytes": 45,
+        "sha256": "4b8874f01bd53bd5836ee0539b95bae68be23edf1b9a1678e01e200a443e65bc"
+      },
+      "candidate-fast.log": {
+        "bytes": 10926,
+        "sha256": "c6d1cfda19fff436d89326d20cda75d43c9e24b84e39c34df976a1e9832f9828"
+      },
+      "candidate-fast.tcl": {
+        "bytes": 1226,
+        "sha256": "288681bab73f9479f75d8ce23117d73642ae12b85ca04cca97d2131e1d5b586d"
+      },
+      "candidate-map.log": {
+        "bytes": 333911,
+        "sha256": "d86ccb8bd0f9978f9c3aae919877643c6f445edae0b167f6d97f12d29cb13cbc"
+      },
+      "candidate-map.ys": {
+        "bytes": 1539,
+        "sha256": "bd07bf37f51164d465830ac3ee2dd670c7ff61fd871eacb0b0b3538e3ccc011d"
+      },
+      "candidate-slow.log": {
+        "bytes": 10928,
+        "sha256": "fcacbc9fed5ec737303f360a34d33351c2dcda59b3101adbfa7d4ab422c501da"
+      },
+      "candidate-slow.tcl": {
+        "bytes": 1226,
+        "sha256": "64da5a42cd8e799af48acf1a59a60874f316b623f5e655ff3c78d1be85967085"
+      },
+      "candidate-typ.log": {
+        "bytes": 10926,
+        "sha256": "a2b6f2d7e15056cdb361eab764b780c6e316ec7e7b326284342a80d579486dc9"
+      },
+      "candidate-typ.tcl": {
+        "bytes": 1224,
+        "sha256": "cbc142e5681947cc78d26e195ae8de8a9375a5221c446a032950dda07cb5566b"
+      },
+      "candidate.area.rpt": {
+        "bytes": 1508,
+        "sha256": "ebd4b4366542f6dabef3942dcef863c481489acf7fe902a26fe905201ac11eb8"
+      },
+      "candidate.mapped.json": {
+        "bytes": 2539462,
+        "sha256": "d6509afa4f2e3b5f89019df553d78b469dd4850bfa363b370c8830a43342ee03"
+      },
+      "candidate.netlist.v": {
+        "bytes": 421854,
+        "sha256": "ae40cbe6210044c7d8c08a103626b6cbbe1ea5d1a4c74f9e8038fda3ab626f21"
+      },
+      "candidate.sta.v": {
+        "bytes": 421854,
+        "sha256": "ae40cbe6210044c7d8c08a103626b6cbbe1ea5d1a4c74f9e8038fda3ab626f21"
+      },
+      "candidate_rtl_to_mapped.log": {
+        "bytes": 322915,
+        "sha256": "8ece9772bb5fec78703d0013dd44f9a18f60deeadbd0587b4bf84a70554cb39b"
+      },
+      "candidate_rtl_to_mapped.ys": {
+        "bytes": 1197,
+        "sha256": "ae57eeed12cf84a6d9af49b388452f0c3856c7dc77d97eedb0090c64df19a6ab"
+      },
+      "mapped_original_to_candidate.log": {
+        "bytes": 27529,
+        "sha256": "6a5b93d3be081516e3dbb9e9b71d4cb7aa21baf11ece88cacbbfa1c1ff428787"
+      },
+      "mapped_original_to_candidate.ys": {
+        "bytes": 1326,
+        "sha256": "f3ebf9f9ad3b02d83e72c376312008c5ff13bbe167afd308890b085e68c567ed"
+      },
+      "openroad-version.log": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "original-fast.log": {
+        "bytes": 11207,
+        "sha256": "cec41d72753b74d854a414405a9e15c9cdf08a749c175a41ab6748e9791ccc46"
+      },
+      "original-fast.tcl": {
+        "bytes": 1225,
+        "sha256": "ffbda07456241ef5c44487ab2ef5fab7980ef73153a760d5e4ba0a9264256943"
+      },
+      "original-map.log": {
+        "bytes": 246171,
+        "sha256": "e8dd16a797900fdc6b5d35675e9dca7f0b97a8201530579bef92f290183b9345"
+      },
+      "original-map.ys": {
+        "bytes": 1534,
+        "sha256": "ff990b4f04f98747ff4d5488b0366d8b80d3c3b3639758e5eaecad049f2a86e9"
+      },
+      "original-slow.log": {
+        "bytes": 11298,
+        "sha256": "bccc4c0dc76d53267ded38d73a383b161b6ebfb086818424e1b5d67b37a931c9"
+      },
+      "original-slow.tcl": {
+        "bytes": 1225,
+        "sha256": "c56327f57a236b54b9214c5f304edf080dfeaf80c157d3ec1a58e058a9230bee"
+      },
+      "original-typ.log": {
+        "bytes": 11298,
+        "sha256": "350bfc15e87b1f8a9e5f5c376d2e88268371be467af96063c8cc8bda5cd879b3"
+      },
+      "original-typ.tcl": {
+        "bytes": 1223,
+        "sha256": "c053f98bf5db7a688672a545b41e1a8ddf7def4d27e636b74ed91cb951a9eae5"
+      },
+      "original.area.rpt": {
+        "bytes": 1511,
+        "sha256": "16f0dd7fc5d8bf09ce94928dfecc6cccfc0d45fd5dcf0027a084f92eb98be890"
+      },
+      "original.mapped.json": {
+        "bytes": 2389227,
+        "sha256": "e9adaa7686397c202cdd1e92ce2e9740d39ac8d5f3da50b4f44800142e3b35ed"
+      },
+      "original.netlist.v": {
+        "bytes": 396918,
+        "sha256": "a4d537dc94fb047498d6ab223fe0a3904e366e77a794752bdcd6d3f3cce66bb6"
+      },
+      "original.sta.v": {
+        "bytes": 396918,
+        "sha256": "a4d537dc94fb047498d6ab223fe0a3904e366e77a794752bdcd6d3f3cce66bb6"
+      },
+      "original_rtl_to_mapped.log": {
+        "bytes": 224890,
+        "sha256": "d987c4d5390e1d554148c63be9088af0bbbd2a77c3e0324f3956d89f4f2a4941"
+      },
+      "original_rtl_to_mapped.ys": {
+        "bytes": 1193,
+        "sha256": "ea9f402d26b71fd37e146e8990177a91d6fb68b43090b17497d4c4fe7dcf2550"
+      },
+      "pmp.sdc": {
+        "bytes": 285,
+        "sha256": "201d1223c5f242e976ce92abe579336fa8277f6e322bb55db82ef19040983e04"
+      },
+      "wrong_comparison_control-counterexample.json": {
+        "bytes": 838,
+        "sha256": "fc5615e7fe20be8b2667b947598ec84ca8ab5bd6c1c321091474174411d4d6b5"
+      },
+      "wrong_comparison_control-counterexample.vcd": {
+        "bytes": 941,
+        "sha256": "8d1954cb46674fb12dd503c9c587ebd4c3d097914c66ed30b0934c500ccf9fb6"
+      },
+      "wrong_comparison_control.log": {
+        "bytes": 323429,
+        "sha256": "65c9093c2de698323dd22119a078c1dafe8baada48ea37e93e1756a39b185399"
+      },
+      "wrong_comparison_control.ys": {
+        "bytes": 1198,
+        "sha256": "4f53f43adbb2507de4cc131896cd4725c091e3098c9aa1185d43b21541287ec0"
+      },
+      "yosys-version.log": {
+        "bytes": 89,
+        "sha256": "76e506cbb7d03bec5a2d7083d6c4b1a6e99eae2efdbfc0b499710840c232c5dd"
+      }
+    }
+  },
+  "archive": {
+    "path": "docs/evidence/pmp-prefix-mapped-20261002.tar.xz",
+    "bytes": 265676,
+    "sha256": "7a7e78450fab3d32ffe64b025b41c6bb8de78628da413129fbed6c3bfa609dd4"
+  },
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

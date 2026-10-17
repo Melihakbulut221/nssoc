@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{upgreek}
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{array}
@@ -17,6 +18,7 @@
 \sisetup{group-separator={,}, group-minimum-digits=4,
          group-digits=integer, text-series-to-math=true}
 
+\DeclareSIUnit{\um}{\text{\ensuremath{\upmu}}m}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcommand{\file}[1]{\texttt{\small #1}}
 
@@ -55,7 +57,7 @@ the watchdog causes.
 
 \textbf{The costs are stated as measured pairs, not as estimates.}
 Protecting the system memory costs \num{2068} cells, \num{234}
-flip-flops and \SI{31391}{\micro\meter\squared}---\SI{4.78}{\percent} of
+flip-flops and \SI{31391}{\um\squared}---\SI{4.78}{\percent} of
 the standard-cell area---and halves the usable RAM from \num{64} to
 \num{32}\,KiB, because the protection buys its check bits out of the
 word width rather than out of a seventh macro. Protecting the register
@@ -75,6 +77,14 @@ to a beam, and neither open PDK involved publishes total-ionising-dose or
 single-event data. Every reliability figure is a seeded fault-injection
 measurement on register-transfer or gate-level models.
 \end{abstract}
+
+\paragraph{Historical measurement scope (22 September 2026).}
+The numerical results below describe the archived runs named in this
+manuscript, not the current RTL or a manufactured device. Subsequent
+interface and boot-ROM changes require their own physical verification.
+Current product acceptance and unresolved requirements are recorded in
+\href{https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/92-product-acceptance.md}{the product acceptance register}.
+
 
 \section{Introduction}
 \label{sec:intro}
@@ -239,7 +249,7 @@ here as a trade rather than as a feature.
 \midrule
 register-file SECDED and scrub & --- & \num{222} & --- \\
 system-memory protection & \num{2068} & \num{234} &
-  \SI{31391}{\micro\meter\squared} (\SI{4.78}{\percent}) \\
+  \SI{31391}{\um\squared} (\SI{4.78}{\percent}) \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -324,8 +334,8 @@ total power, typical corner & \SI{56.1}{\milli\watt} \\
 \end{tabular}
 \end{center}
 
-Synthesis of the whole SoC as one design gives \num{27694} cells,
-\num{3077} flip-flops and \SI{392932.89}{\micro\meter\squared}
+The early whole-SoC synthesis measurement gives \num{27694} cells
+and \num{3077} flip-flops. Its area is \SI{392932.89}{\um\squared}
 (\num{54.141}\,kGE), which is \SI{1.11}{\percent} \emph{smaller} than the
 sum of the nine blocks synthesised separately---the whole is not the sum
 of its parts, and the difference is worth knowing before anyone budgets
@@ -345,7 +355,7 @@ KLayout XOR & \num{0} differences \\
 KLayout DRC & \num{11048} markers, \textbf{all of them inside the vendor
   SRAM macros}; \num{0} name a cell this design drew \\
 Magic DRC & \num{182} boxes, \num{20} inside a macro footprint, and every
-  one of the other \num{162} within \SI{0.5}{\micro\meter} of a macro
+  one of the other \num{162} within \SI{0.5}{\um} of a macro
   edge \\
 \bottomrule
 \end{tabular}
@@ -371,20 +381,24 @@ first modelled it at \SI{+4.3}{} to \SI{+5.5}{\nano\second} when it in
 fact cost \SI{0.53}{\nano\second}---wrong by about five nanoseconds and
 in the wrong direction. Timing-driven placement is what helped.
 
-\paragraph{Hold is met in the shipping layout and lost in one variant.}
-Repairing that variant's last two antenna violations required
-\num{60} additional diodes, whose load breaks hold at
-\SI{-0.44}{\nano\second} on \num{55} endpoints. The trade is structural:
-a gentler repair setting converges on a byte-identical layout. The
-layout reported above is the one that meets hold and carries two antenna
-violations; the alternative is reported rather than hidden.
+\paragraph{Antenna repair trades away hold margin.}
+Correction, 22 September 2026: the earlier heading ``Hold is met in the
+shipping layout and lost in one variant'' misidentified the tabulated run.
+The layout tabulated above is \texttt{s83ant}, with zero antenna
+violations and \SI{-0.4351}{\nano\second} of worst hold slack on
+\num{55} endpoints. It does not meet hold. The earlier
+\texttt{s83romecc5} baseline meets hold at all three measured corners,
+with \SI{+0.0296}{\nano\second} at fast, but retains two antenna
+violations. Repair adds \num{60} diodes; a gentler repair setting
+converges on the same failing-hold layout. Neither candidate meets all
+physical acceptance conditions.
 
 \paragraph{It is not a flight part and it is not radiation-hardened.}
 No silicon. No beam. The process kit publishes no total-ionising-dose or
 single-event data, so the word ``rad-hard'' is not used of this part and
 every reliability number here is a seeded injection on a model.
 
-\paragraph{The spacecraft interfaces are mostly absent.} SpaceWire, CAN,
+\paragraph{Interfaces in this historical snapshot.} SpaceWire, CAN,
 SPI, I2C and a second UART are unbuilt; four candidates are fetched,
 elaborated and priced, and nine of the sixteen peripheral slots are
 reserved addresses with nothing behind them.

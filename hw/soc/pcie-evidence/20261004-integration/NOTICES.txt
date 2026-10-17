@@ -1,0 +1,83 @@
+PCIe native development evidence — component notices
+
+Project-authored RTL and transistor circuit descriptions: CERN-OHL-W-2.0.
+Project scripts/testbenches: Apache-2.0. Measurements and prose: CC-BY-4.0.
+Copyright 2026 Hasan Melih Akbulut. Full texts are in LICENSES/.
+
+The physical RX/bank capsules contain geometry derived from unmodified IHP
+Open PDK PCells. Copyright IHP PDK Authors; Apache-2.0.
+
+The RX analog capsules include compiled r3_cmc.osdi resistor models. Their
+source is r3_cmc version 1.1.2, IHP PDK revision
+c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c, under
+libs.tech/verilog-a/r3_cmc/r3_cmc.va and r3_cmc_macros.include.
+Copyright 2025 IHP Open PDK Authors; modifications under Apache-2.0.
+The incorporated R3_CMC model is licensed under Educational Community License
+2.0 (ECL-2.0), developed by the Silicon Integration Initiative Compact Model
+Coalition. CMC release June 16, 2023; public release December 16, 2024.
+Both licence texts are provided in LICENSES/Apache-2.0.txt and ECL-2.0.txt.
+Original source notices are retained by the pinned upstream source:
+https://github.com/IHP-GmbH/IHP-Open-PDK/tree/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc
+
+The RXv2 archive additionally preserves three unmodified upstream diagnostic
+source files under startup-diagnostics/upstream/:
+ngspice42-devsup.c, ngspice42-vbicload.c and ngspice47-vbicload.c.
+Their original copyright headers remain in the files, including the Regents
+of the University of California; Thomas L. Quarles; Colin McAndrew/Motorola;
+Dietmar Warning/DAnalyse GmbH. They are diagnostic source evidence, not
+project-authored source. ngspice COPYING assigns these files Modified BSD:
+https://raw.githubusercontent.com/imr/ngspice/ngspice-42/COPYING
+https://raw.githubusercontent.com/imr/ngspice/ngspice-47/COPYING
+
+The applicable copyright, conditions and disclaimer follow verbatim:
+
+Copyright 1985 - 2018, Regents of the University of California and others
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+contributors may be used to endorse or promote products derived from this
+software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+New credit/replay, pad/bank and sampler evidence uses project-authored source
+and native generated measurements/geometry. The bounded PLL candidate review
+contains paths, hashes and analysis only; inspected third-party PLL source/GDS
+is not redistributed and no adaptation licence is inferred from public access.
+
+The startup.tar.xz capsule additionally retains the exact native HBT/resistor
+library sections, R3_CMC Verilog-A source, and ngspice42/47 device.c, vbic.c,
+vbicask.c and vbicparam.c diagnostic sources. Original file notices are kept.
+Those ngspice sources are Modified BSD (BSD-3-Clause), under the copyright,
+conditions and disclaimer reproduced above. The R3_CMC source retains its
+ECL-2.0/Apache-2.0 notices. No compiled simulator or OSDI is in this capsule.
+VCO geometry is generated from native IHP PCells, Apache-2.0; its circuit is
+original project hardware under CERN-OHL-W-2.0. Complete native VCO waves are
+published as an external evidence release asset, with source and model pins.
+
+These project captures are evidence of bounded experiments. They are not a
+PCI-SIG conformance certificate, fabrication approval or a full-chip signoff.
+
+The vco-startup.tar.xz capsule retains unchanged IHP model libraries and
+R3_CMC/PSP model input sources with their original notices. The CMC-origin
+models are covered by ECL-2.0 and the IHP modifications by Apache-2.0, as
+recorded in those files. No OSDI or simulator executable is included.

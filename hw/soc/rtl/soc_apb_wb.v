@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // AMBA APB completer to Wishbone B3 classic initiator, with a 32-to-8
 // bit lane adapter.
 //
@@ -309,3 +311,5 @@ module soc_apb_wb #(
 `endif
 
 endmodule
+
+`default_nettype wire

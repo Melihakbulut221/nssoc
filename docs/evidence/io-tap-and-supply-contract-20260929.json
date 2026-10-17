@@ -1,0 +1,133 @@
+{
+  "status": "DIAGNOSED_REFERENCE_GEOMETRY_CONTRACT_MISMATCH",
+  "input_sha256": {
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds": "aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/extracted.cir": "3018f380921188e3abf68bf938e3568d0902a967de4a84b9c90c8d040cbe753b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-tap-contract-20260929/diagnose_v4.py": "2361baa4835390c101dcf39b4908e8ecc52b94ad74c82bfc262d3a7d804d0a7a"
+  },
+  "taps": 64,
+  "square_taps": 64,
+  "square_perimeter_taps": 64,
+  "geometry": {
+    "sg13g2_DCNDiode": {
+      "area_um2": 141.2964,
+      "perimeter_um": 221.76,
+      "holes": 2,
+      "bbox_um": "(0,0;33.06,10.26)",
+      "cdl": {
+        "cell": "sg13g2_DCNDiode",
+        "source_line": "XR0 anode sub! / ptap1 r=5.191 A=141.253p Perim=47.54u w=11.885u l=11.885u",
+        "w_um": 11.884999999999998,
+        "l_um": 11.884999999999998,
+        "area_um2": 141.253,
+        "perimeter_um": 47.53999999999999,
+        "square": true,
+        "perimeter_is_2_w_plus_l": true
+      },
+      "rounded_equal_area_square_side_um": 11.885,
+      "native_extraction_agrees_with_direct_geometry": true
+    },
+    "sg13g2_DCPDiode": {
+      "area_um2": 33.5104,
+      "perimeter_um": 197.12,
+      "holes": 1,
+      "bbox_um": "(-1.66,-1.66;34.72,11.92)",
+      "cdl": {
+        "cell": "sg13g2_DCPDiode",
+        "source_line": "XR0 guard sub! / ptap1 r=17.289 A=33.524p Perim=23.16u w=5.79u l=5.79u",
+        "w_um": 5.79,
+        "l_um": 5.79,
+        "area_um2": 33.524,
+        "perimeter_um": 23.16,
+        "square": true,
+        "perimeter_is_2_w_plus_l": true
+      },
+      "rounded_equal_area_square_side_um": 5.79,
+      "native_extraction_agrees_with_direct_geometry": true
+    }
+  },
+  "diode_connections": {
+    "sg13g2_DCNDiode": {
+      "native_child_port_mapping": {
+        "\\$2": "\\$1",
+        "anode": "iovss",
+        "cathode": "pad",
+        "cathode$1": "pad"
+      },
+      "split_terminals": [
+        "cathode",
+        "cathode$1"
+      ],
+      "joined_in_parent_net": "pad"
+    },
+    "sg13g2_DCPDiode": {
+      "native_child_port_mapping": {
+        "\\$1": "\\$1",
+        "guard": "iovss$1",
+        "cathode": "iovdd",
+        "anode": "pad",
+        "anode$1": "pad"
+      },
+      "split_terminals": [
+        "anode",
+        "anode$1"
+      ],
+      "joined_in_parent_net": "pad"
+    }
+  },
+  "ptap_electrical_model_body": "1 2 \n.param R=262.8 w=0.78e-6 l=0.78e-6\nR1 1 2 R=R",
+  "scope": "Read-only comparison of original vendor views. CDL tap perimeter encodes an equivalent square, whereas native extraction measures the actual perforated region. No reference value, native rule, topology or physical mask changed; all seven IO LVS failures remain open.",
+  "lvs_accepted": false,
+  "manufacturing_approval": false,
+  "supply_port_contract": {
+    "status": "VERIFIED_SPLIT_GROUND_PORTS_REQUIRE_PARENT_CONNECTION",
+    "input_sha256": {
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds": "aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/lef/sg13g2_io.lef": "8b3dc3960960c08e07a1cde3dd9cd0484f5b12df07c4628726fff551bb775c0c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz": "0374f408637bf0cba4cb706a13871700753f0d86edb0eb002c4b05ff9a120b80",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-tap-contract-20260929/verify_supply_ports.py": "5f21542bc35e64170de539e869da94959a2337d917e99555623886144d0739db"
+    },
+    "top": "sg13g2_IOPadIn",
+    "pin": "iovss",
+    "layer": "TopMetal2 134/0",
+    "ports": [
+      {
+        "lef_rect_um": [
+          0.0,
+          36.0,
+          80.0,
+          58.5
+        ],
+        "native_cluster_id": 3
+      },
+      {
+        "lef_rect_um": [
+          0.0,
+          8.5,
+          80.0,
+          31.0
+        ],
+        "native_cluster_id": 3
+      },
+      {
+        "lef_rect_um": [
+          0.0,
+          127.5,
+          80.0,
+          132.5
+        ],
+        "native_cluster_id": 4
+      }
+    ],
+    "independent_native_clusters": 2,
+    "original_gds_exactly_matches_extracted_ground_topmetal": true,
+    "lef_covers_both_clusters": true,
+    "scope": "The native cell has two disconnected ground clusters, both exposed by the original LEF iovss ports. Parent routing must connect both. No physical connection, reference or rule changed. This does not verify the routed whole chip or close transistor LVS.",
+    "lvs_accepted": false,
+    "manufacturing_approval": false
+  },
+  "raw_asset": "io-tap-and-supply-contract-assets-20260929.json"
+}

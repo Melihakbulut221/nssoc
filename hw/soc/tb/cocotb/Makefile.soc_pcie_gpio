@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+SIM ?= icarus
+TOPLEVEL_LANG = verilog
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+VENV_BIN := $(abspath $(dir $(THIS_MK))/../../../.venv/bin)
+ifeq ($(shell command -v cocotb-config 2>/dev/null),)
+GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
+.PHONY: $(GOALS)
+$(GOALS):
+	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
+else
+# Preserve the cocotb interpreter's stdlib/site-packages when OSS CAD Suite's
+# vvp launcher replaces PYTHONHOME with its bundled Python installation.
+PCIE_PYTHON := $(shell cocotb-config --python-bin)
+export PYTHONPATH := $(shell "$(PCIE_PYTHON)" -c 'import os,sys; print(os.pathsep.join(sys.path))')
+RTL := $(abspath $(dir $(THIS_MK))/../../rtl)
+VERILOG_SOURCES = $(RTL)/pcie/soc_pcie_tlp_regs.v $(RTL)/soc_gpio.v $(abspath $(dir $(THIS_MK))/tb_soc_pcie_gpio.v)
+TOPLEVEL = tb_soc_pcie_gpio
+MODULE = test_soc_pcie_gpio
+SIM_BUILD ?= sim_build_soc_pcie_gpio
+COCOTB_RESULTS_FILE ?= results_soc_pcie_gpio.xml
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim
+endif

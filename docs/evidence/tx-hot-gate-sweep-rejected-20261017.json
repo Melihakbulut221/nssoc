@@ -1,0 +1,360 @@
+{
+  "status": "ALL_THREE_HOT_CASES_REJECTED_WITH_FIXED_ORACLE_AND_LIMITS",
+  "scope": "Native hot12 physical source versus gate9/gate6 frozen-wire sensitivities. All source bits, capture and original 62HBT/672MOS/phase gates preserved. No layout acceptance, qualified PVT, full PHY or timing closure.",
+  "cases": [
+    {
+      "gate_length_um": 12,
+      "source_run": 38983807650,
+      "source_head": "c98d08565172f321fd45972a4dcb723e97761939",
+      "summary_asset": 649016900,
+      "summary_sha256": "dc06bf9d71e4be0201fad334039328aa6fbea54a1ef585d4205b35400060c6b0",
+      "parts_sha256": "db5f2f4eea79bedf114c39478b06a45af388e8049471ff21b4e62c272f53b87a",
+      "condition": {
+        "temperature_c": 125,
+        "supply_scale": 0.95,
+        "core_scale": 0.95,
+        "hbt": "hbt_wcs",
+        "resistor": "res_wcs",
+        "lv_corner": "mos_ss",
+        "hv_corner": "mos_ss",
+        "step_ps": 0.5
+      },
+      "clock_model_sha256": "1f4eb38c991e326a7803536376d5249634e333772bc4ca49f5a7b277fed7c91f",
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": -0.2715015346898617,
+        "wrong_sign_samples": 251,
+        "below_100mv_samples": 328,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": -0.2715015346898617,
+            "wrong_sign_samples": 97,
+            "below_100mv_samples": 117
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": -0.23370575856707743,
+            "wrong_sign_samples": 97,
+            "below_100mv_samples": 120
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": -0.1344653833265368,
+            "wrong_sign_samples": 57,
+            "below_100mv_samples": 91
+          }
+        },
+        "passed": false,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.02313613977626905,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 384,
+          "common_mode_range_v": [
+            1.894541815787537,
+            1.9113467348370383
+          ],
+          "passed": false
+        },
+        "final": {
+          "samples": 6912,
+          "minimum_margin_v": -0.09825783676858713,
+          "wrong_sign_samples": 1584,
+          "below_150mv_samples": 3456,
+          "common_mode_range_v": [
+            1.8096792778011896,
+            1.8479924533115213
+          ],
+          "passed": false
+        }
+      },
+      "failed_hbts": {
+        "xtree.xd0006": {
+          "min_post_vce_v": 0.38818826413055313,
+          "max_post_vce_v": 0.4389098905322639,
+          "max_whole_abs_vce_v": 0.4389098905322639,
+          "max_whole_abs_vbe_v": 0.7978236799049396,
+          "max_whole_abs_ic_per_emitter_a": 0.0006989096675660294,
+          "passed": false
+        },
+        "xtree.xd0007": {
+          "min_post_vce_v": 0.3862961977611438,
+          "max_post_vce_v": 0.437193171551456,
+          "max_whole_abs_vce_v": 0.437193171551456,
+          "max_whole_abs_vbe_v": 0.797096462581273,
+          "max_whole_abs_ic_per_emitter_a": 0.0006912455242481761,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "controls": [
+        {
+          "fault": "nominal_temperature",
+          "rejected": true,
+          "reason": ""
+        },
+        {
+          "fault": "nominal_hbt",
+          "rejected": true,
+          "reason": "Missing actual model corner HBT"
+        },
+        {
+          "fault": "shortened_capture",
+          "rejected": true,
+          "reason": "Changed topology, probes, solver, source identity or capture"
+        },
+        {
+          "fault": "removed_input",
+          "rejected": true,
+          "reason": "Changed topology, probes, solver, source identity or capture"
+        }
+      ],
+      "component_screen_passed": false,
+      "matched_driver_physical_model_used": true
+    },
+    {
+      "gate_length_um": 9,
+      "source_run": 38985964196,
+      "source_head": "fcf721da573ba667928ac1f11fed732d01325b69",
+      "summary_asset": 649105360,
+      "summary_sha256": "0a7a90213fc9f37f02a7233b0ffb6899200c05f4cad083fada518d300d4bff6f",
+      "parts_sha256": "f2d4d842c00859532651e8b8df22b5b33ae3bd270ed8cf4ab230a7c9618afdc0",
+      "condition": {
+        "temperature_c": 125,
+        "supply_scale": 0.95,
+        "core_scale": 0.95,
+        "hbt": "hbt_wcs",
+        "resistor": "res_wcs",
+        "lv_corner": "mos_ss",
+        "hv_corner": "mos_ss",
+        "step_ps": 0.5
+      },
+      "clock_model_sha256": "1f4eb38c991e326a7803536376d5249634e333772bc4ca49f5a7b277fed7c91f",
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": -0.24428492042015626,
+        "wrong_sign_samples": 114,
+        "below_100mv_samples": 222,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": -0.24428492042015626,
+            "wrong_sign_samples": 69,
+            "below_100mv_samples": 96
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": -0.1455899447193263,
+            "wrong_sign_samples": 44,
+            "below_100mv_samples": 84
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": -0.0029811840893565478,
+            "wrong_sign_samples": 1,
+            "below_100mv_samples": 42
+          }
+        },
+        "passed": false,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.046133709741405404,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 384,
+          "common_mode_range_v": [
+            1.8946604045348723,
+            1.9095284487054487
+          ],
+          "passed": false
+        },
+        "final": {
+          "samples": 6912,
+          "minimum_margin_v": -0.04756868422984839,
+          "wrong_sign_samples": 576,
+          "below_150mv_samples": 3456,
+          "common_mode_range_v": [
+            1.8103480766859024,
+            1.8479407442175897
+          ],
+          "passed": false
+        }
+      },
+      "failed_hbts": {
+        "xtree.xd0006": {
+          "min_post_vce_v": 0.38772789830112514,
+          "max_post_vce_v": 0.43879022304480825,
+          "max_whole_abs_vce_v": 0.43879022304480825,
+          "max_whole_abs_vbe_v": 0.7978374617781543,
+          "max_whole_abs_ic_per_emitter_a": 0.000699065519719309,
+          "passed": false
+        },
+        "xtree.xd0007": {
+          "min_post_vce_v": 0.38578190255055267,
+          "max_post_vce_v": 0.4370734066698385,
+          "max_whole_abs_vce_v": 0.4370734066698385,
+          "max_whole_abs_vbe_v": 0.7971101675234276,
+          "max_whole_abs_ic_per_emitter_a": 0.0006913996620949874,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "controls": [
+        {
+          "fault": "nominal_temperature",
+          "rejected": true,
+          "reason": ""
+        },
+        {
+          "fault": "nominal_hbt",
+          "rejected": true,
+          "reason": "Missing actual model corner HBT"
+        },
+        {
+          "fault": "shortened_capture",
+          "rejected": true,
+          "reason": "Changed topology, probes, solver, source identity or capture"
+        },
+        {
+          "fault": "removed_input",
+          "rejected": true,
+          "reason": "Changed topology, probes, solver, source identity or capture"
+        }
+      ],
+      "component_screen_passed": false,
+      "matched_driver_physical_model_used": false
+    },
+    {
+      "gate_length_um": 6,
+      "source_run": 38985964196,
+      "source_head": "fcf721da573ba667928ac1f11fed732d01325b69",
+      "summary_asset": 649091642,
+      "summary_sha256": "0e8af622e91011527aca84c00ed977ba6d7d4384032959a418e86d2265e9e198",
+      "parts_sha256": "0ba2747214b056ad962e59a6667817aa1e467bde51df379beab99fe7a44b1bc6",
+      "condition": {
+        "temperature_c": 125,
+        "supply_scale": 0.95,
+        "core_scale": 0.95,
+        "hbt": "hbt_wcs",
+        "resistor": "res_wcs",
+        "lv_corner": "mos_ss",
+        "hv_corner": "mos_ss",
+        "step_ps": 0.5
+      },
+      "clock_model_sha256": "1f4eb38c991e326a7803536376d5249634e333772bc4ca49f5a7b277fed7c91f",
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": -0.18515766514006637,
+        "wrong_sign_samples": 42,
+        "below_100mv_samples": 98,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": -0.18515766514006637,
+            "wrong_sign_samples": 33,
+            "below_100mv_samples": 66
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": -0.021753307758052953,
+            "wrong_sign_samples": 9,
+            "below_100mv_samples": 32
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.11899468572555816,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": false,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.06759660205136808,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 384,
+          "common_mode_range_v": [
+            1.894715877143684,
+            1.9079602876789576
+          ],
+          "passed": false
+        },
+        "final": {
+          "samples": 6912,
+          "minimum_margin_v": 0.0020938233371132764,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 2826,
+          "common_mode_range_v": [
+            1.8110411076325383,
+            1.8481597754158092
+          ],
+          "passed": false
+        }
+      },
+      "failed_hbts": {
+        "xtree.xd0006": {
+          "min_post_vce_v": 0.38714010474678495,
+          "max_post_vce_v": 0.438138538878871,
+          "max_whole_abs_vce_v": 0.438138538878871,
+          "max_whole_abs_vbe_v": 0.7978497074658396,
+          "max_whole_abs_ic_per_emitter_a": 0.0006992042036577615,
+          "passed": false
+        },
+        "xtree.xd0007": {
+          "min_post_vce_v": 0.3852689406399101,
+          "max_post_vce_v": 0.43642009780701635,
+          "max_whole_abs_vce_v": 0.43642009780701635,
+          "max_whole_abs_vbe_v": 0.7971223442140181,
+          "max_whole_abs_ic_per_emitter_a": 0.0006915368163119659,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "controls": [
+        {
+          "fault": "nominal_temperature",
+          "rejected": true,
+          "reason": ""
+        },
+        {
+          "fault": "nominal_hbt",
+          "rejected": true,
+          "reason": "Missing actual model corner HBT"
+        },
+        {
+          "fault": "shortened_capture",
+          "rejected": true,
+          "reason": "Changed topology, probes, solver, source identity or capture"
+        },
+        {
+          "fault": "removed_input",
+          "rejected": true,
+          "reason": "Changed topology, probes, solver, source identity or capture"
+        }
+      ],
+      "component_screen_passed": false,
+      "matched_driver_physical_model_used": false
+    }
+  ],
+  "observation": "Lowering gate length12->9->6 reduces wrong output signs251->114->42 but leaves all384 transition CMOS samples below150mV. HBT6/7 VCE failures remain and slightly worsen. Gate speed alone is not demonstrated to close hot headroom.",
+  "next_actions": [
+    "Inspect already-live gate3 hot/cold and nominal6; do not repeat them.",
+    "Inspect separate fixed thermal clock hot/cold result before any combination.",
+    "Any candidate needs actual geometry, nativeDRC/LVS, freshRC and same full electrical gates."
+  ],
+  "serial_phy_complete": false,
+  "mainchip_integrated": false,
+  "final_timing_complete": false
+}

@@ -1,0 +1,53 @@
+{
+  "status": "NO_BLOCKING_FINDING_IN_ADDITIVE_COMPOSER_AND_CONTROLLER_SOURCE",
+  "freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v5-local-v1-wire-20261005/source-freeze.json",
+    "bytes": 614,
+    "sha256": "e3a263acad32993f955bf697fec83762b516fb1597ddb3f1eb86c2e79a622b00"
+  },
+  "source_pins": {
+    "scripts/build_pcie_vco_v5_hybrid_v1.py": {
+      "bytes": 18968,
+      "sha256": "335c0517af5f56782dad332e4abf8c78246cd2862743b1a92714db9e3d60f4de"
+    },
+    "scripts/diagnose_pcie_vco_v5_powered_v1.py": {
+      "bytes": 28822,
+      "sha256": "feba40e94fa011d20d930d68be8a71b96d0b002df7d9556622aed9a53b3a2185"
+    },
+    "sw/tests/test_pcie_vco_v5_hybrid_v1.py": {
+      "bytes": 7750,
+      "sha256": "f4ac05fdf54027a8db68198188a6f16bcc48a32590fba0ffcab9e83d35bb98e2"
+    },
+    "sw/tests/test_pcie_vco_v5_powered_v1.py": {
+      "bytes": 5123,
+      "sha256": "bf674aee10fd5589fc1824b9ce9d22b3e24f879884105b69182e21ee6a31ec34"
+    }
+  },
+  "prior_sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/build_pcie_local_vco_hybrid_v7.py": {
+      "bytes": 18968,
+      "sha256": "8f650a76c2fc0e93e142fe8e160e8d103400b3bed2bd311f9b7ada6027692de9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_local_vco_powered_v8.py": {
+      "bytes": 28825,
+      "sha256": "34d7c1c7eb7d57fb19d47c097d9fac2375433ce7855d25499dffbb119b235a59"
+    }
+  },
+  "native_circuit": {
+    "path": "hw/soc/analog/pcie/clock_vco_hbt_v5.spice",
+    "bytes": 3160,
+    "sha256": "c657c4e5205b31da3ee56f1a277b0370a16933d329a78671106adc43d3f48434"
+  },
+  "independent_ast_bridges": {
+    "composer": "Same complete function census; only geometry_decimal differs from frozen local_vco_hybrid_v7. compose, bindings, named terminal/model parameter checks and all wire-record preservation are AST-identical.",
+    "controller": "Same complete function census; every function AST including main, numerical audit, metrology, process/resource cleanup and streaming exactly equals local_vco_powered_v8 after the one human deck-title VCOv5/VCOv4 substitution."
+  },
+  "findings": [],
+  "reasoning": [
+    "Composer binds new exact anchors, native extracted circuit, device geometry and wire bytes. Its unchanged named-terminal census/model conversion retains62 intrinsic instances,145 metal terminals,56 body/well terminals and13 finite contacts.",
+    "Changed decimal normalization is an explicit finite spelling map for pinned binary-float geometry artifacts, not a tolerance or acceptance relaxation. Other native geometry/value comparisons remain exact Decimal comparisons.",
+    "BODY_SUBSTRATE, internal body_well_2 and WIRE_CREF stay separate in the unchanged composition; no inferred body-to-metal join was added. External ideal body/wire-reference bench assumptions remain explicit.",
+    "Controller changes the imported composer, exact source/output pins and descriptive VCO title. Native model, ramp,OFF/zeroOP,numerical/signal/current/VCE criteria and resource/lifecycle functions are preserved exactly."
+  ],
+  "scope": "Bounded source-only comparison. Four frozen files rehashed, but tests were not rerun or independently reviewed. No native/raw replay, physical geometry/LVS extraction rerun, all-device SOA, tuning-bracket, timing or full PEX qualification. This receipt does not qualify the later separately versioned .55V controller."
+}

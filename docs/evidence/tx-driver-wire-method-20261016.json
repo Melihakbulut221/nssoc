@@ -1,0 +1,58 @@
+{
+  "original_sha256": "25c9addbae4eed9d60dee956c06a3a1e08009c624a29351629a06fc5465f38d6",
+  "adapted_sha256": "a997b8affd0e0e0f207721ec76d1101b30f23a324351225d80d4b994d6ca78dd",
+  "original_method_run": 38851306875,
+  "original_path": "hw/soc/out/pcie-pump-rhi140-wire-20261012/probe01.py",
+  "edits": [
+    {
+      "before": "P=R/'hw/soc/out/pcie-pump-rhi140-20261012'",
+      "after": "P=B/'inputs/tx-input-driver/cloud-tx-input-driver'",
+      "count": 1
+    },
+    {
+      "before": "GDS=P/'layout02/nssoc_pump_filter13_rhi140_v1.gds';DB=P/'native03/lvs/result.lvsdb'",
+      "after": "GDS=P/'base/layout.gds';DB=P/'check-raw_flat_lvs/result.lvsdb'",
+      "count": 1
+    },
+    {
+      "before": "08d8368099459f93eec3fbd2800d44f3052b2cfad2e7dcab275500e84cccd2ee",
+      "after": "b6bc711f9e291ecd563a9bebbc13e14aa5839b404de9007ddcd930ab56f68ae5",
+      "count": 1
+    },
+    {
+      "before": "P/'native03/lvs/audit.json'",
+      "after": "P/'check-raw_flat_lvs/audit.json'",
+      "count": 1
+    },
+    {
+      "before": "top=g.top_cell()",
+      "after": "top=g.cell('nssoc_tx_input_driver_v7_physical_v1');assert top is not None",
+      "count": 1
+    },
+    {
+      "before": "c.pin_count()==7",
+      "after": "c.pin_count()==6",
+      "count": 1
+    },
+    {
+      "before": "dict(sg13_hv_nmos=5,sg13_hv_pmos=4,ptap1=13,ntap1=4,rppd=3,cap_cmim=1)",
+      "after": "dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)",
+      "count": 1
+    },
+    {
+      "before": "'pump_wires'",
+      "after": "'full_driver_wires'",
+      "count": 1
+    },
+    {
+      "before": "'PUMPWIRES'",
+      "after": "'DRIVERWIRES'",
+      "count": 1
+    },
+    {
+      "before": "PASS_GEOMETRIC_PUMP_WIRE_COMPONENT_BINDING_NO_RC",
+      "after": "PASS_FULL_DRIVER_METAL_VIA_GRAPH_BOUND_TO_ALL100_NATIVE_DEVICES_NO_RC",
+      "count": 1
+    }
+  ]
+}

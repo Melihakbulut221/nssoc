@@ -1,0 +1,124 @@
+{
+  "status": "PASS_TX03_SOURCE_ONLY_PEER",
+  "utc": "2026-10-05T16:59:44.811313+00:00",
+  "reviewer": "/root/rx_route_resume",
+  "findings": [],
+  "method": {
+    "bytes": 6491,
+    "sha256": "950657d1847fc92f6fc5f5083a3cb47fad238133340368481c56a90eef2890c9"
+  },
+  "source_freeze": {
+    "bytes": 981,
+    "sha256": "01432a62637e99366f0085542708d71a43ae79a7a87041fcbec3135202d5f9f1"
+  },
+  "candidate": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/postroute_repair03.py",
+    "bytes": 12841,
+    "sha256": "9c1c479dbf9577f34bb8015fcf4f2a8f5942aaa479b26ae1bdfdda2cfc655eb4"
+  },
+  "derivation": {
+    "bytes": 15310,
+    "sha256": "b57be1eec32486d54f99e25dbee001132000ee835cf55da27a561e72e11599d1"
+  },
+  "target_census": {
+    "bytes": 16881,
+    "sha256": "94cbc8b39f678c7cc10aaec4906d37dbb98b87943466f6350c4cbb0febce5a2f"
+  },
+  "baseline_pins_rehashed": 14,
+  "independent_native_instance_census": 38142,
+  "independently_checked_targets": [
+    {
+      "name": "_26905_",
+      "master": "sg13g2_a221oi_1",
+      "loads": 1,
+      "change": "isolate",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.702728
+    },
+    {
+      "name": "_46080_",
+      "master": "sg13g2_xnor2_1",
+      "loads": 3,
+      "change": "isolate",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.687995
+    },
+    {
+      "name": "_46081_",
+      "master": "sg13g2_xnor2_1",
+      "loads": 3,
+      "change": "isolate",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.715347
+    },
+    {
+      "name": "_46082_",
+      "master": "sg13g2_xor2_1",
+      "loads": 2,
+      "change": "isolate",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.79141
+    },
+    {
+      "name": "_47648_",
+      "master": "sg13g2_xnor2_1",
+      "loads": 1,
+      "change": "isolate",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.622066
+    },
+    {
+      "name": "_43580_",
+      "master": "sg13g2_xnor2_1",
+      "loads": 6,
+      "change": "isolate",
+      "target": "sg13g2_buf_8",
+      "actual_slow_cell_net_delay_ns": 1.167706
+    },
+    {
+      "name": "_44119_",
+      "master": "sg13g2_xnor2_1",
+      "loads": 4,
+      "change": "isolate",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.925749
+    },
+    {
+      "name": "place16128",
+      "master": "sg13g2_buf_1",
+      "loads": 8,
+      "change": "upsize",
+      "target": "sg13g2_buf_8",
+      "actual_slow_cell_net_delay_ns": 0.692621
+    },
+    {
+      "name": "place16147",
+      "master": "sg13g2_buf_1",
+      "loads": 8,
+      "change": "upsize",
+      "target": "sg13g2_buf_8",
+      "actual_slow_cell_net_delay_ns": 0.634707
+    },
+    {
+      "name": "rebuffer18281",
+      "master": "sg13g2_buf_1",
+      "loads": 1,
+      "change": "upsize",
+      "target": "sg13g2_buf_4",
+      "actual_slow_cell_net_delay_ns": 0.206259
+    }
+  ],
+  "checks": [
+    "Full original02/new03 source read; exact whole-source forward and inverse ledger rebuilt, all6 helper function ASTs unchanged.",
+    "All saved baseline and census inputs freshly rehashed. Independent actual routed Verilog and Liberty parser verifies every selected master/output/net/exact complete load set; all10 targets occur in actualTX02 worst3slow paths.",
+    "Seven buffers have true A\u2192X function and three upsizes have identical fullpin directions/functions; existing hold/recovery circuit inherited in immutableTX02 baseline with no new hold insertion.",
+    "Generated Tcl asserts exact current target master, actual outputnet, full sorted loads and zero boundary terminals; inserts real declared buf4/buf8 at actual source location, then detailed placement/freshincrementalGRT.",
+    "Read baseline actualRC before geometry clear; originalDB/SPEF remain immutable; before/after logical netlist guard; only freshGRT estimates after cell/net edits. Unchanged4ns/IO/propagatedclock, no false/multicycle paths introduced.",
+    "Native control retains blocked signal spawn registration, own processgroup, failure-only5scleanup,1GiBentry/528MiBsharedfloor/2.5GiBAS/singleCPU4; no healthy elapsed timeout. Fresh equivalence/ports/DRT/RC mandatory."
+  ],
+  "native_executed": false,
+  "tests_rerun": false,
+  "qualified_rc": false,
+  "physical_acceptance": false,
+  "scope": "Source-only candidate peer; no fresh GRT, nativeproof, portreplay, route or nominalRC acceptance. PreviousTX02 timing remains the only measured baseline; no timing improvement promised."
+}

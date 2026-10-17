@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""New bounded diagnostic of the failed PLL divider, never full acquisition proof."""
+import json,os,re,shutil,subprocess,time
+from pathlib import Path
+import numpy as np
+import compare_cloud_routed_endpoints as reports
+import run_cloud_pll865_snapshot as pll
+from cloud_vbic_tree32_backend import backend_readback
+from route_cloud_newer_postcts import sha,fetch
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-pll-divider-probes';LIB=ROOT/'cloud-pll-snapshot'
+SUMMARY='6f8d58ce61d36a2ba9d1a6685c489606fd690f47ec4c5c762ab8d6eb333d0470'
+PARTS='214dd0fbc2ff51a0a41c389176adc9a00c8d51b8749320d843d4317bffaae8bc'
+def main():
+    assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False);reports.OUT=OUT
+    r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False,acquisition_accepted=False,new_bounded_diagnostic=True,original_completed_run_restarted=False,scope='New time-zero50ns diagnostic of the unchanged failed physical845 parent, original supplies/reset/reference/OFF102/engine/PDK/.3125ps. Adds all102HBT C/B/E/S/current probes to locate divider failure. Original1us capture preserved; this shorter diagnostic cannot establish acquisition, full-device safety or PHY acceptance.')
+    def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
+    save()
+    try:
+        url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38910378266-1-pll-native-acquisition-continuation/pll-native-acquisition-continuation-38910378266-1.summary.json'
+        fetch(url,SUMMARY,OUT/'terminal.json');prior=json.loads((OUT/'terminal.json').read_text())
+        assert prior['native_exitcode']==0 and not prior['independent_acquisition']['passed'] and len(prior['independent_acquisition']['feedback_edges_s'])==0
+        selected=tuple(n for n in prior['outputs']if n.startswith(('model-sources/','runtime/')))+('case/circuit.cir','case/actual-acquisition.cir','case/parent865.spice','case/spinit')
+        old,proof=reports.restore_report('pll-native-acquisition-continuation',38910378266,SUMMARY,PARTS,OUT/'source',selected);assert old==prior;r['source']=proof
+        assert not LIB.exists();shutil.copytree(OUT/'source/model-sources',LIB)
+        assert all(sha(LIB/p)==d for p,d in old['preparation']['model_sources'].items())
+        case=OUT/'diagnostic';shutil.copytree(OUT/'source/case',case);original=(case/'circuit.cir').read_text();parent=(case/'parent865.spice').read_text()
+        assert sha(case/'parent865.spice')=='8147a7cbae9d1a43b362733a3b52c218c5d04ef519cedf9abf35cd17ff27911e'
+        rows=[l.lower().split()for l in parent.splitlines()if l.lower().startswith('x_')]
+        hbts={w[0]:dict(terminals=w[1:5],nx=float(next(p.split('=')[1]for p in w if p.startswith('nx='))))for w in rows if len(w)>5 and w[5]=='npn13g2'};assert len(hbts)==102
+        base=old['preparation']['vectors'];assert len(base)==34
+        required={'v(xloop.'+n+')'for d in hbts.values()for n in d['terminals']}|{'@q.xloop.'+n+'.qnpn13g2[ic]'for n in hbts}
+        vectors=list(dict.fromkeys(base+sorted(required)));assert len(vectors)<600
+        source_save='save '+' '.join(base);assert original.splitlines().count(source_save)==1
+        full='.tran 3.125e-13 1e-06 0 3.125e-13';short='.tran 3.125e-13 5e-08 0 3.125e-13';assert original.count(full)==1
+        deck=original.replace(source_save,'save '+' '.join(vectors)).replace(full,short)
+        assert deck.replace('save '+' '.join(vectors),source_save).replace(short,full)==original
+        (case/'circuit.cir').write_text(deck)
+        wrapper=(case/'actual-acquisition.cir').read_text();assert wrapper.count('write op.raw all')==1
+        wrapper=wrapper.replace('write op.raw all','write op.raw '+' '.join(base));(case/'actual-acquisition.cir').write_text(wrapper)
+        # Published input models and original capture remain untouched. Only
+        # this separate diagnostic deck changes duration and recorded probes.
+        engine=OUT/'source/runtime/patched-ngspice';assert sha(engine)=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509';engine.chmod(0o755)
+        protected={str(p):sha(p)for p in [engine,*case.iterdir(),*LIB.rglob('*')]if p.is_file()};r.update(hbt_devices=hbts,probe_count=len(vectors),protected_inputs=protected);save()
+        env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN','LD_PRELOAD','PYTHONPATH','PYTHONHOME')}
+        env.update(SPICE_SCRIPTS=str(case),OMP_NUM_THREADS='1',GLIBC_TUNABLES='glibc.cpu.hwcaps=-AVX512F,-AVX512CD,-AVX512BW,-AVX512DQ,-AVX512ER,-AVX512PF,-AVX512VL,-RTM')
+        os.sched_setaffinity(0,{min(os.sched_getaffinity(0))});start=time.monotonic()
+        with (OUT/'native.log').open('w')as f:code=subprocess.call([str(engine),'-n','-b','actual-acquisition.cir'],cwd=case,env=env,stdout=f,stderr=subprocess.STDOUT)
+        text=(OUT/'native.log').read_text(errors='replace');r.update(returncode=code,elapsed_s=time.monotonic()-start);save();assert code==0
+        options,diagnostics,_=backend_readback(text,'klu');r.update(native_options=options,diagnostics=diagnostics);save();assert not diagnostics
+        assert all(options[k]==old['native_options'][k]for k in ('backend','numeric','method'))
+        flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',text)
+        assert len(flags)==102 and {n for n,b in flags}=={'q.xloop.'+n+'.qnpn13g2'for n in hbts}
+        assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1']for _,body in flags)
+        r['zero_source_op']=pll.zero_source_operating_point((case/'op.raw').read_bytes(),base)
+        raw=(case/'actual-acquisition.raw').read_bytes();names,values,meta=pll.decode_prefix(raw)
+        assert meta['header_matches_observed'] and meta['payload_has_only_complete_rows'] and np.isfinite(values).all()
+        observed={n:values[:,i]for i,n in enumerate(names)};assert len(names)==len(vectors)+1 and len(observed)==len(names)
+        data={'time':observed['time']};used={'time'}
+        for name in vectors:
+            allowed={name}if name.startswith('v(')else{name,'i('+name+')'};found=allowed&set(observed);assert len(found)==1
+            actual=found.pop();assert actual not in used;used.add(actual);data[name]=observed[actual]
+        assert used==set(observed);t=data['time'];assert t[0]==0 and abs(t[-1]-50e-9)<1e-15 and np.all(np.diff(t)>0) and np.diff(t).max()<=3.125e-13*1.00001
+        r['capture']=dict(**meta,raw_sha256=sha(case/'actual-acquisition.raw'),start_s=float(t[0]),end_s=float(t[-1]),rows=len(t))
+        measurements={}
+        for name,d in hbts.items():
+            c,b,e,sub=[data['v(xloop.'+n+')']for n in d['terminals']]
+            ic=data['@q.xloop.'+name+'.qnpn13g2[ic]']/d['nx'];signals={'vce_v':c-e,'vbe_v':b-e,'vbc_v':b-c,'ic_per_emitter_a':ic,'collector_v':c,'base_v':b,'emitter_v':e,'substrate_v':sub};windows=[]
+            for lo,hi in [(0.,50e-9),(5e-9,10e-9),(10e-9,20e-9),(40e-9,50e-9)]:
+                mask=(t>=lo)&(t<=hi);assert mask.sum()>10
+                windows.append(dict(interval_s=[lo,hi],signals={k:dict(minimum=float(v[mask].min()),maximum=float(v[mask].max()),mean=float(v[mask].mean()))for k,v in signals.items()}))
+            measurements[name]=dict(nx=d['nx'],windows=windows)
+        r['hbt_measurements']=measurements;r['terminal_signal_ranges']={n:[float(data[n][t>=40e-9].min()),float(data[n][t>=40e-9].max())]for n in base}
+        assert all(sha(Path(p))==d for p,d in protected.items()) and all(sha(OUT/'source'/p)==old['outputs'][p]for p in selected)
+        r.update(status='COMPLETE_50NS_ALL102HBT_DIVIDER_DIAGNOSTIC_NOT_ACQUISITION_OR_SAFETY_ACCEPTANCE',source_unchanged=True)
+    except BaseException as error:r.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    finally:
+        r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
+if __name__=='__main__':main()

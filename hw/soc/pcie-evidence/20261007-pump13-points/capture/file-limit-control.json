@@ -1,0 +1,25 @@
+{
+  "status": "PASS_ACTUAL_NATIVE_FILE_CAP_AND_EXACT_SINGLE_CHANGE",
+  "bytes_at_limit": 8388608,
+  "returncode": 0,
+  "resource_bound": {
+    "previous_source_sha256": "40d000863819023bd19e0bbd13199a7b80f3cc7a1b944cb91b85b396d973a39b",
+    "replacement_before": "native_limit=previous.native_limit",
+    "replacement_after": "def native_limit():\n    # Bound BOTH native regular files; compressed FIFO data has its own cap.\n    resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n    resource.setrlimit(resource.RLIMIT_FSIZE, (8 * 1024**2,) * 2)\n    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n    os.sched_setaffinity(0, {10})",
+    "physical_changes": false,
+    "native_file_cap_bytes": 8388608,
+    "previous_native_file_cap_bytes": 47185920,
+    "per_case_cap_unchanged": 67108864,
+    "maximum_gzip_bytes": 31083914,
+    "native_OP_and_log_bytes": 16777216,
+    "receipts_bytes": 2097152,
+    "failed_tail_bytes": 1048576,
+    "deck_and_source_allowance_bytes": 2097152,
+    "worst_case_sum_bytes": 53104010,
+    "strict_remaining_headroom_bytes": 14004854
+  },
+  "source_change_only_native_limit": true,
+  "graph_unchanged": true,
+  "reviewer": "root",
+  "external_independent_review": false
+}

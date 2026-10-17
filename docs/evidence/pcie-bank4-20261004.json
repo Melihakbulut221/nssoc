@@ -1,0 +1,339 @@
+{
+  "status": "PASS_SOURCE_BOUND_NATIVE_RX_V2_AND_FOUR_LANE_ANALOG_BANK_PHYSICAL_SCOPE",
+  "sources": {
+    "hw/soc/flow/make_pcie_rx_cell_v2.py": {
+      "bytes": 15569,
+      "sha256": "a8ca655aea85cae169e067d7a5b329c2ec37f0d310aa64e6f74552eaf9a779e4"
+    },
+    "hw/soc/flow/make_pcie_analog_bank.py": {
+      "bytes": 12440,
+      "sha256": "60cf86ed0bba1b0f3d53a19d4edf3dad93050e5328d07668b8bfade46d428340"
+    },
+    "hw/soc/flow/check_pcie_analog_bank.py": {
+      "bytes": 14009,
+      "sha256": "5f9a98383f9c82e22a178a9f3aebd9d38d0a3e1f9091cc688e682067a8e31ee4"
+    },
+    "sw/tests/test_pcie_analog_bank.py": {
+      "bytes": 7507,
+      "sha256": "3fd4eccdfe78cbda1fae15f203f85e681be9dde30af7ba27fb24cda8c6d47b20"
+    },
+    "hw/soc/analog/pcie/rx_hbt_rsil_v2.spice": {
+      "bytes": 1046,
+      "sha256": "d02827087e0cb43f447fc46fda05dbd23dcee13ad68755fd31ba738404332a4e"
+    },
+    "hw/soc/analog/pcie/tx_cml_rsil.spice": {
+      "bytes": 864,
+      "sha256": "eec3e2491d7711deaa022343828d2fe8821228ac5b82f4c2f5b1299115017af9"
+    },
+    "hw/soc/flow/make_pcie_tx_cell.py": {
+      "bytes": 9697,
+      "sha256": "78bf226b2d81f821501e5661876068dd60725c005734d770be87fbd857c9be2c"
+    },
+    "hw/soc/flow/check_pcie_rx_cell.py": {
+      "bytes": 12767,
+      "sha256": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885"
+    },
+    "hw/soc/flow/check_ihp_drc.py": {
+      "bytes": 8745,
+      "sha256": "b93e899a9b350edf63e55292913be09e2eea3dedbc95a6d027a5254979ad8650"
+    },
+    "hw/soc/flow/prepare_ihp_drc.py": {
+      "bytes": 3457,
+      "sha256": "3b935282cef742cfb64b37d6b9cb2765660c418a1f7a1ef0491f5bb11c312f47"
+    },
+    "hw/soc/flow/audit_klayout_lvs.py": {
+      "bytes": 5297,
+      "sha256": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568"
+    },
+    "hw/soc/pnr/ihp-drc.lock.json": {
+      "bytes": 12628,
+      "sha256": "d47860e82e76d81897ce51452aa1f7a7bb76643da38093911b5cdb55a4ebf73a"
+    },
+    "hw/soc/pnr/ihp-lvs.lock.json": {
+      "bytes": 10912,
+      "sha256": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532"
+    }
+  },
+  "owned_sources": [
+    "hw/soc/flow/make_pcie_rx_cell_v2.py",
+    "hw/soc/flow/make_pcie_analog_bank.py",
+    "hw/soc/flow/check_pcie_analog_bank.py",
+    "sw/tests/test_pcie_analog_bank.py"
+  ],
+  "native": {
+    "rx-v2": {
+      "layout_result": {
+        "bytes": 38562,
+        "sha256": "4703c4fdf0e14daa3e29f385cfcfce8a1fefaedb8966dbd7b26ab19d44518ff0"
+      },
+      "check_result": {
+        "bytes": 66599,
+        "sha256": "89b6fcef687975d6df61734fe47a649ba92d3f7e4a73dcca72009c5620958d96"
+      },
+      "status": "PASS_NATIVE_RX_V2_MAIN_DRC_STRICT_LVS_LEF_AND_NEGATIVE_CONTROLS_ONLY",
+      "generated_views": {
+        "nssoc_rx_hbt_v2_layout.lef": {
+          "bytes": 2416,
+          "sha256": "87ede28b01e7389e547cc08fe88e594c24acbaf45ce0c3e039433f3d71be5296"
+        },
+        "nssoc_rx_hbt_v2_layout.gds": {
+          "bytes": 76416,
+          "sha256": "f71f00782f94f2f0e5fef9d0f8a996ab8500d747336f8013f41f2c2389c1ddce"
+        },
+        "schematic.cir": {
+          "bytes": 857,
+          "sha256": "cbadec0c8f5280774c107ea19910f7cf9dfe4f42647e52e75ae00c497186673c"
+        }
+      },
+      "inputs_rehashed": 203,
+      "outputs_rehashed": 43,
+      "native_steps": [
+        {
+          "name": "drc",
+          "status": "PASS",
+          "returncode": 0,
+          "seconds": 4.444818113988731,
+          "audit_returncode": null
+        },
+        {
+          "name": "physical_offgrid",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 4.450150156015297,
+          "audit_returncode": null
+        },
+        {
+          "name": "lvs",
+          "status": "PASS within comparison scope",
+          "returncode": 0,
+          "seconds": 3.1663822150148917,
+          "audit_returncode": 0
+        },
+        {
+          "name": "wrong_load",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.187688207020983,
+          "audit_returncode": 1
+        },
+        {
+          "name": "wrong_input",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.2859139959909953,
+          "audit_returncode": 1
+        },
+        {
+          "name": "missing_tap",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.2420831010094844,
+          "audit_returncode": 1
+        },
+        {
+          "name": "lef",
+          "status": "PASS",
+          "returncode": 0,
+          "seconds": 0.807767624995904,
+          "audit_returncode": null
+        },
+        {
+          "name": "lef_missing_pin",
+          "status": "EXPECTED_REJECTION",
+          "returncode": 1,
+          "seconds": 0.8030500079912599,
+          "audit_returncode": null
+        }
+      ],
+      "drc_categories": 560,
+      "drc_markers": 0,
+      "primitive_devices": 9,
+      "ports": 9
+    },
+    "bank4": {
+      "layout_result": {
+        "bytes": 83175,
+        "sha256": "02869d239d1a1a8fd38c5c81e49f6b171a9ece7c4819c3424a4937fa782ed0d3"
+      },
+      "check_result": {
+        "bytes": 77011,
+        "sha256": "0cff1fa8b8ff9783743a0834ffe463745159701c73859585f1f102b7017b1431"
+      },
+      "status": "PASS_NATIVE_BANK4_MAIN_DRC_STRICT_LVS_LEF_AND_NEGATIVE_CONTROLS_ONLY",
+      "generated_views": {
+        "nssoc_pcie_analog_bank4.lef": {
+          "bytes": 10532,
+          "sha256": "63382360826818145800e7164ffc3caab78d6c47be99b93b7f7f00ce1c0dfbdb"
+        },
+        "nssoc_pcie_analog_bank4.gds": {
+          "bytes": 181028,
+          "sha256": "93d88e657b034065605d5bdb65e45d20c05903ef3c5d32b8df4509c07514b6da"
+        },
+        "schematic.cir": {
+          "bytes": 6697,
+          "sha256": "52b4799d16ec7e933ad621d489a3f03264a98f3be6dba74ff77a56053f9d88e6"
+        }
+      },
+      "inputs_rehashed": 212,
+      "outputs_rehashed": 61,
+      "native_steps": [
+        {
+          "name": "drc",
+          "status": "PASS",
+          "returncode": 0,
+          "seconds": 5.094601068005431,
+          "audit_returncode": null
+        },
+        {
+          "name": "physical_offgrid",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 4.981648678018246,
+          "audit_returncode": null
+        },
+        {
+          "name": "lvs",
+          "status": "PASS within comparison scope",
+          "returncode": 0,
+          "seconds": 3.4370186630112585,
+          "audit_returncode": 0
+        },
+        {
+          "name": "wrong_load",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.36592222598847,
+          "audit_returncode": 1
+        },
+        {
+          "name": "wrong_lane",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.4250889450195245,
+          "audit_returncode": 1
+        },
+        {
+          "name": "missing_tap",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.5162637940084096,
+          "audit_returncode": 1
+        },
+        {
+          "name": "physical_open",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.450964079995174,
+          "audit_returncode": 1
+        },
+        {
+          "name": "physical_bulk_short",
+          "status": "FAIL",
+          "returncode": 0,
+          "seconds": 3.4327611940097995,
+          "audit_returncode": 1
+        },
+        {
+          "name": "lef",
+          "status": "PASS",
+          "returncode": 0,
+          "seconds": 0.7632215470075607,
+          "audit_returncode": null
+        },
+        {
+          "name": "lef_missing_pin",
+          "status": "EXPECTED_REJECTION",
+          "returncode": 1,
+          "seconds": 0.7853905819938518,
+          "audit_returncode": null
+        }
+      ],
+      "drc_categories": 560,
+      "drc_markers": 0,
+      "primitive_devices": 57,
+      "ports": 47
+    }
+  },
+  "archive": {
+    "bytes": 203944,
+    "sha256": "359e9a2712523512c95ebf1e83a22a3c1122b1afdba3c87fee1c83fc2eb44ecc",
+    "path": "hw/soc/out/pcie-bank4-20261004/rx-v2-bank4-native.tar.xz",
+    "members": 151,
+    "roundtrip_all_members_verified": true
+  },
+  "source_input_union_count": 212,
+  "native_output_union_count": 104,
+  "all_inputs_and_outputs_rehashed": true,
+  "geometry": {
+    "bank_bbox_um": [
+      0,
+      0,
+      260,
+      1460
+    ],
+    "lanes": 4,
+    "instances": 8,
+    "hbt": 32,
+    "rsil": 24,
+    "square_ptap_contacts": 64,
+    "combined_tap_area_um2": 256,
+    "combined_tap_perimeter_um": 512,
+    "shared_real_metal_nets": [
+      "AVDD",
+      "AVSS",
+      "SUB"
+    ],
+    "explicit_signal_bias_boundary_ports": 44,
+    "total_boundary_ports": 47
+  },
+  "root_review_inputs": {
+    "independent_geometry_review": {
+      "bytes": 15505,
+      "sha256": "4bd776a40c041daf4df1f2e58a5e4cc5c131a8b7cfb5b6439268b819df35bab6"
+    }
+  },
+  "original_tx_geometry_sha256": "e94cfeb84b007ae23449de25e2c35fd63720f52ccfd5fa44d8d3a6f4380fa7c2",
+  "rendering": {
+    "svg": {
+      "bytes": 205365,
+      "sha256": "585c07dce948492af88f5ba02c27f0c1abf5a692940b6bb782fc9a16be69a6b8"
+    },
+    "png": {
+      "bytes": 31071,
+      "sha256": "3bc0638c76d40e31fa534cc39dc50ce2be6ffa4e3332479273d689ab1d1aee2b"
+    },
+    "record": {
+      "bytes": 637,
+      "sha256": "98a0652b6c57593ccc99019c40c1a28410eeab63949add159ae8efbed6963a88"
+    },
+    "scope": "Actual GDS polygons; selected drawing layers; view rotated90degrees only."
+  },
+  "controls": {
+    "bank": [
+      "physical_offgrid",
+      "wrong_load",
+      "wrong_lane",
+      "missing_tap",
+      "physical_open",
+      "physical_bulk_short",
+      "lef_missing_pin"
+    ],
+    "rx_v2": [
+      "physical_offgrid",
+      "wrong_load",
+      "wrong_input",
+      "missing_tap",
+      "lef_missing_pin"
+    ],
+    "physical_open": "Exact removed lane2 RX input via, missing-onlyL2_RX_INP strict-port rejection, intact57device circuit; all other LVS negatives requireNoMatch."
+  },
+  "limits": [
+    "This separate analog bank is not instantiated in soc_top or the current digital chip shell.",
+    "No serializer/deserializer, slicer, PLL/CDR, equalizer or PCIe PHY/link acceptance.",
+    "No RF pad/ESD or package connection, interconnect PEX, EM, supply IR-drop, post-layout analog PVT, Liberty or production signoff.",
+    "Main560categoryDRC only; density/antenna and chip context are separate gates.",
+    "External per-cell current biases and per-laneVCM remain explicit ports.",
+    "Analogv2 PVT result is separate evidence; physical PASS does not override unresolved compact-model initialization warnings."
+  ],
+  "superseded_diagnostics": "Initial bank had276TM1 minimumwidth violations; explicit2.4um nativevia landing metal fixedthem. Collector initially requiredNoMatch for portopen; strict vendor portfailure was alreadycorrect, exact specificnegativepredicate nowverified in fresh finalruns. Original failedrecords retained."
+}

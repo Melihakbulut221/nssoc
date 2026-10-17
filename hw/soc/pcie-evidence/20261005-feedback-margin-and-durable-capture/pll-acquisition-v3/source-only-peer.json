@@ -1,0 +1,179 @@
+{
+  "status": "PASS_PRODUCER_SOURCE_AND_SAVED_CONTROLS_WITH_TEST_PORTABILITY_FINDING",
+  "utc": "2026-10-05T15:48:42.824108+00:00",
+  "reviewer": "/root/rx_route_resume",
+  "source_freeze": {
+    "bytes": 2405,
+    "sha256": "31437ed0bb7bb8907a364b268df18313574f755912be00ed5fdfe3b573a9e18f"
+  },
+  "method": {
+    "bytes": 7115,
+    "sha256": "14505c3b0d2d39f9879cb59acb92112e4db4a4950f623182a455ccf6a51eebef"
+  },
+  "reviewed_sources": {
+    "scripts/characterize_pcie_pll_acquisition_v3.py": {
+      "bytes": 3473,
+      "sha256": "d3b6706d0b8feb1c6a5c66bb434df29fe792b621200eae8fc593ea5e4faa9b8d"
+    },
+    "sw/tests/test_pcie_pll_acquisition_v3.py": {
+      "bytes": 10654,
+      "sha256": "0e1f784136184852b8ddcfd94b69df9a1618be924aca3f4048d99e4d5a2add6f"
+    }
+  },
+  "frozen_dependencies": {
+    "scripts/characterize_pcie_pll_acquisition_v2.py": {
+      "bytes": 4294,
+      "sha256": "e902a71626fef5ad0727f52123a7ee5ce2e6fe6b91aaf223130f68e029ed9531"
+    },
+    "scripts/publish_pcie_native_capture_v3.py": {
+      "bytes": 20052,
+      "sha256": "b2ea742c31c20c19bf02b30b3b1954342d5aa73772732dc69c8f170f46e1fa0f"
+    },
+    "sw/tests/test_pcie_native_publisher_v3.py": {
+      "bytes": 14854,
+      "sha256": "787a3bc6f6ea7163ee20925c7d35d115a0e696d0d306c8185190bca464030663"
+    },
+    "scripts/characterize_pcie_clock_trim_stream_v2.py": {
+      "bytes": 19742,
+      "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+    }
+  },
+  "source_bridges": {
+    "publisher": {
+      "original_sha256": "f13bb3e1d22a3062697b4e526c6baa39ed63a31e57fb5337d0a1c7fa6155bf39",
+      "modified_sha256": "8dfc032d8cfb1fcb8a2ba98e94132b7c55b38c638bc5b9b7011f4f0b59c29f0c",
+      "exact_replacements": [
+        [
+          "class OwnedPublisherV2:",
+          "class OwnedPublisherV3:"
+        ]
+      ]
+    },
+    "run": {
+      "original_sha256": "981f2bb4c3b5f2ba08717df9d96521a4fdfbed38b984b4d36f5569ba4b7f4e0d",
+      "modified_sha256": "abe03ca11ee6703e5b4c2c3b99d27563e2a19ff7febc677f0038f5cb0fe73e9c",
+      "exact_replacements": [
+        [
+          "OwnedPublisherV2(owner)",
+          "OwnedPublisherV3(owner)"
+        ],
+        [
+          "+ [__file__, str(reference)]",
+          "+ [__file__, str(publication.__file__), str(publication.lifecycle.__file__), str(reference)]"
+        ]
+      ]
+    }
+  },
+  "pure_deck_byte_comparisons": [
+    {
+      "step": 5e-12,
+      "bytes": 50529,
+      "sha256": "f81ffeffc585196aaf946faed5ac43b7009de16cab123409823f71f14246409f"
+    },
+    {
+      "step": 2.5e-12,
+      "bytes": 50533,
+      "sha256": "77b4a8a2d6d525c8fd9507adeb12ae521f1deb334719968527f5ebd625820be4"
+    }
+  ],
+  "original_deck": {
+    "path": "/dev/shm/nssoc-pll-connected-loop-v1-startup01/bench.cir",
+    "bytes": 50504,
+    "sha256": "6f31cfc4c419005b857608eb2d873d13b44c8e53e0328517cb9eefeb373b55c4"
+  },
+  "saved_controls": {
+    "log": {
+      "bytes": 99,
+      "sha256": "245de76d2f1e1f1f17692006d4f2b0dc344a957d3bddbc02fff3cfc9abb3b1dc"
+    },
+    "reported_passed": 15,
+    "rerun": false,
+    "critical_cases": {
+      "transient": {
+        "ledger_status": "PASS_PUBLISHED_PARTS",
+        "receipt_status": "PASS_IMMUTABLE_RELEASE_ROUNDTRIPS",
+        "authenticated_attempts": 2,
+        "all_gzip_members_read": 8,
+        "owner": {
+          "bytes": 1429,
+          "sha256": "1b3125421295397d3f31c6784d57517e6c543698f2d7b3732d4ced0c39276e27"
+        },
+        "receipt": {
+          "bytes": 1712,
+          "sha256": "44d896173266fbddf821c157cc40ec8499b0eace94a44620da103f3a26ecef4a"
+        },
+        "ledger": {
+          "bytes": 1171,
+          "sha256": "34b4c68e3c17203e47ac9fbe7bf5b60f750f674c7bd69b0750e839a93393a5f7"
+        },
+        "attempts": {
+          "bytes": 10347,
+          "sha256": "777686ed0faeae1ece25efcec6869d47b36245cfb0fc224448f3878f1068de83"
+        }
+      },
+      "mismatch": {
+        "ledger_status": "ERROR_PART_RETAINED",
+        "receipt_status": "FAIL",
+        "authenticated_attempts": 1,
+        "all_gzip_members_read": 4,
+        "owner": {
+          "bytes": 2028,
+          "sha256": "5f16dd79fd956333a5e7d79b10f141d276cb99feb1e7ecab3a9f37613898714f"
+        },
+        "receipt": {
+          "bytes": 1448,
+          "sha256": "b7f26c7a799abf6c270b7de1cc7c832db60959c0473b76e6a41a12bd9a451e4f"
+        },
+        "ledger": {
+          "bytes": 654,
+          "sha256": "b776eb2984ddf457525c29cd1a3de8aa5727cbbd87ace2139925900045a3ff6d"
+        },
+        "attempts": {
+          "bytes": 4809,
+          "sha256": "975c6dd575a5732b7f931c989c022b70ce583fd633c2c2d0b45803be1daef657"
+        }
+      },
+      "outer_SIGTERM": {
+        "ledger_status": "ERROR_PART_RETAINED",
+        "receipt_status": "FAIL",
+        "authenticated_attempts": 1,
+        "all_gzip_members_read": 4,
+        "owner": {
+          "bytes": 2321,
+          "sha256": "7ad4cd3d5705f0e1ad8084ad18a730ba155b4f4a1cd601f92f05f6bdd6310ab6"
+        },
+        "receipt": {
+          "bytes": 1422,
+          "sha256": "06c4bbca5cf8da4fc79058d0398041153c13b0a35bb65665bd2846d30643c54b"
+        },
+        "ledger": {
+          "bytes": 645,
+          "sha256": "294d55bfdbe1b12431c91f3107aed19d509012469ccb2617980ca3a10c970142"
+        },
+        "attempts": {
+          "bytes": 4465,
+          "sha256": "7cda069768346a1806d437f7b803a31a8078cf96a0519c3f1ef22b57c9503e31"
+        }
+      }
+    }
+  },
+  "verified": [
+    "Full producer and inherited OwnedPublisher/run sources inspected; exact inverse bridges; private namespaces preserve old module globals",
+    "Only V3 publisher class routing and additional publisher/owner input pins change; main source and native electrical/numerical/capture/lifecycle aliases identical",
+    "Publisher source is frozen approved V3; parent5s grace exceeds nested1s failure cleanup; SIGTERM fixture retained 32B pending raw+84B part and reaped all groups",
+    "Immutable local original removed only after full metadata and authenticated+anonymous byte readbacks; saved TLS-prefix reconstructed and mismatch stays terminal"
+  ],
+  "findings": [
+    {
+      "scope": "test portability only",
+      "file": "sw/tests/test_pcie_pll_acquisition_v3.py",
+      "function": "test_actual_deck_generation_bytes_identical",
+      "reason": "Reads volatile ORIGINAL/bench.cir with no tracked test fixture; new tests cannot reproduce on fresh checkout until exact fixture is supplied",
+      "blocks_current_native_on_restored_exact_inputs": false
+    }
+  ],
+  "native_executed": false,
+  "tests_executed": false,
+  "transport_executed": false,
+  "physical_acceptance": false
+}

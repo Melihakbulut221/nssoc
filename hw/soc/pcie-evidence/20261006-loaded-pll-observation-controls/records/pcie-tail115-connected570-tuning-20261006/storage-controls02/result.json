@@ -1,0 +1,109 @@
+{
+  "status": "PASS_ACTUAL_SSD_CAP_FLOOR_SPECIAL_FILE_AND_FINITE_FAILURE_CONTROLS",
+  "cases": 20,
+  "outcomes": [
+    {
+      "case": "actual_empty_ssd_point_and_aggregate",
+      "passed": true
+    },
+    {
+      "case": "actual_sparse_point_exact_reserved_cap",
+      "passed": true
+    },
+    {
+      "case": "actual_sparse_point_one_byte_over",
+      "passed": true,
+      "diagnostic": "Point1280MiB byte cap and final receipts"
+    },
+    {
+      "case": "actual_sparse_aggregate_exact_cap_including_failed_other_point",
+      "passed": true
+    },
+    {
+      "case": "actual_sparse_aggregate_one_byte_over",
+      "passed": true,
+      "diagnostic": "Aggregate4GiB byte cap including failures"
+    },
+    {
+      "case": "actual_dangling_file_link",
+      "passed": true,
+      "diagnostic": "No linked or special native evidence"
+    },
+    {
+      "case": "actual_directory_link",
+      "passed": true,
+      "diagnostic": "No linked or special native evidence"
+    },
+    {
+      "case": "exact_owned_stream_fifo",
+      "passed": true
+    },
+    {
+      "case": "wrong_special_fifo",
+      "passed": true,
+      "diagnostic": "Only exact direct-point stream FIFO"
+    },
+    {
+      "case": "one_ENOENT_restarts_complete_tree",
+      "passed": true,
+      "attempts": 2
+    },
+    {
+      "case": "four_complete_ENOENT_attempts_stop",
+      "passed": true,
+      "diagnostic": "[Errno 2] Repeated injected churn"
+    },
+    {
+      "case": "non_ENOENT_is_fatal",
+      "passed": true,
+      "diagnostic": "[Errno 13] Injected non-ENOENT"
+    },
+    {
+      "case": "injected_shared_floor_one_byte_low",
+      "passed": true,
+      "diagnostic": "Shared512MiB reserve"
+    },
+    {
+      "case": "injected_ssd_floor_reserved_tail_one_byte_low",
+      "passed": true,
+      "diagnostic": "SSD1GiB continuous and terminal reserve"
+    },
+    {
+      "case": "injected_both_normal_floors_exact_boundary",
+      "passed": true
+    },
+    {
+      "case": "failed_only_finalization_uses_pre_reserved_tail_despite_floor_trigger",
+      "passed": true
+    },
+    {
+      "case": "failed_tail_cannot_exceed_reservation",
+      "passed": true,
+      "diagnostic": "Reserved failed-tail bytes only"
+    },
+    {
+      "case": "actual_partial_FileIO_write_loop",
+      "passed": true,
+      "writes": 2292
+    },
+    {
+      "case": "actual_capture_preserves_received_prefix_on_shared_floor_failure",
+      "passed": true,
+      "diagnostic": "Shared512MiB reserve"
+    },
+    {
+      "case": "actual_bad_native_trailer_rejected_full_gzip_retained",
+      "passed": true,
+      "diagnostic": "Exact native sample-count trailer"
+    }
+  ],
+  "method": {
+    "bytes": 7294,
+    "sha256": "80499b094bad4a7a67c565448ad0b594f9bc772deeecf98a18b305d6c389a2e8"
+  },
+  "producer": {
+    "bytes": 21744,
+    "sha256": "6d01fddc3921e91597a02cdb7c5cb66f795bedf89aa9ff7589543e37299071a9"
+  },
+  "scope": "Actual sparse/file/FIFO/byte operations; injected disk observations and transient errors are explicit. No native simulator or publication. Emergency closure cannot turn exception into PASS. Complete received prefix, not unread FIFO bytes, is retained; finite gzip has fsync only at close and no solver checkpoint."
+}

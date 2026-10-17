@@ -1,0 +1,60 @@
+{
+  "status": "REJECTED_PREPLACEMENT_SETUP_REGRESSION",
+  "adopted": false,
+  "comparison": {
+    "pcie-crc-residue-cut-20261009": {
+      "worst_slack_ns": {
+        "slow_max": -2.475437,
+        "slow_min": -0.473121,
+        "typical_max": -0.184042,
+        "typical_min": -0.53948,
+        "fast_max": 0.793174,
+        "fast_min": -0.601382
+      },
+      "log_sha256": "fcf7993e6a063f249db7b8c277834486b3da882926647f2226e922ee35ac7e76"
+    },
+    "pcie-quarantine-index-cut-20261009": {
+      "worst_slack_ns": {
+        "slow_max": -2.793582,
+        "slow_min": -0.465004,
+        "typical_max": -0.39614,
+        "typical_min": -0.53948,
+        "fast_max": 0.821509,
+        "fast_min": -0.601382
+      },
+      "log_sha256": "06ae19ffafcb31b9a2d7e8a7accf0603fe8d18eecf7b527db2f541883fbb2f9d"
+    }
+  },
+  "relational_induction": "PASS all registers, RAM and public outputs; MAX_TLP_DWORDS8, initial reset, arbitrary equal initial RAM. Explicit clock/reset edge modeling.",
+  "invariant": "PASS index0outsideEMIT",
+  "rtl_fault_controls": {
+    "status": "PASS_THREE_ACTUAL_RTL_FAULT_COUNTEREXAMPLES",
+    "cases": [
+      {
+        "name": "wrong_idle_index",
+        "rejected": true,
+        "returncode": 1,
+        "sha256": "b334bb84d728c57b976233512a013a9e748982d946a2125dde57581f122814bd"
+      },
+      {
+        "name": "wrong_sop_count",
+        "rejected": true,
+        "returncode": 1,
+        "sha256": "d23623a1afc760b7e68d4b415ac1358390b86797568225c4b71beca4416bafa0"
+      },
+      {
+        "name": "missing_bad_pulse",
+        "rejected": true,
+        "returncode": 1,
+        "sha256": "4bd65fbe6c3786f46a7728d2c97cb8f263328650213899f5eb0898b686166f23"
+      }
+    ],
+    "scope": "Eight-step counterexamples under initial reset and arbitrary equal initial RAM. Full positive relational induction logged separately."
+  },
+  "port_tests": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0
+  },
+  "scope": "Unplaced wireload screen only. Formal and functional success does not establish physical timing benefit. No new routed acceptance."
+}

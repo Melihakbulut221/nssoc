@@ -1,0 +1,118 @@
+{
+  "status": "PASS_NATIVE_ODD_GEOMETRY_REGRESSION_WITH_EXPLICIT_FRACTIONAL_AREA_DELTA",
+  "cases": [
+    {
+      "case": "before_50.005_R0",
+      "source_cap_af": 7688.68,
+      "old_distributed_af": [
+        70.261474609375,
+        889.4879760742188,
+        2884.803466796875,
+        889.4879760742188,
+        2954.63916015625
+      ],
+      "new_distributed_af": [
+        70.26209259033203,
+        889.4881591796875,
+        2884.803466796875,
+        889.4881591796875,
+        2954.638427734375
+      ],
+      "old_sum_af": 7688.6800537109375,
+      "new_sum_af": 7688.680305480957,
+      "same_R": true,
+      "same_native_source_total": true
+    },
+    {
+      "case": "before_50.005_R90",
+      "source_cap_af": 7688.68,
+      "old_distributed_af": [
+        70.2614974975586,
+        70.2614974975586,
+        924.5125732421875,
+        2849.56591796875,
+        2849.56591796875,
+        924.5125732421875
+      ],
+      "new_distributed_af": [
+        70.26209259033203,
+        70.26209259033203,
+        924.512451171875,
+        2849.565673828125,
+        2849.565673828125,
+        924.512451171875
+      ],
+      "old_sum_af": 7688.679977416992,
+      "new_sum_af": 7688.680435180664,
+      "same_R": true,
+      "same_native_source_total": true
+    },
+    {
+      "case": "before_691.005_R0",
+      "source_cap_af": 61570.2,
+      "old_distributed_af": [
+        69.27589416503906,
+        877.0108032226562,
+        29839.0234375,
+        877.0108032226562,
+        29907.87890625
+      ],
+      "new_distributed_af": [
+        69.27652740478516,
+        877.0113525390625,
+        29839.021484375,
+        877.0113525390625,
+        29907.87890625
+      ],
+      "old_sum_af": 61570.19984436035,
+      "new_sum_af": 61570.19962310791,
+      "same_R": true,
+      "same_native_source_total": true
+    },
+    {
+      "case": "before_691.005_R90",
+      "source_cap_af": 61570.2,
+      "old_distributed_af": [
+        69.27588653564453,
+        69.27588653564453,
+        911.5437622070312,
+        29804.279296875,
+        29804.279296875,
+        911.5437622070312
+      ],
+      "new_distributed_af": [
+        69.27652740478516,
+        69.27652740478516,
+        911.5443115234375,
+        29804.279296875,
+        29804.279296875,
+        911.5443115234375
+      ],
+      "old_sum_af": 61570.19789123535,
+      "new_sum_af": 61570.200271606445,
+      "same_R": true,
+      "same_native_source_total": true
+    }
+  ],
+  "scope": "Pre-multiply promotion also preserves half-area formerly truncated by integer /2. Native float fields/ABI remain exact. Nonoverflow distributed point values are not claimed globally identical.",
+  "arithmetic_examples": [
+    {
+      "x": 3,
+      "y": 3,
+      "old_float": 4,
+      "new_float": 4.5
+    },
+    {
+      "x": 9673,
+      "y": 329,
+      "old_float": 1591208,
+      "new_float": 1591208.5
+    }
+  ],
+  "tests": {
+    "new_tests": 3,
+    "seconds": 0.43,
+    "ruff": "PASS"
+  },
+  "old_v4_seal_unchanged": true
+}

@@ -32,16 +32,13 @@ sys.path.insert(0, str(ROOT / "hw" / "openlane"))
 RUN = ROOT / "hw" / "openlane" / "pilot_ihp" / "runs" / "signoff-6x2"
 REPLICAS = ["u_pilot.u_cfg_a", "u_pilot.u_cfg_b", "u_pilot.u_cfg_c"]
 
-pytestmark = pytest.mark.skipif(
-    not (RUN / "final" / "def").is_dir(),
-    reason="the sign-off run tree is gitignored build output; this measures a "
-           "layout, and without the layout there is nothing to measure")
-
-
 @pytest.fixture(scope="module")
-def measured():
+def measured(historical_snapshot):
     import replica_placement
-    return replica_placement.measure(RUN, REPLICAS)
+    # 2026-09-20: the original DEF and netlist were recovered byte-for-byte.
+    # The helper checks any live copies against those identities first.
+    run = RUN if (RUN / 'final/def').is_dir() else historical_snapshot / RUN.relative_to(ROOT)
+    return replica_placement.measure(run, REPLICAS)
 
 
 def test_the_attribution_reproduces_the_synthesis_guard(measured):

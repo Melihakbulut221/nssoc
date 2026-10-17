@@ -1,0 +1,52 @@
+{
+  "status": "SOURCE_BOUND_INTEGRATION_PREREQUISITES_NO_DESIGN_EDITS_OR_NATIVE",
+  "comparison": "result01.json",
+  "current_conclusions": [
+    "The active539-device acquisition run uses schematic VCOv4 and div4v5, rather than the numerically converged physical Tail115 clock.",
+    "Shared302-device CMOS receiver/div20 feedback is exact after removing only the xloop hierarchy prefix. Replacing old122 VCO/divider instances with153 physical records adds31 contacts. Reusing112 detector/pump plus3 filter devices would make570 model instances, plus1271 wireR/1414 wireC. This combination has not been generated or simulated.",
+    "All49 VCO and73 divider reference identities/dimensions join actual native IDs. Six VCO MIMs change12x12 to11x11um, with CP0 startup offset12.2x12 to11.2x11. Seven divider instances change: first XUP/XUN L8 to4; clock XDP/XDN L7 to8; XCP/XCN20x20 to24x24; second XBIAS L12.7 to11.5. Logical reference net connections remain equal.",
+    "Physical records additionally contain extracted PMOS diffusion geometry, explicit HBT geometry, finite contacts, distributed wire topology and different body boundaries. Thirteen logical parameter changes do not imply only thirteen electrical differences.",
+    "N16 uses ideal VCTRL0.6V and50fF at each VCO output. The539 loop uses actual charge pump, finite R80/R47/C10x10 filter, PFD load at FB and100MHz reference/reset. A connected loop must remove ideal VCTRL and explicitly retain or revise both output loads.",
+    "Old detector swaps FB/REF because its schematic VCO gain is negative. Physical loaded tuning direction/range and all-device bounds must be measured over pump/filter-reachable control voltages. A0.6V finite point does not justify transferring the old bias or detector polarity.",
+    "N16 establishes nominal34ns functionality plus adjacent0.625/0.3125ps numerical agreement. It does not establish1us acquisition, PVT, jitter, data CDR, substrate extraction or chip integration."
+  ],
+  "prerequisites": [
+    {
+      "order": 1,
+      "task": "Freeze source-only570-instance composition",
+      "details": "Bind exact physical subckt port order; unchanged112 detector/pump+3filter inverse; shared302 identity; all153 records and1271R/1414C. Keep four body/wire-reference ports distinct with explicit bench termination. Preserve all running539 inputs. Do not generate or simulate before separate source review."
+    },
+    {
+      "order": 2,
+      "task": "Measure loaded physical tuning range",
+      "details": "Converged0.6V gives8.148938GHz, while100MHz with /80 targets8GHz. Predeclare bounded control range and measure tuning sign, target coverage, startup/division and all455 limits under actual loads. Do not silently retune components or infer expected filter bias from one point."
+    },
+    {
+      "order": 3,
+      "task": "Bind complete connected measurements and faults",
+      "details": "Extend full safety census to570 including31 contacts/112 detector-pump/3filter; retain64HBT OFF/startup. Derive hierarchical observation paths from actual graph. Preserve13 division predicates and add PFD/current/control/reference-frequency/settling/slip checks. Actual faults must detect missing or shorted pump connection, wrong detector polarity and broken feedback; no ideal internal source/clamp."
+    },
+    {
+      "order": 4,
+      "task": "Source-review bounded fresh startup then acquisition",
+      "details": "Use new immutable namespace, reviewed local SSD spool/owner lifecycle and computed full570 raw storage/reserve. A full short connected startup must precede longer acquisition. Old539 run at2.5ps output/1.25ps maxstep cannot inherit N16 convergence. Changed closed-loop physics requires its own declared adjacent-step frequency and unaligned-phase pair before numerical acceptance."
+    },
+    {
+      "order": 5,
+      "task": "Qualify later CDR and routed PHY separately",
+      "details": "A reference PLL does not demonstrate data-clock recovery. Actual data-driven detector/CDR topology, receiver load, clock distribution, joint physical connectivity and routed-chip timing remain separate requirements. Per-block wire models are not joint substrate/inter-block routed PEX."
+    }
+  ],
+  "scope": "Read-only analysis, no source/generation/test/native edits and no interaction with active capture. No smaller timestep needed for the now-passing declared finite pair.",
+  "findings": [],
+  "basis": {
+    "hw/soc/out/pcie-tail115-pll-structure-20261006/result01.json": {
+      "bytes": 50969,
+      "sha256": "f4b68b6ad9cc77823ddde789c311241bebee8a61959d8e3e36b7c57b118b2b86"
+    },
+    "hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006/numerical-convergence01.json": {
+      "bytes": 9837,
+      "sha256": "f239033476fb46b72a073f050b2c6d4c19a93c34cff331d25a5cfdee282ddc3f"
+    }
+  }
+}

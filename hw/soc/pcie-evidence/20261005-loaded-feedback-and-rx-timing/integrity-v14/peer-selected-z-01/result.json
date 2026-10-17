@@ -1,0 +1,66 @@
+{
+  "status": "CONFIRMED_SELECTED_Z_COMPONENT_SEMANTIC_DIFFERENCE",
+  "utc": "2026-10-05T13:42:09.599564+00:00",
+  "returncode": 0,
+  "literal_cases": 6,
+  "fields": [
+    "data",
+    "keep",
+    "sop",
+    "eop",
+    "dllp",
+    "sequence"
+  ],
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/generate_pcie_integrity_read_v14.py": {
+      "bytes": 2153,
+      "sha256": "122858e3c7e1870b3d47eb2322e2c1f2f1d1c5b9c0f8ca5037305595a815338d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v11.v": {
+      "bytes": 190744,
+      "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v14.v": {
+      "bytes": 191363,
+      "sha256": "deaab5503ebbecc3c3caa9c8e007dffadbe7867dc121fbca46b34f8c89db1614"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_integrity_v14_read.py": {
+      "bytes": 6278,
+      "sha256": "76bbd348fb6c80db4c19a02b07856dc266879588deadf9a34fbba17b2dbd1ead"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_integrity_v3_crc.py": {
+      "bytes": 13003,
+      "sha256": "6e6c4b0fb432468bf95303d4bf8918386c4f6c7d4b21d3ad15331416f0284177"
+    },
+    "/home/hasanmelih/.local/bin/iverilog": {
+      "bytes": 151,
+      "sha256": "052eab3e5b71dbc395547dacefe2e13653e9a5e0ac8b1a1fab86c48817e39058"
+    },
+    "/home/hasanmelih/.local/bin/vvp": {
+      "bytes": 146,
+      "sha256": "0172528a53a8cb92a6997ffcb49e25c96def5d22c7537b76816cd1dc9f6d62e8"
+    }
+  },
+  "outputs": {
+    "sim.vvp": {
+      "bytes": 48832,
+      "sha256": "5f02a655899bcc19edd1268cfd7d530ea261fa25552ec60c39d21a0fc6e420d0"
+    },
+    "run.log": {
+      "bytes": 454,
+      "sha256": "1d4bfdb07898c164372e917a75dad2e2055375f5ee943b9ab5125104c9b7ab60"
+    },
+    "compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "tb.v": {
+      "bytes": 7332,
+      "sha256": "881c01488dbb9ec791892cb0039241dba362cc8abb952082f86b556ddaa01bb5"
+    }
+  },
+  "actual_CPU_affinity": [
+    8
+  ],
+  "scope": "Independent Icarus execution of unchanged literal V11/V14 read bodies. Eligible selected high-impedance bits pass through V11 as Z but V14 OR converts them to X in all six data/metadata fields. Does not prove such state reachable under complete-DUT protocol; existing finite 0/1/X successes remain unchanged. No repository RTL or author tests modified."
+}

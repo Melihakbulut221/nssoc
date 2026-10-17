@@ -54,8 +54,9 @@ Four classes of check:
      gated nets rather than on `clk_i_regs`. `docs/33` is the record of
      what a header claim without a census is worth, and `docs/75` is the
      record of a census that counted the right number of the wrong thing.
-     The netlist half skips when no build output is present, exactly as
-     `sw/tests/test_flow_evidence.py` does.
+     Added 2026-09-20: the netlist count always audits the recorded Ethernet
+     baseline, as well as retained historical clock-gate builds. This checks
+     the recorded graph without requiring a new synthesis or a local PDK.
 
 Run with the repository-root suite::
 
@@ -70,6 +71,7 @@ import subprocess
 from pathlib import Path
 
 import pytest
+from evidence import recorded_netlist
 
 ROOT = Path(__file__).resolve().parents[2]
 SOC_RTL = ROOT / "hw" / "soc" / "rtl"
@@ -135,7 +137,12 @@ def test_nothing_in_the_design_selects_the_ungated_configuration():
         "the RTL selects the ungated configuration somewhere: {}".format(
             offenders))
 
-    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh"}
+    # The interface reproduction profile pins the normal gated build; it
+    # cannot inherit an ungated experiment from the caller's environment.
+    profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
+    assert re.search(r"\bSOC_CLKGATE=1\b", profile)
+    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh",
+               "implement_interfaces.sh"}
     setters = set()
     for p in sorted(SOC_FLOW.glob("*.sh")):
         if re.search(r"SOC_CLKGATE", p.read_text()):
@@ -271,8 +278,9 @@ def _netlists():
     return found
 
 
-@pytest.mark.parametrize("nl", _netlists() or [None])
-def test_three_integrated_clock_gates_survive_synthesis(nl):
+@pytest.mark.parametrize("nl", _netlists() + [
+    pytest.param(None, id="recorded-ethernet-baseline")])
+def test_three_integrated_clock_gates_survive_synthesis(nl, tmp_path):
     """The count, on the netlist rather than in the header.
 
     docs/57 found the first gate by grepping the signed-off netlist for
@@ -280,8 +288,8 @@ def test_three_integrated_clock_gates_survive_synthesis(nl):
     none. This is that grep, kept as a test.
     """
     if nl is None:
-        pytest.skip("no hw/soc/out/s76*gate netlist in this tree; "
-                    "SOC_MEM=sram hw/soc/flow/syn_soc_top.sh 20 <out> builds one")
+        nl = recorded_netlist(
+            ROOT / "docs/evidence/ethernet-netlist-20260920.json", tmp_path, ROOT)
     text = nl.read_text()
     names = sorted(re.findall(r"sg13g2_lgcp_1\s+\\(\S+)", text))
     assert len(names) == 3, (
@@ -543,8 +551,8 @@ def test_wake_gnt_defaults_off_and_is_forwarded():
 
 
 def test_nothing_in_the_design_selects_the_wake_qualified_grant():
-    """Only the three flow scripts that carry SOC_CLKGATE may carry
-    SOC_WAKE_GNT, and nothing in the RTL sets the parameter itself."""
+    """Only the flow scripts and the explicitly pinned reproduction profile
+    may carry SOC_WAKE_GNT; nothing in the RTL sets the parameter itself."""
     offenders = []
     for p in sorted(SOC_RTL.glob("*.v")) + sorted(SOC_RTL.glob("*.vh")):
         text = p.read_text()
@@ -556,7 +564,12 @@ def test_nothing_in_the_design_selects_the_wake_qualified_grant():
     assert not offenders, (
         "the RTL selects the wakefulness-qualified grant somewhere: "
         "{}".format(offenders))
-    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh"}
+    profile = (SOC_FLOW / "implement_interfaces.sh").read_text()
+    # The current logic-ROM physical candidate uses the measured WAKE=1
+    # boot profile; legacy module and standalone flow defaults remain zero.
+    assert re.search(r"\bSOC_WAKE_GNT=1\b", profile)
+    allowed = {"syn_soc_top.sh", "sim_soc.sh", "fi_core.sh",
+               "implement_interfaces.sh"}
     setters = {p.name for p in sorted(SOC_FLOW.glob("*.sh"))
                if re.search(r"SOC_WAKE_GNT", p.read_text())}
     assert setters <= allowed, (

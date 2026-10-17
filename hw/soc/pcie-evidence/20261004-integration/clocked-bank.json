@@ -1,0 +1,1950 @@
+{
+  "status": "PASS_FIXED_CLOCKED_BANK_V3_MAIN_DRC_DEEP_FLAT_LVS_AND_THIRTEEN_NEGATIVES_ONLY",
+  "sources": {
+    "hw/soc/flow/make_pcie_clocked_bank_v3.py": {
+      "bytes": 15729,
+      "sha256": "82808021fc2a22cbd32d4099201f1d4848221fce14e7b9ff2d24b696395d2dc8"
+    },
+    "hw/soc/flow/check_pcie_clocked_bank_v3.py": {
+      "bytes": 15286,
+      "sha256": "4b2050f8b139cdaff43e8a3965cca56a42a8bcbd1bde998841ea3710c9fdc575"
+    },
+    "sw/tests/test_pcie_clocked_bank_v3.py": {
+      "bytes": 7212,
+      "sha256": "56e47d38b6e637703d2b4111bdd2b0371898f5a8b767389da55f5fe00e5c2512"
+    }
+  },
+  "results": {
+    "layout": {
+      "result": {
+        "bytes": 65129,
+        "sha256": "0192ac00110ea18e7eb4d7f2cf00e6749f614d4fb219ceb148ccbb6e4b66cf28"
+      },
+      "status": "GENERATED_REQUIRES_CLOCKED_BANK_DRC_LVS_PEX"
+    },
+    "native": {
+      "result": {
+        "bytes": 110892,
+        "sha256": "496f4aa767086753eb46b61b5c0999f7cc03dc88a24eb64f57d05d98e43ef507"
+      },
+      "status": "PASS_CLOCKED_BANK_V3_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_AND_THIRTEEN_NEGATIVE_CONTROLS_ONLY",
+      "steps": [
+        {
+          "name": "drc",
+          "status": "PASS",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/drc/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/drc/drc.lyrdb",
+              "-rd",
+              "threads=2",
+              "-rd",
+              "no_recommended=False",
+              "-rd",
+              "precheck_drc=False"
+            ],
+            "returncode": 0,
+            "seconds": 12.201313024008414,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "85f0ab435c605c3fc279c4af4d0ff2a50af7cbedec7d6b5290f3e22acea978ad"
+          },
+          "measurement": {
+            "status": "PASS",
+            "process_returncode": 0,
+            "markers": 0,
+            "categories": {},
+            "category_count": 560,
+            "report_sha256": "f8ce64d20f1e184226df9f9774169bc07061120315ab6654383489d2997154e2",
+            "log_sha256": "85f0ab435c605c3fc279c4af4d0ff2a50af7cbedec7d6b5290f3e22acea978ad"
+          },
+          "audit": null
+        },
+        {
+          "name": "offgrid",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/offgrid/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/offgrid/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/offgrid/drc.lyrdb",
+              "-rd",
+              "threads=2",
+              "-rd",
+              "no_recommended=False",
+              "-rd",
+              "precheck_drc=False"
+            ],
+            "returncode": 0,
+            "seconds": 14.12736640899675,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "323f43a97f7c121ce61a078a0b24bb15f64c15ff4ac2216fe697241c17474db6"
+          },
+          "measurement": {
+            "status": "FAIL",
+            "process_returncode": 0,
+            "markers": 6,
+            "categories": {
+              "'M1.a'": 2,
+              "metal1_drw_Offgrid": 4
+            },
+            "category_count": 560,
+            "report_sha256": "a6457255c05eeb4ef65dcc6be7cdadb0968ce1c9ae22168100af8d93323bbe48",
+            "log_sha256": "323f43a97f7c121ce61a078a0b24bb15f64c15ff4ac2216fe697241c17474db6"
+          },
+          "audit": null
+        },
+        {
+          "name": "lvs",
+          "status": "PASS within comparison scope",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/lvs/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/lvs/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/lvs/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 9.405614357994637,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "7f7779c7061e9dc0109563ff430701c05c12bcace7dc95e9a4b29ac39838d676"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "Match",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/lvs/result.lvsdb": {
+                "bytes": 1732449,
+                "sha256": "8873767e938231ea507b46d653ed958fc4319de75e32434c39855d6a83e4042b"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/lvs/deck.log": {
+                "bytes": 37039,
+                "sha256": "8263ed4cec06da2718ea0944f9b3e4380c8c3a36fa324cec9d0e34aedc68e91b"
+              }
+            }
+          }
+        },
+        {
+          "name": "lvs_flat",
+          "status": "PASS within comparison scope",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/lvs_flat/deck.log",
+              "-rd",
+              "run_mode=flat",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/lvs_flat/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/lvs_flat/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 8.62381857499713,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "d5089ccf4c6c0bb21abeba8570c103b0fdd12c39e332bb89f2c05d6a6fa1f1da"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "Match",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/lvs_flat/result.lvsdb": {
+                "bytes": 1479281,
+                "sha256": "81e6231989ee597bc3bb7dd825bbf87753bb5d8f8d8f35d84dd3641512bbc6f4"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/lvs_flat/deck.log": {
+                "bytes": 37039,
+                "sha256": "b179c0a76d83c6a1fb6fda2b43ec833714c704badb4a5d8cb77f22d62a512448"
+              }
+            }
+          }
+        },
+        {
+          "name": "sampler_load",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/sampler_load/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-checks-01/sampler_load/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/sampler_load/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/sampler_load/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 9.433886829006951,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "cc1af8e2be07e7d0b3a0bb304e8fe62c2903a5979960606df862239ec3d37e84"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/sampler_load/result.lvsdb": {
+                "bytes": 1732504,
+                "sha256": "12b43ea65cd3bb77010c6a11bf91351e842b80371bc027ce75dfb1dc183108f7"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/sampler_load/deck.log": {
+                "bytes": 37059,
+                "sha256": "120df53da8dc17174b4189deaec26cd8b94afb997994f5b3c8e082a2fefc45cc"
+              }
+            }
+          }
+        },
+        {
+          "name": "wrong_clock",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/wrong_clock/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-checks-01/wrong_clock/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/wrong_clock/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/wrong_clock/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 8.974157021002611,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "204b12aff75097b81b44dea7648fa005f8337eabf1c5aff5dd534da08c613e31"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/wrong_clock/result.lvsdb": {
+                "bytes": 1732688,
+                "sha256": "b55db2bf93fd258a2b15629019dd6ccd6ff6dd40e10bca5374c124e936267dff"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/wrong_clock/deck.log": {
+                "bytes": 37056,
+                "sha256": "2bb6dbdb01fcb711567a61f2d474c1403a1533d371bf7eb79e2806e28759ff19"
+              }
+            }
+          }
+        },
+        {
+          "name": "missing_tap",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/missing_tap/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-checks-01/missing_tap/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/missing_tap/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/missing_tap/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 9.066290735005168,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "285ada62b27cff229ac16319d3fbd066f6e85fbf6cb0e176d30aa01d0d80782e"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/missing_tap/result.lvsdb": {
+                "bytes": 1732437,
+                "sha256": "2b53662fed679d354e72a5b20f75b4d17eb39650fd496a4cf766d7fe5a8bdbdf"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/missing_tap/deck.log": {
+                "bytes": 37056,
+                "sha256": "c32a5a02ef48a362ddba97654fec240b4400bccf751e5788f3e1916a4020cabd"
+              }
+            }
+          }
+        },
+        {
+          "name": "vco_cap",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/vco_cap/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-checks-01/vco_cap/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/vco_cap/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/vco_cap/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 10.39203560698661,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "373a6cfae45617e49d380b1021bcb4178e833e9cfac0df5a4d8de87da48601fd"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/vco_cap/result.lvsdb": {
+                "bytes": 1732462,
+                "sha256": "358933a250f2f30c40349504495d7ef83d4892038327dfbf912b6e1242adfe61"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/vco_cap/deck.log": {
+                "bytes": 37044,
+                "sha256": "a953f4ab791b0a0aa1fdf8377fd5fbc6620ed743fbbf79d1cf640ec9e97ec82b"
+              }
+            }
+          }
+        },
+        {
+          "name": "vco_pmos",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-v3-01/nssoc_pcie_clocked_bank4_v3.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/vco_pmos/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-checks-01/vco_pmos/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/vco_pmos/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/vco_pmos/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 8.838274199981242,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "6999122aa0279e8383e0f210b6096cacc856b61ffd89158f0517805a779e9523"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/vco_pmos/result.lvsdb": {
+                "bytes": 1732938,
+                "sha256": "e03536f1cdb085cd71dae401f12ef3f2ea09962ba310916be9817757056c2b03"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/vco_pmos/deck.log": {
+                "bytes": 37047,
+                "sha256": "11b90c019a4e4b36a477cac6eb7dcfe599c7774ab7b77f5670149a6fbe45e384"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_open",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/clock_open/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/clock_open/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/clock_open/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/clock_open/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 9.10397482800181,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "026a79c968cc986e741feb53ff48a28a7d15dbdd9a4997cfad9ce7222fcda45c"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/clock_open/result.lvsdb": {
+                "bytes": 1731415,
+                "sha256": "976e44bca04c239fbbea3b2ef44ad101ab22718bb7a1177d1ebeb1aaeb6c3350"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/clock_open/deck.log": {
+                "bytes": 37035,
+                "sha256": "6335e35a26abe611a579e36784d98d2e71f3a1f60071aa0984426b2f92a68a71"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_short",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/clock_short/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/clock_short/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/clock_short/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/clock_short/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 9.919012347003445,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "b158ca5e9bbbfc80c0f8647ddda20f1ea20f85d29489b4538040db921fec0497"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 199,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/clock_short/result.lvsdb": {
+                "bytes": 1734349,
+                "sha256": "cb1eb9cc1821f7da3da88cbe58bfce5916bc58c9521a73523632b353740d100c"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/clock_short/deck.log": {
+                "bytes": 37038,
+                "sha256": "17596f7a4a6007e1ce4314a726351bbbd6fc3074799a439980a81ea125c31017"
+              }
+            }
+          }
+        },
+        {
+          "name": "rail_23_25_short",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/rail_23_25_short/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/rail_23_25_short/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/rail_23_25_short/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/rail_23_25_short/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 8.850980012008222,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "6b1eb164aaf94ef191517047494434545befdcea0c0016d3490ab935e8cc5768"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/rail_23_25_short/result.lvsdb": {
+                "bytes": 1735287,
+                "sha256": "ef6f171ec2736010c156bb9d9cbec099e3d10bd58dd87879b6b30b2cf7f0084c"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/rail_23_25_short/deck.log": {
+                "bytes": 37053,
+                "sha256": "df244cc04b74677b072216b12960f81fff21f3d11ead9b56f5d51d8a2ed3b4a7"
+              }
+            }
+          }
+        },
+        {
+          "name": "rail_18_25_short",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/rail_18_25_short/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/rail_18_25_short/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/rail_18_25_short/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/rail_18_25_short/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 8.565977935999399,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "b5d149850b6d44ace286e9eccd75b7dde88ede4a8b9396c7ff01c0bb957ba95e"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/rail_18_25_short/result.lvsdb": {
+                "bytes": 1733295,
+                "sha256": "2a40ccca9476d698f851d001a14f5cc9cf27f3e5689ad43e6582af72f1e05aca"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/rail_18_25_short/deck.log": {
+                "bytes": 37053,
+                "sha256": "4ce29a4af7adfdb87ec408e639f9e667cf1bf38223550f01e0dbd99abfb4a8e6"
+              }
+            }
+          }
+        },
+        {
+          "name": "substrate_short",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/substrate_short/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/substrate_short/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/substrate_short/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/substrate_short/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 9.106502733979141,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "1f52c9440cfc750ea4ac05c1b819703a85beab478db3b5dbf6e74e8e14da3da5"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "NoMatch",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/substrate_short/result.lvsdb": {
+                "bytes": 1732865,
+                "sha256": "7f02b3d16c80eea9b1127defcd675575d552ef7f884931cee769dfdd5bfd7d44"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/substrate_short/deck.log": {
+                "bytes": 37050,
+                "sha256": "a799c65a63d123842e802a76e98c335e0a1f46b23d5e02a4b1fb760229c6187b"
+              }
+            }
+          }
+        },
+        {
+          "name": "vctrl_open",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-clocked-bank-checks-01/vctrl_open/wrong.gds",
+              "-rd",
+              "topcell=nssoc_pcie_clocked_bank4_v3",
+              "-rd",
+              "log=/dev/shm/nssoc-clocked-bank-checks-01/vctrl_open/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-clocked-bank-v3-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-clocked-bank-checks-01/vctrl_open/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-clocked-bank-checks-01/vctrl_open/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 10.146595288999379,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "0d7243ab3d12fa85515525976234aff916dbd3d940b9d180c008b94626db550c"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_clocked_bank4_v3",
+            "reasons": [
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_clocked_bank4_v3",
+                "schematic": "NSSOC_PCIE_CLOCKED_BANK4_V3",
+                "status": "Match",
+                "layout_devices_recursive": 200,
+                "schematic_devices_recursive": 200
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-clocked-bank-checks-01/vctrl_open/result.lvsdb": {
+                "bytes": 1730883,
+                "sha256": "2dfb452198e7f48548164f4a48feb6ac069a8aa064ca516c572b11d8887c795f"
+              },
+              "/dev/shm/nssoc-clocked-bank-checks-01/vctrl_open/deck.log": {
+                "bytes": 37035,
+                "sha256": "6490e777508756e708195b9e19fba83e620a4133bc7b9d2c77408cd89120f8eb"
+              }
+            }
+          }
+        },
+        {
+          "name": "lef",
+          "status": "PASS",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-exit",
+              "/dev/shm/nssoc-clocked-bank-checks-01/lef/inspect.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 1.8924905299791135,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "606ed34cb2d4a2b38763c1fc4c64965a93ee48aab7d11289274615603b2d6900"
+          },
+          "measurement": null,
+          "audit": null
+        },
+        {
+          "name": "lef_missing_pin",
+          "status": "EXPECTED_REJECTION",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-exit",
+              "/dev/shm/nssoc-clocked-bank-checks-01/lef_missing_pin/inspect.tcl"
+            ],
+            "returncode": 1,
+            "seconds": 1.8599814210028853,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "5c0a069dd3cb4e5290ea876cc21e0b239343e5b6043a03796a4799cf128141a1"
+          },
+          "measurement": null,
+          "audit": null
+        }
+      ]
+    },
+    "parents/bank-v2": {
+      "result": {
+        "bytes": 90397,
+        "sha256": "20dcc3309215cfed1a781a8b026dc6db7114a1ec4476c420155799408e693172"
+      },
+      "status": "GENERATED_REQUIRES_BANK_DRC_LVS_PEX"
+    },
+    "parents/vco": {
+      "result": {
+        "bytes": 100168,
+        "sha256": "5181af78eaa6b7ea86a083671cc510ebb9fb812cda9f975e06d646a41488ce8f"
+      },
+      "status": "GENERATED_REQUIRES_NATIVE_DRC_LVS_AND_PEX"
+    }
+  },
+  "physical": {
+    "bbox_um": [
+      0,
+      0,
+      1650,
+      3000
+    ],
+    "hbt": 110,
+    "polysilicon_resistors": 81,
+    "cmim": 6,
+    "hv_pmos": 1,
+    "physical_ptap": 104,
+    "physical_ntap": 1,
+    "combined_lvs_devices": 200,
+    "external_ports": 54,
+    "rx_sampler_paths": 8,
+    "clock_branches": 8,
+    "main_drc_markers": 0,
+    "main_rule_categories": 560,
+    "negative_controls": 13,
+    "both_deep_and_flat_strict_lvs": true
+  },
+  "geometry_preservation": {
+    "BANK": {
+      "unchanged_geometry_layers": [
+        "8/0",
+        "10/0",
+        "19/0",
+        "1/0",
+        "14/0",
+        "6/0",
+        "63/0",
+        "33/0",
+        "1/20",
+        "7/21",
+        "26/0",
+        "30/0",
+        "29/0",
+        "50/0",
+        "49/0",
+        "5/0",
+        "111/0",
+        "128/0",
+        "52/0",
+        "28/0",
+        "40/0",
+        "67/0",
+        "66/0",
+        "24/0",
+        "126/0",
+        "134/0",
+        "133/0",
+        "125/0"
+      ],
+      "removed_top_pin_metadata": {
+        "8/2": 0,
+        "10/2": 0,
+        "134/2": 4,
+        "134/25": 4,
+        "126/2": 56,
+        "126/25": 56,
+        "67/2": 0,
+        "67/25": 0
+      },
+      "offset_um": [
+        100.0,
+        20.0
+      ],
+      "bbox_um": "(100,20;1170,2660)",
+      "ports": {
+        "L0_TX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            79.0,
+            102.0,
+            81.0
+          ]
+        },
+        "L0_TX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            79.0,
+            1170.0,
+            81.0
+          ]
+        },
+        "L0_TX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            51.0,
+            102.0,
+            53.0
+          ]
+        },
+        "L0_TX_OUTN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            87.0,
+            102.0,
+            89.0
+          ]
+        },
+        "L0_TX_OUTP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            87.0,
+            1170.0,
+            89.0
+          ]
+        },
+        "L0_RX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            264.0,
+            102.0,
+            266.0
+          ]
+        },
+        "L0_RX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            264.0,
+            1170.0,
+            266.0
+          ]
+        },
+        "L0_RX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            236.0,
+            102.0,
+            238.0
+          ]
+        },
+        "L0_RX_VCM": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            352.0,
+            1170.0,
+            354.0
+          ]
+        },
+        "L0_SAMPLER_QP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            485.03000000000003,
+            1170.0,
+            487.03000000000003
+          ]
+        },
+        "L0_SAMPLER_QN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            495.03000000000003,
+            1170.0,
+            497.03000000000003
+          ]
+        },
+        "L0_SAMPLER_CLKP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            505.03000000000003,
+            102.0,
+            507.03000000000003
+          ]
+        },
+        "L0_SAMPLER_CLKN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            515.03,
+            102.0,
+            517.03
+          ]
+        },
+        "L0_SAMPLER_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            555.03,
+            102.0,
+            557.03
+          ]
+        },
+        "L1_TX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            739.0,
+            102.0,
+            741.0
+          ]
+        },
+        "L1_TX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            739.0,
+            1170.0,
+            741.0
+          ]
+        },
+        "L1_TX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            711.0,
+            102.0,
+            713.0
+          ]
+        },
+        "L1_TX_OUTN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            747.0,
+            102.0,
+            749.0
+          ]
+        },
+        "L1_TX_OUTP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            747.0,
+            1170.0,
+            749.0
+          ]
+        },
+        "L1_RX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            924.0,
+            102.0,
+            926.0
+          ]
+        },
+        "L1_RX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            924.0,
+            1170.0,
+            926.0
+          ]
+        },
+        "L1_RX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            896.0,
+            102.0,
+            898.0
+          ]
+        },
+        "L1_RX_VCM": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1012.0,
+            1170.0,
+            1014.0
+          ]
+        },
+        "L1_SAMPLER_QP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1145.03,
+            1170.0,
+            1147.03
+          ]
+        },
+        "L1_SAMPLER_QN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1155.03,
+            1170.0,
+            1157.03
+          ]
+        },
+        "L1_SAMPLER_CLKP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1165.03,
+            102.0,
+            1167.03
+          ]
+        },
+        "L1_SAMPLER_CLKN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1175.03,
+            102.0,
+            1177.03
+          ]
+        },
+        "L1_SAMPLER_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1215.03,
+            102.0,
+            1217.03
+          ]
+        },
+        "L2_TX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1399.0,
+            102.0,
+            1401.0
+          ]
+        },
+        "L2_TX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1399.0,
+            1170.0,
+            1401.0
+          ]
+        },
+        "L2_TX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1371.0,
+            102.0,
+            1373.0
+          ]
+        },
+        "L2_TX_OUTN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1407.0,
+            102.0,
+            1409.0
+          ]
+        },
+        "L2_TX_OUTP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1407.0,
+            1170.0,
+            1409.0
+          ]
+        },
+        "L2_RX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1584.0,
+            102.0,
+            1586.0
+          ]
+        },
+        "L2_RX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1584.0,
+            1170.0,
+            1586.0
+          ]
+        },
+        "L2_RX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1556.0,
+            102.0,
+            1558.0
+          ]
+        },
+        "L2_RX_VCM": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1672.0,
+            1170.0,
+            1674.0
+          ]
+        },
+        "L2_SAMPLER_QP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1805.03,
+            1170.0,
+            1807.03
+          ]
+        },
+        "L2_SAMPLER_QN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            1815.03,
+            1170.0,
+            1817.03
+          ]
+        },
+        "L2_SAMPLER_CLKP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1825.03,
+            102.0,
+            1827.03
+          ]
+        },
+        "L2_SAMPLER_CLKN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1835.03,
+            102.0,
+            1837.03
+          ]
+        },
+        "L2_SAMPLER_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            1875.03,
+            102.0,
+            1877.03
+          ]
+        },
+        "L3_TX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2059.0,
+            102.0,
+            2061.0
+          ]
+        },
+        "L3_TX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            2059.0,
+            1170.0,
+            2061.0
+          ]
+        },
+        "L3_TX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2031.0,
+            102.0,
+            2033.0
+          ]
+        },
+        "L3_TX_OUTN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2067.0,
+            102.0,
+            2069.0
+          ]
+        },
+        "L3_TX_OUTP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            2067.0,
+            1170.0,
+            2069.0
+          ]
+        },
+        "L3_RX_INP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2244.0,
+            102.0,
+            2246.0
+          ]
+        },
+        "L3_RX_INN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            2244.0,
+            1170.0,
+            2246.0
+          ]
+        },
+        "L3_RX_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2216.0,
+            102.0,
+            2218.0
+          ]
+        },
+        "L3_RX_VCM": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            2332.0,
+            1170.0,
+            2334.0
+          ]
+        },
+        "L3_SAMPLER_QP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            2465.03,
+            1170.0,
+            2467.03
+          ]
+        },
+        "L3_SAMPLER_QN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            1168.0,
+            2475.03,
+            1170.0,
+            2477.03
+          ]
+        },
+        "L3_SAMPLER_CLKP": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2485.03,
+            102.0,
+            2487.03
+          ]
+        },
+        "L3_SAMPLER_CLKN": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2495.03,
+            102.0,
+            2497.03
+          ]
+        },
+        "L3_SAMPLER_IREF": {
+          "layer": "TopMetal1",
+          "rect_um": [
+            100.0,
+            2535.03,
+            102.0,
+            2537.03
+          ]
+        },
+        "AVDD1V8": {
+          "layer": "TopMetal2",
+          "rect_um": [
+            1088.0,
+            20.0,
+            1092.0,
+            24.0
+          ]
+        },
+        "AVDD2V5": {
+          "layer": "TopMetal2",
+          "rect_um": [
+            1108.0,
+            20.0,
+            1112.0,
+            24.0
+          ]
+        },
+        "AVSS": {
+          "layer": "TopMetal2",
+          "rect_um": [
+            1128.0,
+            20.0,
+            1132.0,
+            24.0
+          ]
+        },
+        "SUB": {
+          "layer": "TopMetal2",
+          "rect_um": [
+            1148.0,
+            20.0,
+            1152.0,
+            24.0
+          ]
+        }
+      }
+    },
+    "VCO": {
+      "unchanged_geometry_layers": [
+        "8/0",
+        "1/0",
+        "14/0",
+        "6/0",
+        "63/0",
+        "40/0",
+        "28/0",
+        "5/0",
+        "128/0",
+        "111/0",
+        "52/0",
+        "126/0",
+        "67/0",
+        "129/0",
+        "36/0",
+        "50/0",
+        "66/0",
+        "125/0",
+        "19/0",
+        "33/0",
+        "1/20",
+        "7/21",
+        "10/0",
+        "26/0",
+        "30/0",
+        "29/0",
+        "49/0",
+        "31/0",
+        "32/0",
+        "44/0",
+        "51/0"
+      ],
+      "removed_top_pin_metadata": {
+        "8/2": 0,
+        "10/2": 0,
+        "31/2": 0,
+        "5/2": 0,
+        "67/2": 6,
+        "67/25": 6,
+        "126/2": 0,
+        "126/25": 0,
+        "134/2": 0,
+        "134/25": 0
+      },
+      "offset_um": [
+        100.0,
+        2700.0
+      ],
+      "bbox_um": "(100,2700;1500,2977.03)",
+      "ports": {
+        "CLKP": {
+          "layer": "Metal5",
+          "rect_um": [
+            1498.0,
+            2785.03,
+            1500.0,
+            2787.03
+          ]
+        },
+        "CLKN": {
+          "layer": "Metal5",
+          "rect_um": [
+            1498.0,
+            2795.03,
+            1500.0,
+            2797.03
+          ]
+        },
+        "VCTRL": {
+          "layer": "Metal5",
+          "rect_um": [
+            100.0,
+            2805.03,
+            102.0,
+            2807.03
+          ]
+        },
+        "AVDD": {
+          "layer": "Metal5",
+          "rect_um": [
+            100.0,
+            2815.03,
+            102.0,
+            2817.03
+          ]
+        },
+        "AVSS": {
+          "layer": "Metal5",
+          "rect_um": [
+            100.0,
+            2825.03,
+            102.0,
+            2827.03
+          ]
+        },
+        "SUB": {
+          "layer": "Metal5",
+          "rect_um": [
+            100.0,
+            2835.03,
+            102.0,
+            2837.03
+          ]
+        }
+      }
+    }
+  },
+  "clock_connections": [
+    {
+      "source": "VCO_CLKP",
+      "sink": "L0_SAMPLER_CLKP",
+      "net": "CLOCKP",
+      "branch": {
+        "net": "CLOCKP",
+        "layer": "TopMetal1",
+        "rect_um": [
+          30.0,
+          505.03000000000003,
+          101.0,
+          507.03000000000003
+        ],
+        "terminal": "L0_SAMPLER_CLKP"
+      }
+    },
+    {
+      "source": "VCO_CLKN",
+      "sink": "L0_SAMPLER_CLKN",
+      "net": "CLOCKN",
+      "branch": {
+        "net": "CLOCKN",
+        "layer": "TopMetal1",
+        "rect_um": [
+          50.0,
+          515.03,
+          101.0,
+          517.03
+        ],
+        "terminal": "L0_SAMPLER_CLKN"
+      }
+    },
+    {
+      "source": "VCO_CLKP",
+      "sink": "L1_SAMPLER_CLKP",
+      "net": "CLOCKP",
+      "branch": {
+        "net": "CLOCKP",
+        "layer": "TopMetal1",
+        "rect_um": [
+          30.0,
+          1165.03,
+          101.0,
+          1167.03
+        ],
+        "terminal": "L1_SAMPLER_CLKP"
+      }
+    },
+    {
+      "source": "VCO_CLKN",
+      "sink": "L1_SAMPLER_CLKN",
+      "net": "CLOCKN",
+      "branch": {
+        "net": "CLOCKN",
+        "layer": "TopMetal1",
+        "rect_um": [
+          50.0,
+          1175.03,
+          101.0,
+          1177.03
+        ],
+        "terminal": "L1_SAMPLER_CLKN"
+      }
+    },
+    {
+      "source": "VCO_CLKP",
+      "sink": "L2_SAMPLER_CLKP",
+      "net": "CLOCKP",
+      "branch": {
+        "net": "CLOCKP",
+        "layer": "TopMetal1",
+        "rect_um": [
+          30.0,
+          1825.03,
+          101.0,
+          1827.03
+        ],
+        "terminal": "L2_SAMPLER_CLKP"
+      }
+    },
+    {
+      "source": "VCO_CLKN",
+      "sink": "L2_SAMPLER_CLKN",
+      "net": "CLOCKN",
+      "branch": {
+        "net": "CLOCKN",
+        "layer": "TopMetal1",
+        "rect_um": [
+          50.0,
+          1835.03,
+          101.0,
+          1837.03
+        ],
+        "terminal": "L2_SAMPLER_CLKN"
+      }
+    },
+    {
+      "source": "VCO_CLKP",
+      "sink": "L3_SAMPLER_CLKP",
+      "net": "CLOCKP",
+      "branch": {
+        "net": "CLOCKP",
+        "layer": "TopMetal1",
+        "rect_um": [
+          30.0,
+          2485.03,
+          101.0,
+          2487.03
+        ],
+        "terminal": "L3_SAMPLER_CLKP"
+      }
+    },
+    {
+      "source": "VCO_CLKN",
+      "sink": "L3_SAMPLER_CLKN",
+      "net": "CLOCKN",
+      "branch": {
+        "net": "CLOCKN",
+        "layer": "TopMetal1",
+        "rect_um": [
+          50.0,
+          2495.03,
+          101.0,
+          2497.03
+        ],
+        "terminal": "L3_SAMPLER_CLKN"
+      }
+    }
+  ],
+  "validation": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_pcie_clocked_bank_v3.py sw/tests/test_pcie_clock_vco_layout.py sw/tests/test_pcie_sampler_layout.py sw/tests/test_pcie_rx_cell.py sw/tests/test_pcie_analog_bank.py -q -p no:cacheprovider",
+    "passed": 117,
+    "ruff": "All checks passed"
+  },
+  "native": {
+    "pdk": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "deck": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+    "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "child_memory_limit_bytes": 2147483648
+  },
+  "reproduction": {
+    "generate": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python hw/soc/flow/make_pcie_clocked_bank_v3.py --pdk PDK --bank ORIGINAL_BANK_V2 --vco ORIGINAL_VCO --out /dev/shm/nssoc-clocked-NEW",
+    "check": "python hw/soc/flow/check_pcie_clocked_bank_v3.py --pdk PDK --layout /dev/shm/nssoc-clocked-NEW --out /dev/shm/nssoc-clocked-CHECKNEW",
+    "parents": "Both exact parent generated GDS/LEF/SPICE/result files included under parents/. Their transitive pinned source/runtime/PDK paths must be present; original source methods and circuits are also included. No old producer is modified."
+  },
+  "assumptions": {
+    "tx_rx_supply_v": 1.8,
+    "sampler_supply_v": 2.5,
+    "vco_supply_v": 2.3,
+    "external_vctrl": true,
+    "external_bias": true,
+    "clock_fanout_qualified": false,
+    "post_layout_8ghz_qualified": false,
+    "qualified_pex": false,
+    "em_qualified": false,
+    "pll_or_cdr_complete": false,
+    "main_chip_integrated": false,
+    "manufacturing_approval": false
+  },
+  "render": {
+    "path": "hw/soc/out/pcie-clocked-bank-v3-20261004/combined-bank-v3.png",
+    "bytes": 37285,
+    "sha256": "1ea9d6b2e5af7125eade992ab8b1aeff37095a39b83f3af6899d93f4d9d3b01d",
+    "method": "Native KLayout LayoutView load original GDS, original PDK layer properties, full hierarchy and save_image. Only grid/text visibility altered; no generated illustration."
+  },
+  "retention": "All final native physical views, complete positive/negative logs and databases, generated fault inputs and exact project source copies retained. No vendor runtime or implementation source redistributed.",
+  "limitations": "The fixed VCO drives four differential sampler clock branches by real metal. Native connectivity/DRC does not prove electrical fanout, input common-mode compatibility, extracted parasitics, current density, clock skew/jitter or post-layout 8GHz performance. The original VCO has independent real corner headroom failures. No PLL locking or clock/data recovery and no main-chip integration is claimed.",
+  "capsule": {
+    "path": "hw/soc/out/pcie-clocked-bank-v3-20261004/clocked-bank-v3-native-final.tar.xz",
+    "bytes": 332380,
+    "sha256": "b649b822b02374ed1cc66251d35cc019ebb01e6a9121ab1d7f989a23ea60f8cb",
+    "members": 157
+  }
+}

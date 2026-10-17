@@ -1,0 +1,153 @@
+{
+  "run": 38349972455,
+  "source_head": "7f63df44",
+  "status": "REJECTED_NATIVE_LVS_MULTIPLE_SHORTS",
+  "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38349972455-1-layout-final_drive_v5-critical_buses_power_trunks/tx-layout-repair-cloud-final_drive_v5-critical_buses_power_trunks-38349972455-1.summary.json",
+  "summary_sha256": "e30026c21675706208e8ca76bcb29a1d743f7a7a2970f5a8e381162285fa5542",
+  "physical": {
+    "status": "FAIL",
+    "steps": {
+      "drc": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_final_drive_v5_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/drc/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/drc/drc.lyrdb",
+            "-rd",
+            "threads=2",
+            "-rd",
+            "no_recommended=False",
+            "-rd",
+            "precheck_drc=False"
+          ],
+          "returncode": 0,
+          "seconds": 6.838568081999995,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "d6a17990a34d250511225421c71b2162c2da1b4ca75d99b94284e7a1d1a17b01"
+        },
+        "measurement": {
+          "status": "PASS",
+          "process_returncode": 0,
+          "markers": 0,
+          "categories": {},
+          "category_count": 560,
+          "report_sha256": "bf129ba7e8031c93c52fbf00fe011aff12ea5d643cb972fb917c3990cb28e24e",
+          "log_sha256": "d6a17990a34d250511225421c71b2162c2da1b4ca75d99b94284e7a1d1a17b01"
+        },
+        "status": "PASS"
+      },
+      "lvs": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_final_drive_v5_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 4.977375887999983,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "04fa9a152ff1554ffd4acbcceeb4e24f0b47903f6c3214f888a0afee9c1be185"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/audit.json"
+          ],
+          "returncode": 1,
+          "seconds": 1.0323329559999763,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+        },
+        "audit": {
+          "status": "FAIL",
+          "top": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+          "reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "NoMatch": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V5_LAYOUT_V1",
+              "status": "NoMatch",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+              "bytes": 273855,
+              "sha256": "fe527963bd612f1ff85ff53a998007a54705d497ba98d013800be5d6dd4238ef"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+              "bytes": 37159,
+              "sha256": "191b5998b15f93792842f9e4b336e06c0a174d1158897f9d35339f44ef1f1946"
+            }
+          }
+        }
+      }
+    },
+    "serial_phy_complete": false,
+    "main_chip_integrated": false,
+    "qualified_pex": false,
+    "error": "ValueError('Strict transistor comparison failed')"
+  },
+  "diagnosis": {
+    "native_report_reader": 38350134677,
+    "observation": "Native extracted ports merge avdd|on|op|sub. Pitch28.8 aligns each prior sub trunk x+19.2 with next resistor signal trunk x+28.8-9.6. DRC cannot distinguish different logical nets once merged.",
+    "repair": "Use38.4um resistorbank pitch, separating adjacent signal trunks, native pin accesses and prior substrate trunks. Unchanged circuit values and proof gates."
+  },
+  "adopted": false
+}

@@ -1,0 +1,376 @@
+{
+  "status": "NATIVE_PLACEMENT_AND_ESTIMATED_STA_COMPLETE_ROUTING_RUNNING",
+  "runs": [
+    38334595459,
+    38335168863
+  ],
+  "prior_run": 38334297776,
+  "prior_failure": "Native legalization and invariant check passed; fault injector attempted to move FIRM instance, causing ODB0359 abort. Explicit temporary unlock of only the in-memory fault victim repairs test mechanics; no circuit/constraint relaxation. Original failed artifacts retained.",
+  "conclusion": "Broad leftward moves worsen PCIe slow setup from-1.275681ns to-7.354043/-8.248657ns and are not adopted. Bounded local DPO changes433of932eligiblecells with unchanged PCIe setup/hold worst slacks; EthernetRX setup+0.021432ns,TX+0.116203ns. Routing remains live, no route/signoff acceptance.",
+  "documentation": "https://openroad.readthedocs.io/en/latest/main/src/dpl/README.html",
+  "profiles": {
+    "left_spread": {
+      "milestone_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-postcts-placement-left_spread-38334595459-1.pre-route.json",
+      "milestone_sha256": "c38079614b6c900fa4a9d465acab135bb84ba2cc2c5ca5720ef2c5b311c5ba39",
+      "source_odb_sha256": "e4e04605899913e69784bc32d4fabc39350fec8b975c6fdab095a6b95262d292",
+      "candidate_odb_sha256": "1cb5aa6d1f70086c2f189f2e0e7ee977f3dc85aae2e29ade7ee8fd8be0c0d5ff",
+      "connectivity_sha256": "cd1853c79dd15675ec3ae2ea05edca7f4a0b91edaa0daa49090a1a3acf9a5e38",
+      "instances": 113771,
+      "selected_count": 932,
+      "changed_count": 932,
+      "native_fault_controls": [
+        "unselected_cell_displacement_rejected",
+        "disconnected_cell_pin_rejected"
+      ],
+      "before": {
+        "slow_max": {
+          "asynchronous": -0.916105,
+          "path delay": 1.861444,
+          "clk_i": -0.589711,
+          "eth_gtx": 3.564959,
+          "eth_rx_clk_i": 0.022355,
+          "eth_tx_clk_i": 0.116145,
+          "pcie_clk_i": -1.275681
+        },
+        "slow_min": {
+          "asynchronous": 0.583182,
+          "clk_i": 0.194697,
+          "eth_gtx": 0.479709,
+          "eth_rx_clk_i": 0.179726,
+          "eth_tx_clk_i": 0.570716,
+          "pcie_clk_i": 0.160809
+        },
+        "typical_max": {
+          "asynchronous": 0.556846,
+          "path delay": 2.367791,
+          "clk_i": 6.901612,
+          "eth_gtx": 4.202464,
+          "eth_rx_clk_i": 3.112331,
+          "eth_tx_clk_i": 3.170683,
+          "pcie_clk_i": 0.101957
+        },
+        "typical_min": {
+          "asynchronous": 0.285018,
+          "clk_i": 0.041541,
+          "eth_gtx": 0.01852,
+          "eth_rx_clk_i": 0.178271,
+          "eth_tx_clk_i": 0.265772,
+          "pcie_clk_i": 0.02501
+        },
+        "fast_max": {
+          "asynchronous": 1.423023,
+          "path delay": 2.64231,
+          "clk_i": 10.791141,
+          "eth_gtx": 4.546548,
+          "eth_rx_clk_i": 4.236168,
+          "eth_tx_clk_i": 4.716456,
+          "pcie_clk_i": 0.82051
+        },
+        "fast_min": {
+          "asynchronous": 0.103703,
+          "clk_i": -0.054434,
+          "eth_gtx": -0.227544,
+          "eth_rx_clk_i": 0.078263,
+          "eth_tx_clk_i": 0.090726,
+          "pcie_clk_i": -0.065767
+        }
+      },
+      "after": {
+        "slow_max": {
+          "asynchronous": -0.916105,
+          "path delay": 1.861444,
+          "clk_i": -0.589711,
+          "eth_gtx": 3.564959,
+          "eth_rx_clk_i": -0.509033,
+          "eth_tx_clk_i": -1.025816,
+          "pcie_clk_i": -8.248657
+        },
+        "slow_min": {
+          "asynchronous": 0.583182,
+          "clk_i": 0.194697,
+          "eth_gtx": 0.479709,
+          "eth_rx_clk_i": 0.179726,
+          "eth_tx_clk_i": 0.570716,
+          "pcie_clk_i": 0.160809
+        },
+        "typical_max": {
+          "asynchronous": 0.556846,
+          "path delay": 2.367791,
+          "clk_i": 6.901612,
+          "eth_gtx": 4.202464,
+          "eth_rx_clk_i": 2.774678,
+          "eth_tx_clk_i": 2.437464,
+          "pcie_clk_i": -3.642352
+        },
+        "typical_min": {
+          "asynchronous": 0.285018,
+          "clk_i": 0.041541,
+          "eth_gtx": 0.01852,
+          "eth_rx_clk_i": 0.178271,
+          "eth_tx_clk_i": 0.265772,
+          "pcie_clk_i": 0.02501
+        },
+        "fast_max": {
+          "asynchronous": 1.423023,
+          "path delay": 2.64231,
+          "clk_i": 10.791141,
+          "eth_gtx": 4.546548,
+          "eth_rx_clk_i": 4.236168,
+          "eth_tx_clk_i": 4.379353,
+          "pcie_clk_i": -0.999764
+        },
+        "fast_min": {
+          "asynchronous": 0.103703,
+          "clk_i": -0.054434,
+          "eth_gtx": -0.227544,
+          "eth_rx_clk_i": 0.078263,
+          "eth_tx_clk_i": 0.090726,
+          "pcie_clk_i": -0.065767
+        }
+      },
+      "adopted": false
+    },
+    "left_compact": {
+      "milestone_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-postcts-placement-left_compact-38334595459-1.pre-route.json",
+      "milestone_sha256": "7d134f13dd2f5c780e5f69a1b78b8daf2f7b437e3f200e58c9f660e1d45cfcb9",
+      "source_odb_sha256": "e4e04605899913e69784bc32d4fabc39350fec8b975c6fdab095a6b95262d292",
+      "candidate_odb_sha256": "59d61ed639ada88038bcc71c12cba71fab92168db5459db0ebcec91090bc470d",
+      "connectivity_sha256": "cd1853c79dd15675ec3ae2ea05edca7f4a0b91edaa0daa49090a1a3acf9a5e38",
+      "instances": 113771,
+      "selected_count": 932,
+      "changed_count": 932,
+      "native_fault_controls": [
+        "unselected_cell_displacement_rejected",
+        "disconnected_cell_pin_rejected"
+      ],
+      "before": {
+        "slow_max": {
+          "asynchronous": -0.916105,
+          "path delay": 1.861444,
+          "clk_i": -0.589711,
+          "eth_gtx": 3.564959,
+          "eth_rx_clk_i": 0.022355,
+          "eth_tx_clk_i": 0.116145,
+          "pcie_clk_i": -1.275681
+        },
+        "slow_min": {
+          "asynchronous": 0.583182,
+          "clk_i": 0.194697,
+          "eth_gtx": 0.479709,
+          "eth_rx_clk_i": 0.179726,
+          "eth_tx_clk_i": 0.570716,
+          "pcie_clk_i": 0.160809
+        },
+        "typical_max": {
+          "asynchronous": 0.556846,
+          "path delay": 2.367791,
+          "clk_i": 6.901612,
+          "eth_gtx": 4.202464,
+          "eth_rx_clk_i": 3.112331,
+          "eth_tx_clk_i": 3.170683,
+          "pcie_clk_i": 0.101957
+        },
+        "typical_min": {
+          "asynchronous": 0.285018,
+          "clk_i": 0.041541,
+          "eth_gtx": 0.01852,
+          "eth_rx_clk_i": 0.178271,
+          "eth_tx_clk_i": 0.265772,
+          "pcie_clk_i": 0.02501
+        },
+        "fast_max": {
+          "asynchronous": 1.423023,
+          "path delay": 2.64231,
+          "clk_i": 10.791141,
+          "eth_gtx": 4.546548,
+          "eth_rx_clk_i": 4.236168,
+          "eth_tx_clk_i": 4.716456,
+          "pcie_clk_i": 0.82051
+        },
+        "fast_min": {
+          "asynchronous": 0.103703,
+          "clk_i": -0.054434,
+          "eth_gtx": -0.227544,
+          "eth_rx_clk_i": 0.078263,
+          "eth_tx_clk_i": 0.090726,
+          "pcie_clk_i": -0.065767
+        }
+      },
+      "after": {
+        "slow_max": {
+          "asynchronous": -0.916105,
+          "path delay": 1.861444,
+          "clk_i": -0.589711,
+          "eth_gtx": 3.564959,
+          "eth_rx_clk_i": -0.415519,
+          "eth_tx_clk_i": -1.011816,
+          "pcie_clk_i": -7.354043
+        },
+        "slow_min": {
+          "asynchronous": 0.583182,
+          "clk_i": 0.194697,
+          "eth_gtx": 0.479709,
+          "eth_rx_clk_i": 0.179726,
+          "eth_tx_clk_i": 0.570716,
+          "pcie_clk_i": 0.160809
+        },
+        "typical_max": {
+          "asynchronous": 0.556846,
+          "path delay": 2.367791,
+          "clk_i": 6.901612,
+          "eth_gtx": 4.202464,
+          "eth_rx_clk_i": 2.835604,
+          "eth_tx_clk_i": 2.44668,
+          "pcie_clk_i": -3.113933
+        },
+        "typical_min": {
+          "asynchronous": 0.285018,
+          "clk_i": 0.041541,
+          "eth_gtx": 0.01852,
+          "eth_rx_clk_i": 0.178271,
+          "eth_tx_clk_i": 0.265772,
+          "pcie_clk_i": 0.02501
+        },
+        "fast_max": {
+          "asynchronous": 1.423023,
+          "path delay": 2.64231,
+          "clk_i": 10.791141,
+          "eth_gtx": 4.546548,
+          "eth_rx_clk_i": 4.236168,
+          "eth_tx_clk_i": 4.38566,
+          "pcie_clk_i": -0.681623
+        },
+        "fast_min": {
+          "asynchronous": 0.103703,
+          "clk_i": -0.054434,
+          "eth_gtx": -0.227544,
+          "eth_rx_clk_i": 0.078263,
+          "eth_tx_clk_i": 0.090726,
+          "pcie_clk_i": -0.065767
+        }
+      },
+      "adopted": false
+    },
+    "local_optimize": {
+      "milestone_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/newer-postcts-placement-local_optimize-38335168863-1.pre-route.json",
+      "milestone_sha256": "aefeb3315ebb6910361118821a4bfd3a7916b52c8b3db0db3f22e4977a4f2f29",
+      "source_odb_sha256": "e4e04605899913e69784bc32d4fabc39350fec8b975c6fdab095a6b95262d292",
+      "candidate_odb_sha256": "efb1f743f4f3b752af42cfdb8a077233b240542ef279cb76e83e4e4e16a735e4",
+      "connectivity_sha256": "cd1853c79dd15675ec3ae2ea05edca7f4a0b91edaa0daa49090a1a3acf9a5e38",
+      "instances": 113771,
+      "selected_count": 932,
+      "changed_count": 433,
+      "native_fault_controls": [
+        "unselected_cell_displacement_rejected",
+        "disconnected_cell_pin_rejected"
+      ],
+      "before": {
+        "slow_max": {
+          "asynchronous": -0.916105,
+          "path delay": 1.861444,
+          "clk_i": -0.589711,
+          "eth_gtx": 3.564959,
+          "eth_rx_clk_i": 0.022355,
+          "eth_tx_clk_i": 0.116145,
+          "pcie_clk_i": -1.275681
+        },
+        "slow_min": {
+          "asynchronous": 0.583182,
+          "clk_i": 0.194697,
+          "eth_gtx": 0.479709,
+          "eth_rx_clk_i": 0.179726,
+          "eth_tx_clk_i": 0.570716,
+          "pcie_clk_i": 0.160809
+        },
+        "typical_max": {
+          "asynchronous": 0.556846,
+          "path delay": 2.367791,
+          "clk_i": 6.901612,
+          "eth_gtx": 4.202464,
+          "eth_rx_clk_i": 3.112331,
+          "eth_tx_clk_i": 3.170683,
+          "pcie_clk_i": 0.101957
+        },
+        "typical_min": {
+          "asynchronous": 0.285018,
+          "clk_i": 0.041541,
+          "eth_gtx": 0.01852,
+          "eth_rx_clk_i": 0.178271,
+          "eth_tx_clk_i": 0.265772,
+          "pcie_clk_i": 0.02501
+        },
+        "fast_max": {
+          "asynchronous": 1.423023,
+          "path delay": 2.64231,
+          "clk_i": 10.791141,
+          "eth_gtx": 4.546548,
+          "eth_rx_clk_i": 4.236168,
+          "eth_tx_clk_i": 4.716456,
+          "pcie_clk_i": 0.82051
+        },
+        "fast_min": {
+          "asynchronous": 0.103703,
+          "clk_i": -0.054434,
+          "eth_gtx": -0.227544,
+          "eth_rx_clk_i": 0.078263,
+          "eth_tx_clk_i": 0.090726,
+          "pcie_clk_i": -0.065767
+        }
+      },
+      "after": {
+        "slow_max": {
+          "asynchronous": -0.916105,
+          "path delay": 1.861444,
+          "clk_i": -0.589711,
+          "eth_gtx": 3.564959,
+          "eth_rx_clk_i": 0.021432,
+          "eth_tx_clk_i": 0.116203,
+          "pcie_clk_i": -1.275681
+        },
+        "slow_min": {
+          "asynchronous": 0.583182,
+          "clk_i": 0.194697,
+          "eth_gtx": 0.479709,
+          "eth_rx_clk_i": 0.179726,
+          "eth_tx_clk_i": 0.570716,
+          "pcie_clk_i": 0.160809
+        },
+        "typical_max": {
+          "asynchronous": 0.556846,
+          "path delay": 2.367791,
+          "clk_i": 6.901612,
+          "eth_gtx": 4.202464,
+          "eth_rx_clk_i": 3.111845,
+          "eth_tx_clk_i": 3.170705,
+          "pcie_clk_i": 0.101957
+        },
+        "typical_min": {
+          "asynchronous": 0.285018,
+          "clk_i": 0.041541,
+          "eth_gtx": 0.01852,
+          "eth_rx_clk_i": 0.178271,
+          "eth_tx_clk_i": 0.265772,
+          "pcie_clk_i": 0.02501
+        },
+        "fast_max": {
+          "asynchronous": 1.423023,
+          "path delay": 2.64231,
+          "clk_i": 10.791141,
+          "eth_gtx": 4.546548,
+          "eth_rx_clk_i": 4.236168,
+          "eth_tx_clk_i": 4.716456,
+          "pcie_clk_i": 0.82051
+        },
+        "fast_min": {
+          "asynchronous": 0.103703,
+          "clk_i": -0.054434,
+          "eth_gtx": -0.227544,
+          "eth_rx_clk_i": 0.078263,
+          "eth_tx_clk_i": 0.090726,
+          "pcie_clk_i": -0.065767
+        }
+      },
+      "adopted": false
+    }
+  }
+}

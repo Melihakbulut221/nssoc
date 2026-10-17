@@ -1,0 +1,166 @@
+{
+  "recorded": "2026-09-30T22:50:46.541939+03:00",
+  "status": "FIXED_FRESH_PUBLICATION_BUILD_VERIFIED",
+  "failed_run": 36758984569,
+  "failed_source_commit": "7803e1fd968f39f39092f5be19ada0d0f3431d0b",
+  "failure": "First Tectonic compile exceeded300second budget during cold dependency downloads; no observed TeX semantic error. Original failure retained.",
+  "fix_source_commit": "9caf85e88f0b71368457cf169597b891f0a49306",
+  "fix": {
+    "status": "PASS_TARGETED_CONTROLS",
+    "source_files": {
+      ".github/workflows/publications.yml": "d602e6b0afac0e7086cadcc52bfa35715d2807fa556149d190594ae5903ac695",
+      "sw/tests/test_publication_gates.py": "57a5634cac80432a4ae68a8df885e7d21509f18f73e9582b40027457babfd3d4"
+    },
+    "unchanged_final_validator_sha256": "57f27f2cc2d439e19442be27ee454d02be0b1ec8d02ebfb7fee0851b12777b68",
+    "tracked_freshness_still_valid": true,
+    "changes": {
+      "scratch_preparation_total_seconds": 900,
+      "final_command_timeout_seconds_unchanged": 300,
+      "workflow_limit_minutes": 45,
+      "retry_added": false,
+      "cache_scope": "Tectonic resources only, no manuscript PDFs",
+      "failure_receipt_retained": true,
+      "final_validation_scope_unchanged": true
+    },
+    "checks": [
+      {
+        "command": ".venv/bin/python -m pytest -q sw/tests/test_publication_gates.py",
+        "result": "31 passed in0.25s"
+      },
+      {
+        "command": "hw/soc/tools/dev-env/bin/ruff check sw/tests/test_publication_gates.py",
+        "result": "PASS"
+      },
+      {
+        "command": "actionlint1.7.12 -shellcheck= -pyflakes= .github/workflows/publications.yml",
+        "result": "PASS"
+      },
+      {
+        "command": "git diff --check",
+        "result": "PASS"
+      }
+    ],
+    "native_fixture": "native-only-cached/receipt.json",
+    "primary_docs": [
+      "https://tectonic-typesetting.github.io/book/latest/getting-started/first-document.html#cache",
+      "https://tectonic-typesetting.github.io/book/latest/v2cli/compile.html"
+    ],
+    "cache_action": {
+      "commit": "0057852bfaa89a56745cba8c7296529d2fc39830",
+      "release": "v4.3.0",
+      "url": "https://github.com/actions/cache/commit/0057852bfaa89a56745cba8c7296529d2fc39830"
+    },
+    "claim_boundary": "The failed full cloud publication run is not yet repaired by a successful rerun. Preliminary PDFs are never accepted or reused by final build."
+  },
+  "rerun_review": {
+    "status": "PASS_FOUR_FRESH_MANUSCRIPT_BUILDS_AND_HASH_PROVENANCE_ONLY",
+    "source_commit": "9caf85e88f0b71368457cf169597b891f0a49306",
+    "push_run_id": 36766891134,
+    "pr_run_id": 36766899679,
+    "both_api_conclusion": "success",
+    "pr_scope": "API status and head verified only; PR artifact not independently downloaded",
+    "artifact_id": 11122920364,
+    "artifact_bytes": 1724703,
+    "artifact_sha256": "520c8a893494bcaafaadad31a53b6367b4934d65d99260b5094b550851f86a06",
+    "build_receipt_sha256": "88c13fb50c17c9ad7e03aa910b2c378025b451a0c988b64e9499f46abb408588",
+    "warmup_receipt_sha256": "66e582ff2f998af21e84359e26ea5af1ff2994d3b6b5d47c8a3aff5bc4ceb37f",
+    "warmup_elapsed_seconds": 221.01632273700002,
+    "warmup_accepted_deliverables": false,
+    "distinct_inputs_checked_at_commit": 39,
+    "documents": {
+      "paper-soc": {
+        "input_count": 13,
+        "input_hashes_match_commit": true,
+        "pdf_sha256": "519b8328456d770e9922087b886c2d2eb2549ffc05d2d70596e55b27e82e0c08",
+        "bbl_sha256": "76bb765d4ab32a0497a083701dcbf11327d4210ffc9fe703116b2bf0e5f84266",
+        "archive_sha256": "ff9f8ba34737aa69e2a36e73e1f6a081bd88d8d52b45ae3d31f7ca340fca2be1",
+        "text_sha256": "22a351c260d4545e0a5ee82244593976c83379f089654c6963bc3f4338d4fc9b",
+        "pages": 16,
+        "all_four_command_returncodes": 0,
+        "all_command_log_hashes_match": true,
+        "source_archive_members_match_inputs": true,
+        "archive_members": {
+          "main.tex": "904ebf92927c3eb7030d03234ad7887f17907099ec7684ebda28b211ac4655d6",
+          "main.bbl": "76bb765d4ab32a0497a083701dcbf11327d4210ffc9fe703116b2bf0e5f84266",
+          "figures/floorplan_macros.pdf": "f3c34c4b547e3df241918cba9228b303ed6faa152ed2a7c9ebf72ebd4511d9ac",
+          "figures/layout_regions.pdf": "71f23d20e17223a703c4c6104cf2d81e4a779f85051ac6682fda22d7969643c5",
+          "figures/layout_panels.pdf": "01381655d3f0b4a6096120fc43c6c3de773053c3cd809bb86752139502a7a9ad"
+        }
+      },
+      "paper-design": {
+        "input_count": 10,
+        "input_hashes_match_commit": true,
+        "pdf_sha256": "6b2d4990cc827a77a91c6ba0edfa2dcbc8f92a68d656ba7ca7333ec3633c5bfe",
+        "bbl_sha256": "91e2f32418f1f9e138326863d806f366837aa2225898a8ddc18d04a6858c67d6",
+        "archive_sha256": "5cbb03ed77ca5039907c7f72bf11226daa3072eff012e29a635ab2304a28f712",
+        "text_sha256": "ba19099580ee2d0ffe20949685c7a06acabc65ed55b3843db7f29bd654a59a59",
+        "pages": 7,
+        "all_four_command_returncodes": 0,
+        "all_command_log_hashes_match": true,
+        "source_archive_members_match_inputs": true,
+        "archive_members": {
+          "main.tex": "5bbbf6267f225ea0ce0c3a093f27307388a163b74768e231e116178b053e03d4",
+          "main.bbl": "91e2f32418f1f9e138326863d806f366837aa2225898a8ddc18d04a6858c67d6"
+        }
+      },
+      "paper-residual": {
+        "input_count": 9,
+        "input_hashes_match_commit": true,
+        "pdf_sha256": "9340dfb2fc1287c0aadc4d85b1d97d590a96311b1a616fa76e33e8a7bc9c87ce",
+        "bbl_sha256": "6781b8e18fda48db1c60238c915f1decb62fe0fa69af6a93e9c21527bebcceda",
+        "archive_sha256": "b1bc3d86217b42ddfaf12b97d4c376a054b7d167774b71f07b102abb60f43304",
+        "text_sha256": "6122be2397674c66dcd1b96a94cec94b81662ad7c67fcb9b616ffde1ce8f3102",
+        "pages": 8,
+        "all_four_command_returncodes": 0,
+        "all_command_log_hashes_match": true,
+        "source_archive_members_match_inputs": true,
+        "archive_members": {
+          "main.tex": "2ee7590d1e8bb314468bf07dc0b9fd8532e554903c583a8c89bd0ff31bc88443",
+          "main.bbl": "6781b8e18fda48db1c60238c915f1decb62fe0fa69af6a93e9c21527bebcceda"
+        }
+      },
+      "thesis": {
+        "input_count": 23,
+        "input_hashes_match_commit": true,
+        "pdf_sha256": "6db4e12ea6ff515ecaf1c9c7f5d391e3c6e90a5c9821e51eb2f5474c55284f8f",
+        "bbl_sha256": "0ff0703902aa8c78b0f067ced8b2b5ef54f7a42129ecec835747c7ef74699366",
+        "archive_sha256": "1afb096eabbbd3465bf5bdaa13d04428eca6882966f7e04666c05ede067e50ec",
+        "text_sha256": "8d2092aabfc7320726f82ea00a1188afef8700d46dcbf52dbba4fb14d951a3e3",
+        "pages": 90,
+        "all_four_command_returncodes": 0,
+        "all_command_log_hashes_match": true,
+        "source_archive_members_match_inputs": true,
+        "archive_members": {
+          "main.tex": "379bd73379fdeaf0b94ef0ee772785149460ea06efe267fe227adce7038cc905",
+          "main.bbl": "0ff0703902aa8c78b0f067ced8b2b5ef54f7a42129ecec835747c7ef74699366",
+          "chapters/arch.tex": "fecb29ff2c2ab9f9312ffd842affe33e2f3aef25a69eced67730ee8fd7c1b9f8",
+          "chapters/conclusion.tex": "7dfda4a042b16fc553b07c9437ec9cea48ff4b2126cfaa79e7a078d7f3a748f0",
+          "chapters/harden.tex": "aa523399ddcaa4b49ac3e8cb79c9cbcac5c52c904c4b2c79fe7f29961db6c27b",
+          "chapters/intro.tex": "41f408afc4b772641255a55e4cb59d9b8b560110e5edba579d68d4b041d50744",
+          "chapters/npu.tex": "d98a9bc1f33a90bc8a1f1a7d37ac2621b6a1df5efb87727c085d2f83ad2d6242",
+          "chapters/phys.tex": "7bc4d73675c7fc143fc16396fb2068347b05a07130ec5836fc594f7e0307e9bd",
+          "chapters/results.tex": "64ebae49dad3c65d3805561f668a7a06dcb3f4ab2397df1ff7459e2d03313b4c",
+          "chapters/verif.tex": "4c5c4a880e34b76e866a8b5e502d31fdf3668498848d9be60fbed840a6110b4a",
+          "figures/floorplan_macros.pdf": "f3c34c4b547e3df241918cba9228b303ed6faa152ed2a7c9ebf72ebd4511d9ac",
+          "figures/layout_blocks.pdf": "b5da932c2c62d1ce0d42f8edf9fcdd4c3415064d69103e19b715880eb3627036",
+          "figures/layout_density.pdf": "b7c1c722c1570f26eef40690bd48de53ac89978cf0736a2dd59b5158e89e627e",
+          "figures/layout_ibex_npu.pdf": "25fff5a1d506fbe23d0f9aa38cafdefedc654c95869bc591a3079d03c5201e09",
+          "figures/layout_panels.pdf": "01381655d3f0b4a6096120fc43c6c3de773053c3cd809bb86752139502a7a9ad",
+          "figures/layout_regions.pdf": "71f23d20e17223a703c4c6104cf2d81e4a779f85051ac6682fda22d7969643c5"
+        }
+      }
+    },
+    "tracked_thesis_normalized_text_matches": true,
+    "job_log_sha256": "d5ed29755526910c7b1c0673e2a0d4c03934ab8c950943b8b8e7ef89f00fc563",
+    "scope": "Fresh PDF/source/archive and selected historical metric checks only. Outstanding scientific claims and product gates remain open.",
+    "full_chip_lvs_accepted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "source_edits": false,
+    "native_chip_jobs_started": false
+  },
+  "rerun_review_sha256": "4dfb4126c4dfa77f6e02ad70c715afef5fda0306c79a656abb6d37414d42b9e5",
+  "raw_evidence_manifest": "docs/evidence/cloud-supply-and-io-followup-assets-20260930.json",
+  "physical_or_manufacturing_acceptance": false,
+  "fix_validation_record_scope": "The embedded fix record was captured before the successful rerun. Its prelaunch claim_boundary is historical; rerun_review below is the later verified result."
+}

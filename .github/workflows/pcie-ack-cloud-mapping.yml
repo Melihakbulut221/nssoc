@@ -1,0 +1,350 @@
+name: pcie-ack-cloud-mapping
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/pcie-ack-cloud-mapping.yml
+      - scripts/run_cloud_ack_mapping.py
+      - docs/evidence/pcie-ack-map-cloud-input-20261012.json
+  workflow_dispatch:
+    inputs:
+      study:
+        type: choice
+        options: [advert_dedicated_ack_commit, advert_dedicated_window, trace_dedicated_preabc, trace_dedicated_endpoints, advert_dedicated_commit, advert_bank_eop, advert_bank_commit, read_static_reports, advert_static_commit, trace_control_endpoints, read_control_reports, advert_control, ack, replay_idle, credit_verdict, advert_eop, ack_window, ack_window_eop, fc_refresh, fc_snapshot, advert_body, advert_factored, advert_reset, abc_delay, abc_slow_corner]
+        default: ack
+permissions:
+  contents: read
+concurrency:
+  group: pcie-ack-cloud-mapping-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  map-and-screen:
+    if: github.event_name == 'workflow_dispatch' && inputs.study != 'trace_dedicated_preabc' && inputs.study != 'read_control_reports' && inputs.study != 'trace_control_endpoints' && inputs.study != 'read_static_reports' && inputs.study != 'trace_dedicated_endpoints'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360 # Hosted platform ceiling; no shorter native watchdog.
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        profile: ${{ fromJSON(inputs.study == 'advert_dedicated_ack_commit' && '["physical_idle_credit_dedicated","physical_idle_credit_dedicated_ack_commit"]' || inputs.study == 'advert_dedicated_window' && '["physical_idle_credit_dedicated","physical_idle_credit_dedicated_window"]' || inputs.study == 'advert_dedicated_commit' && '["physical_idle_credit","physical_idle_credit_dedicated"]' || inputs.study == 'advert_bank_eop' && '["physical_idle_credit","physical_idle_credit_bank_eop"]' || inputs.study == 'advert_bank_commit' && '["physical_idle_credit","physical_idle_credit_bank"]' || inputs.study == 'advert_static_commit' && '["physical_idle_credit","physical_idle_credit_static"]' || inputs.study == 'advert_control' && '["physical_idle_credit","physical_idle_credit_control"]' || inputs.study == 'abc_slow_corner' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_slowmap"]' || inputs.study == 'abc_delay' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_d2000"]' || inputs.study == 'advert_reset' && '["physical_idle_credit_window_eop","physical_idle_credit_window_reset"]' || inputs.study == 'advert_factored' && '["physical_idle_credit_window_eop","physical_idle_credit_window_factored"]' || inputs.study == 'advert_body' && '["physical_idle_credit_window_eop","physical_idle_credit_window_body"]' || inputs.study == 'fc_snapshot' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_snapshot"]' || inputs.study == 'fc_refresh' && '["physical_idle_credit_window_eop","physical_idle_credit_window_eop_refresh"]' || inputs.study == 'ack_window_eop' && '["physical_idle_credit","physical_idle_credit_window_eop"]' || inputs.study == 'ack_window' && '["physical_idle_credit","physical_idle_credit_window"]' || inputs.study == 'advert_eop' && '["physical_idle_credit","physical_idle_credit_eop"]' || inputs.study == 'credit_verdict' && '["physical_idle","physical_idle_credit"]' || inputs.study == 'replay_idle' && '["physical_baseline","physical_idle"]' || '["baseline","ack"]') }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare exact physical runtime on hosted runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 3 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Prepare consistent Python and cocotb for joint port controls
+        if: ${{ inputs.study == 'ack_window_eop' || inputs.study == 'fc_refresh' || inputs.study == 'fc_snapshot' || inputs.study == 'advert_body' || inputs.study == 'advert_factored' || inputs.study == 'advert_reset' || inputs.study == 'abc_delay' || inputs.study == 'abc_slow_corner' || inputs.study == 'advert_control' || inputs.study == 'advert_dedicated_commit' || inputs.study == 'advert_dedicated_window' || inputs.study == 'advert_dedicated_ack_commit' || inputs.study == 'advert_bank_eop' || inputs.study == 'advert_bank_commit' || inputs.study == 'advert_static_commit' }}
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+      - name: Exact input mapping and original three-corner screening
+        run: |
+          python3 -m py_compile scripts/run_cloud_ack_mapping.py scripts/run_cloud_replay_idle.py
+          ${{ (inputs.study == 'ack_window_eop' || inputs.study == 'fc_refresh' || inputs.study == 'fc_snapshot' || inputs.study == 'advert_body' || inputs.study == 'advert_factored' || inputs.study == 'advert_reset' || inputs.study == 'abc_delay' || inputs.study == 'abc_slow_corner' || inputs.study == 'advert_control' || inputs.study == 'advert_dedicated_commit' || inputs.study == 'advert_dedicated_window' || inputs.study == 'advert_dedicated_ack_commit' || inputs.study == 'advert_bank_eop' || inputs.study == 'advert_bank_commit' || inputs.study == 'advert_static_commit') && 'hw/.venv/bin/python' || 'python3' }} scripts/run_cloud_ack_mapping.py --profile '${{ matrix.profile }}'
+      - name: Keep complete success or failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ack-map-${{ matrix.profile }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-ack-map/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Permanently preserve result bytes
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f 'cloud-ack-map/${{ matrix.profile }}/result.json'
+          archive='ack-map-${{ matrix.profile }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-ack-map
+          sha256sum "$archive" > "$archive.sha256"
+          cp 'cloud-ack-map/${{ matrix.profile }}/result.json' "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group 'ack-map-${{ matrix.profile }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+
+  read-control-reports:
+    if: github.event_name == 'workflow_dispatch' && (inputs.study == 'read_control_reports' || inputs.study == 'trace_control_endpoints' || inputs.study == 'read_static_reports' || inputs.study == 'trace_dedicated_endpoints')
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Read exact preserved reports on hosted runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRACE_ENDPOINTS: ${{ inputs.study }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, io, json, os, re, subprocess, sys, tarfile
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from read_opensta_phase_slacks import parse_phases
+          assert os.environ['GITHUB_ACTIONS'] == 'true'
+          out=Path('cloud-control-reports'); out.mkdir()
+          sources=[('physical_idle_credit',639167692,16843302,'60448a4513c527f11a17463ed8871f400b8f3d381bbc4daa22d2b3a60a615ca7',639167825,'935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc'),('physical_idle_credit_control',639169881,17235476,'052f5f252e3cae645121861d190c384b270faf6dc41a7f9c37ec925c3b79ab66',639169985,'d448253d0fbb41ce68098328354b3c0467741525441eb18ebc565cd757a5853d')]
+          source_run=38509087565
+          candidate_profile='physical_idle_credit_control'
+          if os.environ['TRACE_ENDPOINTS']=='read_static_reports':
+              source_run=38513559584
+              candidate_profile='physical_idle_credit_static'
+              sources=[('physical_idle_credit',639277828,16843307,'202ef5517c9f1fc1487f5c581b5ed8a56be9f6bda002f7fa31a29cdfbbac1c54',639278022,'935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc'),('physical_idle_credit_static',639278486,17196101,'182523238f0c2935201726859334b0b8faf580a32990c0c30a32ec52880cbba5',639278671,'53fbcfce106008b2951e45bf3db1bef6bcd4910a3bff9864bf497f544c3a2d56')]
+          if os.environ['TRACE_ENDPOINTS']=='trace_dedicated_endpoints':
+              source_run=38519026139
+              candidate_profile='physical_idle_credit_dedicated'
+              sources=[('physical_idle_credit',639407302,16845473,'2eda2e16cbfec86426ece31b0e3f1efb6bf3b000be808ce93e4f4c1313be5113',639407422,'935b57971096ec5778a08ccc802f07a93a3ff04cac3731eb571df3db8a8dbcfc'),('physical_idle_credit_dedicated',639409574,17175029,'64733ac1ec40294ab72209a0b37463cc9a2d6f2f3b5688abc56f459bb86ea1f3',639409787,'fad5552b4f38cd0294e9b7855ceb4866b6bbd4c586c0a6e633d836d46930fd41')]
+          results={}
+          def fetch(i):
+              return subprocess.check_output(['gh','api',f'repos/{os.environ["GITHUB_REPOSITORY"]}/releases/assets/{i}','-H','Accept: application/octet-stream'])
+          for profile,aid,size,digest,sid,logsha in sources:
+              raw=fetch(aid)
+              assert len(raw)==size and hashlib.sha256(raw).hexdigest()==digest
+              summaryraw=fetch(sid); summary=json.loads(summaryraw)
+              assert summary['profile']==profile and summary['status']=='COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
+              assert summary['screen_result']['outputs']['screen.log']==logsha
+              name=f'cloud-ack-map/{profile}/screen05/screen.log'
+              provenance={}
+              with tarfile.open(fileobj=io.BytesIO(raw)) as tf:
+                  hits=[m for m in tf if m.name==name]
+                  assert len(hits)==1 and hits[0].isfile() and hits[0].size<20000000
+                  log=tf.extractfile(hits[0]).read()
+                  mapped_raw=None
+                  if os.environ['TRACE_ENDPOINTS']=='trace_dedicated_endpoints':
+                      provenance['mapping_inventory']=[dict(name=m.name,bytes=m.size) for m in tf if m.isfile() and (f'cloud-ack-map/{profile}/map/' in m.name or m.name.endswith('candidate-soc_pcie_replay_tx.v'))]
+                      for member in tf:
+                          if not member.isfile():
+                              continue
+                          if member.name.endswith(('/map/synthesis.ys','candidate-soc_pcie_replay_tx.v')):
+                              assert member.size<100000
+                              data=tf.extractfile(member).read()
+                              provenance[member.name]=dict(sha256=hashlib.sha256(data).hexdigest(),text=data.decode())
+                          elif member.name==f'cloud-ack-map/{profile}/map/synthesis.log':
+                              assert member.size<100000000
+                              data=tf.extractfile(member).read()
+                              (out/(profile+'.synthesis.log')).write_bytes(data)
+                              provenance['synthesis_log_sha256']=hashlib.sha256(data).hexdigest()
+                  if os.environ['TRACE_ENDPOINTS'] in ('trace_control_endpoints','read_static_reports','trace_dedicated_endpoints'):
+                      mapping_name=f'cloud-ack-map/{profile}/map/soc_top.mapped.json'
+                      members=[m for m in tf if m.name==mapping_name]
+                      assert len(members)==1 and members[0].isfile() and members[0].size<300000000
+                      mapped_raw=tf.extractfile(members[0]).read()
+              assert hashlib.sha256(log).hexdigest()==logsha
+              (out/(profile+'.log')).write_bytes(log)
+              text=log.decode()
+              prefixes=[p for p in ('CORNER','PHASE') if re.search(r'^'+p+r'_\w+[ 	]*$',text,re.M)]
+              assert len(prefixes)==1, prefixes
+              phases=parse_phases(text,prefixes[0])
+              assert len(phases)>=6
+              assert {p['path_type'] for v in phases.values() for p in v['paths']}=={'min','max'}
+              assert len({p['corner'] for v in phases.values() for p in v['paths']})==3
+              results[profile]=dict(archive_asset=aid,archive_sha256=digest,summary_asset=sid,summary_sha256=hashlib.sha256(summaryraw).hexdigest(),log_sha256=logsha,mapped_cells=summary['mapped_cells'],phases=phases)
+              results[profile]['archive_provenance']=provenance
+              if mapped_raw is not None:
+                  mapped=json.loads(mapped_raw)['modules']['soc_top']
+                  assert len(mapped['cells'])==summary['mapped_cells']
+                  endpoint_names={p['endpoint'] for phase in phases.values() for p in phase['paths'] if p['group']=='pcie_clk_i'}
+                  # Exact Yosys register names survive the saved OpenROAD repair.
+                  # Never substitute fuzzy aliases or silently skip an endpoint.
+                  start_names={p['startpoint'].split(' (',1)[0] for phase in phases.values() for p in phase['paths'] if p['group']=='pcie_clk_i'} if os.environ['TRACE_ENDPOINTS']=='trace_dedicated_endpoints' else set()
+                  # Follow only actual one-input/one-output library inverters
+                  # and buffers. This recovers Yosys flip_bits register aliases
+                  # without guessing an RTL name from a generated identifier.
+                  polarity_edges={}
+                  all_aliases={}
+                  for net,record in mapped['netnames'].items():
+                      for index,bit in enumerate(record['bits']):
+                          all_aliases.setdefault(bit,[]).append(dict(net=net,bit_index=index,attributes=record.get('attributes',{})))
+                  for gate_name,gate in mapped['cells'].items():
+                      master=gate['type']
+                      if not master.startswith(('sg13g2_inv_','sg13g2_buf_')):
+                          continue
+                      directions=gate['port_directions']; conn=gate['connections']
+                      ins=[pin for pin,direction in directions.items() if direction=='input']
+                      outs=[pin for pin,direction in directions.items() if direction=='output']
+                      assert len(ins)==len(outs)==1 and len(conn[ins[0]])==len(conn[outs[0]])==1
+                      ib,ob=conn[ins[0]][0],conn[outs[0]][0]
+                      polarity_edges.setdefault(ib,[]).append(dict(cell=gate_name,master=master,input_pin=ins[0],output_pin=outs[0],input_bit=ib,output_bit=ob,inverted=master.startswith('sg13g2_inv_')))
+                  def polarity_aliases(bit):
+                      queue=[(bit,False,[])]; seen=set(); found=[]
+                      while queue:
+                          current,inverted,path=queue.pop(0)
+                          assert (current,inverted) not in seen, ('cyclic or reconvergent buffer/inverter chain',current,path)
+                          seen.add((current,inverted))
+                          aliases=all_aliases.get(current,[])
+                          public=[a for a in aliases if not a['net'].startswith('$')]
+                          if public:
+                              found.append(dict(bit=current,inverted_from_register_q=inverted,cell_path=path,aliases=public))
+                          for edge in polarity_edges.get(current,[]):
+                              assert len(path)<32, 'Unexpectedly long polarity-only path'
+                              queue.append((edge['output_bit'],inverted ^ edge['inverted'],path+[edge]))
+                      return found
+                  endpoints={}
+                  for name in sorted(endpoint_names | start_names):
+                      if name in mapped['cells']:
+                          cell=mapped['cells'][name]
+                          assert cell['type'].startswith('sg13g2_df'), cell
+                      else:
+                          assert name in start_names and name not in endpoint_names and name in mapped['ports'], ('Unbound reported startpoint',name)
+                          port=mapped['ports'][name]
+                          assert port['direction']=='input'
+                          cell=dict(type='input_port',connections={'PORT':port['bits']})
+                      connections=cell['connections']; bits={bit for row in connections.values() for bit in row if isinstance(bit,int)}
+                      aliases={str(bit):[] for bit in bits}
+                      for net,record in mapped['netnames'].items():
+                          for index,bit in enumerate(record['bits']):
+                              if bit in bits:
+                                  aliases[str(bit)].append(dict(net=net,bit_index=index,attributes=record.get('attributes',{})))
+                      assert all(aliases[str(bit)] for bit in bits)
+                      endpoints[name]=dict(master=cell['type'],attributes=cell.get('attributes',{}),connections=connections,bit_aliases=aliases)
+                      if cell['type']!='input_port':
+                          assert len(connections['Q'])==1
+                          endpoints[name]['q_polarity_rtl_aliases']=polarity_aliases(connections['Q'][0])
+                  results[profile]['reported_pcie_endpoints']={n:endpoints[n] for n in sorted(endpoint_names)}
+                  if start_names:
+                      results[profile]['reported_pcie_startpoints']={n:endpoints[n] for n in sorted(start_names)}
+                  results[profile]['mapped_json_sha256']=hashlib.sha256(mapped_raw).hexdigest()
+          base=results['physical_idle_credit']['phases']; cand=results[candidate_profile]['phases']
+          assert base.keys()==cand.keys()
+          differences={}
+          for phase in base:
+              assert base[phase]['groups'].keys()==cand[phase]['groups'].keys()
+              differences[phase]={g:dict(baseline_ns=base[phase]['groups'][g]['worst_slack_ns'],candidate_ns=cand[phase]['groups'][g]['worst_slack_ns'],candidate_minus_baseline_ns=cand[phase]['groups'][g]['worst_slack_ns']-base[phase]['groups'][g]['worst_slack_ns']) for g in base[phase]['groups']}
+          result=dict(status='COMPLETE_EXACT_PAIRED_REPORTED_SLACK_READBACK_NOT_SIGNOFF',source_run=source_run,timing_accepted=False,adopted=False,scope='Original unplaced three-corner reports only; all reported groups preserved. No routing or signoff acceptance.',sources=results,differences=differences)
+          (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(differences,indent=2))
+          PYCODE
+      - name: Retain original reports and readback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: control-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-control-reports/
+          if-no-files-found: error
+      - name: Permanently preserve readback
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.study == 'trace_dedicated_endpoints' && 'dedicated-endpoints' || inputs.study == 'read_static_reports' && 'static-reports' || inputs.study == 'trace_control_endpoints' && 'control-endpoints' || 'control-reports' }}' cloud-control-reports/result.json cloud-control-reports/*.log
+
+  trace-dedicated-preabc:
+    if: github.event_name == 'workflow_dispatch' && inputs.study == 'trace_dedicated_preabc'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Reproduce exact original mapping prefix and bind register polarity before ABC
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, io, json, os, subprocess, tarfile
+          from pathlib import Path
+          assert os.environ['GITHUB_ACTIONS']=='true'
+          repo='repos/'+os.environ['GITHUB_REPOSITORY']
+          def fetch(aid):
+              return subprocess.check_output(['gh','api',repo+'/releases/assets/'+str(aid),'-H','Accept: application/octet-stream'])
+          def digest(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          out=Path('cloud-preabc-trace');out.mkdir()
+          result=dict(status='RUNNING',source_run=38519026139,source_archive_asset=639409574,adopted=False,timing_accepted=False)
+          try:
+              raw=fetch(639409574)
+              assert len(raw)==17175029 and hashlib.sha256(raw).hexdigest()=='64733ac1ec40294ab72209a0b37463cc9a2d6f2f3b5688abc56f459bb86ea1f3'
+              with tarfile.open(fileobj=io.BytesIO(raw)) as tf:
+                  assert all(m.name=='cloud-ack-map' or m.name.startswith('cloud-ack-map/') for m in tf)
+                  tf.extractall('.',filter='data')
+              base=Path('cloud-ack-map/physical_idle_credit_dedicated')
+              original=json.loads((base/'result.json').read_text())
+              assert original['status']=='COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE'
+              version=subprocess.check_output(['yosys','-V'],text=True).strip()
+              assert version==original['runtime'];result['runtime']=version
+              recipe=(base/'map/synthesis.ys').read_text()
+              assert digest(base/'map/synthesis.ys')==original['physical_source_binding']['relocated_recipe_sha256']
+              assert str(Path.cwd())=='/home/runner/work/nssoc/nssoc'
+              lines=recipe.splitlines(keepends=True);starts=[i for i,l in enumerate(lines) if l.startswith('abc ')]
+              assert len(starts)==1
+              prefix=''.join(lines[:starts[0]])
+              assert prefix.count('synth -flatten -top soc_top')==1 and prefix.count('dfflibmap -liberty ')==1
+              premapped=base/'map/soc_top.pre_map.v';expected_pre=digest(premapped)
+              protected={str(f):digest(f) for f in base.rglob('*') if f.is_file() and '/map/' not in str(f)}
+              script=out/'prefix.ys';script.write_text(prefix+'write_json '+str((out/'before-abc.json').resolve())+'\n')
+              with (out/'prefix.log').open('w') as log:
+                  subprocess.run(['yosys','-s',str(script)],stdout=log,stderr=subprocess.STDOUT,check=True)
+              assert digest(premapped)==expected_pre, 'Original pre-map netlist must reproduce byte for byte'
+              assert all(digest(Path(f))==h for f,h in protected.items())
+              before=json.loads((out/'before-abc.json').read_text())['modules']['soc_top']
+              mapped=json.loads((base/'map/soc_top.mapped.json').read_text())['modules']['soc_top']
+              aliases={};edges={}
+              for name,record in before['netnames'].items():
+                  for index,bit in enumerate(record['bits']):
+                      aliases.setdefault(bit,[]).append(dict(net=name,bit_index=index,attributes=record.get('attributes',{})))
+              for name,cell in before['cells'].items():
+                  master=cell['type']
+                  if master=='$_NOT_' or master.startswith(('sg13g2_inv_','sg13g2_buf_')):
+                      ins=[pin for pin,d in cell['port_directions'].items() if d=='input'];outs=[pin for pin,d in cell['port_directions'].items() if d=='output']
+                      assert len(ins)==len(outs)==1
+                      ib=cell['connections'][ins[0]];ob=cell['connections'][outs[0]]
+                      assert len(ib)==len(ob)==1
+                      edges.setdefault(ib[0],[]).append(dict(cell=name,master=master,input_bit=ib[0],output_bit=ob[0],inverted=master=='$_NOT_' or master.startswith('sg13g2_inv_')))
+              bindings={}
+              for name in ['$auto$ff.cc:337:slice$1176743','$auto$ff.cc:337:slice$1176745','$auto$ff.cc:337:slice$1176748']:
+                  a=before['cells'][name];b=mapped['cells'][name]
+                  assert a['type']==b['type'] and a['attributes']==b['attributes']
+                  bit=a['connections']['Q'][0];queue=[(bit,False,[])];seen=set();found=[]
+                  while queue:
+                      bit,inv,path=queue.pop(0)
+                      assert (bit,inv) not in seen;seen.add((bit,inv))
+                      public=[x for x in aliases.get(bit,[]) if not x['net'].startswith('$')]
+                      if public:found.append(dict(inverted_from_q=inv,path=path,aliases=public))
+                      for edge in edges.get(bit,[]):
+                          assert len(path)<32
+                          queue.append((edge['output_bit'],inv ^ edge['inverted'],path+[edge]))
+                  bindings[name]=dict(master=a['type'],attributes=a['attributes'],q_aliases=aliases.get(a['connections']['Q'][0],[]),rtl_bindings=found)
+              result.update(bindings=bindings,premap_sha256=expected_pre,before_abc_sha256=digest(out/'before-abc.json'),mapped_json_sha256=digest(base/'map/soc_top.mapped.json'),prefix_sha256=digest(script))
+              assert all(b['rtl_bindings'] for b in bindings.values()), 'Unbound register remains open'
+              result['status']='PASS_EXACT_REPRODUCED_PREABC_REGISTER_POLARITY_BINDING_NOT_TIMING'
+          except BaseException as error:
+              result.update(status='FAIL_OR_ERROR',error=repr(error));raise
+          finally:
+              (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+              print(json.dumps(result,indent=2))
+          PYCODE
+      - name: Preserve successful or failed provenance evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='preabc-trace-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-preabc-trace
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-preabc-trace/result.json "${archive%.tar.gz}.summary.json"
+          python3 scripts/publish_cloud_results.py --group 'dedicated-preabc' "$archive" "$archive.sha256" "${archive%.tar.gz}.summary.json"

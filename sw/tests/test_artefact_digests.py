@@ -123,21 +123,10 @@ def test_the_any_state_theorem_and_the_campaign_agree():
 
 
 # =====================================================================
-# docs/evidence/: the records, covered here rather than in the manifest
+# docs/evidence/: committed JSON records and independent digest coverage
 # =====================================================================
-#
-# The external review's F6 acceptance asks that this file cover the
-# committed evidence. It does NOT ask that docs/80 list it, and the two
-# are different requests: that file's own header says every path in it
-# is gitignored on purpose, because its job is to pin what git cannot
-# see. docs/evidence/ is tracked, so git pins it already -- an edit is
-# a diff -- and adding it to a manifest of untracked things would be a
-# second, weaker copy of a guarantee git gives for free.
-#
-# What git does NOT give is the two properties below: that every run a
-# claim or a document names has its record, and that the record is the
-# one scripts/collect_evidence.py would write. Those are what this
-# covers.
+# Corrected 2026-09-19: external review F6 explicitly requests extending
+# docs/80 as well as this test. The former comment claimed otherwise.
 
 
 EVIDENCE = ROOT / "docs" / "evidence"
@@ -199,3 +188,21 @@ def test_no_record_exists_for_a_run_the_collector_does_not_name():
         "them, or delete them -- a record nothing points at is a number "
         "with no claim behind it." % ", ".join(stray))
 
+
+
+def test_every_evidence_file_has_a_matching_manifest_digest():
+    """F6: changes/deletions cannot silently bypass the fresh-clone audit."""
+    import hashlib
+    rows = {}
+    for line in MANIFEST.read_text().splitlines():
+        fields = line.split("\t")
+        if len(fields) == 7 and fields[0] == "docs-evidence":
+            assert fields[3] not in rows, "duplicate evidence digest"
+            rows[fields[3]] = fields
+    actual = {p.relative_to(ROOT).as_posix(): p
+              for p in [*EVIDENCE.rglob("*.json"), *EVIDENCE.rglob("*.v.gz"),
+                        *EVIDENCE.rglob("*.log")]}
+    assert rows.keys() == actual.keys(), "refresh with scripts/artefact_digests.py --write-evidence"
+    for name, path in actual.items():
+        assert int(rows[name][4]) == path.stat().st_size, name
+        assert rows[name][5] == hashlib.sha256(path.read_bytes()).hexdigest(), name

@@ -1,0 +1,150 @@
+{
+  "status": "OBSERVED_RUNNING_LOCAL_PLL_AND_SEPARATE_PUBLICATION_NOT_COMPLETION",
+  "utc": "2026-10-06T06:45:25.580540+00:00",
+  "boot_id": "e1b7ced9-2243-4340-a046-92e8b30a45bc",
+  "policy": {
+    "bytes": 18548,
+    "sha256": "076665ab174b24f173cd5ce4ecc6d5f9433d662b4388d126926d3c75e3f3a80b"
+  },
+  "support_peer": {
+    "bytes": 871355,
+    "sha256": "fb5a528d63a7a25407a735727b6fa4acb03779266bce496036708e9aaa8871a2"
+  },
+  "aggregate_peer": {
+    "bytes": 1492,
+    "sha256": "a48fa6b7b3717173a3ad81158e72aa05f22f1babdaba70c4c0d19e9ab6a9667f"
+  },
+  "observer": {
+    "bytes": 7008,
+    "sha256": "21ef22b8e5abad24779f52327b377302ec0c3292233179cdb4a08645789a5058"
+  },
+  "producer": {
+    "pid": 350516,
+    "start_ticks": "5704483",
+    "state": "S",
+    "parent_pid": 1,
+    "process_group": 350516,
+    "affinity": [
+      12
+    ],
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v5.py",
+      "--out",
+      "/dev/shm/nssoc-pll-acquisition-v5-max125-local-01",
+      "--spool",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-captures/v5-max125-01",
+      "--prefix",
+      "pcie-pll-acquisition-v5-max125-local-01-20261006",
+      "--step-ps",
+      "2.5",
+      "--reference",
+      "/dev/shm/nssoc-pll-loop-stream-v1-evidence/original-public-replay-v2.json",
+      "--reference-sha",
+      "27bd5f99f3ee3660ce567e4bcc4af4eaa018cfa44193975713ff8e13854acb35",
+      "--prerequisites",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-acquisition-v3-20261005/numerical-convergence-plan01/launch01/prerequisites.json",
+      "--prerequisites-sha",
+      "0b5ce64d407f21efd64e50778ef961878c7dc6936df2298ca911dff965b3c35e"
+    ],
+    "cpu_ticks": 4005
+  },
+  "native": [
+    {
+      "pid": 350532,
+      "start_ticks": "5704684",
+      "state": "R",
+      "parent_pid": 350516,
+      "process_group": 350532,
+      "affinity": [
+        12
+      ],
+      "command": [
+        "/dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice",
+        "-n",
+        "-b",
+        "bench.cir"
+      ],
+      "cpu_ticks": 6818
+    }
+  ],
+  "worker": {
+    "pid": 350582,
+    "start_ticks": "5705751",
+    "state": "S",
+    "parent_pid": 1,
+    "process_group": 350582,
+    "affinity": [
+      14
+    ],
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py",
+      "--spool",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-captures/v5-max125-01",
+      "--out",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-spool-v1-20261006/publication01",
+      "--configuration-sha",
+      "ceba7f3ada7c055b87817749d4bc6a5b63653ae42222efa538714eabaeda401b"
+    ],
+    "cpu_ticks": 79
+  },
+  "native_status": "RUNNING",
+  "native_owner_status": "HEALTHY",
+  "last_actual_native_reference_seconds": 1.22044e-08,
+  "local_status": "CAPTURING_LOCAL",
+  "local_parts": 3,
+  "local_committed_rows": 7614,
+  "local_snapshot": {
+    "bytes": 43204,
+    "sha256": "f982833d7d9a58cedda2f22d022215d84959395c9ea58c866ff72c73c6fbde35"
+  },
+  "publication_status": "RUNNING_INDEPENDENT_LOCAL_SPOOL_PUBLICATION",
+  "public_parts": 3,
+  "public_attempts": 3,
+  "publication_snapshot": {
+    "bytes": 6534,
+    "sha256": "e3e4af4807e459d44f036bb347e89a57327850975e28dcf2ba1f57e4d3a4e5d9"
+  },
+  "first_part": {
+    "row": {
+      "bytes": 13259500,
+      "first_row": 0,
+      "index": 0,
+      "name": "pcie-pll-acquisition-v5-max125-local-01-20261006-part00000.bin.xz",
+      "rows": 2538,
+      "sha256": "5e50f0147f2e14c10cffee9f929593e29ff4ebfd9d48ae1f5841c0f160cd7eee",
+      "status": "LOCAL_DURABLE",
+      "uncompressed_bytes": 16771104,
+      "uncompressed_sha256": "7d485857cf80773342ead9df5db8274dde392c8ecd3628ca24eb63b54b9a9766"
+    },
+    "receipt": {
+      "bytes": 2439,
+      "sha256": "d0317f435e455ba8c138d0b655d7c47c463de069d0bb22039b639da1a57cbb90"
+    },
+    "asset": {
+      "name": "pcie-pll-acquisition-v5-max125-local-01-20261006-part00000.bin.xz",
+      "asset_id": 614735668,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/pcie-pll-acquisition-v5-max125-local-01-20261006-part00000.bin.xz",
+      "bytes": 13259500,
+      "sha256": "5e50f0147f2e14c10cffee9f929593e29ff4ebfd9d48ae1f5841c0f160cd7eee",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    "raw_rows": 2538,
+    "first_time_seconds": 0.0,
+    "last_time_seconds": 3.153125000000007e-09,
+    "raw_sha256": "7d485857cf80773342ead9df5db8274dde392c8ecd3628ca24eb63b54b9a9766"
+  },
+  "reservation": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-captures/v5-max125-01/reservation.bin",
+    "logical_bytes": 10737418240,
+    "allocated_bytes": 10737430528
+  },
+  "native_directory": "/dev/shm/nssoc-pll-acquisition-v5-max125-local-01",
+  "local_directory": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-captures/v5-max125-01",
+  "publication_directory": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-local-spool-v1-20261006/publication01",
+  "RAM_free": 5873467392,
+  "SSD_free": 277639954432,
+  "scope": "Read-only observations at separate instants, not one atomic global snapshot. Source and criteria unchanged; fresh time-zero native. Local/public/physical completion remain distinct. No EDA execution, network request, or signal."
+}

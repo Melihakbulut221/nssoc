@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-20",
+  "scope": "Shared native-SDC derate guard executes before database/constraint load in both bounded native resizer steps and independent route reports. It rejects truncating integer, invalid and missing values without converting or weakening the constraint.",
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_interface_flow.py sw/tests/test_corner_reports.py",
+    "passed": 36
+  },
+  "native_templates": {
+    "BoundedPostCTS": {
+      "source_step": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/29-openroad-resizertimingpostcts",
+      "scope": "Template generation only; uses existing GRT state paths because archived CTS geometry is not needed to generate a script. No tool execution or physical result.",
+      "generated": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-derate-guard-template-controls2/BoundedPostCTS/bounded_setup.tcl",
+      "sha256": "2a6a4e8bcedbab8871695bedac1bf9abc9769d25501c0ba12718c157bfbbc10a",
+      "derate_guard_precedes_database": true
+    },
+    "BoundedPostGRT": {
+      "source_step": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/36-openroad-resizertimingpostgrt",
+      "scope": "Template generation only; uses existing GRT state paths because archived CTS geometry is not needed to generate a script. No tool execution or physical result.",
+      "generated": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-derate-guard-template-controls2/BoundedPostGRT/bounded_setup.tcl",
+      "sha256": "63edb504052a42b3e1769b921fda4316d57e04ad280d4b53b7bb74058cce76e8",
+      "derate_guard_precedes_database": true
+    }
+  },
+  "active_run": "Already-generated startup-clear-nativeenv Tcl remains byte-identical after the wrapper change; it already uses actual original 5.0. No active process was modified.",
+  "initial_template_attempt": "Original CTS state could not load because its input geometry had been archived. No tool ran. The successful retry used the retained GRT state for template generation only.",
+  "artifacts": {
+    "hw/soc/flow/check_timing_derate.tcl": {
+      "bytes": 781,
+      "sha256": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f"
+    },
+    "hw/soc/flow/report_route_corners.py": {
+      "bytes": 7830,
+      "sha256": "a54ec4c7b9202a27bd98f6079c2a7291584667e47353c3f1a7340548e4c56ed7"
+    },
+    "hw/soc/pnr/interface_flow.py": {
+      "bytes": 3971,
+      "sha256": "47fa0ea7efe3012954181ae1427ebd8caf6b3807c885909daf65c09ab4fe0872"
+    },
+    "sw/tests/test_interface_flow.py": {
+      "bytes": 5675,
+      "sha256": "8762ccd70ba21361cd348aab8b720db9c4883fbbdc3821dec4d430ed97f37626"
+    },
+    "hw/soc/out/external-review-20260919/native-derate-guard-template-controls2/result.json": {
+      "bytes": 1293,
+      "sha256": "4cd674965f74021b8f9cf2dc22e3c160c95c475e92b13da7587301b41dfd869b"
+    },
+    "hw/soc/out/external-review-20260919/active-bounded-script-before-guard.json": {
+      "bytes": 186,
+      "sha256": "d7adab9b4cfc72d3ea6f0a410e10be7698970a5cea700ea78e58832826ddbe0f"
+    },
+    "hw/soc/out/external-review-20260919/native-derate-guard-template-controls2/BoundedPostCTS/bounded_setup.tcl": {
+      "bytes": 3374,
+      "sha256": "2a6a4e8bcedbab8871695bedac1bf9abc9769d25501c0ba12718c157bfbbc10a"
+    },
+    "hw/soc/out/external-review-20260919/native-derate-guard-template-controls2/BoundedPostGRT/bounded_setup.tcl": {
+      "bytes": 3520,
+      "sha256": "63edb504052a42b3e1769b921fda4316d57e04ad280d4b53b7bb74058cce76e8"
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "status": "PASS_INDEPENDENT_LITERAL_BFS_FIRST_R_IS_A_PROBE_DISCONNECTING_BRIDGE",
+  "method": {
+    "bytes": 2962,
+    "sha256": "6c236641e0c6aa4ea7720d11a39775b3650ca735490518cedac74fd493ec3031"
+  },
+  "inputs": {
+    "/dev/shm/nssoc-div4-v7-wire-rc-01/wires.spice": {
+      "bytes": 33826,
+      "sha256": "267643dd475d20c84789ed2801a4c07ed2e26a5a0db48c90924585ec2525dd9a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-v5-20261005/anchors.json": {
+      "bytes": 175796,
+      "sha256": "46f0eebf028f4cf685eef7640f2bd713dcad1768884ef1d77c4035ea4d08b9ee"
+    }
+  },
+  "removed_resistor": {
+    "name": "R0",
+    "a": "P002",
+    "b": "T0172",
+    "ohms": "29.4381"
+  },
+  "physical_wire_component": 12,
+  "original_component": [
+    "P002",
+    "T0172"
+  ],
+  "after_split_components": [
+    [
+      "P002"
+    ],
+    [
+      "T0172"
+    ]
+  ],
+  "affected_actual_anchors": {
+    "P002": {
+      "label": "P002",
+      "metal": 67,
+      "point_dbu": [
+        1519000,
+        86030
+      ],
+      "wire_component": 12,
+      "kind": "PUBLIC_PORT_REFERENCE",
+      "detail": {
+        "name": "CLKP",
+        "rect_dbu": [
+          1518000,
+          85030,
+          1520000,
+          87030
+        ]
+      }
+    },
+    "T0172": {
+      "label": "T0172",
+      "metal": 8,
+      "point_dbu": [
+        1322000,
+        15750
+      ],
+      "wire_component": 12,
+      "kind": "INTRINSIC_DEVICE_TERMINAL_REFERENCE",
+      "detail": {
+        "device": 47,
+        "model": "rppd",
+        "terminal": "rppd_1",
+        "native_net": "CLKP",
+        "native_cluster": 27,
+        "disposition": "ACTUAL_METAL_POINT_REFERENCE",
+        "metal": 8,
+        "point_dbu": [
+          1322000,
+          15750
+        ],
+        "access_box_dbu": [
+          1320020,
+          15600,
+          1323980,
+          15900
+        ],
+        "wire_component": 12
+      }
+    }
+  },
+  "total_resistor_components_before": 37,
+  "total_resistor_components_after": 38,
+  "connected_components_before": 37,
+  "connected_components_after": 36,
+  "isolated_actual_anchors_after": [
+    "P002",
+    "T0172"
+  ],
+  "expected_earlier_strict_rejection": "Physical wire R graph open or incomplete",
+  "original_native_files_modified": false,
+  "native_executed": false
+}

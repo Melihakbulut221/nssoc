@@ -1,0 +1,91 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: pll-filter-candidates-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/pll-filter-candidates-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pll-filter-candidates-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  filter-candidate-one-us:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        size: [9, 11]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Native dependencies and strict original parser controls
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 networkx==3.5
+          python3 -m py_compile scripts/cloud_pll_vbic_acquisition.py scripts/cloud_pll_filter_experiment.py
+          python3 sw/tests/test_cloud_pll_loop_ports.py
+          python3 scripts/cloud_vbic_tree32_backend.py --controls-only
+          python3 scripts/cloud_chunked_results.py --self-test
+      - name: Measure filter candidate with original full1us acquisition gates
+        run: python3 scripts/cloud_pll_filter_experiment.py --size-um ${{ matrix.size }}
+      - name: Preserve complete native parent/model/runtime/waveform evidence
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-pll-vbic-acquisition
+          if [ ! -f cloud-pll-vbic-acquisition/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > cloud-pll-vbic-acquisition/result.json
+          fi
+          stem="pll-filter-${{ matrix.size }}-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-pll-vbic-acquisition/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-pll-vbic-acquisition --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-filter-${{ matrix.size }}',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Require a complete source-bound full1us measurement
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          p = Path('cloud-pll-vbic-acquisition/result.json')
+          assert p.is_file(), 'No acquisition report'
+          r = json.loads(p.read_text())
+          assert r['source_head'] == os.environ['GITHUB_SHA']
+          assert r['status'] == 'COMPLETE_FILTER_CANDIDATE_ONE_US_NOT_PHYSICAL_ACCEPTANCE', r.get('error')
+          assert r['protected_inputs_unchanged'] and r['capture']['end_s'] == 1e-6
+          assert r['filter_cap_um'] == ${{ matrix.size }}
+          assert r['filter_experiment']['wire_records_changed'] == 0
+          assert r['physical_candidate_accepted'] is False
+          print('Measured candidate against original gates:', r['candidate_gate_passed'])
+          print('Full safety, refinement, PVT, clock load and PHY acceptance remain separate.')
+          PYCODE
+      - name: Retain evidence if release publication failed
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll-filter-${{ matrix.size }}-${{ github.run_id }}-fallback
+          retention-days: 30
+          compression-level: 0
+          path: |
+            pll-filter-*.summary.json
+            pll-filter-*.parts.json
+            pll-filter-*.tar.gz*
+            cloud-pll-vbic-acquisition/result.json
+            cloud-pll-vbic-acquisition/patched/run.log

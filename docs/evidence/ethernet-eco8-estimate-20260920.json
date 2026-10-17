@@ -1,0 +1,188 @@
+{
+  "date": "2026-09-20",
+  "status": "STRUCTURAL PASS; estimated setup and hold still FAIL",
+  "scope": "ECO8 pre-route estimate after fully recomputing global routing, using the native flow RC and Liberty corner setup. Not detailed route, extracted STA, gate-level simulation or physical signoff. No RTL or SDC change.",
+  "changes": {
+    "hold23732": {
+      "old": "sg13g2_dlygate4sd3_1",
+      "new": "sg13g2_buf_1"
+    },
+    "_116300_": {
+      "old": "sg13g2_dfrbpq_1",
+      "new": "sg13g2_dfrbpq_2"
+    }
+  },
+  "estimated_corners": {
+    "nom_fast_1p32V_m40C": {
+      "setup_wns_ns": 3.2601249289596024,
+      "hold_wns_ns": -0.15732637860005091
+    },
+    "nom_slow_1p08V_125C": {
+      "setup_wns_ns": -0.729995640154059,
+      "hold_wns_ns": 0.06118661306361722
+    },
+    "nom_typ_1p20V_25C": {
+      "setup_wns_ns": 2.042264637430571,
+      "hold_wns_ns": 0.08040035531578685
+    }
+  },
+  "structural_check": {
+    "original_instances": 94555,
+    "added_noninverting_buffers": 0,
+    "equivalent_combinational_substitutions": 1,
+    "equivalent_sequential_substitutions": 1,
+    "state_definitions_compared_exactly": true,
+    "unchanged_ports_and_assigns": true,
+    "unchanged_original_wire_declarations": true,
+    "all_original_pin_connections_equal_after_buffer_contraction": true
+  },
+  "commands": [
+    ".venv/bin/python hw/soc/out/external-review-20260919/prepare_eco8.py",
+    "~/.local/opt/llbin/openroad -exit -metrics hw/soc/out/external-review-20260919/timing-eco8-critical-delay/metrics.json hw/soc/out/external-review-20260919/timing-eco8-critical-delay/eco.tcl",
+    "python3 hw/soc/flow/check_physical_eco.py hw/soc/out/external-review-20260919/timing-eco7-cap/soc_top.nl.v hw/soc/out/external-review-20260919/timing-eco8-critical-delay/soc_top.nl.v hw/soc/out/external-review-20260919/timing-eco8-critical-delay/validation-inputs.json"
+  ],
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/inputs.json",
+      "bytes": 7112,
+      "sha256": "b37be8ec244f52175d4453b5e4b705f3111b17b34d46c930587bb4fb73367b1d"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/validation-inputs.json",
+      "bytes": 7198,
+      "sha256": "140b3878d4a4403ceb99dbffae0d48bbc6bddda5bc8bef77f8d2b492f2f6bdc8"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/connectivity-check.json",
+      "bytes": 364,
+      "sha256": "92264d4c567ab4bce797e9592acff46707b4e481534debdf1a6a053673eed5c4"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/eco.tcl",
+      "bytes": 14216,
+      "sha256": "5eb50d68d1ef902a9ae9ff3ee2ef98fcd6123c265cba2caa556b42ecf965564e"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/eco.log",
+      "bytes": 16326,
+      "sha256": "b81200fe8c9197f229d1c47fdf521e534dbf63a870cd566de13cfebbc9fa567c"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/metrics.json",
+      "bytes": 2287,
+      "sha256": "6a8d1f69e43fdb0cc969cdec06085a4fa2eb6f4c0b3164d4c1a7ec57da768195"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/soc_top.odb",
+      "bytes": 89038283,
+      "sha256": "fd3b7d042231fdb6b2fd5b0a9065080431c004dd0c28acf67aa1cb01b6961ab8"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/soc_top.nl.v",
+      "bytes": 10794861,
+      "sha256": "79c10d6616f2a9bc415b511c0ed53d7bc29128b7206f7babf5e25005b4f0e949"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/soc_top.def",
+      "bytes": 22913723,
+      "sha256": "d1d369bcde80e25f24a7d3040f3de94507421682caf9b89c2314b61691f68c77"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/timing-eco8-critical-delay/soc_top.sdc",
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    }
+  ],
+  "buffering_follow_up": {
+    "date": "2026-09-20",
+    "tag": "timing-eco9-buffer-repair",
+    "status": "STRUCTURAL PASS; setup and hold estimates FAIL",
+    "scope": "ECO9 starts from ECO8 and enables setup buffering with pin swap, gate cloning and buffer removal disabled. Final global routing is recomputed after optimization; intermediate optimizer slack is not adopted. No final native route/extraction or gate simulation.",
+    "estimated_corners": {
+      "nom_fast_1p32V_m40C": {
+        "setup_wns_ns": 3.2589287746390414,
+        "hold_wns_ns": -0.2465108187351029
+      },
+      "nom_slow_1p08V_125C": {
+        "setup_wns_ns": -0.5793694576971153,
+        "hold_wns_ns": 0.06161582529707626
+      },
+      "nom_typ_1p20V_25C": {
+        "setup_wns_ns": 2.041108229095416,
+        "hold_wns_ns": -0.023671287822107628
+      }
+    },
+    "structural_check": {
+      "original_instances": 94555,
+      "added_noninverting_buffers": 74,
+      "equivalent_combinational_substitutions": 21,
+      "equivalent_sequential_substitutions": 2,
+      "state_definitions_compared_exactly": true,
+      "unchanged_ports_and_assigns": true,
+      "unchanged_original_wire_declarations": true,
+      "all_original_pin_connections_equal_after_buffer_contraction": true
+    },
+    "commands": [
+      ".venv/bin/python hw/soc/out/external-review-20260919/prepare_eco9.py",
+      "timeout 2400 ~/.local/opt/llbin/openroad -exit -metrics hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/metrics.json hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/eco.tcl",
+      "python3 hw/soc/flow/check_physical_eco.py hw/soc/out/external-review-20260919/timing-eco8-critical-delay/soc_top.nl.v hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/soc_top.nl.v hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/validation-inputs.json"
+    ],
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/inputs.json",
+        "bytes": 6886,
+        "sha256": "a1a740ce1dfaeb440b069ab8c96388a802487e7008ddbd87a7dfaf2c20b7444b"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/validation-inputs.json",
+        "bytes": 14526,
+        "sha256": "d91c3d62ba8eda5b480fc208893bf541579d7b42ce1af29abc58dd6b7ecf2296"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/connectivity-check.json",
+        "bytes": 366,
+        "sha256": "0ad8649897cb803554c79e6f23582596d614b1382174652ce148056b4cca6219"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/validation.log",
+        "bytes": 452,
+        "sha256": "ef769b8dc00fb75a201c619ff7e4d65767f02333511b92a47b174573d12fa7dc"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/eco.tcl",
+        "bytes": 15314,
+        "sha256": "cdae640eed951af4f9c7d439df069c275c091aa90f6dc05f728f9831f0e1459f"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/eco.log",
+        "bytes": 91875,
+        "sha256": "311c33b206ec5659f8f40590b9851e9560713e300799d97ffe9b7b6981e839fa"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/metrics.json",
+        "bytes": 4144,
+        "sha256": "3d7127aaae81aea043f54dcc59a4a3dd9b3070d4eef2ae62dca227afb157757b"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/soc_top.odb",
+        "bytes": 89051850,
+        "sha256": "6eec52699ef9dedbb382409f00598a35a04f0fa7240a9f1ce4334009770064d9"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/soc_top.nl.v",
+        "bytes": 10800638,
+        "sha256": "a609c54feea2be4946d4f4374efde92d115a0370191441a8e107058698e1d58e"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/soc_top.def",
+        "bytes": 22924921,
+        "sha256": "7ffde3d87d80c15532a625f360185d7251dae9172b942193d2e5b1608989a2dd"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/timing-eco9-buffer-repair/soc_top.sdc",
+        "bytes": 29892,
+        "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+      }
+    ]
+  }
+}

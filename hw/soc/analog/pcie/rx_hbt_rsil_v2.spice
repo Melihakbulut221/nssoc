@@ -1,0 +1,19 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Experimental RX preamplifier v2, not a PCIe-qualified receiver.
+* Four native HBTs and four native three-terminal self-heating rsil devices.
+* External nominal VCM=1.36 V and IREF=0.75 mA remain required.
+* Split input termination is about 50 ohm; collector loads are about 100 ohm.
+* Reduced native collector resistance targets the real 150 fF output load.
+* No pad/ESD/channel/package model, offset cancellation, CTLE, slicer or CDR.
+* SUB is the compact-model bulk node, independent of AVSS; tap RC is not here.
+.subckt nssoc_rx_hbt_rsil_v2 inp inn outp outn avdd avss sub iref vcm
+XREF iref iref avss sub npn13G2 Nx=1
+XTAIL tail iref avss sub npn13G2 Nx=4
+XP outn inp tail sub npn13G2 Nx=4
+XN outp inn tail sub npn13G2 Nx=4
+XRTP inp vcm sub rsil w=10u l=70.215u b=0 sw_et=1
+XRTN inn vcm sub rsil w=10u l=70.215u b=0 sw_et=1
+XRP avdd outp sub rsil w=2u l=27.5u b=0 sw_et=1
+XRN avdd outn sub rsil w=2u l=27.5u b=0 sw_et=1
+.ends nssoc_rx_hbt_rsil_v2

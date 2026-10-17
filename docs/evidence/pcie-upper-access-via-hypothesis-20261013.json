@@ -1,0 +1,16 @@
+{
+  "status": "SOURCE_INSPECTION_AND_PHYSICAL_HYPOTHESIS_NOT_ELECTRICAL_ACCEPTANCE",
+  "layout_source": "docs/evidence/pcie-final-v5-kelvin-physical-20261013.json",
+  "composition_source": "docs/evidence/pcie-final-v5-kelvin-composition-20261013.json",
+  "runtime_source": "docs/evidence/pcie-magic-cloud-runtime-20261013.json",
+  "pcell_source": "docs/evidence/pcie-tx-layout-cloud-input-20261013.json",
+  "observations": [
+    "Native wire model contains supply branches R1=20.2223ohm andR2=20.2091ohm between avdd bus and the two native load terminals. These are extracted model values, not foundry qualification.",
+    "Frozen typical Magic table defines Via1..Via4 contact resistance9000milliohm,TopVia12200milliohm,TopVia21100milliohm. Coefficients remain unchanged.",
+    "Generator escape calls via(met,3,x,y,cols) with8columns forHBTpinaccess, but via(3,6,lane,y) inherits helper defaultcols=2. PCell vn_columns controls lower-via arrays; vt1/vt2_columns are separate defaults1."
+  ],
+  "hypothesis": "Sparse lower-via arrays in the vertical escape may contribute material series resistance. Native geometry, fresh extraction and full-wave acceptance must verify the effect; no inferred success from via count alone.",
+  "candidate": "critical_buses_kelvin_short_vias",
+  "change": "Only M3-to-TM1 escape call gains vn_columns8 instead2, on already physicallypassing shortreturngeometry. NativeRCcoefficients, all54devices, circuit, corner, sourcebit oracle and physical/electrical gates unchanged.",
+  "adopted": false
+}

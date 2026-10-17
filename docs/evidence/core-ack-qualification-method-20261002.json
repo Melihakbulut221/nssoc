@@ -1,0 +1,75 @@
+{
+  "status": "FROZEN_SOURCE_AND_CAPTURED_PROTOCOL_PREFLIGHT_PASS_NOT_SYNTHESIZED",
+  "sources": {
+    "scripts/run_cloud_core_ack_qualification.py": {
+      "bytes": 35143,
+      "sha256": "2469bcee4aeae7d2aa565b704a1fb7534d29532b81b466ca613efae6a14c4c04"
+    },
+    "sw/tests/test_core_ack_qualification.py": {
+      "bytes": 15640,
+      "sha256": "b3f6b079dbac978681dfdadcb512ab8247ea283efcff4a6dc71e9c43417a0404"
+    },
+    ".github/workflows/timing-core-ack-qualification.yml": {
+      "bytes": 8724,
+      "sha256": "45287fccf51081d83d1ce36639f8d36b985d8bf08dd16a341fe4aaab40233ff0"
+    },
+    "hw/soc/pnr/core-ack-qualification-input.lock.json": {
+      "bytes": 16633,
+      "sha256": "b208c9d5c6115990680be96e183eecc9ca723f262658e92a5a843cf94c2640c7"
+    }
+  },
+  "required_actual_core": {
+    "run_id": 37012329552,
+    "source_commit": "1c46e6c88f1aeec53be08b6dcb08aca0d5460787",
+    "artifact_id": 11228850191,
+    "artifact_name": "core-ack-protocol-1",
+    "bytes": 2530369,
+    "sha256": "a92a1ec730f35aaefc3e1f56cc43c14f42c28bfdfaadeedf39b4a09bfb24a97b",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-core-ack-full-width-37012329552-20261002.zip",
+    "result": {
+      "bytes": 51135,
+      "sha256": "d5a4d69f1dc3e95e083cebcca0de7e5c0a61802b61f990c28abb0324a5f0618a"
+    },
+    "firmware": {
+      "bytes": 4228,
+      "sha256": "23891593617bf95f7a4f4577e59af33e7960797589bd8b3e9b0641543f652382"
+    },
+    "signature_sha256": "70ef3becdad7f7b96bcdf33b717c9a40ec3ef48bc75cf77d6d8c984e8898a2c1"
+  },
+  "actual_captured_native_replay": {
+    "cases": 9,
+    "compilations": 6,
+    "result": {
+      "bytes": 51135,
+      "sha256": "d5a4d69f1dc3e95e083cebcca0de7e5c0a61802b61f990c28abb0324a5f0618a"
+    },
+    "source_files": 81,
+    "prepared_files": 87,
+    "native_outputs": 71,
+    "immutable_git_methods": 8
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_core_ack_qualification.py sw/tests/test_alu_qualification.py sw/tests/test_alu_prefix_experiment.py",
+    "passed": 100,
+    "scope": "Pure source/receipt/recipe checks, tiny Python-only detached-worker control and stub-child actual boot_run path; no Ibex simulation or EDA execution."
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "qualification_scope": [
+    "Exactly one request-pipe source changes; the original C10 ALU and all other 80 RTL/header inputs remain byte-identical.",
+    "The queue adds one cycle before upstream acknowledgement and downstream exposure; same-cycle equivalence is neither asserted nor waived.",
+    "The required actual-core run proves only nine directed cases, not all reachable core hazards or interrupt/debug/PMP-update interleavings.",
+    "Full-SoC boot uses the immutable C10 loader, native functional cells and explicit SRAM models; no SDF or transistor/analog timing.",
+    "A successful 28-check boot and system/Ethernet MBIST are finite workload evidence, not exhaustive architectural refinement.",
+    "No default RTL adoption, physical timing/RC, DRC/LVS or manufacturing acceptance follows from this experiment."
+  ],
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "sequential_equivalence_proved": false,
+  "actual_core_protocol_proved": false,
+  "full_soc_functional_accepted": false,
+  "root_frozen_sources_verified": true,
+  "independent_peer_review": "PASS_NO_BLOCKING_FINDING",
+  "root_focused_tests_passed": 100
+}

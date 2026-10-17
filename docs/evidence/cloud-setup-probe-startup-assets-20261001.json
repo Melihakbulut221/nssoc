@@ -1,0 +1,123 @@
+{
+  "release_tag": "evidence-20260927-chip-io",
+  "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+  "source_commit": "0e76a3a4d9b3234b4958ab9f5da6c5ab55ee246a",
+  "source_run": 36858091870,
+  "original_artifact_id": 11160011351,
+  "assets": [
+    {
+      "name": "timing-setup-probe-startup-20261001.zip",
+      "bytes": 378274,
+      "sha256": "4c8da149a7e4e3eb54a41bb34bd461d39ee70cb7c16458ca2ac3508eeddfe117",
+      "asset_id": 603168102,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/timing-setup-probe-startup-20261001.zip",
+      "original_zip_unchanged": true,
+      "github_api_digest_verified": true,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true
+    }
+  ],
+  "scope": "Running startup evidence only. Four tiny native controls and full-chip native startup; no completed repair or candidate acceptance.",
+  "timing_accepted": false,
+  "candidate_adopted": false,
+  "manufacturing_approval": false,
+  "startup_review": {
+    "schema": 1,
+    "status": "PASS_STARTUP_PIN_CLOSURE_AND_NATIVE_CONTROLS_ONLY",
+    "source_commit": "0e76a3a4d9b3234b4958ab9f5da6c5ab55ee246a",
+    "run_id": 36858091870,
+    "artifact": {
+      "id": 11160011351,
+      "name": "setup-probe-startup-1",
+      "bytes": 378274,
+      "sha256": "4c8da149a7e4e3eb54a41bb34bd461d39ee70cb7c16458ca2ac3508eeddfe117",
+      "api_digest_matches": true
+    },
+    "snapshot_recorded": "2026-10-01T11:54:41.588534+00:00",
+    "result_recorded": "2026-10-01T11:54:32.607297+00:00",
+    "method_count": 11,
+    "captured_file_count": 76,
+    "source_reference_count": 26,
+    "config_state_translation_verified": true,
+    "sdc_manifest_pin": {
+      "path": "inputs/hw/soc/out/pipeline-timing-checkpointed-20260929/attempt3/chunk-010/01-openroad-resizertimingpostgrt/soc_top.sdc",
+      "bytes": 56724,
+      "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+    },
+    "native_controls": {
+      "cases": {
+        "complete_coverage": {
+          "passed": true
+        },
+        "bad_coverage": {
+          "passed": true
+        },
+        "corrupt_units": {
+          "passed": true
+        },
+        "route_mutation": {
+          "passed": true
+        }
+      },
+      "raw_output_pins": 43,
+      "returncode": 0,
+      "elapsed_seconds": 15.054464585999995,
+      "offline_semantic_replay": "PASS"
+    },
+    "phase": "native-diagnostic",
+    "status_at_capture": "RUNNING",
+    "resources_before_native": {
+      "available_memory_bytes": 15690600448,
+      "free_disk_bytes": 88398020608
+    },
+    "native_address_space_limit_bytes": 8589934592,
+    "first_native_progress": "C10 ODB and design SDC loaded; 32 macros observed; global routing extra iteration 3/50.",
+    "repair_started_in_available_log": false,
+    "complete_validator_expected_rejection": "Partial evidence is not a completed diagnostic",
+    "timing_accepted": false,
+    "candidate_adopted": false,
+    "manufacturing_approval": false,
+    "limitations": [
+      "Startup snapshot is not atomic across files and is not a completed diagnostic.",
+      "C10 SDC bytes and runtime/PDK bundle are not present in this small artifact; only their original manifest pins and prepared path translation are independently checked here.",
+      "Captured native-control files were rechecked and semantically replayed in host Python; no native process was launched locally.",
+      "Native log warns both SRAM types lack Liberty models in three corners and are black-boxed.",
+      "Native log warns base SDC flow supports only the first clock in a multi-clock configuration; full signoff is not claimed.",
+      "No setup repair result, four chip endpoint snapshots, complete timing validation, or candidate adoption is proved by this startup capture."
+    ],
+    "raw_inputs": {
+      "run.json": {
+        "sha256": "d0c89929979200028c043250dc6c75fcd93812e4353286f27a6c4db6b40395e6",
+        "bytes": 13496
+      },
+      "jobs.json": {
+        "sha256": "000e4b0fb59859f945411ce9cebd2f914fa74f498cecd0c204d35a46e5ad6db1",
+        "bytes": 4199
+      },
+      "artifacts.json": {
+        "sha256": "a55487e9d56d650e17004fff89bbfef0f3b1aa0786d29649e02cce3babcbc32f",
+        "bytes": 743
+      },
+      "zip-inventory.json": {
+        "sha256": "437d60c6c6d632e17ce431d24068042b112b8f0af9c3f9e258b6eeb120dc8d2a",
+        "bytes": 8502
+      },
+      "capture/capture.json": {
+        "sha256": "5a44f50d75e8009b8a2c2d0bbe79c7f0c759e972a216e8cf458767fcb54cfe2c",
+        "bytes": 18838
+      },
+      "capture/result.json": {
+        "sha256": "5a827df4bc1875222604db04937ffaa41819afa8fd305619a30fc933151fcd89",
+        "bytes": 5227
+      },
+      "capture/native-diagnostic.log": {
+        "sha256": "57568ab704f83e70ca8e65adce5262674a4c0cd8021918d6e6b0e411f94f3469",
+        "bytes": 13782
+      },
+      "verify_startup.py": {
+        "sha256": "95b45cf3b903e193f8c7716efab4caf8772412be33c3130f5ee485c22a76b204",
+        "bytes": 6727
+      }
+    }
+  }
+}

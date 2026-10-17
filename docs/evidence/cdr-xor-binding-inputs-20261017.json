@@ -1,0 +1,33 @@
+{
+  "run": 39038617521,
+  "summary_asset": 650606163,
+  "summary_sha256": "64c719b2138eb87bc4f9d5109857bf677606d931c9f6efd6bddfbe90e4990c1b",
+  "parts_asset": 650606225,
+  "parts_sha256": "855c9cc874f04401a4ad99be98e74626b6ce6cf73579579b8d724b407285a401",
+  "report": {
+    "status": "COMPLETE_PINNED_NATIVE_BINDING_METHOD_REVIEW_INPUTS_NOT_COMPOSITION",
+    "source_head": "3a26caff84080a83c3a26919911e68091a7362e6",
+    "accepted": false,
+    "full_phy_accepted": false,
+    "composition_complete": false,
+    "rc_source": {
+      "run": 39037889261,
+      "summary_sha256": "ff79aec82615dac17b55186f6e3dfeebab0991a5582f84cc3c4d711d34d3b449",
+      "parts_sha256": "4c81d504b915e421210b9d6755ed8b75e1d8a920b41334873ec3473a471bede0"
+    },
+    "methods": {
+      "build-devices01.py": {
+        "sha256": "0eb67cdcc00c5339344c7c75606b55524606ac82ed586c82906fe6a70e5cacfe",
+        "text": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nfrom collections import Counter\nfrom decimal import Decimal\nimport sys,json,hashlib,re,math\nR=Path.cwd();B=Path(__file__).resolve().parent;sys.path.insert(0,str(R/'scripts'));import build_pcie_local_vco_hybrid_v6 as h\nP=Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2');techpath=P/'libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json';tech=json.loads(techpath.read_text())['techParams'];raw=B.parent/'physical92/lvs/extracted.cir';rows=json.loads((B/'devices01.json').read_text())['devices'];assert Counter(d['model']for d in rows)==dict(npn13G2=19,rppd=8,ptap1=27)\nstatements=h.statements(raw.read_text());ports=statements[0][2:];assert set(ports)=={'ap','an','bp','bn','sp','sn','op','on','avdd','avss','sub','iref'}and len(ports)==12\nnative={int(re.fullmatch(r'[QRC]\\$(\\d+)',x[0])[1]):x for x in statements[1:-1]};assert set(native)=={d['native_id']for d in rows}==set(range(1,55));node_map={n:n if n in ports else'n_'+n.removeprefix('$')for d in rows for n in d['terminals'].values()};assert len(node_map)==len(set(node_map.values()));bindings=[];out=['* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut','* SPDX-License-Identifier: CERN-OHL-W-2.0','.subckt nssoc_tx_mux54_compact_v1 '+' '.join(ports)]\nfor d in rows:\n model=d['model'];order=h.NATIVE_ORDER[model];line=native[d['native_id']];assert set(d['terminals'])==set(order);assert line[len(order)+1]==model;assert [n.removeprefix('\\\\')for n in line[1:len(order)+1]]==[d['terminals'][t]for t in order]\n params=dict(x.split('=')for x in line[len(order)+2:]);assert set(params)==set(d['parameters'])\n for k,v in d['parameters'].items():\n  exp=-12 if k=='A'else -6 if k in ['w','l','ps','we','le','P']else 0\n  assert abs(h.number(params[k])/Decimal(10)**exp-Decimal(str(v)))<=Decimal(str(math.ulp(v))),(d['native_id'],k,params[k],v)\n sim={k.lower():v for k,v in h.model_params(d,tech).items()};cm='npn13g2'if model=='npn13G2'else model;nets=[node_map[d['terminals'][t]]for t in h.MODEL_ORDER[model]];name=f'XD{d[\"native_id\"]:04d}'\n if model=='npn13G2':assert 1<=int(sim['nx'])<=10 and sim['we']=='0.07u'and sim['le']=='0.9u'\n if model=='rppd':assert sim['sw_et']=='1'and sim['m']=='1'and sim['b']=='0'\n if model=='rppd':\n  for key in ['w','l','ps']:sim[key]=format(Decimal(str(d['parameters'][key])),'f')+'u'\n out.append(' '.join([name,*nets,cm,*[k+'='+v for k,v in sim.items()]]));bindings.append(dict(instance=name,native_id=d['native_id'],model=cm,native_model=model,native_terminal_order=order,compact_model_order=h.MODEL_ORDER[model],native_nodes=d['terminals'],compact_nodes=nets,parameters=sim))\nout+=['.ends nssoc_tx_mux54_compact_v1',''];target=B/'mux54-compact01.spice';target.write_text('\\n'.join(out));sources=[Path(__file__),Path(h.__file__),raw,B/'devices01.json',B.parent/'physical92/lvs/audit.json',B.parent/'physical92/lvs/result.lvsdb',techpath]\nfor rel,pin in h.MODEL_PINS.items():\n q=P/rel;assert hashlib.sha256(q.read_bytes()).hexdigest()==pin;sources.append(q)\nr=dict(status='PASS_NATIVE54_MODEL_AND_TERMINAL_BINDING',inputs={str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in sources},output={target.name:hashlib.sha256(target.read_bytes()).hexdigest()},native_ports=ports,devices=bindings,node_map=node_map,census=dict(Counter(d['model']for d in rows)),wire_parasitics_included=False,native_simulation_passed=False,contact_model='Twenty-seven actual2x2um finite ptap models, exact pinnedPDK CbTapCalc formula. Body spreading resistance not modeled.',serial_phy_complete=False);(B/'binding01.json').write_text(json.dumps(r,indent=2)+'\\n');print(r['status'])\n"
+      },
+      "export01.py": {
+        "sha256": "2bc1eca7c9815b188d14a1c246fe31b35030be8220b4e32468b0d2d3a3465911",
+        "text": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nimport json,hashlib\nimport klayout.db as db\nR=Path.cwd();B=Path(__file__).resolve().parent;source=B.parent/'physical92/lvs';audit=json.loads((source/'audit.json').read_text());assert audit['status']=='PASS within comparison scope'\nlvs=db.LayoutVsSchematic();lvs.read(str(source/'result.lvsdb'));c=lvs.netlist().circuit_by_name('nssoc_tx_mux2_passive_topmetal_layout_v1');assert c is not None and c.pin_count()==12\nrows=[]\nfor d in c.each_device():\n kind=d.device_class();rows.append(dict(native_id=d.id(),model=kind.name,terminals={t.name:d.net_for_terminal(t.id()).name for t in kind.terminal_definitions()},parameters={p.name:d.parameter(p.id())for p in kind.parameter_definitions()}))\nassert len(rows)==54\ninputs=[source/'audit.json',source/'result.lvsdb',source/'extracted.cir',Path(__file__).resolve()];pins={str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in inputs}\n(B/'devices01.json').write_text(json.dumps(dict(status='EXPORTED_ACTUAL_NATIVE_LVS_DEVICE_TERMINALS',inputs=pins,devices=rows,qualified_pex=False,serial_phy_complete=False),indent=2)+'\\n');print(rows[1])\n"
+      }
+    },
+    "outputs": {
+      "build-devices01.py": "0eb67cdcc00c5339344c7c75606b55524606ac82ed586c82906fe6a70e5cacfe",
+      "export01.py": "2bc1eca7c9815b188d14a1c246fe31b35030be8220b4e32468b0d2d3a3465911"
+    }
+  }
+}

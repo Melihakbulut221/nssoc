@@ -1,0 +1,119 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tree32-pgo-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/tree32-pgo-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tree32-pgo-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact-fine-step-pgo-study:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify strict numerical guards and original stream transport
+        run: |
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          python3 -m py_compile scripts/cloud_tree32_pgo.py
+          python3 scripts/cloud_tree32_pgo.py --controls-only
+          python3 -m pytest -q sw/tests/test_cloud_tx_stream.py sw/tests/test_cloud_tx_original_bits.py
+      - name: Install native compiler dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential autoconf automake libtool bison flex libreadline-dev libncurses-dev libsndfile1 libsamplerate0 libxaw7 libxt6 libxft2 libfontconfig1
+      - name: Build instrumented exact upstream and frozen single-expression VBIC patch
+        run: |
+          set -o pipefail
+          mkdir -p cloud-tree32-pgo/build-runtime cloud-tree32-pgo/profiles
+          git init "$RUNNER_TEMP/tree32-pgo-source"
+          git -C "$RUNNER_TEMP/tree32-pgo-source" remote add origin https://github.com/imr/ngspice.git
+          git -C "$RUNNER_TEMP/tree32-pgo-source" fetch --depth 1 origin a80f6e3e95d51534905b1f23410a951802666656
+          git -C "$RUNNER_TEMP/tree32-pgo-source" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/tree32-pgo-source" rev-parse HEAD)" = a80f6e3e95d51534905b1f23410a951802666656
+          git -C "$RUNNER_TEMP/tree32-pgo-source" archive HEAD | gzip > cloud-tree32-pgo/upstream-source.tar.gz
+          python3 - <<'PYCODE'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from cloud_vbic_companion import patch
+          result=patch(Path(os.environ['RUNNER_TEMP'])/'tree32-pgo-source/src/spicelib/devices/vbic/vbicload.c')
+          Path('cloud-tree32-pgo/patch.json').write_text(json.dumps(result,indent=2)+'\n')
+          PYCODE
+          git -C "$RUNNER_TEMP/tree32-pgo-source" diff -- src/spicelib/devices/vbic/vbicload.c > cloud-tree32-pgo/companion.patch
+          (cd "$RUNNER_TEMP/tree32-pgo-source" && ./autogen.sh) 2>&1 | tee cloud-tree32-pgo/autogen.log
+          mkdir "$RUNNER_TEMP/tree32-pgo-build"
+          task_cflags=$(PYTHONPATH=scripts python3 -c 'from cloud_tree32_pgo import GENERATE_FLAGS; print(GENERATE_FLAGS)')
+          (cd "$RUNNER_TEMP/tree32-pgo-build" && "$RUNNER_TEMP/tree32-pgo-source/configure" --without-x --with-readline=no --disable-openmp CFLAGS="$task_cflags" LDFLAGS="$task_cflags") 2>&1 | tee cloud-tree32-pgo/generate-configure.log
+          make -C "$RUNNER_TEMP/tree32-pgo-build" -j2 V=1 2>&1 | tee cloud-tree32-pgo/generate-build.log
+          cp "$RUNNER_TEMP/tree32-pgo-build/src/ngspice" cloud-tree32-pgo/build-runtime/training-ngspice
+          cp "$RUNNER_TEMP/tree32-pgo-build/config.log" cloud-tree32-pgo/generate-config.log
+          gcc --version > cloud-tree32-pgo/compiler.txt
+          lscpu > cloud-tree32-pgo/cpu.txt
+      - name: Train actual32stream native tree for1p2ns at unchanged0p25ps maximum step
+        run: python3 scripts/cloud_tree32_pgo.py --train
+      - name: Rebuild same source from actual profile with strict floating point and LTO
+        run: |
+          set -o pipefail
+          make -C "$RUNNER_TEMP/tree32-pgo-build" clean 2>&1 | tee cloud-tree32-pgo/clean.log
+          task_cflags=$(PYTHONPATH=scripts python3 -c 'from cloud_tree32_pgo import FLAGS; print(FLAGS)')
+          (cd "$RUNNER_TEMP/tree32-pgo-build" && "$RUNNER_TEMP/tree32-pgo-source/configure" --without-x --with-readline=no --disable-openmp CFLAGS="$task_cflags" LDFLAGS="$task_cflags") 2>&1 | tee cloud-tree32-pgo/configure.log
+          make -C "$RUNNER_TEMP/tree32-pgo-build" -j2 V=1 2>&1 | tee cloud-tree32-pgo/build.log
+          cp "$RUNNER_TEMP/tree32-pgo-build/src/ngspice" cloud-tree32-pgo/build-runtime/optimized-ngspice
+          cp "$RUNNER_TEMP/tree32-pgo-build/config.log" cloud-tree32-pgo/config.log
+          python3 - <<'PYCODE'
+          import hashlib,json,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from cloud_tree32_pgo import FLAGS,prepared
+          prepared()
+          root=Path('cloud-tree32-pgo')
+          digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+          report=dict(upstream='a80f6e3e95d51534905b1f23410a951802666656',flags=FLAGS,configure_options=['--without-x','--with-readline=no','--disable-openmp'],optimized_sha256=digest(root/'build-runtime/optimized-ngspice'),prepared_state_sha256=digest(root/'prepared-state.json'))
+          (root/'build.json').write_text(json.dumps(report,indent=2)+'\n')
+          PYCODE
+      - name: Compare all3060vectors against frozen reference with original1nV limit and measure CPU cost
+        run: python3 scripts/cloud_tree32_pgo.py
+      - name: Preserve native profiles, full vectors, source, runtime, failures and comparison
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-tree32-pgo
+          if [ ! -f cloud-tree32-pgo/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_PAIRED_REPORT","accepted":false}' > cloud-tree32-pgo/result.json
+          fi
+          stem="tree32-pgo-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-tree32-pgo/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-tree32-pgo --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];m=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tree32-pgo',stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tree32-pgo-${{ github.run_id }}-fallback
+          retention-days: 30
+          compression-level: 0
+          path: |
+            tree32-pgo-*.json
+            tree32-pgo-*.tar.gz*
+            cloud-tree32-pgo/result.json
+            cloud-tree32-pgo/training.json
+            cloud-tree32-pgo/*.log

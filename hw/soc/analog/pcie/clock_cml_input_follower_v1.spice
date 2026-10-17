@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Two emitter followers for the CML cascade common-mode interface.
+* Layout adds four finite substrate contacts between SUB and device bulk.
+* Component development source; not a qualified PCIe PHY or acquired PLL.
+.subckt nssoc_cml_input_follower_v1 cp cn bp bn avdd avss sub
+XFP avdd cp bp sub npn13g2 nx=2 we=0.07u le=0.9u
+XFN avdd cn bn sub npn13g2 nx=2 we=0.07u le=0.9u
+XRP bp avss sub rppd w=2.0u l=8.0u ps=0.0u b=0 m=1 sw_et=1
+XRN bn avss sub rppd w=2.0u l=8.0u ps=0.0u b=0 m=1 sw_et=1
+.ends nssoc_cml_input_follower_v1

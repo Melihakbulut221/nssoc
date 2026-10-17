@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "producer": {
+    "run_id": 36990647336,
+    "source_commit": "945881e8bd9854419f1f3066039c380658693a81",
+    "artifact_id": 11223714813,
+    "artifact_name": "combined-repair-final-1",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-combined-repair-36990647336-20261002.zip",
+    "bytes": 329082361,
+    "sha256": "6117183fcc255f16a6d45c88c32c76935ba8e7c58d6a0aa8257c12a735f3ba96",
+    "entrypoint": "scripts/run_cloud_combined_repair.py",
+    "kind": "combined_setup_hold_repair",
+    "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+  },
+  "candidate_files": {
+    "soc_top.odb": {
+      "bytes": 107886723,
+      "sha256": "c48940a8469224ec305d9f1516b5f7726b64097b093cfa147d96dd1354e8bf7b"
+    },
+    "soc_top.def": {
+      "bytes": 24448106,
+      "sha256": "a1e2b79816f86371bc9fc3ba4b6909fdeba19f87d7ebc182e755f69d7142434e"
+    },
+    "soc_top.sdc": {
+      "bytes": 56724,
+      "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+    },
+    "soc_top.v": {
+      "bytes": 12122862,
+      "sha256": "acb5e0cb93a21d45821b429052230af527a719731e93ba24e808c14acca0ad86"
+    }
+  },
+  "baseline_metrics": {
+    "setup_wns_seconds": -4.209004700328478e-09,
+    "hold_wns_seconds": -1.5530043917522107e-10,
+    "setup_tns_seconds": -3.5549244330468355e-06,
+    "hold_tns_seconds": -2.117501507470365e-09,
+    "setup_violating_endpoints": 1311,
+    "hold_violating_endpoints": 66,
+    "slew_violations": 2,
+    "capacitance_violations": 3,
+    "instance_count": 103889
+  },
+  "baseline_fingerprints": {
+    "constraints": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "netlist": "acb5e0cb93a21d45821b429052230af527a719731e93ba24e808c14acca0ad86",
+    "placement": "a5620d260e4f76509a66f8417bde5dccde902a6228c665e9301abd9590a06bf0",
+    "routing": "00928d4e4ee2fc3557090706790df888a30987866dc9b503e1c658f5c854e06d",
+    "parasitics": "7a3000b926ee75bd2b317485df336f1283a7b431adc4d9fe9a251d256f3f57ef"
+  },
+  "original_matched_metrics": {
+    "setup_wns_ns": -4.909516349016485,
+    "hold_wns_ns": -1.8409653801398917,
+    "setup_tns_ns": -4320.800144341774,
+    "hold_tns_ns": -26.461044910774945,
+    "setup_violating_endpoints": 1384,
+    "hold_violating_endpoints": 113,
+    "slew_violations": 0,
+    "capacitance_violations": 1
+  },
+  "original_selected_metrics": {
+    "setup_wns_ns": -4.710829,
+    "hold_wns_ns": -1.840329
+  },
+  "targets": [
+    {
+      "driver": "fanout1387",
+      "pin": "X",
+      "net": "net1387"
+    },
+    {
+      "driver": "fanout1391",
+      "pin": "X",
+      "net": "net1391"
+    },
+    {
+      "driver": "fanout1228",
+      "pin": "X",
+      "net": "net1228"
+    }
+  ],
+  "native_api_source": {
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "files": {
+      "src/rsz/src/Resizer.i": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/Resizer.i",
+        "bytes": 19925,
+        "sha256": "28732aeb65f49c204bf3d25adfb7984c8e53fc8e1a29f7b23ffbec7d23808da4"
+      },
+      "src/rsz/src/RepairDesign.cc": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairDesign.cc",
+        "bytes": 77985,
+        "sha256": "791000a64b13a72aed4d68551ae6ca0f8b693c23f206aaea6e6246211324d230"
+      },
+      "src/rsz/test/repair_wire9.tcl": {
+        "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/test/repair_wire9.tcl",
+        "bytes": 307,
+        "sha256": "7df5aa391bd9e91a95b4d6adb79ee849341c530ac5ce24910d40d79bc77bcdc0"
+      }
+    }
+  },
+  "manifest_sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+  "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "scope": "Unadopted three-net electrical repair continuation; unchanged original C10 and candidate-baseline timing guards. Full native geometry/endpoint/control and limited logic proof required. No setup repair or threshold change."
+}

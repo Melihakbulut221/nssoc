@@ -1,0 +1,23 @@
+drc PASS
+offgrid FAIL
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7.py", line 720, in <module>
+    main()
+    ~~~~^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7.py", line 640, in main
+    validate_lvs(
+    ~~~~~~~~~~~~^
+        step,
+        ^^^^^
+        (directory / "extracted.cir").read_text(),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        name in ("lvs", "lvs_flat"),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7.py", line 376, in validate_lvs
+    validate_expanded_devices(text)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_pcie_clock_div4_v7.py", line 353, in validate_expanded_devices
+    raise ValueError("Exact unmultiplied straight native passive device")
+ValueError: Exact unmultiplied straight native passive device

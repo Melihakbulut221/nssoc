@@ -1,0 +1,21 @@
+{
+  "status": "CAPACITY_ABORT_CONTENT_DOMAIN_EXPERIMENT",
+  "rejected_parent": {
+    "path": "hw/soc/out/pcie-integrity-v12-20261005/candidate-decision.json",
+    "sha256": "f90abde9bf1c0d30b228b2ed1cf4921994d58633f6fc057fef79d58c1c4f2ec4"
+  },
+  "stable_baseline": "V11",
+  "source_freeze_sha256": "5fc9176560e9656a77c74374235ae28a24dad0bd91a9e546b2fc1e593d4e67eb",
+  "motivation": {
+    "startpoint_q_wire": "framer.read_ptr[2]",
+    "endpoint_q_wire": "framer.ending",
+    "arrival_ns": 7.838686,
+    "buffer_count": 24,
+    "buffer_delay_ns": 3.8281819999999995
+  },
+  "change": "Quarantined slot-content and resident-cache enables bypass only capacity qualification: content_step=originalstep OR ring_overflow_now. Public parser/capacity/fault/commit/pointers/output controls remain byteidentical to V11 through two literalinverse transforms.",
+  "pending_end_drain": "Both content_step and originalstep require !ending&&current_valid; onceendingisregistered neither writes. AnEDStoken onanormalacceptedstep retains originalmetadata/commit behavior.",
+  "overflow_extra_write": "Additionalwrite onlyoccurs whenoriginalring_overflow_now/fault_now aretrue. Theunchangedfaultbranch clearsvalidityandallringpointers andhaltsatsameedge, beforeanynewowner orcommit.",
+  "evidence": "SavedfullV11/V13miter13cases, occupiedmetadata/committedverdict checks,1actualoverflowwriteedge,41pendingdrainedges,128exhaustiveactualenablepredicatecombinations,actualcapacity/overflownegativecontrols.",
+  "limits": "Initializedbinary finite default150 caseonly; hiddeninvalid/uncommittedstatesmaydiffer. NoMAX4118/fourstate/exhaustivefullformal orphysicaltimingacceptance."
+}

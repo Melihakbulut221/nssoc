@@ -1,0 +1,454 @@
+{
+  "status": "PASS_INDEPENDENT_SAVED_LOCAL_PLL_SPOOL_CONTROLS_AND_LAUNCH",
+  "archive": {
+    "bytes": 1083656,
+    "sha256": "f3d6d56cacca645f952e648e27cf7855284ae7df998a4e50bda26af36d3eea9d"
+  },
+  "validation": {
+    "bytes": 4233,
+    "sha256": "4ab8e384118e80ee528c5cd793b8074dbf5a7487d58ed7b0a83763c0bfdbf45f"
+  },
+  "members": {
+    "bytes": 1366183,
+    "sha256": "aec44f28f0b7029f32978b4f563d1a99c7cb46bad1ae67095e3afe4f3e17e7a2"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 6593,
+    "sha256": "a86687d5750c42c9efeea1f84ba77bf643479a76b355d448de3c7f2bd22ecc0e"
+  },
+  "readback_members": 3967,
+  "data_members": 3966,
+  "logical_data_bytes": 3132649663,
+  "sparse_zero_fixtures": [
+    {
+      "name": "dev-shm/nssoc-spool-complete-controls02/test_actual_sparse_near_cap_an0/evidence/filled",
+      "bytes": 520093697,
+      "all_zero": true
+    },
+    {
+      "name": "dev-shm/nssoc-spool-complete-controls02/test_terminal_error_record_sur0/publication/actual-near-cap",
+      "bytes": 520093697,
+      "all_zero": true
+    },
+    {
+      "name": "dev-shm/nssoc-spool-complete-controls03/test_actual_sparse_near_cap_an0/evidence/filled",
+      "bytes": 520093697,
+      "all_zero": true
+    },
+    {
+      "name": "dev-shm/nssoc-spool-complete-controls03/test_terminal_error_record_sur0/publication/actual-near-cap",
+      "bytes": 520093697,
+      "all_zero": true
+    },
+    {
+      "name": "dev-shm/nssoc-spool-publisher-controls03/test_actual_sparse_near_cap_an0/evidence/filled",
+      "bytes": 520093697,
+      "all_zero": true
+    },
+    {
+      "name": "dev-shm/nssoc-spool-publisher-controls04/test_terminal_error_record_sur0/publication/actual-near-cap",
+      "bytes": 520093697,
+      "all_zero": true
+    }
+  ],
+  "source_files": 6,
+  "frozen_fixture_files": 3804,
+  "all_frozen_source_dependency_evidence_fixture_pins": 3938,
+  "campaigns": [
+    {
+      "name": "local-controls02",
+      "cases": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "local-controls03",
+      "cases": 27,
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "local-controls04",
+      "cases": 28,
+      "passed": 28,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "bridge-controls01",
+      "cases": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "bridge-controls02",
+      "cases": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "publisher-controls01",
+      "cases": 14,
+      "passed": 12,
+      "failed": 2,
+      "skipped": 0
+    },
+    {
+      "name": "publisher-controls02",
+      "cases": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "publisher-controls03",
+      "cases": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "publisher-controls04",
+      "cases": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "complete-controls02",
+      "cases": 65,
+      "passed": 65,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "complete-controls03",
+      "cases": 67,
+      "passed": 67,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "bridge-controls05",
+      "cases": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "total_executions": 303,
+  "total_historical_failures": 2,
+  "historical_failures": [
+    {
+      "campaign": "publisher-controls01",
+      "name": "test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery[upload]",
+      "message": "Failed: Traceback (most recent call last):\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 219, in <module>\n    main()\n    ~~~~^^\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 214, in main\n    result = run(args.spool, args.out, args.configuration_sha)\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 163, in run\n    result = publish(path, receipt, directory)\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 60, in command\n    process = owner.launch('publication', [sys.executable, str(Path(publication.__file__).resolve()),\n                           '--tag', TAG, '--out', str(receipt), str(path)],\n                           env=env, stdin=subprocess.DEVNULL, stdout=log,\n                           stderr=subprocess.STDOUT)\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py\", line 105, in launch\n    require(kind in (\"native\", \"publisher\"), \"Explicit owned process kind\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py\", line 31, in require\n    raise ValueError(message)\nValueError: Explicit owned process kind"
+    },
+    {
+      "campaign": "publisher-controls01",
+      "name": "test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery[backoff]",
+      "message": "Failed: Traceback (most recent call last):\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 219, in <module>\n    main()\n    ~~~~^^\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 214, in main\n    result = run(args.spool, args.out, args.configuration_sha)\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 163, in run\n    result = publish(path, receipt, directory)\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_local_spool_v1.py\", line 60, in command\n    process = owner.launch('publication', [sys.executable, str(Path(publication.__file__).resolve()),\n                           '--tag', TAG, '--out', str(receipt), str(path)],\n                           env=env, stdin=subprocess.DEVNULL, stdout=log,\n                           stderr=subprocess.STDOUT)\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py\", line 105, in launch\n    require(kind in (\"native\", \"publisher\"), \"Explicit owned process kind\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py\", line 31, in require\n    raise ValueError(message)\nValueError: Explicit owned process kind"
+    }
+  ],
+  "current_predicates": 69,
+  "current_counts": {
+    "sw.tests.test_pcie_durable_spool_v1": 30,
+    "sw.tests.test_pcie_local_spool_publisher_v1": 21,
+    "sw.tests.test_pcie_pll_local_capture_v1": 18
+  },
+  "current_actual_xml_predicates": [
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_corruption_rejected_retained[order]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_corruption_rejected_retained[part]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_corruption_rejected_retained[rawhash]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_corruption_rejected_retained[row]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_corruption_rejected_retained[trailer]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[committed_dir_fsync]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[data_fsync]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[data_write]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[ledger_replace]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[ledger_write]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[mirror_write]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[record_write]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_failed_commit_boundary_retains_bytes[rename]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_actual_near_cap_terminal_inventory_rejected_before_write"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_duplicate_spool_never_replaces"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_existing_committed_directory_rejected"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_floor_and_cap_prevent_commit"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_native_files_preserved_before_invalid_or_absent_manifest[absent]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_native_files_preserved_before_invalid_or_absent_manifest[invalid]"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_no_network_or_reclaim_after_completed_parts"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_no_partial_row_or_duplicate_metadata"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_part_count_cap_and_duplicate_name"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_raw_corruption_even_if_compressed_metadata_redefined"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_real_lossless_parts_and_terminal_reservation"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_real_short_os_write_completes_exact_bytes"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_terminal_corrupt_source_keeps_reservation"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_terminal_native_raw_and_partial_tail_durable_copy"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_terminal_native_symlink_rejected_without_reclaim"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_wrong_trailer_prevents_complete_status"
+    },
+    {
+      "module": "sw.tests.test_pcie_durable_spool_v1",
+      "name": "test_zero_write_fails_with_prefix_retained"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery[backoff]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_actual_offline_worker_stop_leaves_native_complete_then_late_recovery[upload]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_actual_signal_at_owner_handoff_prevents_late_transfer[after_inner_exit]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_actual_signal_at_owner_handoff_prevents_late_transfer[before_inner_enter]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_actual_sparse_near_cap_and_terminal_reserved_headroom"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_configuration_pin_refuses_any_publication"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_finite_offline_budget_does_not_mutate_native_capture"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_invalid_native_terminal_stops_worker_before_wait_or_transfer[absent]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_invalid_native_terminal_stops_worker_before_wait_or_transfer[invalid]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_nontransport_or_ambiguous_error_no_retry[IntegrityError('bad byte')]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_nontransport_or_ambiguous_error_no_retry[RuntimeError('HTTP 401')]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_nontransport_or_ambiguous_error_no_retry[Some.TransportError('offline')]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_nontransport_or_ambiguous_error_no_retry[TransportError(__import__('os'))]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_nontransport_or_ambiguous_error_no_retry[ValueError('duplicate')]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_real_modified_part_or_success_receipt_rejected[declaredfile]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_real_modified_part_or_success_receipt_rejected[metadata]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_real_modified_part_or_success_receipt_rejected[roundtrip]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_real_modified_part_or_success_receipt_rejected[source]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_terminal_error_record_survives_operative_resource_guard[operative_budget]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_terminal_error_record_survives_operative_resource_guard[shared_floor]"
+    },
+    {
+      "module": "sw.tests.test_pcie_local_spool_publisher_v1",
+      "name": "test_worker_transient_then_success_retains_every_byte"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_invalid_raw_fails_and_retains_tails[grid]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_invalid_raw_fails_and_retains_tails[nonfinite]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_invalid_raw_fails_and_retains_tails[partial_frame]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_invalid_raw_fails_and_retains_tails[trailer]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_irregular_raw_capture_same_reducer_and_all_bytes[stride0]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_irregular_raw_capture_same_reducer_and_all_bytes[stride1]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_irregular_raw_capture_same_reducer_and_all_bytes[stride2]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_native_preheader_failure_preserves_original_error_and_raw_prefix"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_native_sigterm_reaps_writer_and_preserves_partial_payload"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_owned_native_fifo_and_terminal_guard[False]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_actual_owned_native_fifo_and_terminal_guard[True]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_all_complete_body_bridges_inverse_and_private_globals"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_cli_never_calls_local_capture_public[FAIL_NATIVE_LOCAL_STREAM_FINITE_SCREEN-1]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_cli_never_calls_local_capture_public[PASS_NATIVE_LOCAL_STREAM_FINITE_SCREEN-0]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_cli_never_calls_local_capture_public[PASS_NATIVE_STREAM_FINITE_SCREEN-1]"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_exact_deck_and_all_physics_resource_aliases"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_header_fsync_failure_keeps_consumed_line_in_ram_tail"
+    },
+    {
+      "module": "sw.tests.test_pcie_pll_local_capture_v1",
+      "name": "test_oversized_header_same_parser_boundary_and_exact_consumed_prefix"
+    }
+  ],
+  "aggregate_peer": {
+    "bytes": 1492,
+    "sha256": "a48fa6b7b3717173a3ad81158e72aa05f22f1babdaba70c4c0d19e9ab6a9667f"
+  },
+  "support_peer": {
+    "bytes": 871355,
+    "sha256": "fb5a528d63a7a25407a735727b6fa4acb03779266bce496036708e9aaa8871a2"
+  },
+  "scope": "Independent stdlib streaming readback of every closed member and original file; six sparse fixtures fully hashed without allocation. Twelve actual XML campaigns and current69 source-corresponding predicates recounted; historical failures retained. Existing independent source/launch peers rebound. Active PLL/spool/publication excluded and not read. No producer import, tests, native or network rerun. Native completion, numerical convergence and physical acceptance remain false.",
+  "native_completion": false,
+  "numerical_convergence": false,
+  "physical_acceptance": false
+}

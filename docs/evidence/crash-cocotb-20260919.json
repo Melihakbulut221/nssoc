@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-19",
+  "scope": "External review F2: cocotb observes firmware-provoked double fault in the real CPU, watchdog reset and actual BOOTREG APB transactions. No forced crash inputs, stored PC or read response.",
+  "commands": [
+    "SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault bash hw/soc/flow/sim_soc.sh hw/soc/out/external-review-20260919/crash-demo",
+    "bash scripts/check_soc_crash_cocotb.sh hw/soc/out/external-review-20260919/crash-demo",
+    ".venv/bin/python -m pytest -q sw/tests/test_memmap.py"
+  ],
+  "result": {
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "simulation_ns": 3172635.0,
+    "wall_seconds": 361.53125381469727,
+    "fault_pc": "0xff9fe000",
+    "post_reset_reads": 2,
+    "ignored_write": "0xdeadbeef"
+  },
+  "firmware_injection": "mtvec points to unmapped peripheral address 0xff9fe000; illegal instruction followed by handler fetch fault produces double fault; watchdog resets core and firmware reads retained BOOTREG.CRASH.",
+  "sampling_correction": "The first observer reacted to a combinational delta-cycle transition and saw 0x1d0 before a synchronous fault was present. The corrected observer requires double_fault_seen_o still high at the settled falling clock edge before checking the crash input. RTL was unchanged. The failed log and XML are preserved.",
+  "ci": "formal-and-boot workflow now runs this observer after its existing complete C/Verilog crash demo; make soc-crash-cocotb builds and runs both locally.",
+  "limits": "Observer completes after the accepting edge of the second retained-PC read; the separate C/Verilog regression checks full program termination. Retained register is only the PC, not the remaining crash_dump words. Area measurement remains docs/86 F2; no new design hardware here.",
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/crash-demo/tb_soc.vvp": {
+      "bytes": 4881117,
+      "sha256": "2613647808ff7a1ba11510cc4da8e84250f6db56ce316a4b2f5bd2e4d5d78ecd"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/test_soc.hex": {
+      "bytes": 18144,
+      "sha256": "14dfefda8f9f6a61f292a4ddbddb727b40629243336c547b7592a82664eab7a7"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "1c93ab85ef75c85d7607f392a98b571015d813988546364af9b5176c7eafbbe8"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/app.elf": {
+      "bytes": 15036,
+      "sha256": "5f8895f4bbfc3c14fb844478f001b574e250ad531f33ec21851cf13af2760f32"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/soc_param_override.v": {
+      "bytes": 572,
+      "sha256": "15c1e7e1b5d689dac87d08a2b38efc19d3cf1cbeeecb1ad72b719001e2babf2e"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/sim.log": {
+      "bytes": 1884,
+      "sha256": "7b2fa6b535297c1cc3fb315d3b9baa909d184b9a175d7bc3f777ae80ea4003e4"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/crash-cocotb.log": {
+      "bytes": 3526,
+      "sha256": "c933aa6d2bd14246a91c1160a82ad5061a1b7c45f1cc34d9416c24b14caee701"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/crash-cocotb.xml": {
+      "bytes": 438,
+      "sha256": "14dc7c3b9ecee87759d46210ceee36663fa79b0cfad30bf9c951dbf40cc0ede5"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/crash-cocotb-inputs.sha256": {
+      "bytes": 482,
+      "sha256": "1adeb088d49d592f6627b5a8102f5b2bb36a1843d949752e779b596e1c75ee7c"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/crash-cocotb-edge-failed.log": {
+      "bytes": 6856,
+      "sha256": "ed0e3dd3c5420a5081de727b1873abbd81e8603c39205ad2649228df6c645e66"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/crash-cocotb-edge-failed.xml": {
+      "bytes": 575,
+      "sha256": "9ef49df8f280a1ba6e2f17fc70ae1eb48c3db94a1b9fd731169f325ce4ce97ab"
+    },
+    "hw/soc/out/external-review-20260919/crash-demo/crash-cocotb-edge-failed-inputs.sha256": {
+      "bytes": 482,
+      "sha256": "f354fd383de6123f3463c59c31a1dd329b1d48f80ca4b3b3adb52ac0e793bce3"
+    },
+    "hw/soc/tb/integration/test_crash_recovery.py": {
+      "bytes": 2101,
+      "sha256": "a4f0eda508de99212d4ac907d3d40cd84a3fe87fbbcb23135f01aff43302c05c"
+    },
+    "scripts/check_soc_crash_cocotb.sh": {
+      "bytes": 1835,
+      "sha256": "f7ed2116021e35f4b5233260493561d0497a59fe7031e50bc9929e2d948c3e27"
+    },
+    "hw/soc/tb/sw/test_ibex.c": {
+      "bytes": 80186,
+      "sha256": "c486908bfb523308f81c5f8794f9bda3f6e068f29e0ac5030f7705e17e3b168b"
+    },
+    "hw/soc/out/external-review-20260919/crash-memmap-tests.log": {
+      "bytes": 99,
+      "sha256": "e207ca76ffd04d0fa12d005f3b884f150d53399dc491931dea771e983a8f46f9"
+    }
+  },
+  "memmap_result": "..............................                                           [100%]\n30 passed in 0.29s"
+}

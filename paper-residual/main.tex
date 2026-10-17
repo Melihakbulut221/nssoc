@@ -5,6 +5,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{upgreek}
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{array}
@@ -17,6 +18,7 @@
 \sisetup{group-separator={,}, group-minimum-digits=4,
          group-digits=integer, text-series-to-math=true}
 
+\DeclareSIUnit{\um}{\text{\ensuremath{\upmu}}m}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcommand{\file}[1]{\texttt{\small #1}}
 
@@ -57,11 +59,11 @@ on a six-macro layout of the same design.
 The sharpest result is a distance. Running Magic's deck against the
 LEF abstraction rather than the vendor GDS produces \num{182} error boxes
 of which \num{20} fall inside a macro footprint; \textbf{every one of the
-other \num{162} lies within \SI{0.500}{\micro\meter} of a macro edge}, in
+other \num{162} lies within \SI{0.500}{\um} of a macro edge}, in
 six discrete values and no others, with nothing in the open field of
 standard cells and routing. The bound reproduces at
-\SI{0.500}{\micro\meter} on a second layout and, run backwards, at
-\SI{0.380}{\micro\meter} on a six-macro layout measured eleven days
+\SI{0.500}{\um} on a second layout and, run backwards, at
+\SI{0.380}{\um} on a six-macro layout measured eleven days
 earlier---so the property held for a published measurement all along and
 was not asked of it.
 
@@ -71,12 +73,23 @@ layers this PDK defines, because the technology LEF states plain
 \texttt{ENCLOSURE} and qualifies none of it with \texttt{CUTCLASS}. And
 we report an asymmetry in the accompanying LVS: the comparison passes
 only when the vendor macro is black-boxed on both sides, and the passing
-comparison is \emph{weaker} than the one that fails, whose failure is a
-bus-delimiter naming artefact rather than a connectivity error.
+comparison is \emph{weaker} than the one that fails, whose failure includes incompatible macro views and bus naming. It does
+not establish transistor-level SRAM connectivity.
 
 No silicon exists. Nothing here was fabricated or exposed to a beam.
 Every number is a deck output on a layout.
 \end{abstract}
+
+\paragraph{Historical measurement scope (22 September 2026).}
+The numerical results below describe the archived runs named in this
+manuscript, not the current RTL or a manufactured device. Subsequent
+interface and boot-ROM changes require their own physical verification.
+Current product acceptance and unresolved requirements are recorded in
+\href{https://github.com/Melihakbulut221/nssoc/blob/codex/complete-open-work/docs/92-product-acceptance.md}{the product acceptance register}.
+The earlier abstract called the failing LVS a ``bus-delimiter naming
+artefact rather than a connectivity error''. That conclusion is withdrawn:
+the comparison does not establish transistor-level SRAM connectivity.
+
 
 \section{Introduction}
 \label{sec:intro}
@@ -131,7 +144,7 @@ tools against commercial ones. It is an accounting of one run.
 \subsection{What the deck contains}
 
 The PDK ships its KLayout rules as a tree of \num{39} files under
-\file{libs.tech/klayout/tech/drc/rule\_decks/}, of which \num{38}
+{\small\path{libs.tech/klayout/tech/drc/rule_decks/}}, of which \num{38}
 contain at least one rule. Counting \texttt{.output()} calls statically
 across them gives \num{376} distinct rule names, of which \num{25} are
 constructed by string interpolation over a layer index---so
@@ -223,11 +236,12 @@ eight, antenna-repaired      & \num{204} & \num{204} & \textbf{0} \\
 \end{tabular}
 \end{center}
 
-Every cell named by every marker is an \texttt{RM\_IHPSG13\_1P\_ROWDEC*},
-\texttt{COLDEC*} or \texttt{RSC\_IHPSG13\_*}---row decoders, column
-decoders and the standard cells inside the vendor's own array. The
-design's standard cells, its routing, its power grid and its pads
-produce nothing.
+Every marker names a cell inside the vendor array. The cell families are
+row decoders ({\small\path{RM_IHPSG13_1P_ROWDEC*}}), column decoders
+({\small\path{COLDEC*}}) and internal standard cells
+({\small\path{RSC_IHPSG13_*}}). The
+reported core's standard cells, routing and power grid produce no
+markers in that classification. This is not a pad-ring verification.
 
 \paragraph{The third row is a measurement and not a repetition.} The
 antenna-repaired layout differs from the second by \num{60} inserted
@@ -273,7 +287,7 @@ footprint. The second is cheap and is the one reported here.
 Abstracted, the eight-macro layout produces \num{182} boxes: \num{20}
 inside a macro footprint, \num{162} outside. The standard reading of the
 \num{162} is mechanistic---a LEF \texttt{OBS} blanket is one shape wider
-than \SI{10}{\micro\meter}, so ordinary routing beside it violates a
+than \SI{10}{\um}, so ordinary routing beside it violates a
 wide-metal spacing rule it would not violate against the macro's real
 geometry. That reading is an interpretation. It can be replaced.
 
@@ -287,18 +301,18 @@ gap to nearest macro edge & \multicolumn{3}{c}{boxes} \\
 \cmidrule(l){2-4}
  & eight macros & eight, repaired & six macros \\
 \midrule
-\SI{0}{\micro\meter} (touching) & 2  & 2  & 4  \\
-\SI{0.220}{\micro\meter}        & 31 & 31 & 1  \\
-\SI{0.260}{\micro\meter}        & 39 & 55 & 27 \\
-\SI{0.280}{\micro\meter}        & 4  & 5  & 21 \\
-\SI{0.320}{\micro\meter}        & 54 & 54 & 51 \\
-\SI{0.380}{\micro\meter}        & 15 & 12 & 3  \\
-\SI{0.500}{\micro\meter}        & 5  & 3  & 0  \\
+\SI{0}{\um} (touching) & 2  & 2  & 4  \\
+\SI{0.220}{\um}        & 31 & 31 & 1  \\
+\SI{0.260}{\um}        & 39 & 55 & 27 \\
+\SI{0.280}{\um}        & 4  & 5  & 21 \\
+\SI{0.320}{\um}        & 54 & 54 & 51 \\
+\SI{0.380}{\um}        & 15 & 12 & 3  \\
+\SI{0.500}{\um}        & 5  & 3  & 0  \\
 \midrule
 total outside                   & \num{150} & \num{162} & \num{107} \\
-\textbf{maximum}                & \textbf{\SI{0.500}{\micro\meter}}
-                                & \textbf{\SI{0.500}{\micro\meter}}
-                                & \textbf{\SI{0.380}{\micro\meter}} \\
+\textbf{maximum}                & \textbf{\SI{0.500}{\um}}
+                                & \textbf{\SI{0.500}{\um}}
+                                & \textbf{\SI{0.380}{\um}} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -313,19 +327,19 @@ placement and the report.
 \paragraph{It held for a published run and was not asked of it.} The
 third column is a six-macro layout measured eleven days before this
 analysis existed, whose \num{107} outside boxes had been reported without
-a distance. Its maximum is \SI{0.380}{\micro\meter}. The property was
+a distance. Its maximum is \SI{0.380}{\um}. The property was
 true of that measurement all along. This is the ordinary way a result is
 missed: not by measuring wrongly, but by not putting a question to an
 instrument that could already answer it.
 
 \paragraph{One caution, stated because it changes a number.} A second
 split is available---against the drawn extent, the LEF box plus a
-\SI{0.225}{\micro\meter} well overhang---and it should be read with care.
+\SI{0.225}{\um} well overhang---and it should be read with care.
 Of the \num{33} boxes it reclassifies as straddling an edge, \num{31}
-overlap by exactly \SI{0.005}{\micro\meter}, at three different macro
-edges. The markers sit \SI{0.220}{\micro\meter} from the LEF edge and the
-\SI{0.225}{\micro\meter} model overshoots them by five nanometres. Set
-the constant to \SI{0.220}{\micro\meter} and all \num{31} move. That
+overlap by exactly \SI{0.005}{\um}, at three different macro
+edges. The markers sit \SI{0.220}{\um} from the LEF edge and the
+\SI{0.225}{\um} model overshoots them by five nanometres. Set
+the constant to \SI{0.220}{\um} and all \num{31} move. That
 split is decided by a modelling choice below the resolution of the thing
 it models; the footprint split above it is not.
 
@@ -336,9 +350,12 @@ An accounting of what a deck checks is incomplete without the
 complementary question: what checks nothing else does.
 
 Every detailed-routing log this design has produced carries seven
-instances of
-\texttt{[DRT-0349] LEF58\_ENCLOSURE with no CUTCLASS is not supported.
-Skipping for layer X}---for \texttt{Cont}, \texttt{Via1} through
+instances of the following message:
+\begin{quote}\small\ttfamily
+[DRT-0349] LEF58\_ENCLOSURE with no CUTCLASS is not supported.\\
+Skipping for layer X
+\end{quote}
+The layers are \texttt{Cont}, \texttt{Via1} through
 \texttt{Via4}, \texttt{TopVia1} and \texttt{TopVia2}, which is every cut
 layer the technology defines.
 
@@ -367,11 +384,13 @@ that fails}.
 Supplying the vendor CDL, netgen expands the macro's transistors on the
 schematic side while the extraction sees the LEF abstract on the layout
 side. The comparison fails: \num{64901} netlist nets against \num{63155}
-layout nets, and a top-level pin-matching failure. The cause is
-\emph{naming}. The CDL spells buses \texttt{A\_DIN<32>} and globals
+layout nets, and a top-level pin-matching failure. One observed mismatch
+is naming. The CDL spells buses \texttt{A\_DIN<32>} and globals
 \texttt{VSS!}, \texttt{VDD!} where the layout has \texttt{A\_DIN[32]},
-\texttt{VSS}, \texttt{VDD}; the net difference follows from the
-delimiters.
+\texttt{VSS}, \texttt{VDD}. These differences do not establish that
+normalising names alone would make the transistor-level comparison pass.
+An abstract layout and a transistor-level schematic are different views;
+macro-interior LVS remains unverified.
 
 Black-boxing the macro on both sides, the comparison passes:
 \num{63155} = \num{63155}, circuits match uniquely, all seven difference
@@ -393,7 +412,7 @@ the run checked.
 Of the \num{20} Magic boxes inside a macro footprint, four are a rule the
 six-macro layout cannot produce: \texttt{M2.d}, minimum area, twice in
 each of the two \SI{512}{}$\times$\SI{16}{} check macros, at
-\SI{0.26}{\micro\meter} square.
+\SI{0.26}{\um} square.
 
 They are the macro's own pin rectangles for \texttt{A\_DOUT[14]} and
 \texttt{A\_DOUT[15]}. One hundred and eight of the macro's \num{111} pins
@@ -467,7 +486,7 @@ this paper reports.
 \label{sec:artefacts}
 
 The classifier that produces the footprint split and the distances is
-\file{scripts/classify\_magic\_drc.py}. It reproduces a previously
+{\small\path{scripts/classify_magic_drc.py}}. It reproduces a previously
 recorded classification of the six-macro layout exactly---\num{16} inside,
 \num{0} straddling, \num{107} outside of \num{123}---which is the check
 that it is measuring what the earlier, uncommitted script measured.

@@ -1,0 +1,30 @@
+{
+  "status": "CORRECTED_STIMULUS_AFTER_ACTUAL_UNDETECTED_MUTANT",
+  "freeze02": {
+    "bytes": 2039,
+    "sha256": "7fb52e60ab21027b156c3804c8a6de0aef50fb30ef5ed6fe5446b67346e7abc0"
+  },
+  "freeze03": {
+    "bytes": 2024,
+    "sha256": "2fef19abf2b24e27a9f5a632717f2aad43a575238ef887f450403e304e5f2661"
+  },
+  "changed_sources": [
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v20.py",
+    "sw/tests/test_pcie_gen3_integrity_v20_miter.py",
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py",
+    "sw/tests/test_pcie_gen3_integrity_v20_retire.py"
+  ],
+  "retained_failure": {
+    "bytes": 964,
+    "sha256": "4b7a71fcd905349d238409430dab9ef06ff4dd1b2e28ed5f85c7ae0fc5a03f2c"
+  },
+  "reason": "OriginalheldTLP spansmorethanone16bytebeat, leavingnonzero-keephead underbackpressure. Hence never-empty retirement mutant wasnot sensitized. A6byteDLLPfitsfirstbeat; followingcommittedIDLhead iszero whileoutputheld.",
+  "required_new_witness": "reference.retire&&committed!=0&&read_keep===0&&output_valid&&ready===0, countdelta>=RING/4. Publicheldcycles>=RING/2, nooverflow/halt, scoreboarddrainandEDS end.",
+  "planned_targeted_retests": [
+    "full15caseV17/V20miter",
+    "changed15thdirectcase",
+    "retire_never_empty actualDUTmutant withnewcase",
+    "changedsourceinverse guard"
+  ],
+  "unchanged_results": "Remaining34priorPASS retained byexact5productsourcepins+unchangedfirst14oracle andotherliteral/negativebody sourceinverses. FullsuccessfulmergedcoverageonlyafternewretetestsactuallyPASS."
+}

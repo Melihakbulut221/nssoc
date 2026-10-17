@@ -15,11 +15,15 @@ TECTONIC ?= $(shell command -v tectonic 2>/dev/null || \
 LATEX ?= pdflatex
 BIBTEX ?= bibtex
 DOC := main
+# TeX resolves these paths from the thesis directory. Chapter and figure
+# edits must invalidate the PDF and all files must travel in the archive.
+CHAPTERS := $(wildcard chapters/*.tex)
+FIGS := $(wildcard figures/*.pdf figures/*.png)
 
 .PHONY: all arxiv clean
 all: $(DOC).pdf
 
-$(DOC).pdf: $(DOC).tex refs.bib
+$(DOC).pdf: $(DOC).tex refs.bib $(CHAPTERS) $(FIGS) Makefile
 ifneq ($(TECTONIC),)
 	$(TECTONIC) -X compile $(DOC).tex --outdir . --keep-logs \
 	  --keep-intermediates
@@ -71,8 +75,8 @@ endif
 # with the source or every citation renders as [?].
 arxiv: $(DOC).pdf
 	@test -s $(DOC).bbl || { echo "no $(DOC).bbl to ship"; exit 1; }
-	tar czf arxiv.tar.gz $(DOC).tex $(DOC).bbl
-	@echo "arxiv.tar.gz written -- .tex and .bbl, no .bib"
+	tar czf arxiv.tar.gz $(DOC).tex $(DOC).bbl $(CHAPTERS) $(FIGS)
+	@echo "arxiv.tar.gz written -- main, chapters, bibliography and figures"
 
 clean:
 	rm -f $(DOC).pdf $(DOC).aux $(DOC).bbl $(DOC).blg $(DOC).log \

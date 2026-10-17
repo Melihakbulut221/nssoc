@@ -1,0 +1,807 @@
+{
+  "status": "PASS_RTL_CANDIDATE_CONTROLS_NATIVE_AND_TIMING_PENDING",
+  "inputs": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v3.v": {
+      "bytes": 175748,
+      "sha256": "ea9c978b14ce0b5d764cb87cdf82ce1e76aa2a83d1ed19eaf97f74aa800b2abb"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v3.v": {
+      "bytes": 3264,
+      "sha256": "10b56eaaf76bb4547273f5bd9cf3c5ec5d635284d61486f5abe82a91b90c0616"
+    },
+    "scripts/generate_pcie_crc_candidates_v3.py": {
+      "bytes": 4639,
+      "sha256": "ad19629a09a9fbd54060abf59a5ad3cb76d813ea706b6d1295341b975c763b4e"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v3.py": {
+      "bytes": 11193,
+      "sha256": "1046aa585ae9a662c5c34d05ecc970da33d31d6803cf14c15d3a02a966533840"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v3.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v3": {
+      "bytes": 1508,
+      "sha256": "80538088802a3dddee8c529223c3e6ef7bc442eb1f62cc776c4e2ffe4d60a554"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v3_crc.py": {
+      "bytes": 13003,
+      "sha256": "6e6c4b0fb432468bf95303d4bf8918386c4f6c7d4b21d3ad15331416f0284177"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v3_miter.py": {
+      "bytes": 6588,
+      "sha256": "e7930c71157810376994b55def50b8c603145b30bfdb0d27baeec27da3d85d05"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v3.py": {
+      "bytes": 4787,
+      "sha256": "a8002bab5459baad7685d9f522c805be65d54c7853a06b6021f08ef88f1ef6f8"
+    }
+  },
+  "inherited_bench_first12_ast_exact": true,
+  "rtl_public_cases": {
+    "profiles": [
+      150,
+      4118
+    ],
+    "direct_and_full_public_miter_each": 13,
+    "execution_union": "Each profile/mode:12 unchanged cases from first-run plus separately selected new13th alignment case; no single final unfiltered invocation claimed.",
+    "positive_executions": 52,
+    "all_output_miter_faults": 2,
+    "final_targeted_receiver_faults": 8
+  },
+  "crc": {
+    "pure_xor_equations": 304,
+    "all_input_basis_vectors": 976,
+    "zero_vectors": 11,
+    "random_vectors": 704,
+    "actual_equation_faults": 3,
+    "actual_arbitrary_state_parser_cases": 32768,
+    "compared_next_state_write_verdict_outputs": 28,
+    "actual_parser_faults": 3,
+    "abstract_four_step_paths": 1327104
+  },
+  "xml": [
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_miter_fault_is_obs0/capture/results.xml",
+      "pin": {
+        "bytes": 4215,
+        "sha256": "866568a585ab08a4c94acd90d50520f472029e900de7bd83487cd2ffc10919cc"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "failures": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "skipped": [
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_miter_fault_is_obs1/capture/results.xml",
+      "pin": {
+        "bytes": 4216,
+        "sha256": "3e838bd02a0e7caa5a88e491a6a2e5d4fc2481a96102fe00264bb30011be1f6f"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "failures": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "skipped": [
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje0/capture/results.xml",
+      "pin": {
+        "bytes": 4275,
+        "sha256": "755548777e17f9f3a7cafb1f8695f55ee3eab17c52e56c40560bb41a23a9c223"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje1/capture/results.xml",
+      "pin": {
+        "bytes": 4115,
+        "sha256": "4050dce6a9b5ffec30b64f8b5da929ff33af60fb642ab3db430fee3aedd83f8c"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje2/capture/results.xml",
+      "pin": {
+        "bytes": 4274,
+        "sha256": "8afecb2b433541bbe3a57ba704321c3061a2da3ae7b0aa065e04e2cfa768df26"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje3/capture/results.xml",
+      "pin": {
+        "bytes": 4115,
+        "sha256": "d4059d01fae5b61d271a5d5ebbcdcf314653d82cca863fc7e5032c4fb4a5d853"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje4/capture/results.xml",
+      "pin": {
+        "bytes": 4115,
+        "sha256": "ebccba6aba2a7ae446a82d39bbcb88d36014bf3b1ebb928afbd24cd45ce42d3b"
+      },
+      "selected": [
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje5/capture/results.xml",
+      "pin": {
+        "bytes": 4761,
+        "sha256": "4049219c7c5c5bba1e75a57c3e0fbe8bbd424fba81b24c5b5cebaa36449798a3"
+      },
+      "selected": [
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps"
+      ],
+      "failures": [
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje6/capture/results.xml",
+      "pin": {
+        "bytes": 4830,
+        "sha256": "ac6ab478295daea15003bd23f2fccc0c40f8c96089969a56632e7faf6828fa4d"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "failures": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "skipped": [
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_fault_reje7/capture/results.xml",
+      "pin": {
+        "bytes": 4280,
+        "sha256": "bc6e59ae9493d780e388bf8eb22b786a82efcb8ec19abf44db44a605a3898d9f"
+      },
+      "selected": [
+        "edb_quarantine_and_eds_release_drain"
+      ],
+      "failures": [
+        "edb_quarantine_and_eds_release_drain"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_full_posit0/capture/results.xml",
+      "pin": {
+        "bytes": 4183,
+        "sha256": "3d33e070fd556d13df638d6342a3448e1192819c0758f7863b315595b086dd98"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ],
+      "failures": [],
+      "skipped": []
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_actual_wide_rx_full_posit1/capture/results.xml",
+      "pin": {
+        "bytes": 4189,
+        "sha256": "428171080b16be5a8b8924fed8086371ee68b9af83f22f5b96a425ed5db69a2e"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ],
+      "failures": [],
+      "skipped": []
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_v2_v3_cycle_exact_all_pub0/capture/results.xml",
+      "pin": {
+        "bytes": 4180,
+        "sha256": "77552e71747aa22431ba19e2cc8d8c74795f4aa4b716bd33e16fed9a0fe62db6"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ],
+      "failures": [],
+      "skipped": []
+    },
+    {
+      "kind": "first-run",
+      "path": "/dev/shm/nssoc-integrity-v3-public-controls-02/test_v2_v3_cycle_exact_all_pub1/capture/results.xml",
+      "pin": {
+        "bytes": 4190,
+        "sha256": "aaa0ecefd261663426968612a1dc5488778e84fccc4be23ac0e706f3dec871ed"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ],
+      "failures": [],
+      "skipped": []
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje0/capture/results.xml",
+      "pin": {
+        "bytes": 4616,
+        "sha256": "f27c298941541bb9967de0042d093a2790d62507891663d125828f1a9a8969de"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte",
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje1/capture/results.xml",
+      "pin": {
+        "bytes": 4616,
+        "sha256": "99346ebb6a74a72c9040f2bffa96b05d98292e3ce8b92edc1f7bcafb55be49ee"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte",
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje2/capture/results.xml",
+      "pin": {
+        "bytes": 4616,
+        "sha256": "d082dd8c40d7bfc9f7bfd8124ff8ed099b44e7bd6aa577181c1cff0b37ffd414"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte",
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje3/capture/results.xml",
+      "pin": {
+        "bytes": 4616,
+        "sha256": "b88dea97455bf3ce13e5e7760656f66e69ffe3c04ee12e413a9f9f305d84a7b0"
+      },
+      "selected": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "failures": [
+        "tlp_crc_coverage_residue_nullification_and_successor"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "incomplete_maximum_packet_cannot_release_any_byte",
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje4/capture/results.xml",
+      "pin": {
+        "bytes": 4616,
+        "sha256": "c84e9be3551d382f2860d92f7a35d92e81e48225196d8ef1380dc74ebaca973e"
+      },
+      "selected": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "failures": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje5/capture/results.xml",
+      "pin": {
+        "bytes": 4616,
+        "sha256": "72965359740ec8ec11240359a33e5531cd7710ec34c78b98214e64ae9b4f41dd"
+      },
+      "selected": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "failures": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje6/capture/results.xml",
+      "pin": {
+        "bytes": 5171,
+        "sha256": "aef577c28aa6b93f17b5245e21c7ee11fae999664802add688ec78489169d4b0"
+      },
+      "selected": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "failures": [
+        "sustained_minimum_packets_exceed_every_buffer"
+      ],
+      "skipped": [
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte",
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ]
+    },
+    {
+      "kind": "final-fault",
+      "path": "/dev/shm/nssoc-integrity-v3-fault-controls-03/test_actual_wide_rx_fault_reje7/capture/results.xml",
+      "pin": {
+        "bytes": 4621,
+        "sha256": "48110cd825f43dce8f67622352fe6a522894c505425469fc6a82af253cd7a1f9"
+      },
+      "selected": [
+        "edb_quarantine_and_eds_release_drain"
+      ],
+      "failures": [
+        "edb_quarantine_and_eds_release_drain"
+      ],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte",
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ]
+    },
+    {
+      "kind": "added-alignment",
+      "path": "/dev/shm/nssoc-integrity-v3-alignment-controls-03/direct-150/capture/results.xml",
+      "pin": {
+        "bytes": 4455,
+        "sha256": "3740a50d229b99d75dff9c49e0374ef6cf57172bfb51fdd998277bfcc1d82c67"
+      },
+      "selected": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "added-alignment",
+      "path": "/dev/shm/nssoc-integrity-v3-alignment-controls-03/direct-4118/capture/results.xml",
+      "pin": {
+        "bytes": 4456,
+        "sha256": "8f14e80bde58399d8a54ef86338edd4ac7c8ebe9e98b0ee03c3396fbdbcf5fa5"
+      },
+      "selected": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "added-alignment",
+      "path": "/dev/shm/nssoc-integrity-v3-alignment-controls-03/miter-150/capture/results.xml",
+      "pin": {
+        "bytes": 4455,
+        "sha256": "e7067e857c838a3e137755fd4249d17e8926dd3504fd93d2f0e263d8cfdf089f"
+      },
+      "selected": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    },
+    {
+      "kind": "added-alignment",
+      "path": "/dev/shm/nssoc-integrity-v3-alignment-controls-03/miter-4118/capture/results.xml",
+      "pin": {
+        "bytes": 4455,
+        "sha256": "8d1689f80032afafe0198fa399f5cd8c9e4124549276974dd48d7c4609f734c4"
+      },
+      "selected": [
+        "crc_candidates_cover_every_dword_start_and_cross_slice_seed"
+      ],
+      "failures": [],
+      "skipped": [
+        "sustained_minimum_packets_exceed_every_buffer",
+        "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+        "all65_partial_raw_abort_phases_restart_exactly",
+        "edb_quarantine_and_eds_release_drain",
+        "actual_full_ring_replacement_and_late_stall_overflow",
+        "malformed_tokens_and_headers_never_release_quarantine",
+        "bounded_stalls_preserve_all_wide_metadata",
+        "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+        "start_without_abort_reseeds_and_discards_prior_epoch",
+        "primary_trace_crc_vectors_and_adjacent_bad_dllps",
+        "tlp_crc_coverage_residue_nullification_and_successor",
+        "incomplete_maximum_packet_cannot_release_any_byte"
+      ]
+    }
+  ],
+  "history": [
+    {
+      "status": "INTERRUPTED_DURING_INCOMPLETE_DIAGNOSIS",
+      "reason": "Original static-function runs deliberately interrupted; subsequent identical static/automatic16case traces bothPASS. Initial stall hypothesis disproved, no simulator failure claim.",
+      "directory": "/dev/shm/nssoc-integrity-v3-delta-diagnosis-01"
+    },
+    {
+      "status": "FAILED_CONTROL_EXPECTATIONS_PRESERVED",
+      "log": {
+        "bytes": 6942,
+        "sha256": "6ecf0a9bd7fdafb83906bd18027f062b1db13b38748c631d9330e1f1c60844aa"
+      },
+      "failures": [
+        "obsolete v1-v2-only source assertion",
+        "unobservable intermediate word0 seed mutation",
+        "unobservable intermediate80-bit suffix mutation",
+        "missing public odd-DWORD SDP placement for arbitrary saved DLLP CRC"
+      ],
+      "resolution": "Exact prior tests/bench retained. Correct inverse source bridge; sequence mutation across allsuffixes; final112-bit suffix mutation; independent13th case all16 DWORD starts, including cross-slice SDP."
+    },
+    {
+      "status": "TEST_BRIDGE_TRAILING_SEPARATOR_FAILURE",
+      "reason": "Two appended blank separator lines initially rejected; explicit exact suffix of two newlines now required, all original bench bytes and AST preserved."
+    }
+  ],
+  "limits": [
+    "No native mapping or STA acceptance yet",
+    "No exhaustive native sequential proof",
+    "Arbitrary parser simulation covers finite cases; abstract paths and GF linear basis checks have separate explicit scopes",
+    "MAX4118 tested onlyRTL; no fullPCS/LTSSM/PMA/timing claim"
+  ],
+  "proof_logs": {
+    "/dev/shm/nssoc-integrity-v3-cheap-final-04.log": {
+      "bytes": 112,
+      "sha256": "daefcda5a0b9b517b95f19f16f60a72e39445e170a7b4ffa07d5241d60385aef"
+    },
+    "/dev/shm/nssoc-integrity-v3-crc-controls-02.log": {
+      "bytes": 110,
+      "sha256": "b5066458485a51ed16c73bb8b5b5a6c6ef2ec6552b65c3e4771027130fb6779a"
+    },
+    "/dev/shm/nssoc-integrity-v3-fault-controls-03.log": {
+      "bytes": 113,
+      "sha256": "4df4a2535ffb5fb7519c52c77f4474f55bbbf23b991068ac79bad6d9fee50e94"
+    },
+    "/dev/shm/nssoc-integrity-v3-source-bridge-04.log": {
+      "bytes": 113,
+      "sha256": "414df54dac4bcecb19227096f4cff933469bff79d5f482ea35df7f30544ff49a"
+    },
+    "/dev/shm/nssoc-integrity-v3-abstract-01.log": {
+      "bytes": 112,
+      "sha256": "929b0ea271a1cc83382824d624d918327a0cb290f6eb6c7a8c2b7807b0f5b255"
+    }
+  }
+}

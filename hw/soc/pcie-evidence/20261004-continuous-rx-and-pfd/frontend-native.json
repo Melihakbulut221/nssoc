@@ -1,0 +1,144 @@
+{
+  "status": "PASS_PORT_ONLY_PCIE_GEN3_CONTINUOUS_DATA_RX",
+  "top": "soc_pcie_gen3_continuous_rx",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v3.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx.v": {
+      "bytes": 3131,
+      "sha256": "17e2ebdc22ec2d7ea2c6230be33ed7d7e37df5f8c0286c9082cbf3c31d64bbf1"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx.py": {
+      "bytes": 7006,
+      "sha256": "3cf4f1099e90e078ac2b1f83c026addfa893d4cc3db86dec909d33b81f87d14e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py": {
+      "bytes": 18525,
+      "sha256": "2d43c6208e8cbe58db5cbe25ae7a5f8c3094bc5cfdc2fc3ef838d24cca70f3ff"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx": {
+      "bytes": 1309,
+      "sha256": "bb6586bec6d642dfb12e3e92e1cf1fac49b8fc052458880e5dbdab3386187d73"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx.py": {
+      "bytes": 8617,
+      "sha256": "9b12563ad2c7627c8193db2ec0a373f1cc5f5a741b2549f0f00b2477ec931dec"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    }
+  },
+  "expected_tests": 6,
+  "mode": "native",
+  "commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/dev/shm/nssoc-gen3-continuous-rx-native-01/map.ys"
+      ],
+      "returncode": 0,
+      "log": "map.log",
+      "log_pin": {
+        "bytes": 345625,
+        "sha256": "ef9ad238b82a3838be6db7ee7407673ec7b3131016f4f39ce1c6026eaf22ca77"
+      }
+    },
+    {
+      "argv": [
+        "make",
+        "-f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx",
+        "--no-print-directory",
+        "VERILOG_SOURCES=/dev/shm/nssoc-gen3-continuous-rx-native-01/mapped.v /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "SIM_BUILD=/dev/shm/nssoc-gen3-continuous-rx-native-01/sim",
+        "COCOTB_RESULTS_FILE=/dev/shm/nssoc-gen3-continuous-rx-native-01/results.xml",
+        "PCIE_NATIVE=1"
+      ],
+      "returncode": 0,
+      "log": "simulation.log",
+      "log_pin": {
+        "bytes": 36022,
+        "sha256": "f838cdc0da93dd65b0636db95fe0e2e83f942b59656109f51dc1235578bb332e"
+      }
+    }
+  ],
+  "runtime": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog": {
+      "bytes": 453,
+      "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp": {
+      "bytes": 485,
+      "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+      "bytes": 540,
+      "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+    }
+  },
+  "address_space_limit_bytes": 2147483648,
+  "yosys_max_threads": 1,
+  "scope": "Continuous raw32-bit/lane input, whole-block data descrambler and context-safe IDL bypass. Packet output remains byte-wide and can overflow on dense traffic. External Data Stream epoch/alignment/deskew; no variableSKP, OS, CDC, PMA, fullPCS/LTSSM or physicalfrequency acceptance.",
+  "mapped_cells": 54368,
+  "tests": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0
+  },
+  "outputs": {
+    "results.xml": {
+      "bytes": 2008,
+      "sha256": "1b875c304fcc97e3ea4de9bc687ec89dfb94ee58741c1ee0fafb668766b22efc"
+    },
+    "simulation.log": {
+      "bytes": 36022,
+      "sha256": "f838cdc0da93dd65b0636db95fe0e2e83f942b59656109f51dc1235578bb332e"
+    },
+    "mapped.v": {
+      "bytes": 6732402,
+      "sha256": "5cbc7df389704b6c203fb23dcd68398104d9c068fcda65eb015f8daae5509f21"
+    },
+    "mapped.json": {
+      "bytes": 36306652,
+      "sha256": "b273f745c88d286fc523e2567e15bed1a09cf3001134b8d711776a11b4b0a967"
+    },
+    "map.log": {
+      "bytes": 345625,
+      "sha256": "ef9ad238b82a3838be6db7ee7407673ec7b3131016f4f39ce1c6026eaf22ca77"
+    },
+    "map.ys": {
+      "bytes": 1387,
+      "sha256": "8a379d1d7e89c9ed07a0c67145746876d43587625c2ad42bdf14afb017107448"
+    }
+  }
+}

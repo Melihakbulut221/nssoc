@@ -1,0 +1,591 @@
+{
+  "status": "PASS_BOUNDED_REPLAY_DLLP_AND_PACKET_PORT_TESTS_NO_LINK_CONFORMANCE",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_dllp_rx.v": {
+      "bytes": 3448,
+      "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_replay_tx.v": {
+      "bytes": 10102,
+      "sha256": "c14be51aaf367fac2c129cc4065a0729a83407e87eb2f7bc558b7831e8001c54"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_reliable_packets.v": {
+      "bytes": 6799,
+      "sha256": "9212832d6fc20d26efaf1b1c7918cb39451644e178d7e5c2f90e1cc0cb741436"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_dllp_rx.py": {
+      "bytes": 5981,
+      "sha256": "d4f98ba57d88b1249a0153dc80c4e0d5af44634f74d9176024f0970f309fa06e"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_dllp_rx": {
+      "bytes": 1286,
+      "sha256": "39520787d8815099dfce6602e0b0fe3ebe5c0cb3a442480b5aa1ee277c30d459"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_replay_tx.py": {
+      "bytes": 12818,
+      "sha256": "8c2990075020775280ebb88e41d91fe0cdac02f53d0fc9e889e6566012ac672e"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_replay_tx": {
+      "bytes": 1296,
+      "sha256": "f85979d686132a795c3dfa2d04e354b787764968ea61bab7f8b541af6fe44224"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_reliable_packets.py": {
+      "bytes": 9557,
+      "sha256": "dcde0581c3bda290ddd41692983336a17d33ffc64194bd1ceaa0132610406d16"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_reliable_packets": {
+      "bytes": 1673,
+      "sha256": "16b2078915b87000fc0b5148c596cff91d7c00e48e0f5d4e7086cc18456b6fb4"
+    },
+    "scripts/check_pcie_replay.py": {
+      "bytes": 8721,
+      "sha256": "4191e491fc2641b57aee6028bbeb94779f275859f4bbce730666d3dadba9fa0b"
+    },
+    "sw/tests/test_pcie_replay.py": {
+      "bytes": 5360,
+      "sha256": "e2f6b0384aeefeb5c4a81ef5a549eb3e8b1e583d15fc0bcb58811ad609428e99"
+    }
+  },
+  "runs": {
+    "dllprx-rtl": {
+      "result": {
+        "bytes": 8910,
+        "sha256": "f1f225153150ec104794df2c9b6ced253070baab65e40de5a84fa4b4a65c80ca"
+      },
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "scope": "CRC-checked classic VC0 DLLP receive, bounded exact encoded-TLP replay and external once-per-original credit reservation. Local-cycle timer and external recovery. No local FC advertisement, PCS, LTSSM, SDF, physical timing qualification, layout or SoC integration."
+    },
+    "replay-rtl": {
+      "result": {
+        "bytes": 8922,
+        "sha256": "6c37188e49c9dff2a7ebd520f5489819c068d70b7a12600d4675ae761dd0818b"
+      },
+      "tests": {
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "scope": "CRC-checked classic VC0 DLLP receive, bounded exact encoded-TLP replay and external once-per-original credit reservation. Local-cycle timer and external recovery. No local FC advertisement, PCS, LTSSM, SDF, physical timing qualification, layout or SoC integration."
+    },
+    "reliable-rtl": {
+      "result": {
+        "bytes": 12496,
+        "sha256": "0fd995ac58c61230a7ee34dc813dbb0061aa535cacdb27c57d6a4431ef1dc316"
+      },
+      "tests": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "scope": "CRC-checked classic VC0 DLLP receive, bounded exact encoded-TLP replay and external once-per-original credit reservation. Local-cycle timer and external recovery. No local FC advertisement, PCS, LTSSM, SDF, physical timing qualification, layout or SoC integration."
+    },
+    "dllprx-native": {
+      "result": {
+        "bytes": 10756,
+        "sha256": "0079617bfbed8cc330ea545cab5fffae2dc6c71c9bef11790c2121bd0f49d208"
+      },
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": 372,
+      "scope": "CRC-checked classic VC0 DLLP receive, bounded exact encoded-TLP replay and external once-per-original credit reservation. Local-cycle timer and external recovery. No local FC advertisement, PCS, LTSSM, SDF, physical timing qualification, layout or SoC integration."
+    },
+    "replay-native": {
+      "result": {
+        "bytes": 10772,
+        "sha256": "380ddcf62fc51782578c389a487ad280430e2bcd5770716c6617cd20ab770751"
+      },
+      "tests": {
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": 4746,
+      "scope": "CRC-checked classic VC0 DLLP receive, bounded exact encoded-TLP replay and external once-per-original credit reservation. Local-cycle timer and external recovery. No local FC advertisement, PCS, LTSSM, SDF, physical timing qualification, layout or SoC integration."
+    },
+    "reliable-native": {
+      "result": {
+        "bytes": 13403,
+        "sha256": "d253f98c717e4b8c7cd4ca2be1612ef958f8f63658f4f80abf3a1882057425cd"
+      },
+      "tests": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": 11753,
+      "scope": "CRC-checked classic VC0 DLLP receive, bounded exact encoded-TLP replay and external once-per-original credit reservation. Local-cycle timer and external recovery. No local FC advertisement, PCS, LTSSM, SDF, physical timing qualification, layout or SoC integration."
+    }
+  },
+  "mutations": [
+    {
+      "case": "corruption_reserved_vc_and_all_framing_fail_closed",
+      "counts": [
+        0,
+        1,
+        2
+      ],
+      "log": {
+        "bytes": 5556,
+        "sha256": "499a7be3f6425af41c3e8b0e53a606c0ff9dff60cf0ddff6f1d6f7c891866f4d"
+      }
+    },
+    {
+      "case": "exhaustive_ack_nak_and_vc0_credit_bit_fields",
+      "counts": [
+        0,
+        1,
+        2
+      ],
+      "log": {
+        "bytes": 6109,
+        "sha256": "5ec642f1db125291a74b6219a4557fcc1ccd39d271b50b9fbefdf510eb36fa59"
+      }
+    },
+    {
+      "case": "full_queue_cumulative_ack_only_fully_sent_and_nak_preserves_bytes",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 5918,
+        "sha256": "d7a377d113458f0a18619e8d2e23efb597263e4e9def962e83122f4bc6fc6d99"
+      }
+    },
+    {
+      "case": "full_queue_cumulative_ack_only_fully_sent_and_nak_preserves_bytes",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 6341,
+        "sha256": "326fe40c620c3e596abffa9dcf80e82381e8a47121215a750121728fd2cc92d8"
+      }
+    },
+    {
+      "case": "full_queue_cumulative_ack_only_fully_sent_and_nak_preserves_bytes",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 6134,
+        "sha256": "6ae6c2c53a47c7bc6e66e9f1bd1da12597554da644aa536b36729702bf63140f"
+      }
+    },
+    {
+      "case": "pending_ack_during_replay_and_new_frame_credit_are_atomic",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 6123,
+        "sha256": "7225422aa8051c9a4079825f109993501ddf87869be2f616aad1faf5bf32aa0d"
+      }
+    },
+    {
+      "case": "expiry_preempts_new_credit_and_frame_but_not_an_inflight_packet",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 6421,
+        "sha256": "827fd1eaf57f8ee4f4fe7b3a39a3cd06a6461f0bc8bf56f84e2f886f496d86a0"
+      }
+    },
+    {
+      "case": "timeout_duplicate_ack_training_pause_exhaustion_and_recovery",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 6982,
+        "sha256": "a45d458c92c9391d820df58ce3b33bec88541f86e42024c1cd96cb9a6aad6597"
+      }
+    },
+    {
+      "case": "early_ack_is_classified_before_waiting_for_transmit_end",
+      "counts": [
+        0,
+        1,
+        6
+      ],
+      "log": {
+        "bytes": 5814,
+        "sha256": "77b82bd5fd54babd270f2bf330ef1ea3e83e4b410cf9188862ebe159b34a2835"
+      }
+    },
+    {
+      "case": "stalled_replay_first_byte_cannot_be_preempted_by_new_ack",
+      "counts": [
+        0,
+        1,
+        3
+      ],
+      "log": {
+        "bytes": 8250,
+        "sha256": "55d73a0a3584c844a34d1459aab851e817d81ce56e2256c6949358abc530a694"
+      }
+    }
+  ],
+  "default_contract": {
+    "depth": 4,
+    "max_encoded_tlp_bytes": 38,
+    "sequence_modulus": 4096,
+    "timeout_local_cycles": 1024,
+    "max_replays_before_external_recovery": 3,
+    "credit": "Exactly one reservation for each original frame; retries preserve encoded bytes and consume no new credit.",
+    "ack": "Cumulative modulo window is classified when validated ACK is first presented, with freeing deferred to a packet-safe boundary. Late forward ACK resets retry counter; stale ignored; future ACK rejected.",
+    "recovery": "Original plus three retries; next request raises sticky exhaustion/retrain request and retains bytes. External retrain_done allows another replay. Link down resets ownership/sequence.",
+    "training": "Timer and new packet scheduling pause; an already started packet completes atomically.",
+    "fc": "CRC checked classic VC0 Init1/Init2/Update fields exposed to external controller. No local credit advertisement."
+  },
+  "source_references": [
+    {
+      "url": "https://www.intel.com/content/dam/support/us/en/programmable/support-resources/fpga-wiki/asset03/pci-express-base-r2.1.pdf",
+      "sections": "3.4 DLLP CRC/type and 3.5.2.1 sequence/ACK/replay; historical Base2.1, indexed primary extracts, not Gen3 qualification."
+    },
+    {
+      "url": "https://community.intel.com/cipcp26785/attachments/cipcp26785/fpga-intellectual-property/8220/1/PCI_Express_Base_Specification_v20.pdf",
+      "sections": "Historical Fig3-6 FC field packing and Fig3-16 cumulative ACK; no specification redistributed."
+    }
+  ],
+  "scope": {
+    "rtl_port_cases": 14,
+    "ihp_mapped_port_cases": 14,
+    "python_tests": 11,
+    "real_rejected_mutants": 10,
+    "actual_wrap_original_frames_per_replay_run": 4097,
+    "formal_equivalence_proved": false,
+    "sdf": false,
+    "physical": false,
+    "soc_top_integrated": false,
+    "complete_pcie_link": false,
+    "open_dependencies": [
+      "Receive-credit accounting/advertisement and its timers",
+      "PCS and LTSSM/recovery handshake",
+      "line-rate replay timer calibration",
+      "clock/reset crossings and SoC arbitration"
+    ]
+  },
+  "historical": {
+    "initial_failure": "Intentional overflow test kept driving after sticky source fault; test corrected to end at first rejected byte. This is not a functional RTL failure.",
+    "superseded_native": "Pre-receipt-frontier native attempts passed their older source-bound suites; retained as historical only.",
+    "retention": "Historical result/log/XML retained; simulator intermediates and prior source checkout not included."
+  },
+  "complete_inputs_rechecked": true,
+  "capsule_members": {
+    "dllprx-native/map.log": {
+      "bytes": 43632,
+      "sha256": "a10e77a1f70012abcbd69f95370440b6f7d8ce0b90705b05719ef9de90591921"
+    },
+    "dllprx-native/map.ys": {
+      "bytes": 1154,
+      "sha256": "a8b89fc1f5162062e9e43b1f79794a5e7438d0b377d25b56d9b884125e3f4b3d"
+    },
+    "dllprx-native/mapped.json": {
+      "bytes": 329041,
+      "sha256": "0f8558889e44d16adba972aa0f1dfa9e56beb85151978da93fc50c80fce19912"
+    },
+    "dllprx-native/mapped.v": {
+      "bytes": 39876,
+      "sha256": "401366969c59c21e86c727b49add8685fe950174c872a53ee1083fd061a3e776"
+    },
+    "dllprx-native/result.json": {
+      "bytes": 10756,
+      "sha256": "0079617bfbed8cc330ea545cab5fffae2dc6c71c9bef11790c2121bd0f49d208"
+    },
+    "dllprx-native/results.xml": {
+      "bytes": 996,
+      "sha256": "6beb31950e8ea50d5cd15524806a3c11a495c60aa599fce9196a96a27e43b1f1"
+    },
+    "dllprx-native/simulation.log": {
+      "bytes": 34106,
+      "sha256": "4534a5c0eff6971df8ad79ccf8fc0a752f7614766c7d97d5dd23c628e97da916"
+    },
+    "dllprx-rtl/result.json": {
+      "bytes": 8910,
+      "sha256": "f1f225153150ec104794df2c9b6ced253070baab65e40de5a84fa4b4a65c80ca"
+    },
+    "dllprx-rtl/results.xml": {
+      "bytes": 1001,
+      "sha256": "444c80cb6164bf59825590984e47ed45eb1c026d369809fae350aca4c3ec7d6c"
+    },
+    "dllprx-rtl/simulation.log": {
+      "bytes": 4671,
+      "sha256": "faab453440c35bb3810a33d2542a6b344720010a932a2618e24508f5d8692c23"
+    },
+    "historical/pcie-reliable-native-final/result.json": {
+      "bytes": 13398,
+      "sha256": "8b6f60188f3ee85dde06ded207b10a39a7db3c69ec9021f7ce4efc7c79c59e01"
+    },
+    "historical/pcie-reliable-native-final/results.xml": {
+      "bytes": 1424,
+      "sha256": "cc8c91205029088cc9e43b59bb3e1d86acd5315ae4647a0eb4a27f04c1ee3340"
+    },
+    "historical/pcie-reliable-native-final/simulation.log": {
+      "bytes": 35040,
+      "sha256": "c1bbc7bf3c0e00a349510c52ab478787df5804e7281bc1575430306e59ab86b9"
+    },
+    "historical/pcie-replay-native-final/result.json": {
+      "bytes": 10767,
+      "sha256": "4e281e15d581e86a51abb203b1554e6bed5d0f6b9b8a72f7c2befab84a3a07b4"
+    },
+    "historical/pcie-replay-native-final/results.xml": {
+      "bytes": 1985,
+      "sha256": "92f226f93bcceaac4f37735b7ccd396d4adf5322dea5cd371bedec5a129b5c35"
+    },
+    "historical/pcie-replay-native-final/simulation.log": {
+      "bytes": 35921,
+      "sha256": "80b58bc34b75e0ca28190d766a71cdf96b17a0bc5362b687b9b9578be77b5846"
+    },
+    "historical/pcie-replay-rtl-01/result.json": {
+      "bytes": 4117,
+      "sha256": "993bc5ac7b6f7f1855dae245f241f2b2152de862ec8bf7fad73a9f117dac5d9f"
+    },
+    "historical/pcie-replay-rtl-01/results.xml": {
+      "bytes": 1766,
+      "sha256": "22835fb3313df536a8a4b215567cb0ed5817d9baa06db315198e78a86a98804d"
+    },
+    "historical/pcie-replay-rtl-01/simulation.log": {
+      "bytes": 7390,
+      "sha256": "c61a0add0e9fd9b14fb7c81ca03547ff89b1b9c6e4e029362e719afa008abc98"
+    },
+    "lint.log": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "mutations/pytest.log": {
+      "bytes": 100,
+      "sha256": "ad5b866adf7c771b652db7ad7b03720f75e8918ec6458b0e26e5111081de1c2b"
+    },
+    "mutations/test_real_port_scoreboard_reje0/mutation.log": {
+      "bytes": 5556,
+      "sha256": "499a7be3f6425af41c3e8b0e53a606c0ff9dff60cf0ddff6f1d6f7c891866f4d"
+    },
+    "mutations/test_real_port_scoreboard_reje0/results.xml": {
+      "bytes": 1157,
+      "sha256": "2675fce4ee69bce1e98bf56a234cb74ae78a6f993555c12c75364d3c590a4ed4"
+    },
+    "mutations/test_real_port_scoreboard_reje1/mutation.log": {
+      "bytes": 6109,
+      "sha256": "5ec642f1db125291a74b6219a4557fcc1ccd39d271b50b9fbefdf510eb36fa59"
+    },
+    "mutations/test_real_port_scoreboard_reje1/results.xml": {
+      "bytes": 1461,
+      "sha256": "609f2899e75aa4f12662b0e76e4d0794bceaaa6edf7c71e6d25bcc40b571b1c5"
+    },
+    "mutations/test_real_port_scoreboard_reje2/mutation.log": {
+      "bytes": 5918,
+      "sha256": "d7a377d113458f0a18619e8d2e23efb597263e4e9def962e83122f4bc6fc6d99"
+    },
+    "mutations/test_real_port_scoreboard_reje2/results.xml": {
+      "bytes": 2444,
+      "sha256": "83ff902973f6f0ca19782dc7a9358984cae5ca5e5086025b77d61ea86ec78158"
+    },
+    "mutations/test_real_port_scoreboard_reje3/mutation.log": {
+      "bytes": 6341,
+      "sha256": "326fe40c620c3e596abffa9dcf80e82381e8a47121215a750121728fd2cc92d8"
+    },
+    "mutations/test_real_port_scoreboard_reje3/results.xml": {
+      "bytes": 2566,
+      "sha256": "1aba500ca1895911a6628602ef0ce2a7efe2ce7c4a233bdeddf3ea02b5d6f972"
+    },
+    "mutations/test_real_port_scoreboard_reje4/mutation.log": {
+      "bytes": 6134,
+      "sha256": "6ae6c2c53a47c7bc6e66e9f1bd1da12597554da644aa536b36729702bf63140f"
+    },
+    "mutations/test_real_port_scoreboard_reje4/results.xml": {
+      "bytes": 2645,
+      "sha256": "06eac68487015cd3371a9f6f39ad6afef4880ff4172e69b67bc359b63b123653"
+    },
+    "mutations/test_real_port_scoreboard_reje5/mutation.log": {
+      "bytes": 6123,
+      "sha256": "7225422aa8051c9a4079825f109993501ddf87869be2f616aad1faf5bf32aa0d"
+    },
+    "mutations/test_real_port_scoreboard_reje5/results.xml": {
+      "bytes": 2590,
+      "sha256": "fcb910f50e557583a80fbd6280702472379b009786edbc9c5d2489230c111522"
+    },
+    "mutations/test_real_port_scoreboard_reje6/mutation.log": {
+      "bytes": 6421,
+      "sha256": "827fd1eaf57f8ee4f4fe7b3a39a3cd06a6461f0bc8bf56f84e2f886f496d86a0"
+    },
+    "mutations/test_real_port_scoreboard_reje6/results.xml": {
+      "bytes": 2614,
+      "sha256": "a7de97bd7f03f1801841106280dfe578b807b69318b479139bbc492da9c52f06"
+    },
+    "mutations/test_real_port_scoreboard_reje7/mutation.log": {
+      "bytes": 6982,
+      "sha256": "a45d458c92c9391d820df58ce3b33bec88541f86e42024c1cd96cb9a6aad6597"
+    },
+    "mutations/test_real_port_scoreboard_reje7/results.xml": {
+      "bytes": 3073,
+      "sha256": "b9c6effc21ffad73e0556d0715dd10792ce5274f6748777a8783c13d8e72c2f1"
+    },
+    "mutations/test_real_port_scoreboard_reje8/mutation.log": {
+      "bytes": 5814,
+      "sha256": "77b82bd5fd54babd270f2bf330ef1ea3e83e4b410cf9188862ebe159b34a2835"
+    },
+    "mutations/test_real_port_scoreboard_reje8/results.xml": {
+      "bytes": 2443,
+      "sha256": "d5097168c4ce53c6316cbfec0f73444afbe7abfa689b6c4052e961b3f20c2ff9"
+    },
+    "mutations/test_real_port_scoreboard_reje9/mutation.log": {
+      "bytes": 8250,
+      "sha256": "55d73a0a3584c844a34d1459aab851e817d81ce56e2256c6949358abc530a694"
+    },
+    "mutations/test_real_port_scoreboard_reje9/results.xml": {
+      "bytes": 1762,
+      "sha256": "3a5d68e704f18e5e97d8403130ac013323aeac23f173f59767224c70d53a573e"
+    },
+    "reliable-native/map.log": {
+      "bytes": 642256,
+      "sha256": "8ba65ba87f4a4f128e89fc4cf434fa1309be4f10de740f60c8182db6bd87f485"
+    },
+    "reliable-native/map.ys": {
+      "bytes": 2151,
+      "sha256": "8811811c11c10671d51476810b334892e0aba277fab024eb67c8b779d5b3a9c0"
+    },
+    "reliable-native/mapped.json": {
+      "bytes": 8396478,
+      "sha256": "ff731d0a910322df552504d0d4d40b4b95dcc02a1c7d380cfb6e9cfd9244fe0c"
+    },
+    "reliable-native/mapped.v": {
+      "bytes": 1629070,
+      "sha256": "aae5638195492732a652016a8bb8ef840a09688e34629140d968da4580d673a6"
+    },
+    "reliable-native/result.json": {
+      "bytes": 13403,
+      "sha256": "d253f98c717e4b8c7cd4ca2be1612ef958f8f63658f4f80abf3a1882057425cd"
+    },
+    "reliable-native/results.xml": {
+      "bytes": 1423,
+      "sha256": "d3cc019cf396e44e401ca0367150eb48c82556d654e948e2c90efa53f2ba4673"
+    },
+    "reliable-native/simulation.log": {
+      "bytes": 35048,
+      "sha256": "a45c74feb1a6d1a7694e42d398bd6686c51d1503394ff8e34bc7d3c8c58ce208"
+    },
+    "reliable-rtl/result.json": {
+      "bytes": 12496,
+      "sha256": "0fd995ac58c61230a7ee34dc813dbb0061aa535cacdb27c57d6a4431ef1dc316"
+    },
+    "reliable-rtl/results.xml": {
+      "bytes": 1431,
+      "sha256": "099317ea970d5a694c7a8daf0349c039cf84dc2bc6be7de41a2899f0f589aa38"
+    },
+    "reliable-rtl/simulation.log": {
+      "bytes": 6562,
+      "sha256": "90d9e45ea725b7c3eaa8ae5134e4ae789901393f13bbce89e18be3eae04e4173"
+    },
+    "replay-native/map.log": {
+      "bytes": 276386,
+      "sha256": "2cb67930975aea456d5087b7387acb078caa0c2f3a4ca8464d5b374fcd7e8a6b"
+    },
+    "replay-native/map.ys": {
+      "bytes": 1160,
+      "sha256": "d49448dc2d11be9ac7c02c8bb88fc36af29aee488b39727c91bc82f4d23ea349"
+    },
+    "replay-native/mapped.json": {
+      "bytes": 3191110,
+      "sha256": "7a8167d2a126fdde3d1eff85960df7e1d83a903724aedf6e0332296225ff5a32"
+    },
+    "replay-native/mapped.v": {
+      "bytes": 558782,
+      "sha256": "7bee29b445f805941aec646be7d71fd64ab31213b19943577f156283739b71a4"
+    },
+    "replay-native/result.json": {
+      "bytes": 10772,
+      "sha256": "380ddcf62fc51782578c389a487ad280430e2bcd5770716c6617cd20ab770751"
+    },
+    "replay-native/results.xml": {
+      "bytes": 2281,
+      "sha256": "5a28ca470d5017156ef5360284f45907c4205c363f3689e231ce37e88a6aca54"
+    },
+    "replay-native/simulation.log": {
+      "bytes": 36429,
+      "sha256": "21605a3a38f3986ff1e670308da2ddfc95a342b809488c2a6bf360f802de248a"
+    },
+    "replay-rtl/result.json": {
+      "bytes": 8922,
+      "sha256": "6c37188e49c9dff2a7ebd520f5489819c068d70b7a12600d4675ae761dd0818b"
+    },
+    "replay-rtl/results.xml": {
+      "bytes": 2289,
+      "sha256": "43ba57b4c2e33afd538566e0d6e0d14125df76da3c97fd5a0493a263e9ac9b70"
+    },
+    "replay-rtl/simulation.log": {
+      "bytes": 6996,
+      "sha256": "a7719bf522734d86493baca2cd4897d8ebc685bdbaf62da5597eeae5f6315b2f"
+    },
+    "source/hw/soc/rtl/pcie/soc_pcie_dllp_rx.v": {
+      "bytes": 3448,
+      "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+    },
+    "source/hw/soc/rtl/pcie/soc_pcie_reliable_packets.v": {
+      "bytes": 6799,
+      "sha256": "9212832d6fc20d26efaf1b1c7918cb39451644e178d7e5c2f90e1cc0cb741436"
+    },
+    "source/hw/soc/rtl/pcie/soc_pcie_replay_tx.v": {
+      "bytes": 10102,
+      "sha256": "c14be51aaf367fac2c129cc4065a0729a83407e87eb2f7bc558b7831e8001c54"
+    },
+    "source/hw/soc/tb/cocotb/Makefile.soc_pcie_dllp_rx": {
+      "bytes": 1286,
+      "sha256": "39520787d8815099dfce6602e0b0fe3ebe5c0cb3a442480b5aa1ee277c30d459"
+    },
+    "source/hw/soc/tb/cocotb/Makefile.soc_pcie_reliable_packets": {
+      "bytes": 1673,
+      "sha256": "16b2078915b87000fc0b5148c596cff91d7c00e48e0f5d4e7086cc18456b6fb4"
+    },
+    "source/hw/soc/tb/cocotb/Makefile.soc_pcie_replay_tx": {
+      "bytes": 1296,
+      "sha256": "f85979d686132a795c3dfa2d04e354b787764968ea61bab7f8b541af6fe44224"
+    },
+    "source/hw/soc/tb/cocotb/test_soc_pcie_dllp_rx.py": {
+      "bytes": 5981,
+      "sha256": "d4f98ba57d88b1249a0153dc80c4e0d5af44634f74d9176024f0970f309fa06e"
+    },
+    "source/hw/soc/tb/cocotb/test_soc_pcie_reliable_packets.py": {
+      "bytes": 9557,
+      "sha256": "dcde0581c3bda290ddd41692983336a17d33ffc64194bd1ceaa0132610406d16"
+    },
+    "source/hw/soc/tb/cocotb/test_soc_pcie_replay_tx.py": {
+      "bytes": 12818,
+      "sha256": "8c2990075020775280ebb88e41d91fe0cdac02f53d0fc9e889e6566012ac672e"
+    },
+    "source/scripts/check_pcie_replay.py": {
+      "bytes": 8721,
+      "sha256": "4191e491fc2641b57aee6028bbeb94779f275859f4bbce730666d3dadba9fa0b"
+    },
+    "source/sw/tests/test_pcie_replay.py": {
+      "bytes": 5360,
+      "sha256": "e2f6b0384aeefeb5c4a81ef5a549eb3e8b1e583d15fc0bcb58811ad609428e99"
+    }
+  },
+  "capsule": {
+    "bytes": 466020,
+    "sha256": "b70a7beb73aeba0ae02dd1a63bc3a6941eae17fe72359d4f8b61e4c9f9dbd09d"
+  }
+}

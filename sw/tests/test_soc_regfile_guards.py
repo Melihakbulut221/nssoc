@@ -121,9 +121,14 @@ def _find_yosys():
 
 YOSYS = _find_yosys()
 needs_yosys = pytest.mark.skipif(YOSYS is None, reason="yosys not available")
-needs_gen = pytest.mark.skipif(
-    not (SOC_GEN / (TOP + ".v")).is_file(),
-    reason="hw/soc/gen is not populated: run hw/soc/flow/sv2v_ibex.sh")
+@pytest.fixture(scope='module', autouse=True)
+def pinned_source_snapshot(prepared_sources):
+    global SOC_GEN, UPSTREAM
+    old_gen, old_upstream = SOC_GEN, UPSTREAM
+    SOC_GEN = prepared_sources / 'gen'
+    UPSTREAM = SOC_GEN / (TOP + '.v')
+    yield
+    SOC_GEN, UPSTREAM = old_gen, old_upstream
 
 
 def _sg13g2_liberty():
@@ -239,7 +244,6 @@ def test_scrub_zero_removes_the_pointer_and_nothing_else(workdir):
 
 
 @needs_yosys
-@needs_gen
 def test_upstreams_own_file_measures_the_data_flip_flops_only(workdir):
     """The baseline, from upstream's file, measured with the same
     recipe in the same run.
@@ -365,7 +369,6 @@ def _ports(text, module):
     return [p.strip() for p in body.split(",") if p.strip()]
 
 
-@needs_gen
 def test_the_substitute_declares_upstreams_ports_in_upstreams_order():
     """The whole substitution rests on this.
 
@@ -394,7 +397,6 @@ def test_the_substitute_declares_upstreams_ports_in_upstreams_order():
         "about: {}".format(ours[len(theirs):]))
 
 
-@needs_gen
 def test_the_substitute_accepts_every_parameter_ibex_top_overrides():
     """`ibex_top` overrides five parameters by name. A substitute that
     did not declare one of them would fail to build; one that declared

@@ -1,0 +1,28 @@
+{
+  "run": 38810141084,
+  "job": 116681014582,
+  "status": "FAILED_OPAQUE_OPTIONAL_RECT_BINDING",
+  "accepted": false,
+  "error": "Native getBBox returns unwrapped optional<odb::Rect>, no xMin method. No native bbox proof was produced.",
+  "assets": [
+    {
+      "id": 645228267,
+      "name": "routed-geometry-38810141084-1.parts.json",
+      "size": 832,
+      "digest": "sha256:b3c17cf235bd22d332483fb2412f9092ab1b2a495d8693fe6a2871d7094d0e1d"
+    },
+    {
+      "id": 645228188,
+      "name": "routed-geometry-38810141084-1.summary.json",
+      "size": 1841,
+      "digest": "sha256:3c03cd03778536058e4a000966811415d0429d58ec820fc94c998c5271935f05"
+    },
+    {
+      "id": 645228369,
+      "name": "routed-geometry-38810141084-1.tar.gz.part0000",
+      "size": 58769169,
+      "digest": "sha256:c6adfff60b21f710428787c81f31bc345117eb8dba3fb45c20f11c014c894d51"
+    }
+  ],
+  "correction": "Keep bbox verification explicitly false. Independently compare sum(abs(shape.dx-shape.dy)) against pinned native dbWire::getLength, which traverses native dbWireShapeItr including RECT patches. Geometric continuity still only a diagnostic, not LVS/shape equivalence."
+}

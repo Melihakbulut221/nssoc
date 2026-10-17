@@ -1,0 +1,81 @@
+{
+  "status": "PASS_BOUNDED_ROOT_SOURCE_ONLY_REVIEW_BEFORE_MEASUREMENT",
+  "utc": "2026-10-05T15:03:24.738489+00:00",
+  "source_freeze": {
+    "bytes": 811,
+    "sha256": "4b176ee3ef4ede933065be7a36131a09c5bfa709c6fc61a3389d791fe07beba7"
+  },
+  "sources": {
+    "hw/soc/analog/pcie/clock_div2_conditioned_hbt_v2.spice": {
+      "bytes": 539,
+      "sha256": "4d66ab2d298dc80dfd588ff71dfe7da6457316fd9645fe24228ee4399e44a77b"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt_v6.spice": {
+      "bytes": 1393,
+      "sha256": "da930f276ceca44341476fd47e84c9fcc427fdfa6c0917693530e16f159e977f"
+    },
+    "hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v2.spice": {
+      "bytes": 667,
+      "sha256": "0efb2161450fedfd0475db6df1748a275d1a2587e0e02cc041c7dc916eab5aa8"
+    },
+    "scripts/characterize_pcie_vco_v6_feedback_bias_v1.py": {
+      "bytes": 7921,
+      "sha256": "56bd41ef4d8840a5a5344fc8a2e27fcd555126ec08eddab15a251e21a9e33405"
+    },
+    "sw/tests/test_pcie_vco_v6_feedback_bias_v1.py": {
+      "bytes": 4182,
+      "sha256": "d7cf7187a92d2c0ae40ceb38ba0efc0769a708a826bd9ba74e07d0de3ba152d7"
+    }
+  },
+  "electrical_deltas": [
+    {
+      "old": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div2_conditioned_hbt.spice",
+        "bytes": 507,
+        "sha256": "6986c012843f603f7ab7769e951ae01314acdbc0c8e8fc62ce8b5c7a9af25ec3"
+      },
+      "new": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div2_conditioned_hbt_v2.spice",
+        "bytes": 539,
+        "sha256": "4d66ab2d298dc80dfd588ff71dfe7da6457316fd9645fe24228ee4399e44a77b"
+      },
+      "full_diff": "--- clock_div2_conditioned_hbt.spice\n+++ clock_div2_conditioned_hbt_v2.spice\n@@ -1,10 +1,10 @@\n * SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n * SPDX-License-Identifier: CERN-OHL-W-2.0\n-* Separate native resistive clock common-mode conditioner prototype.\n-.subckt nssoc_clock_div2_conditioned_hbt clkp clkn qp qn avdd avss sub\n+* Separate v2: both native upward-bias rppd lengths8 to6.4um; all other devices unchanged.\n+.subckt nssoc_clock_div2_conditioned_hbt_v2 clkp clkn qp qn avdd avss sub\n XSP clkp ckp sub rppd w=4u l=3.6u b=0 sw_et=1\n XSN clkn ckn sub rppd w=4u l=3.6u b=0 sw_et=1\n-XUP avdd ckp sub rppd w=1u l=8u b=0 sw_et=1\n-XUN avdd ckn sub rppd w=1u l=8u b=0 sw_et=1\n+XUP avdd ckp sub rppd w=1u l=6.4u b=0 sw_et=1\n+XUN avdd ckn sub rppd w=1u l=6.4u b=0 sw_et=1\n XCORE ckp ckn qp qn avdd avss sub nssoc_clock_div2_hbt\n-.ends nssoc_clock_div2_conditioned_hbt\n+.ends nssoc_clock_div2_conditioned_hbt_v2\n"
+    },
+    {
+      "old": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v5.spice",
+        "bytes": 1378,
+        "sha256": "e68db6846dbfee30afa526a988ff1d585e1f74e10aab06ed65a10de300c944fc"
+      },
+      "new": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div4_hbt_v6.spice",
+        "bytes": 1393,
+        "sha256": "da930f276ceca44341476fd47e84c9fcc427fdfa6c0917693530e16f159e977f"
+      },
+      "full_diff": "--- clock_div4_hbt_v5.spice\n+++ clock_div4_hbt_v6.spice\n@@ -1,10 +1,10 @@\n * SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n * SPDX-License-Identifier: CERN-OHL-W-2.0\n-* Separate v5: two limiter collector loads L4.0 to4.4um; all guards unchanged.\n+* Separate v6: first conditioner uses L6.4 pull-ups; limiter and sampler remain unchanged.\n * The first core retains its upward common-mode network. The second network\n * lowers the first core's high output common mode; no ideal level shift.\n-.subckt nssoc_clock_div4_hbt_v5 clkp clkn qp qn avdd avss sub\n-XFIRST clkp clkn s1p s1n avdd avss sub nssoc_clock_div2_conditioned_hbt\n+.subckt nssoc_clock_div4_hbt_v6 clkp clkn qp qn avdd avss sub\n+XFIRST clkp clkn s1p s1n avdd avss sub nssoc_clock_div2_conditioned_hbt_v2\n * Real input bias, limiter reference and differential pair; no ideal gain.\n XLSP s1p bip sub rppd w=2u l=3.6u b=0 sw_et=1\n XLSN s1n bin sub rppd w=2u l=3.6u b=0 sw_et=1\n@@ -25,4 +25,4 @@\n XCP lp ckp cap_cmim w=20u l=20u\n XCN ln ckn cap_cmim w=20u l=20u\n XSECOND ckp ckn qp qn avdd avss sub nssoc_clock_div2_hbt\n-.ends nssoc_clock_div4_hbt_v5\n+.ends nssoc_clock_div4_hbt_v6\n"
+    },
+    {
+      "old": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v1.spice",
+        "bytes": 651,
+        "sha256": "31543ff47012caaa280ae91f3187aa59ce79a9cccd21a238659ff505ded31c8a"
+      },
+      "new": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v2.spice",
+        "bytes": 667,
+        "sha256": "0efb2161450fedfd0475db6df1748a275d1a2587e0e02cc041c7dc916eab5aa8"
+      },
+      "full_diff": "--- pll_feedback_vco_v6_wire_v1.spice\n+++ pll_feedback_vco_v6_wire_v2.spice\n@@ -1,9 +1,9 @@\n * SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n * SPDX-License-Identifier: CERN-OHL-W-2.0\n-* Actual physical-wire VCOv6, unchanged native HBT /4 and CMOS /20.\n+* Physical VCOv6; first divider pull-ups L6.4um, other native /4 and /20 unchanged.\n * External VCTRL and explicit body/wire references; not a locked PLL.\n-.subckt nssoc_pll_feedback_vco_v6_wire_v1 vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref\n+.subckt nssoc_pll_feedback_vco_v6_wire_v2 vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref\n XOSC vco_avdd avss clkn clkp sub vctrl body_substrate wire_cref nssoc_vco_local_hybrid_open_v2\n-XDIV clkp clkn qp qn div_avdd avss sub nssoc_clock_div4_hbt_v5\n+XDIV clkp clkn qp qn div_avdd avss sub nssoc_clock_div4_hbt_v6\n XFB qp qn clearb fb fbbar div_avdd core_vdd avss sub nssoc_pll_feedback_div20_v2\n-.ends nssoc_pll_feedback_vco_v6_wire_v1\n+.ends nssoc_pll_feedback_vco_v6_wire_v2\n"
+    }
+  ],
+  "observations": [
+    "Inspected private observerV2 namespace rebinding: production measurement/run/capture/deck/resource bytecode objects inherited unchanged; only config and actual chain source binding replaced.",
+    "Independent normalized SPICE inverse shows only two actual rppd pullup lengths8\u21926.4um; all terminals, width1um, thermal switches, other devices and chain connections unchanged except versioned subcircuit names.",
+    "Graph guard checks437identities and only xchain.xdiv.xfirst.xup/xun params.l; unchanged VCO hybrid889R765C; disconnect and actual modulus fault preserved.",
+    "Eleven existing source controls cover four graph configurations, invalid terminal/width/length/ideal-bias changes, frozen execution guards; read saved pass log, no repeated test or native run."
+  ],
+  "limitations": [
+    "No measured margin/frequency improvement yet; native0.6/0.85 and faults still required.",
+    "Divider/CMOS portion remains schematic; VCO model finite diagnostic; no qualifiedPEX/PVT/jitter/ESD/PLLlock/fullPHY/mainchip acceptance."
+  ]
+}

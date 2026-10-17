@@ -1,0 +1,202 @@
+"""Exercise deletion gates against a fake remote; never needs real GitHub."""
+import importlib.util
+import json
+from pathlib import Path
+import sys
+from unittest.mock import patch
+import pytest
+
+SCRIPT = Path(__file__).resolve().parents[2] / 'scripts/migrate_outputs_to_cloud.py'
+
+
+def load(tmp_path):
+    spec = importlib.util.spec_from_file_location('migration', SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.ROOT = tmp_path
+    module.BASE = tmp_path / 'hw/soc/out'
+    module.STATE = module.BASE / 'cloud-migration-20261012'
+    module.STATE.mkdir(parents=True)
+    module.LIMIT = 64
+    return module
+
+
+def test_failed_manifest_keeps_original_and_resume_deletes_only_after_verified(tmp_path):
+    m = load(tmp_path)
+    source = m.BASE / 'unique.raw'
+    source.write_bytes(b'raw captured evidence' * 11)
+    remote = {}
+    fail = [True]
+    def publish(path, tag):
+        if path.name.endswith('.manifest.json') and fail[0]:
+            raise RuntimeError('offline before durable manifest')
+        receipt = dict(name=path.name, bytes=path.stat().st_size,
+                       sha256=m.digest(path), url='https://example.test/' + path.name)
+        remote[path.name] = (path.read_bytes(), receipt)
+        return receipt
+    def release(tag):
+        return dict(assets=[dict(name=k, size=r['bytes'], digest='sha256:' + r['sha256'])
+                            for k, (_, r) in remote.items()])
+    with patch.object(m, 'publish', publish), patch.object(m, 'release', release), \
+            patch.object(m.subprocess, 'check_output', return_value='test-head'), \
+            patch.object(sys, 'argv', ['migrate', '--apply']):
+        with pytest.raises(RuntimeError, match='offline'):
+            m.main()
+        assert source.exists()
+        fail[0] = False
+        m.main()
+        assert not source.exists()
+    manifest = json.loads(remote['batch-000000.manifest.json'][0])
+    restore = tmp_path / 'restore'
+    restore.mkdir()
+    for part in manifest['parts']:
+        (restore / part['name']).write_bytes(remote[part['name']][0])
+    record = dict(manifest['records'][0], parts=manifest['parts'])
+    assert m.restore_manifest(record, restore).read_bytes() == b'raw captured evidence' * 11
+
+
+def test_safe_excludes_symlinks_and_external_files(tmp_path):
+    m = load(tmp_path)
+    secret = tmp_path / 'outside'
+    secret.write_text('outside project output')
+    link = m.BASE / 'linked'
+    link.symlink_to(secret)
+    assert not m.safe(link)
+    assert not m.safe(secret)
+    state = m.STATE / 'journal'
+    state.write_text('keep')
+    assert not m.safe(state)
+
+
+def test_changed_original_not_deleted_after_upload(tmp_path):
+    m = load(tmp_path)
+    source = m.BASE / 'case.log'
+    source.write_text('original')
+    def publish(path, tag):
+        source.write_text('changed after archive creation')
+        return dict(name=path.name, bytes=path.stat().st_size, sha256=m.digest(path))
+    with patch.object(m, 'publish', publish), \
+            patch.object(m.subprocess, 'check_output', return_value='test-head'), \
+            patch.object(sys, 'argv', ['migrate', '--apply']):
+        with pytest.raises(RuntimeError, match='Input changed'):
+            m.main()
+    assert source.read_text() == 'changed after archive creation'
+
+
+def test_pnr_cleanup_separate_scope_retains_source_and_output_state(tmp_path):
+    m = load(tmp_path)
+    source = tmp_path / 'hw/soc/pnr/flow.py'
+    run = tmp_path / 'hw/soc/pnr/runs/history/result.log'
+    run.parent.mkdir(parents=True)
+    source.write_text('source must remain')
+    run.write_text('actual historical output')
+    old_state = m.STATE / 'transfer-progress.json'
+    old_state.write_text('{"batch":123}')
+    seen = []
+
+    def publish(path, tag):
+        seen.append(tag)
+        return dict(name=path.name, bytes=path.stat().st_size, sha256=m.digest(path))
+
+    def git(args, **kwargs):
+        return b'' if 'ls-files' in args else 'test-head'
+
+    with patch.object(m, 'publish', publish), patch.object(m.subprocess, 'check_output', git), \
+            patch.object(sys, 'argv', ['migrate', '--scope', 'pnr-runs', '--apply']):
+        m.main()
+    assert not run.exists()
+    assert source.read_text() == 'source must remain'
+    assert old_state.read_text() == '{"batch":123}'
+    assert seen and set(seen) == {'cloud-migration-pnr-20261013-000'}
+    assert not m.safe(source)
+
+
+def test_pnr_scope_refuses_tracked_sources(tmp_path):
+    m = load(tmp_path)
+    with patch.object(m.subprocess, 'check_output', return_value=b'hw/soc/pnr/runs/source.v\0'), \
+            patch.object(sys, 'argv', ['migrate', '--scope', 'pnr-runs', '--apply']):
+        with pytest.raises(RuntimeError, match='tracked sources'):
+            m.main()
+
+
+def test_archived_readonly_output_deletion_restores_parent_mode(tmp_path):
+    m=load(tmp_path)
+    directory=m.BASE/'frozen'
+    directory.mkdir()
+    source=directory/'capture.dat'
+    source.write_bytes(b'original native capture')
+    source.chmod(0o444)
+    directory.chmod(0o555)
+    try:
+        m.remove_verified_output(source,m.digest(source))
+        assert not source.exists()
+        assert directory.stat().st_mode & 0o777 == 0o555
+    finally:
+        directory.chmod(0o755)
+
+
+def test_changed_readonly_output_keeps_data_and_permissions(tmp_path):
+    m=load(tmp_path)
+    directory=m.BASE/'frozen'
+    directory.mkdir()
+    source=directory/'capture.dat'
+    source.write_bytes(b'changed native capture')
+    directory.chmod(0o555)
+    try:
+        with pytest.raises(RuntimeError,match='Changed or unsafe'):
+            m.remove_verified_output(source,'not-the-current-hash')
+        assert source.exists() and directory.stat().st_mode & 0o777 == 0o555
+    finally:
+        directory.chmod(0o755)
+
+
+def test_permission_repair_never_expands_scope(tmp_path):
+    m=load(tmp_path)
+    source=tmp_path/'source.v'
+    source.write_text('unique source')
+    with pytest.raises(RuntimeError,match='unsafe'):
+        m.remove_verified_output(source,m.digest(source))
+    assert source.read_text()=='unique source'
+
+
+@pytest.mark.parametrize('scope,relative,family', [
+    ('tools','hw/soc/tools','tools'),
+    ('pnr-runs','hw/soc/pnr/runs','pnr'),
+])
+def test_selected_scope_keeps_unique_neighbor_and_skips_external_link(tmp_path,scope,relative,family):
+    m=load(tmp_path)
+    selected=tmp_path/relative
+    selected.mkdir(parents=True)
+    original=selected/'locally_modified_tool.cpp'
+    original.write_bytes(b'unique tool patch, retain exact bytes remotely')
+    neighbor=tmp_path/'hw/soc/rtl/keep.v'
+    neighbor.parent.mkdir(parents=True)
+    neighbor.write_text('never migrate project RTL')
+    link=selected/'external'
+    link.symlink_to(neighbor)
+    seen=[]
+    def publish(path,tag):
+        seen.append((tag,path.read_bytes(),path.name))
+        return dict(name=path.name,bytes=path.stat().st_size,sha256=m.digest(path))
+    def git(args,**kwargs):
+        return b'' if 'ls-files' in args else 'test-head'
+    with patch.object(m,'publish',publish),patch.object(m.subprocess,'check_output',git), \
+            patch.object(sys,'argv',['migrate','--scope',scope,'--apply']):
+        m.main()
+    assert not original.exists()
+    assert neighbor.read_text()=='never migrate project RTL'
+    assert link.is_symlink()
+    assert {tag for tag,_,_ in seen}=={'cloud-migration-'+family+'-20261013-000'}
+    import io,tarfile
+    packed=next(data for _,data,name in seen if name.endswith('.tar.gz'))
+    with tarfile.open(fileobj=io.BytesIO(packed),mode='r:gz') as archive:
+        assert archive.getnames()==[relative+'/locally_modified_tool.cpp']
+        assert archive.extractfile(archive.getmembers()[0]).read()==b'unique tool patch, retain exact bytes remotely'
+
+
+def test_tool_scope_refuses_any_tracked_source(tmp_path):
+    m=load(tmp_path)
+    with patch.object(m.subprocess,'check_output',return_value=b'hw/soc/tools/important.py\0'), \
+            patch.object(sys,'argv',['migrate','--scope','tools','--apply']):
+        with pytest.raises(RuntimeError,match='tracked sources'):
+            m.main()

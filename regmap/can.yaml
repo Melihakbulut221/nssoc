@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+# Bank aliases are intentional. All writes and read side effects decode eight
+# address bits; register reads decode five. FIFO selection uses all eight.
+schema: 1
+block: can
+address_bits: 8
+register_read_bits: 5
+banks:
+  COMMON:
+    MODE: 0
+    COMMAND: 1
+    STATUS: 2
+    IRQ: 3
+    BTR0: 6
+    BTR1: 7
+    CDR: 31
+  BASIC_RESET:
+    ACR0: 4
+    AMR0: 5
+  BASIC_TX:
+    DATA0: 10
+    DATA1: 11
+    DATA2: 12
+    DATA3: 13
+    DATA4: 14
+    DATA5: 15
+    DATA6: 16
+    DATA7: 17
+    DATA8: 18
+    DATA9: 19
+  BASIC_RX:
+    DATA0: 20
+    DATA1: 21
+    DATA2: 22
+    DATA3: 23
+    DATA4: 24
+    DATA5: 25
+    DATA6: 26
+    DATA7: 27
+    DATA8: 28
+    DATA9: 29
+  EXTENDED:
+    IER: 4
+    ALC: 11
+    ECC: 12
+    EWL: 13
+    RXERR: 14
+    TXERR: 15
+    RMC: 29
+  EXTENDED_RESET:
+    ACR0: 16
+    ACR1: 17
+    ACR2: 18
+    ACR3: 19
+    AMR0: 20
+    AMR1: 21
+    AMR2: 22
+    AMR3: 23
+  EXTENDED_TX:
+    DATA0: 16
+    DATA1: 17
+    DATA2: 18
+    DATA3: 19
+    DATA4: 20
+    DATA5: 21
+    DATA6: 22
+    DATA7: 23
+    DATA8: 24
+    DATA9: 25
+    DATA10: 26
+    DATA11: 27
+    DATA12: 28
+  EXTENDED_RX:
+    DATA0: 16
+    DATA1: 17
+    DATA2: 18
+    DATA3: 19
+    DATA4: 20
+    DATA5: 21
+    DATA6: 22
+    DATA7: 23
+    DATA8: 24
+    DATA9: 25
+    DATA10: 26
+    DATA11: 27
+    DATA12: 28

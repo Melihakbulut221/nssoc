@@ -1,0 +1,2469 @@
+{
+  "status": "COMPLETE_EQUIVALENT_LEGALIZED_CANDIDATE_TIMING_STILL_FAILS",
+  "run": 38460825316,
+  "source_head": "9588d4421d7d574edfd7f5e687b72431f7628b8b",
+  "adopted": false,
+  "summary_asset_id": 638141166,
+  "summary_sha256": "a0413b69f0d2b827eedf1f74950bfd30e02cf004cb411eb7544c9553175b8b31",
+  "receipt": {
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38460825316-1-credit-prefix-eco/credit-prefix-eco-38460825316-1.tar.gz",
+    "bytes": 201763214,
+    "sha256": "a3d5857a0a251db7f56ed0a15449df3a98d7e1c94cd5554813dc346383fe186a"
+  },
+  "summary": {
+    "status": "COMPLETE_SOURCE_BOUND_CREDIT_PREFIX_ECO_SCREEN_NOT_SIGNOFF",
+    "adopted": false,
+    "timing_accepted": false,
+    "scope": "Equivalent reassociation of one mapped credit carry cone. Same cells outside declared cone, clocks, constraints and RC. Placement estimates; full routing, extraction, hold and PHY remain required.",
+    "source": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38371498733-1-route-local_optimize_buffers/newer-postcts-placement-local_optimize_buffers-38371498733-1.tar.gz",
+      "bytes": 162715340,
+      "sha256": "c8488362bba408a9e5ab7f57776b97b46b1821054fdcdd2b44e27c955320a8d3"
+    },
+    "baseline": {
+      "slow_max": {
+        "worst_slack_ns": -1.275681,
+        "path_count": 21,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": -0.916105,
+            "path_count": 3
+          },
+          "path delay": {
+            "worst_slack_ns": 1.861444,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": -0.589711,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 2.308341,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.023324,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.116203,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": -1.275681,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1189708",
+            "endpoint": "$auto$ff.cc:337:slice$1252673",
+            "slack_ns": -0.916105
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1189708",
+            "endpoint": "$auto$ff.cc:337:slice$1252674",
+            "slack_ns": -0.916045
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171772",
+            "slack_ns": -0.858011
+          },
+          {
+            "group": "path delay",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178257",
+            "endpoint": "$auto$ff.cc:337:slice$1178364",
+            "slack_ns": 1.861444
+          },
+          {
+            "group": "path delay",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178237",
+            "endpoint": "$auto$ff.cc:337:slice$1178344",
+            "slack_ns": 2.506618
+          },
+          {
+            "group": "path delay",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178247",
+            "endpoint": "$auto$ff.cc:337:slice$1178354",
+            "slack_ns": 2.511703
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1",
+            "slack_ns": -0.589711
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "g_clkgate.u_npu_cg.u_icg",
+            "slack_ns": -0.577993
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "$auto$ff.cc:337:slice$1459366",
+            "slack_ns": -0.514579
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603211",
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 2.308341
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603210",
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 2.313778
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1177438",
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.319292
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176413",
+            "slack_ns": 0.023324
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176409",
+            "slack_ns": 0.103061
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176418",
+            "slack_ns": 0.258822
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171893",
+            "slack_ns": 0.116203
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171891",
+            "slack_ns": 0.145267
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171894",
+            "slack_ns": 0.42385
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1165788",
+            "endpoint": "$auto$ff.cc:337:slice$1166025",
+            "slack_ns": -1.275681
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1165468",
+            "endpoint": "$auto$ff.cc:337:slice$1176312",
+            "slack_ns": -1.275034
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1165468",
+            "endpoint": "$auto$ff.cc:337:slice$1176311",
+            "slack_ns": -1.273681
+          }
+        ]
+      },
+      "slow_min": {
+        "worst_slack_ns": 0.160809,
+        "path_count": 18,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.583182,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 0.194697,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 1.554914,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.179726,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.570716,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.160809,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1299351",
+            "slack_ns": 0.583182
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1165672",
+            "slack_ns": 0.606993
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1178281",
+            "slack_ns": 0.608527
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1161046",
+            "endpoint": "$auto$ff.cc:337:slice$1160796",
+            "slack_ns": 0.194697
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1161045",
+            "endpoint": "$auto$ff.cc:337:slice$1160795",
+            "slack_ns": 0.207905
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179409",
+            "endpoint": "$auto$ff.cc:337:slice$1179409",
+            "slack_ns": 0.215964
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603212",
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 1.554914
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603215",
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 1.580787
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603166",
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 1.591484
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435195",
+            "slack_ns": 0.179726
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[2] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435197",
+            "slack_ns": 0.180038
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435196",
+            "slack_ns": 0.184002
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172119",
+            "endpoint": "$auto$ff.cc:337:slice$1172119",
+            "slack_ns": 0.570716
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172112",
+            "endpoint": "$auto$ff.cc:337:slice$1172112",
+            "slack_ns": 0.575486
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1177612",
+            "endpoint": "$auto$ff.cc:337:slice$1177604",
+            "slack_ns": 0.581345
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "pcie_function_id_i[15] (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1172443",
+            "slack_ns": 0.160809
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1295474",
+            "endpoint": "$auto$ff.cc:337:slice$1176231",
+            "slack_ns": 0.185746
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1188149",
+            "endpoint": "$auto$ff.cc:337:slice$1188149",
+            "slack_ns": 0.199534
+          }
+        ]
+      },
+      "typical_max": {
+        "worst_slack_ns": 0.101957,
+        "path_count": 21,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.556846,
+            "path_count": 3
+          },
+          "path delay": {
+            "worst_slack_ns": 2.367791,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 6.901612,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 3.418189,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 3.113,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 3.170705,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.101957,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171772",
+            "slack_ns": 0.556846
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171773",
+            "slack_ns": 0.556852
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171774",
+            "slack_ns": 0.556851
+          },
+          {
+            "group": "path delay",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178257",
+            "endpoint": "$auto$ff.cc:337:slice$1178364",
+            "slack_ns": 2.367791
+          },
+          {
+            "group": "path delay",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178237",
+            "endpoint": "$auto$ff.cc:337:slice$1178344",
+            "slack_ns": 2.767421
+          },
+          {
+            "group": "path delay",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178247",
+            "endpoint": "$auto$ff.cc:337:slice$1178354",
+            "slack_ns": 2.770593
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1",
+            "slack_ns": 6.901612
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "$auto$ff.cc:337:slice$1459366",
+            "slack_ns": 6.943314
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "$auto$ff.cc:337:slice$1459365",
+            "slack_ns": 6.951924
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603211",
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 3.418189
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603210",
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 3.421466
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1177438",
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 3.424955
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176413",
+            "slack_ns": 3.113
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176409",
+            "slack_ns": 3.155122
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176418",
+            "slack_ns": 3.268343
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171893",
+            "slack_ns": 3.170705
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171891",
+            "slack_ns": 3.18731
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1154653",
+            "endpoint": "$auto$ff.cc:337:slice$1171861",
+            "slack_ns": 3.204568
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 0.101957
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1167151",
+            "slack_ns": 0.482701
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1167154",
+            "slack_ns": 0.482899
+          }
+        ]
+      },
+      "typical_min": {
+        "worst_slack_ns": 0.02501,
+        "path_count": 18,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.285018,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 0.041541,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 0.697129,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.178271,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.265772,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.02501,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1178281",
+            "slack_ns": 0.285018
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1252672",
+            "slack_ns": 0.294191
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1178324",
+            "slack_ns": 0.294633
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179409",
+            "endpoint": "$auto$ff.cc:337:slice$1179409",
+            "slack_ns": 0.041541
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179424",
+            "endpoint": "$auto$ff.cc:337:slice$1179424",
+            "slack_ns": 0.045369
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179439",
+            "endpoint": "$auto$ff.cc:337:slice$1179439",
+            "slack_ns": 0.070254
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603212",
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.697129
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603215",
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 0.716496
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603166",
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.723055
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[2] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435197",
+            "slack_ns": 0.178271
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435195",
+            "slack_ns": 0.178276
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435196",
+            "slack_ns": 0.180574
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172119",
+            "endpoint": "$auto$ff.cc:337:slice$1172119",
+            "slack_ns": 0.265772
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1177612",
+            "endpoint": "$auto$ff.cc:337:slice$1177604",
+            "slack_ns": 0.266747
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1187664",
+            "endpoint": "$auto$ff.cc:337:slice$1171898",
+            "slack_ns": 0.270579
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1295474",
+            "endpoint": "$auto$ff.cc:337:slice$1176231",
+            "slack_ns": 0.02501
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1188149",
+            "endpoint": "$auto$ff.cc:337:slice$1188149",
+            "slack_ns": 0.034061
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1176644",
+            "endpoint": "$auto$ff.cc:337:slice$1176644",
+            "slack_ns": 0.036362
+          }
+        ]
+      },
+      "fast_max": {
+        "worst_slack_ns": 0.82051,
+        "path_count": 21,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 1.423023,
+            "path_count": 3
+          },
+          "path delay": {
+            "worst_slack_ns": 2.64231,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 10.791141,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 4.019973,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 4.236168,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 4.716456,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.82051,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171772",
+            "slack_ns": 1.423023
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171773",
+            "slack_ns": 1.423029
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171774",
+            "slack_ns": 1.423032
+          },
+          {
+            "group": "path delay",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178257",
+            "endpoint": "$auto$ff.cc:337:slice$1178364",
+            "slack_ns": 2.64231
+          },
+          {
+            "group": "path delay",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178237",
+            "endpoint": "$auto$ff.cc:337:slice$1178344",
+            "slack_ns": 2.921842
+          },
+          {
+            "group": "path delay",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178254",
+            "endpoint": "$auto$ff.cc:337:slice$1178361",
+            "slack_ns": 2.923917
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1459434",
+            "endpoint": "double_fault_seen_o (output port clocked by clk_i)",
+            "slack_ns": 10.791141
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1459434",
+            "endpoint": "core_sleep_o (output port clocked by clk_i)",
+            "slack_ns": 11.075504
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1",
+            "slack_ns": 11.358081
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603211",
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 4.019973
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603210",
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 4.022242
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1177438",
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 4.02453
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1603181",
+            "slack_ns": 4.236168
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1603152",
+            "slack_ns": 4.255009
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1177173",
+            "slack_ns": 4.361213
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1154653",
+            "endpoint": "$auto$ff.cc:337:slice$1171861",
+            "slack_ns": 4.716456
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1154653",
+            "endpoint": "$auto$ff.cc:337:slice$1171865",
+            "slack_ns": 4.845654
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171893",
+            "slack_ns": 4.86148
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 0.82051
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_tx_valid_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 1.121887
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_initialized_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 1.223176
+          }
+        ]
+      },
+      "fast_min": {
+        "worst_slack_ns": -0.065767,
+        "path_count": 18,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.103703,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": -0.054434,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 0.238373,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.078263,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.090726,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": -0.065767,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1440440",
+            "endpoint": "$auto$ff.cc:337:slice$1186405",
+            "slack_ns": 0.103703
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1440440",
+            "endpoint": "$auto$ff.cc:337:slice$1186408",
+            "slack_ns": 0.103834
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1440440",
+            "endpoint": "$auto$ff.cc:337:slice$1186406",
+            "slack_ns": 0.103835
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179409",
+            "endpoint": "$auto$ff.cc:337:slice$1179409",
+            "slack_ns": -0.054434
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179424",
+            "endpoint": "$auto$ff.cc:337:slice$1179424",
+            "slack_ns": -0.051861
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179439",
+            "endpoint": "$auto$ff.cc:337:slice$1179439",
+            "slack_ns": -0.03676
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603212",
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.238373
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603215",
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 0.253203
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603166",
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.257376
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1435229",
+            "endpoint": "$auto$ff.cc:337:slice$1177177",
+            "slack_ns": 0.078263
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1165875",
+            "endpoint": "$auto$ff.cc:337:slice$1177334",
+            "slack_ns": 0.083512
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1154676",
+            "endpoint": "$auto$ff.cc:337:slice$1154676",
+            "slack_ns": 0.096418
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172119",
+            "endpoint": "$auto$ff.cc:337:slice$1172119",
+            "slack_ns": 0.090726
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172112",
+            "endpoint": "$auto$ff.cc:337:slice$1172112",
+            "slack_ns": 0.091889
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172118",
+            "endpoint": "$auto$ff.cc:337:slice$1172104",
+            "slack_ns": 0.092239
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1295474",
+            "endpoint": "$auto$ff.cc:337:slice$1176231",
+            "slack_ns": -0.065767
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1188149",
+            "endpoint": "$auto$ff.cc:337:slice$1188149",
+            "slack_ns": -0.060567
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1176644",
+            "endpoint": "$auto$ff.cc:337:slice$1176644",
+            "slack_ns": -0.058942
+          }
+        ]
+      }
+    },
+    "logic": {
+      "status": "PASS_ALL_256_CUTPOINT_ASSIGNMENTS_ALL_SEVEN_ORIGINAL_OUTPUTS",
+      "actual_liberty_sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "miter_sha256": "d18efd3e81a5ca7f3206f67d1346b5c6685f107c16ec352e9ac053c0d3e34591",
+      "proof_sha256": "b078d68f3a7cbe3fcb69dfe40eac5c56ef2bae9188a65f20291fe81b5d843513",
+      "negative_control": "ACTUAL_FINAL_NAND_REPLACED_BY_AND_REJECTED"
+    },
+    "geometry": {
+      "status": "PASS_ONLY_DECLARED_CARRY_INPUT_REASSOCIATION_AND_NEW_AND_GATES",
+      "original_instances": 113791,
+      "added_instances": 14,
+      "changed_instances": {
+        "$abc$1705011$auto$blifparse.cc:397:parse_blif$1737171": {
+          "master": "sg13g2_and2_1",
+          "location": [
+            1995360,
+            1780380
+          ],
+          "orient": "MX",
+          "pins": {
+            "A": "nssoc_credit_prefix_0_out",
+            "B": "$abc$1705011$new_n58989",
+            "X": "$abc$1705011$new_n58993",
+            "VDD": "VPWR",
+            "VSS": "VGND"
+          }
+        },
+        "$abc$1705011$auto$blifparse.cc:397:parse_blif$1737174": {
+          "master": "sg13g2_and2_1",
+          "location": [
+            1996800,
+            1787940
+          ],
+          "orient": "R180",
+          "pins": {
+            "A": "nssoc_credit_prefix_2_out",
+            "B": "$abc$1705011$new_n58989",
+            "X": "$abc$1705011$new_n58996",
+            "VDD": "VPWR",
+            "VSS": "VGND"
+          }
+        },
+        "$abc$1705011$auto$blifparse.cc:397:parse_blif$1737178": {
+          "master": "sg13g2_and2_1",
+          "location": [
+            1994400,
+            1787940
+          ],
+          "orient": "R180",
+          "pins": {
+            "A": "nssoc_credit_prefix_4_out",
+            "B": "$abc$1705011$new_n58989",
+            "X": "$abc$1705011$new_n59000",
+            "VDD": "VPWR",
+            "VSS": "VGND"
+          }
+        },
+        "$abc$1705011$auto$blifparse.cc:397:parse_blif$1737181": {
+          "master": "sg13g2_and2_1",
+          "location": [
+            2000160,
+            1799280
+          ],
+          "orient": "MY",
+          "pins": {
+            "A": "nssoc_credit_prefix_7_out",
+            "B": "$abc$1705011$new_n58989",
+            "X": "$abc$1705011$new_n59003",
+            "VDD": "VPWR",
+            "VSS": "VGND"
+          }
+        },
+        "$abc$1705011$auto$blifparse.cc:397:parse_blif$1737185": {
+          "master": "sg13g2_and2_1",
+          "location": [
+            2003520,
+            1803060
+          ],
+          "orient": "MX",
+          "pins": {
+            "A": "nssoc_credit_prefix_10_out",
+            "B": "$abc$1705011$new_n58989",
+            "X": "$abc$1705011$new_n59007",
+            "VDD": "VPWR",
+            "VSS": "VGND"
+          }
+        },
+        "$abc$1705011$auto$blifparse.cc:397:parse_blif$1737188": {
+          "master": "sg13g2_nand2_1",
+          "location": [
+            2007840,
+            1806840
+          ],
+          "orient": "R0",
+          "pins": {
+            "Y": "$abc$1705011$new_n59010",
+            "A": "nssoc_credit_prefix_13_out",
+            "B": "$abc$1705011$new_n58989",
+            "VDD": "VPWR",
+            "VSS": "VGND"
+          }
+        }
+      },
+      "original_geometry_unchanged": true,
+      "power_geometry_unchanged": true
+    },
+    "candidate": {
+      "slow_max": {
+        "worst_slack_ns": -1.275034,
+        "path_count": 21,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": -0.916105,
+            "path_count": 3
+          },
+          "path delay": {
+            "worst_slack_ns": 1.861444,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": -0.589711,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 2.308341,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.023324,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.116203,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": -1.275034,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1189708",
+            "endpoint": "$auto$ff.cc:337:slice$1252673",
+            "slack_ns": -0.916105
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1189708",
+            "endpoint": "$auto$ff.cc:337:slice$1252674",
+            "slack_ns": -0.916045
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171772",
+            "slack_ns": -0.858011
+          },
+          {
+            "group": "path delay",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178257",
+            "endpoint": "$auto$ff.cc:337:slice$1178364",
+            "slack_ns": 1.861444
+          },
+          {
+            "group": "path delay",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178237",
+            "endpoint": "$auto$ff.cc:337:slice$1178344",
+            "slack_ns": 2.506618
+          },
+          {
+            "group": "path delay",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178247",
+            "endpoint": "$auto$ff.cc:337:slice$1178354",
+            "slack_ns": 2.511703
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1",
+            "slack_ns": -0.589711
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "g_clkgate.u_npu_cg.u_icg",
+            "slack_ns": -0.577993
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "$auto$ff.cc:337:slice$1459366",
+            "slack_ns": -0.514579
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603211",
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 2.308341
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603210",
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 2.313778
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1177438",
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 2.319292
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176413",
+            "slack_ns": 0.023324
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176409",
+            "slack_ns": 0.103061
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176418",
+            "slack_ns": 0.258822
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171893",
+            "slack_ns": 0.116203
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171891",
+            "slack_ns": 0.145267
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171894",
+            "slack_ns": 0.42385
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1165468",
+            "endpoint": "$auto$ff.cc:337:slice$1176312",
+            "slack_ns": -1.275034
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1165468",
+            "endpoint": "$auto$ff.cc:337:slice$1176311",
+            "slack_ns": -1.273681
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1165465",
+            "endpoint": "$auto$ff.cc:337:slice$1165551",
+            "slack_ns": -1.273135
+          }
+        ]
+      },
+      "slow_min": {
+        "worst_slack_ns": 0.160809,
+        "path_count": 18,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.583182,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 0.194697,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 1.554914,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.179726,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.570716,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.160809,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1299351",
+            "slack_ns": 0.583182
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1165672",
+            "slack_ns": 0.606993
+          },
+          {
+            "group": "asynchronous",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1178281",
+            "slack_ns": 0.608527
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1161046",
+            "endpoint": "$auto$ff.cc:337:slice$1160796",
+            "slack_ns": 0.194697
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1161045",
+            "endpoint": "$auto$ff.cc:337:slice$1160795",
+            "slack_ns": 0.207905
+          },
+          {
+            "group": "clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179409",
+            "endpoint": "$auto$ff.cc:337:slice$1179409",
+            "slack_ns": 0.215964
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603212",
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 1.554914
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603215",
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 1.580787
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603166",
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 1.591484
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435195",
+            "slack_ns": 0.179726
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[2] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435197",
+            "slack_ns": 0.180038
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435196",
+            "slack_ns": 0.184002
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172119",
+            "endpoint": "$auto$ff.cc:337:slice$1172119",
+            "slack_ns": 0.570716
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172112",
+            "endpoint": "$auto$ff.cc:337:slice$1172112",
+            "slack_ns": 0.575486
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1177612",
+            "endpoint": "$auto$ff.cc:337:slice$1177604",
+            "slack_ns": 0.581345
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "pcie_function_id_i[15] (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1172443",
+            "slack_ns": 0.160809
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1295474",
+            "endpoint": "$auto$ff.cc:337:slice$1176231",
+            "slack_ns": 0.185746
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "slow",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1188149",
+            "endpoint": "$auto$ff.cc:337:slice$1188149",
+            "slack_ns": 0.199534
+          }
+        ]
+      },
+      "typical_max": {
+        "worst_slack_ns": 0.101957,
+        "path_count": 21,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.556846,
+            "path_count": 3
+          },
+          "path delay": {
+            "worst_slack_ns": 2.367791,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 6.901612,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 3.418189,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 3.113,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 3.170705,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.101957,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171772",
+            "slack_ns": 0.556846
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171773",
+            "slack_ns": 0.556852
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171774",
+            "slack_ns": 0.556851
+          },
+          {
+            "group": "path delay",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178257",
+            "endpoint": "$auto$ff.cc:337:slice$1178364",
+            "slack_ns": 2.367791
+          },
+          {
+            "group": "path delay",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178237",
+            "endpoint": "$auto$ff.cc:337:slice$1178344",
+            "slack_ns": 2.767421
+          },
+          {
+            "group": "path delay",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178247",
+            "endpoint": "$auto$ff.cc:337:slice$1178354",
+            "slack_ns": 2.770593
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1",
+            "slack_ns": 6.901612
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "$auto$ff.cc:337:slice$1459366",
+            "slack_ns": 6.943314
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "$auto$ff.cc:337:slice$1459365",
+            "slack_ns": 6.951924
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603211",
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 3.418189
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603210",
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 3.421466
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1177438",
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 3.424955
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176413",
+            "slack_ns": 3.113
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176409",
+            "slack_ns": 3.155122
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1176418",
+            "slack_ns": 3.268343
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171893",
+            "slack_ns": 3.170705
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171891",
+            "slack_ns": 3.18731
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1154653",
+            "endpoint": "$auto$ff.cc:337:slice$1171861",
+            "slack_ns": 3.204568
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 0.101957
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1167151",
+            "slack_ns": 0.482701
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1167154",
+            "slack_ns": 0.482899
+          }
+        ]
+      },
+      "typical_min": {
+        "worst_slack_ns": 0.02501,
+        "path_count": 18,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.285018,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 0.041541,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 0.697129,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.178271,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.265772,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.02501,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1178281",
+            "slack_ns": 0.285018
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1252672",
+            "slack_ns": 0.294191
+          },
+          {
+            "group": "asynchronous",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1252674",
+            "endpoint": "$auto$ff.cc:337:slice$1178324",
+            "slack_ns": 0.294633
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179409",
+            "endpoint": "$auto$ff.cc:337:slice$1179409",
+            "slack_ns": 0.041541
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179424",
+            "endpoint": "$auto$ff.cc:337:slice$1179424",
+            "slack_ns": 0.045369
+          },
+          {
+            "group": "clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179439",
+            "endpoint": "$auto$ff.cc:337:slice$1179439",
+            "slack_ns": 0.070254
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603212",
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.697129
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603215",
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 0.716496
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603166",
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.723055
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[2] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435197",
+            "slack_ns": 0.178271
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435195",
+            "slack_ns": 0.178276
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1435196",
+            "slack_ns": 0.180574
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172119",
+            "endpoint": "$auto$ff.cc:337:slice$1172119",
+            "slack_ns": 0.265772
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1177612",
+            "endpoint": "$auto$ff.cc:337:slice$1177604",
+            "slack_ns": 0.266747
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1187664",
+            "endpoint": "$auto$ff.cc:337:slice$1171898",
+            "slack_ns": 0.270579
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1295474",
+            "endpoint": "$auto$ff.cc:337:slice$1176231",
+            "slack_ns": 0.02501
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1188149",
+            "endpoint": "$auto$ff.cc:337:slice$1188149",
+            "slack_ns": 0.034061
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "typical",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1176644",
+            "endpoint": "$auto$ff.cc:337:slice$1176644",
+            "slack_ns": 0.036362
+          }
+        ]
+      },
+      "fast_max": {
+        "worst_slack_ns": 0.82051,
+        "path_count": 21,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 1.423023,
+            "path_count": 3
+          },
+          "path delay": {
+            "worst_slack_ns": 2.64231,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": 10.791141,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 4.019973,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 4.236168,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 4.716456,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": 0.82051,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171772",
+            "slack_ns": 1.423023
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171773",
+            "slack_ns": 1.423029
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1171774",
+            "slack_ns": 1.423032
+          },
+          {
+            "group": "path delay",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178257",
+            "endpoint": "$auto$ff.cc:337:slice$1178364",
+            "slack_ns": 2.64231
+          },
+          {
+            "group": "path delay",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178237",
+            "endpoint": "$auto$ff.cc:337:slice$1178344",
+            "slack_ns": 2.921842
+          },
+          {
+            "group": "path delay",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1178254",
+            "endpoint": "$auto$ff.cc:337:slice$1178361",
+            "slack_ns": 2.923917
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1459434",
+            "endpoint": "double_fault_seen_o (output port clocked by clk_i)",
+            "slack_ns": 10.791141
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1459434",
+            "endpoint": "core_sleep_o (output port clocked by clk_i)",
+            "slack_ns": 11.075504
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1182550",
+            "endpoint": "u_ram.g_ram_2048x64_ecc.u_b1",
+            "slack_ns": 11.358081
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603211",
+            "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+            "slack_ns": 4.019973
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1603210",
+            "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "slack_ns": 4.022242
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1177438",
+            "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+            "slack_ns": 4.02453
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1603181",
+            "slack_ns": 4.236168
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1603152",
+            "slack_ns": 4.255009
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "endpoint": "$auto$ff.cc:337:slice$1177173",
+            "slack_ns": 4.361213
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1154653",
+            "endpoint": "$auto$ff.cc:337:slice$1171861",
+            "slack_ns": 4.716456
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "$auto$ff.cc:337:slice$1154653",
+            "endpoint": "$auto$ff.cc:337:slice$1171865",
+            "slack_ns": 4.845654
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "endpoint": "$auto$ff.cc:337:slice$1171893",
+            "slack_ns": 4.86148
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_rx_ready_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 0.82051
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_tx_valid_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 1.121887
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "max",
+            "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "endpoint": "pcie_initialized_o (output port clocked by pcie_clk_i)",
+            "slack_ns": 1.223176
+          }
+        ]
+      },
+      "fast_min": {
+        "worst_slack_ns": -0.065767,
+        "path_count": 18,
+        "groups": {
+          "asynchronous": {
+            "worst_slack_ns": 0.103703,
+            "path_count": 3
+          },
+          "clk_i": {
+            "worst_slack_ns": -0.054434,
+            "path_count": 3
+          },
+          "eth_gtx": {
+            "worst_slack_ns": 0.238373,
+            "path_count": 3
+          },
+          "eth_rx_clk_i": {
+            "worst_slack_ns": 0.078263,
+            "path_count": 3
+          },
+          "eth_tx_clk_i": {
+            "worst_slack_ns": 0.090726,
+            "path_count": 3
+          },
+          "pcie_clk_i": {
+            "worst_slack_ns": -0.065767,
+            "path_count": 3
+          }
+        },
+        "paths": [
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1440440",
+            "endpoint": "$auto$ff.cc:337:slice$1186405",
+            "slack_ns": 0.103703
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1440440",
+            "endpoint": "$auto$ff.cc:337:slice$1186408",
+            "slack_ns": 0.103834
+          },
+          {
+            "group": "asynchronous",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1440440",
+            "endpoint": "$auto$ff.cc:337:slice$1186406",
+            "slack_ns": 0.103835
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179409",
+            "endpoint": "$auto$ff.cc:337:slice$1179409",
+            "slack_ns": -0.054434
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179424",
+            "endpoint": "$auto$ff.cc:337:slice$1179424",
+            "slack_ns": -0.051861
+          },
+          {
+            "group": "clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1179439",
+            "endpoint": "$auto$ff.cc:337:slice$1179439",
+            "slack_ns": -0.03676
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603212",
+            "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "slack_ns": 0.238373
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603215",
+            "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+            "slack_ns": 0.253203
+          },
+          {
+            "group": "eth_gtx",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1603166",
+            "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+            "slack_ns": 0.257376
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1435229",
+            "endpoint": "$auto$ff.cc:337:slice$1177177",
+            "slack_ns": 0.078263
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1165875",
+            "endpoint": "$auto$ff.cc:337:slice$1177334",
+            "slack_ns": 0.083512
+          },
+          {
+            "group": "eth_rx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1154676",
+            "endpoint": "$auto$ff.cc:337:slice$1154676",
+            "slack_ns": 0.096418
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172119",
+            "endpoint": "$auto$ff.cc:337:slice$1172119",
+            "slack_ns": 0.090726
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172112",
+            "endpoint": "$auto$ff.cc:337:slice$1172112",
+            "slack_ns": 0.091889
+          },
+          {
+            "group": "eth_tx_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1172118",
+            "endpoint": "$auto$ff.cc:337:slice$1172104",
+            "slack_ns": 0.092239
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1295474",
+            "endpoint": "$auto$ff.cc:337:slice$1176231",
+            "slack_ns": -0.065767
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1188149",
+            "endpoint": "$auto$ff.cc:337:slice$1188149",
+            "slack_ns": -0.060567
+          },
+          {
+            "group": "pcie_clk_i",
+            "corner": "fast",
+            "path_type": "min",
+            "startpoint": "$auto$ff.cc:337:slice$1176644",
+            "endpoint": "$auto$ff.cc:337:slice$1176644",
+            "slack_ns": -0.058942
+          }
+        ]
+      }
+    },
+    "group_deltas_ns": {
+      "slow_max": {
+        "asynchronous": 0.0,
+        "path delay": 0.0,
+        "clk_i": 0.0,
+        "eth_gtx": 0.0,
+        "eth_rx_clk_i": 0.0,
+        "eth_tx_clk_i": 0.0,
+        "pcie_clk_i": 0.0006470000000000642
+      },
+      "slow_min": {
+        "asynchronous": 0.0,
+        "clk_i": 0.0,
+        "eth_gtx": 0.0,
+        "eth_rx_clk_i": 0.0,
+        "eth_tx_clk_i": 0.0,
+        "pcie_clk_i": 0.0
+      },
+      "typical_max": {
+        "asynchronous": 0.0,
+        "path delay": 0.0,
+        "clk_i": 0.0,
+        "eth_gtx": 0.0,
+        "eth_rx_clk_i": 0.0,
+        "eth_tx_clk_i": 0.0,
+        "pcie_clk_i": 0.0
+      },
+      "typical_min": {
+        "asynchronous": 0.0,
+        "clk_i": 0.0,
+        "eth_gtx": 0.0,
+        "eth_rx_clk_i": 0.0,
+        "eth_tx_clk_i": 0.0,
+        "pcie_clk_i": 0.0
+      },
+      "fast_max": {
+        "asynchronous": 0.0,
+        "path delay": 0.0,
+        "clk_i": 0.0,
+        "eth_gtx": 0.0,
+        "eth_rx_clk_i": 0.0,
+        "eth_tx_clk_i": 0.0,
+        "pcie_clk_i": 0.0
+      },
+      "fast_min": {
+        "asynchronous": 0.0,
+        "clk_i": 0.0,
+        "eth_gtx": 0.0,
+        "eth_rx_clk_i": 0.0,
+        "eth_tx_clk_i": 0.0,
+        "pcie_clk_i": 0.0
+      }
+    },
+    "candidate_odb_sha256": "dc4d9bcaf7ca617b31ece0c7504a591d41ddff0e5558821e2a6cb7815940d074"
+  },
+  "interpretation": "Original worst endpoint is absent from the three reported slow PCIe paths after ECO, but its exact improved slack was not directly reported. Overall WNS improves only0.647ps to-1.275034ns because replay read_pos[2]/[1] paths remain. No group worst slack regresses in this finite report; this is not unconstrained coverage or signoff. Full route/PEX/DRC/LVS and hold closure still required."
+}

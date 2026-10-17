@@ -465,7 +465,8 @@ The committed fabric's column reproduces, to the digit, the profile that
 sent this work here: max 81, p99 79, p90 74, median 39, mean 41.3, 48.90
 per cent deeper than 40. **The same profile comes back from
 `hw/soc/out/s86-abcps-syn`, the run whose abc delay target is expressed
-in picoseconds rather than nanoseconds** — a thousandfold tightening —
+with the period converted to picoseconds** — a thousandfold relaxation of
+the numeric ABC target, from 20 ps to 20,000 ps for a 20 ns period —
 and from `s85-wg0-syn`, which is the run `docs/77` section 18.5 reports:
 `max 81 p99 79 p90 74 median 39 mean 41.3`, `3124 (48.90 %)` in all
 three **[fact, `logic_depth.py` on each netlist]**. The depth is not
@@ -479,11 +480,13 @@ drive-strength substitution on an identical instance name — 80
 `sg13g2_nor3_2` → `_1`, and 35 more of the same shape
 **[fact, `diff` of the two `soc_top.netlist.v`, 2026-09-16]**. Cell
 count, instance names and structure are unchanged, which is why the
-depth profile is identical to the digit. A thousandfold tightening of
-the delay target moved **sizing** and did not restructure anything: abc
-had no shorter arrangement of this logic to find, which is the result,
-but it is a weaker statement than "abc tried to restructure and could
-not".
+depth profile is identical to the digit. Correcting the target's units moved
+**sizing** without changing the measured structure in this experiment. It does
+not establish that a different synthesis strategy could not shorten the logic.
+The unit interpretation was checked again against the pinned Yosys 0.62
+`help abc` output on 23 September 2026: `-D` takes picoseconds. The default
+mapping remains unchanged; `SOC_ABC_D_PS=1` selects the conversion in
+`hw/soc/flow/syn_soc_top.sh`.
 
 ### 5.1 The deepest endpoint class, which is the whole argument
 
@@ -875,4 +878,3 @@ concentrate the fan-out.
 4. **`docs/83` section 5's other two structural items are untouched by
    this.** The core's pipeline and the register file's write encoder
    hold the worst endpoint, and no version of this change reaches them.
-

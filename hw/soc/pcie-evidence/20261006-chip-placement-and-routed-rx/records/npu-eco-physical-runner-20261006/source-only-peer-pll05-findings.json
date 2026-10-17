@@ -1,0 +1,29 @@
+{
+  "status": "FINDING_SOURCE_ONLY_MACRO_AWARE_TEMPLATE_READER_CONTROL",
+  "freeze": {
+    "bytes": 8090,
+    "sha256": "1cf566184f91467211f06f60189fc75a8ef2839f1617512e88001fe375d6cb88"
+  },
+  "findings": [
+    {
+      "priority": 2,
+      "file": "template_control04.py",
+      "message": "Native control input manifest omits the existing three --input-lef files, source COMMANDS/config and control method despite direct consumption. Preserve this draft, add exact paths and recheck after native using existing pins loop; product helper/flow can remain byte-identical."
+    }
+  ],
+  "saved_control_recount": {
+    "cases": 68,
+    "counts": {
+      "sw.tests.test_npu_eco_physical": 24,
+      "sw.tests.test_cloud_alu_physical": 33,
+      "sw.tests.test_npu_eco_template_lefs": 11
+    },
+    "all_pass": true
+  },
+  "source_review": {
+    "helper": "Only strict signal template arguments are accepted; exact two master names and one matching-named LEF each, appended without altering original command.",
+    "flow": "One original Odb.ApplyDEFTemplate replaced with inherited subclass/get_command; all other step classes/run behavior exact.",
+    "runner": "Only run function nativeflow path/class changed plus method inventory/pins; all other function ASTs exact source03."
+  },
+  "native_executed_by_peer": false
+}

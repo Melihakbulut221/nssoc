@@ -1,0 +1,98 @@
+{
+  "status": "CANDIDATE_A_STOPPED_CANDIDATE_B_RUNNING_NOT_ACCEPTED",
+  "observed_at": "2026-09-27T10:54:00+03:00",
+  "candidate_a": {
+    "status": "STOPPED_UNACCEPTED_CANDIDATE_A_TO_PRIORITIZE_PIPELINED_B",
+    "reason": "Prioritize source-bound functional-tested pipeline candidate B. Candidate A still has estimated setup -7.588405ns/hold -1.383924ns and69399 initial-route markers; no final A timing or physical acceptance.",
+    "pid": 1787644,
+    "command": "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/python ${REPOSITORY}/hw/soc/out/timing-repair2-20260927/route_flow.py --flow RepairedCoreRoute --manual-pdk --pdk-root ${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root --pdk ihp-sg13g2 --force-run-dir ${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/route --with-initial-state ${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/route-state.json ${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/route-config.json ",
+    "route_log_sha256_before_stop": "ce38a7b912d35d48d8bc5bf1ae4b644db4a24b0e8d26c4afe0e9d01bced5dd3f",
+    "retained": [
+      "optimized netlist/ODB",
+      "scoped equation proof",
+      "global-route timing estimates",
+      "partial detailed-route logs"
+    ],
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "route_log_sha256_after_stop": "ce38a7b912d35d48d8bc5bf1ae4b644db4a24b0e8d26c4afe0e9d01bced5dd3f"
+  },
+  "candidate_a_terminal": {
+    "status": "ROUTE_OR_STA_ERROR",
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "proof_command": [
+      "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "python",
+      "${REPOSITORY}/hw/soc/flow/check_eco_load_logic.py",
+      "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical11/run/09-openroad-fillinsertion/soc_top.nl.v",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/run/repair/soc_top.nl.v",
+      "--liberty",
+      "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+      "--macro-verilog",
+      "${REPOSITORY}/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/independent_bb.v",
+      "--output",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/proof"
+    ],
+    "input_sha256": {
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verify_and_route.py": "d2c2c7fc6e3dcc1bd869b887458799e267005d946168c3269ff82ac1da05747e",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/route_flow.py": "d882b16ab5f9894820f3f202c44dac9cb0d1ae313a47311f191ee5c299cf6939",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/result.json": "966e1da7ad1a2346382484c1c2ada35616f9a7b9c6497856211c774f29a32042",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/run/repair/state_out.json": "e1c9183b589f1b126034a792825505f53bf6e5ea31bb2661dfbfbda810bf93a3",
+      "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical11/run/09-openroad-fillinsertion/soc_top.nl.v": "14d8ed0c82a709098bc6139fd0ccf8f036a3177f530b888ca47ea0eb932bde80",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/run/repair/soc_top.nl.v": "e14dc53045d0ccd6b703d4640b411bcc6b7309ca81b8dbcc00a5733169844fa3",
+      "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+      "${REPOSITORY}/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/independent_bb.v": "d113e5d672bf584a08338a77bf8a0c1c238ed600949180455bc9a551c9709a64",
+      "${REPOSITORY}/hw/soc/flow/check_eco_load_logic.py": "e454fa7d1de5081578993fbf36aa4b28bb1b352412c953194186535600edf3e7",
+      "${REPOSITORY}/hw/soc/flow/eco_logic.py": "2175067cb6c07b0c40be88eb7de2e5737ad85560ab466e3d7bfbf7be6f417266",
+      "${REPOSITORY}/hw/soc/flow/eco_logic_loads.py": "56b90b566d0c965b9c3fb34addc49dd83cf6dc0b0268eec9b9010c2d5b3e5efb"
+    },
+    "proof_returncode": 0,
+    "proof_result_sha256": "42f769ae09d5c25a11afa2012728ee950bce87d5f39888136071f24efeae36b4",
+    "route_command": [
+      "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "python",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/route_flow.py",
+      "--flow",
+      "RepairedCoreRoute",
+      "--manual-pdk",
+      "--pdk-root",
+      "${REPOSITORY}/hw/soc/out/eth-mbist-20260926/physical/pdk-root",
+      "--pdk",
+      "ihp-sg13g2",
+      "--force-run-dir",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/route",
+      "--with-initial-state",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/route-state.json",
+      "${REPOSITORY}/hw/soc/out/timing-repair2-20260927/verification/route-config.json"
+    ],
+    "route_returncode": -15
+  },
+  "candidate_b_status": "RUNNING_FRESH_PIPELINED_CORE_PHYSICAL",
+  "candidate_b_netlist_sha256": "13dd615dabe769c4c2809dfb1e4b2e182f55c265256aea0f279e4d31c8005e48",
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "postroute_equation_method": {
+    "status": "QUEUED_NOT_EXECUTED",
+    "publication": {
+      "status": "PASS_PUBLISHED_BYTES_ONLY",
+      "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-timing-repair-candidates",
+      "release_id": 397538942,
+      "asset": {
+        "name": "pipeline-postroute-proof-method-20260927.tar.xz",
+        "bytes": 12968,
+        "sha256": "1715ce3fbc18b346bbed51c618f43590837dfb56749185c6aebb31cb0a60efa1",
+        "members": 8,
+        "local_roundtrip_verified": true,
+        "scope": "Queued source method only; proof result pending",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-timing-repair-candidates/pipeline-postroute-proof-method-20260927.tar.xz",
+        "asset_id": 592448562,
+        "authenticated_roundtrip_verified": true,
+        "anonymous_roundtrip_verified": true
+      },
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "scope": "Wait for completed pipeline physical producer, then independently compare final-state digital cell equations with original mapped netlist. Does not certify timing, SRAM internals, CDC or GDS connectivity."
+  }
+}

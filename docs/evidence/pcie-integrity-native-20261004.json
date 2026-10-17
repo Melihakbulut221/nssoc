@@ -1,0 +1,175 @@
+{
+  "status": "PASS_MAPPED_RX_INTEGRITY_PORT_TESTS",
+  "top": "soc_pcie_tlp_integrity",
+  "source_files": {
+    "hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": {
+      "bytes": 1070,
+      "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v": {
+      "bytes": 4222,
+      "sha256": "7d68e35487f00fee5e0e389cb6e09c2e543cab01c2d303ae6156404719f0571a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_tlp_integrity.v": {
+      "bytes": 4478,
+      "sha256": "7751b81254d22d99091fd395740ab1d97dd2e624fe517553a5ec4e46ce11f193"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_tlp_stream.v": {
+      "bytes": 5931,
+      "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": {
+      "bytes": 8352,
+      "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+    },
+    "scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+      "bytes": 8904,
+      "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_tlp_integrity": {
+      "bytes": 1398,
+      "sha256": "0cf71e65dfcce5f3ed2eb7d3eb589ddbf9924511518730f1a331c4c3ea1fcd53"
+    }
+  },
+  "models": {
+    "bytes": 53835,
+    "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+  },
+  "liberty": {
+    "bytes": 1715351,
+    "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+  },
+  "iverilog_version": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+  "commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/dev/shm/nssoc-pcie-integrity-native-20261004-v2/map.ys"
+      ],
+      "returncode": 0,
+      "log": "map.log",
+      "log_pin": {
+        "bytes": 231250,
+        "sha256": "a4f6a50180122247277c982d9ecf59b4c1da9c7ce38aca2ec8cefa0210fbc2b9"
+      }
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py",
+        "--out",
+        "/dev/shm/nssoc-pcie-integrity-native-20261004-v2/simulation",
+        "--netlist",
+        "/dev/shm/nssoc-pcie-integrity-native-20261004-v2/mapped.v",
+        "--models",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "--iverilog-dir",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin"
+      ],
+      "returncode": 0,
+      "log": "simulation.log",
+      "log_pin": {
+        "bytes": 41,
+        "sha256": "c11cf75f0027714c4e9ce45ab65a8bdc261f02f5b71bbe9ee061652497aa8462"
+      }
+    }
+  ],
+  "candidate_adopted": false,
+  "full_pcie_link": false,
+  "scope": "Default-parameter, single-clock receive-integrity block mapped to IHP cells; no SDF, placement, PCIe link or SoC adoption.",
+  "mapped_cells": 3361,
+  "tests": {
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0
+  },
+  "outputs": {
+    "map.ys": {
+      "bytes": 1438,
+      "sha256": "495379337b22c3e5ca67a9bde988c889b73f23bdf3b7ac1942d7e0e2b3c0186c"
+    },
+    "mapped.v": {
+      "bytes": 443692,
+      "sha256": "b690831b98f7fe22fdbb457d15bd55d8fac0743438552385b6b24ab8c01e53f0"
+    },
+    "mapped.json": {
+      "bytes": 2377289,
+      "sha256": "a639cfd9ae30b29b46452f659619b10e8b778654b999f211645c6cd2dea438ba"
+    },
+    "simulation/results.xml": {
+      "bytes": 1983,
+      "sha256": "f0f645b0fc047629271f181aa1946b2caaf770bca9efd504fe4d2a8a4268d1e8"
+    }
+  },
+  "evidence_archive": {
+    "path": "docs/evidence/pcie-integrity-native-20261004.tar.gz",
+    "bytes": 78011,
+    "sha256": "4d6143ea80c1db0ac16b114c6c558bb8266e070eab5c36bf5c55f9a6b04189aa",
+    "members": {
+      "final/result.json": {
+        "bytes": 4176,
+        "sha256": "48d448544a7695a320108e824eac72f5de1d86e773bb929039bde592b47ca8d6"
+      },
+      "final/map.ys": {
+        "bytes": 1438,
+        "sha256": "495379337b22c3e5ca67a9bde988c889b73f23bdf3b7ac1942d7e0e2b3c0186c"
+      },
+      "final/map.log": {
+        "bytes": 231250,
+        "sha256": "a4f6a50180122247277c982d9ecf59b4c1da9c7ce38aca2ec8cefa0210fbc2b9"
+      },
+      "final/mapped.v": {
+        "bytes": 443692,
+        "sha256": "b690831b98f7fe22fdbb457d15bd55d8fac0743438552385b6b24ab8c01e53f0"
+      },
+      "final/simulation.log": {
+        "bytes": 41,
+        "sha256": "c11cf75f0027714c4e9ce45ab65a8bdc261f02f5b71bbe9ee061652497aa8462"
+      },
+      "final/simulation/result.json": {
+        "bytes": 2709,
+        "sha256": "10bc48264686f806c10deb491480c1185908659cd020619cff7c5fb05d5fe642"
+      },
+      "final/simulation/driver.log": {
+        "bytes": 35975,
+        "sha256": "e4870f4a199f1ee0d67df4e9535e6fd0b0cdadd3df9b13c8e49d7d3d9ab264f3"
+      },
+      "final/simulation/results.xml": {
+        "bytes": 1983,
+        "sha256": "f0f645b0fc047629271f181aa1946b2caaf770bca9efd504fe4d2a8a4268d1e8"
+      },
+      "initial-launcher-failure/result.json": {
+        "bytes": 3643,
+        "sha256": "7cd7cd9a590242209496803537a603f9393198a38a23546fd8cc134e367019a0"
+      },
+      "initial-launcher-failure/simulation.log": {
+        "bytes": 928,
+        "sha256": "d5670f102e63b3112bcc76b16a0bee4fbbb7af09d7f3991815a5a9cd93852549"
+      },
+      "initial-launcher-failure/simulation/driver.log": {
+        "bytes": 1146,
+        "sha256": "9074c249809703e3221ae9d399df2f183b4aa6488c7b7a9052efd77a7e83dd87"
+      }
+    }
+  },
+  "initial_failed_attempt": {
+    "cause": "OSS CAD Suite cocotb-config selected ahead of the active Python environment; Python stdlib/runtime mismatch prevented simulation startup. Retained, then corrected in the source driver.",
+    "functional_failure": false
+  },
+  "native_simulator_limitations": "Unmodified cell model specify blocks compiled with -gspecify; Icarus warns some timing checks are unsupported. No SDF, extracted timing, place/route, or physical closure claim."
+}

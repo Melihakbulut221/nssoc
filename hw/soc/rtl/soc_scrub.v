@@ -142,18 +142,18 @@ module soc_scrub #(
     output wire        irq_o
 );
 
-  localparam [11:0] REG_STATUS  = 12'h000;
-  localparam [11:0] REG_IRQEN   = 12'h004;
-  localparam [11:0] REG_RAMSEC  = 12'h008;
-  localparam [11:0] REG_RAMRD   = 12'h00C;
-  localparam [11:0] REG_RAMDED  = 12'h010;
-  localparam [11:0] REG_ROMSEC  = 12'h014;
-  localparam [11:0] REG_ROMRD   = 12'h018;
-  localparam [11:0] REG_ROMDED  = 12'h01C;
-  localparam [11:0] REG_CLR     = 12'h020;
-  localparam [11:0] REG_CTRL    = 12'h024;
-  localparam [11:0] REG_RAMADDR = 12'h028;
-  localparam [11:0] REG_ROMADDR = 12'h02C;
+  localparam [11:0] REG_STATUS  = 12'h000; // regmap:scrub:STATUS
+  localparam [11:0] REG_IRQEN   = 12'h004; // regmap:scrub:IRQEN
+  localparam [11:0] REG_RAMSEC  = 12'h008; // regmap:scrub:RAMSEC
+  localparam [11:0] REG_RAMRD   = 12'h00C; // regmap:scrub:RAMRD
+  localparam [11:0] REG_RAMDED  = 12'h010; // regmap:scrub:RAMDED
+  localparam [11:0] REG_ROMSEC  = 12'h014; // regmap:scrub:ROMSEC
+  localparam [11:0] REG_ROMRD   = 12'h018; // regmap:scrub:ROMRD
+  localparam [11:0] REG_ROMDED  = 12'h01C; // regmap:scrub:ROMDED
+  localparam [11:0] REG_CLR     = 12'h020; // regmap:scrub:CLR
+  localparam [11:0] REG_CTRL    = 12'h024; // regmap:scrub:CTRL
+  localparam [11:0] REG_RAMADDR = 12'h028; // regmap:scrub:RAMADDR
+  localparam [11:0] REG_ROMADDR = 12'h02C; // regmap:scrub:ROMADDR
 
   // Bit index of each source, shared by STATUS, IRQEN and CLR.
   // hw/soc/tb/sw/soc_scrub.h carries the same names.
@@ -189,9 +189,13 @@ module soc_scrub #(
 
   // ---- the record: one counter and one sticky per source, POR domain
   //
-  // The event is a BRANCH CONDITION and not an addend, for the reason
-  // soc_busstat.v records at length: an X on an event line in the first
-  // cycles after reset must not poison a counter for the run.
+  // Undefined startup SRAM reports may poison these counters. The cold
+  // loader clears them after initializing RAM, without reading them first.
+  // Mask the old count BEFORE saturation/increment, retaining both stage
+  // boundaries through mapping. A clear must not depend on the old bits:
+  // ABC previously factored a clear into x & !x, which cannot recover X
+  // in native four-state simulation. Unknown events remain visible; a
+  // simultaneous known event and clear records one. Warm records persist.
   wire [CNT_W-1:0] cnt    [0:NSRC-1];
   wire [NSRC-1:0]  sticky;
 
@@ -200,22 +204,20 @@ module soc_scrub #(
     for (gi = 0; gi < NSRC; gi = gi + 1) begin : g_src
       reg [CNT_W-1:0] cnt_q;
       reg             sticky_q;
+      (* keep = 1 *) wire [CNT_W-1:0] count_before_event =
+          clr[gi] ? {CNT_W{1'b0}} : cnt_q;
+      (* keep = 1 *) wire [CNT_W-1:0] count_after_event =
+          (&count_before_event) ? count_before_event :
+          count_before_event + {{(CNT_W-1){1'b0}}, 1'b1};
 
       always @(posedge clk_i or negedge rst_por_ni) begin
         if (!rst_por_ni) begin
           cnt_q    <= {CNT_W{1'b0}};
           sticky_q <= 1'b0;
-        end else if (clr[gi]) begin
-          if (ev[gi]) begin
-            cnt_q    <= {{(CNT_W-1){1'b0}}, 1'b1};
-            sticky_q <= 1'b1;
-          end else begin
-            cnt_q    <= {CNT_W{1'b0}};
-            sticky_q <= 1'b0;
-          end
-        end else if (ev[gi]) begin
-          sticky_q <= 1'b1;
-          if (~&cnt_q) cnt_q <= cnt_q + {{(CNT_W-1){1'b0}}, 1'b1};
+        end else begin
+          cnt_q <= ev[gi] ? count_after_event : count_before_event;
+          if (clr[gi]) sticky_q <= ev[gi];
+          else if (ev[gi]) sticky_q <= 1'b1;
         end
       end
 

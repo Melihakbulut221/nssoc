@@ -1,0 +1,95 @@
+{
+  "status": "PASS_ADDITIVE_CAPTURE_AUDITOR_NATIVE_DATA_REPLAY",
+  "recorded_utc": "2026-10-04T03:17:52.066424+00:00",
+  "sources": {
+    "scripts/check_pcie_rx_v2_capture.py": {
+      "bytes": 9063,
+      "sha256": "3ac09c6649948d03d09222bfc1247994ef0c7f20147c4c64e215473aa9f16b90"
+    },
+    "sw/tests/test_pcie_rx_v2_capture.py": {
+      "bytes": 7013,
+      "sha256": "42fa05da93ba502cb619ff19073b388511076becef2287ad638d00ed5032b7e6"
+    }
+  },
+  "checks": {
+    "pytest": {
+      "passed": 62,
+      "log": {
+        "bytes": 99,
+        "sha256": "93d506e4559d584567ceec00ec5cd21c0f4b18af07d6580be2fab50fb0dd9f27"
+      },
+      "command": "PYTHONDONTWRITEBYTECODE=1 hw/soc/tools/cocotb-venv/bin/python -m pytest -q -p no:cacheprovider sw/tests/test_pcie_rx_v2_capture.py sw/tests/test_pcie_rx_v2.py"
+    },
+    "ruff": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    }
+  },
+  "results": {
+    "ng42-full": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/ng42-full.json",
+      "bytes": 401299,
+      "sha256": "f9045ca127caadfdfa078637ed72f90503e99d1ae06f875ed683ba659eebff48"
+    },
+    "ng42-metadata": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/ng42-metadata.json",
+      "bytes": 401414,
+      "sha256": "374972b4b0d6fe82270b69566d43f5da72b15d79c9461f644dde5b5a57f7ec4a"
+    },
+    "ng47-full": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/ng47-full.json",
+      "bytes": 284906,
+      "sha256": "af234e002be24700bee584f1d3f02383ced2982ead45a1a78fda2f4549a55f0a"
+    },
+    "ng47-retained": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/ng47-retained.json",
+      "bytes": 285075,
+      "sha256": "51bf26583246ee53d8e2b23f43f55bb25967a66375023139f92914823147c2d3"
+    },
+    "actual-capture-mutations": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/actual-capture-mutations.json",
+      "bytes": 2797,
+      "sha256": "340e4e837da1bbcc0b0eebba775e21d189fc9bd88585f6f488fb311ec0f6204f"
+    },
+    "cli-metadata": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/cli-metadata.json",
+      "bytes": 401414,
+      "sha256": "374972b4b0d6fe82270b69566d43f5da72b15d79c9461f644dde5b5a57f7ec4a"
+    }
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-v2-capture-audit-20261004/capture-audit.tar.xz",
+    "bytes": 67500,
+    "sha256": "acc7553e717dd5c343aefee5afd2a4d38bc537c17051dec84c0dcd7a87bddf8a",
+    "members": 11
+  },
+  "replay": {
+    "memory_limit_bytes": 2147483648,
+    "full_transient_waveforms_reparsed": {
+      "ng42": 97,
+      "ng47": 97
+    },
+    "publication_transient_waveforms_reparsed": {
+      "ng42": 0,
+      "ng47": 1
+    },
+    "decks_regenerated_per_capture": 106,
+    "circuit_bridges_per_capture": 106,
+    "required_input_pins_per_capture": 14,
+    "actual_capture_omission_negatives": 14,
+    "actual_capture_rehashed_mutation_negatives": 2
+  },
+  "commands": [
+    "hw/soc/tools/cocotb-venv/bin/python scripts/check_pcie_rx_v2_capture.py --directory /dev/shm/nssoc-rx-v2-final-ng42-20261004 --mode full --output NEW-ng42-full.json",
+    "hw/soc/tools/cocotb-venv/bin/python scripts/check_pcie_rx_v2_capture.py --directory /dev/shm/nssoc-rx-v2-final-ng47-20261004 --mode full --output NEW-ng47-full.json",
+    "hw/soc/tools/cocotb-venv/bin/python scripts/check_pcie_rx_v2_capture.py --directory /dev/shm/nssoc-rx-v2-publication-20261004/ng47 --mode retained --output NEW-ng47-retained.json",
+    "hw/soc/tools/cocotb-venv/bin/python scripts/check_pcie_rx_v2_capture.py --directory /dev/shm/nssoc-rx-v2-publication-20261004/ng42 --mode metadata --output NEW-ng42-metadata.json"
+  ],
+  "boundaries": [
+    "No frozen producer/reviewer/circuit or original capture edited. No SPICE process run.",
+    "PASS is capture integrity only; both producers remain RX_V2_MEASUREMENT_PASS_NUMERICAL_RESIDUAL.",
+    "Full audits use all original raw waves; retained audit uses exactly one actual worst-PVT wave; metadata uses none.",
+    "Existing absolute source/model/runtime paths must be available with exact frozen bytes.",
+    "No physical/PCIe/full-PHY acceptance."
+  ]
+}

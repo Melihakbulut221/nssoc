@@ -1,0 +1,281 @@
+{
+  "status": "PASS_FOUR_ACTUAL_LIFECYCLE_CONTROLS",
+  "source": {
+    "bytes": 8582,
+    "sha256": "2524980c5a3110d40592066dafc5aa4d0fdaaae68bebc7e49d789b723c66245b"
+  },
+  "method": {
+    "bytes": 4594,
+    "sha256": "32f30971c1cc50c2f97639e3eb6d33818b656c8ddc7ff541fca95086bbdd72bb"
+  },
+  "rows": [
+    {
+      "case": "healthy",
+      "source": {
+        "bytes": 8582,
+        "sha256": "2524980c5a3110d40592066dafc5aa4d0fdaaae68bebc7e49d789b723c66245b"
+      },
+      "remaining": [],
+      "status": "PASS_ACTUAL_LIFECYCLE_CONTROL"
+    },
+    {
+      "case": "resource",
+      "source": {
+        "bytes": 8582,
+        "sha256": "2524980c5a3110d40592066dafc5aa4d0fdaaae68bebc7e49d789b723c66245b"
+      },
+      "tree_cleanup": {
+        "before": [
+          {
+            "pid": 93553,
+            "state": "S",
+            "ppid": 93550,
+            "process_group": 93553,
+            "start_ticks": "1162995"
+          },
+          {
+            "pid": 93558,
+            "state": "S",
+            "ppid": 93553,
+            "process_group": 93558,
+            "start_ticks": "1162996"
+          }
+        ],
+        "signals": [
+          {
+            "identity": {
+              "pid": 93553,
+              "state": "S",
+              "ppid": 93550,
+              "process_group": 93553,
+              "start_ticks": "1162995"
+            },
+            "signal": 15
+          },
+          {
+            "identity": {
+              "pid": 93558,
+              "state": "S",
+              "ppid": 93553,
+              "process_group": 93558,
+              "start_ticks": "1162996"
+            },
+            "signal": 15
+          },
+          {
+            "identity": {
+              "pid": 93553,
+              "state": "S",
+              "ppid": 93550,
+              "process_group": 93553,
+              "start_ticks": "1162995"
+            },
+            "signal": 9
+          },
+          {
+            "identity": {
+              "pid": 93558,
+              "state": "S",
+              "ppid": 93553,
+              "process_group": 93558,
+              "start_ticks": "1162996"
+            },
+            "signal": 9
+          }
+        ],
+        "healthy_elapsed_watchdog": null,
+        "after": [
+          {
+            "pid": 93553,
+            "state": "Z",
+            "ppid": 93550,
+            "process_group": 93553,
+            "start_ticks": "1162995"
+          },
+          {
+            "pid": 93558,
+            "state": "Z",
+            "ppid": 93550,
+            "process_group": 93558,
+            "start_ticks": "1162996"
+          }
+        ]
+      },
+      "expected_error": "AssertionError(('own capture ceiling', 2147484568))",
+      "remaining": [
+        {
+          "pid": 93558,
+          "state": "Z",
+          "ppid": 93550,
+          "process_group": 93558,
+          "start_ticks": "1162996"
+        }
+      ],
+      "sparse_cap_witness_size": 2147483649,
+      "status": "PASS_ACTUAL_LIFECYCLE_CONTROL"
+    },
+    {
+      "case": "cancel_tree",
+      "source": {
+        "bytes": 8582,
+        "sha256": "2524980c5a3110d40592066dafc5aa4d0fdaaae68bebc7e49d789b723c66245b"
+      },
+      "tree_cleanup": {
+        "before": [
+          {
+            "pid": 93581,
+            "state": "S",
+            "ppid": 93580,
+            "process_group": 93581,
+            "start_ticks": "1163519"
+          },
+          {
+            "pid": 93582,
+            "state": "S",
+            "ppid": 93581,
+            "process_group": 93582,
+            "start_ticks": "1163520"
+          }
+        ],
+        "signals": [
+          {
+            "identity": {
+              "pid": 93581,
+              "state": "S",
+              "ppid": 93580,
+              "process_group": 93581,
+              "start_ticks": "1163519"
+            },
+            "signal": 15
+          },
+          {
+            "identity": {
+              "pid": 93582,
+              "state": "S",
+              "ppid": 93581,
+              "process_group": 93582,
+              "start_ticks": "1163520"
+            },
+            "signal": 15
+          },
+          {
+            "identity": {
+              "pid": 93581,
+              "state": "S",
+              "ppid": 93580,
+              "process_group": 93581,
+              "start_ticks": "1163519"
+            },
+            "signal": 9
+          },
+          {
+            "identity": {
+              "pid": 93582,
+              "state": "S",
+              "ppid": 93581,
+              "process_group": 93582,
+              "start_ticks": "1163520"
+            },
+            "signal": 9
+          }
+        ],
+        "healthy_elapsed_watchdog": null,
+        "after": [
+          {
+            "pid": 93581,
+            "state": "Z",
+            "ppid": 93580,
+            "process_group": 93581,
+            "start_ticks": "1163519"
+          },
+          {
+            "pid": 93582,
+            "state": "Z",
+            "ppid": 93580,
+            "process_group": 93582,
+            "start_ticks": "1163520"
+          }
+        ]
+      },
+      "expected_error": "Cancelled('Parent received SIGTERM')",
+      "remaining": [
+        {
+          "pid": 93582,
+          "state": "Z",
+          "ppid": 93580,
+          "process_group": 93582,
+          "start_ticks": "1163520"
+        }
+      ],
+      "status": "PASS_ACTUAL_LIFECYCLE_CONTROL"
+    },
+    {
+      "case": "complete_signal",
+      "source": {
+        "bytes": 8582,
+        "sha256": "2524980c5a3110d40592066dafc5aa4d0fdaaae68bebc7e49d789b723c66245b"
+      },
+      "expected_error": "Cancelled('Parent received SIGTERM')",
+      "remaining": [],
+      "status": "PASS_ACTUAL_LIFECYCLE_CONTROL"
+    }
+  ],
+  "raw_files": {
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/complete_signal.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/cancel_tree.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/resource.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/healthy.log": {
+      "bytes": 8,
+      "sha256": "63745aef95742025c6d7a1b4fc0e7107e6f3c3eb2e0cb290f33c46f176e6740d"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/complete_signal/result.json": {
+      "bytes": 275,
+      "sha256": "6915a1511460087a90c191f84e644d43fe5ce1419566f96f0eb689e7e8d31fc7"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/complete_signal/owner.json": {
+      "bytes": 780,
+      "sha256": "969fe6d3261e0c243d383795eb47f1ecacb2ed29b661ddbba624cbbe7812d54c"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/cancel_tree/result.json": {
+      "bytes": 1982,
+      "sha256": "03f36d5876ada9574bb3b783fe1db8cad63d159449169ab02710f1988cb0cce9"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/cancel_tree/owner.json": {
+      "bytes": 1544,
+      "sha256": "74d6a81810a9d52ef538d4cb962bd3f7ff3e1e845a7335d0789b7b38850f7c0a"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/cancel_tree/ready.json": {
+      "bytes": 16,
+      "sha256": "4a565515f5c3deef9c42132794cecfbc2fb1819fae70e69d673f262a583d4edd"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/resource/result.json": {
+      "bytes": 2035,
+      "sha256": "f9e13991e52aba8b89bbb49c34db91f64a8032096ca745f291c898bff2ad4e3c"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/resource/owner.json": {
+      "bytes": 1565,
+      "sha256": "e15f3675b466bd2c32dd235d458e7b634d01d293dfcd53547477a22d0b9bccd1"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/resource/ready.json": {
+      "bytes": 16,
+      "sha256": "b6ca2d2d7a8e2df78ff472637fd0d340ad3a26cb56e79485de82d39265a87db1"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/healthy/result.json": {
+      "bytes": 207,
+      "sha256": "86fd75efd151036200a616a5924e45926a9263f964e88bbbc67318e1139665bc"
+    },
+    "/dev/shm/nssoc-integrity-v18-max4118-lifecycle01/healthy/owner.json": {
+      "bytes": 578,
+      "sha256": "ab01b27d5ef3f7d2019f900b124db184966f8eebeaad32099d7f6999db4bacf2"
+    }
+  }
+}

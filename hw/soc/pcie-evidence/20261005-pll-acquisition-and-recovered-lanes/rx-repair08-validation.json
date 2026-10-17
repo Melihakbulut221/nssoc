@@ -1,0 +1,48 @@
+{
+  "status": "PASS_ROUTER_DRC_FUNCTION_AND_NOMINAL_HOLD__SETUP_STILL_FAIL",
+  "utc": "2026-10-04T23:12:48.685777+00:00",
+  "router_drc_violations": 0,
+  "same_logical_netlist_after_detailed_route": true,
+  "proof_state_bits": 1804,
+  "proof_boundary_functions": 5443,
+  "actual_proof_fault_controls": 10,
+  "physical_netlist_port_tests": 6,
+  "nominal_rc_cell_corner_slack_ns": {
+    "slow": {
+      "recovery": 0.398547,
+      "setup": -1.087295,
+      "removal": 0.905781,
+      "hold": 0.01737
+    },
+    "typical": {
+      "recovery": 1.695179,
+      "setup": 0.858905,
+      "removal": 0.601059,
+      "hold": 0.046886
+    },
+    "fast": {
+      "recovery": 2.481713,
+      "setup": 1.957524,
+      "removal": 0.421232,
+      "hold": 0.069723
+    }
+  },
+  "extraction": {
+    "model": "PDK nominal IHP_rcx_patterns.rules",
+    "actual_source_odb": {
+      "bytes": 27934542,
+      "sha256": "bb3ef5d72871f0955397cdd72f83ecaec75dd903e931748672ebbe846bf7254b"
+    },
+    "actual_fresh_spef": {
+      "bytes": 29128160,
+      "sha256": "47b1fa9c5a12e8d6fd866772a154aaa7999ff820c33913c627974062d00a5b4a"
+    },
+    "qualified_rc": false,
+    "distinct_rc_process_corners": false
+  },
+  "setup_closed": false,
+  "finite_nominal_hold_pass": true,
+  "constraints": "Unchanged4ns,0.2ns I/O,0.1ns input slew,0.01pF output load, propagated clock; no false/multicycle paths added.",
+  "scope": "Standalone default150-byte receiver signal routing. 0 router DRC is not foundry fullchip DRC. Nominal extracted setup remains failing in SS; no full PHY, main-chip, full RC-corner or production signoff.",
+  "preserved_failure": "physical-replay01 failed before the native run due a source guard/interpreter preparation mismatch; physical-replay02 is a distinct actual6-case run."
+}

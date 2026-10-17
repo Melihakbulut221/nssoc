@@ -1,0 +1,188 @@
+{
+  "status": "AUTHOR_SUPERSEDED_V16_INCOMPLETE_CAPTURE_RETAINED",
+  "utc": "2026-10-05T17:23:53.112558+00:00",
+  "method": {
+    "bytes": 5655,
+    "sha256": "29c2c6e64b95d9548e9c42a17592354f3be3e1853d235f7c143dd41099d64c63"
+  },
+  "lifecycle_peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/continuation-source-only-peer-root03.json",
+    "bytes": 2585,
+    "sha256": "6f654831463660e6cd4c2eef8229b9cfb5b60d05849f50f9250a7dd81f95695c"
+  },
+  "identity_guards": {
+    "bytes": 3945,
+    "sha256": "76ae360dc7ee7860a7ff87b302c7adc9de4645c6c3c61bd5bb2c7d9e532f44a6"
+  },
+  "prior_supersession": {
+    "bytes": 9084,
+    "sha256": "337713b07e09645b8adbac0599388682baccb2f436f8f63bc7df4ea605e98ffd"
+  },
+  "prior_controller_failure": {
+    "bytes": 1235,
+    "sha256": "134b1b8f08144b3ed5c06ae693709c87ea6234792b8627f450a070a1d46493ca"
+  },
+  "stops": [
+    {
+      "kind": "incomplete_Icarus14_probe",
+      "expected": {
+        "pid": 45372,
+        "state": "S",
+        "process_group": 45372,
+        "start_ticks": "501497",
+        "commandline_bytes": 1209,
+        "commandline_sha256": "02c415b8b87ff8c80e9644a6e7f58de856be3e9f3def77201c34b0aaa020f1a8",
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib,json,datetime,os\nR=Path.cwd();B=R/'hw/soc/out/pcie-integrity-v16-20261005';D=Path('/dev/shm/nssoc-integrity-v16-icarus14-probe01');D.mkdir();p=Path('/dev/shm/nssoc-integrity-v16-controls01/test_literal_balanced_read_all2/tb.v');(D/'tb.v').write_bytes(p.read_bytes())\ndef pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\ninputs=[p,D/'tb.v']+[R/'hw/soc/tools/oss-cad-suite'/n for n in ['bin/iverilog','bin/vvp','lib/ivl/ivl','lib/ivl/ivlpp','lib/ivl/vvp.tgt']];r=dict(utc=datetime.datetime.now(datetime.UTC).isoformat(),inputs={str(p):pin(p) for p in inputs},scope='Exact already-generated frozen V16 ring128 literal bench, same4096cases. Compare installed Icarus14 elaboration performance; no DUT/source or coverage edits. Old Icarus12 capture remains untouched.',expected_cpu=[6])\n(D/'method.json').write_text(json.dumps(r,indent=2)+'\\n');print(str(D))\nPY\ntaskset -c 6 hw/soc/tools/oss-cad-suite/bin/iverilog -g2012 -s tb -o /dev/shm/nssoc-integrity-v16-icarus14-probe01/sim.vvp /dev/shm/nssoc-integrity-v16-icarus14-probe01/tb.v > /dev/shm/nssoc-integrity-v16-icarus14-probe01/compile.log 2>&1"
+        ]
+      },
+      "group": 45372,
+      "members_before": [
+        {
+          "pid": 45372,
+          "state": "S",
+          "process_group": 45372,
+          "start_ticks": "501497",
+          "commandline_bytes": 1209,
+          "commandline_sha256": "02c415b8b87ff8c80e9644a6e7f58de856be3e9f3def77201c34b0aaa020f1a8",
+          "stat_text": "45372 (bash) S 5448 45372 45372 0 -1 4194304 575 1975 0 0 0 2 5 1 32 12 1 0 501497 20660224 835 18446744073709551615 100416324337664 100416325313325 140725900654320 0 0 0 65536 4 65538 1 0 0 17 16 0 0 0 0 0 100416325536176 100416325584816 100416360697856 140725900658646 140725900659855 140725900659855 140725900664814 0\n"
+        },
+        {
+          "pid": 45374,
+          "state": "S",
+          "process_group": 45372,
+          "start_ticks": "501507",
+          "commandline_bytes": 513,
+          "commandline_sha256": "62b3eb1a363e17d1d54138c88767228c9f3f6f30d7966e9f19fe7a382188fcb2",
+          "stat_text": "45374 (ld-linux-x86-64) S 45372 45372 45372 0 -1 4194304 521 432 0 0 0 0 0 0 32 12 1 0 501507 2908160 425 18446744073709551615 130501378486272 130501378675189 140723430746720 0 0 0 65536 6 0 1 0 0 17 6 0 0 0 0 0 130501378725280 130501378734156 93825655771136 140723430750707 140723430751220 140723430751220 140723430756251 0\n"
+        },
+        {
+          "pid": 45378,
+          "state": "S",
+          "process_group": 45372,
+          "start_ticks": "501509",
+          "commandline_bytes": 362,
+          "commandline_sha256": "ad6a9d4e6f64b639967f2e2fc4336250df5016fc289f554dd19c35a90a87a673",
+          "stat_text": "45378 (sh) S 45374 45372 45372 0 -1 4194304 76 840 0 0 0 0 0 0 32 12 1 0 501509 2879488 421 18446744073709551615 108772660445184 108772660529181 140725616252944 0 0 0 0 0 65538 1 0 0 17 6 0 0 0 0 0 108772660555216 108772660560416 108772932481024 140725616257759 140725616258121 140725616258121 140725616263152 0\n"
+        },
+        {
+          "pid": 45380,
+          "state": "R",
+          "process_group": 45372,
+          "start_ticks": "501509",
+          "commandline_bytes": 406,
+          "commandline_sha256": "c4e9642817aa85f2cdc3b557db9f8e29bc8a1ad68f9fe95c6129bf4f4f1164bb",
+          "stat_text": "45380 (ld-linux-x86-64) R 45378 45372 45372 0 -1 4194304 4210 431 4 0 195009 32 0 0 32 12 1 0 501509 25243648 5224 18446744073709551615 136986766962688 136986767151605 140728228104784 0 0 0 0 0 0 0 0 0 17 6 0 0 0 0 0 136986767201696 136986767210572 93825991053312 140728228112914 140728228113320 140728228113320 140728228118427 0\n"
+        }
+      ],
+      "remaining_exact_identities": [],
+      "after": [
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "reason": "Finish authorized supersession after exact oldcontrol/watcherdeath. V2 polling raced exiting commandline; strict signal guards unchanged, observational liveness separated. V16 remains incomplete, not passed.",
+  "PLL_untouched": true,
+  "prior_stopped_identities_rechecked": [
+    {
+      "expected": {
+        "pid": 48770,
+        "state": "S",
+        "process_group": 48770,
+        "start_ticks": "564755",
+        "commandline_bytes": 1894,
+        "commandline_sha256": "defdce2acfc2a952c5a38147655c2d7221aeaa91cd4d0311f6bf0f2e59d59556",
+        "stat_text": "48770 (bash) S 5448 48770 48770 0 -1 4194304 623 1748 0 0 0 0 1 0 32 12 1 0 564755 20660224 840 18446744073709551615 100165534048256 100165535023917 140733454224480 0 0 0 65536 4 65538 1 0 0 17 0 0 0 0 0 0 100165535246768 100165535295408 100166278025216 140733454226729 140733454228623 140733454228623 140733454233582 0\n"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 48772,
+        "state": "S",
+        "process_group": 48770,
+        "start_ticks": "564758",
+        "commandline_bytes": 77,
+        "commandline_sha256": "59e750679857bbce0015beafe6e77abd20dddf3f1a4dfc2b831b0d12da8cddcf",
+        "stat_text": "48772 (python3) S 48770 48770 48770 0 -1 4194304 4436 0 0 0 8 1 0 0 32 12 1 0 564758 52641792 6904 18446744073709551615 107545731080192 107545734122449 140729599242144 0 0 0 0 16781312 16386 1 0 0 17 6 0 0 0 0 0 107545735806944 107545736763368 107545920262144 140729599249425 140729599249502 140729599249502 140729599254480 0\n"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 42780,
+        "state": "S",
+        "process_group": 42780,
+        "start_ticks": "453528",
+        "commandline_bytes": 1390,
+        "commandline_sha256": "dc613b0881dd8f44ad98e8996c90a0f1c5727b4a5fc98c3d7afcc9a2e1e4c370",
+        "stat_text": "42780 (bash) S 5448 42780 42780 0 -1 4194304 637 5671 0 0 0 0 4 2 32 12 1 0 453528 20660224 812 18446744073709551615 104266267684864 104266268660525 140737032557280 0 0 0 65536 4 65538 1 0 0 17 19 0 0 0 0 0 104266268883376 104266268932016 104267300409344 140737032566561 140737032567951 140737032567951 140737032572910 0\n"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 42816,
+        "state": "S",
+        "process_group": 42780,
+        "start_ticks": "453535",
+        "commandline_bytes": 241,
+        "commandline_sha256": "e980bb602656b65c27646b1fb9be59827514e3d20391b30689cae7b9fee7ee25",
+        "stat_text": "42816 (python) S 42780 42780 42780 0 -1 4194304 9300 6790 0 0 22 2 9728 1 32 12 1 0 453535 71880704 11701 18446744073709551615 97439436816384 97439439858641 140732520913264 0 0 0 0 16781312 134218986 1 0 0 17 6 0 0 0 0 0 97439441543136 97439442499560 97439835701248 140732520921988 140732520922229 140732520922229 140732520927207 0\n"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 43284,
+        "state": "S",
+        "process_group": 42780,
+        "start_ticks": "463290",
+        "commandline_bytes": 300,
+        "commandline_sha256": "58aa0fba9e4898e39d9bcf154e452274af4137b6982b4539007b49b3248edc4d",
+        "stat_text": "43284 (iverilog) S 42816 42780 42780 0 -1 4194304 139 0 0 0 0 0 0 0 32 12 1 0 463290 2813952 419 18446744073709551615 100475667337216 100475667365429 140723011683808 0 0 0 65536 6 0 1 0 0 17 6 0 0 0 0 0 100475667381248 100475667382424 100476731359232 140723011689070 140723011689370 140723011689370 140723011694528 0\n"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 43285,
+        "state": "S",
+        "process_group": 42780,
+        "start_ticks": "463290",
+        "commandline_bytes": 338,
+        "commandline_sha256": "0f83466f6b583283724b2c5fc82d303eba29e4a3e034b2672094ecec8ffb64bd",
+        "stat_text": "43285 (sh) S 43284 42780 42780 0 -1 4194304 79 95 0 0 0 0 0 0 32 12 1 0 463290 2879488 421 18446744073709551615 105596405796864 105596405880861 140731309211920 0 0 0 0 0 65538 1 0 0 17 6 0 0 0 0 0 105596405906896 105596405912096 105597133963264 140731309218424 140731309218762 140731309218762 140731309223920 0\n"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 43287,
+        "state": "R",
+        "process_group": 42780,
+        "start_ticks": "463290",
+        "commandline_bytes": 177,
+        "commandline_sha256": "1d0f375f0678b11c89208172d3eddc4293bc766ff8f3738d5729c06fe4ca5fc0",
+        "stat_text": "43287 (ivl) R 43285 42780 42780 0 -1 4194304 4563 0 0 0 203618 30 0 0 32 12 1 0 463290 24322048 5128 18446744073709551615 107360482422784 107360484096385 140735100345568 0 0 0 0 0 0 0 0 0 17 6 0 0 0 0 0 107360484717544 107360484794552 107360964579328 140735100349145 140735100349322 140735100349322 140735100354480 0\n"
+      },
+      "after": null
+    }
+  ],
+  "finished_utc": "2026-10-05T17:23:53.180324+00:00",
+  "controls_log": {
+    "bytes": 3,
+    "sha256": "ab5df625bc76dbd4e163bed2dd888df828f90159bb93556525c31821b6541d46"
+  },
+  "controls_status": "Incomplete; no full-suite PASS, no native V16 map launched",
+  "probe_status": "Incomplete compiler comparison; no simulation PASS",
+  "V16_source_freeze": {
+    "bytes": 2056,
+    "sha256": "0c818c3e94ad0ef32ccbd93f401e8f4977226f3f29767f39c0f7397b81179e75"
+  }
+}

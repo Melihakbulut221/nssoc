@@ -1,0 +1,141 @@
+{
+  "status": "PARTIAL_PROGRESS_NOT_GOAL_COMPLETION",
+  "recorded_at_utc": "2026-10-16T21:20:34.099837+00:00",
+  "cloud_only": true,
+  "full_serial_gen3_x4_complete": false,
+  "mainchip_final_timing_closed": false,
+  "clock_repair": {
+    "run": 38963616666,
+    "summary_asset": 648606819,
+    "summary_sha256": "ef5a73beacc646110a46b83f1cb8dee1427b73fcdf14deb69bce8329d9e7de41",
+    "parts_asset": 648606925,
+    "parts_sha256": "4db74b8b18f280305ac38616d06a93f51661c25a0de4ce5eaa4cc81ef8cb2b6d",
+    "status": "COMPLETE_ACTUAL_CLOCK_AND_DRIVER_FRESH_RC_LOADED_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+    "component_screen_passed": true,
+    "scope": "Eight actual raw100/260R295C drivers, actual162-device routed core, and actual 5.7um native6/13R28C clock reference with finite body contacts. Full34ns/256bits/672MOS/62HBT/original phases, gates and zeroOP unchanged. External clock modulation, supplies, driver-core-clock connections and TX/bias elements not all physically integrated. No PVT/32:1/four-lane/fullPHY/mainchip acceptance.",
+    "model_sha256": "1f4eb38c991e326a7803536376d5249634e333772bc4ca49f5a7b277fed7c91f",
+    "signals": {
+      "samples": 768,
+      "minimum_margin_v": 0.20591999684599283,
+      "wrong_sign_samples": 0,
+      "below_100mv_samples": 0,
+      "phases": {
+        "0.3": {
+          "samples": 256,
+          "minimum_margin_v": 0.20591999684599283,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0
+        },
+        "0.5": {
+          "samples": 256,
+          "minimum_margin_v": 0.2780446536343988,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0
+        },
+        "0.7": {
+          "samples": 256,
+          "minimum_margin_v": 0.2752430827676784,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0
+        }
+      },
+      "passed": true,
+      "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+      "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+    },
+    "interfaces": {
+      "cmos": {
+        "samples": 768,
+        "minimum_margin_v": 0.17578908052856312,
+        "wrong_sign_samples": 0,
+        "below_150mv_samples": 0,
+        "common_mode_range_v": [
+          1.9473489704126485,
+          1.9571696850925586
+        ],
+        "passed": true
+      },
+      "final": {
+        "samples": 6912,
+        "minimum_margin_v": 0.15093179519260236,
+        "wrong_sign_samples": 0,
+        "below_150mv_samples": 0,
+        "common_mode_range_v": [
+          1.8983866907960896,
+          1.9355837003655563
+        ],
+        "passed": true
+      }
+    },
+    "hbt_count": 62,
+    "mos_count": 672,
+    "weak_hbt": {
+      "min_post_vce_v": 0.40955880205188877,
+      "max_post_vce_v": 0.8066376147539106,
+      "max_whole_abs_vce_v": 0.8066376147539106,
+      "max_whole_abs_vbe_v": 0.8843047556925896,
+      "max_whole_abs_ic_per_emitter_a": 0.0009898536806174686,
+      "passed": true
+    },
+    "failed_hbts": {},
+    "failed_mos": {},
+    "all_engineering_gates_passed": true,
+    "raw_sha256": "622304f8916bc3425a82282b7ebee5d8730adf73d33c9a0449c774636530b84d",
+    "native_exitcode": 0,
+    "diagnostics": []
+  },
+  "pll_load_selection": {
+    "chosen_um": 3.2,
+    "source_run": 38962945591,
+    "scope": "50ns original-wire hypothesis only",
+    "vce_min_last10ns_v": 0.4509036153721996,
+    "rejected_4p2_vce_min_last10ns_v": 0.3870619741295227,
+    "reason": "3p2 restores feedback without the sampled sub400mV collector headroom of4p2. This is candidate selection, not all-PVT/device-safety/lock acceptance.",
+    "required": "Fresh physical3p2 DRC/LVS/LEF then anchors, intrinsic, wireRC, composition and original full acquisition. Full serial chain, four lanes and mainchip remain open."
+  },
+  "corrpre": {
+    "implementation_commit": "ae66847136304fafabeacf9b2ef6e9c91d6d2b89",
+    "default": 0,
+    "scope": "Full per-word decode before read mux, no new storage or cycle; old report/scrub retained. No full-core selection yet.",
+    "first_failure_run": 38966653325,
+    "first_failure_summary_asset": 648614176,
+    "first_failure_sha256": "4a0d4102d6e253fb8645580ee316f1a1e66bfdcc129c0839228234d2d3185aca",
+    "repair": "Explicit async2sync before clock-step equivalence; native simulation still exercises unmodified async-reset RTL. Candidate is not yet validated."
+  },
+  "physical_failures": [
+    {
+      "run": 38967898472,
+      "reason": "Literal escaped newline in fault tuple, fixed before native run"
+    },
+    {
+      "run": 38968144826,
+      "summary_asset": 648645215,
+      "reason": "Geometry generated; omitted technology LEF blocked checker before DRC/LVS",
+      "repair_commit": "eb724afd292f991ba504e1486bd52188c8c2d8aa",
+      "tech_lef_sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6"
+    }
+  ],
+  "live_runs": [
+    {
+      "id": 38967093235,
+      "head_sha": "7f392d9484cf31b20e306739d69c82eb51abce6d",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38967093235"
+    },
+    {
+      "id": 38968477345,
+      "head_sha": "eb724afd292f991ba504e1486bd52188c8c2d8aa",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38968477345"
+    },
+    {
+      "id": 38957249404,
+      "head_sha": "2a3f6a2cac51640809c2e40aba8d685927229520",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/38957249404"
+    }
+  ]
+}

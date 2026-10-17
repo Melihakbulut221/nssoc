@@ -1,0 +1,128 @@
+{
+  "date": "2026-09-23",
+  "status": "NOT ACCEPTED: imported estimated SPEF fails capacitance conservation; timing/electrical closure claims withdrawn",
+  "scope": "Old baseline CPU configuration. Complete routing graph estimated RC, not final detailed routing/extraction. Original 20 ns/8 ns clocks and 0.95/1.05 derates. No timing exceptions added.",
+  "method": "Fresh full global route from ECO12, then three bounded incremental repair_design passes with 20% slew/cap repair margins. Netlist sizing/buffering equation check compared to the original routed implementation.",
+  "in_memory_slow": {
+    "setup_wns_ns": -3.657321660152063,
+    "hold_wns_ns": 0.43544791227550317,
+    "slew_violations": 0,
+    "capacitance_violations": 0
+  },
+  "fresh_spef_import_corners": {
+    "fast": {
+      "setup_wns_ns": 3.667775076358366,
+      "hold_wns_ns": -0.2932915104906642,
+      "slew_violations": 11,
+      "capacitance_violations": 0
+    },
+    "typ": {
+      "setup_wns_ns": 2.551239736126625,
+      "hold_wns_ns": -0.040082382991649235,
+      "slew_violations": 3,
+      "capacitance_violations": 0
+    },
+    "slow": {
+      "setup_wns_ns": -2.8984495624000313,
+      "hold_wns_ns": 0.42328119984914286,
+      "slew_violations": 0,
+      "capacitance_violations": 0
+    }
+  },
+  "measurement_consistency": {
+    "status": "Resolved exporter defect: missing pin-node wire capacitance invalidates imported timing",
+    "evidence": "docs/evidence/estimated-spef-integrity-20260923.json",
+    "scope": "Raw earlier numbers remain as biased diagnostics; do not use imported SPEF timing as acceptance."
+  },
+  "logic_check": {
+    "retained_cells": 72992,
+    "positive_buffers_before": 24054,
+    "positive_buffers_after": 24545,
+    "equivalent_sizes": 266,
+    "equivalent_input_permutations": 102,
+    "status": "PASS within scope",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/nl/soc_top.nl.v": "bf1af80096206981a1f162ddc3f1040a5ace7159e1c8c3c883a4d0b05b8e6f71",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental15/final/nl/soc_top.nl.v": "cbb4d042bcee311f740a2baebb3634643ea3d65ffa4d749991f0d68cfdd72f38",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic.py": "da9eeb156f61502c881a099eedfcc9ea29505bbd126c8586c04cd39d17db6601",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic.py": "48174c6b90ed532266d2dddf39e6722c482e15bd4a53473a0f785e1d93b831b2"
+    },
+    "scope": "Retained cell input equations and state definitions; verified positive buffer contraction and Boolean pin permutations. Unchanged opaque masters require identical input equations. Excludes timing, analog, SRAM interiors, initialization, CDC and extracted physical connectivity.",
+    "generated": {
+      "after.ys": "2dadbe5e5a1df71a56fdafb15ba631b6ab14c0e971258363d623e0dd203b3802",
+      "before.json": "4140991987b5a416e275f92c50f6749cb7b7bd8389b2ddcc9b607ef3eec23865",
+      "before-libraries.json": "fc9f56f74c468bee02e183b9facd645ad3acdc06cc93fe893a15d86440e61629",
+      "after.json": "9a68356cf3d3d2d30a47b68639ea22a3d550782e0cb8fbbf7a1a3cb482f3354b",
+      "after.log": "23f8a9c50515513684cdb52e96719eb248c1e629cf2e7fd3a94c524157cbf01d",
+      "after-libraries.json": "fc9f56f74c468bee02e183b9facd645ad3acdc06cc93fe893a15d86440e61629",
+      "before.log": "1d5d24ea0a4637635d79255500cb7dcac41bde73cdce700d9141816cf1b09943",
+      "before.ys": "1b30f43c47e48edc4daa3bd01323c76e8672217dc9d68d91bc33091e71822471"
+    }
+  },
+  "identity": {
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental17/final/nl/soc_top.nl.v": {
+      "sha256": "cbb4d042bcee311f740a2baebb3634643ea3d65ffa4d749991f0d68cfdd72f38",
+      "bytes": 11049699
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental17/final/odb/soc_top.odb": {
+      "sha256": "9ac9893d1d5f269b96bc192916059596baae6128c55f2b1ee581cb8182941ff1",
+      "bytes": 102663298
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental17/final/sdc/soc_top.sdc": {
+      "sha256": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289",
+      "bytes": 30395
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental17/1-openroad-resizertimingpostgrt/soc_top.grt.spef": {
+      "sha256": "63e377b8dfa83ec2acaf0430513ae99ae00ae848d6ee5da68cab0e226e1ff176",
+      "bytes": 84887337
+    },
+    "hw/soc/out/external-review-20260919/route-closure-20260923/runs/electrical-incremental17/1-openroad-resizertimingpostgrt/soc_top.final.guide": {
+      "sha256": "6cd66b573c6c72046500f24c1f03c1776316d61fb145904d38c23e148a82607d",
+      "bytes": 30648143
+    }
+  },
+  "rejected_export_attempt": "ECO16 used RCX write_spef; RCX-0134 reported no extraction data and no file was produced. Its missing-file STA attempts are invalid. ECO17 uses the documented estimate_parasitics -global_routing -spef_file and asserts that the file exists.",
+  "archive": {
+    "path": "docs/evidence/incremental-electrical-20260923.tar.gz",
+    "sha256": "3b1ba8e32fab3f03ae1fb973c51c85f6471a9c59258fca58425b9c169822783f",
+    "bytes": 279299,
+    "members": {
+      "electrical_incremental15.py": "e50900b947256e1254bbb6d1adc972e2990c862b14815ed4b42193935527f51a",
+      "electrical_incremental16.py": "ac493762dcd350ece4068b3bfbaedfed0210f84f10920b9814ac3502387f3e71",
+      "electrical_incremental17.py": "012e7b5c653d4328b528cb1aab2b63361bbb216ceda381123d63ee2082ae9c31",
+      "electrical-incremental15-driver.log": "fcfcd6b0b3e080652ad05334487d4b3d09174b18902e51105a83715109c5fddb",
+      "electrical-incremental16-driver.log": "dba3d29b6bbae734ceb22f942d418eea61d66fb809157e759df1540b84e309d7",
+      "electrical-incremental17-driver.log": "4551ab56bb335ce1d9d60160fc344cded1fc84711334c4ebbeb81bab45e814fc",
+      "electrical15-proof/result.json": "78ec553a277ddae8997dd2ec9ae19af5a8eb4495802d0ddef28bf03113df1c56",
+      "state-electrical-eco13.json": "8753f183170d09999edc22c318963d45fc079a2c751a6417d9e02b288e7990bd",
+      "config-optimize.json": "3c4a5d52e213d74035068c950218288b1a8347e40fab930399936affe41c52fa",
+      "electrical16-sta/INVALID-MISSING-SPEF.txt": "7bb2419446565652a55b03c72eebcbcb531d573cbdf099d0234c7dfee3ee4580",
+      "spef-help.log": "643bb8e856b8f18cb7ea3ddb3abd7397589f4a5dfe03f1cd6159d75dc96cff0a",
+      "electrical17-sta/typ.log": "40eb86a19f39ea698f414fe887501a07256850bae4a79cae92dbf4a7353a63ae",
+      "electrical17-sta/fast-max.rpt": "2d42f4e2ecdbb994045d185a214aa85a96d04d953910574396d2e226c22f77df",
+      "electrical17-sta/slow.tcl": "0278437cd2029d96fc68afa29d0504564569daa9c62d9999212beac31034eaf2",
+      "electrical17-sta/slow.log": "dd96899fbf30a4a2ffcb7aedca33a272b1d7dc9f858d0301e8c12884a1d0dbe0",
+      "electrical17-sta/slow-electrical.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "electrical17-sta/fast.tcl": "35abc7383a763bdcaf0d5bd20dfbff3a8921c4899e3c0fccc11fd130a282d517",
+      "electrical17-sta/slow-max.rpt": "5366ff15f8e8ecfe5fd8c1115475330388097554f6ed5fce8359f3e2c7a8cab4",
+      "electrical17-sta/fast.log": "a71342a4393944cd86edc9023c0c32c9a381d141d7d52a9180288f795ce7669d",
+      "electrical17-sta/fast-electrical.rpt": "1742289003d0a76d90438ac9a9fbff8b549f55e5a6386f3b0ac6ad25eca27751",
+      "electrical17-sta/typ-max.rpt": "e735a83a205a913bc6dc073d93ad7c9ce26252db12162af4a8059bbfa89d8790",
+      "electrical17-sta/typ-electrical.rpt": "611dc1286f8286cfa24ad55f90c8a48eccd8afeb69be829a01648cb949d6d59e",
+      "electrical17-sta/typ.tcl": "8c3f04111a81c1d5e00e62722db09f807b86480a98f81871c8a1840bcba5468d",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/incremental.tcl": "f3b20ebd7fecf1076875bc9331610d5fdc554cf73b6195371f4b8417b5a25c6b",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical-1.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/max.rpt": "7e74cfa34c6d5d7b0b76a85b182890f4036a327b58a1d7bdb22192a29ce0c1c0",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical-2.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/config.json": "511da94dc4d27092938aff22faaeeb7c2b3f5caf5127bfb4129c3b7dc1664da7",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical-before.rpt": "fe34e99435e6c86008249593e82766427c920665f6a2ba273c6795f1e1ef09fd",
+      "runs/electrical-incremental17/1-openroad-resizertimingpostgrt/electrical-0.rpt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "superseding_integrity_audit": "docs/evidence/estimated-spef-integrity-20260923.json"
+}

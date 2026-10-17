@@ -1,0 +1,345 @@
+{
+  "schema": 1,
+  "status": "STRICT_NATIVE_COHERENT_VSS_LVS_STILL_FAIL",
+  "evidence_date_utc": "2026-10-02",
+  "scope": "Read-only diagnosis of captured strict native coherent Vss results, plus correction of a pure arithmetic helper. No new native extraction, physical/reference mutation or LVS acceptance.",
+  "source_sha": "fb3f7492ea94c8e6a3c98cebbf4dbc4892cfe4f9",
+  "run_id": 36917255183,
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36917255183",
+  "upstream_views_and_deck_commit": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "artifact": {
+    "id": 11191090244,
+    "name": "coherent-vss-lvs-attempt-1",
+    "size_in_bytes": 27596825,
+    "digest": "sha256:b0527ae1fb9019181b97880581e33feb170aa9a8765cb3a1839607b965b78b2a"
+  },
+  "verification": {
+    "selected_member_crc_and_result_sha256_verified": true,
+    "exact_producer_git_method_files": 14,
+    "exact_producer_git_lock_files": 1,
+    "unchanged_deck_files": 53,
+    "selected_native_member_pins": 15,
+    "whole_zip_sha256_verified_locally": false,
+    "runtime_binary_rehashed_locally": false,
+    "gds_rehashed_locally": false,
+    "native_controls_recorded_passed": 8,
+    "controls_scope": "Generic physical-parent framework; not IHP Vss or full-chip qualification.",
+    "corrected_helper_selected_tests_passed": 131,
+    "ruff": "PASS",
+    "git_diff_check": "PASS",
+    "diagnostic_integrity_negative_controls": 4
+  },
+  "native_cases": {
+    "deep": [
+      {
+        "layout": "sg13g2_DCNDiode",
+        "schematic": "SG13G2_DCNDIODE",
+        "status": "NoMatch",
+        "layout_devices_recursive": 3,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "sg13g2_DCPDiode",
+        "schematic": "SG13G2_DCPDIODE",
+        "status": "NoMatch",
+        "layout_devices_recursive": 3,
+        "schematic_devices_recursive": 2
+      },
+      {
+        "layout": "sg13g2_IOPadVss",
+        "schematic": "SG13G2_IOPADVSS",
+        "status": "Skipped",
+        "layout_devices_recursive": 8,
+        "schematic_devices_recursive": 6
+      }
+    ],
+    "flat": [
+      {
+        "layout": "sg13g2_IOPadVss",
+        "schematic": "SG13G2_IOPADVSS",
+        "status": "NoMatch",
+        "layout_devices_recursive": 5,
+        "schematic_devices_recursive": 6
+      }
+    ]
+  },
+  "reference_explicit_globals": [],
+  "native_reference_well_names": [
+    "SUB!",
+    "I2.SUB!",
+    "I1.SUB!"
+  ],
+  "reference_taps_correctly_scoped": [
+    {
+      "instance": "sg13g2_iopadvss/xi1/r0",
+      "model": "ptap1",
+      "tie": "iovss",
+      "well": "sg13g2_iopadvss/xi1/sub!",
+      "area_um2": "141.253",
+      "perimeter_um": "47.54"
+    },
+    {
+      "instance": "sg13g2_iopadvss/xi2/r0",
+      "model": "ptap1",
+      "tie": "iovss",
+      "well": "sg13g2_iopadvss/xi2/sub!",
+      "area_um2": "33.524",
+      "perimeter_um": "23.16"
+    },
+    {
+      "instance": "sg13g2_iopadvss/r1",
+      "model": "ptap1",
+      "tie": "iovss",
+      "well": "sg13g2_iopadvss/sub!",
+      "area_um2": "5329",
+      "perimeter_um": "292"
+    },
+    {
+      "instance": "sg13g2_iopadvss/r0",
+      "model": "ptap1",
+      "tie": "vss",
+      "well": "sg13g2_iopadvss/sub!",
+      "area_um2": "23.523",
+      "perimeter_um": "19.4"
+    }
+  ],
+  "native_flat_taps": [
+    {
+      "instance": "sg13g2_iopadvss/r$5",
+      "model": "ptap1",
+      "tie": "anode|iovss",
+      "well": "sg13g2_iopadvss/\\$1",
+      "area_um2": "141.2964",
+      "perimeter_um": "221.76"
+    },
+    {
+      "instance": "sg13g2_iopadvss/r$6",
+      "model": "ptap1",
+      "tie": "guard|iovss",
+      "well": "sg13g2_iopadvss/\\$1",
+      "area_um2": "5407.1",
+      "perimeter_um": "703.48"
+    },
+    {
+      "instance": "sg13g2_iopadvss/r$7",
+      "model": "ptap1",
+      "tie": "anode|cathode|vss",
+      "well": "sg13g2_iopadvss/\\$1",
+      "area_um2": "24",
+      "perimeter_um": "160.6"
+    }
+  ],
+  "tap_role_deltas": [
+    {
+      "cell": "sg13g2_dcndiode",
+      "reference_instance": "r0",
+      "layout_instance": "r$3",
+      "reference": {
+        "area_um2": "141.253",
+        "perimeter_um": "47.54"
+      },
+      "layout": {
+        "area_um2": "141.2964",
+        "perimeter_um": "221.76"
+      },
+      "delta": {
+        "area_um2": "0.0434",
+        "perimeter_um": "174.22"
+      },
+      "native_correspondence_accepted": false
+    },
+    {
+      "cell": "sg13g2_dcpdiode",
+      "reference_instance": "r0",
+      "layout_instance": "r$3",
+      "reference": {
+        "area_um2": "33.524",
+        "perimeter_um": "23.16"
+      },
+      "layout": {
+        "area_um2": "33.5104",
+        "perimeter_um": "197.12"
+      },
+      "delta": {
+        "area_um2": "-0.0136",
+        "perimeter_um": "173.96"
+      },
+      "native_correspondence_accepted": false
+    },
+    {
+      "cell": "sg13g2_iopadvss",
+      "reference_instance": "r1",
+      "layout_instance": "r$1",
+      "reference": {
+        "area_um2": "5329",
+        "perimeter_um": "292"
+      },
+      "layout": {
+        "area_um2": "5379.0466",
+        "perimeter_um": "677.04"
+      },
+      "delta": {
+        "area_um2": "50.0466",
+        "perimeter_um": "385.04"
+      },
+      "native_correspondence_accepted": false
+    },
+    {
+      "cell": "sg13g2_iopadvss",
+      "reference_instance": "r0",
+      "layout_instance": "r$2",
+      "reference": {
+        "area_um2": "23.523",
+        "perimeter_um": "19.4"
+      },
+      "layout": {
+        "area_um2": "24",
+        "perimeter_um": "160.6"
+      },
+      "delta": {
+        "area_um2": "0.477",
+        "perimeter_um": "141.2"
+      },
+      "native_correspondence_accepted": false
+    }
+  ],
+  "tap_pairing_scope": "Source-supported same-cell role comparisons only; these are not accepted native device correspondences.",
+  "findings": [
+    "Deep native DCN has two m=1 diodes with distinct cathode nets; parent call connects both to vss. Deep native DCP likewise has distinct anodes connected by the parent. Reference children already combine each pair into m=2; deep children fail 3 layout vs 2 reference devices and parent comparison is skipped.",
+    "Flat extraction merges both diode pairs into m=2, but remains 5 layout vs 6 reference devices. Native flat output retains distinct anode|iovss and guard|iovss conductors; names do not prove a physical join.",
+    "Flat native layout has one substrate node; captured reference H section has SUB!, I1.SUB!, I2.SUB!. Pinned vendor CDL declares no .GLOBAL; globally joining these names would change the reference contract.",
+    "Substantial independent strict tap A/P differences remain, including VSS 24/160.6 against 23.523/19.4. Under fixed tap-recognition masks and parameters, external metal-only connections cannot remove that independent mismatch. Actual parent extraction could change overlapping recognition geometry; that has not been measured.",
+    "Native CustomTap preserves ordered TIE/WELL and enabled A/P comparison. No A/P waiver, geometry edit, model substitution or arbitrary name/global union is justified by these observations."
+  ],
+  "helper_correction": {
+    "path": "scripts/io_tap_contract_audit.py",
+    "sha256": "4c60714751008768334a9ded83ad3c0ec6fa249482e8ee4abbd87024156fca5f",
+    "rule": "Only explicit .GLOBAL declarations and SPICE ground 0 are global; a ! suffix is not global.",
+    "historical_replay": {
+      "local": {
+        "status": "REPLAYED",
+        "parameter_deltas_unchanged": true,
+        "explicit_globals": [
+          "sub!"
+        ]
+      },
+      "main": {
+        "status": "REJECTED_WITH_CORRECT_LOCAL_WELL_SCOPING",
+        "reason": "Require one combined ptap per tie: iovss"
+      },
+      "dev": {
+        "status": "REJECTED_WITH_CORRECT_LOCAL_WELL_SCOPING",
+        "reason": "Require one combined ptap per tie: iovss"
+      }
+    },
+    "superseded_claims": [
+      {
+        "path": "docs/evidence/io-tap-contract-audit-20261001.json",
+        "key": "new_finding_latest_references",
+        "scope": "Same main/dev topology and combined A/P as local is unsupported without explicit global substrate contract."
+      },
+      {
+        "path": "docs/105-core-io-physical-integration.md",
+        "line_at_review": 2083,
+        "scope": "main/dev equivalence paragraph; historical local explicit-.GLOBAL deltas remain valid."
+      },
+      {
+        "path": "hw/soc/out/io-tap-contract-20261001/main-contract-final.json",
+        "key": "reference_combined",
+        "scope": "Historical inferred global combination must not be transferred to strict main Vdd/Vss acceptance."
+      },
+      {
+        "path": "hw/soc/out/io-tap-contract-20261001/dev-contract-final.json",
+        "key": "reference_combined",
+        "scope": "Historical inferred global combination must not be transferred to strict dev Vdd/Vss acceptance."
+      }
+    ]
+  },
+  "next_safe_action": "Cloud-only isolated tap-recognition geometry attribution using the same immutable subset and deck, plus an authoritative substrate/parent boundary contract. Record mask polygon A/P and overlap before proposing any physical correction. Do not rerun unchanged isolated Vss or fit reference parameters.",
+  "raw_diagnosis": {
+    "path": "hw/soc/out/timing-heartbeat-20261002-0628/io-review/diagnosis.json",
+    "sha256": "857bd136d3b0951f73e121e5ac4f5386b077fb959e377fad3eb4d828f5c2242f",
+    "method": "hw/soc/out/timing-heartbeat-20261002-0628/io-review/diagnose_vss.py",
+    "method_sha256": "1cd36d4da3f2044d39f361a19dd67a68f0c8451909437ec1207c2b6fcefc8b5b",
+    "selected_pin_receipt": "hw/soc/out/timing-heartbeat-20261002-0628/io-review/selected-review.json",
+    "selected_pin_receipt_sha256": "954eaca08bb0a510c29b1c6db91d91e4f6ac575b5af7ab092553180cfc4b067b"
+  },
+  "raw_selected_sha256": {
+    "comparison/deep/audit.json": {
+      "bytes": 1348,
+      "sha256": "28a1ea66c00ac46dde9db2621f117e00d14eb44538ccb9c9104baa6a445f95a0"
+    },
+    "comparison/deep/deck.log": {
+      "bytes": 37130,
+      "sha256": "bb569afa2a0cf8e0f880fe07436b9117db2f52526d698661a5fa1d483bf9a3d3"
+    },
+    "comparison/deep/extracted.cir": {
+      "bytes": 744,
+      "sha256": "35461c602f7c0a1b6874e6f790282bee9cbe0039d48cb01d87bd6ebc1f14bede"
+    },
+    "comparison/deep/lvs.lvsdb.gz": {
+      "bytes": 79575,
+      "sha256": "e7015181489a8c1d5a519b8113b79cd051d0ffe83b18145e2593614f02dc42a3"
+    },
+    "comparison/flat/audit.json": {
+      "bytes": 952,
+      "sha256": "ad97b02f8a981479a7917d41f6baa5517efa9320dcbf2fb31f1c8babd4ac1b75"
+    },
+    "comparison/flat/deck.log": {
+      "bytes": 37127,
+      "sha256": "3b2d6ac8e5bfb97212cfecd659c910aa4207948570bd0a599a5eb8201993e8cf"
+    },
+    "comparison/flat/extracted.cir": {
+      "bytes": 441,
+      "sha256": "727230c0dc848a84107daa5c01808b5b7b9967f77cc3ede934ef0d334ba1a4ce"
+    },
+    "comparison/flat/lvs.lvsdb.gz": {
+      "bytes": 80980,
+      "sha256": "6f19314235d0cbb473c31f09539d34e60e94ea4f3f6638b1dcf432755f50945f"
+    },
+    "comparison/inputs/preparation.json": {
+      "bytes": 11271,
+      "sha256": "9f29d1c3494d3d1494c34fcb1571fd5e5a0cbcecccbbbb319059736d22df3331"
+    },
+    "comparison/inputs/schematic.cir": {
+      "bytes": 757,
+      "sha256": "0bc0b09f52bc66e69a685ba6f869773b3768f195e12f107788571f5698bca36b"
+    },
+    "comparison/inputs/selected-source.cdl": {
+      "bytes": 761,
+      "sha256": "ae16c50e686348f31aeeb5324a2c7c14b253bd0e5a74bd014bd3f8241cda219e"
+    },
+    "comparison/inputs/sg13g2_io.cdl": {
+      "bytes": 38738,
+      "sha256": "7a30e902099e8a8f85e0ae853167904df3793357a793a7b4dc82237b72b3eec4"
+    },
+    "comparison/inputs/sg13g2_io.lef": {
+      "bytes": 96886,
+      "sha256": "1100f050cd477b0db6072e1b2b53ee1e13d7e5473e7b5d20f27534cc27806320"
+    },
+    "comparison/inputs/subset/receipt.json": {
+      "bytes": 3982,
+      "sha256": "076663cab5da0dc8906830d358f792c1ff138facd0467dea9c4d9be518dbaa30"
+    },
+    "comparison/result.json": {
+      "bytes": 63606,
+      "sha256": "a21adebd7c365564c392229a75430da25f83db7602eb56d9efaaa42a359068f6"
+    },
+    "comparison.log": {
+      "bytes": 22,
+      "sha256": "bf07f1288ebb526f40fbad01248450911b0f82edd8257ed542f6051e009008c5"
+    },
+    "controls/result.json": {
+      "bytes": 18726,
+      "sha256": "6a99acca72de56a668c83f417673dd8eebe46db464321bf2bc2c23dbb7963cad"
+    },
+    "controls.log": {
+      "bytes": 167,
+      "sha256": "c068ac4531a1e1cc9ca3a4ac6e2d785e8f14a0ccb3c877842f51b97baf918411"
+    }
+  },
+  "corrected_test_source_sha256": "19f1888582dc1fc5164f853a26a4c2b49738adac46bdaa166f763469b7ba4686",
+  "all_seven_io_lvs_open": true,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false
+}

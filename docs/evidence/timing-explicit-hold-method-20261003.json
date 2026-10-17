@@ -1,0 +1,620 @@
+{
+  "schema": 1,
+  "status": "FROZEN_EXPLICIT_HOLD_METHOD_REVIEWED_NATIVE_CONTROL_PASS_CHIP_RESULT_PENDING",
+  "files": {
+    "hw/soc/pnr/timing-explicit-hold-input.lock.json": {
+      "bytes": 20307,
+      "sha256": "19e77e307a80e8123ea3da516408e1423a4a601115a68f544aa64156be36e298"
+    },
+    "scripts/run_cloud_explicit_hold.py": {
+      "bytes": 32755,
+      "sha256": "6a266e14da26fc09d69777c4974febdd8008c3e45ac928409514e1dec192e0fd"
+    },
+    "hw/soc/pnr/timing_explicit_hold_helpers.tcl": {
+      "bytes": 14197,
+      "sha256": "6d12da88eaf4e6f93c945ae125c4395690225abc5fa6d1f8d5d05267707149fc"
+    },
+    "hw/soc/pnr/timing_explicit_hold_step.tcl": {
+      "bytes": 6620,
+      "sha256": "95cf09e92239db84a16618dcbd8c764d41290c57b44deb9a569277c4855c56ce"
+    },
+    "hw/soc/pnr/timing_explicit_hold_reload.tcl": {
+      "bytes": 2603,
+      "sha256": "d7c70fc01fa59065c084dc2541e43cfd0efba7164b75258541819812c2b1507a"
+    },
+    "sw/tests/timing_explicit_hold_native.tcl": {
+      "bytes": 13678,
+      "sha256": "76fce42db5438266627b0d1c072bc38cdf466702219bd50ab4f8868cf154f3ed"
+    },
+    "sw/tests/test_explicit_hold.py": {
+      "bytes": 20900,
+      "sha256": "3112b29ca73df4183d1888e2c5e4bb0272d909febf4310cc5c8687c6ca876fb7"
+    },
+    ".github/workflows/timing-explicit-hold.yml": {
+      "bytes": 6200,
+      "sha256": "1c6fa517ffb025626cf2918d19724e4ac5759eaf91071c07ee9deb60e58ee71f"
+    }
+  },
+  "original_frozen_methods": 56,
+  "all_ancestor_git_and_current_bytes_root_verified": true,
+  "author_validation": {
+    "focused_and_adjacent_tests": {
+      "passed": 430,
+      "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm hw/soc/tools/cocotb-venv/bin/python -m pytest -q -p no:cacheprovider sw/tests/test_explicit_hold.py sw/tests/test_cloud_critical_followup.py sw/tests/test_cloud_residual_repair.py"
+    },
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "native_control_reparse": {
+      "status": "PASS_NATIVE_EXPLICIT_HOLD_CONTROL",
+      "negative_count": 39,
+      "native_result": {
+        "bytes": 4071,
+        "sha256": "00e61fe8ff70aae802857e234227267d9eb075a6492eccdfacee592943192846"
+      },
+      "native_log": {
+        "bytes": 1494,
+        "sha256": "1531ccb6666a5c4d64b260d16f20c5bed7cea392513b1de4ec1a69b0df53f8b5"
+      },
+      "helper": {
+        "bytes": 14197,
+        "sha256": "6d12da88eaf4e6f93c945ae125c4395690225abc5fa6d1f8d5d05267707149fc"
+      },
+      "fixture": {
+        "bytes": 13678,
+        "sha256": "76fce42db5438266627b0d1c072bc38cdf466702219bd50ab4f8868cf154f3ed"
+      }
+    }
+  },
+  "source_validation_pin": {
+    "bytes": 16983,
+    "sha256": "aad9348e475ebb035050d6b1aa5ddc2bcded7904aeaa13af884212f579b3daa6"
+  },
+  "independent_root_native_execution": {
+    "status": "ROOT_ACTUAL_NATIVE_SINGLE_SD3_CONTROL_PASS",
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "openroad",
+      "-exit",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_explicit_hold_native.tcl"
+    ],
+    "returncode": 0,
+    "seconds": 0.9749872750107897,
+    "memory_limit_bytes": 2147483648,
+    "runtime": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "source": {
+      "sw/tests/timing_explicit_hold_native.tcl": {
+        "bytes": 13678,
+        "sha256": "76fce42db5438266627b0d1c072bc38cdf466702219bd50ab4f8868cf154f3ed"
+      },
+      "hw/soc/pnr/timing_explicit_hold_helpers.tcl": {
+        "bytes": 14197,
+        "sha256": "6d12da88eaf4e6f93c945ae125c4395690225abc5fa6d1f8d5d05267707149fc"
+      },
+      "hw/soc/pnr/timing_hold_reproducibility.tcl": {
+        "bytes": 16850,
+        "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+      }
+    },
+    "pdk_files": {
+      "ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef": {
+        "bytes": 28396,
+        "sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6"
+      },
+      "ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_stdcell.lef": {
+        "bytes": 188966,
+        "sha256": "c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589"
+      },
+      "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib": {
+        "bytes": 1716550,
+        "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+      },
+      "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": {
+        "bytes": 1711183,
+        "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+      }
+    },
+    "native_result": {
+      "status": "PASS_NATIVE_EXPLICIT_HOLD_CONTROL",
+      "negative_control_messages": {
+        "missing_driver": "Explicit endpoint identity/status differs",
+        "wrong_driver_master": "Explicit endpoint identity/status differs",
+        "wrong_sink": "Explicit endpoint connection differs",
+        "wrong_net": "Explicit target must be an unprotected sole Q to D signal",
+        "missing_net": "Explicit target must be an unprotected sole Q to D signal",
+        "source_placement": "Explicit endpoint source placement differs",
+        "missing_endpoint": "Explicit target must be an unprotected sole Q to D signal",
+        "extra_endpoint": "Explicit target must be an unprotected sole Q to D signal",
+        "clock_net": "Explicit target must be an unprotected sole Q to D signal",
+        "protected_net": "Explicit target must be an unprotected sole Q to D signal",
+        "protected_driver": "Explicit endpoint identity/status differs",
+        "fixed_driver": "Explicit endpoint identity/status differs",
+        "unplaced_driver": "Explicit endpoint identity/status differs",
+        "driver_missing_VDD": "Explicit endpoint supply is unbound",
+        "driver_missing_VSS": "Explicit endpoint supply is unbound",
+        "protected_sink": "Explicit endpoint identity/status differs",
+        "fixed_sink": "Explicit endpoint identity/status differs",
+        "unplaced_sink": "Explicit endpoint identity/status differs",
+        "sink_missing_VDD": "Explicit endpoint supply is unbound",
+        "sink_missing_VSS": "Explicit endpoint supply is unbound",
+        "changed_radius": "Explicit vacancy radius must remain 10 microns",
+        "unplaced_other_object": "Unplaced original instance prevents a legal vacancy proof",
+        "no_legal_vacancy": "No existing legal sd3 vacancy within 10 microns; original cells will not move",
+        "preexisting_reserved_net": "Explicit insertion net prefix already exists",
+        "moved_original_cell": "Complete contraction or original placement changed: objects",
+        "changed_original_orientation": "Complete contraction or original placement changed: objects",
+        "changed_original_status": "Complete contraction or original placement changed: objects",
+        "changed_original_protection": "Complete contraction or original placement changed: objects",
+        "changed_original_graph": "Complete contraction or original placement changed: graph",
+        "extra_new_net": "Explicit cell/net census differs",
+        "extra_new_cell": "Explicit cell/net census differs",
+        "native_overlap": "DPL-0033",
+        "moved_delay_cell": "Explicit chosen vacancy changed",
+        "changed_delay_orientation": "Explicit chosen vacancy changed",
+        "fixed_delay_cell": "Explicit chosen vacancy changed",
+        "delay_missing_VDD": "Explicit delay supply is floating/different",
+        "delay_missing_VSS": "Explicit delay supply is floating/different",
+        "reversed_delay_topology": "Explicit sole-branch topology changed",
+        "wrong_delay_master": "Explicit cell/net census differs"
+      },
+      "insertion": {
+        "buffer": "nssoc_explicit_sd31",
+        "new_net": "nssoc_explicit_holdnet1",
+        "original_net": "target",
+        "driver": "driver",
+        "sink": "sink",
+        "master": "sg13g2_dlygate4sd3_1",
+        "initial_instances": 3,
+        "initial_nets": 9,
+        "location_dbu": [
+          50400,
+          34020
+        ],
+        "orientation": "MX",
+        "row_name": "ROW_7",
+        "distance_dbu": 3780,
+        "dbu_per_micron": 1000,
+        "radius_um": 10
+      },
+      "before_metrics": {
+        "fast": {
+          "min_slack_ns": 0.126718,
+          "max_slack_ns": 19.819574
+        },
+        "typical": {
+          "min_slack_ns": 0.189193,
+          "max_slack_ns": 19.729259
+        },
+        "slow": {
+          "min_slack_ns": 0.298361,
+          "max_slack_ns": 19.556967
+        }
+      },
+      "after_metrics": {
+        "fast": {
+          "min_slack_ns": 0.379521,
+          "max_slack_ns": 19.57045
+        },
+        "typical": {
+          "min_slack_ns": 0.566494,
+          "max_slack_ns": 19.353432
+        },
+        "slow": {
+          "min_slack_ns": 0.905685,
+          "max_slack_ns": 18.961374
+        }
+      },
+      "independently_predicted_nearest_vacancy": true,
+      "deterministic_vacancy": true,
+      "full_graph_contraction_preserved": true,
+      "all_original_placements_preserved": true,
+      "no_detailed_placement_called": true,
+      "pg_bindings_preserved": true,
+      "all_three_corners_loaded_and_timed": true,
+      "constraints_preserved": true,
+      "pre_sdc_sha256": "2db805e316ee1f516e1c6336211746536354cc75d200a35c9ceca722cef7df04",
+      "post_sdc_sha256": "2db805e316ee1f516e1c6336211746536354cc75d200a35c9ceca722cef7df04",
+      "placement_parasitic_tiny_control_only": true,
+      "candidate_adopted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "raw_files": {
+      "after-fast.rpt": {
+        "bytes": 4369,
+        "sha256": "87548a8a2a25fc126be14785efebcc0cae2184a601274275f98f5706bd6be320"
+      },
+      "after-slow.rpt": {
+        "bytes": 4369,
+        "sha256": "f901d75550a87c4405fd4629098790c5db082b8b4f6ae24da00ad49ab3e18b19"
+      },
+      "after-typical.rpt": {
+        "bytes": 4375,
+        "sha256": "2da49ddf8f69d52af8bd514c64f6f4a9ef9c4e80647ab938218dd6c265c28e26"
+      },
+      "after.def": {
+        "bytes": 4012,
+        "sha256": "fde5d94b000d43bc0ec2670dcb922bc6ca8dfbdd7186131518afb0b0e426cc25"
+      },
+      "after.odb": {
+        "bytes": 360242,
+        "sha256": "bb5b7bab3b8287879ef9fd8f74866eb02b4fd5c4ca3c2ceb1ab0966367f71922"
+      },
+      "after.sdc": {
+        "bytes": 1458,
+        "sha256": "2db805e316ee1f516e1c6336211746536354cc75d200a35c9ceca722cef7df04"
+      },
+      "after.v": {
+        "bytes": 523,
+        "sha256": "076689034f82d909bf11940278d5325d68cfe621321a712621b0a5551daf8814"
+      },
+      "before.odb": {
+        "bytes": 351075,
+        "sha256": "96312f8ef2aea0a64261724a4b23aa8807dbbc4a7cfa336173a3c469daaf8425"
+      },
+      "before.sdc": {
+        "bytes": 1458,
+        "sha256": "2db805e316ee1f516e1c6336211746536354cc75d200a35c9ceca722cef7df04"
+      },
+      "before.v": {
+        "bytes": 282,
+        "sha256": "522528a58bde464d360c9552e0293cae4666f4e397d1993c69af3dc19637b3a7"
+      },
+      "graph-after-contracted.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "graph-before.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "negative-restored-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "negative-restored-objects.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      },
+      "objects-after-contracted.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      },
+      "objects-before.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      },
+      "pristine-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "pristine-objects.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      },
+      "result.json": {
+        "bytes": 4071,
+        "sha256": "00e61fe8ff70aae802857e234227267d9eb075a6492eccdfacee592943192846"
+      },
+      "verify-1-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "verify-1-objects.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      },
+      "verify-2-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "verify-2-objects.tsv": {
+        "bytes": 195,
+        "sha256": "44ff6d0a294214e0cda01b495c1fa0fdadb931e1d58e851826ec09b0bebb7d68"
+      },
+      "verify-3-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "verify-3-objects.tsv": {
+        "bytes": 197,
+        "sha256": "10b75f56c3f0b8499b46534af5b1a90dad40568fa1bb5a67a7014d9eac17de51"
+      },
+      "verify-4-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "verify-4-objects.tsv": {
+        "bytes": 193,
+        "sha256": "b4323a092b289b15ab0547eed79bd2f57467dc26e38ce29e5b9494e17351818e"
+      },
+      "verify-5-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "verify-5-objects.tsv": {
+        "bytes": 195,
+        "sha256": "4b4caf5ecadf88caa634983c5f5bfd177a1340c8e92607d66a60b73d2888090f"
+      },
+      "verify-6-graph.tsv": {
+        "bytes": 952,
+        "sha256": "504bf322b98d7b3ff04d260f16a6c9a54a5665f77f6085d038cd50b4d561d1b3"
+      },
+      "verify-6-objects.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      },
+      "verify-7-graph.tsv": {
+        "bytes": 956,
+        "sha256": "4b3ea6e391f0f890078cff9e942b3f85ffe8d072f27f96b64fdf8e0dd66f2ec1"
+      },
+      "verify-7-objects.tsv": {
+        "bytes": 195,
+        "sha256": "7e91a3fec434efa4a84cf0f853c8dfbfddfb3ba707d0099c8c5cd2e7434279ab"
+      }
+    },
+    "raw_bundle": {
+      "path": "hw/soc/out/heartbeat-20261003-0547/explicit-hold-source/root-native.tar.gz",
+      "bytes": 140497,
+      "sha256": "049d799f1858c77f3728310134c4c15225f41402b43f60e4701f7a17fc06ba86"
+    },
+    "native_log": {
+      "bytes": 1494,
+      "sha256": "1531ccb6666a5c4d64b260d16f20c5bed7cea392513b1de4ec1a69b0df53f8b5"
+    },
+    "no_original_chip_inputs": true,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "root_native_reviewer_pin": {
+    "bytes": 3296,
+    "sha256": "a3d83fed072dbfcce58d31ce38274af0c0d61eca9a3f78aa5760f1a07517dff9"
+  },
+  "parent_producer": {
+    "run_id": 37102104480,
+    "source_commit": "4882cfe2cf9c39123dcef4f0cef7edac4c1d80a1",
+    "artifact_id": 11267076249,
+    "artifact_name": "critical-followup-final-1",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-critical-followup-corrected-final-37102104480-20261003.zip",
+    "bytes": 526253250,
+    "sha256": "9f7e215fa0b43ff7552b1b8427f778b74022c7443adb3476c2c33acfc19e74ae",
+    "entrypoint": "scripts/run_cloud_critical_followup.py",
+    "kind": "critical_hold_and_size_trial",
+    "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+  },
+  "parent_rejected_guard": {
+    "reference_metrics": {
+      "selected_c10": {
+        "setup_wns_ns": -4.710829,
+        "hold_wns_ns": -1.840329
+      },
+      "matched_c10": {
+        "setup_wns_ns": -4.909516349016485,
+        "hold_wns_ns": -1.8409653801398917,
+        "setup_tns_ns": -4320.800144341774,
+        "hold_tns_ns": -26.461044910774945,
+        "setup_violating_endpoints": 1384,
+        "hold_violating_endpoints": 113,
+        "slew_violations": 0,
+        "capacitance_violations": 1
+      },
+      "combined_parent": {
+        "setup_wns_ns": -4.209004700328478,
+        "hold_wns_ns": -0.15530043917522107,
+        "setup_tns_ns": -3554.9244330468355,
+        "hold_tns_ns": -2.117501507470365,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 66,
+        "slew_violations": 2,
+        "capacitance_violations": 3
+      },
+      "electrical_first": {
+        "setup_wns_ns": -4.255417351828328,
+        "hold_wns_ns": -0.1589801623680387,
+        "setup_tns_ns": -3598.960802264628,
+        "hold_tns_ns": -2.1187052112736637,
+        "setup_violating_endpoints": 1312,
+        "hold_violating_endpoints": 65,
+        "slew_violations": 0,
+        "capacitance_violations": 3
+      },
+      "electrical_margin_parent": {
+        "setup_wns_ns": -4.199984360298004,
+        "hold_wns_ns": -0.16056200813352461,
+        "setup_tns_ns": -3549.3283121468266,
+        "hold_tns_ns": -2.150905897835287,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 67,
+        "slew_violations": 0,
+        "capacitance_violations": 1
+      },
+      "residual_parent": {
+        "setup_wns_ns": -4.230063410659568,
+        "hold_wns_ns": -0.15798429231494993,
+        "setup_tns_ns": -3564.432972780196,
+        "hold_tns_ns": -2.0873311967761765,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 58,
+        "slew_violations": 0,
+        "capacitance_violations": 0
+      },
+      "candidate_before": {
+        "setup_wns_ns": -4.230063410659568,
+        "hold_wns_ns": -0.15798429231494993,
+        "setup_tns_ns": -3564.432972780196,
+        "hold_tns_ns": -2.0873311967761765,
+        "setup_violating_endpoints": 1311,
+        "hold_violating_endpoints": 58,
+        "slew_violations": 0,
+        "capacitance_violations": 0
+      }
+    },
+    "canonical_reloaded": {
+      "setup_wns_ns": -4.198961178758509,
+      "hold_wns_ns": -0.15798429231494993,
+      "setup_tns_ns": -3530.324192979606,
+      "hold_tns_ns": -2.0873311967761765,
+      "setup_violating_endpoints": 1310,
+      "hold_violating_endpoints": 58,
+      "slew_violations": 0,
+      "capacitance_violations": 0
+    },
+    "no_regression": {
+      "selected_c10": true,
+      "matched_c10": true,
+      "combined_parent": false,
+      "electrical_first": true,
+      "electrical_margin_parent": true,
+      "residual_parent": true,
+      "candidate_before": true
+    },
+    "setup_improved": true,
+    "exact_reload_repeatable": true,
+    "protected_physical_objects_preserved": true,
+    "aggregate_estimate_guard_passed": false,
+    "disposition": "REJECTED_ISOLATED_CANDIDATE",
+    "zero_violations": false,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "decisions": [
+    "Exactly one approved sd3 noninverting cell and one native-generated net; complete graph contraction and both limited ECO proofs remain mandatory.",
+    "Nearest legal compatible vacant row site within fixed 10 microns of source driver lower-left; no original instance master/location/orientation/status or protected connectivity may change.",
+    "No detailed placement or repair_timing invocation in the chip trial or two fresh reloads; exact baseline must reproduce or fail closed.",
+    "All 23,527 endpoints and three corners are compared; all six historical references and fresh source guards retained; no automatic adoption.",
+    "Transient before-fresh-route Q-path slew/global metrics are diagnostic; acceptance assessment uses final independent reload only."
+  ],
+  "chip_trial_dispatched": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "scope": "Method and tiny native controls only. Exact single-delay chip effect remains to be measured. Existing source placements, graphs, constraints and six historical guards are mandatory; no final timing, qualified LVS or signoff inferred.",
+  "independent_peer_review": {
+    "status": "PASS_INDEPENDENT_EXPLICIT_HOLD_METHOD_REVIEW",
+    "reviewed_at_utc": "2026-10-03T07:41:00.491489+00:00",
+    "reviewed_source_files": {
+      "hw/soc/pnr/timing-explicit-hold-input.lock.json": {
+        "bytes": 20307,
+        "sha256": "19e77e307a80e8123ea3da516408e1423a4a601115a68f544aa64156be36e298"
+      },
+      "scripts/run_cloud_explicit_hold.py": {
+        "bytes": 32755,
+        "sha256": "6a266e14da26fc09d69777c4974febdd8008c3e45ac928409514e1dec192e0fd"
+      },
+      "hw/soc/pnr/timing_explicit_hold_helpers.tcl": {
+        "bytes": 14197,
+        "sha256": "6d12da88eaf4e6f93c945ae125c4395690225abc5fa6d1f8d5d05267707149fc"
+      },
+      "hw/soc/pnr/timing_explicit_hold_step.tcl": {
+        "bytes": 6620,
+        "sha256": "95cf09e92239db84a16618dcbd8c764d41290c57b44deb9a569277c4855c56ce"
+      },
+      "hw/soc/pnr/timing_explicit_hold_reload.tcl": {
+        "bytes": 2603,
+        "sha256": "d7c70fc01fa59065c084dc2541e43cfd0efba7164b75258541819812c2b1507a"
+      },
+      "sw/tests/timing_explicit_hold_native.tcl": {
+        "bytes": 13678,
+        "sha256": "76fce42db5438266627b0d1c072bc38cdf466702219bd50ab4f8868cf154f3ed"
+      },
+      "sw/tests/test_explicit_hold.py": {
+        "bytes": 20900,
+        "sha256": "3112b29ca73df4183d1888e2c5e4bb0272d909febf4310cc5c8687c6ca876fb7"
+      },
+      ".github/workflows/timing-explicit-hold.yml": {
+        "bytes": 6200,
+        "sha256": "1c6fa517ffb025626cf2918d19724e4ac5759eaf91071c07ee9deb60e58ee71f"
+      }
+    },
+    "source_validation_receipt": {
+      "bytes": 16983,
+      "sha256": "aad9348e475ebb035050d6b1aa5ddc2bcded7904aeaa13af884212f579b3daa6"
+    },
+    "exact_frozen_ancestor_methods_verified_against_git": 56,
+    "frozen_ancestor_commit": "4882cfe2cf9c39123dcef4f0cef7edac4c1d80a1",
+    "parent_result": {
+      "bytes": 247227,
+      "sha256": "44f3c6e64204ae303d90b6dd2cefb24feb85a7808327276ab510b925e58629d2"
+    },
+    "parent_source": {
+      "run_id": 37102104480,
+      "source_commit": "4882cfe2cf9c39123dcef4f0cef7edac4c1d80a1",
+      "artifact_id": 11267076249,
+      "artifact_name": "critical-followup-final-1",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-critical-followup-corrected-final-37102104480-20261003.zip",
+      "bytes": 526253250,
+      "sha256": "9f7e215fa0b43ff7552b1b8427f778b74022c7443adb3476c2c33acfc19e74ae",
+      "entrypoint": "scripts/run_cloud_critical_followup.py",
+      "kind": "critical_hold_and_size_trial",
+      "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+    },
+    "tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/nssoc-explicit-peer-tests sw/tests/test_explicit_hold.py sw/tests/test_cloud_critical_followup.py",
+      "returncode": 0,
+      "passed": 328,
+      "seconds": 0.38
+    },
+    "authored_native_fixture": {
+      "receipt": {
+        "bytes": 12707,
+        "sha256": "819063e77bd9a0b5236d8211d1d544fda376821a2ab07e8989bf9de6ce6f3e97"
+      },
+      "execution_seconds": 0.9716895099991234,
+      "native_output_files_rehashed": 33,
+      "negative_count": 39,
+      "runtime_and_pdk_before_after_rehash": true
+    },
+    "root_independent_native_review": {
+      "bytes": 11823,
+      "sha256": "0eda4bc7a9d6d275c6279f9e7d3a4e1590a0d99a65cc7bba304f441335bcffa2"
+    },
+    "additional_exact_bus_lookup": {
+      "receipt": {
+        "bytes": 6261,
+        "sha256": "e50e579a48595873e56234f08f1654a8254af462a7f0012de107bdd6948f6119"
+      },
+      "execution_seconds": 0.9682038570026634,
+      "name_only_transform": true,
+      "source_name": "u_npu.u_node0.mosi_s[0]",
+      "negative_count": 39
+    },
+    "checks": [
+      "Exact final critical source result and permanently archived artifact bind the isolated unadopted candidate.",
+      "All 56 frozen ancestor methods match immutable producer Git blobs; all eight new source pins match the freeze.",
+      "Source and native endpoint binding requires sole approved Q to D branch, original masters, raw source placement and supplies.",
+      "Native insert_buffer names are observed through exact one-instance and one-net set differences, constrained to reviewed prefixes and identity delay master.",
+      "Nearest legal compatible vacancy is selected deterministically within 10 microns of driver lower-left; no detailed placement or timing repair is invoked.",
+      "Complete original graph contraction and master/location/orientation/status/dont_touch snapshots remain equal before and after insertion and both independent reloads.",
+      "Three-corner full endpoint/path capture and unchanged SDC are mandatory; the old six historical metric guards and fresh candidate guard remain strict.",
+      "Two child processes reload the exact exported ODB/SDC with actual ELF pin and restored environment bindings; neither child permits placement changes.",
+      "The isolated old parent still fails combined_parent hold guard; no waiver or reinterpretation was introduced.",
+      "Both original limited ECO logic proofs remain mandatory; Liberty-proven positive-buffer contraction preserves functional source equations within the documented proof scope.",
+      "Failure capture includes exact tiny physical view whitelist, hidden workflow methods, startup and immutable intervals; missing final evidence cannot pass.",
+      "Read-only Git/artifact acquisition receives token, then native environment strips credentials."
+    ],
+    "authorship": "Reviewer authored only the small timing_explicit_hold_native.tcl fixture and its tiny executions. Runner/helper/step/reload/lock/workflow/tests were reviewed read-only. Root separately executed the frozen fixture independently.",
+    "limitations": [
+      "No full-chip native candidate, global route, full endpoint table or new reload process was executed locally by this reviewer.",
+      "Actual full-chip source graph/placement binding and legal vacancy are mandatory cloud preflight checks and remain unexecuted for this method.",
+      "Tiny fixture uses placement parasitics; its slack gains do not predict chip gains or signoff timing.",
+      "No acceptance follows until actual cloud result/endpoint/proof guards are inspected; candidate adoption, final timing, DRC/LVS and manufacturing approval remain false."
+    ],
+    "blockers": [],
+    "production_source_edits_by_reviewer": false,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "independent_peer_review_pin": {
+    "bytes": 6318,
+    "sha256": "1d63866d12f4d2e1db4d5329a736797bf0ad2593a7f45a6b84acc65bac68fce9"
+  }
+}

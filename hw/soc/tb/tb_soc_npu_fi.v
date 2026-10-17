@@ -254,14 +254,21 @@ module tb_soc_npu_fi;
   wire npu_aer_in_stb, npu_aer_out_vld;
 
   soc_top #(.ROM_INIT(`ROM_HEX)) dut (
+      // Idle MAC only in this NPU fault campaign; no GMII traffic injected.
+      .eth_rx_clk_i(clk), .eth_tx_clk_i(clk), .eth_rxd_i(8'b0),
+      .eth_rx_dv_i(1'b0), .eth_rx_er_i(1'b0), .eth_mdio_i(1'b1),
+      .spw_di_i(1'b0), .spw_si_i(1'b0), .i2c_scl_i(1'b1), .i2c_sda_i(1'b1),
+      .can_rx_i(1'b1), .spi_miso_i(1'b0),
       .clk_i  (clk),
       .rst_ni (rst_n),
+      .irq_external_i(1'b0),
       .wdog_dis_i (wdog_dis),
       // The bootstrap pins, docs/68. Tied to the board this campaign
       // models: boot from the flash on chip select 0, which is what
       // soc_boot.v samples once and reports. Nothing in this bench
       // reads them back; they are here because soc_top has the port.
       .strap_i    (4'h0),
+      .uart_rx_i  (1'b1),
       .uart_tx_o  (uart_tx),
       .uart_irq_o (uart_irq),
       // The GPIO pins (docs/65): a board with nothing on them. The

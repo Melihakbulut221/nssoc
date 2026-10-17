@@ -1,0 +1,93 @@
+{
+  "observed_at": "2026-10-16T09:05:47.453307+00:00",
+  "cloud_only": true,
+  "local_workspace_entries": 0,
+  "source_head": "9715704bc8d5ad87da28e7c63fbd77c687fcf4e6",
+  "receipts": [
+    {
+      "run": 38875782771,
+      "source_head": "aebe63b2fd5d69aa8f34fc925cc0731378954de5",
+      "summary_asset": 646722256,
+      "summary_sha256": "d5a9643ae98d237da3d6c60a53aa6023f8563d1926ea6d31c26bd478b0e7371a",
+      "result_status": "PASS_FRESH_FULL_DRIVER_WIRE_RC_AND13_RAW_CORRUPTIONS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE",
+      "model_sha256": null
+    },
+    {
+      "run": 38876864912,
+      "source_head": "9715704bc8d5ad87da28e7c63fbd77c687fcf4e6",
+      "summary_asset": 646752281,
+      "summary_sha256": "088b313a9cdf0d1803842b3ae0eefda12af07d75c36cd4c7bd79b126d2b71cf7",
+      "result_status": "PASS_RAW100_AND_ALL251R294C_EXACT_PHYSICAL_COMPOSITION_WITH10_FAULTS_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE",
+      "model_sha256": "e0219a2c161fdf5b522be533010432a3f7fd472112ae4cfbb6ee82490702c408"
+    },
+    {
+      "run": 38874773944,
+      "source_head": "ae315dbc2829e967b8506200f0fde99682f5a258",
+      "summary_asset": 646722055,
+      "summary_sha256": "591e7d5c7e4ed189fd2c251af0eaa81998564e1d28ad5ababfeab2896573b33d",
+      "result_status": "COMPLETE_ALL_ENDPOINT_ROUTED_ECO_COMPARISON_NOT_SIGNOFF",
+      "model_sha256": null
+    },
+    {
+      "run": 38876183060,
+      "source_head": "0c788375b3d19c41a6d21c473f9d64b2a8661bc2",
+      "summary_asset": 646740791,
+      "summary_sha256": "1d1950bbd4f7c4d2b44c9debc0a8139d2acf5bbb8934d3222d3ea7cfbd9494f0",
+      "result_status": "COMPLETE_ROUTED_CANDIDATE_SIGNAL_GEOMETRY_AND_ANTENNA_SCREEN_NOT_SIGNOFF",
+      "model_sha256": null
+    },
+    {
+      "run": 38876188299,
+      "source_head": "0c788375b3d19c41a6d21c473f9d64b2a8661bc2",
+      "summary_asset": 646732282,
+      "summary_sha256": "6aa29a5e6fa262ad8c35235d30b500168623d02cee14f73e95ac77ff436d08eb",
+      "result_status": "COMPLETE_CANDIDATE_NATIVE_RC_ANNOTATION_DIAGNOSIS_NOT_COVERAGE_ACCEPTANCE",
+      "model_sha256": null
+    }
+  ],
+  "live_runs": [
+    {
+      "id": 38857745157,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "91fb54b95d182d47dfb751216ec00d6e999e508b"
+    },
+    {
+      "id": 38847729630,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "beb087ef2714d1a45aa146e9a2975c6038ac48fd"
+    }
+  ],
+  "qualified_phy": false,
+  "qualified_timing": false,
+  "next": [
+    "Simulate the exact raw100 plus251R294C composed driver using pinned native models and original electrical gates.",
+    "Use actual141-route conflict paths to design a measured hold repair for the five endpoints with positive setup in all corners; preserve the remaining setup conflicts.",
+    "Collect physical PLL results only after authoritative completion."
+  ],
+  "route141": {
+    "adopted": false,
+    "setup_negative_endpoint_counts": [
+      9379,
+      481,
+      2
+    ],
+    "hold_negative_endpoint_counts": [
+      0,
+      1,
+      91
+    ],
+    "antenna_net_violations": 631,
+    "antenna_pin_violations": 793,
+    "loaded_unannotated_drivers": 0,
+    "continuity_failures": 0,
+    "cross_net_rectangle_contacts": 0
+  },
+  "limitations": [
+    "Not full serial PHY acceptance",
+    "Not full-chip integration/signoff",
+    "Poly/diffusion resistance and substrate spreading are not qualified",
+    "Composed driver has not yet passed electrical simulation"
+  ]
+}

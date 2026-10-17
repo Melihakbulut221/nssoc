@@ -1,0 +1,17 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Native HBT master/slave toggle prescaler, not a PLL/CDR or PCIe PHY.
+* Include the exact frozen rx_sampler_hbt_v2.spice before this subcircuit.
+* Master tracks low clock, slave high; slave QN/Q drives master DP/DN.
+* Independent nominal2.5V rail and a native resistor/HBT bias reference.
+* Small fixed native MIM mismatch supplies a physical startup asymmetry.
+* No ideal clock, gain, logic state, IC, UIC or startup current kick exists.
+.subckt nssoc_clock_div2_hbt clkp clkn qp qn avdd avss sub
+XBIAS avdd ref sub rppd w=1u l=12.7u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XM qn qp mp mn clkn clkp avdd avss sub ref nssoc_cml_latch
+XS mp mn qp qn clkp clkn avdd avss sub ref nssoc_cml_latch
+XSEEDP mp avss cap_cmim w=2.2u l=2u
+XSEEDN mn avss cap_cmim w=2u l=2u
+.ends nssoc_clock_div2_hbt
+

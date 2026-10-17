@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="29" time="202.062" timestamp="2026-10-06T05:39:39.915444+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_exact_generated_inverse_and_wrapper_bridge" time="0.001" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[None]" time="3.441" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[skip]" time="0.119" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[invert]" time="0.115" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[ignore_step]" time="0.018" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[stale_owner]" time="0.089" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[reverse_priority]" time="0.115" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_cache" name="test_actual_cache_body_literal_fourstate_and_extra_fault_writes[restore_fault_gate]" time="0.123" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_v21_v22_cycle_exact_all_public_outputs[150]" time="107.619"><failure message="AssertionError: assert (1 == 0)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v22-public-controls01/test_v21_v22_cycle_exact_all_p0/miter-rtl'], returncode=1).returncode">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v22-public-controls01/test_v21_v22_cycle_exact_all_p0')
+maximum = 150
+
+    @pytest.mark.parametrize("maximum", [150, 4118])
+    def test_v21_v22_cycle_exact_all_public_outputs(tmp_path, maximum):
+        helper = runpy.run_path(
+            str(ROOT / "sw/tests/test_pcie_gen3_continuous_rx_integrity_v22.py")
+        )
+        rtl = miter(tmp_path / "miter-rtl")
+        result, record, cases, out = helper["run"](tmp_path, maximum=maximum, rtl=rtl)
+&gt;       assert result.returncode == 0 and record["tests"] == {
+            "passed": 17,
+            "failed": 0,
+            "skipped": 0,
+        }
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v22-public-controls01/test_v21_v22_cycle_exact_all_p0/miter-rtl'], returncode=1).returncode
+
+sw/tests/test_pcie_gen3_integrity_v22_miter.py:249: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_actual_miter_fault_is_observed[public_data_inversion]" time="1.461" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_actual_miter_fault_is_observed[unqualified_speculative_fault]" time="3.425" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_actual_miter_fault_is_observed[cache_skips_step]" time="1.333" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_actual_miter_fault_is_observed[cache_inverts_value]" time="1.355" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_actual_miter_fault_is_observed[cache_stale_new_owner]" time="1.813"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...tl', '--iverilog-dir', '/home/hasanmelih/.local/bin', '--test', 'cache_fault_write_and_new_epoch_reuse'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x735c95d20740&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v22-public-controls01/test_actual_miter_fault_is_obs4')
+fault = 'cache_stale_new_owner'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v22.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V22_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V22_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V22_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V22_FAULT_QUARANTINE_NOT_ATOMIC",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...tl', '--iverilog-dir', '/home/hasanmelih/.local/bin', '--test', 'cache_fault_write_and_new_epoch_reuse'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x735c95d20740&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v22_miter.py:317: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_actual_miter_fault_is_observed[fault_keeps_ring_owner]" time="1.822"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...tl', '--iverilog-dir', '/home/hasanmelih/.local/bin', '--test', 'cache_fault_write_and_new_epoch_reuse'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x735c95d20900&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v22-public-controls01/test_actual_miter_fault_is_obs5')
+fault = 'fault_keeps_ring_owner'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v22.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V22_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V22_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V22_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V22_FAULT_QUARANTINE_NOT_ATOMIC",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...tl', '--iverilog-dir', '/home/hasanmelih/.local/bin', '--test', 'cache_fault_write_and_new_epoch_reuse'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x735c95d20900&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v22_miter.py:317: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v22_miter" name="test_only_quarantined_cache_edits_to_frozen_sources" time="0.004" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_full_positive_profiles[150]" time="60.906" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[selector_loses_stp]" time="1.359" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[sequence_byte_order]" time="1.386" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[carry_word_order]" time="1.364" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[stp_suffix_word_order]" time="1.414" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[initial_dllp_loses_carry]" time="1.634" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[dllp_preceding_seed_order]" time="1.170" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[look_drops_successor]" time="1.395" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[edb_releases_bad]" time="1.145" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[fault_descriptor_survives]" time="1.131" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[restart_descriptor_survives]" time="1.310" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[empty_descriptor_blocks]" time="1.151" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v22" name="test_actual_wide_rx_fault_rejected[full_descriptor_overwrite]" time="3.693" /></testsuite></testsuites>

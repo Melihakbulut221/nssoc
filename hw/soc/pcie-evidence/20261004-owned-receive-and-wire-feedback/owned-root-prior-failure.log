@@ -1,0 +1,2330 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF.                                 [100%]
+=================================== FAILURES ===================================
+_______________ test_actual_wide_rx_full_positive_profiles[150] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_full_posit0')
+maximum = 150
+
+    @pytest.mark.parametrize("maximum", [150, 4118])
+    def test_actual_wide_rx_full_positive_profiles(tmp_path, maximum):
+>       result, record, cases, _ = run(tmp_path, maximum)
+                                   ^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:332: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1955a90>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_full_posit0/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_full_posit0/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______________ test_actual_wide_rx_full_positive_profiles[4118] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_full_posit1')
+maximum = 4118
+
+    @pytest.mark.parametrize("maximum", [150, 4118])
+    def test_actual_wide_rx_full_positive_profiles(tmp_path, maximum):
+>       result, record, cases, _ = run(tmp_path, maximum)
+                                   ^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:332: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e110de50>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_full_posit1/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_full_posit1/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______________ test_actual_wide_rx_fault_rejected[three_steps] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje0')
+name = 'three_steps', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'for(j=0;j<4;j=j+1)', after = 'for(j=0;j<3;j=j+1)', count = 1
+case = 'sustained_minimum_packets_exceed_every_buffer'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e110e350>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje0/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje0/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____ test_actual_wide_rx_fault_rejected[lost_same_edge_block_activation] ______
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje1')
+name = 'lost_same_edge_block_activation'
+module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'if(!current_valid || (last_slice && !next_valid))'
+after = 'if(!current_valid)', count = 1
+case = 'sustained_minimum_packets_exceed_every_buffer'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1936d70>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje1/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje1/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[look_drops_successor] ___________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje2')
+name = 'look_drops_successor', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'commit_n=position;state_n=TOKEN;'
+after = 'commit_n=position;state_n=TOKEN;handled=1;', count = 1
+case = 'sustained_minimum_packets_exceed_every_buffer'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1937230>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje2/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje2/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____________ test_actual_wide_rx_fault_rejected[edb_releases_bad] _____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje3')
+name = 'edb_releases_bad', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'verdict_value[j]=0;event_nullified[j]='
+after = 'verdict_value[j]=1;event_nullified[j]=', count = 1
+case = 'edb_quarantine_and_eds_release_drain'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1927ad0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje3/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje3/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+______________ test_actual_wide_rx_fault_rejected[zero_body_lost] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje4')
+name = 'zero_body_lost', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "TLP:begin\n             lcrc_n=crc32_32(lcrc_n,word);\n             write_data[j*32+:32]=word;write_keep[j*4+:4]=4'b1111;"
+after = "TLP:begin\n             lcrc_n=crc32_32(lcrc_n,word);\n             write_data[j*32+:32]=word;write_keep[j*4+:4]=(word==0)?4'b0000:4'b1111;"
+count = 1, case = 'maximum_zero_packets_cross_blocks_and_verdict_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e19238a0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje4/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje4/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[one_completion_event] ___________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje5')
+name = 'one_completion_event', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "event_good[j]=(dllp_crc_n==16'h556f);"
+after = "event_good[0]=(dllp_crc_n==16'h556f);", count = 1
+case = 'sustained_minimum_packets_exceed_every_buffer'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1923f00>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje5/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje5/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[denied_full_replace] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje6')
+name = 'denied_full_replace', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = '+released_dwords', after = '+0', count = 1
+case = 'actual_full_ring_replacement_and_late_stall_overflow'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10ae450>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje6/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje6/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____ test_actual_wide_rx_fault_rejected[held_output_register_corruption] ______
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje7')
+name = 'held_output_register_corruption'
+module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'if(!output_valid || ready_i) output_valid<=0;'
+after = "if(output_valid && !ready_i) output_data<=output_data^128'b1; if(!output_valid || ready_i) output_valid<=0;"
+count = 1, case = 'bounded_stalls_preserve_all_wide_metadata'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10aef50>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje7/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje7/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+____________ test_actual_wide_rx_fault_rejected[verdict_wrap_alias] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje8')
+name = 'verdict_wrap_alias', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'tag_n=position;', after = "tag_n={1'b0,position[AW-1:0]};", count = 2
+case = 'verdict_tag_reuse_cannot_nullify_an_older_live_tail'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e109f980>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje8/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje8/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________ test_actual_wide_rx_fault_rejected[eds_loses_pending_packet] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje9')
+name = 'eds_loses_pending_packet', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'if(ending_n) begin current_valid<=0;next_valid<=0;end'
+after = 'if(ending_n) begin current_valid<=0;next_valid<=0;active_o<=0;end'
+count = 1, case = 'edb_quarantine_and_eds_release_drain'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e109e3f0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje9/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje9/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________ test_actual_wide_rx_fault_rejected[bad_block_header_ignored] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje10')
+name = 'bad_block_header_ignored', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "(headers_i!=8'haa || block_error_i)", after = 'block_error_i'
+count = 1, case = 'malformed_tokens_and_headers_never_release_quarantine'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e11bc9f0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje10/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje10/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[bad_stp_crc_ignored] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje11')
+name = 'bad_stp_crc_ignored', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'crc==word[23:20]', after = "1'b1", count = 1
+case = 'malformed_tokens_and_headers_never_release_quarantine'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1192350>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje11/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje11/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+______________ test_actual_wide_rx_fault_rejected[wrong_raw_lane] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje12')
+name = 'wrong_raw_lane', module = 'soc_pcie_gen3_ingress'
+before = 'word_i[lane*32+:32]', after = 'word_i[((lane+1)%4)*32+:32]', count = 1
+case = 'sustained_minimum_packets_exceed_every_buffer'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10f0ae0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje12/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje12/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+____________ test_actual_wide_rx_fault_rejected[wrong_lfsr_advance] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje13')
+name = 'wrong_lfsr_advance', module = 'soc_pcie_gen3_data_descrambler'
+before = 'mask(128,bit_number)', after = 'mask(127,bit_number)', count = 1
+case = 'sustained_minimum_packets_exceed_every_buffer'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0ffc1d0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje13/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje13/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+__________ test_actual_wide_rx_fault_rejected[restart_without_reseed] __________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje14')
+name = 'restart_without_reseed', module = 'soc_pcie_gen3_continuous_rx_owned_v1'
+before = 'transport_flush || stream_start_i', after = 'transport_flush'
+count = 1, case = 'start_without_abort_reseeds_and_discards_prior_epoch'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0ffc350>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje14/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje14/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+____________ test_actual_wide_rx_fault_rejected[lcrc_initial_zero] _____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje15')
+name = 'lcrc_initial_zero', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "crc32_16(32'hffffffff,", after = "crc32_16(32'b0,", count = 1
+case = 'tlp_crc_coverage_residue_nullification_and_successor'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e11afac0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje15/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje15/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[sequence_byte_order] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje16')
+name = 'sequence_byte_order', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "crc32_16(32'hffffffff,{word[31:24],4'b0,word[19:16]})"
+after = "crc32_16(32'hffffffff,{4'b0,word[19:16],word[31:24]})", count = 1
+case = 'tlp_crc_coverage_residue_nullification_and_successor'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0fe8260>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje16/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje16/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+__________ test_actual_wide_rx_fault_rejected[lcrc_misses_last_word] ___________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje17')
+name = 'lcrc_misses_last_word', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'lcrc_n=crc32_32(lcrc_n,word);'
+after = 'if(remaining_n!=1) lcrc_n=crc32_32(lcrc_n,word);', count = 1
+case = 'tlp_crc_coverage_residue_nullification_and_successor'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1113610>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje17/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje17/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+________ test_actual_wide_rx_fault_rejected[ordinary_lcrc_not_checked] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje18')
+name = 'ordinary_lcrc_not_checked', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "(lcrc_n==32'hdebb20e3)", after = "1'b1", count = 2
+case = 'tlp_crc_coverage_residue_nullification_and_successor'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e1112e90>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje18/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje18/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+________ test_actual_wide_rx_fault_rejected[edb_ignores_inverted_lcrc] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje19')
+name = 'edb_ignores_inverted_lcrc', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "(lcrc_n==32'b0)", after = "1'b1", count = 1
+case = 'tlp_crc_coverage_residue_nullification_and_successor'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10a6c30>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje19/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje19/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_ test_actual_wide_rx_fault_rejected[wrong_dllp_residue_reproduces_first_failure] _
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje20')
+name = 'wrong_dllp_residue_reproduces_first_failure'
+module = 'soc_pcie_gen3_framer_rx_owned_v1', before = "16'h556f"
+after = "16'h555f", count = 3
+case = 'primary_trace_crc_vectors_and_adjacent_bad_dllps'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e11575d0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje20/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje20/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+______________ test_actual_wide_rx_fault_rejected[dllp_seed_zero] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje21')
+name = 'dllp_seed_zero', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "crc16_16(16'hffff,", after = "crc16_16(16'b0,", count = 1
+case = 'primary_trace_crc_vectors_and_adjacent_bad_dllps'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0dcaa50>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje21/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje21/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____________ test_actual_wide_rx_fault_rejected[dllp_body_order] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje22')
+name = 'dllp_body_order', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "crc16_16(16'hffff,word[31:16])"
+after = "crc16_16(16'hffff,{word[23:16],word[31:24]})", count = 1
+case = 'primary_trace_crc_vectors_and_adjacent_bad_dllps'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10fdfd0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje22/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje22/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[crc_failure_is_good] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje23')
+name = 'crc_failure_is_good', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = "event_crc_bad[j]=(lcrc_n!=32'hdebb20e3)"
+after = "event_good[j]=(lcrc_n!=32'hdebb20e3)", count = 1
+case = 'tlp_crc_coverage_residue_nullification_and_successor'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10bf700>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje23/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje23/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____________ test_actual_wide_rx_fault_rejected[event_type_lost] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje24')
+name = 'event_type_lost', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'event_dllp[j]=1', after = 'event_dllp[j]=0', count = 1
+case = 'primary_trace_crc_vectors_and_adjacent_bad_dllps'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0faf110>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje24/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje24/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+____________ test_actual_wide_rx_fault_rejected[owner_body_ignored] ____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje25')
+name = 'owner_body_ignored', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = '(owner_body_taken[ot] || body_taken_now[ot])', after = "1'b1"
+count = 1, case = 'held_body_prevents_owner_slot_reuse'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0fad8b0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje25/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje25/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________ test_actual_wide_rx_fault_rejected[owner_descriptor_ignored] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje26')
+name = 'owner_descriptor_ignored', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = '(owner_desc_taken[ot] || desc_taken_now[ot])', after = "1'b1"
+count = 1, case = 'bad_descriptors_fill_owner_slots_fail_closed'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0fa2990>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje26/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje26/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+__________ test_actual_wide_rx_fault_rejected[bad_descriptor_missing] __________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje27')
+name = 'bad_descriptor_missing', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'owner_done[verdict_owners[oi*OW+:OW] & (OWNER_SLOTS-1)]<=1;'
+after = 'owner_done[verdict_owners[oi*OW+:OW] & (OWNER_SLOTS-1)]<=event_good[oi];'
+count = 1, case = 'ownership_long_generation_sequence_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10e2490>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje27/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje27/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________ test_actual_wide_rx_fault_rejected[null_descriptor_missing] __________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje28')
+name = 'null_descriptor_missing', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'owner_null[verdict_owners[oi*OW+:OW] & (OWNER_SLOTS-1)]<=event_nullified[oi];'
+after = 'owner_null[verdict_owners[oi*OW+:OW] & (OWNER_SLOTS-1)]<=0;', count = 1
+case = 'ownership_long_generation_sequence_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10d1c70>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje28/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje28/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____________ test_actual_wide_rx_fault_rejected[wrong_body_owner] _____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje29')
+name = 'wrong_body_owner', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'read_owner[r*OW+:OW]=slot_owner[read_address];'
+after = 'read_owner[r*OW+:OW]=0;', count = 1
+case = 'ownership_long_generation_sequence_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10d1810>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje29/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje29/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+________ test_actual_wide_rx_fault_rejected[descriptor_generation_lost] ________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje30')
+name = 'descriptor_generation_lost', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'descriptor_read_owner[od*OW+:OW]=owner_identity[oa];'
+after = 'descriptor_read_owner[od*OW+:OW]=owner_identity[oa] & (OWNER_SLOTS-1);'
+count = 1, case = 'ownership_long_generation_sequence_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e10d1450>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje30/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje30/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+________ test_actual_wide_rx_fault_rejected[held_descriptor_overwrite] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje31')
+name = 'held_descriptor_overwrite', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'if(descriptor_count==0 || descriptor_ready_i)', after = "if(1'b1)"
+count = 1, case = 'descriptors_hold_while_body_drains'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0f7de50>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje31/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje31/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+___________ test_actual_wide_rx_fault_rejected[held_body_frees_ring] ___________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje32')
+name = 'held_body_frees_ring', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'wire body_pop=enabled && active_o && output_valid && ready_i;'
+after = 'wire body_pop=enabled && active_o && output_valid;', count = 1
+case = 'body_holds_after_descriptors_retired'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0f7eb70>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje32/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje32/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________ test_actual_wide_rx_fault_rejected[wrong_descriptor_length] __________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje33')
+name = 'wrong_descriptor_length', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'descriptor_read_bytes[od*13+:13]=owner_bytes[oa];'
+after = "descriptor_read_bytes[od*13+:13]=owner_bytes[oa]+1'b1;", count = 1
+case = 'ownership_long_generation_sequence_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0f7f430>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje33/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje33/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________ test_actual_wide_rx_fault_rejected[descriptor_pointer_stuck] _________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje34')
+name = 'descriptor_pointer_stuck', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'if(descriptor_pop) descriptor_ptr<=descriptor_read_ptr;'
+after = 'if(descriptor_pop) descriptor_ptr<=descriptor_ptr;', count = 1
+case = 'ownership_long_generation_sequence_wrap'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0f7fe30>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje34/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje34/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+__________ test_actual_wide_rx_fault_rejected[owner_capacity_ignored] __________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje35')
+name = 'owner_capacity_ignored', module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = 'owner_full_now=1;', after = 'owner_full_now=0;', count = 2
+case = 'bad_descriptors_fill_owner_slots_fail_closed'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0f7fa20>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje35/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje35/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______ test_actual_wide_rx_fault_rejected[same_edge_owner_free_denied] ________
+
+tmp_path = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje36')
+name = 'same_edge_owner_free_denied'
+module = 'soc_pcie_gen3_framer_rx_owned_v1'
+before = ' && !release_now[allocate_n & (OWNER_SLOTS-1)]', after = '', count = 2
+case = 'same_edge_descriptor_release_allows_full_owner_replace'
+
+    @pytest.mark.parametrize(
+        "name,module,before,after,count,case", FAULTS, ids=[x[0] for x in FAULTS]
+    )
+    def test_actual_wide_rx_fault_rejected(
+        tmp_path, name, module, before, after, count, case
+    ):
+        rtl = tmp_path / "rtl"
+        rtl.mkdir()
+        for m in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / f"{m}.v", rtl / f"{m}.v")
+        p = rtl / f"{module}.v"
+        text = p.read_text()
+        assert text.count(before) == count
+        p.write_text(text.replace(before, after))
+>       result, record, cases, out = run(
+            tmp_path,
+            maximum=4118 if name == "owner_body_ignored" else 150,
+            rtl=rtl,
+            case=case,
+        )
+
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:352: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py:321: in run
+    cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7ff7e0f7d0e0>
+source = PosixPath('/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje36/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-root-owned-v1-01/test_actual_wide_rx_fault_reje36/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_full_positive_profiles[150]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_full_positive_profiles[4118]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[three_steps]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[lost_same_edge_block_activation]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[look_drops_successor]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[edb_releases_bad]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[zero_body_lost]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[one_completion_event]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[denied_full_replace]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[held_output_register_corruption]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[verdict_wrap_alias]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[eds_loses_pending_packet]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[bad_block_header_ignored]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[bad_stp_crc_ignored]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[wrong_raw_lane]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[wrong_lfsr_advance]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[restart_without_reseed]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[lcrc_initial_zero]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[sequence_byte_order]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[lcrc_misses_last_word]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[ordinary_lcrc_not_checked]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[edb_ignores_inverted_lcrc]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[wrong_dllp_residue_reproduces_first_failure]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[dllp_seed_zero]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[dllp_body_order]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[crc_failure_is_good]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[event_type_lost]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[owner_body_ignored]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[owner_descriptor_ignored]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[bad_descriptor_missing]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[null_descriptor_missing]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[wrong_body_owner]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[descriptor_generation_lost]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[held_descriptor_overwrite]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[held_body_frees_ring]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[wrong_descriptor_length]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[descriptor_pointer_stuck]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[owner_capacity_ignored]
+FAILED sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py::test_actual_wide_rx_fault_rejected[same_edge_owner_free_denied]
+39 failed, 1 passed in 132.34s (0:02:12)

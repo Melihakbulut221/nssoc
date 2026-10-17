@@ -45,7 +45,7 @@ mkdir -p "$OUT"
   -I "$SW" -L "$SW" \
   -T "$SW/link_soc.ld" \
   "$@" \
-  "$SW/sup_crt0.S" "$SW/fi_supervisor.c" \
+  "$SW/sup_crt0.S" "$SW/fi_supervisor.c" "$SW/lib/soc_hal.c" \
   -o "$OUT/fi_supervisor.elf" -lgcc
 
 "$OBJDUMP" -d -S "$OUT/fi_supervisor.elf" > "$OUT/fi_supervisor.dis"

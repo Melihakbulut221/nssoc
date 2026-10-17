@@ -1,0 +1,80 @@
+{
+  "date": "2026-09-20",
+  "source_head": "c02aa7979477aa8cfcae84d2744abd0d01a04198",
+  "scope": "Hosted checks, RTL, and formal/whole-CPU regression on c02aa79. Fifteen RTL skips remain SKIP. No physical layout, PCIe implementation, pad/PHY or radiation signoff is inferred. Later documentation-only revisions have separate workflow runs.",
+  "runs": [
+    {
+      "event": "push",
+      "run_id": 35469632101,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35469632101",
+      "jobs": [
+        {
+          "name": "rtl",
+          "conclusion": "success",
+          "startedAt": "2026-09-19T21:11:11Z",
+          "completedAt": "2026-09-19T21:20:42Z"
+        },
+        {
+          "name": "formal-and-boot",
+          "conclusion": "success",
+          "startedAt": "2026-09-19T21:11:01Z",
+          "completedAt": "2026-09-19T22:00:27Z"
+        },
+        {
+          "name": "checks",
+          "conclusion": "success",
+          "startedAt": "2026-09-19T21:11:01Z",
+          "completedAt": "2026-09-19T21:13:04Z"
+        }
+      ]
+    },
+    {
+      "event": "pr",
+      "run_id": 35469634120,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35469634120",
+      "jobs": [
+        {
+          "name": "checks",
+          "conclusion": "success",
+          "startedAt": "2026-09-19T21:11:03Z",
+          "completedAt": "2026-09-19T21:12:38Z"
+        },
+        {
+          "name": "rtl",
+          "conclusion": "success",
+          "startedAt": "2026-09-19T21:11:03Z",
+          "completedAt": "2026-09-19T21:20:23Z"
+        },
+        {
+          "name": "formal-and-boot",
+          "conclusion": "success",
+          "startedAt": "2026-09-19T21:11:05Z",
+          "completedAt": "2026-09-19T22:00:25Z"
+        }
+      ]
+    }
+  ],
+  "rtl_tests": {
+    "pass": 479,
+    "fail": 0,
+    "skip": 15
+  },
+  "whole_cpu_crash_cocotb": {
+    "pass": 1,
+    "fail": 0,
+    "skip": 0,
+    "simulated_ns": 3172635,
+    "wall_seconds": 197.6
+  },
+  "boot_cases": {
+    "none": 28,
+    "entry0_secondary": 28,
+    "length0_secondary": 28
+  },
+  "retrieval_command": "gh run view 35469634120 --log",
+  "log": {
+    "path": "hw/soc/out/external-review-20260919/github-c02-pr.log",
+    "sha256": "b618fdc41a741b9ffb452eec3d21e28bf636a5602af5b41a1d41eaf980614202",
+    "bytes": 538613
+  }
+}

@@ -1,0 +1,3614 @@
+{
+  "status": "PASS_BASELINE_AND_FOUR_ACTUAL_COPIED_INPUT_BINDING_CONTROLS",
+  "controller_identity": {
+    "pid": 324611,
+    "state": "R",
+    "process_group": 324611,
+    "start_ticks": "5327244"
+  },
+  "boot_id": "e1b7ced9-2243-4340-a046-92e8b30a45bc",
+  "freeze": {
+    "bytes": 429483,
+    "sha256": "e97fcd032181c13fc98b58c0dc8bd1aaf1f1b4985002ee307386e0b17110761a"
+  },
+  "cases": [
+    {
+      "name": "positive",
+      "changes": {
+        "source": [],
+        "native": []
+      },
+      "inputs": {
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/bind_source_ids.py": {
+          "bytes": 3172,
+          "sha256": "73d061934c58d6c286d0230c96b622d63f69c26cca3b89336873f894010502b9"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/device-location-geometry.json": {
+          "bytes": 159279,
+          "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/fixture-layout/schematic.cir": {
+          "bytes": 7384,
+          "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/fixture-layout/result.json": {
+          "bytes": 239227,
+          "sha256": "7b48381c49f7295f8159c5910fb978b4bfa0c7e73e5423e710835857005232e0"
+        }
+      },
+      "method_inverse_byte_exact": true,
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python",
+          "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/bind_source_ids.py"
+        ],
+        "returncode": 0,
+        "seconds": 2.0227113549990463,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "a993d59cfe0d6deb0db057ed03c8629ce8b50e734cc9d35db478013272e4b9f4",
+        "lifecycle_source_sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886",
+        "process_owner_sha256": "771ba87d10798dcc977c499e761ab1e764b9df28e461833d39fc888540a07f82"
+      },
+      "positive_output": {
+        "bytes": 107035,
+        "sha256": "5316a18c72bbfa9be0976bee95b4d57329295b036686ced1d42dad6777524725"
+      },
+      "status": "PASS_BASELINE"
+    },
+    {
+      "name": "reference_clock_swap",
+      "changes": {
+        "source": [
+          {
+            "path": "$.instances[0].nets[0]",
+            "old": "CLKP",
+            "new": "CLKN"
+          }
+        ],
+        "native": []
+      },
+      "inputs": {
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/bind_source_ids.py": {
+          "bytes": 3184,
+          "sha256": "d5eedb67c3bb1764873f84a27ceec9a0bcf1828ff7397df911eac83182c4b117"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/device-location-geometry.json": {
+          "bytes": 159279,
+          "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/fixture-layout/schematic.cir": {
+          "bytes": 7384,
+          "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/fixture-layout/result.json": {
+          "bytes": 239227,
+          "sha256": "f205e98287bbc99875c43dca1ff63bf8fdf57f706cdfef5d130d6edf229268f2"
+        }
+      },
+      "method_inverse_byte_exact": true,
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python",
+          "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/bind_source_ids.py"
+        ],
+        "returncode": 1,
+        "seconds": 2.0249965639959555,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "be3f7df38fa52c92c0c7d0dc59786f6019d6b61c0876aca7a753e4d07a01971b",
+        "lifecycle_source_sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886",
+        "process_owner_sha256": "c9905fd230041fa5a36882f924b8973b39d16bdd563f58b32122f1fd7a9306db"
+      },
+      "expected_assertion_observed": "assert all(len(v)==1 for v in net_map.values())",
+      "status": "PASS_EXPECTED_REJECTION"
+    },
+    {
+      "name": "reference_pullup_length",
+      "changes": {
+        "source": [
+          {
+            "path": "$.instances[2].length_um",
+            "old": 4.0,
+            "new": 6.4
+          }
+        ],
+        "native": []
+      },
+      "inputs": {
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/bind_source_ids.py": {
+          "bytes": 3187,
+          "sha256": "6f30190f12ff19c0ec895913b5e5de3654e818b21a1dfbe51af61332e56381ae"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/device-location-geometry.json": {
+          "bytes": 159279,
+          "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/fixture-layout/schematic.cir": {
+          "bytes": 7384,
+          "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/fixture-layout/result.json": {
+          "bytes": 239227,
+          "sha256": "ff1b11cd6dc0a938d26b4c71e01e3d474787cd9720cbeac7b60b1c99dd7c66f7"
+        }
+      },
+      "method_inverse_byte_exact": true,
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python",
+          "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/bind_source_ids.py"
+        ],
+        "returncode": 1,
+        "seconds": 2.023665947999689,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "726f68a694410857f9ba51a2cef179be7a89b4c7cb6830d30f0911b4456dc434",
+        "lifecycle_source_sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886",
+        "process_owner_sha256": "227e56efcfb28deef215d76fe353876553b7eaf024b6059e8ea5360597501c6b"
+      },
+      "expected_assertion_observed": "assert all(math.isclose(d['parameters'][k],v",
+      "status": "PASS_EXPECTED_REJECTION"
+    },
+    {
+      "name": "reference_missing_tap",
+      "changes": {
+        "source": [
+          {
+            "path": "$.instances",
+            "old": [
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XSP",
+                "nets": [
+                  "CLKP",
+                  "DIV__XFIRST__CKP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XSP",
+                "width_um": 4.0,
+                "length_um": 3.6,
+                "placement_row": 0,
+                "placement_um": [
+                  856.0,
+                  55.79
+                ],
+                "bbox_um": "(855.8,55.18;860.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XSN",
+                "nets": [
+                  "CLKN",
+                  "DIV__XFIRST__CKN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XSN",
+                "width_um": 4.0,
+                "length_um": 3.6,
+                "placement_row": 0,
+                "placement_um": [
+                  832.0,
+                  55.79
+                ],
+                "bbox_um": "(831.8,55.18;836.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XUP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__CKP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XUP",
+                "width_um": 1.0,
+                "length_um": 4.0,
+                "placement_row": 0,
+                "placement_um": [
+                  808.0,
+                  55.39
+                ],
+                "bbox_um": "(807.8,54.78;809.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XUN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__CKN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XUN",
+                "width_um": 1.0,
+                "length_um": 4.0,
+                "placement_row": 0,
+                "placement_um": [
+                  784.0,
+                  55.39
+                ],
+                "bbox_um": "(783.8,54.78;785.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XBIAS",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__XCORE__REF",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XBIAS",
+                "width_um": 1.0,
+                "length_um": 12.7,
+                "placement_row": 0,
+                "placement_um": [
+                  760.0,
+                  46.69
+                ],
+                "bbox_um": "(759.8,46.08;761.2,60)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XREF",
+                "nets": [
+                  "DIV__XFIRST__XCORE__REF",
+                  "DIV__XFIRST__XCORE__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XREF",
+                "nx": 1,
+                "placement_row": 0,
+                "placement_um": [
+                  736.0,
+                  56.0
+                ],
+                "bbox_um": "(732.65,52.67;739.35,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XDP",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__S1N",
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  712.0,
+                  56.0
+                ],
+                "bbox_um": "(708.65,52.67;717.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XDN",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__S1P",
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  688.0,
+                  56.0
+                ],
+                "bbox_um": "(684.65,52.67;693.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XLP",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  664.0,
+                  56.0
+                ],
+                "bbox_um": "(660.65,52.67;669.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XLN",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  640.0,
+                  56.0
+                ],
+                "bbox_um": "(636.65,52.67;645.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XCS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "DIV__XFIRST__CKN",
+                  "DIV__XFIRST__XCORE__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  616.0,
+                  56.0
+                ],
+                "bbox_um": "(612.65,52.67;624.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XCH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "DIV__XFIRST__CKP",
+                  "DIV__XFIRST__XCORE__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  592.0,
+                  56.0
+                ],
+                "bbox_um": "(588.65,52.67;600.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XT",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__TE",
+                  "DIV__XFIRST__XCORE__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  568.0,
+                  56.0
+                ],
+                "bbox_um": "(564.65,52.67;576.9,59.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__XCORE__MP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  544.0,
+                  57.27
+                ],
+                "bbox_um": "(543.8,56.66;552.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__XCORE__MN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  520.0,
+                  57.27
+                ],
+                "bbox_um": "(519.8,56.66;528.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XBS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  496.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(495.8,20.38;497.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XBH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  472.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(471.8,20.38;473.2,60)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XDP",
+                "nets": [
+                  "DIV__S1N",
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  448.0,
+                  56.0
+                ],
+                "bbox_um": "(444.65,52.67;453.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XDN",
+                "nets": [
+                  "DIV__S1P",
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  424.0,
+                  56.0
+                ],
+                "bbox_um": "(420.65,52.67;429.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XLP",
+                "nets": [
+                  "DIV__S1N",
+                  "DIV__S1P",
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  400.0,
+                  56.0
+                ],
+                "bbox_um": "(396.65,52.67;405.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XLN",
+                "nets": [
+                  "DIV__S1P",
+                  "DIV__S1N",
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  376.0,
+                  56.0
+                ],
+                "bbox_um": "(372.65,52.67;381.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XCS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "DIV__XFIRST__CKP",
+                  "DIV__XFIRST__XCORE__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  352.0,
+                  56.0
+                ],
+                "bbox_um": "(348.65,52.67;360.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XCH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "DIV__XFIRST__CKN",
+                  "DIV__XFIRST__XCORE__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  328.0,
+                  56.0
+                ],
+                "bbox_um": "(324.65,52.67;336.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XT",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__TE",
+                  "DIV__XFIRST__XCORE__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  304.0,
+                  56.0
+                ],
+                "bbox_um": "(300.65,52.67;312.9,59.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__S1P",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  280.0,
+                  57.27
+                ],
+                "bbox_um": "(279.8,56.66;288.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__S1N",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  256.0,
+                  57.27
+                ],
+                "bbox_um": "(255.8,56.66;264.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XBS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  232.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(231.8,20.38;233.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XBH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  208.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(207.8,20.38;209.2,60)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XFIRST__XCORE__XSEEDP",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MP",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XSEEDP",
+                "width_um": 2.2,
+                "length_um": 2.0,
+                "placement_row": 0,
+                "placement_um": [
+                  184.0,
+                  57.4
+                ],
+                "bbox_um": "(183.4,56.8;186.8,60)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XFIRST__XCORE__XSEEDN",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MN",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XSEEDN",
+                "width_um": 2.0,
+                "length_um": 2.0,
+                "placement_row": 0,
+                "placement_um": [
+                  160.0,
+                  57.4
+                ],
+                "bbox_um": "(159.4,56.8;162.6,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLSP",
+                "nets": [
+                  "DIV__S1P",
+                  "DIV__BIP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLSP",
+                "width_um": 2.0,
+                "length_um": 3.6,
+                "placement_row": 1,
+                "placement_um": [
+                  160.0,
+                  231.79
+                ],
+                "bbox_um": "(159.8,231.18;162.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLSN",
+                "nets": [
+                  "DIV__S1N",
+                  "DIV__BIN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLSN",
+                "width_um": 2.0,
+                "length_um": 3.6,
+                "placement_row": 1,
+                "placement_um": [
+                  184.0,
+                  231.79
+                ],
+                "bbox_um": "(183.8,231.18;186.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLDP",
+                "nets": [
+                  "DIV__BIP",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLDP",
+                "width_um": 1.0,
+                "length_um": 16.0,
+                "placement_row": 1,
+                "placement_um": [
+                  208.0,
+                  219.39000000000001
+                ],
+                "bbox_um": "(207.8,218.78;209.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLDN",
+                "nets": [
+                  "DIV__BIN",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLDN",
+                "width_um": 1.0,
+                "length_um": 16.0,
+                "placement_row": 1,
+                "placement_um": [
+                  232.0,
+                  219.39000000000001
+                ],
+                "bbox_um": "(231.8,218.78;233.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLB",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__LREF",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLB",
+                "width_um": 1.0,
+                "length_um": 9.0,
+                "placement_row": 1,
+                "placement_um": [
+                  256.0,
+                  226.39000000000001
+                ],
+                "bbox_um": "(255.8,225.78;257.2,236)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLREF",
+                "nets": [
+                  "DIV__LREF",
+                  "DIV__LREF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLREF",
+                "nx": 1,
+                "placement_row": 1,
+                "placement_um": [
+                  280.0,
+                  232.0
+                ],
+                "bbox_um": "(276.65,228.67;283.35,235.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLP",
+                "nets": [
+                  "DIV__LN",
+                  "DIV__BIP",
+                  "DIV__LT",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 1,
+                "placement_um": [
+                  304.0,
+                  232.0
+                ],
+                "bbox_um": "(300.65,228.67;309.2,235.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLN",
+                "nets": [
+                  "DIV__LP",
+                  "DIV__BIN",
+                  "DIV__LT",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 1,
+                "placement_um": [
+                  328.0,
+                  232.0
+                ],
+                "bbox_um": "(324.65,228.67;333.2,235.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLT",
+                "nets": [
+                  "DIV__LT",
+                  "DIV__LREF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLT",
+                "nx": 4,
+                "placement_row": 1,
+                "placement_um": [
+                  352.0,
+                  232.0
+                ],
+                "bbox_um": "(348.65,228.67;360.9,235.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__LP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLRP",
+                "width_um": 8.0,
+                "length_um": 4.4,
+                "placement_row": 1,
+                "placement_um": [
+                  376.0,
+                  230.99
+                ],
+                "bbox_um": "(375.8,230.38;384.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__LN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLRN",
+                "width_um": 8.0,
+                "length_um": 4.4,
+                "placement_row": 1,
+                "placement_um": [
+                  400.0,
+                  230.99
+                ],
+                "bbox_um": "(399.8,230.38;408.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSP",
+                "nets": [
+                  "DIV__LP",
+                  "DIV__CKP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XSP",
+                "width_um": 2.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  424.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(423.8,226.78;426.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSN",
+                "nets": [
+                  "DIV__LN",
+                  "DIV__CKN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XSN",
+                "width_um": 2.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  448.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(447.8,226.78;450.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XDP",
+                "nets": [
+                  "DIV__CKP",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XDP",
+                "width_um": 1.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  472.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(471.8,226.78;473.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XDN",
+                "nets": [
+                  "DIV__CKN",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XDN",
+                "width_um": 1.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  496.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(495.8,226.78;497.2,236)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XCP",
+                "nets": [
+                  "DIV__LP",
+                  "DIV__CKP"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XCP",
+                "width_um": 24.0,
+                "length_um": 24.0,
+                "placement_row": 1,
+                "placement_um": [
+                  520.0,
+                  211.4
+                ],
+                "bbox_um": "(519.4,210.8;544.6,236)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XCN",
+                "nets": [
+                  "DIV__LN",
+                  "DIV__CKN"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XCN",
+                "width_um": 24.0,
+                "length_um": 24.0,
+                "placement_row": 1,
+                "placement_um": [
+                  556.0,
+                  211.4
+                ],
+                "bbox_um": "(555.4,210.8;580.6,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XBIAS",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XSECOND__REF",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XBIAS",
+                "width_um": 1.0,
+                "length_um": 11.5,
+                "placement_row": 2,
+                "placement_um": [
+                  760.0,
+                  375.89
+                ],
+                "bbox_um": "(759.8,375.28;761.2,388)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XREF",
+                "nets": [
+                  "DIV__XSECOND__REF",
+                  "DIV__XSECOND__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XREF",
+                "nx": 1,
+                "placement_row": 2,
+                "placement_um": [
+                  736.0,
+                  384.0
+                ],
+                "bbox_um": "(732.65,380.67;739.35,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XDP",
+                "nets": [
+                  "DIV__XSECOND__MN",
+                  "QN",
+                  "DIV__XSECOND__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  712.0,
+                  384.0
+                ],
+                "bbox_um": "(708.65,380.67;717.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XDN",
+                "nets": [
+                  "DIV__XSECOND__MP",
+                  "QP",
+                  "DIV__XSECOND__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  688.0,
+                  384.0
+                ],
+                "bbox_um": "(684.65,380.67;693.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XLP",
+                "nets": [
+                  "DIV__XSECOND__MN",
+                  "DIV__XSECOND__MP",
+                  "DIV__XSECOND__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  664.0,
+                  384.0
+                ],
+                "bbox_um": "(660.65,380.67;669.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XLN",
+                "nets": [
+                  "DIV__XSECOND__MP",
+                  "DIV__XSECOND__MN",
+                  "DIV__XSECOND__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  640.0,
+                  384.0
+                ],
+                "bbox_um": "(636.65,380.67;645.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XCS",
+                "nets": [
+                  "DIV__XSECOND__XM__SE",
+                  "DIV__CKN",
+                  "DIV__XSECOND__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  616.0,
+                  384.0
+                ],
+                "bbox_um": "(612.65,380.67;624.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XCH",
+                "nets": [
+                  "DIV__XSECOND__XM__HE",
+                  "DIV__CKP",
+                  "DIV__XSECOND__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  592.0,
+                  384.0
+                ],
+                "bbox_um": "(588.65,380.67;600.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XT",
+                "nets": [
+                  "DIV__XSECOND__XM__TE",
+                  "DIV__XSECOND__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  568.0,
+                  384.0
+                ],
+                "bbox_um": "(564.65,380.67;576.9,387.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XSECOND__MP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  544.0,
+                  385.27
+                ],
+                "bbox_um": "(543.8,384.66;552.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XSECOND__MN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  520.0,
+                  385.27
+                ],
+                "bbox_um": "(519.8,384.66;528.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XBS",
+                "nets": [
+                  "DIV__XSECOND__XM__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  496.0,
+                  348.99
+                ],
+                "bbox_um": "(495.8,348.38;497.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XBH",
+                "nets": [
+                  "DIV__XSECOND__XM__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  472.0,
+                  348.99
+                ],
+                "bbox_um": "(471.8,348.38;473.2,388)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XDP",
+                "nets": [
+                  "QN",
+                  "DIV__XSECOND__MP",
+                  "DIV__XSECOND__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  448.0,
+                  384.0
+                ],
+                "bbox_um": "(444.65,380.67;453.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XDN",
+                "nets": [
+                  "QP",
+                  "DIV__XSECOND__MN",
+                  "DIV__XSECOND__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  424.0,
+                  384.0
+                ],
+                "bbox_um": "(420.65,380.67;429.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XLP",
+                "nets": [
+                  "QN",
+                  "QP",
+                  "DIV__XSECOND__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  400.0,
+                  384.0
+                ],
+                "bbox_um": "(396.65,380.67;405.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XLN",
+                "nets": [
+                  "QP",
+                  "QN",
+                  "DIV__XSECOND__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  376.0,
+                  384.0
+                ],
+                "bbox_um": "(372.65,380.67;381.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XCS",
+                "nets": [
+                  "DIV__XSECOND__XS__SE",
+                  "DIV__CKP",
+                  "DIV__XSECOND__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  352.0,
+                  384.0
+                ],
+                "bbox_um": "(348.65,380.67;360.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XCH",
+                "nets": [
+                  "DIV__XSECOND__XS__HE",
+                  "DIV__CKN",
+                  "DIV__XSECOND__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  328.0,
+                  384.0
+                ],
+                "bbox_um": "(324.65,380.67;336.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XT",
+                "nets": [
+                  "DIV__XSECOND__XS__TE",
+                  "DIV__XSECOND__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  304.0,
+                  384.0
+                ],
+                "bbox_um": "(300.65,380.67;312.9,387.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "QP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  280.0,
+                  385.27
+                ],
+                "bbox_um": "(279.8,384.66;288.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "QN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  256.0,
+                  385.27
+                ],
+                "bbox_um": "(255.8,384.66;264.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XBS",
+                "nets": [
+                  "DIV__XSECOND__XS__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  232.0,
+                  348.99
+                ],
+                "bbox_um": "(231.8,348.38;233.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XBH",
+                "nets": [
+                  "DIV__XSECOND__XS__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  208.0,
+                  348.99
+                ],
+                "bbox_um": "(207.8,348.38;209.2,388)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XSECOND__XSEEDP",
+                "nets": [
+                  "DIV__XSECOND__MP",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XSEEDP",
+                "width_um": 2.2,
+                "length_um": 2.0,
+                "placement_row": 2,
+                "placement_um": [
+                  184.0,
+                  385.40000000000003
+                ],
+                "bbox_um": "(183.4,384.8;186.8,388)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XSECOND__XSEEDN",
+                "nets": [
+                  "DIV__XSECOND__MN",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XSEEDN",
+                "width_um": 2.0,
+                "length_um": 2.0,
+                "placement_row": 2,
+                "placement_um": [
+                  160.0,
+                  385.40000000000003
+                ],
+                "bbox_um": "(159.4,384.8;162.6,388)"
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP0",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  170.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP1",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  290.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP2",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  410.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP3",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  530.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP4",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  650.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP5",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  770.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP6",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  170.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP7",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  290.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP8",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  410.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP9",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  530.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP10",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  650.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP11",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  770.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP12",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  170.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP13",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  290.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP14",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  410.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP15",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  530.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP16",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  650.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP17",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  770.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              }
+            ],
+            "new": [
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XSP",
+                "nets": [
+                  "CLKP",
+                  "DIV__XFIRST__CKP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XSP",
+                "width_um": 4.0,
+                "length_um": 3.6,
+                "placement_row": 0,
+                "placement_um": [
+                  856.0,
+                  55.79
+                ],
+                "bbox_um": "(855.8,55.18;860.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XSN",
+                "nets": [
+                  "CLKN",
+                  "DIV__XFIRST__CKN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XSN",
+                "width_um": 4.0,
+                "length_um": 3.6,
+                "placement_row": 0,
+                "placement_um": [
+                  832.0,
+                  55.79
+                ],
+                "bbox_um": "(831.8,55.18;836.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XUP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__CKP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XUP",
+                "width_um": 1.0,
+                "length_um": 4.0,
+                "placement_row": 0,
+                "placement_um": [
+                  808.0,
+                  55.39
+                ],
+                "bbox_um": "(807.8,54.78;809.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XUN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__CKN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_CONDITIONED_HBT_V3",
+                "source_instance": "XUN",
+                "width_um": 1.0,
+                "length_um": 4.0,
+                "placement_row": 0,
+                "placement_um": [
+                  784.0,
+                  55.39
+                ],
+                "bbox_um": "(783.8,54.78;785.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XBIAS",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__XCORE__REF",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XBIAS",
+                "width_um": 1.0,
+                "length_um": 12.7,
+                "placement_row": 0,
+                "placement_um": [
+                  760.0,
+                  46.69
+                ],
+                "bbox_um": "(759.8,46.08;761.2,60)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XREF",
+                "nets": [
+                  "DIV__XFIRST__XCORE__REF",
+                  "DIV__XFIRST__XCORE__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XREF",
+                "nx": 1,
+                "placement_row": 0,
+                "placement_um": [
+                  736.0,
+                  56.0
+                ],
+                "bbox_um": "(732.65,52.67;739.35,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XDP",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__S1N",
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  712.0,
+                  56.0
+                ],
+                "bbox_um": "(708.65,52.67;717.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XDN",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__S1P",
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  688.0,
+                  56.0
+                ],
+                "bbox_um": "(684.65,52.67;693.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XLP",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  664.0,
+                  56.0
+                ],
+                "bbox_um": "(660.65,52.67;669.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XLN",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  640.0,
+                  56.0
+                ],
+                "bbox_um": "(636.65,52.67;645.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XCS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "DIV__XFIRST__CKN",
+                  "DIV__XFIRST__XCORE__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  616.0,
+                  56.0
+                ],
+                "bbox_um": "(612.65,52.67;624.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XCH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "DIV__XFIRST__CKP",
+                  "DIV__XFIRST__XCORE__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  592.0,
+                  56.0
+                ],
+                "bbox_um": "(588.65,52.67;600.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XM__XT",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__TE",
+                  "DIV__XFIRST__XCORE__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  568.0,
+                  56.0
+                ],
+                "bbox_um": "(564.65,52.67;576.9,59.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__XCORE__MP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  544.0,
+                  57.27
+                ],
+                "bbox_um": "(543.8,56.66;552.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XFIRST__XCORE__MN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  520.0,
+                  57.27
+                ],
+                "bbox_um": "(519.8,56.66;528.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XBS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  496.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(495.8,20.38;497.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XM__XBH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XM__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  472.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(471.8,20.38;473.2,60)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XDP",
+                "nets": [
+                  "DIV__S1N",
+                  "DIV__XFIRST__XCORE__MP",
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  448.0,
+                  56.0
+                ],
+                "bbox_um": "(444.65,52.67;453.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XDN",
+                "nets": [
+                  "DIV__S1P",
+                  "DIV__XFIRST__XCORE__MN",
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  424.0,
+                  56.0
+                ],
+                "bbox_um": "(420.65,52.67;429.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XLP",
+                "nets": [
+                  "DIV__S1N",
+                  "DIV__S1P",
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  400.0,
+                  56.0
+                ],
+                "bbox_um": "(396.65,52.67;405.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XLN",
+                "nets": [
+                  "DIV__S1P",
+                  "DIV__S1N",
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 0,
+                "placement_um": [
+                  376.0,
+                  56.0
+                ],
+                "bbox_um": "(372.65,52.67;381.2,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XCS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "DIV__XFIRST__CKP",
+                  "DIV__XFIRST__XCORE__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  352.0,
+                  56.0
+                ],
+                "bbox_um": "(348.65,52.67;360.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XCH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "DIV__XFIRST__CKN",
+                  "DIV__XFIRST__XCORE__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  328.0,
+                  56.0
+                ],
+                "bbox_um": "(324.65,52.67;336.9,59.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XFIRST__XCORE__XS__XT",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__TE",
+                  "DIV__XFIRST__XCORE__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 0,
+                "placement_um": [
+                  304.0,
+                  56.0
+                ],
+                "bbox_um": "(300.65,52.67;312.9,59.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__S1P",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  280.0,
+                  57.27
+                ],
+                "bbox_um": "(279.8,56.66;288.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__S1N",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 0,
+                "placement_um": [
+                  256.0,
+                  57.27
+                ],
+                "bbox_um": "(255.8,56.66;264.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XBS",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  232.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(231.8,20.38;233.2,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XFIRST__XCORE__XS__XBH",
+                "nets": [
+                  "DIV__XFIRST__XCORE__XS__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 0,
+                "placement_um": [
+                  208.0,
+                  20.990000000000002
+                ],
+                "bbox_um": "(207.8,20.38;209.2,60)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XFIRST__XCORE__XSEEDP",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MP",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XSEEDP",
+                "width_um": 2.2,
+                "length_um": 2.0,
+                "placement_row": 0,
+                "placement_um": [
+                  184.0,
+                  57.4
+                ],
+                "bbox_um": "(183.4,56.8;186.8,60)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XFIRST__XCORE__XSEEDN",
+                "nets": [
+                  "DIV__XFIRST__XCORE__MN",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_HBT",
+                "source_instance": "XSEEDN",
+                "width_um": 2.0,
+                "length_um": 2.0,
+                "placement_row": 0,
+                "placement_um": [
+                  160.0,
+                  57.4
+                ],
+                "bbox_um": "(159.4,56.8;162.6,60)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLSP",
+                "nets": [
+                  "DIV__S1P",
+                  "DIV__BIP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLSP",
+                "width_um": 2.0,
+                "length_um": 3.6,
+                "placement_row": 1,
+                "placement_um": [
+                  160.0,
+                  231.79
+                ],
+                "bbox_um": "(159.8,231.18;162.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLSN",
+                "nets": [
+                  "DIV__S1N",
+                  "DIV__BIN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLSN",
+                "width_um": 2.0,
+                "length_um": 3.6,
+                "placement_row": 1,
+                "placement_um": [
+                  184.0,
+                  231.79
+                ],
+                "bbox_um": "(183.8,231.18;186.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLDP",
+                "nets": [
+                  "DIV__BIP",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLDP",
+                "width_um": 1.0,
+                "length_um": 16.0,
+                "placement_row": 1,
+                "placement_um": [
+                  208.0,
+                  219.39000000000001
+                ],
+                "bbox_um": "(207.8,218.78;209.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLDN",
+                "nets": [
+                  "DIV__BIN",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLDN",
+                "width_um": 1.0,
+                "length_um": 16.0,
+                "placement_row": 1,
+                "placement_um": [
+                  232.0,
+                  219.39000000000001
+                ],
+                "bbox_um": "(231.8,218.78;233.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLB",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__LREF",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLB",
+                "width_um": 1.0,
+                "length_um": 9.0,
+                "placement_row": 1,
+                "placement_um": [
+                  256.0,
+                  226.39000000000001
+                ],
+                "bbox_um": "(255.8,225.78;257.2,236)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLREF",
+                "nets": [
+                  "DIV__LREF",
+                  "DIV__LREF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLREF",
+                "nx": 1,
+                "placement_row": 1,
+                "placement_um": [
+                  280.0,
+                  232.0
+                ],
+                "bbox_um": "(276.65,228.67;283.35,235.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLP",
+                "nets": [
+                  "DIV__LN",
+                  "DIV__BIP",
+                  "DIV__LT",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 1,
+                "placement_um": [
+                  304.0,
+                  232.0
+                ],
+                "bbox_um": "(300.65,228.67;309.2,235.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLN",
+                "nets": [
+                  "DIV__LP",
+                  "DIV__BIN",
+                  "DIV__LT",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 1,
+                "placement_um": [
+                  328.0,
+                  232.0
+                ],
+                "bbox_um": "(324.65,228.67;333.2,235.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XLT",
+                "nets": [
+                  "DIV__LT",
+                  "DIV__LREF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLT",
+                "nx": 4,
+                "placement_row": 1,
+                "placement_um": [
+                  352.0,
+                  232.0
+                ],
+                "bbox_um": "(348.65,228.67;360.9,235.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__LP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLRP",
+                "width_um": 8.0,
+                "length_um": 4.4,
+                "placement_row": 1,
+                "placement_um": [
+                  376.0,
+                  230.99
+                ],
+                "bbox_um": "(375.8,230.38;384.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XLRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__LN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XLRN",
+                "width_um": 8.0,
+                "length_um": 4.4,
+                "placement_row": 1,
+                "placement_um": [
+                  400.0,
+                  230.99
+                ],
+                "bbox_um": "(399.8,230.38;408.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSP",
+                "nets": [
+                  "DIV__LP",
+                  "DIV__CKP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XSP",
+                "width_um": 2.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  424.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(423.8,226.78;426.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSN",
+                "nets": [
+                  "DIV__LN",
+                  "DIV__CKN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XSN",
+                "width_um": 2.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  448.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(447.8,226.78;450.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XDP",
+                "nets": [
+                  "DIV__CKP",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XDP",
+                "width_um": 1.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  472.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(471.8,226.78;473.2,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XDN",
+                "nets": [
+                  "DIV__CKN",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XDN",
+                "width_um": 1.0,
+                "length_um": 8.0,
+                "placement_row": 1,
+                "placement_um": [
+                  496.0,
+                  227.39000000000001
+                ],
+                "bbox_um": "(495.8,226.78;497.2,236)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XCP",
+                "nets": [
+                  "DIV__LP",
+                  "DIV__CKP"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XCP",
+                "width_um": 24.0,
+                "length_um": 24.0,
+                "placement_row": 1,
+                "placement_um": [
+                  520.0,
+                  211.4
+                ],
+                "bbox_um": "(519.4,210.8;544.6,236)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XCN",
+                "nets": [
+                  "DIV__LN",
+                  "DIV__CKN"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV4_HBT_V10",
+                "source_instance": "XCN",
+                "width_um": 24.0,
+                "length_um": 24.0,
+                "placement_row": 1,
+                "placement_um": [
+                  556.0,
+                  211.4
+                ],
+                "bbox_um": "(555.4,210.8;580.6,236)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XBIAS",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XSECOND__REF",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XBIAS",
+                "width_um": 1.0,
+                "length_um": 11.5,
+                "placement_row": 2,
+                "placement_um": [
+                  760.0,
+                  375.89
+                ],
+                "bbox_um": "(759.8,375.28;761.2,388)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XREF",
+                "nets": [
+                  "DIV__XSECOND__REF",
+                  "DIV__XSECOND__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XREF",
+                "nx": 1,
+                "placement_row": 2,
+                "placement_um": [
+                  736.0,
+                  384.0
+                ],
+                "bbox_um": "(732.65,380.67;739.35,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XDP",
+                "nets": [
+                  "DIV__XSECOND__MN",
+                  "QN",
+                  "DIV__XSECOND__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  712.0,
+                  384.0
+                ],
+                "bbox_um": "(708.65,380.67;717.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XDN",
+                "nets": [
+                  "DIV__XSECOND__MP",
+                  "QP",
+                  "DIV__XSECOND__XM__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  688.0,
+                  384.0
+                ],
+                "bbox_um": "(684.65,380.67;693.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XLP",
+                "nets": [
+                  "DIV__XSECOND__MN",
+                  "DIV__XSECOND__MP",
+                  "DIV__XSECOND__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  664.0,
+                  384.0
+                ],
+                "bbox_um": "(660.65,380.67;669.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XLN",
+                "nets": [
+                  "DIV__XSECOND__MP",
+                  "DIV__XSECOND__MN",
+                  "DIV__XSECOND__XM__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  640.0,
+                  384.0
+                ],
+                "bbox_um": "(636.65,380.67;645.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XCS",
+                "nets": [
+                  "DIV__XSECOND__XM__SE",
+                  "DIV__CKN",
+                  "DIV__XSECOND__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  616.0,
+                  384.0
+                ],
+                "bbox_um": "(612.65,380.67;624.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XCH",
+                "nets": [
+                  "DIV__XSECOND__XM__HE",
+                  "DIV__CKP",
+                  "DIV__XSECOND__XM__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  592.0,
+                  384.0
+                ],
+                "bbox_um": "(588.65,380.67;600.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XM__XT",
+                "nets": [
+                  "DIV__XSECOND__XM__TE",
+                  "DIV__XSECOND__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  568.0,
+                  384.0
+                ],
+                "bbox_um": "(564.65,380.67;576.9,387.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XSECOND__MP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  544.0,
+                  385.27
+                ],
+                "bbox_um": "(543.8,384.66;552.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "DIV__XSECOND__MN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  520.0,
+                  385.27
+                ],
+                "bbox_um": "(519.8,384.66;528.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XBS",
+                "nets": [
+                  "DIV__XSECOND__XM__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  496.0,
+                  348.99
+                ],
+                "bbox_um": "(495.8,348.38;497.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XM__XBH",
+                "nets": [
+                  "DIV__XSECOND__XM__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  472.0,
+                  348.99
+                ],
+                "bbox_um": "(471.8,348.38;473.2,388)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XDP",
+                "nets": [
+                  "QN",
+                  "DIV__XSECOND__MP",
+                  "DIV__XSECOND__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  448.0,
+                  384.0
+                ],
+                "bbox_um": "(444.65,380.67;453.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XDN",
+                "nets": [
+                  "QP",
+                  "DIV__XSECOND__MN",
+                  "DIV__XSECOND__XS__SE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XDN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  424.0,
+                  384.0
+                ],
+                "bbox_um": "(420.65,380.67;429.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XLP",
+                "nets": [
+                  "QN",
+                  "QP",
+                  "DIV__XSECOND__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLP",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  400.0,
+                  384.0
+                ],
+                "bbox_um": "(396.65,380.67;405.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XLN",
+                "nets": [
+                  "QP",
+                  "QN",
+                  "DIV__XSECOND__XS__HE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XLN",
+                "nx": 2,
+                "placement_row": 2,
+                "placement_um": [
+                  376.0,
+                  384.0
+                ],
+                "bbox_um": "(372.65,380.67;381.2,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XCS",
+                "nets": [
+                  "DIV__XSECOND__XS__SE",
+                  "DIV__CKP",
+                  "DIV__XSECOND__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCS",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  352.0,
+                  384.0
+                ],
+                "bbox_um": "(348.65,380.67;360.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XCH",
+                "nets": [
+                  "DIV__XSECOND__XS__HE",
+                  "DIV__CKN",
+                  "DIV__XSECOND__XS__TE",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XCH",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  328.0,
+                  384.0
+                ],
+                "bbox_um": "(324.65,380.67;336.9,387.78)"
+              },
+              {
+                "kind": "hbt",
+                "name": "DIV__XSECOND__XS__XT",
+                "nets": [
+                  "DIV__XSECOND__XS__TE",
+                  "DIV__XSECOND__REF",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XT",
+                "nx": 4,
+                "placement_row": 2,
+                "placement_um": [
+                  304.0,
+                  384.0
+                ],
+                "bbox_um": "(300.65,380.67;312.9,387.78)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XRP",
+                "nets": [
+                  "DIV_AVDD",
+                  "QP",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRP",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  280.0,
+                  385.27
+                ],
+                "bbox_um": "(279.8,384.66;288.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XRN",
+                "nets": [
+                  "DIV_AVDD",
+                  "QN",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XRN",
+                "width_um": 8.0,
+                "length_um": 2.12,
+                "placement_row": 2,
+                "placement_um": [
+                  256.0,
+                  385.27
+                ],
+                "bbox_um": "(255.8,384.66;264.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XBS",
+                "nets": [
+                  "DIV__XSECOND__XS__SE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBS",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  232.0,
+                  348.99
+                ],
+                "bbox_um": "(231.8,348.38;233.2,388)"
+              },
+              {
+                "kind": "resistor",
+                "name": "DIV__XSECOND__XS__XBH",
+                "nets": [
+                  "DIV__XSECOND__XS__HE",
+                  "AVSS",
+                  "SUB"
+                ],
+                "source_subcircuit": "NSSOC_CML_LATCH",
+                "source_instance": "XBH",
+                "width_um": 1.0,
+                "length_um": 38.4,
+                "placement_row": 2,
+                "placement_um": [
+                  208.0,
+                  348.99
+                ],
+                "bbox_um": "(207.8,348.38;209.2,388)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XSECOND__XSEEDP",
+                "nets": [
+                  "DIV__XSECOND__MP",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XSEEDP",
+                "width_um": 2.2,
+                "length_um": 2.0,
+                "placement_row": 2,
+                "placement_um": [
+                  184.0,
+                  385.40000000000003
+                ],
+                "bbox_um": "(183.4,384.8;186.8,388)"
+              },
+              {
+                "kind": "capacitor",
+                "name": "DIV__XSECOND__XSEEDN",
+                "nets": [
+                  "DIV__XSECOND__MN",
+                  "AVSS"
+                ],
+                "source_subcircuit": "NSSOC_CLOCK_DIV2_TAIL_V10",
+                "source_instance": "XSEEDN",
+                "width_um": 2.0,
+                "length_um": 2.0,
+                "placement_row": 2,
+                "placement_um": [
+                  160.0,
+                  385.40000000000003
+                ],
+                "bbox_um": "(159.4,384.8;162.6,388)"
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP1",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  290.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP2",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  410.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP3",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  530.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP4",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  650.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP5",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  770.0,
+                  4.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP6",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  170.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP7",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  290.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP8",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  410.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP9",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  530.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP10",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  650.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP11",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  770.0,
+                  180.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP12",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  170.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP13",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  290.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP14",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  410.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP15",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  530.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP16",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  650.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              },
+              {
+                "kind": "substrate_tap",
+                "name": "TAP17",
+                "nets": [
+                  "SUB",
+                  "BULK"
+                ],
+                "placement_um": [
+                  770.0,
+                  332.0
+                ],
+                "area_um2": 4,
+                "perimeter_um": 8
+              }
+            ]
+          }
+        ],
+        "native": []
+      },
+      "inputs": {
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/bind_source_ids.py": {
+          "bytes": 3185,
+          "sha256": "d59b470d2a503ed5e4ac754dbb33addc10d7f24afc3f07309571c711ccd2fdc9"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/device-location-geometry.json": {
+          "bytes": 159279,
+          "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/fixture-layout/schematic.cir": {
+          "bytes": 7384,
+          "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/fixture-layout/result.json": {
+          "bytes": 239001,
+          "sha256": "c550172a5fe48dba71f86dbf737a26f7b57912a0e4216066f4e7ec75432ebfe9"
+        }
+      },
+      "method_inverse_byte_exact": true,
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python",
+          "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/bind_source_ids.py"
+        ],
+        "returncode": 1,
+        "seconds": 2.0257337669972912,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4fa9ebf6a5fde31c18c14859c1b0eee18e1a5f345e20e1eb5aa121e941640fef",
+        "lifecycle_source_sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886",
+        "process_owner_sha256": "fa749d7e007d0513a4ad16dc8cd9b7248855f2ffb1161064d1f69344d2ea825c"
+      },
+      "expected_assertion_observed": "assert len(matches)==1,(d['native_id'],at,matches)",
+      "status": "PASS_EXPECTED_REJECTION"
+    },
+    {
+      "name": "native_mim_area_corruption",
+      "changes": {
+        "source": [],
+        "native": [
+          {
+            "path": "$.devices[67].parameters.A",
+            "old": 4.0,
+            "new": 4.08
+          }
+        ]
+      },
+      "inputs": {
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/bind_source_ids.py": {
+          "bytes": 3190,
+          "sha256": "669fad29c0b569c61cbc27b9593b11c18544dbcd635ef190701823cc9c151cee"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/device-location-geometry.json": {
+          "bytes": 159280,
+          "sha256": "d05da08161d8fdc220308fd7ffd987ca04d433f9390e9ec3407771daaee90c02"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/fixture-layout/schematic.cir": {
+          "bytes": 7384,
+          "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+        },
+        "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/fixture-layout/result.json": {
+          "bytes": 239227,
+          "sha256": "7b48381c49f7295f8159c5910fb978b4bfa0c7e73e5423e710835857005232e0"
+        }
+      },
+      "method_inverse_byte_exact": true,
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python",
+          "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/bind_source_ids.py"
+        ],
+        "returncode": 1,
+        "seconds": 2.0273733520007227,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "024b7e635b45c6f3a839b4713afb446feafb54038b845a15e60239350c4e4f8a",
+        "lifecycle_source_sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886",
+        "process_owner_sha256": "a00ddcc5a95e913e687f2a6184fc46f339e2eb6bc0872f7b7f286fc3df24ccb6"
+      },
+      "expected_assertion_observed": "assert all(math.isclose(d['parameters'][k],v",
+      "status": "PASS_EXPECTED_REJECTION"
+    }
+  ],
+  "positive_geometry": {
+    "bytes": 427924,
+    "sha256": "3c51ab7b72714aaa3a37148f36e7a9161414ca264f443aec24763d11bd7b1af3"
+  },
+  "unchanged_production_method": {
+    "bytes": 3138,
+    "sha256": "cb95f873ec1da1ae346c5584cd576d50742cbf5fcec8c312fb75d87afa8480c6"
+  },
+  "no_physical_design_mutation": true,
+  "no_new_native_device_extraction": true,
+  "actual_electrical_fault_simulated": false,
+  "resource_contract": {
+    "cpu": 10,
+    "native_AS": 2147483648,
+    "own_scratch": 83886080,
+    "reserve": 25165824,
+    "entry": 1073741824,
+    "continuous": 536870912,
+    "healthy_elapsed_watchdog_seconds": null,
+    "failure_cleanup_grace_seconds": 5
+  },
+  "fixture_outputs": {
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/bind_source_ids.py": {
+      "bytes": 3190,
+      "sha256": "669fad29c0b569c61cbc27b9593b11c18544dbcd635ef190701823cc9c151cee"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/device-location-geometry.json": {
+      "bytes": 159280,
+      "sha256": "d05da08161d8fdc220308fd7ffd987ca04d433f9390e9ec3407771daaee90c02"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/bind_source_ids.py": {
+      "bytes": 3185,
+      "sha256": "d59b470d2a503ed5e4ac754dbb33addc10d7f24afc3f07309571c711ccd2fdc9"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/device-location-geometry.json": {
+      "bytes": 159279,
+      "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/bind_source_ids.py": {
+      "bytes": 3187,
+      "sha256": "6f30190f12ff19c0ec895913b5e5de3654e818b21a1dfbe51af61332e56381ae"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/device-location-geometry.json": {
+      "bytes": 159279,
+      "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/bind_source_ids.py": {
+      "bytes": 3184,
+      "sha256": "d5eedb67c3bb1764873f84a27ceec9a0bcf1828ff7397df911eac83182c4b117"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/device-location-geometry.json": {
+      "bytes": 159279,
+      "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/source-native-bijection.json": {
+      "bytes": 107035,
+      "sha256": "5316a18c72bbfa9be0976bee95b4d57329295b036686ced1d42dad6777524725"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/bind_source_ids.py": {
+      "bytes": 3172,
+      "sha256": "73d061934c58d6c286d0230c96b622d63f69c26cca3b89336873f894010502b9"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/device-location-geometry.json": {
+      "bytes": 159279,
+      "sha256": "54f26bb99420b3798d77503a5c8e36d082a49021dc0a76e04cdcca6395bfb7b8"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/fixture-layout/schematic.cir": {
+      "bytes": 7384,
+      "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/native_mim_area_corruption/fixture-layout/result.json": {
+      "bytes": 239227,
+      "sha256": "7b48381c49f7295f8159c5910fb978b4bfa0c7e73e5423e710835857005232e0"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/fixture-layout/schematic.cir": {
+      "bytes": 7384,
+      "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_missing_tap/fixture-layout/result.json": {
+      "bytes": 239001,
+      "sha256": "c550172a5fe48dba71f86dbf737a26f7b57912a0e4216066f4e7ec75432ebfe9"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/fixture-layout/schematic.cir": {
+      "bytes": 7384,
+      "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_pullup_length/fixture-layout/result.json": {
+      "bytes": 239227,
+      "sha256": "ff1b11cd6dc0a938d26b4c71e01e3d474787cd9720cbeac7b60b1c99dd7c66f7"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/fixture-layout/schematic.cir": {
+      "bytes": 7384,
+      "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/reference_clock_swap/fixture-layout/result.json": {
+      "bytes": 239227,
+      "sha256": "f205e98287bbc99875c43dca1ff63bf8fdf57f706cdfef5d130d6edf229268f2"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/fixture-layout/schematic.cir": {
+      "bytes": 7384,
+      "sha256": "f4e6c78648fae0d1805a440b87613aaee538d706a35adbe011923ff248709e70"
+    },
+    "/dev/shm/nssoc-div4-v10-tail-v1-binding-controls-01/positive/fixture-layout/result.json": {
+      "bytes": 239227,
+      "sha256": "7b48381c49f7295f8159c5910fb978b4bfa0c7e73e5423e710835857005232e0"
+    }
+  }
+}

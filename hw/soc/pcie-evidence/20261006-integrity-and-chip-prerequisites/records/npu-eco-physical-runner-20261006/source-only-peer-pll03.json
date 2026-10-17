@@ -1,0 +1,80 @@
+{
+  "status": "PASS_SOURCE_ONLY_MATCHED_NPU_PHYSICAL_RUNNER",
+  "freeze": {
+    "bytes": 6677,
+    "sha256": "81cd1ac90fd7806fcc61ab706d6dd51d2c138da1e19d4d04a7f6b440db622e5e"
+  },
+  "method": {
+    "bytes": 5570,
+    "sha256": "69c6d500cb0a3e43a8400445cc6ed0cc8b2fef159008ac4b23bb2564a1da528b"
+  },
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_npu_eco_physical.py": {
+      "bytes": 18183,
+      "sha256": "ccf10a23cd473acc46f29f26b210fd8afeec4c71299016d2fac65759ee1e3196"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/npu_physical_process.py": {
+      "bytes": 4133,
+      "sha256": "39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_npu_eco_physical.py": {
+      "bytes": 9952,
+      "sha256": "8698f2dd61affff5c9ceded77dabf32f1b4411adb75a6c175958090ca0e7a35b"
+    }
+  },
+  "prior_finding": {
+    "bytes": 2864,
+    "sha256": "00fbee6cb0adbe4ae32690a60e5f6e86765e52620ccc08f6efa4045e4492ed19"
+  },
+  "findings": [],
+  "saved_controls": {
+    "actual_cases": 57,
+    "counts_by_class": {
+      "sw.tests.test_npu_eco_physical": 24,
+      "sw.tests.test_cloud_alu_physical": 33
+    },
+    "all_passed": true,
+    "rerun": false,
+    "xml": {
+      "bytes": 8240,
+      "sha256": "e64b46bd9a95125ed412fbdd93ce8b9965d7716ae81b78f47b95b68996baa6dc"
+    },
+    "log": {
+      "bytes": 99,
+      "sha256": "d963a883a882a7a2dab7d573495da12fe45b999632d6e3880015313c53027db7"
+    },
+    "ruff": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    }
+  },
+  "exact_diff_checks": {
+    "changed_functions": [
+      "execute",
+      "preserve",
+      "run",
+      "compare"
+    ],
+    "new_functions": [
+      "capture_template",
+      "verify_saved_geometry"
+    ],
+    "all_prior_test_functions_AST_unchanged": true,
+    "process_helper_whole_byte_identity": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/pcie-gen3-transmit-v4-repair-20261005/owned_lifecycle05.py",
+      "bytes": 4133,
+      "sha256": "39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526"
+    }
+  },
+  "reviewed_corrections": [
+    "Template GEOMETRY is independently captured and hashed at the actual template stage, including available partial files during failure preservation. Missing inventory fails verification; template and final are parsed separately and byte pins compared. Saved comparison calls audit_check(final,template), not final twice. Three actual template-only corruption cases and positive control are present and saved PASS.",
+    "SIGINT/TERM remain blocked through caller child assignment. Inner helper restores its blocked entry mask and then supplied child_setup restores the actual original mask before native limits. Pending signal reaches caller only after owned handle assignment; outer exception cleans the exact unreaped owned group. Actual injected SIGTERM between spawn and assignment is saved PASS with child absent and handlers restored.",
+    "Complete runner and test diffs reread; only four declared functions changed, two geometry helpers added, and all prior test function ASTs are unchanged. Original source01 and initial52-case evidence/finding remain retained."
+  ],
+  "continuing_scope": [
+    "Strict readiness reruns full boot/source/mapping evidence before physical work; exact original/factored input,28firmwarechecks34321binaryequations and full source bundle/runtime pins remain required. This review does not assert boot or native physical completion.",
+    "Same20ns,32fixedSRAM,301physical signal boxes, matched original config and all existing raw timing/geometry audit methods remain unchanged. Compare reparses raw audit and strict readiness; returned results remain global-route estimates without adoption, final timing or manufacturing acceptance.",
+    "Owned helper is byte-identical to reviewed TX05. WNOWAIT retains leader through group cleanup; no healthy elapsed timeout. Memory9GiB/disk3GiB are launch entry checks, native8GiBAS, not a claimed continuous9GiB reserve."
+  ],
+  "native_or_tests_executed_by_peer": false
+}

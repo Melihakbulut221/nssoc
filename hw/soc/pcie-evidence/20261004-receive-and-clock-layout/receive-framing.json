@@ -1,0 +1,520 @@
+{
+  "status": "PASS_FROZEN_GEN3_RECEIVE_FRAMING_RTL_AND_EXECUTED_FAULTS",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx.v": {
+      "bytes": 6982,
+      "sha256": "1bdb05a37097de42c5aab8a48c6e6f84eb1bffec9287afc351b299bcd99d2f2f"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_framer_rx.py": {
+      "bytes": 13399,
+      "sha256": "b0df9662ae5c359cd3d76e9ac8fcf99089a1ede4b77c2f55d2a1fc90d57ffb1f"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_framer_rx": {
+      "bytes": 1341,
+      "sha256": "9a1b627fd20da65b8f553a69ccfd10a649d0c1b99c1540c4cca37db5d07cb228"
+    },
+    "scripts/check_pcie_gen3_receive.py": {
+      "bytes": 4993,
+      "sha256": "782bfcd4dd1869acb22895501e37c1088bf860ff258f7da872085a3fe8d80603"
+    },
+    "sw/tests/test_pcie_gen3_receive.py": {
+      "bytes": 3568,
+      "sha256": "48b541a7142b8479364399bfbb94e72f970ee463ca8e6c98fc26c90a81276182"
+    }
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-20261004/receive-framing-rtl-controls.tar.xz",
+    "bytes": 56300,
+    "sha256": "c750ad51ad9a6b355b3bcf78875debeaa4575b09adf8f81aeb65ee5692931c68",
+    "members": 179,
+    "all_members_roundtrip_verified": true
+  },
+  "captures": [
+    {
+      "name": "nssoc-gen3-receive-rtl-final",
+      "receipt": {
+        "bytes": 3335,
+        "sha256": "741dfe38bf45d52e9d0980a6107b727203c14f67a41b0470101b64c26f6800e5"
+      },
+      "capacity": 150,
+      "tests": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "nssoc-gen3-receive-maximum-rtl-final",
+      "receipt": {
+        "bytes": 3353,
+        "sha256": "d97939914364feec012a64d2d43114f82461436b4071aebc003bf199dff3b258"
+      },
+      "capacity": 4118,
+      "tests": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "rtl_port_cases": 12,
+  "actual_hdl_faults": [
+    {
+      "name": "crc",
+      "old": "frame_crc==word[23:20]",
+      "new": "1'b1",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "2bae6552844fa3d5f2d2ddca6ef0b0646d8cd1fdec902289cd66e75d42995d60"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "parity",
+      "old": "(^{length_dw,word[23:20],word[15]})==1'b0",
+      "new": "1'b1",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "c9cfe5a7e6f985033470bc3e7bfa968aa6bdea6e3349c35c60844b629abde56b"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "capacity",
+      "old": "encoded_bytes<=MAX_ENCODED_BYTES",
+      "new": "1'b1",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "dfcc2adb120b329ee322029290e241252fdb4990123ed581e9773080bc9dc86d"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "header_shape",
+      "old": "packet_bytes!=header_bytes",
+      "new": "1'b0",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "ea1b816dc0978452941a057ea9b85543b82c1f392f03f0d7a9fb31fb61e6947e"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "format",
+      "old": "header_bad<=fmt[2]",
+      "new": "header_bad<=1'b0",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "0731cd85811bceabcdc1df46a8fad5a6439726c993351853dea3def9454948b4"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "first_symbol_edb",
+      "old": "edb_ok=word==32'hc0c0c0c0",
+      "new": "edb_ok=word[7:0]==8'hc0",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "6efbf125adb87b9f1ebdf6c0bea03d690eb773b484ea988d79d4d24aa6e7bb60"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "lane0_idl_only",
+      "old": "idl_ok=word==32'b0",
+      "new": "idl_ok=word[7:0]==8'b0",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "5ed61e38cab23b16e5d799afd35b7dd9ff15e3224b11c1f844ea556cf35c5297"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "eds_anywhere",
+      "old": "&& word_index==15",
+      "new": "&& 1'b1",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "4b4d4165593ccf605ba65645b8a4df8e057bc8de8e652c964c0bd8c38efdda87"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "mixed_header",
+      "old": "headers_i!=8'haa",
+      "new": "headers_i[1:0]!=2'b10",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "d0980002552c72ce26079242fe96ebedb3ae90c389b0d316be1e4ee28b28f869"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "input_error",
+      "old": "headers_i!=8'haa || block_error_i",
+      "new": "headers_i!=8'haa || 1'b0",
+      "receipt": {
+        "bytes": 3413,
+        "sha256": "0301fb06efbea90e91658da85363413a474f4a4ae22feb5267403800de1d8eae"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "premature_tlp",
+      "old": "else state<=LOOK;",
+      "new": "else begin state<=EMIT;packet_good_o<=1;end",
+      "receipt": {
+        "bytes": 3417,
+        "sha256": "932fe36a07e6e84cd2dbe1b5b3c3bf328b9f8b35b3ac1eaf111d8113a80a8f97"
+      },
+      "xml": {
+        "passed": 4,
+        "failed": 2,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "lost_successor",
+      "old": "               packet_good_o<=1;state<=EMIT;read_pos<=0;",
+      "new": "               packet_good_o<=1;state<=EMIT;read_pos<=0;consume_word();",
+      "receipt": {
+        "bytes": 3417,
+        "sha256": "dc29c50a40d45aa828d245695c80c640afbca3c7436a24596a868e76238a5fbf"
+      },
+      "xml": {
+        "passed": 3,
+        "failed": 3,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "stall_loss",
+      "old": "if(valid_o && ready_i)",
+      "new": "if(valid_o)",
+      "receipt": {
+        "bytes": 3418,
+        "sha256": "1bfd7e0ec14eb91e3cc9239a7f8f998b9f24eb99f05d951c2a1eddd0f219394b"
+      },
+      "xml": {
+        "passed": 1,
+        "failed": 5,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "sequence_reserved",
+      "old": "packet[0]<={4'b0,word[19:16]}",
+      "new": "packet[0]<={4'h1,word[19:16]}",
+      "receipt": {
+        "bytes": 3418,
+        "sha256": "c59bfe08d1fc2e4bd11ba6cc249f91f7195a216d20daf329fe1ea4240304613c"
+      },
+      "xml": {
+        "passed": 1,
+        "failed": 5,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "dllp_lane",
+      "old": "packet[0]<=word[23:16]",
+      "new": "packet[0]<=word[31:24]",
+      "receipt": {
+        "bytes": 3417,
+        "sha256": "841060e9130914df2fa46adee210f4497662ce687ba91637e0db38ae8b2e222e"
+      },
+      "xml": {
+        "passed": 5,
+        "failed": 1,
+        "skipped": 0
+      }
+    }
+  ],
+  "focused_tests": {
+    "passed": 17,
+    "hdl_faults": 15,
+    "cli_bounds_controls": 2,
+    "log": {
+      "bytes": 110,
+      "sha256": "8a2cc49ad81a476e6b78ebc7629eeadd2c4bd16453d2ef70cd49bccf411c8ab3"
+    }
+  },
+  "initial_failed_campaign": {
+    "test_summary": "2 failed,15 passed: CRC check bypass escaped single-bit-only oracle; second failure was a nonunique mutation anchor with no HDL execution",
+    "source_archive": "initial-method",
+    "actual_results": [
+      {
+        "name": "test_actual_receive_fault_reje0",
+        "status": "PASS_PORT_ONLY_GEN3_RECEIVE_FRAMING",
+        "tests": {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3441,
+          "sha256": "c44294a8bf8bf428136231f5cf2498dfbe3f50b2929f83ee051495f1bf9b54ea"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje1",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "7205ae252faeed179ef3609e6ee76c2d640edae7b0ccb80a9022cb8b524385b8"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje10",
+        "status": "FAIL",
+        "tests": {
+          "passed": 4,
+          "failed": 2,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3405,
+          "sha256": "b52ea3fad2140f5cd495bbc62a068fce3b8bd176c09ff8f0b37f9e9bd31a2522"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje12",
+        "status": "FAIL",
+        "tests": {
+          "passed": 1,
+          "failed": 5,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3406,
+          "sha256": "1f9be18bce95befca6ed02a8ed0bafd0d9a31f0e2feb98bee6a2f4371b0fc1e7"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje13",
+        "status": "FAIL",
+        "tests": {
+          "passed": 1,
+          "failed": 5,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3406,
+          "sha256": "a0d565894f2112fbbcdc0e7e76d600b8fd66192f71df86209cda9f621786abfb"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje14",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3405,
+          "sha256": "ec6d9adbd339714a8efce5490cf383c62f044c24bb4e8daf1393e82743ed0e74"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje2",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "abec78c5b78c6721ca298dc881a096b1273a266e3e0929c5e04e8bef57bad465"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje3",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "141058a090daceb5969befa1fd1697ce7df2ef80e2862cc5953f514f87d375c8"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje4",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "6fa2d475ce6561605264e16db1921577fd185b6eee0f3c4623366d96032bf62a"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje5",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "1e4ab5da8e2dadae530a3042cb2a09b965531c1765ad28c7f3c06479ec375879"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje6",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "60a33a77f23dfe61656bf24dde6cda0f630741f2039ba7cb05eef1e612b5832d"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje7",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "dac438f281933d28a42bd0c47e275e6bc15d5fe42fc95ccc873e28e1abcba851"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje8",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "f83689af2177255bf566e12f4f186407aba0ca8f50e8c2274f7bda3472d04c21"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_reje9",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3401,
+          "sha256": "2686c79b953351737aff0f1813f79d848220b03af194d72b887a7b5befee59e1"
+        }
+      },
+      {
+        "name": "test_actual_receive_fault_rejecurrent",
+        "status": "FAIL",
+        "tests": {
+          "passed": 5,
+          "failed": 1,
+          "skipped": 0
+        },
+        "receipt": {
+          "bytes": 3405,
+          "sha256": "ec6d9adbd339714a8efce5490cf383c62f044c24bb4e8daf1393e82743ed0e74"
+        }
+      }
+    ],
+    "prior_failure_superseded": false
+  },
+  "contract": {
+    "top": "soc_pcie_gen3_framer_rx",
+    "input": "Already deskewed/descrambled512-bit x4 payload plus each lane2-bit header and ready/valid/block_error",
+    "external_control": "stream_start from external SDS/training owner; explicit abort for lost/truncated stream; no elapsed stall timeout",
+    "output": "Complete byte packet with SOP/EOP/DLLP flag; TLP sequence restored with reserved zero upper nibble",
+    "tokens": "STP CRC4/even parity/length; exact SDP/EDB/IDL; exact EDS only final DW",
+    "quarantine": "TLP waits for validated immediate successor; exact EDB discards and pulses packet_nullified with sequence; malformed EDB or successor halts with no packet output",
+    "successor": "Valid immediate STP/SDP/IDL/EDS retained during held prior packet then processed exactly once",
+    "header_shape": "Normal3DW/4DW optional payload/digest header length agrees with STP length; no Prefix/PMUX",
+    "capacity": [
+      150,
+      4118
+    ],
+    "maximum_digest_exclusion": "4122 encoded bytes for4096payload+4DW+digest do not fit4118",
+    "metadata": "sequence meaningful for non-DLLP packet_good/nullified pulses; DLLP byte flag stable through held output",
+    "recovery": "Framing error halts stream until fresh external start/reset/flush; exact EDS signals end and delegates OS handling"
+  },
+  "primary_source": {
+    "url": "https://studylib.net/doc/28447088/pcie-v4.0",
+    "sections": "PCI Express Base4.0v1.0 \u00a7\u00a74.2.2.1 and4.2.2.3.1/3.3, Figs4-12/13",
+    "scope": "Primary specification excerpts inspected; not redistributed"
+  },
+  "scope": {
+    "native_mapping": false,
+    "independent_rx_oracle": true,
+    "tx_helpers_imported_by_oracle": false,
+    "formal": false,
+    "lcrc_crc16_validation": false,
+    "gearbox_descrambling_alignment_deskew": false,
+    "os_skp_training_ltssm": false,
+    "pma_line_rate_queue": false,
+    "mainchip_integration": false,
+    "physical_timing_acceptance": false
+  },
+  "peer_review_pending": true,
+  "source_unchanged_after_capture": true
+}

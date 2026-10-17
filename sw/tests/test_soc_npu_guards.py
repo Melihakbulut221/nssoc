@@ -282,7 +282,7 @@ def test_the_vector_table_has_a_stub_for_the_npus_line():
         "no single vector-table row for interrupt id {}".format(idx))
     assert "vec_spurious" not in rows[0], (
         "interrupt id {} still vectors to the spurious handler".format(idx))
-    assert re.search(r"vec_fast12:\s*li t0, {}\b".format(idx), crt0), (
+    assert re.search(r"vec_fast12:[^\n]*\bli t0,\s*{}\b".format(idx), crt0), (
         "the stub does not report id {}".format(idx))
 
 
@@ -295,8 +295,10 @@ def test_spending_the_npus_line_left_the_spares_alone():
     a slot from reserved to implemented and does not touch the count.
     """
     used = {v[1] for v in IRQ_SOURCES.values()}
-    assert len(used) == 13
-    assert sorted(set(range(15)) - used) == SPARE_FAST_LINES == [13, 14]
+    # 2026-09-19: Ethernet consumes former spare 13; NPU's line is unchanged.
+    assert IRQ_SOURCES['ETH'][1] == 13
+    assert len(used) == 14
+    assert sorted(set(range(15)) - used) == SPARE_FAST_LINES == [14]
 
 
 # ---------------------------------------------------------------------

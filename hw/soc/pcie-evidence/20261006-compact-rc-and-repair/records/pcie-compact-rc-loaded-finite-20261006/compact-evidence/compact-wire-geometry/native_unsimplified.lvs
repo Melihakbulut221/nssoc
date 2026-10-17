@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+# Additive output wrapper; all device/connectivity extraction comes unchanged
+# from the pinned official deck. There is no LVS comparison in this experiment.
+# %include /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs
+raise 'Unsimplified flat extraction contract' unless NET_ONLY && !SIMPLIFY && !COMBINE_DEVICES && !PURGE && !PURGE_NETS && !PURGE_DEVICES && !DISABLE_TAP_EXTRACTION && TOP_LVL_PINS && $run_mode.to_s == 'flat'
+raise 'Fresh explicit geometry export path required' if $native_l2n.to_s.empty?
+report_netlist($native_l2n)
+logger.info('NSSOC_UNSIMPLIFIED_GEOMETRY_L2N_EXPORT_REQUESTED')

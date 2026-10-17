@@ -1,0 +1,22 @@
+read_liberty -lib /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/snapshot/pdk/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+read_verilog -lib /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/inputs/repo/hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/inputs/repo/hw/soc/pnr/RM_IHPSG13_2P_256x16_c2_bm_bist_bb.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/inputs/models/independent_bb.v
+read_verilog /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-closure-resume-20261005-1900/evq37187157260/producer/synthesis-candidate/soc_top.netlist.v
+hierarchy -check -top soc_top
+setattr -set keep 1 t:sg13g2_*
+write_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/candidate/before.json
+techmap -autoproc -map /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/inputs/repo/hw/soc/techmap/independent_sram_map.v
+proc
+flatten
+opt
+techmap
+opt
+dfflibmap -liberty /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/snapshot/pdk/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+abc -liberty /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/snapshot/pdk/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib -constr /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/snapshot/repo/hw/soc/out/timing-repair2-20260927/synthesis-pipeline/abc.constr -D 20
+opt_clean
+select -assert-count 16 t:SP6TSRAM512x64
+select -assert-count 16 t:DP8TSRAMDP256x16
+select -assert-none t:RM_IHPSG13_*
+check -assert
+write_json /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/candidate/after.json
+write_verilog -noattr /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/candidate/soc_top.netlist.v
+stat -liberty /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-mapping-20261006/native01/snapshot/pdk/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib

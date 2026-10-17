@@ -270,7 +270,7 @@ def _skip_no_run(path, tag):
 
 
 @pytest.fixture(scope="module")
-def run_dir():
+def run_dir(historical_snapshot):
     """The run tree section 4 says its numbers came from.
 
     No run trees at all -> skip. Some run trees but not the documented
@@ -282,6 +282,11 @@ def run_dir():
     path = RUNS_DIR / tag
     if path.is_dir():
         return path
+    snapshot = historical_snapshot / path.relative_to(ROOT)
+    if snapshot.is_dir():
+        # Selected original raw reports and actual directory inventory.
+        # This is a recorded run snapshot, not a rerun of the physical flow.
+        return snapshot
     if not _retained_run_tags():
         _skip_no_run(path, tag)
     pytest.skip(
@@ -408,7 +413,7 @@ def test_timing_table_claims_zero_violations_on_three_corners():
 # Artifact: what the run actually produced. Skips without the run tree.
 # ----------------------------------------------------------------------
 
-def test_documented_run_tag_is_retained():
+def test_documented_run_tag_is_retained(historical_snapshot):
     """A retained run tree must include the tag section 4 cites.
 
     Skips when no run tree was kept at all, which is the fresh-clone
@@ -426,6 +431,9 @@ def test_documented_run_tag_is_retained():
     """
     tag = _run_tag()
     retained = _retained_run_tags()
+    recorded = historical_snapshot / RUNS_DIR.relative_to(ROOT)
+    if recorded.is_dir():
+        retained = sorted(set(retained) | {p.name for p in recorded.iterdir() if p.is_dir()})
     if not retained:
         _skip_no_run(RUNS_DIR / tag, tag)
     assert tag in retained, (

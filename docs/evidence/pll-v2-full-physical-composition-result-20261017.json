@@ -1,0 +1,107 @@
+{
+  "summary": {
+    "asset_id": 648939650,
+    "sha256": "a17fde2bd57f2710327bd84156ee8c9354187ae997f27ff93dd332d84f6a62a3"
+  },
+  "parts": {
+    "asset_id": 648939719,
+    "sha256": "9b861472d9c80e4c6c7e43bb5c22a5eafd8e82a0202e51c770c2a2052f72c861"
+  },
+  "run": 38981800336,
+  "status": "PASS_NEW_PHYSICAL845_DIVIDER_PARENT_MODEL_EXACT_GRAPH_AND_COMPONENT_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+  "source_head": "3e8eb39716367099b9ec467851b3b41225e0ffa0",
+  "accepted": false,
+  "qualified_pex": false,
+  "full_phy_accepted": false,
+  "mainchip_integrated": false,
+  "electrical_acquisition_passed": false,
+  "scope": "Actual new845PLL layout: both new native91/382R649C dividers plus fresh98R242C parent wires. All other device/wire records preserved. Exact whole845graph against nativeLVS-passed new physical reference. Finite tap electrical values remain unchanged; their geometry evidence comes from same-GDS native extraction. One-picometer comparison grid for serialized linear dimensions,1000x finer than GDS. No qualified substrate/RF PEX, transient, x4 or mainchip acceptance.",
+  "candidate_sha256": "d86f4716070f22b36f3fafb9b5d789f2dd029552aefafbedbab8aebdfb0cb85b",
+  "component_preservation": {
+    "unchanged_devices": 845,
+    "unchanged_records": 9165,
+    "fresh_parent_R": 98,
+    "fresh_parent_C": 242,
+    "total_wires": 8660,
+    "parent_wires_byte_equal_to_old": false
+  },
+  "graph_faults": [
+    {
+      "name": "missing_pump_device",
+      "rejection": "Intrinsic geometry census differs"
+    },
+    {
+      "name": "wrong_pump_cap_width",
+      "rejection": "Intrinsic geometry census differs"
+    },
+    {
+      "name": "pump_up_down_swapped",
+      "rejection": "Intrinsic connectivity color mismatch round 0"
+    },
+    {
+      "name": "private_pump_bulk",
+      "rejection": "Intrinsic graph node count differs"
+    },
+    {
+      "name": "short_vctrl_avss",
+      "rejection": "Shorted public ports {'vctrl', 'avss'}"
+    },
+    {
+      "name": "wrong_other_width",
+      "rejection": "Intrinsic geometry census differs"
+    }
+  ],
+  "counts": {
+    "devices": 845,
+    "wires": 8660,
+    "public_ports": 17
+  },
+  "component_faults": [
+    {
+      "name": "drop_parent_R",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    },
+    {
+      "name": "change_parent_R",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    },
+    {
+      "name": "change_parent_C",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    },
+    {
+      "name": "move_parent_C",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    },
+    {
+      "name": "change_divider_R",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    },
+    {
+      "name": "change_divider_tap_R",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    },
+    {
+      "name": "revert_divider_load",
+      "rejected": true,
+      "reason": "Changed component, wire value, boundary or attachment"
+    }
+  ],
+  "source_unchanged": true,
+  "next_acquisition": {
+    "run": 38982797234,
+    "source_head": "ae5d3668d130616a49e0f9592ae49f4f1c98ffc9",
+    "workflow": "pll-v2-native-acquisition-cloud.yml",
+    "original_duration_s": 1e-06,
+    "original_max_step_s": 3.125e-13,
+    "original_probe_count": 34,
+    "source_controls_passed": true,
+    "acceptance_not_yet_known": true
+  }
+}

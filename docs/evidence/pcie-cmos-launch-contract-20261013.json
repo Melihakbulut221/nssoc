@@ -1,0 +1,1773 @@
+{
+  "run": 38322832591,
+  "source_head": "5757933372af71be50c6d59a148c0dda3861e9ac",
+  "adopted": false,
+  "status": "SIGNAL_PASS_REQUIRES_DRIVER_HEADROOM_AND_REAL_UPSTREAM_SERIALIZER",
+  "unchanged": [
+    "Original256sourcebits",
+    "All768original output sampletimes",
+    "100mVoutputlimit",
+    "0.4VminimumHBT VCE",
+    "No fitted output latency"
+  ],
+  "changed_contract": "Prospective A input launched125psbefore selection;B unchanged. No implemented upstream serializer, clock recovery or physical clock tree is implied. Legacy simultaneous input contract results retained.",
+  "cases": {
+    "cmos_hv_resistive-coincident": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-cmos-driver-cmos_hv_resistive-coincident-38322832591-1.summary.json",
+      "sha256": "92ea0049313822912bd664137377e770dab5b01c85f10178eb33bf22ff64eb88",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "compact",
+        "interconnect": "actual",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim. Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.",
+        "data_driver": {
+          "mode": "cmos_hv_resistive",
+          "source_sha256": "55d319b50d6ec9cf4a94868e3b48ec8b3103bf0f9359686c542a66afe0a10891",
+          "input_capsule_sha256": "43134a616eb4c742709a08d63f8277e2bd0536bfa89f690e170c0ac5859464bf",
+          "launch": "coincident",
+          "a_transition_advance_s": 0,
+          "launch_scope": "Historical coincident gate-data launch retained.",
+          "expected_devices": {
+            "lv_mos": 16,
+            "hv_mos": 16,
+            "native_resistors": 12
+          },
+          "prospective_screen": {
+            "mos_terminal_abs_limit_v": 1.32,
+            "sampled_common_mode_v": [
+              1.8,
+              2.05
+            ],
+            "hv_mos_terminal_abs_limit_v": 2.75,
+            "minimum_sampled_differential_v": 0.15,
+            "input_source_rate_gbps": 4.0
+          },
+          "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim."
+        },
+        "data_driver_review": {
+          "status": "MEASURED_NATIVE_CMOS_DATA_DRIVER_NOT_PHY_ACCEPTANCE",
+          "zero_source_op": true,
+          "active_input_ranges_v": {
+            "ap": [
+              1.6056089968644247,
+              2.1871508423911603
+            ],
+            "an": [
+              1.6055795413067804,
+              2.1867516417391037
+            ],
+            "bp": [
+              1.6015321329823657,
+              2.1873599457119526
+            ],
+            "bn": [
+              1.6016498876338767,
+              2.187384836665161
+            ]
+          },
+          "devices": {
+            "xad_ap.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.310087234763928,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013338928859367
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2367132012237654,
+                "vgs": 1.310087234763928,
+                "vgd": 1.3017334512867893
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2771791903390568,
+                "vgs": 1.2912011169345037,
+                "vgd": 1.3017334512867893
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2912011169345037,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013338928859367
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_0": {
+              "peaks": {
+                "vds": 2.4034881640142403,
+                "vgs": 1.2367132012237654,
+                "vgd": 2.1282567584371
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_1": {
+              "peaks": {
+                "vds": 2.4034881640142403,
+                "vgs": 1.2367132012237654,
+                "vgd": 2.1282567584371
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_2": {
+              "peaks": {
+                "vds": 2.4034881640142403,
+                "vgs": 1.2367132012237654,
+                "vgd": 2.1282567584371
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_3": {
+              "peaks": {
+                "vds": 2.4034881640142403,
+                "vgs": 1.2367132012237654,
+                "vgd": 2.1282567584371
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.310087499517606,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013297933108291
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2367161011184244,
+                "vgs": 1.310087499517606,
+                "vgd": 1.3017335536387726
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2771490749458592,
+                "vgs": 1.2912010791239883,
+                "vgd": 1.3017335536387726
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2912010791239883,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013297933108291
+              },
+              "passed": true
+            },
+            "xad_an.XHV_0": {
+              "peaks": {
+                "vds": 2.403454864210522,
+                "vgs": 1.2367161011184244,
+                "vgd": 2.127849131312687
+              },
+              "passed": true
+            },
+            "xad_an.XHV_1": {
+              "peaks": {
+                "vds": 2.403454864210522,
+                "vgs": 1.2367161011184244,
+                "vgd": 2.127849131312687
+              },
+              "passed": true
+            },
+            "xad_an.XHV_2": {
+              "peaks": {
+                "vds": 2.403454864210522,
+                "vgs": 1.2367161011184244,
+                "vgd": 2.127849131312687
+              },
+              "passed": true
+            },
+            "xad_an.XHV_3": {
+              "peaks": {
+                "vds": 2.403454864210522,
+                "vgs": 1.2367161011184244,
+                "vgd": 2.127849131312687
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3102415434748438,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013265639918262
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2360936768059334,
+                "vgs": 1.3102415434748438,
+                "vgd": 1.3005439839067898
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.265463339530321,
+                "vgs": 1.291108232978506,
+                "vgd": 1.3005439839067898
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.291108232978506,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013265639918262
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_0": {
+              "peaks": {
+                "vds": 2.4642613164846034,
+                "vgs": 1.2360936768059334,
+                "vgd": 2.157080652655626
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_1": {
+              "peaks": {
+                "vds": 2.4642613164846034,
+                "vgs": 1.2360936768059334,
+                "vgd": 2.157080652655626
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_2": {
+              "peaks": {
+                "vds": 2.4642613164846034,
+                "vgs": 1.2360936768059334,
+                "vgd": 2.157080652655626
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_3": {
+              "peaks": {
+                "vds": 2.4642613164846034,
+                "vgs": 1.2360936768059334,
+                "vgd": 2.157080652655626
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3102411095792807,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013322478181863
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.236095456605646,
+                "vgs": 1.3102411095792807,
+                "vgd": 1.300543337114473
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2654637555201864,
+                "vgs": 1.2911097010733013,
+                "vgd": 1.300543337114473
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2911097010733013,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013322478181863
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_0": {
+              "peaks": {
+                "vds": 2.464279635975318,
+                "vgs": 1.236095456605646,
+                "vgd": 2.157128759697312
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_1": {
+              "peaks": {
+                "vds": 2.464279635975318,
+                "vgs": 1.236095456605646,
+                "vgd": 2.157128759697312
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_2": {
+              "peaks": {
+                "vds": 2.464279635975318,
+                "vgs": 1.236095456605646,
+                "vgd": 2.157128759697312
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_3": {
+              "peaks": {
+                "vds": 2.464279635975318,
+                "vgs": 1.236095456605646,
+                "vgd": 2.157128759697312
+              },
+              "passed": true
+            }
+          },
+          "samples": 768,
+          "minimum_margin_v": -0.36076053379771467,
+          "wrong_sign_samples": 208,
+          "below_150mv_samples": 256,
+          "common_mode_range_v": [
+            1.8424983096139012,
+            1.926959060236274
+          ],
+          "common_mode_outside_target_samples": 0,
+          "mean_cmos_supply_power_w": 0.0013727280714418825,
+          "peak_reverse_supply_current_a": 0.0005450662771926407,
+          "reverse_supply_charge_c": 1.0179677642418334e-13,
+          "note": "Engineering terminal-voltage screen only. Native model convergence and downstream HBT/signal screens remain separate. Reverse rail current is reported, not presumed supportable by a real regulator.",
+          "engineering_screen_passed": false,
+          "original_bit_output": {
+            "samples": 768,
+            "minimum_margin_v": -0.30626334744138095,
+            "wrong_sign_samples": 192,
+            "below_100mv_samples": 192,
+            "phases": {
+              "0.3": {
+                "samples": 256,
+                "minimum_margin_v": -0.30626334744138095,
+                "wrong_sign_samples": 64,
+                "below_100mv_samples": 64
+              },
+              "0.5": {
+                "samples": 256,
+                "minimum_margin_v": -0.3039281849466531,
+                "wrong_sign_samples": 64,
+                "below_100mv_samples": 64
+              },
+              "0.7": {
+                "samples": 256,
+                "minimum_margin_v": -0.302199400981624,
+                "wrong_sign_samples": 64,
+                "below_100mv_samples": 64
+              }
+            },
+            "passed": false,
+            "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+            "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+          },
+          "selected_input_source_bits": {
+            "samples": 768,
+            "minimum_margin_v": -0.3563712637424763,
+            "wrong_sign_samples": 192,
+            "below_150mv_samples": 224,
+            "common_mode_range_v": [
+              1.8779243266078338,
+              1.9463630202469093
+            ],
+            "note": "Original source bits while each input is selected. Legacy half-rate sample screen is retained separately above, including unselected time slots."
+          },
+          "lossless_raw_wave": {
+            "sha256": "acf9738d601d0eaf8f59f7984ed539053abfdbe49ba608f8db8c8a4d18168650",
+            "bytes": 38456726
+          },
+          "packed_sha256": "947949b0620820287243a95424a2ecf33a3f0c90e6fe68ff92661d94ffe8ee00"
+        },
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.172213791330609,
+          "wrong_sign_samples": 0,
+          "passed": true
+        },
+        "failed_devices": {
+          "xmux.xd0041": {
+            "min_vce_v": 0.2018328581535508,
+            "max_vce_v": 0.9944643421489139,
+            "max_abs_vbe_v": 0.8644754274772832,
+            "max_abs_ic_per_emitter_a": 0.0006814450476264135,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9944643421489139,
+            "whole_startup_peak_abs_vbe_v": 0.8644754274772832,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006814450476264135,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0043": {
+            "min_vce_v": 0.2018328581535508,
+            "max_vce_v": 0.9944643421489139,
+            "max_abs_vbe_v": 0.8644754274772832,
+            "max_abs_ic_per_emitter_a": 0.0006814450476264166,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9944643421489139,
+            "whole_startup_peak_abs_vbe_v": 0.8644754274772832,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006814450476264166,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0046": {
+            "min_vce_v": 0.30371151962911125,
+            "max_vce_v": 0.9882992009457252,
+            "max_abs_vbe_v": 0.8640850256109884,
+            "max_abs_ic_per_emitter_a": 0.000652759122127931,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9882992009457252,
+            "whole_startup_peak_abs_vbe_v": 0.8640850256109884,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.000652759122127931,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0047": {
+            "min_vce_v": 0.30371151962911125,
+            "max_vce_v": 0.9882992009457252,
+            "max_abs_vbe_v": 0.8640850256109884,
+            "max_abs_ic_per_emitter_a": 0.0006527591221279469,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9882992009457252,
+            "whole_startup_peak_abs_vbe_v": 0.8640850256109884,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006527591221279469,
+            "post_passed": false,
+            "whole_upper_passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    },
+    "cmos_hv_resistive-inactive_half_cycle": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-cmos-driver-cmos_hv_resistive-inactive_half_cycle-38322832591-1.summary.json",
+      "sha256": "a080dd2b1b145294bf7616f97fae4061aec9c8b690b1343750df0e6ae3a9d470",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "compact",
+        "interconnect": "actual",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim. Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.",
+        "data_driver": {
+          "mode": "cmos_hv_resistive",
+          "source_sha256": "55d319b50d6ec9cf4a94868e3b48ec8b3103bf0f9359686c542a66afe0a10891",
+          "input_capsule_sha256": "43134a616eb4c742709a08d63f8277e2bd0536bfa89f690e170c0ac5859464bf",
+          "launch": "inactive_half_cycle",
+          "a_transition_advance_s": 1.25e-10,
+          "launch_scope": "Prospective external gate-data availability contract, not an implemented upstream serializer/clock tree. A changes one serial UI before selection; B unchanged. Source bits and all final-output observation times unchanged.",
+          "expected_devices": {
+            "lv_mos": 16,
+            "hv_mos": 16,
+            "native_resistors": 12
+          },
+          "prospective_screen": {
+            "mos_terminal_abs_limit_v": 1.32,
+            "sampled_common_mode_v": [
+              1.8,
+              2.05
+            ],
+            "hv_mos_terminal_abs_limit_v": 2.75,
+            "minimum_sampled_differential_v": 0.15,
+            "input_source_rate_gbps": 4.0
+          },
+          "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim."
+        },
+        "data_driver_review": {
+          "status": "MEASURED_NATIVE_CMOS_DATA_DRIVER_NOT_PHY_ACCEPTANCE",
+          "zero_source_op": true,
+          "active_input_ranges_v": {
+            "ap": [
+              1.6055937457770957,
+              2.187504057368414
+            ],
+            "an": [
+              1.60557237249038,
+              2.187301015367634
+            ],
+            "bp": [
+              1.6057196494465553,
+              2.1876969711347947
+            ],
+            "bn": [
+              1.6056945526022652,
+              2.1876860740075346
+            ]
+          },
+          "devices": {
+            "xad_ap.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3102411851154794,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.201333926706983
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.236089661374711,
+                "vgs": 1.3102411851154794,
+                "vgd": 1.3005492375504415
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2656665502133546,
+                "vgs": 1.291113708858543,
+                "vgd": 1.3005492375504415
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.291113708858543,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.201333926706983
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_0": {
+              "peaks": {
+                "vds": 2.4658663910403065,
+                "vgs": 1.236089661374711,
+                "vgd": 2.1553008856551417
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_1": {
+              "peaks": {
+                "vds": 2.4658663910403065,
+                "vgs": 1.236089661374711,
+                "vgd": 2.1553008856551417
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_2": {
+              "peaks": {
+                "vds": 2.4658663910403065,
+                "vgs": 1.236089661374711,
+                "vgd": 2.1553008856551417
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_3": {
+              "peaks": {
+                "vds": 2.4658663910403065,
+                "vgs": 1.236089661374711,
+                "vgd": 2.1553008856551417
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3102408512897614,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013298205217198
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2360964680671953,
+                "vgs": 1.3102408512897614,
+                "vgd": 1.3005271680396253
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.265662080513348,
+                "vgs": 1.2911127249275909,
+                "vgd": 1.3005271680396253
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2911127249275909,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013298205217198
+              },
+              "passed": true
+            },
+            "xad_an.XHV_0": {
+              "peaks": {
+                "vds": 2.465756114230099,
+                "vgs": 1.2360964680671953,
+                "vgd": 2.155040949076917
+              },
+              "passed": true
+            },
+            "xad_an.XHV_1": {
+              "peaks": {
+                "vds": 2.465756114230099,
+                "vgs": 1.2360964680671953,
+                "vgd": 2.155040949076917
+              },
+              "passed": true
+            },
+            "xad_an.XHV_2": {
+              "peaks": {
+                "vds": 2.465756114230099,
+                "vgs": 1.2360964680671953,
+                "vgd": 2.155040949076917
+              },
+              "passed": true
+            },
+            "xad_an.XHV_3": {
+              "peaks": {
+                "vds": 2.465756114230099,
+                "vgs": 1.2360964680671953,
+                "vgd": 2.155040949076917
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3102374107185506,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013318297099242
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2360956014389424,
+                "vgs": 1.3102374107185506,
+                "vgd": 1.30054305273353
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2656605445151543,
+                "vgs": 1.291114467573693,
+                "vgd": 1.30054305273353
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.291114467573693,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013318297099242
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_0": {
+              "peaks": {
+                "vds": 2.4658702371311723,
+                "vgs": 1.2360956014389424,
+                "vgd": 2.155288252125055
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_1": {
+              "peaks": {
+                "vds": 2.4658702371311723,
+                "vgs": 1.2360956014389424,
+                "vgd": 2.155288252125055
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_2": {
+              "peaks": {
+                "vds": 2.4658702371311723,
+                "vgs": 1.2360956014389424,
+                "vgd": 2.155288252125055
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_3": {
+              "peaks": {
+                "vds": 2.4658702371311723,
+                "vgs": 1.2360956014389424,
+                "vgd": 2.155288252125055
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3102366154219254,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013335561107623
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.236095454433712,
+                "vgs": 1.3102366154219254,
+                "vgd": 1.300546002500849
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2656670684062112,
+                "vgs": 1.2911137255179006,
+                "vgd": 1.300546002500849
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2911137255179006,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2013335561107623
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_0": {
+              "peaks": {
+                "vds": 2.465871265964042,
+                "vgs": 1.236095454433712,
+                "vgd": 2.155338411238237
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_1": {
+              "peaks": {
+                "vds": 2.465871265964042,
+                "vgs": 1.236095454433712,
+                "vgd": 2.155338411238237
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_2": {
+              "peaks": {
+                "vds": 2.465871265964042,
+                "vgs": 1.236095454433712,
+                "vgd": 2.155338411238237
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_3": {
+              "peaks": {
+                "vds": 2.465871265964042,
+                "vgs": 1.236095454433712,
+                "vgd": 2.155338411238237
+              },
+              "passed": true
+            }
+          },
+          "samples": 768,
+          "minimum_margin_v": -0.36681682861049336,
+          "wrong_sign_samples": 64,
+          "below_150mv_samples": 128,
+          "common_mode_range_v": [
+            1.8651482359621967,
+            1.9301990271699594
+          ],
+          "common_mode_outside_target_samples": 0,
+          "mean_cmos_supply_power_w": 0.0013759249115202826,
+          "peak_reverse_supply_current_a": 0.00027242545490153855,
+          "reverse_supply_charge_c": 6.005997655864699e-14,
+          "note": "Engineering terminal-voltage screen only. Native model convergence and downstream HBT/signal screens remain separate. Reverse rail current is reported, not presumed supportable by a real regulator.",
+          "engineering_screen_passed": false,
+          "original_bit_output": {
+            "samples": 768,
+            "minimum_margin_v": 0.17166930644154665,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0,
+            "phases": {
+              "0.3": {
+                "samples": 256,
+                "minimum_margin_v": 0.17166930644154665,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0
+              },
+              "0.5": {
+                "samples": 256,
+                "minimum_margin_v": 0.2910705888005889,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0
+              },
+              "0.7": {
+                "samples": 256,
+                "minimum_margin_v": 0.29088868237829724,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0
+              }
+            },
+            "passed": true,
+            "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+            "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+          },
+          "selected_input_source_bits": {
+            "samples": 768,
+            "minimum_margin_v": 0.1057167000941428,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 64,
+            "common_mode_range_v": [
+              1.8791132158434438,
+              1.9171218555576792
+            ],
+            "note": "Original source bits while each input is selected. Legacy half-rate sample screen is retained separately above, including unselected time slots."
+          },
+          "lossless_raw_wave": {
+            "sha256": "d5b69d2905633acc60ca6affa718d6134d307e733cf24826750b2b199ad774e6",
+            "bytes": 38456726
+          },
+          "packed_sha256": "196c3e10d46853a25819667a4b57bd3fa3699ee36549c48ea4197ce257b8fe0a"
+        },
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.17166930644154665,
+          "wrong_sign_samples": 0,
+          "passed": true
+        },
+        "failed_devices": {
+          "xmux.xd0041": {
+            "min_vce_v": 0.20179316433314753,
+            "max_vce_v": 0.988113486691817,
+            "max_abs_vbe_v": 0.864445145884454,
+            "max_abs_ic_per_emitter_a": 0.0006793553294698525,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.988113486691817,
+            "whole_startup_peak_abs_vbe_v": 0.864445145884454,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006793553294698525,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0043": {
+            "min_vce_v": 0.20179316433314753,
+            "max_vce_v": 0.988113486691817,
+            "max_abs_vbe_v": 0.864445145884454,
+            "max_abs_ic_per_emitter_a": 0.0006793553294698576,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.988113486691817,
+            "whole_startup_peak_abs_vbe_v": 0.864445145884454,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006793553294698576,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0046": {
+            "min_vce_v": 0.2013026441524719,
+            "max_vce_v": 0.9881637468339561,
+            "max_abs_vbe_v": 0.864049215763278,
+            "max_abs_ic_per_emitter_a": 0.0006802125622691936,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9881637468339561,
+            "whole_startup_peak_abs_vbe_v": 0.864049215763278,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006802125622691936,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0047": {
+            "min_vce_v": 0.2013026441524719,
+            "max_vce_v": 0.9881637468339561,
+            "max_abs_vbe_v": 0.864049215763278,
+            "max_abs_ic_per_emitter_a": 0.0006802125622692064,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9881637468339561,
+            "whole_startup_peak_abs_vbe_v": 0.864049215763278,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006802125622692064,
+            "post_passed": false,
+            "whole_upper_passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    },
+    "cmos_hv_light-coincident": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-cmos-driver-cmos_hv_light-coincident-38322832591-1.summary.json",
+      "sha256": "63289a2a74afcbc8b7752a34aa82cf08a9417b2603791adade236427f3ed5bb8",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "compact",
+        "interconnect": "actual",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim. Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.",
+        "data_driver": {
+          "mode": "cmos_hv_light",
+          "source_sha256": "261f414b58e103fef9f610fb92f44bdb3f9c536aa2fca8bb4a1aa61dd690153b",
+          "input_capsule_sha256": "43134a616eb4c742709a08d63f8277e2bd0536bfa89f690e170c0ac5859464bf",
+          "launch": "coincident",
+          "a_transition_advance_s": 0,
+          "launch_scope": "Historical coincident gate-data launch retained.",
+          "expected_devices": {
+            "lv_mos": 16,
+            "hv_mos": 16,
+            "native_resistors": 12
+          },
+          "prospective_screen": {
+            "mos_terminal_abs_limit_v": 1.32,
+            "sampled_common_mode_v": [
+              1.8,
+              2.05
+            ],
+            "hv_mos_terminal_abs_limit_v": 2.75,
+            "minimum_sampled_differential_v": 0.15,
+            "input_source_rate_gbps": 4.0
+          },
+          "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim."
+        },
+        "data_driver_review": {
+          "status": "MEASURED_NATIVE_CMOS_DATA_DRIVER_NOT_PHY_ACCEPTANCE",
+          "zero_source_op": true,
+          "active_input_ranges_v": {
+            "ap": [
+              1.657373262347675,
+              2.159380649776644
+            ],
+            "an": [
+              1.657326867036542,
+              2.158881538764554
+            ],
+            "bp": [
+              1.6547990487104454,
+              2.1593276253085683
+            ],
+            "bn": [
+              1.6549233717689402,
+              2.159508009616257
+            ]
+          },
+          "devices": {
+            "xad_ap.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3097755023795525,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009916333063595
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2525655122613653,
+                "vgs": 1.3097755023795525,
+                "vgd": 1.3019968240261848
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2781161451414549,
+                "vgs": 1.2919255200931787,
+                "vgd": 1.3019968240261848
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2919255200931787,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009916333063595
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_0": {
+              "peaks": {
+                "vds": 2.3648043664528524,
+                "vgs": 1.2525655122613653,
+                "vgd": 2.111058915894515
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_1": {
+              "peaks": {
+                "vds": 2.3648043664528524,
+                "vgs": 1.2525655122613653,
+                "vgd": 2.111058915894515
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_2": {
+              "peaks": {
+                "vds": 2.3648043664528524,
+                "vgs": 1.2525655122613653,
+                "vgd": 2.111058915894515
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_3": {
+              "peaks": {
+                "vds": 2.3648043664528524,
+                "vgs": 1.2525655122613653,
+                "vgd": 2.111058915894515
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3097757301482285,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009885662151525
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2525697808774223,
+                "vgs": 1.3097757301482285,
+                "vgd": 1.3019970177831985
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2781034136501466,
+                "vgs": 1.2919255963700833,
+                "vgd": 1.3019970177831985
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2919255963700833,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009885662151525
+              },
+              "passed": true
+            },
+            "xad_an.XHV_0": {
+              "peaks": {
+                "vds": 2.3648451981055985,
+                "vgs": 1.2525697808774223,
+                "vgd": 2.110786578813602
+              },
+              "passed": true
+            },
+            "xad_an.XHV_1": {
+              "peaks": {
+                "vds": 2.3648451981055985,
+                "vgs": 1.2525697808774223,
+                "vgd": 2.110786578813602
+              },
+              "passed": true
+            },
+            "xad_an.XHV_2": {
+              "peaks": {
+                "vds": 2.3648451981055985,
+                "vgs": 1.2525697808774223,
+                "vgd": 2.110786578813602
+              },
+              "passed": true
+            },
+            "xad_an.XHV_3": {
+              "peaks": {
+                "vds": 2.3648451981055985,
+                "vgs": 1.2525697808774223,
+                "vgd": 2.110786578813602
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3099267878868148,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2011118717685372
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2515870380650331,
+                "vgs": 1.3099267878868148,
+                "vgd": 1.3012179577809162
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2723208131534398,
+                "vgs": 1.2918115245887585,
+                "vgd": 1.3012179577809162
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2918115245887585,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2011118717685372
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_0": {
+              "peaks": {
+                "vds": 2.4357064505656663,
+                "vgs": 1.2515870380650331,
+                "vgd": 2.152107164508604
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_1": {
+              "peaks": {
+                "vds": 2.4357064505656663,
+                "vgs": 1.2515870380650331,
+                "vgd": 2.152107164508604
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_2": {
+              "peaks": {
+                "vds": 2.4357064505656663,
+                "vgs": 1.2515870380650331,
+                "vgd": 2.152107164508604
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_3": {
+              "peaks": {
+                "vds": 2.4357064505656663,
+                "vgs": 1.2515870380650331,
+                "vgd": 2.152107164508604
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3099262579253599,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2011112539551312
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2515896576796248,
+                "vgs": 1.3099262579253599,
+                "vgd": 1.3012184265063143
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.27231655845617,
+                "vgs": 1.2918132401905476,
+                "vgd": 1.3012184265063143
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2918132401905476,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2011112539551312
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_0": {
+              "peaks": {
+                "vds": 2.435734306364036,
+                "vgs": 1.2515896576796248,
+                "vgd": 2.1521907660993382
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_1": {
+              "peaks": {
+                "vds": 2.435734306364036,
+                "vgs": 1.2515896576796248,
+                "vgd": 2.1521907660993382
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_2": {
+              "peaks": {
+                "vds": 2.435734306364036,
+                "vgs": 1.2515896576796248,
+                "vgd": 2.1521907660993382
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_3": {
+              "peaks": {
+                "vds": 2.435734306364036,
+                "vgs": 1.2515896576796248,
+                "vgd": 2.1521907660993382
+              },
+              "passed": true
+            }
+          },
+          "samples": 768,
+          "minimum_margin_v": -0.23657581629018565,
+          "wrong_sign_samples": 128,
+          "below_150mv_samples": 240,
+          "common_mode_range_v": [
+            1.9014287117652064,
+            1.9373635758187877
+          ],
+          "common_mode_outside_target_samples": 0,
+          "mean_cmos_supply_power_w": 0.0009207827648977651,
+          "peak_reverse_supply_current_a": 0.0005510108689262966,
+          "reverse_supply_charge_c": 1.1071491888851317e-13,
+          "note": "Engineering terminal-voltage screen only. Native model convergence and downstream HBT/signal screens remain separate. Reverse rail current is reported, not presumed supportable by a real regulator.",
+          "engineering_screen_passed": false,
+          "original_bit_output": {
+            "samples": 768,
+            "minimum_margin_v": -0.3061791491766652,
+            "wrong_sign_samples": 192,
+            "below_100mv_samples": 192,
+            "phases": {
+              "0.3": {
+                "samples": 256,
+                "minimum_margin_v": -0.3061791491766652,
+                "wrong_sign_samples": 64,
+                "below_100mv_samples": 64
+              },
+              "0.5": {
+                "samples": 256,
+                "minimum_margin_v": -0.30502474077564656,
+                "wrong_sign_samples": 64,
+                "below_100mv_samples": 64
+              },
+              "0.7": {
+                "samples": 256,
+                "minimum_margin_v": -0.3025406415243257,
+                "wrong_sign_samples": 64,
+                "below_100mv_samples": 64
+              }
+            },
+            "passed": false,
+            "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+            "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+          },
+          "selected_input_source_bits": {
+            "samples": 768,
+            "minimum_margin_v": -0.265790719836577,
+            "wrong_sign_samples": 192,
+            "below_150mv_samples": 288,
+            "common_mode_range_v": [
+              1.8860833173950786,
+              1.9499141894431509
+            ],
+            "note": "Original source bits while each input is selected. Legacy half-rate sample screen is retained separately above, including unselected time slots."
+          },
+          "lossless_raw_wave": {
+            "sha256": "eec764e8a3f13c54400dd9ef2f53e475b739faee4e0f9c71fafa013e93f6130b",
+            "bytes": 38456726
+          },
+          "packed_sha256": "b539e7263d3daa44ec6d8dc2591340c2893f69d6832b60512812478cb5ce9dbf"
+        },
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.21013668843830247,
+          "wrong_sign_samples": 0,
+          "passed": true
+        },
+        "failed_devices": {
+          "xmux.xd0041": {
+            "min_vce_v": 0.262941303290086,
+            "max_vce_v": 0.9813719534507346,
+            "max_abs_vbe_v": 0.8644410179424049,
+            "max_abs_ic_per_emitter_a": 0.0006687025669379562,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9813719534507346,
+            "whole_startup_peak_abs_vbe_v": 0.8644410179424049,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006687025669379562,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0043": {
+            "min_vce_v": 0.262941303290086,
+            "max_vce_v": 0.9813719534507346,
+            "max_abs_vbe_v": 0.8644410179424049,
+            "max_abs_ic_per_emitter_a": 0.0006687025669379651,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9813719534507346,
+            "whole_startup_peak_abs_vbe_v": 0.8644410179424049,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006687025669379651,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0046": {
+            "min_vce_v": 0.27935845836170115,
+            "max_vce_v": 0.9605533133303854,
+            "max_abs_vbe_v": 0.8640948598499647,
+            "max_abs_ic_per_emitter_a": 0.0006576712201239161,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9605533133303854,
+            "whole_startup_peak_abs_vbe_v": 0.8640948598499647,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006576712201239161,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0047": {
+            "min_vce_v": 0.27935845836170115,
+            "max_vce_v": 0.9605533133303854,
+            "max_abs_vbe_v": 0.8640948598499647,
+            "max_abs_ic_per_emitter_a": 0.0006576712201239127,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9605533133303854,
+            "whole_startup_peak_abs_vbe_v": 0.8640948598499647,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006576712201239127,
+            "post_passed": false,
+            "whole_upper_passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    },
+    "cmos_hv_light-inactive_half_cycle": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-cmos-driver-cmos_hv_light-inactive_half_cycle-38322832591-1.summary.json",
+      "sha256": "6a3c151f141ccfbf0a64cc21f446294ce1e371acd6246d255c7157f97e2dd6ee",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "compact",
+        "interconnect": "actual",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim. Original downstream768-sample100mV and23-HBT screens retained. Ideal sources now drive foundry CMOS gates at0/1.2V; clock/bias sources still ideal.",
+        "data_driver": {
+          "mode": "cmos_hv_light",
+          "source_sha256": "261f414b58e103fef9f610fb92f44bdb3f9c536aa2fca8bb4a1aa61dd690153b",
+          "input_capsule_sha256": "43134a616eb4c742709a08d63f8277e2bd0536bfa89f690e170c0ac5859464bf",
+          "launch": "inactive_half_cycle",
+          "a_transition_advance_s": 1.25e-10,
+          "launch_scope": "Prospective external gate-data availability contract, not an implemented upstream serializer/clock tree. A changes one serial UI before selection; B unchanged. Source bits and all final-output observation times unchanged.",
+          "expected_devices": {
+            "lv_mos": 16,
+            "hv_mos": 16,
+            "native_resistors": 12
+          },
+          "prospective_screen": {
+            "mos_terminal_abs_limit_v": 1.32,
+            "sampled_common_mode_v": [
+              1.8,
+              2.05
+            ],
+            "hv_mos_terminal_abs_limit_v": 2.75,
+            "minimum_sampled_differential_v": 0.15,
+            "input_source_rate_gbps": 4.0
+          },
+          "scope": "Actual foundry CMOS data drivers and native passive network loaded by the final mux. Select clock still ideal. No complete serializer, rail-sink capability, independent rail startup, PVT, physical layout or foundry SOA claim."
+        },
+        "data_driver_review": {
+          "status": "MEASURED_NATIVE_CMOS_DATA_DRIVER_NOT_PHY_ACCEPTANCE",
+          "zero_source_op": true,
+          "active_input_ranges_v": {
+            "ap": [
+              1.6573240704235483,
+              2.1595391858918793
+            ],
+            "an": [
+              1.6573245581043758,
+              2.159442686846204
+            ],
+            "bp": [
+              1.6574653566659738,
+              2.159721802636082
+            ],
+            "bn": [
+              1.6574563193590077,
+              2.159705424780533
+            ]
+          },
+          "devices": {
+            "xad_ap.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3099265997995526,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.200991705008251
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2515808491932399,
+                "vgs": 1.3099265997995526,
+                "vgd": 1.301221064354284
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.272627756361341,
+                "vgs": 1.2918148553636872,
+                "vgd": 1.301221064354284
+              },
+              "passed": true
+            },
+            "xad_ap.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2918148553636872,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.200991705008251
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_0": {
+              "peaks": {
+                "vds": 2.4364321499882324,
+                "vgs": 1.2515808491932399,
+                "vgd": 2.151764581406507
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_1": {
+              "peaks": {
+                "vds": 2.4364321499882324,
+                "vgs": 1.2515808491932399,
+                "vgd": 2.151764581406507
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_2": {
+              "peaks": {
+                "vds": 2.4364321499882324,
+                "vgs": 1.2515808491932399,
+                "vgd": 2.151764581406507
+              },
+              "passed": true
+            },
+            "xad_ap.XHV_3": {
+              "peaks": {
+                "vds": 2.4364321499882324,
+                "vgs": 1.2515808491932399,
+                "vgd": 2.151764581406507
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3099262950295516,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009898847625282
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2515911148834433,
+                "vgs": 1.3099262950295516,
+                "vgd": 1.3012229685689993
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.272627788917491,
+                "vgs": 1.2918142729725857,
+                "vgd": 1.3012229685689993
+              },
+              "passed": true
+            },
+            "xad_an.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2918142729725857,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009898847625282
+              },
+              "passed": true
+            },
+            "xad_an.XHV_0": {
+              "peaks": {
+                "vds": 2.4363189898143167,
+                "vgs": 1.2515911148834433,
+                "vgd": 2.151456797087602
+              },
+              "passed": true
+            },
+            "xad_an.XHV_1": {
+              "peaks": {
+                "vds": 2.4363189898143167,
+                "vgs": 1.2515911148834433,
+                "vgd": 2.151456797087602
+              },
+              "passed": true
+            },
+            "xad_an.XHV_2": {
+              "peaks": {
+                "vds": 2.4363189898143167,
+                "vgs": 1.2515911148834433,
+                "vgd": 2.151456797087602
+              },
+              "passed": true
+            },
+            "xad_an.XHV_3": {
+              "peaks": {
+                "vds": 2.4363189898143167,
+                "vgs": 1.2515911148834433,
+                "vgd": 2.151456797087602
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.309923296227718,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009898853908771
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2515898114650317,
+                "vgs": 1.309923296227718,
+                "vgd": 1.3012221449407078
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2726141597116154,
+                "vgs": 1.2918158212413065,
+                "vgd": 1.3012221449407078
+              },
+              "passed": true
+            },
+            "xad_bp.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2918158212413065,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.2009898853908771
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_0": {
+              "peaks": {
+                "vds": 2.436412980160639,
+                "vgs": 1.2515898114650317,
+                "vgd": 2.151656755210233
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_1": {
+              "peaks": {
+                "vds": 2.436412980160639,
+                "vgs": 1.2515898114650317,
+                "vgd": 2.151656755210233
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_2": {
+              "peaks": {
+                "vds": 2.436412980160639,
+                "vgs": 1.2515898114650317,
+                "vgd": 2.151656755210233
+              },
+              "passed": true
+            },
+            "xad_bp.XHV_3": {
+              "peaks": {
+                "vds": 2.436412980160639,
+                "vgs": 1.2515898114650317,
+                "vgd": 2.151656755210233
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN1": {
+              "peaks": {
+                "vds": 1.3099199573134137,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.200991614594141
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XN0": {
+              "peaks": {
+                "vds": 1.2515897101222897,
+                "vgs": 1.3099199573134137,
+                "vgd": 1.301220543487669
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP1": {
+              "peaks": {
+                "vds": 1.2726269931359697,
+                "vgs": 1.2918149383513882,
+                "vgd": 1.301220543487669
+              },
+              "passed": true
+            },
+            "xad_bn.xbuf.XP0": {
+              "peaks": {
+                "vds": 1.2918149383513882,
+                "vgs": 1.2000000000000002,
+                "vgd": 1.200991614594141
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_0": {
+              "peaks": {
+                "vds": 2.436433213898663,
+                "vgs": 1.2515897101222897,
+                "vgd": 2.1517372119632694
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_1": {
+              "peaks": {
+                "vds": 2.436433213898663,
+                "vgs": 1.2515897101222897,
+                "vgd": 2.1517372119632694
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_2": {
+              "peaks": {
+                "vds": 2.436433213898663,
+                "vgs": 1.2515897101222897,
+                "vgd": 2.1517372119632694
+              },
+              "passed": true
+            },
+            "xad_bn.XHV_3": {
+              "peaks": {
+                "vds": 2.436433213898663,
+                "vgs": 1.2515897101222897,
+                "vgd": 2.1517372119632694
+              },
+              "passed": true
+            }
+          },
+          "samples": 768,
+          "minimum_margin_v": -0.24026475463832275,
+          "wrong_sign_samples": 64,
+          "below_150mv_samples": 128,
+          "common_mode_range_v": [
+            1.9027375991239874,
+            1.9397854787761522
+          ],
+          "common_mode_outside_target_samples": 0,
+          "mean_cmos_supply_power_w": 0.0009229481251117914,
+          "peak_reverse_supply_current_a": 0.00027541427148938813,
+          "reverse_supply_charge_c": 6.965667693340185e-14,
+          "note": "Engineering terminal-voltage screen only. Native model convergence and downstream HBT/signal screens remain separate. Reverse rail current is reported, not presumed supportable by a real regulator.",
+          "engineering_screen_passed": false,
+          "original_bit_output": {
+            "samples": 768,
+            "minimum_margin_v": 0.21016052170202193,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0,
+            "phases": {
+              "0.3": {
+                "samples": 256,
+                "minimum_margin_v": 0.21016052170202193,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0
+              },
+              "0.5": {
+                "samples": 256,
+                "minimum_margin_v": 0.2911169602607595,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0
+              },
+              "0.7": {
+                "samples": 256,
+                "minimum_margin_v": 0.29096426705740863,
+                "wrong_sign_samples": 0,
+                "below_100mv_samples": 0
+              }
+            },
+            "passed": true,
+            "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+            "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+          },
+          "selected_input_source_bits": {
+            "samples": 768,
+            "minimum_margin_v": 0.10347534526809454,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 128,
+            "common_mode_range_v": [
+              1.9144733502515718,
+              1.931846470700814
+            ],
+            "note": "Original source bits while each input is selected. Legacy half-rate sample screen is retained separately above, including unselected time slots."
+          },
+          "lossless_raw_wave": {
+            "sha256": "bbcc67fdf159c113ce0885c7cb1899d8e1b6a6cf9457b374c3984befc4b21f86",
+            "bytes": 38456726
+          },
+          "packed_sha256": "0d8af86d3320979f1b51997ebe7a1ef5c620021bcec3bdcfb6ec49ef90e41833"
+        },
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.21016052170202193,
+          "wrong_sign_samples": 0,
+          "passed": true
+        },
+        "failed_devices": {
+          "xmux.xd0041": {
+            "min_vce_v": 0.2629092322799388,
+            "max_vce_v": 0.9603807137257662,
+            "max_abs_vbe_v": 0.8644410179424049,
+            "max_abs_ic_per_emitter_a": 0.0006686998920620404,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9603807137257662,
+            "whole_startup_peak_abs_vbe_v": 0.8644410179424049,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006686998920620404,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0043": {
+            "min_vce_v": 0.2629092322799388,
+            "max_vce_v": 0.9603807137257662,
+            "max_abs_vbe_v": 0.8644410179424049,
+            "max_abs_ic_per_emitter_a": 0.0006686998920620497,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9603807137257662,
+            "whole_startup_peak_abs_vbe_v": 0.8644410179424049,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006686998920620497,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0046": {
+            "min_vce_v": 0.26252567925927484,
+            "max_vce_v": 0.9604300422228257,
+            "max_abs_vbe_v": 0.8640702838917206,
+            "max_abs_ic_per_emitter_a": 0.0006695148218925364,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9604300422228257,
+            "whole_startup_peak_abs_vbe_v": 0.8640702838917206,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006695148218925364,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0047": {
+            "min_vce_v": 0.26252567925927484,
+            "max_vce_v": 0.9604300422228257,
+            "max_abs_vbe_v": 0.8640702838917206,
+            "max_abs_ic_per_emitter_a": 0.0006695148218925313,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9604300422228257,
+            "whole_startup_peak_abs_vbe_v": 0.8640702838917206,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0006695148218925313,
+            "post_passed": false,
+            "whole_upper_passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    }
+  },
+  "conclusion": "Both coincident candidates retain192wrong/768. Fixed125psAprelaunch removes all final-output sign/100mV failures, but both retain4HBT VCEfailures and selected-input150mV failures. v3minimumoutput210.161mV; HBTminimumVCE0.262526V. No candidateadoption; fullserialPHY/routing/timingOPEN."
+}

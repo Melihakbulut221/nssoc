@@ -1,0 +1,138 @@
+{
+  "run": 38957249404,
+  "source_head": "2a3f6a2cac51640809c2e40aba8d685927229520",
+  "summary_sha256": "8fa70ddcf57970bcb4b726f68ecad6ebeb0c5389e9027f1dba1773906645b67b",
+  "parts_sha256": "d41a2ecf54bb782b439d8c9e46f005ff964d682602167910672d81fb6a09e290",
+  "routed_odb_sha256": "83beec1f190a814928dd0fcdce69a97dd0c2a9240ce55e457312060287f4a5da",
+  "status": "COMPLETE_SIX_SHORT_BRANCH_DELAYS_ROUTED_FRESH_RC_ALL_ENDPOINTS_NOT_SIGNOFF",
+  "accepted": false,
+  "final_timing_complete": false,
+  "native_drt_drvs": 0,
+  "endpoint_count": 22544,
+  "endpoint_corner_delay_rows": 135264,
+  "endpoints": {
+    "fast_max": {
+      "improved": 11476,
+      "regressed": 9995,
+      "unchanged": 1073,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": 1.7209567104714552e-10,
+      "worst_after_seconds": 1.3175727175962493e-10
+    },
+    "fast_min": {
+      "improved": 10191,
+      "regressed": 11236,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 6,
+      "negative_before": 6,
+      "negative_after": 1,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": -4.616795834522236e-11,
+      "worst_after_seconds": -7.90811860440499e-13
+    },
+    "slow_max": {
+      "improved": 10767,
+      "regressed": 10705,
+      "unchanged": 1072,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 47,
+      "resolved_negative": 6,
+      "negative_before": 9310,
+      "negative_after": 9351,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -5.649649637007315e-09,
+      "worst_after_seconds": -5.793440394086247e-09
+    },
+    "slow_min": {
+      "improved": 9909,
+      "regressed": 11518,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 1.2603584842452165e-11,
+      "worst_after_seconds": 1.4045986596045168e-11
+    },
+    "typical_max": {
+      "improved": 10201,
+      "regressed": 11270,
+      "unchanged": 1073,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 21,
+      "resolved_negative": 18,
+      "negative_before": 461,
+      "negative_after": 464,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -1.5093384320152836e-09,
+      "worst_after_seconds": -1.4641265977388684e-09
+    },
+    "typical_min": {
+      "improved": 10090,
+      "regressed": 11337,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 2.527561493437247e-11,
+      "worst_after_seconds": 2.1618928869315823e-11
+    }
+  },
+  "antenna": [
+    "[INFO ANT-0002] Found 627 net violations.",
+    "[INFO ANT-0001] Found 783 pin violations."
+  ],
+  "spef_integrity": {
+    "status": "PASS within scope",
+    "nets": 113796,
+    "inconsistent_nets": 0,
+    "declared_total_pf": 1474.7802355125762,
+    "serialized_total_pf": 1474.7802191718326,
+    "coupling_entries": 2140430,
+    "allow_coupling": true,
+    "difference_pf": 1.6340743513865164e-05,
+    "examples": [],
+    "input_sha256": "64d69fc50b7c0b8326e2150d87e1f5f004ea9ae71bcdeca7655d1306ce59da12",
+    "scope": "Per-net wire-capacitance conservation only; each net includes its own coupling entries when explicitly enabled. Aggregate sums are not unique physical capacitance. Excludes RC accuracy, connectivity, coupling symmetry/model correctness, timing and manufacturing acceptance."
+  },
+  "negative_hold_paths": [
+    {
+      "group": "eth_rx_clk_i",
+      "corner": "fast",
+      "path_type": "min",
+      "startpoint": "$auto$ff.cc:337:slice$1166145",
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+      "slack_ns": -0.000791
+    }
+  ],
+  "next_actions": [
+    "Independent actual six-addition cell/net census and signal geometry/annotation for ODB83beec1f.",
+    "Trace remaining new -0.7908ps hold endpoint with all-endpoint setup reachability before any additional delay.",
+    "Slow setup WNS regressed143.790757ps and negative endpoints9310->9351; do not accept as timing closure. Continue CORRPRE whole-core candidate evidence."
+  ],
+  "scope": "Original six negative hold endpoints resolved; one new negative endpoint appeared after full route. NominalRC three-corner STA only; unconstrained endpoints remain. Antenna627nets/783pins. No final signoff."
+}

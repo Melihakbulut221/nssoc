@@ -1,0 +1,35 @@
+{
+  "status": "HEALTHY",
+  "reason": null,
+  "elapsed_watchdog_seconds": null,
+  "failure_grace_seconds": 5.0,
+  "processes": [
+    {
+      "kind": "native",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "sw/tests/test_pcie_gen3_integrity_v20_retire.py::test_exact_generated_inverse_and_wrapper_bridge",
+        "sw/tests/test_pcie_gen3_integrity_v20_miter.py::test_actual_miter_fault_is_observed[retire_never_empty]",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/targeted_controls04.py",
+        "--basetemp=/dev/shm/nssoc-integrity-v20-public-controls04",
+        "--junitxml=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/controls04.xml"
+      ],
+      "identity": {
+        "pid": 129643,
+        "state": "R",
+        "process_group": 129643,
+        "start_ticks": "1753508"
+      },
+      "process_group": 129643,
+      "status": "REAPED_NO_LIVE_MEMBERS",
+      "returncode": 0,
+      "members_at_leader_exit": []
+    }
+  ],
+  "cleanup": null
+}

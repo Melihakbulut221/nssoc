@@ -1,0 +1,51 @@
+{
+  "title": "PCI Express Base Specification Revision 4.0 Version 1.0 (27 September 2017)",
+  "reference": {
+    "author": "PCI-SIG",
+    "host_scope": "Third-party mirror, primary-authored document",
+    "url": "https://www.pedestrian.com.cn/_downloads/d2f2495e73c44b8c3a8dfd4c399f50f0/PCIE_V4.0.pdf",
+    "sha256": "e5cb45c3a25066d362d7ad95e0e4be59b1afd90ee774bab5ee90268bf081e770",
+    "bytes": 20802626,
+    "redistribution": false
+  },
+  "clauses": [
+    {
+      "section": "4.2.2.2.1",
+      "printed_and_pdf_pages": [
+        236,
+        237
+      ],
+      "paraphrase": "An aligned receiver searches EIEOS until SDS establishes Locked state. Locked state forbids alignment adjustment; variable SKP boundary changes still apply. Invalid sync headers leave locked alignment."
+    },
+    {
+      "section": "4.2.4.6",
+      "table": "4-14",
+      "printed_and_pdf_pages": [
+        279
+      ],
+      "encoding": {
+        "header": 1,
+        "header_bits": 2,
+        "symbol0_hex": "e1",
+        "symbols1_to15_hex": "55"
+      },
+      "paraphrase": "SDS marks entry into a data stream. Permitted LTSSM contexts and following-data requirements are outside this leaf."
+    }
+  ],
+  "corroboration": [
+    {
+      "url": "https://cdn.teledynelecroy.com/files/appnotes/measuring-pcie-l1-substate-timing.pdf",
+      "page": 6,
+      "scope": "Primary instrument-vendor appnote identifies SDS as return-to-L0 marker after training; not authority for literal bytes."
+    }
+  ],
+  "local_contract": [
+    "raw_i[0] arrives first; low payload byte is earliest. Each block carries its two sync bits.",
+    "Accept exact full aligned 130-bit SDS only. Set local locked_o on the same sampling edge as block_valid_o/sds_o; gate every following raw-word EIEOS acquisition immediately, independent of external search remaining enabled.",
+    "SDS DATA-header alias, corruption and partial capture do not establish lock. Search control can suppress acquisition without suppressing already-aligned SDS classification.",
+    "Every accepted exact aligned EIEOS is classified by eieos_o. After SDS it never asserts realign_o or adjusts the bit boundary.",
+    "Reset, force_realign, raw-valid gap or detected malformed boundary/header clears lock. Loss/fault propagation beyond this recovered-clock leaf is external.",
+    "Variable66/98/130/162/194-bit SKP extraction remains identical; no insertion/deletion, deskew, CDC, LTSSM or full-PCS qualification."
+  ],
+  "base_rtl_sha256": "ad5671d1f04a632118d982e94b3d034251d8fe3ea7e9b7c6f61d0aa68e646fd4"
+}

@@ -1,0 +1,788 @@
+{
+  "author": {
+    "frozen_dependencies": {
+      ".github/workflows/timing-alu-boot-trace.yml": {
+        "bytes": 2576,
+        "sha256": "524516ba46e1437eb3ce270c73c89d49b55a1054f77c1f22359426f9336e4e7b"
+      },
+      ".github/workflows/timing-alu-qualification.yml": {
+        "bytes": 4154,
+        "sha256": "777d566224bb3af9667cf997b3797b1b6829e721995bf31809aefafd4fd7352a"
+      },
+      "docs/evidence/timing-cloud-input-20260930.json": {
+        "bytes": 1089565,
+        "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+      },
+      "hw/soc/flow/gen_logic_boot_rom.py": {
+        "bytes": 3473,
+        "sha256": "5f3510003984edf7decf2be3240fe9a13074547d7d87bcf2cfa4f73d9e3dc117"
+      },
+      "hw/soc/flow/sim_logic_boot_gl.py": {
+        "bytes": 11771,
+        "sha256": "85bf0e22c0ba246973953ac5c8ee79e4c7219fcee2c78c5d55babcc121385830"
+      },
+      "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+        "bytes": 43759,
+        "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+      },
+      "hw/soc/pnr/alu-qualification-input.lock.json": {
+        "bytes": 11333,
+        "sha256": "5848b42bbdf8817205d629d7db2ef9619f82a62f12d8667fd85e749f219511c2"
+      },
+      "hw/soc/tb/alu_boot_trace.v": {
+        "bytes": 5176,
+        "sha256": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc"
+      },
+      "scripts/bootstrap_oss.py": {
+        "bytes": 4879,
+        "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+      },
+      "scripts/prepare_alu_prefix.py": {
+        "bytes": 3824,
+        "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+      },
+      "scripts/run_cloud_alu_boot_trace.py": {
+        "bytes": 26813,
+        "sha256": "a1a47d79de7893ef69bafe290b49fc68afcd68e5af106c987750cf536c48a5f2"
+      },
+      "scripts/run_cloud_alu_prefix.py": {
+        "bytes": 14684,
+        "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+      },
+      "scripts/run_cloud_alu_qualification.py": {
+        "bytes": 28008,
+        "sha256": "cc918fbe661e7cd18f935795a08133c8b5438a256b5f50202195840f544fd429"
+      },
+      "scripts/run_cloud_eco_logic_proof.py": {
+        "bytes": 13139,
+        "sha256": "093cd8bfedce21561b57c049d935f1a80d3b6a09fd06b673b1ea0c58659f1c6e"
+      },
+      "scripts/run_cloud_timing_experiment.py": {
+        "bytes": 32423,
+        "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+      },
+      "sw/tests/test_alu_boot_trace.py": {
+        "bytes": 13862,
+        "sha256": "d303f420c342895f7a136fd49077821732c09509b605fc5cd7670e3566444674"
+      }
+    },
+    "limitations": [
+      "Source-bound full-chip pin excerpts are derived only after cloud preparation verifies both original immutable netlists. No full netlist was downloaded or executed locally.",
+      "Event sequence records observed scheduler order, not a simulator internal delta index. Same-time events are retained with binary scalar values.",
+      "Native internal notifier values can be unknown by design; these observations do not themselves certify a failure or repair.",
+      "Expected candidate boot failure remains separate from successful complete diagnostic capture."
+    ],
+    "native_controls": {
+      "archive": {
+        "bytes": 28639,
+        "path": "hw/soc/out/heartbeat-20261003-0547/npu-state-source/native-controls.tar.gz",
+        "sha256": "4307f53a11dc4fcacd5e8c8b1dd8351495407f15e5aba073ccc205b1d3db9a95"
+      },
+      "directory": "/dev/shm/nssoc-npu-state-native-control",
+      "files": {
+        "bit0_unknown/baseline-compile-execution.json": {
+          "bytes": 379,
+          "sha256": "670142bb7f6ee63760d3cab996f150ae409817a1787e1ea7714cac565a2e7878"
+        },
+        "bit0_unknown/baseline-compile.log": {
+          "bytes": 768,
+          "sha256": "97ee38b6a3a698decb2a02daed808054ba5bdf2e2cf45e4a9241f2cfdeba9aea"
+        },
+        "bit0_unknown/baseline-run-execution.json": {
+          "bytes": 207,
+          "sha256": "50d4ae2a4a252a143d5826db987197b791bbd3f83fa4040fcdb2b5b509b5629b"
+        },
+        "bit0_unknown/baseline-run.log": {
+          "bytes": 315,
+          "sha256": "e5cf863b543ec9da2612f19070680bf7ee07c7f81715c91b21f39abbf1c0d0ab"
+        },
+        "bit0_unknown/baseline.v": {
+          "bytes": 593,
+          "sha256": "906e4ad2ade943cb88ea81df5d46475ff21edbdcfd73aeed8fb6de255ce79764"
+        },
+        "bit0_unknown/baseline.vvp": {
+          "bytes": 9098,
+          "sha256": "26df413325db6a83bcdaa017c6904f7bee56d624ee9fdcd61552e3b3b39a6a2d"
+        },
+        "bit0_unknown/compile-execution.json": {
+          "bytes": 452,
+          "sha256": "6058cbd532b1a7505d25e1a86b6dfd2830bc3365b1680a9694ca71082170104a"
+        },
+        "bit0_unknown/compile.log": {
+          "bytes": 768,
+          "sha256": "97ee38b6a3a698decb2a02daed808054ba5bdf2e2cf45e4a9241f2cfdeba9aea"
+        },
+        "bit0_unknown/npu-state-events.log": {
+          "bytes": 11716,
+          "sha256": "b80fa02d543d22c46be367c25aede3339ffdde893548035b0027e371ff483574"
+        },
+        "bit0_unknown/run-execution.json": {
+          "bytes": 277,
+          "sha256": "0eda61da65ae394d92b467b30efa52cff13530b429a4fbf41649f8d2e4c981f5"
+        },
+        "bit0_unknown/run.log": {
+          "bytes": 408,
+          "sha256": "92da29388565be9aa025ca606bce132746eea74d0ca19caf890dfab266b380fa"
+        },
+        "bit0_unknown/sim.vvp": {
+          "bytes": 45349,
+          "sha256": "309a64eeac6577f711eb1e126d757679b9292d26d877c469e6b8a2aabe050107"
+        },
+        "bit0_unknown/tiny.v": {
+          "bytes": 1372,
+          "sha256": "f2d6949aeb95c6b6e23f7a753b2937c2c7f0d3a7a9741a72bfb1fff950dad556"
+        },
+        "bit3_unknown/baseline-compile-execution.json": {
+          "bytes": 379,
+          "sha256": "2067eee8da7ffb9e6c667e7e16ee62f2c1d668e667720d147e030877159acf85"
+        },
+        "bit3_unknown/baseline-compile.log": {
+          "bytes": 768,
+          "sha256": "97ee38b6a3a698decb2a02daed808054ba5bdf2e2cf45e4a9241f2cfdeba9aea"
+        },
+        "bit3_unknown/baseline-run-execution.json": {
+          "bytes": 207,
+          "sha256": "a52f7ab5fae692018f6eae81ea5b2c2a3ff2ce840eff5ee454228b44fc82da7e"
+        },
+        "bit3_unknown/baseline-run.log": {
+          "bytes": 315,
+          "sha256": "87e514b114c63b403e66d36b02c6b6d8c23005d16321f71203c0abc44ae4a85e"
+        },
+        "bit3_unknown/baseline.v": {
+          "bytes": 593,
+          "sha256": "60b63a747aef934a1475c7c47abe94ef791389ed2ae4f4151b3d501ec474c5c3"
+        },
+        "bit3_unknown/baseline.vvp": {
+          "bytes": 9098,
+          "sha256": "4875c4a6fbe1db40ae192f53c6e6773ef20f5edfb314512ccf064e2005e02763"
+        },
+        "bit3_unknown/compile-execution.json": {
+          "bytes": 452,
+          "sha256": "47bf075f221b763b1e708c8c62ec90aa0884a41286ef2bb8cc4e7f5b777076a5"
+        },
+        "bit3_unknown/compile.log": {
+          "bytes": 768,
+          "sha256": "97ee38b6a3a698decb2a02daed808054ba5bdf2e2cf45e4a9241f2cfdeba9aea"
+        },
+        "bit3_unknown/npu-state-events.log": {
+          "bytes": 12140,
+          "sha256": "2706d5b689bf758ad5644645745ead8f8f08acd6a45dd8de3ec6753df1d2a0f7"
+        },
+        "bit3_unknown/run-execution.json": {
+          "bytes": 277,
+          "sha256": "bb5037b9e1d4cc986d9a06ef4c69fce9d3b4c9857e2a2092a0032d5dd90efd41"
+        },
+        "bit3_unknown/run.log": {
+          "bytes": 408,
+          "sha256": "ea53f92f06fdc74cb108a5b9e762c78d948d998c612207de85fd69f5f6cfae8c"
+        },
+        "bit3_unknown/sim.vvp": {
+          "bytes": 45349,
+          "sha256": "ef1f05630b1f08a1865d02046b870084527a12156bf74bff6ba60c0af8ce3d5e"
+        },
+        "bit3_unknown/tiny.v": {
+          "bytes": 1372,
+          "sha256": "55ec19d86c46471e79fa5fa21769728b06579422928b039e3237c246557e9a19"
+        },
+        "known/baseline-compile-execution.json": {
+          "bytes": 365,
+          "sha256": "85ba096f371984ea9bb6398f1e730f59a719894b180d8ddfa297b50047d1f86e"
+        },
+        "known/baseline-compile.log": {
+          "bytes": 768,
+          "sha256": "97ee38b6a3a698decb2a02daed808054ba5bdf2e2cf45e4a9241f2cfdeba9aea"
+        },
+        "known/baseline-run-execution.json": {
+          "bytes": 200,
+          "sha256": "21aace8e9db7c932d583af6d1f436cc8c8b22e3df2ffe2af7b7fc909166de27e"
+        },
+        "known/baseline-run.log": {
+          "bytes": 308,
+          "sha256": "2a0f337c99fc807819035f2caeb8318a3a9672bd031bcfca7cca65f96056d971"
+        },
+        "known/baseline.v": {
+          "bytes": 593,
+          "sha256": "d96fc1b9c05fcffe8496d395b1c616c15a3ddef27b2c7b7601dd569653fac50f"
+        },
+        "known/baseline.vvp": {
+          "bytes": 9092,
+          "sha256": "458f3384e76d33b379293483d32ca2cc3db735c0c7d6198082473d7d67b4c62b"
+        },
+        "known/compile-execution.json": {
+          "bytes": 438,
+          "sha256": "3ac2c1c7cd8f622cdf31176d79fe4a7ba13030618318349dd285b0c45bedf056"
+        },
+        "known/compile.log": {
+          "bytes": 768,
+          "sha256": "97ee38b6a3a698decb2a02daed808054ba5bdf2e2cf45e4a9241f2cfdeba9aea"
+        },
+        "known/npu-state-events.log": {
+          "bytes": 12980,
+          "sha256": "04a42a0889923aad497d17e76e021cd4c5bd137f7d91cefbeb3f1056325c5fdd"
+        },
+        "known/run-execution.json": {
+          "bytes": 263,
+          "sha256": "9878d8df21e6ff150316521ffc89b626b9c86c9dd85e625cef639711527f2b37"
+        },
+        "known/run.log": {
+          "bytes": 401,
+          "sha256": "556fd0815ff70632df740692247da626cd05b4794ac5d8e4a8ec543ee07eefd0"
+        },
+        "known/sim.vvp": {
+          "bytes": 45343,
+          "sha256": "54c994932c9b53e8e8348fb5e1cae4f4ece9ac5f1443153cfa5eef4bcb7b138c"
+        },
+        "known/tiny.v": {
+          "bytes": 1372,
+          "sha256": "5de4a572383a250deee7d3a92811c75903d3d0490b1b32e48fe45fd879c446d4"
+        },
+        "result.json": {
+          "bytes": 7234,
+          "sha256": "b1993e6d5dd97cbd840b414101b4bc3d940d5c775fe8488a645d72c05641c067"
+        }
+      },
+      "model": {
+        "bytes": 53835,
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+      },
+      "results": {
+        "bit0_unknown": {
+          "baseline_compile": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-DFUNCTIONAL",
+              "-s",
+              "tiny",
+              "-o",
+              "/dev/shm/nssoc-npu-state-native-control/bit0_unknown/baseline.vvp",
+              "/dev/shm/nssoc-npu-state-native-control/bit0_unknown/baseline.v",
+              "/dev/shm/nssoc-dfrbpq-model.v"
+            ],
+            "returncode": 0
+          },
+          "baseline_execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+              "-i",
+              "/dev/shm/nssoc-npu-state-native-control/bit0_unknown/baseline.vvp"
+            ],
+            "returncode": 0
+          },
+          "compile": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-DFUNCTIONAL",
+              "-s",
+              "tiny",
+              "-o",
+              "/dev/shm/nssoc-npu-state-native-control/bit0_unknown/sim.vvp",
+              "/dev/shm/nssoc-npu-state-native-control/bit0_unknown/tiny.v",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_state_event_trace.v",
+              "/dev/shm/nssoc-dfrbpq-model.v"
+            ],
+            "returncode": 0
+          },
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+              "-i",
+              "/dev/shm/nssoc-npu-state-native-control/bit0_unknown/sim.vvp",
+              "+npu_trace_dir=/dev/shm/nssoc-npu-state-native-control/bit0_unknown"
+            ],
+            "returncode": 0
+          },
+          "native_output_trajectory_unchanged": true,
+          "observation": {
+            "events": 108,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 11716,
+              "sha256": "b80fa02d543d22c46be367c25aede3339ffdde893548035b0027e371ff483574"
+            },
+            "samples": 6,
+            "sequence": 114,
+            "start": 2,
+            "unknown_scalar_events": [
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 16,
+                "signal": 4,
+                "value": "x"
+              },
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 18,
+                "signal": 0,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 26,
+                "signal": 8,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 29,
+                "signal": 1,
+                "value": "x"
+              }
+            ],
+            "width": 44
+          },
+          "unknown_q_bits": [
+            0
+          ]
+        },
+        "bit3_unknown": {
+          "baseline_compile": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-DFUNCTIONAL",
+              "-s",
+              "tiny",
+              "-o",
+              "/dev/shm/nssoc-npu-state-native-control/bit3_unknown/baseline.vvp",
+              "/dev/shm/nssoc-npu-state-native-control/bit3_unknown/baseline.v",
+              "/dev/shm/nssoc-dfrbpq-model.v"
+            ],
+            "returncode": 0
+          },
+          "baseline_execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+              "-i",
+              "/dev/shm/nssoc-npu-state-native-control/bit3_unknown/baseline.vvp"
+            ],
+            "returncode": 0
+          },
+          "compile": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-DFUNCTIONAL",
+              "-s",
+              "tiny",
+              "-o",
+              "/dev/shm/nssoc-npu-state-native-control/bit3_unknown/sim.vvp",
+              "/dev/shm/nssoc-npu-state-native-control/bit3_unknown/tiny.v",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_state_event_trace.v",
+              "/dev/shm/nssoc-dfrbpq-model.v"
+            ],
+            "returncode": 0
+          },
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+              "-i",
+              "/dev/shm/nssoc-npu-state-native-control/bit3_unknown/sim.vvp",
+              "+npu_trace_dir=/dev/shm/nssoc-npu-state-native-control/bit3_unknown"
+            ],
+            "returncode": 0
+          },
+          "native_output_trajectory_unchanged": true,
+          "observation": {
+            "events": 112,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 12140,
+              "sha256": "2706d5b689bf758ad5644645745ead8f8f08acd6a45dd8de3ec6753df1d2a0f7"
+            },
+            "samples": 6,
+            "sequence": 118,
+            "start": 2,
+            "unknown_scalar_events": [
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 10,
+                "signal": 37,
+                "value": "x"
+              },
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 12,
+                "signal": 33,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 20,
+                "signal": 41,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 29,
+                "signal": 34,
+                "value": "x"
+              }
+            ],
+            "width": 44
+          },
+          "unknown_q_bits": [
+            3
+          ]
+        },
+        "known": {
+          "baseline_compile": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-DFUNCTIONAL",
+              "-s",
+              "tiny",
+              "-o",
+              "/dev/shm/nssoc-npu-state-native-control/known/baseline.vvp",
+              "/dev/shm/nssoc-npu-state-native-control/known/baseline.v",
+              "/dev/shm/nssoc-dfrbpq-model.v"
+            ],
+            "returncode": 0
+          },
+          "baseline_execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+              "-i",
+              "/dev/shm/nssoc-npu-state-native-control/known/baseline.vvp"
+            ],
+            "returncode": 0
+          },
+          "compile": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-DFUNCTIONAL",
+              "-s",
+              "tiny",
+              "-o",
+              "/dev/shm/nssoc-npu-state-native-control/known/sim.vvp",
+              "/dev/shm/nssoc-npu-state-native-control/known/tiny.v",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_state_event_trace.v",
+              "/dev/shm/nssoc-dfrbpq-model.v"
+            ],
+            "returncode": 0
+          },
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+              "-i",
+              "/dev/shm/nssoc-npu-state-native-control/known/sim.vvp",
+              "+npu_trace_dir=/dev/shm/nssoc-npu-state-native-control/known"
+            ],
+            "returncode": 0
+          },
+          "native_output_trajectory_unchanged": true,
+          "observation": {
+            "events": 120,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 12980,
+              "sha256": "04a42a0889923aad497d17e76e021cd4c5bd137f7d91cefbeb3f1056325c5fdd"
+            },
+            "samples": 6,
+            "sequence": 126,
+            "start": 2,
+            "unknown_scalar_events": [],
+            "width": 44
+          },
+          "unknown_q_bits": []
+        }
+      },
+      "runtime_archive": {
+        "bytes": 737555999,
+        "local_archive_rehashed": true,
+        "sha256": "f9c8f52d7333341a1dcad3dc19b0ce229f1b30c5a30cdc8befcc6dd5c8ee2cbd"
+      },
+      "tools": {
+        "iverilog": {
+          "bytes": 453,
+          "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+        },
+        "vvp": {
+          "bytes": 485,
+          "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+        }
+      }
+    },
+    "schema": 1,
+    "scope": {
+      "default_layout_adopted": false,
+      "full_chip_execution": false,
+      "prior_failure": {
+        "candidate_boot_failed": true,
+        "first_candidate_unknown_cycle": 1569431,
+        "run_id": 37071773733,
+        "source_commit": "c7ffba6373529530bf208e58dc9d1bf66eb1182b"
+      },
+      "qualification_cycle_bound": 3000000,
+      "read_only": true,
+      "rtl_modified": false,
+      "scalar_count": 44,
+      "window": [
+        1569360,
+        1569520
+      ]
+    },
+    "source_files": {
+      ".github/workflows/timing-npu-state-trace.yml": {
+        "bytes": 2588,
+        "sha256": "3dba8c0537b1e0ff81ea2cc58d55a76e7b3a1320639907c0298302ad6a6c8808"
+      },
+      "hw/soc/tb/npu_state_event_trace.v": {
+        "bytes": 1926,
+        "sha256": "909131caa1d65d3554846f11daff0f9538474ffaa3ae2acf1d720a120f5eec9b"
+      },
+      "scripts/run_cloud_npu_state_trace.py": {
+        "bytes": 17348,
+        "sha256": "c877425001c16eae37c85f69bfd8ed6f457e7fde3501586532efee60e9a23e14"
+      },
+      "sw/tests/test_npu_state_trace.py": {
+        "bytes": 8680,
+        "sha256": "6b693e274a1a1e0a3915738ea6faec44cc62252d90cdef30af86ce99a9cc6ba7"
+      }
+    },
+    "status": "FROZEN_SOURCE_TINY_NATIVE_CONTROLS_PASS_NO_CHIP_EXECUTION",
+    "test_count": 90,
+    "tests": [
+      {
+        "command": [
+          "hw/soc/tools/cocotb-venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "sw/tests/test_npu_state_trace.py",
+          "sw/tests/test_alu_boot_trace.py",
+          "sw/tests/test_alu_qualification.py"
+        ],
+        "output": {
+          "bytes": 179,
+          "sha256": "b42f10441a2a7e6c0bdfa58252a5b8d2196b1b70e48cb4872f4d330d1f6f59b1"
+        },
+        "returncode": 0
+      },
+      {
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "scripts/run_cloud_npu_state_trace.py",
+          "sw/tests/test_npu_state_trace.py"
+        ],
+        "output": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        },
+        "returncode": 0
+      },
+      {
+        "command": [
+          "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+          ".github/workflows/timing-npu-state-trace.yml"
+        ],
+        "output": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 0
+      }
+    ],
+    "utc": "2026-10-03T06:09:48.279419+00:00"
+  },
+  "independent_review": {
+    "author_validation": {
+      "bytes": 20950,
+      "sha256": "63dd5335eca2893146a62bf61064bd950339941727cbadc26b734f729c6ec84d"
+    },
+    "candidate_adopted": false,
+    "checked_at": "2026-10-03T06:21:39.262271+00:00",
+    "existing_native_replay": {
+      "all_eight_prior_state_q_identities_match": true,
+      "archive": {
+        "bytes": 28639,
+        "sha256": "4307f53a11dc4fcacd5e8c8b1dd8351495407f15e5aba073ccc205b1d3db9a95"
+      },
+      "files_rehashed": 40,
+      "model_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "prior_source_bound_q_receipt": {
+        "bytes": 16559,
+        "sha256": "126df8546e755737827ec536329d10a70737eab907d5cd1e2d2d9dc279677a15"
+      },
+      "recorded_successful_processes": 12,
+      "results": {
+        "bit0_unknown": {
+          "events": 108,
+          "native_output_trajectory_unchanged": true,
+          "raw_event_file": {
+            "bytes": 11716,
+            "sha256": "b80fa02d543d22c46be367c25aede3339ffdde893548035b0027e371ff483574"
+          },
+          "samples": 6,
+          "unknown_q_bits": [
+            0
+          ]
+        },
+        "bit3_unknown": {
+          "events": 112,
+          "native_output_trajectory_unchanged": true,
+          "raw_event_file": {
+            "bytes": 12140,
+            "sha256": "2706d5b689bf758ad5644645745ead8f8f08acd6a45dd8de3ec6753df1d2a0f7"
+          },
+          "samples": 6,
+          "unknown_q_bits": [
+            3
+          ]
+        },
+        "known": {
+          "events": 120,
+          "native_output_trajectory_unchanged": true,
+          "raw_event_file": {
+            "bytes": 12980,
+            "sha256": "04a42a0889923aad497d17e76e021cd4c5bd137f7d91cefbeb3f1056325c5fdd"
+          },
+          "samples": 6,
+          "unknown_q_bits": []
+        }
+      }
+    },
+    "findings": [],
+    "frozen_methods_rehashed": 16,
+    "full_soc_functional_accepted": false,
+    "limitations": [
+      "Full chip native source binding runs during cloud preparation against both exact immutable netlists; this review rechecked the saved first-X Q witnesses without loading either large netlist.",
+      "Observer event sequence denotes observed scheduler execution order, not simulator-internal delta cycles; recording alone does not establish a causal RTL defect.",
+      "The fixed paired window diagnoses the observed state transition; it is not exhaustive event capture over all three million cycles.",
+      "The source-pinned native controls distinguish bit0 and bit3 unknowns and preserve sampled output trajectories; no whole-SoC behavior or timing acceptance follows.",
+      "The prior four-state candidate boot failure remains open."
+    ],
+    "manufacturing_approval": false,
+    "review": {
+      "actual_boot_pass_separate_from_diagnostic_capture": true,
+      "all_44_scalar_indices_and_binary_snapshots_retained": true,
+      "complete_samples_required": 161,
+      "cycle_scope": {
+        "meaning": "New NPU observer retains the original qualification workload bound, restoring it relative to the old shortened 1.6M diagnostic trace. The old completed trace did not execute 3M cycles.",
+        "new_npu_observer_cycle_bound": 3000000,
+        "original_qualification_cycle_bound": 3000000,
+        "prior_bounded_trace_diagnostic_cycle_bound": 1600000,
+        "prior_candidate_final_cycle": 1600096
+      },
+      "exact_native_model_udp_relations_checked": true,
+      "incomplete_window_event_overflow_bad_sequence_or_mismatched_scalar_rejected": true,
+      "instrumentation_preserves_all_original_bench_statements": true,
+      "mbist_marker_and_original_boot_verdict_parser_retained": true,
+      "native_credentials_scrubbed": true,
+      "native_failure_and_raw_output_preserved": true,
+      "native_model_and_source_hash_required": true,
+      "observed_scheduler_sequence_not_simulator_delta_index": true,
+      "read_only_monitor_inputs_no_dut_assignments_or_force": true,
+      "same_fixed_window": [
+        1569360,
+        1569520
+      ],
+      "scalar_fields_per_native_cell": [
+        "D",
+        "Q",
+        "CLK",
+        "RESET_B",
+        "delayed_D",
+        "delayed_CLK",
+        "delayed_RESET_B",
+        "notifier",
+        "int_fwire_IQ",
+        "int_fwire_r",
+        "xcr_0"
+      ],
+      "total_native_scalar_bits": 44,
+      "unchanged_qualification_cycle_limit": 3000000,
+      "workflow_full_history_and_hidden_method_uploads": true
+    },
+    "reviewer": "targeted_failure",
+    "source_files": {
+      ".github/workflows/timing-npu-state-trace.yml": {
+        "bytes": 2588,
+        "sha256": "3dba8c0537b1e0ff81ea2cc58d55a76e7b3a1320639907c0298302ad6a6c8808"
+      },
+      "hw/soc/tb/npu_state_event_trace.v": {
+        "bytes": 1926,
+        "sha256": "909131caa1d65d3554846f11daff0f9538474ffaa3ae2acf1d720a120f5eec9b"
+      },
+      "scripts/run_cloud_npu_state_trace.py": {
+        "bytes": 17348,
+        "sha256": "c877425001c16eae37c85f69bfd8ed6f457e7fde3501586532efee60e9a23e14"
+      },
+      "sw/tests/test_npu_state_trace.py": {
+        "bytes": 8680,
+        "sha256": "6b693e274a1a1e0a3915738ea6faec44cc62252d90cdef30af86ce99a9cc6ba7"
+      }
+    },
+    "state_bijection_proved": false,
+    "status": "INDEPENDENT_NPU_OBSERVER_SOURCE_AND_COMPACT_NATIVE_REPLAY_PASS",
+    "tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/nssoc-peer-npu-20261003 sw/tests/test_npu_state_trace.py sw/tests/test_alu_boot_trace.py sw/tests/test_alu_qualification.py",
+      "passed": 90,
+      "scope": "Includes bounded toy Icarus monitor controls; no full SoC simulation.",
+      "seconds": 0.57
+    },
+    "timing_accepted": false
+  },
+  "root_review": {
+    "author_receipt": {
+      "bytes": 20950,
+      "sha256": "63dd5335eca2893146a62bf61064bd950339941727cbadc26b734f729c6ec84d"
+    },
+    "candidate_adopted": false,
+    "checks": [
+      "Exact original and candidate four DFF Q bindings and native model pin.",
+      "Read-only44scalar observer with binary snapshots, event sequence and fixed161cycle paired window.",
+      "Original3Mqualification limit restored; prior completed trace was1.6Mdiagnostic.",
+      "All original firmware, reset, models and bench statements preserved.",
+      "Positive and isolated bit0/bit3 unknown controls preserve sampled native output trajectories.",
+      "Missing/incomplete event capture, source mismatch or boot failure cannot become acceptance."
+    ],
+    "limits": [
+      "Observer sequence numbers are observation order, not a simulator internal delta index.",
+      "No new wholechip execution, cause identification or candidate acceptance yet."
+    ],
+    "peer_receipt": {
+      "bytes": 5458,
+      "sha256": "7677d78098c73207146826da4f387fee775e85cb24b044a7fb8c99fb47091e77"
+    },
+    "source_files": {
+      ".github/workflows/timing-npu-state-trace.yml": {
+        "bytes": 2588,
+        "sha256": "3dba8c0537b1e0ff81ea2cc58d55a76e7b3a1320639907c0298302ad6a6c8808"
+      },
+      "hw/soc/tb/npu_state_event_trace.v": {
+        "bytes": 1926,
+        "sha256": "909131caa1d65d3554846f11daff0f9538474ffaa3ae2acf1d720a120f5eec9b"
+      },
+      "scripts/run_cloud_npu_state_trace.py": {
+        "bytes": 17348,
+        "sha256": "c877425001c16eae37c85f69bfd8ed6f457e7fde3501586532efee60e9a23e14"
+      },
+      "sw/tests/test_npu_state_trace.py": {
+        "bytes": 8680,
+        "sha256": "6b693e274a1a1e0a3915738ea6faec44cc62252d90cdef30af86ce99a9cc6ba7"
+      }
+    },
+    "status": "ROOT_SOURCE_AND_CAPTURE_REVIEW_PASS",
+    "utc": "2026-10-03T06:23:17.038856+00:00"
+  },
+  "schema": 1,
+  "scope": "Prepared read-only diagnostic method and tiny native controls only."
+}

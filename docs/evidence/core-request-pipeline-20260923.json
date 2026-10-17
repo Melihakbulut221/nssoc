@@ -1,0 +1,185 @@
+{
+  "date": "2026-09-23",
+  "status": "PARTIAL: optional request pipeline block verified; whole-CPU and physical candidate pending",
+  "scope": "Request token/reset/occupancy contract only. No whole-core equivalence, physical timing, full DRC/LVS or product acceptance. Defaults remain zero; implementation entrypoint does not select the candidate.",
+  "source_sha256": {
+    "hw/soc/rtl/soc_req_pipe.v": "16643f4fd3c76376f67d931c56d3118e0cf1114a7e1847fd59c5deb453982cc8",
+    "hw/soc/rtl/soc_top.v": "947e947bbbc496e2094d8401e44fd614caee187922f7c402ec6796cd51d2b24d",
+    "hw/soc/tb/tb_soc_req_pipe.v": "5ccd5625bfef427a7b30014ce675d205046b025c58f3f6df823cd3402c44474c",
+    "hw/soc/formal/soc_req_pipe.sby": "3f21ffc0c3896d84e05780264e890829101acce212ac5bb31f2d7c428bad4902",
+    "hw/soc/formal/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+    "sw/tests/test_soc_req_pipe.py": "0e5eae0030d8f05cac23caf5dd0b2cbde2f3e4edb8933ee652a7a1ea5a37507e",
+    "hw/soc/flow/sim_soc.sh": "ef6e3c8f47082fde1dfc6d083dd0e78d25c40ee5660aa8a3fee722c46256ea65",
+    "hw/soc/flow/syn_soc_top.sh": "f45950ebd8d15198cb9b5fa39659e53b8b2c0a755c93c46569832cf8169a01c7",
+    "hw/soc/flow/pnr_soc_top.sh": "fd511f5df4b50ac2a87a4debabc681a91d62594db808401626a8ec9601dc6922",
+    "hw/soc/flow/fi_core.sh": "44ce898a3c351a8705c5a014a2360426ebaf4c899c145f2f29b8e99047af4bc7",
+    "hw/soc/flow/fi_npu.sh": "0f34411e7c1654e0194b75f73be48857a4c22214afe34e50df201bf63a702d15"
+  },
+  "formal": {
+    "bmc": {
+      "status": "PASS 0 5",
+      "config_sha256": "adcbe1e2bfe61f90dd9f1c339078e59b9a86da34e61214e7a6cdd26de9fb9ba0",
+      "log_sha256": "a0e8e0c3d3293d9da64ef51370f7d4d3e4cf014a5c887a3ccbe4eafcbf8699ca"
+    },
+    "prove": {
+      "status": "PASS 0 1",
+      "config_sha256": "cdc057adfa7146a81ff3cf2fdbfb629756d2847602ee7d71df537993264379da",
+      "log_sha256": "f219e1ee2345a8b84c9134814cc11ad869eb1dcfda8f66f47568e66629666b6d"
+    },
+    "cover": {
+      "status": "PASS 0 0",
+      "config_sha256": "1c940570ed17ca901c1941fa9cebb4d4f9e71a012564483e366facb46bdacefc",
+      "log_sha256": "ff0d42df5f7678bab9660c89e0a34163f5b2be0c5cb36b5016e17b53d97c98af"
+    }
+  },
+  "formal_mutants": {
+    "payload": {
+      "returncode": 2,
+      "status": "FAIL",
+      "rtl_sha256": "3fb458bf013d3cda4a271e8be8bd07024485fe9e52447be5ddccdad53325ee82",
+      "log_sha256": "8858079ed8162f2e54ddbc804e1d52baa8590b96c81308cdd267dd8d68f5bafc"
+    },
+    "early_release": {
+      "returncode": 2,
+      "status": "FAIL",
+      "rtl_sha256": "18318dba0a11de410f0558737a5a5e3e08a9d07713c44e1adbf610ab4c5ea330",
+      "log_sha256": "ceeac3ef65e429e780df469541414ce075caf56c09645009ed3804ffbd8480a9"
+    },
+    "overwrite": {
+      "returncode": 2,
+      "status": "FAIL",
+      "rtl_sha256": "8aa0d9516685e1e85223aeffdd2d596450cfdc7deb13f85a78a6a06acebe55d1",
+      "log_sha256": "aef5d50d32802605183bfefdde3e6cb5d974cc851cc1ea1997344dacba10013e"
+    },
+    "bypass": {
+      "returncode": 2,
+      "status": "FAIL",
+      "rtl_sha256": "3003537abdf06d0aa8b190c5e79f3e1a6374e919c6ccb7890b784251ab127fc4",
+      "log_sha256": "612275413bd55abfc13c76093fd836c2308878888bc3115b5317eb7f24d82937"
+    }
+  },
+  "scoreboard": {
+    "accepted": 209,
+    "delivered": 207,
+    "reset_discarded": 2,
+    "stalled_cycles": 714,
+    "mutation_cases": 4
+  },
+  "regression": {
+    "initial_wider_guards": {
+      "passed": 99,
+      "failed": 1,
+      "reason": "fi_core.sh and fi_npu.sh omitted the new module from explicit source lists"
+    },
+    "corrected_source_guard_and_rtl_cases": {
+      "passed": 6
+    },
+    "inventory_and_rtl_cases": {
+      "passed": 8
+    }
+  },
+  "synthesis_candidate": {
+    "CORE_REQ_REG": 1,
+    "CORE_WB_STAGE": 1,
+    "cells": 70376,
+    "flops": 9601,
+    "area_um2": 1078127.7444,
+    "result": "Synthesis only; no timing acceptance"
+  },
+  "archive": {
+    "path": "docs/evidence/core-request-pipeline-20260923.tar.gz",
+    "sha256": "5afcce7e0de3faae2c5fff0044490e4f8baa20cf3d50945407b88612da575aa5",
+    "bytes": 39541,
+    "members": {
+      "core-pipeline-depth-split.log": "c77932e058b7c1d8fabd710142dc36f9ff58fd89a521c2c5b11f300024e53637",
+      "core-pipeline-guards.log": "cb0fed5e5bae53ed24f95f8bc9e419cb3e1d5f9bad7a339fa264902eeda1a677",
+      "core-pipeline-source-fix.log": "e294d58817276d5377bf3bcb35039ecb555722eb3cfdba356c1a9238baaf8280",
+      "core-pipeline-synthesis/area.rpt": "f9134fcc3f814b2a1b6e6da13b8f459a2ea57ebefb07ad70732a7e50cde667a5",
+      "core-pipeline-synthesis/soc_top_syn.ys": "5bfa478e8e8a7fe5e0f43a0971cab7647a4761697058bcce1af3cd73cd582440",
+      "core-pipeline-synthesis-driver.log": "d293a0b28ba80479946367d634dd181c623a1a7e4b74935475ed2c851570416f",
+      "core-pipeline-synthesis-sources.json": "b1ba1bdbea16a2d608cfa17006cea5460a2f33f61aeac5edaa238c1d7de34868",
+      "req-pipe-mutants/bypass/driver.log": "612275413bd55abfc13c76093fd836c2308878888bc3115b5317eb7f24d82937",
+      "req-pipe-mutants/bypass/soc_req_pipe.v": "3003537abdf06d0aa8b190c5e79f3e1a6374e919c6ccb7890b784251ab127fc4",
+      "req-pipe-mutants/bypass/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/bypass/test/engine_0/logfile.txt": "d8200e392e4044deef0dc5e6d3517013a15dff2866bf89b64e8bff0e6f9387a2",
+      "req-pipe-mutants/bypass/test/engine_0/trace.smtc": "8aee4a060b00767054920ab9e61df7e90a8d5ab214e53c1c2882e6e226a2ccc8",
+      "req-pipe-mutants/bypass/test/engine_0/trace.vcd": "6721f4415309062093fa731a4a83ad017235018fff7331048a1cb77c1d9f4aaf",
+      "req-pipe-mutants/bypass/test/engine_0/trace.yw": "e4cc5b278258c860f016c9681b195f65618582c1e782c5f3bf76f36578f3fdb2",
+      "req-pipe-mutants/bypass/test/engine_0/trace_tb.v": "0ea807f4da20976175c4e3cffd1b8d7b8a928725e6c216fa577ab28149cfeb3f",
+      "req-pipe-mutants/bypass/test/logfile.txt": "612275413bd55abfc13c76093fd836c2308878888bc3115b5317eb7f24d82937",
+      "req-pipe-mutants/bypass/test/src/soc_req_pipe.v": "3003537abdf06d0aa8b190c5e79f3e1a6374e919c6ccb7890b784251ab127fc4",
+      "req-pipe-mutants/bypass/test/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/bypass/test/status": "54c2862151d1efdbec1fb49edb5766e6e0c15c24e532866ac1305bd25dabc02c",
+      "req-pipe-mutants/bypass/test.sby": "7b46401dbd726f14137a2c1d70f5fd4463de24877e0b191adf0af6be0e8d6bfe",
+      "req-pipe-mutants/early_release/driver.log": "ceeac3ef65e429e780df469541414ce075caf56c09645009ed3804ffbd8480a9",
+      "req-pipe-mutants/early_release/soc_req_pipe.v": "18318dba0a11de410f0558737a5a5e3e08a9d07713c44e1adbf610ab4c5ea330",
+      "req-pipe-mutants/early_release/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/early_release/test/engine_0/logfile.txt": "eadeabaa04a819472d8c8f5f6b1feb3916c7df9184171f722a07340890c91c51",
+      "req-pipe-mutants/early_release/test/engine_0/trace.smtc": "0fa7fcc6267b5f7209141d1e51ce2d614a6082a5f2a1a0e6359d61966462172d",
+      "req-pipe-mutants/early_release/test/engine_0/trace.vcd": "27d1dafccbeb4f01440126267747a68ec59a5b509cd8e8db3c6bb06c22ebb770",
+      "req-pipe-mutants/early_release/test/engine_0/trace.yw": "86f1bcf750b2d40a239efe138449da371fefd3916b18435944d58d045b459ad3",
+      "req-pipe-mutants/early_release/test/engine_0/trace_tb.v": "2542ee7b8e220a80060258df2179945602905c19b07db25bee9195ef2d87cdad",
+      "req-pipe-mutants/early_release/test/logfile.txt": "ceeac3ef65e429e780df469541414ce075caf56c09645009ed3804ffbd8480a9",
+      "req-pipe-mutants/early_release/test/src/soc_req_pipe.v": "18318dba0a11de410f0558737a5a5e3e08a9d07713c44e1adbf610ab4c5ea330",
+      "req-pipe-mutants/early_release/test/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/early_release/test/status": "54c2862151d1efdbec1fb49edb5766e6e0c15c24e532866ac1305bd25dabc02c",
+      "req-pipe-mutants/early_release/test.sby": "7b46401dbd726f14137a2c1d70f5fd4463de24877e0b191adf0af6be0e8d6bfe",
+      "req-pipe-mutants/overwrite/driver.log": "aef5d50d32802605183bfefdde3e6cb5d974cc851cc1ea1997344dacba10013e",
+      "req-pipe-mutants/overwrite/soc_req_pipe.v": "8aa0d9516685e1e85223aeffdd2d596450cfdc7deb13f85a78a6a06acebe55d1",
+      "req-pipe-mutants/overwrite/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/overwrite/test/engine_0/logfile.txt": "9a96d7640ba217b3b2914febc01cad43cfe4867a8495cd7c942657d5a7850e5e",
+      "req-pipe-mutants/overwrite/test/engine_0/trace.smtc": "d1c9a5fd32e737edc53b315bb365c23e25b64b010f6eb423b5b2e2160205398a",
+      "req-pipe-mutants/overwrite/test/engine_0/trace.vcd": "f8b0c136a8f1ee44881f56a3b64b975c684138bf42b7b194f0c061a826822a52",
+      "req-pipe-mutants/overwrite/test/engine_0/trace.yw": "a4b0cfe978ae56c38d8c97423c41fdbad8a4fea349e51fce47af25966472e5a0",
+      "req-pipe-mutants/overwrite/test/engine_0/trace_tb.v": "051e497bd75c2bc0ab014c3c7ffd60c071ccb8431fb4362cfd2f4dbef940064f",
+      "req-pipe-mutants/overwrite/test/logfile.txt": "aef5d50d32802605183bfefdde3e6cb5d974cc851cc1ea1997344dacba10013e",
+      "req-pipe-mutants/overwrite/test/src/soc_req_pipe.v": "8aa0d9516685e1e85223aeffdd2d596450cfdc7deb13f85a78a6a06acebe55d1",
+      "req-pipe-mutants/overwrite/test/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/overwrite/test/status": "54c2862151d1efdbec1fb49edb5766e6e0c15c24e532866ac1305bd25dabc02c",
+      "req-pipe-mutants/overwrite/test.sby": "7b46401dbd726f14137a2c1d70f5fd4463de24877e0b191adf0af6be0e8d6bfe",
+      "req-pipe-mutants/payload/driver.log": "8858079ed8162f2e54ddbc804e1d52baa8590b96c81308cdd267dd8d68f5bafc",
+      "req-pipe-mutants/payload/soc_req_pipe.v": "3fb458bf013d3cda4a271e8be8bd07024485fe9e52447be5ddccdad53325ee82",
+      "req-pipe-mutants/payload/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/payload/test/engine_0/logfile.txt": "4bad89feb6003a85850d5e422324fa988a30493331cfd2c8c210239f088ef54e",
+      "req-pipe-mutants/payload/test/engine_0/trace.smtc": "b96cf58de878e5f8e1f5a9c0f01ea2fc9f1d464bfe5dd790eaa0628aececb582",
+      "req-pipe-mutants/payload/test/engine_0/trace.vcd": "8acc793f5377ec2afcc0ce0e84fefde9245f329b9d6b4cb23462f05697a693c6",
+      "req-pipe-mutants/payload/test/engine_0/trace.yw": "d5b21ea44b49c06052688fb8866be2fb8a050a68849927017d5b2ed1e98705e8",
+      "req-pipe-mutants/payload/test/engine_0/trace_tb.v": "8a7609639d95014533bf8650a846866f2df375fa7860410ed3a74fb677b935cd",
+      "req-pipe-mutants/payload/test/logfile.txt": "8858079ed8162f2e54ddbc804e1d52baa8590b96c81308cdd267dd8d68f5bafc",
+      "req-pipe-mutants/payload/test/src/soc_req_pipe.v": "3fb458bf013d3cda4a271e8be8bd07024485fe9e52447be5ddccdad53325ee82",
+      "req-pipe-mutants/payload/test/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-mutants/payload/test/status": "54c2862151d1efdbec1fb49edb5766e6e0c15c24e532866ac1305bd25dabc02c",
+      "req-pipe-mutants/payload/test.sby": "7b46401dbd726f14137a2c1d70f5fd4463de24877e0b191adf0af6be0e8d6bfe",
+      "req-pipe-mutants/results.json": "22f48b424dc8abe4760a6dd8491c0dbe47935026741ec99a9f5f22b0b7f21522",
+      "req-pipe-proof_bmc/config.sby": "adcbe1e2bfe61f90dd9f1c339078e59b9a86da34e61214e7a6cdd26de9fb9ba0",
+      "req-pipe-proof_bmc/engine_0/logfile.txt": "7a877f5db356f6601b37bafdf3e0d9b177b7aacef616a5cd02e6f3550a6bca63",
+      "req-pipe-proof_bmc/logfile.txt": "a0e8e0c3d3293d9da64ef51370f7d4d3e4cf014a5c887a3ccbe4eafcbf8699ca",
+      "req-pipe-proof_bmc/src/soc_req_pipe.v": "16643f4fd3c76376f67d931c56d3118e0cf1114a7e1847fd59c5deb453982cc8",
+      "req-pipe-proof_bmc/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-proof_bmc/status": "9768d51e75bbaf455ceae1cb5204dc0141f1d615040e48bd90d44c2613f92e9a",
+      "req-pipe-proof_cover/config.sby": "1c940570ed17ca901c1941fa9cebb4d4f9e71a012564483e366facb46bdacefc",
+      "req-pipe-proof_cover/engine_0/logfile.txt": "764ee74756ce872125cbeee2ed13885b00834a5a385f8a9329d9a857d5ba245f",
+      "req-pipe-proof_cover/engine_0/trace0.smtc": "36a0f6ac492d92b6bacc2f1868b12690ecbf4280a5bc4c16bff0ec42d264dc3c",
+      "req-pipe-proof_cover/engine_0/trace0.vcd": "a93c2ff8defdf7c464f9dab553cfcc7874328c05b5e4e6a6440237fe4cee31f3",
+      "req-pipe-proof_cover/engine_0/trace0.yw": "e6bd647a99746cbcd62f97a2b0ab17fb47971a52e87fcaf40f478c5fe74de427",
+      "req-pipe-proof_cover/engine_0/trace1.smtc": "7b9af475ae8e96ca6e4f06c422c538a6b0286d9eba302cf25be10572ba623414",
+      "req-pipe-proof_cover/engine_0/trace1.vcd": "105284f0c1e9eaadc244c1d1093d12b42a2f730c8bf58e49eeda0437b31e76b2",
+      "req-pipe-proof_cover/engine_0/trace1.yw": "346e7f51bc39d95d22684a4ede43d7ef10d63b0345504ab9a75a7edde10b0623",
+      "req-pipe-proof_cover/engine_0/trace2.smtc": "3a370a78334d8d50d922d1507f873ca8aa546f7767da80651c7e3bedc7dba993",
+      "req-pipe-proof_cover/engine_0/trace2.vcd": "1d57d6480eab1ef4ecaaf0c29f4da8666f0f5fd6e76292343f22ddc101ffb953",
+      "req-pipe-proof_cover/engine_0/trace2.yw": "0965749f4727f705a327cc34cfe6f522a0a068395319e92b9391eae362a7bb5b",
+      "req-pipe-proof_cover/engine_0/trace3.smtc": "3a370a78334d8d50d922d1507f873ca8aa546f7767da80651c7e3bedc7dba993",
+      "req-pipe-proof_cover/engine_0/trace3.vcd": "92ba99bd123543c9457fd79f188ca4920932d4eb42814700b7eeb696b7d5c853",
+      "req-pipe-proof_cover/engine_0/trace3.yw": "3b19e137508ff2969a108f0d4fc463aa5b0d6a7d96da9c48a23085a172f34b0c",
+      "req-pipe-proof_cover/logfile.txt": "ff0d42df5f7678bab9660c89e0a34163f5b2be0c5cb36b5016e17b53d97c98af",
+      "req-pipe-proof_cover/src/soc_req_pipe.v": "16643f4fd3c76376f67d931c56d3118e0cf1114a7e1847fd59c5deb453982cc8",
+      "req-pipe-proof_cover/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-proof_cover/status": "4d489b9bfaac73d73a64a4023bf4d947ca1d4216d9f72864c97bfb6a2bc07d56",
+      "req-pipe-proof_prove/config.sby": "cdc057adfa7146a81ff3cf2fdbfb629756d2847602ee7d71df537993264379da",
+      "req-pipe-proof_prove/logfile.txt": "f219e1ee2345a8b84c9134814cc11ad869eb1dcfda8f66f47568e66629666b6d",
+      "req-pipe-proof_prove/src/soc_req_pipe.v": "16643f4fd3c76376f67d931c56d3118e0cf1114a7e1847fd59c5deb453982cc8",
+      "req-pipe-proof_prove/src/soc_req_pipe_props.v": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2",
+      "req-pipe-proof_prove/status": "82bc437cdb0ebaedde9abc25a1795f5b1cd22d37f1e4d1240fd300e529561df4"
+    }
+  }
+}

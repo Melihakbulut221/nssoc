@@ -1,0 +1,92 @@
+{
+  "run": 38819589884,
+  "job": 116712626062,
+  "source_head": "02344a922a5c04c4e2230fe1f425a3b4670e4c83",
+  "summary_sha256": "54a23354fc53eb4811b574a1c1bbd70aa413d83463e5165f240b8925c10e00ff",
+  "archive_sha256": "14883e2c8766210fddfaccb1d2a121a3e9a3bb308fd795029d5897a362bb636a",
+  "release": "cloud-results-38819589884-1-routed-endpoints",
+  "verified_summary": {
+    "status": "COMPLETE_ACTUAL_ROUTED_ENDPOINT_CENSUS_NOT_TIMING_ACCEPTANCE",
+    "accepted": false,
+    "source_head": "02344a922a5c04c4e2230fe1f425a3b4670e4c83",
+    "source_run": 38809759501,
+    "final_timing_complete": false,
+    "scope": "Complete native endpoint census and all three cell-corner rise/fall min/max slacks on original extracted nominalRC. Hold targets retain setup failures/unconstrained cases. No delay-cell prediction, candidate adoption or qualified RC/signoff.",
+    "controls": {
+      "valid": 1,
+      "invalid_rejected": 5
+    },
+    "endpoint_count": 22544,
+    "endpoint_corner_delay_rows": 135264,
+    "summary": {
+      "fast_min": {
+        "constrained": 21427,
+        "unconstrained": 1117,
+        "negative": 91,
+        "worst_seconds": -1.5106649264851058e-10,
+        "negative_sum_seconds": -2.8155513476235683e-09
+      },
+      "fast_max": {
+        "constrained": 21472,
+        "unconstrained": 1072,
+        "negative": 53,
+        "worst_seconds": -2.97877278399028e-09,
+        "negative_sum_seconds": -4.0807912604634566e-08
+      },
+      "slow_min": {
+        "constrained": 21427,
+        "unconstrained": 1117,
+        "negative": 0,
+        "worst_seconds": 4.578548651323899e-11,
+        "negative_sum_seconds": 0.0
+      },
+      "slow_max": {
+        "constrained": 21472,
+        "unconstrained": 1072,
+        "negative": 9601,
+        "worst_seconds": -1.1940512578689777e-08,
+        "negative_sum_seconds": -2.1267929933399543e-05
+      },
+      "typical_min": {
+        "constrained": 21427,
+        "unconstrained": 1117,
+        "negative": 0,
+        "worst_seconds": 4.2721381987576024e-13,
+        "negative_sum_seconds": 0.0
+      },
+      "typical_max": {
+        "constrained": 21472,
+        "unconstrained": 1072,
+        "negative": 1285,
+        "worst_seconds": -6.233345839490312e-09,
+        "negative_sum_seconds": -4.6361530148253394e-07
+      }
+    },
+    "negative_hold_endpoints": 91,
+    "hold_target_categories": {
+      "positive_setup_all_corners": 1,
+      "existing_setup_violation": 90,
+      "incomplete_setup_constraints": 0,
+      "boundary": 0,
+      "multiple_or_missing_driver": 0
+    },
+    "source_unchanged": true,
+    "original_routed_timing_reproduced": true,
+    "outputs": {
+      "native-endpoint-census.log": "d4a0edd75946d75dd83f1d533402015f1d960070b483cedaedbac3da735417b8",
+      "native-target-topology.log": "b1ec65aaab29b732e7a7783fcc65c3b4eaaaa4dbd237e5a358d449c1bec7b5cd",
+      "original-summary.json": "aa721c7ccd04c30ed97af33dac632eb0cfdd99fd27232a46819299d12f62e583",
+      "endpoint-slacks.tsv": "476dc4ac85c73b1c752def712680e79dd859284af0b4dd2f314869ccbeb37e8e",
+      "negative-hold-targets.json": "98ad71fbb670c1e546aaba6f7257a5e1af8114f05ea825604781c7bb157b3cef",
+      "native-census.json": "47e92d0bb5a85000a663cbb1dcf2e81aebd74829f1498357163a0f8801257814",
+      "hold-target-topology.json": "7b1ec1d911c8bce4e43ba406215634039d2883318407a3b37d37a1a08ea98406",
+      "endpoint-census.tcl": "c7d7c3dfdc512ea177e04f2310640ca6651c7f609674ed580fe0cb771bd704ac"
+    }
+  },
+  "conclusion": "Complete source-bound actual-route endpoint census.90of91negative hold endpoints also violate setup; isolated delay insertion is not adequate closure.1117hold and1072setup native endpoints lack finite constrained paths and are not passing endpoints. No final timing/PHY acceptance.",
+  "failed_predecessor": {
+    "run": 38818676027,
+    "summary_sha256": "ba78bccac23b513bded662295ab84524ca53b61f560f228666ba15bc389cffff",
+    "cause": "STA/ODB name escaping mismatch; fixed using native identity conversion without name normalization."
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "scope": "SCRUBCTL startup-X recovery correction; targeted controls and corrected base/full whole-SoC native IHP baseline boot pass. Physical timing and fault acceptance remain open.",
+  "failure": "docs/evidence/hosted-native-hal-20260921.json",
+  "diagnosis": "The failing base mapped DED-counter cone has a reconvergent x & !x dependence on an old unknown counter bit even during software clear. The unchanged 71-cell cone reproduces the failure through only event/clear/clock/POR boundary inputs; no forced storage value or PDK patch. Standalone old RTL mapping did not reproduce the particular optimization, so the actual failing mapped cone is retained as the negative control.",
+  "change": "Mask the old count before saturating increment and retain intermediate mapping boundaries. Known clear/event priority, saturation, POR/system-reset policy and MMIO ABI are unchanged. Unknown event values remain observable.",
+  "native": {
+    "status": "PASS",
+    "scope": "Native mapped SCRUBCTL recovery and known-value semantics; not whole-SoC acceptance",
+    "commands": [
+      {
+        "command": [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/yosys",
+          "-s",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/synth.ys"
+        ],
+        "returncode": 0,
+        "elapsed_s": 1.0166127370030154,
+        "log_sha256": "b4b6cbe6d520445c1c4b1e957e39f9cf3d1caefbac76997ae6a6e545be115395"
+      },
+      {
+        "command": [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/iverilog",
+          "-g2012",
+          "-DFUNCTIONAL",
+          "-s",
+          "tb_scrub_native_clear",
+          "-o",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/positive.vvp",
+          "<repo>/hw/soc/tb/tb_scrub_native_clear.v",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/netlist.v",
+          "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.1647856400013552,
+        "log_sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+      },
+      {
+        "command": [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/vvp",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/positive.vvp"
+        ],
+        "returncode": 0,
+        "elapsed_s": 15.600412339998002,
+        "log_sha256": "6f2d8b1e22c6ba509713fa6524208a88dc298e44a4e788f231b3f767470e3a9c"
+      },
+      {
+        "command": [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/iverilog",
+          "-g2012",
+          "-DFUNCTIONAL",
+          "-s",
+          "tb",
+          "-o",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/negative.vvp",
+          "<repo>/hw/soc/tb/fixtures/tb_scrub_clear_negative.v",
+          "<repo>/hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v",
+          "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.0645340880000731,
+        "log_sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+      },
+      {
+        "command": [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/vvp",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/negative.vvp"
+        ],
+        "returncode": 1,
+        "elapsed_s": 0.032442579002236016,
+        "log_sha256": "e1a8e6424695f8773d887918a1d9b979786eb0563487d25f703d773c1355400a"
+      }
+    ],
+    "inputs": {
+      "<repo>/scripts/check_scrub_native.py": "e3c9d7eeee73d83f523047ac869ea271c01dcb54833d5eb834e1102f7f38637c",
+      "<repo>/hw/soc/rtl/soc_scrub.v": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+      "<repo>/hw/soc/tb/tb_scrub_native_clear.v": "f3d50eed1121d7f8ee3f88b96d96cd2cd12a1fb7e6f8a9f71ea088ef085c3253",
+      "<repo>/hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v": "59ee325f869d6f8bea00ff33535700fc3597e76cbe42bff8f4724801452ed8ef",
+      "<repo>/hw/soc/tb/fixtures/tb_scrub_clear_negative.v": "5638ec623eef25f193657ba02ff022ffaec1220e6d00ed1375256131b46fc10f",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    },
+    "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+    "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+    "native_cell": {
+      "library": "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "<repo>/hw/soc/tools/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/native-cell/sim.vvp",
+          "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/native-cell/tb_native_cell_gate.v",
+          "<repo>/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.06430540900328197
+      },
+      "runs": [
+        {
+          "command": [
+            "<repo>/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "<repo>/hw/soc/out/external-review-20260919/scrub-mask-native-final/native-cell/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.032204095004999544,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "sources_unchanged": true
+  },
+  "formal": {
+    "bmc": {
+      "status": "PASS",
+      "source_sha256": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+      "log_sha256": "9b578fdd29f68ae754a40e6392d84684002c7fe68d2c6ba7885b9f52e41dc08a"
+    },
+    "prove": {
+      "status": "PASS",
+      "source_sha256": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+      "log_sha256": "44bcf168321e34c22f7138314549e48993c33cb6723bd10799b7747d9910427e"
+    },
+    "prove_w16": {
+      "status": "PASS",
+      "source_sha256": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+      "log_sha256": "b154332f7106c5259b0826998414e55d65fe0d6442da02a8b42263462bd88434"
+    },
+    "cover": {
+      "status": "PASS",
+      "source_sha256": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+      "log_sha256": "d4e77f199fb25cdfb210f54f15c06481e5f6a2846f015b80a3b33cd24066926e"
+    }
+  },
+  "rtl": {
+    "pass": 12,
+    "fail": 0,
+    "skip": 0
+  },
+  "guards": {
+    "pass": 64,
+    "first_attempt": "Wrong test filename caused pytest collection exit 4; no tests ran. Corrected invocation passes."
+  },
+  "lint": {
+    "base": 987,
+    "full": 1015,
+    "base-sram-logic": 1012,
+    "full-sram-logic": 1040,
+    "status": "PASS with unchanged exact warning inventories, not warning-free RTL"
+  },
+  "whole_soc": {
+    "status": "PASS",
+    "base_local_output": "hw/soc/out/external-review-20260919/base-scrub-mask-gl",
+    "netlist_sha256": "0b27b001b127eafb14bfc0ac8f714169fc4d12592191fc833ab2983cc1aba38e",
+    "synthesis_source_token_parity": true,
+    "independent_workflow": ".github/workflows/native-recovery.yml",
+    "completion_record": "docs/evidence/native-recovery-completed-20260921.json"
+  },
+  "artifacts": {
+    "hw/soc/rtl/soc_scrub.v": {
+      "bytes": 12604,
+      "sha256": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d"
+    },
+    "scripts/check_scrub_native.py": {
+      "bytes": 5364,
+      "sha256": "e3c9d7eeee73d83f523047ac869ea271c01dcb54833d5eb834e1102f7f38637c"
+    },
+    "scripts/check_soc_native_boot.sh": {
+      "bytes": 3054,
+      "sha256": "7ae582f7a27d2e43362c8072c09433357eb98a06726277a519ef16a10b1be43f"
+    },
+    ".github/workflows/native-recovery.yml": {
+      "bytes": 2166,
+      "sha256": "172334795d4efe95c329237782366f23c1afe2eff583ec926c8c7331796fced3"
+    },
+    "hw/soc/tb/tb_scrub_native_clear.v": {
+      "bytes": 2492,
+      "sha256": "f3d50eed1121d7f8ee3f88b96d96cd2cd12a1fb7e6f8a9f71ea088ef085c3253"
+    },
+    "hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v": {
+      "bytes": 9363,
+      "sha256": "59ee325f869d6f8bea00ff33535700fc3597e76cbe42bff8f4724801452ed8ef"
+    },
+    "hw/soc/tb/fixtures/tb_scrub_clear_negative.v": {
+      "bytes": 1013,
+      "sha256": "5638ec623eef25f193657ba02ff022ffaec1220e6d00ed1375256131b46fc10f"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-rtl-final.xml": {
+      "bytes": 3516,
+      "sha256": "057fabce23b723b1afcbeece63e5699b4d9bae2a08527a45fb2d7a3df629ecff"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-rtl-final.log": {
+      "bytes": 10433,
+      "sha256": "5a2d83971bea60bc5431627bc275d4e1669f45bb177cec86dc717cb93abe180a"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-formal-final.log": {
+      "bytes": 28853,
+      "sha256": "6a69365df62eea1e5f8b81c36e88e6ca0c6074b7385068eca8c52521621d27e6"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-guards-final.log": {
+      "bytes": 99,
+      "sha256": "8cecde37a72eee858034d89ec2ddd1ade263009accf6d615cfdd28fb3aed196d"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-guards.log": {
+      "bytes": 98,
+      "sha256": "f0fc91e21f5cc8920a09f69e163a8ecd346e215eb02636095b57c10e67099051"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-lint-base.log": {
+      "bytes": 156,
+      "sha256": "dfb76262aee92048ad072a6338b8c53a55848f090d6198aa6b3b4637b3e05021"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-lint-full.log": {
+      "bytes": 157,
+      "sha256": "f6bf5908f1d1df11319195927e33841d6d5c6b70fc9363dd4168a86340c0525b"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-lint-base-sram.log": {
+      "bytes": 168,
+      "sha256": "2fdae98fc698e58c55124572b59808717157945e7fcf091005d6fbc977b25a07"
+    },
+    "hw/soc/out/external-review-20260919/scrub-mask-lint-full-sram.log": {
+      "bytes": 168,
+      "sha256": "54301a58bc15e27ff96951e7eafe2114dd9077ce8de1f5af272ba052a8ebd16f"
+    }
+  },
+  "publication": {
+    "tests_passed": 139,
+    "reuse": "1040/1040, zero missing or invalid licences",
+    "spdx": "577 inline, 474 path-covered, zero missing/wrong",
+    "strict_site": "PASS; local file-target check included",
+    "logs": {
+      "hw/soc/out/external-review-20260919/scrub-mask-publication.log": "ef75a6ec8a45a31b6f8598d18d514521145ffeb0252865178100d6c7c0cc0674",
+      "hw/soc/out/external-review-20260919/scrub-mask-reuse.log": "a158c10c01058503a5bc4a6d15478dcca83403057fb9b9378980363664e7bb0a",
+      "hw/soc/out/external-review-20260919/scrub-mask-site.log": "facd7ddca44d94809228b91b7da56ed5dca0f6ca719cba7ee74bfb82888c609a"
+    }
+  },
+  "whole_soc_counter_cone": {
+    "status": "PASS",
+    "scope": "Unchanged cell subgraphs extracted from the old and corrected whole-SoC mapped netlists. Clock, POR, event and decoded-clear boundaries only; no forcing storage, PDK edits or rewriting cells. This is a cone-level check, not a complete boot.",
+    "old_cells": 71,
+    "corrected_cells": 97,
+    "old_result": "FAIL: known clear retains X",
+    "corrected_result": "PASS: known clear produces zero after unknown-event poisoning",
+    "whole_native_diagnostic": "Old base netlist short-bound observation fails at 130096 cycles as expected; after the firmware clear RAM SEC is zero but DED retains X. It is not acceptance or a new completed full run.",
+    "artifacts": {
+      "hw/soc/out/external-review-20260919/extract_counter.py": {
+        "sha256": "8f825897de93cd177c0fd4d0bffa29066032798a7a94bd746dbfc343af8b13c8",
+        "bytes": 2325
+      },
+      "hw/soc/out/external-review-20260919/extract_corrected_counter.py": {
+        "sha256": "eaf3f9710cecbb6d3475a0704c424ce244e6ef42b5c7637df5dae326e7395dd3",
+        "bytes": 2413
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/actual-cone/cone.v": {
+        "sha256": "9c656a485250e741b5a4eaef12b6ef03c1d9a603f7649b6b518fbab467ac3108",
+        "bytes": 8943
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/actual-cone/run.log": {
+        "sha256": "37fbd5ee072ede2a05ee242bb958acdae61e1db00d2835c75ca7e951476f11bc",
+        "bytes": 222
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/corrected-cone/cone.v": {
+        "sha256": "77fe943ea9045f9d28e7fd424b5ac53f91c65a2992e033d2e6578c9c3bc027ee",
+        "bytes": 13800
+      },
+      "hw/soc/out/external-review-20260919/scrub-clear-probe/corrected-cone/run.log": {
+        "sha256": "b60a13887a7e00edb3e702298d17e462c770bb52e86f127f4a67c9c286ad97e5",
+        "bytes": 192
+      },
+      "hw/soc/out/external-review-20260919/base-native-observe-20260921/result.json": {
+        "sha256": "c42d8332b987a40a704f4e9ae969e49486782eef8431cd917d644d5ad1db237f",
+        "bytes": 2288
+      },
+      "hw/soc/out/external-review-20260919/base-native-observe-20260921/bench.v": {
+        "sha256": "455a4ce18aa16a56a16f218189882bb1d5fad76b198ce21bc3c1181612254bc5",
+        "bytes": 12658
+      },
+      "hw/soc/out/external-review-20260919/base-native-observe-20260921/run.log": {
+        "sha256": "5d2bf57af672236d6df10860c59796c425098de34fa90427ca3036b11ad7db7a",
+        "bytes": 12565
+      }
+    }
+  },
+  "full_working_tree_python": {
+    "passed": 1260,
+    "skipped": [
+      {
+        "test": "sw.tests.test_tt_submission.test_the_vendored_tooling_is_the_commit_the_documents_name",
+        "reason": "tt/tt/ is a gitignored clone of TinyTapeout/tt-support-tools and is not in this tree. Restore it with\n  git clone https://github.com/TinyTapeout/tt-support-tools tt/tt\n  git -C tt/tt checkout 01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
+      }
+    ],
+    "failed": 0,
+    "elapsed_s": 619.74,
+    "scope": "Working-tree regression including corrected counter, new native runner guards and thesis distribution tests. Evidence annotations changed during execution and have separate publication checks; not an independent clean-clone or hosted-native result.",
+    "logs": {
+      "hw/soc/out/external-review-20260919/scrub-mask-full-pytest.xml": "e040cba38d12961efcdd4d2792eda4b2509b3f213d9548c51b8dcbf93e8d1c6e",
+      "hw/soc/out/external-review-20260919/scrub-mask-full-pytest.log": "b37e1af3f81f3606f7d2b116c97c20dd5ee0566a71d3bbe725870731b9db8323"
+    },
+    "restored_skipped_dependency": {
+      "path": "tt/tt (ignored local tool checkout)",
+      "head": "01d5d2814fa9dd61e9d211e0b235a4a592a9316a",
+      "checkout_clean": true,
+      "targeted_suite": "sw/tests/test_tt_submission.py",
+      "passed": 19,
+      "skipped": 0,
+      "scope": "Follow-up after the full suite; does not rewrite its original one-skip result or claim a second complete suite. No frozen submission source changed.",
+      "log": "hw/soc/out/external-review-20260919/tt-restored-controls.log",
+      "log_sha256": "aefec41ff0671ec93dd0bddac11947a25858df8b32aa2336eb3cde41393dc583"
+    }
+  },
+  "completed_whole_soc": "docs/evidence/native-recovery-completed-20260921.json"
+}

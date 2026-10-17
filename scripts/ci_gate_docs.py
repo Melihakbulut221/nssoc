@@ -10,7 +10,10 @@ scripts/ci_local.sh run the SAME check rather than two copies of it. A
 gate that exists twice is a gate that disagrees with itself eventually.
 """
 
+import hashlib
 import json
+
+import build_docs
 import pathlib
 import sys
 
@@ -22,13 +25,35 @@ def main():
     expected_backend = sys.argv[2]
     manifest = json.loads((site / "manifest.json").read_text())
 
-    sources = sorted(pathlib.Path("docs").glob("*.md"))
-    expected = len(sources) + 2          # README.md and ROADMAP.md
+    root = pathlib.Path(__file__).resolve().parent.parent
+    sources = build_docs.linked_documents(build_docs.discover(root), root,
+                                         build_docs.tracked_files(root))
+    expected = len(sources)
 
     failures = []
     if manifest["documents"] != expected:
         failures.append(
             f"built {manifest['documents']} documents, expected {expected}")
+    expected_pages = {doc.out_name for doc in sources} | {"all-documents.html", "index.html"}
+    if set(manifest.get("pages", [])) != expected_pages:
+        failures.append("manifest page inventory differs from the reachable source corpus")
+    if {p.name for p in site.glob("*.html")} != expected_pages:
+        failures.append("emitted page inventory differs from the reachable source corpus")
+    checked, broken = build_docs.check_site_links(site)
+    if manifest.get("local_links_checked") != checked or manifest.get("broken_local_links") != []:
+        failures.append("local link manifest is missing, stale or reports broken targets")
+    if broken:
+        failures.append(f"{len(broken)} emitted local links have missing or escaping targets")
+    assets = manifest.get("assets")
+    if not isinstance(assets, dict) or not assets:
+        failures.append("missing published asset inventory")
+    else:
+        for relative, row in assets.items():
+            path = (site / row["output"]).resolve()
+            if not path.is_relative_to(site.resolve()) or not path.is_file():
+                failures.append(f"missing or escaping asset: {relative}")
+            elif path.stat().st_size != row["bytes"] or hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
+                failures.append(f"published asset differs from manifest: {relative}")
     if manifest["backend"] != expected_backend:
         failures.append(
             f"backend was {manifest['backend']}, expected {expected_backend}")

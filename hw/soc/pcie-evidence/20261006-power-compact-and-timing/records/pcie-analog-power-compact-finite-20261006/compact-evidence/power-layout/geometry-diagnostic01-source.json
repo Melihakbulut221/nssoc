@@ -1,0 +1,12 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/audit_pcie_clock_div4_v7_power_v2.py",
+    "sha256": "c4c22f16f89d3302fc7b8ef9facfa3c5d9acaf350db99b229c339e4ab5670364"
+  },
+  "diagnostic": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v1-20261005/geometry-diagnostic01.py",
+    "sha256": "b9fcf3d49381963044cb1c134dcd4053e434f91d60173b056e5ac0892e84fa99"
+  },
+  "exact_insert_only": "        if not (set(row[\"geometry\"]) == set(expected) and all((row[\"geometry\"][k] ^ expected[k]).is_empty() for k in expected)):\n            detail = dict(target=target, instance=list(row[\"key\"]), dbu=dbu, transform=str(row[\"transform\"]), layers={str(k):dict(actual=str(row[\"geometry\"].get(k,pya.Region())), expected=str(expected.get(k,pya.Region())), symmetric_difference=str(row[\"geometry\"].get(k,pya.Region()) ^ expected.get(k,pya.Region()))) for k in set(row[\"geometry\"]) | set(expected)})\n            print(json.dumps(detail,indent=2),flush=True)\n",
+  "same_failure_retained": true
+}

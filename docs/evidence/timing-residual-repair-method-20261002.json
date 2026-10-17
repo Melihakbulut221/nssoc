@@ -1,0 +1,299 @@
+{
+  "status": "FROZEN_SOURCE_AND_TINY_NATIVE_CONTROLS_PASS_FULL_CHIP_NOT_RUN",
+  "methods": {
+    "scripts/run_cloud_residual_repair.py": {
+      "bytes": 39082,
+      "sha256": "0b68152caed477e868e4c149cb79db75c92e7eaf6f1b0e7d92f4c703df4ed184"
+    },
+    "hw/soc/pnr/timing_residual_repair_helpers.tcl": {
+      "bytes": 3920,
+      "sha256": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040"
+    },
+    "hw/soc/pnr/timing_residual_repair_step.tcl": {
+      "bytes": 9430,
+      "sha256": "19525f0a14df8cbe6fe0445f8dc954c02f9b291e33edc5609f77a5fec5662d15"
+    },
+    "hw/soc/pnr/timing_residual_reload.tcl": {
+      "bytes": 705,
+      "sha256": "96bbe55573276063b064b7a25fee7e0cf83bc0625c6f99f871f731d550b790cb"
+    },
+    "hw/soc/pnr/timing-residual-repair-input.lock.json": {
+      "bytes": 19034,
+      "sha256": "2d64cf8b4d70494b94489921d800c242f440399c9a7c3bbcd36085992443a6da"
+    },
+    "sw/tests/timing_residual_repair_native.tcl": {
+      "bytes": 6488,
+      "sha256": "907ad813259ca5238c2b1bbfd65ec49f091bd7d767e265fe0f3bafe7248c067d"
+    },
+    "sw/tests/test_cloud_residual_repair.py": {
+      "bytes": 23098,
+      "sha256": "25fb3d97d40860408d73e61a03761d75971a1f992187525e83938631e10dd03f"
+    },
+    ".github/workflows/timing-residual-repair.yml": {
+      "bytes": 6133,
+      "sha256": "7821fef5d66b908d647e53efe24f1bb3c6fc0a963bc5761ab137fb6a59bb1b40"
+    }
+  },
+  "tests": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "sw/tests/test_cloud_residual_repair.py",
+      "sw/tests/test_cloud_electrical_margin.py",
+      "sw/tests/test_cloud_electrical_repair.py"
+    ],
+    "passed": 221,
+    "returncode": 0
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "actual_parent_contract_replayed": true,
+  "native_execution": {
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "openroad",
+      "-exit",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/residual-control-02/methods/sw/tests/timing_residual_repair_native.tcl"
+    ],
+    "returncode": 0,
+    "seconds": 0.8919992410010309,
+    "source_pins": {
+      "sw/tests/timing_residual_repair_native.tcl": {
+        "bytes": 6488,
+        "sha256": "907ad813259ca5238c2b1bbfd65ec49f091bd7d767e265fe0f3bafe7248c067d"
+      },
+      "hw/soc/pnr/timing_residual_repair_helpers.tcl": {
+        "bytes": 3920,
+        "sha256": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040"
+      },
+      "hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+        "bytes": 1654,
+        "sha256": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc"
+      },
+      "hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+        "bytes": 4291,
+        "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+      },
+      "hw/soc/pnr/timing_hold_reproducibility.tcl": {
+        "bytes": 16850,
+        "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+      }
+    },
+    "scope": "Four cells only; <=2GiB address space; no chip input; actual unchanged pinned OpenROAD"
+  },
+  "native_result": {
+    "status": "PASS_NATIVE_RESIDUAL_CONTROL",
+    "wrong_endpoint_rejected": true,
+    "missing_api_rejected": true,
+    "wrong_master_rejected": true,
+    "protected_rejected": true,
+    "protected_driver_rejected": true,
+    "fixed_rejected": true,
+    "unplaced_rejected": true,
+    "clock_rejected": true,
+    "geometry_rejected": true,
+    "native_setup_guard_preserved": true,
+    "constraints_preserved": true,
+    "before_hold_seconds": -7.409074465059007e-10,
+    "after_hold_seconds": -2.4659574382468463e-10,
+    "call": {
+      "endpoint": "sink/D",
+      "master": "sg13g2_dfrbpq_1",
+      "status": "ONE_NATIVE_PASS_COMPLETE",
+      "initial_slack_seconds": -7.409074465059007e-10,
+      "native_calls": 1,
+      "initial_instance_count": 4,
+      "actual_instance_count": 6,
+      "setup_margin_seconds": 1e-10,
+      "hold_margin_seconds": 2e-11,
+      "allow_setup_violations": false,
+      "max_passes": 1,
+      "max_added_cells": 32
+    },
+    "setup_blocked_call": {
+      "endpoint": "sink2/D",
+      "master": "sg13g2_dfrbpq_1",
+      "status": "ONE_NATIVE_PASS_COMPLETE",
+      "initial_slack_seconds": -7.40545291755268e-10,
+      "native_calls": 1,
+      "initial_instance_count": 4,
+      "actual_instance_count": 4,
+      "setup_margin_seconds": 1e-10,
+      "hold_margin_seconds": 2e-11,
+      "allow_setup_violations": false,
+      "max_passes": 1,
+      "max_added_cells": 32
+    },
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "runtime": {
+    "bytes": 1398053408,
+    "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+  },
+  "native_library_pins": {
+    "lef/sg13g2_tech.lef": {
+      "bytes": 28396,
+      "sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6"
+    },
+    "lef/sg13g2_stdcell.lef": {
+      "bytes": 188966,
+      "sha256": "c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589"
+    },
+    "lib/sg13g2_stdcell_fast_1p32V_m40C.lib": {
+      "bytes": 1716550,
+      "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+    },
+    "lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "lib/sg13g2_stdcell_slow_1p08V_125C.lib": {
+      "bytes": 1711183,
+      "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+    }
+  },
+  "native_output_pins": {
+    "native.log": {
+      "bytes": 2915,
+      "sha256": "8dd50cb51f55c76a23b790e4784f76dbfd1872d9452b95faf1545d5b508081d4"
+    },
+    "execution.json": {
+      "bytes": 1320,
+      "sha256": "793b7ca38c8dc27ec0a9ee32e03ec3047c9412c849eba7048520c591325e98a5"
+    },
+    "native/after.v": {
+      "bytes": 580,
+      "sha256": "73ee4b57e8b404751c43b6869d238aaba33c4eefae5dbdaac151d1c67165b247"
+    },
+    "native/after-sink_D-slow-min.rpt": {
+      "bytes": 2527,
+      "sha256": "d9ec3e868804504f19f85c1b71f55022d9df96d93e29d64ed1a90af0731633c6"
+    },
+    "native/result.json": {
+      "bytes": 1203,
+      "sha256": "0d7f410dcc062533d5cf8cd30f103c5047903c8da7bb26c0a44ab142073211c5"
+    },
+    "native/after-sink_D-fast-max.rpt": {
+      "bytes": 2528,
+      "sha256": "0c8051701b101608b8ced85a8f17511beb04f7a78e6d1bb698c9eebed1f9a99a"
+    },
+    "native/before.v": {
+      "bytes": 448,
+      "sha256": "703f469942c52069fbbab19ad406bcb01bf187960d75318b3978b0c89412f983"
+    },
+    "native/after-sink2_D-fast-max.rpt": {
+      "bytes": 2146,
+      "sha256": "aae0f7772e2d6ed070cf98452e1001c7ab1301d6965cc4cf75beceaa7f417c84"
+    },
+    "native/after-sink2_D-slow-max.rpt": {
+      "bytes": 2146,
+      "sha256": "7b8628131419e3d9ec1936a3e9ad534b0dac57648605a773f2b8e918af8d8c48"
+    },
+    "native/after.sdc": {
+      "bytes": 1459,
+      "sha256": "4f6fe76e1744aaa0bc9364fd071fdd6a682e8b41c586972b44d6cf2f8b9f403a"
+    },
+    "native/after-sink_D-slow-max.rpt": {
+      "bytes": 2528,
+      "sha256": "cd7488538b0a7fbdac71f61f16eb16d72bb2741f0f0ce82cc25a94a4efb92ebc"
+    },
+    "native/after-sink2_D-slow-min.rpt": {
+      "bytes": 2145,
+      "sha256": "c857dc660887e52d50beae66a5cff756d08a14b52e86455dfc1d14c27022128d"
+    },
+    "native/after-sink2_D-fast-min.rpt": {
+      "bytes": 2145,
+      "sha256": "613c03391ba3506523b0440a468696bb5c121c3f028623104ff70fc02aafa742"
+    },
+    "native/after-sink_D-typical-min.rpt": {
+      "bytes": 2530,
+      "sha256": "59926d7ae34458e9003a4324057e2cd7e5d5a31af3510f86abf4b4b59e6faa5e"
+    },
+    "native/after-sink2_D-typical-max.rpt": {
+      "bytes": 2149,
+      "sha256": "ec9482cc7bdb8d74be9953de4822e1e10c21dfc6ef56a6d9d6f553857377fd22"
+    },
+    "native/before.sdc": {
+      "bytes": 1459,
+      "sha256": "4f6fe76e1744aaa0bc9364fd071fdd6a682e8b41c586972b44d6cf2f8b9f403a"
+    },
+    "native/after-sink_D-typical-max.rpt": {
+      "bytes": 2531,
+      "sha256": "1e4ad15f566c557364ba7f7b866973a93bb96e21012a3f02e594f7434d9f4577"
+    },
+    "native/tiny.v": {
+      "bytes": 328,
+      "sha256": "5c51f74dee00be6db0750eb90946ed264bff97a572cac74a02691825efd3a134"
+    },
+    "native/after-sink2_D-typical-min.rpt": {
+      "bytes": 2148,
+      "sha256": "7f34b2c088e60a5c946af18ebc2171424aabe3c8a9b5daec3f9b474a40960a3f"
+    },
+    "native/after-sink_D-fast-min.rpt": {
+      "bytes": 2532,
+      "sha256": "8dd035fbbf1068ac750d1a43c78f9b3d2c43a0f66532bbe171894faf8c5820f7"
+    },
+    "methods/hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+      "bytes": 4291,
+      "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+    },
+    "methods/hw/soc/pnr/timing_residual_repair_helpers.tcl": {
+      "bytes": 3920,
+      "sha256": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040"
+    },
+    "methods/hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+      "bytes": 1654,
+      "sha256": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc"
+    },
+    "methods/hw/soc/pnr/timing_hold_reproducibility.tcl": {
+      "bytes": 16850,
+      "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    },
+    "methods/sw/tests/timing_residual_repair_native.tcl": {
+      "bytes": 6488,
+      "sha256": "907ad813259ca5238c2b1bbfd65ec49f091bd7d767e265fe0f3bafe7248c067d"
+    }
+  },
+  "scope": [
+    "Exact completed margin producer full-capture validator runs in cloud before any chip input.",
+    "Two exact initial native baselines; one measured cap-net call; ten exact endpoint attempts, setup permission false, one pass and32 observed-cell bound per pin.",
+    "Exact native source setup/hold margins100ps/20ps tighten targets without changing SDC/Liberty limits.",
+    "One endpoint native repair can change violating sibling loads; all global guards and retained-state logical proofs remain required.",
+    "Five aggregate references: selected C10, matched C10, combined parent, electrical-first parent and margin candidate baseline.",
+    "Original32 SRAM geometry, original protected/clock graph, two final fresh native reloads and C10\u2192parent\u2192candidate limited ECO proofs remain mandatory.",
+    "Only four-cell native fixture executed locally; no chip data loaded."
+  ],
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "root_review": {
+    "verified_at": "2026-10-02T16:10:27.157650+00:00",
+    "methods_checked": 8,
+    "native_captures_checked": 25,
+    "native_result_reparsed": true,
+    "constraints_byte_identical": true,
+    "tests_passed": 221,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "independent_reviews": {
+      "hw/soc/out/closure-20261002-setup-hold-lvs/residual-repair-source/native-peer-review.json": {
+        "bytes": 5010,
+        "sha256": "389e813d19570002f5d9351b7aa78e625f975b0883f609a8c102e72cf8ff2af8"
+      },
+      "hw/soc/out/closure-20261002-setup-hold-lvs/residual-peer-review/independent-review.json": {
+        "bytes": 15377,
+        "sha256": "2088f834385776068591c9030fc1afeec66f95a832eaa397d6f783ae9d9567cc"
+      }
+    },
+    "scope": "Source and tiny native controls; root did not run full chip."
+  },
+  "validation_receipt": {
+    "path": "hw/soc/out/closure-20261002-setup-hold-lvs/residual-repair-source/validation.json",
+    "bytes": 10489,
+    "sha256": "84f8961c236cffb511740a100fef72278482c03fffd59262bb99ad33752686c0"
+  }
+}

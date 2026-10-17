@@ -1,0 +1,179 @@
+{
+  "status": "SUPERSEDING_V16_AFTER_VALIDATED_EQUIVALENT_COMPILE_FIX",
+  "utc": "2026-10-05T17:18:59.325387+00:00",
+  "method": {
+    "bytes": 5072,
+    "sha256": "595f0020b40604edde248e27fce89a97d7f4725239adad04ae8aab94bbbf9801"
+  },
+  "V17_controls": {
+    "bytes": 125,
+    "sha256": "980b1efd27fcf93c2b8ecbc5a0d8716d7a8224363b051b2231e87a3d8cd632eb"
+  },
+  "V17_peer": {
+    "bytes": 4942,
+    "sha256": "ad0a991a3f4a8d2d26b3e69d604cb0e70c66dc9b0326ea5dea0dc1f9cc9e2d35"
+  },
+  "prior_continuation": {
+    "status": "WAITING_EXISTING_FROZEN_CONTROLS",
+    "controller": {
+      "pid": 48772,
+      "state": "R",
+      "process_group": 48770,
+      "start_ticks": "564758"
+    },
+    "affinity": [
+      6
+    ],
+    "policy": {
+      "bytes": 7131,
+      "sha256": "74b8d0bf1c627bea7b1c643437aeefd01dc0510b35b864f7b353f84a9787cbfb"
+    },
+    "stages": [],
+    "elapsed_watchdog_seconds": null,
+    "physical_acceptance": false,
+    "utc": "2026-10-05T16:26:59.798157+00:00"
+  },
+  "lifecycle_peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/continuation-source-only-peer-root02.json",
+    "bytes": 6629,
+    "sha256": "fb912011f7cc1d7995fbb8207d5eb72b1c3c76a2c780d182f8b26b5592ef5bb7"
+  },
+  "identity_guards": {
+    "bytes": 3945,
+    "sha256": "76ae360dc7ee7860a7ff87b302c7adc9de4645c6c3c61bd5bb2c7d9e532f44a6"
+  },
+  "boot_id": "e1b7ced9-2243-4340-a046-92e8b30a45bc",
+  "stops": [
+    {
+      "kind": "idle_continuation",
+      "expected": {
+        "pid": 48772,
+        "state": "S",
+        "process_group": 48770,
+        "start_ticks": "564758",
+        "commandline_bytes": 77,
+        "commandline_sha256": "59e750679857bbce0015beafe6e77abd20dddf3f1a4dfc2b831b0d12da8cddcf",
+        "argv": [
+          "python3",
+          "hw/soc/out/pcie-integrity-v16-20261005/continue_after_controls_v2.py"
+        ]
+      },
+      "group": 48770,
+      "members_before": [
+        {
+          "pid": 48770,
+          "state": "S",
+          "process_group": 48770,
+          "start_ticks": "564755",
+          "commandline_bytes": 1894,
+          "commandline_sha256": "defdce2acfc2a952c5a38147655c2d7221aeaa91cd4d0311f6bf0f2e59d59556",
+          "stat_text": "48770 (bash) S 5448 48770 48770 0 -1 4194304 623 1748 0 0 0 0 1 0 32 12 1 0 564755 20660224 840 18446744073709551615 100165534048256 100165535023917 140733454224480 0 0 0 65536 4 65538 1 0 0 17 0 0 0 0 0 0 100165535246768 100165535295408 100166278025216 140733454226729 140733454228623 140733454228623 140733454233582 0\n"
+        },
+        {
+          "pid": 48772,
+          "state": "S",
+          "process_group": 48770,
+          "start_ticks": "564758",
+          "commandline_bytes": 77,
+          "commandline_sha256": "59e750679857bbce0015beafe6e77abd20dddf3f1a4dfc2b831b0d12da8cddcf",
+          "stat_text": "48772 (python3) S 48770 48770 48770 0 -1 4194304 4436 0 0 0 8 1 0 0 32 12 1 0 564758 52641792 6904 18446744073709551615 107545731080192 107545734122449 140729599242144 0 0 0 0 16781312 16386 1 0 0 17 6 0 0 0 0 0 107545735806944 107545736763368 107545920262144 140729599249425 140729599249502 140729599249502 140729599254480 0\n"
+        }
+      ],
+      "remaining_exact_identities": [],
+      "after": [
+        null,
+        null
+      ]
+    },
+    {
+      "kind": "incomplete_V16_controls",
+      "expected": {
+        "pid": 42780,
+        "state": "S",
+        "process_group": 42780,
+        "start_ticks": "453528",
+        "commandline_bytes": 1390,
+        "commandline_sha256": "dc613b0881dd8f44ad98e8996c90a0f1c5727b4a5fc98c3d7afcc9a2e1e4c370",
+        "argv": [
+          "/bin/bash",
+          "-c",
+          "python3 scripts/generate_pcie_integrity_read_v16.py\nhw/soc/tools/dev-env/bin/ruff check scripts/generate_pcie_integrity_read_v16.py sw/tests/test_pcie_gen3_integrity_v16_read.py\npython3 - <<'PY'\nfrom pathlib import Path\nimport json,hashlib,datetime\nR=Path.cwd();B=R/'hw/soc/out/pcie-integrity-v16-20261005';B.mkdir(exist_ok=False)\nold=json.loads((B.parent/'pcie-integrity-v15-20261005/source-freeze.json').read_text())\ndef pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\nold['files']={n.replace('_v15','_v16'):pin(R/n.replace('_v15','_v16')) for n in old['files']};old['utc']=datetime.datetime.now(datetime.UTC).isoformat();old['scope']='V11-based static genvar known-eligibility balanced payload mux tree; avoids rejectedV15 dynamic procedural tree-array frontend expansion under unchanged2GiB memory bound. Exact V11 read-block inverse; all writers/control unchanged. Measured native depth/timing required.'\n(B/'source-freeze.json').write_text(json.dumps(old,indent=2)+'\\n');print(pin(B/'source-freeze.json'))\nPY\ntaskset -c 6 .venv/bin/python -m pytest -q sw/tests/test_pcie_gen3_integrity_v16_read.py sw/tests/test_pcie_gen3_integrity_v16_miter.py sw/tests/test_pcie_gen3_continuous_rx_integrity_v16.py -k 'not 4118' --basetemp=/dev/shm/nssoc-integrity-v16-controls01 > hw/soc/out/pcie-integrity-v16-20261005/controls01.log 2>&1"
+        ]
+      },
+      "group": 42780,
+      "members_before": [
+        {
+          "pid": 42780,
+          "state": "S",
+          "process_group": 42780,
+          "start_ticks": "453528",
+          "commandline_bytes": 1390,
+          "commandline_sha256": "dc613b0881dd8f44ad98e8996c90a0f1c5727b4a5fc98c3d7afcc9a2e1e4c370",
+          "stat_text": "42780 (bash) S 5448 42780 42780 0 -1 4194304 637 5671 0 0 0 0 4 2 32 12 1 0 453528 20660224 812 18446744073709551615 104266267684864 104266268660525 140737032557280 0 0 0 65536 4 65538 1 0 0 17 19 0 0 0 0 0 104266268883376 104266268932016 104267300409344 140737032566561 140737032567951 140737032567951 140737032572910 0\n"
+        },
+        {
+          "pid": 42816,
+          "state": "S",
+          "process_group": 42780,
+          "start_ticks": "453535",
+          "commandline_bytes": 241,
+          "commandline_sha256": "e980bb602656b65c27646b1fb9be59827514e3d20391b30689cae7b9fee7ee25",
+          "stat_text": "42816 (python) S 42780 42780 42780 0 -1 4194304 9300 6790 0 0 22 2 9728 1 32 12 1 0 453535 71880704 11701 18446744073709551615 97439436816384 97439439858641 140732520913264 0 0 0 0 16781312 134218986 1 0 0 17 6 0 0 0 0 0 97439441543136 97439442499560 97439835701248 140732520921988 140732520922229 140732520922229 140732520927207 0\n"
+        },
+        {
+          "pid": 43284,
+          "state": "S",
+          "process_group": 42780,
+          "start_ticks": "463290",
+          "commandline_bytes": 300,
+          "commandline_sha256": "58aa0fba9e4898e39d9bcf154e452274af4137b6982b4539007b49b3248edc4d",
+          "stat_text": "43284 (iverilog) S 42816 42780 42780 0 -1 4194304 139 0 0 0 0 0 0 0 32 12 1 0 463290 2813952 419 18446744073709551615 100475667337216 100475667365429 140723011683808 0 0 0 65536 6 0 1 0 0 17 6 0 0 0 0 0 100475667381248 100475667382424 100476731359232 140723011689070 140723011689370 140723011689370 140723011694528 0\n"
+        },
+        {
+          "pid": 43285,
+          "state": "S",
+          "process_group": 42780,
+          "start_ticks": "463290",
+          "commandline_bytes": 338,
+          "commandline_sha256": "0f83466f6b583283724b2c5fc82d303eba29e4a3e034b2672094ecec8ffb64bd",
+          "stat_text": "43285 (sh) S 43284 42780 42780 0 -1 4194304 79 95 0 0 0 0 0 0 32 12 1 0 463290 2879488 421 18446744073709551615 105596405796864 105596405880861 140731309211920 0 0 0 0 0 65538 1 0 0 17 6 0 0 0 0 0 105596405906896 105596405912096 105597133963264 140731309218424 140731309218762 140731309218762 140731309223920 0\n"
+        },
+        {
+          "pid": 43287,
+          "state": "R",
+          "process_group": 42780,
+          "start_ticks": "463290",
+          "commandline_bytes": 177,
+          "commandline_sha256": "1d0f375f0678b11c89208172d3eddc4293bc766ff8f3738d5729c06fe4ca5fc0",
+          "stat_text": "43287 (ivl) R 43285 42780 42780 0 -1 4194304 4563 0 0 0 203618 30 0 0 32 12 1 0 463290 24322048 5128 18446744073709551615 107360482422784 107360484096385 140735100345568 0 0 0 0 0 0 0 0 0 17 6 0 0 0 0 0 107360484717544 107360484794552 107360964579328 140735100349145 140735100349322 140735100349322 140735100354480 0\n"
+        }
+      ]
+    }
+  ],
+  "reason": "Superseded by validated equivalent compile fix. Not a healthy elapsed-time limit, not a passed V16 suite, and not user shutdown.",
+  "PLL_untouched": true,
+  "stopped_continuation": {
+    "status": "CANCELLED_RETAINED",
+    "controller": {
+      "pid": 48772,
+      "state": "R",
+      "process_group": 48770,
+      "start_ticks": "564758"
+    },
+    "affinity": [
+      6
+    ],
+    "policy": {
+      "bytes": 7131,
+      "sha256": "74b8d0bf1c627bea7b1c643437aeefd01dc0510b35b864f7b353f84a9787cbfb"
+    },
+    "stages": [],
+    "elapsed_watchdog_seconds": null,
+    "physical_acceptance": false,
+    "utc": "2026-10-05T17:18:59.347783+00:00",
+    "error": "Cancelled('Parent received SIGTERM')",
+    "explicit_stop": true,
+    "stop_reason": "Parent received SIGTERM",
+    "cancellation_reason": "Parent received SIGTERM"
+  }
+}

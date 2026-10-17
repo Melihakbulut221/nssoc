@@ -54,6 +54,13 @@ OUT=${2:-$SOC_DIR/out/soc-top}
   echo "missing $OUT/soc_top.sta.v: run flow/syn_soc_top.sh first" >&2
   exit 1; }
 
+# This historical recipe binds every IO to the CPU clock. Do not silently
+# mis-time an explicitly integrated packet-controller profile with it.
+if grep -Eq '^[[:space:]]*input[[:space:]].*pcie_' "$OUT/soc_top.sta.v"; then
+  echo 'Packet SoC requires mapped multi-clock constraints from scripts/pcie_soc_constraints.py; legacy single-clock STA refused' >&2
+  exit 2
+fi
+
 eval "$(make --no-print-directory -f "$SOC_DIR/tools.soc.mk" printvars)"
 : "${STA:?}" "${SG13G2_TYP:?}" "${SG13G2_SLOW:?}" "${SG13G2_FAST:?}"
 

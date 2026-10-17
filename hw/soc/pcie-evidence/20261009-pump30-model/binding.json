@@ -1,0 +1,989 @@
+{
+  "status": "COMPLETE_NATIVE30_COMPACT_MODEL_BINDING_NOT_SIMULATED",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump13-layout-20261009/native-controls01/lvs/extracted.cir": "84514cb68141aa18804a1f4c7d35a06d8c0691e904add47da514ae33dca1a06b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-binding-20261009/devices01.json": "e905a22a4195eea4c5480db304ab3d012bf149e0803cb5ad1ab5f1fa19a751c9",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump13-layout-20261009/native-controls01/lvs/audit.json": "8bc85eb9778c0a442c130a0377b98c69a8eb8883c726df758e51b89c3643b01b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump13-layout-20261009/native-controls01/lvs/result.lvsdb": "766db97b3feead74215fb3f85087e9ccd5137c41a7a9c5c1335231e0cde66d24",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json": "dce023dcf8dca1a7d875b6f71b5ce651b42f2dc3e9a21abb6de3997262273142",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pump30-binding-20261009/build_devices01.py": "70492402adc2e87afab41a7dcc79d796eaf5bbcea8ad880fd55521604d668c8d",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/build_pcie_local_vco_hybrid_v6.py": "ab2962f0c47cc89029866761992bfdd87ab1d5649920b8bc8edaa1c54bbe5a3f",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_esd.lib": "4a4fb26a87f64bc6ed807f161cc7b3afaeb8d5ca7230b08ebba728e805caa925",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod.lib": "d4b348b494998d7057bdde6fb111c60153d8b86175fafcfc6de461737e7a644b",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod.lib": "94b569e695fd8a223a5a49a5b5a6b0d8a62408820bf0c2ed9dbcb0a8ab7d957e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/utility_functions.py": "131cad3e7c52a5427cbe74a19934b58ed008ab02bc2b3b20bbe060f0c563802e"
+  },
+  "output": {
+    "pump30-compact01.spice": "d570108b798084ef8a5134c383c3345fbd5c1349e75dc376d9a569d2dc798e3e"
+  },
+  "native_ports": [
+    "sub",
+    "vctrl",
+    "div_avdd",
+    "vco_avdd",
+    "up",
+    "avss",
+    "down"
+  ],
+  "devices": [
+    {
+      "instance": "XD0001",
+      "native_id": 1,
+      "model": "rppd",
+      "native_terminal_order": [
+        "rppd_1",
+        "rppd_2",
+        "rppd_sub"
+      ],
+      "compact_model_order": [
+        "rppd_1",
+        "rppd_2",
+        "rppd_sub"
+      ],
+      "native_nodes": {
+        "rppd_1": "vctrl",
+        "rppd_2": "avss",
+        "rppd_sub": "$1"
+      },
+      "compact_nodes": [
+        "vctrl",
+        "avss",
+        "n_1"
+      ],
+      "parameters": {
+        "w": "1.0u",
+        "l": "47.0u",
+        "ps": "0.0u",
+        "b": "0",
+        "m": "1",
+        "sw_et": "1"
+      }
+    },
+    {
+      "instance": "XD0002",
+      "native_id": 2,
+      "model": "sg13_hv_nmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "avss",
+        "G": "up",
+        "D": "$31",
+        "B": "$1"
+      },
+      "compact_nodes": [
+        "n_31",
+        "up",
+        "avss",
+        "n_1"
+      ],
+      "parameters": {
+        "l": "0.45u",
+        "w": "2u",
+        "as": "0.68p",
+        "ad": "0.68p",
+        "ps": "4.68u",
+        "pd": "4.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0003",
+      "native_id": 3,
+      "model": "sg13_hv_pmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "div_avdd",
+        "G": "up",
+        "D": "$31",
+        "B": "$13"
+      },
+      "compact_nodes": [
+        "n_31",
+        "up",
+        "div_avdd",
+        "n_13"
+      ],
+      "parameters": {
+        "l": "0.45u",
+        "w": "4u",
+        "as": "1.36p",
+        "ad": "1.36p",
+        "ps": "8.68u",
+        "pd": "8.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0004",
+      "native_id": 4,
+      "model": "cap_cmim",
+      "native_terminal_order": [
+        "mim_top",
+        "mim_btm"
+      ],
+      "compact_model_order": [
+        "mim_top",
+        "mim_btm"
+      ],
+      "native_nodes": {
+        "mim_top": "vctrl",
+        "mim_btm": "avss"
+      },
+      "compact_nodes": [
+        "vctrl",
+        "avss"
+      ],
+      "parameters": {
+        "w": "10.0u",
+        "l": "10.0u"
+      }
+    },
+    {
+      "instance": "XD0005",
+      "native_id": 5,
+      "model": "sg13_hv_pmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "div_avdd",
+        "G": "$37",
+        "D": "$47",
+        "B": "$11"
+      },
+      "compact_nodes": [
+        "n_47",
+        "n_37",
+        "div_avdd",
+        "n_11"
+      ],
+      "parameters": {
+        "l": "2u",
+        "w": "6.4u",
+        "as": "2.176p",
+        "ad": "2.176p",
+        "ps": "13.48u",
+        "pd": "13.48u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0006",
+      "native_id": 6,
+      "model": "sg13_hv_pmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "div_avdd",
+        "G": "$37",
+        "D": "$37",
+        "B": "$10"
+      },
+      "compact_nodes": [
+        "n_37",
+        "n_37",
+        "div_avdd",
+        "n_10"
+      ],
+      "parameters": {
+        "l": "2u",
+        "w": "8u",
+        "as": "2.72p",
+        "ad": "2.72p",
+        "ps": "16.68u",
+        "pd": "16.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0007",
+      "native_id": 7,
+      "model": "sg13_hv_nmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "avss",
+        "G": "$26",
+        "D": "$37",
+        "B": "$1"
+      },
+      "compact_nodes": [
+        "n_37",
+        "n_26",
+        "avss",
+        "n_1"
+      ],
+      "parameters": {
+        "l": "2u",
+        "w": "2u",
+        "as": "0.68p",
+        "ad": "0.68p",
+        "ps": "4.68u",
+        "pd": "4.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0008",
+      "native_id": 8,
+      "model": "sg13_hv_nmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "avss",
+        "G": "$26",
+        "D": "$42",
+        "B": "$1"
+      },
+      "compact_nodes": [
+        "n_42",
+        "n_26",
+        "avss",
+        "n_1"
+      ],
+      "parameters": {
+        "l": "2u",
+        "w": "2u",
+        "as": "0.68p",
+        "ad": "0.68p",
+        "ps": "4.68u",
+        "pd": "4.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0009",
+      "native_id": 9,
+      "model": "sg13_hv_nmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "avss",
+        "G": "$26",
+        "D": "$26",
+        "B": "$1"
+      },
+      "compact_nodes": [
+        "n_26",
+        "n_26",
+        "avss",
+        "n_1"
+      ],
+      "parameters": {
+        "l": "2u",
+        "w": "2u",
+        "as": "0.68p",
+        "ad": "0.68p",
+        "ps": "4.68u",
+        "pd": "4.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0010",
+      "native_id": 10,
+      "model": "rppd",
+      "native_terminal_order": [
+        "rppd_1",
+        "rppd_2",
+        "rppd_sub"
+      ],
+      "compact_model_order": [
+        "rppd_1",
+        "rppd_2",
+        "rppd_sub"
+      ],
+      "native_nodes": {
+        "rppd_1": "vco_avdd",
+        "rppd_2": "vctrl",
+        "rppd_sub": "$1"
+      },
+      "compact_nodes": [
+        "vco_avdd",
+        "vctrl",
+        "n_1"
+      ],
+      "parameters": {
+        "w": "1.0u",
+        "l": "80.0u",
+        "ps": "0.0u",
+        "b": "0",
+        "m": "1",
+        "sw_et": "1"
+      }
+    },
+    {
+      "instance": "XD0011",
+      "native_id": 11,
+      "model": "rppd",
+      "native_terminal_order": [
+        "rppd_1",
+        "rppd_2",
+        "rppd_sub"
+      ],
+      "compact_model_order": [
+        "rppd_1",
+        "rppd_2",
+        "rppd_sub"
+      ],
+      "native_nodes": {
+        "rppd_1": "div_avdd",
+        "rppd_2": "$26",
+        "rppd_sub": "$1"
+      },
+      "compact_nodes": [
+        "div_avdd",
+        "n_26",
+        "n_1"
+      ],
+      "parameters": {
+        "w": "1.0u",
+        "l": "80.0u",
+        "ps": "0.0u",
+        "b": "0",
+        "m": "1",
+        "sw_et": "1"
+      }
+    },
+    {
+      "instance": "XD0012",
+      "native_id": 12,
+      "model": "sg13_hv_nmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "$42",
+        "G": "down",
+        "D": "vctrl",
+        "B": "$1"
+      },
+      "compact_nodes": [
+        "vctrl",
+        "down",
+        "n_42",
+        "n_1"
+      ],
+      "parameters": {
+        "l": "0.45u",
+        "w": "8u",
+        "as": "2.72p",
+        "ad": "2.72p",
+        "ps": "16.68u",
+        "pd": "16.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    },
+    {
+      "instance": "XD0013",
+      "native_id": 13,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0014",
+      "native_id": 14,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0015",
+      "native_id": 15,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0016",
+      "native_id": 16,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0017",
+      "native_id": 17,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0018",
+      "native_id": 18,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0019",
+      "native_id": 19,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0020",
+      "native_id": 20,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0021",
+      "native_id": 21,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0022",
+      "native_id": 22,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0023",
+      "native_id": 23,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0024",
+      "native_id": 24,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0025",
+      "native_id": 25,
+      "model": "ptap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "sub",
+        "WELL": "$1"
+      },
+      "compact_nodes": [
+        "sub",
+        "n_1"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0026",
+      "native_id": 26,
+      "model": "ntap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "div_avdd",
+        "WELL": "$12"
+      },
+      "compact_nodes": [
+        "div_avdd",
+        "n_12"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0027",
+      "native_id": 27,
+      "model": "ntap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "div_avdd",
+        "WELL": "$11"
+      },
+      "compact_nodes": [
+        "div_avdd",
+        "n_11"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0028",
+      "native_id": 28,
+      "model": "ntap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "div_avdd",
+        "WELL": "$13"
+      },
+      "compact_nodes": [
+        "div_avdd",
+        "n_13"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0029",
+      "native_id": 29,
+      "model": "ntap1",
+      "native_terminal_order": [
+        "TIE",
+        "WELL"
+      ],
+      "compact_model_order": [
+        "TIE",
+        "WELL"
+      ],
+      "native_nodes": {
+        "TIE": "div_avdd",
+        "WELL": "$10"
+      },
+      "compact_nodes": [
+        "div_avdd",
+        "n_10"
+      ],
+      "parameters": {
+        "R": "81.66666666666666666666666668",
+        "w": "2u",
+        "l": "2u"
+      }
+    },
+    {
+      "instance": "XD0030",
+      "native_id": 30,
+      "model": "sg13_hv_pmos",
+      "native_terminal_order": [
+        "S",
+        "G",
+        "D",
+        "B"
+      ],
+      "compact_model_order": [
+        "D",
+        "G",
+        "S",
+        "B"
+      ],
+      "native_nodes": {
+        "S": "$47",
+        "G": "$31",
+        "D": "vctrl",
+        "B": "$12"
+      },
+      "compact_nodes": [
+        "vctrl",
+        "n_31",
+        "n_47",
+        "n_12"
+      ],
+      "parameters": {
+        "l": "0.45u",
+        "w": "8u",
+        "as": "2.72p",
+        "ad": "2.72p",
+        "ps": "16.68u",
+        "pd": "16.68u",
+        "rfmode": "0",
+        "ng": "1",
+        "m": "1"
+      }
+    }
+  ],
+  "node_map": {
+    "vctrl": "vctrl",
+    "avss": "avss",
+    "$1": "n_1",
+    "up": "up",
+    "$31": "n_31",
+    "div_avdd": "div_avdd",
+    "$13": "n_13",
+    "$37": "n_37",
+    "$47": "n_47",
+    "$11": "n_11",
+    "$10": "n_10",
+    "$26": "n_26",
+    "$42": "n_42",
+    "vco_avdd": "vco_avdd",
+    "down": "down",
+    "sub": "sub",
+    "$12": "n_12"
+  },
+  "contact_model": "Exact PDK CbTapCalc area/perimeter conductance; finite2x2um contacts, no spatial bulk or wire RC.",
+  "census": {
+    "sg13_hv_nmos": 5,
+    "sg13_hv_pmos": 4,
+    "rppd": 3,
+    "cap_cmim": 1,
+    "ptap1": 13,
+    "ntap1": 4
+  },
+  "wire_parasitics_included": false,
+  "native_simulation_passed": false,
+  "serial_phy_complete": false
+}

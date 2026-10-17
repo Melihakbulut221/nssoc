@@ -1,0 +1,74 @@
+[
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-wire-rc-v1-20261006/run_native_rc.py",
+    "parent_pin": {
+      "bytes": 7859,
+      "sha256": "f7c13c0cc582d45242bb67683072e06db88319eb358a91619f22c3411e6c5120"
+    },
+    "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-wire-rc-v1-20261006/run_native_rc.py",
+    "new_pin": {
+      "bytes": 7874,
+      "sha256": "ed914e39ced99e6d8ab9bcc87af7f6fab2fa1b890a15fa26841d17eada25f69d"
+    },
+    "substitutions": [
+      [
+        "v9-bias-v1",
+        "v10-tail-v1"
+      ],
+      [
+        "V9_BIAS8",
+        "V10_TAIL115"
+      ]
+    ],
+    "full_unified_diff": "--- \n+++ \n@@ -15,9 +15,9 @@\n \n B = Path(__file__).resolve().parent\n ROOT = B.parents[3]\n-GEOMETRY = B.parent / 'pcie-divider-v9-bias-v1-wire-v1-20261006'\n-O = Path('/dev/shm/nssoc-div4-v9-bias-v1-wire-rc-01')\n-W = Path('/dev/shm/nssoc-div4-v9-bias-v1-wire-geometry-01/wires.gds')\n+GEOMETRY = B.parent / 'pcie-divider-v10-tail-v1-wire-v1-20261006'\n+O = Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-rc-01')\n+W = Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-geometry-01/wires.gds')\n RT = Path('/dev/shm/nssoc-magic-area-product-v4-build/runtime/lib')\n TECH = Path('/dev/shm/nssoc-magic-pad-stack-tech-v1')\n PRIOR = B.parent / 'pcie-vco-v6-local-v1-wire-20261005/run_native_rc.py'\n@@ -37,15 +37,15 @@\n     freeze = json.loads((B / 'source-freeze.json').read_text())\n     assert freeze['inputs'] == {p: pin(p) for p in freeze['inputs']}\n     peer = json.loads((B / 'source-only-peer.json').read_text())\n-    assert peer['status'] == 'PASS_SOURCE_ONLY_DIVIDER_V9_BIAS8_WIRE_RC'\n+    assert peer['status'] == 'PASS_SOURCE_ONLY_DIVIDER_V10_TAIL115_WIRE_RC'\n     assert peer['freeze'] == pin(B / 'source-freeze.json') and not peer['findings']\n     geometry = json.loads((GEOMETRY / 'geometry-execution.json').read_text())\n-    assert geometry['status'] == 'PASS_DIVIDER_V9_BIAS8_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY'\n+    assert geometry['status'] == 'PASS_DIVIDER_V10_TAIL115_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY'\n     assert geometry['outputs'] == {p: pin(p) for p in geometry['outputs']}\n     controls = json.loads((GEOMETRY / 'binding-controls01/result.json').read_text())\n     assert controls['status'] == 'PASS_BASELINE_AND_FOUR_ACTUAL_COPIED_INPUT_BINDING_CONTROLS'\n     saved_peer = json.loads((GEOMETRY / 'saved-geometry-peer.json').read_text())\n-    assert saved_peer['status'] == 'PASS_DIVIDER_V9_BIAS8_SAVED_GEOMETRY_AND_BINDING_CONTROLS'\n+    assert saved_peer['status'] == 'PASS_DIVIDER_V10_TAIL115_SAVED_GEOMETRY_AND_BINDING_CONTROLS'\n     assert not saved_peer['findings']\n     assert saved_peer['geometry_execution'] == pin(GEOMETRY / 'geometry-execution.json')\n     assert saved_peer['binding_controls'] == pin(GEOMETRY / 'binding-controls01/result.json')\n@@ -91,7 +91,7 @@\n         parent=pin(PRIOR), exact_ASTs=[ast.dump(n, include_attributes=False) for n in tcl_nodes],\n         output=pin(script), number_of_actual_geometry_anchors=len(anchors['anchors']),\n         extraction_settings_unchanged=True, generated_name_alias_edges=False))\n-    record = dict(status='RUNNING_NATIVE_DIVIDER_V9_BIAS8_WIRE_RC', inputs=freeze['inputs'],\n+    record = dict(status='RUNNING_NATIVE_DIVIDER_V10_TAIL115_WIRE_RC', inputs=freeze['inputs'],\n                   freeze=pin(B / 'source-freeze.json'), source_peer=pin(B / 'source-only-peer.json'),\n                   native_script=pin(script), geometry_saved_peer=pin(GEOMETRY / 'saved-geometry-peer.json'),\n                   controller_identity=ns['lifecycle']()['process_identity'](os.getpid()),\n",
+    "inverse_byte_exact": true
+  },
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-wire-rc-v1-20261006/audit_wire_rc.py",
+    "parent_pin": {
+      "bytes": 12305,
+      "sha256": "cb913200dd1b92618785c3b5cee3f57d4511c42b5853c98ffcea3a6346b17fb2"
+    },
+    "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-wire-rc-v1-20261006/audit_wire_rc.py",
+    "new_pin": {
+      "bytes": 12306,
+      "sha256": "65213265dac0aec3f4be9e6165a75427f6fa38266c1dbf734f8753c68c0a249d"
+    },
+    "substitutions": [
+      [
+        "v9-bias-v1",
+        "v10-tail-v1"
+      ],
+      [
+        "V9_BIAS8",
+        "V10_TAIL115"
+      ]
+    ],
+    "full_unified_diff": "--- \n+++ \n@@ -6,7 +6,7 @@\n import hashlib,importlib.util,json,math,re,shlex,sys\n import networkx as nx\n B=Path(__file__).resolve().parent\n-GEOMETRY=B.parent/'pcie-divider-v9-bias-v1-wire-v1-20261006'\n+GEOMETRY=B.parent/'pcie-divider-v10-tail-v1-wire-v1-20261006'\n PRIOR=B.parent/'pcie-magic-resis-terminals-v1-20261004/audit_pilot.py'\n spec=importlib.util.spec_from_file_location('frozen_raw_parser',PRIOR);rawparser=importlib.util.module_from_spec(spec);spec.loader.exec_module(rawparser)\n \n",
+    "inverse_byte_exact": true
+  },
+  {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-wire-rc-v1-20261006/check_native_mutations_v2.py",
+    "parent_pin": {
+      "bytes": 6775,
+      "sha256": "2edf07392821c2690a5d7510aeb4e5e98174b9b148e124bb7dfefa5d2f3fa91d"
+    },
+    "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-wire-rc-v1-20261006/check_native_mutations_v2.py",
+    "new_pin": {
+      "bytes": 6776,
+      "sha256": "ff3071598cf71cfccc9ec0ef5a1a20c04acf2f5a00ac83dc0201d3f85511fa4c"
+    },
+    "substitutions": [
+      [
+        "v9-bias-v1",
+        "v10-tail-v1"
+      ],
+      [
+        "V9_BIAS8",
+        "V10_TAIL115"
+      ]
+    ],
+    "full_unified_diff": "--- \n+++ \n@@ -6,7 +6,7 @@\n from decimal import Decimal\n import copy,hashlib,importlib.util,json,re,time\n import networkx as nx\n-B=Path(__file__).resolve().parent;P=Path('/dev/shm/nssoc-div4-v9-bias-v1-wire-rc-01')\n+B=Path(__file__).resolve().parent;P=Path('/dev/shm/nssoc-div4-v10-tail-v1-wire-rc-01')\n from unittest.mock import patch\n import difflib\n spec=importlib.util.spec_from_file_location('strict_wire',B/'audit_wire_rc.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)\n",
+    "inverse_byte_exact": true
+  }
+]

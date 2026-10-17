@@ -1,0 +1,7 @@
+# Fresh TX prestage physical handoff
+
+The native margin candidate 39055820343/source9a12e63608607c9cc3a74da4d644690516c0c3f1 is still unaccepted until all four native cases pass. The tx-margin-pre-physical-cloud successor waits for that exact workflow, source and first attempt. A terminal failure stops the successor; it never restarts the source or substitutes an older passing candidate.
+
+Before CAD it fetches all four exact native summaries, verifies the source/controller and both generated primitive hashes against the actual current candidate, checks nominal/hot/cold engineering gates and actual selector fault detection. Only then are the two new Nx1/Nx3 prestage GDS cells generated in separate Actions jobs. The original physical controller is hash-pinned; explicit source/evidence/cell-name substitutions select the new native resistor geometry. Its 560-rule DRC, strict hierarchical and flat 54-device transistor LVS, physical/reference faults, contacts and geometry checks are retained. Changed resistors are regenerated from the native schematic, not patched into a previous GDS or assigned old RC.
+
+Successful leaf generation is only the next physical step. Parent 32:1 assembly, fresh node/terminal mapping and metal RC, loaded native transient tests, clock/bias/frontend wiring, four lanes and mainchip integration remain required. This job is prepared prospectively; no layout pass is claimed until native gates complete. All archives and failures are retained in GitHub; no local CAD is used.

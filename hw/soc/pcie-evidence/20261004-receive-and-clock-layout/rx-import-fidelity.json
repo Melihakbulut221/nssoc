@@ -1,0 +1,97 @@
+{
+  "status": "PASS_RX_ROUTING_MASK_FIDELITY_ONLY_PROCESS_ROUNDTRIP_NOT_LOSSLESS",
+  "original_full_bank_gds_sha256": "a6973418f56cb907d263854cc735466e0f8706b883f0247d9d398c4e39df0616",
+  "sources": {
+    "hw/soc/out/pcie-magic-rx-import-fidelity-20261004/scan_original.py": {
+      "bytes": 1890,
+      "sha256": "cea1bda09f654195750f2de163a7e32571b2eaf7954d1ce090b9f5301085f5cc"
+    },
+    "hw/soc/out/pcie-magic-rx-import-fidelity-20261004/import_rx.py": {
+      "bytes": 1356,
+      "sha256": "bafefacffd21f9f20961a61d130b9a281ec698364785a51c170cfd81b4f5f1e8"
+    },
+    "hw/soc/out/pcie-magic-rx-import-fidelity-20261004/compare_layers.py": {
+      "bytes": 3180,
+      "sha256": "44620c2ea17af79e9c87b3f9cdc7c03dcb3bf9ca1c20bdef4d4cdb80696f1839"
+    },
+    "hw/soc/out/pcie-magic-rx-import-fidelity-20261004/run_final.py": {
+      "bytes": 828,
+      "sha256": "9c749bc61ba78295a6816e1b78a6cec34ccb60c05a5d7a27abab3bb85f36c170"
+    },
+    "hw/soc/out/pcie-magic-rx-import-fidelity-20261004/seal.py": {
+      "bytes": 5087,
+      "sha256": "e514ab795a9f4fac73b10053cdefc8994570e1f5fff86ab82d49e3870661fe30"
+    }
+  },
+  "native_source_and_tool_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/make_pcie_rx_cell_v2.py": {
+      "bytes": 15569,
+      "sha256": "a8ca655aea85cae169e067d7a5b329c2ec37f0d310aa64e6f74552eaf9a779e4"
+    },
+    "/dev/shm/nssoc-magic-esd-v1-build-final/source/cif/CIFrdutils.c": {
+      "bytes": 42512,
+      "sha256": "119f338382051e91181ddfff02106cfb00713ff1810c3d078fb00401453b4aab"
+    },
+    "/dev/shm/nssoc-magic-esd-v1-build-final/source/calma/CalmaRdcl.c": {
+      "bytes": 43617,
+      "sha256": "49b245fcd748f7fdaf0bfa2db95f926365194dbc4898d5fa82f2c385b4851f4c"
+    },
+    "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-cifin.tech": {
+      "bytes": 25647,
+      "sha256": "508120b436da59c90c26438f6e707800dbc90a8abe6b2c315da2c9bab5962ffc"
+    },
+    "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2-cifout.tech": {
+      "bytes": 45968,
+      "sha256": "ab03fbf76eecdb1f70a1692bf25ab578a887727f2ae36bd6a70e680da3dedd14"
+    },
+    "/dev/shm/nssoc-magic-pad-stack-tech-v1/ihp-sg13g2.tech": {
+      "bytes": 22066,
+      "sha256": "8f9b678e4f25c732c4092f2844f6be51999e33805efd5356ac2c40f6f9bb613f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    }
+  },
+  "exact_ancestral_technology_inventory_rechecked": true,
+  "ancestor_full_graph": {
+    "bytes": 2556,
+    "sha256": "3a49e5879b82a33897a3bbc4dcabdb6041249faa818e456f5c9ba0956843b6ae"
+  },
+  "native_record": {
+    "bytes": 3374,
+    "sha256": "1db2fe2a6cc8c9ed37321badefcfa954610581875211a3060dee24a498f5b822"
+  },
+  "original_grid": {
+    "bytes": 6479,
+    "sha256": "c1a4b710fce8c40ebcba119a701bb1c40cf5a676d4215a67e9b243ec6df76f2a"
+  },
+  "per_layer": {
+    "bytes": 16351,
+    "sha256": "f3bb718997bc1e68873d2845750337d5efbf1f2df54cd9e6d1a015b418934380"
+  },
+  "native_seconds": 0.3690536989888642,
+  "native_memory_limit_bytes": 2147483648,
+  "findings": [
+    "Four original M4 rectangles have endpoint coordinates at2/3nm residues relative to5nm import grid; twelve native text positions are also off-grid.",
+    "All four physical off-grid edges are internal to overlapping M4 geometry: merged original M4 has no off5nm boundary vertices.",
+    "Native raw MAG M4-plane metal/via union equals the original GDS M4 region exactly, XOR0nm2; not merely an exported-GDS observation.",
+    "Native import/export has XOR0nm2 on all five occupied routing metals and four occupied routing-via layers, with no tolerance.",
+    "Native import/export process contact layer6/0 loses5684800nm2; several HBT process/marker/pin layers also differ. These are recorded separately and are not attributed solely to import or numerical grid snapping.",
+    "Current CIFScaleCoord has explicit gridlimit-triggered rounding; cifin/cifout5nm limits remain unchanged. The warning is retained, not suppressed."
+  ],
+  "limitations": [
+    "This is the exact isolated v2_RX subset of the unchanged padded bank, not a whole-bank all-layer mask-conservation certificate.",
+    "Raw MAG stores compact device/contact abstractions; native GDS output reconstructs them. Process-layer roundtrip differences require a separate import-vs-reconstruction audit.",
+    "Connectivity351device/56port pass is separate from geometry and RC metrology. No qualified PEX, device-parameter replacement, ESD stress, post-layout RF timing or mainchip adoption."
+  ],
+  "qualified_pex": false,
+  "whole_process_mask_lossless": false,
+  "old_sources_unchanged": true,
+  "capsule": {
+    "bytes": 45336,
+    "sha256": "098ef394b53e866c37940ab79a90896baa4bab7769af103faf1974d039baa426",
+    "members": 20,
+    "all_roundtrip_verified": true
+  }
+}

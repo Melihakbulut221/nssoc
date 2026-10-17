@@ -1,0 +1,732 @@
+{
+  "date": "2026-09-20",
+  "status": "Structural comparison PASS; estimated timing and electrical FAIL",
+  "scope": "Old RTL ECO25 continuation: 41 local SRAM input/clock leaves, three gate offloads, 20 GMII delay cells and three buffer-strength changes. Original logic/state/diodes and unchanged constraints retained. Not extracted timing or signoff.",
+  "inputs": {
+    "scope": "Three positive buffer size changes, 41 local macro input buffer leaves including four clock pins, 20 stateless GMII hold cells, three gate offload buffers. Same clocks, loads, thresholds and state. Fresh global estimates only; require exact connectivity and all-corner reports.",
+    "seed": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco25-slew-drive",
+    "seed_odb_sha256": "aa8d0e5e6c09b6d732673b5d4e9f1f4d676b8ad101c951d762e05705abe38608",
+    "before_sha256": "1ac23e850e057fb1eaaffc2a73e51551e0ae58e9ed139fa68d5f1644557076d1",
+    "liberty": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+    "liberty_sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+    "macro_libraries": [
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x8_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "63449ec39991d88479958d35f6e17f547b083850ad50dcc0b2fb93e387fb0041"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_64x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "363a49c4905e0899b1391903b16a37a18ba9db9cafa627f6fc4d9bc6f9e01db0"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "9a732262065fa4b7ef48e1cbe41897cd3c8256356d2cc5255aed5517ea1e4bef"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x48_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "357710ff1d4cb5d0f84264a7d07d3473ee584441cab363314cf70529912028e4"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x8_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "b4c3ab4947366ce0dea94e53924ebae9d94f8ed4aa44eda612102215f1bde9a0"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "a04cff61cb4befb2290427db1ff2cb1c31c8d5990dca53ee3e5d1cc621679cd9"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_64x32_c2_slow_1p08V_125C.lib",
+        "sha256": "0304c5e8f04a4a1863c3e50d2a7b8d1ad55eb9cc4b1789d0365db8902c3abd33"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x8_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "78238e1652176a5ef2984b5a7c44432491e05614a1e18bd9cd841b1d0c97638c"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "5672945f5dc90a7e202ca1635f8f06f81adf72a6c53512ad8939ddc1c6681832"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "f23f9f8c41eff35014189b22a223295b91fd1db9d11655dba68f4591a2ed43e6"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_512x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "dbef72291cab181ffb472af4bbdb9d25f5389f7b999aec6900267286fe6d4b48"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "7838bd8ab993208d100c88445c104f23f1ce1c242f59833e5da48fd1713bdfb9"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "c09bbbe341c8ce701933d645198a4045e2cb53f5621842534722876e8243cb40"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "406d5c0127dd98c158b51fcbb7acd69dae60a5d8592392d1878e559108d8f3c5"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "855373febf7481604910cbe2af05cba58b22789553f046ac3eb31dfd81162c67"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x8_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "bb2f9d3b34098d1d9362038fa4c84df89471d463b7f7780e97b6fa9d977a9714"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x8_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "11d498b210a56addb5f81892113b9a0c99145438eb2c3ac23352a51f9faf6b8d"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x8_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "b7e1b2543d85f85aa089d9422f7bf354a85794d40227b7652190d8d7d10860af"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "8ab1090ecf527bc71f0c4dc8db05b833e0f9960b4bdb94f3b0351533463b79a2"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_4096x16_c3_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "a329a42256675e37ecaacc1647d68fa629924d3453653e24f8c8e00b74c31283"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_1024x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "9b804486ac1ccd8001836a42f65d74244877a925b553b9cdce831dc7ec1d4eb6"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_8192x32_c4_slow_1p08V_125C.lib",
+        "sha256": "190e523dfb1486b3f8781e0aa9b6bdd7d7c3f5bcc3ca73a84d3db43d52a7d0ce"
+      },
+      {
+        "path": "/home/hasanmelih/.ciel/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x32_c2_bm_bist_slow_1p08V_125C.lib",
+        "sha256": "a3ce6159425a082cd741af21af36a8f098f04d6921a41f383b55193fed67fc48"
+      }
+    ],
+    "diagnostic_probe": "eco7-endpoint-grt-probe",
+    "diagnostic_matches_seed_wns_exactly": true,
+    "substitutions": {
+      "_070865_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_4"
+      },
+      "_073020_": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_4"
+      },
+      "fanout4892": {
+        "old": "sg13g2_buf_1",
+        "new": "sg13g2_buf_4"
+      }
+    },
+    "new_buffer_drivers": {
+      "eco_26offload_028444": {
+        "A": "_025675_",
+        "X": "eco_26offload_net_028443"
+      },
+      "eco_26offload_128445": {
+        "A": "_012060_",
+        "X": "eco_26offload_net_128444"
+      },
+      "eco_26offload_228446": {
+        "A": "_013112_",
+        "X": "eco_26offload_net_228445"
+      },
+      "eco_gmiihold_028424": {
+        "A": "net24700",
+        "X": "eco_gmiihold_net_028423"
+      },
+      "eco_gmiihold_1028434": {
+        "A": "net24712",
+        "X": "eco_gmiihold_net_1028433"
+      },
+      "eco_gmiihold_1128435": {
+        "A": "eco_gmiihold_net_1028433",
+        "X": "eco_gmiihold_net_1128434"
+      },
+      "eco_gmiihold_1228436": {
+        "A": "net24708",
+        "X": "eco_gmiihold_net_1228435"
+      },
+      "eco_gmiihold_128425": {
+        "A": "eco_gmiihold_net_028423",
+        "X": "eco_gmiihold_net_128424"
+      },
+      "eco_gmiihold_1328437": {
+        "A": "eco_gmiihold_net_1228435",
+        "X": "eco_gmiihold_net_1328436"
+      },
+      "eco_gmiihold_1428438": {
+        "A": "net24724",
+        "X": "eco_gmiihold_net_1428437"
+      },
+      "eco_gmiihold_1528439": {
+        "A": "eco_gmiihold_net_1428437",
+        "X": "eco_gmiihold_net_1528438"
+      },
+      "eco_gmiihold_1628440": {
+        "A": "net24696",
+        "X": "eco_gmiihold_net_1628439"
+      },
+      "eco_gmiihold_1728441": {
+        "A": "eco_gmiihold_net_1628439",
+        "X": "eco_gmiihold_net_1728440"
+      },
+      "eco_gmiihold_1828442": {
+        "A": "net24704",
+        "X": "eco_gmiihold_net_1828441"
+      },
+      "eco_gmiihold_1928443": {
+        "A": "eco_gmiihold_net_1828441",
+        "X": "eco_gmiihold_net_1928442"
+      },
+      "eco_gmiihold_228426": {
+        "A": "net24688",
+        "X": "eco_gmiihold_net_228425"
+      },
+      "eco_gmiihold_328427": {
+        "A": "eco_gmiihold_net_228425",
+        "X": "eco_gmiihold_net_328426"
+      },
+      "eco_gmiihold_428428": {
+        "A": "net24716",
+        "X": "eco_gmiihold_net_428427"
+      },
+      "eco_gmiihold_528429": {
+        "A": "eco_gmiihold_net_428427",
+        "X": "eco_gmiihold_net_528428"
+      },
+      "eco_gmiihold_628430": {
+        "A": "net24720",
+        "X": "eco_gmiihold_net_628429"
+      },
+      "eco_gmiihold_728431": {
+        "A": "eco_gmiihold_net_628429",
+        "X": "eco_gmiihold_net_728430"
+      },
+      "eco_gmiihold_828432": {
+        "A": "net24692",
+        "X": "eco_gmiihold_net_828431"
+      },
+      "eco_gmiihold_928433": {
+        "A": "eco_gmiihold_net_828431",
+        "X": "eco_gmiihold_net_928432"
+      },
+      "eco_macroleaf_028383": {
+        "A": "net6365",
+        "X": "eco_macroleaf_net_028382"
+      },
+      "eco_macroleaf_1028393": {
+        "A": "net25185",
+        "X": "eco_macroleaf_net_1028392"
+      },
+      "eco_macroleaf_1128394": {
+        "A": "net13899",
+        "X": "eco_macroleaf_net_1128393"
+      },
+      "eco_macroleaf_1228395": {
+        "A": "net6347",
+        "X": "eco_macroleaf_net_1228394"
+      },
+      "eco_macroleaf_128384": {
+        "A": "net6300",
+        "X": "eco_macroleaf_net_128383"
+      },
+      "eco_macroleaf_1328396": {
+        "X": "eco_macroleaf_net_1328395",
+        "A": "clknet_1_1_0_eth_rx_clk_i"
+      },
+      "eco_macroleaf_1428397": {
+        "A": "net27800",
+        "X": "eco_macroleaf_net_1428396"
+      },
+      "eco_macroleaf_1528398": {
+        "A": "net6297",
+        "X": "eco_macroleaf_net_1528397"
+      },
+      "eco_macroleaf_1628399": {
+        "A": "net6367",
+        "X": "eco_macroleaf_net_1628398"
+      },
+      "eco_macroleaf_1728400": {
+        "A": "net25185",
+        "X": "eco_macroleaf_net_1728399"
+      },
+      "eco_macroleaf_1828401": {
+        "A": "net13899",
+        "X": "eco_macroleaf_net_1828400"
+      },
+      "eco_macroleaf_1928402": {
+        "A": "net6347",
+        "X": "eco_macroleaf_net_1928401"
+      },
+      "eco_macroleaf_2028403": {
+        "X": "eco_macroleaf_net_2028402",
+        "A": "clknet_1_1_0_eth_rx_clk_i"
+      },
+      "eco_macroleaf_2128404": {
+        "A": "net27800",
+        "X": "eco_macroleaf_net_2128403"
+      },
+      "eco_macroleaf_2228405": {
+        "A": "net27732",
+        "X": "eco_macroleaf_net_2228404"
+      },
+      "eco_macroleaf_228385": {
+        "A": "net6365",
+        "X": "eco_macroleaf_net_228384"
+      },
+      "eco_macroleaf_2328406": {
+        "A": "net27799",
+        "X": "eco_macroleaf_net_2328405"
+      },
+      "eco_macroleaf_2428407": {
+        "A": "net25187",
+        "X": "eco_macroleaf_net_2428406"
+      },
+      "eco_macroleaf_2528408": {
+        "A": "net25179",
+        "X": "eco_macroleaf_net_2528407"
+      },
+      "eco_macroleaf_2628409": {
+        "X": "eco_macroleaf_net_2628408",
+        "A": "clknet_1_0_0_eth_tx_clk_i"
+      },
+      "eco_macroleaf_2728410": {
+        "A": "net27799",
+        "X": "eco_macroleaf_net_2728409"
+      },
+      "eco_macroleaf_2828411": {
+        "A": "net25179",
+        "X": "eco_macroleaf_net_2828410"
+      },
+      "eco_macroleaf_2928412": {
+        "X": "eco_macroleaf_net_2928411",
+        "A": "clknet_1_0_0_eth_tx_clk_i"
+      },
+      "eco_macroleaf_3028413": {
+        "A": "net6437",
+        "X": "eco_macroleaf_net_3028412"
+      },
+      "eco_macroleaf_3128414": {
+        "A": "net6433",
+        "X": "eco_macroleaf_net_3128413"
+      },
+      "eco_macroleaf_3228415": {
+        "A": "net4613",
+        "X": "eco_macroleaf_net_3228414"
+      },
+      "eco_macroleaf_328386": {
+        "A": "net6300",
+        "X": "eco_macroleaf_net_328385"
+      },
+      "eco_macroleaf_3328416": {
+        "A": "net6437",
+        "X": "eco_macroleaf_net_3328415"
+      },
+      "eco_macroleaf_3428417": {
+        "A": "net6433",
+        "X": "eco_macroleaf_net_3428416"
+      },
+      "eco_macroleaf_3528418": {
+        "A": "net6374",
+        "X": "eco_macroleaf_net_3528417"
+      },
+      "eco_macroleaf_3628419": {
+        "A": "net6398",
+        "X": "eco_macroleaf_net_3628418"
+      },
+      "eco_macroleaf_3728420": {
+        "A": "net6398",
+        "X": "eco_macroleaf_net_3728419"
+      },
+      "eco_macroleaf_3828421": {
+        "A": "net24977",
+        "X": "eco_macroleaf_net_3828420"
+      },
+      "eco_macroleaf_3928422": {
+        "A": "net2840",
+        "X": "eco_macroleaf_net_3928421"
+      },
+      "eco_macroleaf_4028423": {
+        "A": "net2838",
+        "X": "eco_macroleaf_net_4028422"
+      },
+      "eco_macroleaf_428387": {
+        "A": "net6462",
+        "X": "eco_macroleaf_net_428386"
+      },
+      "eco_macroleaf_528388": {
+        "A": "net6451",
+        "X": "eco_macroleaf_net_528387"
+      },
+      "eco_macroleaf_628389": {
+        "A": "net6455",
+        "X": "eco_macroleaf_net_628388"
+      },
+      "eco_macroleaf_728390": {
+        "A": "net6451",
+        "X": "eco_macroleaf_net_728389"
+      },
+      "eco_macroleaf_828391": {
+        "A": "net6455",
+        "X": "eco_macroleaf_net_828390"
+      },
+      "eco_macroleaf_928392": {
+        "A": "net6367",
+        "X": "eco_macroleaf_net_928391"
+      }
+    },
+    "diagnostic_report": "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/12-openroad-stapostpnr/nom_slow_1p08V_125C/max.rpt",
+    "diagnostic_sha256": "1de926a76465c1039d91bae29a4bfff8ec69195134a698e858138d1f59cfcd49",
+    "diagnostic_paths": [
+      [
+        "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112235_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ],
+      [
+        "_111665_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112231_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ],
+      [
+        "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112239_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ],
+      [
+        "_111672_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Endpoint: _112240_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "Path Group: clk_i",
+        "Path Type: max"
+      ]
+    ],
+    "target_drivers": [
+      "_067331_/Y",
+      "_070292_/Y",
+      "_070432_/X",
+      "_073052_/Y",
+      "_073775_/Y",
+      "_074960_/X",
+      "_109135_/X",
+      "_111055_/Q",
+      "_111313_/Q",
+      "_111424_/Q",
+      "_111953_/Q",
+      "_112203_/Q",
+      "_112205_/Q",
+      "_113901_/Q",
+      "clkbuf_1_1_0_eth_tx_clk_i/X",
+      "fanout1467/X",
+      "fanout2037/X",
+      "fanout222/X",
+      "fanout2461/X",
+      "fanout2561/X",
+      "fanout27673/X",
+      "fanout27696/X",
+      "fanout27697/X",
+      "fanout27722/X",
+      "fanout27723/X",
+      "fanout27727/X",
+      "fanout27764/X",
+      "fanout27775/X",
+      "fanout27788/X",
+      "fanout27792/X",
+      "fanout2835/X",
+      "fanout2878/X",
+      "fanout298/X",
+      "fanout303/X",
+      "fanout394/X",
+      "fanout3999/X",
+      "fanout4740/X",
+      "fanout4778/X",
+      "fanout6328/X",
+      "hold13835/X",
+      "max_cap1510/X",
+      "wire1374/X",
+      "wire24951/X"
+    ],
+    "attribution_sha256": "ae219649f9e47cb1ff1c1147b5868d2751f9e2d1e3c6762102542a05ede43478",
+    "census_sha256": "8965e065801e74d1237409cf9dcc5255cd32e4473fce1679ef2ed7e1a32caf3a",
+    "planned_macro_leaves": [
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0/B_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1/B_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_DIN[6]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_DIN[8]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3/A_DIN[8]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[3]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_CLK",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/A_DIN[9]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6/B_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[0]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[1]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[3]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_ADDR[4]",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_CLK",
+      "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7/A_DIN[9]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/A_ADDR[6]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[0]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_ADDR[0]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_ADDR[4]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1/B_CLK",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2/A_DIN[8]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/A_ADDR[3]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3/B_ADDR[6]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6/B_ADDR[2]",
+      "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7/B_ADDR[2]",
+      "u_rom.g_rom_1024x32_ecc.u_c0/A_ADDR[8]",
+      "u_rom.g_rom_1024x32_ecc.u_c1/A_ADDR[7]",
+      "u_rom.g_rom_1024x32_ecc.u_c1/A_ADDR[8]"
+    ],
+    "planned_added_cells": 64,
+    "after_sha256": "f15435049b3cae37193f260ca5aadf882b7a910fd6a3f7d5568648e2e7b0e440"
+  },
+  "supervisor": {
+    "command": [
+      "/home/hasanmelih/.local/opt/llbin/openroad",
+      "-exit",
+      "-no_splash",
+      "-metrics",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/metrics.json",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/eco.tcl"
+    ],
+    "status": "COMPLETED",
+    "script_sha256": "fb452daaab00cb258f142f66c41f29cb8e0b868dcf3c2b89e75d10ff8f5f28f6",
+    "start_monotonic": 7988.975600991,
+    "timeout_s": 3600,
+    "disk_floor_bytes": 1073741824,
+    "returncode": 0,
+    "elapsed_s": 140.00275149500067,
+    "seed_unchanged": true
+  },
+  "structural": {
+    "original_instances": 97498,
+    "added_stateless_positive_cells": 64,
+    "added_noninverting_buffers": 44,
+    "added_delay_cells": 20,
+    "equivalent_combinational_substitutions": 3,
+    "equivalent_sequential_substitutions": 0,
+    "state_definitions_compared_exactly": true,
+    "unchanged_ports_and_assigns": true,
+    "unchanged_original_wire_declarations": true,
+    "all_original_pin_connections_equal_after_buffer_contraction": true,
+    "standard_cell_area_delta_um2": 1473.2928
+  },
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "setup_ns": 2.878295461219409,
+      "hold_ns": -0.34655168604579517
+    },
+    "nom_slow_1p08V_125C": {
+      "setup_ns": -1.2394166044294126,
+      "hold_ns": 0.034038772763874764
+    },
+    "nom_typ_1p20V_25C": {
+      "setup_ns": 1.4114780854736306,
+      "hold_ns": -0.03305844580540521
+    }
+  },
+  "electrical": {
+    "nom_typ_1p20V_25C": {
+      "slew": 4,
+      "capacitance": 1,
+      "fanout": 0
+    },
+    "nom_fast_1p32V_m40C": {
+      "slew": 8,
+      "capacitance": 1,
+      "fanout": 0
+    },
+    "nom_slow_1p08V_125C": {
+      "slew": 2,
+      "capacitance": 1,
+      "fanout": 0
+    }
+  },
+  "corrections": [
+    {
+      "scope": "Initial isolated candidate aborted before export because a GMII final driver was an existing positive delay cell, not a buf_N. Retry accepts only explicit noninverting buffer/delay families and structural verification checks actual Liberty functions/state. No source changed.",
+      "supervisor": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "-metrics",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco26-macro-leaves/metrics.json",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/timing-eco26-macro-leaves/eco.tcl"
+        ],
+        "status": "FAILED",
+        "script_sha256": "51e35cd062beb8d037b9099a18c55bfba6135272dd90b761b7ce6f52387f164c",
+        "start_monotonic": 7962.714747541,
+        "timeout_s": 3600,
+        "disk_floor_bytes": 1073741824,
+        "returncode": 1,
+        "elapsed_s": 10.00076119499954,
+        "seed_unchanged": true
+      }
+    }
+  ],
+  "limits": [
+    "GMII fast hold improves but the additional delay causes slow setup failure.",
+    "SRAM hold and remaining electrical failures retained; no native route/antenna/DRC/XOR/LVS verdict."
+  ],
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/connectivity-check.json": {
+      "bytes": 477,
+      "sha256": "334e527f252f26c9f1122761c423487d6049b763a7dd69fbb38c2c65bb75ab06"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_fast_1p32V_m40C-max.rpt": {
+      "bytes": 42070,
+      "sha256": "30579f8119b107a63d7dd21b6cb6918a3e24670192da0b4fd7520ce7a4bc038d"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/soc_top.pnl.v": {
+      "bytes": 14241589,
+      "sha256": "9c128612499b71f15cd9c7dc0a502b21dde55824fbcf0a396bd2b4875600381a"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_slow_1p08V_125C-min.rpt": {
+      "bytes": 36769,
+      "sha256": "f6d380de111d8a1539db2d6126a8acfcf5fde6baad723e63a505a5a65261db2c"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/eco.tcl": {
+      "bytes": 35763,
+      "sha256": "fb452daaab00cb258f142f66c41f29cb8e0b868dcf3c2b89e75d10ff8f5f28f6"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/soc_top.odb": {
+      "bytes": 90879216,
+      "sha256": "06b4dbbe34378a19e93e13cced7cd19a53df096fc06ffb98cb7a93158555c5b6"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/eco.log": {
+      "bytes": 16201,
+      "sha256": "7b40a13a69f3e96e05f9cf86ebd07685bea678f797d8e797c7dd86f4745bc52b"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_typ_1p20V_25C-electrical.rpt": {
+      "bytes": 677,
+      "sha256": "4a4f2993ed311ceb6c1b41ca4cd577bb5ace2d23ded7b63ae0099492f68a3d5f"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/validation-inputs.json": {
+      "bytes": 18255,
+      "sha256": "74df8177c07eb045aefcf7a4c5207f1c17fc4344c28d6513c3467c87897a9b53"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/validation.log": {
+      "bytes": 477,
+      "sha256": "334e527f252f26c9f1122761c423487d6049b763a7dd69fbb38c2c65bb75ab06"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/after_grt.guide": {
+      "bytes": 29444605,
+      "sha256": "5668331fdcf118883d11c84d14f7062e68fa72de28b81423f2efa6dd272ea602"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/soc_top.def": {
+      "bytes": 23421119,
+      "sha256": "6977fd5336975e3430b3d7da1b14a3646457292e2bfe9f12d7eb0b2179be9b09"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/soc_top.sdc": {
+      "bytes": 29892,
+      "sha256": "74c5fb4b31779a7ce6be4a4e5548c7bef7855c287921c944f4bac980537045aa"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_typ_1p20V_25C-max.rpt": {
+      "bytes": 46979,
+      "sha256": "b86c930cf89725bd383a564502bb916aecc57754c8bfbda36eef750eea973f61"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_slow_1p08V_125C-max.rpt": {
+      "bytes": 55370,
+      "sha256": "248bb8252df78665c67516a5a98bd970e55fb885be273163548e0f010d1eca40"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_fast_1p32V_m40C-electrical.rpt": {
+      "bytes": 1008,
+      "sha256": "81f657bd40ddf708dc139915af2b3020ea42ea73fc5ec4dc5a1adbce929539ad"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_typ_1p20V_25C-min.rpt": {
+      "bytes": 41147,
+      "sha256": "c7faf271bd5835bb6020114a4f119c7e5b84a7f9b08b3d456eeeb28bcb0c986a"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/inputs.json": {
+      "bytes": 11654,
+      "sha256": "d1c99f2e2cfffffe65330cf8b9076f4f4d093fe7a8962c8841ff46861591b36e"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/metrics.json": {
+      "bytes": 2302,
+      "sha256": "7db93dcfc83eaec9c9a2373982001d28f8036362695bd9571a4077b33ff9b8b8"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/supervisor.json": {
+      "bytes": 646,
+      "sha256": "e33ac532ebf896587547fc340d383ce24327fd58ab2a169dd9fbc9a700d0aa08"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/soc_top.nl.v": {
+      "bytes": 11118839,
+      "sha256": "f15435049b3cae37193f260ca5aadf882b7a910fd6a3f7d5568648e2e7b0e440"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_fast_1p32V_m40C-min.rpt": {
+      "bytes": 42554,
+      "sha256": "e8d2319159ada3affd7d6474affcc526658942e01037c6c6a16b66a7135d33ae"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves2/nom_slow_1p08V_125C-electrical.rpt": {
+      "bytes": 511,
+      "sha256": "5e695dbb5bce935bd209a7e4f41120d80ce8d334a427e76ec8f5e5d98f6f9035"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves/eco.log": {
+      "bytes": 5186,
+      "sha256": "fc29979cbba73dee7c9ee99406ad2be6b92b8335d56a0d23df9ce0283e8eacd5"
+    },
+    "hw/soc/out/external-review-20260919/timing-eco26-macro-leaves/supervisor.json": {
+      "bytes": 640,
+      "sha256": "deba8f365d2ebfcfac2dcb8d584ddd1c5475104685d73c5c6391cc6e4198850e"
+    },
+    "hw/soc/out/external-review-20260919/prepare_eco26.py": {
+      "bytes": 4485,
+      "sha256": "fa990cbb592a811195147f3eadd6aaf7f74944c07298754ab32680411bca722b"
+    },
+    "hw/soc/out/external-review-20260919/prepare_eco26_retry.py": {
+      "bytes": 4522,
+      "sha256": "9d8a008e55fbf32bb813006e4bbc2c133eb8e0082780581300104f27eb5e06c5"
+    },
+    "hw/soc/out/external-review-20260919/run_eco26.py": {
+      "bytes": 1772,
+      "sha256": "6b2b16a601607efc20eb06443b3cadaf7ea324cbb35286b80a4058e67f4337c3"
+    },
+    "hw/soc/out/external-review-20260919/run_eco26_retry.py": {
+      "bytes": 1773,
+      "sha256": "d072f5cb4cbf80cc7990e4d237332f2ac39e7b31e4a1d1f2658d2a14f2e4327c"
+    },
+    "hw/soc/out/external-review-20260919/validate_eco26.py": {
+      "bytes": 1479,
+      "sha256": "f67f14f7bfa38aed1c17ab736d5232f956f3932ea315477d1b3240f0e51cd31d"
+    },
+    "hw/soc/out/external-review-20260919/record_eco26.py": {
+      "bytes": 2458,
+      "sha256": "150ba5efad9bb9195b6545f04edafd503d5335d5123de9a7911cb24cc9e8f00e"
+    }
+  }
+}

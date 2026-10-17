@@ -1,0 +1,118 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_AND_RECEIPT_REVIEW_NO_ACCEPTANCE",
+  "sources": {
+    "scripts/analyze_pcie_clock_thermal_cycles_v1.py": {
+      "bytes": 9745,
+      "sha256": "100b15ebe2a107054f14af36797db7e19415d65536afa77406404252bcf28884"
+    },
+    "sw/tests/test_pcie_clock_thermal_cycle_analysis_v1.py": {
+      "bytes": 1530,
+      "sha256": "a311b50035812fb6a3f13ed78b53f0a8e9bb6a3b6fd0891644a13bbfef4cc3f0"
+    }
+  },
+  "author_receipt": {
+    "bytes": 988,
+    "sha256": "6fe56f2fa5f5100904f48b968d8f3b2195e2a382b4ca1ff3feff519fb94a8c73"
+  },
+  "result": {
+    "bytes": 508737,
+    "sha256": "55e3cddbc82a3737c94b12e5270ac202aa959c538a9961e5691eb3e407888e3e"
+  },
+  "capsule": {
+    "bytes": 1235948,
+    "sha256": "6bfb64be99d60c75ccaf57268205641cd5361a13dbd4df3c33eff2d5b65b435e"
+  },
+  "members": [
+    {
+      "name": "LICENSES/Apache-2.0.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "name": "LICENSES/CC-BY-4.0.txt",
+      "bytes": 18657,
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+    },
+    {
+      "name": "methods/scripts/analyze_pcie_clock_thermal_cycles_v1.py",
+      "bytes": 9745,
+      "sha256": "100b15ebe2a107054f14af36797db7e19415d65536afa77406404252bcf28884"
+    },
+    {
+      "name": "methods/scripts/diagnose_pcie_clock_trim_thermal_poles_v1.py",
+      "bytes": 12005,
+      "sha256": "158335600c0b95b8a912f87e59de08ca7a77809a645e547842bcf0ff659ca7c2"
+    },
+    {
+      "name": "methods/sw/tests/test_pcie_clock_thermal_cycle_analysis_v1.py",
+      "bytes": 1530,
+      "sha256": "a311b50035812fb6a3f13ed78b53f0a8e9bb6a3b6fd0891644a13bbfef4cc3f0"
+    },
+    {
+      "name": "review/NOTICES.txt",
+      "bytes": 341,
+      "sha256": "36b566bcfdc774413bac914ca94b2c1faa723c7324cc8902baa5a222c3a80258"
+    },
+    {
+      "name": "review/result.json",
+      "bytes": 508737,
+      "sha256": "55e3cddbc82a3737c94b12e5270ac202aa959c538a9961e5691eb3e407888e3e"
+    },
+    {
+      "name": "review/ruff.log",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "review/saved-full-trajectory.json",
+      "bytes": 8489129,
+      "sha256": "e48891c3b3028e7fac2f0fa780d30222a7e1173513d45d00711d33eaa67b4f5b"
+    },
+    {
+      "name": "review/seal.py",
+      "bytes": 4168,
+      "sha256": "3048595e17a9ad0f31e10350d8a51b71a1d0194298527915c804415f86c4ae4d"
+    },
+    {
+      "name": "review/summary.json",
+      "bytes": 3397,
+      "sha256": "29ba11f9f351dbe6b13acda1c585d855df670a0ab4c2d2654e456bc47d4b16ca"
+    },
+    {
+      "name": "review/tests.log",
+      "bytes": 99,
+      "sha256": "27eb5ae8749462bee4fc1349efc0be2576d5b5585c8e974541e7128c15164326"
+    },
+    {
+      "name": "inventory.json",
+      "bytes": 1716,
+      "sha256": "981ef243224483e91a3f8e309dfd6ff93698f510e890840f681a35367986670c"
+    }
+  ],
+  "scope": [
+    "Read-only algorithm/source review and capsule/source/result pins; no SPICE rerun, no independent raw waveform remeasurement, no full31part download.",
+    "Reviewed literal cycle-crossing interpolation, trapezoidal time averages, complete-cycle fixed992\u20131000ns scope, all53 thermal channels, actual-wave drift controls and explicit external terminal-power proxy limits.",
+    "Author10 tests and final-part replay are reported evidence, not reviewer test execution."
+  ],
+  "findings": [
+    "No remaining blocking defect found in bounded cycle integration or source/column binding.",
+    "Original endpoint-based convergence FAIL/ERROR_INCOMPLETE remains unchanged; phase averaging diagnoses periodic-ripple sensitivity and is not an adoption gate.",
+    "Corrected unsupported anonymous-download boolean now states local compressed/raw hash replay; CLI does not claim it independently retrieved the part.",
+    "Captured ng47 outitf.c computes required bytes from finalTime/step*numData*sizeof(double), without FIFO/file predicate in the warning branch. On Linux it prints advisory warning and returns existing ret; original clean-log guard still rejects it."
+  ],
+  "warning_source": {
+    "path": "hw/soc/out/pcie-clock-trim-20261004/longstream-v2-result/warning-source/tmpsndfibtf/src/frontend/outitf.c",
+    "bytes": 57263,
+    "sha256": "995538492e4549ef42aecc74f3d3c1e95da279c029d959d62b27063c2adaeae2",
+    "estimated_gib": 2.4884939193725586
+  },
+  "recorded_diagnosis": {
+    "max_cycle_mean_rate_per_ns": 1.4106327989120485e-06,
+    "max_cycle_mean_span_k": 1.0502908276421863e-05
+  },
+  "limitations": [
+    "Only final8ns complete cycles, not full-time safety revalidation.",
+    "Second0.25ps trial not executed; no timestep agreement.",
+    "No infinite-time equilibrium, PLL/CDR/PCIe/PEX or physical acceptance."
+  ]
+}

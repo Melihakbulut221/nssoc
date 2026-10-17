@@ -1,0 +1,50 @@
+.F.F.......                                                              [100%]
+=================================== FAILURES ===================================
+_______ test_actual_continuous_rx_fault_rejected[successor_payload_lost] _______
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-continuous-rx-controls-01/test_actual_continuous_rx_faul1')
+name = 'successor_payload_lost', module = 'soc_pcie_gen3_framer_rx_v3'
+before = "(!block_pending || block_data==512'b0)", after = "1'b1"
+
+    @pytest.mark.parametrize("name,module,before,after", FAULTS, ids=[r[0] for r in FAULTS])
+    def test_actual_continuous_rx_fault_rejected(tmp_path, name, module, before, after):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for item in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / (item + ".v"), directory / (item + ".v"))
+        source = directory / (module + ".v")
+        text = source.read_text()
+        assert text.count(before) == 1
+        source.write_text(text.replace(before, after))
+        result, record, cases, out = run(tmp_path, directory)
+>       assert result.returncode != 0 and record["status"] == "FAIL"
+E       AssertionError: assert (0 != 0)
+E        +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python', '/home/hasanmel.../bin', '--rtl-dir', '/dev/shm/nssoc-gen3-continuous-rx-controls-01/test_actual_continuous_rx_faul1/rtl'], returncode=0).returncode
+
+sw/tests/test_pcie_gen3_continuous_rx.py:61: AssertionError
+___________ test_actual_continuous_rx_fault_rejected[no_idle_bypass] ___________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-continuous-rx-controls-01/test_actual_continuous_rx_faul3')
+name = 'no_idle_bypass', module = 'soc_pcie_gen3_framer_rx_v3'
+before = 'else if(idle_fast)', after = "else if(1'b0)"
+
+    @pytest.mark.parametrize("name,module,before,after", FAULTS, ids=[r[0] for r in FAULTS])
+    def test_actual_continuous_rx_fault_rejected(tmp_path, name, module, before, after):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for item in MODULES:
+            shutil.copyfile(ROOT / "hw/soc/rtl/pcie" / (item + ".v"), directory / (item + ".v"))
+        source = directory / (module + ".v")
+        text = source.read_text()
+        assert text.count(before) == 1
+        source.write_text(text.replace(before, after))
+        result, record, cases, out = run(tmp_path, directory)
+>       assert result.returncode != 0 and record["status"] == "FAIL"
+E       AssertionError: assert (0 != 0)
+E        +  where 0 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python', '/home/hasanmel.../bin', '--rtl-dir', '/dev/shm/nssoc-gen3-continuous-rx-controls-01/test_actual_continuous_rx_faul3/rtl'], returncode=0).returncode
+
+sw/tests/test_pcie_gen3_continuous_rx.py:61: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_continuous_rx.py::test_actual_continuous_rx_fault_rejected[successor_payload_lost]
+FAILED sw/tests/test_pcie_gen3_continuous_rx.py::test_actual_continuous_rx_fault_rejected[no_idle_bypass]
+2 failed, 9 passed in 53.17s

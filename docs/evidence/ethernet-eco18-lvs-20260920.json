@@ -1,0 +1,117 @@
+{
+  "date": "2026-09-20",
+  "status": "PASS within scope",
+  "run": "eth256-eco18-lvs-20260920",
+  "candidate": "eth256-eco18-clean-route-20260920",
+  "scope": "DEF/LEF-derived Magic extraction against the exact candidate powered netlist. SRAM interiors are black-boxed; this is not SRAM transistor LVS, full transistor GDS LVS, DRC, timing or product closure.",
+  "supervisor": {
+    "command": [
+      "bash",
+      "hw/soc/flow/pnr_soc_top.sh",
+      "eth256-eco18-lvs-20260920",
+      "-F",
+      "Magic.SpiceExtraction",
+      "-T",
+      "Checker.LVS",
+      "-i",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/16-klayout-render/state_out.json"
+    ],
+    "environment": {
+      "SOC_INTERFACE_FLOW": "1",
+      "PNR_CONFIG": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config-fpeth256-decks-20260919-decks.json",
+      "SYN_NETLIST": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v",
+      "PNR_STATE": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/eth256-eco18-lvs-20260920-seed.json"
+    },
+    "returncode": 0,
+    "stop_reason": null,
+    "elapsed_s": 870.0228023410018,
+    "scope": "DEF/LEF-derived SPICE versus this candidate powered netlist; SRAM interiors black-boxed, not transistor-level macro LVS"
+  },
+  "commands": [
+    [
+      "bash",
+      "hw/soc/flow/pnr_soc_top.sh",
+      "eth256-eco18-lvs-20260920",
+      "-F",
+      "Magic.SpiceExtraction",
+      "-T",
+      "Checker.LVS",
+      "-i",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/16-klayout-render/state_out.json"
+    ],
+    [
+      "python3",
+      "hw/soc/out/external-review-20260919/record_eco18_lvs.py"
+    ]
+  ],
+  "metrics": {
+    "magic__illegal_overlap__count": 0,
+    "design__lvs_device_difference__count": 0,
+    "design__lvs_net_difference__count": 0,
+    "design__lvs_property_fail__count": 0,
+    "design__lvs_error__count": 0,
+    "design__lvs_unmatched_device__count": 0,
+    "design__lvs_unmatched_net__count": 0,
+    "design__lvs_unmatched_pin__count": 0
+  },
+  "top_devices": [
+    97150,
+    97150
+  ],
+  "top_nets": [
+    96311,
+    96311
+  ],
+  "report_final_result": "Circuits match uniquely.",
+  "extraction_uses_gds": false,
+  "artifacts": {
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/03-netgen-lvs/reports/lvs.netgen.json": {
+      "bytes": 62248,
+      "sha256": "b87fa92cf156266c2700add5aeeb7cd57bab238ab1272ad4dfe3e7a3d642cca3"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/03-netgen-lvs/reports/lvs.netgen.rpt": {
+      "bytes": 224961,
+      "sha256": "54f7600561d99e2da07c0bf82d508a376fbb7e803a6a822dc122442df6538f88"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/03-netgen-lvs/COMMANDS": {
+      "bytes": 133,
+      "sha256": "0e1fdfa318fd1ee26c8cb07ca393fc6d924624070b744a29c39c37f35557a413"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/03-netgen-lvs/lvs_script.lvs": {
+      "bytes": 1530,
+      "sha256": "58e4044a84e87087f8aeb406e7c3a1c89667d5dba2f5304502f5e4cbbfe115e5"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/04-checker-lvs/state_out.json": {
+      "bytes": 13604,
+      "sha256": "d7a7422468d752dfb2f1ca3e9aab66f01a3bac18cd34daff0dac929a6111782c"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/01-magic-spiceextraction/config.json": {
+      "bytes": 20051,
+      "sha256": "61a14d8cf9071cbedcda11967c8caa6551ca2f5dc6f1bb4768fd4674973948a1"
+    },
+    "hw/soc/out/external-review-20260919/run_eco18_lvs.py": {
+      "bytes": 1946,
+      "sha256": "61de8b0f41059b7254b5769492a85ee6faa2460e5a76211075c5282f0c1110ed"
+    },
+    "hw/soc/out/external-review-20260919/eth256-eco18-lvs-20260920-supervisor.json": {
+      "bytes": 955,
+      "sha256": "c3c5762923c143cf8b9a1e5eef0b7d63b618f6cab7554a423189b3233e06e7cd"
+    },
+    "hw/soc/out/external-review-20260919/record_eco18_lvs.py": {
+      "bytes": 2377,
+      "sha256": "d950457d1098549c8eda1947eaaa48103ce188c9afe379780940a3b008a8a96d"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/10-odb-cellfrequencytables/soc_top.def": {
+      "bytes": 116794425,
+      "sha256": "aa987fd615022e9a7dc045280d7fe0dc4c2d6781cdf7e310bdfb11aba076ad82"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.pnl.v": {
+      "bytes": 29637322,
+      "sha256": "5f91821e73bfb6a959244f443a75279cba03f16531bb04430aa6142d91d744da"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-lvs-20260920/01-magic-spiceextraction/soc_top.spice": {
+      "bytes": 17758215,
+      "sha256": "a8f8ade062812602d21f88f38a967c2209aa045dce8dc02265d107910ae96bdc"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-20",
+  "tested_head": "7d2484c1c6d603addab942824c3ed47b78460342",
+  "source": "Fresh remote clone with shared executables only; no ignored generated dependencies, PDK files or live physical runs copied. Committed hash-validated original snapshots and byte-replayed pinned prepared sources restore only into test scratch directories. This is historical structural verification, not a new physical run.",
+  "command": {
+    "head": "7d2484c1c6d603addab942824c3ed47b78460342",
+    "command": [
+      "bash",
+      "scripts/ci_local.sh",
+      "all",
+      "--record"
+    ],
+    "environment": {
+      "PY": "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+      "PYTEST_ADDOPTS": "-rs --junitxml=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/fresh-clone-7d2484c-pytest.xml"
+    },
+    "returncode": 0,
+    "elapsed_s": 282.121729879
+  },
+  "pytest_counts": {
+    "tests": 931,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1,
+    "passed": 930
+  },
+  "suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "1",
+      "tests": "931",
+      "time": "272.872",
+      "timestamp": "2026-09-20T21:50:14.045720+03:00",
+      "hostname": "pop-os"
+    }
+  ],
+  "gate_counts": {
+    "passed": 16,
+    "failed": 0,
+    "skipped": 7
+  },
+  "ledger_row": "2026-09-20T18:54Z\t7d2484c\tall\t16\t0\t7\ttree-dirty=0,pandoc=no,tex=tectonic",
+  "skipped_tests": [
+    {
+      "test": "sw.tests.test_tt_submission::test_the_vendored_tooling_is_the_commit_the_documents_name",
+      "reason": "tt/tt/ is a gitignored clone of TinyTapeout/tt-support-tools and is not in this tree. Restore it with\n  git clone https://github.com/TinyTapeout/tt-support-tools tt/tt\n  git -C tt/tt checkout 01d5d2814fa9dd61e9d211e0b235a4a592a9316a"
+    }
+  ],
+  "paper_claims": {
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+      "paper/check_claims.py"
+    ],
+    "rederived": 27,
+    "manual": 15,
+    "need_build_output": 0,
+    "wrong": 0
+  },
+  "F6_status": "ACCEPTANCE MET: one absent pinned TinyTapeout support-tool skip, zero paper claims missing build output; no current physical or transistor LVS verdict inferred. Seven front-door skips remain explicit.",
+  "artifacts": [
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-7d2484c-pytest.xml",
+      "bytes": 127278,
+      "sha256": "679d36840276d4b9bbd3281339b919369eae6678062ae79d53419521c7c16bea"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-7d2484c-ci.log",
+      "bytes": 1921,
+      "sha256": "84d524df0e05337135a0dd5ad66d0671516d85e76df9936b8ebf609d10378006"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-7d2484c-clone.log",
+      "bytes": 115,
+      "sha256": "e50f8f108ae57d91a31e4d75b40589743370f420e048bb693469c95505df9953"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-7d2484c-result.json",
+      "bytes": 433,
+      "sha256": "091dc39b6abf6051db238f62221ca465d39cceae9a24b1769757fa18c0059ee9"
+    },
+    {
+      "path": "hw/soc/out/external-review-20260919/fresh-clone-7d2484c-paper-claims.log",
+      "bytes": 4798,
+      "sha256": "9e4d798e32e5cec24377b9c3e3be3a50b4422fa347f5f73080ad2bfa487384c8"
+    }
+  ]
+}

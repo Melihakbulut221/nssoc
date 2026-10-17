@@ -1,0 +1,3928 @@
+{
+  "status": "CARRY_REJECTED_METADATA_MODEST_UNPLACED_GAIN_PHYSICAL_QUEUED",
+  "asset": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-rx-map-timing-20261012.tar.gz",
+    "name": "nssoc-rx-map-timing-20261012.tar.gz",
+    "bytes": 37758701,
+    "sha256": "95f832d17e0d23bf31630e698904574f67449d7a8767c0e765dbba550aaf4688",
+    "members": 82
+  },
+  "carry_comparison": {
+    "path": "hw/soc/out/pcie-rx-credit-carry-select-20261012/comparison38.json",
+    "sha256": "f3e0eb20e96790c6eb07e1d84953acc8656d62d4d877cccc4540132952b9c170",
+    "record": {
+      "status": "REJECT_CARRY_SELECT_TIMING_REGRESSION_NO_PHYSICAL_ADOPTION",
+      "comparison": {
+        "slow_max": {
+          "asynchronous": {
+            "before_ns": 1.244634,
+            "after_ns": 1.31209,
+            "delta_ns": 0.06745599999999996,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 1.31209,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1178093"
+            }
+          },
+          "clk_i": {
+            "before_ns": 0.847313,
+            "after_ns": 1.405573,
+            "delta_ns": 0.55826,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": 1.405573,
+              "startpoint": "u_ram.g_ram_2048x64_ecc.u_b2",
+              "endpoint": "$auto$ff.cc:337:slice$1182516"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": 4.901397,
+            "after_ns": 4.901397,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": 4.901397,
+              "startpoint": "$auto$ff.cc:337:slice$1601420",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": 1.702353,
+            "after_ns": 1.702667,
+            "delta_ns": 0.00031399999999992545,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": 1.702667,
+              "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1161101"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": 1.672742,
+            "after_ns": 1.671149,
+            "delta_ns": -0.0015929999999999556,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": 1.671149,
+              "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1171831"
+            }
+          },
+          "path delay": {
+            "before_ns": 2.505196,
+            "after_ns": 2.505196,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "path delay",
+              "slack_ns": 2.505196,
+              "startpoint": "$auto$ff.cc:337:slice$1178072",
+              "endpoint": "$auto$ff.cc:337:slice$1178179"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": -1.262388,
+            "after_ns": -1.547447,
+            "delta_ns": -0.28505899999999995,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": -1.547447,
+              "startpoint": "$auto$ff.cc:337:slice$1166939",
+              "endpoint": "$auto$ff.cc:337:slice$1295134"
+            }
+          }
+        },
+        "slow_min": {
+          "asynchronous": {
+            "before_ns": 0.36976,
+            "after_ns": 0.355426,
+            "delta_ns": -0.014333999999999958,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 0.355426,
+              "startpoint": "$auto$ff.cc:337:slice$1441442",
+              "endpoint": "$auto$ff.cc:337:slice$1432395"
+            }
+          },
+          "clk_i": {
+            "before_ns": -0.488019,
+            "after_ns": -0.489839,
+            "delta_ns": -0.0018200000000000438,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": -0.489839,
+              "startpoint": "$auto$ff.cc:337:slice$1179196",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": -0.43793,
+            "after_ns": -0.43793,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": -0.43793,
+              "startpoint": "$auto$ff.cc:337:slice$1601420",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": -0.469247,
+            "after_ns": -0.469247,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": -0.469247,
+              "startpoint": "$auto$ff.cc:337:slice$1176859",
+              "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": -0.424302,
+            "after_ns": -0.410593,
+            "delta_ns": 0.013709000000000027,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": -0.410593,
+              "startpoint": "$auto$ff.cc:337:slice$1171871",
+              "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": 0.046319,
+            "after_ns": 0.057926,
+            "delta_ns": 0.011607,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": 0.057926,
+              "startpoint": "$auto$ff.cc:337:slice$1189396",
+              "endpoint": "$auto$ff.cc:337:slice$1189397"
+            }
+          }
+        },
+        "typical_max": {
+          "asynchronous": {
+            "before_ns": 1.881427,
+            "after_ns": 1.92433,
+            "delta_ns": 0.042903000000000135,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 1.92433,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1178093"
+            }
+          },
+          "clk_i": {
+            "before_ns": 7.718967,
+            "after_ns": 8.144167,
+            "delta_ns": 0.42519999999999936,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": 8.144167,
+              "startpoint": "$auto$ff.cc:337:slice$1182283",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": 5.012421,
+            "after_ns": 5.012421,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": 5.012421,
+              "startpoint": "$auto$ff.cc:337:slice$1601420",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": 4.178448,
+            "after_ns": 4.178708,
+            "delta_ns": 0.00025999999999992696,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": 4.178708,
+              "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1161101"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": 4.158401,
+            "after_ns": 4.157523,
+            "delta_ns": -0.0008779999999992683,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": 4.157523,
+              "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1171831"
+            }
+          },
+          "path delay": {
+            "before_ns": 2.754967,
+            "after_ns": 2.754967,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "path delay",
+              "slack_ns": 2.754967,
+              "startpoint": "$auto$ff.cc:337:slice$1178072",
+              "endpoint": "$auto$ff.cc:337:slice$1178179"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": 0.330039,
+            "after_ns": 0.298894,
+            "delta_ns": -0.031145000000000034,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": 0.298894,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1165318"
+            }
+          }
+        },
+        "typical_min": {
+          "asynchronous": {
+            "before_ns": 0.147445,
+            "after_ns": 0.139516,
+            "delta_ns": -0.007928999999999992,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 0.139516,
+              "startpoint": "$auto$ff.cc:337:slice$1441442",
+              "endpoint": "$auto$ff.cc:337:slice$1432395"
+            }
+          },
+          "clk_i": {
+            "before_ns": -0.419495,
+            "after_ns": -0.411859,
+            "delta_ns": 0.007636000000000032,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": -0.411859,
+              "startpoint": "$auto$ff.cc:337:slice$1179196",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": -0.53948,
+            "after_ns": -0.53948,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": -0.53948,
+              "startpoint": "$auto$ff.cc:337:slice$1601420",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": -0.360915,
+            "after_ns": -0.360781,
+            "delta_ns": 0.00013399999999996748,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": -0.360781,
+              "startpoint": "$auto$ff.cc:337:slice$1176840",
+              "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": -0.37065,
+            "after_ns": -0.364404,
+            "delta_ns": 0.006245999999999974,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": -0.364404,
+              "startpoint": "$auto$ff.cc:337:slice$1171871",
+              "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": -0.04421,
+            "after_ns": -0.04421,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": -0.04421,
+              "startpoint": "$auto$ff.cc:337:slice$1189396",
+              "endpoint": "$auto$ff.cc:337:slice$1189397"
+            }
+          }
+        },
+        "fast_max": {
+          "asynchronous": {
+            "before_ns": 2.237824,
+            "after_ns": 2.269401,
+            "delta_ns": 0.031576999999999966,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 2.269401,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1178093"
+            }
+          },
+          "clk_i": {
+            "before_ns": 11.81161,
+            "after_ns": 12.092753,
+            "delta_ns": 0.28114300000000014,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": 12.092753,
+              "startpoint": "$auto$ff.cc:337:slice$1182283",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": 5.083783,
+            "after_ns": 5.083783,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": 5.083783,
+              "startpoint": "$auto$ff.cc:337:slice$1601420",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": 4.505313,
+            "after_ns": 4.50714,
+            "delta_ns": 0.001826999999999579,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": 4.50714,
+              "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1176867"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": 5.491201,
+            "after_ns": 5.490907,
+            "delta_ns": -0.0002940000000002385,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": 5.490907,
+              "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1171831"
+            }
+          },
+          "path delay": {
+            "before_ns": 2.897573,
+            "after_ns": 2.897573,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "path delay",
+              "slack_ns": 2.897573,
+              "startpoint": "$auto$ff.cc:337:slice$1178072",
+              "endpoint": "$auto$ff.cc:337:slice$1178179"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": 1.211302,
+            "after_ns": 1.194228,
+            "delta_ns": -0.017074000000000034,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": 1.194228,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1165318"
+            }
+          }
+        },
+        "fast_min": {
+          "asynchronous": {
+            "before_ns": 0.01996,
+            "after_ns": 0.014095,
+            "delta_ns": -0.005864999999999999,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 0.014095,
+              "startpoint": "$auto$ff.cc:337:slice$1441442",
+              "endpoint": "$auto$ff.cc:337:slice$1432395"
+            }
+          },
+          "clk_i": {
+            "before_ns": -0.388327,
+            "after_ns": -0.385247,
+            "delta_ns": 0.0030799999999999716,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": -0.385247,
+              "startpoint": "$auto$ff.cc:337:slice$1179196",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": -0.601382,
+            "after_ns": -0.601382,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": -0.601382,
+              "startpoint": "$auto$ff.cc:337:slice$1601420",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": -0.34782,
+            "after_ns": -0.347759,
+            "delta_ns": 6.100000000003325e-05,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": -0.347759,
+              "startpoint": "$auto$ff.cc:337:slice$1176840",
+              "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": -0.356428,
+            "after_ns": -0.351847,
+            "delta_ns": 0.004581000000000002,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": -0.351847,
+              "startpoint": "$auto$ff.cc:337:slice$1171871",
+              "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": -0.109062,
+            "after_ns": -0.109062,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": -0.109062,
+              "startpoint": "$auto$ff.cc:337:slice$1189396",
+              "endpoint": "$auto$ff.cc:337:slice$1189397"
+            }
+          }
+        }
+      },
+      "mapped_aliases": {
+        "$auto$ff.cc:337:slice$1178093": [
+          {
+            "signal": "u_pcie_cdc.request",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1182516": [
+          {
+            "signal": "crash_dump",
+            "index": 127
+          }
+        ],
+        "$auto$ff.cc:337:slice$1601420": [
+          {
+            "signal": "eth_tx_en_o",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1161101": [
+          {
+            "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.response_q",
+            "index": 11
+          }
+        ],
+        "$auto$ff.cc:337:slice$1171831": [
+          {
+            "signal": "u_eth.u_mac.tx_fifo.fifo_inst.m_axis_pipe_reg[1]",
+            "index": 1
+          }
+        ],
+        "$auto$ff.cc:337:slice$1178072": [
+          {
+            "signal": "u_pcie_cdc.response_payload",
+            "index": 32
+          }
+        ],
+        "$auto$ff.cc:337:slice$1178179": [
+          {
+            "signal": "u_pcie_cdc.response",
+            "index": 32
+          }
+        ],
+        "$auto$ff.cc:337:slice$1166939": [
+          {
+            "signal": "u_pcie.flow.packets.ack_sequence",
+            "index": 1
+          }
+        ],
+        "$auto$ff.cc:337:slice$1295134": [
+          {
+            "signal": "u_pcie.flow.packets.retry.timer",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1441442": [],
+        "$auto$ff.cc:337:slice$1432395": [
+          {
+            "signal": "u_eth.u_mac.rx_sync_reg_1",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1179196": [
+          {
+            "signal": "u_ram.g_ram_2048x64_ecc.u_ecc.g_scrub.sptr",
+            "index": 7
+          }
+        ],
+        "$auto$ff.cc:337:slice$1176859": [
+          {
+            "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.m_axis_tdata_reg",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1171871": [
+          {
+            "signal": "u_eth.u_mac.tx_fifo.fifo_inst.rd_ptr_reg",
+            "index": 4
+          }
+        ],
+        "$auto$ff.cc:337:slice$1189396": [
+          {
+            "signal": "packet_reset_release",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1189397": [
+          {
+            "signal": "packet_reset_release",
+            "index": 1
+          },
+          {
+            "signal": "packet_rst_n",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1182283": [
+          {
+            "signal": "u_ibex.gen_regfile_ff.register_file_i.raddr_b_i",
+            "index": 1
+          },
+          {
+            "signal": "u_ibex.u_ibex_core.cs_registers_i.csr_addr",
+            "index": 1
+          },
+          {
+            "signal": "u_ibex.u_ibex_core.id_stage_i.controller_i.instr_i",
+            "index": 21
+          }
+        ],
+        "$auto$ff.cc:337:slice$1165318": [
+          {
+            "signal": "u_pcie.credit_data_limit_o",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1176840": [
+          {
+            "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.axa",
+            "index": 4
+          }
+        ],
+        "$auto$ff.cc:337:slice$1176867": [
+          {
+            "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.gmii_rx_dv_d4",
+            "index": 0
+          }
+        ]
+      },
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/compare38.py": "a931f232387b241d2fd01326fb0b6d348349c88c4f644b9a0a2327b892665051",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/screen05/result.json": "60557921e1bba2ecd29da889b302504700b662165a8404ca3d6d879a9c242897",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/screen05/screen.log": "bf459d8ef00f8c47ddd82b8abbe257052d98075dd0fa05c55906a15e9ee0c5ba",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/screen33/result.json": "a699133dac93397b3b77b98cf1157adb29c27f6039dbe1a13c67ad54a2f52922",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/screen33/screen.log": "40298bb277eb3835f68926dcae9f049bdf492b9f9865e0edf49a05f017e6ecc5",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/map-result32.json": "d824d0934b028703c60b80186ad7b1685235921176377de3e71173605c0d67c7",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/mapped-successor37/result.json": "0dfd5bfd0f730491e69080cdb40dd558fcf4d3371302a42f8ebb6a47028ba5a8",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/map32/soc_top.mapped.json": "98421318f93d14f5ea9103e6fe67d7f37fda185af46e52e100977a7eb0ce3deb"
+      },
+      "native_successor_invariant": "PASS_MAPPED_SUCCESSOR_INVARIANT_UNIQUE_BINDING_AND_DPIN_CONTROLS",
+      "scope": "Matchedwholechipunplacedrepair3corners, all7setup6holdgroups, same20SRAM/128ETHresponseFFs/4parameters andoriginalclocktargets. PCIesetupworsensall3corners; rejecteddespitecorrectstatelessRTL andnative12FFsuccessorproof. No physical13sourcechanges/newroute. No finaltimingorPHYclaim."
+    }
+  },
+  "metadata_comparison": {
+    "path": "hw/soc/out/pcie-rx-return-metadata-20261012/comparison18.json",
+    "sha256": "566607551b18c0e54eba5f6fea28e0080127603e6884c3cea9044517712b68d4",
+    "record": {
+      "status": "MEASURED_RETURN_METADATA_UNPLACED_THREE_CORNER_COMPARISON",
+      "comparison": {
+        "slow_max": {
+          "asynchronous": {
+            "before_ns": 1.244634,
+            "after_ns": 1.284421,
+            "delta_ns": 0.03978700000000002,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 1.284421,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1176281"
+            }
+          },
+          "clk_i": {
+            "before_ns": 0.847313,
+            "after_ns": 1.12599,
+            "delta_ns": 0.27867700000000006,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": 1.12599,
+              "startpoint": "$auto$ff.cc:337:slice$1182550",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": 4.901397,
+            "after_ns": 4.901397,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": 4.901397,
+              "startpoint": "$auto$ff.cc:337:slice$1603167",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": 1.702353,
+            "after_ns": 1.702214,
+            "delta_ns": -0.00013900000000011126,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": 1.702214,
+              "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1161364"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": 1.672742,
+            "after_ns": 1.671106,
+            "delta_ns": -0.0016359999999999708,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": 1.671106,
+              "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1172083"
+            }
+          },
+          "path delay": {
+            "before_ns": 2.505196,
+            "after_ns": 2.505196,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "path delay",
+              "slack_ns": 2.505196,
+              "startpoint": "$auto$ff.cc:337:slice$1178257",
+              "endpoint": "$auto$ff.cc:337:slice$1178364"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": -1.262388,
+            "after_ns": -1.240848,
+            "delta_ns": 0.021540000000000115,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": -1.240848,
+              "startpoint": "$auto$ff.cc:337:slice$1165788",
+              "endpoint": "$auto$ff.cc:337:slice$1165995"
+            }
+          }
+        },
+        "slow_min": {
+          "asynchronous": {
+            "before_ns": 0.36976,
+            "after_ns": 0.367501,
+            "delta_ns": -0.0022589999999999555,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 0.367501,
+              "startpoint": "$auto$ff.cc:337:slice$1441750",
+              "endpoint": "$auto$ff.cc:337:slice$1432703"
+            }
+          },
+          "clk_i": {
+            "before_ns": -0.488019,
+            "after_ns": -0.471067,
+            "delta_ns": 0.016951999999999967,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": -0.471067,
+              "startpoint": "$auto$ff.cc:337:slice$1178801",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": -0.43793,
+            "after_ns": -0.43793,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": -0.43793,
+              "startpoint": "$auto$ff.cc:337:slice$1603167",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": -0.469247,
+            "after_ns": -0.469247,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": -0.469247,
+              "startpoint": "$auto$ff.cc:337:slice$1177179",
+              "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": -0.424302,
+            "after_ns": -0.424313,
+            "delta_ns": -1.0999999999983245e-05,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": -0.424313,
+              "startpoint": "$auto$ff.cc:337:slice$1171860",
+              "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": 0.046319,
+            "after_ns": 0.046477,
+            "delta_ns": 0.00015799999999999842,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": 0.046477,
+              "startpoint": "pcie_rx_eop_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1171585"
+            }
+          }
+        },
+        "typical_max": {
+          "asynchronous": {
+            "before_ns": 1.881427,
+            "after_ns": 1.90655,
+            "delta_ns": 0.025123000000000006,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 1.90655,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1176281"
+            }
+          },
+          "clk_i": {
+            "before_ns": 7.718967,
+            "after_ns": 7.863877,
+            "delta_ns": 0.14490999999999943,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": 7.863877,
+              "startpoint": "$auto$ff.cc:337:slice$1182550",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": 5.012421,
+            "after_ns": 5.012421,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": 5.012421,
+              "startpoint": "$auto$ff.cc:337:slice$1603167",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": 4.178448,
+            "after_ns": 4.178341,
+            "delta_ns": -0.00010700000000074539,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": 4.178341,
+              "startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1161364"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": 4.158401,
+            "after_ns": 4.157504,
+            "delta_ns": -0.0008969999999992595,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": 4.157504,
+              "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1172083"
+            }
+          },
+          "path delay": {
+            "before_ns": 2.754967,
+            "after_ns": 2.754967,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "path delay",
+              "slack_ns": 2.754967,
+              "startpoint": "$auto$ff.cc:337:slice$1178257",
+              "endpoint": "$auto$ff.cc:337:slice$1178364"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": 0.330039,
+            "after_ns": 0.373847,
+            "delta_ns": 0.04380799999999996,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": 0.373847,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1165038"
+            }
+          }
+        },
+        "typical_min": {
+          "asynchronous": {
+            "before_ns": 0.147445,
+            "after_ns": 0.146141,
+            "delta_ns": -0.0013039999999999996,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 0.146141,
+              "startpoint": "$auto$ff.cc:337:slice$1441750",
+              "endpoint": "$auto$ff.cc:337:slice$1432703"
+            }
+          },
+          "clk_i": {
+            "before_ns": -0.419495,
+            "after_ns": -0.408584,
+            "delta_ns": 0.010911000000000004,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": -0.408584,
+              "startpoint": "$auto$ff.cc:337:slice$1178801",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": -0.53948,
+            "after_ns": -0.53948,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": -0.53948,
+              "startpoint": "$auto$ff.cc:337:slice$1603167",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": -0.360915,
+            "after_ns": -0.360791,
+            "delta_ns": 0.000124000000000013,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": -0.360791,
+              "startpoint": "$auto$ff.cc:337:slice$1177156",
+              "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": -0.37065,
+            "after_ns": -0.370651,
+            "delta_ns": -1.0000000000287557e-06,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": -0.370651,
+              "startpoint": "$auto$ff.cc:337:slice$1171860",
+              "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": -0.04421,
+            "after_ns": -0.04421,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": -0.04421,
+              "startpoint": "$auto$ff.cc:337:slice$1189701",
+              "endpoint": "$auto$ff.cc:337:slice$1189702"
+            }
+          }
+        },
+        "fast_max": {
+          "asynchronous": {
+            "before_ns": 2.237824,
+            "after_ns": 2.25496,
+            "delta_ns": 0.017136000000000262,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 2.25496,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1176281"
+            }
+          },
+          "clk_i": {
+            "before_ns": 11.81161,
+            "after_ns": 11.910984,
+            "delta_ns": 0.09937399999999919,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": 11.910984,
+              "startpoint": "$auto$ff.cc:337:slice$1182550",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": 5.083783,
+            "after_ns": 5.083783,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": 5.083783,
+              "startpoint": "$auto$ff.cc:337:slice$1603167",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": 4.505313,
+            "after_ns": 4.505315,
+            "delta_ns": 2.000000000279556e-06,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": 4.505315,
+              "startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1177183"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": 5.491201,
+            "after_ns": 5.490897,
+            "delta_ns": -0.00030399999999985994,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": 5.490897,
+              "startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem",
+              "endpoint": "$auto$ff.cc:337:slice$1172083"
+            }
+          },
+          "path delay": {
+            "before_ns": 2.897573,
+            "after_ns": 2.897573,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "path delay",
+              "slack_ns": 2.897573,
+              "startpoint": "$auto$ff.cc:337:slice$1178257",
+              "endpoint": "$auto$ff.cc:337:slice$1178364"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": 1.211302,
+            "after_ns": 1.246757,
+            "delta_ns": 0.03545499999999979,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": 1.246757,
+              "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+              "endpoint": "$auto$ff.cc:337:slice$1165038"
+            }
+          }
+        },
+        "fast_min": {
+          "asynchronous": {
+            "before_ns": 0.01996,
+            "after_ns": 0.019162,
+            "delta_ns": -0.0007980000000000001,
+            "after_path": {
+              "group": "asynchronous",
+              "slack_ns": 0.019162,
+              "startpoint": "$auto$ff.cc:337:slice$1441750",
+              "endpoint": "$auto$ff.cc:337:slice$1432703"
+            }
+          },
+          "clk_i": {
+            "before_ns": -0.388327,
+            "after_ns": -0.384934,
+            "delta_ns": 0.0033929999999999794,
+            "after_path": {
+              "group": "clk_i",
+              "slack_ns": -0.384934,
+              "startpoint": "$auto$ff.cc:337:slice$1178801",
+              "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0"
+            }
+          },
+          "eth_gtx": {
+            "before_ns": -0.601382,
+            "after_ns": -0.601382,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_gtx",
+              "slack_ns": -0.601382,
+              "startpoint": "$auto$ff.cc:337:slice$1603167",
+              "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)"
+            }
+          },
+          "eth_rx_clk_i": {
+            "before_ns": -0.34782,
+            "after_ns": -0.34776,
+            "delta_ns": 6.0000000000004494e-05,
+            "after_path": {
+              "group": "eth_rx_clk_i",
+              "slack_ns": -0.34776,
+              "startpoint": "$auto$ff.cc:337:slice$1177156",
+              "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "eth_tx_clk_i": {
+            "before_ns": -0.356428,
+            "after_ns": -0.356428,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "eth_tx_clk_i",
+              "slack_ns": -0.356428,
+              "startpoint": "$auto$ff.cc:337:slice$1171860",
+              "endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem"
+            }
+          },
+          "pcie_clk_i": {
+            "before_ns": -0.109062,
+            "after_ns": -0.109062,
+            "delta_ns": 0.0,
+            "after_path": {
+              "group": "pcie_clk_i",
+              "slack_ns": -0.109062,
+              "startpoint": "$auto$ff.cc:337:slice$1189701",
+              "endpoint": "$auto$ff.cc:337:slice$1189702"
+            }
+          }
+        }
+      },
+      "mapped_aliases": {
+        "$auto$ff.cc:337:slice$1176281": [
+          {
+            "signal": "u_pcie.flow.packets.retry.next_read_pos",
+            "index": 2
+          }
+        ],
+        "$auto$ff.cc:337:slice$1182550": [
+          {
+            "signal": "u_ibex.gen_regfile_ff.register_file_i.raddr_b_i",
+            "index": 1
+          },
+          {
+            "signal": "u_ibex.u_ibex_core.cs_registers_i.csr_addr",
+            "index": 1
+          },
+          {
+            "signal": "u_ibex.u_ibex_core.id_stage_i.controller_i.instr_i",
+            "index": 21
+          }
+        ],
+        "$auto$ff.cc:337:slice$1603167": [
+          {
+            "signal": "eth_tx_en_o",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1161364": [
+          {
+            "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.response_q",
+            "index": 15
+          }
+        ],
+        "$auto$ff.cc:337:slice$1172083": [
+          {
+            "signal": "u_eth.u_mac.tx_fifo.fifo_inst.m_axis_pipe_reg[1]",
+            "index": 9
+          }
+        ],
+        "$auto$ff.cc:337:slice$1178257": [
+          {
+            "signal": "u_pcie_cdc.response_payload",
+            "index": 32
+          }
+        ],
+        "$auto$ff.cc:337:slice$1178364": [
+          {
+            "signal": "u_pcie_cdc.response",
+            "index": 32
+          }
+        ],
+        "$auto$ff.cc:337:slice$1165788": [
+          {
+            "signal": "u_pcie.credit_data_consumed_o",
+            "index": 29
+          }
+        ],
+        "$auto$ff.cc:337:slice$1165995": [
+          {
+            "signal": "u_pcie.credit_data_limit_o",
+            "index": 29
+          }
+        ],
+        "$auto$ff.cc:337:slice$1441750": [],
+        "$auto$ff.cc:337:slice$1432703": [
+          {
+            "signal": "u_eth.u_mac.rx_sync_reg_1",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1178801": [
+          {
+            "signal": "u_ram.g_ram_2048x64_ecc.u_test_port.bist_addr",
+            "index": 1
+          }
+        ],
+        "$auto$ff.cc:337:slice$1177179": [
+          {
+            "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.m_axis_tdata_reg",
+            "index": 4
+          }
+        ],
+        "$auto$ff.cc:337:slice$1171860": [
+          {
+            "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.ba",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1171585": [
+          {
+            "signal": "u_pcie.receive_ownership.input_active",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1165038": [
+          {
+            "signal": "u_pcie.advertiser.sent_data_o",
+            "index": 4
+          }
+        ],
+        "$auto$ff.cc:337:slice$1177156": [
+          {
+            "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.axa",
+            "index": 4
+          }
+        ],
+        "$auto$ff.cc:337:slice$1189701": [
+          {
+            "signal": "packet_reset_release",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1189702": [
+          {
+            "signal": "packet_reset_release",
+            "index": 1
+          },
+          {
+            "signal": "packet_rst_n",
+            "index": 0
+          }
+        ],
+        "$auto$ff.cc:337:slice$1177183": [
+          {
+            "signal": "u_eth.u_mac.eth_mac_1g_inst.axis_gmii_rx_inst.gmii_rx_dv_d4",
+            "index": 0
+          }
+        ]
+      },
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/compare18.py": "a5131444d55c16bfbf7c0462f16644e896d0ddbdeae246d8f179a71644bbd6fe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/screen05/result.json": "60557921e1bba2ecd29da889b302504700b662165a8404ca3d6d879a9c242897",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/screen05/screen.log": "bf459d8ef00f8c47ddd82b8abbe257052d98075dd0fa05c55906a15e9ee0c5ba",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/screen15/result.json": "eee09b1961f2775064cea9f61218053e99b8be2ec253a6ad8256a31d806a19ac",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/screen15/screen.log": "c4ce0ed22e252dac8a4c8d023e54ba018cef6ed8e86328397e041d8f755356e3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map-audit14.json": "4780b6584edc7f05854f6f9f69d2a9256be5785033dff4076075b88ccf3561b8",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/mapped-successor16/result.json": "d6632ed305c92b925b597b6bebd8d80f31d9fbd0d791822de24519b0662b542b",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map10/soc_top.mapped.json": "400d45daa09abf18f812e34b40cbb89facf6ffa5e922a2273ce30336dece0c24"
+      },
+      "native_successor_invariant": "PASS_MAPPED_SUCCESSOR_INVARIANT_UNIQUE_BINDING_AND_DPIN_CONTROLS",
+      "scope": "Matched whole-chip unplaced repair, all seven setup and six hold groups in three corners, original clocks. Functional reset equivalence, native cache clock/tie audit and mapped successor proof are separate gates. No physical or final timing/PHY acceptance."
+    }
+  },
+  "metadata_monolithic_review": {
+    "path": "hw/soc/out/pcie-rx-return-metadata-20261012/monolithic-review13.json",
+    "sha256": "a2d916fbc4173c8be82a5fe09e5d88536d3f367bfbcecfd6382ee90c6fccc214",
+    "record": {
+      "status": "MONOLITHIC_NATIVE_EQUIVALENCE_UNPROVEN_74_CHANGED_OUTPUT_BITS",
+      "unproven_counts": {
+        "released_data_o": 12,
+        "released_class_o": 2,
+        "data_limit_o": 36,
+        "header_limit_o": 24
+      },
+      "attempted_configurations": 1,
+      "remaining_native_configurations_not_run": 3,
+      "inputs": {
+        "hw/soc/out/pcie-rx-return-metadata-20261012/formal03/result.json": "c02fdb5ed420c350657597dbc3a32dfbf58184a2f49710d59555d8fc99a8a53d",
+        "hw/soc/out/pcie-rx-return-metadata-20261012/formal03/proof-1-4-0.log": "e3ef80ae5fb25e3e3388b81b599a564b0f0ab5dee81d1dfc84a92ed15b3b7f2c",
+        "hw/soc/out/pcie-rx-return-metadata-20261012/formal03/proof-1-4-0.ys": "09f921e2977060b562f053719085c0df28823958d323b1c7ed4f9f64bd6180df",
+        "hw/soc/out/pcie-rx-return-metadata-20261012/composed09.json": "b7b25a7bc2841ab8bfa7fc309da01b7d00b95b8cdfd21c99e3ce571e4f7e6dfa"
+      },
+      "scope": "Native equiv_induct/equiv_status did not prove these74points and this report does not relabel it PASS. It is not a reset-reachable counterexample trace. Separate actualRTL resetbase/inductive invariant + exactsourceprojection + guardedassignmentSAT supply the compositional binary-from-reset proof for all4configurations. Neither result is a timing/PHY claim."
+    }
+  },
+  "metadata_mapping": {
+    "path": "hw/soc/out/pcie-rx-return-metadata-20261012/map-audit14.json",
+    "sha256": "4780b6584edc7f05854f6f9f69d2a9256be5785033dff4076075b88ccf3561b8",
+    "record": {
+      "status": "PASS_MAPPED_RETURN_METADATA_NATIVE_TIEZERO_AND_CLOCK_AUDIT",
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map-audit14.py": "87a3cc9a0c79b5b3495ba0888bcbd6537719a0a36b5c250d6aee5ebe18055904",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map-result10.json": "2866e1ef87f865b375e114a921f9e36dd639dc8d0fe194814856e6677cad64c1",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map10/soc_top.mapped.json": "400d45daa09abf18f812e34b40cbb89facf6ffa5e922a2273ce30336dece0c24",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map10/soc_top.netlist.v": "256ce8c5880423f3aaa1b7065855fa432d83e7306586bc92f642e6dd721bc0fe",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map10/syn.log": "85721bd05f7d25e602a249a04a63b70a7bcd82969610fd71dcc69c337124603c",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/composed09.json": "b7b25a7bc2841ab8bfa7fc309da01b7d00b95b8cdfd21c99e3ce571e4f7e6dfa",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/tests02.json": "679992f71134b2c9fd7c495f2b9450dc73a83a51c3a353c3396099b20f4f8b3c",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/faults05/result.json": "d334a795bf87756fd9d4aa5caf68e72ec56d0ec7f30717bb2be1c8777ef932e5"
+      },
+      "original_failure_preserved": true,
+      "macros": {
+        "RM_IHPSG13_2P_256x16_c2_bm_bist": 16,
+        "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4
+      },
+      "parameters": {
+        "REQ_REG": 0,
+        "MEM_RDREG": 0,
+        "CORE_REQ_REG": 0,
+        "CORE_WB_STAGE": 0
+      },
+      "ethernet_registers": [
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a_cross.compare_data",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1176407",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55557
+              ],
+              "Q": [
+                27824
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176408",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55559
+              ],
+              "Q": [
+                27827
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176409",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55561
+              ],
+              "Q": [
+                27826
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176410",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55563
+              ],
+              "Q": [
+                27819
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176411",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55566
+              ],
+              "Q": [
+                27835
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176412",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55568
+              ],
+              "Q": [
+                27829
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176413",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55570
+              ],
+              "Q": [
+                27828
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176414",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55572
+              ],
+              "Q": [
+                27834
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176415",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55574
+              ],
+              "Q": [
+                27821
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176416",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55576
+              ],
+              "Q": [
+                27837
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176417",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55578
+              ],
+              "Q": [
+                27823
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176418",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55580
+              ],
+              "Q": [
+                27832
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176419",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55582
+              ],
+              "Q": [
+                27818
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176420",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55584
+              ],
+              "Q": [
+                27833
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176421",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55586
+              ],
+              "Q": [
+                27822
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1176422",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                55588
+              ],
+              "Q": [
+                27838
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.response_q",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1161349",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37461
+              ],
+              "Q": [
+                2066
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161350",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37480
+              ],
+              "Q": [
+                2074
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161351",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37495
+              ],
+              "Q": [
+                2045
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161352",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37511
+              ],
+              "Q": [
+                2051
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161353",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37528
+              ],
+              "Q": [
+                2062
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161354",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37544
+              ],
+              "Q": [
+                2012
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161355",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37560
+              ],
+              "Q": [
+                2015
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161356",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37576
+              ],
+              "Q": [
+                2048
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161357",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37592
+              ],
+              "Q": [
+                2064
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161358",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37607
+              ],
+              "Q": [
+                2037
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161359",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37623
+              ],
+              "Q": [
+                2071
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161360",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37638
+              ],
+              "Q": [
+                2024
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161361",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37654
+              ],
+              "Q": [
+                2042
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161362",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37670
+              ],
+              "Q": [
+                2060
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161363",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37685
+              ],
+              "Q": [
+                2031
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1161364",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37701
+              ],
+              "Q": [
+                2077
+              ],
+              "clock": "eth_rx_clk_i",
+              "reset": [
+                2087
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_b_cross.compare_data",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1162077",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37909
+              ],
+              "Q": [
+                26555
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162078",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37927
+              ],
+              "Q": [
+                26542
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162079",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37943
+              ],
+              "Q": [
+                26539
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162080",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37960
+              ],
+              "Q": [
+                26554
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162081",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37977
+              ],
+              "Q": [
+                26544
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162082",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                37993
+              ],
+              "Q": [
+                26558
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162083",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38009
+              ],
+              "Q": [
+                26557
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162084",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38025
+              ],
+              "Q": [
+                26543
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162085",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38041
+              ],
+              "Q": [
+                26541
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162086",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38057
+              ],
+              "Q": [
+                26548
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162087",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38073
+              ],
+              "Q": [
+                26552
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162088",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38089
+              ],
+              "Q": [
+                26546
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162089",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38105
+              ],
+              "Q": [
+                26553
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162090",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38121
+              ],
+              "Q": [
+                26547
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162091",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38137
+              ],
+              "Q": [
+                26538
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1162092",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                38153
+              ],
+              "Q": [
+                26549
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_b.response_q",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1177280",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58254
+              ],
+              "Q": [
+                1891
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177281",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58256
+              ],
+              "Q": [
+                1887
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177282",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58258
+              ],
+              "Q": [
+                1927
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177283",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58261
+              ],
+              "Q": [
+                1909
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177284",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58263
+              ],
+              "Q": [
+                1882
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177285",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58265
+              ],
+              "Q": [
+                1879
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177286",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58267
+              ],
+              "Q": [
+                1889
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177287",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58269
+              ],
+              "Q": [
+                1895
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177288",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58271
+              ],
+              "Q": [
+                1884
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177289",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58273
+              ],
+              "Q": [
+                1931
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177290",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58275
+              ],
+              "Q": [
+                1898
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177291",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58277
+              ],
+              "Q": [
+                1924
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177292",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58279
+              ],
+              "Q": [
+                1876
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177293",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58281
+              ],
+              "Q": [
+                1902
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177294",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58283
+              ],
+              "Q": [
+                1920
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1177295",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                58285
+              ],
+              "Q": [
+                1868
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_a_cross.compare_data",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1172058",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48839
+              ],
+              "Q": [
+                27050
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172059",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48841
+              ],
+              "Q": [
+                27058
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172060",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48843
+              ],
+              "Q": [
+                27055
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172061",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48845
+              ],
+              "Q": [
+                27049
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172062",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48848
+              ],
+              "Q": [
+                27060
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172063",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48850
+              ],
+              "Q": [
+                27052
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172064",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48852
+              ],
+              "Q": [
+                27051
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172065",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48854
+              ],
+              "Q": [
+                27059
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172066",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48856
+              ],
+              "Q": [
+                27057
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172067",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48858
+              ],
+              "Q": [
+                27064
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172068",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48860
+              ],
+              "Q": [
+                27068
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172069",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48862
+              ],
+              "Q": [
+                27062
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172070",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48864
+              ],
+              "Q": [
+                27069
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172071",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48866
+              ],
+              "Q": [
+                27063
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172072",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48868
+              ],
+              "Q": [
+                27054
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1172073",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48870
+              ],
+              "Q": [
+                27065
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_a.response_q",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1170991",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47233
+              ],
+              "Q": [
+                1720
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170992",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47251
+              ],
+              "Q": [
+                1718
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170993",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47267
+              ],
+              "Q": [
+                1700
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170994",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47284
+              ],
+              "Q": [
+                1739
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170995",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47300
+              ],
+              "Q": [
+                1727
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170996",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47315
+              ],
+              "Q": [
+                1712
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170997",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47330
+              ],
+              "Q": [
+                1715
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170998",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47346
+              ],
+              "Q": [
+                1726
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1170999",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47362
+              ],
+              "Q": [
+                1703
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171000",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47378
+              ],
+              "Q": [
+                1681
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171001",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47394
+              ],
+              "Q": [
+                1677
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171002",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47410
+              ],
+              "Q": [
+                1696
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171003",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47426
+              ],
+              "Q": [
+                1689
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171004",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47442
+              ],
+              "Q": [
+                1708
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171005",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47457
+              ],
+              "Q": [
+                1736
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171006",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47473
+              ],
+              "Q": [
+                1732
+              ],
+              "clock": "clk_i",
+              "reset": [
+                1757
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_b_cross.compare_data",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1171380",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47779
+              ],
+              "Q": [
+                27115
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171381",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47795
+              ],
+              "Q": [
+                27118
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171382",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47810
+              ],
+              "Q": [
+                27117
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171383",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47827
+              ],
+              "Q": [
+                27110
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171384",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47844
+              ],
+              "Q": [
+                27126
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171385",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47860
+              ],
+              "Q": [
+                27120
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171386",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47876
+              ],
+              "Q": [
+                27119
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171387",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47891
+              ],
+              "Q": [
+                27125
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171388",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47907
+              ],
+              "Q": [
+                27112
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171389",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47923
+              ],
+              "Q": [
+                27128
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171390",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47939
+              ],
+              "Q": [
+                27114
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171391",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47954
+              ],
+              "Q": [
+                27123
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171392",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47970
+              ],
+              "Q": [
+                27109
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171393",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                47986
+              ],
+              "Q": [
+                27124
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171394",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48002
+              ],
+              "Q": [
+                27113
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171395",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48018
+              ],
+              "Q": [
+                27129
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            }
+          ]
+        },
+        {
+          "signal": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_b.response_q",
+          "flops": [
+            {
+              "cell": "$auto$ff.cc:337:slice$1171885",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48766
+              ],
+              "Q": [
+                1157
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171886",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48768
+              ],
+              "Q": [
+                1134
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171887",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48770
+              ],
+              "Q": [
+                1153
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171888",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48773
+              ],
+              "Q": [
+                1175
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171889",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48775
+              ],
+              "Q": [
+                1131
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171890",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48777
+              ],
+              "Q": [
+                1165
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171891",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48779
+              ],
+              "Q": [
+                1141
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171892",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48781
+              ],
+              "Q": [
+                1183
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171893",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48783
+              ],
+              "Q": [
+                1140
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171894",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48785
+              ],
+              "Q": [
+                1126
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171895",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48787
+              ],
+              "Q": [
+                1179
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171896",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48789
+              ],
+              "Q": [
+                1123
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171897",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48791
+              ],
+              "Q": [
+                1188
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171898",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48793
+              ],
+              "Q": [
+                1161
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171899",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48795
+              ],
+              "Q": [
+                1172
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            },
+            {
+              "cell": "$auto$ff.cc:337:slice$1171900",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                48797
+              ],
+              "Q": [
+                1149
+              ],
+              "clock": "eth_tx_clk_i",
+              "reset": [
+                1194
+              ]
+            }
+          ]
+        }
+      ],
+      "metadata_registers": [
+        {
+          "signal": "u_pcie.receive_ownership.return_class",
+          "logical_width": 32,
+          "registers": [
+            {
+              "index": 0,
+              "cell": "$auto$ff.cc:337:slice$1154476",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30409
+              ],
+              "Q": [
+                30403
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 1,
+              "cell": "$auto$ff.cc:337:slice$1154477",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30412
+              ],
+              "Q": [
+                30410
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            }
+          ],
+          "constants": [
+            {
+              "index": 2,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 3,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 4,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 5,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 6,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 7,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 8,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 9,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 10,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 11,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 12,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 13,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 14,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 15,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 16,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 17,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 18,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 19,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 20,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 21,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 22,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 23,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 24,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 25,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 26,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 27,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 28,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 29,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 30,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 31,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            }
+          ]
+        },
+        {
+          "signal": "u_pcie.receive_ownership.return_units",
+          "logical_width": 12,
+          "registers": [
+            {
+              "index": 0,
+              "cell": "$auto$ff.cc:337:slice$1154478",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30423
+              ],
+              "Q": [
+                30421
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 1,
+              "cell": "$auto$ff.cc:337:slice$1154479",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30433
+              ],
+              "Q": [
+                30431
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 2,
+              "cell": "$auto$ff.cc:337:slice$1154480",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30443
+              ],
+              "Q": [
+                30441
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 3,
+              "cell": "$auto$ff.cc:337:slice$1154481",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30453
+              ],
+              "Q": [
+                30451
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 4,
+              "cell": "$auto$ff.cc:337:slice$1154482",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30463
+              ],
+              "Q": [
+                30461
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 5,
+              "cell": "$auto$ff.cc:337:slice$1154483",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30473
+              ],
+              "Q": [
+                30471
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 6,
+              "cell": "$auto$ff.cc:337:slice$1154484",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30483
+              ],
+              "Q": [
+                30481
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 7,
+              "cell": "$auto$ff.cc:337:slice$1154485",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30493
+              ],
+              "Q": [
+                30491
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 8,
+              "cell": "$auto$ff.cc:337:slice$1154486",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30503
+              ],
+              "Q": [
+                30501
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            },
+            {
+              "index": 9,
+              "cell": "$auto$ff.cc:337:slice$1154487",
+              "master": "sg13g2_dfrbpq_1",
+              "D": [
+                30507
+              ],
+              "Q": [
+                30505
+              ],
+              "clock": "pcie_clk_i",
+              "reset": [
+                13700
+              ]
+            }
+          ],
+          "constants": [
+            {
+              "index": 10,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            },
+            {
+              "index": 11,
+              "value": 0,
+              "cell": "$auto$hilomap.cc:48:hilomap_worker$1770722",
+              "master": "sg13g2_tielo",
+              "netbit": 209
+            }
+          ]
+        }
+      ],
+      "scope": "Native mapping itself completed normally; first reviewer mistook physical tie-zero net209 for a FF. This independent reader verifies actual sg13g2_tielo L_LO and native Liberty function0, every nonconstant cache Q/clock/reset, 128ETHresponseFFs,20SRAM andunchangedports/parameters. No missing driver waived. Originalfailureuntouched. This is structuralmappingreview, not mapped functional equivalence or timing/PHY acceptance."
+    }
+  },
+  "mapped_successor": {
+    "path": "hw/soc/out/pcie-rx-return-metadata-20261012/mapped-successor16/result.json",
+    "sha256": "d6632ed305c92b925b597b6bebd8d80f31d9fbd0d791822de24519b0662b542b",
+    "record": {
+      "status": "PASS_MAPPED_SUCCESSOR_INVARIANT_UNIQUE_BINDING_AND_DPIN_CONTROLS",
+      "width": 6,
+      "clock_port": "pcie_clk_i",
+      "current_net": "u_pcie.flow.packets.retry.read_pos",
+      "successor_net": "u_pcie.flow.packets.retry.next_read_pos",
+      "reset_bit": 13700,
+      "inverted_lsb": {
+        "bit": 53570,
+        "aliases": [
+          "$abc$1705011$auto$ff.cc:792:flip_bits$1692288"
+        ],
+        "cell": "$auto$ff.cc:337:slice$1176279"
+      },
+      "physical_flops": [
+        {
+          "name": "$auto$ff.cc:337:slice$1176310",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              55476
+            ],
+            "Q": [
+              55474
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176311",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              55479
+            ],
+            "Q": [
+              55477
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176312",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              55482
+            ],
+            "Q": [
+              55480
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176313",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              55485
+            ],
+            "Q": [
+              55483
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176314",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              55488
+            ],
+            "Q": [
+              55486
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176315",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              55491
+            ],
+            "Q": [
+              55489
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176279",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              53579
+            ],
+            "Q": [
+              53570
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176280",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              53586
+            ],
+            "Q": [
+              53580
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176281",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              53592
+            ],
+            "Q": [
+              53587
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176282",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              53598
+            ],
+            "Q": [
+              53593
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176283",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              53605
+            ],
+            "Q": [
+              53599
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        },
+        {
+          "name": "$auto$ff.cc:337:slice$1176284",
+          "hide_name": 1,
+          "type": "sg13g2_dfrbpq_1",
+          "parameters": {},
+          "attributes": {
+            "src": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v:150.5-254.8"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output",
+            "RESET_B": "input"
+          },
+          "connections": {
+            "CLK": [
+              4
+            ],
+            "D": [
+              53614
+            ],
+            "Q": [
+              53606
+            ],
+            "RESET_B": [
+              13700
+            ]
+          }
+        }
+      ],
+      "reset_base": {
+        "current": 0,
+        "successor": 1
+      },
+      "trials": [
+        {
+          "tag": "candidate-0",
+          "bit": 1282,
+          "passed": false,
+          "counterexample": true,
+          "returncode": 1,
+          "combinational_cells": 726,
+          "boundary_bits": 207,
+          "log_sha256": "afac20fa0995d084e3417b8baf96058dc5d3bef5add9c48f37baf64d8f1cd78c"
+        },
+        {
+          "tag": "candidate-1",
+          "bit": 53570,
+          "passed": true,
+          "counterexample": false,
+          "returncode": 0,
+          "combinational_cells": 706,
+          "boundary_bits": 201,
+          "log_sha256": "2e53a5fe39d9d6899a865b133d85f71fc678a52811a2ec7965a002cb9c846846"
+        }
+      ],
+      "controls": [
+        {
+          "tag": "hold_successor_lsb",
+          "bit": 53570,
+          "passed": false,
+          "counterexample": true,
+          "returncode": 1,
+          "combinational_cells": 704,
+          "boundary_bits": 201,
+          "log_sha256": "69d1e798403fbdf87efb117a6d3cf8bb6b9905edf4b23744dcf60e439c2bc88a"
+        },
+        {
+          "tag": "swap_successor_bit1",
+          "bit": 53570,
+          "passed": false,
+          "counterexample": true,
+          "returncode": 1,
+          "combinational_cells": 703,
+          "boundary_bits": 201,
+          "log_sha256": "90a29aba9ad72440bbdba1e3d67de3bf742975275a2380fffc3a34862c729cf4"
+        }
+      ],
+      "inputs": {
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_mapped_successor.py": "701ff98b0980318e4304fbeb5dfe54e585a47ee1c08eaf79d45e7830c9b31f96",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-return-metadata-20261012/map10/soc_top.mapped.json": "400d45daa09abf18f812e34b40cbb89facf6ffa5e922a2273ce30336dece0c24",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+      },
+      "inputs_unchanged": true,
+      "scope": "Native reset-zero FF semantics establish the reset base. Actual mapped D cones prove successor=current+1 modulo its width inductively, plus current hold/reset/advance alternatives. All other state and input boundary bits are unconstrained. Exactly one inverted-LSB candidate must pass; two actual D-pin changes must produce counterexamples. Not whole-chip equivalence, protocol progress, CDC, timing or PHY approval."
+    }
+  },
+  "physical": "physical19 waits predecessor native hold repair plus10GiB available RAM/16GiB free disk; original clocks/die/macros/repair policy, independent fixed-clock-expansion reader20. Prepared methods archived, active outputs excluded.",
+  "scope": "All7setup/6holdgroups at3nativecorners in unplaced whole-chip repair. Not final timing, routed acceptance or serial PHY approval."
+}

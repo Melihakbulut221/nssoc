@@ -1,0 +1,2394 @@
+{
+  "status": "PARTIAL_IO_LVS_REPAIR_WITH_OPEN_PRODUCTION_GAPS",
+  "source_commit": "def94d52bf54991a7cb3b6293ac8264fd45cb558",
+  "scope": "27recognitionmarkers and model-bound b=0 spacing adaptation. RCclamp subcell nativeLVS PASS; all7IOmaster LVS FAIL. Two cell-main DRC catalogs560each/0markers. Fullchip GDS remains unmodified; no fullchip signoff.",
+  "publication": {
+    "status": "PASS_PUBLISHED_BYTES_ONLY",
+    "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/evidence-20260927-chip-io",
+    "release_id": 397554124,
+    "asset": {
+      "name": "io-resistor-recognition-and-native-checks-20260927.tar.xz",
+      "bytes": 10227692,
+      "sha256": "f0ac1e16db48a2a87eaac40bcab89504602e28ba44237f5bbcdcc6b5141885ce",
+      "members": 179,
+      "source_commit": "def94d52bf54991a7cb3b6293ac8264fd45cb558",
+      "recorded_utc": "2026-09-27T11:19:08.316637+00:00",
+      "local_roundtrip_verified": true,
+      "scope": "Diagnostic27markerrepair and RCclamp subcellLVS; all7IOmasterLVSfail; no fullchip/production acceptance.",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/io-resistor-recognition-and-native-checks-20260927.tar.xz",
+      "asset_id": 592772374,
+      "authenticated_roundtrip_verified": true,
+      "anonymous_roundtrip_verified": true
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "selected_results": {
+    "source-replay/result.json": {
+      "status": "REPAIRED_RECOGNITION_REQUIRES_LVS_AND_DRC",
+      "input_sha256": {
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/gds/sg13g2_io.gds": "aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51"
+      },
+      "source_sha256": "870308676fb22566c877ae01c2c0413ee36d08c397f8d2c6fe679114eedd2dc2",
+      "output_sha256": {
+        "hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds": "c14891467e309e7302a331015d0ad543d0529872049ccadef899228414742430",
+        "hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.cdl": "94a992ec1f3cdd7297945b8615a5ae0064447ff436cca57fc1131617e06b61f9"
+      },
+      "marker_counts": {
+        "sg13g2_SecondaryProtection": 1,
+        "sg13g2_RCClampResistor": 26
+      },
+      "preservation": {
+        "cells": 46,
+        "layer_pairs": 41,
+        "status": "PASS_EXACT_GEOMETRY_TEXT_AND_INSTANCE_PRESERVATION_EXCEPT_27_MARKERS"
+      },
+      "dialect_changes": [
+        {
+          "line": 28,
+          "before": ".PARAM\n",
+          "after": "",
+          "reason": "empty_parameter_declaration"
+        },
+        {
+          "line": 45,
+          "before": "XR2 vss sub! / ptap1 r=22.472 A=24.01p Perim=19.6u w=4.9u l=4.9u\n",
+          "after": "R2 vss sub! / ptap1 r=22.472 A=24.01p Perim=19.6u w=4.9u l=4.9u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 46,
+          "before": "XR0 iovss sub! / ptap1 r=169.45m A=5.487n Perim=296.3u w=74.075u l=74.075u\n",
+          "after": "R0 iovss sub! / ptap1 r=169.45m A=5.487n Perim=296.3u w=74.075u l=74.075u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 229,
+          "before": "XR0 tie sub! / ptap1 r=9.999 A=65.61p Perim=32.4u w=8.1u l=8.1u\n",
+          "after": "R0 tie sub! / ptap1 r=9.999 A=65.61p Perim=32.4u w=8.1u l=8.1u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 241,
+          "before": "RR29 net15 net16 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR29 net15 net16 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 243,
+          "before": "RR28 net20 net21 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR28 net20 net21 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 245,
+          "before": "RR27 net23 net24 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR27 net23 net24 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 247,
+          "before": "RR24 net17 net18 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR24 net17 net18 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 249,
+          "before": "RR23 net16 net17 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR23 net16 net17 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 251,
+          "before": "RR21 net25 pin2 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR21 net25 pin2 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 253,
+          "before": "RR20 net22 net23 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR20 net22 net23 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 255,
+          "before": "RR19 net19 net20 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR19 net19 net20 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 257,
+          "before": "RR17 net24 net25 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR17 net24 net25 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 259,
+          "before": "RR16 net21 net22 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR16 net21 net22 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 261,
+          "before": "RR15 net18 net19 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR15 net18 net19 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 263,
+          "before": "RR14 net5 net6 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR14 net5 net6 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 265,
+          "before": "RR13 net8 net9 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR13 net8 net9 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 267,
+          "before": "RR12 net11 net12 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR12 net11 net12 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 269,
+          "before": "RR11 net14 net15 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR11 net14 net15 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 271,
+          "before": "RR10 net2 net3 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR10 net2 net3 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 273,
+          "before": "RR9 net1 net2 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR9 net1 net2 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 274,
+          "before": "RR8 net13 net14 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR8 net13 net14 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 276,
+          "before": "RR7 net10 net11 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR7 net10 net11 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 278,
+          "before": "RR6 net7 net8 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR6 net7 net8 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 279,
+          "before": "RR5 net4 net5 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR5 net4 net5 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 280,
+          "before": "RR4 net12 net13 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR4 net12 net13 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 282,
+          "before": "RR3 net9 net10 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "after": "RR3 net9 net10 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 284,
+          "before": "RR2 net6 net7 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR2 net6 net7 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 285,
+          "before": "RR1 net3 net4 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR1 net3 net4 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 286,
+          "before": "RR0 pin1 net1 5.239K $SUB=sub! $[res_rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR0 pin1 net1 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 299,
+          "before": "XR0 iovss sub! / ptap1 r=9.59 A=68.973p Perim=33.22u w=8.305u l=8.305u\n",
+          "after": "R0 iovss sub! / ptap1 r=9.59 A=68.973p Perim=33.22u w=8.305u l=8.305u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 313,
+          "before": "XR1 iovss sub! / ptap1 r=456.33m A=1.97n Perim=177.54u w=44.385u l=44.385u\n",
+          "after": "R1 iovss sub! / ptap1 r=456.33m A=1.97n Perim=177.54u w=44.385u l=44.385u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 314,
+          "before": "XR0 vss sub! / ptap1 r=22.472 A=24.01p Perim=19.6u w=4.9u l=4.9u\n",
+          "after": "R0 vss sub! / ptap1 r=22.472 A=24.01p Perim=19.6u w=4.9u l=4.9u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 329,
+          "before": "XR1 iovss sub! / ptap1 r=449.797m A=2n Perim=178.88u w=44.72u l=44.72u\n",
+          "after": "R1 iovss sub! / ptap1 r=449.797m A=2n Perim=178.88u w=44.72u l=44.72u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 330,
+          "before": "XR0 vss sub! / ptap1 r=22.832 A=23.523p Perim=19.4u w=4.85u l=4.85u\n",
+          "after": "R0 vss sub! / ptap1 r=22.832 A=23.523p Perim=19.4u w=4.85u l=4.85u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 343,
+          "before": "XR0 anode sub! / ptap1 r=5.191 A=141.253p Perim=47.54u w=11.885u l=11.885u\n",
+          "after": "R0 anode sub! / ptap1 r=5.191 A=141.253p Perim=47.54u w=11.885u l=11.885u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 356,
+          "before": "XR0 guard sub! / ptap1 r=17.289 A=33.524p Perim=23.16u w=5.79u l=5.79u\n",
+          "after": "R0 guard sub! / ptap1 r=17.289 A=33.524p Perim=23.16u w=5.79u l=5.79u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 369,
+          "before": "XR1 iovss sub! / ptap1 r=174.346m A=5.329n Perim=292u w=73u l=73u\n",
+          "after": "R1 iovss sub! / ptap1 r=174.346m A=5.329n Perim=292u w=73u l=73u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 370,
+          "before": "XR0 vss sub! / ptap1 r=22.832 A=23.523p Perim=19.4u w=4.85u l=4.85u\n",
+          "after": "R0 vss sub! / ptap1 r=22.832 A=23.523p Perim=19.4u w=4.85u l=4.85u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 381,
+          "before": "XR1 vss sub! / ptap1 r=63.078 A=5.856p Perim=9.68u w=2.42u l=2.42u\n",
+          "after": "R1 vss sub! / ptap1 r=63.078 A=5.856p Perim=9.68u w=2.42u l=2.42u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 382,
+          "before": "XR0 iovss sub! / ptap1 r=625.742m A=1.416n Perim=150.5u w=37.625u l=37.625u\n",
+          "after": "R0 iovss sub! / ptap1 r=625.742m A=1.416n Perim=150.5u w=37.625u l=37.625u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 395,
+          "before": "XR0 vss sub! / ptap1 r=258.978 A=624.1f Perim=3.16u w=790n l=790n\n",
+          "after": "R0 vss sub! / ptap1 r=258.978 A=624.1f Perim=3.16u w=790n l=790n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 414,
+          "before": "XR0 vss sub! / ptap1 r=207.099 A=912.025f Perim=3.82u w=955n l=955n\n",
+          "after": "R0 vss sub! / ptap1 r=207.099 A=912.025f Perim=3.82u w=955n l=955n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 429,
+          "before": "XR0 vss sub! / ptap1 r=251.534 A=656.1f Perim=3.24u w=810n l=810n\n",
+          "after": "R0 vss sub! / ptap1 r=251.534 A=656.1f Perim=3.24u w=810n l=810n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 440,
+          "before": "XR0 vss sub! / ptap1 r=258.978 A=624.1f Perim=3.16u w=790n l=790n\n",
+          "after": "R0 vss sub! / ptap1 r=258.978 A=624.1f Perim=3.16u w=790n l=790n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 455,
+          "before": "XR0 vss sub! / ptap1 r=251.534 A=656.1f Perim=3.24u w=810n l=810n\n",
+          "after": "R0 vss sub! / ptap1 r=251.534 A=656.1f Perim=3.24u w=810n l=810n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 482,
+          "before": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "after": "R0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 499,
+          "before": "XR0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "after": "R0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 510,
+          "before": "RR0 pad core 586.899 $SUB=sub! $[res_rppd] m=1 l=2u w=1u ps=180n trise=0.0 b=0\n",
+          "after": "RR0 pad core 586.899 $SUB=sub! $[rppd] m=1 l=2u w=1u ps=180n trise=0.0 b=0\n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 512,
+          "before": "XR1 minus sub! / ptap1 r=46.556 A=9.03p Perim=12.02u w=3.005u l=3.005u\n",
+          "after": "R1 minus sub! / ptap1 r=46.556 A=9.03p Perim=12.02u w=3.005u l=3.005u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 528,
+          "before": "XR0 vss sub! / ptap1 r=127.332 A=2.016p Perim=5.68u w=1.42u l=1.42u\n",
+          "after": "R0 vss sub! / ptap1 r=127.332 A=2.016p Perim=5.68u w=1.42u l=1.42u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 545,
+          "before": "XR1 vss sub! / ptap1 r=26.933 A=18.966p Perim=17.42u w=4.355u l=4.355u\n",
+          "after": "R1 vss sub! / ptap1 r=26.933 A=18.966p Perim=17.42u w=4.355u l=4.355u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 546,
+          "before": "XR0 iovss sub! / ptap1 r=214.134m A=4.314n Perim=262.72u w=65.68u l=65.68u\n",
+          "after": "R0 iovss sub! / ptap1 r=214.134m A=4.314n Perim=262.72u w=65.68u l=65.68u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 559,
+          "before": "XR0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "after": "R0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 571,
+          "before": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "after": "R0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 589,
+          "before": "XR4 vss sub! / ptap1 r=26.746 A=19.141p Perim=17.5u w=4.375u l=4.375u\n",
+          "after": "R4 vss sub! / ptap1 r=26.746 A=19.141p Perim=17.5u w=4.375u l=4.375u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 590,
+          "before": "XR3 iovss sub! / ptap1 r=214.165m A=4.313n Perim=262.7u w=65.675u l=65.675u\n",
+          "after": "R3 iovss sub! / ptap1 r=214.165m A=4.313n Perim=262.7u w=65.675u l=65.675u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 610,
+          "before": "XR0 vss sub! / ptap1 r=190.268 A=1.051p Perim=4.1u w=1.025u l=1.025u\n",
+          "after": "R0 vss sub! / ptap1 r=190.268 A=1.051p Perim=4.1u w=1.025u l=1.025u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 638,
+          "before": "XR2 iovss sub! / ptap1 r=212.747m A=4.343n Perim=263.6u w=65.9u l=65.9u\n",
+          "after": "R2 iovss sub! / ptap1 r=212.747m A=4.343n Perim=263.6u w=65.9u l=65.9u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 639,
+          "before": "XR1 vss sub! / ptap1 r=24.125 A=21.902p Perim=18.72u w=4.68u l=4.68u\n",
+          "after": "R1 vss sub! / ptap1 r=24.125 A=21.902p Perim=18.72u w=4.68u l=4.68u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 655,
+          "before": "XR1 vss sub! / ptap1 r=24.125 A=21.902p Perim=18.72u w=4.68u l=4.68u\n",
+          "after": "R1 vss sub! / ptap1 r=24.125 A=21.902p Perim=18.72u w=4.68u l=4.68u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 656,
+          "before": "XR2 iovss sub! / ptap1 r=214.165m A=4.313n Perim=262.7u w=65.675u l=65.675u\n",
+          "after": "R2 iovss sub! / ptap1 r=214.165m A=4.313n Perim=262.7u w=65.675u l=65.675u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 670,
+          "before": "XR1 vss sub! / ptap1 r=24.69 A=21.252p Perim=18.44u w=4.61u l=4.61u\n",
+          "after": "R1 vss sub! / ptap1 r=24.69 A=21.252p Perim=18.44u w=4.61u l=4.61u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 671,
+          "before": "XR2 iovss sub! / ptap1 r=173.674m A=5.35n Perim=292.58u w=73.145u l=73.145u\n",
+          "after": "R2 iovss sub! / ptap1 r=173.674m A=5.35n Perim=292.58u w=73.145u l=73.145u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 682,
+          "before": "XR0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "after": "R0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 695,
+          "before": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "after": "R0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 714,
+          "before": "XR1 vss sub! / ptap1 r=26.933 A=18.966p Perim=17.42u w=4.355u l=4.355u\n",
+          "after": "R1 vss sub! / ptap1 r=26.933 A=18.966p Perim=17.42u w=4.355u l=4.355u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 715,
+          "before": "XR0 iovss sub! / ptap1 r=207.756m A=4.45n Perim=266.84u w=66.71u l=66.71u\n",
+          "after": "R0 iovss sub! / ptap1 r=207.756m A=4.45n Perim=266.84u w=66.71u l=66.71u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 731,
+          "before": "XR1 vss sub! / ptap1 r=23.888 A=22.184p Perim=18.84u w=4.71u l=4.71u\n",
+          "after": "R1 vss sub! / ptap1 r=23.888 A=22.184p Perim=18.84u w=4.71u l=4.71u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 732,
+          "before": "XR2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u\n",
+          "after": "R2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 748,
+          "before": "XR1 vss sub! / ptap1 r=24.567 A=21.391p Perim=18.5u w=4.625u l=4.625u\n",
+          "after": "R1 vss sub! / ptap1 r=24.567 A=21.391p Perim=18.5u w=4.625u l=4.625u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 749,
+          "before": "XR2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u\n",
+          "after": "R2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 765,
+          "before": "XR1 vss sub! / ptap1 r=24.897 A=21.022p Perim=18.34u w=4.585u l=4.585u\n",
+          "after": "R1 vss sub! / ptap1 r=24.897 A=21.022p Perim=18.34u w=4.585u l=4.585u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 766,
+          "before": "XR2 iovss sub! / ptap1 r=208.211m A=4.44n Perim=266.54u w=66.635u l=66.635u\n",
+          "after": "R2 iovss sub! / ptap1 r=208.211m A=4.44n Perim=266.54u w=66.635u l=66.635u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 782,
+          "before": "XR1 vss sub! / ptap1 r=24.649 A=21.298p Perim=18.46u w=4.615u l=4.615u\n",
+          "after": "R1 vss sub! / ptap1 r=24.649 A=21.298p Perim=18.46u w=4.615u l=4.615u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 783,
+          "before": "XR2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u\n",
+          "after": "R2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 794,
+          "before": "XR1 vss sub! / ptap1 r=35.383 A=13.177p Perim=14.52u w=3.63u l=3.63u\n",
+          "after": "R1 vss sub! / ptap1 r=35.383 A=13.177p Perim=14.52u w=3.63u l=3.63u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 795,
+          "before": "XR0 iovss sub! / ptap1 r=93.041m A=10.13n Perim=402.6u w=100.65u l=100.65u\n",
+          "after": "R0 iovss sub! / ptap1 r=93.041m A=10.13n Perim=402.6u w=100.65u l=100.65u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 806,
+          "before": "XR1 vss sub! / ptap1 r=246.192 A=680.625f Perim=3.3u w=825n l=825n\n",
+          "after": "R1 vss sub! / ptap1 r=246.192 A=680.625f Perim=3.3u w=825n l=825n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 807,
+          "before": "XR0 iovss sub! / ptap1 r=6.246 A=114.169p Perim=42.74u w=10.685u l=10.685u\n",
+          "after": "R0 iovss sub! / ptap1 r=6.246 A=114.169p Perim=42.74u w=10.685u l=10.685u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 818,
+          "before": "XR1 vss sub! / ptap1 r=246.192 A=680.625f Perim=3.3u w=825n l=825n\n",
+          "after": "R1 vss sub! / ptap1 r=246.192 A=680.625f Perim=3.3u w=825n l=825n\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 819,
+          "before": "XR0 iovss sub! / ptap1 r=14.724 A=40.96p Perim=25.6u w=6.4u l=6.4u\n",
+          "after": "R0 iovss sub! / ptap1 r=14.724 A=40.96p Perim=25.6u w=6.4u l=6.4u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 830,
+          "before": "XR1 vss sub! / ptap1 r=162.013 A=1.369p Perim=4.68u w=1.17u l=1.17u\n",
+          "after": "R1 vss sub! / ptap1 r=162.013 A=1.369p Perim=4.68u w=1.17u l=1.17u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 831,
+          "before": "XR0 iovss sub! / ptap1 r=2.443 A=328.697p Perim=72.52u w=18.13u l=18.13u\n",
+          "after": "R0 iovss sub! / ptap1 r=2.443 A=328.697p Perim=72.52u w=18.13u l=18.13u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 842,
+          "before": "XR1 vss sub! / ptap1 r=101.912 A=2.856p Perim=6.76u w=1.69u l=1.69u\n",
+          "after": "R1 vss sub! / ptap1 r=101.912 A=2.856p Perim=6.76u w=1.69u l=1.69u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 843,
+          "before": "XR0 iovss sub! / ptap1 r=1.224 A=695.113p Perim=105.46u w=26.365u l=26.365u\n",
+          "after": "R0 iovss sub! / ptap1 r=1.224 A=695.113p Perim=105.46u w=26.365u l=26.365u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 854,
+          "before": "XR1 vss sub! / ptap1 r=32.364 A=14.861p Perim=15.42u w=3.855u l=3.855u\n",
+          "after": "R1 vss sub! / ptap1 r=32.364 A=14.861p Perim=15.42u w=3.855u l=3.855u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 855,
+          "before": "XR0 iovss sub! / ptap1 r=253.731m A=3.622n Perim=240.72u w=60.18u l=60.18u\n",
+          "after": "R0 iovss sub! / ptap1 r=253.731m A=3.622n Perim=240.72u w=60.18u l=60.18u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 867,
+          "before": "RR0 net2 iovdd 6.768K $SUB=iovdd $[res_rppd] m=1 l=12.9u w=500n ps=180n \n",
+          "after": "RR0 net2 iovdd 6.768K $SUB=iovdd $[rppd] m=1 l=12.9u w=500n ps=180n \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 869,
+          "before": "XR1 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "after": "R1 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 881,
+          "before": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "after": "R0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 882,
+          "before": "RR1 iovss net2 1.959K $SUB=sub! $[res_rppd] m=1 l=3.54u w=500n ps=180n \n",
+          "after": "RR1 iovss net2 1.959K $SUB=sub! $[rppd] m=1 l=3.54u w=500n ps=180n \n",
+          "reason": "native_rppd_model_spelling"
+        },
+        {
+          "line": 899,
+          "before": "XR1 vss sub! / ptap1 r=22.579 A=23.863p Perim=19.54u w=4.885u l=4.885u\n",
+          "after": "R1 vss sub! / ptap1 r=22.579 A=23.863p Perim=19.54u w=4.885u l=4.885u\n",
+          "reason": "native_tap_device_prefix"
+        },
+        {
+          "line": 900,
+          "before": "XR2 iovss sub! / ptap1 r=214.8m A=4.3n Perim=262.3u w=65.575u l=65.575u\n",
+          "after": "R2 iovss sub! / ptap1 r=214.8m A=4.3n Perim=262.3u w=65.575u l=65.575u\n",
+          "reason": "native_tap_device_prefix"
+        }
+      ],
+      "straight_spacing_changes": [
+        {
+          "before": "RR29 net15 net16 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR29 net15 net16 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR28 net20 net21 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR28 net20 net21 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR27 net23 net24 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR27 net23 net24 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR24 net17 net18 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR24 net17 net18 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR23 net16 net17 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR23 net16 net17 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR21 net25 pin2 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR21 net25 pin2 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR20 net22 net23 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR20 net22 net23 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR19 net19 net20 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR19 net19 net20 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR17 net24 net25 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR17 net24 net25 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR16 net21 net22 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR16 net21 net22 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR15 net18 net19 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR15 net18 net19 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR14 net5 net6 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR14 net5 net6 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR13 net8 net9 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR13 net8 net9 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR12 net11 net12 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR12 net11 net12 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR11 net14 net15 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR11 net14 net15 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR10 net2 net3 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR10 net2 net3 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR9 net1 net2 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR9 net1 net2 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR8 net13 net14 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR8 net13 net14 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR7 net10 net11 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR7 net10 net11 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR6 net7 net8 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR6 net7 net8 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR5 net4 net5 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR5 net4 net5 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR4 net12 net13 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR4 net12 net13 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR3 net9 net10 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0  b=0",
+          "after": "RR3 net9 net10 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0  b=0"
+        },
+        {
+          "before": "RR2 net6 net7 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR2 net6 net7 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR1 net3 net4 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR1 net3 net4 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR0 pin1 net1 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR0 pin1 net1 5.239K $SUB=sub! $[rppd] m=1 l=20u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR0 pad core 586.899 $SUB=sub! $[rppd] m=1 l=2u w=1u ps=180n trise=0.0 b=0",
+          "after": "RR0 pad core 586.899 $SUB=sub! $[rppd] m=1 l=2u w=1u ps=0 trise=0.0 b=0"
+        },
+        {
+          "before": "RR0 net2 iovdd 6.768K $SUB=iovdd $[rppd] m=1 l=12.9u w=500n ps=180n  trise=0.0 b=0",
+          "after": "RR0 net2 iovdd 6.768K $SUB=iovdd $[rppd] m=1 l=12.9u w=500n ps=0  trise=0.0 b=0"
+        },
+        {
+          "before": "RR1 iovss net2 1.959K $SUB=sub! $[rppd] m=1 l=3.54u w=500n ps=180n  trise=0.0 b=0",
+          "after": "RR1 iovss net2 1.959K $SUB=sub! $[rppd] m=1 l=3.54u w=500n ps=0  trise=0.0 b=0"
+        }
+      ],
+      "lvs_accepted": false,
+      "manufacturing_approval": false
+    },
+    "marker-controls/result.json": {
+      "status": "PASS_ONE_VALID_REPAIR_EIGHT_FAULTS_REJECTED",
+      "rejected": [
+        {
+          "fault": "existing_marker",
+          "error": "Marker already present: sg13g2_SecondaryProtection"
+        },
+        {
+          "fault": "missing_extblock",
+          "error": "Resistor masks differ from source CDL geometry: sg13g2_SecondaryProtection"
+        },
+        {
+          "fault": "wrong_length",
+          "error": "Resistor masks differ from source CDL geometry: sg13g2_SecondaryProtection"
+        },
+        {
+          "fault": "active_overlap",
+          "error": "Resistor overlaps active silicon: sg13g2_SecondaryProtection"
+        },
+        {
+          "fault": "mask_change",
+          "error": "Unexpected geometry change: sg13g2_SecondaryProtection (10, 0)"
+        },
+        {
+          "fault": "text_change",
+          "error": "Texts changed: sg13g2_SecondaryProtection"
+        },
+        {
+          "fault": "missing_added_marker",
+          "error": "Unexpected geometry change: sg13g2_SecondaryProtection (128, 0)"
+        },
+        {
+          "fault": "moved_instance",
+          "error": "Instances changed: sg13g2_SecondaryProtection"
+        }
+      ]
+    },
+    "source-replay-lvs/result.json": {
+      "status": "FAIL_IO_CAMPAIGN_WITH_CLAMP_SUBCELL_CONTROL",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/check_source_replay.py": "240694918255c3455f1cdf062b380e02fe616dea337fe1d9dfd0c90fe206edb3",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.cdl": "94a992ec1f3cdd7297945b8615a5ae0064447ff436cca57fc1131617e06b61f9",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds": "c14891467e309e7302a331015d0ad543d0529872049ccadef899228414742430",
+        "${REPOSITORY}/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+        "${REPOSITORY}/hw/soc/flow/repair_io_resistor_markers.py": "870308676fb22566c877ae01c2c0413ee36d08c397f8d2c6fe679114eedd2dc2",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/result.json": "2a9748454df3f752cbae15b83d4dd1aa366446a9eb09d91f695df98b4d4e1fd0",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/flow/transistor_schematic.py": "70967336cb119a7a6f76dca581027853d4de77bc16858bc3bdacd61f0015b793",
+        "${REPOSITORY}/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+      },
+      "results": [
+        {
+          "master": "sg13g2_RCClampResistor",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_RCClampResistor",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 0,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "sg13g2_RCClampResistor",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "Match",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/lvs.lvsdb.gz": {
+                "bytes": 2566,
+                "sha256": "61a14a223b3e10bcfda3c652c90376087cd9ff9077eb3c39a7bc4ab3ac2ef113"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/deck.log": {
+                "bytes": 37223,
+                "sha256": "ba79ec9c85f929c6b95ce7cb58e26e6975915a9bbe05bdab5d89360f85af2160"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadIn",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIn",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIn",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 3,
+              "Skipped": 2
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_IOPadIn",
+                "schematic": "SG13G2_IOPADIN",
+                "status": "Skipped",
+                "layout_devices_recursive": 17,
+                "schematic_devices_recursive": 15
+              },
+              {
+                "layout": "sg13g2_LevelDown",
+                "schematic": "SG13G2_LEVELDOWN",
+                "status": "Skipped",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_SecondaryProtection",
+                "schematic": "SG13G2_SECONDARYPROTECTION",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz": {
+                "bytes": 77915,
+                "sha256": "0374f408637bf0cba4cb706a13871700753f0d86edb0eb002c4b05ff9a120b80"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIn/deck.log": {
+                "bytes": 37218,
+                "sha256": "b32e432ea5caf7ccab3bf357667dabfdb5ac593e8e21de51edeb4a9910448630"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadOut4mA",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadOut4mA/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadOut4mA",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadOut4mA/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadOut4mA/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadOut4mA/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadOut4mA",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 5,
+              "Skipped": 2
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_Clamp_N2N2D",
+                "schematic": "SG13G2_CLAMP_N2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_Clamp_P2N2D",
+                "schematic": "SG13G2_CLAMP_P2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_GateLevelUpInv",
+                "schematic": "SG13G2_GATELEVELUPINV",
+                "status": "Skipped",
+                "layout_devices_recursive": 18,
+                "schematic_devices_recursive": 18
+              },
+              {
+                "layout": "sg13g2_IOPadOut4mA",
+                "schematic": "SG13G2_IOPADOUT4MA",
+                "status": "Skipped",
+                "layout_devices_recursive": 32,
+                "schematic_devices_recursive": 30
+              },
+              {
+                "layout": "sg13g2_LevelUpInv",
+                "schematic": "SG13G2_LEVELUPINV",
+                "status": "NoMatch",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadOut4mA/lvs.lvsdb.gz": {
+                "bytes": 64015,
+                "sha256": "c1d8ebd7bbb4f1cd90018e2f3d721da1e8ada22ccf0b687a88a83670ec808879"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadOut4mA/deck.log": {
+                "bytes": 37236,
+                "sha256": "ebaec05513a284aefe5f7cb598899f394d029f6fab7b6c34e4d4e6aa4bc1e33f"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadInOut4mA",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadInOut4mA/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadInOut4mA",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadInOut4mA/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadInOut4mA/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadInOut4mA/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadInOut4mA",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 10,
+              "Skipped": 3
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_Clamp_N2N2D",
+                "schematic": "SG13G2_CLAMP_N2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_Clamp_P2N2D",
+                "schematic": "SG13G2_CLAMP_P2N2D",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_GateDecode",
+                "schematic": "SG13G2_GATEDECODE",
+                "status": "Skipped",
+                "layout_devices_recursive": 32,
+                "schematic_devices_recursive": 32
+              },
+              {
+                "layout": "sg13g2_IOPadInOut4mA",
+                "schematic": "SG13G2_IOPADINOUT4MA",
+                "status": "Skipped",
+                "layout_devices_recursive": 55,
+                "schematic_devices_recursive": 53
+              },
+              {
+                "layout": "sg13g2_LevelDown",
+                "schematic": "SG13G2_LEVELDOWN",
+                "status": "Skipped",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_LevelUp",
+                "schematic": "SG13G2_LEVELUP",
+                "status": "NoMatch",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_SecondaryProtection",
+                "schematic": "SG13G2_SECONDARYPROTECTION",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              },
+              {
+                "layout": "sg13g2_io_inv_x1",
+                "schematic": "SG13G2_IO_INV_X1",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_io_nand2_x1",
+                "schematic": "SG13G2_IO_NAND2_X1",
+                "status": "NoMatch",
+                "layout_devices_recursive": 5,
+                "schematic_devices_recursive": 5
+              },
+              {
+                "layout": "sg13g2_io_nor2_x1",
+                "schematic": "SG13G2_IO_NOR2_X1",
+                "status": "NoMatch",
+                "layout_devices_recursive": 5,
+                "schematic_devices_recursive": 5
+              },
+              {
+                "layout": "sg13g2_io_tie",
+                "schematic": "SG13G2_IO_TIE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadInOut4mA/lvs.lvsdb.gz": {
+                "bytes": 69878,
+                "sha256": "d02b2659025a96b0908416d1690b95c176cded7090c55b07be1a3d9592f632e9"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadInOut4mA/deck.log": {
+                "bytes": 37246,
+                "sha256": "06b3d43ccc0657308721eb868b8866eb38152d00bc0583e91a7b83f51057f7e0"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadVdd",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVdd/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadVdd",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVdd/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVdd/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVdd/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadVdd",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 3,
+              "Skipped": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_Clamp_N43N43D4R",
+                "schematic": "SG13G2_CLAMP_N43N43D4R",
+                "status": "NoMatch",
+                "layout_devices_recursive": 24,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_IOPadVdd",
+                "schematic": "SG13G2_IOPADVDD",
+                "status": "Skipped",
+                "layout_devices_recursive": 31,
+                "schematic_devices_recursive": 10
+              },
+              {
+                "layout": "sg13g2_RCClampInverter",
+                "schematic": "SG13G2_RCCLAMPINVERTER",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              },
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVdd/lvs.lvsdb.gz": {
+                "bytes": 48567,
+                "sha256": "b1d573443ab0c437d36debf37035e953fbe2ea87ab408abec7b2725bf952c125"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVdd/deck.log": {
+                "bytes": 37231,
+                "sha256": "01a7c785f6ebed5926d587b3d03db8727f63e9b843d5dc91c3a0d9046a505438"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadVss",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVss/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadVss",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVss/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVss/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVss/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadVss",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 2,
+              "Skipped": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_IOPadVss",
+                "schematic": "SG13G2_IOPADVSS",
+                "status": "Skipped",
+                "layout_devices_recursive": 8,
+                "schematic_devices_recursive": 6
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVss/lvs.lvsdb.gz": {
+                "bytes": 79607,
+                "sha256": "ef4e11bab723e36ae592f2131806d578cf0d19a0f70ed3a8e202e1c6676d2cea"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadVss/deck.log": {
+                "bytes": 37218,
+                "sha256": "51b5bdb9b7ad0681c5ffaaa60b0c313154a21a8671ec3fe5879b4f3315f04b29"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadIOVdd",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVdd/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIOVdd",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVdd/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVdd/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVdd/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIOVdd",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 3,
+              "Skipped": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_Clamp_N43N43D4R",
+                "schematic": "SG13G2_CLAMP_N43N43D4R",
+                "status": "NoMatch",
+                "layout_devices_recursive": 24,
+                "schematic_devices_recursive": 3
+              },
+              {
+                "layout": "sg13g2_IOPadIOVdd",
+                "schematic": "SG13G2_IOPADIOVDD",
+                "status": "Skipped",
+                "layout_devices_recursive": 31,
+                "schematic_devices_recursive": 10
+              },
+              {
+                "layout": "sg13g2_RCClampInverter",
+                "schematic": "SG13G2_RCCLAMPINVERTER",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              },
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVdd/lvs.lvsdb.gz": {
+                "bytes": 52787,
+                "sha256": "b72799a9548bbfc62b7feff01de089d2cf16ce55a6ade80fb0d2fcebeba17f70"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVdd/deck.log": {
+                "bytes": 37235,
+                "sha256": "f4ea2bcb1caf0db52255b25eaf5f1137bfb344316dbbf5ff07a856b7ff5a7438"
+              }
+            }
+          }
+        },
+        {
+          "master": "sg13g2_IOPadIOVss",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVss/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIOVss",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVss/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVss/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVss/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIOVss",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_IOPadIOVss",
+                "schematic": "SG13G2_IOPADIOVSS",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVss/lvs.lvsdb.gz": {
+                "bytes": 93377,
+                "sha256": "d2f4a55fbdd11c2eb17aa521cca99f5d7ef6279eccd4917165df7fb4c5d29c4b"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_IOPadIOVss/deck.log": {
+                "bytes": 37226,
+                "sha256": "72969f4177b0864e5550e46921c0994bb4d4b1d595bb71f83680bff836d89e83"
+              }
+            }
+          }
+        }
+      ],
+      "scope": "Marker-repaired IO library and model-bound b=0 spacing canonicalization; native deck unchanged; not full chip or ESD/IR/EM qualification.",
+      "manufacturing_approval": false
+    },
+    "native-faults/result.json": {
+      "status": "PASS_ONE_POSITIVE_THREE_NATIVE_LVS_FAULTS_REJECTED",
+      "positive": {
+        "master": "sg13g2_RCClampResistor",
+        "command": [
+          "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+          "-rd",
+          "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/schematic.cir",
+          "-rd",
+          "topcell=sg13g2_RCClampResistor",
+          "-rd",
+          "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/lvs.lvsdb.gz",
+          "-rd",
+          "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/deck.log",
+          "-rd",
+          "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/extracted.cir",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "thr=1"
+        ],
+        "returncode": 0,
+        "audit_returncode": 0,
+        "audit": {
+          "status": "PASS within comparison scope",
+          "top": "sg13g2_RCClampResistor",
+          "reasons": [],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "Match": 1
+          },
+          "circuits": [
+            {
+              "layout": "sg13g2_RCClampResistor",
+              "schematic": "SG13G2_RCCLAMPRESISTOR",
+              "status": "Match",
+              "layout_devices_recursive": 1,
+              "schematic_devices_recursive": 1
+            }
+          ],
+          "inputs": {
+            "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/lvs.lvsdb.gz": {
+              "bytes": 2566,
+              "sha256": "61a14a223b3e10bcfda3c652c90376087cd9ff9077eb3c39a7bc4ab3ac2ef113"
+            },
+            "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/deck.log": {
+              "bytes": 37223,
+              "sha256": "ba79ec9c85f929c6b95ce7cb58e26e6975915a9bbe05bdab5d89360f85af2160"
+            }
+          }
+        }
+      },
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/run_native_faults.py": "e3b42bd65a5f8a9252a473407001ac00407b4741e384c3385dea0e7b51556e69",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay-lvs/sg13g2_RCClampResistor/schematic.cir": "78a7de323c291bbb6850f51c5ef65fb88121e642bfe216f9fa25846c31cdebc7",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds": "c14891467e309e7302a331015d0ad543d0529872049ccadef899228414742430",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker.gds": "7cf52a98c64baebf1c2dc28e19389d655e1d5fda9187d2b12d3ca54d2a514335",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length.gds": "3aa2b1b16e7c6721a03aeed10c188ac56689321643cec5103ad47522ab6cf15d"
+      },
+      "results": [
+        {
+          "fault": "missing_marker",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_RCClampResistor",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_RCClampResistor",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker/lvs.lvsdb.gz": {
+                "bytes": 2679,
+                "sha256": "f4cb3d41c95c1f1c801af6b6a52d3457cb70ddcaf4aac2e8ed8a198d09d09c59"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/missing_marker/deck.log": {
+                "bytes": 37181,
+                "sha256": "cd96372ffe69532415319e4fbcfdb82938b0fe373738b9e526ede213a20a29ae"
+              }
+            }
+          }
+        },
+        {
+          "fault": "wrong_length",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_RCClampResistor",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_RCClampResistor",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length/lvs.lvsdb.gz": {
+                "bytes": 2639,
+                "sha256": "563a57a0d99ddac1097131b2555b11725b231443dc0af3e62ff626a7d0af0950"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_length/deck.log": {
+                "bytes": 37173,
+                "sha256": "011c248b91f32d38d09b84c1fac4d9b8d02f6b5dbad6b2c6529876a4e86b935d"
+              }
+            }
+          }
+        },
+        {
+          "fault": "wrong_schematic_connection",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_schematic_connection/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_RCClampResistor",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_schematic_connection/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_schematic_connection/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_schematic_connection/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_RCClampResistor",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 2
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_schematic_connection/lvs.lvsdb.gz": {
+                "bytes": 2677,
+                "sha256": "040e62173aa3992e7e93c6163283e67bba886ee26f6b4183380378e74af9713a"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-faults/wrong_schematic_connection/deck.log": {
+                "bytes": 37212,
+                "sha256": "890f0679b4f91c0d37b677cf4d51934b01ccf4c3cd8ca7345c287b2ff0e20e44"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "native-cell-drc/result.json": {
+      "status": "COMPLETED_CELL_MAIN_DRC_CAMPAIGN",
+      "scope": "Cell main deck only, no density/antenna or full chip acceptance.",
+      "results": [
+        {
+          "top": "sg13g2_RCClampResistor",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "topcell=sg13g2_RCClampResistor",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-cell-drc/sg13g2_RCClampResistor/drc.lyrdb",
+            "-rd",
+            "threads=1",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "no_recommended=False",
+            "-rd",
+            "precheck_drc=False"
+          ],
+          "result": {
+            "status": "PASS",
+            "process_returncode": 0,
+            "markers": 0,
+            "categories": {},
+            "category_count": 560,
+            "report_sha256": "e51a5c40c8ad76af049f42b751ffa866ca48ae063d76249db79105284344ec92",
+            "log_sha256": "34edce498ec54a61d79501f67a89c354361ec3a9ba33577f8493377aa48871c2"
+          }
+        },
+        {
+          "top": "sg13g2_IOPadIn",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds",
+            "-rd",
+            "topcell=sg13g2_IOPadIn",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/native-cell-drc/sg13g2_IOPadIn/drc.lyrdb",
+            "-rd",
+            "threads=1",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "no_recommended=False",
+            "-rd",
+            "precheck_drc=False"
+          ],
+          "result": {
+            "status": "PASS",
+            "process_returncode": 0,
+            "markers": 0,
+            "categories": {},
+            "category_count": 560,
+            "report_sha256": "c8162e833a5c8ea5fd4069f9bc6ef7fd9a2f28ffc30de8fb8534dbde458267e9",
+            "log_sha256": "e90ce71f0e79ead01f082d080a6baa19a7d82f3f74f5d0719c73c304c1c03f9b"
+          }
+        }
+      ],
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/run_cell_drc.py": "2aecda72f8b4e614f8c42ad452781c853a89f3ccd594f2b3023198f8831e9c85",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/source-replay/sg13g2_io.gds": "c14891467e309e7302a331015d0ad543d0529872049ccadef899228414742430",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/pnr/ihp-drc.lock.json": "d47860e82e76d81897ce51452aa1f7a7bb76643da38093911b5cdb55a4ebf73a",
+        "${REPOSITORY}/hw/soc/flow/check_ihp_drc.py": "b93e899a9b350edf63e55292913be09e2eea3dedbc95a6d027a5254979ad8650",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech_mod.json": "229029e23785f3ae58c9645d47acfe326c56f0ec41d940bf9383c7063380f9ff",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc": "22a570bfb43d564b7ce3de9d7df0795197be79f86c8a484b4959932c8dd75961",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/antenna.drc": "e3e925d918d2d4e2067751326122fd1a9be9bc3cb4fa10a8aca2fc9349975362",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_16_metal1.drc": "82a0ffa3d6412e88de6caf103c3b1eb1a4cf09b6cfa1857da8c67740f56c5ed0",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_17_metaln.drc": "0023b4dfc61eb71e14d2d4b3b003078d3f8121c732445ad80a9bca187279fb6e",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_18_metalnfiller.drc": "75db77192540e65fa5065a614b6872a90d967447b5a3dade0e0d2cc1630ee83d",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_19_via1.drc": "d86d04e1f8cda3c045dc8caafe85cec64bde15413d0ab521765021153a59ec0e",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_20_vian.drc": "769a1169bf187d88c14e989dd7be8e3e3204cd72edb2a3d70eb45c943a56e2bd",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_21_topvia1.drc": "2a749744b68134b5fd9686dcdf6180a0d3acbed5ecdb1e4d5ac8499f8071e813",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_22_topmetal1.drc": "907319b08f719536f8487c326ca54d55a2fa0ffea0156c3277ab8b073e4a3c60",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_23_topmetal1filler.drc": "0a3bf97c0a34cd5be5cefb3259994f53800a16ba86f69d54aa80e7aa366375fa",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_24_topvia2.drc": "0d5124c2fd6ddefe7161bb55c82cd738db6236feaa7bb39901f08c77145021d1",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_25_topmetal2.drc": "356c09fdb4963e8157b9ee60efabf0d521474cd8c70a8ae17b4a2cd61eaff42e",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_26_topmetal2filler.drc": "da26c6b473924538a0d9fc3e98b1fb77d5496c494de7d3738520d5daed39793e",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_27_passiv.drc": "eb6565030fddb0789be4f4fadb4c4fa3ed690f0d52f83c4b8bfe6780298a3574",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/6_10_sealring.drc": "15802b4d6e32ceb262c1a0c042660f667cf93f804491d73151c4a24de05aa5d4",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/6_11_mim.drc": "0b41a9e4ff1342940920ff6763093aff39f986a8b2f7bfcf2b5dad47fa9da40d",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/6_9_copperpillar.drc": "4ff342d047743695f3ce5c2a9daddd011752489097b7337c24401de2b56e4bbb",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/6_9_pad.drc": "a9a8f450ea73bff364a2c6312575038ef023577d28d1196563d5a834a2790047",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/6_9_solderbump.drc": "57931abfc4d186fd6ae9b54a6c1683679de6f34b21ab225abdb098d7f3aeb9cb",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/7_3_metalslits.drc": "51457f1a8c6e312e9dbb39a65adf8fe716f57978a4a213f038b2473ae4bb8e4c",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/9_1_lbe.drc": "c501e565e2bc172143e048c19bc8c36813972e8604c307977112b1e1791cf2af",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/density.drc": "ef143b293fbbb1722f590d59cd3d942fec5bde6ae216e8a8224d46b87010f8dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_10_psd.drc": "66ef753d801e82ab43e930d46f90fe9b4c84085ce62f71e7ea502acac5ab3d62",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_14_cont.drc": "1f541374c9b12f74bf806d2013e87aacc368535edec07e0c55661f6b4a7b821f",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_15_contbar.drc": "83dee69ea9f0949d0bacf78fedaa9073d312d20ead432ba6ce628ded6d1553b3",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_1_nwell.drc": "7f0d27bd5507fbc530d55f5b7b2e1adeb65b39294b76b1c85530bc3e9338035d",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_2_pwellblock.drc": "3dfb01b5b353013f6b322ab0ff20d52d3325f925504e7cd6e85a0615792d60d7",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_3_nbulay.drc": "31a92ec448a6948d7400850f2bc37bb5a7590c0f7cce787ce46c731022edb5cb",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_5_activ.drc": "ab899d25d0a1dbef1a6a6b327353c80ae84331273e0ed0f239497727cf7fec6c",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_6_activfiller.drc": "c48ec245d0bf36dac15e55db4865b05e6cee96c258607d75e386bc8e3fcf783d",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_7_thickgateox.drc": "aa42686a8d1468f549afcbaea2311cb38c893c0cc1d11b5a09a488af76d64ae0",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_8_gatpoly.drc": "19154ca2432427086fa8fbee0941d8875126d3345487018d833b02025de65529",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/5_9_gatpolyfiller.drc": "288a02299408399ccd94573200948cf01bfb3500915c021d2bedaa355bd2016f",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/6_1_npnsubstratetie.drc": "4826fe274df4f16f8310bee5f3933375fa8a675de691283ae28675fb512e6bfc",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/6_7_schottkydiode.drc": "7e48869e6d92679f5a877f02a7c48f9ca77826fc1121cfc290eb962fd71e8052",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/7_2_latchup.drc": "e1bf94abb6be10d243c84b0f2c71dcce29020e0941087e32113e5f4a8606b931",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/forbidden/3_2_forbidden.drc": "1e4aba916a0ebbddc58533cf641401f12da8da4959387f693d4e278786cd0486",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/geometry/3_1_offgrid.drc": "dc5eb236c1229efb48df98b256a1b3fd3b08cb793db021e4fee889756f292f1d",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/geometry/3_2_angle.drc": "f1a4d08eb5c2b617d04cf73013700a450a3668dae9b5293c0d4c7d988d73efb4",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/layers_def.drc": "a71a4f6250b0220a5608c6d6cc6ef7a9b0a4a8f3f2820208216630528e163147",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/pin/7_4_pin.drc": "508ee712c468f14bd5458b276af3449fcfd167707fc0efb72e27e13189fe5742",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/sg13g2_maximal.drc": "d12e1947f570ce16f04dfd94769f2c38fdbda3920c5f7479272ef517864eae4b",
+        "${REPOSITORY}/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/sg13g2_tech_default.json": "07930b016cdffe14c2cb82b47fbec193643347607db6d44aa1abfdece056cd2f"
+      }
+    },
+    "complete-drc-catalogs.json": {
+      "status": "PASS_TWO_COMPLETE_NATIVE_560_CATEGORY_CATALOGS",
+      "checker_sha256": "ca86e46d2190ff2212e00c82b00b7aad0acbf0ad37651489b192b7ff37a7d954",
+      "results": [
+        {
+          "cell": "sg13g2_RCClampResistor",
+          "report_sha256": "e51a5c40c8ad76af049f42b751ffa866ca48ae063d76249db79105284344ec92",
+          "catalog_identity": [
+            560,
+            "5ff1a95814cf97d5766ad7878244a306238d4accd11d3f8e1f8bab3f0a520341"
+          ]
+        },
+        {
+          "cell": "sg13g2_IOPadIn",
+          "report_sha256": "c8162e833a5c8ea5fd4069f9bc6ef7fd9a2f28ffc30de8fb8534dbde458267e9",
+          "catalog_identity": [
+            560,
+            "5ff1a95814cf97d5766ad7878244a306238d4accd11d3f8e1f8bab3f0a520341"
+          ]
+        }
+      ]
+    },
+    "marker-input-lvs/result.json": {
+      "status": "FAIL_MARKER_INPUT_DIAGNOSTIC",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/check_marker.py": "8937493d5db044dc53d593bfc96f023d3991a5bb77a18d198b8d18f711e45a06",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/sg13g2_io-reader.cdl": "225f23dd9bc82b8c7b509ebd53cee3b71c011a6db49cae1f19ad78e39ec14002",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/input-polyres-marker.gds": "b18373f26d129cd06f694f7ff01fe29dc6f5bb9fae8ef5c8109ecb4dc8768d33",
+        "${REPOSITORY}/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/flow/transistor_schematic.py": "70967336cb119a7a6f76dca581027853d4de77bc16858bc3bdacd61f0015b793",
+        "${REPOSITORY}/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+      },
+      "results": [
+        {
+          "master": "sg13g2_IOPadIn",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/input-polyres-marker.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/marker-input-lvs/sg13g2_IOPadIn/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIn",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/marker-input-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/marker-input-lvs/sg13g2_IOPadIn/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/marker-input-lvs/sg13g2_IOPadIn/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIn",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 3,
+              "Skipped": 2
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_DCNDiode",
+                "schematic": "SG13G2_DCNDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_DCPDiode",
+                "schematic": "SG13G2_DCPDIODE",
+                "status": "NoMatch",
+                "layout_devices_recursive": 3,
+                "schematic_devices_recursive": 2
+              },
+              {
+                "layout": "sg13g2_IOPadIn",
+                "schematic": "SG13G2_IOPADIN",
+                "status": "Skipped",
+                "layout_devices_recursive": 17,
+                "schematic_devices_recursive": 15
+              },
+              {
+                "layout": "sg13g2_LevelDown",
+                "schematic": "SG13G2_LEVELDOWN",
+                "status": "Skipped",
+                "layout_devices_recursive": 9,
+                "schematic_devices_recursive": 9
+              },
+              {
+                "layout": "sg13g2_SecondaryProtection",
+                "schematic": "SG13G2_SECONDARYPROTECTION",
+                "status": "NoMatch",
+                "layout_devices_recursive": 4,
+                "schematic_devices_recursive": 4
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/marker-input-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz": {
+                "bytes": 77925,
+                "sha256": "2cc9c08f4204834b7fb6b3b4977e610d26c68ede79b8e1bdfdc47363b12b7cca"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/marker-input-lvs/sg13g2_IOPadIn/deck.log": {
+                "bytes": 37212,
+                "sha256": "6857c72eb27a64d737573120c8df40c89421d3cee9f27e26217cb3b1d4abe57c"
+              }
+            }
+          }
+        }
+      ],
+      "scope": "Input-cell recognition marker diagnostic against independently normalized vendor CDL; not full chip or ESD/IR/EM qualification.",
+      "manufacturing_approval": false
+    },
+    "flat-global-input-lvs/result.json": {
+      "status": "FAIL_MARKER_INPUT_DIAGNOSTIC",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/check_flat_global.py": "d2a065b24f66d74f46fa9dd7da64d9a658b9f872c6a63394a26076c16136f3b3",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/sg13g2_io-reader.cdl": "225f23dd9bc82b8c7b509ebd53cee3b71c011a6db49cae1f19ad78e39ec14002",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/input-polyres-marker.gds": "b18373f26d129cd06f694f7ff01fe29dc6f5bb9fae8ef5c8109ecb4dc8768d33",
+        "${REPOSITORY}/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/flow/transistor_schematic.py": "70967336cb119a7a6f76dca581027853d4de77bc16858bc3bdacd61f0015b793",
+        "${REPOSITORY}/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+      },
+      "results": [
+        {
+          "master": "sg13g2_IOPadIn",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/input-polyres-marker.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/flat-global-input-lvs/sg13g2_IOPadIn/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_IOPadIn",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/flat-global-input-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/flat-global-input-lvs/sg13g2_IOPadIn/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/flat-global-input-lvs/sg13g2_IOPadIn/extracted.cir",
+            "-rd",
+            "run_mode=flat",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_IOPadIn",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_IOPadIn",
+                "schematic": "SG13G2_IOPADIN",
+                "status": "NoMatch",
+                "layout_devices_recursive": 12,
+                "schematic_devices_recursive": 11
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/flat-global-input-lvs/sg13g2_IOPadIn/lvs.lvsdb.gz": {
+                "bytes": 79197,
+                "sha256": "ea0a393967ed29968a5d023ce1c228a4a60cc96bf53913fd82eab58f1f71bb4c"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/flat-global-input-lvs/sg13g2_IOPadIn/deck.log": {
+                "bytes": 37222,
+                "sha256": "2c614c004edc10366cc8cee4a1e7c3c8f9973b8ec79516e29df9ef442cb62475"
+              }
+            }
+          }
+        }
+      ],
+      "scope": "Input-cell recognition marker diagnostic against independently normalized vendor CDL; not full chip or ESD/IR/EM qualification.",
+      "manufacturing_approval": false
+    },
+    "clamp-resistor-lvs/result.json": {
+      "status": "FAIL_MARKER_INPUT_DIAGNOSTIC",
+      "input_sha256": {
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/check_clamp.py": "d2c47e739eef9d908981be4e6afd716882e64cb7d2d4f34de5f635ab716e2f51",
+        "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "${REPOSITORY}/hw/soc/out/chip-integrated-20260927/sg13g2_io-reader.cdl": "225f23dd9bc82b8c7b509ebd53cee3b71c011a6db49cae1f19ad78e39ec14002",
+        "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/io-polyres-markers.gds": "fbf8f39fd7f5c50811e90af2e594afd251b8cdf84696ad0364f0315ae50c652c",
+        "${REPOSITORY}/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+        "${REPOSITORY}/hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+        "${REPOSITORY}/hw/soc/flow/transistor_schematic.py": "70967336cb119a7a6f76dca581027853d4de77bc16858bc3bdacd61f0015b793",
+        "${REPOSITORY}/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924",
+        "${REPOSITORY}/hw/soc/flow/normalize_io_cdl.py": "c3a19c27c9f1108921fd89e5f2a68b037c876df8828680875bc1d0988bfe13ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+        "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+      },
+      "results": [
+        {
+          "master": "sg13g2_RCClampResistor",
+          "command": [
+            "${REPOSITORY}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "${REPOSITORY}/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/io-polyres-markers.gds",
+            "-rd",
+            "schematic=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/clamp-resistor-lvs/sg13g2_RCClampResistor/schematic.cir",
+            "-rd",
+            "topcell=sg13g2_RCClampResistor",
+            "-rd",
+            "report=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/clamp-resistor-lvs/sg13g2_RCClampResistor/lvs.lvsdb.gz",
+            "-rd",
+            "log=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/clamp-resistor-lvs/sg13g2_RCClampResistor/deck.log",
+            "-rd",
+            "target_netlist=${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/clamp-resistor-lvs/sg13g2_RCClampResistor/extracted.cir",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "thr=1"
+          ],
+          "returncode": 0,
+          "audit_returncode": 1,
+          "audit": {
+            "status": "FAIL",
+            "top": "sg13g2_RCClampResistor",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "sg13g2_RCClampResistor",
+                "schematic": "SG13G2_RCCLAMPRESISTOR",
+                "status": "NoMatch",
+                "layout_devices_recursive": 1,
+                "schematic_devices_recursive": 1
+              }
+            ],
+            "inputs": {
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/clamp-resistor-lvs/sg13g2_RCClampResistor/lvs.lvsdb.gz": {
+                "bytes": 2676,
+                "sha256": "83ffa9b0f74b360c90de457898b6e035eb87cbd47281e37007baf59243a24679"
+              },
+              "${REPOSITORY}/hw/soc/out/io-lvs-repair-20260927/clamp-resistor-lvs/sg13g2_RCClampResistor/deck.log": {
+                "bytes": 37210,
+                "sha256": "8166bc74a5e35316923a6515e6be13418834b265fbf88467d71b8e7fc011012d"
+              }
+            }
+          }
+        }
+      ],
+      "scope": "Input-cell recognition marker diagnostic against independently normalized vendor CDL; not full chip or ESD/IR/EM qualification.",
+      "manufacturing_approval": false
+    }
+  },
+  "validation": {
+    "pytest": "181 passed, no skips",
+    "reuse": "1477/1477 at source commit",
+    "geometry_controls": "one positive, eight faults rejected",
+    "native_lvs_controls": "one positive, three faults rejected"
+  },
+  "manufacturing_approval": false,
+  "timing_accepted": false,
+  "delivery_checks": {
+    "tested_commit": "38c0ad1f9f06f4f1132e0f7e75a76e4a92eb3f2a",
+    "tests_log": "........................................................................ [ 29%]\n........................................................................ [ 58%]\n........................................................................ [ 87%]\n..............................                                           [100%]\n246 passed in 0.73s\n",
+    "documentation": {
+      "backend": "pandoc",
+      "documents": 124,
+      "cross_references_resolved": 8351,
+      "unresolved": [],
+      "local_links_checked": 9915,
+      "broken_local_links": []
+    },
+    "reuse_log": "# SUMMARY\n\n* Bad licenses: 0\n* Deprecated licenses: 0\n* Licenses without file extension: 0\n* Missing licenses: 0\n* Unused licenses: 0\n* Used licenses: AGPL-3.0-or-later, Apache-2.0, CC-BY-4.0, CERN-OHL-W-2.0, GPL-3.0-or-later, ISC, LGPL-2.1-or-later, LicenseRef-Magic-1985, MIT\n* Read errors: 0\n* Invalid SPDX License Expressions: 0\n* Files with copyright information: 1479 / 1479\n* Files with license information: 1479 / 1479\n\nCongratulations! Your project is compliant with version 3.3 of the REUSE Specification :-)\n",
+    "digest_summary": "340 verified, 329 historical missing, 0 changed, 0 extractor drift"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-quarterstep-20261006/launch_probe01.py",
+    "bytes": 4449,
+    "sha256": "b5c0101a22c5610458ef6139d2a1833386b9280456e53700861e073364221b19"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006/launch_probe01.py",
+    "bytes": 4446,
+    "sha256": "993b3686a12aceb1f7d38fe92972ed892cbc67bf23120b72113f110f6182d73d"
+  },
+  "substitutions": [
+    [
+      "divider-tail115-v1-quarterstep",
+      "divider-tail115-v1-eighthstep"
+    ],
+    [
+      "characterize_quarterstep01",
+      "characterize_eighthstep01"
+    ],
+    [
+      "QUARTERSTEP_CONVERGENCE",
+      "EIGHTHSTEP_CONVERGENCE"
+    ]
+  ],
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "#!/usr/bin/env python3\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"One fresh, detached CPU10 probe; native ownership stays inside the driver.\"\"\"\nimport datetime\nimport hashlib\nimport json\nimport os\nimport signal\nfrom pathlib import Path\nimport subprocess\nimport sys\n\nR=Path.cwd()\nB=Path(__file__).resolve().parent\n",
+      "after": "#!/usr/bin/env python3\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"One fresh, detached CPU10 probe; native ownership stays inside the driver.\"\"\"\nimport datetime\nimport hashlib\nimport json\nimport os\nimport signal\nfrom pathlib import Path\nimport subprocess\nimport sys\n\nR=Path.cwd()\nB=Path(__file__).resolve().parent\n"
+    },
+    {
+      "tag": "replace",
+      "before": "OUT=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01')\n",
+      "after": "OUT=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "sys.path.insert(0,str(R/'scripts'))\nsys.path.insert(0,str(B))\n",
+      "after": "sys.path.insert(0,str(R/'scripts'))\nsys.path.insert(0,str(B))\n"
+    },
+    {
+      "tag": "replace",
+      "before": "import characterize_quarterstep01 as m\n",
+      "after": "import characterize_eighthstep01 as m\n"
+    },
+    {
+      "tag": "equal",
+      "before": "\n\ndef pin(p):\n    p=Path(p)\n    return {'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}\n\n\ndef verify():\n    freeze=json.loads((B/'source-freeze01.json').read_text())\n    for path,p in freeze['pins'].items():\n        assert pin(path)==p,path\n    peer=json.loads((B/'source-only-peer01-root.json').read_text())\n",
+      "after": "\n\ndef pin(p):\n    p=Path(p)\n    return {'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}\n\n\ndef verify():\n    freeze=json.loads((B/'source-freeze01.json').read_text())\n    for path,p in freeze['pins'].items():\n        assert pin(path)==p,path\n    peer=json.loads((B/'source-only-peer01-root.json').read_text())\n"
+    },
+    {
+      "tag": "replace",
+      "before": "    assert peer['status']=='PASS_SOURCE_ONLY_LOADED455_QUARTERSTEP_CONVERGENCE' and peer['findings']==[]\n",
+      "after": "    assert peer['status']=='PASS_SOURCE_ONLY_LOADED455_EIGHTHSTEP_CONVERGENCE' and peer['findings']==[]\n"
+    },
+    {
+      "tag": "equal",
+      "before": "    assert peer['freeze']==pin(B/'source-freeze01.json')\n    assert os.sched_getaffinity(0)=={10}\n    assert not OUT.exists()\n    c,rows,_=m.config(.6,'')\n    assert len(rows)==455 and len(m.n.vectors(rows,c['extra_vectors']))==956\n    free,used=m._scope['guard'](OUT)\n    assert free>=1024**3 and used+24*1024**2<m.OWN_LIMIT\n    return {'freeze':pin(B/'source-freeze01.json'),'peer':pin(B/'source-only-peer01-root.json'),'free':free,'own':used,'utc':datetime.datetime.now(datetime.UTC).isoformat()}\n\n\ndef run_with_boundary_signals():\n    # Outside the native owner there are no owned children. Fail immediately\n    # so cancellation cannot remain trapped in an inactive outer owner's flag.\n    # The inner ProcessOwner temporarily installs its graceful native handler\n    # and restores this one, covering both entry and exit handoff boundaries.\n    def stop(signum, frame):\n        raise RuntimeError(\"Controller received \" + signal.Signals(signum).name)\n    previous={sig:signal.getsignal(sig) for sig in (signal.SIGINT,signal.SIGTERM)}\n    try:\n        for sig in previous:signal.signal(sig,stop)\n        return m.run(OUT,.6,'')\n    finally:\n        for sig,handler in previous.items():signal.signal(sig,handler)\n\n\ndef controller():\n    preflight=verify()\n    result={'status':'RUNNING','preflight':preflight,'out':str(OUT),'controller_pid':os.getpid(),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}\n    m.n.common.atomic(B/'native06-controller.json',result)\n    try:\n        native=run_with_boundary_signals()\n        m._scope['guard'](OUT)\n        result.update(status='CLOSED_FINITE_NATIVE_RESULT',native_status=native['status'],outputs={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file()})\n        m.n.common.atomic(B/'native06-controller.json',result)\n        return 0 if native['status']=='PASS_NATIVE_LOADED_FEEDBACK_SCREEN' else 1\n    except BaseException as error:\n        result.update(status='FAILED_RETAINED',error=repr(error),outputs={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file()} if OUT.exists() else {})\n        m.n.common.atomic(B/'native06-controller.json',result)\n        raise\n\n\ndef launch():\n    preflight=verify()\n    with (B/'launch-once.json').open('x') as f:json.dump(preflight,f,indent=2)\n    command=['taskset','-c','10',str(R/'hw/soc/tools/cocotb-venv/bin/python'),str(Path(__file__).resolve()),'--controller']\n    env={k:v for k,v in os.environ.items() if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE','GH_TOKEN','GITHUB_TOKEN','LD_PRELOAD')}\n    env.update(PYTHONDONTWRITEBYTECODE='1',OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1')\n    with (B/'native-06-01.log').open('x') as log:\n        process=subprocess.Popen(command,cwd=R,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,env=env)\n        fields=(Path('/proc')/str(process.pid)/'stat').read_text().rsplit(') ',1)[1].split()\n    receipt={'status':'DETACHED_CONTROLLER_STARTED_NATIVE_PROGRESS_REQUIRED','controller':{'pid':process.pid,'start_ticks':fields[19],'process_group':int(fields[2])},'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'command':command,'preflight':preflight,'launcher':pin(Path(__file__))}\n    m.n.common.atomic(B/'detached-launch.json',receipt)\n    print(json.dumps(receipt))\n\n\nif __name__=='__main__':\n    if sys.argv[1:]==['--controller']:raise SystemExit(controller())\n    assert not sys.argv[1:]\n    launch()\n",
+      "after": "    assert peer['freeze']==pin(B/'source-freeze01.json')\n    assert os.sched_getaffinity(0)=={10}\n    assert not OUT.exists()\n    c,rows,_=m.config(.6,'')\n    assert len(rows)==455 and len(m.n.vectors(rows,c['extra_vectors']))==956\n    free,used=m._scope['guard'](OUT)\n    assert free>=1024**3 and used+24*1024**2<m.OWN_LIMIT\n    return {'freeze':pin(B/'source-freeze01.json'),'peer':pin(B/'source-only-peer01-root.json'),'free':free,'own':used,'utc':datetime.datetime.now(datetime.UTC).isoformat()}\n\n\ndef run_with_boundary_signals():\n    # Outside the native owner there are no owned children. Fail immediately\n    # so cancellation cannot remain trapped in an inactive outer owner's flag.\n    # The inner ProcessOwner temporarily installs its graceful native handler\n    # and restores this one, covering both entry and exit handoff boundaries.\n    def stop(signum, frame):\n        raise RuntimeError(\"Controller received \" + signal.Signals(signum).name)\n    previous={sig:signal.getsignal(sig) for sig in (signal.SIGINT,signal.SIGTERM)}\n    try:\n        for sig in previous:signal.signal(sig,stop)\n        return m.run(OUT,.6,'')\n    finally:\n        for sig,handler in previous.items():signal.signal(sig,handler)\n\n\ndef controller():\n    preflight=verify()\n    result={'status':'RUNNING','preflight':preflight,'out':str(OUT),'controller_pid':os.getpid(),'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip()}\n    m.n.common.atomic(B/'native06-controller.json',result)\n    try:\n        native=run_with_boundary_signals()\n        m._scope['guard'](OUT)\n        result.update(status='CLOSED_FINITE_NATIVE_RESULT',native_status=native['status'],outputs={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file()})\n        m.n.common.atomic(B/'native06-controller.json',result)\n        return 0 if native['status']=='PASS_NATIVE_LOADED_FEEDBACK_SCREEN' else 1\n    except BaseException as error:\n        result.update(status='FAILED_RETAINED',error=repr(error),outputs={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file()} if OUT.exists() else {})\n        m.n.common.atomic(B/'native06-controller.json',result)\n        raise\n\n\ndef launch():\n    preflight=verify()\n    with (B/'launch-once.json').open('x') as f:json.dump(preflight,f,indent=2)\n    command=['taskset','-c','10',str(R/'hw/soc/tools/cocotb-venv/bin/python'),str(Path(__file__).resolve()),'--controller']\n    env={k:v for k,v in os.environ.items() if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE','GH_TOKEN','GITHUB_TOKEN','LD_PRELOAD')}\n    env.update(PYTHONDONTWRITEBYTECODE='1',OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1')\n    with (B/'native-06-01.log').open('x') as log:\n        process=subprocess.Popen(command,cwd=R,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,env=env)\n        fields=(Path('/proc')/str(process.pid)/'stat').read_text().rsplit(') ',1)[1].split()\n    receipt={'status':'DETACHED_CONTROLLER_STARTED_NATIVE_PROGRESS_REQUIRED','controller':{'pid':process.pid,'start_ticks':fields[19],'process_group':int(fields[2])},'boot_id':Path('/proc/sys/kernel/random/boot_id').read_text().strip(),'command':command,'preflight':preflight,'launcher':pin(Path(__file__))}\n    m.n.common.atomic(B/'detached-launch.json',receipt)\n    print(json.dumps(receipt))\n\n\nif __name__=='__main__':\n    if sys.argv[1:]==['--controller']:raise SystemExit(controller())\n    assert not sys.argv[1:]\n    launch()\n"
+    }
+  ]
+}

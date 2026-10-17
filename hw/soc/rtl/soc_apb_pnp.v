@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // Peripheral bus device table.
 //
 // The APB-side counterpart of soc_pnp.v: two words per peripheral slot
@@ -50,3 +52,5 @@ module soc_apb_pnp (
   always @(*) prdata_o = apb_pnp_data;
 
 endmodule
+
+`default_nettype wire

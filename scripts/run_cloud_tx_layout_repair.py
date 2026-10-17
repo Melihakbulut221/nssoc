@@ -1,0 +1,758 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Generate real upper-metal TX geometries and run unchanged physical gates."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tarfile
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def fetch(url, digest, target):
+    subprocess.run(['curl', '--fail', '--location', '--retry', '4', '--silent',
+                    '--show-error', url, '-o', str(target)], check=True)
+    assert sha(target) == digest
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--variant', choices=('baseline', 'topmetal_trunks', 'topmetal_trunks_narrow_bus',
+                                             'critical_buses', 'critical_buses_wide_escape',
+                                             'critical_buses_supply_escape', 'critical_buses_power_trunks','critical_buses_power_trunks_vias',
+                                             'critical_buses_kelvin_supply_direct_low_outputs',
+                                             'critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs',
+                                             'critical_buses_interleaved_resistors', 'critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series','critical_buses_kelvin_low_ports_loads_shunts_series_direct','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'), required=True)
+    parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
+    parser.add_argument("--boundary-pins", action="store_true", help="Extend real TM2 public pins to the macro boundary; requires fresh DRC/LVS and RC")
+    parser.add_argument("--boundary-policy", choices=("left", "nearest_pair", "nearest_pair_tight"), default="left", help="Select actual left/right pin metal access while keeping each differential pair on one side")
+    parser.add_argument('--prestage-nx', type=int, choices=(1,3,8), default=8,
+                        help='Actual Nx1/Nx3 cell from the full32 native sizing study; requires new physical proof')
+    parser.add_argument('--prestage-headroom-trim',action='store_true',help='Use the exact fixedgeometry three-corner full32 headroom candidate; fresh physical proof required')
+    args = parser.parse_args()
+    assert not args.prestage_headroom_trim or args.prestage_nx in (1,3)
+    if args.prestage_nx != 8:
+        assert os.environ.get('GITHUB_ACTIONS') == 'true'
+        assert args.circuit_profile == 'cascade158'
+        assert args.variant == 'critical_buses_kelvin_supply_direct'
+        assert args.boundary_pins and args.boundary_policy == 'nearest_pair_tight'
+
+    assert args.boundary_pins or args.boundary_policy == "left", "Boundary policy requires real boundary pins"
+    requested_variant = args.variant
+    left_final_outputs = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'
+    if left_final_outputs:
+        assert args.circuit_profile == 'final_drive_v10', 'Output placement trial binds exact V10 devices'
+        assert args.boundary_pins and args.boundary_policy == 'nearest_pair_tight'
+        args.variant = 'critical_buses_kelvin_low_ports_loads_shunts_series'
+    direct_pre_outputs = requested_variant == 'critical_buses_kelvin_supply_direct_low_outputs'
+    if direct_pre_outputs:
+        assert args.circuit_profile == 'cascade158', 'Short output routes bind exact cascade158 devices'
+        args.variant = 'critical_buses_kelvin_supply_direct'
+    direct_final_supply = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct'
+    if direct_final_supply:
+        assert args.circuit_profile in ('final_drive_v8','final_drive_v10'), 'Direct supply binds an explicit unchanged V8/V10 circuit'
+        args.variant = 'critical_buses_kelvin_low_ports_loads_shunts_series'
+    geometry_variant = args.variant
+    if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
+        assert args.circuit_profile == 'final_drive_v8' or (
+            args.circuit_profile in ('final_drive_v10','final_drive_v11') and
+            args.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series'
+        ), 'Only original V8 geometry trials or explicit V10/V11 series-branch experiment'
+        geometry_variant = 'critical_buses_kelvin_low_critical'
+    if args.circuit_profile in ('cascade16','cascade158'):
+        assert geometry_variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',), 'New prestage keeps proven dense physical geometry'
+    if geometry_variant in ('critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal'):
+        assert args.circuit_profile in ('final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), 'Tail-path geometry requires an explicit final circuit'
+    if args.circuit_profile in ('final_drive_v9','final_drive_v10','final_drive_v11'):
+        assert geometry_variant == 'critical_buses_kelvin_low_critical', 'New data-bank circuit requires its own low-critical layout and fresh RC'
+    if geometry_variant in ('critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct'):
+        assert args.circuit_profile in ('cascade14','cascade158'), 'Supply feed binds an explicitly generated prestage circuit'
+    if args.circuit_profile == 'cascade158':
+        assert geometry_variant == 'critical_buses_kelvin_supply_direct', 'New circuit requires its own direct-supply layout and fresh RC'
+    dense_prestage = args.circuit_profile in ('cascade14','cascade16','cascade158') and geometry_variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct',)
+    if geometry_variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+        assert args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11') or dense_prestage
+    spec_path = ROOT / 'docs/evidence/pcie-tx-layout-cloud-input-20261013.json'
+    spec = json.loads(spec_path.read_text())
+    out = ROOT / 'hw/soc/out/cloud-tx-layout-repair'
+    out.mkdir(parents=True, exist_ok=False)
+    result = dict(status='RUNNING', variant=requested_variant, circuit_profile=args.circuit_profile, boundary_pins=args.boundary_pins, boundary_pin_policy=args.boundary_policy if args.boundary_pins else "none", adopted=False,
+        scope='Real generated layout with54native devices. DRC/LVS and physical fault controls only; new native RC extraction and full waveform validation still required before any electrical adoption. No main-chip or full serial PHY acceptance.')
+
+    def run(command, name):
+        log = out / (name + '.log')
+        with log.open('w') as stream:
+            code = subprocess.call([str(x) for x in command], cwd=ROOT, stdout=stream, stderr=subprocess.STDOUT)
+        if code:
+            print(log.read_text(errors='replace')[-16000:], flush=True)
+            for child in sorted((out / 'physical').glob('*/run.log')):
+                print(str(child) + '\n' + child.read_text(errors='replace')[-4000:], flush=True)
+            raise RuntimeError(f'{name} failed with exit{code}')
+
+    try:
+        archive = out / 'input.tar.gz'
+        fetch(spec['receipt']['url'], spec['receipt']['sha256'], archive)
+        with tarfile.open(archive) as tar:
+            tar.extractall(ROOT, filter='data')
+        archive.unlink()
+        manifest = json.loads((ROOT / 'manifest.json').read_text())
+        assert all(sha(ROOT / n) == r['sha256'] for n, r in manifest['files'].items())
+        originals = out / 'original-methods'
+        originals.mkdir()
+        for bundle in spec['method_archives']:
+            fetch(bundle['url'], bundle['sha256'], archive)
+            with tarfile.open(archive) as tar:
+                for name, digest in bundle['members'].items():
+                    member = tar.getmember(name)
+                    assert member.isfile() and member.size < 1024 * 1024
+                    data = tar.extractfile(member).read()
+                    assert hashlib.sha256(data).hexdigest() == digest
+                    if name.endswith('.spice'):
+                        target = ROOT / name
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                    else:
+                        target = originals / Path(name).name
+                    target.write_bytes(data)
+            archive.unlink()
+        source = (originals / 'layout91.py').read_text()
+        edits = []
+        physical_source=(originals/'physical92.py').read_text()
+        if args.circuit_profile in ('cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'):
+            if args.circuit_profile in ('cascade14','cascade16','cascade158'):
+                version,expected={
+                    'cascade14':('v2','c97692bcc4389c256479631e820a4293b79121d2225d767f5635429cd7dd0805'),
+                    'cascade16':('v3','9cc69586dbe83af7d58ff1c1f15a58aac17958ada8916cd1dbe0554e2813cd39'),
+                    'cascade158':('v4','c24851159489e6947989738bc6859e6731326b77ca9e17acaac9f6bd2d7b1495'),
+                }[args.circuit_profile]
+                circuit=ROOT/f'hw/soc/analog/pcie/tx_mux2_hbt_cascade_{version}.spice'
+                top=f'nssoc_tx_mux2_{args.circuit_profile}_layout_v1'
+            else:
+                from audit_tx_final_layout_source import audit
+                audit_profile = args.circuit_profile.rsplit('_',1)[1]
+                circuit=ROOT/f'hw/soc/analog/pcie/tx_mux2_final_drive_{audit_profile}_layout_core.spice'
+                native=ROOT/f'hw/soc/analog/pcie/tx_mux54_passive_drive_{audit_profile}.spice'
+                expected,native_digest={
+                    'v5':('c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf','75242abe73341e04ba62b2d4a41abf5e55b725ecec6eeb55dbf6abbbe8f2232d'),
+                    'v6':('2ef986b71a2b6b74d4b6b20f74048759c191a441d3bc58667259110b0b2a562f','03e40de12d6f1e340772476959abc823676766a16466bc465c2972954ba64c76'),
+                    'v7':('55249822b97b01e8c5f9f90faa408fbf1a0cd34ce55f8f48a5cde87304c9217a','6f03f8557173a8528f3ad20a16c3102487cbcfe2ba0ac657190f2d46c95edc81'),
+                    'v8':('ece50f76c5c8a6bd9bb334498a958c14a2c7be93cb44d008786e8112608c005d','1cae9383cc799292e85c8e95ff641410a502c76b927d8729248ebef9758f0ed8'),
+                    'v9':('1a627f174fb27bf3219afbb3c07e650f5c0eeaeec3b51e32fe61b11eb876c515','edac2ab70f2c104d1c415c54ad858bcf7c769936f00fa9bc606a17de9de1ffcc'),
+                    'v10':('afca836aec7c57b13fb541afe7ba38b8d47f5cc27c65f0129842228b7f46ae6b','56b50efbbc138e8af973c63809799574da4ffb9c79b9ff5b5732c44e7e234df8'),
+                    'v11':('b4e12e1f3ccbedff553d65b06060643a4322faecd747a1cfb13222bb16e11514','a7029ce4aac015f380756f183e26ab5a66f64f78dbbf07c34fc904c39e8ffc0c'),
+                }[audit_profile]
+                assert sha(native)==native_digest
+                result['circuit_equivalence_before_generation']=audit(circuit.read_text(),native.read_text(),profile=audit_profile)
+                top=f'nssoc_tx_mux2_final_drive_{audit_profile}_layout_v1'
+            assert sha(circuit)==expected
+            if args.prestage_nx in (1,3):
+                from cloud_tx_tree32_budget import resized
+                original_circuit = circuit
+                candidate, sizing = resized(circuit.read_text(), args.prestage_nx)
+                expected = hashlib.sha256(candidate.encode()).hexdigest()
+                assert expected == {1:'af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd',
+                                    3:'3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d'}[args.prestage_nx]
+                if args.prestage_headroom_trim:
+                    from cloud_tx_tree32_budget import trim_dividers
+                    candidate,sizing['divider_trim']=trim_dividers(candidate,args.prestage_nx)
+                    expected=hashlib.sha256(candidate.encode()).hexdigest()
+                    evidence=json.loads((ROOT/'docs/evidence/tx-tree32-headroom-fixed-pvt-pass-20261017.json').read_text())
+                    assert evidence['status']=='FIXED_GEOMETRY_NOMINAL_HOT_COLD_AND_ACTUAL_FAULT_PASSED_NOT_PHYSICAL_ACCEPTANCE'
+                    proofs=[]
+                    assert len(evidence['cases'])==4
+                    for case in evidence['cases']:
+                        assert case['run']==39005251402 and case['source_head']=='ad92399dccc8a4b58ee8afc83cbc4bc0df64c061'
+                        target=out/('trim-native-'+case['group']+'.json')
+                        fetch(case['summary_url'],case['summary_sha256'],target)
+                        proof=json.loads(target.read_text())
+                        assert proof['source_head']==case['source_head'] and proof['variant']=='budget_high3_trim'and proof['source_unchanged']
+                        assert proof['outputs']['pre-nx'+str(args.prestage_nx)+'.spice']==expected and not proof['diagnostics']
+                        if proof['fault']=='none':
+                            assert proof['schematic_screen_passed']and proof['review']['all_engineering_gates_passed']
+                            assert not proof['review']['failed_hbts']and not proof['review']['failed_mos']
+                        else:assert proof['fault']=='swap_leaf_select'and proof['actual_leaf_fault_rejected_by_original_bits']and not proof['review']['signals']['passed']
+                        proofs.append(dict(condition=proof['condition'],fault=proof['fault'],summary_sha256=case['summary_sha256']))
+                    assert {(p['condition'],p['fault'])for p in proofs}=={('nominal','none'),('hot_low','none'),('cold_high','none'),('nominal','swap_leaf_select')}
+                    sizing['fixed_headroom_native_proofs']=proofs
+                circuit = out / ('pre-nx'+str(args.prestage_nx)+'.spice')
+                circuit.write_text(candidate)
+                top = 'nssoc_tx_mux2_cascade158_nx'+str(args.prestage_nx)+('_trim_layout_v1'if args.prestage_headroom_trim else'_layout_v1')
+                result['prestage_sizing'] = dict(sizing,
+                    original_source=str(original_circuit.relative_to(ROOT)),
+                    original_sha256=sha(original_circuit),candidate_sha256=expected,
+                    native_schematic_evidence_run=39005251402 if args.prestage_headroom_trim else 38993903811 if args.prestage_nx==1 else 38999900875,
+                    evidence_scope='Exact fixedgeometry full32 nominal/hot/cold plus actual selector fault' if args.prestage_headroom_trim else 'Original untrimmed sizing; physical/PVT/RC still required.')
+                if args.prestage_nx==3 and not args.prestage_headroom_trim:
+                    from route_cloud_newer_postcts import fetch as fetch_sizing
+                    proofs={}
+                    for fault,digest in [('none','47fbd49a50222e53392edaa8aab9aa0423724c9a3992e397b735c8db9011e283'),
+                                         ('swap_leaf_select','60b3a68f30cf883685f7734be60864a13587a083653a6d6af8332413404229f5')]:
+                        group='tx-tree32-budget-budget_high3-'+fault
+                        url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38999900875-1-'+group+'/'+group+'-38999900875-1.summary.json'
+                        target=out/('native-sizing-'+fault+'.json');fetch_sizing(url,digest,target)
+                        proof=json.loads(target.read_text())
+                        assert proof['source_head']=='1df5234d5e30070148c05fe001ebe2964212f8b0'
+                        assert proof['variant']=='budget_high3'and proof['fault']==fault and proof['source_unchanged']
+                        assert proof['outputs']['pre-nx3.spice']==expected and not proof['diagnostics']
+                        if fault=='none':
+                            assert proof['schematic_screen_passed']and proof['review']['all_engineering_gates_passed']
+                            assert not proof['review']['failed_hbts']and not proof['review']['failed_mos']
+                        else:assert proof['actual_leaf_fault_rejected_by_original_bits']and proof['review']['signals']['wrong_sign_samples']==27
+                        proofs[fault]=dict(summary_sha256=digest,source_run=38999900875)
+                    result['prestage_sizing']['native_schematic_receipts']=proofs
+            for before,after in [
+                ('hw/soc/out/pcie-tx-mux2-20261012/tx_mux2_hbt_passive_fast_v1.spice',str(circuit.relative_to(ROOT))),
+                ('4d7606b3c14ef06de2d25ce46c266dcef3635fe602218b3a8932f7f061e53101',expected),
+                ('nssoc_tx_mux2_passive_topmetal_layout_v1',top)]:
+                assert source.count(before)==1,before
+                source=source.replace(before,after)
+                edits.append(dict(before=before,after=after))
+            assert physical_source.count('nssoc_tx_mux2_passive_topmetal_layout_v1')==1
+            physical_source=physical_source.replace('nssoc_tx_mux2_passive_topmetal_layout_v1',top)
+            result['circuit_source']=dict(path=str(circuit.relative_to(ROOT)),sha256=expected)
+            result['scope']='Native '+args.circuit_profile+' circuit generated as54physical devices including27substrate contacts. Circuit equivalence is not electrical acceptance; Each sizing candidate requires independent fresh electrical screening. Same560DRC rules, strict hierarchical/flat transistor LVS and five physical/reference faults. No extracted electrical acceptance, assembled serializer layout or fullPHY/chip acceptance.'
+        if geometry_variant != 'baseline':
+            changes = [
+                ('30+26*c,30+14*r', '30+28.8*c,30+14*r'),
+                ('238+12*(i-19)', '260.4+14.4*(i-19)'),
+                ('(collector, 1, n[0], x - 9, 0.04)', '(collector, 1, n[0], x - 10.8, 0.04)'),
+                ('(base, 1, n[1], x - 6, -0.04)', '(base, 1, n[1], x - 7.2, -0.04)'),
+                ('(m2[0], 2, n[2], x - 3, 0)', '(m2[0], 2, n[2], x - 3.6, 0)'),
+                ('x - 6 + 3 * k', 'x - 7.2 + 3.6 * k'),
+                ('"sub", x + 15', '"sub", x + 14.4'),
+                ('via(3, 4, lane, y)', 'via(3, 6, lane, y)'),
+                ('box(4, x - 0.6, min(sy, y) - 0.2, x + 0.6, max(sy, y) + 0.2)',
+                 'box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)'),
+                ('via(4, 7, x, y)', 'via(6, 7, x, y)'),
+                ('    for x, y in kelvin:via(2, 5, round(x/0.005)*0.005, round(y/0.005)*0.005, 4)\n',
+                 '    # Return connections use the new thick trunks; omit the bypass.\n'),
+                ('    box(5, min(x for x,y in kelvin)-1, min(y for x,y in kelvin)-6, max(x for x,y in kelvin)+1, max(y for x,y in kelvin)+6)\n',
+                 '    # Old Metal5 bypass would short the new low via stacks.\n'),
+            ]
+            if geometry_variant == 'topmetal_trunks_narrow_bus':
+                changes.append(("width = 16 if net in ['avdd','avss'] else 4", "width = 16 if net in ['avdd','avss'] else 3"))
+            if geometry_variant.startswith('critical_buses'):
+                changes.append(('    for i, net in enumerate(sorted(terminals)):',
+                    "    ordered_nets = ['qn','qp','ea','eb','tail','sp','sn','op','on','ap','an','bp','bn','iref','avdd','avss','sub']\n"
+                    "    assert len(ordered_nets) == len(terminals) and set(ordered_nets) == set(terminals)\n"
+                    "    for i, net in enumerate(ordered_nets):"))
+                # TM2.bR requires5um beside wide lines with>50um parallel run.
+                # These are exactly the three gaps adjacent to the two supply
+                # buses in the explicit critical-net order above.
+                changes.append(('cursor_y = y + half + 3',
+                                "cursor_y = y + half + (5 if net in ['iref','avdd','avss'] else 3)"))
+            if geometry_variant in ('critical_buses_wide_escape','critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                changes.append(('escape(pin, met, net, lane, name, 4, off)',
+                                'escape(pin, met, net, lane, name, 8, off)'))
+            if geometry_variant in ('critical_buses_supply_escape','critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                # Actual measured tail-emitter lift differs from the reference
+                # return. Reduce native supply/return metal resistance in GDS;
+                # keep signal escape geometry and all circuit devices intact.
+                # The same native DRC/LVS/fault checks decide legality.
+                changes.append(('        box(3, lane - 0.2, y - 0.2, x + 0.2, y + 0.2)',
+                    "        half_escape = 0.4 if net in ['avdd','avss'] else 0.2\n"
+                    '        box(3, lane - half_escape, y - half_escape, x + half_escape, y + half_escape)'))
+                changes.append(('            box(6, x - 0.82, min(sy, y) - 0.2, x + 0.82, max(sy, y) + 0.2)',
+                    "            half_trunk = 1.0 if net in ['avdd','avss'] else 0.82\n"
+                    '            box(6, x - half_trunk, min(sy, y) - 0.2, x + half_trunk, max(sy, y) + 0.2)'))
+            if geometry_variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                # More room between routing lanes permits wider native power
+                # trunks without stealing spacing from adjacent signal metal.
+                # This is a new physical candidate, not a scaled RC surrogate.
+                changes += [
+                    ('30+28.8*c,30+14*r','30+38.4*c,30+14*r'),
+                    ('260.4+14.4*(i-19)','337.2+19.2*(i-19)'),
+                    ('(collector, 1, n[0], x - 10.8, 0.04)','(collector, 1, n[0], x - 14.4, 0.04)'),
+                    ('(base, 1, n[1], x - 7.2, -0.04)','(base, 1, n[1], x - 9.6, -0.04)'),
+                    ('(m2[0], 2, n[2], x - 3.6, 0)','(m2[0], 2, n[2], x - 4.8, 0)'),
+                    ('x - 7.2 + 3.6 * k','x - 9.6 + 4.8 * k'),
+                    ('"sub", x + 14.4','"sub", x + 19.2'),
+                    ("half_trunk = 1.0 if net in ['avdd','avss'] else 0.82",
+                     "half_trunk = 1.64 if net in ['avdd','avss'] else 0.82"),
+                    ("width = 16 if net in ['avdd','avss'] else 4",
+                     "width = 32 if net in ['avdd','avss'] else 4"),
+                ]
+            if (args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11') or dense_prestage) and geometry_variant in ('critical_buses_power_trunks','critical_buses_power_trunks_vias','critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                # Actual first-layout extraction shorted ea to avdd: D20's
+                # 18um resistor contact via at x365.4 meets D21's ea escape
+                # lane x366 at the same y. DRC alone did not detect this.
+                # Move whole resistor banks, preserving every device value.
+                # 28.8um would align the prior substrate trunk (+19.2)
+                # with the next signal lane (-9.6), also a real LVS short.
+                changes.append(('337.2+19.2*(i-19)', '337.2+38.4*(i-19)'))
+                if geometry_variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                    # Place one resistor below each HBT bank, in dedicated
+                    # inter-bank lanes. Long bleeders end below HBT tap row.
+                    # Keep the same19HBT/8R/27tap circuit; actual LVS decides.
+                    changes.append(('positions.update({i:(337.2+38.4*(i-19),30) for i in range(19,27)})',
+                        'positions.update({19:(164.4,-50),20:(126.0,-50),21:(202.8,-50),22:(241.2,-50),23:(279.6,-50),24:(318.0,-50),25:(87.6,-50),26:(49.2,-50)})'))
+
+            if geometry_variant in ('critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                # The original same-Y M5 strap crossed other via stacks. Put
+                # the common return below all PCells, with separate vertical
+                # M5 branches at the three actual ground-emitter pin centres.
+                # Short variant joins above the tail/reference banks at64.8um,
+                # avoiding resistor/tap crossings while reducing branchlength.
+                # Tail/reference ground imbalance was measured in native waves.
+                # Jog the reference branch: x298.8 would intersect D23's
+                # substrate via at y~-69; strict LVS caught that actual short.
+                changes.append(('    # Return connections use the new thick trunks; omit the bypass.\n',
+                    ('    return_y = 64.8\n' if geometry_variant in ('critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4') else '    return_y = -92.4\n') +
+                    '    assert len(kelvin) == 3\n'
+                    '    return_lanes = []\n'
+                    '    for index, (x, y) in enumerate(kelvin):\n'
+                    '        via(2, 5, x, y, 4)\n'
+                    '        lane = x + (4.8 if index == 0 else 0)\n'
+                    '        return_lanes.append(lane)\n'
+                    '        box(5, min(x,lane)-0.4, y-0.4, max(x,lane)+0.4, y+0.4)\n'
+                    '        box(5, lane-0.4, min(return_y,y)-0.4, lane+0.4, max(return_y,y)+0.4)\n'
+                    '    box(5, min(return_lanes)-0.4, return_y-0.4, max(return_lanes)+0.4, return_y+0.4)\n'))
+            if geometry_variant in ('critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4','critical_buses_power_trunks_vias'):
+                # Pin access already has8columns, but M3-to-TM1 escape retained
+                # the via helper default of2. Increase actual lower-via cuts;
+                # TopVia1/2 geometry and every extraction coefficient unchanged.
+                changes.append(('via(3, 6, lane, y)', 'via(3, 6, lane, y, 12)' if geometry_variant in ('critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10') else 'via(3, 6, lane, y, 8)'))
+            if geometry_variant in ('critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+                # Increase actual via-array parallelism without changing any
+                # native extraction coefficients or device circuit parameters.
+                changes.extend([
+                    ('vn_rows=1,', f'vn_rows={4 if geometry_variant.endswith("dense4") else 2} if lo==3 and hi==6 else 1,\n                vt1_rows={4 if geometry_variant.endswith("dense4") else 2} if lo==3 and hi==6 else 1,'),
+                    ("half_escape = 0.4 if net in ['avdd','avss'] else 0.2",
+                     "half_escape = 0.4 if net in ['avdd','avss'] else 0.3"),
+                    ('1 if p["w"]=="1u" else 4)', '1 if p["w"]=="1u" else 8)'),
+                ])
+            if geometry_variant in ('critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12'):
+                # Native class sensitivity removed all four HBT violations only
+                # when internal metal loss fell. Widen those actual TM1 trunks
+                # from1.64 to3.0um on existing4.8um lanes; keep return/bias and
+                # every device, cut array and PDK extraction coefficient fixed.
+                # Unchanged native DRC/LVS determines physical legality.
+                changes.append((
+                    "half_trunk = 1.64 if net in ['avdd','avss'] else 0.82",
+                    "half_trunk = 1.5 if net in ['qn','qp','ea','eb','tail'] else (1.64 if net in ['avdd','avss'] else 0.82)"))
+            if geometry_variant.startswith('critical_buses_kelvin_signal_escape_') or geometry_variant == 'critical_buses_kelvin_m3_10':
+                # Explore actual horizontal M3 access, whose long native-R
+                # branches remain after the TM1-only improvement. Do not widen
+                # clock/data bases, supply/return, or alter any PDK coefficient.
+                half_access = {'08': 0.4, '10': 0.5, '12': 0.6}[geometry_variant[-2:]]
+                # m3_10 keeps the proven dense-wide TM1 width; the sibling
+                # sweep retains widened TM1 for a separate controlled axis.
+                changes.append((
+                    "half_escape = 0.4 if net in ['avdd','avss'] else 0.3",
+                    f"half_escape = {half_access} if net in ['qn','qp','ea','eb','tail'] else (0.4 if net in ['avdd','avss'] else 0.3)"))
+            if geometry_variant in ('critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal'):
+                # Hot native waveforms measured ~66mV from selector emitters
+                # to tail collectors and ~34mV emitter return lift. Widen only
+                # actual tail M3/TM1 and the local common M5 return strap.
+                # All devices, other signal trunks, via cuts, PDK RC values
+                # and electrical gates retain the dense-wide source contract.
+                changes.extend([
+                    ("half_escape = 0.4 if net in ['avdd','avss'] else 0.3",
+                     "half_escape = 0.5 if net == 'tail' else (0.4 if net in ['avdd','avss'] else 0.3)"),
+                    ("half_trunk = 1.64 if net in ['avdd','avss'] else 0.82",
+                     "half_trunk = 1.5 if net == 'tail' else (1.64 if net in ['avdd','avss'] else 0.82)"),
+                    ('box(5, min(x,lane)-0.4, y-0.4, max(x,lane)+0.4, y+0.4)',
+                     'box(5, min(x,lane)-0.8, y-0.8, max(x,lane)+0.8, y+0.8)'),
+                    ('box(5, lane-0.4, min(return_y,y)-0.4, lane+0.4, max(return_y,y)+0.4)',
+                     'box(5, lane-0.8, min(return_y,y)-0.8, lane+0.8, max(return_y,y)+0.8)'),
+                    ('box(5, min(return_lanes)-0.4, return_y-0.4, max(return_lanes)+0.4, return_y+0.4)',
+                     'box(5, min(return_lanes)-0.8, return_y-0.8, max(return_lanes)+0.8, return_y+0.8)'),
+                ])
+            if geometry_variant in ('critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal',):
+                # Preserve the complete proven tail-path geometry and add a
+                # real same-net local shunt. Existing M3->TM1 via stacks expose
+                # M4, so no overlapping new cuts are inserted at those points.
+                # The six tail endpoints belong to selector/tail banks only.
+                # Native DRC/LVS must detect any collision with another net.
+                changes.append(('    # Old Metal5 bypass would short the new low via stacks.\n',
+                    '    assert len(terminals["tail"]) == 6\n'
+                    '    tail_join_y = 60.0\n'
+                    '    tail_xs = []\n'
+                    '    for x, sy in terminals["tail"]:\n'
+                    '        box(4, x-0.4, min(sy,tail_join_y)-0.4, x+0.4, max(sy,tail_join_y)+0.4)\n'
+                    '        tail_xs.append(x)\n'
+                    '    box(4, min(tail_xs)-0.4, tail_join_y-1.0, max(tail_xs)+0.4, tail_join_y+1.0)\n'
+                    '    assert rows[17]["nets"][2] == "avss"\n'
+                    '    ground_trunk_x = positions[17][0] - 4.8\n'
+                    '    assert sum(abs(x-ground_trunk_x)<1e-9 for x,sy in terminals["avss"]) == 2\n'
+                    '    box(5, min(ground_trunk_x,min(return_lanes))-0.8, return_y-0.8, max(ground_trunk_x,max(return_lanes))+0.8, return_y+0.8)\n'
+                    '    via(5, 6, ground_trunk_x, return_y, 4)\n'))
+            if geometry_variant in ('critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal',):
+                # Actual hot loaded wave: tail emitters remain33-35mV above
+                # ground and final MUX delay grows9.47ps to22.28ps. Increase
+                # only the same-net local M5 return metal and its native via
+                # arrays; keep all54devices, tail M4 shunt and RC rules intact.
+                # Eight columns failed M4/M5 spacing at a native pin:0.190um.
+                # Six columns retain parallel cuts with more native clearance.
+                changes.extend([
+                    ('via(2, 5, x, y, 4)', 'via(2, 5, x, y, 6)'),
+                    ('box(5, min(x,lane)-0.8, y-0.8, max(x,lane)+0.8, y+0.8)',
+                     'box(5, min(x,lane)-1.6, y-1.6, max(x,lane)+1.6, y+1.6)'),
+                    ('box(5, lane-0.8, min(return_y,y)-0.8, lane+0.8, max(return_y,y)+0.8)',
+                     'box(5, lane-1.6, min(return_y,y)-1.6, lane+1.6, max(return_y,y)+1.6)'),
+                    ('box(5, min(return_lanes)-0.8, return_y-0.8, max(return_lanes)+0.8, return_y+0.8)',
+                     'box(5, min(return_lanes)-1.6, return_y-1.6, max(return_lanes)+1.6, return_y+1.6)'),
+                    ('box(5, min(ground_trunk_x,min(return_lanes))-0.8, return_y-0.8, max(ground_trunk_x,max(return_lanes))+0.8, return_y+0.8)',
+                     'box(5, min(ground_trunk_x,min(return_lanes))-1.6, return_y-1.6, max(ground_trunk_x,max(return_lanes))+1.6, return_y+1.6)'),
+                    ('via(5, 6, ground_trunk_x, return_y, 4)',
+                     'via(5, 6, ground_trunk_x, return_y, 8)'),
+                ])
+            if geometry_variant in ('critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal'):
+                # Native DC38411521005 measured8.029/9.196ohm prestage
+                # and8.579/10.233ohm final avdd paths to load resistors. Add a real parallel
+                # low TM2 feed and wide external TM1 riser; keep original
+                # trunks, all54devices and extraction coefficients intact.
+                # New geometry is subject to native DRC/LVS/fault controls.
+                changes.append(('    assert set(ports) == set(PORTS)\n',
+                    '    assert len(terminals["avdd"]) == 2\n'
+                    '    feed_y = -10.0\n'
+                    '    riser_x = -10.0\n'
+                    '    avdd_y = ports["avdd"][1].center().y\n'
+                    '    feed_xs = [x for x,sy in terminals["avdd"]]\n'
+                    '    assert all(sy < feed_y < avdd_y for x,sy in terminals["avdd"])\n'
+                    '    assert riser_x + 4 < min(x for ts in terminals.values() for x,sy in ts) - 4\n'
+                    '    box(7, riser_x-4, feed_y-4, max(feed_xs)+4, feed_y+4)\n'
+                    '    box(6, riser_x-4, feed_y-4, riser_x+4, avdd_y+4)\n'
+                    '    box(7, riser_x-4, avdd_y-4, max(feed_xs)+4, avdd_y+4)\n'
+                    '    via(6, 7, riser_x, feed_y)\n'
+                    '    via(6, 7, riser_x, avdd_y)\n'
+                    '    for x in feed_xs: via(6, 7, x, feed_y)\n'
+                    '    assert set(ports) == set(PORTS)\n'))
+            # Paired native TC captures38520023196/38520032724 preserve exact
+            # Nx4 geometry. Final data collectors lose123-146mV time-mean with
+            # metal; compact hot controls pass. Extend the actual direct M1
+            # landing-to-TM1 supply route to the final V8 load pair, preserving
+            # all original paths, devices and widths. DRC/LVS then fresh RC
+            # and loaded native waves decide; no extracted-R substitution.
+            if geometry_variant == 'critical_buses_kelvin_supply_direct' or direct_final_supply:
+                # The verified prestage still has7.034/8.203ohm from avdd to
+                # load pins and loses inputcommonmode in hot loaded operation.
+                # Connect the actual resistor M1->M3 landing directly to the
+                # existing low TM2 feed, bypassing the long M3 escape. Preserve
+                # the old paths and all devices; native DRC/LVS must pass.
+                changes.extend([
+                    ('    terminals = {}\n',
+                     '    terminals = {}\n    direct_avdd_pins = []\n'),
+                    ('        via(met, 3, x, y, cols)\n',
+                     '        via(met, 3, x, y, cols)\n'
+                     '        if net == "avdd":\n'
+                     '            assert met == 1\n'
+                     '            direct_avdd_pins.append((x,y))\n'
+                     '            via(3, 6, x, y, 8)\n'),
+                    ('    assert set(ports) == set(PORTS)\n',
+                     '    assert len(direct_avdd_pins) == 2\n'
+                     '    assert all(y < feed_y for x,y in direct_avdd_pins)\n'
+                     '    for x,y in direct_avdd_pins:\n'
+                     '        box(6, x-1.64, y-0.2, x+1.64, feed_y+0.2)\n'
+                     '        via(6, 7, x, feed_y)\n'
+                     '    box(7, riser_x-4, feed_y-4, max(x for x,y in direct_avdd_pins)+4, feed_y+4)\n'
+                     '    assert set(ports) == set(PORTS)\n'),
+                ])
+            if geometry_variant in ('critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal'):
+                # Source-bound hot/cold wave diagnosis38420038719/38420042839:
+                # final selector collectors lose86-103mV mean relative to the
+                # compact circuit. Add actual short internal ea/eb routes on
+                # different metals; keep all original paths and54devices.
+                # Existing M3->TM1 stacks expose M4/M5 at every escaped pin.
+                # Nine terminals each: six data emitters, two selectors and
+                # one native bleeder. Native DRC and strict LVS decide legality.
+                changes.append(('    assert set(ports) == set(PORTS)\n',
+                    '    for local_net,local_layer,local_y in [("ea",4,16.0),("eb",5,20.0)]:\n'
+                    '        assert len(terminals[local_net]) == 9\n'
+                    '        local_xs = []\n'
+                    '        for x,sy in terminals[local_net]:\n'
+                    '            box(local_layer, x-0.4, min(sy,local_y)-0.4, x+0.4, max(sy,local_y)+0.4)\n'
+                    '            local_xs.append(x)\n'
+                    '        box(local_layer, min(local_xs)-0.4, local_y-1.0, max(local_xs)+0.4, local_y+1.0)\n'
+                    '    assert set(ports) == set(PORTS)\n'))
+            if geometry_variant == 'critical_buses_kelvin_compact_internal':
+                # Local parallel shunts reduce DC R but hot waveform worsens.
+                # Remove only the superseded ea/eb global trunks and buses,
+                # retaining all nine physical terminals on each local route.
+                # Advance cursor first so every other bus/port stays fixed.
+                # This removes real metal; never edit extracted R/C values.
+                changes.append(('        xs = []\n',
+                    '        if net in ("ea", "eb"):\n'
+                    '            assert net not in PORTS and len(terminals[net]) == 9\n'
+                    '            continue\n'
+                    '        xs = []\n'))
+            if geometry_variant in ('critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical'):
+                # The M4/M5-only short-route trial raises internal resistance
+                # and fails cold selector headroom. Use original TM1/TM2
+                # conductors nearer the device banks instead. The cursor has
+                # already advanced, preserving all unrelated bus/port positions.
+                # No local M4/M5 ea/eb shunts, no parallel obsolete upper buses.
+                changes.append(('        xs = []\n',
+                    '        if net in ("ea", "eb"):\n'
+                    '            assert net not in PORTS and len(terminals[net]) == 9\n'
+                    '            y = 16.0 if net == "ea" else 24.0\n'
+                    '        xs = []\n'))
+            if geometry_variant == 'critical_buses_kelvin_low_critical':
+                # Low ea/eb routes remove wrong signs but hot margins and
+                # cold selector headroom still fail. Also shorten the actual
+                # qn/qp collector trunks and TM2 buses; retain the original
+                # cursor and all public-port positions. No R/C scaling.
+                changes.append((
+                    '        if net in ("ea", "eb"):\n'
+                    '            assert net not in PORTS and len(terminals[net]) == 9\n'
+                    '            y = 16.0 if net == "ea" else 24.0\n',
+                    '        if net in ("qn", "qp", "ea", "eb"):\n'
+                    '            assert net not in PORTS\n'
+                    '            assert len(terminals[net]) == (9 if net in ("ea", "eb") else 8)\n'
+                    '            y = {"qn": 1.0, "qp": 9.0, "ea": 16.0, "eb": 24.0}[net]\n'))
+            if args.variant in ('critical_buses_kelvin_low_selects','critical_buses_kelvin_low_selects_m3','critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
+                # Native hot trace: RC adds about11ps before the final mux zero,
+                # versus0.22ps in the following TX zero crossing. Test shorter
+                # selector clock buses on unchanged v8 devices. This hypothesis
+                # still needs native DRC/LVS, fresh RC and full loaded waveforms.
+                changes.append((
+                    '            y = {"qn": 1.0, "qp": 9.0, "ea": 16.0, "eb": 24.0}[net]\n',
+                    '            y = {"qn": 1.0, "qp": 9.0, "ea": 16.0, "eb": 24.0}[net]\n'
+                    '        elif net in ("sp", "sn"):\n'
+                    '            assert net in PORTS and len(terminals[net]) == 2\n'
+                    '            y = 32.0 if net == "sp" else 40.0\n'))
+            if args.variant == 'critical_buses_kelvin_low_selects_m3':
+                # Source-bound native R/coordinate diagnosis38467961171 locates
+                # long internal access branches between actual via landings.
+                # Isolate 0.6->1.0um horizontal M3 on qn/qp/ea/eb only. Tail
+                # already uses1.0um. Preserve all devices, buses and other nets;
+                # raw solver edges are not assumed uniquely assigned to M3.
+                # Native DRC/LVS, fresh RC and loaded PVT remain mandatory.
+                changes.append((
+                    "half_escape = 0.5 if net == 'tail' else (0.4 if net in ['avdd','avss'] else 0.3)",
+                    "half_escape = 0.5 if net in ['tail','qn','qp','ea','eb'] else (0.4 if net in ['avdd','avss'] else 0.3)"))
+            if args.variant in ('critical_buses_kelvin_low_selects_rows','critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
+                # Wider M3 failed the hot original-bit screen. Keep low-selects
+                # widths/circuit and shorten actual vertical device-bank routes.
+                # Every PCell and its substrate tap follows the new row pitch;
+                # resistor positions and horizontal bank pitch are unchanged.
+                # Strict native DRC/LVS and fresh RC/waves decide acceptance.
+                changes.append(('30+38.4*c,30+14*r', '30+38.4*c,30+7.2*r'))
+            if args.variant in ('critical_buses_kelvin_low_ports','critical_buses_kelvin_low_ports_deep','critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
+                # Actual short-row hot wire capture: the final mux contributes
+                # about11.28ps extra median zero-crossing delay. Its public op/on
+                # nodes join only resistor terminals below the HBT array, but
+                # currently detour to upper buses. Move their actual TM2 buses
+                # down beside those resistors; keep every device and metal width.
+                # No change to extracted R/C or waveform acceptance is allowed.
+                changes.append((
+                    '            y = 32.0 if net == "sp" else 40.0\n',
+                    '            y = 32.0 if net == "sp" else 40.0\n'
+                    '        elif net in ("op", "on"):\n'
+                    '            assert net in PORTS and len(terminals[net]) == 2\n'
+                    '            y = -32.0 if net == "op" else -24.0\n'))
+            if args.variant == 'critical_buses_kelvin_low_ports_deep':
+                # First shortened output buses improve the hot original margin
+                # 26.48->74.25mV but64early samples still fail. Remove another
+                # 16um of vertical output detour beside the fixed resistor row.
+                # Same devices/widths; native decks, new RC and PVT decide.
+                changes.append((
+                    '            y = -32.0 if net == "op" else -24.0\n',
+                    '            y = -48.0 if net == "op" else -40.0\n'))
+            if args.variant in ('critical_buses_kelvin_low_ports_loads','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
+                # The deeper output bus failed hot margin and two HBT headroom
+                # gates. Start from low_ports (all device gates passed), keeping
+                # output buses at -32/-24um. Move only the two native collector
+                # load resistors and their taps 32um toward the HBT bank. This
+                # shortens actual qp/qn and avdd branches without resizing any
+                # device, rescaling extracted RC or changing sample thresholds.
+                changes.append(('19:(164.4,-50),20:(126.0,-50)',
+                                '19:(164.4,-18),20:(126.0,-18)'))
+            if args.variant in ('critical_buses_kelvin_low_ports_shunts','critical_buses_kelvin_low_ports_loads_shunts','critical_buses_kelvin_low_ports_loads_shunts_series'):
+                # Independent of the pending load-move candidate: keep low_ports
+                # collector loads at y=-50 and op/on buses at -32/-24. Place the
+                # two output shunts below their corresponding series resistors,
+                # aligning the op/on TM1 lanes. This removes long horizontal
+                # output buses. Separate avss lanes avoid existing qn/qp and
+                # substrate trunks; native DRC/LVS/RC and waves must verify it.
+                changes.append(('23:(279.6,-50),24:(318.0,-50)',
+                                '23:(92.4,-82),24:(54.0,-82)'))
+                changes.append(('                escape(pin, 1, n[k], x - 9.6 + 4.8 * k, name, 1 if p["w"]=="1u" else 8)',
+                                '                lane = x - 9.6 + 4.8 * k\n                if i in (23,24) and k == 1:\n                    assert n[k] == "avss"\n                    lane = 149.6 if i == 23 else 34.8\n                escape(pin, 1, n[k], lane, name, 1 if p["w"]=="1u" else 8)'))
+            if args.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series':
+                # Paired native hot diagnosis38491313386: clock-to-MUX median
+                # 17.390ps versus compact9.491ps; source-to100mV max38.278ps
+                # misses the unchanged37.5ps early sample. Keep the now-passing
+                # device bias geometry and move only R25/R26 toward qp/qn.
+                # Their y=-18 row reduces real collector-to-output detours;
+                # op/on buses and all devices/values/widths remain unchanged.
+                changes.append(('25:(87.6,-50),26:(49.2,-50)',
+                                '25:(87.6,-18),26:(49.2,-18)'))
+            # loads_shunts combines the independently measured collector-feed
+            # shortening with the output-shunt move. Same54devices/values;
+            # headroom and original-bit margin require new native RC and PVT.
+            if direct_pre_outputs:
+                # Original TC hot gates38523202992 identify the PRESTAGE outputs
+                # as the failed final-input common-mode interface. Preserve all
+                # cascade158 devices/values and direct-supply geometry. Shorten
+                # actual output buses, align shunt/series branches and move the
+                # series pair toward collectors. New DRC/LVS, RC and native waves
+                # decide acceptance; no threshold or extracted-R change.
+                changes.extend([
+                    ('        xs = []\n',
+                     '        if net in ("op", "on"):\n'
+                     '            assert net in PORTS and len(terminals[net]) == 2\n'
+                     '            y = -32.0 if net == "op" else -24.0\n'
+                     '        xs = []\n'),
+                    ('23:(279.6,-50),24:(318.0,-50)',
+                     '23:(92.4,-82),24:(54.0,-82)'),
+                    ('25:(87.6,-50),26:(49.2,-50)',
+                     '25:(87.6,-18),26:(49.2,-18)'),
+                    ('                escape(pin, 1, n[k], x - 9.6 + 4.8 * k, name, 1 if p["w"]=="1u" else 8)',
+                     '                lane = x - 9.6 + 4.8 * k\n'
+                     '                if i in (23,24) and k == 1:\n'
+                     '                    assert n[k] == "avss"\n'
+                     '                    lane = 149.6 if i == 23 else 34.8\n'
+                     '                escape(pin, 1, n[k], lane, name, 1 if p["w"]=="1u" else 8)'),
+                ])
+            for before, after in changes:
+                assert source.count(before) == 1, before
+                source = source.replace(before, after)
+                edits.append(dict(before=before, after=after))
+        if geometry_variant in ('critical_buses_interleaved_resistors','critical_buses_kelvin_return','critical_buses_kelvin_short','critical_buses_kelvin_short_vias','critical_buses_kelvin_dense','critical_buses_kelvin_dense_wide','critical_buses_kelvin_supply_feed','critical_buses_kelvin_supply_direct','critical_buses_kelvin_tail_paths','critical_buses_kelvin_local_tail','critical_buses_kelvin_local_return','critical_buses_kelvin_local_supply','critical_buses_kelvin_low_internal','critical_buses_kelvin_low_critical','critical_buses_kelvin_local_internal','critical_buses_kelvin_compact_internal','critical_buses_kelvin_signal_trunks','critical_buses_kelvin_signal_escape_08','critical_buses_kelvin_signal_escape_10','critical_buses_kelvin_signal_escape_12','critical_buses_kelvin_m3_10','critical_buses_kelvin_dense4'):
+            # Power buses no longer share an x interval. The frozen mutation
+            # assumed they did and failed before injecting any physical fault.
+            # Join the two verified actual pin centres using an L-shaped bridge.
+            before = """    x=max(ports['avdd'][2],ports['avss'][2])+2.5
+    region=pya.Region(top.shapes(L.layer(134,0)))
+    for net in ['avdd','avss']:assert not (region & pya.Region(pya.DBox(x,ys[net]-.1,x+.1,ys[net]+.1).to_itype(L.dbu))).is_empty()
+    top.shapes(L.layer(134,0)).insert(pya.DBox(x,min(ys['avdd'],ys['avss'])-.7,x+.5,max(ys['avdd'],ys['avss'])+.7))"""
+            after = """    xa=(ports['avdd'][0]+ports['avdd'][2])/2
+    xb=(ports['avss'][0]+ports['avss'][2])/2
+    region=pya.Region(top.shapes(L.layer(134,0)))
+    for net,x in [('avdd',xa),('avss',xb)]:assert not (region & pya.Region(pya.DBox(x-.1,ys[net]-.1,x+.1,ys[net]+.1).to_itype(L.dbu))).is_empty()
+    top.shapes(L.layer(134,0)).insert(pya.DBox(min(xa,xb)-.25,ys['avdd']-.25,max(xa,xb)+.25,ys['avdd']+.25))
+    top.shapes(L.layer(134,0)).insert(pya.DBox(xb-.25,min(ys['avdd'],ys['avss'])-.25,xb+.25,max(ys['avdd'],ys['avss'])+.25))
+    assert (pya.Region(top.shapes(L.layer(134,0)))-region).area()>0"""
+            assert physical_source.count(before)==1
+            physical_source=physical_source.replace(before,after)
+            result['physical_fault_geometry_adaptation']=dict(before=before,after=after,
+                scope='Actual avdd/avss pin-centre bridge only. Same DRC/LVS decks, expected fault verdicts and all other controls unchanged.')
+        if left_final_outputs:
+            # The original tight-edge hot waveform still fails52/768 samples.
+            # Move the actual two series and two shunt resistors by one38.4um
+            # physical column toward the output edge, preserving all dimensions,
+            # models, terminal identities, native route widths and fault gates.
+            # Regenerate every affected wire from the new real pin coordinates.
+            before = '23:(92.4,-82),24:(54.0,-82),25:(87.6,-18),26:(49.2,-18)'
+            after = '23:(54.0,-82),24:(15.6,-82),25:(49.2,-18),26:(10.8,-18)'
+            assert source.count(before) == 1
+            source = source.replace(before, after)
+            # Actual native LVS38692269967 found avss|sub: moved row24's
+            # tap escape is15.6+19.2=34.8um, exactly the old avss lane.
+            # Keep row23's proven lane; route row24 outside the avdd riser.
+            # A simple38.4um shift would crowd its TM1 trunk against the
+            # avdd riser at x=-10um (8um wide). The external lane avoids it.
+            # Keep all original taps, device terminals and physical gates.
+            ground_before = 'lane = 149.6 if i == 23 else 34.8'
+            ground_after = 'lane = 149.6 if i == 23 else -19.2'
+            assert source.count(ground_before) == 1
+            source = source.replace(ground_before, ground_after)
+            # Preserve the original8um centre-spacing exclusion around the
+            # 8um-wide supply riser, now allowing conductors on either side.
+            clearance_before = 'assert riser_x + 4 < min(x for ts in terminals.values() for x,sy in ts) - 4'
+            clearance_after = 'assert all(abs(x-riser_x) > 8.0 for ts in terminals.values() for x,sy in ts)'
+            assert source.count(clearance_before) == 1
+            source = source.replace(clearance_before, clearance_after)
+            edits.append(dict(supply_riser_center_clearance_um=8.0,
+                before=clearance_before, after=clearance_after,
+                scope='Same minimum exclusion distance on both sides; new external ground lane is9.2um from riser centre. Native DRC/LVS unchanged.'))
+            edits.append(dict(output_ground_escape_lanes_um=[149.6,-19.2],
+                before=ground_before, after=ground_after,
+                reason='Remove real avss/sub collision at x34.8 after passive translation; native DRC/LVS must verify.'))
+            edits.append(dict(output_passive_translation_um=[-38.4,0.0],
+                generator_row_indices=[23,24,25,26], before=before, after=after,
+                scope='Physical placement/rerouting only; exact V10 schematic unchanged. Fresh native DRC/LVS, RC and loaded waves required.'))
+        if args.boundary_pins:
+            assert (args.circuit_profile, requested_variant) in (
+                ('cascade158','critical_buses_kelvin_supply_direct'),
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series'),
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'),
+                ('final_drive_v10','critical_buses_kelvin_low_ports_loads_shunts_series_direct'))
+            before = '    assert set(ports) == set(PORTS)\n'
+            assert source.count(before) == 1
+            boundary_code = '    # Real TM2 boundary access; no devices, local wires or vias removed.\n    boundary_x = round((top.dbbox().left - 20.0) / 0.005) * 0.005\n    boundary_pin_routes = []\n    for dt in (2, 25):\n        li = layout.layer(layers["TopMetal2"], dt)\n        assert sum(1 for _ in top.shapes(li).each()) == len(PORTS)\n        top.shapes(li).clear()\n    old_ports = dict(ports)\n    for net, (pin_metal, old_pin) in old_ports.items():\n        assert pin_metal == "TopMetal2" and boundary_x < old_pin.left\n        y = old_pin.center().y\n        width = 32.0 if net in ("avdd", "avss") else 4.0\n        box(7, boundary_x, y-width/2, old_pin.right, y+width/2)\n        pin = pya.DBox(boundary_x, y-0.6, boundary_x+2.0, y+0.6)\n        ports[net] = ("TopMetal2", pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 2)).insert(pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 25)).insert(\n            pya.DText(net, boundary_x, y))\n        boundary_pin_routes.append(dict(net=net, old_pin_um=str(old_pin),\n            new_pin_um=str(pin), width_um=width, layer="TopMetal2"))\n    assert len(boundary_pin_routes) == len(PORTS) == 12\n    assert abs(top.dbbox().left-boundary_x) < layout.dbu/2\n    assert len({round(b.center().y/layout.dbu) for _, b in ports.values()}) == 12\n'
+            if args.boundary_policy in ("nearest_pair", "nearest_pair_tight"):
+                boundary_code = '    # Extend real public conductors to the nearest paired horizontal boundary.\n    # No original devices, metal, vias, source phases or oracle limits are removed.\n    original_boundary = top.dbbox()\n    boundary_left = round((original_boundary.left - 20.0) / 0.005) * 0.005\n    boundary_right = round((original_boundary.right + 20.0) / 0.005) * 0.005\n    old_ports = dict(ports)\n    groups = (("sp","sn"), ("op","on"), ("ap","an"), ("bp","bn"),\n              ("iref",), ("avdd",), ("avss",), ("sub",))\n    assert {n for g in groups for n in g} == set(PORTS)\n    sides = {}\n    for group in groups:\n        left_cost = sum(old_ports[n][1].center().x - (boundary_left + 1.0) for n in group)\n        right_cost = sum((boundary_right - 1.0) - old_ports[n][1].center().x for n in group)\n        side = "left" if left_cost <= right_cost else "right"\n        for net in group:\n            sides[net] = side\n    assert set(sides.values()) == {"left", "right"}\n    for dt in (2, 25):\n        li = layout.layer(layers["TopMetal2"], dt)\n        assert sum(1 for _ in top.shapes(li).each()) == len(PORTS)\n        top.shapes(li).clear()\n    boundary_pin_routes = []\n    for net, (pin_metal, old_pin) in old_ports.items():\n        assert pin_metal == "TopMetal2"\n        assert boundary_left <= old_pin.left < old_pin.right <= boundary_right\n        y = old_pin.center().y\n        width = 32.0 if net in ("avdd", "avss") else 4.0\n        if sides[net] == "left":\n            box(7, boundary_left, y-width/2, old_pin.right, y+width/2)\n            pin = pya.DBox(boundary_left, y-0.6, boundary_left+2.0, y+0.6)\n        else:\n            box(7, old_pin.left, y-width/2, boundary_right, y+width/2)\n            pin = pya.DBox(boundary_right-2.0, y-0.6, boundary_right, y+0.6)\n        ports[net] = ("TopMetal2", pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 2)).insert(pin)\n        top.shapes(layout.layer(layers["TopMetal2"], 25)).insert(\n            pya.DText(net, pin.left, y))\n        boundary_pin_routes.append(dict(net=net, old_pin_um=str(old_pin),\n            new_pin_um=str(pin), width_um=width, layer="TopMetal2",\n            side=sides[net], pin_displacement_um=abs(pin.center().x-old_pin.center().x),\n            original_left_displacement_um=old_pin.center().x-(boundary_left+1.0)))\n    assert len(boundary_pin_routes) == len(PORTS) == 12\n    assert abs(top.dbbox().left-boundary_left) < layout.dbu/2\n    assert abs(top.dbbox().right-boundary_right) < layout.dbu/2\n    assert len({round(b.center().y/layout.dbu) for _, b in ports.values()}) == 12\n    assert sum(r["pin_displacement_um"] for r in boundary_pin_routes) < sum(\n        r["original_left_displacement_um"] for r in boundary_pin_routes)\n    for group in groups:\n        assert len({sides[n] for n in group}) == 1\n'
+            if args.boundary_policy == "nearest_pair_tight":
+                # Remove only the optional 20um perimeter margin. Real public
+                # conductors still reach the original physical bounding box.
+                # Fresh DRC/LVS, extracted RC and loaded waves remain mandatory.
+                assert boundary_code.count("original_boundary.left - 20.0") == 1
+                assert boundary_code.count("original_boundary.right + 20.0") == 1
+                boundary_code = boundary_code.replace("original_boundary.left - 20.0", "original_boundary.left")
+                boundary_code = boundary_code.replace("original_boundary.right + 20.0", "original_boundary.right")
+            source = source.replace(before, boundary_code + before)
+            before = '                ports={n: str(b) for n, (_, b) in ports.items()},\n'
+            assert source.count(before) == 1
+            source = source.replace(before, before + '                boundary_pin_routes=boundary_pin_routes,\n')
+            edits.append(dict(boundary_pin_policy=args.boundary_policy, scope='Extend all12 actual TM2 public conductors to selected macro boundaries; each differential pair stays on one side. Retain original devices/local routes and unchanged native physical gates. Fresh RC and loaded waves required.'))
+        if args.prestage_nx in (1,3):
+            # Move actual enlarged bleeders and taps down by their growth.
+            # Native DRC/LVS decide connectivity; all routes regenerate.
+            length,delta={1:('307.2','268.8'),3:('102.4','64.0')}[args.prestage_nx]
+            before = '    assert sorted(positions)==list(range(27))\n'
+            after = ('    for index in (21,22):\n'
+                     '        assert rows[index]["path"] in ("xtest.xba","xtest.xbb")\n'
+                     '        assert rows[index]["params"]["l"] == "'+length+'u"\n'
+                     '        px,py = positions[index]\n'
+                     '        positions[index] = (px,py-'+delta+')\n' + before)
+            assert source.count(before) == 1
+            source = source.replace(before, after)
+            edits.append(dict(before=before,after=after,
+                reason='Place actual longer scaled bleeders outside HBT rows; preserve all PCells, substrate taps, native gates and regeneration of routes.'))
+        generator = out / 'generate.py' 
+        generator.write_text(source)
+        physical_method=out/'verify-physical.py'
+        physical_method.write_text(physical_source)
+        result.update(source_bindings=spec, explicit_geometry_edits=edits,
+                      generator_sha256=sha(generator), original_generator_sha256=sha(originals / 'layout91.py'),
+                      physical_method_sha256=sha(physical_method),original_physical_method_sha256=sha(originals/'physical92.py'))
+        app = Path(os.environ['CLOUD_APPIMAGE'])
+        assert sha(app) == spec['runtime_sha256']
+        run([app, 'python', generator, '--pdk', ROOT / 'pdk', '--out', out / 'layout'], 'generation')
+        generated = json.loads((out / 'layout/result.json').read_text())
+        result['layout'] = generated
+        if args.circuit_profile in ('final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'):
+            result['generated_reference_equivalence']=audit(circuit.read_text(),native.read_text(),
+                (out/'layout/schematic.cir').read_text(),profile=audit_profile)
+        # The controller is standard Python; launching it inside the AppImage
+        # would make its native child invocations require a nested FUSE mount.
+        run([sys.executable, physical_method, '--layout', out / 'layout', '--out', out / 'physical', '--app', app], 'physical')
+        physical = json.loads((out / 'physical/result.json').read_text())
+        assert physical['status'] == 'PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS'
+        result['physical'] = {k: v for k, v in physical.items() if k != 'inputs'}
+        assert all(sha(ROOT / n) == r['sha256'] for n, r in manifest['files'].items())
+        result['status'] = 'PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
+    except BaseException as error:
+        result.update(status='FAIL_OR_ERROR', error=repr(error))
+        report = out / 'physical/result.json'
+        if report.exists():
+            result['physical'] = json.loads(report.read_text())
+        # Preserve compact diagnostic text alongside the exact full archive.
+        # This avoids a separate hosted archive-read job for every native failure.
+        result['failure_reports']={}
+        for child in sorted((out/'physical').glob('*/*')):
+            if child.name not in ('extracted.cir','mutation.log') or not child.is_file():
+                continue
+            if child.stat().st_size<=256*1024:
+                result['failure_reports'][str(child.relative_to(out))]=dict(
+                    sha256=sha(child),bytes=child.stat().st_size,text=child.read_text(errors='replace'))
+
+        raise
+    finally:
+        (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+        print(json.dumps({k: v for k, v in result.items() if k not in ('layout', 'physical', 'source_bindings')}), flush=True)
+
+
+if __name__ == '__main__':
+    main()

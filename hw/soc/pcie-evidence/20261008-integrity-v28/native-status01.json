@@ -1,0 +1,136 @@
+{
+  "status": "COMPLETE_NATIVE_SCREEN_REVIEW_REQUIRED",
+  "controller": {
+    "pid": 125795,
+    "state": "R",
+    "process_group": 125795,
+    "start_ticks": "3670597"
+  },
+  "boot_id": "c2bddebc-4473-4e3d-8e47-dad965487334",
+  "stages": [
+    {
+      "name": "map",
+      "status": "COMPLETE",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/dev/shm/nssoc-integrity-v28-balanced-map-01/map.ys"
+      ],
+      "identity": {
+        "pid": 125807,
+        "state": "R",
+        "process_group": 125807,
+        "start_ticks": "3670765"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 5092334,
+        "sha256": "fbdb76d8f66ead965c1c8e0d2323aae60c7c030ea9ba2874099a30937f0e8d61"
+      }
+    },
+    {
+      "name": "balanced_import02",
+      "status": "COMPLETE",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v28-20261008/balanced_import02.py"
+      ],
+      "identity": {
+        "pid": 126096,
+        "state": "R",
+        "process_group": 126096,
+        "start_ticks": "3674865"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "prove_balanced_import",
+      "status": "COMPLETE",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v28-20261008/prove_balanced_import.py"
+      ],
+      "identity": {
+        "pid": 126149,
+        "state": "R",
+        "process_group": 126149,
+        "start_ticks": "3675720"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 61,
+        "sha256": "7024565294adfd6115f74e331aa2c8985544df06c91f7a6d2e641973913d70c7"
+      }
+    },
+    {
+      "name": "balanced_preplacement02",
+      "status": "COMPLETE",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v28-20261008/balanced_preplacement02.py"
+      ],
+      "identity": {
+        "pid": 126253,
+        "state": "R",
+        "process_group": 126253,
+        "start_ticks": "3676519"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "review_timing",
+      "status": "COMPLETE",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v28-20261008/review_timing.py"
+      ],
+      "identity": {
+        "pid": 126721,
+        "state": "R",
+        "process_group": 126721,
+        "start_ticks": "3683938"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 1786,
+        "sha256": "79e814662d0896fc4a7a12a6141528f3125dfc161372976b1099ab0448ec43fc"
+      }
+    },
+    {
+      "name": "analyze_critical_path",
+      "status": "COMPLETE",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v28-20261008/analyze_critical_path.py"
+      ],
+      "identity": {
+        "pid": 126753,
+        "state": "R",
+        "process_group": 126753,
+        "start_ticks": "3684206"
+      },
+      "returncode": 0,
+      "log": {
+        "bytes": 468,
+        "sha256": "a367d64be0384df34ae633e7d19983fed854a2bfcf120defbd6fe9ddf8235fea"
+      }
+    }
+  ],
+  "freeze": {
+    "bytes": 97623,
+    "sha256": "267a4c38c3ca840ff62193abde87a7dea435f5c144a3386059be6537d0c02df6"
+  },
+  "physical_acceptance": false,
+  "mapped_cells": 96821,
+  "stop_reason": null
+}

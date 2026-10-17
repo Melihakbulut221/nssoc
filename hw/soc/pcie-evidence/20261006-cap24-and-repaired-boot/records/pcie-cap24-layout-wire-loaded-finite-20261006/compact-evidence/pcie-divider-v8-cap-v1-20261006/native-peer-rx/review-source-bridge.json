@@ -1,0 +1,149 @@
+{
+  "before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-20261006/native-peer-rx/review_saved_native.py",
+    "bytes": 10436,
+    "sha256": "7359a8dfcaa8c2e7c41cf3216ccb20da5243079cf1764c2e4738ca82be43132c"
+  },
+  "after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-20261006/native-peer-rx/review_saved_native.py",
+    "bytes": 12438,
+    "sha256": "ec0bdb90c716cf4b3ec3cfefc13158854787c6de1378ce1d1711d4fb7adb0cb3"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+    },
+    {
+      "tag": "replace",
+      "before": "\"\"\"Independent saved compactV2 evidence readback; never rerun physical checks.\"\"\"\n",
+      "after": "\"\"\"Independent saved Cap24V1 evidence readback; never rerun physical checks.\"\"\"\n"
+    },
+    {
+      "tag": "equal",
+      "before": "from pathlib import Path\nimport collections,datetime,hashlib,json,re,tarfile,xml.etree.ElementTree as ET\n",
+      "after": "from pathlib import Path\nimport collections,datetime,hashlib,json,re,tarfile,xml.etree.ElementTree as ET\n"
+    },
+    {
+      "tag": "replace",
+      "before": "B=Path(__file__).resolve().parent;D=B.parent;N=Path('/dev/shm/nssoc-div4-v7-compact-v2-checks-01');L=Path('/dev/shm/nssoc-div4-v7-compact-v2-layout-01');R=D.parents[3]\n",
+      "after": "from decimal import Decimal\nB=Path(__file__).resolve().parent;D=B.parent;N=Path('/dev/shm/nssoc-div4-v8-cap-v1-checks-01');L=Path('/dev/shm/nssoc-div4-v8-cap-v1-layout-01');R=D.parents[3]\n"
+    },
+    {
+      "tag": "equal",
+      "before": "def pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef j(p):return json.loads(Path(p).read_text())\ndef stream_pin(f):\n h=hashlib.sha256();n=0\n while b:=f.read(1024**2):n+=len(b);h.update(b)\n return dict(bytes=n,sha256=h.hexdigest())\nbackup=j(D/'native-archive01.json');manifest=backup['members'];archive=Path(backup['archive']['path']);assert pin(archive)=={k:backup['archive'][k]for k in ['bytes','sha256']}\nwith tarfile.open(archive,'r:xz') as t:\n",
+      "after": "def pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef j(p):return json.loads(Path(p).read_text())\ndef stream_pin(f):\n h=hashlib.sha256();n=0\n while b:=f.read(1024**2):n+=len(b);h.update(b)\n return dict(bytes=n,sha256=h.hexdigest())\nbackup=j(D/'native-archive01.json');manifest=backup['members'];archive=Path(backup['archive']['path']);assert pin(archive)=={k:backup['archive'][k]for k in ['bytes','sha256']}\nwith tarfile.open(archive,'r:xz') as t:\n"
+    },
+    {
+      "tag": "replace",
+      "before": " assert len(t.getmembers())==len(manifest)==343 and set(t.getnames())==set(manifest)\n",
+      "after": " assert len(t.getmembers())==len(manifest)==411 and set(t.getnames())==set(manifest)\n"
+    },
+    {
+      "tag": "equal",
+      "before": " for m in t.getmembers():\n  assert m.isfile() and m.size==manifest[m.name]['bytes']\n  with t.extractfile(m) as f:assert stream_pin(f)=={k:manifest[m.name][k]for k in ['bytes','sha256']}\nready=j(D/'native-finite-review-ready01.json');assert len(ready['closed_native_files'])==195\nfor name,value in ready['closed_native_files'].items():assert pin(name)==value\n",
+      "after": " for m in t.getmembers():\n  assert m.isfile() and m.size==manifest[m.name]['bytes']\n  with t.extractfile(m) as f:assert stream_pin(f)=={k:manifest[m.name][k]for k in ['bytes','sha256']}\nready=j(D/'native-finite-review-ready01.json');assert len(ready['closed_native_files'])==195\nfor name,value in ready['closed_native_files'].items():assert pin(name)==value\n"
+    },
+    {
+      "tag": "replace",
+      "before": "record=j(N/'result.json');assert record['status']=='PASS_DIV4_V7_COMPACT_V2_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\n",
+      "after": "record=j(N/'result.json');assert record['status']=='PASS_DIV4_V8_CAP_V1_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "for name,digest in record['inputs'].items():assert pin(name)['sha256']==digest\nfor name,digest in record['outputs'].items():assert pin(N/name)['sha256']==digest\nlayout=j(L/'result.json')\nfor name,digest in layout['input_sha256'].items():assert pin(name)['sha256']==digest\nfor name,digest in layout['output_sha256'].items():assert pin(L/name)['sha256']==digest\nlaunch=j(D/'launch-manifest01.json');assert {str(p.relative_to(L)):pin(p) for p in L.rglob('*') if p.is_file()}=={str(Path(p).relative_to(L)):v for p,v in ready['closed_native_files'].items() if Path(p).is_relative_to(L)}\nfreeze=j(D/'source-freeze01.json');source=freeze['product_sources']\nfor n,v in freeze['inputs'].items():assert pin(n)==v\nfor n,v in source.items():assert pin(n)==v\n",
+      "after": "for name,digest in record['inputs'].items():assert pin(name)['sha256']==digest\nfor name,digest in record['outputs'].items():assert pin(N/name)['sha256']==digest\nlayout=j(L/'result.json')\nfor name,digest in layout['input_sha256'].items():assert pin(name)['sha256']==digest\nfor name,digest in layout['output_sha256'].items():assert pin(L/name)['sha256']==digest\nlaunch=j(D/'launch-manifest01.json');assert {str(p.relative_to(L)):pin(p) for p in L.rglob('*') if p.is_file()}=={str(Path(p).relative_to(L)):v for p,v in ready['closed_native_files'].items() if Path(p).is_relative_to(L)}\nfreeze=j(D/'source-freeze01.json');source=freeze['product_sources']\nfor n,v in freeze['inputs'].items():assert pin(n)==v\nfor n,v in source.items():assert pin(n)==v\n"
+    },
+    {
+      "tag": "replace",
+      "before": "peer=j(D/'source-only-peer01-pll.json');assert peer['findings']==[] and peer['source_pins']==source\ngeometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_COMPACT_INTRINSICS_POWER_AND_FOUR_GEOMETRY_CONTROLS'\n",
+      "after": "peer=j(D/'source-only-peer01-rx.json');assert peer['findings']==[] and peer['source_pins']==source\ngeometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_CAP24_TWO_MIM_DELTA_POWER_AND_SIX_GEOMETRY_CONTROLS'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "for name,value in geometry['inputs'].items():assert pin(name)==value\nassert geometry['physical_primitives']==91 and geometry['native_instances']==725 and geometry['native_vias']==634\nassert geometry['power_arrays']==47 and geometry['power_straps']==8 and geometry['local_buses']==47\n",
+      "after": "for name,value in geometry['inputs'].items():assert pin(name)==value\nassert geometry['physical_primitives']==91 and geometry['native_instances']==725 and geometry['native_vias']==634\nassert geometry['power_arrays']==47 and geometry['power_straps']==8 and geometry['local_buses']==47\n"
+    },
+    {
+      "tag": "replace",
+      "before": "assert len(geometry['controls'])==4 and all(x['status']=='EXPECTED_REJECTION' for x in geometry['controls'])\nassert [x['fault'] for x in geometry['controls']]==['remove_actual_hbt','remove_hbt_metal1','remove_power_via4','remove_power_straps']\n",
+      "after": "assert len(geometry['controls'])==6 and all(x['status']=='EXPECTED_REJECTION' for x in geometry['controls'])\nassert [x['fault'] for x in geometry['controls']]==['remove_actual_hbt','remove_hbt_metal1','remove_power_via4','remove_power_straps','remove_actual_changed_mim_plate','restore_undersized_actual_mim']\n"
+    },
+    {
+      "tag": "equal",
+      "before": "assert geometry['retained_layout_owners'] and not geometry['full_route_identity_claim'] and not geometry['qualified_pex']\n",
+      "after": "assert geometry['retained_layout_owners'] and not geometry['full_route_identity_claim'] and not geometry['qualified_pex']\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "assert geometry['changed_mim_dimensions_um']=={'DIV__XCN':[20,24],'DIV__XCP':[20,24]} and geometry['unchanged_intrinsics']==89\n"
+    },
+    {
+      "tag": "equal",
+      "before": "raw=j(B/'raw-database-read.json');assert len(raw['databases'])==16;database={x['name']:x for x in raw['databases']};outcomes=[]\npositive=[];negative=[]\nfor step in record['steps']:\n name=step['name'];nd=N/name\n if name in ['drc','offgrid']:\n  xml=ET.parse(nd/'drc.lyrdb').getroot();categories=xml.findall('./categories//category');items=xml.findall('./items/item');assert len(categories)==560\n  counts=dict(collections.Counter(x.findtext('category') for x in items));assert len(items)==step['measurement']['markers'] and counts==step['measurement']['categories']\n  assert 'KLayout DRC run for tables \\'main\\' completed' in (nd/'run.log').read_text()\n  if name=='drc':assert not items;positive.append(name)\n  else:assert len(items)==6 and counts['metal1_drw_Offgrid']==4;negative.append(name)\n  outcomes.append(dict(name=name,categories=560,markers=len(items),marker_categories=counts));continue\n if 'audit' in step:\n  d=database[name];assert pin(d['input']['path'])=={k:d['input'][k] for k in ['bytes','sha256']};assert len(d['pairs'])==1 and not d['extraction_diagnostics']\n",
+      "after": "raw=j(B/'raw-database-read.json');assert len(raw['databases'])==16;database={x['name']:x for x in raw['databases']};outcomes=[]\npositive=[];negative=[]\nfor step in record['steps']:\n name=step['name'];nd=N/name\n if name in ['drc','offgrid']:\n  xml=ET.parse(nd/'drc.lyrdb').getroot();categories=xml.findall('./categories//category');items=xml.findall('./items/item');assert len(categories)==560\n  counts=dict(collections.Counter(x.findtext('category') for x in items));assert len(items)==step['measurement']['markers'] and counts==step['measurement']['categories']\n  assert 'KLayout DRC run for tables \\'main\\' completed' in (nd/'run.log').read_text()\n  if name=='drc':assert not items;positive.append(name)\n  else:assert len(items)==6 and counts['metal1_drw_Offgrid']==4;negative.append(name)\n  outcomes.append(dict(name=name,categories=560,markers=len(items),marker_categories=counts));continue\n if 'audit' in step:\n  d=database[name];assert pin(d['input']['path'])=={k:d['input'][k] for k in ['bytes','sha256']};assert len(d['pairs'])==1 and not d['extraction_diagnostics']\n"
+    },
+    {
+      "tag": "replace",
+      "before": "  pair=d['pairs'][0];assert pair['layout']=='nssoc_clock_div4_v7_compact_v2_layout' and pair['schematic']=='NSSOC_CLOCK_DIV4_V7_COMPACT_V2_LAYOUT'\n",
+      "after": "  pair=d['pairs'][0];assert pair['layout']=='nssoc_clock_div4_v8_cap_v1_layout' and pair['schematic']=='NSSOC_CLOCK_DIV4_V8_CAP_V1_LAYOUT'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "  audit=j(nd/'audit.json');assert audit==step['audit']\n  for n,v in audit['inputs'].items():assert pin(n)==v\n  assert audit['circuits'][0]['status']==pair['status'] and audit['circuits'][0]['layout_devices_recursive']==pair['layout_devices'] and audit['circuits'][0]['schematic_devices_recursive']==pair['schematic_devices']\n",
+      "after": "  audit=j(nd/'audit.json');assert audit==step['audit']\n  for n,v in audit['inputs'].items():assert pin(n)==v\n  assert audit['circuits'][0]['status']==pair['status'] and audit['circuits'][0]['layout_devices_recursive']==pair['layout_devices'] and audit['circuits'][0]['schematic_devices_recursive']==pair['schematic_devices']\n"
+    },
+    {
+      "tag": "replace",
+      "before": "  log=(nd/'deck.log').read_text();ports=re.search(r'^\\.SUBCKT nssoc_clock_div4_v7_compact_v2_layout (.*)$',(nd/'extracted.cir').read_text(),re.M).group(1).split()\n",
+      "after": "  log=(nd/'deck.log').read_text();ports=re.search(r'^\\.SUBCKT nssoc_clock_div4_v8_cap_v1_layout (.*)$',(nd/'extracted.cir').read_text(),re.M).group(1).split()\n"
+    },
+    {
+      "tag": "equal",
+      "before": "  assert 'strict port mode' in log and 'flag_missing_ports enabled' in log\n  if name in ['lvs','lvs_flat']:\n   assert pair['status']=='Match' and pair['layout_devices']==pair['schematic_devices']==74 and set(ports)==set(layout['ports']);assert 'INFO : Congratulations! Netlists match.' in log and \"ERROR : Netlists don't match\" not in log\n   assert audit['reasons']==[];positive.append(name)\n   lines=(nd/'extracted.cir').read_text().splitlines();rows=[]\n   for line in lines:\n    if line.startswith('+'):rows[-1]+=' '+line[1:]\n    elif line and not line.startswith(('*','.')):rows.append(line)\n   census=collections.Counter('hbt' if x.startswith('Q') else 'ptap' if ' ptap1 ' in x else 'resistor' if ' rppd ' in x else 'capacitor' if ' cap_cmim ' in x else 'UNKNOWN' for x in rows)\n   assert census==dict(hbt=34,resistor=33,capacitor=6,ptap=1)\n   assert sum('ptap1 A=72p P=144u' in x for x in rows)==1\n",
+      "after": "  assert 'strict port mode' in log and 'flag_missing_ports enabled' in log\n  if name in ['lvs','lvs_flat']:\n   assert pair['status']=='Match' and pair['layout_devices']==pair['schematic_devices']==74 and set(ports)==set(layout['ports']);assert 'INFO : Congratulations! Netlists match.' in log and \"ERROR : Netlists don't match\" not in log\n   assert audit['reasons']==[];positive.append(name)\n   lines=(nd/'extracted.cir').read_text().splitlines();rows=[]\n   for line in lines:\n    if line.startswith('+'):rows[-1]+=' '+line[1:]\n    elif line and not line.startswith(('*','.')):rows.append(line)\n   census=collections.Counter('hbt' if x.startswith('Q') else 'ptap' if ' ptap1 ' in x else 'resistor' if ' rppd ' in x else 'capacitor' if ' cap_cmim ' in x else 'UNKNOWN' for x in rows)\n   assert census==dict(hbt=34,resistor=33,capacitor=6,ptap=1)\n   assert sum('ptap1 A=72p P=144u' in x for x in rows)==1\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "   # Independently compare every native parameter census to actual generation.\n   for model,kind,count,index in [('rppd','resistor',33,4),('cap_cmim','capacitor',6,3)]:\n    selected=[line.split() for line in rows if ' '+model+' ' in line];assert len(selected)==count\n    measured=[]\n    for fields in selected:\n     parts=fields[index+1:];params=dict(v.split('=')for v in parts);assert len(parts)==len(params) and params['m']=='1'\n     if model=='rppd':assert set(params)=={'w','l','ps','b','m'} and params['ps']=='0u' and params['b']=='0'\n     else:assert set(params)=={'w','l','A','P','m'}\n     assert all(re.fullmatch(r'[0-9]+(?:\\.[0-9]+)?u',params[k]) for k in ['w','l'])\n     w,length=Decimal(params['w'][:-1]),Decimal(params['l'][:-1]);assert w>0 and length>0;measured.append((w,length))\n     if model=='cap_cmim':assert params['A'].endswith('p')and params['P'].endswith('u')and Decimal(params['A'][:-1])==w*length and Decimal(params['P'][:-1])==2*(w+length)\n    expected=[(Decimal(str(q['width_um'])),Decimal(str(q['length_um'])))for q in layout['instances']if q['kind']==kind]\n    assert collections.Counter(measured)==collections.Counter(expected)\n    if model=='cap_cmim':assert measured.count((Decimal(24),Decimal(24)))==2\n   selected=[line.split()for line in rows if line.startswith('Q')];nx=[]\n   for fields in selected:\n    assert len(fields)==10 and fields[5]=='npn13G2';parts=fields[6:];params=dict(v.split('=')for v in parts)\n    assert len(params)==len(parts)==4 and params['we']=='70n'and params['le']=='900n'and params['m']=='1';nx.append(int(params['Nx']))\n   assert collections.Counter(nx)==collections.Counter(q['nx']for q in layout['instances']if q['kind']=='hbt')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "  else:\n   assert audit['status']=='FAIL' and \"ERROR : Netlists don't match\" in log and 'INFO : Congratulations! Netlists match.' not in log;negative.append(name)\n   if name=='clock_open':assert pair['status']=='Match' and len(ports)==6 and set(ports)==set(layout['ports'])-{'CLKP'}\n   else:assert pair['status']=='NoMatch'\n   physical=nd/'wrong.gds';reference=nd/'wrong.cir'\n",
+      "after": "  else:\n   assert audit['status']=='FAIL' and \"ERROR : Netlists don't match\" in log and 'INFO : Congratulations! Netlists match.' not in log;negative.append(name)\n   if name=='clock_open':assert pair['status']=='Match' and len(ports)==6 and set(ports)==set(layout['ports'])-{'CLKP'}\n   else:assert pair['status']=='NoMatch'\n   physical=nd/'wrong.gds';reference=nd/'wrong.cir'\n"
+    },
+    {
+      "tag": "replace",
+      "before": "   if physical.exists():assert pin(physical)!=pin(L/'nssoc_clock_div4_v7_compact_v2_layout.gds') and step['mutation_execution']['returncode']==0\n",
+      "after": "   if physical.exists():assert pin(physical)!=pin(L/'nssoc_clock_div4_v8_cap_v1_layout.gds') and step['mutation_execution']['returncode']==0\n"
+    },
+    {
+      "tag": "equal",
+      "before": "   else:assert reference.exists() and pin(reference)!=pin(L/'schematic.cir')\n  outcomes.append(dict(name=name,pair=pair,extracted_ports=ports,deck_verdict='MATCH' if name in ['lvs','lvs_flat'] else 'NO_MATCH',audit_reasons=audit['reasons']));continue\n log=(nd/'native.log').read_text();tcl=(nd/'inspect.tcl').read_text();assert tcl.count('findMTerm ')==7\n if name=='lef':\n  assert step['execution']['returncode']==0 and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' in log;positive.append(name)\n elif name=='lef_missing_pin':\n  assert step['execution']['returncode']==1 and 'Analog terminal census changed' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n elif name=='lef_blocked_pin':\n  assert step['execution']['returncode']==1 and 'Divider pin obstruction overlap' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n else:raise AssertionError(name)\n outcomes.append(dict(name=name,native_returncode=step['execution']['returncode'],native_seven_pin_tcl_checked=True))\nassert len(positive)==4 and len(negative)==17 and len(record['steps'])==21\n",
+      "after": "   else:assert reference.exists() and pin(reference)!=pin(L/'schematic.cir')\n  outcomes.append(dict(name=name,pair=pair,extracted_ports=ports,deck_verdict='MATCH' if name in ['lvs','lvs_flat'] else 'NO_MATCH',audit_reasons=audit['reasons']));continue\n log=(nd/'native.log').read_text();tcl=(nd/'inspect.tcl').read_text();assert tcl.count('findMTerm ')==7\n if name=='lef':\n  assert step['execution']['returncode']==0 and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' in log;positive.append(name)\n elif name=='lef_missing_pin':\n  assert step['execution']['returncode']==1 and 'Analog terminal census changed' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n elif name=='lef_blocked_pin':\n  assert step['execution']['returncode']==1 and 'Divider pin obstruction overlap' in log and 'PASS_NATIVE_ANALOG_BANK_LEF_ONLY' not in log;negative.append(name)\n else:raise AssertionError(name)\n outcomes.append(dict(name=name,native_returncode=step['execution']['returncode'],native_seven_pin_tcl_checked=True))\nassert len(positive)==4 and len(negative)==17 and len(record['steps'])==21\n"
+    },
+    {
+      "tag": "replace",
+      "before": "lef=(L/'nssoc_clock_div4_v7_compact_v2_layout.lef').read_text()\n",
+      "after": "lef=(L/'nssoc_clock_div4_v8_cap_v1_layout.lef').read_text()\n"
+    },
+    {
+      "tag": "equal",
+      "before": "for name,value in layout['ports'].items():\n p=re.search(r'  PIN '+name+r'\\n(.*?)  END '+name,lef,re.S).group(1)\n direction='INPUT' if name in ['CLKP','CLKN'] else 'OUTPUT' if name in ['QP','QN'] else 'INOUT';use='POWER' if name=='DIV_AVDD' else 'GROUND' if name in ['AVSS','SUB'] else 'SIGNAL'\n assert 'DIRECTION '+direction+' ;' in p and 'USE '+use+' ;' in p\nassert len(re.findall(r'^  PIN ',lef,re.M))==7\nowners=[]\nfor path in N.rglob('*.owned.json'):\n owner=j(path);assert owner['status']=='HEALTHY' and owner['cleanup'] is None\n for entry in owner['processes']:assert entry['status']=='REAPED_NO_LIVE_MEMBERS' and entry['members_at_leader_exit']==[]\n owners.append(dict(path=str(path),**pin(path)))\nread_owner=j(B/'saved-database-reader.owned.json');assert read_owner['cleanup'] is None and all(x['status']=='REAPED_NO_LIVE_MEMBERS' and not x['members_at_leader_exit'] for x in read_owner['processes'])\n",
+      "after": "for name,value in layout['ports'].items():\n p=re.search(r'  PIN '+name+r'\\n(.*?)  END '+name,lef,re.S).group(1)\n direction='INPUT' if name in ['CLKP','CLKN'] else 'OUTPUT' if name in ['QP','QN'] else 'INOUT';use='POWER' if name=='DIV_AVDD' else 'GROUND' if name in ['AVSS','SUB'] else 'SIGNAL'\n assert 'DIRECTION '+direction+' ;' in p and 'USE '+use+' ;' in p\nassert len(re.findall(r'^  PIN ',lef,re.M))==7\nowners=[]\nfor path in N.rglob('*.owned.json'):\n owner=j(path);assert owner['status']=='HEALTHY' and owner['cleanup'] is None\n for entry in owner['processes']:assert entry['status']=='REAPED_NO_LIVE_MEMBERS' and entry['members_at_leader_exit']==[]\n owners.append(dict(path=str(path),**pin(path)))\nread_owner=j(B/'saved-database-reader.owned.json');assert read_owner['cleanup'] is None and all(x['status']=='REAPED_NO_LIVE_MEMBERS' and not x['members_at_leader_exit'] for x in read_owner['processes'])\n"
+    },
+    {
+      "tag": "replace",
+      "before": "result=dict(status='PASS_INDEPENDENT_SAVED_COMPACT_V2_NATIVE_RESULT',findings=[],checks=pin(N/'result.json'),geometry=pin(N/'power-geometry.json'),GDS=pin(L/'nssoc_clock_div4_v7_compact_v2_layout.gds'),ready=pin(D/'native-finite-review-ready01.json'),utc=datetime.datetime.now(datetime.UTC).isoformat(),method=pin(__file__),archive=dict(path=str(archive),**pin(archive)),full_member_readback=343,native_inputs_rehashed=len(record['inputs']),native_outputs_rehashed=len(record['outputs']),immutable_generated_gds=pin(L/'nssoc_clock_div4_v7_compact_v2_layout.gds'),launch_layout_files_equal=True,source_pins=source,source_peer=pin(D/'source-only-peer01-pll.json'),raw_database_read=pin(B/'raw-database-read.json'),raw_reader_execution=pin(B/'reader-execution.json'),positive_stages=positive,expected_negative_stages=negative,stage_details=outcomes,closed_native_owner_receipts=owners,scope='All21 saved standalone compactV2 divider native stages checked with343 archive members and195 closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. Original compact candidate tap/escape collision and source-test corrections remain preserved. Hash-bound actualGDS audit verifies91unchanged primitive local geometries at725declared placements,634nativevias,47powerarrays,8powerstraps,47localbuses and4actualgeometryfaults. Route identity is explicitly not claimed after changed placement. Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.',manufacturing_approval=False,qualified_pex=False,extracted_division=False,clockbank_integration=False,phy_complete=False,physical_acceptance=False)\n",
+      "after": "result=dict(status='PASS_INDEPENDENT_SAVED_CAP24_V1_NATIVE_RESULT',findings=[],checks=pin(N/'result.json'),geometry=pin(N/'power-geometry.json'),GDS=pin(L/'nssoc_clock_div4_v8_cap_v1_layout.gds'),ready=pin(D/'native-finite-review-ready01.json'),utc=datetime.datetime.now(datetime.UTC).isoformat(),method=pin(__file__),archive=dict(path=str(archive),**pin(archive)),full_member_readback=411,native_inputs_rehashed=len(record['inputs']),native_outputs_rehashed=len(record['outputs']),immutable_generated_gds=pin(L/'nssoc_clock_div4_v8_cap_v1_layout.gds'),launch_layout_files_equal=True,source_pins=source,source_peer=pin(D/'source-only-peer01-rx.json'),raw_database_read=pin(B/'raw-database-read.json'),raw_reader_execution=pin(B/'reader-execution.json'),positive_stages=positive,expected_negative_stages=negative,stage_details=outcomes,closed_native_owner_receipts=owners,scope='All21 saved standalone Cap24V1 divider native stages checked with411 archive members and195 closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. All source-test failures and additive metadata correction remain preserved. Hash-bound actualGDS audit verifies two MIM20to24um deltas and89unchanged intrinsic geometries at725declared placements,634nativevias,47powerarrays,8powerstraps,47localbuses and6actualgeometryfaults. Independent positive netlist census additionally checks every passive W/L, MIM area/perimeter, HBT Nx/geometry and finite body contacts. Route identity is explicitly not claimed after changed placement. Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.',manufacturing_approval=False,qualified_pex=False,extracted_division=False,clockbank_integration=False,phy_complete=False,physical_acceptance=False)\n"
+    },
+    {
+      "tag": "equal",
+      "before": "p=D/'native-saved-peer-rx.json';assert not p.exists();p.write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(dict(path=str(p),**pin(p))))\n",
+      "after": "p=D/'native-saved-peer-rx.json';assert not p.exists();p.write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(dict(path=str(p),**pin(p))))\n"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "status": "PRE_IMPLEMENTATION_RELATION_REQUIRES_ACTUAL_WITNESSES",
+  "baseline": "V21",
+  "edit": "Only generated cache-slot content writer condition: step && !fault_now -> step. All cache next-value logic, verdict-array writes, ring content/tag writes, pointers, parser, commit, retirement descriptor and public control priorities remain byte-identical. One associated stale comment is corrected; generator inverse restores it exactly.",
+  "state_relation": [
+    "All public port values and all ownership/state controls are equal cycle by cycle for known control inputs, including a previously valid output accepted on a prospective-fault edge.",
+    "All seven ring content fields and main verdict array remain exactly equal: their writers and enables are unchanged.",
+    "During an active epoch all initialized occupied slots with nonzero keep have equal cached verdicts; invalid pre-reset cache entries are unconstrained. On a known fault step the same edge empties all three ring pointers, clears output/retire validity and deactivates/halts the stream. Thus cache differences are not owned or committed.",
+    "A new epoch must perform the unchanged slot write before that slot becomes occupied. The cache same-edge effective_tag selects the new write tag and initializes from the common main verdict array, then applies the identical ordered four verdict broadcasts. Therefore the new owner cannot inherit the prior invalid cache difference.",
+    "Nonwritten invalid slots may preserve differences until rewritten. Slots with no data (zero keep) are not payload owners and cannot expose a cached verdict. Every retired nonempty slot must have a fresh owner and current packet verdict before commit.",
+    "Known faults are the extra-write condition. This relation does not claim unrestricted arbitrary-X control sequential equivalence; selected payload X/Z and four-state no-fault cache transition semantics remain exact."
+  ],
+  "mandatory_controls": [
+    "Actual accepted parser-fault or accepted-badblock step which changes at least one cached bit while same-edge ownership is atomically empty. A requested scenario without this literal observed difference is not sufficient.",
+    "Full public-port/cycle miter with occupied/committed cache checking and descriptor validity/payload checks, including original16 public cases.",
+    "Additional prefilled verdict cache + malformed token then restart/flush/reset/abort, old/new epoch wrap, output backpressure and actual overflow; all output bytes and events checked.",
+    "Real mutants: skip cache updates, invert cache value, retain ring ownership on fault, force stale cache on new slot write. Each must fail a named relation or public scoreboard assertion rather than a compile/witness error.",
+    "Exact whole-framer inverse and same original4ns/2GiBCPU6 native screen only after independent source peer and all functional gates."
+  ],
+  "scope": "One component timing experiment, not stable adoption or fullPHY; V21 registered latency contract unchanged and no relaxed timing predicates."
+}

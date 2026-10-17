@@ -1,0 +1,9 @@
+# TX full32 drive: recover measured hot headroom
+
+Drive-v1 run39050192928/source8fcacc39b7fd22a91107c8a4fedd3da7852cd8bc completed with rejection. Nominal and cold native schematic gates passed, and the real deepest-selector fault was detected. Hot serial bits also passed, but24data transistors in the two high stages failed the unchanged0.4V VCE gate, minimum0.38845165V. This is a device failure despite a good output bit stream. Preserve the complete four reports and captures referenced by docs/evidence/tx-drive-v1-rejection-20261017.json.
+
+The new drive-v2 candidate changes only XFPR/XFNR shunt length in the two Nx3 high stages from6.55to7.0um (width1.5um). All28low stages keep12.77um shunts; all series resistors retain the v1 quarter-resistance geometry. This intentionally departs from the v1 first-order DC divider ratio: reduced output-to-ground loading is intended to raise collector voltage. It may also raise final-stage input common mode, so all interfaces and every transistor must be rechecked. Cold v1's tightest high-stage VCE was0.420865V; final-stage minimum VCE was above0.510V, with maxVBE up to0.98139V. These measured margins justify a bounded experiment, not a guarantee.
+
+The unchanged native controller still tests604HBT/512MOS and719tree emitters, original34ns/256bit/three-phase data contract, actual selector corruption, native OFF/startup/readback and every interface/device limit. Four actual candidate-geometry corruptions are required to fail before simulation. The original controller is hash-pinned and only explicit variant/output/geometry metadata substitutions are permitted. No old physical RC or prior layout is accepted for changed geometry. Fresh physical and extracted verification remain necessary if all native corners pass.
+
+Run only in GitHub Actions using tx-tree32-headroom-cloud. Full PHY remains open.

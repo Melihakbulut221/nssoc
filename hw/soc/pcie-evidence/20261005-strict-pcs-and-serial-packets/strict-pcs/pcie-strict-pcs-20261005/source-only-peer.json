@@ -1,0 +1,87 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_ONLY_REVIEW",
+  "utc": "2026-10-05T01:02:45.943504+00:00",
+  "reviewer": "targeted_failure",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_sds_deskew_v2.v": {
+      "bytes": 8293,
+      "sha256": "bc3120f3f03af9e267449a72ebb77241a90b5fb008e74edfd14e154451a25ac7"
+    },
+    "sw/tests/test_pcie_gen3_sds_deskew_v2.py": {
+      "bytes": 9884,
+      "sha256": "bfccea93f5fa488fb4979cbd8ffaa3e6d1d393e855c444b0dd270866f3a5f222"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": {
+      "bytes": 6031,
+      "sha256": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v8.v": {
+      "bytes": 188737,
+      "sha256": "e9f57f0f2047bd0dabd7bc130b84b9884d23f8c48ee19f1ed660b936e3a56788"
+    },
+    "scripts/generate_pcie_integrity_pcs_v8.py": {
+      "bytes": 1948,
+      "sha256": "eed499276b69e24810f1f172a6c80743c8ac30e51814daabf6a2c0f52fc2304f"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_packet_rx_v1.v": {
+      "bytes": 4116,
+      "sha256": "63ad987023503598538867ecdb13b00b56d538bec681441598b34e36b118500e"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_packet_rx_v1.py": {
+      "bytes": 12495,
+      "sha256": "62446c78c92d3f7cb07d5d326ffd32066870a1742b9453e68a8b77ef317c5e85"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_recovered_packet_rx_v1": {
+      "bytes": 1590,
+      "sha256": "c4e0977b97f3299f528472cfbeecacc2ff33d9ab9d9a01a3c50c8ae67bdeec65"
+    },
+    "scripts/check_pcie_gen3_recovered_packet_rx_v1.py": {
+      "bytes": 8464,
+      "sha256": "5c8d39e8547fec08aff4b3f9b8704c359abfffb09036384024168c3c0c93eb7c"
+    },
+    "sw/tests/test_pcie_gen3_recovered_packet_rx_v1.py": {
+      "bytes": 2846,
+      "sha256": "53fee5cc9bb08caea9268ccdaab9a77019553619a64575ca9afba807f1746374"
+    }
+  },
+  "source_freeze": {
+    "bytes": 1638,
+    "sha256": "ce8112a17f877609d39c83071c6fd8e44b05087714a756f89396d408af553db2"
+  },
+  "native_reruns": 0,
+  "tests_run_by_reviewer": 0,
+  "checks": [
+    "Exactly one pending DATA-quartet decision is owned; completing last-slice decision and next DATA acceptance may share an edge without clearing newly accepted pending state.",
+    "Only token-context final-position EDS drives expect_os; matching EDS bits inside a payload do not alter packet state.",
+    "SKP cohorts require four valid equal-length legal records, retire atomically under backpressure, resume the same stream and do not reseed any LFSR.",
+    "Complete EIOS/EIEOS is consumed atomically; stream_stop_i begins framer retirement, not immediate packet discard. stopped_q gates only later transport epoch faults after an accepted normal end; parser halted still drives top fault; coordinated reset clears both.",
+    "No combinational parser/cohort fault feedback identified: parser halted, cohort fault, CDC faults and stopped epoch guard are stateful.",
+    "Frozen V8 generator recreates generated RTL byte-for-byte from pinned V7 source; its behavioral delta is four explicit replacements and version namespace.",
+    "Read actual15 public raw-port case oracles and eight wiring mutants, including 2us normal-end downstream stall causing real lane fault before eventual lossless packet drain, payload EDS, all32 aggregate bit offsets, CRC/nullification and reset-after-registered-halt.",
+    "Runtime runner checks exact test identities/counts, source/runtime before/after pins, preserves logs and closes child process group on failure; no healthy elapsed cutoff."
+  ],
+  "scope": [
+    "Read-only source review; author native results not independently reexecuted or full raw captures replayed.",
+    "One coordinated reset/arm epoch with fixed logical lane0..3; no second stream without reset.",
+    "Complete-record EIOS/EIEOS only; truncated EIOS, lane assignment, equalization, full LTSSM, physical CDC, analog clocks, timing and complete PCIe PHY remain excluded.",
+    "Buffered data may retire before synchronized active-epoch transport fault is observed; downstream epoch-abort contract remains."
+  ],
+  "reviewed_case_names": [
+    "actual_packet_context_skp_resume_and_payload_eds",
+    "packet_output_stalls_and_independent_lane_skew",
+    "eieos_ends_only_after_packet_drain",
+    "crc_bad_and_nullified_packets_do_not_escape",
+    "parity_reports_without_packet_retrain",
+    "lfsr_diagnostic_never_changes_packet_state",
+    "skp_without_real_eds_faults",
+    "consecutive_skp_faults",
+    "unequal_skp_lengths_fault",
+    "bad_framing_token_aborts_raw_epoch",
+    "data_after_eds_without_os_faults",
+    "mixed_eios_eieos_cohort_faults",
+    "all_32_raw_bit_phases_preserve_packet_bytes",
+    "coordinated_reset_recovers_after_framing_abort",
+    "normal_end_drain_survives_later_transport_fault"
+  ],
+  "actionable_issues": []
+}

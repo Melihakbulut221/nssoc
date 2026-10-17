@@ -1,0 +1,467 @@
+{
+  "observed_at": "2026-10-16T05:24:00.185369+00:00",
+  "run": 38854319701,
+  "source_head": "3e6aa2907fd117ffed490ba38eb7fbe83ec8e03e",
+  "summary_asset": 646223734,
+  "summary_sha256": "2f361b2067e409c222f9bc7834ec590ffe12d0f6b787b48da344ad11df01f5a3",
+  "parts": {
+    "asset": 646223820,
+    "sha256": "d61db6ffb8fedb4323dc31509de1e807f2140ec3a2a89c40bcee842adfeafb47",
+    "manifest": {
+      "format": "ordered-tar-gzip-parts-v1",
+      "stem": "eco-endpoint-compare-38854319701-1",
+      "source_directory": "cloud-eco-endpoint-compare",
+      "bytes": 28594904,
+      "sha256": "b0d12e1233459ff5a956ccf5c54cd4898454b9a6645ce7b0b46685219c4fac0a",
+      "parts": [
+        {
+          "index": 0,
+          "name": "eco-endpoint-compare-38854319701-1.tar.gz.part0000",
+          "bytes": 28594904,
+          "sha256": "b0d12e1233459ff5a956ccf5c54cd4898454b9a6645ce7b0b46685219c4fac0a"
+        }
+      ],
+      "part_limit_bytes": 1073741824,
+      "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+      "verification": {
+        "parts": 1,
+        "bytes": 28594904,
+        "sha256": "b0d12e1233459ff5a956ccf5c54cd4898454b9a6645ce7b0b46685219c4fac0a",
+        "all_parts_and_combined_bytes_verified": true
+      }
+    }
+  },
+  "status": "COMPLETE_ALL_ENDPOINT_ROUTED_ECO_COMPARISON_NOT_SIGNOFF",
+  "accepted": false,
+  "endpoint_count": 22544,
+  "endpoint_corner_delay_rows": 135264,
+  "exact_graph_coverage": {
+    "build": {
+      "revision": "857316ff001b2a8dbbdc5996944d08a6d38c87ab",
+      "sources": {
+        "util/Fuzzy.cc": "6994742a570428caba13dae80d6293c3da9d7658f6762ed013c4a6cc5fc7c26c",
+        "include/sta/Fuzzy.hh": "d2d2b15c94ab2bd5b5bc85db0a56bb62be7756a78d6214f6a62d945a4e071ac2",
+        "include/sta/MinMax.hh": "88e2b4b6b2b4246f88fbb7b905a9e1daee1016897ed640f23f678d21788b7843",
+        "include/sta/Iterator.hh": "89a17969378e841c794aa88fd58008ce69d2feae34915e39206740b53fd7b6dc"
+      },
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-Wl,--gc-sections",
+        "-I",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source/driver.cc",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source/Fuzzy.cc",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source/native-selection"
+      ],
+      "driver_sha256": "b7cc3771e4962bffb0c6d8916612786da8f698944b2784ea79717ec8883cde36",
+      "executable_sha256": "dc18eda2a66d38a7bf10dd67afdd42ba871c10de751ac69c29709d9756eaac20"
+    },
+    "controls": {
+      "valid_native_case": 1,
+      "malformed_cases_rejected": 13,
+      "exact_minimum_gate_unchanged": true
+    },
+    "verification": {
+      "status": "PASS_EXACT_GRAPH_MINIMA_AND_NATIVE_SELECTION_NOT_TIMING_ACCEPTANCE",
+      "accepted": false,
+      "endpoint_delay_checks": 45088,
+      "exact_minimum_equality": true,
+      "original_guard_failures_preserved": [
+        {
+          "delay": "max",
+          "error": "Unsupported native vertex-versus-PathEnd slack semantics: $auto$ff.cc:337:slice$1183756/D"
+        }
+      ],
+      "native_selection": [
+        {
+          "a_seconds": 1.4382139035262753e-08,
+          "b_seconds": 1.438214791704695e-08,
+          "fuzzy_equal": true,
+          "fuzzy_less": false
+        }
+      ]
+    },
+    "native_report": {
+      "status": "COMPLETE_EXACT_GRAPH_PATH_COVERAGE_REQUIRES_NATIVE_SELECTION_CHECK",
+      "accepted": false,
+      "checks": [
+        {
+          "delay": "min",
+          "endpoints": 22544,
+          "constrained": 21427,
+          "raw_graph_paths": 258332,
+          "negative": 88,
+          "graph_minimum_exactly_equals_pathend_minimum": true
+        },
+        {
+          "delay": "max",
+          "endpoints": 22544,
+          "constrained": 21472,
+          "raw_graph_paths": 318694,
+          "negative": 9549,
+          "graph_minimum_exactly_equals_pathend_minimum": true
+        }
+      ],
+      "mismatches": [
+        {
+          "endpoint": "$auto$ff.cc:337:slice$1183756/D",
+          "delay": "max",
+          "vertex_seconds": 1.438214791704695e-08,
+          "graph_minimum_seconds": 1.4382139035262753e-08,
+          "native_chosen_path_seconds": 1.438214791704695e-08,
+          "native_chosen_path_tag": "95274 ^ max/3 clk_i ^ clk_src clk_i crpr_pin $auto$ff.cc:337:slice$1482966/CLK max PathDelay 8.000ns -max -from {clk_i} -to {eth_rx_clk_i} PathDelay 8.000ns -max -from {clk_i} -to {eth_tx_clk_i}",
+          "native_chosen_path_transition": "rise",
+          "native_chosen_path_transition_raw": "^",
+          "raw_graph_paths": 21
+        }
+      ],
+      "original_guard_failures": [
+        {
+          "delay": "max",
+          "error": "Unsupported native vertex-versus-PathEnd slack semantics: $auto$ff.cc:337:slice$1183756/D"
+        }
+      ],
+      "value_units": "seconds"
+    }
+  },
+  "comparison": {
+    "fast_max": {
+      "improved": 13521,
+      "regressed": 7950,
+      "unchanged": 1073,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 3,
+      "resolved_negative": 23,
+      "negative_before": 53,
+      "negative_after": 33,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -2.97877278399028e-09,
+      "worst_after_seconds": -9.880629647796013e-10
+    },
+    "fast_min": {
+      "improved": 12478,
+      "regressed": 8949,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 2,
+      "resolved_negative": 5,
+      "negative_before": 91,
+      "negative_after": 88,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": -1.5106649264851058e-10,
+      "worst_after_seconds": -1.5018719601300745e-10
+    },
+    "slow_max": {
+      "improved": 13657,
+      "regressed": 7814,
+      "unchanged": 1073,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 53,
+      "negative_before": 9601,
+      "negative_after": 9549,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -1.1940512578689777e-08,
+      "worst_after_seconds": -7.815487812479205e-09
+    },
+    "slow_min": {
+      "improved": 11115,
+      "regressed": 10312,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 4.578548651323899e-11,
+      "worst_after_seconds": 2.1917023751427678e-11
+    },
+    "typical_max": {
+      "improved": 13421,
+      "regressed": 8048,
+      "unchanged": 1075,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 14,
+      "resolved_negative": 206,
+      "negative_before": 1285,
+      "negative_after": 1093,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -6.233345839490312e-09,
+      "worst_after_seconds": -3.34056071693567e-09
+    },
+    "typical_min": {
+      "improved": 11784,
+      "regressed": 9643,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 1,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 4.2721381987576024e-13,
+      "worst_after_seconds": -1.0051959264956167e-11
+    }
+  },
+  "parent_comparison": {
+    "fast_max": {
+      "improved": 13784,
+      "regressed": 7687,
+      "unchanged": 1073,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 3,
+      "resolved_negative": 0,
+      "negative_before": 30,
+      "negative_after": 33,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -9.31934085457442e-10,
+      "worst_after_seconds": -9.880629647796013e-10
+    },
+    "fast_min": {
+      "improved": 11481,
+      "regressed": 9946,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 2,
+      "resolved_negative": 10,
+      "negative_before": 96,
+      "negative_after": 88,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": -1.802179516730007e-10,
+      "worst_after_seconds": -1.5018719601300745e-10
+    },
+    "slow_max": {
+      "improved": 13309,
+      "regressed": 8163,
+      "unchanged": 1072,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 44,
+      "negative_before": 9592,
+      "negative_after": 9549,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -7.694042736261508e-09,
+      "worst_after_seconds": -7.815487812479205e-09
+    },
+    "slow_min": {
+      "improved": 11496,
+      "regressed": 9931,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 2.2716162284552865e-11,
+      "worst_after_seconds": 2.1917023751427678e-11
+    },
+    "typical_max": {
+      "improved": 13091,
+      "regressed": 8379,
+      "unchanged": 1074,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 7,
+      "resolved_negative": 225,
+      "negative_before": 1311,
+      "negative_after": 1093,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -3.2728069143672656e-09,
+      "worst_after_seconds": -3.34056071693567e-09
+    },
+    "typical_min": {
+      "improved": 11496,
+      "regressed": 9931,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 1,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 5.232037025848513e-12,
+      "worst_after_seconds": -1.0051959264956167e-11
+    }
+  },
+  "targeted_hold_changes": [
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[4].u_mem/A_MEN",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[4\\].u_mem",
+        "pin": "A_MEN"
+      },
+      "before_hold_seconds": {
+        "slow": 4.990141633243184e-10,
+        "typical": 1.3450751623622637e-10,
+        "fast": -8.213074664809028e-11
+      },
+      "after_hold_seconds": {
+        "slow": 1.8351770103564036e-09,
+        "typical": 9.454635963024316e-10,
+        "fast": 4.707568779238613e-10
+      },
+      "before_setup_seconds": {
+        "slow": 1.6640595568162553e-09,
+        "typical": 4.011867282827097e-09,
+        "fast": 5.335493824532023e-09
+      },
+      "after_setup_seconds": {
+        "slow": 6.636469151999336e-11,
+        "typical": 3.0132505379754093e-09,
+        "fast": 4.696678157500855e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_ADDR[5]",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[6\\].u_mem",
+        "pin": "A_ADDR[5]"
+      },
+      "before_hold_seconds": {
+        "slow": 9.450946691913487e-10,
+        "typical": 1.944522320940223e-10,
+        "fast": -1.802179516730007e-10
+      },
+      "after_hold_seconds": {
+        "slow": 2.3427413342602676e-09,
+        "typical": 1.0161849139933565e-09,
+        "fast": 3.685385330243207e-10
+      },
+      "before_setup_seconds": {
+        "slow": 3.049427821366635e-09,
+        "typical": 4.975387213335125e-09,
+        "fast": 6.094452942306816e-09
+      },
+      "after_setup_seconds": {
+        "slow": 1.4807550741124942e-09,
+        "typical": 3.986264207611612e-09,
+        "fast": 5.470865538370617e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[5]",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[7\\].u_mem",
+        "pin": "A_ADDR[5]"
+      },
+      "before_hold_seconds": {
+        "slow": 9.476215367953955e-10,
+        "typical": 2.0005908041298426e-10,
+        "fast": -1.7606294200334105e-10
+      },
+      "after_hold_seconds": {
+        "slow": 2.5228947819755376e-09,
+        "typical": 1.1175176339861537e-09,
+        "fast": 4.329193670216114e-10
+      },
+      "before_setup_seconds": {
+        "slow": 3.0448465970778216e-09,
+        "typical": 4.97140328903356e-09,
+        "fast": 6.089319271040949e-09
+      },
+      "after_setup_seconds": {
+        "slow": 1.2654730596750596e-09,
+        "typical": 3.8434335714043755e-09,
+        "fast": 5.385955681447285e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_MEN",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[7\\].u_mem",
+        "pin": "A_MEN"
+      },
+      "before_hold_seconds": {
+        "slow": 5.782283540867184e-10,
+        "typical": 1.4423529037799199e-10,
+        "fast": -7.777223309801684e-11
+      },
+      "after_hold_seconds": {
+        "slow": 1.9373322945881455e-09,
+        "typical": 7.716897121312627e-10,
+        "fast": 1.9176538135212695e-10
+      },
+      "before_setup_seconds": {
+        "slow": 2.1617916345917365e-09,
+        "typical": 4.324008706646509e-09,
+        "fast": 5.576293649056652e-09
+      },
+      "after_setup_seconds": {
+        "slow": 4.497753280929828e-10,
+        "typical": 3.406988469123462e-09,
+        "fast": 5.173850681217118e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    }
+  ],
+  "all_four_target_timing_passed": true,
+  "any_endpoint_regression": true,
+  "any_loss_of_constraints": false,
+  "remaining_hold_targets": 88,
+  "hold_conflict_paths": 528,
+  "source_unchanged": true,
+  "failed_predecessors": [
+    {
+      "run": 38850059650,
+      "reason": "Original native aggregate slack differs from raw strict PathEnd minimum; exact frozen guard preserved."
+    },
+    {
+      "run": 38852993264,
+      "summary_asset": 646190616,
+      "summary_sha256": "f37004582bec791c66b471329bc0a6200da0a7b5a797f9f84ccb89e005c234cf",
+      "reason": "Graph path transition adapter expected long names. Pinned native RiseFall outputs ^/v; corrected with exact symbol controls."
+    }
+  ],
+  "future_review_controls": {
+    "run": 38855045418,
+    "conclusion": "success",
+    "full_comparison": "intentionally skipped on push; no duplicate physical run"
+  }
+}

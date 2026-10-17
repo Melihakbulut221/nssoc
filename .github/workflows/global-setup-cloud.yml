@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: global-setup-cloud
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/global-setup-cloud.yml
+      - docs/evidence/cloud-global-route-rc-20261013.json
+      - scripts/run_cloud_global_setup.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: global-setup-cloud-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  paired-route:
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [baseline, buffered]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact native runtime on hosted runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Route unchanged baseline and four-cell candidate under equal conditions
+        run: python3 scripts/run_cloud_global_setup.py --profile '${{ matrix.profile }}'
+      - name: Keep full geometry, timing, proof and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: global-setup-cloud-${{ matrix.profile }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-global-setup/
+          compression-level: 1
+          retention-days: 30
+          if-no-files-found: error
+      - name: Preserve complete evidence permanently
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='global-setup-cloud-${{ matrix.profile }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-global-setup
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-global-setup/result.json "$summary"
+          gh release upload cloud-migration-20261012-000 "$archive" "$archive.sha256" "$summary"

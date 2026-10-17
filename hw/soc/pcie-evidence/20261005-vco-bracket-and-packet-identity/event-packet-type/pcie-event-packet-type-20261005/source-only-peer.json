@@ -1,0 +1,105 @@
+{
+  "status": "CLEAN_BOUNDED_PACKET_TYPE_SIDEBAND_SOURCE_ONLY_REVIEW",
+  "source_freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-event-packet-type-20261005/source-freeze.json",
+    "bytes": 1804,
+    "sha256": "70b6bf3d00038ea2002c186d7714b6efe79265ce76593151713260ad8cdb7046"
+  },
+  "all_ten_source_pins_rehashed": {
+    "scripts/generate_pcie_event_type_sideband_v1.py": {
+      "bytes": 2833,
+      "sha256": "0e9f32ff8150c66e9f936edf6cd5c5735c8f363a7bc622089f2cba2e4473defc"
+    },
+    "scripts/check_pcie_gen3_dllp_consumer_v6.py": {
+      "bytes": 8881,
+      "sha256": "e17adce76b943d5979514ea8d5c5f18d7bb20b2f6ec2f5aac03987501ec91c9b"
+    },
+    "scripts/check_pcie_gen3_recovered_events_v2.py": {
+      "bytes": 10172,
+      "sha256": "ab52a968e134860dc93c2d83e91e52f71b05efe8f1ff5ff07defc6d42422c4b8"
+    },
+    "sw/tests/test_pcie_gen3_event_packet_type_v1.py": {
+      "bytes": 3411,
+      "sha256": "e36efdd9efe33f13e776b4a5a05903a1815d4fc7799ff909b2da27068845df1d"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v": {
+      "bytes": 17774,
+      "sha256": "263d91fb910ab27e5ac3e2efe49b4e93366aff2d47a498afc483dfd587c679dc"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v": {
+      "bytes": 6729,
+      "sha256": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_v6.py": {
+      "bytes": 14065,
+      "sha256": "0045535806ec603e756c45805b5e6c684042b5268e2302511b98a4403a2e1b66"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_events_v2.py": {
+      "bytes": 13675,
+      "sha256": "7bf2b4f3b44cfb1ce4053d721e5a32970f37156dc7437e7058d59a8436fe2b96"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_v6": {
+      "bytes": 1154,
+      "sha256": "0cc9fb568b692ca38cc00bd20ac0642b00302b59c3ccbc0076c5fee2e11181d3"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_recovered_events_v2": {
+      "bytes": 1653,
+      "sha256": "d5d08cf86b730f2d40be53960c352489b029c2baa6f996730af43373022abf65"
+    }
+  },
+  "literal_source_bridges": [
+    {
+      "baseline": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v5.v",
+        "bytes": 17438,
+        "sha256": "734cce5b4b37b5d1f8ec4751deecdd3fda8934e32dbc1b7570b2ee2492cd72b4"
+      },
+      "candidate": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v",
+        "bytes": 17774,
+        "sha256": "263d91fb910ab27e5ac3e2efe49b4e93366aff2d47a498afc483dfd587c679dc"
+      },
+      "literal_inverse_substitutions": 9,
+      "reconstructed_original_bytes_exact": true
+    },
+    {
+      "baseline": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v1.v",
+        "bytes": 6645,
+        "sha256": "840863872ae5a06e2f6d8fed642e28b14da58faea3c581445e221ae5caef370c"
+      },
+      "candidate": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v",
+        "bytes": 6729,
+        "sha256": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50"
+      },
+      "literal_inverse_substitutions": 4,
+      "reconstructed_original_bytes_exact": true
+    }
+  ],
+  "findings": [],
+  "reasoning": [
+    "event_packet_dllp_n[j] samples nk[a] at exactly the same ordered gather and same full6-bit owner as event_owner/sequence/bytes/kind. The assignment precedes bad/null/good decoding, so rejected DLLP does not lose its type merely because good is false.",
+    "The four added type bits are registered with the existing event bundle. While event_count is nonzero and event_pop is false, event_packet_dllp_n retains its current register; later live descriptors cannot rewrite the held sideband.",
+    "A new gather first zeros all four type bits then fills only accepted contiguous event lanes. This follows the same modulo64 event order and computed next-entry state as all existing event metadata.",
+    "Per-lane event_valid AND masks the new output on reset, explicit flush, epoch mismatch, halt, and unused lanes. Flush/epoch do not need to clear the hidden type register because they clear count and mask outputs immediately; the next gather rebuilds all valid type bits.",
+    "Old controls and body/descriptor/release priorities reconstruct exactly. The new field has no fan-in to any original handshake, state, error, decoded value, TLP output or end counter. Physical timing/fanout still requires a separate native check.",
+    "The recovered wrapper adds only the four-bit public port, consumer version name and named connection. Existing abort/upstream-fault flush, normal-stop drain and accepted-event accounting are untouched.",
+    "Leaf oracle appends the input packet dictionary DLLP type independently of decoded event kind. The new256bad-packet alternating-type wrap/stall case and flush/epoch mask case exercise the new association. Existing six leaf and11raw cases add type checks through the shared event tuple."
+  ],
+  "controls_reviewed_not_rerun": {
+    "author_reported_pytest_controls": 9,
+    "inverse_source_controls": 2,
+    "leaf_positive_cases": 8,
+    "raw_positive_cases": 11,
+    "actual_mutants": 5,
+    "negative_scope": "Four leaf assertion rejections; the raw disconnected output mutant produces an unknown/high-impedance valid sideband and expected ValueError. Its signal-read diagnostic is not a compiler/tool failure. Exact status/XML/runtime checks remain required."
+  },
+  "runtime_source_scope": "Read new leaf/fullraw runner diffs: source/runtime pins, exact executed XML name/count, identity-error rejection, group failure cleanup, resource gates and complete closed-program gzip readback preserved or strengthened. No runner execution performed here.",
+  "limitations": [
+    "Source-only manual review and pure literal source reconstruction, no HDL/native/SAT/formal/wave replay.",
+    "Assumes the existing owned descriptor/body contract and bounded64-ID/16-bit observational epoch semantics; no controller ACK/NAK/credit action or LTSSM policy acceptance.",
+    "Adds output/state only at source level; no cell-count, timing, SDF or physical performance claim.",
+    "New consumerV6/recoveredEventsV2 remain outside unchanged published phase18/doc127."
+  ]
+}

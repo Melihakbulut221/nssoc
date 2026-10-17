@@ -1,0 +1,20 @@
+{
+  "status": "PARALLEL_CONSTANT_SLOT_READ_EXPERIMENT_FROM_V11",
+  "baseline": {
+    "source": "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v11.v",
+    "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+  },
+  "source_freeze_sha256": "9f211b7850c645fdb4c3f10b41997d8caaacf3e1cf91fa476e484173b31cca3e",
+  "measured_motivation": {
+    "rejected_V12_start": "framer.read_ptr[2]",
+    "rejected_V12_endpoint": "framer.ending",
+    "rejected_V12_buffer_delay_ns": 3.828182,
+    "rejected_V13_start": "framer.read_ptr[2]",
+    "rejected_V13_endpoint": "framer.output_sequence[45]",
+    "rejected_V13_buffer_delay_ns": 3.462092
+  },
+  "implementation": "For each of four readlanes, compare wrappedreadaddress with eachconstant physicalslot. Oneaddress/count/keep/verdict condition gates all60datametadatabits. ORtogether disjoint eligible contributions. Proceduralif, notternary/bitwiseXenable, preservesreference unknown-conditionnot-true masking.",
+  "unchanged": "EveryV11clockenable,slotwriter,verdictcachewriter,parser/fault/retire/commit/pointer/reset state and publicwire is exactbyinverse. Thiscandidate is not cumulativeto rejectedV12/V13.",
+  "proof_scope": "Literalcombinationalreference/candidate comparison across12288cases at rings16/64/128, includingunknown selectedpayload/keep/verdict/readpointer/count, plus26wholeDUTpositivepubliccases,17actualHDLfaults. Thisis finite; not fullfourstate sequentialSATproof orMAX4118/physicalfrequency qualification.",
+  "area_tradeoff": "Paralleldecode/maskedOR may use morecells thanmultiplexers; actualsame4ns nativepreplacement will decide whether worstsetup improves."
+}

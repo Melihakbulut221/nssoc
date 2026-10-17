@@ -1,0 +1,64 @@
+{
+  "status": "DIAGNOSTIC_ONLY_SAME_COMPONENT_ALGORITHM_EMIT_BEFORE_UNCHANGED_ASSERTION",
+  "original": {
+    "bytes": 5240,
+    "sha256": "eb0e44c5db7009cfd960f4b618a23b4716ebc81decd56180a51815e201da0fa7"
+  },
+  "diagnostic": {
+    "bytes": 5231,
+    "sha256": "6d46a5adaa88ad18d4ce0bbdb789074e8261905548c24c8c23dbcbe0af5e90cb"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Exact metal/via-only component census bound to native unsimplified LVS.\"\"\"\nfrom pathlib import Path\nfrom collections import Counter,defaultdict\nimport pya,json,hashlib,time\nB=Path(__file__).parent\nGDS=Path('/dev/shm/nssoc-div4-v7-layout-01/nssoc_clock_div4_v7_layout.gds')\nDB=Path('/dev/shm/nssoc-div4-v7-wire-native-02/result.l2n')\n",
+      "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Exact metal/via-only component census bound to native unsimplified LVS.\"\"\"\nfrom pathlib import Path\nfrom collections import Counter,defaultdict\nimport pya,json,hashlib,time\nB=Path(__file__).parent\nGDS=Path('/dev/shm/nssoc-div4-v7-layout-01/nssoc_clock_div4_v7_layout.gds')\nDB=Path('/dev/shm/nssoc-div4-v7-wire-native-02/result.l2n')\n"
+    },
+    {
+      "tag": "replace",
+      "before": "OUT=Path('/dev/shm/nssoc-div4-v7-wire-geometry-04');OUT.mkdir()\n",
+      "after": "OUT=Path('/dev/shm/nssoc-div4-v7-wire-geometry-diagnostic01');OUT.mkdir()\n"
+    },
+    {
+      "tag": "equal",
+      "before": "METALS=[8,10,30,50,67,126,134];VIAS=[19,29,49,66,125,133]\ndef pin(p):\n p=Path(p);return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\ng=pya.Layout();g.read(str(GDS));top=g.top_cell()\nl=pya.LayoutToNetlist();l.read(str(DB));c=l.netlist().top_circuit()\nassert c.pin_count()==7\nclasses=Counter(d.device_class().name for d in c.each_device())\nassert classes==dict(npn13G2=34,ptap1=18,rppd=33,cap_cmim=6),classes\nwire=pya.Layout();wire.dbu=g.dbu;wt=wire.create_cell('bank_wires')\nregions={};mapping={};layers={}\nfor layer in METALS+VIAS:\n r=pya.Region(top.begin_shapes_rec(g.layer(layer,0))).merged();regions[layer]=r\n wt.shapes(wire.layer(layer,0)).insert(r);assert (r^pya.Region(wt.begin_shapes_rec(wire.layer(layer,0)))).is_empty()\n layers[layer]=dict(explicitly_empty=r.is_empty(),area_dbu2=r.area(),polygons=r.count(),bbox=str(r.bbox()),source_union_sha256=hashlib.sha256('\\n'.join(sorted(poly.to_s() for poly in r.each())).encode()).hexdigest())\n# Empty layers remain explicitly inventoried; no nonempty polygon is omitted.\nACTIVE_METALS=[m for m in METALS if not regions[m].is_empty()]\nassert ACTIVE_METALS==[8,10,30,50,67,126]\nassert regions[134].is_empty() and regions[133].is_empty()\nfor metal in ACTIVE_METALS:\n r=regions[metal];a=r.area();box=r.bbox();candidates=[]\n for i in l.layer_indexes():\n  lr=l.layer_by_index(i)\n  if lr.bbox()==box and lr.area()==a and (lr^r).is_empty():candidates.append(i)\n assert len(candidates)==1,(metal,candidates)\n mapping[metal]=candidates[0]\ne=pya.LayoutToNetlist('BANKWIRES',g.dbu)\nfor layer,r in regions.items():\n if not r.is_empty():e.register(r,'gds_'+str(layer));e.connect(r)\nfor a,v,b in zip(METALS,VIAS,METALS[1:]):\n if not regions[v].is_empty():\n  assert not regions[a].is_empty() and not regions[b].is_empty()\n  e.connect(regions[a],regions[v]);e.connect(regions[v],regions[b])\ne.extract_netlist();ec=e.netlist().top_circuit()\nassert len(list(ec.each_device()))==0\nrows=[];owners=defaultdict(list);cache={}\nfor n in ec.each_net():\n pieces={m:e.shapes_of_net(n,regions[m],True) for m in ACTIVE_METALS}\n first=next((m,r) for m,r in pieces.items() if not r.is_empty());m,r=first\n # A native interior point obtained from exact rectangular decomposition.\n boxes=[poly.bbox() for poly in r.decompose_trapezoids_to_region().each() if poly.area()==poly.bbox().area() and poly.bbox().width()>2 and poly.bbox().height()>2]\n assert boxes,'No exact rectangular interior for conductor probe'\n point=boxes[0].center();native=l.probe_net(l.layer_by_index(mapping[m]),point)\n assert native is not None\n nid=native.cluster_id\n checks={}\n for metal,piece in pieces.items():\n  key=(nid,metal)\n  if key not in cache:cache[key]=l.shapes_of_net(native,l.layer_by_index(mapping[metal]),True)\n  assert (piece-cache[key]).is_empty(),('Wire component crosses native device/net boundary',n.cluster_id,nid,metal)\n  checks[metal]=dict(area_dbu2=piece.area(),polygons=piece.count())\n owners[nid].append(n.cluster_id)\n rows.append(dict(component=n.cluster_id,native_cluster=nid,native_name=native.name,probe_metal=m,probe_dbu=[point.x,point.y],layers=checks))\nassert all(len(v)==1 for v in owners.values()), 'One native metal net split into multiple physical conductors'\n# Complete native metal coverage, including nets that are not public ports.\ncoverage=[]\nfor n in c.each_net():\n a=sum(l.shapes_of_net(n,l.layer_by_index(mapping[m]),True).area() for m in ACTIVE_METALS)\n if a:assert n.cluster_id in owners,(n.name,n.cluster_id,a)\n coverage.append(dict(native_cluster=n.cluster_id,name=n.name,metal_area_dbu2=a,wire_components=owners.get(n.cluster_id,[])))\n",
+      "after": "METALS=[8,10,30,50,67,126,134];VIAS=[19,29,49,66,125,133]\ndef pin(p):\n p=Path(p);return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\ng=pya.Layout();g.read(str(GDS));top=g.top_cell()\nl=pya.LayoutToNetlist();l.read(str(DB));c=l.netlist().top_circuit()\nassert c.pin_count()==7\nclasses=Counter(d.device_class().name for d in c.each_device())\nassert classes==dict(npn13G2=34,ptap1=18,rppd=33,cap_cmim=6),classes\nwire=pya.Layout();wire.dbu=g.dbu;wt=wire.create_cell('bank_wires')\nregions={};mapping={};layers={}\nfor layer in METALS+VIAS:\n r=pya.Region(top.begin_shapes_rec(g.layer(layer,0))).merged();regions[layer]=r\n wt.shapes(wire.layer(layer,0)).insert(r);assert (r^pya.Region(wt.begin_shapes_rec(wire.layer(layer,0)))).is_empty()\n layers[layer]=dict(explicitly_empty=r.is_empty(),area_dbu2=r.area(),polygons=r.count(),bbox=str(r.bbox()),source_union_sha256=hashlib.sha256('\\n'.join(sorted(poly.to_s() for poly in r.each())).encode()).hexdigest())\n# Empty layers remain explicitly inventoried; no nonempty polygon is omitted.\nACTIVE_METALS=[m for m in METALS if not regions[m].is_empty()]\nassert ACTIVE_METALS==[8,10,30,50,67,126]\nassert regions[134].is_empty() and regions[133].is_empty()\nfor metal in ACTIVE_METALS:\n r=regions[metal];a=r.area();box=r.bbox();candidates=[]\n for i in l.layer_indexes():\n  lr=l.layer_by_index(i)\n  if lr.bbox()==box and lr.area()==a and (lr^r).is_empty():candidates.append(i)\n assert len(candidates)==1,(metal,candidates)\n mapping[metal]=candidates[0]\ne=pya.LayoutToNetlist('BANKWIRES',g.dbu)\nfor layer,r in regions.items():\n if not r.is_empty():e.register(r,'gds_'+str(layer));e.connect(r)\nfor a,v,b in zip(METALS,VIAS,METALS[1:]):\n if not regions[v].is_empty():\n  assert not regions[a].is_empty() and not regions[b].is_empty()\n  e.connect(regions[a],regions[v]);e.connect(regions[v],regions[b])\ne.extract_netlist();ec=e.netlist().top_circuit()\nassert len(list(ec.each_device()))==0\nrows=[];owners=defaultdict(list);cache={}\nfor n in ec.each_net():\n pieces={m:e.shapes_of_net(n,regions[m],True) for m in ACTIVE_METALS}\n first=next((m,r) for m,r in pieces.items() if not r.is_empty());m,r=first\n # A native interior point obtained from exact rectangular decomposition.\n boxes=[poly.bbox() for poly in r.decompose_trapezoids_to_region().each() if poly.area()==poly.bbox().area() and poly.bbox().width()>2 and poly.bbox().height()>2]\n assert boxes,'No exact rectangular interior for conductor probe'\n point=boxes[0].center();native=l.probe_net(l.layer_by_index(mapping[m]),point)\n assert native is not None\n nid=native.cluster_id\n checks={}\n for metal,piece in pieces.items():\n  key=(nid,metal)\n  if key not in cache:cache[key]=l.shapes_of_net(native,l.layer_by_index(mapping[metal]),True)\n  assert (piece-cache[key]).is_empty(),('Wire component crosses native device/net boundary',n.cluster_id,nid,metal)\n  checks[metal]=dict(area_dbu2=piece.area(),polygons=piece.count())\n owners[nid].append(n.cluster_id)\n rows.append(dict(component=n.cluster_id,native_cluster=nid,native_name=native.name,probe_metal=m,probe_dbu=[point.x,point.y],layers=checks))\nassert all(len(v)==1 for v in owners.values()), 'One native metal net split into multiple physical conductors'\n# Complete native metal coverage, including nets that are not public ports.\ncoverage=[]\nfor n in c.each_net():\n a=sum(l.shapes_of_net(n,l.layer_by_index(mapping[m]),True).area() for m in ACTIVE_METALS)\n if a:assert n.cluster_id in owners,(n.name,n.cluster_id,a)\n coverage.append(dict(native_cluster=n.cluster_id,name=n.name,metal_area_dbu2=a,wire_components=owners.get(n.cluster_id,[])))\n"
+    },
+    {
+      "tag": "delete",
+      "before": "assert len(rows)==37 and len(coverage)==38\n",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "wire.write(str(OUT/'wires.gds'));e.write(str(OUT/'wires.l2n'))\n",
+      "after": "wire.write(str(OUT/'wires.gds'));e.write(str(OUT/'wires.l2n'))\n"
+    },
+    {
+      "tag": "replace",
+      "before": "result=dict(status='GEOMETRY_ONLY_ALL_METAL_VIA_COMPONENTS_BOUND_TO_NATIVE_LVS_NO_RC_YET',method=pin(__file__),inputs={str(p):pin(p) for p in [GDS,DB]},\n",
+      "after": "result=dict(status='DIAGNOSTIC_ONLY_NO_GEOMETRY_ACCEPTANCE',method=pin(__file__),inputs={str(p):pin(p) for p in [GDS,DB]},\n"
+    },
+    {
+      "tag": "equal",
+      "before": " native_devices=dict(classes),native_device_count=sum(classes.values()),native_ports=[p.name() for p in c.each_pin()],\n native_layer_mapping=mapping,layers=layers,wire_components=rows,native_net_coverage=coverage,\n wire_component_count=len(rows),native_net_count=len(coverage),native_metal_net_count=sum(bool(r['metal_area_dbu2']) for r in coverage),\n no_wire_geometry_change=True,no_component_union_by_native_label=True,no_device_deleted_from_native_graph=True,\n rc_qualified=False,full_pex_qualified=False,substrate_r_modeled=False,\n outputs={p.name:pin(p) for p in OUT.iterdir() if p.is_file()})\n",
+      "after": " native_devices=dict(classes),native_device_count=sum(classes.values()),native_ports=[p.name() for p in c.each_pin()],\n native_layer_mapping=mapping,layers=layers,wire_components=rows,native_net_coverage=coverage,\n wire_component_count=len(rows),native_net_count=len(coverage),native_metal_net_count=sum(bool(r['metal_area_dbu2']) for r in coverage),\n no_wire_geometry_change=True,no_component_union_by_native_label=True,no_device_deleted_from_native_graph=True,\n rc_qualified=False,full_pex_qualified=False,substrate_r_modeled=False,\n outputs={p.name:pin(p) for p in OUT.iterdir() if p.is_file()})\n"
+    },
+    {
+      "tag": "replace",
+      "before": "(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\\n');(B/'wire-component-geometry.json').write_text(json.dumps(result,indent=2)+'\\n')\n",
+      "after": "(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\\n');(B/'wire-component-geometry-diagnostic.json').write_text(json.dumps(result,indent=2)+'\\n')\n"
+    },
+    {
+      "tag": "equal",
+      "before": "print(result['status'],len(rows),len(coverage),[(r['name'],len(r['wire_components'])) for r in coverage if len(r['wire_components'])>1])\n",
+      "after": "print(result['status'],len(rows),len(coverage),[(r['name'],len(r['wire_components'])) for r in coverage if len(r['wire_components'])>1])\n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "assert len(rows)==37 and len(coverage)==38\n"
+    }
+  ],
+  "scope": "Fresh diagnostic output path/filename/status only; unchanged count assertion moved after raw observation, no acceptance or source/GDS modification."
+}

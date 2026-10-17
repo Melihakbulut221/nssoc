@@ -1,0 +1,13 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Four-times-area filter-capacitor candidate. Closed-loop improvement unqualified.
+* Nested XDET/XCP paths preserve the exact selected570 source identities.
+.subckt nssoc_tail115_pump13_detector_slice_v1 up down cp avdd avss sub
+XCP up down cp avdd avss sub nssoc_pll_charge_pump_hv_v1
+.ends nssoc_tail115_pump13_detector_slice_v1
+.subckt nssoc_tail115_pump_filter13_v1 up down vctrl vco_avdd div_avdd avss sub
+XDET up down vctrl div_avdd avss sub nssoc_tail115_pump13_detector_slice_v1
+XRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1
+XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1
+XC vctrl avss cap_cmim w=20u l=20u
+.ends nssoc_tail115_pump_filter13_v1

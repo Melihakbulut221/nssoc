@@ -1,0 +1,36 @@
+{
+  "status": "PRIMARY_SOURCE_RESEARCH_NOT_IMPLEMENTED_OR_NATIVE_VALIDATED",
+  "openroad_commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "accepted": false,
+  "source_files": [
+    {
+      "path": "src/drt/src/io/io.cpp",
+      "sha256": "5981b0cf31cae90fdfa2628ffb33c437cf15f33d866310176fd5f53024321c7e",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/io/io.cpp"
+    },
+    {
+      "path": "src/drt/src/dr/FlexDR.cpp",
+      "sha256": "122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp"
+    },
+    {
+      "path": "src/odb/src/db/dbNet.cpp",
+      "sha256": "5105f249925c773cc16eabbf438381451cfb8dd50fe66c520bc3ed4218637e28",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbNet.cpp"
+    },
+    {
+      "path": "src/odb/include/odb/dbWireGraph.h",
+      "sha256": "2be133d615636ded86f665ea134d3a1e5ef9d47c497d09475925491df8745187",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/include/odb/dbWireGraph.h"
+    }
+  ],
+  "findings": [
+    "drt io.cpp reads decoder FIXED into frNet::isFixed and skips rewriting/deleting fixed wires. FlexDR switches ALL ripup to INCR when fixed nets exist.",
+    "dbNet::setWireType changes only net metadata flags; it does not rewrite encoded path opcodes. Metadata-only fixing is insufficient.",
+    "dbWireGraph explicitly does not expose patch-wire rectangles; naive graph rewrite cannot be assumed lossless.",
+    "A future retained-route ECO must prove native encoded FIXED, unchanged wire shapes/vias/widths/patches/pins/NDR for every protected net and original cell geometry, then perform actual changed-net routing, full geometry/DRC and fresh all-net RC/endpoint comparison. Fixed clock geometry does not imply unchanged coupling or clock delay."
+  ],
+  "next_experiment": "Cloud-only native positive/negative controls for a geometry-preserving encoded route-class conversion before integrating this mechanism. Existing live full reroutes are not changed or restarted.",
+  "full_serial_phy_complete": false,
+  "final_timing_complete": false
+}
