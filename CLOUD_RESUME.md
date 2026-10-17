@@ -1,3 +1,9 @@
+## Exact active gate follow-up handles (2026-10-17)
+
+This turn is PROGRESS: actual cold6/cold9 passed, hot6 failed with fewer output errors, native follow-up experiments started and all receipts pushed. No local files. Gate3 hot/cold run38988006162 is in_progress at source773ca36c82c5e5eed7bea62cf5be629839caa608 (tx-gate-fast-sensitivity-cloud.yml). Nominal6 run38987814037/job117263257047 is in its native step at sourcec157c352f1ad98818877cdf1d824f26f208b9b13. Do not duplicate either. Existing thermal38986834834, hot9 of38985964196, full1usPLL38982797234, actualEthernetroute38978702458, PCIeCORRPREboot38984849452 all confirmed in native steps. Review new native electrical reports before proposing a combined thermal/gate candidate or matched physical layout. All fullPHY, mainchip and finaltiming objectives remain OPEN.
+
+---
+
 ## Hot gate6 rejected; cold gate9 passed; next gate3 bracket dispatched (2026-10-17)
 
 Cloud-only. Cold6 PASS above is not a PVT/physical acceptance. Hot6 summary649091642 SHA0e8af622e91011527aca84c00ed977ba6d7d4384032959a418e86d2265e9e198; parts649091675 SHA0ba2747214b056ad962e59a6667817aa1e467bde51df379beab99fe7a44b1bc6. Native0/no warnings, source unchanged, but original gates FAIL:42/768wrong sign and98below100mV, minimum-185.158mV; CMOS384below150mV/min67.597mV; final2826below150mV/min2.094mV. HBT6/7 VCE387.140/385.269mV remain failures. AllMOS pass. This improves hot dynamic output versus original251wrong signs but is rejected, not adopted.
