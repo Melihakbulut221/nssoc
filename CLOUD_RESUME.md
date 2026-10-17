@@ -1,3 +1,13 @@
+## Latest: native sensitivity isolates combined wireR/C limitation; real PD layoutv2 launched
+
+CDRdiagnostic39078437382 nowall6nativecaptures available: ONLYbothR/C×.001 passesunchangeddataandallHBT/MIMgates forbothphases. Earlyphase−.153708606V,late+.147488945V; allsamplers0wrong,minimumsignedmargin>=.13491V. LowRalone andlowCalone fail. Fullreceipthashesandmetrics docs/evidence/cdr-mim-wire-sensitivity-20261018.json. ArtificialscalingNEVERphysicalacceptance. NeedrealwireR/Cimprovement.
+
+Newphysicalv2keepsall16verifiedmacros/394devicesandcircuitparameters unchanged. Reordersrowplacement withdeterministicpair-swap/segment-reversalminimumweightedactualconnectionspan; biaspublicportsplacedatfirstactualmacroconnectionheight; wide64umpublicrailfeeds replace3.2umfeeds, retaining7nativeviacrossings perrail. Publicpowerrows32/112/192um separatefromsignalrows; candidatehasfreshTOPnssoc_cdr_retimed_pd394_layout_v2. Originalv1generator/controller/checker remainfrozen. Newcontroller runsunchanged560ruleDRC/deep+flat394LVS and5realnegativecontrols. RequireactualphysicalPASS,thenfreshplane/nativebinding/MIM-awarewholeRCandloadedtransient; nooldIDs/RC/electricalresultreuse.
+
+Mainchiplogic39079184710 runningwith18exactcriticalreports. PLLMIM21windowcases39078852727 passed; fullreceipt docs/evidence/pll-mim-window-comparison-pass-20261018.json. For11um mutualwire-only5.58323fF versusMIMaware.610951fF; CDLdeviceestimate removalground182.943→2.30619fF. For24um mutual26.459→1.87917fF; ground867.426→7.53592fF. LocalwindowsnotfullclockRCqualification; ongoing845PLLtrajectorynotmodified. Nativecapsule39078674197 live,TXfullwire39067769686 live. CLOUDONLY; goalOPEN,turnPROGRESS.
+
+---
+
 ## Latest: banked postCTS repair completed; exact logic proof and critical reports launched
 
 PostCTS39061293959/sourcea31ca5b2eab6f1ca459ca347bb8d1ad1dbdd98fe completednativebefore/after3corner measurements, returncode0/sourcesunchanged. Fullreceipt docs/evidence/replay-onehot-postcts-pass-20261018.json summary651875030/parts651875113. Freshpropagated-clockplacementestimates, NOTroute/extractedtiming. Slowsetup8194→8147,WS−9.48871→−6.19976ns; slowhold395→11,WS−1.02147→−.575487ns,r2r0. Typicalsetup4781→5036,WS−4.51309→−2.809ns; hold783→22,r2r0. Fastsetup1509→1098,WS−1.80475→−1.07956ns; fasthold11805→171,WS−.689778→−.391465ns,r2r130 WS−.068686ns. Slowslew180→1; allcornercap0; fanout1148remains. NOTclosure.
