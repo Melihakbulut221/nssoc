@@ -1,3 +1,15 @@
+## Ethernet actual full reroute terminal: hold regressed; independent review dispatched (2026-10-17)
+
+Run38978702458/source deed6d20f745d4a5a18d420cc7184ca09d322893 completedSUCCESS as execution, NOT timingacceptance. Summary649142256 SHA43a8be4e7899e3e22d318230abfe2c6479655d3c237937e72fcaebe5fd6b80f7;parts649142354 SHA2c2803ceded84f3c119d4051ee208f8e09623db3386691733cb098ec039dee8b. NativeDRT0 andoriginalsource/logic/negativecontrol passed; freshRC/all22544endpoints135264rows measured. Fast hold1->2negative endpoints, WNS-0.790812ps->-137.859058ps; noholdresolved andone newlynegative. SlowsetupWNS-5.793440->-5.676133ns butnegativeendpoints9351->9361;typicalsetupWNS-1.464127->-1.572313ns,464->467negative. Antenna627nets783pins->643nets800pins. Keep parent, reject globaltiming/antennaacceptance. ODB2a127c74e04a216dab65cd56d2a92194a51c61aff408842e9ab717db33922676.
+
+Dispatched ethernet-delay-independent-review-cloud.yml ONCE with run38978702458 andexactsummary/partshashes above; findlatestworkflow_dispatch run, do notduplicate. Inspectgeometry/annotationreport andactualfailingendpointpaths.
+
+Next actionable physical hypothesis: producer archive already contains candidate.odb/proposed.odb before all-signalDRT. Audit whether one sd1->sd2 master swap preserves real LEF pin contact with old complete routing; samefootprint alone is NOT proof. If actualnative pin/shapes/connectivity/PG/NDR checks pass, freshRC/allendpointSTA on that unchanged-wire candidate mayavoid globalDRT regressions. Need inspect native preparation script and candidate hash in docs/evidence/ethernet-reroute-regression-20261017.json, then run independentnativeaudit; do nottreat frozenRCscreen asphysicalacceptance. OriginalfreshparentODB83beec1... retained.
+
+Tree32 nativeLVS1674PASS butrecommendedemitterbudgetDRCFAIL as below. Allgate/thermal electricalexperiments terminal. OriginalPLL38982797234 andPCIeCORRPREboot38984849452 remain live. Cloud-only, fullgoalOPEN.
+
+---
+
 ## Tree32 native connectivity proved; emitter-budget DRC remains failed (2026-10-17)
 
 PROGRESS, not completion. Run38989984341 source77d3628b5bc701449fe248d8b02e7216a5e955ea terminalFAIL only at finalmainDRC. Both nativehierarchical+flatLVS PASS:1674layout=1674reference devices,oneMatch,zeroextractiondiagnostics,all162ports. Wrongfinger,missingHBT,actualintermacrocut,railshort andoffgrid controls rejected. GDS ba5358d2c379e8b564cf4a8e38064939fa4dfcde7db9a52669b5fec9950da617 differs from firstGDS9af718... ONLY in41BGNLIB/BGNSTR timestamprecords: verifiedallremainingbytesidentical with normalizedSHA1be29cf235e7550b2eb7ce56c021134ce302d3aced6d35f3eb07fe40269648d3. Do notclaimrawhashesequal. Original560-rule DRC stillFAIL single npn13G2.bR emitter-budgetmarker; doNOTrelabelfullrunPASS. Summary649155418 SHA501272489c0d10b2bf6837c2f2380b331e46eb78533c45881db171366d9cc308;parts649155494 SHA55c3325d2c6ea29e5dcf6c704fb109ecacfb160a9bba5de66f28be7bb4eaecf3. Exactreceipt docs/evidence/tx-tree32-connectivity-pass-budget-fail-20261017.json.
