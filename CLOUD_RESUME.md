@@ -1,3 +1,13 @@
+## C8 pump native physical passed; fresh C8 RC launched (2026-10-17)
+
+PROGRESS. C8layout39005085975/sourced93b775713d7ece6720116b5d55a1a57f7498d00 PASS560DRC0/deep+flat30=30oneMatch/noextractiondiagnostics/all5physicalfaults+LEF2faults. Verified actual archivedresult/GDS/LEF/schematic hashes inRAM. GDS806e5ddf92eb94a9bd44b26ae40984b4f4d817d8ea59b775ecf0bde242ff6aac. Receipt docs/evidence/pll-filter-c8-physical-pass-20261017.json summary649608194/parts649608318/archive649608376252480bytes. This is pumpmacro only, not845parentorPLLacquisition.
+
+Existing RCcontroller nowexplicit --size-um8 uses this exact freshGDS/nativeLVS and same pinnednativeMagic/terminalownership/13rawcorruption checks; originalC9default and original sourcefailure retained. Nativecapwidth/length/area/perimeter mustbe8/8/64/32. Separate pll-filter-c8-rc workflow starts fresh extraction, neverreuseC9RC. Next composeactualC8nativepump, substituteinto verifieddivider-v2 parent, regenerateparentwires/DRC/LVS/extraction, then fulloriginal1usacquisition withunchanged100ppm/50ps/no-slipwindows.
+
+Full32headroom39005251402/sourcead92399dccc8a4b58ee8afc83cbc4bc0df64c061 controls juststartedatlastcheck. Preserve actualwire39004595306, compact39004839884 andMBIST38994926932. Cloud-only/localempty/goalOPEN; thisturnPROGRESS.
+
+---
+
 ## Fixed transistor headroom/common-mode correction candidate launched (2026-10-17)
 
 PROGRESS. Based on actual fixedPVT39002430107: hotlowfast-a/b15dataHBT VCE minimum393.049mV; coldhighfinal/level4commonmode maxima2.055244/2.060439V. Existing final selector cold VCE407.465mV leaves little margin. Actual tails have much more: hotfast538mV/final479mV, coldfast563mV/final524mV.

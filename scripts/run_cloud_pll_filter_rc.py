@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Fresh wire extraction from the real 9 um pump; never old RC relabeled as new."""
-import hashlib,json,os,subprocess,sys,tarfile
+import argparse,hashlib,json,os,subprocess,sys,tarfile
 from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
@@ -30,9 +30,18 @@ def unpack(packed,destination,prefix=None):
     packed.unlink()
 
 def main():
+    global TOP,GDS_SHA,OUT
+    parser=argparse.ArgumentParser();parser.add_argument('--size-um',type=int,choices=(8,9),default=9);size=parser.parse_args().size_um
+    archive_bytes=248708;source_run=38848309907
+    if size==8:
+        pin=json.loads((ROOT/'docs/evidence/pll-filter-c8-physical-pass-20261017.json').read_text())
+        TOP='nssoc_pump_filter13_rhi140_c8_v1'
+        GDS_SHA=pin['layout_outputs'][TOP+'.gds']
+        OUT=ROOT/'hw/soc/out/cloud-pll-filter-c8-rc'
+        archive_bytes=pin['bytes'];source_run=pin['source_run']
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,qualified_pex=False,full_serial_phy_complete=False,parent_model_composed=False,
-        scope='Fresh actual 9 um pump metal/via geometry and native30-device terminal binding, 59 physical reference points, native Magic wire RC and thirteen raw-corruption controls. Intrinsic body/well spreading, qualified RF extraction, complete845-parent model and electrical acquisition are separate requirements.')
+        scope=f'Fresh actual {size} um pump metal/via geometry and native30-device terminal binding, 59 physical reference points, native Magic wire RC and thirteen raw-corruption controls. Intrinsic body/well spreading, qualified RF extraction, complete845-parent model and electrical acquisition are separate requirements.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(command,label):
         path=OUT/(label+'.log')
@@ -46,22 +55,30 @@ def main():
         summary_sha='ae90bac4182e79be42f41aedea9605ade46d2f80b5a127c7f38f7b25534ba0ad'
         parts_sha='f52d7d03da41475095a6067b958c99d629a959da9829e58e6915148d297e525b'
         archive_sha='2a8e067beb6b2598a3eab4bc88d79acf0b5a5e8cb4a2f26a214a36c0629297cf'
+        if size==8:
+            stem=pin['stem'];base=pin['base'];summary_sha=pin['summary_sha256'];parts_sha=pin['parts_sha256'];archive_sha=pin['sha256']
         fetch(base+stem+'.summary.json',summary_sha,OUT/'source-summary.json')
         fetch(base+stem+'.parts.json',parts_sha,OUT/'source-parts.json')
         prior=json.loads((OUT/'source-summary.json').read_text());manifest=json.loads((OUT/'source-parts.json').read_text())
-        assert prior['size_um']==9 and prior['source_head']=='8380558b46bbc150b7d3e459e8f47be2fd260313'
-        assert prior['status']=='FAIL_OR_ERROR' and prior['error'].startswith('FileNotFoundError(')
+        assert prior['size_um']==size
+        if size==9:
+            assert prior['source_head']=='8380558b46bbc150b7d3e459e8f47be2fd260313'
+            assert prior['status']=='FAIL_OR_ERROR' and prior['error'].startswith('FileNotFoundError(')
+        else:
+            assert prior['source_head']==pin['source_head']
+            assert prior['status']=='PASS_CANDIDATE_PUMP_NATIVE_DRC_LVS_LEF_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
+            assert prior['lef']['status']=='PASS_NATIVE_LEF_AND_TWO_PHYSICAL_FAULTS'
         assert prior['physical']['status']=='PASS_NATIVE_PUMP_FILTER_DRC_LVS_AND_FAULT_CONTROLS'
         assert {k:v['status'] for k,v in prior['physical']['steps'].items()}=={k:('PASS' if k in ('drc','lvs','lvs_flat') else 'REJECTED_EXPECTED_FAULT') for k in ('drc','lvs','lvs_flat','wrong_width','missing_well','vctrl_open','rail_short','offgrid')}
-        assert manifest['parts']==[dict(index=0,name=stem+'.tar.gz.part0000',bytes=248708,sha256=archive_sha)]
-        assert manifest['sha256']==archive_sha and manifest['bytes']==248708
+        assert manifest['parts']==[dict(index=0,name=stem+'.tar.gz.part0000',bytes=archive_bytes,sha256=archive_sha)]
+        assert manifest['sha256']==archive_sha and manifest['bytes']==archive_bytes
         packed=OUT/'source.tar.gz';fetch(base+manifest['parts'][0]['name'],archive_sha,packed)
-        assert packed.stat().st_size==248708
+        assert packed.stat().st_size==archive_bytes
         unpack(packed,OUT,'cloud-pll-filter-layout');(OUT/'cloud-pll-filter-layout').rename(OUT/'source')
         source=OUT/'source';assert sha(source/'result.json')==summary_sha
         assert all(sha(source/n)==v for n,v in prior['outputs'].items())
         assert sha(source/'layout'/(TOP+'.gds'))==GDS_SHA
-        result['source_evidence']=dict(run=38848309907,summary_sha256=summary_sha,parts_sha256=parts_sha,archive_sha256=archive_sha,gds_sha256=GDS_SHA,physical_status=prior['physical']['status']);save()
+        result['source_evidence']=dict(run=source_run,size_um=size,summary_sha256=summary_sha,parts_sha256=parts_sha,archive_sha256=archive_sha,gds_sha256=GDS_SHA,physical_status=prior['physical']['status']);save()
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==prior['runtime_sha256'];result['runtime_sha256']=sha(app)
         runtime=json.loads((ROOT/'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
         rt=OUT/'magic-cloud';rt.mkdir();packed=OUT/'magic.tar.gz'
@@ -94,7 +111,8 @@ def main():
             run([app,'python',OUT/name],name.removesuffix('.py'))
         devices=json.loads((OUT/'devices01.json').read_text())
         caps=[d for d in devices['devices'] if d['model']=='cap_cmim'];assert len(caps)==1
-        params={k.lower():v for k,v in caps[0]['parameters'].items()};assert params['w']==params['l']==9.0,params
+        params={k.lower():v for k,v in caps[0]['parameters'].items()};assert params['w']==params['l']==float(size),params
+        assert params['a']==size**2 and params['p']==4*size,params
         result['actual_capacitor']=caps[0]
         result['wire_geometry']=json.loads((OUT/'native01/result.json').read_text())
         result['terminal_anchors']=json.loads((OUT/'anchors03.json').read_text());save()
@@ -108,7 +126,7 @@ def main():
         assert all(sha(source/n)==v for n,v in prior['outputs'].items())
         assert all(sha(rt/n)==v['sha256'] for n,v in magic_manifest['files'].items())
         assert sha(raw)==rawspec['sha256']
-        result['status']='PASS_ACTUAL_C9_PUMP_NATIVE_WIRE_RC_AND_CONTROLS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
+        result['status']=f'PASS_ACTUAL_C{size}_PUMP_NATIVE_WIRE_RC_AND_CONTROLS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p!=OUT/'result.json'};save()
