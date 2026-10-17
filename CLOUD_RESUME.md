@@ -1,3 +1,11 @@
+## All original gate6/9 corner runs complete; hot9 also rejected (2026-10-17)
+
+Previous turn was VERIFIED WAIT; this turn is PROGRESS by completed native evidence. Run38985964196 is terminalSUCCESS as an execution, but both hot cases failed engineering gates. Hot9 summary649105360 SHA0a7a90213fc9f37f02a7233b0ffb6899200c05f4cad083fada518d300d4bff6f; parts649105420 SHAf2d4d842c00859532651e8b8df22b5b33ae3bd270ed8cf4ab230a7c9618afdc0. Native0/no diagnostics, preserved source.114wrong output signs/222below100mV; CMOS384below150mV,min46.134mV; final576wrong signs/3456below150mV,min-47.569mV; HBT6/7 VCE387.728/385.782mV fail. NoMOSfailures. Cold6 andcold9 passed only their original scoped screens; no overall PVT/physical adoption.
+
+Exact comparison with original hot12 and hot6 is in docs/evidence/tx-hot-gate-sweep-rejected-20261017.json. Output wrong signs251->114->42 as length12->9->6; hot input settling improves, but384transition interface samples remain below150mV and tail HBT headroom slightly worsens. Speed alone has not solved the two failure mechanisms. Fixed source bits, allphases, capture, device gates and exactclock model were verified across reports. Nominal6/fastgate3/thermalclock runs are still distinct and live; inspect before any combined candidate. No additional simulation dispatched or healthy job restarted. FullPHY/mainchip/finaltiming remain OPEN, local workspace empty.
+
+---
+
 ## Exact active gate follow-up handles (2026-10-17)
 
 This turn is PROGRESS: actual cold6/cold9 passed, hot6 failed with fewer output errors, native follow-up experiments started and all receipts pushed. No local files. Gate3 hot/cold run38988006162 is in_progress at source773ca36c82c5e5eed7bea62cf5be629839caa608 (tx-gate-fast-sensitivity-cloud.yml). Nominal6 run38987814037/job117263257047 is in its native step at sourcec157c352f1ad98818877cdf1d824f26f208b9b13. Do not duplicate either. Existing thermal38986834834, hot9 of38985964196, full1usPLL38982797234, actualEthernetroute38978702458, PCIeCORRPREboot38984849452 all confirmed in native steps. Review new native electrical reports before proposing a combined thermal/gate candidate or matched physical layout. All fullPHY, mainchip and finaltiming objectives remain OPEN.
