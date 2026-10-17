@@ -1,3 +1,9 @@
+## Latest: MIM plate union guard replaces storage-polygon count assumption
+
+Checked 2026-10-17T22:26:46.219445+00:00. MIM39074877198/sourceecdc0f6af0cdc55ac7f25d5b76e7ae7d5f34037a failedBEFOREMagic atpolygoncountguard. Recordednativecellcmim$2/device226 has4storedpolygonsperplate buttoparea6350400DBU2 equals2520x2520bbox andbottom23040000 equals4800x4800bbox. Polygoncountalone doesnotprove disconnectedmetal. Newguard requireszeroexactRegionXOR againsteachfilledboundingrectangle, a directgeometry/connectivityproof; originalmetal/via equality andinteriorpoint guards remain. No geometry edited. Failure preserved docs/evidence/cdr-mim-plate-storage-failure-20261018.json. Inspectsuccessor beforeinferringrectangleunion orMIMcapresults. CLOUDONLY; fullgoalOPEN.
+
+---
+
 ## Latest: MIM comparison generation failure preserved; actual plate-interior probes
 
 Checked 2026-10-17T22:23:17.582466+00:00. MIM39074621918/source0da97d812bbb4815d924b932f67d0513fa22dbf5 stopped BEFOREMagic: isolatedsourceplate rectangular-bbox-equality assumption failed. Noelectrical/MIMcomparisonresult. Fullfailure docs/evidence/cdr-mim-plate-rectangle-failure-20261018.json. Correction retainsexactoriginalmetal/via geometry andrequiresoneconnectedpolygonperplate, choosesinteriorrectangularwitnessfromactualTM1shape ratherthanassumingfilledbbox. Both2DBUprobearea witnesses mustlieinsideactualdrawing; sourcepolygoncounts/areas/bboxes savedbeforeguards. NativeMIMdevicecensus/geometrychecks unchanged. Observe successor; ifconnectedpolygon guardfails, inspectretainedactualgeometry ratherthanwaiving. FullPD394compositionpass stillvalid, fullparentMIMcapacitancequalification stillOPEN. CLOUDONLY.
