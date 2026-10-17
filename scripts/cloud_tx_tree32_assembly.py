@@ -129,17 +129,22 @@ def generate():
     # Each column has separate external AVDD/AVSS/SUB trunks. Global buses
     # are below every child; never draw a global rail through macro bodies.
     rail_ends={k:[]for k in ('avdd','avss','sub')}
+    return_width=plan.get('return_rail_width_um',32.);assert return_width in (32.,64.)
+    return_geometry=[]
     for level in range(5):
         pitch=plan['column_pitch_um']
         group=[n for n in plan['nodes']if n['x_um']==pitch*level];assert group
         x0=pitch*level;right=max(b.right for n in group for b in pins[n['label']].values())
-        for net,width,x,ybus in [('avdd',32.,right+140.,-100.),('sub',4.,right+200.,-300.),('avss',32.,x0-40. if level<4 else right+260.,-200.)]:
-            ys=[stub(n['label'],net,x,width,True)for n in group]
+        for net,width,x,ybus in [('avdd',32.,right+140.,-100.),('sub',4.,right+200.,-300.),('avss',return_width,x0-40. if level<4 else right+260.,-200.)]:
+            ys=[stub(n['label'],net,x,32. if net=='avss'else width,True)for n in group]
+            if net=='avss':return_geometry.append(dict(layer='TopMetal1',box_um=[x-width/2,ybus-width/2,x+width/2,max(ys)+width/2],width_um=width))
             box('TopMetal1',x-width/2,ybus-width/2,x+width/2,max(ys)+width/2);via(x,ybus,True)
             rail_ends[net].append((x,ybus,width))
     for net,ends in rail_ends.items():
         xs=[x for x,y,w in ends];y=ends[0][1];w=ends[0][2]
         box('TopMetal2',min(xs)-w/2,y-w/2,max(xs)+w/2,y+w/2)
+        if net=='avss':return_geometry.append(dict(layer='TopMetal2',box_um=[min(xs)-w/2,y-w/2,max(xs)+w/2,y+w/2],width_um=w))
+    assert len(return_geometry)==6
     # Same physically anchored final-emitter return strap as the verified4:1
     # parent, transformed with the mirrored final macro; no child edits.
     final=next(n for n in plan['nodes']if n['label']=='f');x=final['x_um']+334.785-280.875;yy=final['y_um'];end_y=yy+330.24
@@ -165,13 +170,14 @@ def generate():
     sys.path.insert(0,str(ROOT/'hw/soc/flow'));import make_pcie_clock_vco_v6_local_v1 as writer
     writer.TOP=TOP;writer.PORTS=ports;writer.use_direction=lambda n:('POWER','INOUT')if n=='avdd'else('GROUND','INOUT')if n in ('avss','sub')else('SIGNAL','OUTPUT'if n in ('mp','mn')else 'INPUT')
     dest=OUT/'layout';dest.mkdir();top.write(str(dest/(TOP+'.gds')));(dest/'schematic.cir').write_text('\n'.join(schematic)+'\n');(dest/(TOP+'.lef')).write_text(writer.lef(pya,L.dbu,top.dbbox(),public))
-    result=dict(status='GENERATED_UNVERIFIED_TREE32_1674_DEVICES',inputs=protected,outputs={p.name:sha(p)for p in dest.iterdir()},ports={n:str(b)for n,(_,b)in public.items()},bbox_um=str(top.dbbox()),parent_signal_centerline_sum_um=sum(r['centerline_length_um']for r in routes),parent_signal_centerline_max_um=max(r['centerline_length_um']for r in routes),placement_pitch=dict(column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um']),placements=placements,origin_translation_um=[dx,dy],signal_routes=routes,core_devices=837,substrate_contacts=837,total_devices=1674,frozen_child_drawing_regions_equal=True,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False,scope='Actual30pre+1final native macros,60intermacro signal wires and shared supplies/body. Clock/bias generation,64CMOSdrivers,loadedTX/fourlanes/mainchip and all electrical/RC gates remain outside this core.')
+    result=dict(status='GENERATED_UNVERIFIED_TREE32_1674_DEVICES',inputs=protected,outputs={p.name:sha(p)for p in dest.iterdir()},ports={n:str(b)for n,(_,b)in public.items()},bbox_um=str(top.dbbox()),parent_return_geometry_before_origin_translation=return_geometry,parent_signal_centerline_sum_um=sum(r['centerline_length_um']for r in routes),parent_signal_centerline_max_um=max(r['centerline_length_um']for r in routes),placement_pitch=dict(column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um']),placements=placements,origin_translation_um=[dx,dy],signal_routes=routes,core_devices=837,substrate_contacts=837,total_devices=1674,frozen_child_drawing_regions_equal=True,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False,scope='Actual30pre+1final native macros,60intermacro signal wires and shared supplies/body. Clock/bias generation,64CMOSdrivers,loadedTX/fourlanes/mainchip and all electrical/RC gates remain outside this core.')
     (dest/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
     global OUT,TOP
     p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
     p.add_argument('--placement-pitch',choices=('original','tight'),default='original')
+    p.add_argument('--return-rail',choices=('original','wide64'),default='original')
     p.add_argument('--variant',choices=('baseline','budget_high8','budget_high3','budget_high3_trim'),default='baseline');a=p.parse_args()
     if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
         OUT=ROOT/('hw/soc/out/cloud-tx-tree32-'+({'budget_high8':'budget','budget_high3':'high3','budget_high3_trim':'headroom'}[a.variant])+'-assembly')
@@ -180,6 +186,10 @@ def main():
         assert a.variant=='budget_high3_trim'
         OUT=ROOT/'hw/soc/out/cloud-tx-tree32-tight-assembly'
         TOP='nssoc_tx_tree32_budget_high3_trim_tight_core_v1'
+    if a.return_rail=='wide64':
+        assert a.variant=='budget_high3_trim'and a.placement_pitch=='tight'
+        OUT=ROOT/'hw/soc/out/cloud-tx-tree32-return64-assembly'
+        TOP='nssoc_tx_tree32_budget_high3_trim_tight_return64_core_v1'
     if a.generate:generate();return
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=a.variant,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False)
@@ -199,6 +209,8 @@ def main():
                 n['y_um']=round(n['y_um']/422.*600.,9)
             check['column_pitch_um']=1000.;check['row_pitch_um']=600.
         assert check==original,'Placement changed original selector topology'
+        plan['return_rail_width_um']=64. if a.return_rail=='wide64'else 32.
+        result['return_rail']=dict(profile=a.return_rail,trunk_and_bus_width_um=plan['return_rail_width_um'],child_stub_width_um=32.,local_final_strap_width_um=4.,power_vias_columns=4,power_vias_rows=4,scope='Only external AVSS TM1 trunks and bottom TM2 return bus widen. Child stubs, local final strap, AVDD, SUB, signal routes and devices unchanged. No resistance scaling or electrical claim.')
         result['placement_pitch']=dict(name=a.placement_pitch,column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um'],inverse_topology_matches_original=True)
         result['placement_scope']='Only parent macro pitch/trunks/routes move. Frozen child drawings, devices, topology and acceptance rules unchanged. New RC and loaded waveforms mandatory; no parasitic or electrical pass inferred.'
         if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
@@ -242,7 +254,7 @@ def main():
                     raw=t.extractfile(prefix+name).read();target=OUT/'inputs'/kind/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
                     if Path(name).name in row['generated_outputs']:assert hashlib.sha256(raw).hexdigest()==row['generated_outputs'][Path(name).name]
             packed.unlink()
-        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate','--variant',a.variant,'--placement-pitch',a.placement_pitch],'generate')
+        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate','--variant',a.variant,'--placement-pitch',a.placement_pitch,'--return-rail',a.return_rail],'generate')
         generated=json.loads((OUT/'layout/result.json').read_text());result['layout']=generated
         method=(OUT/'inputs/pre/verify-physical.py').read_text()
         child_top='nssoc_tx_mux2_cascade158_nx3_trim_layout_v1'if a.variant=='budget_high3_trim'else'nssoc_tx_mux2_cascade158_nx3_layout_v1'if a.variant=='budget_high3'else'nssoc_tx_mux2_cascade158_layout_v1'
