@@ -1,3 +1,11 @@
+## Cloud-only native connectivity diagnosis; high2 electrical result rejected (2026-10-17)
+
+PROGRESS. Local workspace remains empty; all source edits, CAD and tests run in GitHub. Added routed-gap-connectivity-cloud workflow and scripts/cloud_routed_gap_connectivity.py: restore exact inventory38998404892 and routedODB38992990610 by fixed archive/summary hashes, inspect native pin direction/net drivers/loads and all nonoutput-instance pins, plus worst32setup endpoints each corner. No SDC changes/waivers/ODB writes. New job automatically starts on workflow push; record its actual run/result before claiming any outcome.
+
+Native high2 nominal38997777137/job117294073742 completed: REJECTED4 final muxHBTs (xmux.xd0041/43/46/47), worst VCE350.779mV below unchanged400mV. All768output samples pass280.512mV; all five interface checks pass; noMOSfailure/no solverdiagnostics. This narrows32failedHBTs in high4/high8 to4 but is NOT acceptedPHY. Summary649409510 hashbedee7ec2921ee549ba4ce236abc2602a1cb2d75af60db58d176a3b8de7bd7d8; parts649409581/archive649409669 permanentlypublished. Receipt docs/evidence/tx-tree32-high2-nominal-rejected-20261017.json. Otherthree lowerloadingjobs, exactMBISTboot38994926932 andPLL38982797234 stilllive atcheck; preserve them/no restart. Next inspect terminalall1/faults, then choose designcorrection; no high2physicalpromotion whilefailed. GoalOPEN.
+
+---
+
 ## Full32 RC composition passed; actual routed coverage inventory completed (2026-10-17)
 
 PROGRESS. Nativecomposition38998200846/sourcec322ce7e75adfe0dce6d1a876aa8264bd3d32654 PASS.1674devices114815R76347C, all377resistorcomponents recover native schematicnets;3100metal+1674intrinsicbodyterminalreferences and162ports retained. Sixactual malformed output controls rejected, actualfinalHBTbase probes bound. Model wire96/tree1674-wire01.spice SHA2a3ec1d0fd9cd9f8dcb99a0dc3899a14f1611da66644a0d72ebda81357783319; compact2f1321b7905ff4aca0e8b2a5a259dcf3c49462cee72a8c707f250771ef52c748. Summaryasset649397284 is38.5MB: filter before printing. Fullreceipts docs/evidence/tx-tree32-budget-composition-pass-20261017.json. This is the REJECTEDhigh8 electrical reference, not acceptedPHY; nextsizingrequiresfreshlayoutRC.
