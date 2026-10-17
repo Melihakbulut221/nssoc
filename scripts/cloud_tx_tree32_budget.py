@@ -56,10 +56,37 @@ def resized(text,nx):
         else:raise AssertionError('Sizing corruption escaped checker')
     return result,dict(nx=nx,emitters=1+18*nx,resistance_ratio=str(Decimal(8)/nx),changes=changes,actual_parameter_faults_rejected=controls,compact_parasitics_recomputed_by_native_model=True,physical_layout_matches=False)
 
+def trim_dividers(text,nx):
+    assert nx in (1,3)
+    original,_=resized(SOURCE.read_text(),nx)
+    assert text==original,'Unbound original sizing source'
+    before=records(text);expected=[list(r)for r in before]
+    old,new=('31.6','30') if nx==1 else ('15.8','15.4')
+    changed=[]
+    for row in expected:
+        if row[0] not in ('XFPR','XFNR'):continue
+        assert row[6]=='l='+old+'u' and row[5]==('w=1u' if nx==1 else 'w=1.5u')
+        row[6]='l='+new+'u';changed.append(row[0])
+    assert changed==['XFPR','XFNR']
+    def verify(candidate):
+        assert records(candidate)==expected,'Undeclared divider or topology change'
+    candidate='* Fixed common-mode/headroom trim; requires native corners and fresh physical proof.\n'+'\n'.join(' '.join(r)for r in expected)+'\n'
+    verify(candidate);faults=[]
+    for label in ('untrimmed','wrong_width','tail_area','data_terminal'):
+        bad=[list(r)for r in expected]
+        if label=='untrimmed':bad=before
+        elif label=='wrong_width':next(r for r in bad if r[0]=='XFPR')[5]='w=7u'
+        elif label=='tail_area':next(r for r in bad if r[0]=='XT_0')[-1]='Nx=99'
+        else:next(r for r in bad if r[0]=='XAP_0')[2]='wrong_data'
+        try:verify('\n'.join(' '.join(r)for r in bad))
+        except AssertionError:faults.append(label)
+        else:raise AssertionError('Actual trim corruption accepted')
+    return candidate,dict(source_sha256=hashlib.sha256(text.encode()).hexdigest(),candidate_sha256=hashlib.sha256(candidate.encode()).hexdigest(),changed_instances=changed,old_l_um=old,new_l_um=new,widths_and_other_records_unchanged=True,rejected_controls=faults,physical_layout_matches=False)
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--variant',choices=('baseline','budget','budget_high8','budget_high2','budget_high3','budget_all1'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--variant',choices=('baseline','budget','budget_high8','budget_high2','budget_high3','budget_high3_trim','budget_all1'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
     assert args.variant!='baseline'or args.fault=='none'
-    assert args.condition=='nominal'or(args.variant=='budget_high3'and args.fault=='none')
+    assert args.condition=='nominal'or(args.variant in ('budget_high3','budget_high3_trim')and args.fault=='none')
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('cloud-tx-tree32-budget-'+args.variant+'-'+args.fault+(''if args.condition=='nominal'else'-'+args.condition));out.mkdir(exist_ok=False);native=out/'native';native.mkdir()
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,fault=args.fault,condition=args.condition,condition_parameters=tree.CONDITIONS[args.condition],accepted=False,full_serial_phy_complete=False,physical_layout_matches=False,schematic_screen_passed=False,scope='New actual full32-input/five-level transistor schematic at250Mb/s per input and8Gb/s output. 30pre+1final, native resistor bias, external differential clock modulation, schematic CMOS drivers and ideal intermacro connections. Every604HBT/512MOS terminal/current captured and original34ns/256bits/three phases/device limits retained. Original4427-emitter physical tree remains rejected. New candidate needs fresh cells/GDS/LVS/DRC/PEX, actual raw100 frontends/physical clock, all corners, RX/PLL/CDR, four lanes and mainchip before acceptance.')
@@ -70,7 +97,7 @@ def main():
         inputs=out/'fixtures';fixtures(inputs);engines.OUT=out;paths,provenance=engines.restore_engines();result['runtime_provenance']=provenance
         assert sha(paths['patched'])=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'
         low,prooflow=resized(SOURCE.read_text(),1)
-        high_nx={'budget_high2':2,'budget_high3':3,'budget_all1':1}.get(args.variant,4)
+        high_nx={'budget_high2':2,'budget_high3':3,'budget_high3_trim':3,'budget_all1':1}.get(args.variant,4)
         high,proofhigh=resized(SOURCE.read_text(),high_nx)
         # The measured Nx4 candidate failed 32 HBT VCE checks in a/b.
         # Keep those two fast stages at the original, hash-bound Nx8 topology;
@@ -81,12 +108,22 @@ def main():
                            source_sha256=SOURCE_SHA,unchanged_original_cell=True,
                            compact_parasitics_recomputed_by_native_model=True,
                            physical_layout_matches=False)
+        clock_key='stiff65'
+        if args.variant=='budget_high3_trim':
+            low,prooflow['divider_trim']=trim_dividers(low,1)
+            high,proofhigh['divider_trim']=trim_dividers(high,3)
+            clock_key='stiff625'
+            clock_path=ROOT/'hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice'
+            assert sha(clock_path)=='597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca'
+            tree.CLOCK_REFERENCES[clock_key]=clock_path
+            tree.CLOCK_FEEDS[clock_key]=tree.CLOCK_FEEDS['stiff65']
+            result['fixed_headroom_candidate']=dict(low_output_resistor_l_um=30.,high_output_resistor_l_um=15.4,clock_offset_l_um=6.25,clock_source_sha256=sha(clock_path),per_corner_retuning=False,new_layout_or_rc_accepted=False)
         lowpath=out/'pre-nx1.spice';lowpath.write_text(low)
         highpath=out/('pre-nx'+str(proofhigh['nx'])+'.spice');highpath.write_text(high)
         result['sizing']={'low':prooflow,'high':proofhigh}
         tree.PRE=SOURCE if args.variant=='baseline'else lowpath
         tree.FRONT=ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc'
-        deck,contract=tree.build(inputs,args.condition,fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,final_override=FINAL,clock_reference='stiff65',solver_profile=PROFILE)
+        deck,contract=tree.build(inputs,args.condition,fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,final_override=FINAL,clock_reference=clock_key,solver_profile=PROFILE)
         stimuli=pwl_voltage_sources(deck);original_vectors=list(contract['vectors'])
         assert len(contract['tree_plan']['nodes'])==30 and contract['streams']==32 and len(contract['hbt'])==604 and len(contract['mos'])==512
         if args.variant not in ('baseline','budget_all1'):
@@ -108,10 +145,10 @@ def main():
             assert sorted(r['nx']for r in rows.values())==[1]+[expected]*18
             stages[n['label']]=dict(stride=n['stride'],emitters=sum(r['nx']for r in rows.values()))
         final=[v for k,v in contract['hbt'].items()if k.startswith('xmux.')];assert len(final)==19 and sum(r['nx']for r in final)==77
-        tree_emitters=sum(r['emitters']for r in stages.values())+77;assert tree_emitters=={'baseline':4427,'budget':755,'budget_high8':899,'budget_high2':683,'budget_high3':719,'budget_all1':647}[args.variant]
+        tree_emitters=sum(r['emitters']for r in stages.values())+77;assert tree_emitters=={'baseline':4427,'budget':755,'budget_high8':899,'budget_high2':683,'budget_high3':719,'budget_high3_trim':719,'budget_all1':647}[args.variant]
         result['budget']=dict(stages=stages,tree_emitters=tree_emitters,four_lane_tree_only=4*tree_emitters,explicit_lane_hbt_emitters=sum(r['nx']for r in contract['hbt'].values()),remaining_chip_blocks_included=False,whole_chip_emitter_budget_passed=False)
         (native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
-        protected=[Path(__file__),SOURCE,FINAL,lowpath,highpath,tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES['stiff65'],tree.CLOCK_FEEDS['stiff65'],ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_stream.py',ROOT/'scripts/cloud_tx_data_driver.py',paths['patched'],*[p for p in inputs.rglob('*')if p.is_file()],native/'bench.cir',native/'contract.json',native/'spinit']
+        protected=[Path(__file__),SOURCE,FINAL,lowpath,highpath,tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES[clock_key],tree.CLOCK_FEEDS[clock_key],ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_stream.py',ROOT/'scripts/cloud_tx_data_driver.py',paths['patched'],*[p for p in inputs.rglob('*')if p.is_file()],native/'bench.cir',native/'contract.json',native/'spinit']
         result['protected_inputs']={str(q):sha(q)for q in protected};save()
         def limits():
             resource.setrlimit(resource.RLIMIT_AS,(12*1024**3,)*2);resource.setrlimit(resource.RLIMIT_FSIZE,(8*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})

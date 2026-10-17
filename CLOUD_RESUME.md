@@ -1,3 +1,13 @@
+## Fixed transistor headroom/common-mode correction candidate launched (2026-10-17)
+
+PROGRESS. Based on actual fixedPVT39002430107: hotlowfast-a/b15dataHBT VCE minimum393.049mV; coldhighfinal/level4commonmode maxima2.055244/2.060439V. Existing final selector cold VCE407.465mV leaves little margin. Actual tails have much more: hotfast538mV/final479mV, coldfast563mV/final524mV.
+
+New explicit budget_high3_trim candidate preserves719emitters/31mux topology/final77 and allbiasfeeds. Only two outputshunt lengths in eachcell type change:28Nx1 stages31.6→30um (w1),2Nx3 stages15.8→15.4um(w1.5); clockreferenceoffset6.5→6.25um(w4), unchanged14.5umfeed. Hypothesis: lower interstagecommonmode to address hotdataVCE/coldcommonmode, andlower clockcommonmode to retainselectorheadroom without consuming marginaldataheadroom. Native model decides; not assumedpass. No per-cornerretuning, supply/stimulus/window/oracle/limit changes. Exacttwo-record trimguard+fourcorruptions percell; existingoriginals retained.
+
+Dedicated tx-tree32-headroom workflow runs samefixedcandidate atnominal/hotlow/coldhigh plusactualleafselectorfault atnominal; original604HBT512MOS34ns256bitsallfiveinterfaces. NewgeometryrequiresfreshnativeDRC/LVS/RC andphysicalclock integration if accepted; priorhigh3layout is unchanged and itswire/compactjobs remainlive. OriginalPVTfailures retained. SeparatePLL C8physicalcandidate fromd93b775713d7ece6720116b5d55a1a57f7498d00 launched; recordrun/outcome. MBIST38994926932 stillliveatlastcheck. Cloud-only/localempty/goalOPEN; thisturnPROGRESS.
+
+---
+
 ## PLL C8 physical correction candidate launched (2026-10-17)
 
 PROGRESS. Original full1us divider-v2/C9 physical845 result stillFAIL132.847ppm in800-900ns, final900-1000ns88.069ppmPASS. Candidate changes only actual native filter capacitor from9x9um to8x8um (area81→64um²) to test faster loop convergence; increased ripple/device stress remain risks to measure, not assumed acceptable. RHI140/RLO47 and chargepump/detector topology/12other coredevices unchanged. Same1us100ppm50ps/no-slip windows mustpass after actual integration; no shifted windows or relaxed limits.
