@@ -1,3 +1,9 @@
+## Trimmed full32 parent physical passed; fresh native RC launched (2026-10-17)
+
+Run39008646377/source68a1d9d2 passed actual31macro1674device deep+flatLVS,560DRCzero and fiveactualfaults. Full2808961byte archive SHAa205c70d3a490b64f57c5ea81032349909b24f3432aa95cb4d9382920891e1d2 and every output verified in RAM. ActualGDS b050d7560c1ba246d3e7a8d2907a8111e02b9dd2aa5d3d419bcdca5167f843bd. Receipt tx-tree32-headroom-physical-pass-20261017.json. This is the trimmed28Nx1/2Nx3/unchangedfinal719emitter core, not the old untrimmed physical candidate.
+
+Dedicated tx-tree32-headroom-extraction-cloud uses this exact native geometry and unchanged1674device/4774terminal/377conductor/162port graph gates and13actualraw faults. No oldRC reused. Next exactcomposition, actual loadedwiredwaveforms/PVT, physicalstiff625clock/frontend and fullPHY integration. Mainchip freshpercorner+electricalrepair39009256177 live; PLL39007535633 and oldwire39004595306 remainlive. FullgoalOPEN/cloudonly/localworkspaceempty.
+
 ## Fresh per-corner postCTS electrical repair trial (2026-10-17)
 
 Native archive39007378877 shows preCTS fast recovery path rst_sys_n with4905fanout/34.334957pF/88.553902ns slew and -93.098068ns slack. This report predates CTS; inherited CTS metrics are not a fresh timing verdict. LibreLane3.0.5 corner.tcl explicitly reports only the first loaded corner, so mixed inherited slow/typical metrics cannot represent this CTS database.
