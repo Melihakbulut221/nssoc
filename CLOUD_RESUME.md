@@ -1,3 +1,9 @@
+## Full PLL half/quarter comparison campaign (2026-10-17)
+
+Quarter native capture 39035550686 completed: exact same physical C8 parent, 50ns, 640071 complete rows, all102OFF/zero-sourceOP/no diagnostics. Fixed40-50ns window is8.002744565650GHz and measured clampcurrent -4.602831117uA. This is an externally clamped response, not closed-loop acquisition.
+
+New pll-quarter-comparison-cloud restores all original/half/quarter full captures, verifies actual parent and bench identity except declared timestep, reproduces original measurement gates, compares every saved voltage edge ordinal without phase fitting, and checks a real removed-edge corruption. Numerical similarity must be measured before a finer closed-loop acquisition run. Old original1us failing100ppm window remains failed. Allworkcloud/localempty/fullgoalOPEN. Previous goalturn PROGRESS: new fullwire XOR rejection changed next action and immutable cloud checkpoint saved.
+
 ## Cloud-only checkpoint and physical XOR margin rejection (2026-10-17)
 
 Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` verified EMPTY. All checkout, CAD, tests, simulation and artifact storage remain on hosted runners/releases; local API orchestration only. Do not restore a local checkout or unpack cloud archives locally. No unrelated repository or user-file deletion. Existing eight-hour schedule unchanged.
