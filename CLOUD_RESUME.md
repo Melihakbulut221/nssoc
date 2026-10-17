@@ -1,3 +1,13 @@
+## Exact routed coverage gap connectivity passed in cloud (2026-10-17)
+
+PROGRESS. Native ODB run38999476919/source2ec2f57cc3ba928746f071d726adaa4daf1ef48e PASS. All1072setup/1117hold unconstrained endpoints resolved against immutable actual114031cell/114103net routedODB49a805c66e904b534dd846bcca58070feaeac77dfe1427f7937e89427b0085e8. Native1063OUTPUTpins:763disconnected+299no-load+1loaded; setup9INPUT/hold54INPUT allhaveactualdrivers. Loaded output output37844/X is sg13g2_buf_1 drivingnet37844(CLOCK) toactualeth_gtx_clk_o boundary. Two setup-unconstrained D inputs on u_pcie_cdc.acknowledgement/request needactualclock/exception/CDCjustification; six other paths and resetpins likewise unresolved. No pin waived/noSDCchange. 3actual malformedinstance/pin/boundary identitycontrols rejected. Optionalworst32setup percorner bound toactualnativepins includingboundaryports.
+
+Summaryasset649435523 hash12e090a480943b60b0ff3d4e6c87aa35cb4bb02c7fcd0562ef234d97e70440ee; parts649435573 hashe9fac871fcdb670119d23b54803c446b9a3ac61c7f50e8b2a007f4a48d413eee; archive649435616 size33267700 hash175cd05d748efccc4032540ca2afa867837a24baed363d219f9705f02d018bff. Native reportnative-connectivity.json SHA5b1c61d490000ecb57d6d07b0729bbc2eaeb586c6fa59889c7673350680c7acd. Allreceipt docs/evidence/routed-gap-native-connectivity-20261017.json. Initialboundary-handlingfailure38999238748 preserved. Next timingstep: traceactualconnected9setup/54hold inputs' clock/arrival/exception paths and forwardedEthernetclock constraints, do not classifyunusedjustfromnames/no-loadcount.
+
+Sizing38997777137 terminalall4jobs:high2nominalREJECTED4finalselectorHBTs (worst350.779mV),all1REJECTED16HBTs+64interface samples;bothfaultsreject27wrongbits. Originallimits400mVVCE/150mVinterstageunchanged. Next analogstep actualselectorheadroom/designcorrection thenfreshnativefull32test; do not promote failedhigh8physicalcandidate. Boot38994926932 andPLL38982797234 status atlastcheck: {"38994926932": {"status": "in_progress", "conclusion": null}, "38982797234": {"status": "in_progress", "conclusion": null}}. Cloud-only work/localworkspaceemptyconfirmed. FullPHY/routedmainchip/finaltiminggoalOPEN.
+
+---
+
 ## Native connectivity boundary support and completed low-loading study (2026-10-17)
 
 PROGRESS. First connectivity run38999238748/sourcec4c2233c9f27d1e0adf36c4ee019396a75350269 failed honestly when optional worstsetup list included native boundary pcie_rx_ready_o; unconstrained coverage was allinstance as expected. No silicon/SDC fault inferred. Added exact native BTerm support with reversed input/output driver semantics and actual missing-boundary identity control. Failedarchive retained; new dispatch atthiscommit, record actualID/result next.
