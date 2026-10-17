@@ -1,3 +1,176 @@
+## Current: first v5 loaded-clock nominal screen PASSED; complete CDR parent queued/live
+
+Checked 2026-10-17T21:18:50.341867+00:00. This goal turn PROGRESS: strict35device sampler and all3RCleaves passed; full16macro394device parent implemented and actualrightMetal5pin support corrected; first TX nominal loadedphysical-clock screen verified. CLOUD ONLY; active localworkspaceempty. No local CAD/test/artifact.
+
+TX39067769686/source2db35478d9c5be9f53a05cbc6ddae94b55823933 compactnominal117498997043 SUCCESS with actualnative result electrical_screen_passed=true. Summary651615704 SHA35bba36038d6011ae987fa492f6d4f5d2ff84a4ba84652b7f57f9a1ac75df1d9 bytes1167909, parts651615788 SHA933426c9f3e17016f6cfbe2688a43cbb0a1f1a55c4f8acd760671a227fb54f97. Compact receipt docs/evidence/tx-v5-compact-nominal-pass-20261018.json; full native captures remain Release (~692MBcompressed,913MBraw). 34ns,256originalbits,768fixed0.3/0.5/0.7UI samples allcorrect, minmargin0.28036162456134095V, no100mVviolations. All604HBT/512MOS bounds,124inputlegs372databases,44actualphysicalclockbindingfaults,zero-sourceOP,OFFflags604,solverreadback andno-diagnostics gates passed. Elevenactualclockmacros includeRC, but TXcoremetalRC is omitted in compactmode; no fullwire/PVT/PHYclaim. Othercompact cases and fullwire remain toinspect; do not restartlivejobs.
+
+Corrected actualCDRparent39069972566/sourcead2eecaaa38cd7ff1e191a05e82e1a282f453dcd has job117505371526; lateststatusbelow. Eight nativechildproofs bound by exacthashes, real16macros expected394devices. First39069553921 failedgenerator BEFOREDRC/LVS atunsupportedrightMetal5samplerQP/QN and its fullfailure preserved. Newroute supports those exactedgepins withactualMetal5-to-TM2 PCells, plusnativeXORrightTM2. Alsoexactzero-origin avoidsstaleplacementmetadata. Nextinspect actualparentDRC/LVS, retainrejections andrepairrealgeometry. AfterPASS: freshwholeparentRC and sourceboundloadednativePD/full-loop; don'tduplicatechildRC orreplaceclockfeedbackwithbehavioral sources.
+
+OldTXcold117495612074/run39066521495 nowterminalFAILURE. Check annotation explicitly says hostedrunnerlostcommunication; native step failed at20:27:38UTC, publication nevercompleted, runnermarkedfailed21:11:47UTC. No Release/log/fallbackartifact currentlyavailable for thisonecase. Authoritativejobandannotation preserved docs/evidence/tx-v5-old-cold-runner-loss-20261018.json. Do notclaimits exacterrorisverified or all5rawreportsretained. Four othercases have verifiedKeyError reports. Newcorrectedcoldcase is independent.
+
+Mainchipboot39059432529/placement39059854681/postCTS39061293959 and actualPLL39043210978 still tracked below. FullserialPHY/mainchiprouting/finalsetuphold remainOPEN. Do notmarkcompleteorblocked.
+
+Current job snapshot:
+```json
+{
+  "39069972566": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117505371526,
+        "name": "native-physical",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Route actual Metal5 and TopMetal2 edge pins and verify394devices with faults"
+        ]
+      }
+    ]
+  },
+  "39067769686": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117498882518,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117498996909,
+        "name": "native-full32 (wire, nominal, none)",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Simulate all eleven physical clock macros loaded by actual full32 tree"
+        ]
+      },
+      {
+        "id": 117498996957,
+        "name": "native-full32 (compact, cold_high, none)",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117498996977,
+        "name": "native-full32 (compact, nominal, swap_leaf_select)",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117498997011,
+        "name": "native-full32 (compact, hot_low, none)",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117498997043,
+        "name": "native-full32 (compact, nominal, none)",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      }
+    ]
+  },
+  "39059432529": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117474167674,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117474959878,
+        "name": "native-boot (full)",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Native CORRPRE, PCIe, system MBIST and both Ethernet MBIST handover boot"
+        ]
+      }
+    ]
+  },
+  "39059854681": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117475389870,
+        "name": "source-ready",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Wait for exact native sources without restarting them"
+        ]
+      }
+    ]
+  },
+  "39061293959": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117479631693,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117479728644,
+        "name": "source-ready",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Observe exact placement without restarting it"
+        ]
+      }
+    ]
+  },
+  "39043210978": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117426690566,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117427115868,
+        "name": "initial",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117479132555,
+        "name": "continuation",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Restore exact published process on the next hosted runner"
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
 ## Latest: real sampler right-edge routing corrected; first parent failure preserved
 
 Checked 2026-10-17T21:12:24.277854+00:00. Parent39069553921/source14604c4c07cdb75a7c304a9db1200e18d0e5f8b6 completedFAILURE after all8childproofs restored, BEFOREparentDRC/LVS. Cause: real samplerQP/QN are rightedgeMetal5 x878..880um, initially only rightTopMetal2 accepted. New generator explicitly supports ONLY samplerQP/QN Metal5 and XOR ep/en/iref TopMetal2 on verifiedbboxedge, withnativeoutsidevia stacks. Also fixes x=-1.6publicwireoverhang; exactzeroorigin, no transform that would stale metadata. Failure fullreceipt docs/evidence/cdr-parent-edge-pin-failure-20261018.json. A cancellation guard saw jobstarted and aborted BEFOREanycancelrequest; run was NOTcancelled. Observe corrected successor triggered by thiscommit.
