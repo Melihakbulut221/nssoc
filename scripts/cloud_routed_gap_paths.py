@@ -108,7 +108,11 @@ puts "NSSOC_GAP_DIAGNOSTIC_COMPLETE $index"
             code=proc.wait()
         text=(OUT/'diagnostic.log').read_text(errors='replace')
         assert code==0 and not re.search(r'(?m)^\[ERROR|^Error:',text),(code,text[-3000:])
-        phases=parse_phases(text,'CORNER')
+        # Extra targeted path reports are outside the original phase groups.
+        # Keep the parser strict within its original output rather than feeding
+        # the added diagnostic paths into the last original timing phase.
+        assert text.count('NSSOC_GAP_CLOCKS_BEGIN')==1
+        phases=parse_phases(text.split('NSSOC_GAP_CLOCKS_BEGIN',1)[0],'CORNER')
         for k,v in source['routed_timing'].items():assert phases[k]['groups']==v['groups'],k
         assert text.count('NSSOC_GAP_DIAGNOSTIC_COMPLETE 55')==1
         begins=re.findall(r'^NSSOC_GAP_PATH_BEGIN (\d+) (fast|typical|slow) (min|max)$',text,re.M)

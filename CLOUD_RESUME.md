@@ -1,3 +1,13 @@
+## Read-only path report parser boundary fixed; PLL process continued (2026-10-17)
+
+PROGRESS. First pathdiagnostic39000140682/source0aa21643100b618c4adacb29bc5ea958ba619d3d completednative thenpostparserFAILED Missing or duplicate path slack in fast_min because additional targetedreports were parsed aspartoflast originalphase. Preservedrelease summary649457886/parts649457917/archive649457946. Fixedcontroller to delimit originalphase text before unique NSSOC_GAP_CLOCKS_BEGIN; same strict parser/comparisons, no timingthresholdchange. Freshdispatch atthiscommit, recordrunID/result next.
+
+PLLinitial38982797234/job117247407978 savedactualprocess at14400.0169s, nofull1us yet. Summary649447733 SHAd63ab7a6c57af254b9124935fbcb5b9eb1947c1b10abb1cb1f74509ec7e689fd; parts649447783 SHA7d93673735c365c5011636d725e33820ee5bc79c9de32f54fd89bed9e032b218; archive649447841 611638241bytes SHA618a63137258424bb6a73d161ad4e9e1b66f8a1f7591dace904eaf36aa0ad67b. StatusSAVED_ACTUAL_PHYSICAL845_ONE_US_PROCESS_NOT_FULL_CAPTURE_OR_ACCEPTANCE; originalinputsunchanged/zeroOP/startupreadbackPASS. Automaticcontinuationjob117300617099 confirmedlive, no coldrestart. Needactualresume/prefixinvariance andfullcaptureproof beforeacquisitionclaim.
+
+Midload38999900875 controls117300421775 PASS; native117300545608/609 live. MBISTboot38994926932/job117285636114 live. Allworkcloudonly/localempty/goalOPEN.
+
+---
+
 ## Connected coverage gaps: exact native clock/path diagnosis launched (2026-10-17)
 
 PROGRESS. New cloud-only routed-gap-paths workflow restores originalSTA/libraries/SDC runtimearchive and exactfreshRC38992990610 plus nativeconnectivity38999476919. Verifies sourceTcl exactidentity and originalnative phasegroups after rerun; then55connectedunconstrained pins (54inputs+Ethernetclockdriver) matched through nativeStaToDbconversion,330corner/delay bounded reports, effectivewrite_sdc anddisablededges. No exceptionchange/SDCedit/ODBwrite. Diagnostics stillnotwaiver/functionalCDCproof. Record actualrun/result next. APIs checked against pinnedOpenSTA857316ff primarysource; report_checks accepts-unconstrained/full_clock_expanded/corner, write_sdc supports-no_timestamp.
