@@ -1,3 +1,11 @@
+## Cloud-only continuation and completed banked repair (2026-10-17)
+
+Previous turn PROGRESS: fixed malformed CDR load-v2 wrapper hash attribute at b7d162e1; failed original39033502977 retained, corrected39033918372 live. Local workspace empty, no local CAD/tests/artifacts. Latest user cloud-only instruction overrides older local-work goal wording.
+
+Banked39030330882 completed actual three-corner before/after repair. Slow setupWS -14.9706 -> -8.51408ns; hold460 ->53; setup7632 ->7750 (count regression preserved). Typical setup5911 ->5544, hold876 ->65. Fast setup2728 ->1618, hold11698 ->313. Register-only hold zero slow/typical but148fast remain. This is placement estimate, not routed timing. Exact logic39031081958 and GRT39031588904 chain remains live; do not duplicate. New cloud-corrpre-banked-paths restores SHA-verified complete archive and inspects saved pre/post native timing paths before choosing another intervention. All original gates/constraints/failures retained.
+
+Mixedclock39018157113 finished waveform but electrical_screen_passed=false; successful job is NOT PHY acceptance. Full-wire tight39025744008 and return6439030593206 remain live. LoadedC8tuning low/center/high completed, center_half remainslive; compare paired timestep before loop decisions. Complete serialPHY, detailed mainchip route and final setup/hold remain OPEN.
+
 ## Native CDR XOR first result and two-load repair (2026-10-17)
 
 39033213991/source67265ae7 completed four native campaigns: zeroOP/all19OFF/no diagnostics/sourceunchanged. Nominal margin97.708968mV andcold90.559487mV FAIL original100mV although all768signs correct. Hotlow104.978718mV passes. Actualoutputswap detects768wrong samples. ALL19HBTdevicebounds pass at allcases; minimumactiveVCE0.4900/0.5022/0.5136V and maximumalltimeVCE1.1241/1.1954/1.0175V nominal/cold/hot. Originalreports/raw remainpermanent; receipt cdr-xor-first-rejection-20261017.json pins allfour exact summaries.
