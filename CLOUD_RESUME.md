@@ -1,3 +1,9 @@
+## Critical-buffer native API correction (2026-10-17)
+
+Targeted39034766244 was rejected: nested SWIGhandle list passed to native remove_buffers resolved to empty selection; native removed34291buffers, and exact23-removal guard rejected before any candidate state was written/adopted. Fullfailure archive preserved (summary8dfdbf14, parts7dadacfd, archivea03388ee). Cloudinspection39035838984 recovered exact log. Corrected call expands23validated INSTANCE NAMES, verifies native procedure uses get_cells on args, pre-resolves same23handles, tests missingselection then calls. Exact23removal/retainedinst/clock guards stay. Also compare allthree baseline metrics BEFORE the mutating native stage, and expose nativefailuretail in future reports. Fresh run must start ORIGINAL proven repairedODB a1ad2156, never failed mutated memory. IncumbentGRT untouched. No timing/logicpass claim until actualnewresult.
+
+Fresh CDR core physical campaign source510c4eb1 started separately; complete XOR parent/coreRC/waveform stillrequired. PLLquarterstep39035550686 continues; startuptrace39035550785 localizes divergence to seconddivider. Allcloud/localempty/fullgoalOPEN.
+
 ## Fresh CDR load core physical campaign and current native failures (2026-10-17)
 
 CDR load-v2 schematic passed originalnative gates; new cdr-core-layout-cloud generates fresh54device geometry with ONLY the two1.4um load resistors changed versus v10 core. Core-to-native54 and generatedreference audits preserve all27body contacts. Frozen controller adapted onlysourcepaths/hashes/top/outputroot; original560DRC/hierarchical-flatLVS/fivephysicalfaults unchanged. Separate12corepins remain: XOR crosswired parent routing, freshRC and loaded nativewaves are still required; never call this completeCDR/serialPHY/mainchip integration. No old geometry credited for changedresistors.

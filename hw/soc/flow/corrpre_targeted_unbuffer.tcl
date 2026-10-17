@@ -46,6 +46,7 @@ foreach inst [$nssoc_block getInsts] {
     dict set nssoc_before [$inst getName] [list [[$inst getMaster] getName] [$inst getLocation] [$inst getOrient]]
 }
 set nssoc_cells {}
+set nssoc_names {}
 foreach {name master} $nssoc_target_buffers {
     set inst [$nssoc_block findInst $name]
     if {$inst eq "NULL" || $inst eq ""} {error "Missing exact target: $name"}
@@ -63,9 +64,20 @@ foreach {name master} $nssoc_target_buffers {
     set cell [get_cells -quiet $name]
     if {[llength $cell] != 1} {error "Ambiguous STA target: $name"}
     lappend nssoc_cells {*}$cell
+    lappend nssoc_names $name
 }
 if {[llength $nssoc_cells] != 23} {error "Changed target count"}
-remove_buffers $nssoc_cells
+# This pinned native API resolves its argument list through get_cells.
+# Pass expanded instance NAMES, never a nested list of SWIG object handles.
+set nssoc_remove_body [info body remove_buffers]
+if {![regexp {rsz::remove_buffers_cmd\s+\[get_cells\s+\$args\]} $nssoc_remove_body]} {error "Unsupported native remove_buffers argument policy"}
+set nssoc_resolved [get_cells $nssoc_names]
+if {[llength $nssoc_resolved] != 23 || [lsort $nssoc_resolved] ne [lsort $nssoc_cells]} {error "Native target name resolution changed"}
+# Explicit empty selection is dangerous: reject it before invoking the command.
+set nssoc_bad [get_cells -quiet {__nssoc_absent_target_negative_control__}]
+if {[llength $nssoc_bad] != 0} {error "Missing-target resolution control failed"}
+puts "NSSOC_TARGET_ARGUMENTS_VERIFIED names=23 resolved=23 missing_control=0"
+remove_buffers {*}$nssoc_names
 set nssoc_after [dict create]
 foreach inst [$nssoc_block getInsts] {
     set name [$inst getName]

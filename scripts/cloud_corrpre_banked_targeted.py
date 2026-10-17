@@ -108,6 +108,9 @@ def main():
         with(OUT/'native.log').open('w')as log:
             code=subprocess.call(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
         r.update(returncode=code,elapsed_s=time.monotonic()-start);save()
+        if code:
+            r['native_failure_tail']=(OUT/'native.log').read_text(errors='replace')[-20000:];save()
+            print(r['native_failure_tail'],flush=True)
         assert code==0,'Native targeted repair failed; every completed state retained'
         phases={}
         for phase in ('before','after'):
