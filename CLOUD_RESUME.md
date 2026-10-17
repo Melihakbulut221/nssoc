@@ -1,3 +1,13 @@
+## Fresh C8 RC passed; native pump model composition launched (2026-10-17)
+
+PROGRESS. C8RC39005420676/sourcefa523c29c5ddf87f03c1f2c4047e7b0906d9db5f PASS exact30devices/7publicports/12physicalconductors/59probes. Fresh84R155C; all native resistor edges/values and C attachment/169collapsedmatrix conserved, noidealaliases/deletednodes;13actualcorruptionsrejected. Native capacitorw8/l8/A64/P32/m1.141shortwarnings verifiedsamephysicalconductor; substrateR/RF qualification stillopen. Receipt docs/evidence/pll-filter-c8-rc-pass-20261017.json pins summary649616372/parts649616461/archive6496165165926947bytes.
+
+Existing composition controller supports explicit --size-um8, exactnewsourceGDS/extraction, all30native terminals/parameters, actual84R155C andsame6outputcorruptions. OriginalC9default unchanged. Dedicated pll-filter-c8-compose workflow startsnewmodelbinding. Next composeC8into exactdivider-v2 physical845parent withfreshparentrouting/DRC/LVS/RC, then originalfull1usacquisition; noC9parasiticsrelabeled.
+
+Headroom39005251402, physicalwire39004595306, compact39004839884 andMBIST38994926932 freshlyliveatstartofturn. Cloud-only/localempty/goalOPEN; prior/currentturnPROGRESS.
+
+---
+
 ## C8 pump native physical passed; fresh C8 RC launched (2026-10-17)
 
 PROGRESS. C8layout39005085975/sourced93b775713d7ece6720116b5d55a1a57f7498d00 PASS560DRC0/deep+flat30=30oneMatch/noextractiondiagnostics/all5physicalfaults+LEF2faults. Verified actual archivedresult/GDS/LEF/schematic hashes inRAM. GDS806e5ddf92eb94a9bd44b26ae40984b4f4d817d8ea59b775ecf0bde242ff6aac. Receipt docs/evidence/pll-filter-c8-physical-pass-20261017.json summary649608194/parts649608318/archive649608376252480bytes. This is pumpmacro only, not845parentorPLLacquisition.

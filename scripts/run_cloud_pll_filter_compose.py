@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Bind the new native pump devices and actual fresh wire RC to one physical model."""
-import hashlib,json,os,shutil,subprocess,sys
+import argparse,hashlib,json,os,shutil,subprocess,sys
 from pathlib import Path
 from run_cloud_pll_filter_rc import unpack
 from run_cloud_tx_layout_repair import fetch,sha
@@ -17,9 +17,16 @@ METHODS={
  'pcie-pump-rhi140-current-20261012/check-compose03.py':'59e219d235f60ca2ec39a3458aa3e8badf9b06a6b5e25919c1979f4e3f78c8f8',
 }
 def main():
+    global OUT,SOURCE
+    parser=argparse.ArgumentParser();parser.add_argument('--size-um',type=int,choices=(8,9),default=9);size=parser.parse_args().size_um
+    archive_bytes=5921475;source_run=38853877930
+    if size==8:
+        pin=json.loads((ROOT/'docs/evidence/pll-filter-c8-rc-pass-20261017.json').read_text())
+        OUT=ROOT/'hw/soc/out/cloud-pll-filter-c8-compose';SOURCE=ROOT/'hw/soc/out'/pin['source_directory']
+        archive_bytes=pin['bytes'];source_run=pin['source_run']
     assert os.environ.get('GITHUB_ACTIONS')=='true';assert not SOURCE.exists();OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,qualified_pex=False,full_serial_phy_complete=False,parent_model_composed=False,electrical_acquisition_passed=False,
-        scope='Actual nine-micrometer capacitor, all30native devices and all84R155C freshly extracted wire records. Strict native terminal/parameter and actual six-corruption composition checks. No845parent model, substrate spreading, RF qualification or electrical/PHY acceptance.')
+        scope=f'Actual {size}-micrometer capacitor, all30native devices and all84R155C freshly extracted wire records. Strict native terminal/parameter and actual six-corruption composition checks. No845parent model, substrate spreading, RF qualification or electrical/PHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     def run(command,label):
         log=OUT/(label+'.log')
@@ -31,18 +38,21 @@ def main():
     try:
         stem='pll-filter-rc-9-38853877930-1';base=BASE+'cloud-results-38853877930-1-pll-filter-rc-9/'
         summary_sha='3d7f1ddd048ec3440eda2b3efe059470fe240edf1b347fc46486fe14573386b0';parts_sha='76e67891b5591edefab68d6002367db72ea3b4fda6702b6c93f4c2f8f9b6106d';archive_sha='954a9fdf95bf0683f1f89087e6865f31774a2dcb420192a9bc95dd32bb44686c'
+        if size==8:
+            stem=pin['stem'];base=pin['base'];summary_sha=pin['summary_sha256'];parts_sha=pin['parts_sha256'];archive_sha=pin['sha256']
         fetch(base+stem+'.summary.json',summary_sha,OUT/'source-summary.json');fetch(base+stem+'.parts.json',parts_sha,OUT/'source-parts.json')
         prior=json.loads((OUT/'source-summary.json').read_text());parts=json.loads((OUT/'source-parts.json').read_text())
-        assert prior['status']=='PASS_ACTUAL_C9_PUMP_NATIVE_WIRE_RC_AND_CONTROLS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
+        assert prior['status']==f'PASS_ACTUAL_C{size}_PUMP_NATIVE_WIRE_RC_AND_CONTROLS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
+        if size==8:assert prior['source_head']==pin['source_head']
         assert prior['audit']['actual_exported_resistors']==84 and prior['audit']['actual_exported_capacitors']==155
-        assert prior['actual_capacitor']['parameters']==dict(w=9.,l=9.,A=81.,P=36.,m=1.)
+        assert prior['actual_capacitor']['parameters']==dict(w=float(size),l=float(size),A=float(size**2),P=float(4*size),m=1.)
         assert len(prior['controls']['cases'])==13
-        assert parts['parts']==[dict(index=0,name=stem+'.tar.gz.part0000',bytes=5921475,sha256=archive_sha)]
-        assert parts['bytes']==5921475 and parts['sha256']==archive_sha
-        packed=OUT/'rc.tar.gz';fetch(base+parts['parts'][0]['name'],archive_sha,packed);assert packed.stat().st_size==5921475
-        unpack(packed,SOURCE.parent,'cloud-pll-filter-rc')
+        assert parts['parts']==[dict(index=0,name=stem+'.tar.gz.part0000',bytes=archive_bytes,sha256=archive_sha)]
+        assert parts['bytes']==archive_bytes and parts['sha256']==archive_sha
+        packed=OUT/'rc.tar.gz';fetch(base+parts['parts'][0]['name'],archive_sha,packed);assert packed.stat().st_size==archive_bytes
+        unpack(packed,SOURCE.parent,SOURCE.name)
         assert sha(SOURCE/'result.json')==summary_sha and all(sha(SOURCE/n)==v for n,v in prior['outputs'].items())
-        result['physical_rc_source']=dict(run=38853877930,summary_sha256=summary_sha,parts_sha256=parts_sha,archive_sha256=archive_sha,gds_sha256=prior['source_evidence']['gds_sha256']);save()
+        result['physical_rc_source']=dict(run=source_run,size_um=size,summary_sha256=summary_sha,parts_sha256=parts_sha,archive_sha256=archive_sha,gds_sha256=prior['source_evidence']['gds_sha256']);save()
         for n in ('devices01.json','anchors03.json','native-mutations01.json'):shutil.copyfile(SOURCE/n,OUT/n)
         pdk=ROOT/'pdk'
         for path,digest in MODEL_PINS.items():
@@ -59,6 +69,7 @@ def main():
             else:
                 replacements=[("R/'hw/soc/out/pcie-pump-rhi140-binding-20261012'","B"),("B.parent/'pcie-pump-rhi140-wire-20261012/rc01/wires.spice'","R/'hw/soc/out/cloud-pll-filter-rc/rc01/wires.spice'")]
             for old,new in replacements:
+                new=new.replace("cloud-pll-filter-rc",SOURCE.name)
                 count=text.count(old);assert count>0,(name,old);text=text.replace(old,new);edits.append(dict(before=old,after=new,count=count))
             target=OUT/name;target.write_text(text);adaptations[name]=dict(original_sha256=digest,adapted_sha256=sha(target),edits=edits)
         result['method_adaptations']=adaptations;save()
@@ -73,7 +84,7 @@ def main():
         result['composition_controls']=json.loads((OUT/'composition-controls01.json').read_text());assert len(result['composition_controls']['actual_rejected_mutants'])==6
         assert result['composition_controls']['status']=='PASS_NATIVE30_AND_ALL239_WIRE_RECORDS_WITH_EXPLICIT_REFERENCES'
         assert all(sha(SOURCE/n)==v for n,v in prior['outputs'].items()) and all(sha(pdk/n)==v for n,v in MODEL_PINS.items())
-        result['source_unchanged']=True;result['status']='PASS_ACTUAL_C9_PUMP_PHYSICAL_MODEL_AND_FAULTS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
+        result['source_unchanged']=True;result['status']=f'PASS_ACTUAL_C{size}_PUMP_PHYSICAL_MODEL_AND_FAULTS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob('*') if p.is_file() and p!=OUT/'result.json'};save()
