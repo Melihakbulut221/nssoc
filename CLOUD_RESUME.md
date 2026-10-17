@@ -1,3 +1,11 @@
+## Latest: MIM-aware PD394 composition passed; actual loaded full-wire screen launched
+
+Composition39076756076/source683c43176763bedd9cc2456d90f25c54ab9c8da7 passed394devices8956R7660C and15corruptions; exactly11intrinsicMIM, everyR/C preserved. Fullreceipt docs/evidence/cdr-mim-composition-pass-20261018.json, summary651819213/parts651819286. New cloud_cdr_mim_loaded.py restores exactmodel and maps all26ports BYNAME, including grounded avss/sub/wire_cref as external testbench boundaries (intrinsicbody contacts remain159). Numeric emitter dimensions exact despite equivalent unit spelling. Native plane logicalidentities select actual sampler data-pair collector referencepoints;150fF per output is applied THERE, not ideal macroboundary alias. All394 native devices plus fullwire retained; everyHBT/cap voltage/current checked. Unchanged earlier256bit oracle, sample/comparison phasegates and VIcollectorcurrent thresholds; sevenbindingcorruptions plus twoequivalentunitcontrols. First actualnominalearly/late, stoppedclock andVIbiasoffscreen running inGitHub only; requirewaveforms, not prep or greenwrappers. PVT/constants/timestep convergence and actualVCOfeedback remainnext; nofullPHYclaim.
+
+Boot39059432529 and placement39059854681 nowSUCCESS. PostCTS39061293959 job117523902317 live; aftersuccess dispatch prepared replay-onehot-logic-cloud.yml after inspectingexactsource. TXfullwire39067769686 job117498996909 and PLLactualcontinuation39043210978 job117479132555 live. No healthyprocessrestart. LocalworkspaceEMPTY. Previousgoalturn verifiedcloudhandoff; thisturnPROGRESS. ThreefullgoalitemsOPEN; latestuserCLOUDONLY overridesoldlocalwording.
+
+---
+
 ## Latest: MIM-aware full raw RC audit PASSED; corrected complete composition launched
 
 Checked 2026-10-17T22:51:17.707354+00:00. Audit39076409923/source3b29e5e673b59258a24adc302d3bce104015a469 PASS8956R7660C/111components776points. AllRnativevalue/topology,per-pointgroundC,mutualattachment/value,collapsedmatrix conserved;11intrinsicMIMsource/replacement/baseline/exportidentitiespassed;13unchangedwire+9MIMcorruptions rejected. Fullreceipt docs/evidence/cdr-mim-parent-audit-pass-20261018.json summary651810118/parts651810205. Human-readablephysicalcomparison docs/cdr-mim-aware-parasitics-20261018.md.
