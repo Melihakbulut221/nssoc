@@ -45,6 +45,17 @@ def bind(module):
     return inventory
 
 
+
+def clock_port_delay_cleanup():
+    # Pinned OpenSTA removes only the specified clock edge. Omitting -clock
+    # selects a null-clock delay, leaving the inherited clk_i data delay live.
+    # These four ports carry clocks; their clock waveform/latency stays intact.
+    return [
+        "unset_input_delay -clock clk_i [get_ports {pcie_clk_i eth_rx_clk_i eth_tx_clk_i}]",
+        "unset_output_delay -clock clk_i [get_ports eth_gtx_clk_o]",
+    ]
+
+
 def render(module, base):
     inventory = bind(module)
     lines = [base.replace("@PERIOD@", "20.0")]
@@ -53,9 +64,9 @@ def render(module, base):
         "create_clock -name pcie_clk_i -period 4.0 [get_ports pcie_clk_i]",
         "create_clock -name eth_rx_clk_i -period 8.0 [get_ports eth_rx_clk_i]",
         "create_clock -name eth_tx_clk_i -period 8.0 [get_ports eth_tx_clk_i]",
-        "unset_input_delay [get_ports {pcie_clk_i eth_rx_clk_i eth_tx_clk_i}]",
-        "unset_input_delay [get_ports {eth_rxd_i* eth_rx_dv_i eth_rx_er_i}]",
-        "unset_output_delay [get_ports {eth_txd_o* eth_tx_en_o eth_tx_er_o eth_gtx_clk_o}]",
+        *clock_port_delay_cleanup(),
+        "unset_input_delay -clock clk_i [get_ports {eth_rxd_i* eth_rx_dv_i eth_rx_er_i}]",
+        "unset_output_delay -clock clk_i [get_ports {eth_txd_o* eth_tx_en_o eth_tx_er_o}]",
         "create_generated_clock -name eth_gtx -source [get_ports eth_tx_clk_i] -divide_by 1 [get_ports eth_gtx_clk_o]",
         "set_input_delay -clock eth_rx_clk_i -max 3.0 [get_ports {eth_rxd_i* eth_rx_dv_i eth_rx_er_i}]",
         "set_input_delay -clock eth_rx_clk_i -min 0.5 [get_ports {eth_rxd_i* eth_rx_dv_i eth_rx_er_i}]",
@@ -73,7 +84,7 @@ def render(module, base):
             raise ValueError("Invalid packet port inventory")
         patterns = " ".join(n + ("*" if len(module["ports"][n]["bits"]) > 1 else "")
                             for n in names)
-        lines += [f"unset_{delay}_delay [get_ports {{{patterns}}}]",
+        lines += [f"unset_{delay}_delay -clock clk_i [get_ports {{{patterns}}}]",
                   f"set_{delay}_delay -clock pcie_clk_i -max 0.8 [get_ports {{{patterns}}}]",
                   f"set_{delay}_delay -clock pcie_clk_i -min 0.2 [get_ports {{{patterns}}}]"]
     # Existing Ethernet FIFO budgets. The packet clock is deliberately absent

@@ -1,3 +1,13 @@
+## Fix actual inherited clock-port data delays (2026-10-17)
+
+PROGRESS. Native pathdiagnostic39000522126/sourcef8eb29e3161d0984d9d1ca1fdfcc87e7b897fa9c PASS:55pins330queries, originalphasegroups reproduced/sourceunchanged. EffectiveSDC exposes3clockinputs plus eth_gtx_clk_o retaininggeneric4nsdata delay relativeclk_i. PinnedOpenSTA857316ff Sdc.tcl unset_port_delay defaultsclockNULL; Sdc.cc removeInputDelay/removeOutputDelay matchesonlyexactClockEdge, so omitted-clock unsetdoesnotremove clk_i-bounddelay. This is a real generator bug, not a reason to waive timingpaths.
+
+Changed scripts/pcie_soc_constraints.py: explicit-clockcleanup helper removes only3clock-input data delays andforwardedclock-output data delay; allother PCIe/Ethernet budgetreset unsets explicitlyselectclk_i. Sameclocks/periods/uncertainties/propagation/data budgets/CDCexceptions retained. Added cloud-clock-port-delay workflow: exactnativeoriginalODB/SPEF/runtime replay, originalphasegroupreproduction, before/aftereffectiveSDCcommandmultiset equality permittingonly4knownrecordsremoved/noaddedcommands, existingmappedCDCtests,55targetdiagnostics. This candidate changes constraints intentionally for clockports and mustnotborrowpriorclosurecounts; fullpostfixnativecensus/STA/physicalverification stillrequired. NewrunID/resultpending.
+
+Midload38999900875 bothnativeslive, PLL38982797234 continuation117300617099 live, MBIST38994926932 live. No localfiles; goalOPEN.
+
+---
+
 ## Read-only path report parser boundary fixed; PLL process continued (2026-10-17)
 
 PROGRESS. First pathdiagnostic39000140682/source0aa21643100b618c4adacb29bc5ea958ba619d3d completednative thenpostparserFAILED Missing or duplicate path slack in fast_min because additional targetedreports were parsed aspartoflast originalphase. Preservedrelease summary649457886/parts649457917/archive649457946. Fixedcontroller to delimit originalphase text before unique NSSOC_GAP_CLOCKS_BEGIN; same strict parser/comparisons, no timingthresholdchange. Freshdispatch atthiscommit, recordrunID/result next.

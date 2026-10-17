@@ -2,7 +2,9 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Read-only native clock/path diagnostics for connected routed coverage gaps."""
-import json,os,re,subprocess,tarfile
+import argparse,json,os,re,subprocess,tarfile
+from collections import Counter
+from pcie_soc_constraints import clock_port_delay_cleanup
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from route_cloud_newer_postcts import fetch,sha
@@ -11,11 +13,13 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-routed-gap-paths'
 SOURCE=ROOT/'cloud-routed-extraction'
 
-def main():
+def main(clock_cleanup=False):
+    global OUT
+    if clock_cleanup:OUT=ROOT/'cloud-clock-port-delay'
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False);reports.OUT=OUT
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,constraints_changed=False,
-        scope='Exact original SDC/libraries/native routed ODB/SPEF, read-only diagnostic paths and exported effective SDC. No new false paths or generated clocks. Observations require functional/CDC and source-synchronous interface justification before acceptance.')
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,constraints_changed=clock_cleanup,clock_cleanup=clock_cleanup,
+        scope='Exact original SDC/libraries/native routed ODB/SPEF. Optional explicit clock-port cleanup removes only four inherited data-delay records, with all other effective constraints compared unchanged. No new false paths or generated clocks. This is not full timing closure or functional/CDC proof.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
@@ -99,7 +103,10 @@ foreach name [lsort [dict keys $target_pins]] {
 puts "NSSOC_GAP_DIAGNOSTIC_COMPLETE $index"
 """
         diagnostic=diagnostic.replace('TARGET_FILE','{'+str(OUT/'targets.tsv')+'}').replace('EFFECTIVE_SDC','{'+str(OUT/'effective.sdc')+'}')
-        path=OUT/'diagnostic.tcl';path.write_text(actual+'\n'+diagnostic)
+        cleanup=''
+        if clock_cleanup:
+            cleanup='write_sdc -no_timestamp -digits 12 {'+str(OUT/'before-cleanup.sdc')+'}\n'+'\n'.join(clock_port_delay_cleanup())+'\n'
+        path=OUT/'diagnostic.tcl';path.write_text(actual+'\n'+cleanup+diagnostic)
         result.update(connectivity_source=cp,routed_source=sp,original_runtime_source=dict(summary_sha256=reports.SUMMARY_SHA,archive_sha256=reports.ARCHIVE_SHA),targets=targets);save()
         runtime=Path(os.environ['CLOUD_APPIMAGE']);assert sha(runtime)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
         with(OUT/'diagnostic.log').open('w')as log:
@@ -119,6 +126,21 @@ puts "NSSOC_GAP_DIAGNOSTIC_COMPLETE $index"
         ends=re.findall(r'^NSSOC_GAP_PATH_END (\d+) (fast|typical|slow) (min|max)$',text,re.M)
         assert begins==ends and len(begins)==330 and len(set(begins))==330
         assert (OUT/'effective.sdc').stat().st_size>0
+        if clock_cleanup:
+            # Compare every effective command; only four known wrong data
+            # delays may disappear. Every other I/O budget/clock/exception stays.
+            def commands(path):
+                text=path.read_text().replace('\\\n','')
+                return Counter(line.strip()for line in text.splitlines()if line.strip()and not line.lstrip().startswith('#'))
+            before=commands(OUT/'before-cleanup.sdc');after=commands(OUT/'effective.sdc')
+            removed=list((before-after).elements());added=list((after-before).elements())
+            expected={
+                'set_input_delay 4.000000000000 -clock [get_clocks {clk_i}] -add_delay [get_ports {'+p+'}]'
+                for p in ('pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i')}
+            expected.add('set_output_delay 4.000000000000 -clock [get_clocks {clk_i}] -add_delay [get_ports {eth_gtx_clk_o}]')
+            assert set(removed)==expected and len(removed)==4 and not added,(removed,added)
+            result['clock_cleanup_effective_delta']=dict(removed=removed,added=added,all_other_commands_unchanged=True,
+                original_clock_unqualified_unset_failed=True,explicit_clock_unset_passed=True)
         for directory,proof in [(OUT/'source',sp),(OUT/'connectivity',cp)]:assert all(sha(directory/n)==v['sha256']for n,v in proof['restore']['selected_files'].items())
         assert all(sha(SOURCE/n)==v for n,v in original_result['outputs'].items())and all(sha(Path(n))==v for n,v in original_result['protected_inputs'].items())
         result.update(status='COMPLETE_EXACT_ROUTED_GAP_PATH_DIAGNOSTIC_NOT_TIMING_ACCEPTANCE',source_unchanged=True,original_timing_reproduced=True,queries=len(begins),target_count=55,
@@ -126,4 +148,5 @@ puts "NSSOC_GAP_DIAGNOSTIC_COMPLETE $index"
     except BaseException as e:result.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
-if __name__=='__main__':main()
+if __name__=='__main__':
+    p=argparse.ArgumentParser();p.add_argument('--clock-cleanup',action='store_true');main(p.parse_args().clock_cleanup)
