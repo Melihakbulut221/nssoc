@@ -1,3 +1,9 @@
+## Tight422 real physical gates passed; NEW parentRC extraction (2026-10-17)
+
+39022070443/source09f47802: native560category DRC zero markers, deep and flat LVS exact1674/1674match, allfive actualfaults rejected. The15 TM1.b violations in tight420 are repaired by real2um rowpitch increase; failed predecessor retained. Full2,836,600byte archive81cddb52 and ALL79 output hashes independently verified; receipt tx-tree32-tight-physical-pass-20261017.json. Actual bbox3466.785x7227.82um,60parent signal centerline sum75591.2um/max2526.8um. These geometric measures are not electrical speedup or fullPHY acceptance.
+
+New tx-tree32-tight-extraction-cloud restores ONLY that passed exact700/422geometry, keeps1674devices/4774native terminals/3100metal references/377conductors/3262anchors, original graph/capacitance-conservation and13actualrawfault controls. New top/root/receipt selected explicitly; no old114819R76351C reuse. Next inspect actual RC/verdict, compose fresh model with measuredcounts and source-bound gates, then full mixedclock originalbits/bounds waveform. All independent live simulations and one-shot mainchip handoff39021081392 preserved. Cloudonly/localempty/fullgoalOPEN. This turn PROGRESS.
+
 ## Tight420 rejected by15 real TM1 spacing violations; tight422 successor (2026-10-17)
 
 39021671377/source72a8b732 completed actual deep+flatLVS PASS and allfive physical fault rejections, but unchanged560category DRC rejects15 TM1.b markers. Native XML802001d0 shows repeated edge pairs with0.73um clearance vs1.64um required (example y741.88/742.61). Actual child pre_low bbox height592.04um; overlapping bounding rectangles are not themselves an accepted placement proof. Full native layers and exact device connectivity remain the acceptance gate.

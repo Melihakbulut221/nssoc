@@ -10,17 +10,22 @@ def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     parser=argparse.ArgumentParser()
     parser.add_argument('--variant',choices=('budget_high8','budget_high3','budget_high3_trim'),default='budget_high8')
-    selected=parser.parse_args().variant
+    parser.add_argument('--placement-pitch',choices=('original','tight'),default='original')
+    selected_args=parser.parse_args();selected=selected_args.variant
+    tight=selected_args.placement_pitch=='tight'
+    assert not tight or selected=='budget_high3_trim'
     high3=selected in ('budget_high3','budget_high3_trim')
     trim=selected=='budget_high3_trim'
     args=argparse.Namespace(variant='tree32_'+selected,circuit_profile='assembly32')
     spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())
-    top='nssoc_tx_tree32_'+selected+'_core_v1'
+    top='nssoc_tx_tree32_'+selected+('_tight_core_v1'if tight else'_core_v1')
     spec['circuits']['assembly32']={'top':top}
     runtime=json.loads((ROOT/'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
     receipt_name='tx-tree32-headroom-physical-pass-20261017.json' if trim else 'tx-tree32-high3-physical-pass-20261017.json' if high3 else 'tx-tree32-budget-physical-pass-20261017.json'
+    if tight:receipt_name='tx-tree32-tight-physical-pass-20261017.json'
     receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
     out=ROOT/'hw/soc/out'/('cloud-tx-tree32-headroom-assembly' if trim else 'cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
+    if tight:out=ROOT/'hw/soc/out/cloud-tx-tree32-tight-assembly'
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-extraction-input.tar.gz'
@@ -45,6 +50,10 @@ def main():
         assert physical['status']=='PASS_TREE32_1674_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
         assert physical['source_head']==receipt['source_head']
         assert physical['variant']==selected
+        if tight:
+            assert physical['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
+            assert receipt['placement_pitch']==physical['placement_pitch']
+        result['placement_pitch']=physical.get('placement_pitch',dict(name='original',column_um=1000.,row_um=600.))
         assert physical['emitter_budget']['reference_emitters']==(719 if high3 else 899)
         assert physical['emitter_budget']['recommended_rules_enabled'] and not physical['emitter_budget']['waiver']
         assert physical['layout']['outputs']==receipt['layout_outputs']
