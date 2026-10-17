@@ -1,3 +1,9 @@
+## Exact CORRPRE/PCIe/system+Ethernet MBIST boot passed; new physical stage (2026-10-17)
+
+Run38994926932 succeeded. Original43-file artifact12090748551 SHA2560fcb32e81d63669f7df2833b83f4cb371bd9972a251bb0e15e77121b5e710d92 inspected in RAM: gates passed, sources unchanged,28firmware checks, independentPCIe idle monitor, explicit system/bothEthernetMBIST observer. No packet traffic or SDF proof. New workflow corrpre-pcie-mbist-boot-evidence-cloud permanently preserves this exact artifact then starts PacketInterfaces physical flow through CTS from its actual mappedJSON/netlist; no resynthesis. Keeps20SRAMfloorplan, four clocks,20nsCPU/4nsPCIe/8nsGMII constraints and allcorner checker thresholds. Require actual completedCTS state and native logs before continuation through routing; CTS itself is not final timing.
+
+PLL C8parentRC39006326123 passed:83planes/14divider/7pump planes,98R242C,8rawfaults. Full845C8model composition and original1us acquisition still required. Full32compact39004839884 nominal screen passed; realwire39004595306 still pending at last poll. Headroom nominal39005251402 passed; hot/cold still pending. Allwork cloudonly, localworkspace empty; fullgoal OPEN.
+
 ## C8 PLL parent verified; fresh parent RC launched (2026-10-17)
 
 All work remains cloud-only. The current local workspace is empty; no checkout, CAD runtimes or artifacts are required there. Source, evidence, unsuccessful runs and continuation instructions remain on GitHub.
