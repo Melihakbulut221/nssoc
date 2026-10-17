@@ -1,3 +1,11 @@
+## Latest correction: v5 parent dependency repaired, exact successor live
+
+Checked 2026-10-17T19:48:14.201560+00:00. Actual current parent run39063951673/source7a1d1445ffdf55f82b8f6411280fc68719c3d63a is in_progress. The earlier39063787291 endedFAILURE BEFORE geometry/CAD because NumPy was missing in hostPython imported by tree_plan. Preserved docs/evidence/tx-balanced-v5-parent-dependency-failure-20261017.json (summary651421970 SHAef3ca0a3ff3690fdc0c0cf76279ee7673b8a7ca398f419b9423f916729ea5310). Added numpy==2.3.3 plus actual topology/selection preflight before CAD. Circuit, geometry, counts and physical gates unchanged. Observe39063951673 next; do not restart the completed predecessor or duplicate the successor. All successfulTXnative/leaves andCDR13native/converterphysical receipts below remain valid.
+
+CLOUD ONLY. Local workspace confirmed empty. Full serialPHY, mainchiprouting and finaltiming remain OPEN.
+
+---
+
 ## Latest: fresh v5 full32 parent is running in GitHub
 
 At 2026-10-17T19:46:05.706058+00:00, new exact parent run39063787291/sourcea29e3acd9b5d05e78ac99d1e8950bf08fe1da119 is completed. Workflowtx-balanced-v5-assembly-cloud.yml; scripts/cloud_tx_balanced_v5_assembly.py. Do not duplicate it. It restores exact freshleaf archives from39063246309 via new tx-pre-nx{1,3}-balanced-v5-physical-input-20261017.json; native circuit hashes bind39060767622. Adds independent complete physical-summary canonicalSHA check as well as archive/file hashes. Same31macros1674devices719emitters, nativeDRC/LVS/fault gates. Native new lowcell bbox353.985x592.04um, high353.985x387.24um: OLD422umrowpitchisINVALID. Fresh parent only permits original1000umcolumns600umrows and rejects child-height/channel overflow before routing. Parent topnssoc_tx_tree32_budget_balanced_v5_core_v1, outputhw/soc/out/cloud-tx-tree32-balanced-v5-assembly. Review actual parent results; if PASS, prepare freshRC/extraction/composition for this exact variant and actualgeometry. Old trim/tight/return64_RC cannot be reused.
