@@ -1,3 +1,9 @@
+## Latest: native PD394 model binding prepared while fresh RC runs
+
+Checked 2026-10-17T22:04:17.704489+00:00. CorrectedRC39072993122/source28e6794034db8f7d4c5b70f93d7a86a0c2d40af0 nowin_progress, job117514286846 restoringpinnedruntime atlastpoll. No restart. New cdr-retimed-binding cloud workflow independentlyexports all394nativeLVS devices fromsameverifieddatabase, crosschecks1134terminalidentities/parameters againstactualPcellgeometry andnativeextractedSPICE, generatespinnedPDK compactmodel withall11MIM/159finitecontacts, and rejects8actualmodelmutations. Exactdecimal nativeSPICE geometry checkedagainstJSON withinoneULP beforeMIMarea/perimeterchecks. This isrequired input towholewirecomposition, notelectrical/closedloop acceptance. Needinspectnative resultbeforeusingmodel. AllworkCLOUDONLY; localworkspaceempty; fullPHY/mainchiprouting/finaltimingOPEN.
+
+---
+
 ## Latest: RC preflight raw-pattern bug preserved and corrected
 
 Checked 2026-10-17T21:55:55.200554+00:00. Run39072836611/source1fe320ca485b5255e5abcac26fc96d9ec305bdfd failed BEFOREnativeextraction: mutations48.py source replacement used a Python-interpretednewline instead of the literalbackslash-n inside its rawregex. Exact replacementcount0 assertion prevented execution. NoRCresultgenerated. Fullsummary651702872/parts651702930 preserved, compactreceipt docs/evidence/cdr-retimed-rc-preflight-failure-20261018.json. Correction adds ONLY r-prefix tothatreplacementtarget; source/rawcorruptionsemanticsandallacceptancegates unchanged. Observe successor fromthiscommit. ExistingPD394physical/158planes/776terminalpoints proofs remainvalid. CLOUD ONLY; threegoalheadingsOPEN.
