@@ -1,3 +1,15 @@
+## Cloud checkpoint: fresh shunt-v4 physical/RC chain passed; loaded cases start
+
+Source496467a4/run39049460903 composed the fresh54native devices with all4020R/2641C and passed six real corruption controls. Wire model SHA256b201876a3b0988f746822213f51c120e09f9837c0f26ddb1a7a591bd57dfdc23. Physical chain: core39047111778 -> parent39048145296 -> nativeplanes39048840245 -> RC39049134526 -> composition39049460903, all passed in their stated scope. Receipts under docs/evidence/cdr-v4-*. New cdr-v4-wire-cloud uses the unchanged frozen d30ebc0b native adapter/base3ec870fa, original34ns/256symbols/threephases/100mV/19HBT headroom gates for nominal/hot/cold plus actual swapped-output control. Its result is not yet known. v2/v3 rejections remain preserved; do not mark the CDR or PHY complete.
+
+TXreturn64 diagnostic39049047760/source4e571cab passed actual60data-net R/C binding and sparse-resistance controls. Original114909R/76614C/1674devices remain unchanged. MetalR ranges26.46–32.81ohm, native reference-shuntC95.22–254.19fF per data conductor; actual interconductor coupling is separately retained, not folded into ground load. Source resistors/semiconductor loads are outside those metal-only values. See docs/tx-data-metal-load-20261017.md and evidence/tx-return64-data-network-20261017.json. Initial parser failure39048432696 preserved; corrected code handles the actual coupling elements. Earlier waveform diagnosis39046963485 reproduces all original failures:364wrong/387below100mV, six HBT VCE violations, first wrong input signs at level8; public-to-native selector clock delay below0.5ps with no missing/extra edges in this bench. Next repair must address real loaded data-driver/interstage geometry and final HBT headroom with fresh native electrical/physical proof; no acceptance inferred from metal-only analysis.
+
+All work remains CLOUD ONLY. Local /home/hasanmelih/Documents/ChatGPT/nnsoc is empty and no native CAD/simulation process runs locally. Do not recreate a checkout, download/unpack archives or run CAD/tests locally. Source edits/API metadata are kept in memory; source, reports and heavy traces remain in GitHub. Do not touch the separate nssoc-upstream directory.
+
+Regionalroute39045601192, full1us halfstep PLL39043210978, replayCRCnativeboot39041981816 and dependent placement39042752404 were still in progress at last check. Inspect exact current state; do not restart live jobs because of observation timeout. FullserialPHY/mainchiproute/finalsetuphold remain OPEN.
+
+---
+
 ## Cloud checkpoint: v4 physical core passed; parent routing follows
 
 CDR shunt-v4 core run39047111778/source835d674d passed native560-category DRC (zero markers), deep/flat54-device LVS and five actual fault controls. New geometry retains the reviewed344.985x355.24um boundary and all12 original pin rectangles. Exact source report and archive hashes are in docs/evidence/cdr-v4-core-physical-pass-20261017.json. Next cdr-v4-parent-cloud routes the real crossed data connections around this fresh core; no v3 geometry/RC reuse. Fresh parent DRC/LVS, RC extraction/composition and nominal/hot/cold loaded waves remain mandatory before electrical acceptance.
