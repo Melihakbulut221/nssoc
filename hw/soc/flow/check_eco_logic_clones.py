@@ -29,10 +29,11 @@ def quote(path):
     return '"' + str(path).replace('\\', '\\\\').replace('"', '\\"') + '"'
 
 
-def library_script(liberties, macro_verilog):
+def library_script(liberties, macro_verilog, macro_defines=()):
+    flags = " ".join("-D" + name for name in macro_defines)
     return '\n'.join(
         ['read_liberty -lib ' + quote(p.resolve()) for p in liberties]
-        + ['read_verilog -lib ' + quote(p.resolve()) for p in macro_verilog])
+        + ['read_verilog -lib ' + flags + ' ' + quote(p.resolve()) for p in macro_verilog])
 
 
 def main():
@@ -44,11 +45,15 @@ def main():
     parser.add_argument('--macro-liberty', action='append', type=Path, default=[])
     parser.add_argument('--macro-verilog', action='append', type=Path, default=[],
                         help='Unchanged opaque macro interfaces; no SRAM behavioral proof')
+    parser.add_argument('--macro-verilog-define', action='append', default=[],
+                        help='Preprocessor define for opaque macro interface parsing only')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     import re
     if not re.fullmatch(r'[A-Za-z_]\w*', args.top):
         parser.error('Unsupported top identifier')
+    if any(not re.fullmatch(r'[A-Za-z_]\w*', name) for name in args.macro_verilog_define):
+        parser.error('Unsupported macro preprocessor identifier')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     sources = [args.before, args.after, args.liberty, *args.macro_liberty, *args.macro_verilog,
@@ -61,7 +66,7 @@ def main():
     models = standard_models(args.liberty.read_text())
     modules = []
     for name, netlist in [('before', args.before), ('after', args.after)]:
-        script = library_script([args.liberty, *args.macro_liberty], args.macro_verilog)
+        script = library_script([args.liberty, *args.macro_liberty], args.macro_verilog, args.macro_verilog_define)
         script += f'\nwrite_json {quote(output / (name + "-libraries.json"))}\n'
         script += f'read_verilog {quote(netlist.resolve())}\nhierarchy -check -top {args.top}\n'
         script += f'write_json {quote(output / (name + ".json"))}\n'
@@ -79,6 +84,7 @@ def main():
     if digest(executable) != executable_sha:
         raise ValueError('Yosys executable changed during proof')
     result.update(status='PASS within scope', yosys_version=version, sources=expected,
+                  macro_verilog_defines=args.macro_verilog_define,
                   yosys_executable=dict(path=str(executable), sha256=executable_sha),
                   scope=('Combinational duplicate output equations, retained cell inputs and state '
                          'definitions; positive buffer contraction and Boolean pin permutations. '

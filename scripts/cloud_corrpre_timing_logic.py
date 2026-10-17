@@ -41,9 +41,13 @@ def main():
         execute([sys.executable,ROOT/'sw/tests/eco_logic_native.py','--checker',checker,'--liberty',liberty,'--output',OUT/'controls'],'native-controls')
         controls=json.loads((OUT/'controls/result.json').read_text());assert controls['status']=='PASS_NATIVE_ECO_CONTROLS';result['controls']=controls;save()
         command=[sys.executable,checker,before,after,'--liberty',liberty,'--output',OUT/'proof']
+        # IHP's timing-check syntax is unsupported by Yosys. Its upstream
+        # FUNCTIONAL branch has the same ports; -lib still makes each macro
+        # opaque. No native timing model or functional simulation is altered.
+        command+=['--macro-verilog-define','FUNCTIONAL']
         for macro in macros:command+=['--macro-verilog',macro]
         execute(command,'full-netlist-proof')
-        proof=json.loads((OUT/'proof/result.json').read_text());assert proof['status']=='PASS within scope'and proof['retained_cells']>10000
+        proof=json.loads((OUT/'proof/result.json').read_text());assert proof['status']=='PASS within scope'and proof['retained_cells']>10000 and proof['macro_verilog_defines']==['FUNCTIONAL']
         assert all(sha(p)==h for p,h in protected.items())
         result.update(status='PASS_SAVED_FULLCHIP_TIMING_ECO_EQUATIONS_NOT_TIMING_OR_PHYSICAL_SIGNOFF',proof=proof,sources_unchanged=True)
     except BaseException as e:result.update(status='FAIL_OR_ERROR',error=repr(e));raise

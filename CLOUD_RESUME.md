@@ -1,3 +1,11 @@
+## Physical clock loading exposes four HBT headroom violations; original bounds retained (2026-10-17)
+
+Actual11clock/native32 compact39012081694/source52e9cee6: hotlow PASS, nominal/coldhigh REJECTED despite all original bits passing. Actual xtree.xd0109/01010/0111/0112 (exact names in receipt; xd0110 is second) have minVCE nominal0.379722865V/cold0.379821309V below unchanged0.40V. No numerical diagnostics, all44clock binding faults caught,66clock devices143R308C33finite taps. Receipt tx-tree32-clock-wire-compact-rejection-20261017.json preserves actual names/values. Next bind these four devices to actual source geometry/core role and repair clock loading/headroom; do not lower threshold or adopt bit-only pass. Wire and selectorfault runs preserved.
+
+Saved fullchip ECO proof39013882291 failed BEFORE equivalence: Yosys cannot parse original IHP SRAM $setuphold extended syntax atline139. Native positive/negative macro controls passed. No evidence of functional mismatch yet. Successor adds explicit macro-only preprocessor define FUNCTIONAL for unchanged IHP source while retaining read_verilog -lib opaque semantics, input/state equation gates and all native models unchanged. No SRAM timing/interior acceptance. Failure archive retained.
+
+RTL bank proof39013401464 lcrc9/replay4x38/replay2x18 passed at last poll; othercasesqueued/running. Nativeprotocol39013401471 running. Need allsix+protocol before new fullchip bankedRTL boot/physical flow; actual fullgoal OPEN. Cloud-only/localempty.
+
 ## Trimmed physical compact core passed three electrical conditions; saved-chip logic proof launched (2026-10-17)
 
 39011282078/source718dbe0b: nominal/hotlow/coldhigh compact core passed full34ns/256bits/0.3,0.5,0.7UI with604HBT/512MOS/all5interfaces, zero-sourceOP, no numerical diagnostics. Min TX margins280.998/199.932/274.585mV against unchanged100mV. Actual swappedleaf fault rejected27samples (9at each phase). Receipt tx-tree32-trimmed-compact-wave-pass-20261017.json pins actual reports; these retain schematic clocks and omit core metalRC. Wire remains live; actual11clock matrix39012081694 remains independent and live. No fullPHY/PVT/RF/mainchip acceptance.
