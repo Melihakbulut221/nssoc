@@ -1,3 +1,13 @@
+## Latest: all158native planes passed; whole-parent conductor/terminal extraction preparation
+
+Checked 2026-10-17T21:47:33.086750+00:00. Planes39072071100/source19683de5f5e9833d8a7af525357d879b15a59713 PASS:158actualplanes across51distinctlogicalnets,19mappingfaultsrejected; native394devices1134terminals; nativeLEFreadbbox1703.2x5094.3um. Fullreceipt docs/evidence/cdr-retimed-planes-pass-20261018.json. LEFread isnotabstractsignoff; RC/closedloop remainopen.
+
+New cdr-retimed-wire-inputs cloud workflow derives freshmetal/via components fromactualfullPDGDS, binds everyunsimplifiednativeLVSdevice torealPcell, then751metal+383intrinsicbodyterminalreferences and25publicports. Parentremovedpinannotations are recoveredonlyfromexactlyidenticalnativeprimitive drawing inhash-boundchildGDS, withouteditingtargetGDS. MIMplates useactualgeometry. No previousXORRC reused. Preserve anyfailedbinding; do not waive terminals orinfer a smaller devicecount. AfterPASS useobservedwirecomponent/probecensus forfreshMagicRC and13rawcorruptioncontrols, composefullnativePD withall394devicecards andrealwireR/C, thenactualVCOfeedback.
+
+Allnative execution CLOUD ONLY. FullserialPHY/mainchiprouting/finalsetuphold stillOPEN. This turnPROGRESS.
+
+---
+
 ## Latest: PD394 physical gates passed; whole-parent reference-plane binding next
 
 Checked 2026-10-17T21:42:09.212121+00:00. Run39071247094/source49f06a17064c93c6bdf5fc38367c93fc14992573 completed SUCCESS. All560nativeDRC rules zero markers; hierarchical and flat unsimplified LVS394 match, no extractiondiagnostics. Wrongfinger, missingHBT, actualTopMetal2 publicopen, actualrailshort andoffgrid allrejected. The q_open case has deviceMatch but missing successfuldeckverdict/explicitdeckmismatch: the checker correctly refuses falsePASS. Complete summaryandparts hashes retained docs/evidence/cdr-retimed-parent-physical-pass-20261018.json.
