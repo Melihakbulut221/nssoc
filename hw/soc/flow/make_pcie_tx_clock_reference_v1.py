@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 
 PORTS = ["avdd", "cm", "avss", "sub"]
 TOP = "nssoc_tx_clock_reference_layout_v1"
-OFFSET_LENGTHS = {"l6p5": "6.5u", "l6p2": "6.2u", "l5p9": "5.9u", "l5p7": "5.7u"}
+OFFSET_LENGTHS = {"l6p25": "6.25u", "l6p5": "6.5u", "l6p2": "6.2u", "l5p9": "5.9u", "l5p7": "5.7u"}
 CIRCUIT = "hw/soc/analog/pcie/tx_clock_common_bias_v3.spice"
 CIRCUIT_SHA256 = "da579518bd5140afc4e68545020524c3877a0119e2786c04833bc2e3e26ff199"
 FEED = "hw/soc/analog/pcie/tx_clock_bias_feed_v2.spice"
@@ -39,6 +39,15 @@ def devices(reference, feed, variant):
     actual = [line.split() for text in (reference, feed) for line in text.splitlines()
               if line.strip().startswith("X")]
     assert actual == expected, "Unexpected clock reference/feed topology"
+    if variant == "l6p25":
+        trimmed = Path(__file__).resolve().parents[3] / "hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice"
+        assert sha(trimmed) == "597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca"
+        changed = [list(r) for r in expected]
+        assert changed[1][6] == "l=6.5u"
+        changed[1][6] = "l=6.25u"
+        native = [line.split() for text in (trimmed.read_text(), feed) for line in text.splitlines() if line.strip().startswith("X")]
+        assert native == changed, "Native headroom clock differs beyond offset length"
+
     for fields in actual:
         count = 4 if fields[0] == "XREF" else 3
         row = dict(path="xclock." + fields[0].lower(), model=fields[count+1].lower(),
@@ -76,6 +85,8 @@ def main():
         *src.rglob("*.json"),
         lyp,
     ]
+    if args.variant == "l6p25":
+        inputs.append(R / "hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice")
     pins = {str(p): sha(p) for p in inputs}
     sys.dont_write_bytecode = True
     sys.path[:0] = [str(src), str(src / "pycell4klayout-api/source/python")]

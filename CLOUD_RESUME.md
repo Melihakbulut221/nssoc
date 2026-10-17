@@ -1,3 +1,7 @@
+## Actual6device stiff625 clock reference/feed physical candidate launched (2026-10-17)
+
+New tx-clock-headroom-physical-cloud generates l6p25 offset6.25um/w4 with unchanged feed14.5um/w4,HBTNx1 and3finitebodycontacts. Generator independently matches every core record to native passed trim625 source SHA597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca plus originalfeed. Same560nativeDRC/deep+flat6deviceLVS/sixactualfault gates; no resistance scaling of oldRC. Next nativeanchors/binding/intrinsic/wires/RC/composition and loadedactual32tree waveform are required. Txpretrimphysical39007846049 alreadylive bothnx1/nx3; retainhandles. PLL39007535633/mainchip39007378877/originalwire39004595306 live atlastverifiedpoll. Cloudonly, goalOPEN.
+
 ## Actual headroom-trim macro layouts launched (2026-10-17)
 
 New tx-pre-headroom-physical-cloud matrix nx1/nx3 generates real PCells/metal for the exact native threecorner passed sizing. It restores all4 original39005251402 summaries and checks each generated schematic SHA against everynativecase before geometry. Only XFPR/XFNR L31.6->30um(Nx1),15.8->15.4um(Nx3), same widths and allotherrecords. Each54device macro still mustpass560DRC,deep/flatLVS and5actualfaults. Newtops nssoc_tx_mux2_cascade158_nx1_trim_layout_v1/nx3_trim_layout_v1. Originaluntrimmedflowdefaults and failedPVT preserved. Next consume actual macro results, assemble31macro trimmedparent, freshRC/composition/nativewave using clockstiff625; neverreuseuntrimmedRC asnewgeometryproof.

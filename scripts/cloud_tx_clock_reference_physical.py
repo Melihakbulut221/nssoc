@@ -7,7 +7,7 @@ from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=['l6p5','l6p2','l5p9','l5p7'],required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=['l6p5','l6p25','l6p2','l5p9','l5p7'],required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('hw/soc/out/cloud-tx-clock-reference-'+args.variant);out.mkdir(parents=True,exist_ok=False)
     record=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,accepted=False,qualified_pex=False,electrically_validated=False,serial_phy_complete=False,mainchip_integrated=False)
@@ -38,6 +38,7 @@ def main():
         generator=ROOT/'hw/soc/flow/make_pcie_tx_clock_reference_v1.py'
         checker=ROOT/'hw/soc/flow/check_pcie_tx_clock_reference_v1.py'
         sources=[generator,checker,Path(__file__),ROOT/'hw/soc/analog/pcie/tx_clock_common_bias_v3.spice',ROOT/'hw/soc/analog/pcie/tx_clock_bias_feed_v2.spice']
+        if args.variant=='l6p25':sources.append(ROOT/'hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice')
         record['inputs']={str(p):sha(p)for p in sources}
         record['generation']=execute([app,'python',generator,'--pdk',ROOT/'pdk','--out',out/'layout','--variant',args.variant],out,'generate');save()
         assert record['generation']['returncode']==0,(out/'generate.log').read_text()[-8000:]
