@@ -2,12 +2,12 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Native source-bound pump DC current balance; no acquisition or PHY approval."""
-import json,os,re,shutil,subprocess
+import hashlib,json,os,re,shutil,subprocess
 from pathlib import Path
 import numpy as np
 import compare_cloud_routed_endpoints as reports
 from route_cloud_newer_postcts import fetch,sha
-from cloud_vbic_tree32_backend import backend_readback,readback_controls
+from cloud_vbic_tree32_backend import native_diagnostics
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-pll-pump-current'
 LIB=ROOT/'cloud-pll-snapshot'
@@ -39,6 +39,45 @@ def parser_controls():
         except AssertionError:rejected.append(name)
         else:raise AssertionError('Corrupt DC table accepted')
     return dict(known_resistor_source_sign_and_kcl=True,forward_and_reverse=True,rejected=rejected)
+# Diagnostic-specific stricter tolerance. Original acquisition readers remain unchanged.
+def option_values(text,backend):
+    assert ('KLU' in text) if backend=='klu' else ('Sparse 1.3' in text)
+    numeric={}
+    for label,pattern in {'reltol':r'reltol(?:\s+\(current\))?','abstol':r'abstol(?:\s+\(current\))?','vntol':r'vntol(?:\s+\(voltage\))?','trtol':'trtol','maxord':r'(?:maxord|maxorder)','itl4':r'itl4(?:\s+\(transient iterations\))?'}.items():
+        values=re.findall(r'(?mi)^\s*'+pattern+r'\s*=\s*(\S+)\s*$',text);assert len(values)==1,(label,values);numeric[label]=float(values[0])
+    assert numeric['reltol']==1e-6 and numeric['abstol']==1e-12
+    method=re.findall(r'(?mi)^\s*(?:method|integration method)\s*=\s*(\S+)\s*$',text);assert len(method)==1
+    return dict(backend=backend,numeric=numeric,method=method[0],native_readback_sha256=hashlib.sha256(text.encode()).hexdigest())
+
+def options(path,backend):
+    return option_values(path.read_text(),backend)
+
+def backend_readback(log,backend):
+    blocks=re.findall(r'(?ms)^NSSOC_BACKEND_OPTIONS_BEGIN\s*\n(.*?)^NSSOC_BACKEND_OPTIONS_END\s*$',log)
+    assert len(blocks)==1 and log.count('NSSOC_BACKEND_OPTIONS_BEGIN')==log.count('NSSOC_BACKEND_OPTIONS_END')==1,'Missing/duplicate native readback scope'
+    block=blocks[0];parsed=option_values(block,backend)
+    benign={'Truncation error correction, charge based, is selected:','diaggmin (stepping) = 0'}
+    inside=False;scoped=[]
+    for line in log.splitlines():
+        if line.strip()=='NSSOC_BACKEND_OPTIONS_BEGIN':inside=True
+        elif line.strip()=='NSSOC_BACKEND_OPTIONS_END':inside=False
+        if inside and line.strip() in benign:continue
+        scoped.append(line)
+    return parsed,native_diagnostics('\n'.join(scoped)),block
+
+def readback_controls():
+    block='Sparse 1.3\nreltol (current) = 0.000001\nabstol (current) = 1e-12\nvntol (voltage) = 1e-6\ntrtol = 7\nmaxorder = 2\nitl4 (transient iterations) = 10\nIntegration method = trapezoidal\nTruncation error correction, charge based, is selected:\ndiaggmin (stepping) = 0\n'
+    good='NSSOC_BACKEND_OPTIONS_BEGIN\n'+block+'NSSOC_BACKEND_OPTIONS_END\n'
+    assert not backend_readback(good,'sparse')[1]
+    assert not backend_readback(good.replace('Sparse 1.3','KLU'),'klu')[1]
+    rejected=[]
+    for name,bad in [('outside_label','diaggmin (stepping) = 0\n'+good),('inside_warning',good.replace('Sparse 1.3','Sparse 1.3\nWarning: genuine failure')),('changed_tolerance',good.replace('0.000001','0.01')),('duplicate',good+good),('missing_marker',good.replace('NSSOC_BACKEND_OPTIONS_END','')),('wrong_backend',good.replace('Sparse 1.3','KLU')),('missing_numeric',good.replace('trtol = 7\n',''))]:
+        try:failed=bool(backend_readback(bad,'sparse')[1])
+        except AssertionError:failed=True
+        assert failed,name;rejected.append(name)
+    return dict(positive=2,negative=rejected,only_verified_option_labels_exempted=True)
+
+
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False);reports.OUT=OUT
