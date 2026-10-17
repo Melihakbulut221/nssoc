@@ -111,3 +111,27 @@ def test_changed_native_model_rejected(tmp_path, monkeypatch):
         return dict(command=command, returncode=0, elapsed_s=0)
     monkeypatch.setattr(gl, 'run_logged', fake_run)
     assert not gl.check_native_cell('iverilog', '/tools/iverilog', library, tmp_path / 'gate')['passed']
+
+
+@pytest.mark.parametrize('profile', ['off', 'packet', 'packet-async'])
+def test_mapped_packet_profile_matches_all_public_ports(profile):
+    fields = {} if profile == 'off' else {
+        **{n: ('input', w) for n, w in gl.PCIE_INPUT_WIDTHS.items()},
+        **{n: ('output', w) for n, w in gl.PCIE_OUTPUT_WIDTHS.items()}}
+    if profile == 'packet-async':
+        fields['pcie_clk_i'] = ('input', 1)
+    body = '\n'.join(direction + (' [%d:0]' % (width-1) if width > 1 else '') + ' ' + name + ';'
+                     for name, (direction, width) in fields.items())
+    text = 'module soc_top(' + ','.join(fields) + ');\n' + body + '\nendmodule\n'
+    assert gl.validate_pcie_profile(text, profile)['profile'] == profile
+    alternatives = {'off', 'packet', 'packet-async'} - {profile}
+    for wrong in alternatives:
+        with pytest.raises(ValueError):
+            gl.validate_pcie_profile(text, wrong)
+    if fields:
+        for bad in [text.replace('input [7:0] pcie_rx_data_i;', 'input pcie_rx_data_i;'),
+                    text.replace('input pcie_tx_ready_i;', ''),
+                    text.replace('input pcie_tx_ready_i;', 'output pcie_tx_ready_i;'),
+                    text.replace('input pcie_tx_ready_i;', 'input pcie_tx_ready_i;\ninput pcie_tx_ready_i;')]:
+            with pytest.raises(ValueError):
+                gl.validate_pcie_profile(bad, profile)

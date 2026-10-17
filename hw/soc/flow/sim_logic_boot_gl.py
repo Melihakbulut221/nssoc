@@ -78,6 +78,36 @@ def validate_builds(synthesis, firmware):
     return manifests[0]
 
 
+
+PCIE_INPUT_WIDTHS = dict(pcie_link_up_i=1, pcie_training_i=1, pcie_retrain_done_i=1,
+    pcie_function_id_i=16, pcie_rx_data_i=8, pcie_rx_sop_i=1, pcie_rx_eop_i=1,
+    pcie_rx_error_i=1, pcie_rx_valid_i=1, pcie_rx_dllp_i=1, pcie_tx_ready_i=1)
+PCIE_OUTPUT_WIDTHS = dict(pcie_rx_ready_o=1, pcie_tx_data_o=8, pcie_tx_sop_o=1,
+    pcie_tx_eop_o=1, pcie_tx_valid_o=1, pcie_tx_dllp_o=1, pcie_tx_replay_o=1,
+    pcie_initialized_o=1, pcie_error_o=1, pcie_retrain_request_o=1)
+
+def validate_pcie_profile(text, profile):
+    """Do not simulate an enabled packet controller with floating input ports."""
+    if profile not in ('off', 'packet', 'packet-async'):
+        raise ValueError('Unknown mapped PCIe profile')
+    top = re.findall(r'\bmodule\s+soc_top\s*\((.*?)\);(.*?)\bendmodule\b', text, re.S)
+    if len(top) != 1:
+        raise ValueError('Expected exactly one mapped soc_top module')
+    header, body = top[0]
+    header_ports = re.findall(r'\bpcie_\w+\b', header)
+    declarations = re.findall(r'\b(input|output)\s*(?:\[(\d+)\s*:\s*(\d+)\])?\s+(pcie_\w+)\s*;', body)
+    ports = {name: (direction, abs(int(hi)-int(lo))+1 if hi else 1)
+             for direction, hi, lo, name in declarations}
+    expected = {} if profile == 'off' else {
+        **{name: ('input', width) for name, width in PCIE_INPUT_WIDTHS.items()},
+        **{name: ('output', width) for name, width in PCIE_OUTPUT_WIDTHS.items()}}
+    if profile == 'packet-async':
+        expected['pcie_clk_i'] = ('input', 1)
+    if ports != expected or len(declarations) != len(ports) or sorted(header_ports) != sorted(expected):
+        raise ValueError('Mapped PCIe port inventory does not match requested boot profile')
+    return dict(profile=profile, ports=ports, traffic_tested=False,
+                scope='Packet interface held link-down during real CPU/Ethernet firmware boot; no packet traffic, SDF or serial PHY qualification.')
+
 def read_symbols(nm, elf):
     output = subprocess.check_output([nm, str(elf)], text=True)
     symbols = {}
@@ -164,12 +194,14 @@ def main(argv=None):
     parser.add_argument('--timeout', type=int, default=14400, help='Run wall seconds')
     parser.add_argument('--cycles', type=int, default=1000000)
     parser.add_argument('--prepare-only', action='store_true')
+    parser.add_argument('--pcie-profile', choices=('off', 'packet', 'packet-async'), default='off')
     args = parser.parse_args(argv)
     if args.timeout <= 0 or args.cycles <= 0:
         parser.error('Timeout and cycle bound must be positive')
     syn, fw, pdk, out = (getattr(args, key).resolve()
                          for key in ('synthesis', 'firmware', 'pdk', 'output'))
     manifest = validate_builds(syn, fw)
+    pcie = validate_pcie_profile((syn / 'soc_top.netlist.v').read_text(), args.pcie_profile)
     symbols = read_symbols(args.nm, fw / 'app.elf')
     tool = shutil.which(args.tool or args.simulator)
     if tool is None:
@@ -191,6 +223,10 @@ def main(argv=None):
     hashes = {str(p): dict(sha256=digest(p), bytes=p.stat().st_size) for p in tracked}
     defines = ['-DFUNCTIONAL', '-DTIMEOUT_CYCLES=' + str(args.cycles)]
     defines += [f"-D{macro}=32'h{symbols[symbol]:08x}" for macro, symbol in SYMBOLS.items()]
+    if args.pcie_profile != 'off':
+        defines.append('-DNSSOC_GL_PCIE')
+    if args.pcie_profile == 'packet-async':
+        defines.append('-DNSSOC_GL_PCIE_ASYNC')
     if args.simulator == 'iverilog':
         command = [tool, '-g2005-sv', '-s', 'tb_logicrom_gl', '-o', str(out / 'sim.vvp')]
         runs = [[str(Path(tool).with_name('vvp')), '-i', str(out / 'sim.vvp'),
@@ -205,7 +241,7 @@ def main(argv=None):
     out.mkdir(parents=True, exist_ok=False)
     record = dict(scope='Functional boot only. No ROM/RAM preload, SDF or fault qualification. '
                   'Verilator is a supplemental randomized two-state control.',
-                  simulator=args.simulator, version=version, loader_manifest=manifest,
+                  simulator=args.simulator, version=version, loader_manifest=manifest, pcie=pcie,
                   symbols=symbols, sources=hashes, compile_command=command, run_commands=runs,
                   run_timeout_s=args.timeout, cycle_bound=args.cycles)
     (out / 'inputs.json').write_text(json.dumps(record, indent=2) + '\n')
@@ -225,12 +261,13 @@ def main(argv=None):
             log = out / f'run-{number}.log'
             status = run_logged(run, log, args.timeout)
             status['pass_banner'] = 'LOGICROM_GL PASS checks=28' in log.read_text()
+            status['pcie_idle_boot_passed'] = (args.pcie_profile == 'off' or bool(re.search(r'PCIE_IDLE_BOOT PASS samples=[1-9][0-9]*', log.read_text())))
             result['runs'].append(status)
             (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     result['sources_unchanged'] = all(digest(p) == info['sha256'] for p, info in hashes.items())
     result['passed'] = (result['compile']['returncode'] == 0 and result['sources_unchanged']
                         and len(result['runs']) == len(runs)
-                        and all(r['returncode'] == 0 and r['pass_banner'] for r in result['runs']))
+                        and all(r['returncode'] == 0 and r['pass_banner'] and r['pcie_idle_boot_passed'] for r in result['runs']))
     (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result, indent=2))
     return 0 if result['passed'] else 1

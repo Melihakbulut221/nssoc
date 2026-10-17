@@ -163,7 +163,41 @@ module tb_logicrom_gl;
   // check in the program would pass vacuously, so it is a constant here
   // and hw/soc/tb/cocotb/test_soc_wdog.py is where the disabled case is
   // driven.
+`ifdef NSSOC_GL_PCIE
+  // A real independent packet clock; no internal drive or register preload.
+`ifdef NSSOC_GL_PCIE_ASYNC
+  reg pcie_clk = 1'b0;
+  initial begin #1.3; forever #4 pcie_clk = ~pcie_clk; end
+`else
+  wire pcie_clk = clk;
+`endif
+  wire pcie_rx_ready, pcie_tx_valid, pcie_initialized, pcie_error, pcie_retrain_request;
+  integer pcie_idle_samples = 0;
+  always @(negedge pcie_clk) if (rst_n && cycles > 32) begin
+    if ((^{pcie_rx_ready,pcie_tx_valid,pcie_initialized,pcie_error,pcie_retrain_request}) === 1'bx)
+      $fatal(1,"Unknown mapped PCIe control during link-down boot");
+    if (pcie_tx_valid !== 1'b0 || pcie_initialized !== 1'b0 || pcie_error !== 1'b0 || pcie_retrain_request !== 1'b0)
+      $fatal(1,"Unexpected mapped PCIe activity during link-down boot");
+    pcie_idle_samples = pcie_idle_samples + 1;
+  end
+`endif
+
   soc_top dut (
+`ifdef NSSOC_GL_PCIE
+`ifdef NSSOC_GL_PCIE_ASYNC
+      .pcie_clk_i(pcie_clk),
+`endif
+      .pcie_link_up_i(1'b0), .pcie_training_i(1'b0), .pcie_retrain_done_i(1'b0),
+      .pcie_function_id_i(16'h0100), .pcie_rx_data_i(8'b0),
+      .pcie_rx_sop_i(1'b0), .pcie_rx_eop_i(1'b0), .pcie_rx_error_i(1'b0),
+      .pcie_rx_valid_i(1'b0), .pcie_rx_dllp_i(1'b0), .pcie_tx_ready_i(1'b1),
+      .pcie_rx_ready_o(pcie_rx_ready), .pcie_tx_data_o(),
+      .pcie_tx_sop_o(), .pcie_tx_eop_o(), .pcie_tx_valid_o(pcie_tx_valid),
+      .pcie_tx_dllp_o(), .pcie_tx_replay_o(),
+      .pcie_initialized_o(pcie_initialized), .pcie_error_o(pcie_error),
+      .pcie_retrain_request_o(pcie_retrain_request),
+`endif
+
       .spw_di_i(spw_loop_d), .spw_si_i(spw_loop_s),
       .spw_do_o(spw_loop_d), .spw_so_o(spw_loop_s),
       .i2c_scl_i(!i2c_scl_oe), .i2c_sda_i(!i2c_sda_oe),
@@ -312,6 +346,10 @@ module tb_logicrom_gl;
        u_flash0.violations!=0 || saw_alert_minor || saw_alert_major_int ||
        saw_alert_major_bus || saw_double_fault)
       $fatal(1,"Whole mapped SoC logic-ROM boot failed");
+`ifdef NSSOC_GL_PCIE
+    if (pcie_idle_samples < 100) $fatal(1,"No meaningful packet-clock boot observation");
+    $display("PCIE_IDLE_BOOT PASS samples=%0d",pcie_idle_samples);
+`endif
     $display("LOGICROM_GL PASS checks=28");
     $finish;
   end
