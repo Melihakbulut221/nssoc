@@ -1,3 +1,9 @@
+## Tighter parent placement candidate launched from real wire rejection (2026-10-17)
+
+Previous turn PROGRESS (one-shot handoff). Allnative jobs and coordinator39021081392 stilllive. Read actual tree generator: original31macros use1000um stage columns and600um leaf rows. Old fullwire39004595306 has377wrong/768TXsamples while native transient finished; same parent pitch exists in current headroom candidate. This supports testing intermacro parasitic reduction, but does not attribute all failures to wires or predict a pass.
+
+New tx-tree32-tight-assembly-cloud uses700um columns/420um rows ONLY for budget_high3_trim. Own output/GDS top/release group avoids overwriting old geometry. Exact inverse coordinate transform recovers original topology/maps/clocks/roles; frozenchild drawing-region equality/native1674devices/589HBT/719emitters/162ports/60routes/560DRC categories/deep+flatLVS/fiveactualfaults unchanged. Record actual centerline lengths and bounding box. Native DRC/LVS must pass before new parentRC extraction and full mixedclock waveform. Never reuse old114819R76351C or claim signal speedup from geometric shortening. No source-bit/phase/limit changes; all existing runs preserved. Cloud-only/localempty/fullgoalOPEN.
+
 ## Exact cloud handoff dispatched once:39021081392 (2026-10-17)
 
 Previous turn VERIFIED WAIT; this turn PROGRESS. Final control39020916901/source52f83d4d passed all9synthetic orchestration checks, including actual workflow run-name binding, existing healthy/successful reuse, failed/ambiguous successor rejection, no retry of uncertain dispatch and wrong/failed boot rejection. The first run-name discrepancy was caught via actual API BEFORE any handoff dispatch, then corrected; no duplicate native job was launched. These are orchestration tests only, not design acceptance.

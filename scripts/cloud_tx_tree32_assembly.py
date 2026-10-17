@@ -10,7 +10,8 @@ OUT=ROOT/'hw/soc/out/cloud-tx-tree32-assembly'
 TOP='nssoc_tx_tree32_core_v1'
 CHILD_PORTS='ap an bp bn sp sn op on avdd avss sub iref'.split()
 
-def topology():
+def topology(column_pitch=1000.,row_pitch=600.):
+    assert (column_pitch,row_pitch) in ((1000.,600.),(700.,420.))
     from run_cloud_tx_mux4 import tree_plan
     plan=tree_plan(32)
     nodes=[dict(n,kind='pre')for n in plan['nodes']]
@@ -38,19 +39,20 @@ def topology():
             for child in n['inputs']:visit(child)
     visit('f');assert len(leaf_order)==16 and len(set(leaf_order))==16
     def row(label):
-        if label in leaf_order:return leaf_order.index(label)*600.
+        if label in leaf_order:return leaf_order.index(label)*row_pitch
         return sum(row(c)for c in by[label]['inputs'])/2
     maps={};ports=[]
     for n in nodes:
         tag=n['label'];a,b=n['inputs'];out='m'if tag=='f'else tag
         maps[tag]=dict(zip(CHILD_PORTS,[a+'p',a+'n',b+'p',b+'n',n['clock']+'p',n['clock']+'n',out+'p',out+'n','avdd','avss','sub',n['reference']],strict=True))
-        n['x_um']=(4-(n['stride'].bit_length()-1))*1000.
+        n['x_um']=(4-(n['stride'].bit_length()-1))*column_pitch
         n['y_um']=row(tag)
     ports=[f'd{i}{suffix}'for i in range(32)for suffix in ('p','n')]
     ports += [n['clock']+s for n in nodes for s in ('p','n')]
     ports += [n['reference']for n in nodes]+['mp','mn','avdd','avss','sub']
     assert len(ports)==len(set(ports))==162
-    return dict(nodes=nodes,maps=maps,ports=ports,source_plan=plan,selection_fault_rejected=True)
+    return dict(nodes=nodes,maps=maps,ports=ports,source_plan=plan,selection_fault_rejected=True,
+        column_pitch_um=column_pitch,row_pitch_um=row_pitch)
 
 def flatten(text,tag,mapping):
     rows=text.splitlines();headers=[l.split()for l in rows if l.lower().startswith('.subckt ')]
@@ -122,14 +124,15 @@ def generate():
             x=right+40+12*k;y0=stub(child,op,x,4);y1=stub(parent,ip,x,4)
             box('TopMetal1',x-2,min(y0,y1)-2,x+2,max(y0,y1)+2)
             assert maps[child][op]==maps[parent][ip]
-            routes.append(dict(net=maps[child][op],endpoints=[child+'.'+op,parent+'.'+ip],x_um=x,y_um=[y0,y1],width_um=4,fault_cut_um=[x-3,(y0+y1)/2-.5,x+3,(y0+y1)/2+.5]))
+            routes.append(dict(centerline_length_um=abs(center(child,op)[0]-x)+abs(y1-y0)+abs(center(parent,ip)[0]-x),net=maps[child][op],endpoints=[child+'.'+op,parent+'.'+ip],x_um=x,y_um=[y0,y1],width_um=4,fault_cut_um=[x-3,(y0+y1)/2-.5,x+3,(y0+y1)/2+.5]))
     assert len(routes)==60 and len({r['net']for r in routes})==60
     # Each column has separate external AVDD/AVSS/SUB trunks. Global buses
     # are below every child; never draw a global rail through macro bodies.
     rail_ends={k:[]for k in ('avdd','avss','sub')}
     for level in range(5):
-        group=[n for n in plan['nodes']if n['x_um']==1000.*level];assert group
-        x0=1000.*level;right=max(b.right for n in group for b in pins[n['label']].values())
+        pitch=plan['column_pitch_um']
+        group=[n for n in plan['nodes']if n['x_um']==pitch*level];assert group
+        x0=pitch*level;right=max(b.right for n in group for b in pins[n['label']].values())
         for net,width,x,ybus in [('avdd',32.,right+140.,-100.),('sub',4.,right+200.,-300.),('avss',32.,x0-40. if level<4 else right+260.,-200.)]:
             ys=[stub(n['label'],net,x,width,True)for n in group]
             box('TopMetal1',x-width/2,ybus-width/2,x+width/2,max(ys)+width/2);via(x,ybus,True)
@@ -162,16 +165,21 @@ def generate():
     sys.path.insert(0,str(ROOT/'hw/soc/flow'));import make_pcie_clock_vco_v6_local_v1 as writer
     writer.TOP=TOP;writer.PORTS=ports;writer.use_direction=lambda n:('POWER','INOUT')if n=='avdd'else('GROUND','INOUT')if n in ('avss','sub')else('SIGNAL','OUTPUT'if n in ('mp','mn')else 'INPUT')
     dest=OUT/'layout';dest.mkdir();top.write(str(dest/(TOP+'.gds')));(dest/'schematic.cir').write_text('\n'.join(schematic)+'\n');(dest/(TOP+'.lef')).write_text(writer.lef(pya,L.dbu,top.dbbox(),public))
-    result=dict(status='GENERATED_UNVERIFIED_TREE32_1674_DEVICES',inputs=protected,outputs={p.name:sha(p)for p in dest.iterdir()},ports={n:str(b)for n,(_,b)in public.items()},bbox_um=str(top.dbbox()),placements=placements,origin_translation_um=[dx,dy],signal_routes=routes,core_devices=837,substrate_contacts=837,total_devices=1674,frozen_child_drawing_regions_equal=True,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False,scope='Actual30pre+1final native macros,60intermacro signal wires and shared supplies/body. Clock/bias generation,64CMOSdrivers,loadedTX/fourlanes/mainchip and all electrical/RC gates remain outside this core.')
+    result=dict(status='GENERATED_UNVERIFIED_TREE32_1674_DEVICES',inputs=protected,outputs={p.name:sha(p)for p in dest.iterdir()},ports={n:str(b)for n,(_,b)in public.items()},bbox_um=str(top.dbbox()),parent_signal_centerline_sum_um=sum(r['centerline_length_um']for r in routes),parent_signal_centerline_max_um=max(r['centerline_length_um']for r in routes),placement_pitch=dict(column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um']),placements=placements,origin_translation_um=[dx,dy],signal_routes=routes,core_devices=837,substrate_contacts=837,total_devices=1674,frozen_child_drawing_regions_equal=True,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False,scope='Actual30pre+1final native macros,60intermacro signal wires and shared supplies/body. Clock/bias generation,64CMOSdrivers,loadedTX/fourlanes/mainchip and all electrical/RC gates remain outside this core.')
     (dest/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
     global OUT,TOP
     p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
+    p.add_argument('--placement-pitch',choices=('original','tight'),default='original')
     p.add_argument('--variant',choices=('baseline','budget_high8','budget_high3','budget_high3_trim'),default='baseline');a=p.parse_args()
     if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
         OUT=ROOT/('hw/soc/out/cloud-tx-tree32-'+({'budget_high8':'budget','budget_high3':'high3','budget_high3_trim':'headroom'}[a.variant])+'-assembly')
         TOP='nssoc_tx_tree32_'+a.variant+'_core_v1'
+    if a.placement_pitch=='tight':
+        assert a.variant=='budget_high3_trim'
+        OUT=ROOT/'hw/soc/out/cloud-tx-tree32-tight-assembly'
+        TOP='nssoc_tx_tree32_budget_high3_trim_tight_core_v1'
     if a.generate:generate();return
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=a.variant,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False)
@@ -179,7 +187,20 @@ def main():
         with (OUT/(label+'.log')).open('w')as f:code=subprocess.call(list(map(str,command)),stdout=f,stderr=subprocess.STDOUT)
         if code:print((OUT/(label+'.log')).read_text(errors='replace')[-12000:],flush=True);raise RuntimeError((label,code))
     try:
-        plan=topology();plan['variant']=a.variant
+        plan=topology(700.,420.)if a.placement_pitch=='tight'else topology();plan['variant']=a.variant
+        plan['placement_pitch']=a.placement_pitch
+        # Inverse placement transform must recover the original bit topology,
+        # maps, roles, clocks, references and every original macro coordinate.
+        original=topology();check=json.loads(json.dumps(plan))
+        check.pop('variant');check.pop('placement_pitch')
+        if a.placement_pitch=='tight':
+            for n in check['nodes']:
+                n['x_um']=round(n['x_um']/700.*1000.,9)
+                n['y_um']=round(n['y_um']/420.*600.,9)
+            check['column_pitch_um']=1000.;check['row_pitch_um']=600.
+        assert check==original,'Placement changed original selector topology'
+        result['placement_pitch']=dict(name=a.placement_pitch,column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um'],inverse_topology_matches_original=True)
+        result['placement_scope']='Only parent macro pitch/trunks/routes move. Frozen child drawings, devices, topology and acceptance rules unchanged. New RC and loaded waveforms mandatory; no parasitic or electrical pass inferred.'
         if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
             for n in plan['nodes']:
                 if n['kind']=='pre' and n['stride']>=4:n['kind']='pre_low'
@@ -221,7 +242,7 @@ def main():
                     raw=t.extractfile(prefix+name).read();target=OUT/'inputs'/kind/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
                     if Path(name).name in row['generated_outputs']:assert hashlib.sha256(raw).hexdigest()==row['generated_outputs'][Path(name).name]
             packed.unlink()
-        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate','--variant',a.variant],'generate')
+        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate','--variant',a.variant,'--placement-pitch',a.placement_pitch],'generate')
         generated=json.loads((OUT/'layout/result.json').read_text());result['layout']=generated
         method=(OUT/'inputs/pre/verify-physical.py').read_text()
         child_top='nssoc_tx_mux2_cascade158_nx3_trim_layout_v1'if a.variant=='budget_high3_trim'else'nssoc_tx_mux2_cascade158_nx3_layout_v1'if a.variant=='budget_high3'else'nssoc_tx_mux2_cascade158_layout_v1'
