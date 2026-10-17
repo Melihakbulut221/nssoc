@@ -416,7 +416,10 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
                                            '83e128161062e8ca514177a17480874ae5229e789003264ac40da7185eb42118',
                                            # Same cells in the native DRC/LVS and RC verified tight422 assembly.
                                            'b6274c8964ae9c687a61107d5cff24c973680ec322f26e9af6de647ff74dce97',
-                                           '6d5e61e5418b9862c368019781bed8ab4c9f3d9884bbe2faebccbc4e591acb66')
+                                           '6d5e61e5418b9862c368019781bed8ab4c9f3d9884bbe2faebccbc4e591acb66',
+                                           # Fresh native geometry/RC composition39027347884;64um AVSS only.
+                                           'ce2b1f68486b000d1574ac202acaac2853b6ce4ea9f123f67ddedc6eebf711c2',
+                                           'acde00f937c0bc576d608b51c079b984b8379900834c01d4cd74d7bfff34200f')
         assert pre_bias in ('native_res','native_res_tc')
         expected_interfaces={'ap','an','bp','bn'}
         if streams==32:

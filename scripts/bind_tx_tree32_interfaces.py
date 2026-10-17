@@ -18,7 +18,12 @@ if tight:
  assert physical['variant']=='budget_high3_trim'
  assert physical['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
  assert layout['placement_pitch']==dict(column_um=700.,row_um=422.)
-gds=P/'layout'/('nssoc_tx_tree32_'+physical['variant']+('_tight'if tight else'')+'_core_v1.gds')
+wide64=physical.get('return_rail',{}).get('profile')=='wide64'
+if wide64:
+ assert tight and physical['return_rail']['trunk_and_bus_width_um']==64.
+ assert physical['return_rail']['child_stub_width_um']==32.
+ assert physical['return_rail']['local_final_strap_width_um']==4.
+gds=P/'layout'/('nssoc_tx_tree32_'+physical['variant']+('_tight_return64'if wide64 else'_tight'if tight else'')+'_core_v1.gds')
 assert hashlib.sha256(gds.read_bytes()).hexdigest()==layout['outputs'][gds.name]
 g=pya.Layout();g.read(str(gds))
 l=pya.LayoutVsSchematic();l.read(str(P/'physical/lvs/result.lvsdb'))

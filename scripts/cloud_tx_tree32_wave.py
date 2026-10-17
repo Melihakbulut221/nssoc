@@ -12,26 +12,28 @@ from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 PROFILE='breakpoint_tight_trap'
 def main():
- p=argparse.ArgumentParser();p.add_argument('--placement-pitch',choices=('original','tight'),default='original');p.add_argument('--physical-clock',action='store_true');p.add_argument('--first-clock-l5p7',action='store_true');p.add_argument('--mode',choices=('compact','wire'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--variant',choices=('budget_high3','budget_high3_trim'),default='budget_high3');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--return-rail',choices=('original','wide64'),default='original');p.add_argument('--placement-pitch',choices=('original','tight'),default='original');p.add_argument('--physical-clock',action='store_true');p.add_argument('--first-clock-l5p7',action='store_true');p.add_argument('--mode',choices=('compact','wire'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--variant',choices=('budget_high3','budget_high3_trim'),default='budget_high3');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
  assert args.condition=='nominal' or (args.variant=='budget_high3_trim' and args.fault=='none')
  trim=args.variant=='budget_high3_trim'
  tight=args.placement_pitch=='tight'
+ wide64=args.return_rail=='wide64'
+ assert not wide64 or tight
  assert not tight or (trim and args.physical_clock and args.first_clock_l5p7)
  counts=dict(devices=1674,R=114909,C=76614)if tight else dict(devices=1674,R=114819,C=76351)
  assert not args.physical_clock or trim
  assert not args.first_clock_l5p7 or (args.physical_clock and trim)
  clock_key='stiff625' if trim else 'stiff65'
  assert os.environ.get('GITHUB_ACTIONS')=='true'
- out=ROOT/((('cloud-tx-tree32-tight-wave-'if tight else'cloud-tx-tree32-firstclock-wave-'if args.first_clock_l5p7 else'cloud-tx-tree32-clock-wire-wave-'if args.physical_clock else'cloud-tx-tree32-headroom-wave-')+args.mode+'-'+args.condition+'-'+args.fault)if trim else('cloud-tx-tree32-physical-wave-'+args.mode+'-'+args.fault));out.mkdir(exist_ok=False)
- result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode=args.mode,fault=args.fault,variant=args.variant,placement_pitch=args.placement_pitch,condition=args.condition,core_counts=counts,accepted=False,full_phy_accepted=False,qualified_pex=False,electrical_screen_passed=False,scope='Actual full32 physical core1674devices, all604HBT/512MOS native bounds, original34ns/256bits/three sampling phases. Wire mode includes all114819R76351C; compact mode excludes metal RC for diagnosis. External schematic CMOS/clock modulation/output frontends remain. No fullPHY/PVT/RF/substrate/mainchip acceptance.')
+ out=ROOT/((('cloud-tx-tree32-return64-wave-'if wide64 else'cloud-tx-tree32-tight-wave-'if tight else'cloud-tx-tree32-firstclock-wave-'if args.first_clock_l5p7 else'cloud-tx-tree32-clock-wire-wave-'if args.physical_clock else'cloud-tx-tree32-headroom-wave-')+args.mode+'-'+args.condition+'-'+args.fault)if trim else('cloud-tx-tree32-physical-wave-'+args.mode+'-'+args.fault));out.mkdir(exist_ok=False)
+ result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode=args.mode,fault=args.fault,variant=args.variant,placement_pitch=args.placement_pitch,condition=args.condition,return_rail=args.return_rail,core_counts=counts,accepted=False,full_phy_accepted=False,qualified_pex=False,electrical_screen_passed=False,scope='Actual full32 physical core1674devices, all604HBT/512MOS native bounds, original34ns/256bits/three sampling phases. Wire mode includes all114819R76351C; compact mode excludes metal RC for diagnosis. External schematic CMOS/clock modulation/output frontends remain. No fullPHY/PVT/RF/substrate/mainchip acceptance.')
  def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
  save()
  try:
-  receipt=json.loads((ROOT/'docs/evidence'/('tx-tree32-tight-composition-pass-20261017.json'if tight else'tx-tree32-headroom-composition-pass-20261017.json'if trim else'tx-tree32-high3-composition-pass-20261017.json')).read_text());result['source']=receipt
+  receipt=json.loads((ROOT/'docs/evidence'/('tx-tree32-return64-composition-pass-20261017.json'if wide64 else'tx-tree32-tight-composition-pass-20261017.json'if tight else'tx-tree32-headroom-composition-pass-20261017.json'if trim else'tx-tree32-high3-composition-pass-20261017.json')).read_text());result['source']=receipt
   archive=out/'source.tar.gz';fetch(receipt['url'],receipt['sha256'],archive);assert archive.stat().st_size==receipt['bytes']
   dest=out/'source';dest.mkdir()
   with tarfile.open(archive)as tar:tar.extractall(dest,filter='data')
-  archive.unlink();source=dest/('cloud-tx-tree32-tight-assembly'if tight else'cloud-tx-tree32-headroom-assembly'if trim else'cloud-tx-tree32-high3-assembly')
+  archive.unlink();source=dest/('cloud-tx-tree32-return64-assembly'if wide64 else'cloud-tx-tree32-tight-assembly'if tight else'cloud-tx-tree32-headroom-assembly'if trim else'cloud-tx-tree32-high3-assembly')
   assert sha(source/'composition-result.json')==receipt['summary_sha256']
   report=json.loads((source/'composition-result.json').read_text())
   assert report['status']=='PASS_ACTUAL_TREE1674_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT'
@@ -39,6 +41,12 @@ def main():
   if tight:
    assert report['placement_pitch']==receipt['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
    result['scope']=result['scope'].replace('114819R76351C','114909R76614C')
+  if wide64:
+   assert report['source_head']=='086401ca1c58c652a7114d4ebb1b9cd990c075bd'
+   assert report['return_rail']==receipt['return_rail'] and report['return_rail']['profile']=='wide64'
+   assert report['return_rail']['trunk_and_bus_width_um']==64.
+   assert report['geometry_delta']['status']==receipt['geometry_delta_status']=='PASS_EXACT_SIX_AVSS_EXPANSIONS_ALL_OTHER_DRAWING_GEOMETRY_UNCHANGED'
+   assert report['extraction_source_sha256']=='b3aaa9993a1136dfc0716f19832f407420a54ba3d89f0c92f931b14463b17b53'
   assert len(report['controls']['controls'])==6
   assert {c['case']for c in report['controls']['controls']}=={'missing_contact','wrong_hbt_size','bypassed_terminal_rc','wrong_cap_reference','missing_wire_resistor','changed_wire_cap'}
   assert report['controls']['counts']==counts
