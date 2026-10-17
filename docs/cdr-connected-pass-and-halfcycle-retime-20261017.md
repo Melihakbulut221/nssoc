@@ -9,3 +9,9 @@ First sampler must reproduce original PRBS bit i after rising edge START+(i+0.5)
 Nominal/hot/cold, swapped final output, stopped clock and actual wrong-edge second sampler are six separate Actions cases. All outcomes are preserved. Wrong-edge must fail original bit identity rather than a metadata check. This alone is not the three-sample/two-comparator phase detector, clock recovery, jitter/BER, physical routing or x4 integration.
 
 Architecture context: the Alexander detector uses three consecutive samples to distinguish clock/data phase (https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/el.2016.3368). This motivates actual sample timing; it is not evidence that this transistor cascade works.
+
+## Capture correction
+
+The initial half-cycle run39054982732 failed evaluation because the voltage list was derived from HBT terminals only. Converter nodes udp/udn connect through the sampler's input resistors, so they were absent from the saved waveform. Hot report651141978 records the exact KeyError after native simulation returned0 with clean diagnostics. No whole-circuit pass/fail is claimed from this incomplete capture. The source receipt is cdr-halfcycle-capture-error-20261017.json.
+
+The correction saves the union of actual HBT, resistor and MIM terminal bindings and checks all four interstage voltage probes before simulation. Circuit wrapper SHA d1e16573ce5b0ea30a8c37d13fe60867eee13310027e2247e2a2e09776635e52, stimulus, native engine, device limits and timing gates are unchanged. All six cases must rerun with complete waveforms in Actions; old captures remain preserved.

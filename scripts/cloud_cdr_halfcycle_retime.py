@@ -113,7 +113,8 @@ def main():
         r['native_caps']={f[0]:dict(nodes=['xchain.'+n for n in f[1:3]],model=f[3],parameters=f[4:])for f in caps}
         assert len(devices)==30 and len(resistors)==28 and sum(x['nx']for x in devices.values())==82
 
-        nodes={n for x in devices.values()for n in x['nodes']}|{'qp','qn','dp','dn','cp','cn','avdd','ira','irb'};nodes.discard('0')
+        nodes={n for x in devices.values()for n in x['nodes']}|{n for x in resistors.values()for n in x['nodes']}|{n for x in r['native_caps'].values()for n in x['nodes']}|{'qp','qn','dp','dn','cp','cn','avdd','ira','irb'};nodes.discard('0')
+        assert {'xchain.aqp','xchain.aqn','xchain.udp','xchain.udn'}<=nodes,'Required interstage voltage probes missing before simulation'
         vectors=['v('+n+')'for n in sorted(nodes)]+['@q.'+n+'.qnpn13g2[ic]'for n in devices]
         bits=primitive.prbs(0x7f);models=lib/'models/models'
         deck=['NSSOC clean native sampler characterization',f'.lib "{models}/cornerHBT.lib" hbt_typ',f'.lib "{models}/cornerRES.lib" {c["res"]}',f'.lib "{models}/cornerCAP.lib" {c["cap"]}',f'.include "{SOURCE}"',f'.include "{actual_wrapper}"',f'.temp {c["temperature"]}',
