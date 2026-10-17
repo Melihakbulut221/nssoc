@@ -36,7 +36,15 @@ def main():
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     parser.add_argument("--boundary-pins", action="store_true", help="Extend real TM2 public pins to the macro boundary; requires fresh DRC/LVS and RC")
     parser.add_argument("--boundary-policy", choices=("left", "nearest_pair", "nearest_pair_tight"), default="left", help="Select actual left/right pin metal access while keeping each differential pair on one side")
+    parser.add_argument('--prestage-nx', type=int, choices=(1,8), default=8,
+                        help='Actual low-rate Nx1 cell from the full32 native sizing study; requires new physical proof')
     args = parser.parse_args()
+    if args.prestage_nx != 8:
+        assert os.environ.get('GITHUB_ACTIONS') == 'true'
+        assert args.circuit_profile == 'cascade158'
+        assert args.variant == 'critical_buses_kelvin_supply_direct'
+        assert args.boundary_pins and args.boundary_policy == 'nearest_pair_tight'
+
     assert args.boundary_pins or args.boundary_policy == "left", "Boundary policy requires real boundary pins"
     requested_variant = args.variant
     left_final_outputs = requested_variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs'
@@ -144,6 +152,20 @@ def main():
                 result['circuit_equivalence_before_generation']=audit(circuit.read_text(),native.read_text(),profile=audit_profile)
                 top=f'nssoc_tx_mux2_final_drive_{audit_profile}_layout_v1'
             assert sha(circuit)==expected
+            if args.prestage_nx == 1:
+                from cloud_tx_tree32_budget import resized
+                original_circuit = circuit
+                candidate, sizing = resized(circuit.read_text(), 1)
+                expected = hashlib.sha256(candidate.encode()).hexdigest()
+                assert expected == 'af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd'
+                circuit = out / 'pre-nx1.spice'
+                circuit.write_text(candidate)
+                top = 'nssoc_tx_mux2_cascade158_nx1_layout_v1'
+                result['prestage_sizing'] = dict(sizing,
+                    original_source=str(original_circuit.relative_to(ROOT)),
+                    original_sha256=sha(original_circuit),candidate_sha256=expected,
+                    native_schematic_evidence_run=38993903811,
+                    evidence_scope='All28 low-rate Nx1 stages passed their native HBT checks; two different fast Nx4 stages failed. Full32 candidate remains rejected.')
             for before,after in [
                 ('hw/soc/out/pcie-tx-mux2-20261012/tx_mux2_hbt_passive_fast_v1.spice',str(circuit.relative_to(ROOT))),
                 ('4d7606b3c14ef06de2d25ce46c266dcef3635fe602218b3a8932f7f061e53101',expected),
@@ -631,7 +653,22 @@ def main():
             assert source.count(before) == 1
             source = source.replace(before, before + '                boundary_pin_routes=boundary_pin_routes,\n')
             edits.append(dict(boundary_pin_policy=args.boundary_policy, scope='Extend all12 actual TM2 public conductors to selected macro boundaries; each differential pair stays on one side. Retain original devices/local routes and unchanged native physical gates. Fresh RC and loaded waves required.'))
-        generator = out / 'generate.py'
+        if args.prestage_nx == 1:
+            # The two bleeders grow from38.4um to307.2um. Translate their
+            # actual PCells and taps down by268.8um so their upper ends retain
+            # the previous placement. Native DRC/LVS decide legal connectivity;
+            # no previously extracted RC is reused.
+            before = '    assert sorted(positions)==list(range(27))\n'
+            after = ('    for index in (21,22):\n'
+                     '        assert rows[index]["path"] in ("xtest.xba","xtest.xbb")\n'
+                     '        assert rows[index]["params"]["l"] == "307.2u"\n'
+                     '        px,py = positions[index]\n'
+                     '        positions[index] = (px,py-268.8)\n' + before)
+            assert source.count(before) == 1
+            source = source.replace(before, after)
+            edits.append(dict(before=before,after=after,
+                reason='Place actual longer Nx1 bleeders outside HBT rows; preserve all PCells, substrate taps, native gates and regeneration of routes.'))
+        generator = out / 'generate.py' 
         generator.write_text(source)
         physical_method=out/'verify-physical.py'
         physical_method.write_text(physical_source)

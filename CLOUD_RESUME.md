@@ -1,3 +1,11 @@
+## Actual Nx1 prestage physical implementation started (2026-10-17)
+
+PROGRESS. New optional --prestage-nx1 path in run_cloud_tx_layout_repair.py uses exact source-bound resized() transformation from native full32 study38993903811, SHAaf7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd. These28 low-rate cells passed native HBT checks in that study; the overall candidate remains rejected because two fast Nx4 cells failed. Actual new PCells19Nx1HBT+8R+27taps,12ports. Two307.2um bleeder cells/taps translate down268.8um from original38.4um placement; every affected conductor is regenerated. This is a new geometry hypothesis, not assumed equivalent wiring or accepted RC.
+
+New workflow tx-pre-nx1-physical-cloud.yml runs pinned native560-rule DRC, strict54-device deep/flat LVS, wrongfinger/missingHBT/wireopen/railshort/offgrid controls and preserves any failure. No deck waiver, ideal device, previous RC substitution or fullPHY claim. New layout/top nssoc_tx_mux2_cascade158_nx1_layout_v1 must pass before assembling28instances with the two fastcells and final cell. Baseline --prestage-nx8 behavior remains available. Cloud-only, localworkspaceempty. Live full32 high8 sourceb40b3ef/run38996028457, mappedboot38994926932, PLL38982797234 remain running; no restart.
+
+---
+
 ## Targeted full32 fast-stage trial running (2026-10-17)
 
 Source b40b3ef7077d40ffaf5254dd460abd825dfcdfba; run38996028457 tx-tree32-high8-cloud. Native controls compiled successfully; nominal and actual deepest-selector-fault jobs confirmed live. Do not duplicate/restart. Source-defined budget_high8 uses original Nx8 fast a/b,28Nx1 low-rate cells, unchanged final;899tree emitters/lane. No result accepted pending native evidence.
