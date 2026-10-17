@@ -1,3 +1,17 @@
+## Exact CORRPRE + PCIe + system/Ethernet MBIST mapped boot qualification started (2026-10-17)
+
+PROGRESS. New source471a966524f68c18b9801488bfc512bee2dc2de0 adds explicit mapped MBIST qualification rather than inferring MBIST from an environment variable. Workflow corrpre-pcie-mbist-native-boot-cloud.yml run38994926932. Latest jobs: [{"id": 117285277667, "name": "controls", "status": "completed", "conclusion": "success"}, {"id": 117285636114, "name": "native-boot (full)", "status": "in_progress", "conclusion": null}]. Native boot may queue behind existing jobs; never restart it just because it is queued or long-running.
+
+Controls117285277667 PASSED:31pytest checks and actual Icarus observer simulation(1positive+9negative). Artifact12086314127 mapped-mbist-monitor-controls,ZIP6289bytes SHA08825ce12552991d437b051a62a4985ac0964ae5511a25da2fd93b77765ee2ae. Actual missingbusy,unknownstatus,systemfailure,incompleteEthernetdone,busyatdone,droppedcompletion,falsedone,neverdone,lateEthernetfailure all rejected withnonzeroexit; successexit0. No real SRAM fault-coverage claim from observer controls. Source unchanged.
+
+Implementation: sim_logic_boot_gl.py now requires --mbist-profile system-ethernet for actual10-port system/Ethernet MBIST boundary, exact widths/directions/header declarations; defaultoff rejects unexpected MBIST instead of silently ignoringit. New hw/soc/tb/mapped_mbist_boot_monitor.v is read-only testbench observer; after original32cycle reset settling it requires known statuses, observedbusy, clean system andbothEthernet completion, no failflags or completiondrop. ActualTBconnects physicalmappedtop ports and requires MBIST_BOOT PASS before original LOGICROM_GL PASS28checks. Nativecontroller scripts/check_soc_corrpre_pcie_mbist_native_boot.sh fixesSOC_SRAM_MBIST1/SOC_ETH_SRAM1/CORRPRE1/SYNPRE0/full/packetasync/core0:0. RTL firmware preparation stilldoesNOTenableMBIST; only mappednativeexecution isclaimed here. Old nonMBISTboot results remain separate andunchanged.
+
+Cycle bound2million instead of1million is explicitly for the actual raw March pretest:8backgrounds x8192rows x15cycles=983040 additional cycles, before original firmware allowance. Original28firmwarechecks/PCIeindependent125MHzlink-downobserver/nativePDKmodels/faultcontrols preserved. Native walllimit18000s andworkflow360min; this is a longer fullworkload, not relaxed correctness or a production timing claim. Save full successful/failedartifact permanently afterterminal. No full CORRPRE+MBIST layout trial before exact mappedboot outcome. Source files and source-bound controlreceipt: docs/evidence/corrpre-pcie-mbist-native-start-20261017.json.
+
+Prior scoped hold0 andindependentannotation remain verified (see nextentry); setup9351slow/464typical violations and1072setup/1117hold unconstrained endpoints remain open. Nativefull32 budgetstudy38993903811/sourcec34a1738... andfull1usPLL38982797234 remain live(lastcheckedinprogress); leave originals running. FullserialGen3x4/mainchip/finaltiming goalOPEN. Local NSSOCworkspace is empty andallengineeringcloud-only.
+
+---
+
 ## Scoped hold0 verified; full32 native budget study live; CORRPRE PCIe idle boot preserved (2026-10-17)
 
 PROGRESS. All engineering cloud-only, local NSSOC workspace empty. Full goal remains OPEN.
