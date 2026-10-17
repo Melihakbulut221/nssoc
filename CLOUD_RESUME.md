@@ -1,3 +1,13 @@
+## Full32 native budget candidate rejected; targeted fast-stage correction (2026-10-17)
+
+PROGRESS. Cloud-only; local workspace remains empty. Run38993903811 completed: baseline native schematic passed 768 original-bit samples (minimum279.837514mV), all604HBT/512MOS bounds. Budget755-emitter tree passed data (281.351946mV) but FAILED32HBT minimumVCE gates, all16each in xprea/xpreb; minimum372.533256mV vs unchanged400mV limit. No MOS failures or solver diagnostics. Actual swapped deepest selector produced27wrong output samples and was rejected. Green workflow indicates completed study, not accepted device. Original physical4427-emitter rejection remains.
+
+New variant budget_high8 preserves28Nx1 lower-rate stages and restores exact original19HBT/eight-resistor Nx8 cell in two fast stages a/b. Tree899emitters/lane,3596four-lane tree only; wholechip budget not established. Original256bits/34ns/.3,.5,.7UI/all604HBT512MOS/zeroOP/solver gates unchanged. New workflow tx-tree32-high8-cloud.yml starts nominal plus actual deepest-selector fault; source and results must be checked before physical implementation. No GDS, physical intermacroRC, raw100frontend, physicalclock, PVT or fullPHY proof from this schematic. Exact completed summaries/parts/raw hashes and failure measurements: docs/evidence/tx-tree32-budget-rejected-high8-successor-20261017.json.
+
+Mapped CORRPRE+PCIe+system/EthernetMBIST38994926932 and physicalPLL1us38982797234 remain confirmed live; do not restart. FullserialPHY/mainchip/finaltiming goalOPEN.
+
+---
+
 ## Exact CORRPRE + PCIe + system/Ethernet MBIST mapped boot qualification started (2026-10-17)
 
 PROGRESS. New source471a966524f68c18b9801488bfc512bee2dc2de0 adds explicit mapped MBIST qualification rather than inferring MBIST from an environment variable. Workflow corrpre-pcie-mbist-native-boot-cloud.yml run38994926932. Latest jobs: [{"id": 117285277667, "name": "controls", "status": "completed", "conclusion": "success"}, {"id": 117285636114, "name": "native-boot (full)", "status": "in_progress", "conclusion": null}]. Native boot may queue behind existing jobs; never restart it just because it is queued or long-running.
