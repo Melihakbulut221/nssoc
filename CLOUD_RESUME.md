@@ -1,3 +1,11 @@
+## Full physical PLL half-step acquisition campaign (2026-10-17)
+
+New pll-c8-half-native-acquisition-cloud starts separatecontinuous1us on exactC8physical845parent3d2dfdd6/all8660wires. ONLY `.tran` step/maxstep .3125ps->.15625ps. Reversingthatline MUST recover actualoriginalcoarsedeckSHA1817d6ee byte-for-byte, plus existingnativegraph/HBTbindingchecks. Original100ppm/50ps/no-slip/control gates/bothfinal100nswindows/34probes/102OFF/zeroOP/tolerances unchanged. Fouractualdeckfaults mustreject. Actualfullcapture requires>6Mrows/maxstep.15625ps.
+
+Nativeprocesscheckpoint/restore and unchangedprefix/singleentrypoint machinery retained, independent group/root/controller hash; oldcoarsefailedrun and clampedquarterwave preserved. Initial4hourstage checkpoints beforehostdeadline and continuationjob resumesactualprocess; ifpendingagain retainpublisheddescriptor andresumeexactcontroller, nevercoldrestart. Native controls mustpassbeforeinitialstarts. This is numericalrefinementofclosedloopmeasurement, not automaticPLL/PHYacceptance.
+
+Residueprotocol39041981763 and correctedproof39042052313 completedSUCCESS; nativeboot39041981816 stillrunning. Handoff39042752404 waitsthenvalidatesandplacesnewcandidate. XORload-v3schematic39042934992 queued; nofreshgeometryyet. Mainclock200GRT39041556309 and TXreturn64wire39030593206 remainlive. Allcloud/localempty/fullgoalOPEN.
+
 ## XOR load-v3 native design campaign after measured physical rejection (2026-10-17)
 
 Fresh cdr-xor-load-v3-cloud changes ONLY2outputloadlengths1.4->1.8um, width18um unchanged, versus load-v2. Actualv2fullwire failednominal98.75mV/cold85.90mV whileall19HBTscreens passed. Largerload is a hypothesis for signalmargin; native4cases retain original768sample/100mV/19device/.3125ps/34ns/zeroOP/OFF/diagnostic gates. Nativecontroller SHA3ec870fa unchanged. V3canonicalcore/wrapper/layout-input added; NOv3GDS/RC acceptance. Afteractualschematicpass requirefreshnativegeometry/560DRC/54LVS/physicalfaults/crossedparent/fullRC/composition/loadedwaves. Never reuse orscalev2RC foracceptance.
