@@ -38,7 +38,7 @@ jobs:
         run: |
           python3 scripts/check_cloud_routed_shapes.py --controls-only
           python3 scripts/check_cloud_signal_contacts.py --controls-only
-      - name: Audit actual old routes against the new delay cell pins and all physical contacts
+      - name: Retain actual power pin differences before strict native acceptance
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/review_ethernet_preserved_route.py
