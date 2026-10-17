@@ -1,3 +1,15 @@
+## Fresh v3 full-wire model composed; original four native waveform cases started
+
+Composition39045601181/sourceb3e904d2 passed all54native-device bindings, allfresh4020R/2641C attachments and six actual composition controls. New physical modelSHA4186649aeb8f1cced89bd62b3fba2b7bf1d6e7ee7cccc3b37ad5252d165f71b7 is now passed to the frozen original XOR controller with the same previously audited native54/port adapterSHA d30ebc0bcb4ded90050b9f07e78a4a69eb0bcc60e9ed0ccbd584237aa046860a. Only the new model/paths and top name change. 34ns/256symbols/768sample checks,100mV margin, original nominal/hot/cold supplies and temperatures,19HBT voltage/current bounds, zero-sourceOP/19native HBT OFF flags, and actual output-swap negative control remain unchanged. This is a component test, not recovered-clock/fullPHY acceptance.
+
+The new controller fixes a reporting defect inherited fromv2: failed model preparation no longer reports model_has_native54_devices=true. Actual native preparation must pass before that field is set. No waveform acceptance gates were changed.
+
+Regional routing39045601192 is running. Its region rectangles cover two adjacent7.2um grid columns at each measured x hotspot, plus14.4um halo each side; both share y1692..2174.4um. Actual geometry inspection and conservative extra positive Metal5 resource reduction are documented in docs/cdr-v3-rc-regional-routing-20261017.md. No improved routing or timing is claimed before native results.
+
+Still active: exact native boot39041981816, its placement handoff39042752404, PLL full1us halfstep39043210978, TXreturn64fullwire39030593206. No cold restarts or duplicate jobs. All work and evidence remain inGitHub; local workspace remains empty.
+
+---
+
 # Fresh v3 RC and conservative congestion-column trial
 
 Fresh v3 native RC39045292467 passed all13actual corruption controls with4020R/2641C and exact native resistor/capacitor values and attachment accounting. These counts happen to equalv2; the actual new geometry and newly extracted values are separately hash-bound, not reused. Composition now binds this exact new network to54native devices and repeats all six composition controls before any loaded waveform acceptance.
