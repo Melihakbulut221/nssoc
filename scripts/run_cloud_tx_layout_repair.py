@@ -38,7 +38,9 @@ def main():
     parser.add_argument("--boundary-policy", choices=("left", "nearest_pair", "nearest_pair_tight"), default="left", help="Select actual left/right pin metal access while keeping each differential pair on one side")
     parser.add_argument('--prestage-nx', type=int, choices=(1,3,8), default=8,
                         help='Actual Nx1/Nx3 cell from the full32 native sizing study; requires new physical proof')
+    parser.add_argument('--prestage-headroom-trim',action='store_true',help='Use the exact fixedgeometry three-corner full32 headroom candidate; fresh physical proof required')
     args = parser.parse_args()
+    assert not args.prestage_headroom_trim or args.prestage_nx in (1,3)
     if args.prestage_nx != 8:
         assert os.environ.get('GITHUB_ACTIONS') == 'true'
         assert args.circuit_profile == 'cascade158'
@@ -159,15 +161,37 @@ def main():
                 expected = hashlib.sha256(candidate.encode()).hexdigest()
                 assert expected == {1:'af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd',
                                     3:'3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d'}[args.prestage_nx]
+                if args.prestage_headroom_trim:
+                    from cloud_tx_tree32_budget import trim_dividers
+                    candidate,sizing['divider_trim']=trim_dividers(candidate,args.prestage_nx)
+                    expected=hashlib.sha256(candidate.encode()).hexdigest()
+                    evidence=json.loads((ROOT/'docs/evidence/tx-tree32-headroom-fixed-pvt-pass-20261017.json').read_text())
+                    assert evidence['status']=='FIXED_GEOMETRY_NOMINAL_HOT_COLD_AND_ACTUAL_FAULT_PASSED_NOT_PHYSICAL_ACCEPTANCE'
+                    proofs=[]
+                    assert len(evidence['cases'])==4
+                    for case in evidence['cases']:
+                        assert case['run']==39005251402 and case['source_head']=='ad92399dccc8a4b58ee8afc83cbc4bc0df64c061'
+                        target=out/('trim-native-'+case['group']+'.json')
+                        fetch(case['summary_url'],case['summary_sha256'],target)
+                        proof=json.loads(target.read_text())
+                        assert proof['source_head']==case['source_head'] and proof['variant']=='budget_high3_trim'and proof['source_unchanged']
+                        assert proof['outputs']['pre-nx'+str(args.prestage_nx)+'.spice']==expected and not proof['diagnostics']
+                        if proof['fault']=='none':
+                            assert proof['schematic_screen_passed']and proof['review']['all_engineering_gates_passed']
+                            assert not proof['review']['failed_hbts']and not proof['review']['failed_mos']
+                        else:assert proof['fault']=='swap_leaf_select'and proof['actual_leaf_fault_rejected_by_original_bits']and not proof['review']['signals']['passed']
+                        proofs.append(dict(condition=proof['condition'],fault=proof['fault'],summary_sha256=case['summary_sha256']))
+                    assert {(p['condition'],p['fault'])for p in proofs}=={('nominal','none'),('hot_low','none'),('cold_high','none'),('nominal','swap_leaf_select')}
+                    sizing['fixed_headroom_native_proofs']=proofs
                 circuit = out / ('pre-nx'+str(args.prestage_nx)+'.spice')
                 circuit.write_text(candidate)
-                top = 'nssoc_tx_mux2_cascade158_nx'+str(args.prestage_nx)+'_layout_v1'
+                top = 'nssoc_tx_mux2_cascade158_nx'+str(args.prestage_nx)+('_trim_layout_v1'if args.prestage_headroom_trim else'_layout_v1')
                 result['prestage_sizing'] = dict(sizing,
                     original_source=str(original_circuit.relative_to(ROOT)),
                     original_sha256=sha(original_circuit),candidate_sha256=expected,
-                    native_schematic_evidence_run=38993903811 if args.prestage_nx==1 else 38999900875,
-                    evidence_scope='Original Nx1 low-stage evidence or full32 Nx3 nominal plus actual leaf-selector fault. New physical/PVT/RC evidence remains mandatory.')
-                if args.prestage_nx==3:
+                    native_schematic_evidence_run=39005251402 if args.prestage_headroom_trim else 38993903811 if args.prestage_nx==1 else 38999900875,
+                    evidence_scope='Exact fixedgeometry full32 nominal/hot/cold plus actual selector fault' if args.prestage_headroom_trim else 'Original untrimmed sizing; physical/PVT/RC still required.')
+                if args.prestage_nx==3 and not args.prestage_headroom_trim:
                     from route_cloud_newer_postcts import fetch as fetch_sizing
                     proofs={}
                     for fault,digest in [('none','47fbd49a50222e53392edaa8aab9aa0423724c9a3992e397b735c8db9011e283'),

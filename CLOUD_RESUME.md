@@ -1,3 +1,9 @@
+## Actual headroom-trim macro layouts launched (2026-10-17)
+
+New tx-pre-headroom-physical-cloud matrix nx1/nx3 generates real PCells/metal for the exact native threecorner passed sizing. It restores all4 original39005251402 summaries and checks each generated schematic SHA against everynativecase before geometry. Only XFPR/XFNR L31.6->30um(Nx1),15.8->15.4um(Nx3), same widths and allotherrecords. Each54device macro still mustpass560DRC,deep/flatLVS and5actualfaults. Newtops nssoc_tx_mux2_cascade158_nx1_trim_layout_v1/nx3_trim_layout_v1. Originaluntrimmedflowdefaults and failedPVT preserved. Next consume actual macro results, assemble31macro trimmedparent, freshRC/composition/nativewave using clockstiff625; neverreuseuntrimmedRC asnewgeometryproof.
+
+Liveverified: C8full1us39007535633 nativeinitial, CORRPREMBISTplacement39007378877, untrimmedNx3wire39004595306. No restart. Allcloud; localworkspaceempty; goalOPEN.
+
 ## C8 actual845 model passed; original full1us native acquisition launched (2026-10-17)
 
 C8fullcompose39007233693 passed exact full845native graph,8660wire records,17ports,6graph+9component corruptions. Both correcteddividers and815otherdevices retained, actualC8pump30devices/fresh84R155C and freshparent98R242C. ModelSHA3d2dfdd6d27a05fc5d911461c84471b1e05f62e976b7ae31de9d01595a503b60; receipt pll-c8-v2-full-compose-pass-20261017.json.
