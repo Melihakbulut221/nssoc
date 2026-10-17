@@ -1,3 +1,9 @@
+## Trimmed full32 freshRC passed; native device/RC composition launched (2026-10-17)
+
+39009418149/source8e6e0097 passed fresh actualtrimmedGDS extraction with1674devices/4774terminals/377metalcomponents/162ports/3262probes. Actual114819R/76351C, allnativeR edges/values, pointground/mutual C attachments and142884collapsedmatrix entries conserved;13actualrawfaults rejected. Full19412192byte archive SHAdcd0916ead62de2eab6ce643b4cbd532e82568076cd9e9b054cd3fc70548ef56 and nativeaudit sourcehashes verifiedinRAM. GDS b050d756 unchanged. Receipt tx-tree32-headroom-extraction-pass-20261017.json; nooldRC reused despite sameelementcounts.
+
+New tx-tree32-headroom-composition-cloud binds exact1674native devices to thisfreshRC with sixactualmodel corruptions,377component schematic recovery and nativefinalinterface probes. Requires actual result then loadedcompact+wire/PVT and clock/frontend/fourlane/mainchip integration. Mainchip39009508522 RUNNING_NATIVE_BEFORE_REPAIR_AFTER; originalpreCADfailure preserved. Clockgeometry39009656993 all3jobs passed; actualterminal/LEF/graph summaries mustbe bound before anchors/intrinsic/RC successor. PLL39007535633 andoldwire39004595306 live. Cloudonly/localempty/fullgoalOPEN.
+
 ## Stiff625 clock physical verified; terminal/LEF/wire stages launched (2026-10-17)
 
 Clock39008055227 actual6devices passed560DRC0/deep+flatLVS/sixphysicalfaults. Complete243228byte archive and every output verified in RAM; receipt tx-clock-headroom-physical-pass-20261017.json. Added exact l6p25 source pins to existing clock geometry controllers, and independent native binding expects actual6.25um offset plus unchanged14.5um feed. New tx-clock-headroom-geometry-cloud runs terminal binding, LEF/pin checks, and actual conductor graph as separate jobs. Next anchor ownership, finite intrinsic models, fresh wireRC and exact composition before actualloadedfull32 simulation. Noold6.5um RC reused.

@@ -13,11 +13,12 @@ def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     global TOP
     parser=argparse.ArgumentParser()
-    parser.add_argument('--variant',choices=('budget_high8','budget_high3'),default='budget_high8')
+    parser.add_argument('--variant',choices=('budget_high8','budget_high3','budget_high3_trim'),default='budget_high8')
     selected=parser.parse_args().variant
-    high3=selected=='budget_high3'
+    high3=selected in ('budget_high3','budget_high3_trim')
+    trim=selected=='budget_high3_trim'
     TOP='nssoc_tx_tree32_'+selected+'_core_v1'
-    receipt_name='tx-tree32-high3-extraction-pass-20261017.json' if high3 else 'tx-tree32-budget-extraction-pass-20261017.json'
+    receipt_name='tx-tree32-headroom-extraction-pass-20261017.json' if trim else 'tx-tree32-high3-extraction-pass-20261017.json' if high3 else 'tx-tree32-budget-extraction-pass-20261017.json'
     receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
     expected_counts=dict(devices=1674,R=receipt['resistors'],C=receipt['capacitors'])
     assert expected_counts==(dict(devices=1674,R=114819,C=76351) if high3 else dict(devices=1674,R=114815,C=76347))
@@ -25,7 +26,7 @@ def main():
     assert len(PORTS)==len(set(PORTS))==162
     spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     layout=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
-    out=ROOT/'hw/soc/out'/('cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
+    out=ROOT/'hw/soc/out'/('cloud-tx-tree32-headroom-assembly' if trim else 'cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-composition-input.tar.gz'
