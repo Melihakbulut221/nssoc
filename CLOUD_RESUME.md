@@ -1,3 +1,13 @@
+## Nx3 physical cell passed; actual full32 parent assembly launched (2026-10-17)
+
+PROGRESS. Nx3cell39002064010/sourceaf9d24ce2a7f0b2f8532285b0176dd0aa4e0ff15 PASS native560DRC0/deep+flat54=54oneMatch/noextractiondiagnostics/5actualfaultsrejected. Cell353.985x387.24um/12ports/55emitters. GDSb61f877f5fa7d09e702dfb302c9d3d4515a4f7b988d947783f629eabf4445c80, LEFdbdb5b262a1e8c6504abe2df9ca05d437c01b8d235aafe58cd859901e63eb088, schematic08bea3ab5112c15bac3fb1a69611ac2ec396ef1e519673b2b5a39913b54326e0. Receipt docs/evidence/tx-pre-nx3-physical-input-20261017.json pins summary649521898/parts649521988/archive649522099(473409bytes). source_head comes from verifiedGitHubrunmetadata, not nonexistentphysical-summaryfield; earlierRAMpreparationKeyError madeNOremotechange. NoRC/PVT acceptanceinferred.
+
+New tx-tree32-high3-physical workflow invokes cloud_tx_tree32_assembly.py --variant budget_high3. Restoreexactpassed28Nx1+2Nx3+final77cellGDS, preservechilddrawingregions, regenerateactual60intermacrolegs/sharedsupply/body/162ports. Topnssoc_tx_tree32_budget_high3_core_v1, outputcloud-tx-tree32-high3-assembly, expected589HBT/719emitters/1674devices, fourtree2876excludesotherblocks. Originalbaseline/high8recipes preserved. Same560DRC/deep+flat1674LVS/allactualfaults, no waiver. Recordrun/result beforefreshfullparentRC/composition/transients.
+
+PVT39002430107/sourceea34013259eafa89a3191e2d4a54c517d248bfb4 confirmedlive: fixedhot_low/cold_high nativefull32, nocornerretuning. Strictclockcensus39001834734 PASS135264rows/min0/max9351 summary649516563 SHAee221be225cda54ee219ffec8cfd41c69ac2a9ff9371a2b17dab1f9b0a9b1b01;parts649516638/archive649516720. PLL/MBISTliveatlastcheck/localempty/cloudonly/goalOPEN.
+
+---
+
 ## Full32 Nx3 fixed-geometry PVT study launched (2026-10-17)
 
 PROGRESS. NativephysicalNx3cell39002064010/job117306896791 confirmedrunning generation/54deviceDRC/LVS. Added only explicit --condition toexistingfull32sizingcontroller, nominaldefault/outputpaths unchanged. Nonnominal restrictedto budget_high3/no-fault, geometryand sourcebit timing/604HBT512MOS probes/34ns/256bits/.3/.5/.7UI/limits retained. New tx-tree32-high3-pvt workflow runs hot_low(125C,rails95%,MOSss,HBTwcs,RESwcs) andcold_high(-40C,rails105%,MOSff,HBTbcs,RESbcs). Same fixed19Nx3fastcells/8Rgeometry andallbiascircuits; onlyexistingconditiontable drivesPDKcorners/rails/temp. These are two combined corners, NOTcompleteindependent-process/PVT/refinement/RC qualification. Fresh PVTmayreject3.957mVnominalheadroom; preservefailures/no per-cornerretuning. Recordactualrun/resultsnext.

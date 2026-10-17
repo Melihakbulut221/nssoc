@@ -1,0 +1,1330 @@
+{
+  "source_run": 39002064010,
+  "source_head": "af9d24ce2a7f0b2f8532285b0176dd0aa4e0ff15",
+  "source_head_provenance": "GitHub run metadata; physical summary does not contain a source_head field",
+  "summary_asset": 649521898,
+  "summary_sha256": "373c00204aba9537da4f2f521aa1d603b9f3d86cffc57a0798d47dfd14940e79",
+  "parts_asset": 649521988,
+  "parts_sha256": "5233e887f8768cb64f50211bbf637cc6bb1c21ea078b13e302028e0b0975a674",
+  "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-39002064010-1-tx-pre-nx3-physical/tx-pre-nx3-physical-39002064010-1.tar.gz.part0000",
+  "bytes": 473409,
+  "sha256": "060e0ff4c18bc340b87baa0b687f2110b9ae3c32b37b417b1d0e023a4cdc121c",
+  "archive_prefix": "cloud-tx-layout-repair/",
+  "variant": "critical_buses_kelvin_supply_direct",
+  "circuit_profile": "cascade158",
+  "generated_outputs": {
+    "nssoc_tx_mux2_cascade158_nx3_layout_v1.lef": "dbdb5b262a1e8c6504abe2df9ca05d437c01b8d235aafe58cd859901e63eb088",
+    "schematic.cir": "08bea3ab5112c15bac3fb1a69611ac2ec396ef1e519673b2b5a39913b54326e0",
+    "nssoc_tx_mux2_cascade158_nx3_layout_v1.gds": "b61f877f5fa7d09e702dfb302c9d3d4515a4f7b988d947783f629eabf4445c80"
+  },
+  "physical": {
+    "status": "PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS",
+    "steps": {
+      "drc": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_cascade158_nx3_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/drc/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/drc/drc.lyrdb",
+            "-rd",
+            "threads=2",
+            "-rd",
+            "no_recommended=False",
+            "-rd",
+            "precheck_drc=False"
+          ],
+          "returncode": 0,
+          "seconds": 5.245923155000014,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "0057700ebe27092633e79246e0c6d8846fe27fecb408246de4de86d0bb9221ea"
+        },
+        "measurement": {
+          "status": "PASS",
+          "process_returncode": 0,
+          "markers": 0,
+          "categories": {},
+          "category_count": 560,
+          "report_sha256": "b351732f41311a78129498091b0ff8fec4928b0c9d5db988c523ac6ac8953822",
+          "log_sha256": "0057700ebe27092633e79246e0c6d8846fe27fecb408246de4de86d0bb9221ea"
+        },
+        "status": "PASS"
+      },
+      "lvs": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_cascade158_nx3_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 3.8365416460000006,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "756c8272eee8fc8ee7517466c36280e1f80073e556b08aa6f1557ab461268fe6"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/audit.json"
+          ],
+          "returncode": 0,
+          "seconds": 0.7560687580000263,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+        },
+        "audit": {
+          "status": "PASS within comparison scope",
+          "top": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+          "reasons": [],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "Match": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_CASCADE158_NX3_LAYOUT_V1",
+              "status": "Match",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+              "bytes": 361618,
+              "sha256": "c553b7bf6bc0bf6cfd5ee1d092ef3f533c895764108eb69ffff22c29568374f2"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+              "bytes": 37167,
+              "sha256": "3ca69feb84bd575b3e5b6763cb2a8ddf08108af447f7ef39cf1bee52c33270d7"
+            }
+          }
+        },
+        "status": "PASS"
+      },
+      "lvs_flat": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_cascade158_nx3_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/deck.log",
+            "-rd",
+            "run_mode=flat",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 3.8075175459999855,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "469e9902107d05b0d538f67fd93c958c4c010e1409f3074f15782a13a082845d"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/audit.json"
+          ],
+          "returncode": 0,
+          "seconds": 0.7762186230000339,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+        },
+        "audit": {
+          "status": "PASS within comparison scope",
+          "top": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+          "reasons": [],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "Match": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_CASCADE158_NX3_LAYOUT_V1",
+              "status": "Match",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/result.lvsdb": {
+              "bytes": 335228,
+              "sha256": "b766c9e15e72561a314e95e4f3253683b19a65a7f39cbc1649edb214595fc022"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs_flat/deck.log": {
+              "bytes": 37169,
+              "sha256": "4aeebc1582a0a11bd1313fb516a55c37637dbb10960e90b7e9f3dea164ce64f2"
+            }
+          }
+        },
+        "status": "PASS"
+      },
+      "wrong_finger_count": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_cascade158_nx3_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/fault.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 3.928491013999974,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "40a410ea005ca5775fb6247c9beb5fc7ab95780715a3bc3490596e2903589c97"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/audit.json"
+          ],
+          "returncode": 1,
+          "seconds": 0.7783195670000396,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+        },
+        "audit": {
+          "status": "FAIL",
+          "top": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+          "reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "NoMatch": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_CASCADE158_NX3_LAYOUT_V1",
+              "status": "NoMatch",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/result.lvsdb": {
+              "bytes": 361618,
+              "sha256": "544f74e90679025cda76e8ec22f47d39120004a05f10882d0f9dfd3e49d1cdb8"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/wrong_finger_count/deck.log": {
+              "bytes": 37203,
+              "sha256": "a9e192dccb73b3023ab931085a0a59e1169845ad53d861bb3f8cdd53548a90ef"
+            }
+          }
+        },
+        "status": "REJECTED_EXPECTED_FAULT"
+      },
+      "missing_hbt": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_cascade158_nx3_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/fault.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 3.8583820570000285,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "39103a79533c6355f4dfb621916344f1ce10927a21db11094404394840a23259"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/audit.json"
+          ],
+          "returncode": 1,
+          "seconds": 0.7875820490000365,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+        },
+        "audit": {
+          "status": "FAIL",
+          "top": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+          "reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "NoMatch": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_CASCADE158_NX3_LAYOUT_V1",
+              "status": "NoMatch",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 53
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/result.lvsdb": {
+              "bytes": 361502,
+              "sha256": "051ba7c38a63f937e22b86b2f626a468a06064feede8aaa5a02c9a9780752184"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/missing_hbt/deck.log": {
+              "bytes": 37182,
+              "sha256": "2da00acd4d362a08d1f5de979d30b4a8e9f6dd60df2ec03d613ecea2024508f1"
+            }
+          }
+        },
+        "status": "REJECTED_EXPECTED_FAULT"
+      },
+      "q_open": {
+        "mutation": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/fault.py"
+          ],
+          "returncode": 0,
+          "seconds": 2.1050328940000327,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/fault.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 3.8498695739999675,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "7b15905aa4c3cd775d51f9eb2299479e1b051c2fa011efc0d0db97c06add3e19"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/audit.json"
+          ],
+          "returncode": 1,
+          "seconds": 0.7645571660000314,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+        },
+        "audit": {
+          "status": "FAIL",
+          "top": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+          "reasons": [
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "Match": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_CASCADE158_NX3_LAYOUT_V1",
+              "status": "Match",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/result.lvsdb": {
+              "bytes": 361243,
+              "sha256": "4b60c1e5b855b492ef39241bec057e747ff8dc680adaa4f8ade7e3c0545b35d9"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/q_open/deck.log": {
+              "bytes": 37138,
+              "sha256": "27a32422dad8d5bf3e64be1a45b9e729ca84128e5243cb8acba6cb87f3593848"
+            }
+          }
+        },
+        "status": "REJECTED_EXPECTED_FAULT"
+      },
+      "rail_short": {
+        "mutation": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/fault.py"
+          ],
+          "returncode": 0,
+          "seconds": 2.073221554999975,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/fault.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 3.8467327710000063,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "8f7bf02d0cc41e89dcf7df69a281c01827dbdf5b5acf5f0c991921b49282d91e"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/audit.json"
+          ],
+          "returncode": 1,
+          "seconds": 0.7779266709999888,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+        },
+        "audit": {
+          "status": "FAIL",
+          "top": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+          "reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "NoMatch": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_cascade158_nx3_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_CASCADE158_NX3_LAYOUT_V1",
+              "status": "NoMatch",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/result.lvsdb": {
+              "bytes": 361909,
+              "sha256": "6088d4e0a3f95b513fec1c4f818e13a55cda8f446c13d1892606b77aed6a700e"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/rail_short/deck.log": {
+              "bytes": 37150,
+              "sha256": "d03534e12b1b7ccd1201ec48a26badf39387bc02c4a0e233eb8713737ce6896e"
+            }
+          }
+        },
+        "status": "REJECTED_EXPECTED_FAULT"
+      },
+      "offgrid": {
+        "mutation": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/offgrid/fault.py"
+          ],
+          "returncode": 0,
+          "seconds": 2.0740563720000296,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/offgrid/fault.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_cascade158_nx3_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/offgrid/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/offgrid/drc.lyrdb",
+            "-rd",
+            "threads=2",
+            "-rd",
+            "no_recommended=False",
+            "-rd",
+            "precheck_drc=False"
+          ],
+          "returncode": 0,
+          "seconds": 5.442554651999956,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "11e5f9bf35640acebe7a7a8ab88439d1fdf2d1d6843262ff9420ff46d1e7d884"
+        },
+        "measurement": {
+          "status": "FAIL",
+          "process_returncode": 0,
+          "markers": 3780,
+          "categories": {
+            "activ_drw_Offgrid": 28,
+            "activ_mask_Offgrid": 24,
+            "cont_drw_Offgrid": 164,
+            "emwind_drw_Offgrid": 16,
+            "extblock_drw_Offgrid": 48,
+            "gatpoly_drw_Offgrid": 32,
+            "metal1_drw_Offgrid": 516,
+            "metal2_drw_Offgrid": 96,
+            "metal3_drw_Offgrid": 1184,
+            "metal4_drw_Offgrid": 12,
+            "metal5_drw_Offgrid": 54,
+            "nsd_block_Offgrid": 34,
+            "polyres_drw_Offgrid": 16,
+            "psd_drw_Offgrid": 36,
+            "salblock_drw_Offgrid": 16,
+            "substrate_drw_Offgrid": 4,
+            "topmetal1_drw_Offgrid": 508,
+            "topmetal2_drw_Offgrid": 76,
+            "topvia1_drw_Offgrid": 16,
+            "topvia2_drw_Offgrid": 4,
+            "via1_drw_Offgrid": 176,
+            "via2_drw_Offgrid": 368,
+            "via3_drw_Offgrid": 176,
+            "via4_drw_Offgrid": 176
+          },
+          "category_count": 560,
+          "report_sha256": "feef4c71f2e355cddf757b97d4709555dbd921521a391949c225ab2844668e8a",
+          "log_sha256": "11e5f9bf35640acebe7a7a8ab88439d1fdf2d1d6843262ff9420ff46d1e7d884"
+        },
+        "status": "REJECTED_EXPECTED_FAULT"
+      }
+    },
+    "serial_phy_complete": false,
+    "main_chip_integrated": false,
+    "qualified_pex": false
+  },
+  "prestage_sizing": {
+    "nx": 3,
+    "emitters": 55,
+    "resistance_ratio": "2.666666666666666666666666667",
+    "changes": [
+      {
+        "before": [
+          ".subckt",
+          "nssoc_tx_mux2_hbt_cascade_v4",
+          "ap",
+          "an",
+          "bp",
+          "bn",
+          "sp",
+          "sn",
+          "op",
+          "on",
+          "avdd",
+          "avss",
+          "sub",
+          "iref"
+        ],
+        "after": [
+          ".subckt",
+          "nssoc_tx_mux2_budget_nx3_v1",
+          "ap",
+          "an",
+          "bp",
+          "bn",
+          "sp",
+          "sn",
+          "op",
+          "on",
+          "avdd",
+          "avss",
+          "sub",
+          "iref"
+        ]
+      },
+      {
+        "before": [
+          "XAP_0",
+          "qn",
+          "ap",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XAP_0",
+          "qn",
+          "ap",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XAP_1",
+          "qn",
+          "ap",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XAP_1",
+          "qn",
+          "ap",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XAP_2",
+          "qn",
+          "ap",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XAP_2",
+          "qn",
+          "ap",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XAN_0",
+          "qp",
+          "an",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XAN_0",
+          "qp",
+          "an",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XAN_1",
+          "qp",
+          "an",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XAN_1",
+          "qp",
+          "an",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XAN_2",
+          "qp",
+          "an",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XAN_2",
+          "qp",
+          "an",
+          "ea",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XBP_0",
+          "qn",
+          "bp",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XBP_0",
+          "qn",
+          "bp",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XBP_1",
+          "qn",
+          "bp",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XBP_1",
+          "qn",
+          "bp",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XBP_2",
+          "qn",
+          "bp",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XBP_2",
+          "qn",
+          "bp",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XBN_0",
+          "qp",
+          "bn",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XBN_0",
+          "qp",
+          "bn",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XBN_1",
+          "qp",
+          "bn",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XBN_1",
+          "qp",
+          "bn",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XBN_2",
+          "qp",
+          "bn",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XBN_2",
+          "qp",
+          "bn",
+          "eb",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XSA_0",
+          "ea",
+          "sp",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XSA_0",
+          "ea",
+          "sp",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XSA_1",
+          "ea",
+          "sp",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XSA_1",
+          "ea",
+          "sp",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XSB_0",
+          "eb",
+          "sn",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XSB_0",
+          "eb",
+          "sn",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XSB_1",
+          "eb",
+          "sn",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XSB_1",
+          "eb",
+          "sn",
+          "tail",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XT_0",
+          "tail",
+          "iref",
+          "avss",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XT_0",
+          "tail",
+          "iref",
+          "avss",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XT_1",
+          "tail",
+          "iref",
+          "avss",
+          "sub",
+          "npn13G2",
+          "Nx=8"
+        ],
+        "after": [
+          "XT_1",
+          "tail",
+          "iref",
+          "avss",
+          "sub",
+          "npn13G2",
+          "Nx=3"
+        ]
+      },
+      {
+        "before": [
+          "XRP",
+          "avdd",
+          "qp",
+          "sub",
+          "rppd",
+          "w=8u",
+          "l=1.1u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XRP",
+          "avdd",
+          "qp",
+          "sub",
+          "rppd",
+          "w=3u",
+          "l=1.1u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XRN",
+          "avdd",
+          "qn",
+          "sub",
+          "rppd",
+          "w=8u",
+          "l=1.1u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XRN",
+          "avdd",
+          "qn",
+          "sub",
+          "rppd",
+          "w=3u",
+          "l=1.1u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XBA",
+          "ea",
+          "avss",
+          "sub",
+          "rppd",
+          "w=1u",
+          "l=38.4u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XBA",
+          "ea",
+          "avss",
+          "sub",
+          "rppd",
+          "w=1u",
+          "l=102.4u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XBB",
+          "eb",
+          "avss",
+          "sub",
+          "rppd",
+          "w=1u",
+          "l=38.4u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XBB",
+          "eb",
+          "avss",
+          "sub",
+          "rppd",
+          "w=1u",
+          "l=102.4u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XFPR",
+          "op",
+          "avss",
+          "sub",
+          "rppd",
+          "w=4u",
+          "l=15.8u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XFPR",
+          "op",
+          "avss",
+          "sub",
+          "rppd",
+          "w=1.5u",
+          "l=15.8u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XFNR",
+          "on",
+          "avss",
+          "sub",
+          "rppd",
+          "w=4u",
+          "l=15.8u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XFNR",
+          "on",
+          "avss",
+          "sub",
+          "rppd",
+          "w=1.5u",
+          "l=15.8u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XSP",
+          "qp",
+          "op",
+          "sub",
+          "rppd",
+          "w=4u",
+          "l=1.8u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XSP",
+          "qp",
+          "op",
+          "sub",
+          "rppd",
+          "w=1.5u",
+          "l=1.8u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          "XSN",
+          "qn",
+          "on",
+          "sub",
+          "rppd",
+          "w=4u",
+          "l=1.8u",
+          "b=0",
+          "sw_et=1"
+        ],
+        "after": [
+          "XSN",
+          "qn",
+          "on",
+          "sub",
+          "rppd",
+          "w=1.5u",
+          "l=1.8u",
+          "b=0",
+          "sw_et=1"
+        ]
+      },
+      {
+        "before": [
+          ".ends",
+          "nssoc_tx_mux2_hbt_cascade_v4"
+        ],
+        "after": [
+          ".ends",
+          "nssoc_tx_mux2_budget_nx3_v1"
+        ]
+      }
+    ],
+    "actual_parameter_faults_rejected": [
+      "reference_area",
+      "tail_area",
+      "load_geometry",
+      "data_terminal"
+    ],
+    "compact_parasitics_recomputed_by_native_model": true,
+    "physical_layout_matches": false,
+    "original_source": "hw/soc/analog/pcie/tx_mux2_hbt_cascade_v4.spice",
+    "original_sha256": "c24851159489e6947989738bc6859e6731326b77ca9e17acaac9f6bd2d7b1495",
+    "candidate_sha256": "3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d",
+    "native_schematic_evidence_run": 38999900875,
+    "evidence_scope": "Original Nx1 low-stage evidence or full32 Nx3 nominal plus actual leaf-selector fault. New physical/PVT/RC evidence remains mandatory.",
+    "native_schematic_receipts": {
+      "none": {
+        "summary_sha256": "47fbd49a50222e53392edaa8aab9aa0423724c9a3992e397b735c8db9011e283",
+        "source_run": 38999900875
+      },
+      "swap_leaf_select": {
+        "summary_sha256": "60b3a68f30cf883685f7734be60864a13587a083653a6d6af8332413404229f5",
+        "source_run": 38999900875
+      }
+    }
+  },
+  "bbox_um": "(0,0;353.985,387.24)",
+  "accepted": false,
+  "qualified_pex": false,
+  "full_serial_phy_complete": false
+}
