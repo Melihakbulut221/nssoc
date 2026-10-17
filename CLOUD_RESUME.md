@@ -1,3 +1,13 @@
+## Latest: real sampler right-edge routing corrected; first parent failure preserved
+
+Checked 2026-10-17T21:12:24.277854+00:00. Parent39069553921/source14604c4c07cdb75a7c304a9db1200e18d0e5f8b6 completedFAILURE after all8childproofs restored, BEFOREparentDRC/LVS. Cause: real samplerQP/QN are rightedgeMetal5 x878..880um, initially only rightTopMetal2 accepted. New generator explicitly supports ONLY samplerQP/QN Metal5 and XOR ep/en/iref TopMetal2 on verifiedbboxedge, withnativeoutsidevia stacks. Also fixes x=-1.6publicwireoverhang; exactzeroorigin, no transform that would stale metadata. Failure fullreceipt docs/evidence/cdr-parent-edge-pin-failure-20261018.json. A cancellation guard saw jobstarted and aborted BEFOREanycancelrequest; run was NOTcancelled. Observe corrected successor triggered by thiscommit.
+
+Strictsampler39068644438/source83560203f039f45f8e3ccc13ad9acc49c46d476e PASS35deep-flat/560DRC/10faults/LEF. Fullreceipt cdr-sampler-unsimplified-pass-20261018.json; summary651586108 SHAc54e048bec0a36b13d397650c47ea72722d02183a944ad0fdf15e08154bf1ebd. ALL3RCfeedforward leaves39067622805 PASS12deep-flat/560DRC/5faults; cdr-feedforward-physical-pass-20261018.json. Sourceplan39069071644 PASS41cards16macros6faults. Actual parentcode is implemented: generate_cdr_retimed_parent.py/cloud_cdr_retimed_parent.py/check_pcie_cdr_retimed_parent.py/workflowcdr-retimed-parent-cloud.yml. Childspec cdr-retimed-parent-children-20261018.json binds8sources. Expected394native devices is notverified until parentpasses; nextfreshRC/fullnativePD/closed-loop remainOPEN.
+
+CLOUD ONLY, localworkspaceempty. TX39067769686 all5nativejobs in progress atlastpoll; no electricalresult yet. Mainchipboot39059432529/placement39059854681/postCTS39061293959 and PLL39043210978 remainlive atlastpoll. FullgoalOPEN. This turn PROGRESS from actualnative proofs, completeparentimplementation and diagnosed/repaired realpin mismatch.
+
+---
+
 ## Latest: sampler environment repaired with exact pinned PDK LEF
 
 Checked 2026-10-17T20:53:33.552543+00:00. Sampler39068099037/source23623b244091ac587843ee2bdfc1d3c77e7045b2 failed BEFORE nativeDRC/LVS because runtime archive omits pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef. Geometry generation passed. Complete failed summary retained in docs/evidence/cdr-sampler-missing-tech-lef-20261017.json. Controller now fetches exact IHP c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c technologyLEF SHAe3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6 (28396bytes), adds it to protected inputs and records provenance. No circuit/layout/verificationgate changed. Observe successor triggered by this commit, not the terminal predecessor. CLOUD ONLY.

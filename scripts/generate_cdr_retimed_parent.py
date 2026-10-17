@@ -108,9 +108,10 @@ def generate(out):
                 if layer==67:via(access,py,67)
                 connect(net,py,access,tag,pin)
             else:
-                assert layer==134 and abs(b.right-w)<.001, 'Only actual edge pins can use the external routing channel'
+                assert abs(b.right-w)<.001, 'Only actual edge pins can use the external routing channel'
+                assert (kind=='sampler' and pin in ('QP','QN') and layer==67) or (kind=='xor' and pin in ('ep','en','iref') and layer==134), 'Unexpected right-edge interface'
                 access=origin_x+w+12+right_count*8;ey=origin_y+h+16+right_count*8;right_count+=1
-                wire(134,(px,py),(access,py),3.2);via(access,py)
+                wire(layer,(px,py),(access,py),1.2 if layer==67 else 3.2);via(access,py,67 if layer==67 else 126)
                 wire(126,(access,py),(access,ey),3.2);via(access,ey)
                 connect(net,ey,access,tag,pin)
         rows,counts=flatten(refs[kind],TYPES[kind]['top'],tag,node['pins']);assert len(rows)==TYPES[kind]['devices']
@@ -120,7 +121,7 @@ def generate(out):
     public={}
     for index,net in enumerate(plan['ports']):
         y=1.6+index*8;bus=buses[net];x=bus['x'];extent=24 if bus['width']==64 else 0
-        wire(134,(0,y),(x+extent,y),3.2)
+        wire(134,(1.6,y),(x+extent,y),3.2)
         for vx in ([x+d for d in (-24,-16,-8,0,8,16,24)]if extent else[x]):via(vx,y)
         bus['ys'].append(y);b=pya.DBox(0,y-1.6,2.4,y+1.6)
         top.shapes(L.layer(134,2)).insert(b);top.shapes(L.layer(134,25)).insert(pya.DText(net,1.2,y));public[net]=('TopMetal2',b)
@@ -128,11 +129,7 @@ def generate(out):
         assert bus['ys'];wire(126,(bus['x'],min(bus['ys'])),(bus['x'],max(bus['ys'])),bus['width'])
     # No drawing geometry inside any child is edited during routing.
     assert all(sha(Path(p))==v for p,v in protected.items());verify(plan)
-    assert top.dbbox().left>=-1.6 and top.dbbox().bottom==0
-    # Public routing starts exactly at x=0; rectangles cannot extend to negative x.
-    if top.dbbox().left<0:
-        dx=-top.dbbox().left;top.transform(pya.Trans(round(dx/L.dbu),0))
-        public={n:(met,b.transformed(pya.DTrans(dx,0)))for n,(met,b)in public.items()}
+    assert top.dbbox().left==top.dbbox().bottom==0, 'No post-routing transform may invalidate recorded coordinates'
     dest=out/'layout';dest.mkdir()
     opt=pya.SaveLayoutOptions();opt.select_cell(top.cell_index());L.write(str(dest/(TOP+'.gds')),opt)
     (dest/'schematic.cir').write_text('* Frozen native PD source mapped to real physical leaves\n.subckt '+TOP+' '+' '.join(plan['ports'])+'\n'+'\n'.join(reference)+'\n.ends '+TOP+'\n')
