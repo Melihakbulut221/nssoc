@@ -1,3 +1,11 @@
+## Latest: complete MIM-aware native PD capture passed; strict raw audit launched
+
+Checked 2026-10-17T22:46:05.835911+00:00. Capture39075921872/sourceee2a327150d5ea44f84fe908b410c2007b0f4e14 PASS:8956actualR7660C,11explicitnativecap_cmim,111physicalcomponents776points. All11bottomMetal5accesspoints reboundoutsideMIMpaint andall776re-probedinnativeLVS/physicalwiregraph; alloriginalmetal/viasunchanged,masks exactlyactual11Pcells. EachnativeMIMw/l andorderedcomponentpairmatchesactualPDdevices;5faultsrejected. Fullreceipt docs/evidence/cdr-mim-parent-capture-pass-20261018.json summary651795307/parts651795362. RawR/Cvalues/point/matrixaudit NOTyetaccepted.
+
+New cdr-mim-parent-audit reusespreviousstrict394wireauditor withonlyexplicitintrinsicdeviceextension: validates11MIMidentities inrawsource.ext, replacement.res.ext, baselineSPICEanddistributedSPICE, includinguniquedevicelocations andexact5nm-unitw/l. KeepsallwireRmultiset/pointC/mutualC/collapsedmatrix/geometryguardsand13originalcorruptions unchanged, adds9nativeMIMcorruptions. Replacementnegativeperimetermetadata retainedverbatim; explicitPDKcapmodelusesnativew/l, notthosefields. RequireactualauditPASSbeforecomposerupdate. Thenreplaceoldwire-onlymodel withall394nativecards+fresh8956R7660C, emittingeachMIMONLYonce aftermatchednative11-deviceprojection; loadedPD thenactualVCOfeedback. CLOUDONLY; fullgoalOPEN.
+
+---
+
 ## Latest: explicit-model MIM pilot passed; full parent MIM-aware native RC capture launched
 
 Checked 2026-10-17T22:38:38.011096+00:00. Pilot39075539501/sourceef682e597f21093612c7a3a56a1e802fe06a7c8d PASS9nativecases; original6baselineC/deviceoutputs unchanged. Privateextracttech1439949ae12e2e4da21b0fcb2833b78cf10ac8ad52fa5c68889057aabb69b96c removesONLYtwoCDLestimate declarations; allothertechbytes unchanged. MIM-awarePLUS-ground withestimatevswithout:3.6um19.800699fF→0.453193fF,4.8um35.101fF→0.705464fF,40um2405.59fF→17.008301fF. RegularPLUS/MINUSC andexactnativecap_cmimw/l unchanged. Fullreceipt docs/evidence/cdr-mim-explicit-model-pilot-pass-20261018.json summary651785168/parts651785220. NotRF/fullparentqualification.
