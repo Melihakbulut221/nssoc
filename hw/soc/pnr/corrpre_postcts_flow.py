@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Fresh per-corner CTS measurements around electrical repair; no signoff claim."""
 from pathlib import Path
-from interface_flow import Interfaces
+from interface_flow import Interfaces, BoundedPostCTS
 from librelane.flows import Flow
 from librelane.steps import OpenROAD
 
@@ -77,6 +77,10 @@ def measurements(phase):
 @Flow.factory.register()
 class CorrpreElectricalTrial(Interfaces):
     Steps = measurements('Before') + [ElectricalPostCTS] + measurements('After')
+
+@Flow.factory.register()
+class CorrpreTimingTrial(Interfaces):
+    Steps = [BoundedPostCTS] + measurements('TimingAfter')
 
 if __name__ == '__main__':
     from librelane.__main__ import cli

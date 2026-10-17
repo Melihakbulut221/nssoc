@@ -1,3 +1,11 @@
+## Actual postCTS electrical trial complete; setup/hold repair launched (2026-10-17)
+
+39009508522/source74585b18 completed actual1039.55s native before/after all3corner flow. Slow slew193->15; cap0allcorners. SetupWNS unchanged slow-11.3312ns/typ-6.18229/fast-3.2504. Holdcounts worsened slow479->565/typ967->1123/fast12051->12227; worsthold-1.19738/-0.894529/-0.731416ns unchanged. Highfanout>=128 reports empty; old4905load/93ns preCTS report is NOT currentCTS evidence. Trial is NOT adopted or timingpass. Receipt corrpre-postcts-electrical-trial-20261017.json.
+
+New corrpre-postcts-timing-cloud restores originalCTS267678211bytes and completed electrical121328718bytes with allsourcehashes, then native setup100/hold1000 optimization and freshindividualcorner STA from actual repairedODB0543c55882a4f399dbcafd1d2d9b9f36e6c45165e073764c082231ca943da085. No boot/synthesis/placement/CTS rerun. Originalclockbudgets/derate/acceptance preserved; requires structural/formal equivalence thenrouting/extractedSTA/fullsignoff. Searchlimits do NOT waive timing. Nativefailures/checkpoints preserved.
+
+Trimmedwave39010857720 started/queued5cases. Clockcompose successor17283ade shouldbe tracked. PLL39007535633 andoldwire39004595306 aliveatlastpoll. Allcloud/localempty/fullgoalOPEN.
+
 ## Stiff625 fresh wireRC passed; full six-device physical model composition launched (2026-10-17)
 
 39010617177/source16593214 passed actual13R28C/fiveconductor14plane RC, allR/Cconservation and13actualrawfaults. Full5518534byte archive/everyoutput verifiedinRAM; receipt tx-clock-headroom-rc-pass-20261017.json pins newgeometry. New tx-clock-headroom-compose-cloud combines exactintrinsic39010222637 and freshRC39010617177, requires all16terminal identities/nativeGDS/databaseidentity and11actualoutputcorruptions. Noidealbodyalias/oldRC; polymer/diffusion/spreadingR/RF qualification remainsopen. Nextactualmodel loadedinto full32 bench and eventualfullclocklanephysicalassembly.
