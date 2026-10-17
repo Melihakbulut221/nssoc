@@ -1,3 +1,70 @@
+## Cloud checkpoint: actual connected CDR interface passed; half-cycle cascade is next
+
+Cloud-only execution remains mandatory. Local workspace is empty; no local CAD, checkout, tests or downloaded result archives. All native jobs below are GitHub Actions. Older local-execution wording does not apply.
+
+The connected CDR comparison failure is now closed in its stated scope by run39054158225/sourcebb23c0b8939d620a521b103d8ae0b55deceed8d9, completed SUCCESS. Actual two samplers, native level conversion and buffers, four native MIM capacitors, and fresh54device/4020R/2641C XOR all remain connected. Normal nominal/hot/cold:149.960/122.958/132.343mV minimum margins;59.53125/69.21875/54.84375ps clock-to-valid;768correct samples each,zero below100mV. All57HBT and MIM limits,57OFFreadbacks,zeroOP,nodiagnostics; outputswap and stoppedclock faults detected. Full five reports and SHA256 receipts: docs/evidence/cdr-feedforward-v4-pass-20261017.json. Circuit cdr_sampled_compare_buffered_v4.spice SHA8b9ade6650c8d5153f3d872660b04d8cac1970220a6fc5fc233ec05489bb2d7c. This is NOT a completed phase detector/CDR/PHY or physical implementation of changed buffers.
+
+Earlier failures are retained: buffered-v2 run39052561265 (all corners rejected; wrong signs removed but settling and four XOR VCE failures), divider-v3 run39053556768 (nominal/cold passed, hot125below100mV and two tail VCE failures). Receipts cdr-buffered-compare-rejection-20261017.json and cdr-divider-v3-rejection-20261017.json. V4 fixes measured delay using actual3.6um-square cap_cmim across four series legs, plus select shuntL4.2/W8; original acceptance phases and limits unchanged.
+
+Next actual half-cycle retime run39054982732/source4b7bb06270af3d481a99db2df283eefe90248ee2: two15HBT samplers with4conversionR/2MIM; output of first physically drives second. First rising-edge bit i at START+(i+.5)UI must become same original bit at second falling edge START+(i+1)UI. Both100mV/37.5ps gates;150fF all four outputs,30HBT/28R/2MIM,500uA references external. Six cases include actualwrong-edge, outputswap and stoppedclock. Wrapper SHA d1e16573ce5b0ea30a8c37d13fe60867eee13310027e2247e2a2e09776635e52. Inspect native results; do not infer success or a complete Alexander detector. Then integrate real consecutive sample identities and two comparisons, loading/bias, V/I and acquisition loop before physical/x4 acceptance.
+
+TX headroom-v2 run39053691750/source33c2b6709b3912226f36d8fe697dbbb10f50a4c4: only high-stage XFPR/XFNR L6.55to7.0um; low-stage12.77um unchanged;719emitters,604HBT/512MOS and all gates retained. Actual geometry controls passed; nominal and selectorfault jobs passed at last job snapshot, hot/cold still running. Prior v1 run39050192928 hot24HBT VCE failure preserved in docs/evidence/tx-drive-v1-rejection-20261017.json. Fresh physical/RC proof remains mandatory if v2 passes.
+
+New replay-CRC source-bound logic successor39054520337/sourcef31c8ffc45f2c1f802b264b9ab1c512ce9e506f9 is waiting on exact repair39052168254/source2f32b51eec3d0dfc0c5d695c1aec921044e6a90b. It revalidates six proofs/protocol/nativeboot and proves actual placement39042752404 CTS netlist versus this repair only. Never substitute old CRC/banked proof. After success inspect independent native corner STA, exact netlist proof and route lineage. Old regional routing39045601192 is a different repaired candidate. PLL39043210978 must preserve its exact live native process/checkpoint.
+
+Full serialGen3x4 PHY, routed mainchip, finalsetuphold remain OPEN. No final timing, DRC/LVS or manufacturing acceptance is implied by comparator or netlist proof passes.
+
+Live run snapshots at 2026-10-17T17:45:30.217303+00:00:
+
+```json
+[
+  {
+    "id": 39054982732,
+    "name": "cdr-halfcycle-retime-cloud",
+    "status": "queued",
+    "conclusion": null,
+    "head_sha": "4b7bb06270af3d481a99db2df283eefe90248ee2"
+  },
+  {
+    "id": 39053691750,
+    "name": "tx-tree32-headroom-cloud",
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "33c2b6709b3912226f36d8fe697dbbb10f50a4c4"
+  },
+  {
+    "id": 39054520337,
+    "name": "replay-crc-logic-cloud",
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "f31c8ffc45f2c1f802b264b9ab1c512ce9e506f9"
+  },
+  {
+    "id": 39052168254,
+    "name": "replay-crc-postcts-cloud / placement 39042752404",
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "2f32b51eec3d0dfc0c5d695c1aec921044e6a90b"
+  },
+  {
+    "id": 39045601192,
+    "name": "corrpre-banked-region-grt-cloud",
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "b3e904d284192c3c336994577428b662f3ef9aa3"
+  },
+  {
+    "id": 39043210978,
+    "name": "pll-c8-half-native-acquisition-cloud",
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "c7fc9d2709cd3c7e9cf28584c85e6fd8f2d9294c"
+  }
+]
+```
+
+---
+
 ## Cloud-only execution checkpoint (2026-10-17T17:17:15.509088+00:00)
 
 Latest user instruction: do all work in the cloud and leave the local workspace clean. This overrides the older active-goal wording asking for local execution. Do not recreate a local checkout, run local CAD/tests, or download result archives to the workstation. Use GitHub Actions for native execution and retain source, logs, reports and verified result parts in GitHub. In-memory GitHub API inspection and source editing do not require local project files. Do not delete unrelated user directories.
