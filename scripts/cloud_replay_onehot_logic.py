@@ -86,10 +86,22 @@ def main():
              'repaired_state',ROOT/'hw/soc/out/cloud-replay-onehot-postcts',after['repaired_odb_sha256'])):
             state_name=str(relative(report[state_key]))
             selection=[state_name]+[n for n in report['outputs']if n.endswith('.v')]
+            timing_names=[]
+            if label=='after':
+                for corner,measured in report['measurements']['after'].items():
+                    folder=measured['directory']
+                    for filename in ('ws.max.rpt','ws.min.rpt','max.rpt','min.rpt','high-fanout.rpt','checks.rpt'):
+                        name=folder+'/'+filename
+                        assert name in report['outputs'];timing_names.append(name)
+                assert len(timing_names)==18;selection+=timing_names
             assert len(selection)>1 and len(selection)==len(set(selection))
             destination=OUT/label
             restored,proof=reports.restore_report(group,number,digest,parts,destination,selection)
             assert restored==report
+            if timing_names:
+                r['fresh_after_timing_reports']={name:dict(sha256=sha(destination/relative(name)),characters=len((destination/relative(name)).read_text()),excerpt=(destination/relative(name)).read_text()[:18000])for name in timing_names}
+                r['timing_scope']='Exact repaired CTS placement-estimate reports; not routed/extracted signoff. Full report files retained; excerpts are navigation only.'
+                save()
             state=json.loads((destination/state_name).read_text())
             original_nl=Path(state['nl']);original_odb=Path(state['odb'])
             assert original_nl.is_relative_to(source_root)and original_odb.is_relative_to(source_root)

@@ -1,3 +1,13 @@
+## Latest: banked postCTS repair completed; exact logic proof and critical reports launched
+
+PostCTS39061293959/sourcea31ca5b2eab6f1ca459ca347bb8d1ad1dbdd98fe completednativebefore/after3corner measurements, returncode0/sourcesunchanged. Fullreceipt docs/evidence/replay-onehot-postcts-pass-20261018.json summary651875030/parts651875113. Freshpropagated-clockplacementestimates, NOTroute/extractedtiming. Slowsetup8194→8147,WS−9.48871→−6.19976ns; slowhold395→11,WS−1.02147→−.575487ns,r2r0. Typicalsetup4781→5036,WS−4.51309→−2.809ns; hold783→22,r2r0. Fastsetup1509→1098,WS−1.80475→−1.07956ns; fasthold11805→171,WS−.689778→−.391465ns,r2r130 WS−.068686ns. Slowslew180→1; allcornercap0; fanout1148remains. NOTclosure.
+
+replay-onehot-logic workflowpreviouslyunregistered(dispatch-onlybranch404). Addedownpathpushtriggerand18exactaftertimingreports (3corners×wsmax/wsmin/max/min/highfanout/checks) toselectedrestore. Fullfiles/hashesandexcerptsretained. Originalexactnetlistproof/9sourceproof/bootbinding/nativefaultguardsunchanged. Observe newpushrun; requirePASSandinspectcriticalpathsfornextrepair/routing.
+
+CDRdiagnostic39078437382 sixnativejobsstillrunning; PLL39078674197 controlsPASSandrestorestageinprogress; TX39067769686 fullwirelive. PLLMIMwindowcomparison39078852727 nowSUCCESS; inspectnative21casesbeforeclaimingmaskresult. CLOUDONLY. GoalturnPROGRESS; fullPHY/routing/finaltimingOPEN.
+
+---
+
 ## Latest: PLL continuation dispatched; flattened macro MIM census guard corrected
 
 ExactPLLcapsulecontinuation dispatchedas39078674197 at efdac8be7756e543a0e4ebbde19b2f93a92b3dbd; controlsqueued. Do notcoldrestart. CDRsixdiagnosticjobs39078437382 nowinprogress. PostCTS39061293959 andTXfullwire39067769686 remainlive.
