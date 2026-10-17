@@ -1,3 +1,9 @@
+## Full XOR parentRC pass and actual mainchip routing failure (2026-10-17)
+
+FreshRC39037889261/source4d7fa8ee PASS native54device fullmetal extraction:4020R/2641C,15separate wirecomponents,110metal/public probes; all154terminals retained including54bodyterminals with unmodeled substrate spreading. Exact native/export Rmultiset and everyground/mutualC attachment/value pass;13corruptioncontrols rejected. Receipt cdr-xor-parent-rc-pass-20261017.json pins summary650582679 SHAff79aec82615dac17b55186f6e3dfeebab0991a5582f84cc3c4d711d34d3b449, parts650582779 SHA4c81d504b915e421210b9d6755ed8b75e1d8a920b41334873ec3473a471bede0, fullarchive650582865. NEXT actualnative-device/RC composition and fixed original loadedXOR768sample/19HBTgates; no oldschematic acceptance for newRC.
+
+MainchipGRT39031588904 TERMINALFAIL(returncode2,3323s). Not a livewait anymore. No state_out/guide; actualnativefailure reason requires preservednative.log/OpenROADlog inspection, not guessingOOM or relaxingoverflow/NDR. New banked-grt-failure-cloud restores completeSHAverified140433byte failurearchive, extracts nativeerrors/congestion/stats. Source summary650582444 SHA08299ecda4f66635e3161e7bd33a1c11659f233e0af04ca0a070037ee119f326, parts650582566 SHAde42f19424c2033e34665149cb470909083e7e06fab76de0ffc34e0807c7fa67. Correctedtargeted39036154671 remainslive; quarterPLL and bothTXwire remainlive. Allcloud/localempty/fullgoalOPEN; currentturnPROGRESS.
+
 ## XOR native22planes passed; fresh full-parentRC started (2026-10-17)
 
 Native planehandoff39037574235/source6c52eb6b PASS: all12corepins plus10publicpins bind actual54device flatLVS nets, ten distinct groups; four wrong core mappings rejected. Native LEF parser succeeds but fullLEF integration not yet accepted. Summary650571754 SHAa494a03d33e676d942507751176807dff369cd87ee246bbdc273cd85d48f03c8; fullmethodtexts and originalnative refs preserved.
