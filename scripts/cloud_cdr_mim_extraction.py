@@ -31,10 +31,17 @@ def generate():
     for dims,d in sorted(selected.items()):
         cell=L.cell(d['pcell']['cell']);assert cell is not None and not list(cell.each_inst())
         top=pya.Region(cell.begin_shapes_rec(L.layer(126,0))).merged();bottom=pya.Region(cell.begin_shapes_rec(L.layer(67,0))).merged()
-        assert top.count()==bottom.count()==1 and top.area()==top.bbox().area()and bottom.area()==bottom.bbox().area()
-        plus=top.bbox().center();bb=bottom.bbox();minus=pya.Point(bb.left+200,bb.center().y)
-        assert not bottom.inside(pya.Region(pya.Box(minus.x-1,minus.y-1,minus.x+1,minus.y+1))).count() # Point, not full-plate containment.
-        assert not(pya.Region(pya.Box(minus.x-1,minus.y-1,minus.x+1,minus.y+1))-bottom).count()
+        shape_record=dict(native_id=d['native_id'],cell=cell.name,top=dict(polygons=top.count(),area_dbu2=top.area(),bbox=str(top.bbox())),bottom=dict(polygons=bottom.count(),area_dbu2=bottom.area(),bbox=str(bottom.bbox())))
+        with (OUT/'plate-geometry.jsonl').open('a')as stream:stream.write(json.dumps(shape_record)+'\n')
+        assert top.count()==bottom.count()==1,shape_record
+        # Real source plate drawing can contain slots. Pick an interior rectangle
+        # from that unchanged drawing, never fill a slot or probe its bounding-box hole.
+        rects=[p.bbox()for p in top.decompose_trapezoids_to_region().each()if p.area()==p.bbox().area()and p.bbox().width()>2 and p.bbox().height()>2]
+        assert rects,shape_record
+        plus=max(rects,key=lambda b:b.area()).center();bb=bottom.bbox();minus=pya.Point(bb.left+200,bb.center().y)
+        for point,region in ((plus,top),(minus,bottom)):
+            witness=pya.Region(pya.Box(point.x-1,point.y-1,point.x+1,point.y+1))
+            assert (witness-region).is_empty(),(shape_record,str(point))
         tag='mim_'+str(Decimal(dims[0])).replace('.','p').replace('+','')
         folder=OUT/'cases'/tag;folder.mkdir(parents=True)
         for variant in ('wire_only','mim_aware'):

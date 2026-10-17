@@ -1,3 +1,9 @@
+## Latest: MIM comparison generation failure preserved; actual plate-interior probes
+
+Checked 2026-10-17T22:23:17.582466+00:00. MIM39074621918/source0da97d812bbb4815d924b932f67d0513fa22dbf5 stopped BEFOREMagic: isolatedsourceplate rectangular-bbox-equality assumption failed. Noelectrical/MIMcomparisonresult. Fullfailure docs/evidence/cdr-mim-plate-rectangle-failure-20261018.json. Correction retainsexactoriginalmetal/via geometry andrequiresoneconnectedpolygonperplate, choosesinteriorrectangularwitnessfromactualTM1shape ratherthanassumingfilledbbox. Both2DBUprobearea witnesses mustlieinsideactualdrawing; sourcepolygoncounts/areas/bboxes savedbeforeguards. NativeMIMdevicecensus/geometrychecks unchanged. Observe successor; ifconnectedpolygon guardfails, inspectretainedactualgeometry ratherthanwaiving. FullPD394compositionpass stillvalid, fullparentMIMcapacitancequalification stillOPEN. CLOUDONLY.
+
+---
+
 ## Latest: complete PD394 wire composition passed; native MIM separation comparison launched
 
 Checked 2026-10-17T22:19:36.992782+00:00. Composition39074336535/sourcec3d9afcbbd0a6dc006882eb61c7c174ac7f3dc09 PASS: all394PDKdevices+8933R7649C preserve1134terminals/776physicalpoints;13compositionmutations rejected, originalsunchanged. Fullreceipt docs/evidence/cdr-retimed-composition-pass-20261018.json, summary651750342/parts651750424. This isassemblyverification, notloadedtransientorRF/bodyqualifiedPEX.
