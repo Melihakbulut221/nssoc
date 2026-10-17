@@ -36,7 +36,8 @@ jobs:
       - name: Verify explicit-clock delay cleanup on exact routed design
         run: |
           python3 -m py_compile scripts/cloud_routed_gap_paths.py scripts/pcie_soc_constraints.py
-          python3 -m pytest -q sw/tests/test_pcie_soc_constraints.py
+          make soc-interfaces-prepare SOC_INTERFACE_PROFILE=base INTERFACE_PYTHON=python3
+          python3 -m pytest -q sw/tests/test_pcie_soc_constraints.py | tee clock-port-delay-controls.log
           python3 scripts/cloud_routed_gap_paths.py --clock-cleanup
       - name: Preserve exact input and complete output even on failure
         if: always()
@@ -46,6 +47,7 @@ jobs:
         run: |
           root=cloud-clock-port-delay
           mkdir -p "$root"
+          if [ -f clock-port-delay-controls.log ]; then cp clock-port-delay-controls.log "$root/controls.log"; fi
           if [ ! -f "$root/result.json" ]; then
             printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
           fi

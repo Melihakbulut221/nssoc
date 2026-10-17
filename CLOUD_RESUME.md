@@ -1,3 +1,11 @@
+## Clock-delay regression fixture prerequisite restored (2026-10-17)
+
+PROGRESS. Clockcleanup39000922798/sourceed53dc07285f382e199795fdf15483f19eb869f7 stoppedbefore nativeSTA:7pytestPASS/1FAIL because invalidprofileguard test encountered missingignored interfaces.bundle.json beforeprofilevalidation. Not a clockcleanupmeasurement and not skipped. Added pinned base interface preparation via established make soc-interfaces-prepare SOC_INTERFACE_PROFILE=base INTERFACE_PYTHON=python3 before rerunning all8tests. Preservecontrols.log inrelease. Workflowpush starts newjob; recordactualID/outcome.
+
+Prior pathdiagnostic39000522126 PASS receipt:summary649468370 SHAf5a42ccaf4fcf3bfb384774bce9329a0a583444db8baf00e4f22941421c9c3d6; parts649468415 SHA5e6c05939edce9d8df5220e167d470747a3151387ba40498e69b93b044f6fce6; archive649468464. EffectiveSDC77e3e8aadd161b520c15c18b247e105446eac752186dd2ec238457b1b56d536d; diagnosticlogc05b958d57baed98ba0c4ff0149d98a874db8daf1625284086b13047f8c938fe. Fourcombinationalinputgaps haveactualunconstrained paths;5inputgaps(reset/irq/twoPCIesync firststages) haveNoPaths;45hold-onlyinputs haveunconstrainedmin andbudgetedpath-delaymax. These observations stillrequireexactCDC/exception/functionalproof. Ethernetgeneratedclock exists8ns, butclockports retaingenericclk_i data delays; explicit-clockcleanupcandidate fixesgeneratorsemantics, not an acceptancewaiver.
+
+---
+
 ## Fix actual inherited clock-port data delays (2026-10-17)
 
 PROGRESS. Native pathdiagnostic39000522126/sourcef8eb29e3161d0984d9d1ca1fdfcc87e7b897fa9c PASS:55pins330queries, originalphasegroups reproduced/sourceunchanged. EffectiveSDC exposes3clockinputs plus eth_gtx_clk_o retaininggeneric4nsdata delay relativeclk_i. PinnedOpenSTA857316ff Sdc.tcl unset_port_delay defaultsclockNULL; Sdc.cc removeInputDelay/removeOutputDelay matchesonlyexactClockEdge, so omitted-clock unsetdoesnotremove clk_i-bounddelay. This is a real generator bug, not a reason to waive timingpaths.
