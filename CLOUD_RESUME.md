@@ -1,3 +1,13 @@
+## PLL full1us completed; original acquisition gate rejected (2026-10-17)
+
+PROGRESS. Run38982797234 continuation117300617099 finished actual physical845 one-us capture after2940.666s additional host execution. Prior payload unchanged, all protected inputs unchanged, zeroOP0V/102OFF readbacks1, nativeexit0/no diagnostics. 3201212complete35columnrows/end1us/maxstep.3125ps. CaptureSHAca79aa873c5f4d1957d47f6e4151235a7db8c7adae1f67fba48d2e6c909555b7. This is completed simulation, NOT accepted PLL/PHY.
+
+Frozen original acquisition FAIL:800-900ns frequency100013284.710239Hz =132.847102ppm (limit100ppm), phase span11.954651psPASS/no-slipPASS/VCTRLwindowPASS. 900-1000ns frequency100008806.949598Hz=88.069496ppm/7.925557ps PASS. Rolling100ns windows first pass at870ns start, confirmation970ns; this overlapping observation does NOT replace required800-900ns gate. No limit relaxation/window shift. Need actual circuit convergence correction, then fresh physical and full native proof. Controller success only denotes complete native capture. Archive retained798407888bytes, no local download. Receipt docs/evidence/pll-v2-full1us-acquisition-rejected-20261017.json pins summary649546864/parts649546955/archive649547047. Do NOT resume completed process or cold-restart unchanged candidate.
+
+Nx3parent extraction39003193557/source7cbfeeaeff869182413e432cb43dac43bf3caaf8/job117310236174 freshly live in native extraction step. Existing fixedPVT39002430107 andMBISTboot38994926932 live. Preserve jobs. Cloud-only/localempty/goalOPEN.
+
+---
+
 ## Nx3 full32 parent physical passed; fresh parent RC extraction launched (2026-10-17)
 
 PROGRESS. Actual parent run39002749405/sourcee06390caeab0cfda298ec1aa1c3f35bf79a5ccfb passed560DRC0, deep+flatLVS1674=1674oneMatch/noextractiondiagnostics, all5actualfaultsrejected. Exact31macros/60intermacrolegs/162ports/589HBT719emitters. Downloaded archive in RAM only, verified combined SHA and actual archived result/GDS/LEF/schematic hashes. Receipt docs/evidence/tx-tree32-high3-physical-pass-20261017.json pins summary649537225/parts649537316/archive649537389 (2807897bytes). GDS388a341ea0bee5f81fc5f4bf24d0fe12a462a822d5ccbc0853280332f694d6d4. Not mainchip or fullPHY acceptance.
