@@ -1,3 +1,7 @@
+## Actual C8 full845 model composition launched (2026-10-17)
+
+Fresh parentRC39006326123 passed98R242C/all83planes/14divider+7pumpplanes/8rawfaults. New pll-c8-v2-full-compose-cloud restores latest verified845model38981800336, replaces only actual30device84R155C pump and parent98R242C, freezes815otherdevices and both corrected dividers, checks full845graph against new nativeLVS physicalparent and all graph/source faults. Requires inspection before original1us acquisition; no acceptance claim. Physical CORRPRE+PCIe+MBIST follow-up39007090307 is live; do not duplicate it. Cloudonly.
+
 ## Exact CORRPRE/PCIe/system+Ethernet MBIST boot passed; new physical stage (2026-10-17)
 
 Run38994926932 succeeded. Original43-file artifact12090748551 SHA2560fcb32e81d63669f7df2833b83f4cb371bd9972a251bb0e15e77121b5e710d92 inspected in RAM: gates passed, sources unchanged,28firmware checks, independentPCIe idle monitor, explicit system/bothEthernetMBIST observer. No packet traffic or SDF proof. New workflow corrpre-pcie-mbist-boot-evidence-cloud permanently preserves this exact artifact then starts PacketInterfaces physical flow through CTS from its actual mappedJSON/netlist; no resynthesis. Keeps20SRAMfloorplan, four clocks,20nsCPU/4nsPCIe/8nsGMII constraints and allcorner checker thresholds. Require actual completedCTS state and native logs before continuation through routing; CTS itself is not final timing.

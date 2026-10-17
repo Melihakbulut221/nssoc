@@ -1,0 +1,89 @@
+{
+  "source_head": "604dff4b041be73694ee8bdd032121ed3309f167",
+  "source_controller_sha256": "6a2aafac1b30af398bf69acfcc12c1051f1371df016e4fcc42e887269566cbcf",
+  "candidate_controller_sha256": "be0ea8f51592269cda3d9e98e6b69fa9ada4c7c30933a46119b01f1d470fa073",
+  "edits": [
+    {
+      "before": "OUT=ROOT/'hw/soc/out/cloud-pll-divider-v2-full-compose'",
+      "after": "OUT=ROOT/'hw/soc/out/cloud-pll-c8-v2-full-compose'",
+      "count": 1
+    },
+    {
+      "before": "'current-parent/physical/lvs_flat/audit.json')",
+      "after": "'current-parent/physical/lvs_flat/audit.json','pump-rc/anchors03.json','pump-rc/devices01.json')",
+      "count": 1
+    },
+    {
+      "before": "'pll-divider-v2-parent-rc',38981391546,'43d1986f118e72ee9dfdb13546423eb376d034f94632e7e3c4562395b7ca49fd','8456a99c7a9476e4ecd09514be1e3c8e3eaaf5f36d1e8d8d8eeb8d941a2b32ba'",
+      "after": "'pll-c8-v2-parent-rc',39006326123,'eea8dc6473bc3156f95b012eb2e6bbd9bf6f281c01a922239110a86f996f8c50','ed9426eb944fa8047664d8d50588d6d8a570564f4e8d75a75339f43876775fa0'",
+      "count": 1
+    },
+    {
+      "before": "PASS_DIVIDER_V2_ACTUAL845_PARENT_PLANES_FRESH_WIRE_RC_AND_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+      "after": "PASS_C8_DIVIDER_V2_ACTUAL845_PARENT_PLANES_FRESH_WIRE_RC_AND_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "'pll-divider-load3p2v2-parent',38979710689,'cc8f993414e5a722afc6a7d7bd3e5b265faa9c5e13b2d2887025f324a9f6076a','82af9b4f9d384568d36228458238cfb5738d2bb427fd42fc3fa2bf39ed781777'",
+      "after": "'pll-divider-v2-full-compose',38981800336,'a17fde2bd57f2710327bd84156ee8c9354187ae997f27ff93dd332d84f6a62a3','9b861472d9c80e4c6c7e43bb5c22a5eafd8e82a0202e51c770c2a2052f72c861'",
+      "count": 1
+    },
+    {
+      "before": "len(old['controls'])==7 and all(c['rejected']for c in old['controls'])",
+      "after": "len(old['component_faults'])==7 and len(old['graph_faults'])==6 and all(c['rejected']for c in old['component_faults'])",
+      "count": 1
+    },
+    {
+      "before": "old['model_sha256']",
+      "after": "old['candidate_sha256']",
+      "count": 2
+    },
+    {
+      "before": "dd96dd5f7ae91cb6be99fa058014e7caa65b2f41f7157c4a3b6b2ba3a31dbda8",
+      "after": "d86f4716070f22b36f3fafb9b5d789f2dd029552aefafbedbab8aebdfb0cb85b",
+      "count": 1
+    },
+    {
+      "before": "        rows=statements((OUT/'prior-model/parent845.spice').read_text());raw=statements((OUT/'fresh-rc/parent-rc/wires.spice').read_text())",
+      "after": "        pump,receipt=reports.restore_report('pll-filter-compose-8',39005678827,'7fc3b8c05a051059703b562e762af24f713d05dc47d9a3264ebce048e760c17e','96f0a830bf51989dce7592ef56e2425a446df9a8a9ca00522684fbbe4cb87072',OUT/'pump',('pump30-wire01.spice','anchors03.json','devices01.json'))\n        require(pump['status']=='PASS_ACTUAL_C8_PUMP_PHYSICAL_MODEL_AND_FAULTS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE','C8 native child model gate')\n        P=OUT/'pump';result['pump_source']=receipt\n        require(sha(P/'pump30-wire01.spice')=='33fa7b1eb4fe3cd3017a3ce6ffc0a411d364e19100d696351970a021317c0df5','Actual C8 child model')\n        for n in ('anchors03.json','devices01.json'):require(sha(P/n)==sha(OUT/'fresh-rc/pump-rc'/n),'Child plane/device source differs')\n        rows=statements((OUT/'prior-model/parent845.spice').read_text());raw=statements((OUT/'fresh-rc/parent-rc/wires.spice').read_text())\n        childrows=statements((P/'pump30-wire01.spice').read_text())\n        def belongs(w,group):return any(w[0].lower().startswith(k+'_'+group+'_')for k in 'xrc')\n        removed_pump=[w for w in rows[1:-1]if belongs(w,'xpump')]\n        removed_parent=[w for w in rows[1:-1]if belongs(w,'xparent')]\n        kept=[w for w in rows[1:-1]if not belongs(w,'xpump')and not belongs(w,'xparent')]\n        require(Counter(w[0][0].lower()for w in removed_pump)==Counter(x=30,r=84,c=155),'Original pump census')\n        require(Counter(w[0][0].lower()for w in removed_parent)==Counter(r=98,c=242),'Original parent wire census')\n        require(sum(w[0][0].lower()=='x'for w in kept)==815,'815 unchanged devices')\n        ports=childrows[0][2:];require(set(ports)=={'sub','vctrl','div_avdd','vco_avdd','up','avss','down','wire_cref'},'Pump ports')\n        at=lambda w:next(i for i,v in enumerate(w)if '='in v)-1\n        body_index={'sg13_hv_nmos':4,'rppd':3,'ptap1':2}\n        old_bulk={w[body_index[w[at(w)].lower()]].lower() for w in removed_pump if w[0][0].lower()=='x'and w[at(w)].lower()in body_index}\n        new_bulk={w[body_index[w[at(w)].lower()]].lower() for w in childrows[1:-1]if w[0][0].lower()=='x'and w[at(w)].lower()in body_index}\n        require(len(old_bulk)==len(new_bulk)==1 and not new_bulk&set(ports),'Native intrinsic body reference')\n        old_body=next(iter(old_bulk));new_body=next(iter(new_bulk))\n        require(old_body==aliases.get('a_count_vss','a_count_vss'),'Physical common substrate reference')\n        public_map={p:('wire_cref'if p=='wire_cref'else aliases.get('a_pump_'+p,'a_pump_'+p))for p in ports}\n        def rename(n):\n            n=n.lower()\n            if n==new_body:return old_body\n            if n in public_map:return public_map[n]\n            return 'xpump.'+n\n        added_pump=[]\n        for w in childrows[1:-1]:\n            kind=w[0][0].lower();require(kind in 'xrc','Unexpected pump row')\n            index=at(w)if kind=='x'else 3\n            require(index>=3 if kind=='x'else len(w)==4,'Pump row syntax')\n            added_pump.append([kind.upper()+'_xpump_'+w[0].lower(),*[rename(n)for n in w[1:index]],*w[index:]])\n        require(Counter(w[0][0].lower()for w in added_pump)==Counter(x=30,r=84,c=155),'Fresh pump census')\n        def intrinsic_signature(w):\n            index=at(w);params=[]\n            for p in w[index+1:]:\n                key,value=p.lower().split('=');params.append((key,str(number(value).normalize())))\n            return w[index].lower(),tuple(sorted(params))\n        expected=copy.deepcopy([w for w in removed_pump if w[0][0].lower()=='x']);caps=[w for w in expected if w[at(w)].lower()=='cap_cmim'];require(len(caps)==1,'Original capacitor count')\n        cap=caps[0];require(number(next(v[2:]for v in cap if v.lower().startswith('w=')))==number('9u'),'Original capacitor width')\n        require(number(next(v[2:]for v in cap if v.lower().startswith('l=')))==number('9u'),'Original capacitor length')\n        cap[:]=['w=8u'if v.lower().startswith('w=')else'l=8u'if v.lower().startswith('l=')else v for v in cap]\n        require(Counter(map(intrinsic_signature,expected))==Counter(intrinsic_signature(w)for w in added_pump if w[0][0].lower()=='x'),'Unexpected intrinsic change beyond capacitor')\n        require(public_map==result['pump_public_mapping'],'Retained pump reference planes differ')\n        result['pump_change']=dict(unchanged_other_devices=815,old_cap_um=9,new_cap_um=8,native_devices=30,fresh_R=84,fresh_C=155,body_reference=old_body)\n        rows=[rows[0],*kept,*added_pump,*removed_parent,rows[-1]]\n",
+      "count": 1
+    },
+    {
+      "before": "unchanged_devices=845",
+      "after": "unchanged_other_devices=815,replaced_native_pump_devices=30",
+      "count": 1
+    },
+    {
+      "before": "physical['top']=='nssoc_pll845_divider3p2_v2_development'",
+      "after": "physical['top']=='nssoc_pll845_divider3p2_c8_v2_development'",
+      "count": 1
+    },
+    {
+      "before": "physical['integration_proof']['child_geometry_exact']and physical['integration_proof']['all14_instance_ports_unchanged']",
+      "after": "physical['prior_integration_proof']['child_geometry_exact']and physical['prior_integration_proof']['all14_instance_ports_unchanged']and physical['integration_proof']['all7ports_unchanged']and physical['integration_proof']['other_cell_shapes_and_instances_unchanged']",
+      "count": 1
+    },
+    {
+      "before": "'revert_divider_load']:",
+      "after": "'revert_divider_load','change_pump_R','change_pump_C']:",
+      "count": 1
+    },
+    {
+      "before": "prefix='R_xdiv1_'if name=='change_divider_R'else",
+      "after": "prefix='R_xpump_'if name=='change_pump_R'else'C_xpump_'if name=='change_pump_C'else'R_xdiv1_'if name=='change_divider_R'else",
+      "count": 1
+    },
+    {
+      "before": "result.update(status='PASS_NEW_PHYSICAL845_DIVIDER_PARENT_MODEL_EXACT_GRAPH_AND_COMPONENT_FAULTS_NOT_ELECTRICAL_ACCEPTANCE',source_unchanged=True)",
+      "after": "require(all(sha(P/n)==pump['outputs'][n]for n in ('pump30-wire01.spice','anchors03.json','devices01.json')),'C8 source changed')\n        result.update(status='PASS_C8_PHYSICAL845_DIVIDER_PARENT_MODEL_EXACT_GRAPH_AND_COMPONENT_FAULTS_NOT_ELECTRICAL_ACCEPTANCE',source_unchanged=True)",
+      "count": 1
+    },
+    {
+      "before": "Actual new845PLL layout: both new native91/382R649C dividers plus fresh98R242C parent wires. All other device/wire records preserved.",
+      "after": "Actual C8new845PLL layout: actual30device84R155C pump with8um cap plus fresh98R242C parent wires; both native91/382R649C dividers and815other devices retained from verified latest845model.",
+      "count": 1
+    }
+  ],
+  "status": "REQUIRES_CLOUD_NATIVE_GRAPH_AND_COMPONENT_VALIDATION",
+  "accepted": false
+}
