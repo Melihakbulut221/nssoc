@@ -1,3 +1,11 @@
+## Actual mixed32:1 tree native DRC/LVS passed; full parent wire extraction launched (2026-10-17)
+
+PROGRESS. Run38996987743/sourcea9f91eec9efb8df58704843bdc9dce99fc39c942 PASS:1674devices match in deep+flat native LVS,oneMatch,no extractiondiagnostics;560DRCrules zero markers includingrecommended npn13G2.bR; all5physical/reference faults rejected. Real31macro899-emitter tree and60intermacro wires. GDS2fdc5fc1729fb36613b1420f786ac045215b9f2736310c329fc26a6d8a6d05e4. Body4666.785x9897.82um; this is NOT mainchip-fit proof and requires integration/placement work. Fourtree3596emitters excludesotherblocks. Original4427treefailure preserved. Full source-bound summary/archive in docs/evidence/tx-tree32-budget-physical-pass-20261017.json.
+
+New scripts/cloud_tx_tree32_extraction.py and workflow tx-tree32-budget-extraction-cloud.yml restore exact passing parentGDS/LVS and regenerate all wireRC; no child-RC concatenation or ideal intermacro aliases. Expected31macro source census:589HBT248R837taps,1674devices,4774terminals,3100metal+1674body,162publicports3262probes,377metalcomponents+onebody. Expected counts must match native LVS ownership before RC acceptance; same original54cell extraction methods and13raw corruptioncontrols retained with explicit count adaptations. Original body/substrate/RF limitations remain. Full high8schematic38996028457 still live, mappedboot38994926932/PLL38982797234 live. Cloud-only/localempty; goalOPEN.
+
+---
+
 ## Nx1 cell physical pass; real mixed32:1 parent implementation (2026-10-17)
 
 PROGRESS. Run38996604388/source9459550c10a62cc76d8af5f96c874a7e66c29e0a completed actual Nx1 geometry:560DRCcategories zero markers; deep andflat LVS54layout=54reference,oneMatch,noextractiondiagnostics. Wrongfinger,missingHBT,wireopen,railshort,offgrid actual controls rejected. GDS5419c0452693af96e5d2200cb1c8c226872004b11ed00f7d181a26c0fcdaa179, LEF958b044996026fa7cc8dda9d52ca4bb89d3028ff1e845a85e192256258122c5a. Body353.985x592.04um. All full receipts and original physical reports: docs/evidence/tx-pre-nx1-physical-input-20261017.json.
