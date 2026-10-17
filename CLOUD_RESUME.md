@@ -1,3 +1,13 @@
+## Latest: real parent DRC narrow intermediate landing repaired
+
+Checked 2026-10-17T21:26:18.111262+00:00. CDRparent39069972566/sourcead2eecaaa38cd7ff1e191a05e82e1a282f453dcd generated actualGDS/LEF and reference122HBT102R11MIM159contacts=394; bbox1703.2x5094.3um. Native560rule DRC rejected630markers, ALLTM1.a (1.64umminimumwidth). LVS not reached. ArchiveSHA363b02a925bfe84a5da5a3b73e6e0bb8eee739ed15626bc212fab54e01f32db5; fullfailure retained docs/evidence/cdr-parent-tm1-width-failure-20261018.json. Native.lyrdb hashverified; everymarker x794.55..796.65um identifies leftMetal5-to-TM2 accesscenter795.6um. Intermediate nativevia-stackTM1 has narrowprotrusions; rightstacks alreadycoveredbyvertical3.2umTM1.
+
+Newgenerator addsactual3.2um-square TM1landing at eachM5-to-TM2stack, preservingnativecuts andallchilddrawinggeometry/sourcecards. No rulewaiver. Observe corrected successor fromthiscommit; requireall560DRC/deep-flat394LVS/5faults beforefreshRC. Parentfirstconnectivitygeometryislarge; power/RC/delay/currentdensityandclosed-loop stillunverified.
+
+TX39067769686 ALL4compactnativecases verified: nominal/hot/cold positiveelectricalpass; actualselectorfault27wrongbitscorrectlyrejected. cdr/PHYfullwire117498996909 stilllive atlastpoll. Mainchipboot/placement/postCTS/PLL remainlive atlastpoll; nofinaltimingpass. CLOUD ONLY; localworkspaceempty. GoalPROGRESS, notcompleteorblocked.
+
+---
+
 ## Current electrical milestone: all v5 compact controls verified; fullwire and parent still separate
 
 Checked 2026-10-17T21:21:13.475480+00:00. TX39067769686/source2db35478d9c5be9f53a05cbc6ddae94b55823933 compactnominal/hot_low/cold_high all electrical_screen_passed=true with768correct originalbit samples percondition. Minmargins0.28036162456134095/0.22779096206066263/0.2734529690102243V. Actualselectorfault changes27samples and is correctlyREJECTED (electrical_screen_passed=false); do notcallfaultsafe. All604HBT/512MOS/devicebounds/zeroOP/OFFflags/no-diagnostic/nativeclockbindingcontrols verified; no threshold/phase/latency changes. Fullsummary/model/parts/capturehashes preserved docs/evidence/tx-v5-compact-campaign-pass-20261018.json. Summaries nominal651615704,hot651624266,cold651622222,fault651625011. Entirecaptures remaincloudRelease.

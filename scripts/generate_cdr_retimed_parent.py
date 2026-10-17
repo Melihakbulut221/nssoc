@@ -79,6 +79,9 @@ def generate(out):
         q=pya.DBox(min(a[0],b[0])-width/2,min(a[1],b[1])-width/2,max(a[0],b[0])+width/2,max(a[1],b[1])+width/2)
         box(layer,q);return q
     def via(x,y,bottom=126):
+        if bottom==67:
+            # Fill native intermediate-stack protrusions; preserve every native cut.
+            box(126,pya.DBox(x-1.6,y-1.6,x+1.6,y+1.6))
         name={67:'Metal5',126:'TopMetal1'}[bottom]
         c=L.create_cell('via_stack','SG13_dev',dict(b_layer=name,t_layer='TopMetal2',vn_columns=2,vn_rows=1,vt1_columns=2,vt1_rows=1,vt2_columns=1,vt2_rows=1))
         assert c is not None and not c.is_empty();b=c.dbbox()
