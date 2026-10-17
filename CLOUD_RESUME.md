@@ -1,3 +1,9 @@
+## Exact cloud continuation handles (2026-10-17)
+
+Clock-layerGRT39038463008/source6eda7245 created exactlyonce: proofjob117412942236passed, nativejob117413019443 queued lastcheck. Do notduplicate; sameprovenrepair, onlyclocklayerselection changed. Targeted23repair39036154671,quarterPLL39035550686,TXreturn64wire39030593206,tightwire39025744008 live.
+
+CDRXORfullRC39037889261 PASSED4020R/2641C/15components/110probes/13controls after freshphysical54LVS/560DRCpass. Next source-bound model composition requires frozen bindingexport/buildmethods, availableonly in pinnedcloudarchive. cdr-binding-inputs-cloud restores those two exactsources entirelyoncloud and exposes text+hashes for review before adaptation. No compositionpass presumed. Then adaptflatnative54export to10parentports and originalmodelparameters, compose with actualRCterminalrefs, preserve independentlyverifiedintrinsicgraph and original768sample/19HBTnativegates. No tests/CAD/artifacts orscratchlocal; workspaceverifiedempty. FullgoalOPEN, currentturnPROGRESS.
+
 ## Native congestion cause measured; clock-layer route experiment (2026-10-17)
 
 Failureinspection39038196457 completed: bankedGRT39031588904 native385overflow (M2=3,M3=141,M4=25,M5=202,TM1=9,TM2=5),141519routednets,peak2GiB,55m; GRT0273disabledNDR on clknet_1_1_0_pcie_clk_i thenGRT0116fails. This is measuredcongestion/NDR failure, NOTOOM/timeoutevidence. No routeaccepted.
