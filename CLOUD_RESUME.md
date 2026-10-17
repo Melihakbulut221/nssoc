@@ -1,3 +1,11 @@
+## Exact replay verdict timing candidate (2026-10-17)
+
+New replay-crc-cloud isolates a cycle-exact EOP CRC verdict rewrite on replay source a745b57c0eec0e03d687d034f847e25233fc85ccbb242eca51b754656dff78dc, independently verified identical to physical boot f65c0c35a6e2c706f0fe7df485ab6b2115b11e6a. Current worst slow setup path starts ACK encoder busy, traverses data selection/CRC, ends retry count. Reverse residue predicate 00BE26ED removes the byte CRC update chain from that verdict while preserving CRC state updates, packet validation, latency and all handshakes. Candidate is generated only on hosted runner and not adopted yet.
+
+Require unrestricted41input-bit proof, wrong-residue/wrong-byte actual SAT counterexamples, full unmasked sequential equivalence for DEPTH2/3/4 and capacities18/38, baseline/candidate original replay and reliable-packet port scoreboards plus actual wrong-residue failure. Physical timing must be measured separately; no assumed speedup or whole-chip acceptance.
+
+PLL three-step comparison39040693114 completed: half/quarter feedback timing differs only~0.23ps and frequency~4.96ppm in40-50ns, but startup seconddivider falling edge count differs31vs32 nearzero time. Preserve fullordinal discrepancy; no blanket convergence or acquisition acceptance. Fullreport650676290/parts650676428/archive650676535. Allcloud/localempty/fullgoalOPEN.
+
 ## Full PLL half/quarter comparison campaign (2026-10-17)
 
 Quarter native capture 39035550686 completed: exact same physical C8 parent, 50ns, 640071 complete rows, all102OFF/zero-sourceOP/no diagnostics. Fixed40-50ns window is8.002744565650GHz and measured clampcurrent -4.602831117uA. This is an externally clamped response, not closed-loop acquisition.
