@@ -14,6 +14,8 @@ SOURCES={
 SELECTED=('native01/wires.gds','native01/wires.l2n','native01/result.json','source/layout/'+TOP+'.gds','source/layout/result.json','source/check/lvs_flat/result.lvsdb')
 SOURCES['l5p7']=dict(run=38961605786,head='9f940898df74a063c5f703acb67f6927182ab6c4',summary='fdec668ae9d829ef75f94d22fddf84dc2bf7a5d4a24bb1e9ac0531d9337dbbc0',parts='2b45dd68de63bc0f06f303501b8a02710889f418a36511d1020f2fb4b2c6143a')
 
+SOURCES['l6p25']={'run': 39009656993, 'head': '4be54e4d895750094771b79324d80579511d1f15', 'summary': 'c2c36b57ede8b9c423a51c169a59238aa7ea47c3a766209c3adcd7c8ad4df40a', 'parts': '0d79267cc7cf518e93fe4764634fda66557f45b39ecbaf5c347d391e493612c6'}
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--variant',choices=sorted(SOURCES),required=True);args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true';out=ROOT/('hw/soc/out/cloud-tx-clock-reference-anchors-'+args.variant);out.mkdir(parents=True,exist_ok=False);reports.OUT=out

@@ -71,6 +71,8 @@ def controls(text,rows,tech,top,out):
 
 SOURCES['l5p7']=dict(run=38961605786,head='9f940898df74a063c5f703acb67f6927182ab6c4',summary='8a9ca2d7c21d438d7c8a3b8510c8fe94fd69c086daf8a5ec527498e82477b2ea',parts='28016180d088bf15715a3d96c4f7eab29eb5822b748a31d558d39cfa9d9ee427')
 
+SOURCES['l6p25']={'run': 39009656993, 'head': '4be54e4d895750094771b79324d80579511d1f15', 'summary': 'c48aaa6bce12b8262a6803ac029cf387e6c236e496d9e4d9cdfc2741979fc227', 'parts': 'e265f19203e717452d2e9b902f93d7ddf6cf22759364012d1aebc0d984b17058'}
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--variant',choices=sorted(SOURCES),required=True);a=p.parse_args();assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('hw/soc/out/cloud-tx-clock-reference-intrinsic-'+a.variant);out.mkdir(parents=True,exist_ok=False);reports.OUT=out
