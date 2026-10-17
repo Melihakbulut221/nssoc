@@ -1,3 +1,228 @@
+## Current: new CDR leaf geometry verified; corrected TX and strict sampler live/queued
+
+Checked 2026-10-17T20:48:19.851109+00:00. This goal turn PROGRESS: exact CDR buffer cells implemented and physically passed, feed-forward cell candidates implemented with verified results, strict sampler unsimplified deep/flat verification launched, two source-binding bugs repaired without changing electrical limits. CLOUD ONLY overrides old goal wording. Local activeworkspace remains empty; no local CAD/tests/results.
+
+TX39067769686/source2db35478d9c5be9f53a05cbc6ddae94b55823933 is the ONLY intended corrected loaded-wave continuation. Controls117498882518 passed both exact privatebuilder and privateclockadapter hashes/deltas. Wire117498996909 entered native simulation step. Four compact jobs may still queue; inspect authoritative status below. Cancelled39066939313 had ZERO jobs; do not resume it. Prior39066521495's cold117495612074 was still publishing failure; preserve it, not an electrical run. All5 native cases had pre-simulator KeyError('stiff625') from old adapter; source fixes at255f080... and concurrency separation at2db354... preserve original shared methods/44clock controls. No electrical pass yet.
+
+CDRbuffer39067291672/source4160cc84c1678de94cbc324b7363ea57dfbf0c1c passed both data/select, all560DRC/deep-flat14/16deviceLVS and5faults. Receipt docs/evidence/cdr-buffers-physical-pass-20261017.json includes all reports/parts. Exact native v4sourceSHA8b9ade... unchanged.
+
+Feedforward39067622805/sourcecb92c4952c718d772dae0bec0487e476cced4f8d: verified typesdata,select; remainingretime. docs/evidence/cdr-feedforward-physical-progress-20261017.json holds complete reports/parts only for actual passed cases. Eachleaf4rppd+2MIM+6contacts=12native devices, native560DRC/deep-flatLVS and5faults. Three types cover five parent instances. Retain failure if any, don't infer unreported cases passed.
+
+Strictsampler39068099037/source23623b244091ac587843ee2bdfc1d3c77e7045b2: original generator/CIRCUIT unchanged; new check_pcie_sampler_unsimplified.py adds no_simplify=true, top_lvl_pins=true,35device census and flatLVS, retains560DRC/10faults/nativeLEF. Old actual sampler-bank.json proved only28simplified devices (15HBT12R+onecombinedcontact), not35unsimplified. Full historical capsule SHA4ceb1956a8738ce7d12716a5bd0cda3d48a5169b45535178bdd3619de523e30e is preserved. If new run fails inspect actual reason and preserve originalfailure.
+
+NEXT CDR physical parent requires16actualmacros: four35device samplers, two14data buffers,two16select buffers,two54XORs,five12RCfeedforwards,one26VI=394expectedphysicaldevices (235primitives159contacts). Do not assert this census until native parent verifies. Public PD source cdr_retimed_pd_vi_v1.spice frozenSHA5d2f451... has26ports including synthetic wire_cref; actualphysical parent has25 realports. Need independent exactsource pin mapping, actualmetal/vias routing, childgeometry preservation, native560DRC/deep-flatparentLVS/opens/shorts/polarity faults, freshwholeparentRC and sourcebound fullnativePD/full-loop tests. No ideal internal regeneration or replacing realconnections with labels. Physical XOR wire model cannot be counted twice with freshwholeparentRC.
+
+Mainchipboot/placement/postCTS and PLL handles below remain authoritative. No new finaltiming or recovery pass. Keep fullgoalOPEN; component proofs aren't fullPHY/mainchip acceptance.
+
+Current job snapshot:
+```json
+{
+  "39067769686": {
+    "status": "queued",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117498882518,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117498996909,
+        "name": "native-full32 (wire, nominal, none)",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Simulate all eleven physical clock macros loaded by actual full32 tree"
+        ]
+      },
+      {
+        "id": 117498996957,
+        "name": "native-full32 (compact, cold_high, none)",
+        "status": "queued",
+        "conclusion": null,
+        "active": []
+      },
+      {
+        "id": 117498996977,
+        "name": "native-full32 (compact, nominal, swap_leaf_select)",
+        "status": "queued",
+        "conclusion": null,
+        "active": []
+      },
+      {
+        "id": 117498997011,
+        "name": "native-full32 (compact, hot_low, none)",
+        "status": "queued",
+        "conclusion": null,
+        "active": []
+      },
+      {
+        "id": 117498997043,
+        "name": "native-full32 (compact, nominal, none)",
+        "status": "queued",
+        "conclusion": null,
+        "active": []
+      }
+    ]
+  },
+  "39066521495": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117495242773,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117495612006,
+        "name": "native-full32 (wire, nominal, none)",
+        "status": "completed",
+        "conclusion": "failure",
+        "active": []
+      },
+      {
+        "id": 117495612032,
+        "name": "native-full32 (compact, nominal, swap_leaf_select)",
+        "status": "completed",
+        "conclusion": "failure",
+        "active": []
+      },
+      {
+        "id": 117495612046,
+        "name": "native-full32 (compact, nominal, none)",
+        "status": "completed",
+        "conclusion": "failure",
+        "active": []
+      },
+      {
+        "id": 117495612074,
+        "name": "native-full32 (compact, cold_high, none)",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Preserve complete native captures and every failure"
+        ]
+      },
+      {
+        "id": 117495612094,
+        "name": "native-full32 (compact, hot_low, none)",
+        "status": "completed",
+        "conclusion": "failure",
+        "active": []
+      }
+    ]
+  },
+  "39068099037": {
+    "status": "queued",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117499844867,
+        "name": "native-physical",
+        "status": "queued",
+        "conclusion": null,
+        "active": []
+      }
+    ]
+  },
+  "39059432529": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117474167674,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117474959878,
+        "name": "native-boot (full)",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Native CORRPRE, PCIe, system MBIST and both Ethernet MBIST handover boot"
+        ]
+      }
+    ]
+  },
+  "39059854681": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117475389870,
+        "name": "source-ready",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Wait for exact native sources without restarting them"
+        ]
+      }
+    ]
+  },
+  "39061293959": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117479631693,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117479728644,
+        "name": "source-ready",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Observe exact placement without restarting it"
+        ]
+      }
+    ]
+  },
+  "39043210978": {
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 117426690566,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117427115868,
+        "name": "initial",
+        "status": "completed",
+        "conclusion": "success",
+        "active": []
+      },
+      {
+        "id": 117479132555,
+        "name": "continuation",
+        "status": "in_progress",
+        "conclusion": null,
+        "active": [
+          "Restore exact published process on the next hosted runner"
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
 ## Current: independent source queue for repaired TX; CDR buffers physically verified
 
 Checked 2026-10-17T20:41:07.275540+00:00. CLOUD ONLY. Corrected TX source255f0804d02cba941f2a63fc13db75119709131a was pending run39066939313 with ZERO jobs: waiting on old39066521495 publication. Verified zero jobs immediately before cancelling ONLY that pending run. No simulation/CAD process was stopped. Old native failures and still-live cold publication117495612074 are preserved. Workflow concurrency now isolates exact source SHA, cancel-in-progress:false; the new source-push successor must run the unchanged private builder/adapter corrections. Observe the successor, do not dispatch duplicates. Native physics has not passed yet.
