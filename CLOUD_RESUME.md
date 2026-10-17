@@ -1,3 +1,15 @@
+## Latest exact follow-up and completed gate evidence (2026-10-17)
+
+Cloud-only; workspace empty. Tree32 connectivity-first run38989984341/job117270007252 is completed at source77d3628b5bc701449fe248d8b02e7216a5e955ea. It uses identical rejectedGDS and unchanged nativegates; final emittercountDRC must stillfail until redesign. No waiver. Inspect actual LVS/faults before changing topology or claiming connected31macros.
+
+Nominal6 run38987814037 COMPLETE/PASS in scoped electrical review:768output samples min241.144mV,CMOS216.226mV,final202.205mV,zeroHBT/MOSfailures. Summary649144994 SHA31fd011851148aab872e58f8d5a0424a473d1471e754317206f213ba06eb0b77;parts649145103 SHAba4d5b49e1f76a2acaee85e5ca95cff883bb58d833c0f379e5d7b8d110030a8e. Hot6stillFAIL, noPVT/layoutadoption.
+
+Cold3 run38988006162 COMPLETE/native0/no warnings but FAIL originalMOS1.32Vlimit: 304rawMOS fail, worst1.326405324323V. Allsampleddata/HBTscreens pass; this doesnotwaiveMOSoverstress. Summary649145337 SHA88f7b5bd306b7266ea7d2ca38c5e5e6085cb3c3e90d3b2435d0aaff31576f57d;parts649145381 SHA86d2e603d9ebe19c52acb3f6f09e0900e9f750d68ac05fe23ae50c87366e6e93. Hot3alsofaileddata/headroom. Reject shorter-gate-onlystrategy; gate3 notadopted.
+
+Allgate6/9/3corner andnominal6 runs are terminal; thermalbothcorners terminal. Next: inspect32nativeLVS, develop fullchipemitter-budgetedstages with unchanged8Gb/srequirements; use exact actual32input cadence, notlabel4:1experimentas32. Candidatebudget arithmeticONLY, notimplemented:28lowstagesNx1+2highpreNx4+final77=755/lane3020fourlanes;all30preNx1=647/lane2588fourlanes. Must additionallybudgetPLL/CDR/clock/TX and prove nativeelectrical+geometry/freshRC. OriginalPHYgoal notshrunk. Evidence docs/evidence/tx-gate-final-screen-and-tree32-next-20261017.json. OriginalPLL38982797234/Ethernetroute38978702458/PCIeCORRPREboot38984849452 remain preserved.
+
+---
+
 ## Actual32:1 physical prototype generated; native emitter-budget DRC failure retained (2026-10-17)
 
 This turn is PROGRESS. New cloud_tx_tree32_assembly.py/workflow tx-tree32-physical-cloud.yml generated31real macros (30pre+1final),60differential-leg intermacro wires,162ports,1674reference devices/589HBT. Source9da2c7536307ad28c41a2c22bd1cedea54eed785, run38989386738 terminalFAIL. ActualGDS9af71873f74ce5d24a14d5dc8bbb218e3100d6e9030b5616c7f6db307133828d. DRC executed560categories and produced one npn13G2.bR marker, no pass. Reference emitter sum4427 (30x145+77); independent nativegeometry rule rejects >4000recommended chip emitter budget. Rule exactupstream SHA4826fe27... read/verified, not disabled. Fourlane tree projection17708 beforePLL/CDR/clock/TX; requires emitter-budgeted/mixed architecture development. Neither manufacturer waiver nor success claimed. Current prototype has not yet run LVS because strictDRC stopped first.
