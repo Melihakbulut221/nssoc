@@ -1,3 +1,9 @@
+## Stiff625 physical anchors and intrinsic model passed; freshRC launched (2026-10-17)
+
+39010222637/sourcea2f48cdf passed all16terminal/14plane/fiveconductor geometry and sixactualanchor faults; independently built actualsixdevice intrinsic model with3finitebodycontacts and eightactualmodel faults. Both completearchives/everyoutputverifiedinRAM. Receipt tx-clock-headroom-device-models-pass-20261017.json pins provenance. New tx-clock-headroom-rc-cloud uses actualnewgeometry/14planes with unchanged native metalR/C-conservation/13rawfault gates; nooldRC reuse. Nextcompose intrinsic+freshwires and integrate loaded32tree.
+
+Trimmedtree composition39009975834 native summary inspected and passed; attempttofetch33MBarchive inRAM timedout before any remoteedit. This is observationfailure, NOT nativejobfailure; do notrestartcomposition. Wave successor is NOT launched yet. Need receiptandwavecontroller variant/clock625/GDS changes, then fullnative matrix. Mainchip39009508522,PLL39007535633,oldwire39004595306 stilllive. Allcloudonly/fullgoalOPEN.
+
 ## Stiff625 terminal/LEF/conductor proof verified; anchors and intrinsic model launched (2026-10-17)
 
 39009656993/source4be54e4d passed independent actual6device terminalbinding/sixfaults, nativeLEF/pins/threefaults, and fiveconductor wiregraph. Fullarchives and everyoutput hashverifiedinRAM; receipt tx-clock-headroom-geometry-pass-20261017.json pins allthree summaries/manifests/archives. New tx-clock-headroom-device-models-cloud restores exactpassed witnesses for14physicalreferenceplanes/16terminals and finite-contact sixdevice model/eightactualmodel faults. Originalvariants and limits preserved; no6.5um model/RC relabelled.

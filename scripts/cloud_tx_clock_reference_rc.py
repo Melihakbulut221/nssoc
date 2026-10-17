@@ -16,6 +16,8 @@ SOURCES={
 
 SOURCES['l5p7']=dict(run=38962062682,head='1c804f1faca16917fade3ed7d5371098bdae86be',summary='455a655aa99d7a299e9bda320cb2a5984645a7328b89af4a5d0ec8a6916c2e74',parts='910c6069cca3047e577b6ec5002c529a9517d824514c2dd671dbc06fc2dcd845')
 
+SOURCES['l6p25']={'run': 39010222637, 'head': 'a2f48cdf278448ad38c6bb291f2ce467d8e698e2', 'summary': '617a932a5f887d39450fc58e1cdc24e6925b8bfdf56ce65cb5e824855c09efba', 'parts': '2b80f96c1d69fa1062073e400ee5f86796552292e531c4a350d78fac274576b7'}
+
 def main():
     global OUT
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);args=parser.parse_args()
