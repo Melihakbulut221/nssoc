@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: tx-balanced-v5-pre-physical-cloud
 on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/tx-balanced-v5-pre-physical-cloud.yml]
   workflow_dispatch:
 permissions:
   contents: read
@@ -48,7 +51,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Wait for exact full32 native pass then generate fresh prestage GDS and DRC LVS faults
+      - name: Verify exact full32 native pass and generate fresh prestage GDS with DRC LVS faults
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_tx_balanced_v5_physical.py --circuit-profile cascade158 --variant critical_buses_kelvin_supply_direct --boundary-pins --boundary-policy nearest_pair_tight --prestage-nx ${{ matrix.nx }} --prestage-headroom-trim
