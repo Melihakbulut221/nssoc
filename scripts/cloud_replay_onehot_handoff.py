@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-replay-onehot-handoff'
 REPO='repos/Melihakbulut221/nssoc/'
 SOURCES=[(39059432529,'replay-onehot-native-boot-cloud','5c4137e553a0eb647873bc0c41592259e0b111e0'),
- (39059439328,'pcie-transaction','5c4137e553a0eb647873bc0c41592259e0b111e0'),
+ (39059432338,'pcie-transaction','5c4137e553a0eb647873bc0c41592259e0b111e0'),
  (39059432637,'replay-onehot-bank-read-cloud','5c4137e553a0eb647873bc0c41592259e0b111e0'),
  (39059432485,'replay-onehot-cloud','5c4137e553a0eb647873bc0c41592259e0b111e0')]
 def api(path):return json.loads(subprocess.check_output(['gh','api',REPO+path]))
@@ -65,6 +65,7 @@ def main():
                 run=api('actions/runs/'+str(number))
                 assert run['head_sha']==head and run['head_branch']=='codex/complete-open-work'and run['run_attempt']==1
                 assert run['path']=='.github/workflows/'+workflow+'.yml'
+                assert run['event']=='push','Physical source must bind the branch push, not the cancellable PR merge run'
                 row={k:run[k]for k in ('id','head_sha','status','conclusion','html_url')};rows.append(row)
                 assert run['status']!='completed'or run['conclusion']=='success',('Source terminal unsuccessful; no successor',row)
             r['sources']=rows;save()
@@ -86,7 +87,7 @@ def main():
         spec=OUT/'verified-boot-source.json'
         subprocess.run([sys.executable,str(ROOT/'scripts/check_pcie_onehot_banked_boot_source.py'),
             '--boot-run','39059432529','--boot-head',SOURCES[0][2],'--artifact',str(artifact['id']),
-            '--zip-sha256',digest,'--protocol-run','39059439328','--out',str(spec)],check=True,cwd=ROOT)
+            '--zip-sha256',digest,'--protocol-run','39059432338','--out',str(spec)],check=True,cwd=ROOT)
         subprocess.run([sys.executable,str(ROOT/'scripts/preserve_replay_onehot_boot_evidence.py'),'--source-spec',str(spec)],check=True,cwd=ROOT)
         proof=json.loads((ROOT/'cloud-corrpre-pcie-mbist-boot-evidence/result.json').read_text())
         assert proof['gate_result']['passed']and proof['gate_result']['sources_unchanged']and proof['source_spec']==json.loads(spec.read_text())
