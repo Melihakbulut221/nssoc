@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Bind actual1674device32:1 tree to all native parent metal RC; no PHY acceptance."""
-import json,os,shutil,subprocess,sys,tarfile
+import argparse,json,os,shutil,subprocess,sys,tarfile
 from pathlib import Path
 from run_cloud_tx_layout_repair import ROOT,fetch,sha
 from cloud_tx_tree32_assembly import topology
@@ -11,20 +11,27 @@ TOP='nssoc_tx_tree32_budget_high8_core_v1'
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
-    receipt=json.loads((ROOT/'docs/evidence/tx-tree32-budget-extraction-pass-20261017.json').read_text())
+    global TOP
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--variant',choices=('budget_high8','budget_high3'),default='budget_high8')
+    selected=parser.parse_args().variant
+    high3=selected=='budget_high3'
+    TOP='nssoc_tx_tree32_'+selected+'_core_v1'
+    receipt_name='tx-tree32-high3-extraction-pass-20261017.json' if high3 else 'tx-tree32-budget-extraction-pass-20261017.json'
+    receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
     expected_counts=dict(devices=1674,R=receipt['resistors'],C=receipt['capacitors'])
-    assert expected_counts==dict(devices=1674,R=114815,C=76347)
+    assert expected_counts==(dict(devices=1674,R=114819,C=76351) if high3 else dict(devices=1674,R=114815,C=76347))
     assert (receipt['devices'],receipt['ports'],receipt['conductors'],receipt['probes'])==(1674,162,377,3262)
     assert len(PORTS)==len(set(PORTS))==162
     spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     layout=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
-    out=ROOT/'hw/soc/out/cloud-tx-tree32-budget-assembly'
+    out=ROOT/'hw/soc/out'/('cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-composition-input.tar.gz'
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],source=receipt,
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=selected,source=receipt,
         qualified_pex=False,serial_phy_complete=False,native_transient_accepted=False,adopted=False,
-        scope='Actual31macro32:1 tree and complete parent metal graph. Source-sized high8 schematic failed electrical gates; this model is a retained reference, not an acceptedPHY. Body spreading/RF qualification,loaded waves/fourlanes/mainchip remain open.')
+        scope='Actual31macro32:1 tree and complete parent metal graph. No electrical acceptance inferred from composition. Nominal-only high3 schematic success does not erase fixed-cold PVT failure; high8 electrical rejection is also retained. Body spreading/RF qualification,loaded waves/fourlanes/mainchip remain open.')
     adaptations = {}
 
     def restore(pin,directory):
@@ -60,7 +67,8 @@ def main():
         extraction=json.loads(extraction_path.read_text())
         assert extraction['status']=='PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
         assert extraction['native_geometry_census']==receipt['native_geometry_census']
-        assert extraction['variant']=='tree32_budget_high8'
+        assert extraction['source_head']==receipt['source_head']
+        assert extraction['variant']=='tree32_'+selected
         assert extraction['audit']['actual_exported_resistors']==expected_counts['R']
         assert extraction['audit']['actual_exported_capacitors']==expected_counts['C']
         protected={str(q):sha(q) for sub in ('layout','physical','wire96') for q in (out/sub).rglob('*') if q.is_file()}
@@ -178,6 +186,10 @@ def main():
         (wire/'tree-topology-check.json').write_text(json.dumps(topology,indent=2)+'\n')
         interface_helper=wire/'bind-tree-interface.py'
         interface_helper.write_text("# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nimport json,hashlib\nimport pya\nB=Path(__file__).resolve().parent;P=B.parent\nlayout=json.loads((P/'layout/result.json').read_text())\nsource=json.loads((P/'wire96/native05/result.json').read_text())\nlocations=json.loads((P/'wire96/device-locations01.json').read_text())\nanchors=json.loads((P/'wire96/anchors08.json').read_text())\nbinding=json.loads((P/'binding96/binding01.json').read_text())\ng=pya.Layout();g.read(str(P/'layout/nssoc_tx_tree32_budget_high8_core_v1.gds'))\nl=pya.LayoutVsSchematic();l.read(str(P/'physical/lvs/result.lvsdb'))\nlayer=l.layer_by_index(source['native_layer_mapping']['134'])\ndx,dy=layout['origin_translation_um']\ndef shifted(box):\n b=pya.DBox.from_s(box);return pya.DBox(b.left+dx,b.bottom+dy,b.right+dx,b.top+dy)\ndef probe(endpoint):\n macro,port=endpoint.split('.');box=shifted(layout['placements'][macro]['ports'][port]);p=box.center()\n point=pya.Point(round(p.x/g.dbu),round(p.y/g.dbu));net=l.probe_net(layer,point)\n assert net is not None\n return dict(endpoint=endpoint,point_dbu=[point.x,point.y],native_net=net.name,native_cluster=net.cluster_id)\nfinal_box=shifted(layout['placements']['f']['bbox_um'])\ndevices={d['native_id']:d for d in locations['devices']}\nresult=dict(status='PASS_REAL_INTERMACRO_ENDPOINTS_TO_ALL_FINAL_HBT_BASES',modes={'compact':{},'wire':{}},references={},ideal_aliases_inserted=False)\nfor label,endpoint in [('ap','a.op'),('an','a.on'),('bp','b.op'),('bn','b.on')]:\n a,b=probe(endpoint),probe('f.'+label);assert a['native_cluster']==b['native_cluster']\n rows=[]\n for r in anchors['rows']:\n  if r['model']!='npn13G2' or r['terminal']!='B' or r['native_cluster']!=b['native_cluster']:continue\n  box=pya.DBox.from_s(devices[r['device']]['pcell']['bbox'])\n  if (box & final_box)!=box:continue\n  assert r['disposition']=='ACTUAL_TERMINAL_METAL_POINT_REFERENCE'\n  rows.append(r)\n assert len(rows)==3 and len({r['device']for r in rows})==3\n result['references'][label]=dict(endpoints=[a,b],intrinsic_terminals=rows)\n result['modes']['compact'][label]=['xtree.'+binding['node_map'][b['native_net']].lower()]\n result['modes']['wire'][label]=sorted('xtree.'+r['wire_anchor'].lower() for r in rows)\nassert len({r['endpoints'][0]['native_cluster']for r in result['references'].values()})==4\nresult['inputs']={str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in [Path(__file__),P/'layout/result.json',P/'layout/nssoc_tx_tree32_budget_high8_core_v1.gds',P/'physical/lvs/result.lvsdb',P/'wire96/native05/result.json',P/'wire96/device-locations01.json',P/'wire96/anchors08.json',P/'binding96/binding01.json']}\n(B/'tree-interface-probes.json').write_text(json.dumps(result,indent=2)+'\\n');print(result['status'])\n")
+        # Select the exact restored parent GDS in the generated native probe script.
+        helper_source=interface_helper.read_text()
+        assert helper_source.count('nssoc_tx_tree32_budget_high8_core_v1.gds')==2
+        interface_helper.write_text(helper_source.replace('nssoc_tx_tree32_budget_high8_core_v1.gds',TOP+'.gds'))
         run([app,'python',interface_helper],'bind-real-final-interface-probes')
         interface=json.loads((wire/'tree-interface-probes.json').read_text())
         assert interface['status']=='PASS_REAL_INTERMACRO_ENDPOINTS_TO_ALL_FINAL_HBT_BASES'

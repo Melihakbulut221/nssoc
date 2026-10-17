@@ -1,3 +1,13 @@
+## Fresh Nx3 full32 RC passed; exact device/RC composition launched (2026-10-17)
+
+PROGRESS. Extraction39003193557/source7cbfeeaeff869182413e432cb43dac43bf3caaf8 PASS:actual1674devices4774terminals/377metalcomponents/378nets/162ports,114819R76351C. Complete native R value/edge multiset, conductor ownership, every ground/mutual C attachment and collapsed142884matrix entries conserved;13actualcorruptions rejected. No intrinsic ideal aliases or deleted nodes.8655short warnings verified within same physical conductors. Substrate spreadingR/RF qualification remains open. Receipt docs/evidence/tx-tree32-high3-extraction-pass-20261017.json pins summary649556174/parts649556230/archive649556291.
+
+New tx-tree32-high3-composition-cloud uses exact high3 extraction receipt/GDS and new measured114819R76351C census. Original high8 default retained. Native1674device binding, independent output reparse/six actual faults,377component recovery of native nets and actual final HBT interface probes retained. No high8 RC reused. Record result before full RC-loaded native transient. No electrical acceptance inferred.
+
+Cold-high PVT subjob from39002430107 produced summary649550604:all604HBT512MOS bounds and768output bits passed, but final andlevel4 common-mode exceed existing2.05V ceiling (max2.055244V/2.060439V), hence schematic screen FAIL. No corner limit relaxed; hot_low still running atlastcheck. PLL full1us original acquisition failure preserved in prior receipt; MBIST38994926932 still live. Cloud-only/localempty/goalOPEN; prior/currentturnPROGRESS.
+
+---
+
 ## PLL full1us completed; original acquisition gate rejected (2026-10-17)
 
 PROGRESS. Run38982797234 continuation117300617099 finished actual physical845 one-us capture after2940.666s additional host execution. Prior payload unchanged, all protected inputs unchanged, zeroOP0V/102OFF readbacks1, nativeexit0/no diagnostics. 3201212complete35columnrows/end1us/maxstep.3125ps. CaptureSHAca79aa873c5f4d1957d47f6e4151235a7db8c7adae1f67fba48d2e6c909555b7. This is completed simulation, NOT accepted PLL/PHY.
