@@ -32,6 +32,13 @@ def main():
         assert all(sha(Path(p))==h for p,h in protected.items())
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==spec['runtime_sha256']
         r['runtime_sha256']=sha(app);save()
+        tech=ROOT/'pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef'
+        tech.parent.mkdir(parents=True,exist_ok=True)
+        fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef','e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6',tech)
+        assert tech.stat().st_size==28396
+        protected[str(tech)]=sha(tech)
+        r['technology_lef_source']=dict(pdk_commit='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c',url='https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef',sha256=sha(tech),bytes=tech.stat().st_size)
+        save()
         for name,command in [
           ('generation',[app,'python',ROOT/'hw/soc/flow/make_pcie_sampler_cell.py','--pdk',ROOT/'pdk','--out',OUT/'layout']),
           ('physical',[sys.executable,ROOT/'hw/soc/flow/check_pcie_sampler_unsimplified.py','--layout',OUT/'layout','--pdk',ROOT/'pdk','--out',OUT/'physical','--app',app])]:

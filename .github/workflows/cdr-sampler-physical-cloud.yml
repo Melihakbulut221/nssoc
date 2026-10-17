@@ -34,7 +34,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Generate exact sampler and verify all35devices deep-flat DRC LEF and faults
+      - name: Restore exact PDK technology LEF and verify all35sampler devices and faults
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_cdr_sampler_physical.py

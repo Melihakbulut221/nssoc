@@ -1,3 +1,11 @@
+## Latest: sampler environment repaired with exact pinned PDK LEF
+
+Checked 2026-10-17T20:53:33.552543+00:00. Sampler39068099037/source23623b244091ac587843ee2bdfc1d3c77e7045b2 failed BEFORE nativeDRC/LVS because runtime archive omits pdk/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef. Geometry generation passed. Complete failed summary retained in docs/evidence/cdr-sampler-missing-tech-lef-20261017.json. Controller now fetches exact IHP c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c technologyLEF SHAe3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6 (28396bytes), adds it to protected inputs and records provenance. No circuit/layout/verificationgate changed. Observe successor triggered by this commit, not the terminal predecessor. CLOUD ONLY.
+
+TX39067769686 still in nativewire stage with compact jobsqueued/starting; retimephysical39067622805 now started dependencies, data/select alreadypassed. Mainchipboot39059432529/postCTS39061293959/PLL39043210978 verifiedlive. Continue actual16macro CDRparent integration once leafphysical proofs ready; fullgoalOPEN.
+
+---
+
 ## Current: new CDR leaf geometry verified; corrected TX and strict sampler live/queued
 
 Checked 2026-10-17T20:48:19.851109+00:00. This goal turn PROGRESS: exact CDR buffer cells implemented and physically passed, feed-forward cell candidates implemented with verified results, strict sampler unsimplified deep/flat verification launched, two source-binding bugs repaired without changing electrical limits. CLOUD ONLY overrides old goal wording. Local activeworkspace remains empty; no local CAD/tests/results.
