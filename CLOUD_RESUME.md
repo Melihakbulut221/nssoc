@@ -1,3 +1,17 @@
+## Both actual TX corners rejected; hot dynamic cause isolated, resistor hypotheses running (2026-10-17)
+
+Cloud-only; workspace empty. The hot raw-wave replay38985443422 has COMPLETED/PASSED exact reproduction of every original engineering field and missing-current-probe rejection. It is diagnosis, not electrical acceptance. Summary649029088 SHAfae624f004371885491097dc66ba42cfc86a76d2341d975e92c6d4c46e7d67e3; parts649029181, archive649029225/115077bytes. All384 hot CMOS-below150mV samples occur on changed source bits; repeated bits and initial samples pass. All fourbanks show same pattern: transition margins23-28mV at0.3UI,48-52mV at0.5UI,69-73mV at0.7UI; repeated-bit margins~175mV. Native source voltages are correct0/1.14V. This supports a driver-settling hypothesis, not a fitted-phase fix. HBT6/7 minima occur around3.38656/4.88759ns with collectors~434/433mV and emitters~46mV; all native below400mV samples retained.
+
+Cold_high job of38983807650 also COMPLETED with native0/no warnings, but component_screen_passed=false. All768output phases pass minimum264.883mV; CMOS minimum294.576mV and final240.238mV pass. Actual tree HBT125/133 fail original400mV VCE limit at399.353056/398.725897mV. No MOS failures. Preserve small failures; no limit waiver. Summary649038740 SHAb1da9dd5e4815827113503a87b4f1e77ac01a71467c1f257bf1249d31c636971; parts649038807 SHA604f48c21b999036878370369f267447726ee94f88d3fbf3f77526d552195a16; archive649038903/775761625bytes.
+
+New gate-resistor SENSITIVITY38985964196 sourcefcf721da573ba667928ac1f11fed732d01325b69, workflow tx-gate-corner-sensitivity-cloud.yml, script cloud_tx_gate_corner_sensitivity.py. Four jobs hot_low/cold_high x gate_length6/9. Only XD85 source-bound native resistor din->gate changes width2um/length12um to6 or9um. Native intrinsic38945917784 proves semantic nodes and originalparameters; physical composition38946552766 proves actual terminal bindingw00155/w00156/BULK. All99other devices and260R295C retained with four undeclared mutation controls. New geometries are NOT realized; all old wireRC stay frozen. Full original34ns/256bits/phase/device gates, physical5p7clock and actual162tree unchanged. Do not promote any passing sensitivity to layout acceptance. If promising across corners, implement actual driver GDS, rerun nativeDRC/LVS/rawdevice/terminalRC/composition before original loaded tests and full32/x4 integration. Earlier12um gate was intentional cold overshoot damping; both corner jobs are necessary.
+
+Cold raw-wave diagnosis 38986103076 source2851f693e74efa35e921f4bc75312ab8cc3ba58b dispatched using same exact-replay script and independent cold report; no native resimulation. Workflow tx-hot-corner-diagnosis-cloud.yml now matrixcold_high only; hot completed source preserved. Group tx-hot-corner-diagnosis-cold_high. Inspect HBT125/133 actual native bindings/minimum samples before proposing a separate headroom repair.
+
+PCIe-enabled CORRPRE boot38984849452 passed boundary-profile tests and is running; full1usPLL38982797234 and Ethernetroute38978702458 remain active. No healthy job restarted. Receipt docs/evidence/tx-corner-diagnosis-and-gate-hypotheses-20261017.json records exact sources. Full goal remains OPEN.
+
+---
+
 ## Actual hot-corner TX FAILED; native-wave diagnosis dispatched (2026-10-17)
 
 Cloud-only; local workspace empty. This turn is PROGRESS: mapped PCIe boot qualification added and actual hot-corner failure measured; full goal stays OPEN.
