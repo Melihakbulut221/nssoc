@@ -1,3 +1,10 @@
+## One-shot cloud boot to CTS to repair handoff prepared (2026-10-17)
+
+Previous turn VERIFIED WAIT; allfive native handles stilllive. New corrpre-banked-handoff-cloud can be dispatched once after its own source/archive/idempotency controls pass. It waits on EXACT boot39016026619/f65c0c35, never cancels/restarts. On success it hashes original fullartifact, repeats sixproof/protocol source binding and existing actual28checks/system+bothEthernetMBIST/native source verifier, then dispatches source-bound placement. A separate hosted job waits on that EXACT placement, checks native report/source/parts and dispatches prepared postCTS repair; repair independently rehashes full original source archives before CAD. Any failed source stops handoff. Native acceptance is never inferred from coordinator success.
+
+Placement and postCTS now have explicit candidate run-names to detect/reuse existing work. Failed or ambiguous successors are preserved for review, no automatic rerun. An uncertain dispatch is not retried blindly. Once handoff is live, let it own these two dispatches; inspect its job output next_run instead of manually duplicating them. Original PHY/PLL comparisons remain independent. Allcloud/localempty/fullgoalOPEN.
+ 
+
 ## Banked continuation controls passed; native prerequisites live (2026-10-17)
 
 39019902200/source10d241eb controls117359471038 PASS: actual cloud syntax/source guard fixture rejected13source mutations,4unsafe paths; real archive roundtrip plus6corruptions passed. This is continuation infrastructure validation ONLY, not physical repair evidence. Native job117359536550 deliberately skipped onpush. Receipt corrpre-banked-resume-controls-20261017.json preserves loghash and exact counts. Next dispatch remains gated on completed NEWboot39016026619 then NEWplacement; no use of old timing DB. Mixedclockwire39018157113, comparisons39011282078/39012081694 and PLL39007535633 confirmed in_progress at09:07UTC. No process restarted. This turn PROGRESS; fullgoalOPEN/cloudonly/localempty.
