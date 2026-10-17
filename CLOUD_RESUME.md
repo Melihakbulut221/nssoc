@@ -1,3 +1,13 @@
+## Current cloud continuation: corrected v5 source controls PASS
+
+Checked 2026-10-17T20:26:24.009957+00:00. Exact successor39066521495/sourcea03d13db7bdaff5139839930540384210f5c96cf is queued. New controls117495242773 PASSED in GitHub: original builder hash, adapted builder hash, exact whitelist-only delta, composed model receipt and rejection of stale hashes. Native job states at checkpoint: 117495612006 native-full32 (wire, nominal, none) in_progress/None, 117495612032 native-full32 (compact, nominal, swap_leaf_select) queued/None, 117495612046 native-full32 (compact, nominal, none) queued/None, 117495612074 native-full32 (compact, cold_high, none) queued/None, 117495612094 native-full32 (compact, hot_low, none) queued/None. Do not claim electrical pass until native reports are verified. Original run39065872931's five pre-simulator failures remain preserved. If a successor fails inspect the actual next failure; do not loosen checks or restart unchanged inputs.
+
+CLOUD ONLY remains mandatory. Local active workspace rechecked empty, no local CAD/simulation process; no local files created this turn. Existing8hour heartbeat already specifies GitHub-hosted execution only and remains ACTIVE. Cloud migration Release cloud-migration-final-checkout-20261013 retirement-progress.json confirms COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE with all9 archive batches PASS_EVERY_REMOTE_ARCHIVE_MEMBER (3008078533 logical bytes). Unrelated repositories/documents remain untouched.
+
+Exact mainchip boot39059432529 still running native PCIe/system/two-Ethernet-MBIST; placement39059854681 waits that boot; postCTS39061293959 waits exact placement. PLL39043210978 continuation117479132555 still restores/runs its actual published process. Preserve all live jobs. Full serial Gen3x4, routed mainchip and final timing remain OPEN. Read the following source/evidence records for detailed next work.
+
+---
+
 ## Latest correction: loaded v5 preparation failure preserved; private builder fix
 
 Checked 2026-10-17T20:23:25.620579+00:00. CLOUD ONLY; active local workspace empty. Run39065872931 FAILED in all5 native jobs BEFORE ngspice: old run_cloud_tx_mux4.py:415 rejects new model SHA. This is not an electrical rejection. Complete failure report assets remain in their Releases; hashed compact receipt docs/evidence/tx-balanced-v5-wave-binding-failure-20261017.json preserves all5 cases.
