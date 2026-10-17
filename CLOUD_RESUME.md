@@ -1,3 +1,13 @@
+## Latest: complete PD394 wire composition passed; native MIM separation comparison launched
+
+Checked 2026-10-17T22:19:36.992782+00:00. Composition39074336535/sourcec3d9afcbbd0a6dc006882eb61c7c174ac7f3dc09 PASS: all394PDKdevices+8933R7649C preserve1134terminals/776physicalpoints;13compositionmutations rejected, originalsunchanged. Fullreceipt docs/evidence/cdr-retimed-composition-pass-20261018.json, summary651750342/parts651750424. This isassemblyverification, notloadedtransientorRF/bodyqualifiedPEX.
+
+New cdr-mim-extraction cloudworkflow selectsactual3.6/4.8/40umMIMPcells fromsamePDGDS. Exports pairedwire-onlyandMIM-awareviews, provesallmetal/via geometryidentical, labelsactualplatepoints, runsnativeMagic extraction6cases, requiresnointrinsicdevice inwire-onlyandexactonecorrect-sizedcap_cmim inMIM-aware, recordsallresidualC. Mustinspectrawnativeoutput; no subtraction/fullparentcorrection yet. Purpose: resolvepotentialordinaryTM1/M5overlap doublecount whereintrinsicMIMmodelalreadyaccountsplatecap. Do not inferfullparentaccurateC fromcomponent/R/C bookkeeping. Afterreview implementMIM-awarefullparentextraction withstrictnativegraphandcapretirementchecks, thenloadedPD/actualVCOfeedback. AllworkCLOUDONLY; threegoaltopicsOPEN.
+
+Verifiedlive thisturn: TXfullwire117498996909, mainchipboot117474959878, placement/sourcewait117475389870,postCTS/sourcewait117479728644,PLLcontinuation117479132555. Do notrestart healthyhandles. Localworkspaceempty. GoalturnPROGRESS.
+
+---
+
 ## Latest: all394 native model bindings passed; complete wire composition launched
 
 Checked 2026-10-17T22:15:27.718848+00:00. Binding39074041419/source4f5fdf1991cb86a128c9c1cbdfb62104b2f21513 PASS: all394devices122HBT102rppd11MIM159finitecontacts,1134namedterminals andpinnedPDKmodelparameters, exactnativeSPICEcanonicalgeometry,3positive/3negativebinaryreadbackcontrols and8modelmutations. Fullreceipt docs/evidence/cdr-retimed-binding-pass-20261018.json; summary651739159/parts651739193.
