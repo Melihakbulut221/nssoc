@@ -1,3 +1,11 @@
+## Actual eleven clock macros connected to full32 transient bench (2026-10-17)
+
+Clock composition39010928232/source17283ade passed exact6devices13R28C/16terminals/fiveconductors/11actual corruptions. Complete5646767byte archive and479output hashes verified in RAM; receipt tx-clock-headroom-composition-pass-20261017.json. This proves composition, not electrical behavior.
+
+New tx-tree32-clock-wire-wave-cloud binds all ELEVEN full32 clock references to actual l6p25 model c2f8e8dc, preserving604HBT/512MOS, all124input legs/372data bases, original34ns/256bits/three phases/bounds/solver/source bits. Total66clock devices143R308C/33finite taps. Every group has four actual binding corruptions (44 checks); HBT terminal/current and OFF flags remapped. Five cloud cases: compact nominal/hotlow/coldhigh, wire nominal, actual deepest selector fault compact. Shared waveform controller default and old4input adapter unchanged. Native runs must be inspected; no success presumed. Ideal modulation, supply/reference boundaries and macro-to-macro wires remain; CMOS/output and fullPHY/mainchip integration open.
+
+Preserve live mainchip39011120664, schematic-clock comparison39011282078, PLL39007535633 and oldwire39004595306. No local checkout/CAD/artifacts; workspace remains empty. Goal OPEN. Previous turn VERIFIED WAIT; this turn PROGRESS.
+
 ## Exact headroom full32 build guard repaired after pre-simulation rejection (2026-10-17)
 
 39010857720 all5cases stopped BEFORE native simulation at legacy assembled clock_reference==stiff65 guard. Cloud restoration and newGDS124leg/372base binding had completed; archives/failures retained. Extend assembled builder only for streams32 + exacttrimmedcompact163a6dfd/wire83e12816 SHA + pinnedclock625597ecb6d/feed650579e0. Originalstiff65 path retained; no thresholds/stimuli/solver/sourcebit changes. New matrix successor reruns terminal failed build, not a liveprocess. Actual fullarchive hash is enforced by cloudconsumer; RAMtimeout was observationonly.
