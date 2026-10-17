@@ -1,3 +1,11 @@
+## Banked global-route continuation prepared behind actual repaired-logic proof (2026-10-17)
+
+Previous goal turn PROGRESS: completed24case cold native rejection retained and exact new banked equation proof39031081958/sourcef9eb01a2 started. It is waiting for live repair39030330882; other live waveform jobs unchanged.
+
+New corrpre-banked-grt-cloud has separate wait and native jobs. It waits ONLY for exact39031081958/headf9eb01a2 actual proof, then independently restores full hash-verified proof/placement39029282884/repair39030330882 archives, binds original20SRAM/clocks20/4/8/8ns/5percentderate, exact repaired ODB and proven netlist. New flow only runs native GlobalRouting with existing propagated-clock/derate guards; no other placement, RTL, physical clock, routing-layer or capacity changes. Congestion permission must remainfalse; native NDR downgrade is an explicit rejection. Original failures and complete states always preserved, including interrupted states. Success is only a global-route checkpoint, not DRT/extracted timing/serialPHY approval. Next must inspect actual metrics, then continue detailed routing and fresh extracted STA from this exact checkpoint; never reuse older unbanked route.
+
+Push launches this new chain once; no manual duplicate dispatch. Source wait budget expiration never cancels or restarts live source. Allcloud/localempty/fullgoalOPEN. Prior and current steps remain progress, not completion.
+
 ## New banked postrepair logic continuation and rejected cold NODESET evidence (2026-10-17)
 
 Previous goal turn PROGRESS: cloud source Path fix and one new actual diagnostic run. Cold39030670479 now completed all24 native tables/all102physicalnodes. Original1uV agreement gate rejected1.406721858e-6V; all three initial paths also have native gmin in five ofeight states/directions. Neither declared seed fixes convergence. Receipt pll-pump-cold-nodeset-rejection-20261017.json binds exact summary and every raw table SHA; no thresholds changed, no repeated blind seed trial. Original acquisition remains rejected.
