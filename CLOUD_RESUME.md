@@ -1,3 +1,11 @@
+## Nx1 native physical run confirmed (2026-10-17)
+
+Source9459550c10a62cc76d8af5f96c874a7e66c29e0a, run38996604388, job117290438492. Pinned runtime preparation and Python syntax check passed; actual GDS/native physical verification step is running. Do not restart. Expected release group tx-pre-nx1-physical, output hw/soc/out/cloud-tx-layout-repair. Preserve failed geometry and diagnose native reports before changing any placement. Original default-profile regression also auto-triggered tx-critical-route-cloud38996604281; leave it running.
+
+Full32 high8 nominal117288746339 and actual fault117288746286 (run38996028457) remain in native simulation; no waveform result yet. Boot38994926932 and PLL38982797234 last confirmed live this turn. Goal remains OPEN. All files and execution on GitHub; local project remains empty.
+
+---
+
 ## Actual Nx1 prestage physical implementation started (2026-10-17)
 
 PROGRESS. New optional --prestage-nx1 path in run_cloud_tx_layout_repair.py uses exact source-bound resized() transformation from native full32 study38993903811, SHAaf7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd. These28 low-rate cells passed native HBT checks in that study; the overall candidate remains rejected because two fast Nx4 cells failed. Actual new PCells19Nx1HBT+8R+27taps,12ports. Two307.2um bleeder cells/taps translate down268.8um from original38.4um placement; every affected conductor is regenerated. This is a new geometry hypothesis, not assumed equivalent wiring or accepted RC.
