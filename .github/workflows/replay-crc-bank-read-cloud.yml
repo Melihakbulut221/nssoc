@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: replay-crc-bank-read-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/replay-crc-bank-read-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: replay-crc-bank-read-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: replay-d2-b18, kind: replay, parameters: '{"DEPTH":2,"MAX_BYTES":18}'}
+          - {name: replay-d3-b38, kind: replay, parameters: '{"DEPTH":3,"MAX_BYTES":38}'}
+          - {name: replay-d4-b38, kind: replay, parameters: '{"DEPTH":4,"MAX_BYTES":38}'}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prove arbitrary memory cuts, real faults and full sequential equivalence
+        env:
+          CASE_PARAMETERS: ${{ matrix.parameters }}
+        run: |
+          python3 -m py_compile scripts/check_pcie_tx_read_banks.py
+          python3 scripts/check_pcie_tx_read_banks.py --kind ${{ matrix.kind }} --parameters "$CASE_PARAMETERS" --out cloud-replay-crc-bank-read-${{ matrix.name }}
+      - name: Preserve all native proofs and counterexamples
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=cloud-replay-crc-bank-read-${{ matrix.name }}
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="replay-crc-bank-read-${{ matrix.name }}-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','replay-crc-bank-read-${{ matrix.name }}',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Preserve results on release failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: replay-crc-bank-read-${{ matrix.name }}-${{ github.run_id }}
+          path: cloud-replay-crc-bank-read-${{ matrix.name }}/
+          retention-days: 30

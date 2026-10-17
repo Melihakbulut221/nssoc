@@ -56,6 +56,8 @@ module soc_pcie_replay_tx #(
     reg [2:0] retries;
     reg ack_observed,ack_was_allowed,ack_was_stale;
     wire [31:0] next_crc;
+    wire replay_crc_residue_ok=((in_sop_i ? 32'hffffffff : input_crc) ^
+                              {24'b0,in_data_i})==32'h00be26ed;
     soc_pcie_crc32_byte input_crc_byte(.state_i(in_sop_i ? 32'hffffffff : input_crc),
         .data_i(in_data_i),.state_o(next_crc));
     function [PW-1:0] advance;
@@ -149,7 +151,7 @@ module soc_pcie_replay_tx #(
                     bytes[tail*MAX_BYTES+write_pos]<=in_data_i;write_pos<=write_pos+1'b1;
                     if(in_eop_i) begin
                         capturing<=0;
-                        if(write_pos<17 || next_crc!=32'hdebb20e3 ||
+                        if(write_pos<17 || !replay_crc_residue_ok ||
                            {bytes[tail*MAX_BYTES][3:0],bytes[tail*MAX_BYTES+1]}!=next_store_sequence) begin
                             source_error_o<=1;halt<=1;
                         end else begin

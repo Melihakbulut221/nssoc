@@ -1,3 +1,11 @@
+## Proven replay CRC RTL adopted; fresh native chip validation (2026-10-17)
+
+Run39041074376 passed all41bit predicate proofs, actualwrong-residue/wrong-byte counterexamples and fullunmaskedsequential proofs642/1289/1610points (DEPTH2/3/4,bytes18/38). Baseline/candidate each7replay+4reliablepacket testsPASS,wrongresidue7fail0skip. Canonical replay now EXACTcandidate1a15c0b9d6cfdfbf5ebed9a61c52901e126ca826008d167ff96bea4218a8f4dc. Frozenpre-residuefixture preserves a745b57c baseline matching oldchipboot. Receipt replay-crc-exact-adoption-20261017.json retains alloriginalreports/pins.
+
+New replay-crc-native-boot-cloud starts fresh CORRPRE+PCIe+system/bothEthernetMBIST mappedchip validation using unchanged native models, clocks, commands and28checks. New replay-crc-bank-read-cloud redoes originalarbitrarymemory+unmaskedsequentialbank proofs on changedreplay for all3sizes; do not reuse oldreplay sourceidentity. Canonical residue proof reruns against frozenfixture. Generic pcie-transaction nativeprotocol workflow mustalso pass at this newRTLhead. Existingold bankproofreceipt/handoff/gate sourcepins are NOT altered. A new source-bound physical handoff is stillrequired; oldincumbentclock200 routing remains separate andmustnotinheritnewRTLcorrectness or timing.
+
+Clock200GRT39041556309 active frome06941ee; TXreturn64wire39030593206 stilllive. FullserialPHY/mainchipDRT/finalsetupholdOPEN. Allcloud/localempty. CurrentgoalturnPROGRESS: PLLnumericalcomparison, provenactualRTLoptimization and freshnativevalidation, measuredroutefailure/newsearch.
+
 ## Clock-layer failure measured; extended native congestion repair (2026-10-17)
 
 Clock-layerGRT39038463008 TERMINALFAIL after1698seconds: actualMetal4..TopMetal2 clocks verified, NDR preserved(no downgrade warning), overflow328 versus original385. M2=1,M3=119,M4=16,M5=185,TM1=4,TM2=3;141519nets. No guide/state accepted. Fullreceipt corrpre-clock50-congestion-20261017.json retains native tail and immutable release pins.

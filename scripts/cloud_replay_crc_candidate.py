@@ -49,22 +49,24 @@ def main():
     def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        baseline=ROOT/REL;crc=ROOT/'hw/soc/rtl/pcie/soc_pcie_crc32_byte.v'
+        baseline=ROOT/'sw/tests/fixtures/pcie_chip_timing/pre-residue-replay-20261017.v';crc=ROOT/'hw/soc/rtl/pcie/soc_pcie_crc32_byte.v'
+        canonical=ROOT/REL
         assert sha(baseline)==BASE and sha(crc)==CRC
         remote=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/contents/'+REL+'?ref='+BOOT]))
         assert hashlib.sha256(base64.b64decode(remote['content'])).hexdigest()==BASE
         r['physical_boot_source']=dict(head=BOOT,replay_sha256=BASE,byte_identity_verified=True)
         yosys=Path(shutil.which('yosys')).resolve();iverilog=Path(shutil.which('iverilog')).resolve()
-        protected={str(p):sha(p)for p in [baseline,crc,yosys,iverilog,Path(__file__),ROOT/'scripts/check_pcie_replay.py']}
+        protected={str(p):sha(p)for p in [baseline,canonical,crc,yosys,iverilog,Path(__file__),ROOT/'scripts/check_pcie_replay.py']}
         original=baseline.read_text();altered=candidate(original)
+        assert canonical.read_text()==altered,'Canonical RTL differs from exactly proven candidate'
         folders={}
         for label in ['baseline','candidate','wrong_residue']:
             folder=out/(label+'-rtl');folder.mkdir();folders[label]=folder
             for p in (ROOT/'hw/soc/rtl/pcie').glob('*.v'):shutil.copyfile(p,folder/p.name)
-        (folders['candidate']/baseline.name).write_text(altered)
+        (folders['candidate']/'soc_pcie_replay_tx.v').write_text(altered)
         wrong=altered.replace("==32'h00be26ed","==32'h00be26ec");assert wrong!=altered
-        (folders['wrong_residue']/baseline.name).write_text(wrong)
-        r['candidate_sha256']=sha(folders['candidate']/baseline.name)
+        (folders['wrong_residue']/'soc_pcie_replay_tx.v').write_text(wrong)
+        r['candidate_sha256']=sha(folders['candidate']/'soc_pcie_replay_tx.v')
         r['cut_proof']=cut(yosys,out/'predicate',EXPR);assert r['cut_proof']['passed'];save()
         r['controls']={}
         for label,expr in [('wrong_residue',EXPR.replace('00be26ed','00be26ec')),('wrong_byte',EXPR.replace('in_data_i}',"(in_data_i ^ 8'h01)}"))]:
