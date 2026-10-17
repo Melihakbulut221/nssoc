@@ -1,3 +1,17 @@
+## Actual hot-corner TX FAILED; native-wave diagnosis dispatched (2026-10-17)
+
+Cloud-only; local workspace empty. This turn is PROGRESS: mapped PCIe boot qualification added and actual hot-corner failure measured; full goal stays OPEN.
+
+Hot_low job117250494710 of38983807650 completed native simulation return0, no diagnostics, original four corner mutations rejected, but component_screen_passed=false. All original output/interface gates were retained. Output251/768wrong-sign and328below100mV; minimum-271.501535mV. CMOS interface minimum23.136140mV,384/768below150mV,0wrong-sign. Final interface minimum-98.257837mV,1584/6912wrong-sign,3456below150mV. Two actual tree HBTs fail original400mV VCE gate: xtree.xd0006=388.188264mV,xd0007=386.296198mV. All672MOS screens pass. Do not attribute the complete failure solely to two HBTs: input swing is also badly degraded. Nominal passing margin under1mV did not survive the actual hot/low corner.
+
+Full evidence preserved: summary649016900 SHA dc06bf9d71e4be0201fad334039328aa6fbea54a1ef585d4205b35400060c6b0; parts649016971 SHA db5f2f4eea79bedf114c39478b06a45af388e8049471ff21b4e62c272f53b87a; archive649017047,754144583bytes,SHA621c25bd79adeb38a328dcb84aa8a45f0699244e095c3db84ad9c1eb57978103. Group tx-clock-corner-loaded-l2p4-series-l6p2-hot_low. Receipt `docs/evidence/tx-actual-hot-corner-failure-20261017.json`.
+
+New read-only diagnosis38985443422 source1814a8682fcb53c502766abd11f61a17f1b36379, workflow `tx-hot-corner-diagnosis-cloud.yml`, script `cloud_tx_hot_corner_diagnosis.py`, group tx-hot-corner-diagnosis-hot_low. Restores exact native wave/contract/op and actual162device binding. Replays every engineering field byte-for-value against published review, original missing-current probe fault retained. Locates all62HBT minima and saved-sample below400mV intervals. Adds original768CMOS phase samples broken down by bank/repeated versus changed source bits; reproduces original aggregate counters/minimum exactly and records actual168MOS terminal voltages per worst bank sample (all672 covered). No new native simulation or model change. Inspect this before choosing a physically realized repair; do not weaken limits, retime oracle or rescale voltage to hide the failure.
+
+Cold_high job117250494493 still live. Original1us PLL38982797234 and actual Ethernet route38978702458 still live. PCIe-enabled CORRPRE boot38984849452 passed profile/unit preparation checks and is in native recovery/mapped boot; its link-down-only scope remains below. Do not duplicate/restart any healthy job. Continue all original fullPHY/mainchip/setuphold requirements.
+
+---
+
 ## PCIe-enabled CORRPRE mapped boot qualification started (2026-10-17)
 
 Cloud-only; local workspace empty. Prior goal turn was VERIFIED WAIT (specific TX/PLL/Ethernet handles remained live). This turn adds a missing full-chip configuration check toward setup candidate integration.
