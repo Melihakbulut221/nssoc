@@ -1,3 +1,11 @@
+## Latest: MIM mask pilot passed and exposed explicit-device estimate double counting
+
+Checked 2026-10-17T22:32:57.845228+00:00. MIM39075117015/source19890a6759c1123f92f47c4d94cdae4985b211cf PASSall6nativecases, actualplateunions/metalvias preserved andonecorrectcap_cmim recognizedperawarecell. Wire-onlyvsMIM-aware residualPLUS/MINUSC:3.6um0.597510/0.143658fF,4.8um1.091230/0.220565fF,40um70.009297/2.349720fF. Fullreceipt docs/evidence/cdr-mim-mask-comparison-pass-20261018.json summary651773433/parts651773526. NativeMIM-aware3.6um ALSOexportsPLUS-to-sub19.800699fF whileexplicitcap_cmim model remains. Raw.ext hasnodePLUScap19800.7aF plusdevicecsubckt. Techsource marksdefaultareacap*mimcap1500/defaultperimeter40 asCDLdevice-valueestimation; explicitngspicecapmodelalreadycontainsCJ/CJSW. ThereforeDO NOTadoptplainMIM-awaretotalC asqualified.
+
+Successor addsprivateexplicit-model-onlytech view removingEXACTLYthosetwoCDLestimate declarations, retainingearlierphysicalparasiticrules andallothertechbytes.9nativecases comparewire-only,originalaware,andbyte-identicalGDSwithprivateexplicit-modeltech atall3sizes. Original6baselinecap/device outputs mustmatchpriorcapture. Recordallmutual/groundC andintrinsicdevicegeometry; nofullparentcorrectionclaimyet. Originalruntimeimmutable. Afterpilot evaluateactualC, thenfullPDnativeMIM-awareRC withstrictintrinsicdevice separation/audit. CLOUDONLY; fullgoalOPEN.
+
+---
+
 ## Latest: MIM plate union guard replaces storage-polygon count assumption
 
 Checked 2026-10-17T22:26:46.219445+00:00. MIM39074877198/sourceecdc0f6af0cdc55ac7f25d5b76e7ae7d5f34037a failedBEFOREMagic atpolygoncountguard. Recordednativecellcmim$2/device226 has4storedpolygonsperplate buttoparea6350400DBU2 equals2520x2520bbox andbottom23040000 equals4800x4800bbox. Polygoncountalone doesnotprove disconnectedmetal. Newguard requireszeroexactRegionXOR againsteachfilledboundingrectangle, a directgeometry/connectivityproof; originalmetal/via equality andinteriorpoint guards remain. No geometry edited. Failure preserved docs/evidence/cdr-mim-plate-storage-failure-20261018.json. Inspectsuccessor beforeinferringrectangleunion orMIMcapresults. CLOUDONLY; fullgoalOPEN.
