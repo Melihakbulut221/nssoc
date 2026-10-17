@@ -23,7 +23,7 @@ for a,b in zip(old,new):
     assert b==expected,'Undeclared physical primitive change'
 assert changed==['XD0007','XD0008']
 trial.COMPONENT=core;trial.WRAPPER=wrapper
-trial.COMPONENT_SHA='09a9ee6003add2f26b61d0e27d09c0a273ae359d263f3eeb6a37b243910c3411';trial.36675fe728928ac9ce144f641a518647ae70afb0bbd55ad5d789abfd476b0e64='36675fe728928ac9ce144f641a518647ae70afb0bbd55ad5d789abfd476b0e64'
+trial.COMPONENT_SHA='09a9ee6003add2f26b61d0e27d09c0a273ae359d263f3eeb6a37b243910c3411';trial.WRAPPER_SHA='36675fe728928ac9ce144f641a518647ae70afb0bbd55ad5d789abfd476b0e64'
 trial.OUTPUT_STEM='cloud-cdr-xor-load';trial.TOP='nssoc_cdr_xor_hbt_load_v2'
 trial.EXTRA_INPUTS=[Path(__file__),original]
 trial.main()
