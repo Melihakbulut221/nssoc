@@ -20,6 +20,14 @@ BOOT_WORKFLOW = ".github/workflows/corrpre-pcie-mbist-native-boot-cloud.yml"
 PLACE_WORKFLOW = ".github/workflows/corrpre-banked-placement-cloud.yml"
 
 
+def placement_title():
+    return f"corrpre-banked-placement-cloud / boot {BOOT_RUN}"
+
+
+def repair_title(run):
+    return f"corrpre-banked-postcts-cloud / placement {run}"
+
+
 def api(path, payload=None):
     command = ["gh", "api", REPO + path]
     if payload is not None:
@@ -145,11 +153,11 @@ def main():
             report["verified_native_boot"] = dict(artifact=artifact["id"], zip_sha256=digest,
                 native_log_banner=proof["native_log_banner"], source_spec=json.loads(spec.read_text()))
             save()
-            launch("corrpre-banked-placement-cloud.yml", f"corrpre-banked-placement / boot {BOOT_RUN}",
+            launch("corrpre-banked-placement-cloud.yml", placement_title(),
                 dict(boot_run=str(BOOT_RUN), boot_head=BOOT_HEAD, boot_artifact=str(artifact["id"]),
                      boot_zip_sha256=digest, protocol_run=str(PROTOCOL_RUN)), report, save)
         else:
-            assert run["display_title"] == f"corrpre-banked-placement / boot {BOOT_RUN}"
+            assert run["display_title"] == placement_title()
             group = "corrpre-banked-placement"
             stem = f"{group}-{args.run}-{run['run_attempt']}"
             release = api(f"releases/tags/cloud-results-{args.run}-{run['run_attempt']}-{group}")
@@ -171,7 +179,7 @@ def main():
                 cts_odb_sha256=summary["cts_odb_sha256"], boot_source_spec=spec,
                 scope="Native completion and source metadata. Successor independently verifies every archive byte before CAD.")
             save()
-            launch("corrpre-banked-postcts-cloud.yml", f"corrpre-banked-postcts / placement {args.run}",
+            launch("corrpre-banked-postcts-cloud.yml", repair_title(args.run),
                 dict(placement_run=str(args.run), summary_sha256=summary_sha, parts_sha256=parts_sha),
                 report, save)
         report["status"] = "VERIFIED_SOURCE_AND_DISPATCHED_OR_FOUND_EXACT_SUCCESSOR_NOT_PHYSICAL_ACCEPTANCE"

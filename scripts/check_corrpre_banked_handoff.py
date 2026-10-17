@@ -17,6 +17,18 @@ def main():
                display_title=title, html_url="https://example.invalid/fixture",
                path=handoff.BOOT_WORKFLOW, head_branch=handoff.BRANCH, run_attempt=1)
     checks = []
+    # Bind de-duplication to the actual workflow run-name, not an invented title.
+    for workflow, expression, expected in [
+        ("corrpre-banked-placement-cloud.yml", "inputs.boot_run", handoff.placement_title()),
+        ("corrpre-banked-postcts-cloud.yml", "inputs.placement_run", handoff.repair_title(handoff.BOOT_RUN)),
+    ]:
+        source = (handoff.ROOT / ".github/workflows" / workflow).read_text()
+        names = [line.removeprefix('run-name: "').removesuffix('"')
+                 for line in source.splitlines() if line.startswith('run-name: "')]
+        assert len(names) == 1
+        placeholder = "$" + "{{ " + expression + " || 'controls' }}"
+        assert names[0].replace(placeholder, str(handoff.BOOT_RUN)) == expected
+    checks.append("actual_workflow_run_names_match_deduplication")
     with tempfile.TemporaryDirectory() as temp, patch.dict(os.environ, GITHUB_OUTPUT=str(Path(temp) / "output")):
         # An observed running or completed successor is reused, never dispatched twice.
         for status, conclusion in [("in_progress", None), ("completed", "success")]:
