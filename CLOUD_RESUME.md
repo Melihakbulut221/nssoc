@@ -1,3 +1,13 @@
+## Current electrical milestone: all v5 compact controls verified; fullwire and parent still separate
+
+Checked 2026-10-17T21:21:13.475480+00:00. TX39067769686/source2db35478d9c5be9f53a05cbc6ddae94b55823933 compactnominal/hot_low/cold_high all electrical_screen_passed=true with768correct originalbit samples percondition. Minmargins0.28036162456134095/0.22779096206066263/0.2734529690102243V. Actualselectorfault changes27samples and is correctlyREJECTED (electrical_screen_passed=false); do notcallfaultsafe. All604HBT/512MOS/devicebounds/zeroOP/OFFflags/no-diagnostic/nativeclockbindingcontrols verified; no threshold/phase/latency changes. Fullsummary/model/parts/capturehashes preserved docs/evidence/tx-v5-compact-campaign-pass-20261018.json. Summaries nominal651615704,hot651624266,cold651622222,fault651625011. Entirecaptures remaincloudRelease.
+
+Fullwire117498996909 isin_progress/None; containsactual116611R77471C and mustpassindependently. CompactpassisnotmetalRCqualification. FullwirePVT/fault/timestepandPHY/multilane/mainchip stillrequired. ActualCDRparent39069972566 iscompleted/failure; jobs117505371526:completed/failure. Inspect actualgeometry/nativeDRC/LVS beforefreshRC. Previousnativeparentgenerationfailure and oldTXrunnerloss remain preserved below.
+
+This turn PROGRESS. CLOUD ONLY. FullserialPHY/mainchiprouting/finalsetuphold remainOPEN; goalnotcompleteorblocked. All code/evidence pushed, localworkspaceempty.
+
+---
+
 ## Current: first v5 loaded-clock nominal screen PASSED; complete CDR parent queued/live
 
 Checked 2026-10-17T21:18:50.341867+00:00. This goal turn PROGRESS: strict35device sampler and all3RCleaves passed; full16macro394device parent implemented and actualrightMetal5pin support corrected; first TX nominal loadedphysical-clock screen verified. CLOUD ONLY; active localworkspaceempty. No local CAD/test/artifact.
