@@ -57,7 +57,9 @@ for node in physical['plan']['nodes']:
    for r in rows:
     assert r['device'] not in used;used.add(r['device'])
    result['references'][key]=dict(endpoints=endpoints,intrinsic_terminals=rows)
-   result['modes']['compact'][key]=['xtree.'+binding['node_map'][sink['native_net']].lower()]
+   compact_node=binding['node_map'][sink['native_net']].lower()
+   # Public data pins are bound at the bench scope; internal nets stay hierarchical.
+   result['modes']['compact'][key]=[compact_node if compact_node in binding['native_ports'] else 'xtree.'+compact_node]
    result['modes']['wire'][key]=sorted('xtree.'+r['wire_anchor'].lower() for r in rows)
 assert len(result['references'])==124 and len(used)==372
 for mode in ('compact','wire'):

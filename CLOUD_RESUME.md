@@ -1,3 +1,13 @@
+## All124 geometry legs bound; compact public-port naming fixed (2026-10-17)
+
+PROGRESS. Fixed runner39004595306 native pya preflight and actual GDS124input-leg/372data-base binding PASS. Compact-none then correctly stopped at strict build assertion "Every interface probe must already be an actual bound transistor terminal": external publicd0p..d31n must remain bench names, not xtree.d0p. Verified exact archivedbind-interface.log PASS against summary649591720, archive649591838. No simulation/electrical result from this failed compact build.
+
+Fix only compact mode public-node qualification using native_ports; internalnetnames and wire-anchor mapping unchanged. New separate tx-tree32-compact-wave workflow reruns compactnominal+actualleafselectorfault only. Preserve existing wire-none39004595306/job117314367530, freshlylive; do not duplicate orrestart it. Add saved native-binding census before simulation. Earlier39004398464 namespace failure preserved. Record newcompactrun/result next.
+
+PVTreceipt docs/evidence/tx-tree32-high3-pvt-rejected-20261017.json committed with both exactcorner hashes/captures/bounds/interfacefailures; nominal/physical successdoesnotclosePVT. MBIST38994926932 liveatlastcheck. Cloud-only/localempty/goalOPEN.
+
+---
+
 ## Full32 waveform runner namespace startup repaired (2026-10-17)
 
 PROGRESS. First full32 waveform39004398464/source1960fda8d88f5b2370d6238738d1225239f279fa stopped BEFORE native binding/simulation: Ubuntu24 AppImage error "cannot write uid_map: Operation not permitted" (exit127). Exact bind-interface.log read from archivedcompact-none case and verified against summary hash; failed captures preserved summary649584769/parts649584826/archive649584891. Not a waveform measurement or rejected circuit.

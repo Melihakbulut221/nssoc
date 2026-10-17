@@ -42,6 +42,7 @@ def main():
   tree.FRONT=ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc'
   deck,contract=tree.build(inputs,'nominal',fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,clock_reference='stiff65',assembled_core=core,interface_probes=interfaces['modes'][args.mode],solver_profile=PROFILE)
   assert len(contract['hbt'])==604 and len(contract['mos'])==512 and len(contract['interface_probes'])==124
+  result['native_binding']=dict(actual_input_legs=124,actual_data_bases=372,hbt_count=604,mos_count=512,public_data_pins=64,all_interface_probes_are_bound_terminals=True);save()
   assert contract['source_bits_sha256']=='5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825'
   assert len(contract['tree_plan']['nodes'])==30 and tree.BITS==256 and tree.UI==125e-12 and abs(tree.STOP-34e-9)<1e-22
   native=out/'native';native.mkdir();(native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
