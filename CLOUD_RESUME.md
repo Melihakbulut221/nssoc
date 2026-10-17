@@ -1,3 +1,13 @@
+## C8 PLL parent verified; fresh parent RC launched (2026-10-17)
+
+All work remains cloud-only. The current local workspace is empty; no checkout, CAD runtimes or artifacts are required there. Source, evidence, unsuccessful runs and continuation instructions remain on GitHub.
+
+Actual C8 pump with divider-v2 PLL parent passed run39005910789: 560 DRC categories/zero markers, deep and flat native LVS845=845, retained divider geometry and actual capacitor/open controls. Child C8 composition passed run39005678827 with fresh84R/155C and native30device proof. Receipts are in docs/evidence/pll-c8-v2-parent-pass-20261017.json and pll-filter-c8-compose-pass-20261017.json.
+
+The pll-c8-v2-parent-rc-cloud workflow now restores this exact parent and the actual C8 child RC, preserving all83native reference planes,14divider and7pump planes, native parent-only polygons and all physical/raw fault controls. Completion must be inspected before full845model composition and original1us acquisition. The prior C9 132.847ppm failure in the required800-900ns window remains rejected; no window or tolerance change is allowed.
+
+Healthy runs remain untouched: wire39004595306, compact39004839884, fixedgeometry PVT/headroom39005251402, CORRPRE+PCIe+EthernetMBIST boot38994926932. Recheck actual run state; do not infer electrical acceptance from a green controller. Mainchip setup and full serialPHY remain open.
+
 ## Actual C8 pump integrated-parent candidate launched (2026-10-17)
 
 PROGRESS. New cloud_pll_c8_v2_parent controller restores exact accepted divider-v2 physical845 parent38980553476 (GDS4ae1faf3d673a62c8eb5d53daabbf0c3e3bf5e4a875d60073c751ed5184e256b) and passedC8pump39005085975. Integrates freshC8GDS, changes onlycap9x9→8x8 in845reference, freezes all other cells/parentpolygons andall7pumpports/transform/bbox. Retains original14divider-port/sourceproof. Existing strict560DRC/deep+flat845LVS andactualwrongcap/open fault verifier reused. OriginalC10→C9 recipe remains default; explicitgeometryparameters preserveoldbehavior.
