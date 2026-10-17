@@ -1,3 +1,11 @@
+## Independent cold pump DC NODESET study prepared (2026-10-17)
+
+New pll-pump-cold-nodeset-cloud restores only SHA-bound models/runtime/pump from completed failed39029337682 archive, preserving its original native warning evidence. New24cases:unseeded +two DECLARED guesses0.25V/1.25V, allfour UP/DOWN states, eachforward/reverse61point0.4..0.7V sweep. Final circuit/supply/model/RC/corner/1e-6/1e-12/itl1=1000 equations identical except preliminary .nodeset directive. Original transient and all PLL acquisition methods unchanged. Observe every native physical device/wire node as well as all external source currents; require every path within1uVallnodes/1nAallcurrents and KCL<10nA, complete tables, finite values, strictactualreadback. Both seeded paths must have ZERO native diagnostics; unseeded diagnostics always retained. Mutated actual table tests must reject current and internalnode changes. No .ic/UIC, no inference of device safety/PLL startup or PHY.
+
+Primary reference inspected: https://ngspice.sourceforge.io/docs/ngspice-manual.pdf section11.2.1/11.2.2. NODESET is a preliminary DC guess and may select a different state in multistable circuits, hence independent seed/direction/allnode comparison rather than accepting one convenient solution. Failure of either declared seed remains rejection. Inspect real cold result before calling even static DC convergence closed.
+
+Other jobs confirmedlive:placement39029282884/coordinator39021081392/return64compact39028091844/tightwire39025744008/mixedclock39018157113. Prior turnPROGRESS via verified mainchip nativeboot and nextplacement, plus source-bound pumpcurrent evidence/coldrejection. Allcloud/localempty/fullgoalOPEN.
+
 ## New banked mainchip boot passed; placement successor live (2026-10-17)
 
 Native bankedboot39016026619/sourcef65c0c35 completed:28firmwarechecks/0fails,PCIeidle4,087,258samples,systemMBIST983010busycycles/done983043,bothEthernetMBISTdone mask3. Native run11095.186739s; immutable IHPcell gate/preflight and RTL boot PASS, inputsunchanged. Source artifact12099508453 ZIP2ca2129e/5,371,330bytes/all43files inspected. Same ZIP or all extracted files verified inside durable coordinator archive650312045/4,691,683bytes. Receipt pcie-banked-native-boot-pass-20261017.json. This is functional native source evidence, not finaltiming or serialPHY.
