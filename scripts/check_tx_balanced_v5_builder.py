@@ -30,5 +30,10 @@ def check():
     assert allowed==[tuple(MODELS.values())]
     for stale in ('163a6dfd92e563b2332632ce38fedac60d2b5358cfcc9e51331dfb540ac67ee1','acde00f937c0bc576d608b51c079b984b8379900834c01d4cd74d7bfff34200f','0'*64):
         assert stale not in allowed[0]
-    return dict(status='PASS_ONLY_EXACT_V5_MODEL_BINDING_CHANGED',base_sha256=BASE_SHA,adapted_sha256=ADAPTED_SHA,models=MODELS,unchanged_solver_and_review=True)
+    adapter_base=(ROOT/'scripts/cloud_tx_tree32_clock_adapter.py').read_bytes()
+    adapter=(ROOT/'scripts/cloud_tx_balanced_v5_clock_adapter.py').read_bytes()
+    assert hashlib.sha256(adapter_base).hexdigest()=='ad351e3d681ad1d53659aca22d1db47ea06b1b20f716601657dfbee0eb0a4a96'
+    assert hashlib.sha256(adapter).hexdigest()=='6ca4f3148a735f79f533c724ad026b222b361b6bbb711267f114ef4011d72112'
+    assert adapter_base.decode().replace('import run_cloud_tx_mux4 as tree','import cloud_tx_balanced_v5_builder as tree',1)==adapter.decode()
+    return dict(status='PASS_ONLY_EXACT_V5_MODEL_BINDING_CHANGED',base_sha256=BASE_SHA,adapted_sha256=ADAPTED_SHA,models=MODELS,unchanged_solver_and_review=True,clock_adapter_sha256='6ca4f3148a735f79f533c724ad026b222b361b6bbb711267f114ef4011d72112',all_44_clock_faults_unchanged=True)
 if __name__=='__main__': print(json.dumps(check(),sort_keys=True))

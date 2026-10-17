@@ -1,3 +1,11 @@
+## Latest correction: v5 physical-clock adapter shares the configured builder
+
+Checked 2026-10-17T20:29:26.083429+00:00. Run39066521495 passed exact model binding but stopped BEFORE ngspice with KeyError('stiff625') in original clock adapter: it imported original builder, not v5 builder. Wire job117495612006 completedFAILURE; other cases must finish publication and be checked individually. Verified wire failure receipt docs/evidence/tx-balanced-v5-clock-binding-failure-20261017.json; all native reports remain published. No electrical conclusion.
+
+New private cloud_tx_balanced_v5_clock_adapter.py changes ONLY import target to v5 builder. Shared adapter remains unchanged. Source checks verify exact full SHA/delta; runtime asserts adapter.tree is wave.tree. Original44 physical clock fault checks and all device/solver gates retained. Observe successor from this commit after old jobs finish, without cancellation/duplicate dispatch. CLOUD ONLY; no local files/tests. Mainchipboot39059432529/placement39059854681/postCTS39061293959 and PLL39043210978 still live at last verified poll. Full PHY/mainchip/finaltiming OPEN.
+
+---
+
 ## Current cloud continuation: corrected v5 source controls PASS
 
 Checked 2026-10-17T20:26:24.009957+00:00. Exact successor39066521495/sourcea03d13db7bdaff5139839930540384210f5c96cf is queued. New controls117495242773 PASSED in GitHub: original builder hash, adapted builder hash, exact whitelist-only delta, composed model receipt and rejection of stale hashes. Native job states at checkpoint: 117495612006 native-full32 (wire, nominal, none) in_progress/None, 117495612032 native-full32 (compact, nominal, swap_leaf_select) queued/None, 117495612046 native-full32 (compact, nominal, none) queued/None, 117495612074 native-full32 (compact, cold_high, none) queued/None, 117495612094 native-full32 (compact, hot_low, none) queued/None. Do not claim electrical pass until native reports are verified. Original run39065872931's five pre-simulator failures remain preserved. If a successor fails inspect the actual next failure; do not loosen checks or restart unchanged inputs.

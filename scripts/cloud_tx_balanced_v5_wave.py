@@ -80,7 +80,9 @@ def main():
   result['builder_binding']=check()
   deck,contract=tree.build(inputs,args.condition,fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,clock_reference=clock_key,assembled_core=core,interface_probes=interfaces['modes'][args.mode],solver_profile=PROFILE)
   if args.physical_clock:
-   from cloud_tx_tree32_clock_adapter import adapt_clock32
+   from cloud_tx_balanced_v5_clock_adapter import adapt_clock32
+   import cloud_tx_balanced_v5_clock_adapter as clock_adapter
+   assert clock_adapter.tree is tree
    clock_receipt=json.loads((ROOT/'docs/evidence/tx-clock-headroom-composition-pass-20261017.json').read_text())
    clock_archive=out/'clock-source.tar.gz';fetch(clock_receipt['url'],clock_receipt['sha256'],clock_archive)
    assert clock_archive.stat().st_size==clock_receipt['bytes']
@@ -115,7 +117,7 @@ def main():
   assert len(contract['tree_plan']['nodes'])==30 and tree.BITS==256 and tree.UI==125e-12 and abs(tree.STOP-34e-9)<1e-22
   native=out/'native';native.mkdir();(native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
   protected=[Path(__file__),ROOT/'scripts/bind_tx_balanced_v5_interfaces.py',ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_balanced_v5_builder.py',ROOT/'scripts/check_tx_balanced_v5_builder.py',ROOT/'scripts/cloud_tx_stream.py',tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES[clock_key],tree.CLOCK_FEEDS[clock_key],paths['patched'],probe,*[q for q in inputs.rglob('*')if q.is_file()],*[q for q in source.rglob('*')if q.is_file()],*native.iterdir()]
-  if args.physical_clock:protected += [ROOT/'scripts/cloud_tx_tree32_clock_adapter.py',*[q for q in clock_source.rglob('*')if q.is_file()]]
+  if args.physical_clock:protected += [ROOT/'scripts/cloud_tx_tree32_clock_adapter.py',ROOT/'scripts/cloud_tx_balanced_v5_clock_adapter.py',*[q for q in clock_source.rglob('*')if q.is_file()]]
   if args.first_clock_l5p7:protected += [ROOT/'scripts/cloud_tx_tree32_firstclock.py',*[q for q in first_clock_source.rglob('*')if q.is_file()]]
   result['protected_inputs']={str(q):sha(q)for q in protected};save()
   def limits():
