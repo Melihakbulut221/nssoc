@@ -63,6 +63,8 @@ def main():
         for label in ['baseline','candidate','wrong_residue']:
             folder=out/(label+'-rtl');folder.mkdir();folders[label]=folder
             for p in (ROOT/'hw/soc/rtl/pcie').glob('*.v'):shutil.copyfile(p,folder/p.name)
+        (folders['baseline']/'soc_pcie_replay_tx.v').write_text(original)
+        assert sha(folders['baseline']/'soc_pcie_replay_tx.v')==BASE,'Baseline scoreboard must use the original banked RTL'
         (folders['candidate']/'soc_pcie_replay_tx.v').write_text(altered)
         wrong=altered.replace("==32'h00be26ed","==32'h00be26ec");assert wrong!=altered
         (folders['wrong_residue']/'soc_pcie_replay_tx.v').write_text(wrong)

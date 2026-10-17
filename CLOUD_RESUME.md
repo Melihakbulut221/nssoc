@@ -1,3 +1,7 @@
+## Post-adoption proof baseline restoration fix (2026-10-17)
+
+Code review caught a harness-only baseline directory issue after canonical adoption295bb240: copying canonical RTL into every scoreboard directory also copied the new candidate into the nominal baseline slot. Original proof39041074376 remains valid because canonical was then the real old baseline. RTLcandidate and formal fixture pair are unchanged. Corrected harness explicitly writes the frozen original into baseline-rtl and asserts its BASE hash before any scoreboards. Any post-adoption replay-crc run on295bb240 must not be cited as an independent baseline scoreboard. Fresh correctedworkflow rechecks this. Nativeboot/bankproof/protocol runs on295bb240 use correct RTL and remainvalid. Allcloud/localempty/fullgoalOPEN.
+
 ## Proven replay CRC RTL adopted; fresh native chip validation (2026-10-17)
 
 Run39041074376 passed all41bit predicate proofs, actualwrong-residue/wrong-byte counterexamples and fullunmaskedsequential proofs642/1289/1610points (DEPTH2/3/4,bytes18/38). Baseline/candidate each7replay+4reliablepacket testsPASS,wrongresidue7fail0skip. Canonical replay now EXACTcandidate1a15c0b9d6cfdfbf5ebed9a61c52901e126ca826008d167ff96bea4218a8f4dc. Frozenpre-residuefixture preserves a745b57c baseline matching oldchipboot. Receipt replay-crc-exact-adoption-20261017.json retains alloriginalreports/pins.
