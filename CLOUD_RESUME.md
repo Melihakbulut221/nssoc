@@ -1,3 +1,11 @@
+## Tree32 native connectivity proved; emitter-budget DRC remains failed (2026-10-17)
+
+PROGRESS, not completion. Run38989984341 source77d3628b5bc701449fe248d8b02e7216a5e955ea terminalFAIL only at finalmainDRC. Both nativehierarchical+flatLVS PASS:1674layout=1674reference devices,oneMatch,zeroextractiondiagnostics,all162ports. Wrongfinger,missingHBT,actualintermacrocut,railshort andoffgrid controls rejected. GDS ba5358d2c379e8b564cf4a8e38064939fa4dfcde7db9a52669b5fec9950da617 differs from firstGDS9af718... ONLY in41BGNLIB/BGNSTR timestamprecords: verifiedallremainingbytesidentical with normalizedSHA1be29cf235e7550b2eb7ce56c021134ce302d3aced6d35f3eb07fe40269648d3. Do notclaimrawhashesequal. Original560-rule DRC stillFAIL single npn13G2.bR emitter-budgetmarker; doNOTrelabelfullrunPASS. Summary649155418 SHA501272489c0d10b2bf6837c2f2380b331e46eb78533c45881db171366d9cc308;parts649155494 SHA55c3325d2c6ea29e5dcf6c704fb109ecacfb160a9bba5de66f28be7bb4eaecf3. Exactreceipt docs/evidence/tx-tree32-connectivity-pass-budget-fail-20261017.json.
+
+This proves actual31macro60wire32:1 connectivity; nofreshRC/electrical/fourlane/mainchipacceptance. Current4427emitters already exceeds4000recommendedchiplimit; lower-emitter stage design required. Controller/source available for realchanges; donotrerunsamegeometryexpectingDRCpass. Gate andthermalstudies allterminal; resultsbelow. Continue emitter-budgeted full32architecture and exactproduct-rate electricalqualification, retain originalfailed4:1tests. Originalfull1usPLL38982797234/Ethernetroute38978702458/PCIeCORRPREboot38984849452 freshlypolled separately. No localfiles, no healthyrestarts, fullgoalOPEN.
+
+---
+
 ## Latest exact follow-up and completed gate evidence (2026-10-17)
 
 Cloud-only; workspace empty. Tree32 connectivity-first run38989984341/job117270007252 is completed at source77d3628b5bc701449fe248d8b02e7216a5e955ea. It uses identical rejectedGDS and unchanged nativegates; final emittercountDRC must stillfail until redesign. No waiver. Inspect actual LVS/faults before changing topology or claiming connected31macros.
