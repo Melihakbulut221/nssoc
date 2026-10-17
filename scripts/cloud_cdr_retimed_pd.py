@@ -79,6 +79,23 @@ def shifted_data(bits,cm,amp,offset):
         if bits[i]!=bits[i-1]:points.extend([(START+i*UI+offset,value(bits[i-1])),(START+i*UI+offset+5e-12,value(bits[i]))])
     points.append((STOP,value(bits[-1])));return pwl(points)
 
+def hbt_size(fields,physical):
+    params=dict(f.split('=')for f in fields);assert len(params)==len(fields),'Duplicate native HBT parameter'
+    assert set(params)==({'nx','we','le'}if physical else{'nx'}),'Unexpected native HBT parameter set'
+    if physical:assert params['we']=='0.07u'and params['le']=='0.9u','Changed extracted HBT emitter geometry'
+    nx=int(params['nx']);assert nx>0 and str(nx)==params['nx']
+    return nx
+
+def hbt_parameter_controls():
+    assert hbt_size(['nx=2'],False)==2
+    assert hbt_size(['nx=6','we=0.07u','le=0.9u'],True)==6
+    rejected=[]
+    for label,fields,physical in [('wrong_width',['nx=6','we=0.08u','le=0.9u'],True),('wrong_length',['nx=6','we=0.07u','le=1.0u'],True),('missing_area',['we=0.07u','le=0.9u'],True),('unknown_parameter',['nx=2','m=2'],False),('duplicate',['nx=2','nx=3'],False)]:
+        try:hbt_size(fields,physical)
+        except AssertionError:rejected.append(label)
+        else:raise AssertionError('Malformed native HBT accepted: '+label)
+    return dict(positive=2,rejected=rejected)
+
 def bind_pd(texts,ports):
     cells={};current=None
     for text in texts:
@@ -101,8 +118,8 @@ def bind_pd(texts,ports):
                 assert len(f)==4;wire_counts[f[0][0].upper()]+=1;continue
             assert f[0].startswith('x')
             if len(f)>5 and f[5]=='npn13g2':
-                params=dict(x.split('=')for x in f[6:]);assert params.keys()=={'nx'}
-                devices[name]=dict(nodes=[node(n)for n in f[1:5]],nx=int(params['nx']))
+                nx=hbt_size(f[6:],cell=='nssoc_cdr_xor54_wire_v4')
+                devices[name]=dict(nodes=[node(n)for n in f[1:5]],nx=nx)
             elif len(f)>4 and f[4]=='rppd':resistors[name]=dict(nodes=[node(n)for n in f[1:4]],parameters=f[5:])
             elif len(f)>3 and f[3]=='cap_cmim':caps[name]=dict(nodes=[node(n)for n in f[1:3]],parameters=f[4:])
             elif len(f)>3 and f[3]=='ptap1':contacts[name]=dict(nodes=[node(n)for n in f[1:3]],parameters=f[4:])
@@ -129,6 +146,7 @@ def main():
         assert sha(SOURCE)==SOURCE_SHA and sha(WRAPPER)==WRAPPER_SHA and sha(PD)==PD_SHA
         assert sha(ROOT/'scripts/cloud_cdr_xor.py')=='3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe'
         r['readback_controls']=readback_controls()
+        r['hbt_parameter_controls']=hbt_parameter_controls()
         fetch(pump.BASE+'cloud-results-39029337682-1-pll-pump-current/pll-pump-current-39029337682-1.summary.json',primitive.SUMMARY,out/'models-pin.json')
         pin=json.loads((out/'models-pin.json').read_text());wanted=[n for n in pin['outputs']if n.startswith('source/model-sources/')]+['source-pin.json','source/runtime/patched-ngspice']
         old,proof=reports.restore_report('pll-pump-current',39029337682,primitive.SUMMARY,primitive.PARTS,out/'source',wanted);assert old==pin;r['models_source']=proof
