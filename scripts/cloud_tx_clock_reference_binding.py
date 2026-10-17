@@ -50,7 +50,7 @@ def export(source,out):
     (out/'native.json').write_text(json.dumps(dict(status='EXPORTED_NATIVE_CLOCK_TERMINALS_NOT_RC_ACCEPTANCE',gds_sha256=sha(source/'layout'/(TOP+'.gds')),dbu=L.dbu,modes=modes),indent=2)+'\n')
 
 def bind(record,variant):
-    expected_length={'l6p2':6.2,'l6p5':6.5,'l5p7':5.7}[variant];bound={}
+    expected_length={'l6p2':6.2,'l6p5':6.5,'l5p7':5.7,'l6p25':6.25}[variant];bound={}
     for mode,data in record['modes'].items():
         rows=data['devices'];assert len(rows)==6 and len({r['id']for r in rows})==6,'Native device census changed'
         assert Counter(r['model']for r in rows)==Counter(npn13G2=1,rppd=2,ptap1=3),'Native model census changed'

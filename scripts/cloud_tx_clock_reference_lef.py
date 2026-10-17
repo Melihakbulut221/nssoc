@@ -14,6 +14,8 @@ SOURCES={
 
 SOURCES['l5p7']=dict(run=38960984672,head='39c53aa4aaf0cb88ae3690dd8234bac603538787',summary='1b822f557190c9ec42cc179006fccad98e9855bb9a3e16684f22846ad253a459',parts='e22d057646c1786a47d23ae70e84e827db3e2235423abf9061e37da6403dbc19',gds='f0235948da18025d0b6cfdd157c7389884f7d4c6478c6e86a6c44bc8b3345069')
 
+SOURCES['l6p25']={'run': 39008055227, 'head': 'c496854ddc1f5adb77f24507b95b6676d07a0f1e', 'summary': '12b1540175ff4cbc1ed200859ea308776d7e031bf145e29a13df1d009303bc49', 'parts': '636cdcbb92e50cd58b01b82b09488fdf8d2f35fd75d8a9d886e3dbefd6b07376', 'gds': '83e172be554fa8d5da4086d87bbbb1b9fbf3061ba67967929fdd592f6a24035a'}
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'

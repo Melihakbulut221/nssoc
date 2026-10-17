@@ -1,3 +1,9 @@
+## Stiff625 clock physical verified; terminal/LEF/wire stages launched (2026-10-17)
+
+Clock39008055227 actual6devices passed560DRC0/deep+flatLVS/sixphysicalfaults. Complete243228byte archive and every output verified in RAM; receipt tx-clock-headroom-physical-pass-20261017.json. Added exact l6p25 source pins to existing clock geometry controllers, and independent native binding expects actual6.25um offset plus unchanged14.5um feed. New tx-clock-headroom-geometry-cloud runs terminal binding, LEF/pin checks, and actual conductor graph as separate jobs. Next anchor ownership, finite intrinsic models, fresh wireRC and exact composition before actualloadedfull32 simulation. Noold6.5um RC reused.
+
+Mainchip hash adapter successor39009508522 queued; source39009256177 pre-CAD failure retained. Trimmed parent freshRC39009418149 active. PLL39007535633 and originalwired32 39004595306 remain active; do notrestart. Allworkcloud-only; fullgoalOPEN.
+
 ## PostCTS restore hash adapter fixed (2026-10-17)
 
 39009256177 verified the entire original archive and all outputs, then stopped BEFORE native CAD: imported SHA helper expected Path, but state ODB paths are JSON strings. Normalize both forms with Path(path); hashes, original saved CTS, config and timing gates unchanged. Failure remains published under corrpre-postcts-electrical. Successor must reach actual native STA/repair; no original boot/CTS rerun. Trimmed extraction39009418149 remains live. Cloud-only, goal OPEN.
