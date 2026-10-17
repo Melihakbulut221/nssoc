@@ -17,6 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'cloud-tx-hot-corner-diagnosis'
 WORK = ROOT / 'cloud-tx-hot-corner-diagnosis-input'
 SOURCES = {
+    'cold_high': (38983807650, 'tx-clock-corner-loaded-l2p4-series-l6p2-cold_high',
+        'b1da9dd5e4815827113503a87b4f1e77ac01a71467c1f257bf1249d31c636971',
+        '604f48c21b999036878370369f267447726ee94f88d3fbf3f77526d552195a16'),
     'hot_low': (38983807650, 'tx-clock-corner-loaded-l2p4-series-l6p2-hot_low',
         'dc06bf9d71e4be0201fad334039328aa6fbea54a1ef585d4205b35400060c6b0',
         'db5f2f4eea79bedf114c39478b06a45af388e8049471ff21b4e62c272f53b87a')
