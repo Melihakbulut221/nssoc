@@ -42,10 +42,13 @@ def main():
         for line in text.splitlines():
             f=line.split()
             if f and f[0].startswith('c'):
-                assert len(f)==4 and f[0]not in names and f[1]!=f[2] and 'wire_cref'in f[1:3]
-                names.add(f[0]);node=f[1]if f[2]=='wire_cref'else f[2];value=float(f[3])
-                assert node in parent and np.isfinite(value)and value>0
-                caps.append((f[0],node,value))
+                assert len(f)==4 and f[0]not in names and f[1]!=f[2],f
+                names.add(f[0]);value=float(f[3])
+                assert all(n in parent or n=='wire_cref'for n in f[1:3]),f
+                assert np.isfinite(value)and value>0,f
+                # Preserve real coupling capacitors as two-terminal elements;
+                # never reinterpret their total as capacitance to ground.
+                caps.append((f[0],f[1],f[2],value))
         assert len(caps)==76614
         contract=json.loads((OUT/'source/capture/native/contract.json').read_text())
         interfaces=json.loads((OUT/'source/capture/all-interfaces.json').read_text())
@@ -53,7 +56,9 @@ def main():
         result['model_counts']=dict(devices=len(devices),R=len(edges),C=len(caps))
         eg={};cg={}
         for e in edges:eg.setdefault(root(e[1]),[]).append(e)
-        for c in caps:cg.setdefault(root(c[1]),[]).append(c)
+        for c in caps:
+            components={root(n)for n in c[1:3]if n!='wire_cref'}
+            for component in components:cg.setdefault(component,[]).append(c)
         measured=[];used=set()
         keys=sorted(k for k in maps if not k.startswith('d'))
         assert len(keys)==60
@@ -72,19 +77,24 @@ def main():
                         other=dev['nodes'][1-index]
                         contacts.append(dict(device=name,terminal=index,node=node,other_node=other,parameters=dev['parameters'],other_on_avss=root(other)==root('avss')))
             assert len(contacts)==2 and sum(x['other_on_avss']for x in contacts)==1,(key,contacts)
-            all_caps=cg[component];total=sum(x[2]for x in all_caps)
+            all_caps=cg[component]
+            classified={'reference_shunt':[],'within_conductor':[],'between_conductors':[]}
+            for c in all_caps:
+                kind='reference_shunt'if 'wire_cref'in c[1:3]else'within_conductor'if root(c[1])==root(c[2])else'between_conductors'
+                classified[kind].append(c)
+            total=sum(x[3]for x in classified['reference_shunt'])
             solves=[]
             for contact in contacts:
                 m=sparse_resistance(eg[component],contact['node'],targets)
                 solves.append(dict(source_native_resistor_terminal=contact,measurement=m))
             base=key[:-1];wave=next(x for x in prior['all62_differential_input_pairs']if x['input']==base)
             measured.append(dict(conductor=key,stage=wave['stage'],native_hbt_bases=actual_bases,native_endpoints=interfaces['references'][key]['endpoints'],
-                original_wire_capacitance_f=total,wire_capacitors=len(all_caps),native_resistor_terminal_solves=solves,
+                original_reference_shunt_capacitance_f=total,incident_wire_capacitors=len(all_caps),capacitance_classes={kind:dict(count=len(cs),sum_f=sum(c[3]for c in cs))for kind,cs in classified.items()},native_resistor_terminal_solves=solves,
                 original_pair_wave_result={k:wave[k]for k in ('samples','minimum_margin_v','wrong_sign_samples','below_150mv_samples')},
-                largest_native_wire_capacitors=sorted([dict(name=n,node=node,farads=c)for n,node,c in all_caps],key=lambda x:x['farads'],reverse=True)[:12]))
+                largest_native_wire_capacitors=sorted([dict(name=n,nodes=[a,b],farads=c)for n,a,b,c in all_caps],key=lambda x:x['farads'],reverse=True)[:12]))
             result['conductors']=measured;save()
         assert len(measured)==len(used)==60
-        result['stage_wire_capacitance_f']={stage:dict(conductors=len(rows),minimum=min(x['original_wire_capacitance_f']for x in rows),maximum=max(x['original_wire_capacitance_f']for x in rows),total=sum(x['original_wire_capacitance_f']for x in rows))for stage in sorted({x['stage']for x in measured})for rows in [[x for x in measured if x['stage']==stage]]}
+        result['stage_reference_shunt_capacitance_f']={stage:dict(conductors=len(rows),minimum=min(x['original_reference_shunt_capacitance_f']for x in rows),maximum=max(x['original_reference_shunt_capacitance_f']for x in rows),total=sum(x['original_reference_shunt_capacitance_f']for x in rows))for stage in sorted({x['stage']for x in measured})for rows in [[x for x in measured if x['stage']==stage]]}
         assert sha(model)==prior['source']['model_sha256']
         result['status']='COMPLETE_SOURCE_BOUND_DATA_METAL_R_C_DIAGNOSIS_NOT_TRANSIENT_ACCEPTANCE'
     except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
