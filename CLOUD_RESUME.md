@@ -1,3 +1,11 @@
+## C8 actual845 model passed; original full1us native acquisition launched (2026-10-17)
+
+C8fullcompose39007233693 passed exact full845native graph,8660wire records,17ports,6graph+9component corruptions. Both correcteddividers and815otherdevices retained, actualC8pump30devices/fresh84R155C and freshparent98R242C. ModelSHA3d2dfdd6d27a05fc5d911461c84471b1e05f62e976b7ae31de9d01595a503b60; receipt pll-c8-v2-full-compose-pass-20261017.json.
+
+New separate pll-c8-v2-native-acquisition-cloud starts exactly one full1us trajectory for this physical model. Original34probes/.3125ps/KLU/zeroOP/102OFF and original800-900ns+900-1000ns/100ppm gates unchanged. Real process checkpoints permit hosted continuation without cold restart or concatenation. Do not replace132.847ppm priorC9failure with a shorter/late-only window. Inspect native startup and then actual fullcapture; no current electrical acceptance.
+
+CORRPRE+MBIST placement successor39007378877 remainslive after fixing only missing force-run-dir. Full32realwire39004595306 still live. Fixedheadroom threecorner native candidate passed but fresh trimmedlayout/RC/waves still needed. Allwork cloudonly, localworkspace empty, fullgoal OPEN.
+
 ## Fixed headroom candidate passes three native corners; physical launch fix (2026-10-17)
 
 39005251402 actual fixedgeometry budget_high3_trim passes nominal/hot_low/cold_high complete34ns electrical screen with original limits, and actual deepest leaf selector fault is rejected. Receipt tx-tree32-headroom-fixed-pvt-pass-20261017.json. Requires fresh physical geometry for both Nx1/Nx3 feed resistor trim and clock-reference trim625, then parent assembly/RC/wire/PVT; old untrimmed GDS is not this candidate.

@@ -1,0 +1,56 @@
+{
+  "source_head": "8581b34b8524d3fc65ceb15c81c6f42fc37c5525",
+  "original_controller_sha256": "bbc1f1085cb4a5a2c1d537813f8459020cbdb157b86083b45e1fea4d03650448",
+  "new_controller_sha256": "e3570ec29531ecfda342afccdc3c5ab77b8731ac3f7ab132415b8863f78ec2fd",
+  "edits": [
+    {
+      "before": "pll-v2-native-acquisition",
+      "after": "pll-c8-v2-native-acquisition",
+      "count": 2
+    },
+    {
+      "before": "d86f4716070f22b36f3fafb9b5d789f2dd029552aefafbedbab8aebdfb0cb85b",
+      "after": "3d2dfdd6d27a05fc5d911461c84471b1e05f62e976b7ae31de9d01595a503b60",
+      "count": 1
+    },
+    {
+      "before": "a17fde2bd57f2710327bd84156ee8c9354187ae997f27ff93dd332d84f6a62a3",
+      "after": "36652f817d891898447e0cce621e9c3e016c75f8c5eed470d9858b5390bd440e",
+      "count": 1
+    },
+    {
+      "before": "9b861472d9c80e4c6c7e43bb5c22a5eafd8e82a0202e51c770c2a2052f72c861",
+      "after": "4c698f3b25aa64cf93dedc5995ce8c3603b116040ede307e9f0493ce497537c4",
+      "count": 1
+    },
+    {
+      "before": "PASS_NEW_PHYSICAL845_DIVIDER_PARENT_MODEL_EXACT_GRAPH_AND_COMPONENT_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+      "after": "PASS_C8_PHYSICAL845_DIVIDER_PARENT_MODEL_EXACT_GRAPH_AND_COMPONENT_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "3e8eb39716367099b9ec467851b3b41225e0ffa0",
+      "after": "cf1dd4482c7012889da66ffd69608c06b5ec5ddc",
+      "count": 1
+    },
+    {
+      "before": "assert report['component_preservation']['unchanged_devices']==845",
+      "after": "assert report['component_preservation']['unchanged_other_devices']==815 and report['component_preservation']['replaced_native_pump_devices']==30\n    assert report['pump_change']['old_cap_um']==9 and report['pump_change']['new_cap_um']==8\n    assert len(report['component_faults'])==9 and all(x['rejected']for x in report['component_faults'])",
+      "count": 1
+    },
+    {
+      "before": "'pll-divider-v2-full-compose',38981800336",
+      "after": "'pll-c8-v2-full-compose',39007233693",
+      "count": 1
+    },
+    {
+      "before": "New divider-v2 physical845 full1us",
+      "after": "New actual C8-pump and divider-v2 physical845 full1us",
+      "count": 1
+    }
+  ],
+  "original_analysis_unchanged": "1us/.3125ps,34probes,KLU,reltol1e-4/abstol1e-12,zeroOP,102nativeOFF, original800-900ns and900-1000ns acquisition windows and100ppm bounds",
+  "native_checkpoint_preserved": true,
+  "status": "NEW_PHYSICAL_MODEL_REQUIRES_ACTUAL_FULL_NATIVE_TRAJECTORY",
+  "accepted": false
+}
