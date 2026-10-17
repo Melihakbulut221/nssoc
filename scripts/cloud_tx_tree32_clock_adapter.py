@@ -10,9 +10,23 @@ from run_cloud_tx_layout_repair import sha
 
 MODEL_SHA='c2f8e8dc96806c020fdef24547419c425dfc93b915c2c35437a9ae03860fe06a'
 
-def adapt_clock32(deck,contract,model):
+FIRST_MODEL_SHA="1f4eb38c991e326a7803536376d5249634e333772bc4ca49f5a7b277fed7c91f"
+
+def adapt_clock32(deck,contract,model,first_group_model=None):
     assert sha(model)==MODEL_SHA
     original=deck;before=copy.deepcopy(contract);contract=copy.deepcopy(contract)
+    if first_group_model is not None:
+        assert sha(first_group_model)==FIRST_MODEL_SHA
+        first_rows=statements(first_group_model.read_text())
+        assert first_rows[0]==['.subckt','nssoc_clock_reference_l5p7_native6_wire_v1','avdd','cm','avss','sub','wire_cref']
+        assert sum(r[0].startswith('XD')for r in first_rows)==6
+        assert sum(r[0].startswith('R')for r in first_rows)==13
+        assert sum(r[0].startswith('C')for r in first_rows)==28
+        assert [c['name']for c in contract['tree_plan']['clocks'][:3]]==['sa','sb','s']
+        for clock in ('sa','sb','s'):
+            for suffix in ('p','n'):
+                assert re.search(r'(?m)^V'+clock+suffix+r' '+clock+suffix+r'0 clkbias PWL',deck)
+
     assert contract['streams']==32 and contract['clock_reference']=='stiff625'
     assert contract['clock_reference_sha256']=='597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca'
     assert contract['clock_feed_sha256']=='650579e07ec3c52c9ae1f429c3c9c56bec5b8761eae953bac33d08e0dbc4b8cc'
@@ -25,7 +39,8 @@ def adapt_clock32(deck,contract,model):
         assert ref==dict(node='clkbias'+suffix,feed='clkfeed'+suffix,probe='vclkbias_feed'+suffix)
         oldnames=[n for n in contract['hbt']if n.startswith('xclkbias'+suffix+'.')];assert len(oldnames)==1
         old=oldnames[0];assert contract['hbt'][old]['nx']==1
-        top,found=tree.bind_devices(model,'xclkphys'+suffix,[ref['feed'],ref['node'],'0','0','0'],{'npn13g2'})
+        selected_model=first_group_model if index==0 and first_group_model is not None else model
+        top,found=tree.bind_devices(selected_model,'xclkphys'+suffix,[ref['feed'],ref['node'],'0','0','0'],{'npn13g2'})
         assert len(found)==1;new=next(iter(found));assert found[new]['nx']==1
         rename[old]=new;newhbt.update(found)
         replacement='XCLKPHYS'+suffix+' '+ref['feed']+' '+ref['node']+' 0 0 0 '+top
@@ -42,7 +57,8 @@ def adapt_clock32(deck,contract,model):
     for path in includes:
         line=f'.include "{path}"';assert deck.count(line)==1
         deck=deck.replace(line,'* Schematic clock include replaced by physical macro.')
-    deck=deck.replace('.control\n',f'.include "{model}"\n.control\n',1)
+    physical_models=[model]+([]if first_group_model is None else[first_group_model])
+    deck=deck.replace('.control\n',''.join(f'.include "{p}"\n'for p in physical_models)+'.control\n',1)
     oldvectors=contract['vectors']
     removed={v for v in oldvectors if v.startswith('v(xclkbias')or v in {'@q.'+n+'.qnpn13g2[ic]'for n in rename}}
     vectors=list(dict.fromkeys([*[v for v in oldvectors if v not in removed],*sorted(required)]))
@@ -65,7 +81,7 @@ def adapt_clock32(deck,contract,model):
         actual=[r for r in statements(candidate.split('.control\n')[0])if r[0].lower().startswith(('xclkphys','xclkbias','xclkfeed'))]
         assert actual==replacements,'Physical clock instances or ports changed'
         assert required<=set(observed),'Physical HBT terminal/current omitted'
-        assert candidate.count(f'.include "{model}"')==1
+        assert all(candidate.count(f'.include "{p}"')==1 for p in physical_models)
         assert all(f'.include "{p}"'not in candidate for p in includes)
     verify(deck,vectors);controls=[]
     # Corrupt every group's actual instance, not only a representative clock.
@@ -85,6 +101,8 @@ def adapt_clock32(deck,contract,model):
             else:raise AssertionError('Accepted actual clock binding corruption')
     assert len(controls)==44 and all(c['rejected']for c in controls)
     return deck,contract,dict(clock_instances=11,native_devices=66,wire_resistors=143,wire_capacitors=308,finite_contacts=33,controls=controls,
+        first_group_model_sha256=sha(first_group_model)if first_group_model is not None else None,
+        clock_variants=['l5p7'if first_group_model is not None else'l6p25']+['l6p25']*10,
         model_sha256=sha(model),new_hbt=newhbt,removed_schematic_hbt=list(rename),added_required_probes=sorted(required),removed_obsolete_probes=sorted(removed),
         external_clock_modulation_unchanged=True,external_supply_ground_and_wire_cref_ideal=True,intermacro_connections_ideal=True,
         qualified_substrate=False,qualified_pex=False,mainchip_integrated=False,full_phy_accepted=False)

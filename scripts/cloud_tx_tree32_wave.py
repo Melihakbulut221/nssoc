@@ -12,13 +12,14 @@ from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 PROFILE='breakpoint_tight_trap'
 def main():
- p=argparse.ArgumentParser();p.add_argument('--physical-clock',action='store_true');p.add_argument('--mode',choices=('compact','wire'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--variant',choices=('budget_high3','budget_high3_trim'),default='budget_high3');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--physical-clock',action='store_true');p.add_argument('--first-clock-l5p7',action='store_true');p.add_argument('--mode',choices=('compact','wire'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--variant',choices=('budget_high3','budget_high3_trim'),default='budget_high3');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
  assert args.condition=='nominal' or (args.variant=='budget_high3_trim' and args.fault=='none')
  trim=args.variant=='budget_high3_trim'
  assert not args.physical_clock or trim
+ assert not args.first_clock_l5p7 or (args.physical_clock and trim)
  clock_key='stiff625' if trim else 'stiff65'
  assert os.environ.get('GITHUB_ACTIONS')=='true'
- out=ROOT/((('cloud-tx-tree32-clock-wire-wave-'if args.physical_clock else'cloud-tx-tree32-headroom-wave-')+args.mode+'-'+args.condition+'-'+args.fault)if trim else('cloud-tx-tree32-physical-wave-'+args.mode+'-'+args.fault));out.mkdir(exist_ok=False)
+ out=ROOT/((('cloud-tx-tree32-firstclock-wave-'if args.first_clock_l5p7 else'cloud-tx-tree32-clock-wire-wave-'if args.physical_clock else'cloud-tx-tree32-headroom-wave-')+args.mode+'-'+args.condition+'-'+args.fault)if trim else('cloud-tx-tree32-physical-wave-'+args.mode+'-'+args.fault));out.mkdir(exist_ok=False)
  result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode=args.mode,fault=args.fault,variant=args.variant,condition=args.condition,accepted=False,full_phy_accepted=False,qualified_pex=False,electrical_screen_passed=False,scope='Actual full32 physical core1674devices, all604HBT/512MOS native bounds, original34ns/256bits/three sampling phases. Wire mode includes all114819R76351C; compact mode excludes metal RC for diagnosis. External schematic CMOS/clock modulation/output frontends remain. No fullPHY/PVT/RF/substrate/mainchip acceptance.')
  def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
  save()
@@ -69,7 +70,15 @@ def main():
    for name in ('resistors_mod.lib','sg13g2_hbt_mod.lib'):
     assert sha(inputs/'models'/name)==sha(clock_source/'inputs/tx-clock-reference-intrinsic-l6p25/pdk/libs.tech/ngspice/models'/name)
    (out/'schematic-clock-bench.cir').write_text(deck)
-   deck,contract,result['physical_clock_binding']=adapt_clock32(deck,contract,clock_model)
+   first_clock_model=None
+   if args.first_clock_l5p7:
+    from cloud_tx_tree32_firstclock import restore
+    first_clock_model,first_clock_source,result['first_clock_source']=restore(out,inputs)
+   deck,contract,result['physical_clock_binding']=adapt_clock32(deck,contract,clock_model,first_clock_model)
+   if args.first_clock_l5p7:
+    assert result['physical_clock_binding']['clock_variants']==['l5p7']+['l6p25']*10
+    result['physical_clock_binding']['first_group_scope']='Actual l5p7 macro replaces shared sa/sb/s reference only; all other ten groups retain l6p25. No per-corner tuning.'
+
    result['clock_source']=clock_receipt
    result['clock_model_scope']='All eleven actual six-device clock macros, each13R28C and finite body contacts. Modulation, supply, wire C reference and intermacro connections remain ideal boundaries; fullPHY/mainchip still open.'
    result['scope']=result['scope'].replace('External schematic CMOS/clock modulation/output frontends remain.','Actual eleven clock reference/feed macros included. External schematic CMOS, ideal modulation and output frontends remain.')
@@ -80,6 +89,7 @@ def main():
   native=out/'native';native.mkdir();(native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
   protected=[Path(__file__),ROOT/'scripts/bind_tx_tree32_interfaces.py',ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_stream.py',tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES[clock_key],tree.CLOCK_FEEDS[clock_key],paths['patched'],probe,*[q for q in inputs.rglob('*')if q.is_file()],*[q for q in source.rglob('*')if q.is_file()],*native.iterdir()]
   if args.physical_clock:protected += [ROOT/'scripts/cloud_tx_tree32_clock_adapter.py',*[q for q in clock_source.rglob('*')if q.is_file()]]
+  if args.first_clock_l5p7:protected += [ROOT/'scripts/cloud_tx_tree32_firstclock.py',*[q for q in first_clock_source.rglob('*')if q.is_file()]]
   result['protected_inputs']={str(q):sha(q)for q in protected};save()
   def limits():
    resource.setrlimit(resource.RLIMIT_AS,(12*1024**3,)*2);resource.setrlimit(resource.RLIMIT_FSIZE,(8*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})

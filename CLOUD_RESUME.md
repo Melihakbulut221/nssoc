@@ -1,3 +1,9 @@
+## First fast clock group uses a real lower-offset macro; loaded proof pending (2026-10-17)
+
+Native diagnosis39014569166 localized four VCE<0.40V devices to final selector f. New tx-tree32-firstclock-wave-cloud applies existing actual l5p7 six-device13R28C macro ONLY to shared fast sa/sb/s clock group; other10physical groups retain l6p25. The complete5,649,123byte l5p7 archive and all479outputs verified in RAM; cloud independently repeats full verification and same native model library checks. No parameter edit with stale RC. Physical clock counts/binding controls, actual1674core,604HBT512MOS,34ns256bits/.3,.5,.7UI,solver and bounds unchanged. Nominal/hotlow/coldhigh plus actual deepest-selector fault run in cloud. Lower clock common mode is a hypothesis until loaded gates pass; final tail/data/prestage headroom must ALSO pass. No new fullwire run until compact candidate passes; prior live wire jobs retained. Fresh mainchip layout/four-lane/integration remains open.
+
+Digital protocol successor bf478c56 is active after mutation fixture repair. Six bankedRTL equivalence summaries inspected PASS; new fullchip native boot waits for actual protocol pass. Cloud-only and local workspace empty. FullgoalOPEN; previous turn PROGRESS.
+
 ## Cloud-only checkpoint: bank proofs, preserved ECO equations and final-stage HBT localization (2026-10-17)
 
 Workspace /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. No local checkout, simulation, artifact or scratch created; changes use GitHub API in RAM. Continue all engineering on hosted runners; retain outputs in GitHub Releases.
