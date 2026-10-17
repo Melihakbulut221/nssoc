@@ -44,6 +44,14 @@ def main():
         for name,net in top['netnames'].items():
             for i,bit in enumerate(net['bits']):
                 aliases.setdefault(bit,[]).append(dict(net=name,bit=i,hidden=bool(net['hide_name'])))
+        # OpenROAD STA prints identifiers without the Verilog escape prefix;
+        # the saved Yosys JSON retains that prefix. Require a unique spelling
+        # normalization and still prove every cell type, pin and native net.
+        native_names={}
+        for name in top['cells']:
+            visible=name.lstrip(chr(92))
+            assert visible not in native_names,'Ambiguous native identifier normalization'
+            native_names[visible]=name
         def names(bit):return aliases.get(bit,[])
         def bind(path):
             pins=re.findall(r' [\^v] (\S+)/(\S+) \((sg13g2_\S+)\)',path['native_report'])
@@ -52,11 +60,11 @@ def main():
             previous=previous[0];stages=[]
             for index in range(0,len(pins),2):
                 a,b=pins[index:index+2];assert a[0]==b[0]and a[2]==b[2]
-                cell=top['cells'][a[0]];assert cell['type']==a[2]
+                native_name=native_names[a[0]];cell=top['cells'][native_name];assert cell['type']==a[2]
                 assert cell['port_directions'][a[1]]=='input'and cell['port_directions'][b[1]]=='output'
                 incoming=cell['connections'][a[1]];outgoing=cell['connections'][b[1]]
                 assert incoming==[previous]and len(outgoing)==1,'STA path and saved mapped connectivity differ'
-                stages.append(dict(cell=a[0],type=cell['type'],entry=a[1],exit=b[1],
+                stages.append(dict(cell=a[0],native_cell=native_name,type=cell['type'],entry=a[1],exit=b[1],
                     input_aliases=names(incoming[0]),output_aliases=names(outgoing[0]),
                     all_inputs={pin:[names(bit)for bit in bits]for pin,bits in cell['connections'].items()if cell['port_directions'][pin]=='input'}))
                 previous=outgoing[0]
