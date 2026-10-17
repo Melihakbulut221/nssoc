@@ -43,9 +43,9 @@ def parser_controls():
 def option_values(text,backend):
     assert ('KLU' in text) if backend=='klu' else ('Sparse 1.3' in text)
     numeric={}
-    for label,pattern in {'reltol':r'reltol(?:\s+\(current\))?','abstol':r'abstol(?:\s+\(current\))?','vntol':r'vntol(?:\s+\(voltage\))?','trtol':'trtol','maxord':r'(?:maxord|maxorder)','itl4':r'itl4(?:\s+\(transient iterations\))?'}.items():
+    for label,pattern in {'reltol':r'reltol(?:\s+\(current\))?','abstol':r'abstol(?:\s+\(current\))?','vntol':r'vntol(?:\s+\(voltage\))?','itl1':r'itl1(?:\s+\(DC iterations\))?','trtol':'trtol','maxord':r'(?:maxord|maxorder)','itl4':r'itl4(?:\s+\(transient iterations\))?'}.items():
         values=re.findall(r'(?mi)^\s*'+pattern+r'\s*=\s*(\S+)\s*$',text);assert len(values)==1,(label,values);numeric[label]=float(values[0])
-    assert numeric['reltol']==1e-6 and numeric['abstol']==1e-12
+    assert numeric['reltol']==1e-6 and numeric['abstol']==1e-12 and numeric['itl1']==1000
     method=re.findall(r'(?mi)^\s*(?:method|integration method)\s*=\s*(\S+)\s*$',text);assert len(method)==1
     return dict(backend=backend,numeric=numeric,method=method[0],native_readback_sha256=hashlib.sha256(text.encode()).hexdigest())
 
@@ -66,7 +66,7 @@ def backend_readback(log,backend):
     return parsed,native_diagnostics('\n'.join(scoped)),block
 
 def readback_controls():
-    block='Sparse 1.3\nreltol (current) = 0.000001\nabstol (current) = 1e-12\nvntol (voltage) = 1e-6\ntrtol = 7\nmaxorder = 2\nitl4 (transient iterations) = 10\nIntegration method = trapezoidal\nTruncation error correction, charge based, is selected:\ndiaggmin (stepping) = 0\n'
+    block='Sparse 1.3\nreltol (current) = 0.000001\nabstol (current) = 1e-12\nvntol (voltage) = 1e-6\nitl1 (DC iterations) = 1000\ntrtol = 7\nmaxorder = 2\nitl4 (transient iterations) = 10\nIntegration method = trapezoidal\nTruncation error correction, charge based, is selected:\ndiaggmin (stepping) = 0\n'
     good='NSSOC_BACKEND_OPTIONS_BEGIN\n'+block+'NSSOC_BACKEND_OPTIONS_END\n'
     assert not backend_readback(good,'sparse')[1]
     assert not backend_readback(good.replace('Sparse 1.3','KLU'),'klu')[1]
@@ -130,7 +130,7 @@ def main():
             actual_up,actual_down=(down,up)if swap else(up,down)
             deck=['NSSOC actual C8 pump static source-current diagnostic',*library,
                 f'.include "{pump}"',f'.temp {c["temperature"]}',
-                '.options reltol=1e-6 abstol=1e-12 klu',
+                '.options reltol=1e-6 abstol=1e-12 klu itl1=1000',
                 f'VDIV div_avdd 0 {2.5*c["scale"]:.12g}',f'VCO vco_avdd 0 {2.3*c["scale"]:.12g}',
                 f'VUP up 0 {2.5*c["scale"]*actual_up:.12g}',f'VDOWN down 0 {2.5*c["scale"]*actual_down:.12g}',
                 'VSS avss 0 0','VSUB sub 0 0','VCREF wire_cref 0 0','VCLAMP vctrl 0 .4',
@@ -148,6 +148,7 @@ def main():
             log=(dest/'native.log').read_text()
             options,diagnostics,_=backend_readback(log,'klu')
             assert options['numeric']['reltol']==1e-6 and options['numeric']['abstol']==1e-12
+            r.setdefault('native_attempts',{})[name]=dict(returncode=done.returncode,native_options=options,diagnostics=diagnostics,native_log_sha256=sha(dest/'native.log'));save()
             assert not diagnostics,(name,diagnostics)
             text=(dest/'dc.dat').read_text();columns=text.splitlines()[0].lower().split()
             assert columns[1:]==VECTORS,(name,columns)
