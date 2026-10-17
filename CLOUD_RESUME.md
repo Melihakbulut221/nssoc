@@ -1,3 +1,11 @@
+## Connected coverage gaps: exact native clock/path diagnosis launched (2026-10-17)
+
+PROGRESS. New cloud-only routed-gap-paths workflow restores originalSTA/libraries/SDC runtimearchive and exactfreshRC38992990610 plus nativeconnectivity38999476919. Verifies sourceTcl exactidentity and originalnative phasegroups after rerun; then55connectedunconstrained pins (54inputs+Ethernetclockdriver) matched through nativeStaToDbconversion,330corner/delay bounded reports, effectivewrite_sdc anddisablededges. No exceptionchange/SDCedit/ODBwrite. Diagnostics stillnotwaiver/functionalCDCproof. Record actualrun/result next. APIs checked against pinnedOpenSTA857316ff primarysource; report_checks accepts-unconstrained/full_clock_expanded/corner, write_sdc supports-no_timestamp.
+
+Midloadfull32run38999900875/source1df5234d5e30070148c05fe001ebe2964212f8b0 queued atlastcheck; preservequeuedjobs. PLL38982797234 andMBISTboot38994926932 live. Allworkcloudonly/localempty/goalOPEN.
+
+---
+
 ## Native Nx3 intermediate loading candidate launched (2026-10-17)
 
 PROGRESS. Exact high2/high4 measurements bracket two different limiting stages: high2 pre-a/b minimumVCE473.299/475.774mV PASS but finalselector350.779mV FAIL; high4 pre-a/b372.533/373.605mV FAIL but final436.538mV PASS. Added budget_high3 with only a/b nativeNx3 and all8R inverse8/3 geometry;28lowerstagesNx1/final77unchanged. Geometry XRP/RN W3L1.1;BA/BB W1L102.4;FPR/FNR W1.5L15.8;SP/SN W1.5L1.8.719emitters/lane2876fourtreeonly excludingotherblocks; notwholechipbudgetproof. No change to clocks/stimuli/sourcebits/oracle/400mVVCE/150mVinterstage limits. New cloud tx-tree32-midload workflow runs full604HBT512MOS34ns256bits/threephases nominal andactualleafselectorfault; controls independently check exact rationalgeometry ratio using Fraction. Sourcecross-product avoids8/3roundoff; allpreviousnx remainchecked. Results notyetknown; freshphysical/PVT/RC stillrequired.
