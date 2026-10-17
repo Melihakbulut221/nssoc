@@ -182,7 +182,27 @@ module tb_logicrom_gl;
   end
 `endif
 
+`ifdef NSSOC_GL_MBIST
+  wire mbist_busy, mbist_done, mbist_failed, mbist_observation_passed;
+  wire [1:0] eth_mbist_done, eth_mbist_failed;
+  wire [31:0] mbist_busy_cycles, mbist_done_cycle;
+  mapped_mbist_boot_monitor u_mbist_observer (
+      .clk_i(clk), .rst_ni(rst_n), .busy_i(mbist_busy),
+      .done_i(mbist_done), .failed_i(mbist_failed),
+      .eth_done_i(eth_mbist_done), .eth_failed_i(eth_mbist_failed),
+      .passed_o(mbist_observation_passed),
+      .busy_cycles_o(mbist_busy_cycles), .done_cycle_o(mbist_done_cycle)
+  );
+`endif
+
   soc_top dut (
+`ifdef NSSOC_GL_MBIST
+      .mbist_busy_o(mbist_busy), .mbist_done_o(mbist_done),
+      .mbist_failed_o(mbist_failed), .eth_mbist_done_o(eth_mbist_done),
+      .eth_mbist_failed_o(eth_mbist_failed),
+      .mbist_fail_addr_o(), .mbist_fail_expected_o(), .mbist_fail_actual_o(),
+      .mbist_fail_phase_o(), .mbist_fail_background_o(),
+`endif
 `ifdef NSSOC_GL_PCIE
 `ifdef NSSOC_GL_PCIE_ASYNC
       .pcie_clk_i(pcie_clk),
@@ -349,6 +369,14 @@ module tb_logicrom_gl;
 `ifdef NSSOC_GL_PCIE
     if (pcie_idle_samples < 100) $fatal(1,"No meaningful packet-clock boot observation");
     $display("PCIE_IDLE_BOOT PASS samples=%0d",pcie_idle_samples);
+`endif
+`ifdef NSSOC_GL_MBIST
+    if (mbist_observation_passed !== 1'b1 || mbist_done !== 1'b1 ||
+        mbist_busy !== 1'b0 || mbist_failed !== 1'b0 ||
+        eth_mbist_done !== 2'b11 || eth_mbist_failed !== 2'b00)
+      $fatal(1,"Mapped system/Ethernet MBIST did not complete before boot");
+    $display("MBIST_BOOT PASS busy_cycles=%0d done_cycle=%0d eth_done=%0d",
+             mbist_busy_cycles,mbist_done_cycle,eth_mbist_done);
 `endif
     $display("LOGICROM_GL PASS checks=28");
     $finish;

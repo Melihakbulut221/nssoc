@@ -108,6 +108,37 @@ def validate_pcie_profile(text, profile):
     return dict(profile=profile, ports=ports, traffic_tested=False,
                 scope='Packet interface held link-down during real CPU/Ethernet firmware boot; no packet traffic, SDF or serial PHY qualification.')
 
+MBIST_OUTPUT_WIDTHS = dict(mbist_busy_o=1, mbist_done_o=1, mbist_failed_o=1,
+    mbist_fail_addr_o=13, mbist_fail_expected_o=64, mbist_fail_actual_o=64,
+    mbist_fail_phase_o=3, mbist_fail_background_o=8,
+    eth_mbist_done_o=2, eth_mbist_failed_o=2)
+
+def validate_mbist_profile(text, profile):
+    """Require the complete mapped system/Ethernet MBIST public boundary."""
+    if profile not in ('off', 'system-ethernet'):
+        raise ValueError('Unknown mapped MBIST profile')
+    top = re.findall(r'\bmodule\s+soc_top\s*\((.*?)\);(.*?)\bendmodule\b', text, re.S)
+    if len(top) != 1:
+        raise ValueError('Expected exactly one mapped soc_top module')
+    header, body = top[0]
+    names = re.findall(r'\b(?:eth_)?mbist_\w+\b', header)
+    declarations = re.findall(r'\b(input|output)\s*(?:\[(\d+)\s*:\s*(\d+)\])?\s+((?:eth_)?mbist_\w+)\s*;', body)
+    ports = {n: (d, abs(int(hi)-int(lo))+1 if hi else 1) for d, hi, lo, n in declarations}
+    expected = {} if profile == 'off' else {n: ('output', w) for n, w in MBIST_OUTPUT_WIDTHS.items()}
+    if ports != expected or len(declarations) != len(ports) or sorted(names) != sorted(expected):
+        raise ValueError('Mapped MBIST port inventory does not match requested boot profile')
+    return dict(profile=profile, ports=ports, fault_coverage_qualified=False,
+                scope='Observe actual mapped system and Ethernet MBIST busy-to-done handover during boot; no complete memory fault or physical qualification.')
+
+def mbist_boot_passed(text, profile):
+    if profile == 'off':
+        return True
+    if profile != 'system-ethernet':
+        raise ValueError('Unknown mapped MBIST profile')
+    banners = re.findall(r'(?m)^MBIST_BOOT PASS busy_cycles=([1-9][0-9]*) done_cycle=([1-9][0-9]*) eth_done=3$', text)
+    return (len(banners) == 1 and int(banners[0][1]) > int(banners[0][0])
+            and re.search(r'(?im)(?:FATAL:|ERROR:|%Fatal|%Error)', text) is None)
+
 def read_symbols(nm, elf):
     output = subprocess.check_output([nm, str(elf)], text=True)
     symbols = {}
@@ -195,6 +226,7 @@ def main(argv=None):
     parser.add_argument('--cycles', type=int, default=1000000)
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--pcie-profile', choices=('off', 'packet', 'packet-async'), default='off')
+    parser.add_argument('--mbist-profile', choices=('off', 'system-ethernet'), default='off')
     args = parser.parse_args(argv)
     if args.timeout <= 0 or args.cycles <= 0:
         parser.error('Timeout and cycle bound must be positive')
@@ -202,6 +234,7 @@ def main(argv=None):
                          for key in ('synthesis', 'firmware', 'pdk', 'output'))
     manifest = validate_builds(syn, fw)
     pcie = validate_pcie_profile((syn / 'soc_top.netlist.v').read_text(), args.pcie_profile)
+    mbist = validate_mbist_profile((syn / 'soc_top.netlist.v').read_text(), args.mbist_profile)
     symbols = read_symbols(args.nm, fw / 'app.elf')
     tool = shutil.which(args.tool or args.simulator)
     if tool is None:
@@ -217,12 +250,16 @@ def main(argv=None):
                SOC / 'tb/flash_w25q128jv.v',
                pdk / 'libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v']
     sources += [pdk / 'libs.ref/sg13g2_sram/verilog' / name for name in SRAM_MODELS]
+    if args.mbist_profile != 'off':
+        sources.append(SOC / 'tb/mapped_mbist_boot_monitor.v')
     tracked = sources + [fw / name for name in ('app.elf', 'flash0.hex', 'test_soc.bin')]
     tracked += [directory / 'boot-rom' / name for directory in (syn, fw)
                 for name in ('manifest.json', 'soc_logic_boot_rom.v')]
     hashes = {str(p): dict(sha256=digest(p), bytes=p.stat().st_size) for p in tracked}
     defines = ['-DFUNCTIONAL', '-DTIMEOUT_CYCLES=' + str(args.cycles)]
     defines += [f"-D{macro}=32'h{symbols[symbol]:08x}" for macro, symbol in SYMBOLS.items()]
+    if args.mbist_profile != 'off':
+        defines.append('-DNSSOC_GL_MBIST')
     if args.pcie_profile != 'off':
         defines.append('-DNSSOC_GL_PCIE')
     if args.pcie_profile == 'packet-async':
@@ -241,7 +278,7 @@ def main(argv=None):
     out.mkdir(parents=True, exist_ok=False)
     record = dict(scope='Functional boot only. No ROM/RAM preload, SDF or fault qualification. '
                   'Verilator is a supplemental randomized two-state control.',
-                  simulator=args.simulator, version=version, loader_manifest=manifest, pcie=pcie,
+                  simulator=args.simulator, version=version, loader_manifest=manifest, pcie=pcie, mbist=mbist,
                   symbols=symbols, sources=hashes, compile_command=command, run_commands=runs,
                   run_timeout_s=args.timeout, cycle_bound=args.cycles)
     (out / 'inputs.json').write_text(json.dumps(record, indent=2) + '\n')
@@ -262,12 +299,13 @@ def main(argv=None):
             status = run_logged(run, log, args.timeout)
             status['pass_banner'] = 'LOGICROM_GL PASS checks=28' in log.read_text()
             status['pcie_idle_boot_passed'] = (args.pcie_profile == 'off' or bool(re.search(r'PCIE_IDLE_BOOT PASS samples=[1-9][0-9]*', log.read_text())))
+            status['mbist_boot_passed'] = mbist_boot_passed(log.read_text(), args.mbist_profile)
             result['runs'].append(status)
             (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     result['sources_unchanged'] = all(digest(p) == info['sha256'] for p, info in hashes.items())
     result['passed'] = (result['compile']['returncode'] == 0 and result['sources_unchanged']
                         and len(result['runs']) == len(runs)
-                        and all(r['returncode'] == 0 and r['pass_banner'] and r['pcie_idle_boot_passed'] for r in result['runs']))
+                        and all(r['returncode'] == 0 and r['pass_banner'] and r['pcie_idle_boot_passed'] and r['mbist_boot_passed'] for r in result['runs']))
     (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result, indent=2))
     return 0 if result['passed'] else 1

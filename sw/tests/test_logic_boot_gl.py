@@ -135,3 +135,30 @@ def test_mapped_packet_profile_matches_all_public_ports(profile):
                     text.replace('input pcie_tx_ready_i;', 'input pcie_tx_ready_i;\ninput pcie_tx_ready_i;')]:
             with pytest.raises(ValueError):
                 gl.validate_pcie_profile(bad, profile)
+
+
+@pytest.mark.parametrize('profile', ['off', 'system-ethernet'])
+def test_mbist_profile_rejects_incomplete_or_wrong_mapped_boundary(profile):
+    fields = {} if profile == 'off' else gl.MBIST_OUTPUT_WIDTHS
+    declarations = ['output ' + ('[%d:0] ' % (w-1) if w > 1 else '') + n + ';' for n, w in fields.items()]
+    text = 'module soc_top(' + ','.join(fields) + ');\n' + '\n'.join(declarations) + '\nendmodule\n'
+    assert gl.validate_mbist_profile(text, profile)['profile'] == profile
+    with pytest.raises(ValueError):
+        gl.validate_mbist_profile(text, 'system-ethernet' if profile == 'off' else 'off')
+    if fields:
+        for bad in [text.replace('output [1:0] eth_mbist_done_o;', 'output eth_mbist_done_o;'),
+                    text.replace('output mbist_busy_o;', ''),
+                    text.replace('output mbist_done_o;', 'input mbist_done_o;'),
+                    text.replace('output mbist_done_o;', 'output mbist_done_o;\noutput mbist_done_o;'),
+                    text.replace('output [12:0] mbist_fail_addr_o;', 'output [11:0] mbist_fail_addr_o;')]:
+            with pytest.raises(ValueError):
+                gl.validate_mbist_profile(bad, profile)
+
+
+def test_mbist_verdict_requires_one_observed_successful_handover():
+    good = 'MBIST_BOOT PASS busy_cycles=983010 done_cycle=983043 eth_done=3\n'
+    assert gl.mbist_boot_passed(good, 'system-ethernet')
+    for bad in ['', good + good, good.replace('983010', '0'),
+                good.replace('eth_done=3', 'eth_done=1'),
+                good.replace('done_cycle=983043', 'done_cycle=1'), good + 'FATAL: memory failure\n']:
+        assert not gl.mbist_boot_passed(bad, 'system-ethernet')
