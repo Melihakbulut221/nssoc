@@ -1,3 +1,9 @@
+## Native CDR comparison primitive started, no recovered-clock claim (2026-10-17)
+
+Source audit confirms external-clock RX sampler and missing analog CDR. Primary research inspected Lee/Kundert/Razavi JSSC2004 DOI10.1109/JSSC.2004.831600; metastability/jitter and sample alignment must be measured, not inferred from XOR truth. New ORIGINAL cdr_xor_hbt_v1 wrapper cross-connects frozen native54device v10 mux into differential XOR. New cloud_cdr_xor.py runs nominal/hotlow/coldhigh/actualoutputswap 256symbols8GT/s,768fixed-phase samples,all19HBT VCE/current gates,zeroOP/nativeOFF/diagnostics. External10ohm drivers/different commonmodes/500uA idealbias/50fFload are explicit unqualified boundaries. No behavioral gate or complete CDR/layout claim. Push starts one fourcase campaign. Review actual results before sampler/loop integration; keep allfailures.
+
+LoadedC8tuning39032380696/source6f4b02ea now allfour native measurement jobs live. Mainchip repair39030330882 -> logic39031081958 -> globalroute39031588904 remainslive. Return64wire39030593206/tight39025744008/mixed39018157113 live. Previous goalturn VERIFIED_WAIT; current source/research and actual new primitive campaign is PROGRESS. FullgoalOPEN; allcloud/localempty.
+
 ## Exact loaded C8 tuning diagnostic prepared in cloud (2026-10-17)
 
 RX source audit confirms rx_sampler_hbt_v2 remains externally clocked; recovered_x4 digital composition is not an analog CDR. Full CDR/x4/serial physical integration remain required. Current mainchip packet-async candidate must not be described as completed serial-PHY integration.
