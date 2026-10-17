@@ -1,3 +1,11 @@
+## Full32 Nx3 fixed-geometry PVT study launched (2026-10-17)
+
+PROGRESS. NativephysicalNx3cell39002064010/job117306896791 confirmedrunning generation/54deviceDRC/LVS. Added only explicit --condition toexistingfull32sizingcontroller, nominaldefault/outputpaths unchanged. Nonnominal restrictedto budget_high3/no-fault, geometryand sourcebit timing/604HBT512MOS probes/34ns/256bits/.3/.5/.7UI/limits retained. New tx-tree32-high3-pvt workflow runs hot_low(125C,rails95%,MOSss,HBTwcs,RESwcs) andcold_high(-40C,rails105%,MOSff,HBTbcs,RESbcs). Same fixed19Nx3fastcells/8Rgeometry andallbiascircuits; onlyexistingconditiontable drivesPDKcorners/rails/temp. These are two combined corners, NOTcompleteindependent-process/PVT/refinement/RC qualification. Fresh PVTmayreject3.957mVnominalheadroom; preservefailures/no per-cornerretuning. Recordactualrun/resultsnext.
+
+Clockstrictsuccessor39001834734 completedSUCCESS atstartofturn; captureexactsummaryandnativecountsnext. PLL38982797234 continuation andMBISTboot38994926932 freshlyconfirmedlive. Localempty/cloudonly/goalOPEN; priorturnPROGRESS.
+
+---
+
 ## Full post-cleanup timing census unchanged; Nx3 physical queued (2026-10-17)
 
 PROGRESS. Fullnativeclockcleanup39001722601/sourceade36fe40bc8806bc11f575b40077ae14b1a3e2f PASS. All22544endpointidentities/135264corner-delayrows retained; everyrise/fall/worst result exactlyunchanged. Hold0(allcorners), worstfasthold+1.255107ps; slowsetup9351/−5.793440394ns, typicalsetup464/−1.464126598ns,fastsetup0/+0.131757272ns. Coveragegapsstill1072setup/1117hold. ActualSDCbugfixed without dropping endpoints or changing originalexceptions; no setupreductionclaimed. Strictnativegraphchecks/selectionproof/immutableinputs passed. Receipt docs/evidence/clock-port-delay-full-census-20261017.json pins summary649509483/parts649509609/archive649509729. Strictpipefail successor39001834734 remainsseparatemeasurement; preserve it.

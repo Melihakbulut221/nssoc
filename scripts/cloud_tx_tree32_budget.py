@@ -57,11 +57,12 @@ def resized(text,nx):
     return result,dict(nx=nx,emitters=1+18*nx,resistance_ratio=str(Decimal(8)/nx),changes=changes,actual_parameter_faults_rejected=controls,compact_parasitics_recomputed_by_native_model=True,physical_layout_matches=False)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--variant',choices=('baseline','budget','budget_high8','budget_high2','budget_high3','budget_all1'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--variant',choices=('baseline','budget','budget_high8','budget_high2','budget_high3','budget_all1'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');p.add_argument('--condition',choices=('nominal','hot_low','cold_high'),default='nominal');args=p.parse_args()
     assert args.variant!='baseline'or args.fault=='none'
+    assert args.condition=='nominal'or(args.variant=='budget_high3'and args.fault=='none')
     assert os.environ.get('GITHUB_ACTIONS')=='true'
-    out=ROOT/('cloud-tx-tree32-budget-'+args.variant+'-'+args.fault);out.mkdir(exist_ok=False);native=out/'native';native.mkdir()
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,fault=args.fault,accepted=False,full_serial_phy_complete=False,physical_layout_matches=False,schematic_screen_passed=False,scope='New actual full32-input/five-level transistor schematic at250Mb/s per input and8Gb/s output. 30pre+1final, native resistor bias, external differential clock modulation, schematic CMOS drivers and ideal intermacro connections. Every604HBT/512MOS terminal/current captured and original34ns/256bits/three phases/device limits retained. Original4427-emitter physical tree remains rejected. New candidate needs fresh cells/GDS/LVS/DRC/PEX, actual raw100 frontends/physical clock, all corners, RX/PLL/CDR, four lanes and mainchip before acceptance.')
+    out=ROOT/('cloud-tx-tree32-budget-'+args.variant+'-'+args.fault+(''if args.condition=='nominal'else'-'+args.condition));out.mkdir(exist_ok=False);native=out/'native';native.mkdir()
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=args.variant,fault=args.fault,condition=args.condition,condition_parameters=tree.CONDITIONS[args.condition],accepted=False,full_serial_phy_complete=False,physical_layout_matches=False,schematic_screen_passed=False,scope='New actual full32-input/five-level transistor schematic at250Mb/s per input and8Gb/s output. 30pre+1final, native resistor bias, external differential clock modulation, schematic CMOS drivers and ideal intermacro connections. Every604HBT/512MOS terminal/current captured and original34ns/256bits/three phases/device limits retained. Original4427-emitter physical tree remains rejected. New candidate needs fresh cells/GDS/LVS/DRC/PEX, actual raw100 frontends/physical clock, all corners, RX/PLL/CDR, four lanes and mainchip before acceptance.')
     def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save()
     try:
@@ -85,7 +86,7 @@ def main():
         result['sizing']={'low':prooflow,'high':proofhigh}
         tree.PRE=SOURCE if args.variant=='baseline'else lowpath
         tree.FRONT=ROOT/'hw/soc/analog/pcie/tx_cmos_hv_resistive_input_v7.inc'
-        deck,contract=tree.build(inputs,'nominal',fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,final_override=FINAL,clock_reference='stiff65',solver_profile=PROFILE)
+        deck,contract=tree.build(inputs,args.condition,fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,final_override=FINAL,clock_reference='stiff65',solver_profile=PROFILE)
         stimuli=pwl_voltage_sources(deck);original_vectors=list(contract['vectors'])
         assert len(contract['tree_plan']['nodes'])==30 and contract['streams']==32 and len(contract['hbt'])==604 and len(contract['mos'])==512
         if args.variant not in ('baseline','budget_all1'):
