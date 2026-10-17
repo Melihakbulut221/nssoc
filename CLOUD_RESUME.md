@@ -1,3 +1,13 @@
+## Full32 RC composition passed; actual routed coverage inventory completed (2026-10-17)
+
+PROGRESS. Nativecomposition38998200846/sourcec322ce7e75adfe0dce6d1a876aa8264bd3d32654 PASS.1674devices114815R76347C, all377resistorcomponents recover native schematicnets;3100metal+1674intrinsicbodyterminalreferences and162ports retained. Sixactual malformed output controls rejected, actualfinalHBTbase probes bound. Model wire96/tree1674-wire01.spice SHA2a3ec1d0fd9cd9f8dcb99a0dc3899a14f1611da66644a0d72ebda81357783319; compact2f1321b7905ff4aca0e8b2a5a259dcf3c49462cee72a8c707f250771ef52c748. Summaryasset649397284 is38.5MB: filter before printing. Fullreceipts docs/evidence/tx-tree32-budget-composition-pass-20261017.json. This is the REJECTEDhigh8 electrical reference, not acceptedPHY; nextsizingrequiresfreshlayoutRC.
+
+Routedcoverageinventory38998404892/sourcea8059d5d748d3d52b4b2f7de4b106bb70c2daba6 PASS read-only exactsource38992990610. All1072setup-unconstrained endpoints alsohold-unconstrained,45additionalhold-only. Setup pin inventory:Y796+X267=1063outputs, B_N1/B1/A0_1/A1_1/RESET_B2/D3=9otherpins. Holdtotal1117:outputssame1063, otherlogic4, RESET_B26,D24. No boundaryports. Causeunresolved: need actualimmutableODBnet driver/sink/clock/exception evidence; lexicalgroups are not proofunused or authorizedfalsepath. Exactphysicalmapping andallslacks in summaryasset649401605; receipts docs/evidence/routed-coverage-gaps-20261017.json. Noexceptionsadded/noSDCchange.
+
+Lowerloadingfull32run38997777137/source32e08c8699bfe917484590837ac5e1e944192da3 allfour nativejobs confirmedlive:117294073719high2fault,117294073731all1nominal,117294073742high2nominal,117294073764all1fault. Boot38994926932/job117285636114 andPLL38982797234/job117247407978 confirmedlive thisturn; no restart. Workcloudonly/localempty/goalOPEN.
+
+---
+
 ## Full32 parent RC graph passed; actual device composition started (2026-10-17)
 
 PROGRESS. Run38997568496/source571489e3a6fbb6366cd89df4a5451032dfa086ef nativeRC PASS:377metalcomponents/378nets includingbody,1674devices/4774terminals,3100metalreferences+162ports=3262probes. Actual114815R76347C; nativeR topology/value multiset and complete collapsedC conserved,142884matrix entries. All13real rawcorruptions rejected. Actual8655shortwarnings belong to samegeometryconductors; nooriginalnode deletions/noidealaliasR inserted. BodyR/RFdistribution/fullPEX qualifications remainfalse. Exactfullsummary/parts andnativeaudit controls in docs/evidence/tx-tree32-budget-extraction-pass-20261017.json.
