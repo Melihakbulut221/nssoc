@@ -1,3 +1,9 @@
+## Native reset-to-output setup path source binding launched (2026-10-17)
+
+Previous turn PROGRESS. All firstclock39015558689 cases now live; boot39016026619 nativecontrols PASS and nativeboot queued; physical-continuation syntaxcontrols39016147885 PASS (placement deliberately not run without completed input artifact). Wire/PLL live and preserved.
+
+Saved native setup path39012558696 shows pcie_retrain_done_i through hold20120 and a long purely combinational cone to pcie_tx_data_o[5],typ-3.791396ns/fast-1.704735ns. RTL inspection identifies raw local_reset in buffered flow and nested packet-valid arbitration, but does not yet prove exact mapped cone ownership. New pcie-reset-path-diagnosis-cloud restores logically proven actual post-ECO JSON39014414337, verifies all source hashes, and binds EVERY reported input/output cell pin and adjacent native net from input to output5 before emitting RTL net aliases. No falsepaths/clock relaxations or speculative RTL change. Next use exact aliases to isolate reset/control fanout and data selection while preserving retrain/packet atomicity; bankedRTL boot continues unchanged. FullgoalOPEN/cloudonly/localempty.
+
 ## Banked RTL native protocols passed; new fullchip boot dispatched (2026-10-17)
 
 Protocol39015043900/sourcebf478c566ec11ad4d1855a428f45dcc24e824803 completed SUCCESS; actual native log inspected, final replay/credit mutations23passed. Previous failedfixture39013401471 retained. Six formalreadbank proofs and sequential equivalence passed, with actual wrongread counterexamples. New native fullchip synthesis/boot39016026619/sourcef65c0c35a6e2c706f0fe7df485ab6b2115b11e6a dispatched, awaiting live native results. Do not confuse it with old38994926932. New synthesis still must prove28firmwarechecks, system+bothEthernetMBIST handover, independentPCIe idle and source-bound native models; packet traffic was exercised separately byprotocol workflow. No timing/fullPHY pass implied.
