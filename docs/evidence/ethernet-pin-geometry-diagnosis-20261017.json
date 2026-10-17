@@ -1,0 +1,108 @@
+{
+  "status": "DIAGNOSIS_PROGRESS_NOT_TIMING_OR_PHY_ACCEPTANCE",
+  "independent_full_reroute_reviews": [
+    {
+      "group": "ethernet-delay-geometry",
+      "run": 38990762039,
+      "assets": {
+        "parts": {
+          "id": 649184225,
+          "sha256": "a1fb88ca094d5094ada0b6fbc4462aae8beed803f2ca13be2960966aa9f8b3b5"
+        },
+        "summary": {
+          "id": 649184143,
+          "sha256": "1ff369b2c8826b7fd0b8e69448fafbec214f047f4189716ee235b6695e08b469"
+        }
+      },
+      "status": "COMPLETE_INDEPENDENT_ETHERNET_DELAY_GEOMETRY_SCREEN_NOT_SIGNOFF",
+      "accepted": false,
+      "odb_sha256": "2a127c74e04a216dab65cd56d2a92194a51c61aff408842e9ab717db33922676",
+      "scope": "Independent actual Ethernet delay-master ODB/parent census and signal geometry or RC annotation. NoPG/CUT/spacing/internalmacro/transistorLVS/qualifiedRC/SRAM/ESD/fullPHY or timing acceptance.",
+      "continuity": {
+        "status": "COMPLETE_SIGNAL_GEOMETRIC_CONTINUITY_SCREEN_NOT_LVS",
+        "accepted": false,
+        "controls": {
+          "positive": 2,
+          "negative": [
+            "gap",
+            "wrong_layer",
+            "missing_pin",
+            "virtual_short_only",
+            "floating_metal"
+          ]
+        },
+        "checked": 113796,
+        "failed": 0,
+        "total_shapes": 3326742,
+        "inter_net_shorts_checked": false,
+        "transistor_lvs_passed": false,
+        "signal_continuity_passed": true
+      },
+      "contacts": {
+        "shape_count": 3326742,
+        "net_count": 113796,
+        "no_cross_net_contacts": true
+      },
+      "antenna": [
+        "[INFO ANT-0002] Found 643 net violations.",
+        "[INFO ANT-0001] Found 800 pin violations."
+      ]
+    },
+    {
+      "group": "ethernet-delay-annotation",
+      "run": 38990762039,
+      "assets": {
+        "parts": {
+          "id": 649176211,
+          "sha256": "312df6cb44e3ee0458f3c292539311af098d171c1c5973b69d3fc403af55a6b6"
+        },
+        "summary": {
+          "id": 649176137,
+          "sha256": "7ba74fb1ba3f1603f02f5383da2ee94161feebbd60cbdb8baa538e2bdf985a7f"
+        }
+      },
+      "status": "COMPLETE_INDEPENDENT_ETHERNET_DELAY_ANNOTATION_SCREEN_NOT_SIGNOFF",
+      "accepted": false,
+      "odb_sha256": "2a127c74e04a216dab65cd56d2a92194a51c61aff408842e9ab717db33922676",
+      "scope": "Independent actual Ethernet delay-master ODB/parent census and signal geometry or RC annotation. NoPG/CUT/spacing/internalmacro/transistorLVS/qualifiedRC/SRAM/ESD/fullPHY or timing acceptance.",
+      "classification": {
+        "status": "COMPLETE_SOURCE_BOUND_ANNOTATION_DIAGNOSIS_NOT_COVERAGE_ACCEPTANCE",
+        "accepted": false,
+        "checked": 1065,
+        "counts": {
+          "CONNECTED_NO_SINK": 302,
+          "DISCONNECTED_DRIVER": 763
+        },
+        "loaded_unannotated_drivers": 0,
+        "spef_nets": 113796,
+        "spef_name_resolution": {
+          "native_id_and_exact_writer_name": 113796
+        },
+        "scope": "Descriptive native OpenSTA driver classification against exact routed ODB terminals and extracted SPEF D_NET inventory. No missing loaded net is waived. Disconnected outputs alone do not prove unused functional interfaces or complete timing coverage."
+      }
+    }
+  ],
+  "preserved_candidate_gate_failure": {
+    "run": 38991845764,
+    "source_head": "fa776a0218d02b79f82d8e4d5ac9d0ec51d48559",
+    "summary_asset": 649206287,
+    "summary_sha256": "1f6bdc54fe83c48a0e221ecbdf7ed4f9e2ef9ce1b404323cb09fddbbc8469965",
+    "parts_sha256": "3121ccd92ab7fde6164a575631f35dbb900e6a0ed3369779c76334976bcabb73",
+    "wire_records_equal": true,
+    "power_pin_shapes_equal": false,
+    "obstruction_shapes_equal": false,
+    "main_power_bars_equal": true,
+    "interpretation": "Exact pin/obstruction equality failed. Native planar same-rail contact exists, but this alone does not prove absence of signal/obstruction collisions or complete PG connectivity."
+  },
+  "actual_geometry_diagnostic": {
+    "run": 38992292456,
+    "source_head": "03585c2a79da83ae66ebde1d586f978c530e3b47",
+    "workflow": "ethernet-pin-compatible-cloud.yml",
+    "state_at_recording": "in_progress",
+    "original_equality_gate_preserved": true,
+    "candidate_odb_sha256": "49a805c66e904b534dd846bcca58070feaeac77dfe1427f7937e89427b0085e8"
+  },
+  "cloud_only": true,
+  "full_serial_phy_complete": false,
+  "final_timing_complete": false
+}
