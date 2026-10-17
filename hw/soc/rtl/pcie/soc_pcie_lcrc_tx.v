@@ -30,15 +30,21 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     assign tx_sop_o=state==PREFIX0;
     assign tx_eop_o=state==CRC && byte_index==3;
     soc_pcie_crc32_byte crc_step(.state_i(crc),.data_i(tx_data_o),.state_o(crc_next));
+    // Resolve byte order and byte selection independently in each word.
+    // index then selects an eight-bit result, avoiding a word mux followed
+    // by a variable shifter on the index-to-CRC path. No state or latency changes.
+    wire [7:0] selected_word_byte [0:MAX_TLP_DWORDS-1];
+    genvar tx_word;
+    generate for(tx_word=0;tx_word<MAX_TLP_DWORDS;tx_word=tx_word+1) begin: read_tx_word
+        assign selected_word_byte[tx_word]=(tx_word<header_words) ?
+            words[tx_word] >> (8*(3-byte_index)) : words[tx_word] >> (8*byte_index);
+    end endgenerate
     always @* begin
         tx_data_o=0;
         case (state)
             PREFIX0:tx_data_o={4'b0,next_sequence_o[11:8]};
             PREFIX1:tx_data_o=next_sequence_o[7:0];
-            DATA:begin
-                if (index<header_words) tx_data_o=words[index] >> (8*(3-byte_index));
-                else tx_data_o=words[index] >> (8*byte_index);
-            end
+            DATA:tx_data_o=selected_word_byte[index];
             CRC:tx_data_o=(~crc) >> (8*byte_index);
             default:tx_data_o=0;
         endcase

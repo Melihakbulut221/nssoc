@@ -1,3 +1,11 @@
+## PCIe critical byte selection restructured; exact behavior proofs launched (2026-10-17)
+
+Based on saved native path review39012558696, replay send_slot to TX and LCRC transmit_packet.index to downstream CRC are deep setup cones. Replay now reads constant-base banks in parallel then selects an8bit result; flat cross-bank behavior is retained for every language-defined address. LCRC now resolves byte order and selection for each constant word before index selects8bits. No state, latency, ready/valid, reset, timer, ACK/retry, CRC polynomial or clock constraint changes. Frozen pre-change RTL files and SHA-bound checker retained.
+
+New pcie-tx-read-banks-cloud runs replay DEPTH2/3/4 with18/38bytes and LCRC4/8/9words: arbitrary defined memory cuts with no valid/reachability mask, actual wrongbyte/slot/endian corruptions required to produce SAT counterexamples, then full sequential equivalence. Original RTL/native protocol workflows also triggered by RTL change. Changes are experimental until these proofs, native port replay, new mapped fullchip boot/STA and physical routing pass. No timing win claimed from algebra alone.
+
+All five physical11clock/native32 waveform39012081694 live. Schematic-clock comparison39011282078 compactnominal/hotlow/coldhigh and fault jobs terminalSUCCESS, but actual electrical flags/diagnostics still must be inspected before claim; wire case live. PLL39007535633 and oldwire39004595306 live. GoalOPEN/cloudonly/localempty. Previous turnPROGRESS.
+
 ## Saved native path review completed; targeted PCIe and Ethernet causes identified (2026-10-17)
 
 39012558696/sourcefe677fa2 finished read-only cloud inspection; complete source archive9eceb042 and ALL113saved output hashes verified. Receipt corrpre-postcts-path-review-20261017.json pins summarya448aaed and raw worst paths. No native CAD rerun after local-RAM observation timeout.

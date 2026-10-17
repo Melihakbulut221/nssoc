@@ -89,7 +89,15 @@ module soc_pcie_replay_tx #(
         (capturing || (!replay_active && !replay_pending && !ack_valid_i && count<DEPTH));
     assign ack_ready_o=rst_ni && link_up_i && !sending && !capturing && !replay_active;
     assign tx_valid_o=rst_ni && link_up_i && sending;
-    assign tx_data_o=bytes[send_slot*MAX_BYTES+read_pos];
+    // Read constant-base banks in parallel so send_slot only selects the
+    // already-read byte. Keep flat-array cross-bank behavior for every
+    // language-defined address, including read_pos >= MAX_BYTES.
+    wire [7:0] replay_bank_byte [0:DEPTH-1];
+    genvar replay_bank;
+    generate for(replay_bank=0;replay_bank<DEPTH;replay_bank=replay_bank+1) begin: read_replay_bank
+        assign replay_bank_byte[replay_bank]=bytes[replay_bank*MAX_BYTES+read_pos];
+    end endgenerate
+    assign tx_data_o=replay_bank_byte[send_slot];
     assign tx_sop_o=read_pos==0;
     assign tx_eop_o=read_pos==lengths[send_slot]-1'b1;
     assign tx_replay_o=sending_replay;
