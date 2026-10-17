@@ -5,7 +5,11 @@
 import hashlib,json,math,os,subprocess,tarfile,time
 from pathlib import Path
 from bootstrap_flow import verify
-from run_cloud_tx_layout_repair import fetch,sha
+from run_cloud_tx_layout_repair import fetch
+
+def sha(path):
+    with Path(path).open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'hw/soc/out/cloud-corrpre-postcts-electrical'
 SOURCE=ROOT/'hw/soc/out/cloud-corrpre-mbist-placement'

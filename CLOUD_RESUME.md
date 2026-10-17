@@ -1,3 +1,7 @@
+## PostCTS restore hash adapter fixed (2026-10-17)
+
+39009256177 verified the entire original archive and all outputs, then stopped BEFORE native CAD: imported SHA helper expected Path, but state ODB paths are JSON strings. Normalize both forms with Path(path); hashes, original saved CTS, config and timing gates unchanged. Failure remains published under corrpre-postcts-electrical. Successor must reach actual native STA/repair; no original boot/CTS rerun. Trimmed extraction39009418149 remains live. Cloud-only, goal OPEN.
+
 ## Trimmed full32 parent physical passed; fresh native RC launched (2026-10-17)
 
 Run39008646377/source68a1d9d2 passed actual31macro1674device deep+flatLVS,560DRCzero and fiveactualfaults. Full2808961byte archive SHAa205c70d3a490b64f57c5ea81032349909b24f3432aa95cb4d9382920891e1d2 and every output verified in RAM. ActualGDS b050d7560c1ba246d3e7a8d2907a8111e02b9dd2aa5d3d419bcdca5167f843bd. Receipt tx-tree32-headroom-physical-pass-20261017.json. This is the trimmed28Nx1/2Nx3/unchangedfinal719emitter core, not the old untrimmed physical candidate.
