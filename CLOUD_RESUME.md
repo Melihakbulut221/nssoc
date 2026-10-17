@@ -1,3 +1,11 @@
+## Actual firstclock nominal/cold native gates pass; exact reset path identified (2026-10-17)
+
+39015558689/source0f6a3db7: nominal and cold_high compact cases PASS actual original34ns256bits/threephases/all604HBT512MOS/fiveinterfaces/44bindingfaults/604nativeOFF/no numerical diagnostics. Min TX280.885/274.535mV. Prior four final-selector VCE violations now minimum0.403897025Vnominal/0.405244149Vcold above unchanged0.40V; these narrow margins do NOT establish process/RF robustness. Core metalRC is still excluded in compact. Hot_low and actualswapleaf fault remain live; wait for those native verdicts before launching new fullwire candidate. FullPHY/mainchip not accepted. Receipt tx-tree32-firstclock-partial-pass-20261017.json.
+
+Native reset-path diagnosis39017193590/source896e587d PASS: every actual celltype, input/outputpin and adjacent mapped net from pcie_retrain_done_i to outputdata[5] matches saved STA and exactpostECO netlist. Path passes ACKencoderbusy/select_dllp, prefer_retry and into retry.bytes[22][5]/wide reduction, supporting already-running banked-read candidate measurement. Old39016835023 failed only observer identifier spelling (savedJSON retains leading Verilog escapes); rawsource unchanged, unique mapping and allconnectivity checks retained. Both cornerpaths/actualaliases stored in pcie-reset-path-native-binding-20261017.json. Do not waive reset path or remove hold20120 without hold evidence.
+
+New banked fullchip39016026619 controlsPASS and native synthesis/boot live. Its exact future physical dispatch inputs remain recorded below. Original wire39004595306/39011282078/39012081694 and PLL39007535633 stay live; do not restart healthy processes. Cloud-only, local workspace empty. FullgoalOPEN. This turn PROGRESS.
+
 ## Native reset-to-output setup path source binding launched (2026-10-17)
 
 Previous turn PROGRESS. All firstclock39015558689 cases now live; boot39016026619 nativecontrols PASS and nativeboot queued; physical-continuation syntaxcontrols39016147885 PASS (placement deliberately not run without completed input artifact). Wire/PLL live and preserved.
