@@ -26,6 +26,17 @@ jobs:
           python-version: '3.12'
       - name: Compile exact physical methods in the cloud
         run: python3 -m py_compile scripts/cloud_tx_balanced_v5_assembly.py
+      - name: Install topology dependency and exercise source selection before CAD
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 - <<'PYCODE'
+          import sys
+          sys.path.insert(0,'scripts')
+          from cloud_tx_balanced_v5_assembly import topology
+          p=topology()
+          assert len(p['nodes'])==31 and len(p['ports'])==162 and p['selection_fault_rejected']
+          print('Native tree selection preflight passed')
+          PYCODE
       - name: Restore pinned native CAD runtime
         run: |
           sudo apt-get update -qq
