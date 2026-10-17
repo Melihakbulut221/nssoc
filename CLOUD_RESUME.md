@@ -1,3 +1,11 @@
+## Fresh per-corner postCTS electrical repair trial (2026-10-17)
+
+Native archive39007378877 shows preCTS fast recovery path rst_sys_n with4905fanout/34.334957pF/88.553902ns slew and -93.098068ns slack. This report predates CTS; inherited CTS metrics are not a fresh timing verdict. LibreLane3.0.5 corner.tcl explicitly reports only the first loaded corner, so mixed inherited slow/typical metrics cannot represent this CTS database.
+
+New corrpre-postcts-electrical-cloud restores the hash-pinned exact boot-proven CTS archive and DB, clears inherited metrics, and measures slow/typical/fast in separate native processes before/after electrical repair. All clocks propagated, original20/4/8/8ns budgets,5percent derate, PDK, macro libraries, acceptance limits preserved. Native repair_design keeps propagated clocks, disables port rebuffering/buffer removal/tie changes, and repairs internal fanout/slew/cap. No synthesis/placement/CTS rerun. Requires inspecting actual reports and structural/formal checks before adoption, then setup/hold repair, routing and full signoff. All source/failures/native outputs published; cloud-only workspace remains empty. Full PHY and final timing remain OPEN.
+
+Healthy jobs: PLL39007535633, wire39004595306, trimmed parent39008646377. Dedicated parent trigger/group was fixed by68a1d9d2; do not confuse prior c3aaa workflow-name copy error with a physical failure.
+
 ## Headroom-trim Nx1/Nx3 physical PASS; actual31macro parent assembly (2026-10-17)
 
 Both39007846049 macros passed560DRCzero/deep+flat54deviceLVS/fiveactualfaults. Exact native trimscircuitSHA Nx1 6b71f482a0dc084c9e9d13a466cec2940b17cfced6ceb17f76475565fa47043b, Nx3 c718fc426a04a011aaa79f378c65ee9d723bef5619b8ea9133874ac3f9055621. New inputreceipts pin actualGDS/LEF/reference and archives. New budget_high3_trim assembly physicallyplaces28Nx1trim+2Nx3trim+unchangedfinal77,1674native devices/719emitters/162ports. Childdrawing exact and allnativeparentfaultgates retained. Requires fresh extraction/composition/waveforms; clockstiff625physical is separate livejob.
