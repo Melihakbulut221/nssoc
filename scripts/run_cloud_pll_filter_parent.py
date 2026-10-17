@@ -9,6 +9,7 @@ ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-pll-filter-p
 OLDTOP='nssoc_pll845_rhi140_pbuf10_pfd94d2_development_v1'
 TOP='nssoc_pll845_rhi140_c9_pbuf10_pfd94d2_development_v1'
 CHILD='nssoc_pump_filter13_rhi140_c9_v1'
+OLD_CAP_UM,NEW_CAP_UM=10,9
 BASE='https://github.com/Melihakbulut221/nssoc/releases/download/'
 
 def generate():
@@ -35,7 +36,7 @@ def generate():
         assert [round(v*1000) for v in [actual.left,actual.bottom,actual.right,actual.top]]==[round(v*1000) for v in reference], ('Moved macro port',pin,actual,reference)
     # Copy into a fresh namespace. Never overwrite existing PCells or macros.
     for cell in G.each_cell():
-        if cell.name!=CHILD:cell.name='filter9_'+cell.name
+        if cell.name!=CHILD:cell.name='filter'+str(NEW_CAP_UM)+'_'+cell.name
     assert all(L.cell(c.name) is None for c in G.each_cell())
     G.write(str(A/'unique-child.gds'));L.read(str(A/'unique-child.gds'));N=L.cell(CHILD)
     for name,(ss,ii) in original.items():assert shapes(L,L.cell(name))==ss and instances(L.cell(name))==ii,name
@@ -56,15 +57,15 @@ def generate():
     def cards(text):return [l.lower().split() for l in text.splitlines() if l.strip() and not l.startswith(('*','.'))]
     before=cards(match.group(0));after=cards(ref);assert len(before)==len(after)==30
     delta=[(a,b) for a,b in zip(before,after,strict=True) if a!=b];assert len(delta)==1
-    a,b=delta[0];assert 'cap_cmim' in a and 'w=10u' in a and 'l=10u' in a
-    assert b==[{'w=10u':'w=9u','l=10u':'l=9u'}.get(v,v) for v in a]
+    a,b=delta[0];assert 'cap_cmim' in a and f'w={OLD_CAP_UM}u' in a and f'l={OLD_CAP_UM}u' in a
+    assert b==[{f'w={OLD_CAP_UM}u':f'w={NEW_CAP_UM}u',f'l={OLD_CAP_UM}u':f'l={NEW_CAP_UM}u'}.get(v,v) for v in a]
     candidate=s[:match.start()]+ref+'\n'+s[match.end():]
     candidate=candidate.replace(oldchild,CHILD).replace(OLDTOP,TOP)
     expected_line='Xpump up down vctrl vco_avdd div_avdd avss sub avss '+CHILD
     assert expected_line in candidate
     (A/'schematic.cir').write_text(candidate)
-    cap=next(l for l in ref.splitlines() if ' cap_cmim ' in l);assert cap.count('w=9u l=9u')==1
-    wrong=ref.replace(cap,cap.replace('w=9u l=9u','w=10u l=9u'),1)
+    cap=next(l for l in ref.splitlines() if ' cap_cmim ' in l);dimensions=f'w={NEW_CAP_UM}u l={NEW_CAP_UM}u';assert cap.count(dimensions)==1
+    wrong=ref.replace(cap,cap.replace(dimensions,f'w={NEW_CAP_UM+1}u l={NEW_CAP_UM}u'),1)
     assert candidate.count(ref)==1
     (A/'wrong-cap.cir').write_text(candidate.replace(ref,wrong,1))
     opt=pya.SaveLayoutOptions();opt.select_cell(T.cell_index());L.write(str(A/(TOP+'.gds')),opt)
@@ -73,6 +74,7 @@ def generate():
     assert len(bus)==1;cut=bus[0].box;bus[0].delete();L.write(str(A/'vctrl-open.gds'),opt);N.shapes(L.layer(67,0)).insert(cut)
     meta['top']=CHILD;meta['bbox_um']=oldbounds
     old.update(top=TOP,status='GENERATED_FILTER_PARENT_REQUIRES_NATIVE_CHECKS',parent_drc_pass=False,parent_lvs_pass=False,closed_loop_accepted=False,qualified_pex=False,serial_phy_complete=False,main_chip_integrated=False)
+    old['prior_integration_proof']=old.get('integration_proof')
     old['integration_proof']=dict(only_changed_macro='pump',other_cell_shapes_and_instances_unchanged=True,parent_own_shapes_unchanged=True,all7ports_unchanged=True,pump_transform_unchanged=True,pump_bbox_unchanged=True,only_intrinsic_change=delta,expected_native_devices=845)
     old['inputs']={str(p):sha(p) for p in [Path(__file__),P/'result.json',P/(OLDTOP+'.gds'),P/'schematic.cir',C/'result.json',C/(CHILD+'.gds'),C/'schematic.cir']}
     def physical(layout,t,li):

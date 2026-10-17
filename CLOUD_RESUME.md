@@ -1,3 +1,13 @@
+## Actual C8 pump integrated-parent candidate launched (2026-10-17)
+
+PROGRESS. New cloud_pll_c8_v2_parent controller restores exact accepted divider-v2 physical845 parent38980553476 (GDS4ae1faf3d673a62c8eb5d53daabbf0c3e3bf5e4a875d60073c751ed5184e256b) and passedC8pump39005085975. Integrates freshC8GDS, changes onlycap9x9→8x8 in845reference, freezes all other cells/parentpolygons andall7pumpports/transform/bbox. Retains original14divider-port/sourceproof. Existing strict560DRC/deep+flat845LVS andactualwrongcap/open fault verifier reused. OriginalC10→C9 recipe remains default; explicitgeometryparameters preserveoldbehavior.
+
+Dedicated pll-c8-v2-parent-cloud starts freshfullPLLphysical gates. Newtopnssoc_pll845_divider3p2_c8_v2_development. Record actualrun/result; do not inferpass. NextfreshparentRC mustbindall83planes includingnew7pumpplanes andexisting14dividerplanes, then composeactualC8pumpwithunchangedother815devices/retaineddivider-v2 andnewparentwires, exact845graph/faultproof, finallyoriginal1usnativeacquisition. Child C8modelcomposition launchedpreviouscommit e9ad9e656cb12a9b9a5192921ebad47c28a98028; recordoutcome. NoC9RC reuse orwindowrelaxation.
+
+Full32headroom39005251402, physicalwire39004595306, compact39004839884 andMBIST38994926932 remainliveatlastcheck. Allworkcloud-only/localempty/goalOPEN; thisturnPROGRESS.
+
+---
+
 ## Fresh C8 RC passed; native pump model composition launched (2026-10-17)
 
 PROGRESS. C8RC39005420676/sourcefa523c29c5ddf87f03c1f2c4047e7b0906d9db5f PASS exact30devices/7publicports/12physicalconductors/59probes. Fresh84R155C; all native resistor edges/values and C attachment/169collapsedmatrix conserved, noidealaliases/deletednodes;13actualcorruptionsrejected. Native capacitorw8/l8/A64/P32/m1.141shortwarnings verifiedsamephysicalconductor; substrateR/RF qualification stillopen. Receipt docs/evidence/pll-filter-c8-rc-pass-20261017.json pins summary649616372/parts649616461/archive6496165165926947bytes.
