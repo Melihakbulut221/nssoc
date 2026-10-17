@@ -1,3 +1,11 @@
+## Native setup/hold trial improved but not closed; exact path review launched (2026-10-17)
+
+39011120664/source1d0caf4d completed771.30s native repair. Slow setup WNS -11.3312 -> -7.46051ns, hold565 ->6 (-0.0994977ns); typical setup-6.18229 ->-3.7914ns, hold1123 ->13 (-0.127036ns); fast setup-3.2504 ->-1.70473ns, hold12227 ->274 (-0.268389ns). Setup counts slow8050->8102,typ5960->5776,fast4871->2150. Register-to-register hold slow/typ zero, fast257. Slew4/2/0 and cap0; fanout1138 remains. No acceptance/equivalence/routing claim. Receipt corrpre-postcts-timing-trial-20261017.json stores exact source report; repairedODB94e4f21b7ee0018ef0cc9715ed40a2932e8ecda3d23434e770195c77029cd7a6.
+
+99MB remote archive observation timedout180s; native job is SUCCESS and not restarted. New corrpre-timing-path-review-cloud restores and validates complete saved archive in cloud, extracts all actual min/max paths and repair messages for next targeted fix. No CAD rerun. Before adoption require functional equivalence, then routing/extracted3corner timing/fullsignoff.
+
+Actual eleven physical clock integration matrix39012081694/source52e9cee6 queued at last poll. Original schematic-clock matrix39011282078,PLL39007535633,oldwire39004595306 remain live; preserve. Cloud-only/localempty/fullgoalOPEN.
+
 ## Actual eleven clock macros connected to full32 transient bench (2026-10-17)
 
 Clock composition39010928232/source17283ade passed exact6devices13R28C/16terminals/fiveconductors/11actual corruptions. Complete5646767byte archive and479output hashes verified in RAM; receipt tx-clock-headroom-composition-pass-20261017.json. This proves composition, not electrical behavior.
