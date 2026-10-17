@@ -96,7 +96,9 @@ def main():
         pin=json.loads((ROOT/'docs/evidence/pll-c8-v2-parent-pass-20261017.json').read_text())
         selected=['integrated/'+TOP+'.gds','physical/lvs_flat/extracted.cir']
         prior,proof=reports.restore_report('pll-c8-v2-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'inputs',selected)
-        assert prior['status']==pin['status']and prior['source_unchanged'];r['physical_source']=proof
+        assert prior['status']==pin['status']and prior['source_head']==pin['source_head'];r['physical_source']=proof
+        assert prior['physical']['status']=='PASS_ACTUAL845_FILTER_PARENT_NATIVE_DRC_LVS_AND_FAULTS_NOT_RC'
+        assert all(sha(OUT/'inputs'/n)==prior['outputs'][n]for n in selected)
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
         run([app,'python',Path(__file__),'--generate'],ROOT,OUT/'generate.log')
         r['generated']=json.loads((OUT/'cases.json').read_text());save()

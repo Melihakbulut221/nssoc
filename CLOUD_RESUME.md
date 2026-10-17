@@ -1,3 +1,13 @@
+## Latest: actual whole-wire CDR rejected; native R/C sensitivity launched
+
+Fullcapture39077465653 source7abbd5a6fd0573d1a5102493d8355f12686e4120 completed. BOTHnominalearly/late failedactualsamplinganddevicegates; no numericdiagnostics,122OFFreadbacks,zeroOP0. Allwavespreserved(~0.97GBcompressedpercase). Compactreceipt docs/evidence/cdr-mim-loaded-rejection-20261018.json bindsall4summaries/parts. Earlysamplerwrongcounts101/279/367/367; late132/102/366/359. Earlyphase+0.026684Vwrongdirection;late+0.025362Vbelow.03gate. 16HBTboundfailuresincludingbufferstartupVCE2.102V>1.6 andselecttailmin.226V<.4. Negativeclockstop/VIbiasoffdetected, NOTpositivefunctionalacceptance.
+
+New cdr-mim-diagnostic runslowR(.001),lowC(.001),both forbothnominalphases. Preservesall394devices/all8956R7660Ctopology, clocks/bits/biases,150fFcollectorloadsand50fFXORloads, originalgates. Completevalueeditledger andoriginalmodelretained. Artificialscaledwires neverlayoutfix/acceptance. Needresults toseparatewireRrail/signalvsCloadingfromintrinsiccircuit/startupissues, thenrealgeometry/devicechangeswithfreshnativeDRC/LVS/RC.
+
+PLLpilot39078190177 hadpreflightparentreportschema assumption (source_unchangedabsent). Correctedtoexactnativephysicalstatus/sourcehead/selectedfilehashes; noacceptancebooleaninvented, originalparentimmutable. Newworkflowpushlaunchessuccessor. ExistingPLL39043210978,TX39067769686,postCTS39061293959 untouched. CLOUDONLY. GoalturnPROGRESS; all3goalheadsOPEN.
+
+---
+
 ## Latest: PLL actual MIM geometry comparison launched without changing live trajectories
 
 New pll-mim-extraction-cloud usesphysical845parent39005910789, exactGDS79b2f5869f620cb5d6ce57756bab18f6ef10743aee953fb9c140202a6b225cdc andnativeLVS. Recursivelycountsall26actualMIMmaskleafoccurrences andmatches7exactdimensiongroups toall26nativeLVS capacitorcards. Eachactualprimitivegeometry getswire-only,originalMIM-aware andprivateexplicit-model views (21cases). Allmetal/viasunchanged, aware/privateGDSbyteidentical, explicitcapmodelsandmutualCmustmatch; recordsgroundC deviceestimateeffect. NofullclockRCfix/electrical/PHYclaimfromisolatedpilot. DoesnoteditongoingPLL39043210978. Need inspectnativegeneration/APIguards andactualcaseoutputs; preservefailures.
