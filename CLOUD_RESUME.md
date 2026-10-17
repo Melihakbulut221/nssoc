@@ -1,3 +1,13 @@
+## Latest correction: loaded v5 preparation failure preserved; private builder fix
+
+Checked 2026-10-17T20:23:25.620579+00:00. CLOUD ONLY; active local workspace empty. Run39065872931 FAILED in all5 native jobs BEFORE ngspice: old run_cloud_tx_mux4.py:415 rejects new model SHA. This is not an electrical rejection. Complete failure report assets remain in their Releases; hashed compact receipt docs/evidence/tx-balanced-v5-wave-binding-failure-20261017.json preserves all5 cases.
+
+New private scripts/cloud_tx_balanced_v5_builder.py copies original builder exactly except that its assembled-core allowlist accepts ONLY the two proven v5 models. Original shared builder remains byte-identical. scripts/check_tx_balanced_v5_builder.py verifies both full-file SHA values, exact single-block delta, receipt model hashes and rejection of old/unknown model hashes. All native solver/device/signal/diagnostic/sourcebit/timing gates remain byte-identical. Workflow now checks this before five native jobs. Observe the exact successor triggered by this commit; do not duplicate. Simulations/validation run in GitHub only; no local test execution.
+
+Mainchipboot39059432529, placement39059854681, postCTS39061293959 and PLL39043210978 are still IN_PROGRESS as checked immediately before this edit. Keep them running. Full serial PHY, mainchip routing and final timing remain OPEN.
+
+---
+
 ## Latest: fresh v5 RC and composition PASS; physical-clock loaded-wave campaign started
 
 Checked 2026-10-17T20:16:13.223294+00:00. Goal turn PROGRESS: verified actual new parentRC, bound all native devices, preserved proofs and launched complete loaded experiments. CLOUD ONLY. Localworkspaceempty; no local tests/CAD/archives/checkouts.
