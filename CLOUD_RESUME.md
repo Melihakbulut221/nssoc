@@ -1,3 +1,7 @@
+## Targeted candidate new critical paths (2026-10-17)
+
+New corrpre-targeted-paths-cloud reads allsavedbefore/afterpathreports from proven targeted39036154671 archive, including fast r2rhold148->1 and remaining slowsetup-6.96857ns. Originalbaseline andtinyworstholdregressions preserved; no routed/signoffclaim. Needed tochoose nextactualrepair ratherthanrepeat blindbuffering. XORcomposition correctedcampaign frombae1e1e8 awaitsresults; originalNxselectionfailure retained. Allcloud.
+
 ## Targeted timing measured; XOR negative-control ordering repair (2026-10-17)
 
 Targeted39036154671 completed: EXACT23selectedbuffers removed/1627clocknets preserved. Originalbaseline reproduced. 97904retainedcells equationproof+nativecontrolsPASS;34,087->34,518positivebuffers overallafter repair. Slowsetup7750->7697,WS-8.51408->-6.96857ns;hold53->52 butworsthold-0.491189->-0.491309ns(smallregression retained). Typicalsetup5544->5538,WS-4.00975->-3.45891;hold65->64,WS-0.386925->-0.386997. Fastsetup1618->1578,WS-1.81627->-1.5093;hold313->157,r2rhold148->1;worsthold-0.330693->-0.330746. Theseareplacementestimates, NOTroute/signofforwholesaleacceptance. CandidateODB5fb2ddebc51b4bff65a8cf68650ac94229bf1238a279a6fee9272bdedc1425ff; nativeNL e4bb6d25a1c1c8dc0681519b866b49fc9bf4a3c0f5de9a418c2f263d69f35171. Receipt corrpre-targeted-measured-20261017.json. Nextinspectnewcriticalpaths beforeadditionalrepair; clocklayerGRT39038463008 continuesoriginalincumbent, no cancellation.
