@@ -11,21 +11,26 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--variant',choices=('budget_high8','budget_high3','budget_high3_trim'),default='budget_high8')
     parser.add_argument('--placement-pitch',choices=('original','tight'),default='original')
+    parser.add_argument('--return-rail',choices=('original','wide64'),default='original')
     selected_args=parser.parse_args();selected=selected_args.variant
     tight=selected_args.placement_pitch=='tight'
     assert not tight or selected=='budget_high3_trim'
+    wide64=selected_args.return_rail=='wide64'
+    assert not wide64 or(tight and selected=='budget_high3_trim')
     high3=selected in ('budget_high3','budget_high3_trim')
     trim=selected=='budget_high3_trim'
     args=argparse.Namespace(variant='tree32_'+selected,circuit_profile='assembly32')
     spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())
-    top='nssoc_tx_tree32_'+selected+('_tight_core_v1'if tight else'_core_v1')
+    top='nssoc_tx_tree32_'+selected+('_tight_return64_core_v1'if wide64 else'_tight_core_v1'if tight else'_core_v1')
     spec['circuits']['assembly32']={'top':top}
     runtime=json.loads((ROOT/'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
     receipt_name='tx-tree32-headroom-physical-pass-20261017.json' if trim else 'tx-tree32-high3-physical-pass-20261017.json' if high3 else 'tx-tree32-budget-physical-pass-20261017.json'
     if tight:receipt_name='tx-tree32-tight-physical-pass-20261017.json'
+    if wide64:receipt_name='tx-tree32-return64-physical-pass-20261017.json'
     receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
     out=ROOT/'hw/soc/out'/('cloud-tx-tree32-headroom-assembly' if trim else 'cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
     if tight:out=ROOT/'hw/soc/out/cloud-tx-tree32-tight-assembly'
+    if wide64:out=ROOT/'hw/soc/out/cloud-tx-tree32-return64-assembly'
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-extraction-input.tar.gz'
@@ -54,6 +59,10 @@ def main():
             assert physical['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
             assert receipt['placement_pitch']==physical['placement_pitch']
         result['placement_pitch']=physical.get('placement_pitch',dict(name='original',column_um=1000.,row_um=600.))
+        if wide64:
+            assert physical['return_rail']==receipt['return_rail']
+            assert physical['return_rail']['profile']=='wide64'and physical['return_rail']['trunk_and_bus_width_um']==64.
+            result['return_rail']=physical['return_rail']
         assert physical['emitter_budget']['reference_emitters']==(719 if high3 else 899)
         assert physical['emitter_budget']['recommended_rules_enabled'] and not physical['emitter_budget']['waiver']
         assert physical['layout']['outputs']==receipt['layout_outputs']
@@ -176,6 +185,10 @@ def main():
         result['method_adaptations'] = edits
         app = Path(os.environ['CLOUD_APPIMAGE'])
         assert sha(app) == 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+        if wide64:
+            run([app,'python',ROOT/'scripts/check_tx_tree32_return64_geometry.py',out],'exact-return-geometry-delta')
+            result['geometry_delta']=json.loads((out/'return-geometry-delta.json').read_text())
+            assert result['geometry_delta']['status']=='PASS_EXACT_SIX_AVSS_EXPANSIONS_ALL_OTHER_DRAWING_GEOMETRY_UNCHANGED'
         for method in ('probe01.py', 'locate01.py', 'anchors01.py', 'dedup01.py'):
             run([app, 'python', wire / method], method)
         graph=json.loads((wire/'native05/result.json').read_text())
