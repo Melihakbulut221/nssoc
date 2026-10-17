@@ -192,7 +192,24 @@ def main():
         for before,after in edits:assert method.count(before)==1;method=method.replace(before,after)
         old=next(l for l in method.splitlines()if 'li=L.layer(134,0);before=pya.Region'in l);cut=generated['signal_routes'][0]['fault_cut_um']
         new='    li=L.layer(126,0);before=pya.Region(top.shapes(li));cut=pya.Region(pya.DBox('+','.join(map(str,cut))+').to_itype(L.dbu));after=before-cut;assert before.area()!=after.area();top.shapes(li).clear();top.shapes(li).insert(after)'
-        method=method.replace(old,new);verification=OUT/'verify-tree32.py';verification.write_text(method)
+        method=method.replace(old,new)
+        # Preserve every physical gate and the overall failure. Check transistor
+        # connectivity/faults first so the known emitter-count DRC failure does
+        # not hide whether this larger topology is actually connected.
+        original_order='\n'.join('            '+repr(n).replace("'",'"')+',' for n in ('drc','lvs','lvs_flat','wrong_finger_count','missing_hbt','q_open','rail_short','offgrid'))
+        new_order='\n'.join('            '+repr(n).replace("'",'"')+',' for n in ('lvs','lvs_flat','wrong_finger_count','missing_hbt','q_open','rail_short','offgrid','drc'))
+        assert method.count(original_order)==1
+        method=method.replace(original_order,new_order)
+        reference=(OUT/'layout/schematic.cir').read_text()
+        hbts=[l for l in reference.splitlines()if l.startswith('Q')]
+        emitters=sum(int(re.search(r'\bNx=(\d+)\b',l)[1])for l in hbts)
+        assert len(hbts)==589 and emitters==4427
+        result['emitter_budget']=dict(reference_hbts=589,reference_emitters=emitters,
+            four_lane_tree_reference_projection=4*emitters,recommended_chip_maximum=4000,
+            rule='npn13G2.bR',recommended_rules_enabled=True,waiver=False,
+            source='IHP-Open-PDK@5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/6_1_npnsubstratetie.drc',
+            scope='Reference census; actual geometry independently triggers this native rule. PLL/CDR/clock/TX devices are additional. Needs architectural/device redesign, not a disabled rule.')
+        verification=OUT/'verify-tree32.py';verification.write_text(method)
         run([sys.executable,verification,'--layout',OUT/'layout','--out',OUT/'physical','--app',app],'physical')
         result['physical']=json.loads((OUT/'physical/result.json').read_text());assert result['physical']['status']=='PASS_NATIVE_PDK_TX_TREE1674_DRC_LVS_AND_FAULT_CONTROLS'
         assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())
