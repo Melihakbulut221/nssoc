@@ -1,3 +1,11 @@
+## Native congestion cause measured; clock-layer route experiment (2026-10-17)
+
+Failureinspection39038196457 completed: bankedGRT39031588904 native385overflow (M2=3,M3=141,M4=25,M5=202,TM1=9,TM2=5),141519routednets,peak2GiB,55m; GRT0273disabledNDR on clknet_1_1_0_pcie_clk_i thenGRT0116fails. This is measuredcongestion/NDR failure, NOTOOM/timeoutevidence. No routeaccepted.
+
+New corrpre-banked-clock-grt-cloud uses SAME provenrepaired ODB/equationproof, ONLYsetsRT_CLOCK_MIN_LAYER=Metal4/MAX=TopMetal2 (previousnativeMetal2..TopMetal2). Same signalrange,20percentcapacityreserve,50iterations,originalSDC/derate/sources; GRT_ALLOW_CONGESTIONfalse and NDRpreserved gateunchanged. Nativefailuretail and actualclocklayerselection nowcaptured. Fresh separateexperiment, not retry of unchanged source. Waitactualresult; do notadoptNDRrelaxation or congestion. Targeted23repair39036154671 stilllive separately.
+
+CDRactualXORphysical39037271131 and freshRC39037889261 passed componentgates; nextnativecomposition and original loadedwaves stillrequired. FullserialPHY/mainchipDRT/finalsetupholdOPEN. Allcloud/localempty.
+
 ## Full XOR parentRC pass and actual mainchip routing failure (2026-10-17)
 
 FreshRC39037889261/source4d7fa8ee PASS native54device fullmetal extraction:4020R/2641C,15separate wirecomponents,110metal/public probes; all154terminals retained including54bodyterminals with unmodeled substrate spreading. Exact native/export Rmultiset and everyground/mutualC attachment/value pass;13corruptioncontrols rejected. Receipt cdr-xor-parent-rc-pass-20261017.json pins summary650582679 SHAff79aec82615dac17b55186f6e3dfeebab0991a5582f84cc3c4d711d34d3b449, parts650582779 SHA4c81d504b915e421210b9d6755ed8b75e1d8a920b41334873ec3473a471bede0, fullarchive650582865. NEXT actualnative-device/RC composition and fixed original loadedXOR768sample/19HBTgates; no oldschematic acceptance for newRC.
