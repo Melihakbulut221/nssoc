@@ -1,3 +1,15 @@
+## Cloud-only handoff and local cleanup verified (2026-10-17)
+
+Human instruction: all engineering in the cloud; leave the local NSSOC workspace empty. Verified /home/hasanmelih/Documents/ChatGPT/nnsoc contains no entries. No checkout, CAD execution, tests, downloaded artifacts or source files were created locally during this verification. GitHub API requests were handled in memory. Other projects and unrelated user files are outside cleanup scope.
+
+Confirmed branch HEAD before this note: 74ec5349e8df15c67d920a7a1cc1c38d38aa41a1. Prepared scripts/run_cloud_ethernet_preserved_rc.py and .github/workflows/ethernet-preserved-rc-cloud.yml are saved remotely. Do not dispatch fresh RC until the actual geometry prerequisite passes.
+
+Latest verified Actions states: preserved-route audit 38991111150 FAILED at native VDD pin geometry equality (job 117273504932, AssertionError: Power pin geometry changed, VDD). Independent single-delay native census passed before that assertion. This does not yet prove a power disconnect, but the unchanged-geometry prerequisite is not met. Next investigate actual old/new VDD shapes and rail overlap using cloud-native geometry; do not bypass the assertion or promote the candidate without an adequate physical proof. Full-reroute independent review 38990762039 completed successfully as execution; inspect its detailed scope before acceptance. PLL 38982797234 and PCIe CORRPRE boot 38984849452 remain in progress and must not be restarted merely because they are long-running.
+
+Full serial PHY, actual mainchip integration and final timing closure remain OPEN. Cloud-only work and existing failure/acceptance gates remain in force.
+
+---
+
 ## Ethernet actual full reroute terminal: hold regressed; independent review dispatched (2026-10-17)
 
 Run38978702458/source deed6d20f745d4a5a18d420cc7184ca09d322893 completedSUCCESS as execution, NOT timingacceptance. Summary649142256 SHA43a8be4e7899e3e22d318230abfe2c6479655d3c237937e72fcaebe5fd6b80f7;parts649142354 SHA2c2803ceded84f3c119d4051ee208f8e09623db3386691733cb098ec039dee8b. NativeDRT0 andoriginalsource/logic/negativecontrol passed; freshRC/all22544endpoints135264rows measured. Fast hold1->2negative endpoints, WNS-0.790812ps->-137.859058ps; noholdresolved andone newlynegative. SlowsetupWNS-5.793440->-5.676133ns butnegativeendpoints9351->9361;typicalsetupWNS-1.464127->-1.572313ns,464->467negative. Antenna627nets783pins->643nets800pins. Keep parent, reject globaltiming/antennaacceptance. ODB2a127c74e04a216dab65cd56d2a92194a51c61aff408842e9ab717db33922676.
