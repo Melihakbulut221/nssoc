@@ -1,3 +1,11 @@
+## Latest: whole-PD394 native geometry and terminal binding passed; freshRC launched
+
+Checked 2026-10-17T21:53:32.960454+00:00. Wire-inputs39072437449/source19e49d3d941d898c853b0615651945f56cfe4391 PASS:394native devices1134terminals,111independentphysicalwirecomponents112electricalnets,751metal+383intrinsicbodyterminalrefs,25publicports,776uniquephysicalprobes. All394native devices binduniquely toactualPcells.42distinctprimitivecellannotationviews recoveredfromexactlyidenticalsourcechilddrawing withouteditingtargetGDS. Full2.34MBreport remainsRelease651692106; compactsource/hash/outputreceipt docs/evidence/cdr-retimed-wire-inputs-pass-20261018.json.
+
+New cdr-retimed-rc cloudworkflow restores the exact original runnerpath, preservingallanchorinputhashes, thenextractsfreshwholePDmetal/viaRC withnativeMagic. Audits exact111components/776probes, rawresistorvalues/topology, pointgroundC, mutualCattachment/value, collapsedmatrix and13rawcorruptioncontrols. IntrinsicMIM isretainedseparately, notincludedinwire-onlylayout. Restoredsourcefilesunchanged required.4GiBaddressspace/1GiBscratchcaps; noelapsedwatchdog. Anyfailure mustbepreserved andfixedbeforecomposition. AfterRC PASS composeallactual394nativeprimitivecards withfreshwireRCandphysicalreferenceplanes, runloadedPD thenactualVCOfeedback. FullPHY/mainchiprouting/finaltiming remainOPEN. CLOUD ONLY.
+
+---
+
 ## Latest: all158native planes passed; whole-parent conductor/terminal extraction preparation
 
 Checked 2026-10-17T21:47:33.086750+00:00. Planes39072071100/source19683de5f5e9833d8a7af525357d879b15a59713 PASS:158actualplanes across51distinctlogicalnets,19mappingfaultsrejected; native394devices1134terminals; nativeLEFreadbbox1703.2x5094.3um. Fullreceipt docs/evidence/cdr-retimed-planes-pass-20261018.json. LEFread isnotabstractsignoff; RC/closedloop remainopen.
