@@ -413,7 +413,10 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
             assert sha(bias_path)=='597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca'
             assert sha(clock_feed_path)=='650579e07ec3c52c9ae1f429c3c9c56bec5b8761eae953bac33d08e0dbc4b8cc'
             assert sha(assembled_core) in ('163a6dfd92e563b2332632ce38fedac60d2b5358cfcc9e51331dfb540ac67ee1',
-                                           '83e128161062e8ca514177a17480874ae5229e789003264ac40da7185eb42118')
+                                           '83e128161062e8ca514177a17480874ae5229e789003264ac40da7185eb42118',
+                                           # Same cells in the native DRC/LVS and RC verified tight422 assembly.
+                                           'b6274c8964ae9c687a61107d5cff24c973680ec322f26e9af6de647ff74dce97',
+                                           '6d5e61e5418b9862c368019781bed8ab4c9f3d9884bbe2faebccbc4e591acb66')
         assert pre_bias in ('native_res','native_res_tc')
         expected_interfaces={'ap','an','bp','bn'}
         if streams==32:

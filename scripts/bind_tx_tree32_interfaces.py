@@ -13,7 +13,12 @@ locations=json.loads((P/'wire96/device-locations01.json').read_text())
 anchors=json.loads((P/'wire96/anchors08.json').read_text())
 binding=json.loads((P/'binding96/binding01.json').read_text())
 assert physical['variant'] in ('budget_high3','budget_high3_trim')
-gds=P/'layout'/('nssoc_tx_tree32_'+physical['variant']+'_core_v1.gds')
+tight=physical.get('placement_pitch',{}).get('name')=='tight'
+if tight:
+ assert physical['variant']=='budget_high3_trim'
+ assert physical['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
+ assert layout['placement_pitch']==dict(column_um=700.,row_um=422.)
+gds=P/'layout'/('nssoc_tx_tree32_'+physical['variant']+('_tight'if tight else'')+'_core_v1.gds')
 assert hashlib.sha256(gds.read_bytes()).hexdigest()==layout['outputs'][gds.name]
 g=pya.Layout();g.read(str(gds))
 l=pya.LayoutVsSchematic();l.read(str(P/'physical/lvs/result.lvsdb'))
