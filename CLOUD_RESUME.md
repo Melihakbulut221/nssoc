@@ -1,3 +1,11 @@
+## Latest: fresh v5 full32 parent is running in GitHub
+
+At 2026-10-17T19:46:05.706058+00:00, new exact parent run39063787291/sourcea29e3acd9b5d05e78ac99d1e8950bf08fe1da119 is completed. Workflowtx-balanced-v5-assembly-cloud.yml; scripts/cloud_tx_balanced_v5_assembly.py. Do not duplicate it. It restores exact freshleaf archives from39063246309 via new tx-pre-nx{1,3}-balanced-v5-physical-input-20261017.json; native circuit hashes bind39060767622. Adds independent complete physical-summary canonicalSHA check as well as archive/file hashes. Same31macros1674devices719emitters, nativeDRC/LVS/fault gates. Native new lowcell bbox353.985x592.04um, high353.985x387.24um: OLD422umrowpitchisINVALID. Fresh parent only permits original1000umcolumns600umrows and rejects child-height/channel overflow before routing. Parent topnssoc_tx_tree32_budget_balanced_v5_core_v1, outputhw/soc/out/cloud-tx-tree32-balanced-v5-assembly. Review actual parent results; if PASS, prepare freshRC/extraction/composition for this exact variant and actualgeometry. Old trim/tight/return64_RC cannot be reused.
+
+All electrical/physical passes in the following section have complete receipts now committed atca4ba534fd8323e2fb002626914af36d643c6e00. Scope remains incompletePHY/mainchip/finaltiming. Cloud-only, no local artifacts. Mainchipboot39059432529/placement39059854681/postCTS39061293959 and PLL39043210978 confirmedIN_PROGRESS during this turn. Continue observing exactjobs; no restarts on observation timeout.
+
+---
+
 ## Resume: TX v5 native and physical leaves PASS; CDR PD/V-I13 cases and converter leaf PASS
 
 Checked 2026-10-17T19:42:49.532242+00:00. CLOUD ONLY; local workspace remains empty. Previous goal turn and this turn made concrete progress, not a blocker.
