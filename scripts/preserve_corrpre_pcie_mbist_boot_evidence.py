@@ -4,13 +4,27 @@
 """Preserve completed native boot evidence without rerunning simulation."""
 import hashlib,io,json,os,re,subprocess,zipfile
 from pathlib import Path
+import argparse
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--source-spec',type=Path)
+args=parser.parse_args()
+spec=dict(run=38994926932,head='471a966524f68c18b9801488bfc512bee2dc2de0',artifact=12090748551,zip_sha256='0fcb32e81d63669f7df2833b83f4cb371bd9972a251bb0e15e77121b5e710d92')
+if args.source_spec:
+    spec=json.loads(args.source_spec.read_text())
+    assert spec['bank_proof_and_protocol_verified'] is True
+assert type(spec['run'])is int and type(spec['artifact'])is int
+assert re.fullmatch('[0-9a-f]{40}',spec['head']) and re.fullmatch('[0-9a-f]{64}',spec['zip_sha256'])
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 root=Path('cloud-corrpre-pcie-mbist-boot-evidence');root.mkdir(exist_ok=False)
 repo='repos/Melihakbulut221/nssoc'
-run=json.loads(subprocess.check_output(['gh','api',repo+'/actions/runs/38994926932']))
-assert run['head_sha']=='471a966524f68c18b9801488bfc512bee2dc2de0'and run['status']=='completed'and run['conclusion']=='success'
-raw=subprocess.check_output(['gh','api',repo+'/actions/artifacts/12090748551/zip'])
-digest=hashlib.sha256(raw).hexdigest();assert digest=='0fcb32e81d63669f7df2833b83f4cb371bd9972a251bb0e15e77121b5e710d92'
+run=json.loads(subprocess.check_output(['gh','api',repo+'/actions/runs/'+str(spec['run'])]))
+assert run['head_sha']==spec['head']and run['status']=='completed'and run['conclusion']=='success'
+assert run['path']=='.github/workflows/corrpre-pcie-mbist-native-boot-cloud.yml'
+artifact=json.loads(subprocess.check_output(['gh','api',repo+'/actions/artifacts/'+str(spec['artifact'])]))
+assert artifact['workflow_run']['id']==spec['run'] and not artifact['expired']
+assert artifact['name']=='corrpre-pcie-mbist-native-boot-full'
+raw=subprocess.check_output(['gh','api',repo+'/actions/artifacts/'+str(spec['artifact'])+'/zip'])
+digest=hashlib.sha256(raw).hexdigest();assert digest==spec['zip_sha256']
 (root/'original-corrpre-pcie-mbist-native-boot-full.zip').write_bytes(raw)
 z=zipfile.ZipFile(io.BytesIO(raw));assert len(z.namelist())==43 and len(set(z.namelist()))==43
 files={n:dict(bytes=len(z.read(n)),sha256=hashlib.sha256(z.read(n)).hexdigest())for n in z.namelist()}
@@ -32,5 +46,5 @@ netlist_sources=[v for k,v in inputs['sources'].items()if k.endswith('/synthesis
 assert len(netlist_sources)==1 and netlist_sources[0]['sha256']==files['synthesis/soc_top.netlist.v']['sha256']
 scrub=json.loads(z.read('scrub-native/result.json'));assert scrub['status']=='PASS'and scrub['sources_unchanged']
 assert scrub['commands'][-1]['returncode']==1 and scrub['commands'][2]['returncode']==0
-result=dict(status='PRESERVED_COMPLETED_NATIVE_CORRPRE_PCIE_SYSTEM_ETHERNET_MBIST_BOOT_NOT_TIMING_OR_PHYSICAL_ADOPTION',source_head=os.environ['GITHUB_SHA'],source_run=38994926932,source_head_original=run['head_sha'],source_artifact=12090748551,original_zip_sha256=digest,original_zip_bytes=len(raw),configuration=configuration,gate_result=gates,scrub_result=scrub,native_log_banner=[s for s in log.splitlines()if s.startswith(('LOGICROM_GL','PCIE_IDLE_BOOT','MBIST_BOOT'))],files=files,accepted=False,new_simulation=False,final_timing_complete=False,scope='Original unmodified43-file artifact preserved permanently in Releases. Native mapped full-interface CORRPRE/SYNPRE0 packet-async boot28checks and independent PCIe idle samples; actual system and both Ethernet MBIST busy/done handover observed. Exact native netlist hash agrees with simulation input record. No packet traffic, noSDF, qualified physical timing, arbitrary faults or PHY acceptance. CORRPRE remains experimental and not adopted in routed mainchip.')
+result=dict(status='PRESERVED_COMPLETED_NATIVE_CORRPRE_PCIE_SYSTEM_ETHERNET_MBIST_BOOT_NOT_TIMING_OR_PHYSICAL_ADOPTION',source_head=os.environ['GITHUB_SHA'],source_run=spec['run'],source_spec=spec,source_head_original=run['head_sha'],source_artifact=spec['artifact'],original_zip_sha256=digest,original_zip_bytes=len(raw),configuration=configuration,gate_result=gates,scrub_result=scrub,native_log_banner=[s for s in log.splitlines()if s.startswith(('LOGICROM_GL','PCIE_IDLE_BOOT','MBIST_BOOT'))],files=files,accepted=False,new_simulation=False,final_timing_complete=False,scope='Original unmodified43-file artifact preserved permanently in Releases. Native mapped full-interface CORRPRE/SYNPRE0 packet-async boot28checks and independent PCIe idle samples; actual system and both Ethernet MBIST busy/done handover observed. Exact native netlist hash agrees with simulation input record. No packet traffic, noSDF, qualified physical timing, arbitrary faults or PHY acceptance. CORRPRE remains experimental and not adopted in routed mainchip.')
 (root/'result.json').write_text(json.dumps(result,indent=2)+'\n')

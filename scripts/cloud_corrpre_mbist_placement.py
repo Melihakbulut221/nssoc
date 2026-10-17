@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 """Implement the exact MBIST/PCIe boot-proven CORRPRE netlist through CTS."""
-import hashlib,json,os,subprocess,time,zipfile
+import argparse,hashlib,json,os,subprocess,time,zipfile
 from pathlib import Path
 from prepare_pcie_mainchip_pnr import prepare
 from bootstrap_flow import verify
@@ -11,6 +11,8 @@ OUT=ROOT/'hw/soc/out/cloud-corrpre-mbist-placement'
 def sha(p):
  with Path(p).open('rb')as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def main():
+ parser=argparse.ArgumentParser();parser.add_argument('--source-spec',type=Path);args=parser.parse_args()
+ spec=json.loads(args.source_spec.read_text())if args.source_spec else dict(run=38994926932,head='471a966524f68c18b9801488bfc512bee2dc2de0',artifact=12090748551,zip_sha256='0fcb32e81d63669f7df2833b83f4cb371bd9972a251bb0e15e77121b5e710d92')
  assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
  r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False,final_timing_complete=False,qualified_pex=False,scope='CORRPRE/PCIe/20SRAM MBIST candidate from exact boot-proven netlist. This native stage ends at CTS; routing, all-corner extracted setup/hold and physical signoff remain required.')
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
@@ -18,9 +20,10 @@ def main():
  try:
   source=ROOT/'cloud-corrpre-pcie-mbist-boot-evidence';report=json.loads((source/'result.json').read_text())
   assert report['status']=='PRESERVED_COMPLETED_NATIVE_CORRPRE_PCIE_SYSTEM_ETHERNET_MBIST_BOOT_NOT_TIMING_OR_PHYSICAL_ADOPTION'
-  assert report['source_run']==38994926932 and report['gate_result']['passed']
+  assert report['source_run']==spec['run'] and report['source_head_original']==spec['head'] and report['source_artifact']==spec['artifact'] and report['gate_result']['passed']
+  if args.source_spec:assert report['source_spec']==spec and spec['bank_proof_and_protocol_verified'] is True
   archive=source/'original-corrpre-pcie-mbist-native-boot-full.zip'
-  assert sha(archive)==report['original_zip_sha256']=='0fcb32e81d63669f7df2833b83f4cb371bd9972a251bb0e15e77121b5e710d92'
+  assert sha(archive)==report['original_zip_sha256']==spec['zip_sha256']
   boot=OUT/'boot';boot.mkdir()
   with zipfile.ZipFile(archive)as z:
    assert set(z.namelist())==set(report['files'])
