@@ -1,3 +1,11 @@
+## New banked postrepair logic continuation and rejected cold NODESET evidence (2026-10-17)
+
+Previous goal turn PROGRESS: cloud source Path fix and one new actual diagnostic run. Cold39030670479 now completed all24 native tables/all102physicalnodes. Original1uV agreement gate rejected1.406721858e-6V; all three initial paths also have native gmin in five ofeight states/directions. Neither declared seed fixes convergence. Receipt pll-pump-cold-nodeset-rejection-20261017.json binds exact summary and every raw table SHA; no thresholds changed, no repeated blind seed trial. Original acquisition remains rejected.
+
+New corrpre-banked-logic-cloud waits for EXACT live repair39030330882/head29aa2927, requires terminal success and actual completed report, restores FULL SHA-verified archives then exact new CTS/repaired netlists, rechecks six bank proofs/protocol/native boot, and runs actual equation/clone/buffer proof with native corruption controls and opaque SRAM ports. No old unbanked proof substituted. This workflow only proves scoped logical preservation; it cannot close routing, timing, SRAM interiors, CDC or serial PHY. Push launches it once; no manual duplicate dispatch. Wait exhaustion never cancels or restarts source.
+
+Return64fullwire39030593206 native source guard PASS, actual metal waveform live. Repair39030330882 and older tight39025744008/mixed39018157113 confirmed live. Latest placement metrics are inherited multi-stage measurements; fresh corner processes in repair define before/after timing. Full goal OPEN. All workcloud/localempty.
+
 ## Cloud-only handoff and native diagnostic path fix (2026-10-17)
 
 Local workspace /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. No local checkout, CAD, simulation, tests, downloaded artifact or scratch file; GitHub API orchestration uses memory only. Preserve unrelated directories.
