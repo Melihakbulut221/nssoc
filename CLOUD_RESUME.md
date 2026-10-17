@@ -1,3 +1,15 @@
+## Latest cloud-only checkpoint
+
+- Fresh v3 full-wire XOR four-case simulation:39045821084, source691683a29d6e8bb191d587ab95e92b8afdfef8f8.
+- Two-column conservative Metal5 regional GRT:39045601192, sourceb3e904d284192c3c336994577428b662f3ef9aa3.
+- PLL full1us halfstep39043210978; native replay-CRC boot39041981816; source-bound placement handoff39042752404; TXreturn64 fullwire39030593206 remain independent active work. Inspect exact run status before any next action; never duplicate/cold-restart these calculations.
+- Fresh v3 core/parent/22physical planes/fullRC/composition all passed their stated scopes. Full-wire electrical, recovered-clock CDR/fullserialPHY, routed mainchip and setup/hold remain open.
+- Native region/ODB inspection completed; no repaired route acceptance yet.
+- docs/evidence/cloud-only-active-checkpoint-20261017.json records exact current runs/jobs and terminal states.
+- Local /home/hasanmelih/Documents/ChatGPT/nnsoc is empty and no local ngspice/openroad/klayout/yosys/magic/netgen/vvp process was running. No checkout, archive, report or CAD job was left locally. User instruction overrides the older goal's local-work wording.
+
+---
+
 ## Fresh v3 full-wire model composed; original four native waveform cases started
 
 Composition39045601181/sourceb3e904d2 passed all54native-device bindings, allfresh4020R/2641C attachments and six actual composition controls. New physical modelSHA4186649aeb8f1cced89bd62b3fba2b7bf1d6e7ee7cccc3b37ad5252d165f71b7 is now passed to the frozen original XOR controller with the same previously audited native54/port adapterSHA d30ebc0bcb4ded90050b9f07e78a4a69eb0bcc60e9ed0ccbd584237aa046860a. Only the new model/paths and top name change. 34ns/256symbols/768sample checks,100mV margin, original nominal/hot/cold supplies and temperatures,19HBT voltage/current bounds, zero-sourceOP/19native HBT OFF flags, and actual output-swap negative control remain unchanged. This is a component test, not recovered-clock/fullPHY acceptance.
