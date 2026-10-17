@@ -1,3 +1,17 @@
+## Immediate resume: complete half-cycle capture; TX hot deficit remains
+
+Keep all execution in GitHub; local workspace remains empty.
+
+Actual connected CDR comparator run39054158225 PASSED all three native corners and both fault cases; full receipt and scope are immediately below. This remains a real closed interface failure, not full PHY completion.
+
+Initial half-cycle cascade39054982732/source4b7bb06270af3d481a99db2df283eefe90248ee2 has an OBSERVABILITY ERROR: v(xchain.udp/udn) omitted because vector construction used HBT terminals but these inputs connect through native resistors. Hot native code0/no diagnostics, evaluationKeyError; do not claim electrical pass or rejection. Receipt docs/evidence/cdr-halfcycle-capture-error-20261017.json preserves full hot report651141978. The source now saves union of all HBT/resistor/MIM terminal bindings with explicit preflight node check. New corrected run39055313434/source5a6bac4fd0cd7d4b889c91bdeb393c5568acfa2f is live; SAME circuitSHA d1e16573ce5b0ea30a8c37d13fe60867eee13310027e2247e2a2e09776635e52, no changed stimuli/gates. Inspect all six cases and raw node completeness; preserve both runs.
+
+TX headroom-v2 run39053691750/source33c2b6709b3912226f36d8fe697dbbb10f50a4c4 hot has now published a genuine rejection, summary651140761. Actual L6.55to7.0um improved the worst VCE from0.38845165to0.39797605V and failing high-stage data HBT count24to15, but this still FAILS the fixed0.4V bound. All768serial samples passed with minimum229.995mV. Nominal/fault jobs passed; cold job last seen running, inspect final report before choosing next change. Partial hot receipt docs/evidence/tx-headroom-v2-hot-rejection-20261017.json. A further bounded high-shunt increase may recover margin; it is NOT implemented or validated. Never round0.397976up or relax limits. Fresh layout/RC still required after all-corner native success.
+
+New exact CRC repair39052168254 remains live; source-bound successor39054520337 waits for its successful terminal evidence and then revalidates/proves exact netlists. Old regionalroute39045601192 and full1us half-stepPLL39043210978 remain live at last check; preserve handles/checkpoints. No final route/setuphold/serialPHY closure claimed.
+
+---
+
 ## Cloud checkpoint: actual connected CDR interface passed; half-cycle cascade is next
 
 Cloud-only execution remains mandatory. Local workspace is empty; no local CAD, checkout, tests or downloaded result archives. All native jobs below are GitHub Actions. Older local-execution wording does not apply.
