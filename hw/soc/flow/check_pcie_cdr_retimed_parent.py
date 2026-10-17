@@ -48,9 +48,9 @@ L=pya.Layout();L.read({str(gds)!r});top=L.cell({TOP!r});assert top is not None
 fault={fault!r};ys={ys!r}
 if fault=='offgrid':top.transform(pya.Trans(1,0))
 elif fault=='q_open':
-    li=L.layer(67,0);before=pya.Region(top.shapes(li));y=ys['vip'];cut=pya.Region(pya.DBox(5,y-2.2,7,y+2.2).to_itype(L.dbu));after=before-cut;assert before.area()!=after.area();top.shapes(li).clear();top.shapes(li).insert(after)
+    li=L.layer(134,0);before=pya.Region(top.shapes(li));y=ys['vip'];cut=pya.Region(pya.DBox(5,y-2.2,7,y+2.2).to_itype(L.dbu));after=before-cut;assert before.area()!=after.area();top.shapes(li).clear();top.shapes(li).insert(after)
 elif fault=='rail_short':
-    top.shapes(L.layer(67,0)).insert(pya.DBox(2.5,min(ys['avdd'],ys['avss'])-.7,3,max(ys['avdd'],ys['avss'])+.7))
+    top.shapes(L.layer(134,0)).insert(pya.DBox(2.5,min(ys['avdd'],ys['avss'])-.7,3,max(ys['avdd'],ys['avss'])+.7))
 else:raise ValueError(fault)
 L.write({str(target)!r})
 """

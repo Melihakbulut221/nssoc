@@ -1,3 +1,11 @@
+## Latest: full PD394 native DRC and deep/flat LVS PASSED; actual fault-layer correction
+
+Checked 2026-10-17T21:30:27.288440+00:00. Run39070954368/sourcee89530f4f172722352943c548905907bffb27508 closed all630TM1width violations: native560DRC zero markers; deep/flat394deviceLVS PASSwithno diagnostics/oneMatch. Wrongfinger/missingHBT faults rejected. q_open mutation failed BEFOREfaultLVS because inheritedhelper targetedMetal5(layer67) while actualparent publicpins areTopMetal2(layer134); no polygonchanged. Corrected ONLY thetwo layerselectors for q_open/rail_short to134; all gates unchanged. Complete report/parts preserved docs/evidence/cdr-parent-fault-layer-failure-20261018.json. Do not claimallphysicalcontrols passed until corrected successor finishes.
+
+Actual16macro parent connectivity now independentlyverifiedpositive:122HBT102rppd11MIM159contacts=394,25realports. Still needscompletedfaultgates, nativeLEFreadback, freshwholeparentRC, loadedPDandactualVCOfeedback/closed-loop. NofullPHY/mainchip/timingacceptance. Observe successor fromthiscommit, preservepositiveandnegativeevidence. CLOUD ONLY.
+
+---
+
 ## Latest: real parent DRC narrow intermediate landing repaired
 
 Checked 2026-10-17T21:26:18.111262+00:00. CDRparent39069972566/sourcead2eecaaa38cd7ff1e191a05e82e1a282f453dcd generated actualGDS/LEF and reference122HBT102R11MIM159contacts=394; bbox1703.2x5094.3um. Native560rule DRC rejected630markers, ALLTM1.a (1.64umminimumwidth). LVS not reached. ArchiveSHA363b02a925bfe84a5da5a3b73e6e0bb8eee739ed15626bc212fab54e01f32db5; fullfailure retained docs/evidence/cdr-parent-tm1-width-failure-20261018.json. Native.lyrdb hashverified; everymarker x794.55..796.65um identifies leftMetal5-to-TM2 accesscenter795.6um. Intermediate nativevia-stackTM1 has narrowprotrusions; rightstacks alreadycoveredbyvertical3.2umTM1.
