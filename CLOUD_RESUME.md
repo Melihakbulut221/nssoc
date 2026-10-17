@@ -1,3 +1,13 @@
+## Latest: PD394 physical gates passed; whole-parent reference-plane binding next
+
+Checked 2026-10-17T21:42:09.212121+00:00. Run39071247094/source49f06a17064c93c6bdf5fc38367c93fc14992573 completed SUCCESS. All560nativeDRC rules zero markers; hierarchical and flat unsimplified LVS394 match, no extractiondiagnostics. Wrongfinger, missingHBT, actualTopMetal2 publicopen, actualrailshort andoffgrid allrejected. The q_open case has deviceMatch but missing successfuldeckverdict/explicitdeckmismatch: the checker correctly refuses falsePASS. Complete summaryandparts hashes retained docs/evidence/cdr-retimed-parent-physical-pass-20261018.json.
+
+New cloud cdr-retimed-planes workflow binds158actual referenceplanes (133child+25public) across51logicalnets in native394deviceLVS, with16childcluster swaps,missing/duplicateplane andSUB/AVSSshort controls. Records native device/terminal census and LEFreadback; no RC or closed-loop acceptance from this step. AfterPASS build freshwholeparentRC including MIM intrinsic terminal handling; do not doublecount oldXORRC. Full serialPHY/mainchiprouting/finalsetuphold stillOPEN.
+
+Verified live same handles: TXfullwire117498996909/run39067769686; mainchipboot117474959878/run39059432529; placement39059854681 andpostCTS39061293959 sourcewaits; PLLcontinuation117479132555/run39043210978. Do not restart due elapsed observation. CLOUD ONLY; localworkspaceempty. This goalturn PROGRESS, notcomplete orblocked.
+
+---
+
 ## Latest: full PD394 native DRC and deep/flat LVS PASSED; actual fault-layer correction
 
 Checked 2026-10-17T21:30:27.288440+00:00. Run39070954368/sourcee89530f4f172722352943c548905907bffb27508 closed all630TM1width violations: native560DRC zero markers; deep/flat394deviceLVS PASSwithno diagnostics/oneMatch. Wrongfinger/missingHBT faults rejected. q_open mutation failed BEFOREfaultLVS because inheritedhelper targetedMetal5(layer67) while actualparent publicpins areTopMetal2(layer134); no polygonchanged. Corrected ONLY thetwo layerselectors for q_open/rail_short to134; all gates unchanged. Complete report/parts preserved docs/evidence/cdr-parent-fault-layer-failure-20261018.json. Do not claimallphysicalcontrols passed until corrected successor finishes.
