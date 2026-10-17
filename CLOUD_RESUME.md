@@ -1,3 +1,15 @@
+## Current: independent source queue for repaired TX; CDR buffers physically verified
+
+Checked 2026-10-17T20:41:07.275540+00:00. CLOUD ONLY. Corrected TX source255f0804d02cba941f2a63fc13db75119709131a was pending run39066939313 with ZERO jobs: waiting on old39066521495 publication. Verified zero jobs immediately before cancelling ONLY that pending run. No simulation/CAD process was stopped. Old native failures and still-live cold publication117495612074 are preserved. Workflow concurrency now isolates exact source SHA, cancel-in-progress:false; the new source-push successor must run the unchanged private builder/adapter corrections. Observe the successor, do not dispatch duplicates. Native physics has not passed yet.
+
+CDR buffer physical39067291672/source4160cc84c1678de94cbc324b7363ea57dfbf0c1c completedSUCCESS for data and select. Both560DRC/deep-flat14/16deviceLVS/fiveactualfaults passed. Full receipts/manifests in docs/evidence/cdr-buffers-physical-pass-20261017.json. Data summary651534499 SHA77b711934aada7a041329c191c8a5347c024738504e7214d8b7958413cd8213a; select651535649 SHAd9981d88080e06345b9f13af43763542df18b9d00280f9bb710cf753faddf9b7.
+
+Fresh actual feed-forward passive leaves run39067622805/sourcecb92c4952c718d772dae0bec0487e476cced4f8d queued at last poll. Three types retime/data/select cover five parent instances, fournativeR+twoMIM+sixcontacts perleaf, all exact frozenPD source pins/dimensions. New make/check_pcie_cdr_feedforward_v1.py and cloud_cdr_feedforward_physical.py; unchanged native560rule/deep-flat12device/fiveactualfault gates. Preserve any failure and inspect actual geometry. Parent sampler/buffer/XOR/V-I assembly and freshRC/full-loop still required. Existing sampler generator make_pcie_sampler_cell.py binds exact v2nativeSHA254001... and provides27primitives+8taps; inspect prior physical evidence before reusing.
+
+Mainchipboot39059432529 and PLL39043210978 confirmedlive this poll; placement39059854681 and postCTS39061293959 depend on exact boot/placement. No new mainchip timing pass. Full serial Gen3x4/mainchiprouting/finaltiming remain OPEN. Previous turn PROGRESS: actual new physical leaves and verified evidence, source binding fixes, cloud continuation; not blocked.
+
+---
+
 ## Latest correction: v5 physical-clock adapter shares the configured builder
 
 Checked 2026-10-17T20:29:26.083429+00:00. Run39066521495 passed exact model binding but stopped BEFORE ngspice with KeyError('stiff625') in original clock adapter: it imported original builder, not v5 builder. Wire job117495612006 completedFAILURE; other cases must finish publication and be checked individually. Verified wire failure receipt docs/evidence/tx-balanced-v5-clock-binding-failure-20261017.json; all native reports remain published. No electrical conclusion.

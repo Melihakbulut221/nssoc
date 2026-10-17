@@ -9,7 +9,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: tx-balanced-v5-loaded-wave-${{ github.ref }}
+  # A failed predecessor may still publish its evidence; isolate source revisions.
+  group: tx-balanced-v5-loaded-wave-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: false
 jobs:
   controls:
