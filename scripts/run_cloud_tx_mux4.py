@@ -405,7 +405,15 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
                    (TX, 'xtx', ['mp','mn','op','on','tvdd','0','0','tr'])]
     else:
         assert streams in (4,32) and final_override is None and final_drive=='double_taps_margin'
-        assert clock_bias==output_bias=='native_res' and clock_reference=='stiff65'
+        assert clock_bias==output_bias=='native_res' and clock_reference in ('stiff65','stiff625')
+        if clock_reference=='stiff625':
+            # The independently verified headroom candidate is a fixed32-input
+            # physical core, not permission to retune arbitrary assembled cells.
+            assert streams==32
+            assert sha(bias_path)=='597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca'
+            assert sha(clock_feed_path)=='650579e07ec3c52c9ae1f429c3c9c56bec5b8761eae953bac33d08e0dbc4b8cc'
+            assert sha(assembled_core) in ('163a6dfd92e563b2332632ce38fedac60d2b5358cfcc9e51331dfb540ac67ee1',
+                                           '83e128161062e8ca514177a17480874ae5229e789003264ac40da7185eb42118')
         assert pre_bias in ('native_res','native_res_tc')
         expected_interfaces={'ap','an','bp','bn'}
         if streams==32:

@@ -1,3 +1,9 @@
+## Exact headroom full32 build guard repaired after pre-simulation rejection (2026-10-17)
+
+39010857720 all5cases stopped BEFORE native simulation at legacy assembled clock_reference==stiff65 guard. Cloud restoration and newGDS124leg/372base binding had completed; archives/failures retained. Extend assembled builder only for streams32 + exacttrimmedcompact163a6dfd/wire83e12816 SHA + pinnedclock625597ecb6d/feed650579e0. Originalstiff65 path retained; no thresholds/stimuli/solver/sourcebit changes. New matrix successor reruns terminal failed build, not a liveprocess. Actual fullarchive hash is enforced by cloudconsumer; RAMtimeout was observationonly.
+
+Mainchip directsetup/hold39011120664 inprogress. Clockcompose39010928232 terminalSUCCESS; nativeproof mustbe inspected before actualclock6 integration into loadedtree. PLL39007535633 andoldwire39004595306 live. Allcloud/localempty/fullgoalOPEN.
+
 ## Actual postCTS electrical trial complete; setup/hold repair launched (2026-10-17)
 
 39009508522/source74585b18 completed actual1039.55s native before/after all3corner flow. Slow slew193->15; cap0allcorners. SetupWNS unchanged slow-11.3312ns/typ-6.18229/fast-3.2504. Holdcounts worsened slow479->565/typ967->1123/fast12051->12227; worsthold-1.19738/-0.894529/-0.731416ns unchanged. Highfanout>=128 reports empty; old4905load/93ns preCTS report is NOT currentCTS evidence. Trial is NOT adopted or timingpass. Receipt corrpre-postcts-electrical-trial-20261017.json.
