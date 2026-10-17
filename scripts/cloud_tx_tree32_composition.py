@@ -15,14 +15,18 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--variant',choices=('budget_high8','budget_high3','budget_high3_trim'),default='budget_high8')
     parser.add_argument('--placement-pitch',choices=('original','tight'),default='original')
+    parser.add_argument('--return-rail',choices=('original','wide64'),default='original')
     selected_args=parser.parse_args();selected=selected_args.variant
+    wide64=selected_args.return_rail=='wide64'
     tight=selected_args.placement_pitch=='tight'
     assert not tight or selected=='budget_high3_trim'
+    assert not wide64 or (tight and selected=='budget_high3_trim')
     high3=selected in ('budget_high3','budget_high3_trim')
     trim=selected=='budget_high3_trim'
-    TOP='nssoc_tx_tree32_'+selected+('_tight_core_v1'if tight else'_core_v1')
+    TOP='nssoc_tx_tree32_'+selected+('_tight_return64_core_v1'if wide64 else '_tight_core_v1'if tight else'_core_v1')
     receipt_name='tx-tree32-headroom-extraction-pass-20261017.json' if trim else 'tx-tree32-high3-extraction-pass-20261017.json' if high3 else 'tx-tree32-budget-extraction-pass-20261017.json'
     if tight:receipt_name='tx-tree32-tight-extraction-pass-20261017.json'
+    if wide64:receipt_name='tx-tree32-return64-extraction-pass-20261017.json'
     receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
     expected_counts=dict(devices=1674,R=receipt['resistors'],C=receipt['capacitors'])
     assert expected_counts==(dict(devices=1674,R=114909,C=76614)if tight else dict(devices=1674,R=114819,C=76351) if high3 else dict(devices=1674,R=114815,C=76347))
@@ -32,6 +36,7 @@ def main():
     layout=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
     out=ROOT/'hw/soc/out'/('cloud-tx-tree32-headroom-assembly' if trim else 'cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
     if tight:out=ROOT/'hw/soc/out/cloud-tx-tree32-tight-assembly'
+    if wide64:out=ROOT/'hw/soc/out/cloud-tx-tree32-return64-assembly'
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-composition-input.tar.gz'
@@ -78,6 +83,17 @@ def main():
         if tight:
             assert extraction['placement_pitch']==receipt['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
         result['placement_pitch']=extraction.get('placement_pitch',dict(name='original',column_um=1000.,row_um=600.))
+        if wide64:
+            assert extraction['source_head']=='163673ebb478adb767557bd0d40562df97a527c8'
+            assert extraction['return_rail']==receipt['return_rail']
+            assert extraction['return_rail']['profile']=='wide64'
+            assert extraction['return_rail']['trunk_and_bus_width_um']==64.
+            assert extraction['geometry_delta']==receipt['geometry_delta']
+            assert extraction['geometry_delta']['status']=='PASS_EXACT_SIX_AVSS_EXPANSIONS_ALL_OTHER_DRAWING_GEOMETRY_UNCHANGED'
+            assert len(extraction['geometry_delta']['controls'])==3
+            assert all(c['rejected']for c in extraction['geometry_delta']['controls'])
+            result['return_rail']=extraction['return_rail']
+            result['geometry_delta']=extraction['geometry_delta']
         assert extraction['audit']['actual_exported_resistors']==expected_counts['R']
         assert extraction['audit']['actual_exported_capacitors']==expected_counts['C']
         protected={str(q):sha(q) for sub in ('layout','physical','wire96') for q in (out/sub).rglob('*') if q.is_file()}
