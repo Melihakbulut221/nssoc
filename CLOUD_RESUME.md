@@ -1,3 +1,22 @@
+## Cloud-only execution checkpoint (2026-10-17T17:17:15.509088+00:00)
+
+Latest user instruction: do all work in the cloud and leave the local workspace clean. This overrides the older active-goal wording asking for local execution. Do not recreate a local checkout, run local CAD/tests, or download result archives to the workstation. Use GitHub Actions for native execution and retain source, logs, reports and verified result parts in GitHub. In-memory GitHub API inspection and source editing do not require local project files. Do not delete unrelated user directories.
+
+Verified local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty and no local ngspice/OpenROAD/KLayout/Yosys/LibreLane processes were found. No additional deletion was necessary. Cloud source HEAD before this documentation checkpoint: `48f907e0834f2c39d027dcdf3dbb26ba143b1e44`.
+
+Live runs (checked through GitHub API; preserve these jobs rather than restarting):
+- Replay CRC post-CTS repair: 39052168254, source 2f32b51eec3d0dfc0c5d695c1aec921044e6a90b, in progress. Placement 39042752404 completed successfully; inherited placement timing metrics are not final timing evidence. Inspect independent before/after STA, then prove the exact repaired netlist before routing.
+- Regional global routing: 39045601192, source b3e904d284192c3c336994577428b662f3ef9aa3, in progress. This is the earlier repaired netlist, not the new CRC post-CTS candidate.
+- PLL full 1 us half-step acquisition: 39043210978, source c7fc9d2709cd3c7e9cf28584c85e6fd8f2d9294c, in progress. Preserve the exact native process/checkpoint; no cold restart merely to observe progress.
+
+New connected CDR buffered comparison: run 39052561265, source 48f907e0834f2c39d027dcdf3dbb26ba143b1e44, completed FAILURE. Nominal, hot_low and cold_high native jobs failed; actual output-swap and stopped-clock fault jobs succeeded. Inspect retained native summaries/waveforms to identify the next circuit change; do not interpret successful fault detection as a functioning comparator. Passive predecessor 39051840565 also failed and its receipt is docs/evidence/cdr-passive-compare-rejection-20261017.json. Separate clean sampler and XOR primitive passes remain valid only in their stated scope.
+
+TX drive candidate 39050192928 completed FAILURE: nominal/cold/fault jobs passed but hot rejected 24 pre-stage data HBTs for VCE below 0.4 V, despite correct serial bits. Read all bound native reports before selecting a new geometry. Do not weaken safety or eye gates or reuse old extracted RC for new geometry.
+
+Next work, entirely in Actions: diagnose the buffered comparator failure, retain all four TX candidate receipts and repair measured hot headroom, inspect the three live runs when they advance, then regenerate physical/extraction evidence for any changed circuit. Full serial Gen3 x4 PHY, routed main chip and final setup/hold closure remain OPEN. Do not claim manufacturing readiness.
+
+---
+
 ## Cloud checkpoint: clean sampler passed; replayCRC native boot passed
 
 Clean sampler39051016629/source1955966b passed nominal/hot/cold plusreal outputswap/stoppedclock faults. All15HBT/12R/41emitters from unchanged rx_sampler_hbt_v2 source25400147;15OFFreadbacks,zeroOPzero,nodiagnostics. Normal minimum margins146.815152/147.554400/135.627851mV, maximumclock-to-valid23.28125/25.46875/21.71875ps,768correct each. Nominal outputCM2.4051–2.4251V; hot2.2738–2.2926V; cold2.5354–2.5566V. Actual loading/levelconversion to XOR2.0Vdata/1.3Vselect is now the next required integration step. See docs/cdr-sampler-loaded-handoff-20261017.md for a proposed, UNTESTED native resistor starting point and strict scope; do not treat separate primitive passes as an integrated CDR.
