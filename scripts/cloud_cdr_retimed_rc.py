@@ -66,7 +66,7 @@ def main():
                 replace("==['18']","==['112']");replace("==['17']","==['111']")
             else:
                 replace('cases=[\n',NONBRIDGE_SELECTOR+'cases=[\n')
-                replace("re.sub(r'^R\d+ .*\n','',text,count=1,flags=re.M)",'dropped_text')
+                replace(r"re.sub(r'^R\d+ .*\n','',text,count=1,flags=re.M)",'dropped_text')
             assert not(wire/name).exists()
             (wire/name).write_text(text);edits[name]=dict(original_sha256=meta['sha256'],adapted_sha256=sha(wire/name),changes=changes)
         r['method_adaptations']=edits;r['magic_runtime']=runtime;save()

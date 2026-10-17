@@ -1,3 +1,9 @@
+## Latest: RC preflight raw-pattern bug preserved and corrected
+
+Checked 2026-10-17T21:55:55.200554+00:00. Run39072836611/source1fe320ca485b5255e5abcac26fc96d9ec305bdfd failed BEFOREnativeextraction: mutations48.py source replacement used a Python-interpretednewline instead of the literalbackslash-n inside its rawregex. Exact replacementcount0 assertion prevented execution. NoRCresultgenerated. Fullsummary651702872/parts651702930 preserved, compactreceipt docs/evidence/cdr-retimed-rc-preflight-failure-20261018.json. Correction adds ONLY r-prefix tothatreplacementtarget; source/rawcorruptionsemanticsandallacceptancegates unchanged. Observe successor fromthiscommit. ExistingPD394physical/158planes/776terminalpoints proofs remainvalid. CLOUD ONLY; threegoalheadingsOPEN.
+
+---
+
 ## Latest: whole-PD394 native geometry and terminal binding passed; freshRC launched
 
 Checked 2026-10-17T21:53:32.960454+00:00. Wire-inputs39072437449/source19e49d3d941d898c853b0615651945f56cfe4391 PASS:394native devices1134terminals,111independentphysicalwirecomponents112electricalnets,751metal+383intrinsicbodyterminalrefs,25publicports,776uniquephysicalprobes. All394native devices binduniquely toactualPcells.42distinctprimitivecellannotationviews recoveredfromexactlyidenticalsourcechilddrawing withouteditingtargetGDS. Full2.34MBreport remainsRelease651692106; compactsource/hash/outputreceipt docs/evidence/cdr-retimed-wire-inputs-pass-20261018.json.
