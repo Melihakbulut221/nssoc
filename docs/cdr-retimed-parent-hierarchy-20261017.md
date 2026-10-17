@@ -1,0 +1,7 @@
+# Retimed CDR physical parent hierarchy
+
+The parent contains all16 macro instances of the frozen native PD/V-I circuit: four actual samplers, four data/select buffers, two XORs, five differential feed-forward networks and one V/I cell. `cdr_retimed_parent_plan.py` binds every41 source instance/card exactly once and preserves every public signal and bias pin. It removes only the synthetic extracted-capacitance reference `wire_cref` from the physical boundary; real AVSS and SUB remain distinct. Source hashes cover the complete PD, sampler, buffer and V/I schematics.
+
+The expected unsimplified transistor/resistor/capacitor/contact census is122/102/11/159 (394 total), with25 real external ports. Six negative controls alter a real sampler, clock polarity, V/I polarity, RC instance, bias connection or synthetic boundary. These source-binding checks do not constitute layout, DRC/LVS or electrical proof.
+
+The next generator must consume this exact plan, copy actual proven child GDS without changing drawing geometry, route all parent nets in metal/vias, and flatten child references with one explicit physical BULK node. Child pin annotations may be stripped for parent extraction only with independent drawing-geometry equality checks. Full parent DRC/deep-flatLVS, physical open/short and polarity controls, fresh interconnect RC and native loaded PD/closed-loop simulation remain mandatory. The old simplified sampler proof is insufficient for the394-device census; its new35-device unsimplified check must finish first.
