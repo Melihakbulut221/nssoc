@@ -1,3 +1,11 @@
+## Latest: MIM-aware full raw RC audit PASSED; corrected complete composition launched
+
+Checked 2026-10-17T22:51:17.707354+00:00. Audit39076409923/source3b29e5e673b59258a24adc302d3bce104015a469 PASS8956R7660C/111components776points. AllRnativevalue/topology,per-pointgroundC,mutualattachment/value,collapsedmatrix conserved;11intrinsicMIMsource/replacement/baseline/exportidentitiespassed;13unchangedwire+9MIMcorruptions rejected. Fullreceipt docs/evidence/cdr-mim-parent-audit-pass-20261018.json summary651810118/parts651810205. Human-readablephysicalcomparison docs/cdr-mim-aware-parasitics-20261018.md.
+
+New cdr-mim-composition workflow usesauditednewanchors/wiresandnative394modelbinding. Verifiesall11extractorMIMcards againstcapturedorderedidentity/geometry thenprojectsONLYthosecards fromwireview, retainingevery8956R7660Ctoken. Emitsall394nativePDKdevices, exactly11MIMmodels, withnew776planes. Frozenpreviouscomposer changedonlymodelname/census;13oldcompositionfaults+duplicate/retainedMIMfaults required. NeedactualPASSthenloadednativePDwaveswithproperwrapperportmapping/numericHBTgeometryhandling; oldwire-onlyPDmodels arediagnosticonly. RF/body/PVTqualificationandfullPHY/mainchiprouting/finalsetupholdremainOPEN. CLOUDONLY. GoalturnPROGRESS.
+
+---
+
 ## Latest: complete MIM-aware native PD capture passed; strict raw audit launched
 
 Checked 2026-10-17T22:46:05.835911+00:00. Capture39075921872/sourceee2a327150d5ea44f84fe908b410c2007b0f4e14 PASS:8956actualR7660C,11explicitnativecap_cmim,111physicalcomponents776points. All11bottomMetal5accesspoints reboundoutsideMIMpaint andall776re-probedinnativeLVS/physicalwiregraph; alloriginalmetal/viasunchanged,masks exactlyactual11Pcells. EachnativeMIMw/l andorderedcomponentpairmatchesactualPDdevices;5faultsrejected. Fullreceipt docs/evidence/cdr-mim-parent-capture-pass-20261018.json summary651795307/parts651795362. RawR/Cvalues/point/matrixaudit NOTyetaccepted.
