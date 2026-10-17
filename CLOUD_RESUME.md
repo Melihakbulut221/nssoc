@@ -1,3 +1,11 @@
+## Native clock-delay fix controls archived; full census running (2026-10-17)
+
+PROGRESS. Verified actualcontrols.log from hash-bound archive649497309:8passed0failed(0.37s), no assumptionfromworkflowgreen. Added pipefail beforepytest|tee sofuturetestfailurecannotbehiddenbylogging. Workflowpush starts strict successor(fullcensus samecode); preserve alreadyhealthyfullcensus39001722601/sourceade36fe40bc8806bc11f575b40077ae14b1a3e2f, do notcancel/restart. Next compareterminalnativecensus forcorrectedclockconstraints; record bothIDs/outcomes. Completedclockcleanupreceipt nowincludesactualarchivedcontrolsha/text.
+
+FullPHY/allcorner/PVT/qualifiedRC/finaltimingremainOPEN. Midload38999900875, PLL38982797234 continuation andMBISTboot38994926932 remainrunning atlastcheck. No localfiles.
+
+---
+
 ## Explicit-clock cleanup verified; complete native timing census launched (2026-10-17)
 
 PROGRESS. Actualclockcleanup39001319426/source1d065deb41072cdad4bccebfe768444833aad69d PASS:all8mappedconstraints pytest andoriginalphasegroups reproduced; effectiveSDC removesexactly4genericclk_i4nsdata delays atpcie_clk_i/eth_rx_clk_i/eth_tx_clk_i/eth_gtx_clk_o, addsnothing, everyothercommandunchanged. Native330targetqueriescomplete, inputsimmutable. Receipt docs/evidence/clock-port-delay-native-fix-20261017.json binds summary649497178/parts649497245/archive649497309. This is actualSDCbugfix, not newfulltimingacceptance.
