@@ -173,7 +173,7 @@ def main():
                         if len(hits)!=1:missing.append(dict(public_ordinal=ordinal,time_s=edge,direction=direction,candidates=len(hits)));continue
                         j,x=hits[0];assert j not in used;used.add(j)
                         matches.append(dict(public_time_s=edge,base_time_s=x[0],direction=direction,delay_s=x[0]-edge))
-                    legs.append(dict(positive_hbt=ph,negative_hbt=nh,positive_base=pn,negative_base=nn,public_edges=len(public_edges),base_edges=len(actual),matched=matches,unmatched_public=missing,unmatched_base=[x for i,x in enumerate(actual)if i not in used],minimum_delay_s=min((x['delay_s']for x in matches),default=None),maximum_delay_s=max((x['delay_s']for x in matches),differential_range_v=[float(delta[active].min()),float(delta[active].max())],common_mode_range_v=[float(((v(pn)+v(nn))/2)[active].min()),float(((v(pn)+v(nn))/2)[active].max())]))
+                    legs.append(dict(positive_hbt=ph,negative_hbt=nh,positive_base=pn,negative_base=nn,public_edges=len(public_edges),base_edges=len(actual),matched=matches,unmatched_public=missing,unmatched_base=[x for i,x in enumerate(actual)if i not in used],minimum_delay_s=min((x['delay_s']for x in matches),default=None),maximum_delay_s=max((x['delay_s']for x in matches),default=None),differential_range_v=[float(delta[active].min()),float(delta[active].max())],common_mode_range_v=[float(((v(pn)+v(nn))/2)[active].min()),float(((v(pn)+v(nn))/2)[active].max())]))
             clock_rows.append(dict(clock=clock,actual_selector_bases=bases,legs=legs))
         assert len(clock_rows)==31 and sum(len(x['legs'])for x in clock_rows)==124
         result['native31_clock_ports_to124_selector_base_pairs']=clock_rows
