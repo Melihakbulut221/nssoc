@@ -36,7 +36,7 @@ def restore(spec):
 
 def gate_candidate(original,intrinsic,composition,length):
     import hashlib
-    assert length in ('6','9')
+    assert length in ('3','6','9')
     assert hashlib.sha256(original.encode()).hexdigest()==SOURCES['l2p4-series-l6p2']['model']
     rows=statements(original)
     assert sum(r[0].startswith('XD')for r in rows)==100
@@ -105,12 +105,12 @@ def corner_contract(deck,contract,nominal,base,name):
 
 def main():
     global OUT
-    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);parser.add_argument('--condition',choices=('nominal','hot_low','cold_high'),required=True);parser.add_argument('--gate-length',choices=('6','9'),required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);parser.add_argument('--condition',choices=('nominal','hot_low','cold_high'),required=True);parser.add_argument('--gate-length',choices=('3','6','9'),required=True);args=parser.parse_args()
     OUT=ROOT/('hw/soc/out/cloud-tx-gate-corner-sensitivity-'+args.variant+'-'+args.condition+'-g'+args.gate_length+'u');SOURCE=SOURCES[args.variant];reports.OUT=OUT
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode='wire',variant=args.variant,condition_name=args.condition,source=SOURCE,full_pvt_qualified=False,wire_rc_corner='nominal_geometry',serial_phy_complete=False,qualified_timing=False,mainchip_integrated=False,qualified_pex=False,component_screen_passed=False,
         clock_variant='l5p7',clock_candidate_matches_geometry=True,clock_wire_rc_is_fresh_candidate_extraction=True,clock_physical_model_used=True,matched_driver_physical_model_used=False,driver_candidate_matches_geometry=False,physically_realized=False,gate_length_um=args.gate_length,full_combined_physical_acceptance=False,
-        scope='SCHEMATIC SENSITIVITY: only native XD85 gate damping length12um to6um or9um in each raw100 driver; old260R295C wires retained and do not match new geometry. Actual162-device routed core and physical5p7clock unchanged. Full34ns/256bits/672MOS/62HBT/original phases, gates and zeroOP unchanged. External clock modulation, supplies, driver-core-clock connections and TX/bias elements not all physically integrated. Nominal or explicit transistor/temperature/supply corner with nominal geometry wire RC; no correlated RC-corner, complete PVT/32:1/four-lane/fullPHY/mainchip acceptance.')
+        scope='SCHEMATIC SENSITIVITY: only native XD85 gate damping length12um to3um,6um or9um in each raw100 driver; old260R295C wires retained and do not match new geometry. Actual162-device routed core and physical5p7clock unchanged. Full34ns/256bits/672MOS/62HBT/original phases, gates and zeroOP unchanged. External clock modulation, supplies, driver-core-clock connections and TX/bias elements not all physically integrated. Nominal or explicit transistor/temperature/supply corner with nominal geometry wire RC; no correlated RC-corner, complete PVT/32:1/four-lane/fullPHY/mainchip acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save();run=OUT/'native';run.mkdir()
     try:

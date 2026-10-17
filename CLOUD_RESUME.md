@@ -1,3 +1,13 @@
+## Hot gate6 rejected; cold gate9 passed; next gate3 bracket dispatched (2026-10-17)
+
+Cloud-only. Cold6 PASS above is not a PVT/physical acceptance. Hot6 summary649091642 SHA0e8af622e91011527aca84c00ed977ba6d7d4384032959a418e86d2265e9e198; parts649091675 SHA0ba2747214b056ad962e59a6667817aa1e467bde51df379beab99fe7a44b1bc6. Native0/no warnings, source unchanged, but original gates FAIL:42/768wrong sign and98below100mV, minimum-185.158mV; CMOS384below150mV/min67.597mV; final2826below150mV/min2.094mV. HBT6/7 VCE387.140/385.269mV remain failures. AllMOS pass. This improves hot dynamic output versus original251wrong signs but is rejected, not adopted.
+
+Cold9 also passed all original engineering gates; summary649092064 SHA054d1b7a83f04bc17b2c95a3038db8ffdaf53be5980540a6b76f48ffc52f1f4c, parts649092204 SHA04b03e031f0e0bb9d91f6ef35edd5372b9348fe359dd5b89aa1ad224cf8f2169. Hot9 still running at inspection. Thermal clock38986834834 remains separate/uncombined. Exact evidence docs/evidence/tx-hot-gate6-failure-fast-bracket-20261017.json.
+
+New tx-gate-fast-sensitivity-cloud.yml runs gate3 ONLY at hot/cold using same controlled source-bound producer. Only XD85 length changes; original gates/source bits/34ns/phase/672MOS62HBT unchanged. Lower damping may violate cold MOS overshoot: preserve failure, no limit waiver. Same frozen old wires are not matched new geometry. Inspect actual reports before next geometry or combined-clock decision. Nominal6 run38987814037 from c157c352f1ad98818877cdf1d824f26f208b9b13 is active; its purpose is the still-required nominal comparison, not hot qualification. No live job restarted. OriginalPLL38982797234/Ethernetroute38978702458/PCIeCORRPREboot38984849452 remain active. Fullgoal stays OPEN.
+
+---
+
 ## Gate6 cold sensitivity passed; nominal verification queued by new workflow (2026-10-17)
 
 Cloud-only; workspace empty. Previous goal turn was PROGRESS. Cold_high gate6 job117257377816 of38985964196 completed native0/no diagnostics and all original electrical gates passed. Summary649077541 SHAb46d1448c9044b3cb1d60dffc92e6873fe51a689d18fac20ac85902dcd277445; parts649077619 SHA78d0a975c55fce5e03307df57e9cc144a2ffe1a6cb62199e819562d8afda5330. All62HBT672MOS pass; all768output samples pass minimum265.043mV; CMOS301.432mV/final240.032mV. The original physical gate12 corner failure remains preserved. Candidate changes only gate resistor length12->6um with OLD wires; it is NOT matched to new GDS or fresh extraction.
