@@ -1,3 +1,9 @@
+## Tight420 rejected by15 real TM1 spacing violations; tight422 successor (2026-10-17)
+
+39021671377/source72a8b732 completed actual deep+flatLVS PASS and allfive physical fault rejections, but unchanged560category DRC rejects15 TM1.b markers. Native XML802001d0 shows repeated edge pairs with0.73um clearance vs1.64um required (example y741.88/742.61). Actual child pre_low bbox height592.04um; overlapping bounding rectangles are not themselves an accepted placement proof. Full native layers and exact device connectivity remain the acceptance gate.
+
+New candidate changes ONLY rowpitch420->422um, retaining700umcolumns, child drawings, topology,devices and allrules. This moves the observed neighboring edges2um farther apart; not a DRC pass until fresh native run. Failed archive2,830,932bytes/a17d88cc and summary6258a80b retained in tx-tree32-tight420-physical-rejection-20261017.json. First geometry bbox3466.785x7197.82um; actual parent signal centerline sum75463.2um/max2518.8um, not electrical acceptance. Do not extract/adopt failed geometry. Cloudonly/fullgoalOPEN; independent live PHY/PLL and coordinator preserved.
+
 ## Tighter parent placement candidate launched from real wire rejection (2026-10-17)
 
 Previous turn PROGRESS (one-shot handoff). Allnative jobs and coordinator39021081392 stilllive. Read actual tree generator: original31macros use1000um stage columns and600um leaf rows. Old fullwire39004595306 has377wrong/768TXsamples while native transient finished; same parent pitch exists in current headroom candidate. This supports testing intermacro parasitic reduction, but does not attribute all failures to wires or predict a pass.

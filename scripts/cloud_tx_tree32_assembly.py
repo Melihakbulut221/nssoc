@@ -11,7 +11,7 @@ TOP='nssoc_tx_tree32_core_v1'
 CHILD_PORTS='ap an bp bn sp sn op on avdd avss sub iref'.split()
 
 def topology(column_pitch=1000.,row_pitch=600.):
-    assert (column_pitch,row_pitch) in ((1000.,600.),(700.,420.))
+    assert (column_pitch,row_pitch) in ((1000.,600.),(700.,422.))
     from run_cloud_tx_mux4 import tree_plan
     plan=tree_plan(32)
     nodes=[dict(n,kind='pre')for n in plan['nodes']]
@@ -187,7 +187,7 @@ def main():
         with (OUT/(label+'.log')).open('w')as f:code=subprocess.call(list(map(str,command)),stdout=f,stderr=subprocess.STDOUT)
         if code:print((OUT/(label+'.log')).read_text(errors='replace')[-12000:],flush=True);raise RuntimeError((label,code))
     try:
-        plan=topology(700.,420.)if a.placement_pitch=='tight'else topology();plan['variant']=a.variant
+        plan=topology(700.,422.)if a.placement_pitch=='tight'else topology();plan['variant']=a.variant
         plan['placement_pitch']=a.placement_pitch
         # Inverse placement transform must recover the original bit topology,
         # maps, roles, clocks, references and every original macro coordinate.
@@ -196,7 +196,7 @@ def main():
         if a.placement_pitch=='tight':
             for n in check['nodes']:
                 n['x_um']=round(n['x_um']/700.*1000.,9)
-                n['y_um']=round(n['y_um']/420.*600.,9)
+                n['y_um']=round(n['y_um']/422.*600.,9)
             check['column_pitch_um']=1000.;check['row_pitch_um']=600.
         assert check==original,'Placement changed original selector topology'
         result['placement_pitch']=dict(name=a.placement_pitch,column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um'],inverse_topology_matches_original=True)
