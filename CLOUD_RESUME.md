@@ -1,3 +1,13 @@
+## Cloud checkpoint: clean sampler passed; replayCRC native boot passed
+
+Clean sampler39051016629/source1955966b passed nominal/hot/cold plusreal outputswap/stoppedclock faults. All15HBT/12R/41emitters from unchanged rx_sampler_hbt_v2 source25400147;15OFFreadbacks,zeroOPzero,nodiagnostics. Normal minimum margins146.815152/147.554400/135.627851mV, maximumclock-to-valid23.28125/25.46875/21.71875ps,768correct each. Nominal outputCM2.4051–2.4251V; hot2.2738–2.2926V; cold2.5354–2.5566V. Actual loading/levelconversion to XOR2.0Vdata/1.3Vselect is now the next required integration step. See docs/cdr-sampler-loaded-handoff-20261017.md for a proposed, UNTESTED native resistor starting point and strict scope; do not treat separate primitive passes as an integrated CDR.
+
+ReplayCRCnativeboot39041981816/source295bb240 completed successfully. Original43fileartifact12107965275 (5359825bytes,SHA699efc25380b4a26fe310926d94cee9959554715183094cdd6f3876303c003d1) independently revalidated/preserved by39042752404:28nativebootgates, actualsystem+bothEthernetMBISThandover, unchanged sources. Nativeplacement job117448170068 is running in39042752404 after sourceproof validation. Permanentreceipt docs/evidence/replay-crc-native-boot-pass-20261017.json, summary650995312 SHA4962439256c3dcda34ff00d18d237bd61a1e967a427e057e2e09278dafcefcd1. This is noSDFmappedboot, not packettraffic/physicaltiming/PHY acceptance.
+
+TXdrivecandidate39050192928/source8fcacc39 has controlsPASS and four nativecases stillrunning; inspect actual status, do notrestart. Regionalroute39045601192 and full1us halfstepPLL39043210978 last verified live. Source remains cloud-only, localworkspace empty. FullserialPHY/mainchiproute/finalsetuphold remain OPEN.
+
+---
+
 ## Cloud checkpoint: XOR loaded failure closed; next driver candidate running
 
 CDRv4fullwire39049659259/source332c9260 passed nominal/hot/cold unchanged primitive gates and actualswappedoutput. Margins142.357336/150.959468/130.574477mV,768correct each,zero below100mV,all19HBTbounds.19nativeOFFreadbacks,zero-sourceOPzero,no numericaldiagnostics. Fresh54device/4020R2641Cmodel b201876a...; physical/RC/composition chain unchanged. Receipt docs/evidence/cdr-v4-fullwire-pass-20261017.json and docs/cdr-shunt-v4-loaded-verification-20261017.md. This closes the specific XOR margin/headroom failure, NOT CDR/PHY. Next: native sampler input/output common-mode and load integration; old external-clock/node-set sampler evidence is insufficient. Preserve sample identity and original waveform/device checks before constructing full sampled phase detector/V-I loop.
