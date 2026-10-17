@@ -1,3 +1,11 @@
+## Latest: PLL native checkpoint needs/receives next process continuation; CDR diagnostics active
+
+PLL39043210978 completeditscontinuation stage WITHCHECKPOINTONLY, statusSAVED_ACTUAL_PHYSICAL845_ONE_US_PROCESS_NOT_FULL_CAPTURE_OR_ACCEPTANCE. NotacquisitionPASS.102nativeOFFreadbacks,zeroOP0,priorpayloadunchanged,1,658,679,296payloadbytespreserved. Fullreceipt docs/evidence/pll-c8-half-second-checkpoint-20261018.json (summary651853855/parts651853906) containsnextsource_checkpoint. All10methodhashes revalidatedat395f7ebe89f2f7b7a278df8e00eae31f89ad1998 beforedispatch. Resumeexactpublishednativecapsule usingexisting pll-c8-half-native-acquisition-cloud workflow, source_checkpointcontinuation39043210978/attempt1; NEVERcoldrestart. Findnewworkflow_dispatchrunafterthiscommit andverifyrestore.
+
+CDRdiagnostic39078437382 source395f7ebe89f2f7b7a278df8e00eae31f89ad1998 syntaxPASS;6early/lateR/Csensitivityjobsqueued/running. PLLMIMpilot successor39078437332 sameheadrunning; originalpreflightKeyError preserved docs/evidence/pll-mim-parent-schema-failure-20261018.json. TXfullwire39067769686 andpostCTS39061293959 stilllive. Allnativeexecutioncloudonly. FullgoalOPEN; thisturnPROGRESS.
+
+---
+
 ## Latest: actual whole-wire CDR rejected; native R/C sensitivity launched
 
 Fullcapture39077465653 source7abbd5a6fd0573d1a5102493d8355f12686e4120 completed. BOTHnominalearly/late failedactualsamplinganddevicegates; no numericdiagnostics,122OFFreadbacks,zeroOP0. Allwavespreserved(~0.97GBcompressedpercase). Compactreceipt docs/evidence/cdr-mim-loaded-rejection-20261018.json bindsall4summaries/parts. Earlysamplerwrongcounts101/279/367/367; late132/102/366/359. Earlyphase+0.026684Vwrongdirection;late+0.025362Vbelow.03gate. 16HBTboundfailuresincludingbufferstartupVCE2.102V>1.6 andselecttailmin.226V<.4. Negativeclockstop/VIbiasoffdetected, NOTpositivefunctionalacceptance.
