@@ -90,6 +90,12 @@ def main():
     try:
         gold=reference.read_text();gate=candidate.read_text();header=cut_header(kind,params)
         golden=extract(kind,gold);actual=extract(kind,gate)
+        onehot=kind=='replay' and 'reg [READ_CHOICES-1:0] replay_read_onehot;'in gate
+        if onehot:
+            header+="localparam integer BW=$clog2(MAX_BYTES+1),READ_CHOICES=(1<<BW);\nwire [READ_CHOICES-1:0] replay_read_onehot={{(READ_CHOICES-1){1'b0}},1'b1}<<read_pos;\n"
+            anchor='    reg [BW-1:0] write_pos,read_pos;\n'
+            assert gold.count(anchor)==1
+            gold=gold.replace(anchor,anchor+"    localparam integer READ_CHOICES=(1<<BW);\n    (* keep = 1 *) wire [READ_CHOICES-1:0] replay_read_onehot={{(READ_CHOICES-1){1'b0}},1'b1}<<read_pos;\n")
         result['read_cut']=cut(yosys,out/'arbitrary-memory',header,golden,actual)
         assert result['read_cut']['passed'];save()
         mutations=([('wrong_byte','bytes[replay_bank*MAX_BYTES+read_pos]','bytes[replay_bank*MAX_BYTES+(read_pos^1)]'),
@@ -97,6 +103,7 @@ def main():
                    if kind=='replay'else[
                     ('wrong_word','selected_word_byte[index]','selected_word_byte[index^1]'),
                     ('wrong_order','tx_word<header_words','tx_word>=header_words')])
+        if onehot:mutations=[('wrong_byte','bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit]','~bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit]'),('wrong_slot','replay_bank_byte[send_slot]','replay_bank_byte[send_slot^1]')]
         result['controls']=[]
         for label,old,new in mutations:
             assert actual.count(old)==1

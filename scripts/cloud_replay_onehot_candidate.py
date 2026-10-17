@@ -54,15 +54,17 @@ def main():
     def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        canonical=ROOT/REL;crc=ROOT/'hw/soc/rtl/pcie/soc_pcie_crc32_byte.v'
-        assert sha(canonical)==BASE and sha(crc)==CRC
-        original=canonical.read_text();altered=candidate(original)
+        canonical=ROOT/REL;baseline=ROOT/'sw/tests/fixtures/pcie_chip_timing/pre-onehot-replay-20261017.v';crc=ROOT/'hw/soc/rtl/pcie/soc_pcie_crc32_byte.v'
+        assert sha(baseline)==BASE and sha(crc)==CRC
+        original=baseline.read_text();altered=candidate(original)
+        assert canonical.read_text()==altered,'Canonical replay differs from exactly proven one-hot candidate'
         yosys=Path(shutil.which('yosys')).resolve();iverilog=Path(shutil.which('iverilog')).resolve()
-        protected={str(p):sha(p)for p in [canonical,crc,yosys,iverilog,Path(__file__),ROOT/'scripts/check_pcie_replay.py']}
+        protected={str(p):sha(p)for p in [baseline,canonical,crc,yosys,iverilog,Path(__file__),ROOT/'scripts/check_pcie_replay.py']}
         folders={}
         for label in ['baseline','candidate','wrong_cursor']:
             folder=out/(label+'-rtl');folder.mkdir();folders[label]=folder
             for p in (ROOT/'hw/soc/rtl/pcie').glob('*.v'):shutil.copyfile(p,folder/p.name)
+        (folders['baseline']/'soc_pcie_replay_tx.v').write_text(original)
         (folders['candidate']/'soc_pcie_replay_tx.v').write_text(altered)
         wrong=altered.replace(ROTATE,'replay_read_onehot');assert wrong!=altered
         (folders['wrong_cursor']/'soc_pcie_replay_tx.v').write_text(wrong)

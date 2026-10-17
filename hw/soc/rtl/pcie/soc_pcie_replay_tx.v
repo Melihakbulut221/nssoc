@@ -39,6 +39,8 @@ module soc_pcie_replay_tx #(
     reg [PW-1:0] head,tail,send_slot,replay_slot;
     reg [CW-1:0] count,sent_count,replay_left;
     reg [BW-1:0] write_pos,read_pos;
+    localparam integer READ_CHOICES=(1<<BW);
+    (* keep = 1 *) reg [READ_CHOICES-1:0] replay_read_onehot;
     reg capturing,sending,sending_replay,replay_active,replay_pending,replay_first,halt;
     reg [11:0] next_store_sequence;
     // Look ahead continuously. An accepted EOP ends capture, so the next
@@ -91,13 +93,23 @@ module soc_pcie_replay_tx #(
         (capturing || (!replay_active && !replay_pending && !ack_valid_i && count<DEPTH));
     assign ack_ready_o=rst_ni && link_up_i && !sending && !capturing && !replay_active;
     assign tx_valid_o=rst_ni && link_up_i && sending;
-    // Read constant-base banks in parallel so send_slot only selects the
-    // already-read byte. Keep flat-array cross-bank behavior for every
-    // language-defined address, including read_pos >= MAX_BYTES.
+    // A registered one-hot cursor removes binary-address decoding from
+    // the memory-to-transmit path. Include cross-bank addresses exactly as
+    // the flat reference does; unaddressable array reads remain undefined.
     wire [7:0] replay_bank_byte [0:DEPTH-1];
-    genvar replay_bank;
+    genvar replay_bank,replay_bit,replay_offset;
     generate for(replay_bank=0;replay_bank<DEPTH;replay_bank=replay_bank+1) begin: read_replay_bank
-        assign replay_bank_byte[replay_bank]=bytes[replay_bank*MAX_BYTES+read_pos];
+        for(replay_bit=0;replay_bit<8;replay_bit=replay_bit+1) begin: read_bit
+            wire [READ_CHOICES-1:0] selected;
+            for(replay_offset=0;replay_offset<READ_CHOICES;replay_offset=replay_offset+1) begin: read_byte
+                if(replay_bank*MAX_BYTES+replay_offset<DEPTH*MAX_BYTES) begin: present
+                    assign selected[replay_offset]=replay_read_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
+                end else begin: absent
+                    assign selected[replay_offset]=1'b0;
+                end
+            end
+            assign replay_bank_byte[replay_bank][replay_bit]=(read_pos<(DEPTH-replay_bank)*MAX_BYTES) ? |selected : 1'bx;
+        end
     end endgenerate
     assign tx_data_o=replay_bank_byte[send_slot];
     assign tx_sop_o=read_pos==0;
@@ -113,7 +125,7 @@ module soc_pcie_replay_tx #(
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
             head<=0;tail<=0;new_slot<=0;send_slot<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
-            write_pos<=0;read_pos<=0;capturing<=0;sending<=0;sending_replay<=0;
+            write_pos<=0;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};capturing<=0;sending<=0;sending_replay<=0;
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
             next_store_sequence<=0;input_crc<=32'hffffffff;timer<=0;timer_running<=0;retries<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
@@ -185,9 +197,9 @@ module soc_pcie_replay_tx #(
                         end
                     end
                 end else if(replay_active) begin
-                    sending<=1;sending_replay<=1;send_slot<=replay_slot;read_pos<=0;
+                    sending<=1;sending_replay<=1;send_slot<=replay_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end else if(reserve_valid_o && reserve_ready_i) begin
-                    sending<=1;sending_replay<=0;send_slot<=new_slot;read_pos<=0;
+                    sending<=1;sending_replay<=0;send_slot<=new_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end
             end
             if(tx_valid_o && tx_ready_i) begin
@@ -201,7 +213,7 @@ module soc_pcie_replay_tx #(
                         sent_count<=sent_count+1'b1;new_slot<=advance(new_slot,1);
                         if(!timer_running) begin timer<=0;timer_running<=1;end
                     end
-                end else read_pos<=read_pos+1'b1;
+                end else begin read_pos<=read_pos+1'b1;replay_read_onehot<={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};end
             end
         end
     end
