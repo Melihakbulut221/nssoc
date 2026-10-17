@@ -1,3 +1,13 @@
+## Latest: all394 native model bindings passed; complete wire composition launched
+
+Checked 2026-10-17T22:15:27.718848+00:00. Binding39074041419/source4f5fdf1991cb86a128c9c1cbdfb62104b2f21513 PASS: all394devices122HBT102rppd11MIM159finitecontacts,1134namedterminals andpinnedPDKmodelparameters, exactnativeSPICEcanonicalgeometry,3positive/3negativebinaryreadbackcontrols and8modelmutations. Fullreceipt docs/evidence/cdr-retimed-binding-pass-20261018.json; summary651739159/parts651739193.
+
+New cdr-retimed-composition workflow joinsall394nativecards toevery8933R7649C atactual776referencepoints; every383bodyterminal staysonitsnativebodynet via159finitecontacts, noimplicitmetalaliases. Public25ports+separatewire_cref;13compositionmutations. RequirePASSbeforeloadedwaves. MIMdevice/wirecapacitance separation explicitlyUNQUALIFIED: pinnedcmim PCell putsTM1plate overMIM/Metal5, whilewire-onlyextraction removesMIMmask; ordinaryTM1/M5overlap term mayoverlapintrinsicmodelaccounting. NeednativeMIM-aware extraction review/control beforeclaimingelectricalqualification; donotblindlysubtractalltop/bottomnetcoupling becauseexternalroutescontribute. ExistingRCaudit provesrawrecordpreservationonly, notthisphysicalseparation.
+
+CLOUD ONLY. FullPHY/mainchiprouting/finaltimingremainOPEN. Allfailurespreserved. GoalturnPROGRESS.
+
+---
+
 ## Latest: binary native geometry readback corrected, one-ULP bound retained
 
 Checked 2026-10-17T22:11:14.586694+00:00. Binding39073828073/source3078750e95896f670019dfb8cfa91ac04e278a94 passedallprecedingnativebindings thenstopped atMIM234width: exactnativeSPICE4.8um versusnativeJSON4.800000000000001. Decimal(str(float)) measuresroundeddisplaydistance1e-15, incorrectlyexceedingbinaryULP8.88178e-16; actualIEEE754distanceis7.10543e-16. Correction comparesDecimal.from_float(observed) andDecimal.from_float(ulp), retainingexactonebinaryULPboundandnativeSPICEcanonicalgeometry. Added3knownpositiveand3out-of-boundcontrols, includingtwo-ULPwidth rejection. NoPDK/devicegeometry/parameter changes. Fullfailure docs/evidence/cdr-retimed-binding-binary-readback-failure-20261018.json. Observe successor, thencomposewithverified8933R7649C. AllworkCLOUDONLY; fullgoalOPEN.
