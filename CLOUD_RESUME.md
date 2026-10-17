@@ -1,3 +1,11 @@
+## Full32 parent RC graph passed; actual device composition started (2026-10-17)
+
+PROGRESS. Run38997568496/source571489e3a6fbb6366cd89df4a5451032dfa086ef nativeRC PASS:377metalcomponents/378nets includingbody,1674devices/4774terminals,3100metalreferences+162ports=3262probes. Actual114815R76347C; nativeR topology/value multiset and complete collapsedC conserved,142884matrix entries. All13real rawcorruptions rejected. Actual8655shortwarnings belong to samegeometryconductors; nooriginalnode deletions/noidealaliasR inserted. BodyR/RFdistribution/fullPEX qualifications remainfalse. Exactfullsummary/parts andnativeaudit controls in docs/evidence/tx-tree32-budget-extraction-pass-20261017.json.
+
+New cloud_tx_tree32_composition.py restores this exact archive and binds all1674native devices to fullparentRC. Preserves sixoutputcorruptioncontrols, independentresistor-component ownership recovery andactualfinalHBTbase probes; fullnativeC/R copies retained. Newworkflow tx-tree32-budget-composition-cloud.yml. This is an electricalmodel of the REJECTEDhigh8 candidate, not reclassification as acceptedPHY. Later sizing/layoutchanges require own freshphysicalRC. Lowerloading candidates38997777137 remain live; mappedboot38994926932 andPLL38982797234 live. No localfiles; goalOPEN.
+
+---
+
 ## Active cloud handles after physical pass and electrical rejection (2026-10-17)
 
 New lower-loading study run38997777137, source32e08c8699bfe917484590837ac5e1e944192da3, workflowtx-tree32-loadmatch-cloud.yml. Latest native jobs: [{"id": 117294011910, "name": "controls", "status": "completed", "conclusion": "success"}, {"id": 117294073719, "name": "native-full32 (budget_high2, swap_leaf_select)", "status": "in_progress", "conclusion": null}, {"id": 117294073731, "name": "native-full32 (budget_all1, none)", "status": "in_progress", "conclusion": null}, {"id": 117294073742, "name": "native-full32 (budget_high2, none)", "status": "in_progress", "conclusion": null}, {"id": 117294073764, "name": "native-full32 (budget_all1, swap_leaf_select)", "status": "in_progress", "conclusion": null}]. Original bits,34ns256bits,604HBT512MOS gates unchanged. Wait for exact results; no assumed improvement. Prior full32high8 electrical study38996028457 completed and was REJECTED despite separately passing native physical layout; both records preserved.
