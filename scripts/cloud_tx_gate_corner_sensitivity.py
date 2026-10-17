@@ -105,12 +105,12 @@ def corner_contract(deck,contract,nominal,base,name):
 
 def main():
     global OUT
-    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);parser.add_argument('--condition',choices=('hot_low','cold_high'),required=True);parser.add_argument('--gate-length',choices=('6','9'),required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(SOURCES),required=True);parser.add_argument('--condition',choices=('nominal','hot_low','cold_high'),required=True);parser.add_argument('--gate-length',choices=('6','9'),required=True);args=parser.parse_args()
     OUT=ROOT/('hw/soc/out/cloud-tx-gate-corner-sensitivity-'+args.variant+'-'+args.condition+'-g'+args.gate_length+'u');SOURCE=SOURCES[args.variant];reports.OUT=OUT
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],mode='wire',variant=args.variant,condition_name=args.condition,source=SOURCE,full_pvt_qualified=False,wire_rc_corner='nominal_geometry',serial_phy_complete=False,qualified_timing=False,mainchip_integrated=False,qualified_pex=False,component_screen_passed=False,
         clock_variant='l5p7',clock_candidate_matches_geometry=True,clock_wire_rc_is_fresh_candidate_extraction=True,clock_physical_model_used=True,matched_driver_physical_model_used=False,driver_candidate_matches_geometry=False,physically_realized=False,gate_length_um=args.gate_length,full_combined_physical_acceptance=False,
-        scope='SCHEMATIC SENSITIVITY: only native XD85 gate damping length12um to6um or9um in each raw100 driver; old260R295C wires retained and do not match new geometry. Actual162-device routed core and physical5p7clock unchanged. Full34ns/256bits/672MOS/62HBT/original phases, gates and zeroOP unchanged. External clock modulation, supplies, driver-core-clock connections and TX/bias elements not all physically integrated. Two transistor/temperature/supply corners with nominal geometry wire RC; no correlated RC-corner, complete PVT/32:1/four-lane/fullPHY/mainchip acceptance.')
+        scope='SCHEMATIC SENSITIVITY: only native XD85 gate damping length12um to6um or9um in each raw100 driver; old260R295C wires retained and do not match new geometry. Actual162-device routed core and physical5p7clock unchanged. Full34ns/256bits/672MOS/62HBT/original phases, gates and zeroOP unchanged. External clock modulation, supplies, driver-core-clock connections and TX/bias elements not all physically integrated. Nominal or explicit transistor/temperature/supply corner with nominal geometry wire RC; no correlated RC-corner, complete PVT/32:1/four-lane/fullPHY/mainchip acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n')
     save();run=OUT/'native';run.mkdir()
     try:
@@ -159,8 +159,8 @@ def main():
         nominal,nominal_contract=tree.build(inputs,'nominal',clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=4,clock_reference='stiff65',assembled_core=core,interface_probes=probes,solver_profile=PROFILE)
         result['corner_contract']=corner_contract(original,contract,nominal,nominal_contract,args.condition)
         faults=[]
-        mutations=[('nominal_temperature',original.replace('.temp '+str(contract['condition']['temperature_c']),'.temp 27',1)),
-                   ('nominal_hbt',original.replace(' '+contract['condition']['hbt']+'\n',' hbt_typ\n',1)),
+        mutations=[('wrong_temperature',original.replace('.temp '+str(contract['condition']['temperature_c'])+'\n','.temp '+('125' if contract['condition']['temperature_c']==27 else '27')+'\n',1)),
+                   ('wrong_hbt',original.replace(' '+contract['condition']['hbt']+'\n',(' hbt_wcs\n' if contract['condition']['hbt']=='hbt_typ' else ' hbt_typ\n'),1)),
                    ('shortened_capture',re.sub(r'(?m)^(tran \S+) \S+',r'\1 1e-8',original,count=1)),
                    ('removed_input',original.replace('Vd0p d0p0 0 ','Vmissing d0p0 0 ',1))]
         for name,bad in mutations:

@@ -1,3 +1,13 @@
+## Gate6 cold sensitivity passed; nominal verification queued by new workflow (2026-10-17)
+
+Cloud-only; workspace empty. Previous goal turn was PROGRESS. Cold_high gate6 job117257377816 of38985964196 completed native0/no diagnostics and all original electrical gates passed. Summary649077541 SHAb46d1448c9044b3cb1d60dffc92e6873fe51a689d18fac20ac85902dcd277445; parts649077619 SHA78d0a975c55fce5e03307df57e9cc144a2ffe1a6cb62199e819562d8afda5330. All62HBT672MOS pass; all768output samples pass minimum265.043mV; CMOS301.432mV/final240.032mV. The original physical gate12 corner failure remains preserved. Candidate changes only gate resistor length12->6um with OLD wires; it is NOT matched to new GDS or fresh extraction.
+
+New workflow tx-gate-nominal-sensitivity-cloud.yml runs nominal6 ONLY, same producer cloud_tx_gate_corner_sensitivity.py. Condition support now includes nominal; actual wrong-temperature and wrong-HBT controls select a distinct condition so they cannot be no-ops at nominal. Full34ns/256bits/allphases/62HBT672MOS/zeroOP and source binding remain unchanged. Find exact run from this commit's workflow; do not dispatch a duplicate. Existing hot6/hot9/cold9, thermal clock two corners, original1usPLL38982797234, Ethernetroute38978702458 and packet-enabled CORRPREboot38984849452 remain live. No healthy jobs restarted.
+
+Review thermal and gate hypotheses separately. A combined candidate is not yet measured. Main physical entrypoint still hardcodes SYNPRE1 and does not record PCIe profile; CORRPRE adoption requires a configuration-correct route flow and MBIST verification. No such integration is claimed from link-down boot or standalone RF results. FullPHY/mainchip/setuphold remain OPEN. Evidence docs/evidence/tx-cold-gate6-pass-nominal-start-20261017.json.
+
+---
+
 ## Cold native roles verified; separate fixed thermal clock hypothesis queued (2026-10-17)
 
 Cloud-only; workspace empty. This turn is PROGRESS: cold original-wave diagnosis passed, actual devices mapped to native topology, fixed thermal clock circuit hypothesis dispatched. Full target remains OPEN.

@@ -1,0 +1,154 @@
+{
+  "status": "COLD_GATE6_SENSITIVITY_PASSED_NOMINAL_QUALIFICATION_REQUESTED_NOT_PHYSICAL_ACCEPTANCE",
+  "source_run": 38985964196,
+  "job": 117257377816,
+  "source_head": "fcf721da573ba667928ac1f11fed732d01325b69",
+  "summary": {
+    "asset": 649077541,
+    "sha256": "b46d1448c9044b3cb1d60dffc92e6873fe51a689d18fac20ac85902dcd277445"
+  },
+  "parts": {
+    "asset": 649077619,
+    "sha256": "78d0a975c55fce5e03307df57e9cc144a2ffe1a6cb62199e819562d8afda5330"
+  },
+  "condition": {
+    "temperature_c": -40,
+    "supply_scale": 1.05,
+    "core_scale": 1.05,
+    "hbt": "hbt_bcs",
+    "resistor": "res_bcs",
+    "lv_corner": "mos_ff",
+    "hv_corner": "mos_ff",
+    "step_ps": 0.5
+  },
+  "gate_sensitivity": {
+    "instance": "XD85",
+    "original": [
+      "XD85",
+      "w00155",
+      "w00156",
+      "BULK",
+      "rppd",
+      "w=2.0u",
+      "l=12.0u",
+      "ps=0.0u",
+      "b=0",
+      "m=1",
+      "sw_et=1"
+    ],
+    "candidate": [
+      "XD85",
+      "w00155",
+      "w00156",
+      "BULK",
+      "rppd",
+      "w=2.0u",
+      "l=6u",
+      "ps=0.0u",
+      "b=0",
+      "m=1",
+      "sw_et=1"
+    ],
+    "controls": [
+      {
+        "fault": "wrong_gate_terminal",
+        "rejected": true,
+        "reason": "Undeclared device, wire, boundary or terminal change"
+      },
+      {
+        "fault": "wrong_length",
+        "rejected": true,
+        "reason": "Undeclared device, wire, boundary or terminal change"
+      },
+      {
+        "fault": "changed_wire",
+        "rejected": true,
+        "reason": "Undeclared device, wire, boundary or terminal change"
+      },
+      {
+        "fault": "changed_MOS",
+        "rejected": true,
+        "reason": "Undeclared device, wire, boundary or terminal change"
+      }
+    ],
+    "original_model_sha256": "6e77bfdac07cd973a37b7aca558c0c4aeea64ba76b3d5cb2486562df80ebaa3b",
+    "candidate_model_sha256": "c8666a283c3731bf226660026991a01cd6306cbdad47a63bec0915c5f9161de7",
+    "physically_realized": false,
+    "old_wire_rc_retained": true,
+    "all_other99devices_and555wires_unchanged": true,
+    "scope": "Explicit resistor geometry hypothesis; new GDS/LVS/extraction and full-corner simulation required before physical adoption."
+  },
+  "signals": {
+    "samples": 768,
+    "minimum_margin_v": 0.26504279404026065,
+    "wrong_sign_samples": 0,
+    "below_100mv_samples": 0,
+    "phases": {
+      "0.3": {
+        "samples": 256,
+        "minimum_margin_v": 0.2661388977083117,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0
+      },
+      "0.5": {
+        "samples": 256,
+        "minimum_margin_v": 0.2659345523178631,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0
+      },
+      "0.7": {
+        "samples": 256,
+        "minimum_margin_v": 0.26504279404026065,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0
+      }
+    },
+    "passed": true,
+    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+    "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+  },
+  "interfaces": {
+    "cmos": {
+      "samples": 768,
+      "minimum_margin_v": 0.3014318687067854,
+      "wrong_sign_samples": 0,
+      "below_150mv_samples": 0,
+      "common_mode_range_v": [
+        2.0144994990122473,
+        2.0227682074525615
+      ],
+      "passed": true
+    },
+    "final": {
+      "samples": 6912,
+      "minimum_margin_v": 0.2400324886991776,
+      "wrong_sign_samples": 0,
+      "below_150mv_samples": 0,
+      "common_mode_range_v": [
+        1.9872315227426613,
+        2.023932408051417
+      ],
+      "passed": true
+    }
+  },
+  "failed_hbts": {},
+  "failed_mos": {},
+  "worst_hbt_vce": 0.429786299501443,
+  "mos_max_voltage": 2.3866121524533277,
+  "capture": {
+    "header_rows": 78812,
+    "columns": 1408,
+    "header_bytes": 44213,
+    "raw_bytes": 887782581,
+    "raw_sha256": "fccad303cbd04961620bd2d5ccecb0e76e9f328ab3579fb6ae024be39f8532c8",
+    "start_s": 0.0,
+    "end_s": 3.4e-08,
+    "max_step_s": 5.00000000000567e-13,
+    "complete_unmodified_rows": true,
+    "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+  },
+  "physically_realized": false,
+  "full_phy_complete": false,
+  "mainchip_timing_closed": false,
+  "next_step": "Evaluate hot6/hot9/cold9 already running. New nominal6-only workflow tests identical fixed candidate with all original device/phase/zeroOP gates. Do not rerun healthy corner/PLL/route/boot jobs. Any adoption needs actual GDS, native DRC/LVS and fresh terminal wireRC, then unchanged loaded electrical review."
+}
