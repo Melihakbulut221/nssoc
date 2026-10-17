@@ -1,3 +1,15 @@
+## Cloud-only checkpoint: bank proofs, preserved ECO equations and final-stage HBT localization (2026-10-17)
+
+Workspace /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. No local checkout, simulation, artifact or scratch created; changes use GitHub API in RAM. Continue all engineering on hosted runners; retain outputs in GitHub Releases.
+
+All six bank-read proof jobs39013401464 completed SUCCESS. Protocol39013401471 reached final replay/credit mutations with22passes and1fixture failure: old replay assignment no longer exists. Fixture now corrupts actual replay_bank_byte[send_slot] output by XOR sending_replay, preserving real full_queue scoreboard and mandatory actual simulation failure. Require successor native workflow pass before new fullchip synthesis/boot; no skipped test or weakened gate.
+
+Saved fullchip ECO proof39014414337 PASS within opaque macro/interface equation scope:96655retainedcells,17828->33523positivebuffers,46equivalent sizes,zero unobserved output changes. NOT timing closure, SRAM interiors, physical connectivity or later bankedRTL proof. Original failed parser evidence retained.
+
+Native geometry diagnosis39014569166 binds all four failedHBTs xtree.xd0109..xd0112 to final macro f (inputs a/b,clock s,reference mr); actual source-native IDs/geometry and unchanged0.40V rejection saved. Next repair final-stage clock/headroom using actual circuit/layout, rerun native physical/electrical gates. Do not reduce VCE bound or infer acceptance from correct bits.
+
+Preserve live wire39012081694/39011282078/39004595306 and PLL39007535633; query current status before any action. Exact receipts: docs/cloud-evidence/cloud-only-proof-and-headroom-checkpoint-20261017.json. FullPHY/routing/finaltiming remains OPEN.
+
 ## Native headroom failure localization launched (2026-10-17)
 
 New tx-clock-headroom-diagnosis-cloud restores exact1674device composition and geometry; binds failed xtree.xd0109..xd0112 through native_id, actual PCell bbox and unique parent macro ownership. Preserve all source hashes and physical plan role before choosing circuit/layout change. No new waveform or changed bound. Separate saved-chip equation proof successor uses explicit macro-interface FUNCTIONAL parser branch; old parser failure retained. RTL bank proofs/nativeprotocol and all live PHY/PLL/wire jobs preserved. Cloud-only/fullgoalOPEN.

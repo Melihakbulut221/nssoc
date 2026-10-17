@@ -60,8 +60,8 @@ from cocotb_results import count_results  # noqa: E402
         ("soc_pcie_replay_tx", "count<=count-ack_delta", "count<=count", "full_queue"),
         (
             "soc_pcie_replay_tx",
-            "assign tx_data_o=bytes[send_slot*MAX_BYTES+read_pos];",
-            "assign tx_data_o=bytes[send_slot*MAX_BYTES+read_pos] ^ {7'b0,sending_replay};",
+            "assign tx_data_o=replay_bank_byte[send_slot];",
+            "assign tx_data_o=replay_bank_byte[send_slot] ^ {7'b0,sending_replay};",
             "full_queue",
         ),
         (
