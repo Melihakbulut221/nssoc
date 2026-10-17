@@ -1,3 +1,13 @@
+## Cloud checkpoint: XOR loaded failure closed; next driver candidate running
+
+CDRv4fullwire39049659259/source332c9260 passed nominal/hot/cold unchanged primitive gates and actualswappedoutput. Margins142.357336/150.959468/130.574477mV,768correct each,zero below100mV,all19HBTbounds.19nativeOFFreadbacks,zero-sourceOPzero,no numericaldiagnostics. Fresh54device/4020R2641Cmodel b201876a...; physical/RC/composition chain unchanged. Receipt docs/evidence/cdr-v4-fullwire-pass-20261017.json and docs/cdr-shunt-v4-loaded-verification-20261017.md. This closes the specific XOR margin/headroom failure, NOT CDR/PHY. Next: native sampler input/output common-mode and load integration; old external-clock/node-set sampler evidence is insufficient. Preserve sample identity and original waveform/device checks before constructing full sampled phase detector/V-I loop.
+
+New TX drive candidate run39050192928/source8fcacc39 runs original full32 transistor schematic nominal/hot/cold plusactualdeepestselectorfault. Only30pre-cell output series/shunt geometries change; HBTs,719treeemitters,clocksourceandbit/devicegatesunchanged. SeriesL/Wquarter; shuntL/Wapproximately20/47 chosen from an explicitly approximate constant-current divider equation. Lowseries W4L3.6/shuntW1L12.77; highseriesW6L1.8/shuntW1.5L6.55. No previousRC reused. Read actual results before proposing fresh layout; schematic pass alone is not electrical physical acceptance. See docs/tx-output-impedance-candidate-20261017.md.
+
+Regionalroute39045601192, nativeboot39041981816 -> placement39042752404, full1us halfstepPLL39043210978 last verified live. Remain cloud-only; local workspace stays empty. FullserialPHY/mainchiproute/finalsetuphold OPEN.
+
+---
+
 ## Cloud checkpoint: fresh shunt-v4 physical/RC chain passed; loaded cases start
 
 Source496467a4/run39049460903 composed the fresh54native devices with all4020R/2641C and passed six real corruption controls. Wire model SHA256b201876a3b0988f746822213f51c120e09f9837c0f26ddb1a7a591bd57dfdc23. Physical chain: core39047111778 -> parent39048145296 -> nativeplanes39048840245 -> RC39049134526 -> composition39049460903, all passed in their stated scope. Receipts under docs/evidence/cdr-v4-*. New cdr-v4-wire-cloud uses the unchanged frozen d30ebc0b native adapter/base3ec870fa, original34ns/256symbols/threephases/100mV/19HBT headroom gates for nominal/hot/cold plus actual swapped-output control. Its result is not yet known. v2/v3 rejections remain preserved; do not mark the CDR or PHY complete.
