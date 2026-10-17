@@ -1,3 +1,9 @@
+## Headroom-trim Nx1/Nx3 physical PASS; actual31macro parent assembly (2026-10-17)
+
+Both39007846049 macros passed560DRCzero/deep+flat54deviceLVS/fiveactualfaults. Exact native trimscircuitSHA Nx1 6b71f482a0dc084c9e9d13a466cec2940b17cfced6ceb17f76475565fa47043b, Nx3 c718fc426a04a011aaa79f378c65ee9d723bef5619b8ea9133874ac3f9055621. New inputreceipts pin actualGDS/LEF/reference and archives. New budget_high3_trim assembly physicallyplaces28Nx1trim+2Nx3trim+unchangedfinal77,1674native devices/719emitters/162ports. Childdrawing exact and allnativeparentfaultgates retained. Requires fresh extraction/composition/waveforms; clockstiff625physical is separate livejob.
+
+Mainchip39007378877 CTS completed actual124217cells/20SRAM. Detailed metricreview found huge inherited preCTS slow/typ setupvalues and CTS fastWNS-93.0981ns/hold-0.601382ns; stageSUCCESS is NOT timingpass. Inspect nativeCTS and preCTS paths before choosingrepair; exact archive267678211bytes/SHA dc7576bf8d37466f64fffedf578bb926a04936b982eec4f2ea64069665c87442. Allcloud/goalOPEN.
+
 ## Actual6device stiff625 clock reference/feed physical candidate launched (2026-10-17)
 
 New tx-clock-headroom-physical-cloud generates l6p25 offset6.25um/w4 with unchanged feed14.5um/w4,HBTNx1 and3finitebodycontacts. Generator independently matches every core record to native passed trim625 source SHA597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca plus originalfeed. Same560nativeDRC/deep+flat6deviceLVS/sixactualfault gates; no resistance scaling of oldRC. Next nativeanchors/binding/intrinsic/wires/RC/composition and loadedactual32tree waveform are required. Txpretrimphysical39007846049 alreadylive bothnx1/nx3; retainhandles. PLL39007535633/mainchip39007378877/originalwire39004595306 live atlastverifiedpoll. Cloudonly, goalOPEN.

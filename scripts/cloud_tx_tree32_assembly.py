@@ -81,9 +81,9 @@ def generate():
     L=pya.Layout();L.dbu=.001;top=L.create_cell(TOP)
     protected={str(Path(__file__).resolve()):sha(Path(__file__).resolve()),str(OUT/'plan.json'):sha(OUT/'plan.json'),str(lyp):sha(lyp)}
     children={}
-    pre_top='nssoc_tx_mux2_cascade158_nx3_layout_v1'if plan['variant']=='budget_high3'else'nssoc_tx_mux2_cascade158_layout_v1'
+    pre_top='nssoc_tx_mux2_cascade158_nx3_trim_layout_v1'if plan['variant']=='budget_high3_trim'else'nssoc_tx_mux2_cascade158_nx3_layout_v1'if plan['variant']=='budget_high3'else'nssoc_tx_mux2_cascade158_layout_v1'
     child_types=[('pre',pre_top),('final','nssoc_tx_mux2_final_drive_v10_layout_v1')]
-    if plan['variant']in ('budget_high8','budget_high3'):child_types.append(('pre_low','nssoc_tx_mux2_cascade158_nx1_layout_v1'))
+    if plan['variant']in ('budget_high8','budget_high3','budget_high3_trim'):child_types.append(('pre_low','nssoc_tx_mux2_cascade158_nx1_trim_layout_v1'if plan['variant']=='budget_high3_trim'else'nssoc_tx_mux2_cascade158_nx1_layout_v1'))
     for kind,childname in child_types:
         directory=OUT/'inputs'/kind/'layout';data=json.loads((directory/'result.json').read_text())
         for name,digest in data['outputs'].items():assert sha(directory/name)==digest;protected[str(directory/name)]=digest
@@ -168,9 +168,9 @@ def generate():
 def main():
     global OUT,TOP
     p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
-    p.add_argument('--variant',choices=('baseline','budget_high8','budget_high3'),default='baseline');a=p.parse_args()
-    if a.variant in ('budget_high8','budget_high3'):
-        OUT=ROOT/('hw/soc/out/cloud-tx-tree32-'+('budget'if a.variant=='budget_high8'else'high3')+'-assembly')
+    p.add_argument('--variant',choices=('baseline','budget_high8','budget_high3','budget_high3_trim'),default='baseline');a=p.parse_args()
+    if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
+        OUT=ROOT/('hw/soc/out/cloud-tx-tree32-'+({'budget_high8':'budget','budget_high3':'high3','budget_high3_trim':'headroom'}[a.variant])+'-assembly')
         TOP='nssoc_tx_tree32_'+a.variant+'_core_v1'
     if a.generate:generate();return
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
@@ -180,7 +180,7 @@ def main():
         if code:print((OUT/(label+'.log')).read_text(errors='replace')[-12000:],flush=True);raise RuntimeError((label,code))
     try:
         plan=topology();plan['variant']=a.variant
-        if a.variant in ('budget_high8','budget_high3'):
+        if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
             for n in plan['nodes']:
                 if n['kind']=='pre' and n['stride']>=4:n['kind']='pre_low'
             assert sum(n['kind']=='pre_low'for n in plan['nodes'])==28
@@ -190,12 +190,12 @@ def main():
         fetch(source['receipt']['url'],source['receipt']['sha256'],packed)
         with tarfile.open(packed)as t:t.extractall(ROOT,filter='data')
         packed.unlink();manifest=json.loads((ROOT/'manifest.json').read_text());assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())
-        if a.variant in ('budget_high8','budget_high3'):
-            low_spec=ROOT/'docs/evidence/tx-pre-nx1-physical-input-20261017.json'
+        if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
+            low_spec=ROOT/('docs/evidence/tx-pre-nx1-headroom-physical-input-20261017.json'if a.variant=='budget_high3_trim'else'docs/evidence/tx-pre-nx1-physical-input-20261017.json')
             spec['children']['pre_low']=json.loads(low_spec.read_text())
             result['scaled_cell_receipt_sha256']=sha(low_spec)
-            if a.variant=='budget_high3':
-                high_spec=ROOT/'docs/evidence/tx-pre-nx3-physical-input-20261017.json'
+            if a.variant in ('budget_high3','budget_high3_trim'):
+                high_spec=ROOT/('docs/evidence/tx-pre-nx3-headroom-physical-input-20261017.json'if a.variant=='budget_high3_trim'else'docs/evidence/tx-pre-nx3-physical-input-20261017.json')
                 spec['children']['pre']=json.loads(high_spec.read_text())
                 result['high_cell_receipt_sha256']=sha(high_spec)
         for kind,row in spec['children'].items():
@@ -203,17 +203,17 @@ def main():
             with tarfile.open(packed)as t:
                 prefix=row.get('archive_prefix','hw/soc/out/cloud-tx-layout-repair/');prior=json.load(t.extractfile(prefix+'result.json'));assert prior['status']=='PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
                 assert prior['variant']==row['variant']and prior['circuit_profile']==row['circuit_profile']and prior['boundary_pin_policy']=='nearest_pair_tight'
-                if kind=='pre'and a.variant=='budget_high3':
+                if kind=='pre'and a.variant in ('budget_high3','budget_high3_trim'):
                     assert prior['prestage_sizing']['nx']==3 and prior['prestage_sizing']['emitters']==55
-                    assert prior['prestage_sizing']['candidate_sha256']=='3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d'
-                    assert prior['prestage_sizing']['native_schematic_evidence_run']==38999900875
+                    assert prior['prestage_sizing']['candidate_sha256']==('c718fc426a04a011aaa79f378c65ee9d723bef5619b8ea9133874ac3f9055621'if a.variant=='budget_high3_trim'else'3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d')
+                    assert prior['prestage_sizing']['native_schematic_evidence_run']==(39005251402 if a.variant=='budget_high3_trim'else 38999900875)
                     assert prior['physical']['status']=='PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS'
                     assert prior['physical']['steps']['drc']['measurement']['category_count']==560
                     assert prior['physical']['steps']['drc']['measurement']['markers']==0
                     assert all(prior['physical']['steps'][k]['status']=='REJECTED_EXPECTED_FAULT'for k in ('wrong_finger_count','missing_hbt','q_open','rail_short','offgrid'))
                 if kind=='pre_low':
                     assert prior['prestage_sizing']['nx']==1 and prior['prestage_sizing']['emitters']==19
-                    assert prior['prestage_sizing']['candidate_sha256']=='af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd'
+                    assert prior['prestage_sizing']['candidate_sha256']==('6b71f482a0dc084c9e9d13a466cec2940b17cfced6ceb17f76475565fa47043b'if a.variant=='budget_high3_trim'else'af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd')
                     assert prior['physical']['status']=='PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS'
                     assert prior['physical']['steps']['drc']['measurement']['category_count']==560
                     assert not prior['physical']['steps']['drc']['measurement']['categories']
@@ -224,7 +224,7 @@ def main():
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate','--variant',a.variant],'generate')
         generated=json.loads((OUT/'layout/result.json').read_text());result['layout']=generated
         method=(OUT/'inputs/pre/verify-physical.py').read_text()
-        child_top='nssoc_tx_mux2_cascade158_nx3_layout_v1'if a.variant=='budget_high3'else'nssoc_tx_mux2_cascade158_layout_v1'
+        child_top='nssoc_tx_mux2_cascade158_nx3_trim_layout_v1'if a.variant=='budget_high3_trim'else'nssoc_tx_mux2_cascade158_nx3_layout_v1'if a.variant=='budget_high3'else'nssoc_tx_mux2_cascade158_layout_v1'
         edits=[('TOP = "'+child_top+'"','TOP = '+repr(TOP)),("PORTS = ['ap','an','bp','bn','sp','sn','op','on','avdd','avss','sub','iref']",'PORTS = '+repr(plan['ports'])),('"QD0 "','"Qf_D0 "'),('"QD1 "','"Qf_D1 "'),('!= 54','!= 1674'),('TX_MUX54','TX_TREE1674')]
         for before,after in edits:assert method.count(before)==1;method=method.replace(before,after)
         old=next(l for l in method.splitlines()if 'li=L.layer(134,0);before=pya.Region'in l);cut=generated['signal_routes'][0]['fault_cut_um']
@@ -240,11 +240,11 @@ def main():
         reference=(OUT/'layout/schematic.cir').read_text()
         hbts=[l for l in reference.splitlines()if l.startswith('Q')]
         emitters=sum(int(re.search(r'\bNx=(\d+)\b',l)[1])for l in hbts)
-        expected_emitters={'baseline':4427,'budget_high8':899,'budget_high3':719}[a.variant]
+        expected_emitters={'baseline':4427,'budget_high8':899,'budget_high3':719,'budget_high3_trim':719}[a.variant]
         assert len(hbts)==589 and emitters==expected_emitters
-        if a.variant in ('budget_high8','budget_high3'):
+        if a.variant in ('budget_high8','budget_high3','budget_high3_trim'):
             for n in plan['nodes']:
-                expected={'pre_low':19,'pre':55 if a.variant=='budget_high3'else 145,'final':77}[n['kind']]
+                expected={'pre_low':19,'pre':55 if a.variant in ('budget_high3','budget_high3_trim')else 145,'final':77}[n['kind']]
                 actual=sum(int(re.search(r'\bNx=(\d+)\b',l)[1])for l in hbts if l.startswith('Q'+n['label']+'_'))
                 assert actual==expected,(n['label'],actual,expected)
         result['emitter_budget']=dict(reference_hbts=589,reference_emitters=emitters,
