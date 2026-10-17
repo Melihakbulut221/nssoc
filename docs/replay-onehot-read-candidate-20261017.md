@@ -1,0 +1,9 @@
+# Replay read-path candidate from actual native STA
+
+Native path extraction39057107220 on the exact CRC-repaired netlist reports worst slow setup -7.853238ns from retry.read_pos[5] to pcie_tx_data_o[4]. The binary address traverses decoding, substantial fanout buffering and memory selection. The PCIe4ns clock and external output requirement remain unchanged.
+
+scripts/cloud_replay_onehot_candidate.py builds an unadopted candidate from canonical replay SHA1a15c0b9d6cfdfbf5ebed9a61c52901e126ca826008d167ff96bea4218a8f4dc. A registered one-hot cursor follows the original binary cursor: reset/start selects bit0; a successful nonfinal transmit rotates by one, including binary wrap; stalls, link loss and all other states hold exactly as the binary cursor does. Each byte selection is an AND/reduction over that register, retaining flat cross-bank addresses and undefined out-of-array behavior. There is no added transaction latency, changed throughput or constraint relaxation.
+
+GitHub checks DEPTH/MAX_BYTES=(2,18),(3,38),(4,38). Arbitrary memory cuts cover every defined slot/address, including cross-bank reads, with actual inverted-bit and wrong-slot faults. Full sequential equivalence includes a golden observation wire for onehot=(1<<read_pos); this relation must itself be proven, not assumed. Full original port scoreboards run on baseline and candidate; a stuck-cursor mutation must fail actual packet checks. All logs and failure reports are retained. The canonical RTL remains unchanged while these tests run.
+
+If the complete proof passes, rebuild source-bound synthesis/placement/CTS and evaluate the same native timing constraints before adoption as a timing improvement. The input pcie_link_up_i paths and final routing/hold remain additional work; this candidate cannot establish final timing closure by itself.
