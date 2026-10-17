@@ -94,7 +94,7 @@ def main():
             assert sorted(r['nx']for r in rows.values())==[1]+[expected]*18
             stages[n['label']]=dict(stride=n['stride'],emitters=sum(r['nx']for r in rows.values()))
         final=[v for k,v in contract['hbt'].items()if k.startswith('xmux.')];assert len(final)==19 and sum(r['nx']for r in final)==77
-        tree_emitters=sum(r['emitters']for r in stages.values())+77;assert tree_emitters==(4427 if args.variant=='baseline'else755)
+        tree_emitters=sum(r['emitters']for r in stages.values())+77;assert tree_emitters==(4427 if args.variant=='baseline'else 755)
         result['budget']=dict(stages=stages,tree_emitters=tree_emitters,four_lane_tree_only=4*tree_emitters,explicit_lane_hbt_emitters=sum(r['nx']for r in contract['hbt'].values()),remaining_chip_blocks_included=False,whole_chip_emitter_budget_passed=False)
         (native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
         protected=[Path(__file__),SOURCE,FINAL,lowpath,highpath,tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES['stiff65'],tree.CLOCK_FEEDS['stiff65'],ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_stream.py',ROOT/'scripts/cloud_tx_data_driver.py',paths['patched'],*[p for p in inputs.rglob('*')if p.is_file()],native/'bench.cir',native/'contract.json',native/'spinit']
