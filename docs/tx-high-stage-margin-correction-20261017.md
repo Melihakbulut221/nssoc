@@ -1,0 +1,7 @@
+# TX high-stage headroom: second measured correction
+
+Run 39053691750, source 33c2b6709b3912226f36d8fe697dbbb10f50a4c4, completed with a genuine hot rejection. Nominal and cold passed every native engineering gate; the actual selector fault was detected. Raising the two high stages' shunt lengths from 6.55 to 7.0 um improved worst hot VCE from 0.388452 to 0.397976 V and reduced failing HBTs from 24 to 15. It did not pass the fixed 0.4 V bound. All hot serial samples still passed, minimum 229.995 mV. Cold minimum HBT VCE is 0.431217 V; final interface common mode is 2.02621–2.04916 V; maximum HBT VBE is 0.981449 V. The complete four reports are retained in tx-headroom-v2-rejection-20261017.json.
+
+The next candidate raises only XFPR/XFNR length in the two Nx3 high stages from 7.0 to 7.5 um, width 1.5 um unchanged. All 28 low stages, HBTs, series resistors, original clock/data, 719 tree emitters and 604 HBT/512 MOS checks remain unchanged. The measured response motivates another bounded geometry change; it does not prove the resulting common mode or voltage margins. Do not round a near-limit failure up or reuse the old physical RC. All three corners and the actual selector fault must rerun before generating new layout/extraction evidence.
+
+Native controller adaptations remain explicit and hash-pinned. Four real geometry/terminal mutations must be rejected. The new result is not known until tx-tree32-margin-cloud finishes on GitHub Actions. Full PHY remains open.
