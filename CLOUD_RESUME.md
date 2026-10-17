@@ -1,3 +1,9 @@
+## Fixed headroom candidate passes three native corners; physical launch fix (2026-10-17)
+
+39005251402 actual fixedgeometry budget_high3_trim passes nominal/hot_low/cold_high complete34ns electrical screen with original limits, and actual deepest leaf selector fault is rejected. Receipt tx-tree32-headroom-fixed-pvt-pass-20261017.json. Requires fresh physical geometry for both Nx1/Nx3 feed resistor trim and clock-reference trim625, then parent assembly/RC/wire/PVT; old untrimmed GDS is not this candidate.
+
+CORRPRE+PCIe+MBIST original boot artifact permanently preserved by39007090307 before physical failure. Actual28checks/system+bothEthernetMBIST successful; receipt corrpre-pcie-mbist-native-boot-pass-20261017.json. Physical step failed before CAD because --force-run-dir must exist. Added mkdir only; original failed archive retained. New push reruns preparation+physical stage, NOT long boot simulation. PLL C8fullcompose39007233693 remains live, preserve it. Allwork cloudonly; workspace empty, goal OPEN.
+
 ## Actual C8 full845 model composition launched (2026-10-17)
 
 Fresh parentRC39006326123 passed98R242C/all83planes/14divider+7pumpplanes/8rawfaults. New pll-c8-v2-full-compose-cloud restores latest verified845model38981800336, replaces only actual30device84R155C pump and parent98R242C, freezes815otherdevices and both corrected dividers, checks full845graph against new nativeLVS physicalparent and all graph/source faults. Requires inspection before original1us acquisition; no acceptance claim. Physical CORRPRE+PCIe+MBIST follow-up39007090307 is live; do not duplicate it. Cloudonly.

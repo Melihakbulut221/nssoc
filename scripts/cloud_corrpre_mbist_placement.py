@@ -42,6 +42,7 @@ def main():
   command.append(str(prepared/'config.json'))
   protected={str(p):sha(p)for p in [Path(__file__),flow,ROOT/'hw/soc/pnr/interface_flow.py',ROOT/'scripts/prepare_pcie_mainchip_pnr.py',ROOT/'scripts/pcie_soc_constraints.py',ROOT/'scripts/pcie_apb_cdc_constraints.py',prepared/'config.json',prepared/'physical.sdc',prepared/'state.json',boot/'synthesis/soc_top.netlist.v',boot/'synthesis/soc_top.mapped.json']}
   r.update(status='RUNNING_NATIVE_PLACEMENT_CTS',boot_source=report,command=command,protected_inputs=protected,app_sha256=sha(app));save();start=time.monotonic()
+  (OUT/'run').mkdir(exist_ok=False)
   with (OUT/'run.log').open('w')as log:code=subprocess.call(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
   r.update(returncode=code,elapsed_s=time.monotonic()-start);save()
   if code:print((OUT/'run.log').read_text(errors='replace')[-18000:],flush=True)
