@@ -1,3 +1,18 @@
+## Cloud-only execution and local cleanup verified
+
+Verified at 2026-10-17T19:27:13.960337+00:00. User instruction: perform all project work in the cloud and leave no project working files locally. This overrides older local-execution instructions. Workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty. No local OpenROAD/Yosys/ngspice/KLayout/Netgen process was running. Top-level project-name checks in /tmp, /var/tmp and ~/.cache found no matching artifacts. No unrelated repository or user documents were deleted. Do not create local checkouts, downloads, CAD outputs, test outputs or scratch files. Use GitHub-hosted execution and remote evidence; API source edits may be constructed in memory.
+
+Verified source HEAD before this checkpoint: 50be4b9e1bd00cd4eec10aebf6feea6eb866751d.
+- TX v5 native39060767622 still in progress; controls and hot_low pass, nominal/cold/fault remain in progress. Fresh physical workflow `tx-balanced-v5-pre-physical-cloud.yml` is committed at50be4b9e1bd00cd4eec10aebf6feea6eb866751d, manual-only and not dispatched. Dispatch only after exact native run succeeds. Adapted generator SHA2ff793a8293b3cf13261abdd430dfce4872cdc83ef4860b9f77dc19dc25e935a. Then fresh parent/RC/full-wire are still required.
+- Actual PD-to-V/I39061446683: syntax, cold_late, hot_late, hot_early and clock_stopped completed successfully; remaining cases running/queued. Do not declare the campaign passed until all cases and evidence are verified.
+- Native boot39059432529 running; placement39059854681 awaits that exact boot; repair39061293959 awaits exact placement. Retain those runs.
+- Manual successor `replay-onehot-logic-cloud.yml` prepared atb60698ca61e2147a2ffe154ddc969e5330fe6034; do not dispatch before exact repair39061293959 succeeds. Nine proof receipts and exact repaired netlist/archive must be revalidated. Not yet dispatched.
+- PLL39043210978 initial stage saved the actual process and continuation117479132555 is running. Initial checkpoint evidence is committed in docs/evidence/pll-c8-half-initial-checkpoint-20261017.json. A saved checkpoint is not completed acquisition; preserve latest capsule and avoid duplicate restarts.
+
+Full serial Gen3 x4 PHY, routed mainchip and final setup/hold remain open. Current cleanup instruction is satisfied for the active workspace; continue technical work in GitHub only. Existing scheduled checks were not changed.
+
+---
+
 ## Immediate resume: real PD-to-V/I candidate and one-hot post-CTS successor
 
 Checked 2026-10-17T19:14:26.170147+00:00. Latest user directive remains ALL CLOUD ONLY. Workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is EMPTY; no local CAD/test/archive/checkout. This turn made concrete design/proof-flow progress. Full serialGen3x4, mainchip route and finalsetuphold remain OPEN. No blocked goal and no completion claim.
