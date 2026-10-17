@@ -1,3 +1,9 @@
+## Physical XOR native composition passed; full-wire waveforms started (2026-10-17)
+
+Correctedcomposition39039272009/sourcebae1e1e8 PASS54native model/terminalbinding+4020R2641C+sixactualcompositioncontrols. Actualmodel xor54-wire.spice SHAe3672050d2d9c547b2f81de306ea7f0157b3e515f40af34b27d98dfbe27fb484, compactSHAa2e7c91bafb520678b0049dd3396b15ca73e6042b1920d4c3c94f0b1c88c80ad. Thinreceipt cdr-xor-composition-pass-20261017.json pins complete1.44MBsummary650629299/parts650629396/fullarchive650629474; fullsummarypreservedinrelease.
+
+New cdr-xor-wire-cloud runs allfour originalnominal/hotlow/coldhigh/actualoutputswap cases with the actualphysicalmodel. Original34ns/256symbols/768samples/.3125ps/all19HBTbounds/zeroOP/OFF/no diagnostics unchanged. ONLY modelportorder/path/hierarchy and truthfulscope/status adaptation; explicitwire_cref=0. NativecontrollerfrozenSHA3ec870...; alladaptations hashed. No waveformpass untilactualresults. Differentinputcommonmodes/idealbias/externaldrivers/substrate/RF/CDRloop remain requiredboundaries. Targetedcriticalpathreview from9fd864d1 live; clocklayerGRT and PLL/TXjobs continue. FullgoalOPEN/allcloud/localempty.
+
 ## Targeted candidate new critical paths (2026-10-17)
 
 New corrpre-targeted-paths-cloud reads allsavedbefore/afterpathreports from proven targeted39036154671 archive, including fast r2rhold148->1 and remaining slowsetup-6.96857ns. Originalbaseline andtinyworstholdregressions preserved; no routed/signoffclaim. Needed tochoose nextactualrepair ratherthanrepeat blindbuffering. XORcomposition correctedcampaign frombae1e1e8 awaitsresults; originalNxselectionfailure retained. Allcloud.
