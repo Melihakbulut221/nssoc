@@ -1,3 +1,13 @@
+## Fresh v3 parent passed; native RC input validation started
+
+Parent39044651966/source7765aa54 passed native560-category DRC with zero markers, deep/flat54-device LVS, actual dp-open/data-short/output-swap rejection. Fresh geometry receipts are in docs/evidence/cdr-v3-parent-physical-pass-20261017.json. The new cdr-v3-rc-inputs workflow checks all22 core/public physical planes and four wrong mappings with native LVS probes, then preserves original extraction methods. RC and loaded waveforms are still required.
+
+Clock200 region inspection39044651924 succeeded. The final96 overflow regions sum to142; the most congested channels include x3096..3103.2um and x2340..2347.2um. Native report layer names are unspecified (`-`); do not infer per-region layer identity from this file. Separate native layer totals remain Metal3=20/Metal4=15/Metal5=106/TopMetal1=1. PCIe replay and Ethernet nets occur in these regions. A further placement change requires actual ODB/macro overlap analysis, not guessed blockages.
+
+No complete serial PHY, global-route success, detailed-route or setup/hold closure is claimed. Cloud-only execution continues; local workspace empty.
+
+---
+
 # Cloud-only continuation: fresh v3 XOR parent and native congestion regions
 
 Core run 39043479500 passed 560 DRC categories with zero markers, deep and flat 54-device LVS, and all five injected physical faults. Its fresh public pin coordinates and bounding box match the previous parent boundary; the new parent controller asserts the exact v3 coordinates before generating any geometry. It restores the new core, preserves every child shape/instance, and repeats native DRC/LVS plus actual open/short/polarity controls. New parent RC and loaded waveforms remain mandatory. No old-v2 RC scaling or waveform reuse.
