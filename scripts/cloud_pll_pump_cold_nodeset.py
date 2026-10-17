@@ -29,7 +29,6 @@ def compare(a,b):
     return dict(maximum_source_current_delta_a=current,maximum_physical_node_delta_v=voltage)
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
-    assert sha(base.__file__)==BASE_SHA
     OUT.mkdir(exist_ok=False);reports.OUT=OUT
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,
        full_phy_accepted=False,qualified_pex=False,acquisition_accepted=False,
@@ -39,6 +38,7 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
+        assert sha(Path(base.__file__))==BASE_SHA
         r['controls']=dict(parser=base.parser_controls(),readback=base.readback_controls())
         url=base.BASE+'cloud-results-39029337682-1-pll-pump-current/pll-pump-current-39029337682-1.summary.json'
         fetch(url,SOURCE_SHA,OUT/'prior-pin.json');pin=json.loads((OUT/'prior-pin.json').read_text())

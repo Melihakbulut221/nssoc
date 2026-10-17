@@ -1,3 +1,13 @@
+## Cloud-only handoff and native diagnostic path fix (2026-10-17)
+
+Local workspace /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. No local checkout, CAD, simulation, tests, downloaded artifact or scratch file; GitHub API orchestration uses memory only. Preserve unrelated directories.
+
+Return64 full metal waveform explicitly dispatched ONCE as 39030593206 at source29aa2927dc3a16822ea8fad4cd0865de1f509623. Prior39030328669 was push controls only; native job skipped by design, not an electrical result. Keep exact four-case source guard and all native waveform acceptance checks.
+
+Banked placement39029282884 completed successfully including native floorplan/placement/CTS and publication. Coordinator39021081392 completed and owns one successor repair39030330882 at source29aa2927. Repair is in progress; do not duplicate. Actual final setup/hold, routing and full serial PHY remain OPEN.
+
+Cold NODESET39030153113 failed before simulation: sha(base.__file__) passed a string to a Path-only helper. Native physical acceptance was not measured. Fix wraps Path(base.__file__) and moves source assertion inside the existing report try/finally so source-check failures preserve an actual report. All physical models, declared independent seeds, points, convergence limits and acceptance criteria unchanged. Original failure log117388821884 and release cloud-results-39030153113-1-pll-pump-cold-nodeset retained. Dispatch corrected study once after commit; inspect actual 24-case results before any convergence claim.
+
 ## Return64 three-condition and actual-fault screens passed; fullwire prepared (2026-10-17)
 
 Return64compact39028091844/source5838ada7 completed allfour cases. Nominal/hotlow/coldhigh original34ns256bits/allthreephases/all604HBT512MOS/zeroOP/604OFF/nodiagnostics PASS, signal minima0.280885284/0.200580434/0.274534855V. Actual deepestselectorfault rejects27samples/9perphase; no device failures. All44actualbinding controls pass. Receipt tx-tree32-return64-screen-pass-20261017.json pins four exact summaryhashes and six ACTIVE method hashes. Compact excludescoremetalRC; no fullPHY acceptance.
