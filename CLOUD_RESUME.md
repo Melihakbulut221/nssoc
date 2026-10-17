@@ -1,3 +1,11 @@
+## Nx1 cell physical pass; real mixed32:1 parent implementation (2026-10-17)
+
+PROGRESS. Run38996604388/source9459550c10a62cc76d8af5f96c874a7e66c29e0a completed actual Nx1 geometry:560DRCcategories zero markers; deep andflat LVS54layout=54reference,oneMatch,noextractiondiagnostics. Wrongfinger,missingHBT,wireopen,railshort,offgrid actual controls rejected. GDS5419c0452693af96e5d2200cb1c8c226872004b11ed00f7d181a26c0fcdaa179, LEF958b044996026fa7cc8dda9d52ca4bb89d3028ff1e845a85e192256258122c5a. Body353.985x592.04um. All full receipts and original physical reports: docs/evidence/tx-pre-nx1-physical-input-20261017.json.
+
+New --variant budget_high8 in cloud_tx_tree32_assembly.py restores that exact new cell28times at strides4/8/16, originalNx8cell twice atstride2, originalfinal once. Fresh parent60signalroutes/supply/body networks,1674devices,899HBTemitters/reference-lane. Per-instance census explicitly checked. Original baseline4427 failure unchanged. Workflow tx-tree32-budget-physical-cloud.yml runs actual new parentGDS and unchanged nativeLVS/560DRC/faults. Fourtree3596projection excludesclock/PLL/CDR/TX and isNOTwholechip acceptance. No fresh parentRC/electrical acceptance yet. Livefull32high8schematic38996028457 still pending, mappedboot38994926932/PLL38982797234 alive. Localempty/cloudonly.
+
+---
+
 ## Nx1 native physical run confirmed (2026-10-17)
 
 Source9459550c10a62cc76d8af5f96c874a7e66c29e0a, run38996604388, job117290438492. Pinned runtime preparation and Python syntax check passed; actual GDS/native physical verification step is running. Do not restart. Expected release group tx-pre-nx1-physical, output hw/soc/out/cloud-tx-layout-repair. Preserve failed geometry and diagnose native reports before changing any placement. Original default-profile regression also auto-triggered tx-critical-route-cloud38996604281; leave it running.

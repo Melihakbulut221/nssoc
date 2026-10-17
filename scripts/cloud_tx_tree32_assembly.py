@@ -81,7 +81,9 @@ def generate():
     L=pya.Layout();L.dbu=.001;top=L.create_cell(TOP)
     protected={str(Path(__file__).resolve()):sha(Path(__file__).resolve()),str(OUT/'plan.json'):sha(OUT/'plan.json'),str(lyp):sha(lyp)}
     children={}
-    for kind,childname in [('pre','nssoc_tx_mux2_cascade158_layout_v1'),('final','nssoc_tx_mux2_final_drive_v10_layout_v1')]:
+    child_types=[('pre','nssoc_tx_mux2_cascade158_layout_v1'),('final','nssoc_tx_mux2_final_drive_v10_layout_v1')]
+    if plan['variant']=='budget_high8':child_types.append(('pre_low','nssoc_tx_mux2_cascade158_nx1_layout_v1'))
+    for kind,childname in child_types:
         directory=OUT/'inputs'/kind/'layout';data=json.loads((directory/'result.json').read_text())
         for name,digest in data['outputs'].items():assert sha(directory/name)==digest;protected[str(directory/name)]=digest
         old=pya.Layout();old.read(str(directory/(childname+'.gds')));child=old.cell(childname);assert child and old.dbu==L.dbu
@@ -163,29 +165,50 @@ def generate():
     (dest/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true');a=p.parse_args()
+    global OUT,TOP
+    p=argparse.ArgumentParser();p.add_argument('--generate',action='store_true')
+    p.add_argument('--variant',choices=('baseline','budget_high8'),default='baseline');a=p.parse_args()
+    if a.variant=='budget_high8':
+        OUT=ROOT/'hw/soc/out/cloud-tx-tree32-budget-assembly'
+        TOP='nssoc_tx_tree32_budget_high8_core_v1'
     if a.generate:generate();return
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
-    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False)
+    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],variant=a.variant,serial_phy_complete=False,main_chip_integrated=False,qualified_pex=False,electrical_accepted=False)
     def run(command,label):
         with (OUT/(label+'.log')).open('w')as f:code=subprocess.call(list(map(str,command)),stdout=f,stderr=subprocess.STDOUT)
         if code:print((OUT/(label+'.log')).read_text(errors='replace')[-12000:],flush=True);raise RuntimeError((label,code))
     try:
-        plan=topology();(OUT/'plan.json').write_text(json.dumps(plan,indent=2)+'\n');result['plan']=plan
+        plan=topology();plan['variant']=a.variant
+        if a.variant=='budget_high8':
+            for n in plan['nodes']:
+                if n['kind']=='pre' and n['stride']>=4:n['kind']='pre_low'
+            assert sum(n['kind']=='pre_low'for n in plan['nodes'])==28
+            assert {n['label']for n in plan['nodes']if n['kind']=='pre'}=={'a','b'}
+        (OUT/'plan.json').write_text(json.dumps(plan,indent=2)+'\n');result['plan']=plan
         spec=json.loads((ROOT/'docs/evidence/pcie-tree4-assembly-input-20261015.json').read_text());source=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text());packed=OUT/'restore.tar.gz'
         fetch(source['receipt']['url'],source['receipt']['sha256'],packed)
         with tarfile.open(packed)as t:t.extractall(ROOT,filter='data')
         packed.unlink();manifest=json.loads((ROOT/'manifest.json').read_text());assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())
+        if a.variant=='budget_high8':
+            low_spec=ROOT/'docs/evidence/tx-pre-nx1-physical-input-20261017.json'
+            spec['children']['pre_low']=json.loads(low_spec.read_text())
+            result['scaled_cell_receipt_sha256']=sha(low_spec)
         for kind,row in spec['children'].items():
             fetch(row['url'],row['sha256'],packed);assert packed.stat().st_size==row['bytes']
             with tarfile.open(packed)as t:
-                prefix='hw/soc/out/cloud-tx-layout-repair/';prior=json.load(t.extractfile(prefix+'result.json'));assert prior['status']=='PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
+                prefix=row.get('archive_prefix','hw/soc/out/cloud-tx-layout-repair/');prior=json.load(t.extractfile(prefix+'result.json'));assert prior['status']=='PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
                 assert prior['variant']==row['variant']and prior['circuit_profile']==row['circuit_profile']and prior['boundary_pin_policy']=='nearest_pair_tight'
+                if kind=='pre_low':
+                    assert prior['prestage_sizing']['nx']==1 and prior['prestage_sizing']['emitters']==19
+                    assert prior['prestage_sizing']['candidate_sha256']=='af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd'
+                    assert prior['physical']['status']=='PASS_NATIVE_PDK_TX_MUX54_DRC_LVS_AND_FAULT_CONTROLS'
+                    assert prior['physical']['steps']['drc']['measurement']['category_count']==560
+                    assert not prior['physical']['steps']['drc']['measurement']['categories']
                 for name in ['layout/result.json','layout/schematic.cir',*['layout/'+n for n in row['generated_outputs']if n.endswith(('.gds','.lef'))],'verify-physical.py']:
                     raw=t.extractfile(prefix+name).read();target=OUT/'inputs'/kind/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)
                     if Path(name).name in row['generated_outputs']:assert hashlib.sha256(raw).hexdigest()==row['generated_outputs'][Path(name).name]
             packed.unlink()
-        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate'],'generate')
+        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==source['runtime_sha256'];run([app,'python',Path(__file__).resolve(),'--generate','--variant',a.variant],'generate')
         generated=json.loads((OUT/'layout/result.json').read_text());result['layout']=generated
         method=(OUT/'inputs/pre/verify-physical.py').read_text()
         edits=[('TOP = "nssoc_tx_mux2_cascade158_layout_v1"','TOP = '+repr(TOP)),("PORTS = ['ap','an','bp','bn','sp','sn','op','on','avdd','avss','sub','iref']",'PORTS = '+repr(plan['ports'])),('"QD0 "','"Qf_D0 "'),('"QD1 "','"Qf_D1 "'),('!= 54','!= 1674'),('TX_MUX54','TX_TREE1674')]
@@ -203,12 +226,18 @@ def main():
         reference=(OUT/'layout/schematic.cir').read_text()
         hbts=[l for l in reference.splitlines()if l.startswith('Q')]
         emitters=sum(int(re.search(r'\bNx=(\d+)\b',l)[1])for l in hbts)
-        assert len(hbts)==589 and emitters==4427
+        expected_emitters=4427 if a.variant=='baseline'else 899
+        assert len(hbts)==589 and emitters==expected_emitters
+        if a.variant=='budget_high8':
+            for n in plan['nodes']:
+                expected={'pre_low':19,'pre':145,'final':77}[n['kind']]
+                actual=sum(int(re.search(r'\bNx=(\d+)\b',l)[1])for l in hbts if l.startswith('Q'+n['label']+'_'))
+                assert actual==expected,(n['label'],actual,expected)
         result['emitter_budget']=dict(reference_hbts=589,reference_emitters=emitters,
             four_lane_tree_reference_projection=4*emitters,recommended_chip_maximum=4000,
             rule='npn13G2.bR',recommended_rules_enabled=True,waiver=False,
             source='IHP-Open-PDK@5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/6_1_npnsubstratetie.drc',
-            scope='Reference census; actual geometry independently triggers this native rule. PLL/CDR/clock/TX devices are additional. Needs architectural/device redesign, not a disabled rule.')
+            scope='Exact reference census; native DRC independently screens physical geometry. PLL/CDR/clock/TX and other chip devices are additional; four-tree projection is not a whole-chip pass. Original4427-emitter physical failure remains retained, with no disabled rule.')
         verification=OUT/'verify-tree32.py';verification.write_text(method)
         run([sys.executable,verification,'--layout',OUT/'layout','--out',OUT/'physical','--app',app],'physical')
         result['physical']=json.loads((OUT/'physical/result.json').read_text());assert result['physical']['status']=='PASS_NATIVE_PDK_TX_TREE1674_DRC_LVS_AND_FAULT_CONTROLS'
