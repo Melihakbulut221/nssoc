@@ -1,3 +1,13 @@
+## Native shunt-v4 schematic passed; fresh physical core started
+
+Run39046476349/source770d1b4d passed original nominal/hot/cold XOR data/device criteria and actual swapped-output control. Original54devices/19HBT,2ns startup plus32ns/256symbols, same source levels and100mV margin/0.4Vheadroom gates. Actual reports are in docs/evidence/cdr-shunt-v4-native-pass-20261017.json. This is not full-wire acceptance. New cdr-v4-core-layout workflow waits for and verifies these exact four results, then creates new GDS with native560-ruleDRC/deepflat54LVS/fivefaultcontrols using changed8umoutputshunts and unchanged1.8umcollectorloads.
+
+TXreturn64run39030593206 completed capture but failed engineering gates:364wrong/387below100mV among768samples;6HBT headroomfailures; all512MOS passed. Preserve source/raw1.86GB in original release. Read-only diagnosis39046963485/sourceb81f5ba3 restores the capture and original full review, then binds31physicalclockports to124real selector-base pairs through original114909R connectivity to measure clock arrival. Prior diagnostic39046918546/source7dc96c68 failed Python parsing before capture restoration; its expression was corrected, original failed run preserved. No simulation rerun or acceptance-gate change.
+
+Cloud-only policy remains. Regionalroute39045601192, PLL39043210978, nativeboot39041981816/handoff39042752404 remain live; inspect their actual state before any new action. FullserialPHY/mainchiproute/finaltiming remain open.
+
+---
+
 # XOR full-wire v3 rejected; output-shunt repair candidate v4
 
 Actual v3 full-wire39045821084: nominal768correct,112.753734mVminimum, all19HBT bounds pass; hot768correct,124.121245mVminimum but12data HBTs fall below the unchanged0.4V active VCE bound (minimum0.335749V); cold768correct but12samples below100mV, minimum99.267090mV. Swapped output768wrong detected. No native numerical diagnostics; failed traces and all original gates are retained. Component/PHY acceptance remains false.
