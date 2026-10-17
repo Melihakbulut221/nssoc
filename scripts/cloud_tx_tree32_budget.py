@@ -20,12 +20,12 @@ PROFILE='breakpoint_tight_trap'
 def records(text):return [r.split()for r in text.splitlines()if r.strip()and not r.startswith('*')]
 
 def resized(text,nx):
-    assert hashlib.sha256(text.encode()).hexdigest()==SOURCE_SHA and nx in (1,4)
+    assert hashlib.sha256(text.encode()).hexdigest()==SOURCE_SHA and nx in (1,2,4)
     rows=records(text);expected=[];changes=[];top='nssoc_tx_mux2_budget_nx'+str(nx)+'_v1'
     # Reduce native mirror/device area and raise all eight native resistor L/W
     # ratios by the inverse factor. This is a hypothesis, not an RC-preserving
     # equivalence: compact-model geometry/parasitics are simulated afresh.
-    dimensions={1:{'XRP':('1','1.1'),'XRN':('1','1.1'),'XBA':('1','307.2'),'XBB':('1','307.2'),'XFPR':('1','31.6'),'XFNR':('1','31.6'),'XSP':('1','3.6'),'XSN':('1','3.6')},4:{'XRP':('4','1.1'),'XRN':('4','1.1'),'XBA':('1','76.8'),'XBB':('1','76.8'),'XFPR':('2','15.8'),'XFNR':('2','15.8'),'XSP':('2','1.8'),'XSN':('2','1.8')}}[nx]
+    dimensions={1:{'XRP':('1','1.1'),'XRN':('1','1.1'),'XBA':('1','307.2'),'XBB':('1','307.2'),'XFPR':('1','31.6'),'XFNR':('1','31.6'),'XSP':('1','3.6'),'XSN':('1','3.6')},2:{'XRP':('2','1.1'),'XRN':('2','1.1'),'XBA':('1','153.6'),'XBB':('1','153.6'),'XFPR':('1','15.8'),'XFNR':('1','15.8'),'XSP':('1','1.8'),'XSN':('1','1.8')},4:{'XRP':('4','1.1'),'XRN':('4','1.1'),'XBA':('1','76.8'),'XBB':('1','76.8'),'XFPR':('2','15.8'),'XFNR':('2','15.8'),'XSP':('2','1.8'),'XSN':('2','1.8')}}[nx]
     for old in rows:
         new=list(old)
         if old[0].lower()in ('.subckt','.ends'):new[1]=top
@@ -56,7 +56,7 @@ def resized(text,nx):
     return result,dict(nx=nx,emitters=1+18*nx,resistance_ratio=str(Decimal(8)/nx),changes=changes,actual_parameter_faults_rejected=controls,compact_parasitics_recomputed_by_native_model=True,physical_layout_matches=False)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--variant',choices=('baseline','budget','budget_high8'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--variant',choices=('baseline','budget','budget_high8','budget_high2','budget_all1'),required=True);p.add_argument('--fault',choices=('none','swap_leaf_select'),default='none');args=p.parse_args()
     assert args.variant!='baseline'or args.fault=='none'
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('cloud-tx-tree32-budget-'+args.variant+'-'+args.fault);out.mkdir(exist_ok=False);native=out/'native';native.mkdir()
@@ -67,7 +67,9 @@ def main():
         assert sha(SOURCE)==SOURCE_SHA and sha(FINAL)==FINAL_SHA
         inputs=out/'fixtures';fixtures(inputs);engines.OUT=out;paths,provenance=engines.restore_engines();result['runtime_provenance']=provenance
         assert sha(paths['patched'])=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'
-        low,prooflow=resized(SOURCE.read_text(),1);high,proofhigh=resized(SOURCE.read_text(),4)
+        low,prooflow=resized(SOURCE.read_text(),1)
+        high_nx={'budget_high2':2,'budget_all1':1}.get(args.variant,4)
+        high,proofhigh=resized(SOURCE.read_text(),high_nx)
         # The measured Nx4 candidate failed 32 HBT VCE checks in a/b.
         # Keep those two fast stages at the original, hash-bound Nx8 topology;
         # retain Nx1 in all 28 lower-rate stages. No limits or stimuli change.
@@ -85,7 +87,7 @@ def main():
         deck,contract=tree.build(inputs,'nominal',fault=args.fault,clock_bias='native_res',final_drive='double_taps_margin',pre_bias='native_res_tc',output_bias='native_res',streams=32,final_override=FINAL,clock_reference='stiff65',solver_profile=PROFILE)
         stimuli=pwl_voltage_sources(deck);original_vectors=list(contract['vectors'])
         assert len(contract['tree_plan']['nodes'])==30 and contract['streams']==32 and len(contract['hbt'])==604 and len(contract['mos'])==512
-        if args.variant!='baseline':
+        if args.variant not in ('baseline','budget_all1'):
             selected=[n for n in contract['tree_plan']['nodes']if n['stride']==2];assert {n['label']for n in selected}=={'a','b'}
             for n in selected:
                 instance='xpre'+n['label'];lines=re.findall(r'(?m)^'+instance+r' [^\n]+$',deck);assert len(lines)==1
@@ -104,7 +106,7 @@ def main():
             assert sorted(r['nx']for r in rows.values())==[1]+[expected]*18
             stages[n['label']]=dict(stride=n['stride'],emitters=sum(r['nx']for r in rows.values()))
         final=[v for k,v in contract['hbt'].items()if k.startswith('xmux.')];assert len(final)==19 and sum(r['nx']for r in final)==77
-        tree_emitters=sum(r['emitters']for r in stages.values())+77;assert tree_emitters=={'baseline':4427,'budget':755,'budget_high8':899}[args.variant]
+        tree_emitters=sum(r['emitters']for r in stages.values())+77;assert tree_emitters=={'baseline':4427,'budget':755,'budget_high8':899,'budget_high2':683,'budget_all1':647}[args.variant]
         result['budget']=dict(stages=stages,tree_emitters=tree_emitters,four_lane_tree_only=4*tree_emitters,explicit_lane_hbt_emitters=sum(r['nx']for r in contract['hbt'].values()),remaining_chip_blocks_included=False,whole_chip_emitter_budget_passed=False)
         (native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
         protected=[Path(__file__),SOURCE,FINAL,lowpath,highpath,tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES['stiff65'],tree.CLOCK_FEEDS['stiff65'],ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_stream.py',ROOT/'scripts/cloud_tx_data_driver.py',paths['patched'],*[p for p in inputs.rglob('*')if p.is_file()],native/'bench.cir',native/'contract.json',native/'spinit']

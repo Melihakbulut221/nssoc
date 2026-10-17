@@ -1,3 +1,13 @@
+## High8 electrical candidate rejected despite physical pass; lower loading comparison started (2026-10-17)
+
+PROGRESS. Actual full32 native study38996028457/sourceb40b3ef completed nominal+deepest-selectorfault. Nominal data768samples pass minimum280.639076mV, but32HBTminimumVCE failures (worst266.790939mV vs400mV), andlevel4 interface128samples below150mV (minimum104.102895mV). NoMOSfailures/solverdiagnostics,sourceunchanged. Actual selectorfault27wrong output samples rejected. Original high4 worstVCE372.533256mV was better; restoringlargefastcells didNOTcloseelectricalheadroom. DoNOTadopt high8 physicalPASS as functional/electricalPHYacceptance. Evidence docs/evidence/tx-tree32-high8-rejected-loadmatch-20261017.json preserves all failures and raw hashes.
+
+New full32 candidates: budget_high2 fast2Nx2+28Nx1 (683emitters/lane), budget_all1 all30Nx1 (647/lane). All1 avoids duplicate inclusion of the identical physical subckt. Actual native resistorL/W inverse scaling checked,19HBT8Rsource topology retained. New workflow tx-tree32-loadmatch-cloud.yml runs both nominal and actualleaf-selectionfault for each. Same604HBT512MOS/34ns256bits/originalphase/limits/noidealintermacrobuffer/nooraclechange. These are still schematic candidates requiring fresh GDS/PEX/PVT after a pass.
+
+Exact high8physical377-net wire-extraction run38997568496/source571489e3a6fbb6366cd89df4a5451032dfa086ef is confirmed live; preserve it as extraction of an electrically rejected reference. No restart. Boot38994926932 andPLL38982797234 remain live. All workcloud/localempty/fullgoalOPEN.
+
+---
+
 ## Actual mixed32:1 tree native DRC/LVS passed; full parent wire extraction launched (2026-10-17)
 
 PROGRESS. Run38996987743/sourcea9f91eec9efb8df58704843bdc9dce99fc39c942 PASS:1674devices match in deep+flat native LVS,oneMatch,no extractiondiagnostics;560DRCrules zero markers includingrecommended npn13G2.bR; all5physical/reference faults rejected. Real31macro899-emitter tree and60intermacro wires. GDS2fdc5fc1729fb36613b1420f786ac045215b9f2736310c329fc26a6d8a6d05e4. Body4666.785x9897.82um; this is NOT mainchip-fit proof and requires integration/placement work. Fourtree3596emitters excludesotherblocks. Original4427treefailure preserved. Full source-bound summary/archive in docs/evidence/tx-tree32-budget-physical-pass-20261017.json.
