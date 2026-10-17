@@ -1,0 +1,7 @@
+# Exact sampler contact census for the retimed CDR parent
+
+The prior sampler physical capsule `hw/soc/pcie-evidence/20261004-integration/sampler-bank.json` reports 15 HBTs,12 resistors and8 physical substrate contacts, but its LVS compared28 devices because parallel contacts were simplified. It passed its original stated scope; it is not evidence of35-device unsimplified comparison.
+
+The new private checker `check_pcie_sampler_unsimplified.py` retains the original generator and schematic source, all560 DRC rules, native LEF inspection, five reference mutations, three physical connectivity faults, off-grid geometry and missing-LEF-pin rejection. It adds flat LVS, explicitly enables `no_simplify=true` and `top_lvl_pins=true`, requires exactly35 devices in both schematic/layout, and rejects extraction diagnostics or non-Match circuits. No transistor dimensions, nets, geometry or physical limits changed. The shared old checker remains unchanged so earlier evidence is reproducible.
+
+Fresh GitHub generation/verification is required before integrating four actual sampler instances with the new buffer and feed-forward cells. The physical parent is expected to contain235 primitive devices and159 contacts (394 total) if every leaf remains unsimplified: four35-device samplers, two14-device data buffers, two16-device select buffers, two54-device XORs, five12-device RC networks and one26-device V/I cell. This is an expected topology census, not a verified parent layout; fresh parent DRC/LVS and RC-loaded waveforms are mandatory.
