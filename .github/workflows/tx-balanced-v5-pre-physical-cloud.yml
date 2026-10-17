@@ -1,0 +1,80 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-balanced-v5-pre-physical-cloud
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-balanced-v5-pre-physical-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-physical:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        nx: [1, 3]
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Reject an unqualified native source before downloading CAD
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import json,subprocess
+          run=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/39060767622']))
+          assert run['status']=='completed' and run['conclusion']=='success'
+          assert run['head_sha']=='771aab7120fbaeb6154f094a87f2ef7f4c998b7c' and run['event']=='push' and run['run_attempt']==1
+          assert run['path']=='.github/workflows/tx-tree32-balanced-v5-cloud.yml'
+          print('Exact v5 source completed; native report and geometry checks still required.')
+          PYCODE
+      - name: Restore pinned native CAD runtime
+        run: |
+          python3 -m py_compile scripts/cloud_tx_balanced_v5_physical.py
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          python3 -m pip install numpy==2.3.3 networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Wait for exact full32 native pass then generate fresh prestage GDS and DRC LVS faults
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_balanced_v5_physical.py --circuit-profile cascade158 --variant critical_buses_kelvin_supply_direct --boundary-pins --boundary-policy nearest_pair_tight --prestage-nx ${{ matrix.nx }} --prestage-headroom-trim
+      - name: Preserve physical results including rejected geometry
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-tx-balanced-v5-pre
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="tx-balanced-v5-pre-nx${{ matrix.nx }}-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-balanced-v5-pre-nx${{ matrix.nx }}',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-balanced-v5-pre-nx${{ matrix.nx }}-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-balanced-v5-pre/
+          retention-days: 30
