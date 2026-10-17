@@ -1,3 +1,11 @@
+## Latest: explicit-model MIM pilot passed; full parent MIM-aware native RC capture launched
+
+Checked 2026-10-17T22:38:38.011096+00:00. Pilot39075539501/sourceef682e597f21093612c7a3a56a1e802fe06a7c8d PASS9nativecases; original6baselineC/deviceoutputs unchanged. Privateextracttech1439949ae12e2e4da21b0fcb2833b78cf10ac8ad52fa5c68889057aabb69b96c removesONLYtwoCDLestimate declarations; allothertechbytes unchanged. MIM-awarePLUS-ground withestimatevswithout:3.6um19.800699fF→0.453193fF,4.8um35.101fF→0.705464fF,40um2405.59fF→17.008301fF. RegularPLUS/MINUSC andexactnativecap_cmimw/l unchanged. Fullreceipt docs/evidence/cdr-mim-explicit-model-pilot-pass-20261018.json summary651785168/parts651785220. NotRF/fullparentqualification.
+
+New cdr-mim-parent-rc restoresactualfullPDproof; addsactualMIM36/Vmim129 masks towholemetal/viaGDSwithzeroothergeometrychanges. Rebinds11MIMbottompoints toactualMetal5accessoutsideMIMmask (oldcenterlabels wouldlandontopMIMpaint). All776points re-probed inoriginalnativeLVSandphysicalwiregraph; 111components unchanged. Usesexactpilotprivateexplicit-modeltech, capturesnativefullRCwith11intrinsiccaps, andchecksorderednativecapgeometry/componentidentity plus5faults. RawR/Cpoint/value/matrixaudit remainsseparateandREQUIRED aftercapture; do notmarkitpassfromownershipchecks. ThenimplementMIM-awareaudit withvalidatedintrinsicdeviceprojection andmorecorruptions, rebuildfullmodelwithoutaddingnativeMIMtwice, runloadedPD/actualVCOfeedback. CLOUDONLY; fullgoalOPEN.
+
+---
+
 ## Latest: MIM mask pilot passed and exposed explicit-device estimate double counting
 
 Checked 2026-10-17T22:32:57.845228+00:00. MIM39075117015/source19890a6759c1123f92f47c4d94cdae4985b211cf PASSall6nativecases, actualplateunions/metalvias preserved andonecorrectcap_cmim recognizedperawarecell. Wire-onlyvsMIM-aware residualPLUS/MINUSC:3.6um0.597510/0.143658fF,4.8um1.091230/0.220565fF,40um70.009297/2.349720fF. Fullreceipt docs/evidence/cdr-mim-mask-comparison-pass-20261018.json summary651773433/parts651773526. NativeMIM-aware3.6um ALSOexportsPLUS-to-sub19.800699fF whileexplicitcap_cmim model remains. Raw.ext hasnodePLUScap19800.7aF plusdevicecsubckt. Techsource marksdefaultareacap*mimcap1500/defaultperimeter40 asCDLdevice-valueestimation; explicitngspicecapmodelalreadycontainsCJ/CJSW. ThereforeDO NOTadoptplainMIM-awaretotalC asqualified.
