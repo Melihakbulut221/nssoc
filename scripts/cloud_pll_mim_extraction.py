@@ -4,6 +4,8 @@
 """Measure actual native MIM extraction with/without intrinsic device masks.
 
 Uses all seven actual PLL845 MIM geometry groups (26 physical devices).
+Each case keeps actual metal/via polygons inside a1um mask-enclosure window.
+This is a bounded mask-comparison experiment, not a full primitive RC model.
 No net-coupling subtraction or full-parent capacitance acceptance is inferred.
 """
 import argparse,json,os,shutil,subprocess,tarfile
@@ -39,12 +41,24 @@ def generate():
         assert cell.cell_index()not in stack
         mask=pya.Region(cell.shapes(L.layer(36,0))).merged()
         if not mask.is_empty():
-            assert not list(cell.each_inst()),('MIM primitive is not leaf',cell.name)
-            assert(mask^pya.Region(mask.bbox())).is_empty(),('Nonrectangular intrinsic MIM',cell.name)
-            box=mask.bbox();dims=tuple(map(dimension,sorted((Decimal(box.width())/1000,Decimal(box.height())/1000))))
-            assert dims in native,('Physical MIM dimensions absent from native LVS',cell.name,dims)
-            row=dict(native_geometry_group='x'.join(dims),cell=cell.name,path=path,dimensions_um=dims,native_lvs_cards_same_geometry=native[dims])
-            selected.setdefault(dims,row);census[dims]+=1;occurrences.append(row)
+            # Some native macro cells were flattened and contain several MIMs.
+            # Count each actual disconnected MIM mask, never the macro bbox.
+            for index,poly in enumerate(mask.each()):
+                region=pya.Region(poly);box=poly.bbox()
+                assert(region^pya.Region(box)).is_empty(),('Nonrectangular individual intrinsic MIM',cell.name,index)
+                dims=tuple(map(dimension,sorted((Decimal(box.width())/1000,Decimal(box.height())/1000))))
+                assert dims in native,('Physical MIM dimensions absent from native LVS',cell.name,dims)
+                window=pya.Region(box.enlarged(1000))
+                assert ((mask&window)^region).is_empty(),('Another MIM intersects local comparison window',cell.name,index)
+                key='x'.join(dims);row=dict(native_geometry_group=key,source_cell=cell.name,path=path,mask_index=index,mask_bbox_dbu=[box.left,box.bottom,box.right,box.top],window_bbox_dbu=[box.left-1000,box.bottom-1000,box.right+1000,box.top+1000],dimensions_um=dims,native_lvs_cards_same_geometry=native[dims])
+                if dims not in selected:
+                    isolated=L.create_cell('pll_mim_window_'+str(len(selected)))
+                    for layer in METALS+VIAS+(36,129):
+                        li=L.layer(layer,0);clipped=pya.Region(cell.begin_shapes_rec(li))&window
+                        isolated.shapes(li).insert(clipped)
+                        assert(pya.Region(isolated.shapes(li))^clipped).is_empty()
+                    row['cell']=isolated.name;selected[dims]=row
+                census[dims]+=1;occurrences.append(row)
         for index,inst in enumerate(cell.each_inst()):
             assert not inst.is_regular_array(),('Array instance needs explicit expansion',cell.name,index)
             walk(inst.cell,path+'/'+str(index)+':'+inst.cell.name,stack+[cell.cell_index()])
@@ -57,13 +71,13 @@ def generate():
         top=pya.Region(cell.begin_shapes_rec(L.layer(126,0))).merged();bottom=pya.Region(cell.begin_shapes_rec(L.layer(67,0))).merged()
         shape_record=dict(native_geometry_group=d['native_geometry_group'],cell=cell.name,top=dict(polygons=top.count(),area_dbu2=top.area(),bbox=str(top.bbox())),bottom=dict(polygons=bottom.count(),area_dbu2=bottom.area(),bbox=str(bottom.bbox())))
         with (OUT/'plate-geometry.jsonl').open('a')as stream:stream.write(json.dumps(shape_record)+'\n')
-        assert (top^pya.Region(top.bbox())).is_empty()and(bottom^pya.Region(bottom.bbox())).is_empty(),shape_record
-        shape_record['both_plate_unions_equal_filled_rectangle']=True
+        assert not top.is_empty()and not bottom.is_empty(),shape_record
+        shape_record['scope']='Unchanged actual metal/vias within a1um-expanded individual MIM mask window; not a complete primitive or parent RC model'
         # Real source plate drawing can contain slots. Pick an interior rectangle
         # from that unchanged drawing, never fill a slot or probe its bounding-box hole.
         rects=[p.bbox()for p in top.decompose_trapezoids_to_region().each()if p.area()==p.bbox().area()and p.bbox().width()>2 and p.bbox().height()>2]
         assert rects,shape_record
-        plus=max(rects,key=lambda b:b.area()).center();bb=bottom.bbox();minus=pya.Point(bb.left+200,bb.center().y)
+        box=pya.Box(*d['mask_bbox_dbu']);plus=box.center();minus=pya.Point(box.left-200,box.center().y)
         for point,region in ((plus,top),(minus,bottom)):
             witness=pya.Region(pya.Box(point.x-1,point.y-1,point.x+1,point.y+1))
             assert (witness-region).is_empty(),(shape_record,str(point))
@@ -79,7 +93,7 @@ def generate():
             path=folder/(variant+'.gds')
             if variant=='mim_explicit_model':shutil.copyfile(folder/'mim_aware.gds',path)
             else:dst.write(str(path))
-            cases.append(dict(tag=tag,variant=variant,native_geometry_group=d['native_geometry_group'],source_cell=cell.name,w_um=dims[0],l_um=dims[1],gds=str(path.relative_to(OUT)),gds_sha256=sha(path),plus_dbu=[plus.x,plus.y],minus_dbu=[minus.x,minus.y],all_original_metal_vias_equal=True,layers=[dict(layer=str(dst.get_info(i)),area_dbu2=pya.Region(c.begin_shapes_rec(i)).area())for i in dst.layer_indexes()if not pya.Region(c.begin_shapes_rec(i)).is_empty()]))
+            cases.append(dict(tag=tag,variant=variant,native_geometry_group=d['native_geometry_group'],source_cell=d['source_cell'],clipped_cell=cell.name,mask_bbox_dbu=d['mask_bbox_dbu'],window_bbox_dbu=d['window_bbox_dbu'],w_um=dims[0],l_um=dims[1],gds=str(path.relative_to(OUT)),gds_sha256=sha(path),plus_dbu=[plus.x,plus.y],minus_dbu=[minus.x,minus.y],all_original_metal_vias_equal=True,layers=[dict(layer=str(dst.get_info(i)),area_dbu2=pya.Region(c.begin_shapes_rec(i)).area())for i in dst.layer_indexes()if not pya.Region(c.begin_shapes_rec(i)).is_empty()]))
     (OUT/'cases.json').write_text(json.dumps(dict(cases=cases,source_gds_sha256=sha(G)),indent=2)+'\n')
 
 def main():

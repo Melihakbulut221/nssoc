@@ -1,3 +1,13 @@
+## Latest: PLL continuation dispatched; flattened macro MIM census guard corrected
+
+ExactPLLcapsulecontinuation dispatchedas39078674197 at efdac8be7756e543a0e4ebbde19b2f93a92b3dbd; controlsqueued. Do notcoldrestart. CDRsixdiagnosticjobs39078437382 nowinprogress. PostCTS39061293959 andTXfullwire39067769686 remainlive.
+
+PLLpilot39078437332 failedBEFOREMagic: flattened nssoc_reset_gated108_v1 cellcontainsmultipleMIMmasks; wholecellmaskbboxisnotonecapacitor. Originalfailure retained docs/evidence/pll-mim-flattened-cell-failure-20261018.json. Successor countsindividualconnectedMIMrectangles andmatchesall26to7nativeLVSdimensiongroups. Eachselectedsize cropsACTUALmetal/viasandMIM/Vmim in1umexpandedmaskwindow; rejectsotherMIMintersection andprovesexactpolygoncopy. Allthreeviewsusesameclippedmetal/vias; PLUSatmaskcenter,MINUSactualM5outsideleftmask. ThisisexplicitlyaLOCALWINDOWMASKCOMPARISON, notcompletePCell/parentRC; cannotclaimfullmodelrepairfromit. OriginalGDSimmutable. Needinspect21nativecases.
+
+CLOUDONLY, workspaceempty. FullgoalOPEN; thisturnPROGRESS.
+
+---
+
 ## Latest: PLL native checkpoint needs/receives next process continuation; CDR diagnostics active
 
 PLL39043210978 completeditscontinuation stage WITHCHECKPOINTONLY, statusSAVED_ACTUAL_PHYSICAL845_ONE_US_PROCESS_NOT_FULL_CAPTURE_OR_ACCEPTANCE. NotacquisitionPASS.102nativeOFFreadbacks,zeroOP0,priorpayloadunchanged,1,658,679,296payloadbytespreserved. Fullreceipt docs/evidence/pll-c8-half-second-checkpoint-20261018.json (summary651853855/parts651853906) containsnextsource_checkpoint. All10methodhashes revalidatedat395f7ebe89f2f7b7a278df8e00eae31f89ad1998 beforedispatch. Resumeexactpublishednativecapsule usingexisting pll-c8-half-native-acquisition-cloud workflow, source_checkpointcontinuation39043210978/attempt1; NEVERcoldrestart. Findnewworkflow_dispatchrunafterthiscommit andverifyrestore.
