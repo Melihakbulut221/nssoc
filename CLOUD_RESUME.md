@@ -1,3 +1,11 @@
+## Measured critical-buffer experiment and CDR load result (2026-10-17)
+
+Previous turn PROGRESS via cloud-only source fix. Current turn: native banked repair39030330882 completed, exact equation proof39031081958 PASS97904retained cells; GRT39031588904 proceeds. Full saved path review39034280114 PASS: worst slow setup originates transmit_packet.byte_index[0], -8.514077ns, traverses23positive data buffers common to two worst paths. Remaining worst hold is pcie_link_up_i across allcorners. New separate corrpre-banked-targeted-cloud restores EXACT already-proven repaired state, contracts ONLY those23specified data buffers after master/no-clock/no-port/retained-instance/clock-net checks, runs native electrical and setup/hold repair then3corner fresh before/after STA and full equation proof. Original timing must reproduce exactly before mutation. Incumbent GRT untouched. This is a candidate, not closure or selected replacement. Inspect actual timing and proof before adoption; no constraints/windows/gates changed.
+
+CDR load-v2 corrected39033918372 completed: nominal116.976801mV/hot126.501897mV/cold107.755090mV; each768correct originalphase samples, zero below100mV; all19HBTbounds/OFF/zeroOP/no diagnostics pass. Actualswap detects768wrong. Receipt cdr-xor-load-native-pass-20261017.json preserves all4reports; firstfailed39033213991 and malformedrunner39033502977 retained. This is schematic primitive only; no CDRloop/layout acceptance. Next physical design and sampled phase-detector integration must keep real unequal input commonmodes and original gates.
+
+All work cloud; local remains empty. Full serialPHY/mainchip detailed route/final setuphold OPEN.
+
 ## Cloud-only continuation and completed banked repair (2026-10-17)
 
 Previous turn PROGRESS: fixed malformed CDR load-v2 wrapper hash attribute at b7d162e1; failed original39033502977 retained, corrected39033918372 live. Local workspace empty, no local CAD/tests/artifacts. Latest user cloud-only instruction overrides older local-work goal wording.
