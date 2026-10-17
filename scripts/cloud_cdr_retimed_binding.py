@@ -23,6 +23,18 @@ def native_export():
     assert Counter(x['model']for x in devices)==CENSUS
     (OUT/'native-devices.json').write_text(json.dumps(dict(devices=devices,inputs={str(path):sha(path)}),indent=2)+'\n')
 
+def geometry_readback_matches(exact,observed):
+    # Compare to the actual IEEE-754 value, not its rounded JSON spelling.
+    # The bound remains exactly one binary ULP; native SPICE stays authoritative.
+    return math.isfinite(observed) and abs(exact-Decimal.from_float(observed))<=Decimal.from_float(math.ulp(observed))
+
+def geometry_readback_controls():
+    accepted=[('4.8',4.8),('4.8',4.800000000000001),('23.04',23.040000000000003)]
+    rejected=[('4.8',4.800000000000002),('4.8',4.80000001),('23.04',23.04000000000001)]
+    assert all(geometry_readback_matches(Decimal(a),b)for a,b in accepted)
+    assert all(not geometry_readback_matches(Decimal(a),b)for a,b in rejected)
+    return dict(positive=accepted,rejected=rejected,bound='one actual binary ULP',canonical_geometry='exact native extracted SPICE')
+
 def build(native_text,devices,geometry,tech,ports_expected):
     statements=models.statements(native_text)
     assert statements[0][:2]==['.SUBCKT',TOP]and statements[-1]==['.ENDS',TOP]
@@ -49,7 +61,7 @@ def build(native_text,devices,geometry,tech,ports_expected):
         for k,v in d['parameters'].items():
             exponent=-12 if k=='A'else -6 if k in ('w','l','ps','we','le','P')else 0
             value=models.number(params[k])/Decimal(10)**exponent
-            assert abs(value-Decimal(str(v)))<=Decimal(str(math.ulp(v))),(d['native_id'],k,value,v)
+            assert geometry_readback_matches(value,v),(d['native_id'],k,value,v)
             canonical[k]=value
         model_device=dict(d,parameters=canonical)
         sim={k.lower():v for k,v in models.model_params(model_device,tech).items()}
@@ -122,6 +134,7 @@ def main():
         assert rc==0
         raw=(OUT/'inputs/parent/physical/lvs_flat/extracted.cir').read_text();devices=json.loads((OUT/'native-devices.json').read_text())['devices'];geometry=json.loads((OUT/'inputs/wire/device-locations01.json').read_text())
         ports=json.loads((OUT/'inputs/parent/layout/result.json').read_text())['source_plan']['ports'];tech=json.loads((ROOT/'pdk/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json').read_text())['techParams']
+        r['geometry_readback_controls']=geometry_readback_controls()
         text,binding=build(raw,devices,geometry,tech,ports);verify(text,binding);r['controls']=controls(text,binding)
         (OUT/'pd394-compact.spice').write_text(text);(OUT/'binding.json').write_text(json.dumps(binding,indent=2)+'\n');r['binding']=binding
         assert all(sha(OUT/'inputs'/n)==prior['outputs'][n]for n in selected)

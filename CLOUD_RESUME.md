@@ -1,3 +1,9 @@
+## Latest: binary native geometry readback corrected, one-ULP bound retained
+
+Checked 2026-10-17T22:11:14.586694+00:00. Binding39073828073/source3078750e95896f670019dfb8cfa91ac04e278a94 passedallprecedingnativebindings thenstopped atMIM234width: exactnativeSPICE4.8um versusnativeJSON4.800000000000001. Decimal(str(float)) measuresroundeddisplaydistance1e-15, incorrectlyexceedingbinaryULP8.88178e-16; actualIEEE754distanceis7.10543e-16. Correction comparesDecimal.from_float(observed) andDecimal.from_float(ulp), retainingexactonebinaryULPboundandnativeSPICEcanonicalgeometry. Added3knownpositiveand3out-of-boundcontrols, includingtwo-ULPwidth rejection. NoPDK/devicegeometry/parameter changes. Fullfailure docs/evidence/cdr-retimed-binding-binary-readback-failure-20261018.json. Observe successor, thencomposewithverified8933R7649C. AllworkCLOUDONLY; fullgoalOPEN.
+
+---
+
 ## Latest: fresh fullPD RC passed; equivalent HBT unit spelling corrected
 
 Checked 2026-10-17T22:08:05.379078+00:00. CorrectedRC39072993122/source28e6794034db8f7d4c5b70f93d7a86a0c2d40af0 PASS: actual8933wireR7649wireC,111components776probes, exactnativeRtopology/value andpoint/mutualC preservation,13rawcorruptionsrejected,allsourcehashesunchanged. Summary651718605/parts651718678; full2.1MBsummary/rawarchive keptRelease, compactcompleteaudit/controlreceipt docs/evidence/cdr-retimed-rc-pass-20261018.json. This iswiregraphverification, notRF/substrate/completePEXqualification.
