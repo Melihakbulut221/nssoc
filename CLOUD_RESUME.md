@@ -1,3 +1,13 @@
+## Full post-cleanup timing census unchanged; Nx3 physical queued (2026-10-17)
+
+PROGRESS. Fullnativeclockcleanup39001722601/sourceade36fe40bc8806bc11f575b40077ae14b1a3e2f PASS. All22544endpointidentities/135264corner-delayrows retained; everyrise/fall/worst result exactlyunchanged. Hold0(allcorners), worstfasthold+1.255107ps; slowsetup9351/−5.793440394ns, typicalsetup464/−1.464126598ns,fastsetup0/+0.131757272ns. Coveragegapsstill1072setup/1117hold. ActualSDCbugfixed without dropping endpoints or changing originalexceptions; no setupreductionclaimed. Strictnativegraphchecks/selectionproof/immutableinputs passed. Receipt docs/evidence/clock-port-delay-full-census-20261017.json pins summary649509483/parts649509609/archive649509729. Strictpipefail successor39001834734 remainsseparatemeasurement; preserve it.
+
+Full32Nx3native38999900875 passednominalall604HBT512MOS bounds+768bitsamples andactualfault27wrongbits; only3.957mVworstVCEheadroom. Nx3physical39002064010/sourceaf9d24ce2a7f0b2f8532285b0176dd0aa4e0ff15 started/queued. Next validateits54-device560DRC/deep+flatLVS/faults, thenactual719emitter31celltreeassembly andfreshRC/nativewaves/PVT. Do notpromote high8failedlayout orclaimfullPHYfromnominalschematic.
+
+Live atfinalsnapshot: {"39001834734": {"status": "in_progress", "conclusion": null}, "39002064010": {"status": "queued", "conclusion": null}, "38994926932": {"status": "in_progress", "conclusion": null}, "38982797234": {"status": "in_progress", "conclusion": null}}. PLLcontinuationjob117300617099 hasactualsavedinitialcapsule; no coldrestart. ExactCORRPRE+PCIe+system/bothEthernetMBISTboot38994926932 stillmustpassbeforeCORRPREnewroute. UseprovenactualmappedJSON/netlist20SRAM via prepare_pcie_mainchip_pnr.py (nowexplicitclockcleanupinrenderer), nevergenericlegacyrecipe. Localworkspaceemptyconfirmed. Allworkcloudonly, objectiveOPEN; thisturnPROGRESS.
+
+---
+
 ## Full32 Nx3 native nominal and actual selector-fault gate passed (2026-10-17)
 
 PROGRESS. Midload38999900875/source1df5234d5e30070148c05fe001ebe2964212f8b0 terminalPASS within schematicnominalscope. All604HBT/512MOS nativebounds pass, all768output samples pass(min281.021842mV), all5interfacegroupspass; no solverdiagnostics. Actualleafselectorfault independentlyrejects27wrongbits, allboundsunchanged. MinimumVCE403.957492mV leaves only3.957492mV over400mVlimit; this smallnominalmargin is NOT PVT/PEX proof. Tree719emitters/lane2876fourtreeonly excludesotherblocks. Nominalsummary649488228 SHA47fbd49a50222e53392edaa8aab9aa0423724c9a3992e397b735c8db9011e283, fault649489127 SHA60b3a68f30cf883685f7734be60864a13587a083653a6d6af8332413404229f5. Fullreceipts docs/evidence/tx-tree32-high3-native-pass-20261017.json.
