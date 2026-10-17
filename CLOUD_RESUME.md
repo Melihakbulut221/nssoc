@@ -1,3 +1,13 @@
+## New banked mainchip boot passed; placement successor live (2026-10-17)
+
+Native bankedboot39016026619/sourcef65c0c35 completed:28firmwarechecks/0fails,PCIeidle4,087,258samples,systemMBIST983010busycycles/done983043,bothEthernetMBISTdone mask3. Native run11095.186739s; immutable IHPcell gate/preflight and RTL boot PASS, inputsunchanged. Source artifact12099508453 ZIP2ca2129e/5,371,330bytes/all43files inspected. Same ZIP or all extracted files verified inside durable coordinator archive650312045/4,691,683bytes. Receipt pcie-banked-native-boot-pass-20261017.json. This is functional native source evidence, not finaltiming or serialPHY.
+
+Coordinator39021081392 boot-to-placement117363203948 passed and dispatched EXACTLYONE placement39029282884/source981029cf0e986a342135700fef413494df5a2925. New coordinatorjob117386365532 placement-to-repair now waits for that CTS and owns nextrepair dispatch. Do not manuallyduplicate. Preserve original20/4/8/8ns clocks/5percentderate/netlist/20SRAM source; inspect actualplacement and then repair, never reuseoldunbankedCTS.
+
+Pumpcurrent39029337682/sourcee2910729 again rejected coldhigh00 dynamicgmin despite nativeverifieditl1=1000. Nominal/hotlow17cases stillcomplete; not fullPVTaccepted. Record pll-pump-current-cold-1000-rejection-20261017.json,raw650315768/summary650315607. Do not repeat iteration increase. Next targeted cold source-continuation/node-set convergence experiment must preserve finalnativeequations/allRC/sourcecurrent/KCL and compare independent paths; no diagnosticmasking or original PLL gate changes. PLL closed-loop800-900ns100ppm remainsFAIL. PumpDC is a mechanismdiagnostic, not acquisition.
+
+Return64compact39028091844/tightfullwire39025744008/mixedclockwire39018157113 stilllive. No new fullwire before new fourcase native evidence. Allcloud/localempty/fullgoalOPEN; this turnPROGRESS through native current evidence, preserved coldrejections and verified banked mainchip boot advancing to actualplacement.
+
 ## Pump nominal/hot current evidence; cold-start numerical rejection retained (2026-10-17)
 
 Corrected pump39029070985/source981029cf completed17native cases:fourstates forward/reverse at nominal/hotlow plus actualnominal UP/DOWNswap. At0.535V:nominal00bias+5.256872uA,UPincrement+36.064079uA,DOWNincrement-40.526901uA; hotlow+1.792837/+26.285684/-28.908933uA. Maximum external KCL1.32e-15A; actualswap reversescurrent and matchesindependentDOWNwithin1nA. These static data cannot predict dynamic average current from voltage duties. Whole campaignFAIL: coldhigh00 invokes dynamicgmin. Raw/logs retained in650307721 and source summary650307548; receipt pll-pump-current-cold-start-rejection-20261017.json.
