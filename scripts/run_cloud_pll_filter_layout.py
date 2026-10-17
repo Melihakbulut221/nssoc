@@ -7,7 +7,7 @@ from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'hw/soc/out/cloud-pll-filter-layout'
-SOURCES={9: ('pll_pump_filter_hv_rhi140_c9_v1.spice', 'e9f3f758184012e63a05d5ba3d91b3bc3a0fe3f0844053e986a8c2d438902364'), 11: ('pll_pump_filter_hv_rhi140_c11_v1.spice', 'fa61c8591f26d7b032d55bb4aacdeaa9402c2db44522f7fd3bc04e7fa4049e97')}
+SOURCES={8: ('pll_pump_filter_hv_rhi140_c8_v1.spice', 'f1ac5a165fdc8160d6ad2588a6da87d62a4314cc7ce67e7bc4bac0ed6ccd31d7'), 9: ('pll_pump_filter_hv_rhi140_c9_v1.spice', 'e9f3f758184012e63a05d5ba3d91b3bc3a0fe3f0844053e986a8c2d438902364'), 11: ('pll_pump_filter_hv_rhi140_c11_v1.spice', 'fa61c8591f26d7b032d55bb4aacdeaa9402c2db44522f7fd3bc04e7fa4049e97')}
 def generate(size):
     sys.path.insert(0,str(ROOT/'hw/soc/flow'))
     import make_pcie_pump_filter13_v1 as base
@@ -37,7 +37,7 @@ def generate(size):
     r['closed_loop_accepted']=False
     p.write_text(json.dumps(r,indent=2)+'\n')
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--size-um',type=int,choices=(9,11),required=True);p.add_argument('--generate',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--size-um',type=int,choices=(8,9,11),required=True);p.add_argument('--generate',action='store_true');args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     if args.generate:generate(args.size_um);return
     OUT.mkdir(parents=True,exist_ok=False)

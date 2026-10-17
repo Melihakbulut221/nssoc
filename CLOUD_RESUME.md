@@ -1,3 +1,13 @@
+## PLL C8 physical correction candidate launched (2026-10-17)
+
+PROGRESS. Original full1us divider-v2/C9 physical845 result stillFAIL132.847ppm in800-900ns, final900-1000ns88.069ppmPASS. Candidate changes only actual native filter capacitor from9x9um to8x8um (area81→64um²) to test faster loop convergence; increased ripple/device stress remain risks to measure, not assumed acceptable. RHI140/RLO47 and chargepump/detector topology/12other coredevices unchanged. Same1us100ppm50ps/no-slip windows mustpass after actual integration; no shifted windows or relaxed limits.
+
+New hw/soc/analog/pcie/pll_pump_filter_hv_rhi140_c8_v1.spice and explicit --size-um8 in existingphysicalgenerator. Original9/11recipes retained. Dedicated pll-filter-c8-layout-cloud runs fresh PCell GDS/routes/30device deep+flatLVS/560DRC/allfaults/LEF, same native PDK. No C9 parasitics reused. Record actualrun/result then freshC8 childRC/devicebinding and exact845parent including verifieddivider-v2, freshparentRC and original1us nativeacquisition. This is a correction hypothesis, NOT a passedPLL orPHY.
+
+Full32 actualwire39004595306/job117314367530 andfixedcompact39004839884/jobs117315073364,117315073557 freshlylive. Exact CORRPRE+PCIe+system/EthernetMBIST38994926932/job117285636114 live. Do not restarthealthyjobs. Cloud-only/localempty/goalOPEN; prior/currentturnPROGRESS.
+
+---
+
 ## All124 geometry legs bound; compact public-port naming fixed (2026-10-17)
 
 PROGRESS. Fixed runner39004595306 native pya preflight and actual GDS124input-leg/372data-base binding PASS. Compact-none then correctly stopped at strict build assertion "Every interface probe must already be an actual bound transistor terminal": external publicd0p..d31n must remain bench names, not xtree.d0p. Verified exact archivedbind-interface.log PASS against summary649591720, archive649591838. No simulation/electrical result from this failed compact build.
