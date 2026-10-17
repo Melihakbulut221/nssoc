@@ -72,6 +72,8 @@ def main():
                 ('dict(devices=54,R=229,C=301)','dict(devices=54,R=4020,C=2641)'),
                 ('PASS_ALL54_NATIVE_DEVICES530_WIRES_AND_SIX_COMPOSITION_FAULTS','PASS_ALL54_NATIVE_DEVICES6661_WIRES_AND_SIX_COMPOSITION_FAULTS'),
                 ('112actual metal reference points,17wire conductors','110actual metal reference points,15wire conductors')]
+            if name=='check-compose98.py':
+                pairs.append(("elif label=='wrong_hbt_size':i=next(i for i,x in enumerate(lines)if' npn13g2 'in x);assert'nx=1'in lines[i]", "elif label=='wrong_hbt_size':i=next(i for i,x in enumerate(lines)if' npn13g2 'in x and 'nx=1' in x.split());assert 'nx=1' in lines[i].split()"))
             for a,z in pairs:
                 if a in text:changes.append(dict(before=a,after=z,count=text.count(a)));text=text.replace(a,z)
             (wire/name).write_text(text);adaptations[name]=dict(original_sha256=sha(src),adapted_sha256=sha(wire/name),changes=changes)
