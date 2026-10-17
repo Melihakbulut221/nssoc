@@ -1,3 +1,13 @@
+## Cloud-only checkpoint and physical XOR margin rejection (2026-10-17)
+
+Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` verified EMPTY. All checkout, CAD, tests, simulation and artifact storage remain on hosted runners/releases; local API orchestration only. Do not restore a local checkout or unpack cloud archives locally. No unrelated repository or user-file deletion. Existing eight-hour schedule unchanged.
+
+Full-wire XOR run 39039570837/source e8d38f306dc52345d5b109e72be80b231eaaaa16 completed with an electrical rejection, not an infrastructure error. All 768 signs are correct in each positive case and all 19 native HBT engineering screens pass, but nominal has 13 samples below the unchanged 100 mV threshold (minimum 98.7526195 mV), and cold_high has 387 (minimum 85.8977980 mV). Hot_low passes at 109.5384889 mV; actual output-swap control catches all 768 wrong signs. Keep complete raw captures and original gates. Next inspect actual loaded settling and physical load/route choices before changing geometry; a schematic pass is insufficient. No CDR/full PHY acceptance.
+
+Clock-layer GRT 39038463008 and TX return64 wire 39030593206 remain active at this checkpoint; do not duplicate or cancel them. Targeted timing candidate remains unadopted pending routed validation. Quarterstep PLL 39035550686 completed and requires full half/quarter phase/current comparison, not an acquisition claim. Tight422 TX 39025744008 completed but failed electrical gates (364 wrong / 391 below-margin samples, six failed HBT screens). Full serial PHY, detailed main-chip routing and final setup/hold remain OPEN.
+
+Current case measurements, immutable summary/parts hashes and active-run snapshots are preserved in `docs/evidence/cloud-only-checkpoint-20261017.json`. Original archives remain in GitHub Releases. This checkpoint reports storage/execution cleanup, not product completion.
+
 ## Physical XOR native composition passed; full-wire waveforms started (2026-10-17)
 
 Correctedcomposition39039272009/sourcebae1e1e8 PASS54native model/terminalbinding+4020R2641C+sixactualcompositioncontrols. Actualmodel xor54-wire.spice SHAe3672050d2d9c547b2f81de306ea7f0157b3e515f40af34b27d98dfbe27fb484, compactSHAa2e7c91bafb520678b0049dd3396b15ca73e6042b1920d4c3c94f0b1c88c80ad. Thinreceipt cdr-xor-composition-pass-20261017.json pins complete1.44MBsummary650629299/parts650629396/fullarchive650629474; fullsummarypreservedinrelease.
