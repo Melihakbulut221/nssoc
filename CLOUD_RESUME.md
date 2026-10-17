@@ -1,3 +1,11 @@
+## Native load-v3 pass and exact active successor handles (2026-10-17)
+
+Schematic39042934992/sourcef5e8596f all4casesCOMPLETEDPASS: nominal141.606016mV,hot153.976575mV,cold129.756672mV minimumsignedmargin; each768correct/0below100mV; all19HBTengineeringgates pass. Actualoutputswap detects768wrong. Fullreceipt cdr-xor-load-v3-native-pass-20261017.json pins everyoriginalsummary/parts/archive. Oldv2fullwirefailure remainsrejected; newschematicpass is not newphysicalacceptance.
+
+Freshv3corephysical39043479500/sourcea57ef21a IN_PROGRESS aftersourcegate; generator5755d1faa0cda2aed2b4d3833a04cf75295f160fee29f8341054f2e27070aca6. Requireactual560DRC/deepflat54LVS/fivephysicalfaults, then newcrossedparent/referenceplanes/fullRC/composition/originalloadedwaves. Do not assumeoldpincoordinates afternewgeometry. FullPLLhalfstep39043210978/sourcec7fc9d27 controlsPASS; initial117427115868 buildingcheckpointdependencieslastread. Exactcontroller4d779f9a preserved; no1usoutcome yet.
+
+Newresiduephysicalhandoff39042752404/sourcea3944780 currentlyWAITING exactnativeboot39041981816/source295bb240 (actualnativeMBISTboot117423317143running). Protocol39041981763 andcorrectedresidueproof39042052313 COMPLETEDSUCCESS; newbankproof39041981839 alreadyPASS. Handoff independentlyrechecksallsource/actualartifact/gatesbeforefreshCTS, notoldlayoutadoption. Clock200GRT39041556309 and TXreturn64wire39030593206 confirmedlive. Nativejobstates/sources in cloud-closure-progress-20261017.json. Allcloud/localempty/fullgoalOPEN; currentgoalturnPROGRESS.
+
 ## Fresh load-v3 core physical gates prepared (2026-10-17)
 
 Cold load-v3 native case39042934992 alreadycompletedPASS:768correct,0below100mV,min129.756672mV,all19HBTboundsPASS,worstactiveVCE0.502154V. Othercases stillpendingatpreparation; no overallPVT/layoutclaim.
