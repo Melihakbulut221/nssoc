@@ -1,3 +1,23 @@
+## Current cloud-only checkpoint (2026-10-17T18:25:33.166990+00:00)
+
+The latest user instruction is authoritative: perform all project work in the cloud and leave no local project files. The workstation workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified empty; no running local ngspice/OpenROAD/KLayout/Yosys/LibreLane process was found. No unrelated directories were deleted. Do not recreate a local checkout, CAD output, result archive or scratch files. Use GitHub Actions for execution and GitHub for source, logs, evidence and continuation records. In-memory API inspection is permitted. Older local-execution instructions are superseded.
+
+Source before this documentation checkpoint: `64572557c61c1efcb85968d82d37910d1ea9f79e`.
+
+Live GitHub API observations:
+- Full retimed phase-detector workflow 39056756395 (source 3aa56a8e362dd952c0de7c081efe37882ca5d7ec): completed SUCCESS. Inspect and preserve all native case reports before making electrical acceptance claims; workflow success alone is not full PHY acceptance.
+- TX margin v3 39055820343 (source 9a12e63608607c9cc3a74da4d644690516c0c3f1): completed FAILURE. Controls, nominal, hot_low and actual selector-fault jobs passed; cold_high native job 117463550339 failed. Retrieve the native cold report, identify the exact failed bound and retain it before selecting another geometry change. Do not reuse old RC after resistor geometry changes.
+- Fresh TX prestage physical successor 39057426221 (source 64572557c61c1efcb85968d82d37910d1ea9f79e): completed FAILURE in both Nx1/Nx3 source-wait/generation steps. Upstream native qualification failed; no physical pass or completed fresh geometry is claimed.
+- Exact repaired-netlist path extraction 39057107220 (source cf682a83abff0ddecac106e1b78fd79939af6ca8): completed SUCCESS. Summary asset 651211774. Slow setup worst path begins at replay read_pos[5] and ends at pcie_tx_data_o[4]; slack -7.853238 ns. Typical/fast worst setup and worst hold involve pcie_link_up_i. Inspect focused replay mux and link-up RTL next; preserve clocks, delays and functional semantics. No timing closure is claimed.
+- Regional global route 39045601192 (source b3e904d284192c3c336994577428b662f3ef9aa3): IN_PROGRESS. This is the older repaired candidate, not the newer CRC candidate. Preserve its live process.
+- Full 1 us half-step PLL 39043210978 (source c7fc9d2709cd3c7e9cf28584c85e6fd8f2d9294c): IN_PROGRESS. Preserve its native process/checkpoint rather than cold-restarting for observation.
+
+Previously recorded evidence to retain: CRC repair 39052168254 and exact logic equivalence 39054520337 passed in their documented scope (docs/evidence/replay-crc-repair-and-logic-pass-20261017.json). Actual half-cycle retiming 39055313434 passed its six native cases (docs/evidence/cdr-halfcycle-retime-pass-20261017.json). TX v2 cold passed but hot failed the fixed VCE bound (docs/evidence/tx-headroom-v2-rejection-20261017.json).
+
+Next work remains entirely in GitHub: preserve full PD and TX v3 native receipts, diagnose the cold TX rejection, optimize the actual replay/link-up critical paths with functional proof, and follow existing route/PLL handles. Full serial Gen3 x4 PHY, routed mainchip and final setup/hold remain OPEN. Do not label the product or manufacturing signoff complete.
+
+---
+
 ## Immediate resume: complete half-cycle capture; TX hot deficit remains
 
 Keep all execution in GitHub; local workspace remains empty.
