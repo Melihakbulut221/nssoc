@@ -1,15 +1,15 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-name: tx-tree32-high3-physical-cloud
+name: tx-tree32-headroom-assembly-cloud
 on:
   push:
     branches: [codex/complete-open-work]
-    paths: [.github/workflows/tx-tree32-high3-physical-cloud.yml]
+    paths: [.github/workflows/tx-tree32-headroom-assembly-cloud.yml]
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: tx-tree32-high3-physical-${{ github.ref }}
+  group: tx-tree32-headroom-assembly-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   native-physical:
@@ -47,18 +47,18 @@ jobs:
           if [ ! -f "$root/result.json" ]; then
             printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
           fi
-          stem="tx-tree32-high3-physical-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          stem="tx-tree32-headroom-assembly-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           cp "$root/result.json" "$stem.summary.json"
           python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
           python3 - "$stem" <<'PYCODE'
           import json,subprocess,sys
           stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
-          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-tree32-high3-physical',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-tree32-headroom-assembly',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
           PYCODE
       - name: Retain evidence after publication failure
         if: always() && steps.publish.outcome == 'failure'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: tx-tree32-high3-physical-${{ github.run_id }}
+          name: tx-tree32-headroom-assembly-${{ github.run_id }}
           path: hw/soc/out/cloud-tx-tree32-headroom-assembly/
           retention-days: 30
