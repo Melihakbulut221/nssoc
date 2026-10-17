@@ -1,3 +1,9 @@
+## Trimmed native model complete; full32 waveform/PVT matrix launched (2026-10-17)
+
+39009975834/source5ce7936a native composition passed1674devices/114819R76351C,377component recovery/sixactualmodel faults. Summary38497667bytes SHAcd9a218c782f4ca328a4b7a06d33008cbfe685e45b58275870f3f3056580c302 and parts manifest already inspected thissession. Repeatbulk fetch timedout; nojob rerun and no independent RAM fullarchive verification claimed. Successor verifies full33745528byte archive SHAac38ae30398ed3003dbd60738fc7bc41c03b104da269e729e474f618ede0ea47 and all actualmodel hashes. Receipt tx-tree32-headroom-composition-pass-20261017.json.
+
+New tx-tree32-headroom-wave:compactnominal/hotlow/coldhigh, actualwire nominal, actualleafselectorfault compactnominal. FreshGDS124legs/372bases, original604HBT512MOS/34ns256bits/.3,.5,.7UI/limits/sourceoracle unchanged. Clockstiff625 remains schematic in this bench; physicalclock6/frontend/fourlane/mainchip integration OPEN. ClockfreshRC39010617177 passed native13R28C/13faults; inspect completeproof thencompose. Mainchip39009508522, PLL39007535633 andoldwire39004595306 live. Cloudonly/workspaceempty/fullgoalOPEN.
+
 ## Stiff625 physical anchors and intrinsic model passed; freshRC launched (2026-10-17)
 
 39010222637/sourcea2f48cdf passed all16terminal/14plane/fiveconductor geometry and sixactualanchor faults; independently built actualsixdevice intrinsic model with3finitebodycontacts and eightactualmodel faults. Both completearchives/everyoutputverifiedinRAM. Receipt tx-clock-headroom-device-models-pass-20261017.json pins provenance. New tx-clock-headroom-rc-cloud uses actualnewgeometry/14planes with unchanged native metalR/C-conservation/13rawfault gates; nooldRC reuse. Nextcompose intrinsic+freshwires and integrate loaded32tree.

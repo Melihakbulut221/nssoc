@@ -12,8 +12,10 @@ source=json.loads((P/'wire96/native05/result.json').read_text())
 locations=json.loads((P/'wire96/device-locations01.json').read_text())
 anchors=json.loads((P/'wire96/anchors08.json').read_text())
 binding=json.loads((P/'binding96/binding01.json').read_text())
-assert physical['variant']=='budget_high3'
-g=pya.Layout();g.read(str(P/'layout/nssoc_tx_tree32_budget_high3_core_v1.gds'))
+assert physical['variant'] in ('budget_high3','budget_high3_trim')
+gds=P/'layout'/('nssoc_tx_tree32_'+physical['variant']+'_core_v1.gds')
+assert hashlib.sha256(gds.read_bytes()).hexdigest()==layout['outputs'][gds.name]
+g=pya.Layout();g.read(str(gds))
 l=pya.LayoutVsSchematic();l.read(str(P/'physical/lvs/result.lvsdb'))
 layer=l.layer_by_index(source['native_layer_mapping']['134'])
 dx,dy=layout['origin_translation_um']
@@ -66,5 +68,5 @@ for mode in ('compact','wire'):
  rows=[p for v in result['modes'][mode].values() for p in v]
  assert len(rows)==len(set(rows))==(124 if mode=='compact' else 372)
 result['status']='PASS_ALL124_PHYSICAL_INPUT_LEGS_AND372_DATA_BASES'
-result['inputs']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),P/'result.json',P/'layout/result.json',P/'layout/nssoc_tx_tree32_budget_high3_core_v1.gds',P/'physical/lvs/result.lvsdb',P/'wire96/native05/result.json',P/'wire96/device-locations01.json',P/'wire96/anchors08.json',P/'binding96/binding01.json']}
+result['inputs']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in [Path(__file__),P/'result.json',P/'layout/result.json',gds,P/'physical/lvs/result.lvsdb',P/'wire96/native05/result.json',P/'wire96/device-locations01.json',P/'wire96/anchors08.json',P/'binding96/binding01.json']}
 out.write_text(json.dumps(result,indent=2)+'\n');print(result['status'])
