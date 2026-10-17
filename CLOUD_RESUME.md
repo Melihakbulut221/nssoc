@@ -1,3 +1,13 @@
+## Cloud checkpoint: v4 physical core passed; parent routing follows
+
+CDR shunt-v4 core run39047111778/source835d674d passed native560-category DRC (zero markers), deep/flat54-device LVS and five actual fault controls. New geometry retains the reviewed344.985x355.24um boundary and all12 original pin rectangles. Exact source report and archive hashes are in docs/evidence/cdr-v4-core-physical-pass-20261017.json. Next cdr-v4-parent-cloud routes the real crossed data connections around this fresh core; no v3 geometry/RC reuse. Fresh parent DRC/LVS, RC extraction/composition and nominal/hot/cold loaded waves remain mandatory before electrical acceptance.
+
+TXreturn64 diagnosis39046963485/sourceb81f5ba3 completed: original full review reproduced exactly and all source hashes verified. Physical clock public-port to selector-base delays stay below0.5ps with no missing/extra edges in this bench. Data first shows wrong signs at level8 (level16 has margin failures but no wrong signs); final output still364wrong/387below100mV and six HBTs fail headroom. Widened return metal alone did not fix serial transmission. This is a diagnosis, not accepted PHY evidence. See docs/evidence/tx-return64-diagnosis-20261017.json for the bounded receipt; full original traces remain in their GitHub release. Ideal inter-clock connections remain an explicit scope limitation.
+
+All CAD/simulations and retained artifacts remain in GitHub Actions/releases; local workspace is empty. Regionalroute39045601192, PLL39043210978, boot39041981816 and source-handoff39042752404 were live at this checkpoint. Inspect before taking any dependent action. Full serialPHY, completed mainchiproute and finalsetup/hold remain OPEN.
+
+---
+
 ## Native shunt-v4 schematic passed; fresh physical core started
 
 Run39046476349/source770d1b4d passed original nominal/hot/cold XOR data/device criteria and actual swapped-output control. Original54devices/19HBT,2ns startup plus32ns/256symbols, same source levels and100mV margin/0.4Vheadroom gates. Actual reports are in docs/evidence/cdr-shunt-v4-native-pass-20261017.json. This is not full-wire acceptance. New cdr-v4-core-layout workflow waits for and verifies these exact four results, then creates new GDS with native560-ruleDRC/deepflat54LVS/fivefaultcontrols using changed8umoutputshunts and unchanged1.8umcollectorloads.
