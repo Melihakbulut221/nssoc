@@ -1,3 +1,13 @@
+## Explicit-clock cleanup verified; complete native timing census launched (2026-10-17)
+
+PROGRESS. Actualclockcleanup39001319426/source1d065deb41072cdad4bccebfe768444833aad69d PASS:all8mappedconstraints pytest andoriginalphasegroups reproduced; effectiveSDC removesexactly4genericclk_i4nsdata delays atpcie_clk_i/eth_rx_clk_i/eth_tx_clk_i/eth_gtx_clk_o, addsnothing, everyothercommandunchanged. Native330targetqueriescomplete, inputsimmutable. Receipt docs/evidence/clock-port-delay-native-fix-20261017.json binds summary649497178/parts649497245/archive649497309. This is actualSDCbugfix, not newfulltimingacceptance.
+
+Extended --clock-cleanup diagnostic to measure every native endpoint atall3corners/minmax, strictgraph/PathEndcompleteness andoriginalnativefuzzyselectionproof. Compare sharedrows withoriginal38992990610, explicitlyrecordadded/removedendpointnames/nativepinidentity; never silentlydrop disappearedendpoints. SourceODB/SPEF unchanged. Newmanualdispatch clock-port-delay workflow atthiscommit; recordactualrun/result next. NominalRC stillnotqualified/finaltiming.
+
+Midload38999900875 native117300545608/609 live; PLL38982797234 continuation117300617099 live; MBISTboot38994926932/job117285636114 live. Localempty/cloudonly/goalOPEN.
+
+---
+
 ## Clock-delay regression fixture prerequisite restored (2026-10-17)
 
 PROGRESS. Clockcleanup39000922798/sourceed53dc07285f382e199795fdf15483f19eb869f7 stoppedbefore nativeSTA:7pytestPASS/1FAIL because invalidprofileguard test encountered missingignored interfaces.bundle.json beforeprofilevalidation. Not a clockcleanupmeasurement and not skipped. Added pinned base interface preparation via established make soc-interfaces-prepare SOC_INTERFACE_PROFILE=base INTERFACE_PYTHON=python3 before rerunning all8tests. Preservecontrols.log inrelease. Workflowpush starts newjob; recordactualID/outcome.

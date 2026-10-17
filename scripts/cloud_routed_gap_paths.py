@@ -9,6 +9,7 @@ from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from route_cloud_newer_postcts import fetch,sha
 from read_opensta_phase_slacks import parse_phases
+from native_graph_path_coverage import verify as verify_graph
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-routed-gap-paths'
 SOURCE=ROOT/'cloud-routed-extraction'
@@ -32,7 +33,7 @@ def main(clock_cleanup=False):
         assert len(targets)==55 and len({d['endpoint']for d in targets})==55
         source,sp=reports.restore_report('ethernet-compatible-rc',38992990610,
             '40ef6346436194693fea5797abbec711be536a28341fd177d81c3166b47226c1',
-            '9987410d8eac9ec94c53ee3d2bfed3643bde1281098b142bdeede27e2bb80858',OUT/'source',('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl'))
+            '9987410d8eac9ec94c53ee3d2bfed3643bde1281098b142bdeede27e2bb80858',OUT/'source',('routed.odb','candidate.nominal.spef','fresh-routed-sta.tcl','routed-census/native-census.json','routed-census/endpoint-slacks.tsv'))
         assert source['candidate_odb_sha256']==detail['odb_sha256']and source['source_unchanged']
         fetch(reports.BASE+'.summary.json',reports.SUMMARY_SHA,OUT/'original-summary.json');original_result=json.loads((OUT/'original-summary.json').read_text())
         packed=OUT/'original.tar.gz';fetch(reports.BASE+'.tar.gz.part0000',reports.ARCHIVE_SHA,packed)
@@ -106,6 +107,13 @@ puts "NSSOC_GAP_DIAGNOSTIC_COMPLETE $index"
         cleanup=''
         if clock_cleanup:
             cleanup='write_sdc -no_timestamp -digits 12 {'+str(OUT/'before-cleanup.sdc')+'}\n'+'\n'.join(clock_port_delay_cleanup())+'\n'
+        if clock_cleanup:
+            helper=ROOT/'hw/soc/pnr/timing_hold_reproducibility.tcl'
+            method=ROOT/'hw/soc/pnr/routed_endpoint_census.tcl'
+            graph=ROOT/'hw/soc/pnr/native_graph_path_coverage.tcl'
+            assert sha(helper)==reports.HELPER_SHA and sha(method)==reports.CENSUS_METHOD_SHA
+            directory=OUT/'routed-census';directory.mkdir()
+            diagnostic+=f'\nsource {{{helper}}}\nsource {{{graph}}}\nset nssoc_endpoint_out {{{directory}}}\nsource {{{method}}}\nnssoc_graph_finish {{{directory/"native-graph-coverage.json"}}}\n'
         path=OUT/'diagnostic.tcl';path.write_text(actual+'\n'+cleanup+diagnostic)
         result.update(connectivity_source=cp,routed_source=sp,original_runtime_source=dict(summary_sha256=reports.SUMMARY_SHA,archive_sha256=reports.ARCHIVE_SHA),targets=targets);save()
         runtime=Path(os.environ['CLOUD_APPIMAGE']);assert sha(runtime)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
@@ -141,6 +149,18 @@ puts "NSSOC_GAP_DIAGNOSTIC_COMPLETE $index"
             assert set(removed)==expected and len(removed)==4 and not added,(removed,added)
             result['clock_cleanup_effective_delta']=dict(removed=removed,added=added,all_other_commands_unchanged=True,
                 original_clock_unqualified_unset_failed=True,explicit_clock_unset_passed=True)
+        if clock_cleanup:
+            before,old_rows=reports.load_census(OUT/'source/routed-census')
+            after,new_rows=reports.load_census(OUT/'routed-census')
+            result['post_cleanup_native_graph']=verify_graph(OUT/'routed-census',after)
+            old_names=set(before['endpoints']);new_names=set(after['endpoints']);common=old_names&new_names
+            assert all(before['native_pin_mapping'][n]==after['native_pin_mapping'][n]for n in common)
+            shared=set(old_rows)&set(new_rows)
+            result['post_cleanup_timing']=dict(endpoint_count=after['engine_endpoint_count'],rows=len(new_rows),
+                common_endpoint_count=len(common),added_endpoints=sorted(new_names-old_names),removed_endpoints=sorted(old_names-new_names),
+                negative_endpoint_count=after['negative_endpoint_count'],native_wns_seconds=after['native_wns_seconds'],
+                shared_rows_comparison=reports.compare_rows({k:old_rows[k]for k in shared},{k:new_rows[k]for k in shared}),
+                acceptance='NOT_FINAL_TIMING: exact native census after four clock-port data-delay removals; unchanged physical ODB/SPEF, no new routing. Setup/coverage/qualifiedRC/functional CDC and full PHY remain required.')
         for directory,proof in [(OUT/'source',sp),(OUT/'connectivity',cp)]:assert all(sha(directory/n)==v['sha256']for n,v in proof['restore']['selected_files'].items())
         assert all(sha(SOURCE/n)==v for n,v in original_result['outputs'].items())and all(sha(Path(n))==v for n,v in original_result['protected_inputs'].items())
         result.update(status='COMPLETE_EXACT_ROUTED_GAP_PATH_DIAGNOSTIC_NOT_TIMING_ACCEPTANCE',source_unchanged=True,original_timing_reproduced=True,queries=len(begins),target_count=55,
