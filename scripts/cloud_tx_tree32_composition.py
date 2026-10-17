@@ -14,19 +14,24 @@ def main():
     global TOP
     parser=argparse.ArgumentParser()
     parser.add_argument('--variant',choices=('budget_high8','budget_high3','budget_high3_trim'),default='budget_high8')
-    selected=parser.parse_args().variant
+    parser.add_argument('--placement-pitch',choices=('original','tight'),default='original')
+    selected_args=parser.parse_args();selected=selected_args.variant
+    tight=selected_args.placement_pitch=='tight'
+    assert not tight or selected=='budget_high3_trim'
     high3=selected in ('budget_high3','budget_high3_trim')
     trim=selected=='budget_high3_trim'
-    TOP='nssoc_tx_tree32_'+selected+'_core_v1'
+    TOP='nssoc_tx_tree32_'+selected+('_tight_core_v1'if tight else'_core_v1')
     receipt_name='tx-tree32-headroom-extraction-pass-20261017.json' if trim else 'tx-tree32-high3-extraction-pass-20261017.json' if high3 else 'tx-tree32-budget-extraction-pass-20261017.json'
+    if tight:receipt_name='tx-tree32-tight-extraction-pass-20261017.json'
     receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
     expected_counts=dict(devices=1674,R=receipt['resistors'],C=receipt['capacitors'])
-    assert expected_counts==(dict(devices=1674,R=114819,C=76351) if high3 else dict(devices=1674,R=114815,C=76347))
+    assert expected_counts==(dict(devices=1674,R=114909,C=76614)if tight else dict(devices=1674,R=114819,C=76351) if high3 else dict(devices=1674,R=114815,C=76347))
     assert (receipt['devices'],receipt['ports'],receipt['conductors'],receipt['probes'])==(1674,162,377,3262)
     assert len(PORTS)==len(set(PORTS))==162
     spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-composition-input-20261013.json').read_text())
     layout=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
     out=ROOT/'hw/soc/out'/('cloud-tx-tree32-headroom-assembly' if trim else 'cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
+    if tight:out=ROOT/'hw/soc/out/cloud-tx-tree32-tight-assembly'
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-composition-input.tar.gz'
@@ -70,6 +75,9 @@ def main():
         assert extraction['native_geometry_census']==receipt['native_geometry_census']
         assert extraction['source_head']==receipt['source_head']
         assert extraction['variant']=='tree32_'+selected
+        if tight:
+            assert extraction['placement_pitch']==receipt['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)
+        result['placement_pitch']=extraction.get('placement_pitch',dict(name='original',column_um=1000.,row_um=600.))
         assert extraction['audit']['actual_exported_resistors']==expected_counts['R']
         assert extraction['audit']['actual_exported_capacitors']==expected_counts['C']
         protected={str(q):sha(q) for sub in ('layout','physical','wire96') for q in (out/sub).rglob('*') if q.is_file()}
