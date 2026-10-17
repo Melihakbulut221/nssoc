@@ -1,3 +1,11 @@
+## Clock-layer failure measured; extended native congestion repair (2026-10-17)
+
+Clock-layerGRT39038463008 TERMINALFAIL after1698seconds: actualMetal4..TopMetal2 clocks verified, NDR preserved(no downgrade warning), overflow328 versus original385. M2=1,M3=119,M4=16,M5=185,TM1=4,TM2=3;141519nets. No guide/state accepted. Fullreceipt corrpre-clock50-congestion-20261017.json retains native tail and immutable release pins.
+
+New corrpre-banked-clock200-grt-cloud retains same proven sourceODB/netlist,20SRAM,allclock/derate/NDR/capacity/zerooverflow gates. Only search budget increases50to200 relative to failed clock-layertrial; native congestion-region reports every25iterations added for next physical diagnosis. Never adopt an overflowing result. Official option reference: https://openroad.readthedocs.io/en/latest/main/src/grt/README.html#global-route . Detailed route/STA still pending.
+
+PLL fullthree-step comparison39040693114 preserved in pll-three-step-comparison-20261017.json. ReplayCRC proof39041074376 remainsactive on sourcee31f2488; candidateonly, no productionRTL adoption. TXreturn64wire39030593206 stilllive. Allcloud/localempty/fullgoalOPEN.
+
 ## Exact replay verdict timing candidate (2026-10-17)
 
 New replay-crc-cloud isolates a cycle-exact EOP CRC verdict rewrite on replay source a745b57c0eec0e03d687d034f847e25233fc85ccbb242eca51b754656dff78dc, independently verified identical to physical boot f65c0c35a6e2c706f0fe7df485ab6b2115b11e6a. Current worst slow setup path starts ACK encoder busy, traverses data selection/CRC, ends retry count. Reverse residue predicate 00BE26ED removes the byte CRC update chain from that verdict while preserving CRC state updates, packet validation, latency and all handshakes. Candidate is generated only on hosted runner and not adopted yet.
