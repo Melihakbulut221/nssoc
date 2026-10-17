@@ -1,3 +1,9 @@
+## Source-bound residue candidate physical continuation prepared (2026-10-17)
+
+Previousgoalturn PROGRESS: adopted exactlyproven CRCpredicate, newbank proofs passed and actualnativechip/protocolstarted. New replay-crc-placement-cloud waits exactboot39041981816/protocol39041981763/bank39041981839/correctedresidue39042052313. A terminalfailure stops this successor; no blindrestart. Afterallpass a separate job revalidatesnativeproofcounts/actualfaults, per-module sourceidentity and ALLRTL identity betweenboot/protocol/currenthead; downloadsactual43-filebootartifact and retainsall28checks/system+EthernetMBIST/nativecellscrubfaultgates. New boot path is explicitlybound in separatepreserver; incumbentcontroller unchanged.
+
+Onlythen original guardedprepare_pcie_mainchip_pnr/cloud_corrpre_mbist_placement executes actualfreshfloorplan/placement/CTS of newbootnetlist with20SRAM and20/4/8/8ns clocks/5percentderate. Publishgroupsreplay-crc-boot-evidence and replay-crc-placement distinguish newcandidate from incumbent. Oldclock200GRT39041556309 and TXreturn64wire39030593206 continue. NewcandidateCTS willrequireits ownpostCTSrepair/equivalence/routing/extractedSTA; no oldtimingadoption. FullserialPHY/mainchipDRT/finalsetupholdOPEN/allcloud/localempty.
+
 ## Exact active cloud handles after RTL proof and adoption (2026-10-17)
 
 Canonical replay1a15c0b9 was adopted at295bb240; all RTL unchanged through6e33442f. Native chip boot39041981816/source295bb240: controlspassed, job117423317143 now running actualCORRPRE/PCIe/system+EthernetMBIST boot. Native protocol39041981763/source295bb240 job117423150086 running bidirectional nativecell packet integration. Do not duplicate these jobs. Corrected post-adoption residue proof39042052313/source6e33442f queued; invalid redundantbaseline-recheck39041981822/source295bb240 cancelled andmustnotbecited.
