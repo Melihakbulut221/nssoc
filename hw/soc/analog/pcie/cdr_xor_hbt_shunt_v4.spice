@@ -1,0 +1,13 @@
+* Candidate load v3 requires a new waveform campaign and fresh future layout.
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Native differential XOR candidate for CDR sample comparison, not a CDR.
+* Reuses all54 intrinsic/contact devices of the existing v10 mux.
+* With select positive the mux selects A; otherwise it selects inverted A.
+* Its ordinary output is XNOR. Swapping output polarity produces XOR.
+* dp/dn and ep/en require DIFFERENT common modes; no implicit level shifter.
+* External current bias, clocked samplers, V/I converter, physical joins,
+* parasitics, PVT/device checks and closed-loop acquisition remain required.
+.subckt nssoc_cdr_xor_hbt_shunt_v4 dp dn ep en qp qn avdd avss sub iref
+XCORE sub dp dn dn dp iref ep en qp qn avss avdd nssoc_cdr_xor_core_shunt_v4
+.ends nssoc_cdr_xor_hbt_shunt_v4
