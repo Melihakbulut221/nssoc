@@ -34,7 +34,7 @@ def main():
   app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
   probe=out/'all-interfaces.json'
   with (out/'bind-interface.log').open('w')as log:
-   subprocess.run([str(app),'python',str(ROOT/'scripts/bind_tx_tree32_interfaces.py'),str(source),str(probe)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
+   subprocess.run(['sudo','env','-u','LD_LIBRARY_PATH',str(app),'python',str(ROOT/'scripts/bind_tx_tree32_interfaces.py'),str(source),str(probe)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,check=True)
   interfaces=json.loads(probe.read_text());assert interfaces['status']=='PASS_ALL124_PHYSICAL_INPUT_LEGS_AND372_DATA_BASES'
   core=source/('binding96/tree1674-compact01.spice' if args.mode=='compact' else 'wire96/tree1674-wire01.spice')
   result['model_sha256']=sha(core);result['interfaces_sha256']=sha(probe)

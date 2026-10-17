@@ -1,3 +1,11 @@
+## Full32 waveform runner namespace startup repaired (2026-10-17)
+
+PROGRESS. First full32 waveform39004398464/source1960fda8d88f5b2370d6238738d1225239f279fa stopped BEFORE native binding/simulation: Ubuntu24 AppImage error "cannot write uid_map: Operation not permitted" (exit127). Exact bind-interface.log read from archivedcompact-none case and verified against summary hash; failed captures preserved summary649584769/parts649584826/archive649584891. Not a waveform measurement or rejected circuit.
+
+Use sudo only for pinned AppImage native geometry helper, clearing inherited hostLD_LIBRARY_PATH; do not globally disable runner security settings. Add early nativepya import preflight before artifact restore. Native SPICE remains original unprivileged process/solver. Same physical model, ports,124legs/372bases,all604HBT512MOS/limits. Workflow path change starts fixed successor; preserve original failed jobs. Record successor outcome.
+
+---
+
 ## Nx3 composition passed; full physical32 waveform launched (2026-10-17)
 
 PROGRESS. Composition39003764536/source4b0ce6f8c243aee27b385145f7a3009d4343aed8 PASS actual1674devices114819R76351C,377physicalRcomponents recover native schematic, six actual output corruption controls. Receipt docs/evidence/tx-tree32-high3-composition-pass-20261017.json binds summary649566900/parts649567039/archive649567106(33734155bytes). CompactSHA922cbd7f87cfbda0e14888a5233beac0d883d0f8577bf203dac385938a265286; wireSHA1d5332039681fe6f8a986818d8c36902cd95868cff12e7dec94dd9b1adc92233. No electrical acceptance inferred.
