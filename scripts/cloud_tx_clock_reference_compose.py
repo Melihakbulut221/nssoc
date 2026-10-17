@@ -99,6 +99,8 @@ def verify(text,expected,wires,mapping,native,planes):
 
 INPUTS['l5p7']=[dict(run=38962062682,group='tx-clock-reference-intrinsic-l5p7',head='1c804f1faca16917fade3ed7d5371098bdae86be',summary='c2b4f6ece07c28178a788059c7e2f444bdf23de93532d0d684c4dc302f35538a',parts='a817e81c588165aadeb3912b976a868e187374f2b5a985f0e4618df8a4764364',model='07314432a9efb4d37cb1c1cde2aa9429d060750517d01063036a22a6e1e8461b'),dict(run=38962725630,group='tx-clock-reference-rc-l5p7',head='aee605d5ecbe2ae4cdbb84e532fc7a160d9af29b',summary='a9441ba286414e1dd008517a4ccb8afb80057f74c253ce6f53e4c300969547a5',parts='44a153f7ec874f72fa5d0c6e68fd7c7a65161e63ca40f0bec0637a6a72a5372f')]
 
+INPUTS['l6p25']=[{'run': 39010222637, 'group': 'tx-clock-reference-intrinsic-l6p25', 'head': 'a2f48cdf278448ad38c6bb291f2ce467d8e698e2', 'summary': '5367db3faacedab59607ce83ff9d1e941749919cc5e34b1e592793d52f87497d', 'parts': '04b1b32363b98ab41c91b01de33d05cb9e0c1f79dbade8497530c03f71e94bfe', 'model': 'cd21b6edeb00f2fa7687c30cdb81d774d19cbb0645704d5569eb58e14a7b0138'}, {'run': 39010617177, 'group': 'tx-clock-reference-rc-l6p25', 'head': '165932149f47b96af5ce20a38f555b2ddc47c4b5', 'summary': 'e5e776a4408450a9ed084b8c8065be009c66eff21970bb78c18f356d530de31b', 'parts': '97a3dfae7156e84df7d56717d203f72ec93ea875ce27e4a710466041571c96a1'}]
+
 def main():
     global OUT,TOP,INTRINSIC_TOP
     parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=sorted(INPUTS),required=True);args=parser.parse_args()
