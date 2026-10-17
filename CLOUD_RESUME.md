@@ -1,3 +1,13 @@
+## Saved native path review completed; targeted PCIe and Ethernet causes identified (2026-10-17)
+
+39012558696/sourcefe677fa2 finished read-only cloud inspection; complete source archive9eceb042 and ALL113saved output hashes verified. Receipt corrpre-postcts-path-review-20261017.json pins summarya448aaed and raw worst paths. No native CAD rerun after local-RAM observation timeout.
+
+Slow worstsetup -7.460505ns: retry.send_slot[0] FF through deep combinational byte selection to pcie_tx_data_o[3]; arrival10.410504ns vsrequired2.95ns at original4ns clock. Secondslow path -7.457627ns starts endpoint.endpoint.transmit_packet.index[2] into downstream FF. Typical/fast worstsetup retrain_done input ->pcie_tx_data_o[5], -3.791396/-1.704735ns. Worstslow/typ hold pcie_link_up_i ->PCIe FF (-0.099498/-0.127036ns); fast worsthold Ethernet eth_tx_er_o against forwarded eth_gtx (-0.268389ns), followed eth_txd_o[7] (-0.259534ns). Native repair inserted13916hold buffers, resized66 and inserted19setup buffers, both RSZ0062/0064 retained. This needs architectural/logic path work as well as targeted physical repair; do not relax budgets or mask paths.
+
+Next: inspect exact replay byte mux and transmit_packet index cone, preserve full streaming/backpressure/ACK/retry behavior and formal proof when changing RTL. Existing hw/soc/flow/check_eco_logic_clones.py supports retained state/macro equations and positive buffer contraction for physical repair validation; sw/tests/eco_logic_native.py has real negative macro controls. Current new timing candidate still requires this proof and subsequent routing/extractedSTA/signoff.
+
+39012081694/source52e9cee6 all5actual eleven-clock/native32 waveform jobs now in_progress, preserving original schematic-clock39011282078,PLL39007535633,oldwire39004595306. No physical PHY/mainchip or timing acceptance inferred. All cloud, local workspace empty, goal OPEN; this turn PROGRESS.
+
 ## Native setup/hold trial improved but not closed; exact path review launched (2026-10-17)
 
 39011120664/source1d0caf4d completed771.30s native repair. Slow setup WNS -11.3312 -> -7.46051ns, hold565 ->6 (-0.0994977ns); typical setup-6.18229 ->-3.7914ns, hold1123 ->13 (-0.127036ns); fast setup-3.2504 ->-1.70473ns, hold12227 ->274 (-0.268389ns). Setup counts slow8050->8102,typ5960->5776,fast4871->2150. Register-to-register hold slow/typ zero, fast257. Slew4/2/0 and cap0; fanout1138 remains. No acceptance/equivalence/routing claim. Receipt corrpre-postcts-timing-trial-20261017.json stores exact source report; repairedODB94e4f21b7ee0018ef0cc9715ed40a2932e8ecda3d23434e770195c77029cd7a6.
