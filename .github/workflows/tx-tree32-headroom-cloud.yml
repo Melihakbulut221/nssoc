@@ -21,40 +21,11 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Check exact physical scaling and malformed parameter rejection
+      - name: Verify actual native candidate geometry and unchanged emitter budget
         run: |
-          python3 -m py_compile scripts/cloud_tx_tree32_budget.py
           python3 -m pip install numpy==2.3.3
-          python3 - <<'PYCODE'
-          import sys,json
-          from fractions import Fraction
-          sys.path.insert(0,'scripts')
-          from cloud_tx_tree32_budget import resized,records,SOURCE,trim_dividers
-          original=SOURCE.read_text();source={r[0]:r for r in records(original)}
-          proofs={}
-          for nx in (1,2,3,4):
-              text,proof=resized(original,nx)
-              assert len(proof['actual_parameter_faults_rejected'])==4
-              assert proof['emitters']==1+18*nx
-              for row in records(text):
-                  if 'rppd'not in row:continue
-                  prior={k:Fraction(v[:-1])for k,v in (t.split('=')for t in source[row[0]][5:])if k in ('w','l')}
-                  new={k:Fraction(v[:-1])for k,v in (t.split('=')for t in row[5:])if k in ('w','l')}
-                  assert new['l']/new['w']/(prior['l']/prior['w'])==Fraction(8,nx)
-              proofs[nx]=dict(emitters=proof['emitters'],faults=proof['actual_parameter_faults_rejected'])
-          assert 28*19+2*55+77==719
-          for nx in (1,3):
-              original,_=resized(SOURCE.read_text(),nx)
-              candidate,proof=trim_dividers(original,nx)
-              before={r[0]:r for r in records(original)};after={r[0]:r for r in records(candidate)}
-              assert set(before)==set(after)
-              assert [k for k in before if before[k]!=after[k]]==['XFPR','XFNR']
-              assert len(proof['rejected_controls'])==4
-              for name in ('XFPR','XFNR'):
-                  assert before[name][:6]==after[name][:6] and before[name][7:]==after[name][7:]
-                  assert Fraction(after[name][6].split('=')[1][:-1])==Fraction(30 if nx==1 else '15.4')
-          print(json.dumps(proofs))
-          PYCODE
+          python3 -m py_compile scripts/cloud_tx_tree32_headroom.py
+          python3 scripts/cloud_tx_tree32_headroom.py --controls
   native-full32:
     needs: controls
     runs-on: ubuntu-24.04
@@ -63,10 +34,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {variant: budget_high3_trim, fault: none, condition: nominal}
-          - {variant: budget_high3_trim, fault: none, condition: hot_low}
-          - {variant: budget_high3_trim, fault: none, condition: cold_high}
-          - {variant: budget_high3_trim, fault: swap_leaf_select, condition: nominal}
+          - {variant: budget_drive_v2, fault: none, condition: nominal}
+          - {variant: budget_drive_v2, fault: none, condition: hot_low}
+          - {variant: budget_drive_v2, fault: none, condition: cold_high}
+          - {variant: budget_drive_v2, fault: swap_leaf_select, condition: nominal}
     permissions:
       contents: write
     steps:
@@ -83,15 +54,15 @@ jobs:
           python3 -m pip install numpy==2.3.3
       - name: Complete native full32 tree and actual deepest-selector fault
         run: |
-          python3 -m py_compile scripts/cloud_tx_tree32_budget.py
-          python3 scripts/cloud_tx_tree32_budget.py --variant ${{ matrix.variant }} --fault ${{ matrix.fault }} --condition ${{ matrix.condition }}
+          python3 -m py_compile scripts/cloud_tx_tree32_headroom.py
+          python3 scripts/cloud_tx_tree32_headroom.py --variant ${{ matrix.variant }} --fault ${{ matrix.fault }} --condition ${{ matrix.condition }}
       - name: Preserve complete native captures and every failure
         if: always()
         id: publish
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          root=cloud-tx-tree32-budget-${{ matrix.variant }}-${{ matrix.fault }}
+          root=cloud-tx-tree32-headroom-${{ matrix.variant }}-${{ matrix.fault }}
           if [ "${{ matrix.condition }}" != nominal ]; then root="$root-${{ matrix.condition }}"; fi
           mkdir -p "$root"
           if [ ! -f "$root/result.json" ]; then
@@ -110,5 +81,5 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: tx-tree32-headroom-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}
-          path: cloud-tx-tree32-budget-${{ matrix.variant }}-${{ matrix.fault }}*/
+          path: cloud-tx-tree32-headroom-${{ matrix.variant }}-${{ matrix.fault }}*/
           retention-days: 30
