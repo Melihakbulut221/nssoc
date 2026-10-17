@@ -1,0 +1,9 @@
+# CDR PD394 layout v2 physical validation
+
+The actual v2 parent GDS passed 560 native DRC categories with zero markers and both hierarchical and flat transistor LVS (394 versus 394 devices, one Match, no extraction diagnostics) in run 39079610383. Wrong finger count, missing HBT, opened output conductor, shorted supply rails and off-grid geometry were all rejected. The full immutable report and archive hashes are in `evidence/cdr-retimed-parent-v2-physical-pass-20261018.json`.
+
+This candidate reorders the 16 unchanged physical children to shorten connected signal spans, moves signal access ports toward their connected children, and widens the three public supply feeds to 64 um. All child device geometries and circuit parameters remain unchanged. The original v1 layout and its failed whole-wire loaded simulations remain preserved. Artificial R/C sensitivity experiments are diagnostic evidence only and are not substituted for the real candidate.
+
+The next job binds all 158 actual interface points to the new native LVS database, verifies the 51 logical nets, and repeats 19 binding fault controls. Fresh terminal binding, MIM-aware extraction, whole-wire early/late loaded transient simulations, device voltage/current checks and closed-loop acquisition are still required. Old v1 device IDs and wire networks must not be reused for v2.
+
+Mainchip post-CTS repair equivalence independently passed in run 39079184710; the receipt retains all source proofs and fresh timing report excerpts. This proves logic preservation within its stated scope, not timing closure or routed connectivity. Slow setup remains -6.199764 ns and fast hold -0.391465 ns. The first reported slow path starts in the Ibex register file, while the worst fast hold path starts at pcie_rx_valid_i. The full reports remain in the cloud archive.
