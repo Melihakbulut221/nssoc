@@ -36,8 +36,8 @@ def main():
     parser.add_argument('--circuit-profile', choices=('baseline','cascade14','cascade16','cascade158','final_drive_v5','final_drive_v6','final_drive_v7','final_drive_v8','final_drive_v9','final_drive_v10','final_drive_v11'), default='baseline')
     parser.add_argument("--boundary-pins", action="store_true", help="Extend real TM2 public pins to the macro boundary; requires fresh DRC/LVS and RC")
     parser.add_argument("--boundary-policy", choices=("left", "nearest_pair", "nearest_pair_tight"), default="left", help="Select actual left/right pin metal access while keeping each differential pair on one side")
-    parser.add_argument('--prestage-nx', type=int, choices=(1,8), default=8,
-                        help='Actual low-rate Nx1 cell from the full32 native sizing study; requires new physical proof')
+    parser.add_argument('--prestage-nx', type=int, choices=(1,3,8), default=8,
+                        help='Actual Nx1/Nx3 cell from the full32 native sizing study; requires new physical proof')
     args = parser.parse_args()
     if args.prestage_nx != 8:
         assert os.environ.get('GITHUB_ACTIONS') == 'true'
@@ -152,20 +152,39 @@ def main():
                 result['circuit_equivalence_before_generation']=audit(circuit.read_text(),native.read_text(),profile=audit_profile)
                 top=f'nssoc_tx_mux2_final_drive_{audit_profile}_layout_v1'
             assert sha(circuit)==expected
-            if args.prestage_nx == 1:
+            if args.prestage_nx in (1,3):
                 from cloud_tx_tree32_budget import resized
                 original_circuit = circuit
-                candidate, sizing = resized(circuit.read_text(), 1)
+                candidate, sizing = resized(circuit.read_text(), args.prestage_nx)
                 expected = hashlib.sha256(candidate.encode()).hexdigest()
-                assert expected == 'af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd'
-                circuit = out / 'pre-nx1.spice'
+                assert expected == {1:'af7f182a4cb33684e1ca191cfd34462786f7afa2942395de61ff2693514e2dcd',
+                                    3:'3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d'}[args.prestage_nx]
+                circuit = out / ('pre-nx'+str(args.prestage_nx)+'.spice')
                 circuit.write_text(candidate)
-                top = 'nssoc_tx_mux2_cascade158_nx1_layout_v1'
+                top = 'nssoc_tx_mux2_cascade158_nx'+str(args.prestage_nx)+'_layout_v1'
                 result['prestage_sizing'] = dict(sizing,
                     original_source=str(original_circuit.relative_to(ROOT)),
                     original_sha256=sha(original_circuit),candidate_sha256=expected,
-                    native_schematic_evidence_run=38993903811,
-                    evidence_scope='All28 low-rate Nx1 stages passed their native HBT checks; two different fast Nx4 stages failed. Full32 candidate remains rejected.')
+                    native_schematic_evidence_run=38993903811 if args.prestage_nx==1 else 38999900875,
+                    evidence_scope='Original Nx1 low-stage evidence or full32 Nx3 nominal plus actual leaf-selector fault. New physical/PVT/RC evidence remains mandatory.')
+                if args.prestage_nx==3:
+                    from route_cloud_newer_postcts import fetch as fetch_sizing
+                    proofs={}
+                    for fault,digest in [('none','47fbd49a50222e53392edaa8aab9aa0423724c9a3992e397b735c8db9011e283'),
+                                         ('swap_leaf_select','60b3a68f30cf883685f7734be60864a13587a083653a6d6af8332413404229f5')]:
+                        group='tx-tree32-budget-budget_high3-'+fault
+                        url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38999900875-1-'+group+'/'+group+'-38999900875-1.summary.json'
+                        target=out/('native-sizing-'+fault+'.json');fetch_sizing(url,digest,target)
+                        proof=json.loads(target.read_text())
+                        assert proof['source_head']=='1df5234d5e30070148c05fe001ebe2964212f8b0'
+                        assert proof['variant']=='budget_high3'and proof['fault']==fault and proof['source_unchanged']
+                        assert proof['outputs']['pre-nx3.spice']==expected and not proof['diagnostics']
+                        if fault=='none':
+                            assert proof['schematic_screen_passed']and proof['review']['all_engineering_gates_passed']
+                            assert not proof['review']['failed_hbts']and not proof['review']['failed_mos']
+                        else:assert proof['actual_leaf_fault_rejected_by_original_bits']and proof['review']['signals']['wrong_sign_samples']==27
+                        proofs[fault]=dict(summary_sha256=digest,source_run=38999900875)
+                    result['prestage_sizing']['native_schematic_receipts']=proofs
             for before,after in [
                 ('hw/soc/out/pcie-tx-mux2-20261012/tx_mux2_hbt_passive_fast_v1.spice',str(circuit.relative_to(ROOT))),
                 ('4d7606b3c14ef06de2d25ce46c266dcef3635fe602218b3a8932f7f061e53101',expected),
@@ -653,21 +672,20 @@ def main():
             assert source.count(before) == 1
             source = source.replace(before, before + '                boundary_pin_routes=boundary_pin_routes,\n')
             edits.append(dict(boundary_pin_policy=args.boundary_policy, scope='Extend all12 actual TM2 public conductors to selected macro boundaries; each differential pair stays on one side. Retain original devices/local routes and unchanged native physical gates. Fresh RC and loaded waves required.'))
-        if args.prestage_nx == 1:
-            # The two bleeders grow from38.4um to307.2um. Translate their
-            # actual PCells and taps down by268.8um so their upper ends retain
-            # the previous placement. Native DRC/LVS decide legal connectivity;
-            # no previously extracted RC is reused.
+        if args.prestage_nx in (1,3):
+            # Move actual enlarged bleeders and taps down by their growth.
+            # Native DRC/LVS decide connectivity; all routes regenerate.
+            length,delta={1:('307.2','268.8'),3:('102.4','64.0')}[args.prestage_nx]
             before = '    assert sorted(positions)==list(range(27))\n'
             after = ('    for index in (21,22):\n'
                      '        assert rows[index]["path"] in ("xtest.xba","xtest.xbb")\n'
-                     '        assert rows[index]["params"]["l"] == "307.2u"\n'
+                     '        assert rows[index]["params"]["l"] == "'+length+'u"\n'
                      '        px,py = positions[index]\n'
-                     '        positions[index] = (px,py-268.8)\n' + before)
+                     '        positions[index] = (px,py-'+delta+')\n' + before)
             assert source.count(before) == 1
             source = source.replace(before, after)
             edits.append(dict(before=before,after=after,
-                reason='Place actual longer Nx1 bleeders outside HBT rows; preserve all PCells, substrate taps, native gates and regeneration of routes.'))
+                reason='Place actual longer scaled bleeders outside HBT rows; preserve all PCells, substrate taps, native gates and regeneration of routes.'))
         generator = out / 'generate.py' 
         generator.write_text(source)
         physical_method=out/'verify-physical.py'

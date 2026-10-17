@@ -1,3 +1,13 @@
+## Full32 Nx3 native nominal and actual selector-fault gate passed (2026-10-17)
+
+PROGRESS. Midload38999900875/source1df5234d5e30070148c05fe001ebe2964212f8b0 terminalPASS within schematicnominalscope. All604HBT/512MOS nativebounds pass, all768output samples pass(min281.021842mV), all5interfacegroupspass; no solverdiagnostics. Actualleafselectorfault independentlyrejects27wrongbits, allboundsunchanged. MinimumVCE403.957492mV leaves only3.957492mV over400mVlimit; this smallnominalmargin is NOT PVT/PEX proof. Tree719emitters/lane2876fourtreeonly excludesotherblocks. Nominalsummary649488228 SHA47fbd49a50222e53392edaa8aab9aa0423724c9a3992e397b735c8db9011e283, fault649489127 SHA60b3a68f30cf883685f7734be60864a13587a083653a6d6af8332413404229f5. Fullreceipts docs/evidence/tx-tree32-high3-native-pass-20261017.json.
+
+Started Nx3 physicalcell workflow tx-pre-nx3-physical-cloud atthiscommit. Controller supports explicit --prestage-nx3, sourcebinds actualpassedcandidate3f4a896077a8791a617296fece3703c0641be8fcf381b9be0cc18cbd6563109d andbothnativeproofsummaries. Actual55emitters/19HBT+8R+27taps=54devices12ports, freshPCellGDS/LEF/routes. Bleeders38.4→102.4um move64umdown withtaps. Same560DRC/deep+flatLVS/fiveactualfaults, nopriorRCreuse. Recordrun/resultbeforeparentintegration; next mix28verifiedNx1+2freshNx3+final77, freshfull32parentDRC/LVS/RC/nativewave/PVT. Originalhigh8layout/electricalfailure retained.
+
+Clockfixfullcensus39001722601 stilllive; strictpipefail successor39001834734 pending atlastcheck. PLL38982797234 continuation andMBIST38994926932 live. Localempty/cloudonly/goalOPEN.
+
+---
+
 ## Native clock-delay fix controls archived; full census running (2026-10-17)
 
 PROGRESS. Verified actualcontrols.log from hash-bound archive649497309:8passed0failed(0.37s), no assumptionfromworkflowgreen. Added pipefail beforepytest|tee sofuturetestfailurecannotbehiddenbylogging. Workflowpush starts strict successor(fullcensus samecode); preserve alreadyhealthyfullcensus39001722601/sourceade36fe40bc8806bc11f575b40077ae14b1a3e2f, do notcancel/restart. Next compareterminalnativecensus forcorrectedclockconstraints; record bothIDs/outcomes. Completedclockcleanupreceipt nowincludesactualarchivedcontrolsha/text.
