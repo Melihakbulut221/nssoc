@@ -1,3 +1,11 @@
+## Active cloud handles after physical pass and electrical rejection (2026-10-17)
+
+New lower-loading study run38997777137, source32e08c8699bfe917484590837ac5e1e944192da3, workflowtx-tree32-loadmatch-cloud.yml. Latest native jobs: [{"id": 117294011910, "name": "controls", "status": "completed", "conclusion": "success"}, {"id": 117294073719, "name": "native-full32 (budget_high2, swap_leaf_select)", "status": "in_progress", "conclusion": null}, {"id": 117294073731, "name": "native-full32 (budget_all1, none)", "status": "in_progress", "conclusion": null}, {"id": 117294073742, "name": "native-full32 (budget_high2, none)", "status": "in_progress", "conclusion": null}, {"id": 117294073764, "name": "native-full32 (budget_all1, swap_leaf_select)", "status": "in_progress", "conclusion": null}]. Original bits,34ns256bits,604HBT512MOS gates unchanged. Wait for exact results; no assumed improvement. Prior full32high8 electrical study38996028457 completed and was REJECTED despite separately passing native physical layout; both records preserved.
+
+Physical parent extraction38997568496/job117293367721 confirmed running actual31macro nativeRC/graph13fault step. Exactnewsource571489e3a6fbb6366cd89df4a5451032dfa086ef. Boot38994926932/job117285636114 andPLL38982797234/job117247407978 also confirmed alive. Do not restart from observation delays. Localprojectempty/allengineeringcloud; goalOPEN.
+
+---
+
 ## High8 electrical candidate rejected despite physical pass; lower loading comparison started (2026-10-17)
 
 PROGRESS. Actual full32 native study38996028457/sourceb40b3ef completed nominal+deepest-selectorfault. Nominal data768samples pass minimum280.639076mV, but32HBTminimumVCE failures (worst266.790939mV vs400mV), andlevel4 interface128samples below150mV (minimum104.102895mV). NoMOSfailures/solverdiagnostics,sourceunchanged. Actual selectorfault27wrong output samples rejected. Original high4 worstVCE372.533256mV was better; restoringlargefastcells didNOTcloseelectricalheadroom. DoNOTadopt high8 physicalPASS as functional/electricalPHYacceptance. Evidence docs/evidence/tx-tree32-high8-rejected-loadmatch-20261017.json preserves all failures and raw hashes.
