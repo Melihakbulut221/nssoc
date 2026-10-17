@@ -1,3 +1,13 @@
+## Latest: fresh fullPD RC passed; equivalent HBT unit spelling corrected
+
+Checked 2026-10-17T22:08:05.379078+00:00. CorrectedRC39072993122/source28e6794034db8f7d4c5b70f93d7a86a0c2d40af0 PASS: actual8933wireR7649wireC,111components776probes, exactnativeRtopology/value andpoint/mutualC preservation,13rawcorruptionsrejected,allsourcehashesunchanged. Summary651718605/parts651718678; full2.1MBsummary/rawarchive keptRelease, compactcompleteaudit/controlreceipt docs/evidence/cdr-retimed-rc-pass-20261018.json. This iswiregraphverification, notRF/substrate/completePEXqualification.
+
+Binding39073564376/source2bd67bb63fb057286424c6dddf647f5fff8028ee exportedallnative394devices successfully butstopped atliteral HBTsize-stringassert: exactnativeDecimal70n yields0.070u, physicallyequalto0.07u. Changed ONLY the two dimension comparisons toexactSI Decimalvalues; emitterdimensions remain70nm/900nm,integerNx1..10 unchanged. Fullfailure docs/evidence/cdr-retimed-binding-unit-failure-20261018.json. Observecorrectedsuccessor beforecomposing. Nextcomposeall394nativePDK devices+all16582wireelements, preserveMIMtop/bottom/finitecontacts/body andwirecref distinct, testmutations, loadedPD simulations andactualVCOfeedback. MIM/device-wire capacitance separation andRFqualifiedPEX stillrequireexplicitreview; wireauditdoesnotprovephysicalmodelaccuracy.
+
+CLOUD ONLY; localworkspaceempty. FullserialPHY/mainchiprouting/finalsetupholdOPEN. ThisgoalturnPROGRESS.
+
+---
+
 ## Latest: native PD394 model binding prepared while fresh RC runs
 
 Checked 2026-10-17T22:04:17.704489+00:00. CorrectedRC39072993122/source28e6794034db8f7d4c5b70f93d7a86a0c2d40af0 nowin_progress, job117514286846 restoringpinnedruntime atlastpoll. No restart. New cdr-retimed-binding cloud workflow independentlyexports all394nativeLVS devices fromsameverifieddatabase, crosschecks1134terminalidentities/parameters againstactualPcellgeometry andnativeextractedSPICE, generatespinnedPDK compactmodel withall11MIM/159finitecontacts, and rejects8actualmodelmutations. Exactdecimal nativeSPICE geometry checkedagainstJSON withinoneULP beforeMIMarea/perimeterchecks. This isrequired input towholewirecomposition, notelectrical/closedloop acceptance. Needinspectnative resultbeforeusingmodel. AllworkCLOUDONLY; localworkspaceempty; fullPHY/mainchiprouting/finaltimingOPEN.

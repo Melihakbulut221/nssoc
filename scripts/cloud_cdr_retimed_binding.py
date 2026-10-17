@@ -53,7 +53,7 @@ def build(native_text,devices,geometry,tech,ports_expected):
             canonical[k]=value
         model_device=dict(d,parameters=canonical)
         sim={k.lower():v for k,v in models.model_params(model_device,tech).items()}
-        if kind=='npn13G2':assert canonical['Nx']==int(canonical['Nx'])and 1<=int(canonical['Nx'])<=10 and sim['we']=='0.07u'and sim['le']=='0.9u'
+        if kind=='npn13G2':assert canonical['Nx']==int(canonical['Nx'])and 1<=int(canonical['Nx'])<=10 and models.number(sim['we'])==Decimal('0.07e-6')and models.number(sim['le'])==Decimal('0.9e-6')
         nets=[node_map[d['terminals'][t]]for t in models.MODEL_ORDER[kind]]
         model='npn13g2'if kind=='npn13G2'else kind;name=f'XD{d["native_id"]:04d}'
         row=dict(instance=name,native_id=d['native_id'],model=model,native_model=kind,native_terminal_order=order,compact_model_order=models.MODEL_ORDER[kind],native_nodes=d['terminals'],compact_nodes=nets,parameters=sim,native_parameters={k:str(v)for k,v in canonical.items()})
