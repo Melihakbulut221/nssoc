@@ -45,7 +45,18 @@ def native():
                 instance_pins=sorted(ins,key=lambda t:(t['instance'],t['pin'])),boundary_pins=sorted(bs,key=lambda t:t['port']))
         return name
     def detail(d):
-        inst,t=resolve(d['physical_pin']);direction=str(t.getIoType());net=net_record(t.getNet())
+        pin=d['physical_pin']
+        if pin['kind']=='boundary':
+            t=block.findBTerm(pin['port']);assert t is not None,('missing_boundary',pin)
+            assert t.getName()==pin['port']
+            direction=str(t.getIoType());net=net_record(t.getNet())
+            if net is None:classification='boundary_'+direction.lower()+'_disconnected'
+            elif nets[net]['ambiguous_terminals']:classification='boundary_connected_ambiguous_direction'
+            elif direction=='OUTPUT':classification='boundary_output_with_driver'if nets[net]['drivers']else'boundary_output_no_driver'
+            elif direction=='INPUT':classification='boundary_input_with_loads'if nets[net]['loads']else'boundary_input_no_loads'
+            else:classification='boundary_connected_other_direction'
+            return dict(d,direction=direction,net=net,classification=classification)
+        inst,t=resolve(pin);direction=str(t.getIoType());net=net_record(t.getNet())
         if net is None:classification=direction.lower()+'_disconnected'
         elif nets[net]['ambiguous_terminals']:classification='connected_ambiguous_direction'
         elif direction=='OUTPUT':classification='output_with_loads'if nets[net]['loads']else'output_no_loads'
@@ -70,6 +81,11 @@ def native():
             assert str(e).startswith("('missing_"+field+"'")
             controls.append(dict(field=field,rejected=True,reason=str(e)))
         else:raise AssertionError(('malformed_identity_accepted',field))
+    try:detail(dict(physical_pin=dict(kind='boundary',port='__NSSOC_NONEXISTENT_BOUNDARY_CONTROL__')))
+    except AssertionError as e:
+        assert str(e).startswith("('missing_boundary'")
+        controls.append(dict(field='boundary',rejected=True,reason=str(e)))
+    else:raise AssertionError('malformed_boundary_identity_accepted')
     assert sha(source)==ODB_SHA
     result=dict(status='COMPLETE_ACTUAL_NATIVE_CONNECTIVITY_NOT_TIMING_EXCEPTION',accepted=False,
         odb_sha256=ODB_SHA,source_unchanged=True,coverage=coverage,worst_setup=setup,nets=nets,identity_controls=controls,

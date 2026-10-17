@@ -1,3 +1,11 @@
+## Native connectivity boundary support and completed low-loading study (2026-10-17)
+
+PROGRESS. First connectivity run38999238748/sourcec4c2233c9f27d1e0adf36c4ee019396a75350269 failed honestly when optional worstsetup list included native boundary pcie_rx_ready_o; unconstrained coverage was allinstance as expected. No silicon/SDC fault inferred. Added exact native BTerm support with reversed input/output driver semantics and actual missing-boundary identity control. Failedarchive retained; new dispatch atthiscommit, record actualID/result next.
+
+Lowerloadingstudy38997777137 now fullyterminal. high2 nominal4failed selectorHBTs/worstVCE350.779mV; all1 nominal16failed finalHBTs/worstVCE303.725mV and64finalinterface samples below150mV. Bothactual leaf-selector fault jobs rejected27wrong outputbits. Allunchangedlimits preserved, noMOSfail/diagnostics. Fullreceipts docs/evidence/tx-tree32-loadmatch-terminal-20261017.json. High2 schematic failures are final selector XD0041/43/46/47; source final v10 has Nx6 selectors and Nx3 data banks. Any next improvement must be actual design change with fresh simulation/physical proof, no limit/clockoracle relaxation. PLL38982797234 andexactMBISTboot38994926932 stillrunning; localempty/cloudonly/goalOPEN.
+
+---
+
 ## Cloud-only native connectivity diagnosis; high2 electrical result rejected (2026-10-17)
 
 PROGRESS. Local workspace remains empty; all source edits, CAD and tests run in GitHub. Added routed-gap-connectivity-cloud workflow and scripts/cloud_routed_gap_connectivity.py: restore exact inventory38998404892 and routedODB38992990610 by fixed archive/summary hashes, inspect native pin direction/net drivers/loads and all nonoutput-instance pins, plus worst32setup endpoints each corner. No SDC changes/waivers/ODB writes. New job automatically starts on workflow push; record its actual run/result before claiming any outcome.
