@@ -1,3 +1,13 @@
+## Targeted full32 fast-stage trial running (2026-10-17)
+
+Source b40b3ef7077d40ffaf5254dd460abd825dfcdfba; run38996028457 tx-tree32-high8-cloud. Native controls compiled successfully; nominal and actual deepest-selector-fault jobs confirmed live. Do not duplicate/restart. Source-defined budget_high8 uses original Nx8 fast a/b,28Nx1 low-rate cells, unchanged final;899tree emitters/lane. No result accepted pending native evidence.
+
+Latest actual jobs: [{"id": 117288679429, "name": "controls", "status": "completed", "conclusion": "success"}, {"id": 117288746286, "name": "native-full32 (budget_high8, swap_leaf_select)", "status": "in_progress", "conclusion": null}, {"id": 117288746339, "name": "native-full32 (budget_high8, none)", "status": "in_progress", "conclusion": null}].
+
+Physical follow-up investigation: scripts/prepare_pcie_mainchip_pnr.py already binds actual mapped JSON/netlist,20SRAMinventory, Ethernet MBIST wrapper renames and four distinct clocks. Use that exact packet preparation plus hw/soc/pnr/pcie_interface_flow.py (PacketInterfaces); generic pnr_soc_top.sh/implement_interfaces.sh is not an exact CORRPRE+PCIe recipe. Preserve20nsCPU/4nsPCIe/8nsGMII development SDC and postCTS propagated clocks. The independent125MHz native boot clock is a functional experiment, not250MHz timing proof. No fresh CORRPRE+MBIST physical trial before live38994926932 mapped boot result. Its artifact includes synthesisJSON/netlist and firmware; restore exact proven files rather than silently resynthesizing. PLL38982797234 also remains live. No local files created.
+
+---
+
 ## Full32 native budget candidate rejected; targeted fast-stage correction (2026-10-17)
 
 PROGRESS. Cloud-only; local workspace remains empty. Run38993903811 completed: baseline native schematic passed 768 original-bit samples (minimum279.837514mV), all604HBT/512MOS bounds. Budget755-emitter tree passed data (281.351946mV) but FAILED32HBT minimumVCE gates, all16each in xprea/xpreb; minimum372.533256mV vs unchanged400mV limit. No MOS failures or solver diagnostics. Actual swapped deepest selector produced27wrong output samples and was rejected. Green workflow indicates completed study, not accepted device. Original physical4427-emitter rejection remains.
