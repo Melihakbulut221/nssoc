@@ -1,3 +1,9 @@
+## XOR load-v3 native design campaign after measured physical rejection (2026-10-17)
+
+Fresh cdr-xor-load-v3-cloud changes ONLY2outputloadlengths1.4->1.8um, width18um unchanged, versus load-v2. Actualv2fullwire failednominal98.75mV/cold85.90mV whileall19HBTscreens passed. Largerload is a hypothesis for signalmargin; native4cases retain original768sample/100mV/19device/.3125ps/34ns/zeroOP/OFF/diagnostic gates. Nativecontroller SHA3ec870fa unchanged. V3canonicalcore/wrapper/layout-input added; NOv3GDS/RC acceptance. Afteractualschematicpass requirefreshnativegeometry/560DRC/54LVS/physicalfaults/crossedparent/fullRC/composition/loadedwaves. Never reuse orscalev2RC foracceptance.
+
+New residuephysicalhandoff onsourcea3944780 waits exactsourcejobs then allsource/43file/28check/MBISTgates before freshCTS. Mainclock200GRT and TXreturn64wire continue. Allcloud/localempty/fullgoalOPEN.
+
 ## Source-bound residue candidate physical continuation prepared (2026-10-17)
 
 Previousgoalturn PROGRESS: adopted exactlyproven CRCpredicate, newbank proofs passed and actualnativechip/protocolstarted. New replay-crc-placement-cloud waits exactboot39041981816/protocol39041981763/bank39041981839/correctedresidue39042052313. A terminalfailure stops this successor; no blindrestart. Afterallpass a separate job revalidatesnativeproofcounts/actualfaults, per-module sourceidentity and ALLRTL identity betweenboot/protocol/currenthead; downloadsactual43-filebootartifact and retainsall28checks/system+EthernetMBIST/nativecellscrubfaultgates. New boot path is explicitlybound in separatepreserver; incumbentcontroller unchanged.

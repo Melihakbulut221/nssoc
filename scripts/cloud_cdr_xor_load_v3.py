@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Same native XOR campaign; only two physical resistor lengths differ."""
+from pathlib import Path
+import cloud_cdr_xor as trial
+from route_cloud_newer_postcts import sha
+ROOT=Path(__file__).resolve().parents[1]
+original=ROOT/'hw/soc/analog/pcie/tx_mux54_passive_drive_v10.spice'
+core=ROOT/'hw/soc/analog/pcie/cdr_xor_core_load_v3.spice'
+wrapper=ROOT/'hw/soc/analog/pcie/cdr_xor_hbt_load_v3.spice'
+assert sha(Path(trial.__file__))=='3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe'
+assert sha(original)=='56b50efbbc138e8af973c63809799574da4ffb9c79b9ff5b5732c44e7e234df8'
+old=[l for l in original.read_text().splitlines()if l and not l.startswith('*')]
+new=[l for l in core.read_text().splitlines()if l and not l.startswith('*')]
+assert len(old)==len(new)
+changed=[]
+for a,b in zip(old,new):
+    expected=a.replace('nssoc_tx_mux54_passive_drive_v10','nssoc_cdr_xor_core_load_v3')
+    if a.startswith(('XD0007 ','XD0008 ')):
+        assert a.count('l=1.1u ')==1
+        expected=expected.replace('l=1.1u ','l=1.8u ');changed.append(a.split()[0])
+    assert b==expected,'Undeclared physical primitive change'
+assert changed==['XD0007','XD0008']
+trial.COMPONENT=core;trial.WRAPPER=wrapper
+trial.COMPONENT_SHA='b41dc7fee0bdf48165f1890bc84ff72e14a98155a7fd602de23deed968bda189';trial.WRAPPER_SHA='ead393e93f432eacab0e36b63af40505260f80dcfe47697d7c6811490d268daa'
+trial.OUTPUT_STEM='cloud-cdr-xor-load-v3';trial.TOP='nssoc_cdr_xor_hbt_load_v3'
+trial.EXTRA_INPUTS=[Path(__file__),original]
+trial.main()
