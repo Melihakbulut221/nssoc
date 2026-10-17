@@ -1,3 +1,11 @@
+## Trimmed physical compact core passed three electrical conditions; saved-chip logic proof launched (2026-10-17)
+
+39011282078/source718dbe0b: nominal/hotlow/coldhigh compact core passed full34ns/256bits/0.3,0.5,0.7UI with604HBT/512MOS/all5interfaces, zero-sourceOP, no numerical diagnostics. Min TX margins280.998/199.932/274.585mV against unchanged100mV. Actual swappedleaf fault rejected27samples (9at each phase). Receipt tx-tree32-trimmed-compact-wave-pass-20261017.json pins actual reports; these retain schematic clocks and omit core metalRC. Wire remains live; actual11clock matrix39012081694 remains independent and live. No fullPHY/PVT/RF/mainchip acceptance.
+
+New corrpre-timing-logic-cloud restores exact original CTS39007378877 and repaired39011120664 full archives/hash-pinned ODB+netlists, uses actual pinned IHP Liberty/SRAM interfaces, native positive/negative macro controls and existing retained-equation/clone checker. No rerun of CAD. It verifies earlier saved physical repairs, not the new RTL bank candidate. Failure means not proven and must be preserved; no gate widening.
+
+New RTL parallel reads sourcef37028b2 proof39013401464: LCRC9 completed read-cut, both actual bad-read controls and sequential equivalence; remainingfive need current status. Protocol runs39013401471/39013401331 active/queued. Next allsix proofs plus nativeprotocol results, then launch NEW fullchip CORRPRE/PCIe/system+EthernetMBIST synthesis+boot via existing corrpre-pcie-mbist-native-boot-cloud for bankedRTL; retain oldboot/timing. Subsequent placement/routing/extractedSTA must validate actual speedup. FullgoalOPEN/cloudonly/localempty.
+
 ## PCIe critical byte selection restructured; exact behavior proofs launched (2026-10-17)
 
 Based on saved native path review39012558696, replay send_slot to TX and LCRC transmit_packet.index to downstream CRC are deep setup cones. Replay now reads constant-base banks in parallel then selects an8bit result; flat cross-bank behavior is retained for every language-defined address. LCRC now resolves byte order and selection for each constant word before index selects8bits. No state, latency, ready/valid, reset, timer, ACK/retry, CRC polynomial or clock constraint changes. Frozen pre-change RTL files and SHA-bound checker retained.
