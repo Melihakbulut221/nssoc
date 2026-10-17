@@ -8,13 +8,18 @@ from run_cloud_tx_layout_repair import ROOT,fetch,sha
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
-    args=argparse.Namespace(variant='tree32_budget_high8',circuit_profile='assembly32')
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--variant',choices=('budget_high8','budget_high3'),default='budget_high8')
+    selected=parser.parse_args().variant
+    high3=selected=='budget_high3'
+    args=argparse.Namespace(variant='tree32_'+selected,circuit_profile='assembly32')
     spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())
-    top='nssoc_tx_tree32_budget_high8_core_v1'
+    top='nssoc_tx_tree32_'+selected+'_core_v1'
     spec['circuits']['assembly32']={'top':top}
     runtime=json.loads((ROOT/'docs/evidence/pcie-magic-cloud-runtime-20261013.json').read_text())
-    receipt=json.loads((ROOT/'docs/evidence/tx-tree32-budget-physical-pass-20261017.json').read_text())
-    out=ROOT/'hw/soc/out/cloud-tx-tree32-budget-assembly'
+    receipt_name='tx-tree32-high3-physical-pass-20261017.json' if high3 else 'tx-tree32-budget-physical-pass-20261017.json'
+    receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())
+    out=ROOT/'hw/soc/out'/('cloud-tx-tree32-high3-assembly' if high3 else 'cloud-tx-tree32-budget-assembly')
     assert not out.exists()
     out.parent.mkdir(parents=True,exist_ok=True)
     archive=out.parent/'tree32-extraction-input.tar.gz'
@@ -37,8 +42,11 @@ def main():
         assert sha(out/'result.json')==receipt['summary_sha256']
         physical=json.loads((out/'result.json').read_text())
         assert physical['status']=='PASS_TREE32_1674_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'
-        assert physical['variant']=='budget_high8'
-        assert physical['emitter_budget']['reference_emitters']==899
+        assert physical['source_head']==receipt['source_head']
+        assert physical['variant']==selected
+        assert physical['emitter_budget']['reference_emitters']==(719 if high3 else 899)
+        assert physical['emitter_budget']['recommended_rules_enabled'] and not physical['emitter_budget']['waiver']
+        assert physical['layout']['outputs']==receipt['layout_outputs']
         layout=physical['layout']
         assert layout['total_devices']==1674 and len(layout['ports'])==162
         assert len(layout['signal_routes'])==60 and layout['frozen_child_drawing_regions_equal']

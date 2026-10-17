@@ -1,3 +1,13 @@
+## Nx3 full32 parent physical passed; fresh parent RC extraction launched (2026-10-17)
+
+PROGRESS. Actual parent run39002749405/sourcee06390caeab0cfda298ec1aa1c3f35bf79a5ccfb passed560DRC0, deep+flatLVS1674=1674oneMatch/noextractiondiagnostics, all5actualfaultsrejected. Exact31macros/60intermacrolegs/162ports/589HBT719emitters. Downloaded archive in RAM only, verified combined SHA and actual archived result/GDS/LEF/schematic hashes. Receipt docs/evidence/tx-tree32-high3-physical-pass-20261017.json pins summary649537225/parts649537316/archive649537389 (2807897bytes). GDS388a341ea0bee5f81fc5f4bf24d0fe12a462a822d5ccbc0853280332f694d6d4. Not mainchip or fullPHY acceptance.
+
+Extended existing extraction controller with explicit budget_high3 selection; high8 default preserved. Fresh native Magic extraction from exact high3 parent GDS; all1674device/4774terminal/377metalcomponent/162port ownership and RC conservation checks and13actualcorruption controls retained. No high8 parasitics reused. New tx-tree32-high3-extraction-cloud workflow starts on this commit. Record terminal result before composition and RC-loaded native waveforms. Native RC graph success alone is not qualified RF/PEX, substrate resistance or PVT acceptance.
+
+PLL38982797234 continuation, exactCORRPRE+PCIe+system/EthernetMBISTboot38994926932 and fixedhigh3PVT39002430107 freshly confirmed live. Preserve existing jobs. All CAD/simulation/build work cloud-only; local workspace empty. Goal OPEN, prior turn verified wait, this turn PROGRESS.
+
+---
+
 ## Nx3 physical cell passed; actual full32 parent assembly launched (2026-10-17)
 
 PROGRESS. Nx3cell39002064010/sourceaf9d24ce2a7f0b2f8532285b0176dd0aa4e0ff15 PASS native560DRC0/deep+flat54=54oneMatch/noextractiondiagnostics/5actualfaultsrejected. Cell353.985x387.24um/12ports/55emitters. GDSb61f877f5fa7d09e702dfb302c9d3d4515a4f7b988d947783f629eabf4445c80, LEFdbdb5b262a1e8c6504abe2df9ca05d437c01b8d235aafe58cd859901e63eb088, schematic08bea3ab5112c15bac3fb1a69611ac2ec396ef1e519673b2b5a39913b54326e0. Receipt docs/evidence/tx-pre-nx3-physical-input-20261017.json pins summary649521898/parts649521988/archive649522099(473409bytes). source_head comes from verifiedGitHubrunmetadata, not nonexistentphysical-summaryfield; earlierRAMpreparationKeyError madeNOremotechange. NoRC/PVT acceptanceinferred.
