@@ -1,3 +1,19 @@
+## PCIe-enabled CORRPRE mapped boot qualification started (2026-10-17)
+
+Cloud-only; local workspace empty. Prior goal turn was VERIFIED WAIT (specific TX/PLL/Ethernet handles remained live). This turn adds a missing full-chip configuration check toward setup candidate integration.
+
+Inspection found that previous CORRPRE native boot38970744432 used full peripheral profile but `SOC_PCIE_PROFILE` defaulted off. Its28checks/native-cell/scrub controls remain valid for that exact source, not for a PCIe-enabled mapped chip. Do not label it packet-enabled proof.
+
+New run38984849452, source31f823aa6b31466e777f2076cd1575d25dfe43e9, workflow `corrpre-pcie-native-boot-cloud.yml`, job117253801191. `scripts/check_soc_corrpre_pcie_native_boot.sh` preserves original CPU RTL firmware preparation and recovery controls, then maps CORRPRE1/SYNPRE0 with explicit SOC_PCIE_PROFILE=packet-async, Ethernet SRAM/full peripherals, CORE_REQ_REG0/CORE_WB_STAGE0. Native mapped boot selects `--pcie-profile packet-async`. This is link-DOWN coexistence/boot evidence only, NOT packet traffic, SDF, physical route, CDC qualification or serialPHY acceptance.
+
+`sim_logic_boot_gl.py` now rejects requested profiles whose actual mapped soc_top public PCIe port names/directions/widths differ; defaultoff is still required for nonpacket builds. Added profile tests cover missing/wrong-width/wrong-direction/duplicate declarations and wrong-clock profile. Existing native boot bench keeps all28firmware/flash/UART/watchdog/error gates. Optional packet boundary ties every input explicitly, drives independent125MHz clock with1.3ns phase offset and requires known idle controls for at least100packet-clock observations. Its separate PCIE_IDLE_BOOT banner is mandatory for the enabled profile. No internal forces/preloads added. Previous nonpacket evidence preserved.
+
+Review actual unit-test and native outcome before physical CORRPRE adoption; passing RF equivalence and nonpacket boot alone do not establish packet-enabled mainchip correctness or timing. If failure occurs, preserve exact source/logs and fix the cause without loosening firmware gates.
+
+Other live jobs preserved: TX hot/cold38983807650, full1us PLL38982797234, Ethernet route38978702458. Fullgoal remains OPEN. Detailed dispatch/config evidence in `docs/evidence/corrpre-pcie-native-boot-started-20261017.json`.
+
+---
+
 ## TX actual-model corner study dispatched; existing PLL and route preserved (2026-10-17)
 
 Cloud-only continues; local workspace empty. Previous goal turn was PROGRESS (new physical PLL1us native run); this turn adds actual-corner electrical verification toward PHY closure.
