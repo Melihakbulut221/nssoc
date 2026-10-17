@@ -1,3 +1,11 @@
+## Fresh load-v3 core physical gates prepared (2026-10-17)
+
+Cold load-v3 native case39042934992 alreadycompletedPASS:768correct,0below100mV,min129.756672mV,all19HBTboundsPASS,worstactiveVCE0.502154V. Othercases stillpendingatpreparation; no overallPVT/layoutclaim.
+
+New cdr-v3-core-layout-cloud first waits exactsource39042934992/sourcef5e8596f SUCCESS then independentlychecks ALL4realnative reports, source/core/wrapper/controller hashes, everydevicebound,768samples/100mV/zeroOP/OFF/diagnostics and actualswapcontrol. Onlythen generates fresh54device v3core from new1.8umcanonical input, frozenphysicalgenerator adaptedonlydeclaredsourcepaths/hashes/top/root, unchanged560DRC/deepflatLVS/fivephysicalfaults. Outputgroupcdr-v3-core-layout is new; oldv2failurepreserved. CrossedXORparent, fullnewRC/modelcomposition/loadedwaveforms stillrequiredaftercorepasses.
+
+FullphysicalPLLhalfstep39043210978 queuedfromc7fc9d27, frozennewcontroller4d779f9a344532330ac1fc9d39678ceeba1ad12f074a298c8570ea58fbaf6f8c. Sourceboundresidueplacement39042752404 waitsonnativeboot39041981816; protocol39041981763 andcorrectedproof39042052313passed. Clock20039041556309/TXreturn64wire39030593206 continue. Allcloud/localempty/fullgoalOPEN.
+
 ## Full physical PLL half-step acquisition campaign (2026-10-17)
 
 New pll-c8-half-native-acquisition-cloud starts separatecontinuous1us on exactC8physical845parent3d2dfdd6/all8660wires. ONLY `.tran` step/maxstep .3125ps->.15625ps. Reversingthatline MUST recover actualoriginalcoarsedeckSHA1817d6ee byte-for-byte, plus existingnativegraph/HBTbindingchecks. Original100ppm/50ps/no-slip/control gates/bothfinal100nswindows/34probes/102OFF/zeroOP/tolerances unchanged. Fouractualdeckfaults mustreject. Actualfullcapture requires>6Mrows/maxstep.15625ps.
