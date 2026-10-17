@@ -1,3 +1,11 @@
+## Latest: PLL actual MIM geometry comparison launched without changing live trajectories
+
+New pll-mim-extraction-cloud usesphysical845parent39005910789, exactGDS79b2f5869f620cb5d6ce57756bab18f6ef10743aee953fb9c140202a6b225cdc andnativeLVS. Recursivelycountsall26actualMIMmaskleafoccurrences andmatches7exactdimensiongroups toall26nativeLVS capacitorcards. Eachactualprimitivegeometry getswire-only,originalMIM-aware andprivateexplicit-model views (21cases). Allmetal/viasunchanged, aware/privateGDSbyteidentical, explicitcapmodelsandmutualCmustmatch; recordsgroundC deviceestimateeffect. NofullclockRCfix/electrical/PHYclaimfromisolatedpilot. DoesnoteditongoingPLL39043210978. Need inspectnativegeneration/APIguards andactualcaseoutputs; preservefailures.
+
+CDRloaded39077465653, TXfullwire39067769686 andpostCTS39061293959 live atturnstart. Priorfull845loadedtuning has8.018933992GHz/.525V,8.002570406GHz/.535V,7.985945497GHz/.545V at40–50ns; halfstepcenter8.002704871GHz. These areexactpreviousmodelbenchresults, notnewMIM-qualifiedclockcontrol. CDRVI outputcannotbeassumeddirectVCTRL-compatible; actualclockload/controlinterface andclosedlooprequired afterwholePDwaves. CLOUDONLY; previousgoalturnverifiedwait, thisturnPROGRESS. FullgoalOPEN.
+
+---
+
 ## Latest: whole-wire CDR transient running; exact boot/CTS evidence retained
 
 Checked 2026-10-17T23:06:12.243743+00:00. Loaded CDR run39077465653 source7abbd5a6fd0573d1a5102493d8355f12686e4120: syntaxPASS and4nativejobs in simulation step (117527558162 VIbiasoff,117527558194 late,117527558238 stoppedclock,117527558240 early). Full394+8956R7660C; do notreplace withcompact ifslow. Need inspect nativeflags/OP/actualwave/device/bit gates; allfailures retained. Human-readable experiment and exactloadplane limitations docs/cdr-whole-wire-loaded-20261018.md.
