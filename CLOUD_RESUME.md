@@ -1,3 +1,13 @@
+## Nx3 composition passed; full physical32 waveform launched (2026-10-17)
+
+PROGRESS. Composition39003764536/source4b0ce6f8c243aee27b385145f7a3009d4343aed8 PASS actual1674devices114819R76351C,377physicalRcomponents recover native schematic, six actual output corruption controls. Receipt docs/evidence/tx-tree32-high3-composition-pass-20261017.json binds summary649566900/parts649567039/archive649567106(33734155bytes). CompactSHA922cbd7f87cfbda0e14888a5233beac0d883d0f8577bf203dac385938a265286; wireSHA1d5332039681fe6f8a986818d8c36902cd95868cff12e7dec94dd9b1adc92233. No electrical acceptance inferred.
+
+Extended assembled physical tree builder from4 to32 streams using actual formal ports and originalplan. Added native endpoint binding for all124 data-input legs to372 actual HBT bases (all3parallel devices,9p/n combinations per sample). Original604HBT512MOS/34ns/256bits/.3,.5,.7UI/limits andsourceoracle unchanged. New tx-tree32-physical-wave cloud workflow runs compactnominal, actualwire nominal, compact actualleafselectorfault. Full all5interface groups nowobserveactual terminals, not idealintermacro aliases. Runtime dependencies/model hashes/results retained. Native4-stream behavior preserved. Record actualrun/result beforeclaiming any waveform success.
+
+Both fixedPVT39002430107 conditions terminalSCREENFAIL: coldhigh 0HBT0MOS failures and768outputbitsPASS butfinal/level4commonmode>2.05V; hotlow15HBT VCE failures(min393.049mV vs400mV),0MOS/allinterfaces/outputbitsPASS. Do not erase these failures withnominal/RCstudy. Next sizing correction must address opposite-cornercommonmode/headroom simultaneously withactualgeometryandfreshRC. MBIST38994926932 stillliveatlastcheck. PLL originalfull1usgateFAIL preserved. Cloud-only/localempty/goalOPEN.
+
+---
+
 ## Fresh Nx3 full32 RC passed; exact device/RC composition launched (2026-10-17)
 
 PROGRESS. Extraction39003193557/source7cbfeeaeff869182413e432cb43dac43bf3caaf8 PASS:actual1674devices4774terminals/377metalcomponents/378nets/162ports,114819R76351C. Complete native R value/edge multiset, conductor ownership, every ground/mutual C attachment and collapsed142884matrix entries conserved;13actualcorruptions rejected. No intrinsic ideal aliases or deleted nodes.8655short warnings verified within same physical conductors. Substrate spreadingR/RF qualification remains open. Receipt docs/evidence/tx-tree32-high3-extraction-pass-20261017.json pins summary649556174/parts649556230/archive649556291.

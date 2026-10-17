@@ -404,21 +404,29 @@ def build(inputs, condition, fault='none', clock_bias='ideal', final_drive='base
         stages += [(final, 'xmux', [public[p] for p in formal[2:]]),
                    (TX, 'xtx', ['mp','mn','op','on','tvdd','0','0','tr'])]
     else:
-        assert streams==4 and final_override is None and final_drive=='double_taps_margin'
+        assert streams in (4,32) and final_override is None and final_drive=='double_taps_margin'
         assert clock_bias==output_bias=='native_res' and clock_reference=='stiff65'
         assert pre_bias in ('native_res','native_res_tc')
-        assert interface_probes is not None and set(interface_probes)=={'ap','an','bp','bn'}
+        expected_interfaces={'ap','an','bp','bn'}
+        if streams==32:
+            expected_interfaces|={label+suffix for n in plan['nodes'] for label in n['inputs'] for suffix in ('p','n')}
+        assert interface_probes is not None and set(interface_probes)==expected_interfaces
         formal=next(line.lower().split()[2:] for line in assembled_core.read_text().splitlines() if line.lower().startswith('.subckt '))
-        required=set('d0p d0n d1p d1n d2p d2n d3p d3n sap san sbp sbn sp sn mp mn avdd avss sub ra rb mr'.split())
+        required={f'd{i}{suffix}' for i in range(streams) for suffix in ('p','n')}
+        required|={c['name']+suffix for c in plan['clocks'] for suffix in ('p','n')}
+        required|=set(references)|{'mr','mp','mn','avdd','avss','sub'}
+        assert len(required)==(22 if streams==4 else 162)
         assert len(formal)==len(set(formal)) and set(formal) in (required,required|{'wire_cref'})
         public={p:p for p in required};public.update(avss='0',sub='0',wire_cref='0')
         if fault=='swap_pre_a_select':public['sap'],public['san']=public['san'],public['sap']
-        if fault=='swap_leaf_select':public['sbp'],public['sbn']=public['sbn'],public['sbp']
+        if fault=='swap_leaf_select':
+            leaf_clock=plan['nodes'][-1]['clock']
+            public[leaf_clock+'p'],public[leaf_clock+'n']=public[leaf_clock+'n'],public[leaf_clock+'p']
         stages=[(assembled_core,'xtree',[public[p]for p in formal]),
                 (TX,'xtx',['mp','mn','op','on','tvdd','0','0','tr'])]
     for path, instance, ports in stages:
         name, found = bind_devices(path, instance, ports, {'npn13g2'})
-        assert len(found) == (4 if instance == 'xtx' else 57 if instance=='xtree' else 19)
+        assert len(found) == (4 if instance == 'xtx' else 19*(streams-1) if instance=='xtree' else 19)
         hbt.update(found)
         lines.append(instance+' '+' '.join(ports)+' '+name)
     assert len(hbt) == 19*(streams-1)+4 and len(mos) == 16*streams
@@ -577,7 +585,10 @@ def native_diagnostics(log, profile='default'):
 def interface_screen(t, volt, contract, stage):
     mapping=contract.get('interface_probes')
     if mapping is not None:
-        assert set(mapping)=={'ap','an','bp','bn'}, 'Incomplete physical interface mapping'
+        expected={'ap','an','bp','bn'}
+        if contract.get('streams',4)==32:
+            expected|={label+suffix for n in contract['tree_plan']['nodes'] for label in n['inputs'] for suffix in ('p','n')}
+        assert set(mapping)==expected, 'Incomplete physical interface mapping'
         arities={len(nodes) for nodes in mapping.values()}
         assert arities in ({1},{3}), 'All parallel physical inputs must be observed'
         flattened=[node for nodes in mapping.values() for node in nodes]
@@ -593,7 +604,7 @@ def interface_screen(t, volt, contract, stage):
                 for nnode in (mapping or {}).get(prefix+'n',[prefix+'n']):
                     p,n=(np.interp(at,t,volt(node)) for node in (pnode,nnode))
                     samples.append(((p-n)*(2*bit-1),(p+n)/2))
-    parallel=len(mapping['ap']) if mapping is not None and stage=='final' else 1
+    parallel=len(mapping.get(prefix+'p',[prefix+'p'])) if mapping is not None else 1
     assert len(samples)==len(contract['bits'])*3*parallel**2, 'Incomplete original-phase coverage'
     margin,cm = np.asarray(samples).T
     return dict(samples=len(samples),minimum_margin_v=float(margin.min()),
