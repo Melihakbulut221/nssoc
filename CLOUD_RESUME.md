@@ -1,3 +1,11 @@
+## Native CDR XOR first result and two-load repair (2026-10-17)
+
+39033213991/source67265ae7 completed four native campaigns: zeroOP/all19OFF/no diagnostics/sourceunchanged. Nominal margin97.708968mV andcold90.559487mV FAIL original100mV although all768signs correct. Hotlow104.978718mV passes. Actualoutputswap detects768wrong samples. ALL19HBTdevicebounds pass at allcases; minimumactiveVCE0.4900/0.5022/0.5136V and maximumalltimeVCE1.1241/1.1954/1.0175V nominal/cold/hot. Originalreports/raw remainpermanent; receipt cdr-xor-first-rejection-20261017.json pins allfour exact summaries.
+
+Separate loadv2 candidate changes ONLY XD0007/XD0008 native rppd length1.1->1.4um, samewidth18um/allother54device parameters and wiring unchanged. Source delta checked exactly before native work. Fresh cdr-xor-load-cloud uses SAME256symbols/768phases/data/device/zeroOP/OFF/diagnostic gates and actualoutputswap. Frozen baseline preserved; no threshold or commonmode/load/current/phase change. Refactored original runner only adds explicit component/output/module selection and protects caller inputs; controls/measurements unchanged. This is a schematic CDR comparison primitive; new physical layout/RC and real clocked detector/loop remain OPEN. Pushlaunches once; do not duplicate.
+
+Mainchip repair/logic/globalroute chain and all loadedclock/TX wire jobs remain live. CurrentturnPROGRESS via actualnative primitive measurements and targeted transistor-circuit revision. Allcloud/localempty/fullgoalOPEN.
+
 ## Native CDR comparison primitive started, no recovered-clock claim (2026-10-17)
 
 Source audit confirms external-clock RX sampler and missing analog CDR. Primary research inspected Lee/Kundert/Razavi JSSC2004 DOI10.1109/JSSC.2004.831600; metastability/jitter and sample alignment must be measured, not inferred from XOR truth. New ORIGINAL cdr_xor_hbt_v1 wrapper cross-connects frozen native54device v10 mux into differential XOR. New cloud_cdr_xor.py runs nominal/hotlow/coldhigh/actualoutputswap 256symbols8GT/s,768fixed-phase samples,all19HBT VCE/current gates,zeroOP/nativeOFF/diagnostics. External10ohm drivers/different commonmodes/500uA idealbias/50fFload are explicit unqualified boundaries. No behavioral gate or complete CDR/layout claim. Push starts one fourcase campaign. Review actual results before sampler/loop integration; keep allfailures.

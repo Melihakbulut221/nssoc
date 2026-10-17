@@ -16,6 +16,9 @@ COMPONENT_SHA='56b50efbbc138e8af973c63809799574da4ffb9c79b9ff5b5732c44e7e234df8'
 WRAPPER_SHA='342ba96abb65ce58de7c59fec4c9b2c06ecc06be069343ece22ef20c414c2675'
 SUMMARY='d5eed10a190213d552fa410db5eece05cd2c39f0b8c5e8266ecee050c3ba4025'
 PARTS='791cd593eac42eae8b9bf629b9ec90355b167a557910dcb5be4a441d30e01961'
+OUTPUT_STEM='cloud-cdr-xor'
+TOP='nssoc_cdr_xor_hbt_v1'
+EXTRA_INPUTS=[]
 UI=125e-12;START=2e-9;STOP=34e-9;STEP=.3125e-12
 
 def prbs(seed):
@@ -37,7 +40,7 @@ def wave(bits,cm,amplitude):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--case',choices=['nominal','hot_low','cold_high','swap_output'],required=True);args=ap.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
-    out=ROOT/('cloud-cdr-xor-'+args.case);out.mkdir(exist_ok=False);reports.OUT=out
+    out=ROOT/(OUTPUT_STEM+'-'+args.case);out.mkdir(exist_ok=False);reports.OUT=out
     corner='nominal'if args.case=='swap_output'else args.case;c=pump.CORNERS[corner];scale=c['scale']
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],case=args.case,accepted=False,
         full_phy_accepted=False,cdr_accepted=False,layout_accepted=False,
@@ -91,7 +94,7 @@ def main():
             'VEP ep0 0 '+wave(b,1.3*scale,.15*scale),
             'VEN en0 0 '+wave([1-x for x in b],1.3*scale,.15*scale),
             'RDP dp0 dp 10','RDN dn0 dn 10','REP ep0 ep 10','REN en0 en 10',
-            f'XGATE dp dn ep en {output[0]} {output[1]} avdd 0 0 iref nssoc_cdr_xor_hbt_v1',
+            f'XGATE dp dn ep en {output[0]} {output[1]} avdd 0 0 iref {TOP}',
             'CQP qp 0 50f','CQN qn 0 50f','.control',f'pre_osdi {LIB/"models/r3_cmc.osdi"}',
             'set wr_singlescale','set wr_vecnames','set numdgt=16','save '+' '.join(vectors)]
         for n in devices:
@@ -102,7 +105,7 @@ def main():
             'echo NSSOC_BACKEND_OPTIONS_END','quit','.endc','.end']
         native=out/'native';native.mkdir();(native/'bench.cir').write_text('\n'.join(deck)+'\n')
         (native/'spinit').write_text('set num_threads=1\n')
-        protected={str(p):sha(p)for p in [Path(__file__),COMPONENT,WRAPPER,engine,native/'bench.cir',*LIB.rglob('*')]if p.is_file()}
+        protected={str(p):sha(p)for p in [Path(__file__),*EXTRA_INPUTS,COMPONENT,WRAPPER,engine,native/'bench.cir',*LIB.rglob('*')]if p.is_file()}
         r.update(physical_device_count=54,hbt_count=19,source_bits=[a,b],expected_xor=expected.tolist(),
             vectors=vectors,devices=devices,protected_inputs=protected);save()
         env={k:v for k,v in os.environ.items()if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
