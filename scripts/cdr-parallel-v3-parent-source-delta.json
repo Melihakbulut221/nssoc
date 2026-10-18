@@ -113,7 +113,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_risers.py",
       "baseline_sha256": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
       "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_risers.py",
-      "candidate_sha256": "48e94924c7f39ff36bb5109e9a5cbecb4c2c95d56e40ee21dd402cc69f92d690",
+      "candidate_sha256": "9db15d7f4e2854d0f07434b60f332a843ae2aabecf145b0c08b077f304778d06",
       "edits": [
         {
           "before": "cdr_retimed_hybrid_v2",
@@ -134,6 +134,21 @@
           "before": "    assert len(suppressed_shunt_vias)==2\n    assert {(r['tag'],r['net'],r['retained_riser']['device'])for r in suppressed_shunt_vias}=={('x','avss','D21'),('y','avss','D21')}\n    assert all(abs(r['omitted_shunt_center_um'][0]-r['retained_riser']['point'][0])==1. for r in suppressed_shunt_vias)",
           "after": "    # Preserve the two measured XOR collisions; new sampler widths can place\n    # additional redundant same-net shunt stacks near real retained risers.\n    xor_suppressed=[r for r in suppressed_shunt_vias if r['tag'] in ('x','y')]\n    assert len(xor_suppressed)==2\n    assert {(r['tag'],r['net'],r['retained_riser']['device'])for r in xor_suppressed}=={('x','avss','D21'),('y','avss','D21')}\n    assert all(abs(r['omitted_shunt_center_um'][0]-r['retained_riser']['point'][0])==1. for r in xor_suppressed)\n    for r in suppressed_shunt_vias:\n        keep=r['retained_riser']\n        assert r['tag']==keep['tag'] and r['net']==keep['net']\n        assert r['omitted_shunt_center_um'][1]==keep['point'][1]\n        assert abs(r['omitted_shunt_center_um'][0]-keep['point'][0])<4.\n        assert r['tag'] in ('x','y','sa','sb','sc','sd')",
           "count": 1
+        },
+        {
+          "before": "abs(r['point'][0]-x)<4.",
+          "after": "abs(r['point'][0]-x)<5.",
+          "count": 1
+        },
+        {
+          "before": "abs(r['omitted_shunt_center_um'][0]-keep['point'][0])<4.",
+          "after": "abs(r['omitted_shunt_center_um'][0]-keep['point'][0])<5.",
+          "count": 1
+        },
+        {
+          "before": "            riser=pya.DBox(x-1.6,sy-1.6,x+1.6,ey+1.6)\n            overlay.shapes(L.layer(126,0)).insert(riser)\n            via(x,ey)\n            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser)))",
+          "after": "            # Measured TM1.b failures: these three actual sampler rails pass\n            # 0.085/0.965/1.17um from fixed QP/QN via patches (minimum1.64um).\n            # Keep both original electrical endpoints and shift only the span.\n            shift=2.0 if kind=='sampler' and route['device'] in ('M_T3','S_T0','S_RP') else 0.0\n            rx=x+shift\n            riser=pya.DBox(rx-1.6,sy-1.6,rx+1.6,ey+1.6)\n            overlay.shapes(L.layer(126,0)).insert(riser)\n            bridges=[]\n            if shift:\n                for by in (sy,ey):\n                    bridge=pya.DBox(x-1.6,by-1.6,rx+1.6,by+1.6)\n                    overlay.shapes(L.layer(126,0)).insert(bridge);bridges.append(str(bridge))\n            via(x,ey)\n            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser),span_shift_um=shift,new_m6_endpoint_bridges_um=bridges))\n    shifted={(r['tag'],r['device']) for r in risers if r['span_shift_um']}\n    assert shifted=={(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}\n    assert all(len(r['new_m6_endpoint_bridges_um'])==2 for r in risers if r['span_shift_um'])",
+          "count": 1
         }
       ]
     },
@@ -141,7 +156,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_parent.py",
       "baseline_sha256": "f9c52a7fdd0d94a1ef7194941c0faa10edd371a435254e7edceed690b41d2a3b",
       "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_parent.py",
-      "candidate_sha256": "62e16efd979ac0c561b1a226914d90026a7508269778ef8b3453b32edd875f0b",
+      "candidate_sha256": "bbc4f2aebc39a3dd0f9b56b0f8ba2c031c1ed169063d8e6c82ecc785ffc30e7f",
       "edits": [
         {
           "before": "cdr_retimed_hybrid_v2",
@@ -181,6 +196,11 @@
         {
           "before": "==420",
           "after": "==484",
+          "count": 1
+        },
+        {
+          "before": "48e94924c7f39ff36bb5109e9a5cbecb4c2c95d56e40ee21dd402cc69f92d690",
+          "after": "9db15d7f4e2854d0f07434b60f332a843ae2aabecf145b0c08b077f304778d06",
           "count": 1
         }
       ]

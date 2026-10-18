@@ -80,7 +80,7 @@ def generate(out):
             overlay.shapes(L.layer(134,0)).insert(strap)
             xs=[];x=x0+(4 if placed['kind']=='sampler' else 12)
             while x<=x1-4:
-                nearby=[r for r in planned_riser_ends if r['tag']==tag and r['net']==pin.lower()and abs(r['point'][1]-y)<1e-6 and abs(r['point'][0]-x)<4.]
+                nearby=[r for r in planned_riser_ends if r['tag']==tag and r['net']==pin.lower()and abs(r['point'][1]-y)<1e-6 and abs(r['point'][0]-x)<5.]
                 if nearby:
                     assert len(nearby)==1
                     suppressed_shunt_vias.append(dict(tag=tag,net=pin.lower(),omitted_shunt_center_um=[x,y],retained_riser=nearby[0]))
@@ -121,10 +121,23 @@ def generate(out):
             assert c is not None and not c.is_empty()
             b=c.dbbox();vx=round((x-b.center().x)/.005)*.005;vy=round((sy-b.center().y)/.005)*.005
             overlay.insert(pya.DCellInstArray(c.cell_index(),pya.DTrans(vx,vy)))
-            riser=pya.DBox(x-1.6,sy-1.6,x+1.6,ey+1.6)
+            # Measured TM1.b failures: these three actual sampler rails pass
+            # 0.085/0.965/1.17um from fixed QP/QN via patches (minimum1.64um).
+            # Keep both original electrical endpoints and shift only the span.
+            shift=2.0 if kind=='sampler' and route['device'] in ('M_T3','S_T0','S_RP') else 0.0
+            rx=x+shift
+            riser=pya.DBox(rx-1.6,sy-1.6,rx+1.6,ey+1.6)
             overlay.shapes(L.layer(126,0)).insert(riser)
+            bridges=[]
+            if shift:
+                for by in (sy,ey):
+                    bridge=pya.DBox(x-1.6,by-1.6,rx+1.6,by+1.6)
+                    overlay.shapes(L.layer(126,0)).insert(bridge);bridges.append(str(bridge))
             via(x,ey)
-            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser)))
+            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser),span_shift_um=shift,new_m6_endpoint_bridges_um=bridges))
+    shifted={(r['tag'],r['device']) for r in risers if r['span_shift_um']}
+    assert shifted=={(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}
+    assert all(len(r['new_m6_endpoint_bridges_um'])==2 for r in risers if r['span_shift_um'])
     actual_riser_ends={(r['tag'],r['net'],r['device'],tuple(r['supply_end_um']))for r in risers}
     assert {(r['tag'],r['net'],r['device'],tuple(r['point']))for r in planned_riser_ends}==actual_riser_ends
     # Preserve the two measured XOR collisions; new sampler widths can place
@@ -137,7 +150,7 @@ def generate(out):
         keep=r['retained_riser']
         assert r['tag']==keep['tag'] and r['net']==keep['net']
         assert r['omitted_shunt_center_um'][1]==keep['point'][1]
-        assert abs(r['omitted_shunt_center_um'][0]-keep['point'][0])<4.
+        assert abs(r['omitted_shunt_center_um'][0]-keep['point'][0])<5.
         assert r['tag'] in ('x','y','sa','sb','sc','sd')
     assert len({r['tag']for r in risers})==16 and len(risers)>=80
     assert len(straps)==27 and cuts>100,(len(straps),cuts)

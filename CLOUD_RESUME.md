@@ -88,3 +88,6 @@ Mainchip39121691046 and TX39112087217 remain in_progress at this checkpoint. Clo
 
 
 Parent484 run39127789321 at36e1c530d71671261e2380e5ba7b57a213208b7b generated actual484device layout2128.29x4505.08um, but native560rule DRC rejects54TM1.b markers; LVS not reached. Sampler54child remains independentlypassed. Receipt cdr-parallel484-first-drc-rejection-20261018.json preserves fullrejection. This commit launches cdr-parallel-v3-drc-review to expose all54actual native markercoordinates and parent supplyoverlay metadata. Nextfix actualTopMetal1 geometry, retain childconservation/strictDRC/LVS/faults; nofreshRC orparentacceptance yet.
+
+
+Native54marker review39128067557 reproduced allTM1.b errors. ActualsamplerM_T3/S_T0/S_RP supplyspans run0.085/0.965/1.17um from fixedQP/QN M6via patches; nativeTM1.b requires1.64um. This commit shifts onlythose12spans(+2um, fourcopies) and addsactualM6 endpointbridges tooriginalnativevias. Existingchilddrawing/terminalnets retained. Same-net redundantshunt omission radius4→5um prevents endpointnotches; everyomission stillbindstoactualsame-net retainedriser, originaltwoXOR omissions preserved. Fullparent physical rerun starts; noacceptanceuntilnativeDRC/deepflatLVS/faults pass. Receipt cdr-parallel484-native-tm1-diagnosis-20261018.json.
