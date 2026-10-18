@@ -168,7 +168,12 @@ def generate(out):
         bus['ys'].append(y);b=pya.DBox(0,y-width/2,2.4,y+width/2)
         top.shapes(L.layer(134,2)).insert(b);top.shapes(L.layer(134,25)).insert(pya.DText(net,1.2,y));public[net]=('TopMetal2',b)
     for net,bus in buses.items():
-        assert bus['ys'];wire(126,(bus['x'],min(bus['ys'])),(bus['x'],max(bus['ys'])),bus['width'])
+        assert bus['ys']
+        if net=='avss':
+            # Preserve original32um end extension, not a width/2 square cap
+            # that would put a256um-wide rail below the fixed public origin.
+            box(126,pya.DBox(bus['x']-bus['width']/2,min(bus['ys'])-32,bus['x']+bus['width']/2,max(bus['ys'])+32))
+        else:wire(126,(bus['x'],min(bus['ys'])),(bus['x'],max(bus['ys'])),bus['width'])
     # No drawing geometry inside any child is edited during routing.
     assert all(sha(Path(p))==v for p,v in protected.items());verify(plan)
     assert top.dbbox().left==top.dbbox().bottom==0, 'No post-routing transform may invalidate recorded coordinates'
