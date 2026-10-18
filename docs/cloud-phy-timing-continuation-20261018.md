@@ -1,3 +1,13 @@
+# Latest TX diagnosis complete; actual physical paths next
+
+TX return64 path diagnosis39102156220 at87dec08e69f69a4f9e788642ab1d297092a803dd passed exact original gate reproduction. Full receipt `tx-return64-path-review-pass-20261018.json`. All28 failed HBT terminals were measured. Final tail emittersxd0114/115 mean about104mV after widening, versus prior172mV; their original minimum VCE still fails around356–357mV. The repair therefore changed actual rail behavior but did not close the waveform or device gates. Other failed devices need exact current native-ID-to-macro mapping before changing them.
+
+`tx-return64-physical-paths-cloud` is being launched against the exact return64 composition39087377122 and physical source671f86f8d41fafc474ecb879ba4438ced28c1ff7. It verifies every restored file against the simulated source and maps all28 devices to their actual macro and resistor/capacitance paths. Shortest resistor-path sums are not effective impedances/delays or acceptance. No model or waveform changes. Original TX nominal39087664998 remains rejected.
+
+CDR loaded39102038200 and mainchip route39084569446 remain existing live handles; preserve them. Full goal remains open, work cloud-only.
+
+Earlier checkpoint follows:
+
 # Live cloud handles — 2026-10-18 continuation
 
 Goal turn classification: PROGRESS. Full fresh left-output CDR physical/RC/model chain completed and original loaded tests are running as39102038200 at89c79686f7140e8d4700048fe825acf984864432. Syntax/source-delta guard passed; four native cases are live. Preserve these handles; do not start duplicates.
