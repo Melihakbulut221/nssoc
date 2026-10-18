@@ -588,3 +588,8 @@ Mainchip RCX/STA39117700521 and TX39112087217 were verified in progress. Preserv
 ## Completed native runs after cloud migration
 
 Both RCX/STA39117700521 and PD420 model binding39118454522 completed. New pinned receipts are `replay-onehot-round4-routed-sta-result-20261018.json` and `cdr-retimed-hybrid-v2-binding-pass-20261018.json`. The former is NOT timing acceptance: setup9687/7650/3698 and hold4/13/51 for slow/typ/fast, WNSsetup-20.619253/-10.225716/-4.959596ns. All three corners retain electrical violations. Diagnose actual timing reports in the cloud before choosing repair; constraints are original20/4/8/8ns and5%derate. The latter passes420 native model conversions and12 injected corruptions, not loaded waveform gates. Next new420 MIM-aware RC and original loaded simulation. `CLOUD_RESUME.md` contains the latest exact handles. No local checkout/CAD/artifacts.
+
+
+## Fresh PD420 loaded native campaign39119999874
+
+The full new RC/model chain is now verified through composition39119795848; raw audit39119562797 passed22controls and composition passed19. Native loaded run39119999874 at9983399ba530ee13708be851b94dd8bd91d4d3b9 has four live native trajectories and source-delta controls passed. `CLOUD_RESUME.md` now replaces stale dispatch prose with exact live handles, all receipts, original remaining waveform gates and concrete routed timing causes. TX39112087217 is still live. Local task directory remains empty. Full goal OPEN.
