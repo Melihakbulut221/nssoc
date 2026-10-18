@@ -22,3 +22,12 @@ or waveform gate is relaxed. A leaf physical pass must be followed by full
 parent integration, independent primitive/route identity checks, fresh native
 MIM-aware RC and all original loaded early/late/fault screens. Full PHY,
 closed-loop recovery and mainchip timing remain unproven.
+
+
+First run39143329188 stopped during generation: a distributed body tap had no
+independent M4 column within the old plus/minus3um search window after the
+primitive reordering. Native DRC/LVS was not reached. The correction expands
+only the eight distributed taps' nearest-safe search to plus/minus20um. All
+nine local MOS taps keep their original search and primitive-clearance checks;
+all taps retain the original2um M4-column separation, area/perimeter and
+finite reference devices. The failed source and logs remain archived.

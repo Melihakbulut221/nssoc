@@ -4,7 +4,7 @@
       "baseline_path": "hw/soc/flow/make_pcie_sampler_parallel_drive_v8.py",
       "candidate_path": "hw/soc/flow/make_pcie_sampler_local_order_v9.py",
       "baseline_sha256": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
-      "candidate_sha256": "eb46f83b54d06aca33d32cc7116cf945814a15e6a8b8656001d970d7d06fd94a",
+      "candidate_sha256": "b06df57184d75786aed41da98cdd4795af602d7028f7e8ff512bbf1c25d1813a",
       "edits": [
         {
           "before": "nssoc_rx_sampler_parallel_drive_layout_v8",
@@ -19,6 +19,21 @@
         {
           "before": "instances=records, routes=routes, vias=vias, output_shunts=output_shunts,",
           "after": "instances=records, routes=routes, vias=vias, output_shunts=output_shunts, placement_plan=placement_plan,",
+          "count": 1
+        },
+        {
+          "before": "def safe_tap_x(desired, min_x=None):",
+          "after": "def safe_tap_x(desired, min_x=None, search_steps=6):",
+          "count": 1
+        },
+        {
+          "before": "range(1,7) for v in (-.5*k,.5*k)",
+          "after": "range(1,search_steps+1) for v in (-.5*k,.5*k)",
+          "count": 1
+        },
+        {
+          "before": "safe_tap_x(22 + index * 60.0), 4.0",
+          "after": "safe_tap_x(22 + index * 60.0, search_steps=40), 4.0",
           "count": 1
         }
       ]
@@ -40,7 +55,7 @@
       "baseline_path": "scripts/cloud_cdr_sampler_parallel_physical.py",
       "candidate_path": "scripts/cloud_cdr_sampler_local_order_physical.py",
       "baseline_sha256": "e55522ecf84f63bfbbd4e89512f24d386214b399839c349d15e0023dadef87eb",
-      "candidate_sha256": "7746b7add0f28c72519a9c1d42349f42065502c7858b67bc240ea6ccaa27bc2d",
+      "candidate_sha256": "fa9d8205ff08d540d19dece04fc5aad27143a4e16afb528eae177506df4f2fd1",
       "edits": [
         {
           "before": "cloud-cdr-sampler-parallel-physical",
@@ -70,6 +85,11 @@
         {
           "before": "scripts/cdr-sampler-parallel-physical-delta.json",
           "after": "scripts/cdr-sampler-local-order-source-delta.json",
+          "count": 1
+        },
+        {
+          "before": "eb46f83b54d06aca33d32cc7116cf945814a15e6a8b8656001d970d7d06fd94a",
+          "after": "b06df57184d75786aed41da98cdd4795af602d7028f7e8ff512bbf1c25d1813a",
           "count": 1
         }
       ]

@@ -289,11 +289,11 @@ def main():
                 escape(pin, 1, row["nets"][k], x - 6 + 3*k, row["name"],
                        1 if row["width_um"] == 1 else 4)
         records.append(dict(**row, placement_um=[x, y], bbox_um=str(cell.dbbox().transformed(t))))
-    def safe_tap_x(desired, min_x=None):
+    def safe_tap_x(desired, min_x=None, search_steps=6):
         # Reserve an independent M4 column before placing the actual tap.
         # DRC alone cannot detect an accidental union of two labelled nets.
         foreign = [x for points in terminals.values() for x, _ in points]
-        for offset in [0, *[v for k in range(1,7) for v in (-.5*k,.5*k)]]:
+        for offset in [0, *[v for k in range(1,search_steps+1) for v in (-.5*k,.5*k)]]:
             x = round((desired+offset)/.005)*.005
             if (min_x is None or x >= min_x) and all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):
                 return x
@@ -326,7 +326,7 @@ def main():
                             placement_um=[x,y],area_um2=4,perimeter_um=8,local_mos=row["name"]))
     # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.
     for index in range(TAPS - 9):
-        x, y = safe_tap_x(22 + index * 60.0), 4.0
+        x, y = safe_tap_x(22 + index * 60.0, search_steps=40), 4.0
         cell = pc("ptap1", {"w": "2u", "l": "2u"})
         t = instance(cell, x, y)
         ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))]
