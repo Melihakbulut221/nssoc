@@ -1,3 +1,39 @@
+# Latest candidate correction — inspect39143630895
+
+Cloud-only work, no local artifacts. Previous turn made concrete progress and
+preserved both positive and failed electrical evidence. Goal remains OPEN.
+
+Sampler reordering first run39143329188/source de68d3509c7801756e1c1f6ae43ea4fe452171c5
+failed at generation, before DRC/LVS: safe_tap_x could not find a separate M4
+column within+/-3um for a distributed tap after primitive reordering. No physical
+pass is claimed. Receipt cdr-sampler-local-order-tap-search-rejection-20261018.json
+pins fullfailure summary653873888/parts653874008 and archived logs.
+
+Correction commit c5ba33b69cfc47bff4985e6e8ef9a1cc44091afd extends only eight
+distributed taps' nearest-safe search to+/-20um. All nine localMOS taps retain
+the old search. All native contact area/perimeter and17 finite contacts,
+2um M4-column clearance and primitive-clearance checks remain unchanged.
+Exact-delta manifest and generator digest were updated together; original
+source/checkers and failed run retained. Workflow same sampler-local-order.
+
+Retry **39143630895**, native job117722915545, sourcec5ba33b69cfc47bff4985e6e8ef9a1cc44091afd.
+Inspect this latest run first, not the terminal failed39143329188. Source guards
+and runtime restore passed; actual native generation/physical verification was
+running on last inspection. If pass, inspect original560DRC/unsimplified54LVS/
+14fault andLEF gates, actual placement_plan span reduction and primitive rows.
+Then integrate four sampler masters into the wholepower484 parent (keep new
+XOR), independently verify original primitive dimensions/topology, and repeat
+fresh planes/binding/MIM-RC/full loaded tests. No oldRC reuse or timing claim
+from placement planning alone. All details and source paths in checkpoint below.
+
+TX39137607059 andmainchip39121691046 were freshly revalidated in_progress.
+Preserve both healthy jobs. Original failedCDRloaded39141648105 remains rejected;
+new power resistance andpathdiagnosis receipts are already committed.
+
+Observed 2026-10-18T16:10:02.837356+00:00. Candidate status: in_progress, conclusion: None.
+
+---
+
 # Current authoritative cloud continuation — sampler physical reordering candidate
 
 ALL work remains CLOUD ONLY, per latest direct user instruction. Local task
