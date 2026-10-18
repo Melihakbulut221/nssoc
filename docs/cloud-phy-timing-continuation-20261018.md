@@ -1,3 +1,11 @@
+# Current cloud continuation — left-output sampler passed; full parent under test
+
+Cloud-only; local workspace remains empty. Leaf39100436556 at107da2e6dc973db54cb259db1e3301bd7a98bb98 passed native560-category DRC,35-device deep/flat LVS,LEF and ten faults. Receipt `cdr-sampler-left-v1-physical-pass-20261018.json`. New parent workflow `cdr-retimed-left-parent-cloud` restores all four actual new sampler leaves and regenerates complete394-device placement/routes plus original84 supply risers. See `cdr-left-parent-20261018.md`. First inspect that workflow result; if physical passes, rebuild fresh planes/binding/wire/MIM RC/composition before original loaded electrical gates. No electrical success is asserted.
+
+Risers path review39100228873 completed both cases successfully as diagnosis only; original loaded39099179881 remains rejected with14 HBT failures each. First-pair input differential RMS about124mV versus16–19mV at the retimed pair motivated actual output routing changes. Preserve original failed captures and gates. Mainchip39084569446 and TX39087664998 remain live handles. The prepared current-route RCX/STA workflow requires the actual successful route manifest hashes before dispatch; native preflight39099942605 passed but no actual routed timing result exists yet. Full serial PHY, mainchip signoff and final setup/hold remain open.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — supply-risers nominal failures retained
 
 Cloud only. Loaded run39099179881 at8668ffd75d5d2b8b754bc869560dafdd6b7265bc completed: both nominal cases remain rejected despite physical/RC/model passes. Early wrong-sign counts98/282/368/398 of765; late108/74/370/396. Both still have14 failed HBT operating points. Early phase direction fails; late passes. No numerical warnings; source hashes unchanged. Full receipts in `cdr-risers-full-wire-rejection-20261018.json`. New `cdr-risers-path-review-cloud` reads those exact native captures and reproduces every original gate before identifying the next physical/circuit change. Do not treat84 added supply risers as a successful electrical repair.
