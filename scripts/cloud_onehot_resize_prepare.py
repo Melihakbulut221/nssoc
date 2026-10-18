@@ -41,7 +41,7 @@ def main():
         app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64');helper=ROOT/'scripts/prepare_onehot_resized_drivers.py'
         # Already inside the verified AppImage environment; do not nest FUSE mounts.
         openroad=shutil.which('openroad');assert openroad, 'Pinned runtime did not expose OpenROAD'
-        r['native_openroad']=dict(path=openroad,sha256=sha(openroad));save()
+        r['native_openroad']=dict(path=openroad,sha256=sha(Path(openroad)));save()
         protected={str(p):sha(p)for p in [Path(__file__),helper,ROOT/'scripts/select_onehot_routed_loads.py',*[OUT/'source'/n for n in names],OUT/'targets.json']}
         run([openroad,'-exit','-python',helper],'native-resize')
         tcl=OUT/'legalize.tcl';tcl.write_text('read_db {'+str(OUT/'proposed.odb')+'}\nset_thread_count 2\ndetailed_placement -max_displacement {1000 200}\ncheck_placement -verbose\nwrite_db {'+str(OUT/'legalized.odb')+'}\n')
@@ -67,7 +67,7 @@ def main():
         state=json.loads((OUT/'source'/names[2]).read_text());state.update(odb=str(OUT/'candidate.odb'),nl=str(OUT/'candidate.v'),spef=None,def_=None,metrics={});state.pop('def_',None);state['def']=None
         (OUT/'candidate-state.json').write_text(json.dumps(state,indent=2)+'\n')
         (OUT/'trial-config.json').write_text(json.dumps(cfg,indent=2)+'\n')
-        assert all(sha(p)==d for p,d in protected.items())
+        assert all(sha(Path(p))==d for p,d in protected.items())
         r.update(status='PASS_NATIVE_MEASURED_BUFFER_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA',sources_unchanged=True,candidate_odb_sha256=sha(OUT/'candidate.odb'),candidate_netlist_sha256=sha(OUT/'candidate.v'),candidate_state='candidate-state.json',protected_inputs=protected,dependencies_require_original_provenance_restore=True)
     except BaseException as e:r.update(status='FAIL_RESIZE_PREPARATION',error=repr(e));raise
     finally:r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
