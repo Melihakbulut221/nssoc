@@ -28,3 +28,6 @@ The next stage independently compares every whole-parent drawing layer against t
 
 
 Run39139774141 verified all28 parent drawing layers against the original parent plus exactly the two actual XOR leaf additions. All16 placements, routes, public ports, supply overlay and484 reference devices/connections are unchanged; three actual geometry mutations were rejected. All158 child/public planes,51 nets and1394 native terminals bound successfully with19 fault controls. The next cloud stage recovers exact primitive pin annotations and binds the921 metal terminals,473 retained intrinsic body references and25 public ports for fresh RC extraction.
+
+
+Run39140115416 independently recovered native primitive pin annotations and established111 metal conductor components,484 devices,1394 terminals and946 actual metal/public reference points. All921 metal terminal and473 retained intrinsic body classifications are unchanged. The new cloud model-binding and wire-extraction jobs retain the original native converter,12 malformed-model controls,13 raw-R/C controls and point-capacitance conservation checks. Actual new resistor/capacitor counts must be read from the new extraction; old counts and waveforms are not evidence for the repaired geometry.
