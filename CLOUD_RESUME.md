@@ -122,3 +122,12 @@ Latest native-job checkpoint after actualM6 obstacle routing:
   }
 ]
 Read parent39129347291 at8136ace492152f1f91e4e355a7c164bd24059e08 next. TX actualswap_leaf_select job117631094041 finished: full34ns/256bit capture detects fault,24HBTfaildevicegates; doNOTinfer nominal acceptance. Complete rawwaves remaincloud release parts (about1.6GB), never downloadedlocally. Receipt tx-v5-columns-actual-fault-observation-20261018.json. NominalTX117631094117/mainchip117658413515 remainindependent; preservehealthyjobs. FullgoalOPEN.
+
+
+## Authoritative parent484 physical pass; fresh extraction begins
+
+Run39129347291 at8136ace492152f1f91e4e355a7c164bd24059e08 passed560-ruleDRC ZEROmarkers, unsimplifieddeep/flat484deviceLVS andfiveactualfaults. Nativecensus116HBT/46MOS/102R/11MIM/209taps. GDSfc5597ca57d9c6ff97bb230ba4db0334e454fbb5b214d85552c578ebe48e4de1. Receipt cdr-parallel484-parent-physical-pass-20261018.json. SevenactualsamplerM6tracks shiftedpercopy by0.475,-1.795,0.68,1.7,2.72,3.74,1.56um; allactualM6obstacles avoided, originalendpointsandchildshapesretained. FullPHY NOT accepted.
+
+This commit launches cdr-retimed-parallel-v3-planes-cloud: original158planes/51nets/19faults, newly derived1394terminals. Nextfresh wire-inputs/native binding/RC/MIM audit/composition and ORIGINAL full-loadedearly/late/fault gates. Expectedmetalterminal921/body473/anchors946 (derivefromactualcensus; verifyactualnativegeometry); originaltopology111wirecomponents must be independentlyconfirmed, never assume oldRC stillvalid. No reuseold420RC.
+
+TX39112087217 nowTERMINALFAILURE: nativefull34ns/256bits completed in14960s,181/768wrongsign and220below100mV;24HBTfailminVCE;0MOSfail; nodiagnostics. CMOS,level8,level16 interfaces pass;level4 andfinal fail. Receipt tx-v5-columns-native-full-wire-rejection-20261018.json. NextTXwork: bind24failingHBT IDs to physicalstages and inspect nativelevel4/final timing/amplitude/clockheadroom before another expensive simulation. Source65d48a27773e891f289c6a9a534290a16623fd56, fullarchivescloudonly. Mainchip39121691046 stilllastverifiedlive; preserve. FullgoalOPEN.
