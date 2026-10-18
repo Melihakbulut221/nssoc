@@ -5,8 +5,8 @@ All work stays in GitHub-hosted jobs and releases. The local workspace remains e
 ## Active computations at this checkpoint
 
 - Mainchip detailed routing: run 39084569446, source 92c6161af3fbb040ce6433ccae32ee614e6db1ab, native job 117548333285. This starts from exact zero-overflow GRT 39082708488 and revalidates original source/boot/protocol/logic proofs. Do not restart while live. Earlier 39084143703 stopped before the router at a missing optional configuration key; its failure is retained, and the corrected controller uses the same native false default as GRT.
-- CDR v3 native interface binding: run 39085138687, source 175ff17206813a27926c1a5ebe90780c3bc82714. New physical source 39084708980 passed; this binds new native IDs before fresh RC. Do not reuse v2 native IDs or extracted wire model for the changed geometry.
-- TX v5 full-wire path review: run 39084981409, source 36f659124c17dfbb818b089c064d0f53604a5d2b. It reads the original failed capture, reproduces every original gate, then localizes the 32:1 stage and eight HBT failures. No new transient is running for this review.
+- CDR v3 native interface binding39085138687 completed:158 planes,51 nets,1134 terminals and19 rejected faults. The fresh `cdr-retimed-wire-inputs-v3-cloud` workflow now prepares whole native geometry/terminal references. Do not reuse v2 native IDs or extracted RC for the changed geometry.
+- TX v5 full-wire path review39084981409 has completed, reproducing every original gate exactly. No TX transient or review process remains live. Failure localization is recorded in `tx-v5-path-review-20261018.md` and its full receipt; next map the eight failed HBTs onto actual v5 geometry and return conductors.
 
 ## Completed physical progress
 
