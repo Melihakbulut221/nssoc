@@ -1,3 +1,11 @@
+# Latest: saved mainchip route continuation at antenna round2
+
+Native diagnosis39106213346 confirmed DRT39084569446 completed initial routing and round1 with0routingDRC; antenna nets1141→172,2943 actual diodes added. It timed out during round2 routing. Last complete round1 ODB is retained. This commit launches `replay-onehot-antenna-round2-cloud.yml`: require native ODB topology/three controls and exact172 antenna reproduction, then perform only round2 while preserving original maximum8 and zero final gates. No cold restart. Save pre-repair/post-insertion databases and completed route. Inspect actual success/failure; a stage with remaining antenna nets is not closure. `replay-onehot-antenna-continuation-20261018.md` has exact rationale and source bindings.
+
+Hybrid38 corrected-tap run39106371033 is now workflowSUCCESS; inspect all native DRC/deep-flat LVS/twelvefaults/LEF results before accepting its scoped physical proof or building the changed406-device parent. No full PHY or final timing acceptance. Cloud-only; local workspace empty. This turn made actual geometry repairs, native evidence and a resumable route continuation.
+
+Earlier checkpoint follows:
+
 # Latest: real hybrid38 metal short identified and geometry corrected
 
 Reader39106052671 found actual AVDD|SUB and tail short in native extraction, despite zero DRC. Metadata shows1.18um center spacing between1.2um-wide local SUB and AVDD columns, plus one legacy tap overlapping a tail column. New generator physically moves taps into available columns and enforces2um spacing for all distinct-net M4 columns. Source,38devices and native gates unchanged. This commit triggers the next `cdr-sampler-hybrid-physical-cloud` run; inspect it before parent integration. Evidence `cdr-hybrid-native-short-diagnosis-20261018.json` retains actual failing netlists.
