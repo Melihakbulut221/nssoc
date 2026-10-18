@@ -583,3 +583,8 @@ No CI run was cancelled. A proposed redundant-run cancellation stopped at its pr
 Local task workspace is empty; all source modifications use GitHub Git Data API without checkout. Fresh native wire run39117796759 passed with pinned receipt `docs/evidence/cdr-retimed-hybrid-v2-wire-inputs-pass-20261018.json`. New v2 binding workflow preserves all twelve model corruption controls, binary ULP geometry checks, SI dimensions and native body terminals, with exact source delta audit; 64um MOS widths are now admitted for actual XOR tails. It does not claim RC or waveform acceptance. Inspect new workflow at this commit before advancing.
 
 Mainchip RCX/STA39117700521 and TX39112087217 were verified in progress. Preserve healthy jobs. Next native CDR420 RC must be newly extracted and audited, including actual MIM identities and intrinsic/device capacitance accounting; original loaded sampler/data/phase and transistor safety gates remain mandatory.
+
+
+## Completed native runs after cloud migration
+
+Both RCX/STA39117700521 and PD420 model binding39118454522 completed. New pinned receipts are `replay-onehot-round4-routed-sta-result-20261018.json` and `cdr-retimed-hybrid-v2-binding-pass-20261018.json`. The former is NOT timing acceptance: setup9687/7650/3698 and hold4/13/51 for slow/typ/fast, WNSsetup-20.619253/-10.225716/-4.959596ns. All three corners retain electrical violations. Diagnose actual timing reports in the cloud before choosing repair; constraints are original20/4/8/8ns and5%derate. The latter passes420 native model conversions and12 injected corruptions, not loaded waveform gates. Next new420 MIM-aware RC and original loaded simulation. `CLOUD_RESUME.md` contains the latest exact handles. No local checkout/CAD/artifacts.
