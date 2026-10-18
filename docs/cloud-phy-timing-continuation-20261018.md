@@ -1,3 +1,9 @@
+# Latest: real hybrid sampler physical workflow prepared
+
+New `cdr-sampler-hybrid-physical-cloud.yml` is push-triggered by this commit. Find its exact new run and inspect actual generation/DRC/LVS/12-fault results. It uses the exact schematic source that passed39104163004, native single-finger LVNMOS with real gate contact, finite taps and bbox-aware placement. No physical pass yet. Source/checker geometry deltas are pinned in `cdr-sampler-hybrid-physical-delta.json`; original gates remain. See `cdr-hybrid-tail-physical-20261018.md`. Preserve any failure before repair; do not accept old sampler/parent proof for this changed circuit. Mainchip39084569446 is still the existing handle; recheck terminal state, no duplicate live run. Cloud-only; full goal OPEN.
+
+Earlier checkpoint follows:
+
 # Current: cloud-only work; hybrid-tail sampler schematic passed
 
 Checked 2026-10-18T06:41:26.112467+00:00. The user's latest instruction is to perform all work in the cloud and leave this workspace empty. `/home/hasanmelih/Documents/ChatGPT/nnsoc` was inspected empty, and no local CAD process is running. All new source changes use the GitHub Git Data API; native CAD, tests, archive restoration and generated artifacts must remain on hosted runners. Do not recreate a local checkout or download native archives. Do not touch the unrelated nssoc-upstream directory. The older goal wording requesting local work is superseded.

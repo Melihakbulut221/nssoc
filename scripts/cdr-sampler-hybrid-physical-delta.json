@@ -1,0 +1,120 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_left_v1.py",
+      "baseline_sha256": "9abadbdde0ea5af68ebaf7da06876053acbc73b463725ee1fd36b9f09757441a",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py",
+      "candidate_sha256": "c5ef7b367b160fa8322d189697ff8c9e1e05cbf4508c02b86de473801623e780",
+      "edits": [
+        {
+          "before": "Left output pins and real TopMetal2 output shunts for the unchanged HBT sampler.",
+          "after": "Native12HBT/3LVNMOS/12rppd hybrid sampler with finite substrate contacts.",
+          "count": 1
+        },
+        {
+          "before": "import json\n",
+          "after": "import json\nimport math\n",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_hbt_v2_left_v1",
+          "after": "nssoc_rx_sampler_hybrid_tail_layout_v1",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice",
+          "after": "hw/soc/analog/pcie/rx_sampler_hybrid_tail_v1.spice",
+          "count": 1
+        },
+        {
+          "before": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
+          "after": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+          "count": 1
+        },
+        {
+          "before": "            elif len(fields) > 4 and fields[4] == \"RPPD\":",
+          "after": "            elif len(fields) > 5 and fields[5] == \"SG13_LV_NMOS\":\n                params = dict(v.split(\"=\") for v in fields[6:])\n                assert set(params) == {\"W\", \"L\", \"NG\"} and params[\"NG\"] == \"1\"\n                rows.append(dict(kind=\"nmos\", name=name, nets=[net(v) for v in fields[1:5]],\n                                 width_um=float(params[\"W\"][:-1]), length_um=float(params[\"L\"][:-1]), ng=1))\n            elif len(fields) > 4 and fields[4] == \"RPPD\":",
+          "count": 1
+        },
+        {
+          "before": "expand(\"NSSOC_RX_SAMPLER_HBT\", list(PORTS), \"\")",
+          "after": "expand(\"NSSOC_RX_SAMPLER_HYBRID_TAIL_V1\", list(PORTS), \"\")",
+          "count": 1
+        },
+        {
+          "before": "if len(rows) != 27 or sum(row[\"kind\"] == \"hbt\" for row in rows) != 15:",
+          "after": "if len(rows) != 27 or {k: sum(r[\"kind\"] == k for r in rows) for k in (\"hbt\", \"nmos\", \"resistor\")} != {\"hbt\": 12, \"nmos\": 3, \"resistor\": 12}:",
+          "count": 1
+        },
+        {
+          "before": "        else:\n            lines.append(f\"R{row['name']}",
+          "after": "        elif row[\"kind\"] == \"nmos\":\n            lines.append(f\"M{row['name']} {nets} sg13_lv_nmos w={row['width_um']:g}u l={row['length_um']:g}u ng=1 m=1\")\n        else:\n            lines.append(f\"R{row['name']}",
+          "count": 1
+        },
+        {
+          "before": "    for index, row in enumerate(rows):\n        x, y = 20.0 + index * 20, 20.0\n        if row[\"kind\"] == \"hbt\":\n            cell = pc(\"npn13G2\", {\"Nx\": row[\"nx\"]})\n            t = instance(cell, x, y)",
+          "after": "    previous_right = 0.0\n    for index, row in enumerate(rows):\n        if row[\"kind\"] == \"hbt\":\n            cell = pc(\"npn13G2\", {\"Nx\": row[\"nx\"]})\n        else:\n            params = {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"}\n            if row[\"kind\"] == \"nmos\":\n                params[\"ng\"] = 1\n            cell = pc(\"nmos\" if row[\"kind\"] == \"nmos\" else \"rppd\", params)\n        raw = cell.dbbox()\n        x = math.ceil(max(20.0 + index * 20, previous_right + 12 - raw.left) / .005) * .005\n        y = 20.0\n        t = instance(cell, x, y)\n        actual = raw.transformed(t)\n        assert actual.left >= previous_right + 12 - 1e-8 and actual.top < 70\n        previous_right = actual.right\n        if row[\"kind\"] == \"hbt\":",
+          "count": 1
+        },
+        {
+          "before": "        else:\n            cell = pc(\"rppd\", {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"})\n            t = instance(cell, x, y)\n            ps = sorted",
+          "after": "        elif row[\"kind\"] == \"nmos\":\n            mp = sorted([s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],\n                        key=lambda b: b.center().x)\n            gp = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(5, 2))]\n            assert len(mp) == 2 and len(gp) == 1\n            # Native PCell: left source, right drain; separate vertical access levels.\n            for k, (pin, net) in enumerate(zip(mp, [row[\"nets\"][2], row[\"nets\"][0]], strict=True)):\n                py = round((pin.bottom + .4 if k == 0 else pin.top - .4) / .005) * .005\n                tiny = pya.DBox(pin.left, py-.1, pin.right, py+.1)\n                assert pin.contains(pya.DPoint(tiny.left,tiny.bottom)) and pin.contains(pya.DPoint(tiny.right,tiny.top))\n                escape(tiny, 1, net, x-9+3*k, row[\"name\"], 1)\n            gate = gp[0]\n            gx = round(gate.center().x/.005)*.005\n            gy = round((gate.top+1)/.005)*.005\n            top.shapes(layout.layer(5,0)).insert(pya.DBox(gate.left,gate.top-.1,gate.right,gy+.3))\n            top.shapes(layout.layer(5,0)).insert(pya.DBox(gx-.3,gy-.3,gx+.3,gy+.3))\n            top.shapes(layout.layer(6,0)).insert(pya.DBox(gx-.08,gy-.08,gx+.08,gy+.08))\n            pin = rect(1,gx-.25,gy-.25,gx+.25,gy+.25)\n            escape(pin, 1, row[\"nets\"][1], x-3, row[\"name\"], 1)\n            assert row[\"nets\"][3] == \"SUB\"  # connected through all eight finite ptap1 devices below\n        else:\n            ps = sorted",
+          "count": 1
+        },
+        {
+          "before": "primitive_counts=dict(hbt=15,rppd=12,physical_tap=TAPS)",
+          "after": "primitive_counts=dict(hbt=12,nmos=3,rppd=12,physical_tap=TAPS)",
+          "count": 1
+        },
+        {
+          "before": "scope=\"Fixed v2 external-clock sampler.",
+          "after": "scope=\"Hybrid-tail external-clock sampler, not the original all-HBT layout.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_left_v1.py",
+      "baseline_sha256": "98f928288e12d05e10d0ec0573ce4941a921cdc67f69ea4ba9e45c80b9bd8d33",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_hybrid_tail_v1.py",
+      "candidate_sha256": "af379fbd4c45f07cdb9cf8e4e6c8f570bd5e6ceefc9932e3bff9707b0d7fb370",
+      "edits": [
+        {
+          "before": "Native sampler DRC and unsimplified deep/flat35device LVS with original faults.",
+          "after": "Native hybrid sampler DRC and unsimplified35device LVS with twelve fault controls.",
+          "count": 1
+        },
+        {
+          "before": "from make_pcie_sampler_left_v1 import",
+          "after": "from make_pcie_sampler_hybrid_tail_v1 import",
+          "count": 1
+        },
+        {
+          "before": "REFERENCE_FAULTS = (\"wrong_load\", \"tail_nx\", \"missing_tap\", \"master_clock\", \"wrong_input\")",
+          "after": "REFERENCE_FAULTS = (\"wrong_load\", \"tail_width\", \"missing_tap\", \"master_clock\", \"wrong_input\", \"tail_gate\", \"tail_body\")",
+          "count": 1
+        },
+        {
+          "before": "        \"tail_nx\": (\"QM_T M_TE IREF AVSS BULK npn13G2 Nx=4\", \"QM_T M_TE IREF AVSS BULK npn13G2 Nx=3\"),",
+          "after": "        \"tail_width\": (\"MM_T M_TE IREF AVSS BULK sg13_lv_nmos w=32u\", \"MM_T M_TE IREF AVSS BULK sg13_lv_nmos w=31u\"),\n        \"tail_gate\": (\"MM_T M_TE IREF AVSS BULK\", \"MM_T M_TE CLKP AVSS BULK\"),\n        \"tail_body\": (\"MM_T M_TE IREF AVSS BULK\", \"MM_T M_TE IREF AVSS AVSS\"),",
+          "count": 1
+        },
+        {
+          "before": "    if positive:\n        if (audit",
+          "after": "    if positive:\n        census = {\"npn13g2\": 0, \"sg13_lv_nmos\": 0, \"rppd\": 0, \"ptap1\": 0}\n        for line in text.lower().splitlines():\n            fields = line.split()\n            if not fields or fields[0][0] not in \"qmr\":\n                continue\n            matched = [m for m in census if m in fields]\n            assert len(matched) == 1, (\"Unexpected extracted primitive\", line)\n            census[matched[0]] += 1\n        assert census == {\"npn13g2\": 12, \"sg13_lv_nmos\": 3, \"rppd\": 12, \"ptap1\": 8}, census\n        step[\"native_primitive_census\"] = census\n        if (audit",
+          "count": 1
+        },
+        {
+          "before": "    pins = {Path(k): v for k, v in generated[\"input_sha256\"].items()}",
+          "after": "    assert generated[\"primitive_counts\"] == dict(hbt=12,nmos=3,rppd=12,physical_tap=8)\n    pins = {Path(k): v for k, v in generated[\"input_sha256\"].items()}\n    pins[Path(__file__).resolve()] = digest(Path(__file__).resolve())",
+          "count": 1
+        },
+        {
+          "before": "PASS_SAMPLER35_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TEN_FAULTS",
+          "after": "PASS_HYBRID_SAMPLER35_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
