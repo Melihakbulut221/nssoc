@@ -1,3 +1,13 @@
+# Current: actual CDR select-tail repair candidate screened in cloud
+
+Fullhybrid406 diagnosis identified select tails native43/66 with .198-.200V minimumVCE while requiring.4V, and XOR tails27/35/50/58 with .184-.191V. This commit develops `cdr_select_hybrid_tail_v1.spice`: only reference/tail change from HBT to nativeLVNMOS8/32um/.3um; original2HBT differential pair and fourrppd loads unchanged. Source-delta guard and three corruptions retain this scope.
+
+New cdr-select-hybrid-tail-cloud runs component nominal/hot-low/cold-high, actualoutputswap andbiasoff controls with nativeSG13models, zero-sourceOP/OFF, full256bits/34.25ns,120mVdifferential/1.3Vcommonmode input and50fF/output. Original HBT.4-1.6V/1V/3mA andMOS1.32V limits,100mVdata/37.5ps settling apply. This component experiment is NOT fullparent: idealboundary waveform/load does not replay complete406wire graph; no physicalreplacement/layout/parentacceptance. If useful, build actualnewleafDRC/LVS/RC and composeparent before loadedgates. XORtail and retimeddata attenuation remain separate real repairs; do not closefromcomponentpass.
+
+TX originalfullwire newcolumns run39112087217/source65d48a27773e891f289c6a9a534290a16623fd56 queued atlastcheck; preserveit. Mainchipround3 existing39111280543 remainslive. FullobjectiveOPEN. Cloud-only. GoalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: TX column native composition passed; original full-wire trajectory launched
 
 Composition39111549216/source2994d0a065720eb69d740bada3a1eed3f1e87a3c passed full1674device/116611R77471C binding, six original malformed composition controls,377native conductor ownership, all124input legs/372bases and two actual endpoint faults. Full39.3MB summary and complete archive retained remotely; compact receipt `tx-v5-columns-composition-pass-20261018.json` pins both. Compact and wire model hashes changed and are independently fixed in the new builder; no old model accepted.
