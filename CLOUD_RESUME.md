@@ -29,7 +29,9 @@ OPEN. This goal turn made concrete progress; no blocker or completion claim.
    Currentcandidate retains midpoint/endpoints and skips periodic via within
    1.5um of any retained center. Originalfailure archived at
    docs/evidence/cdr-xor-power-access-v4-spacing-rejection-20261018.json.
-   If it passes, require independent drawing/device conservation, parent484
+   This retry has now PASSED:560DRC0,deep/flat59LVS and sevenfaults.
+   Receipt cdr-xor-power-access-v4-physical-pass-20261018.json.
+   Next require independent drawing/device conservation, parent484
    integration, native planes/model binding, fresh MIM-awareRC and original
    full loaded transients. A leaf pass is not a parent/electrical pass.
    Design: docs/pcie-cdr-xor-power-access-repair-20261018.md.
@@ -318,3 +320,6 @@ TX compact model comparison39137222470 atf81ac1777e6ff25a85e0b35aebf06cf5a419c22
 
 
 CDR XOR localpower39137391978 FAILED nativeDRC15markers(M1.b6/M2.b3/V1.b3/V2.b3), LVSnotreached. Receipt cdr-xor-power-access-v4-spacing-rejection-20261018.json retainsfullfailedsourcegeometry. ActualgeneratedviaYrecords show one0.4um-close pair perMOS due mandatorymidpointnear4umpitch. Thiscommit isolatesfix: retainmidpoint/endpoints, skipperiodicvia within1.5um ofretainedcenter; all3sourceviaarrays explicitlyenforcespacing. Same59devices/schematic/native560DRC/deepflatLVS/sevenfaults. Rechecknewrun. TX repairedfullwave fromb8a1b3ebe3047ab21fd9a0824787246a37ea5e24 shouldnowbe live; resolvehandleandpreserve.
+
+
+Latest CDR39137767974 completedSUCCESS at6c5863e11f800e78aadc1169fc9642f7ac6c7847: native560DRC0,unsimplifieddeep-flat59LVS,sevenactualfaultsrejected. Sourceviaspacingfixworked. Fullreceipt cdr-xor-power-access-v4-physical-pass-20261018.json. Next independentlyproveallowed59leafdrawing/devicechanges against old physical leaf. Use ORIGINAL receipt cdr-xor-hybrid-v3-physical-pass-20261018.json toresolvebaselineexactrun (do not infer a runnumber); then integrate newleaf intoactualPD484/restoreall16macros/sourceplan, newnativeDRC/LVS/planes/binding/MIM-awareRC/fulloriginalearlylate+faults. No parent/electricalclaim. TX39137607059 normal117705290956/fault117705290938 andmainchip39121691046 remainlive.

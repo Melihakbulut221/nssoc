@@ -10,3 +10,6 @@ Native560-category DRC, unsimplified deep/flat59-device LVS and all seven actual
 ## First physical rejection and isolated correction
 
 Run39137391978 generated the candidate, then failed the real560-category DRC with15 markers: M1.b6, M2.b3, V1.b3 and V2.b3. LVS was not reached. All failed geometry remains archived. Its recorded source-via centers show one0.4um pair on each of the three MOS stripes: the mandatory stripe-midpoint via was too close to the regular4um-pitch via. This is consistent with the observed metal/via spacing failures. The next candidate keeps the exact midpoint and both end access points, omits a periodic via within1.5um of a retained center, and asserts the actual retained-center spacing. Transistor sizes, M3 escape widths and all physical gates remain unchanged. Actual DRC/LVS must validate the correction; this is not a waiver.
+
+
+The spacing-corrected run39137767974 passed all560 DRC categories with zero violations, unsimplified deep and flat59-device LVS without extraction diagnostics, and all seven real faults. This proves only the leaf physical checks. Independent drawing conservation and full PD484 integration/extraction/transient validation remain mandatory.
