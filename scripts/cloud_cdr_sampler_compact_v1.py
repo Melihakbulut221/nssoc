@@ -5,6 +5,7 @@
 import hashlib,json,os,subprocess,sys,tarfile
 from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
+import compare_cloud_routed_endpoints as reports
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'hw/soc/out/cloud-cdr-sampler-compact-v1'
 
@@ -14,16 +15,24 @@ def main():
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,
            full_phy_accepted=False,closed_loop=False,qualified_pex=False,
            main_chip_integrated=False,
-           scope='Actual sampler compaction candidate: primitive x pitch32to20um, tap pitch96to60um, net row pitch10to6um and width880to560um. Same15HBT12rppd8taps, native PCells, circuit, wire widths, via arrays and all original560DRC/deep-flat35deviceLVS/tenfault/LEF gates. New whole-parent RC and original loaded tests required; no electrical or full PHY acceptance.')
+           scope='Actual sampler compaction candidate: primitive x pitch32to20um, tap pitch96to60um and x origin30to22um to avoid proven signal shorts, net row pitch10to6um and width880to560um. Same15HBT12rppd8taps, native PCells, circuit, wire widths, via arrays and all original560DRC/deep-flat35deviceLVS/tenfault/LEF gates. New whole-parent RC and original loaded tests required; no electrical or full PHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
         analog=ROOT/'hw/soc/analog/pcie/rx_sampler_hbt_v2.spice'
         assert sha(analog)=='2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f'
-        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_compact_v1.py')=='00756e4b2fb9a6ad06ec8d0b55fb790ed2b1c19a6c159685b2e5da2d58f18572'
+        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_compact_v1.py')=='a94f1938100002b9eca7c70ecde985dc73f5d18b1879ae60c8ad884e40a7e2d9'
         paths=[Path(__file__),analog,*[ROOT/p for p in ('hw/soc/flow/make_pcie_sampler_cell.py','hw/soc/flow/make_pcie_sampler_compact_v1.py','hw/soc/flow/check_pcie_sampler_unsimplified.py','hw/soc/flow/check_pcie_sampler_compact_v1.py','scripts/check_cdr_sampler_compact_v1_sources.py','scripts/cdr-sampler-compact-v1-delta.json','scripts/audit_cdr_sampler_compact_v1.py')]]
         subprocess.run([sys.executable,ROOT/'scripts/check_cdr_sampler_compact_v1_sources.py'],check=True)
         protected={str(p):sha(p) for p in paths};r['protected_inputs']=protected
+        reports.OUT=OUT
+        rejected,proof=reports.restore_report('cdr-sampler-compact-v1',39090257244,
+            'ad1c1ff9a6102eb9fd36bf511f610e086aa1871d9d1db3c4c5bab9777a6d1ee1',
+            '515655d23aaa63f7209e65853ea9e8f48601022071c201385abf668cf029b0bd',OUT/'rejected',
+            ('layout/result.json','layout/nssoc_rx_sampler_hbt_v2_compact_v1.gds'))
+        assert rejected['source_head']=='6a9a5f6d2ece8ceb6bfe36b46075a61126a609ba'
+        assert rejected['physical']['status']=='FAILED_OR_INCOMPLETE'
+        r['negative_geometry_source']=proof;save()
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
         packed=OUT/'runtime.tar.gz';fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed)
         with tarfile.open(packed)as tar:tar.extractall(ROOT,filter='data')

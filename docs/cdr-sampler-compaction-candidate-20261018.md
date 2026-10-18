@@ -9,3 +9,11 @@ This candidate regenerates real native GDS with device pitch20um, eight substrat
 The hosted run regenerates both layouts, verifies every native PCell drawing and exact reference after top-name normalization, then runs the unchanged560-category DRC, deep/flat unsimplified35device LVS, ten original fault controls and actual OpenROAD LEF readback. The verifier differs only in the imported candidate top name. Physical failures must be retained. The geometry audit is not a DRC, LVS or electrical acceptance substitute.
 
 After a physical pass, replace all four sampler instances through a source-bound parent manifest, regenerate the entire parent layout and evaluate parent routing compaction. Repeat parent DRC/LVS, fresh native MIM-aware RC, exact device/terminal binding and complete original loaded early/late tests. Reusing old native IDs or the old sampler RC is invalid. Clock recovery, full serialx4 integration, all-corner timing and production acceptance remain open.
+
+## First native result and tap-lane correction
+
+Run39090257244 generated560x191.03um (45.52percent of original area); identical native PCells/reference and all560DRC categories passed, but unsimplified35device LVS rejected connectivity. No electrical or physical acceptance is taken from the area reduction or DRC alone. The failed archive remains in its release and the full receipt is preserved.
+
+Hosted diagnosis39090663060 restored the exact archive and found five actual M4 tap/signal centerline coincidences at151,211,331,391,451um. Native extraction explicitly merged QN|QP|SUB. With primitive pitch20um, the original tap origin30um puts the native tap center on an HBT collector escape lane. The correction moves the eight taps to x=22+60*i um, leaving their native area/perimeter and all other candidate geometry rules unchanged. This selects a separate M4 lane; it does not change substrate connectivity in the reference.
+
+The revised audit reconstructs every M4 vertical route from its actual recorded terminal/via endpoints, verifies each rectangle exists in the flattened native GDS, and checks distinct-net overlaps. Both original and candidate must have no overlap; the restored failed GDS must reproduce exactly five overlaps. The complete unchanged native physical gates still determine acceptance.

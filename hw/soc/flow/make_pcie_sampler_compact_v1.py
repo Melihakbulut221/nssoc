@@ -202,7 +202,7 @@ def main():
         records.append(dict(**row, placement_um=[x, y], bbox_um=str(cell.dbbox().transformed(t))))
     # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.
     for index in range(TAPS):
-        x, y = 30 + index * 60.0, 4.0
+        x, y = 22 + index * 60.0, 4.0
         cell = pc("ptap1", {"w": "2u", "l": "2u"})
         t = instance(cell, x, y)
         ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))]
