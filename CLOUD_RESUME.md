@@ -1,5 +1,11 @@
 # Latest cloud-only continuation — 2026-10-19
 
+Native wire coordinate39170551593 passed; full receipt docs/evidence/cdr-via-rich-native-wire-location-20261019.json. This commit launches cdr-sampler-collector-access-physical-cloud: only16 HBT collector escapes0.4to1.2um/pin-via columns4to16, primitive placement and all original physical gates unchanged. Exact source guard and independent primitive/route metadata checks required. Inspect actual nativeDRC/LVS before parent integration/freshRC/fullwave; no electrical acceptance yet. Remaining supply feederR10067=6.21653ohm is separate. CDR normal cases still fail. Mainchip39161219456 andTX39158584151 lastverifiedlive; preserve. All calculation/archive processing cloud-only; localprojectempty. FullgoalOPEN.
+
+---
+
+# Latest cloud-only continuation — 2026-10-19
+
 CDR path diagnosis 39170038075 PASSED read-only reproduction after the variable-name fix. Both nominal electrical gates remain rejected, 8/6 HBT below minimum VCE, sampler errors unchanged. Complete reports pinned in docs/evidence/cdr-via-rich-v7-native-path-review-20261019.json. New cdr-via-rich-wire-location-cloud workflow binds the actual new dominant resistor branches to native raw coordinates before geometry repair. Resolve its run and inspect output; no new transistor simulation or acceptance claimed. Mainchip39161219456/TX39158584151 revalidated in progress; preserve. Local project stays empty, all calculation/archive processing cloud-only.
 
 ---
