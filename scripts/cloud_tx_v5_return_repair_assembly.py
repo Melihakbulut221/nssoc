@@ -147,11 +147,11 @@ def generate():
         box('TopMetal2',min(xs)-w/2,y-w/2,max(xs)+w/2,y+w/2)
         if net=='avss':return_geometry.append(dict(layer='TopMetal2',box_um=[min(xs)-w/2,y-w/2,max(xs)+w/2,y+w/2],width_um=w))
     assert len(return_geometry)==6
-    # Widen the actual final-emitter return strap at its original physical anchor.
+    # Retain the original final-emitter return strap after native AVSS/SUB short diagnosis.
     # Lower Metal2 emitter accesses and every child drawing stay unchanged.
     final=next(n for n in plan['nodes']if n['label']=='f');x=final['x_um']+334.785-280.875;yy=final['y_um'];end_y=yy+330.24
     for y in (yy+132.230,yy+139.435):via(x,y,bottom='Metal2',upper='TopMetal1',params=dict(vn_columns=8,vn_rows=1,vt1_columns=2,vt1_rows=2))
-    box('TopMetal1',x-6,yy+130.230,x+6,end_y+2);via(x,end_y,params=dict(vt2_columns=4,vt2_rows=4))
+    box('TopMetal1',x-2,yy+130.230,x+2,end_y+2);via(x,end_y,params=dict(vt2_columns=2,vt2_rows=2))
     public={}
     for n in plan['nodes']:
         tag=n['label']
@@ -212,7 +212,7 @@ def main():
             check['column_pitch_um']=1000.;check['row_pitch_um']=600.
         assert check==original,'Placement changed original selector topology'
         plan['return_rail_width_um']=64. if a.return_rail=='wide64'else 32.
-        result['return_rail']=dict(profile=a.return_rail,trunk_and_bus_width_um=plan['return_rail_width_um'],child_stub_width_um=32.,local_final_strap_width_um=12.,final_column_trunk_width_um=128.,final_column_trunk_offset_from_right_um=340.,final_strap_top_via_columns=4,final_strap_top_via_rows=4,power_vias_columns=4,power_vias_rows=4,scope='Final-column AVSS TM1 trunk widens64to128um and moves80um outward; local final AVSS TM1 strap widens4to12um with4x4 topvia array. Other column trunks, bottom bus width, child stubs/drawings, lower emitter vias, AVDD/SUB, signals, topology and devices stay unchanged. No resistance scaling or electrical claim.')
+        result['return_rail']=dict(profile=a.return_rail,trunk_and_bus_width_um=plan['return_rail_width_um'],child_stub_width_um=32.,local_final_strap_width_um=4.,final_column_trunk_width_um=128.,final_column_trunk_offset_from_right_um=340.,final_strap_top_via_columns=2,final_strap_top_via_rows=2,power_vias_columns=4,power_vias_rows=4,scope='Final-column AVSS TM1 trunk widens64to128um and moves80um outward; local final AVSS TM1 strap and2x2 topvia array retain their exact baseline geometry. Other column trunks, bottom bus width, child stubs/drawings, lower emitter vias, AVDD/SUB, signals, topology and devices stay unchanged. No resistance scaling or electrical claim.')
         result['placement_pitch']=dict(name=a.placement_pitch,column_um=plan['column_pitch_um'],row_um=plan['row_pitch_um'],inverse_topology_matches_original=True)
         result['placement_scope']='Only parent macro pitch/trunks/routes move. Frozen child drawings, devices, topology and acceptance rules unchanged. New RC and loaded waveforms mandatory; no parasitic or electrical pass inferred.'
         if a.variant in ('budget_high8','budget_high3','budget_balanced_v5'):

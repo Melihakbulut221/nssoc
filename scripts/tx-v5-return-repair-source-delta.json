@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_tx_v5_columns_assembly.py",
   "baseline_sha256": "1794b0db5a4f3e0fbef080f5b35730a3b10f7a07e345f2485b5e602faf6fb71e",
   "candidate_path": "scripts/cloud_tx_v5_return_repair_assembly.py",
-  "candidate_sha256": "e79c67f84204fdc15e49ded92206a6d8be83b4522ea78dbbeff60c5c6379e22a",
+  "candidate_sha256": "8fd258f7a42fb9c46c46067d9a78f9498e6915752375c875cf302998858367d2",
   "edits": [
     {
       "before": "cloud-tx-v5-columns-assembly",
@@ -37,6 +37,31 @@
     {
       "before": "# Same physically anchored final-emitter return strap as the verified4:1\n    # parent, transformed with the mirrored final macro; no child edits.",
       "after": "# Widen the actual final-emitter return strap at its original physical anchor.\n    # Lower Metal2 emitter accesses and every child drawing stay unchanged.",
+      "count": 1
+    },
+    {
+      "before": "box('TopMetal1',x-6,yy+130.230,x+6,end_y+2);via(x,end_y,params=dict(vt2_columns=4,vt2_rows=4))",
+      "after": "box('TopMetal1',x-2,yy+130.230,x+2,end_y+2);via(x,end_y,params=dict(vt2_columns=2,vt2_rows=2))",
+      "count": 1
+    },
+    {
+      "before": "local_final_strap_width_um=12.",
+      "after": "local_final_strap_width_um=4.",
+      "count": 1
+    },
+    {
+      "before": "final_strap_top_via_columns=4,final_strap_top_via_rows=4",
+      "after": "final_strap_top_via_columns=2,final_strap_top_via_rows=2",
+      "count": 1
+    },
+    {
+      "before": "local final AVSS TM1 strap widens4to12um with4x4 topvia array.",
+      "after": "local final AVSS TM1 strap and2x2 topvia array retain their exact baseline geometry.",
+      "count": 1
+    },
+    {
+      "before": "# Widen the actual final-emitter return strap at its original physical anchor.",
+      "after": "# Retain the original final-emitter return strap after native AVSS/SUB short diagnosis.",
       "count": 1
     }
   ]

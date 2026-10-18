@@ -179,3 +179,8 @@ CDRloaded39132945859 isTERMINALFAILURE. Allfouractualnative simulationsreturn0/n
 
 
 TXreturncandidate39133699199 terminalFAILED actualLVS:1674devicesvs1674,NoMatch,noextractiondiagnostics; DRCnotreachedbecauseLVSfirst. Receipt tx-v5-return-repair-lvs-rejection-20261018.json. Newtx-v5-return-lvs-review-cloud probes534actualpublic/childM7planes againstfailednativeclusters toidentifyopens/shorts beforealteringgeometryagain. Candidate128umfinaltrunk/12umlocalstrap/4x4topvia isNOTaccepted. Originalfailedgeometry retained. CDRpathreviewnewrunpending; mainchip39121691046 lastverifiedlive.
+
+
+NativeTXLVSreview39134192384 PASSED diagnosis: AVSS/SUBshort inonecluster, noopens,1674devicespreserved; all534public/childplanesprobed. Receipt tx-v5-return-native-short-diagnosis-20261018.json. Thiscommit rerunsactualphysicalcandidate with128umoutwardfinaltrunk retained butlocal4umstrap/2x2topvia restoredexactlybaseline toisolateshort. Doesnotclaimlocalreturnorwaveclosure; allnativeLVS/DRC/faultsremain.
+
+CDRpathreview39133993258 PASSED unchangedwave reproduction forbothfailednormalcases. Receipt cdr-parallel-v3-native-path-review-20261018.json pinsfullcloudsummaries+selectednativeevidence. WorstactualAVDDdrop~312mV atloadR259 (shortestRpath27.606ohm isupperbound,notReff); repeatedsamplerloadrails~283mVmeanloss. WorstholdHBT49 C1.6376/B2.3376/E1.4663,VCE0.1712V. Collector-basewirelossespike~150mV. NextCDRpriority actualsupplydistribution/holdnodeconnection diagnosis andgeometryrepairbeforefurtherdrivescaling; donotmislabelstandalonepassasparentpass. FullgoalOPEN; cloudonly.

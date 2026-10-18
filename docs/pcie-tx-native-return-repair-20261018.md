@@ -16,3 +16,9 @@ Keep all 31 macro placements, all 1,674 native devices, child drawings, signal w
 This is an unverified candidate. The cloud workflow must regenerate real GDS and pass the original native DRC, unsimplified device/port LVS and physical fault controls. Frozen-child and native-placement checks remain enabled. Native extracted RC, independent geometry-delta inspection and full loaded waveform gates must then be repeated. No resistor value is scaled and no waveform result is inferred from the DC diagnostic. A return repair alone is not evidence that level-4/final data timing or all selector headroom failures have closed.
 
 All source changes, receipts and artifacts are cloud-only. The original failed design and its evidence remain available.
+
+## Rejected combined repair and isolated trunk candidate
+
+Physical run 39133699199 rejected the combined change: unsimplified LVS found 1,674 devices on each side but a connectivity mismatch. Native cluster review 39134192384 then probed all 534 public/child reference planes and found AVSS shorted to SUB, with no opened logical net. The failed GDS and complete native records remain immutable cloud artifacts.
+
+The next candidate retains the proposed 128 um final-column trunk at its outward location but restores the local emitter strap and its top via to the exact original 4 um / 2-by-2 geometry. This isolates the local widening from the parent-trunk change and requires fresh full native physical gates. No successful geometry or RC reduction is assumed. The local return contribution still needs repair after the isolated result; the full serial PHY objective remains unchanged.
