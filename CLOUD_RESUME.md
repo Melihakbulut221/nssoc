@@ -1,99 +1,124 @@
 # Latest authoritative continuation: cloud-only
 
-The latest direct user instruction is CLOUD ONLY. The local task directory is
-empty. No checkout, CAD, tests, archives or waveforms locally. Use GitHub Git
-Data API for source edits and GitHub-hosted runners/releases for all execution
-and artifacts. Preserve healthy jobs and original failure evidence.
-Full serial Gen3 x4 PHY, integrated mainchip routing and final setup/hold remain
-OPEN. This goal turn made concrete progress; no blocker or completion claim.
+Latest direct user instruction: ALL work and artifacts CLOUD ONLY. Local task
+workspace is empty. No local checkout/CAD/tests/archives/waveforms. Use GitHub
+Git Data API and GitHub-hosted runners/releases. Preserve healthy jobs and all
+failed evidence. Full serial Gen3 x4 PHY, integrated mainchip routing and final
+setup/hold remain OPEN. This goal turn made concrete progress, not a blocker.
 
-## Live jobs: inspect these first
+## Inspect live CDR model binding and fresh RC first
 
-1. TX repaired full32 waveform **39137607059**, source
-   `b8a1b3ebe3047ab21fd9a0824787246a37ea5e24`.
-   Controls117705216679 passed. Nominal117705290956 and actual leaf-select
-   fault117705290938 reached native simulation. Preserve both; no restart on
-   polling timeout. Original256bits/34ns/604HBT512MOS/124inputlegs and all
-   original gates remain. Eleven actual clock references are included but
-   external CMOS/modulation/output boundaries remain, so this is not fullPHY.
-   Controller cloud_tx_v5_return_repair_wave.py; workflow
-   tx-v5-return-repair-loaded-wave-cloud.yml. No new waveform result yet.
-2. CDR XOR local source/power access **39137767974**, source
-   `6c5863e11f800e78aadc1169fc9642f7ac6c7847`, physical candidate.
-   Generator hw/soc/flow/make_pcie_cdr_xor_power_access_v4.py adds actual
-   distributed M1-M3 source vias plus0.4um M3 strap on threeMOS, and widens
-   only AVDD rppd M3 escape0.4→1.2um. Native59devices/schematic unchanged.
-   Native560DRC/deep-flat59LVS/sevenfaults remain unchanged. Firstcandidate
-   **39137391978 FAILED DRC15markers**(M1.b6,M2.b3,V1.b3,V2.b3), LVSnotreached.
-   Actual recorded source-via centers had0.4um-close pairs on allthreeMOS.
-   Currentcandidate retains midpoint/endpoints and skips periodic via within
-   1.5um of any retained center. Originalfailure archived at
-   docs/evidence/cdr-xor-power-access-v4-spacing-rejection-20261018.json.
-   This retry has now PASSED:560DRC0,deep/flat59LVS and sevenfaults.
-   Receipt cdr-xor-power-access-v4-physical-pass-20261018.json.
-   Next require independent drawing/device conservation, parent484
-   integration, native planes/model binding, fresh MIM-awareRC and original
-   full loaded transients. A leaf pass is not a parent/electrical pass.
-   Design: docs/pcie-cdr-xor-power-access-repair-20261018.md.
-3. Mainchip **39121691046**, source
-   `3b415c02d11ac763fd081412b34234103772d347`, native117658413515.
-   Proven50-buffer candidate reroute is live; original20/4/8/8ns clocks and
-   5%derate preserved. It must finish antenna/DRC/disconnected checks, fresh
-   nominalRC and three cell corners. No improved timing result yet. Baseline
-   slow/typ/fast setup9687/7650/3698; hold4/13/51 remain FAILURES.
+Both source `f6fb89236042a8cc57c45badb603fd2eec5c0313`:
 
-## TX verified chain for the live repaired waveform
+- **39140348526** cdr-retimed-power-v4-binding-cloud.
+- **39140348431** cdr-retimed-power-v4-rc-cloud.
 
-- Physical39134428243:560DRC0,deep/flat1674LVS,five physicalfaults.
-- Exactgeometry39134989214:all25drawinglayers; only threeparentrectangles
-  and two identical nativevia moves. All31children/60signals unchanged.
-- FreshRC39135318667:actual1674devices/116611R77471C, original native
-  topology/point-C/mutual-C conservation and13 rawcorruptions passed.
-- Composition39136227539:allnativebindings, sixactualcompositionfaults and
-  two physicalendpointfaults passed. Receipt
-  tx-v5-return-repair-composition-pass-20261018.json.
-- Same run independentDCsolve: E1145.55999885→4.89422435ohm;
-  E1155.57383303→4.90805853ohm(~12% lower). No other tail worsened beyond
-  numericalroundoff. OriginalKCL/energy/reciprocity preserved. Receipt
-  tx-v5-return-repair-resistance-20261018.json. DC is not waveform acceptance.
-- Compact model bytes also changed. Independentcomparison39137222470
-  proved every1674device parameter/orderedterminal topology equivalent,
- 162public namesfixed, with11internalnode renames and publicport reordering.
-  Three actualmalformedmodels rejected. Files are NOT byte-identical.
-  Receipt tx-v5-return-model-equivalence-pass-20261018.json.
-- New compact SHA393dbc4f0f339658c98bf0c50955b894344c767d659ec432b4b8f0dc2e3dd7ee;
-  wire SHA86e2641c5795d299d0b611ece77ab848c4340a993a62b207acd2a81fc73d90b2.
-  Old full32 waveform39112087217 remains181/768wrong and24HBTfail.
+They consume exact repaired full-parent wire inputs39140115416. Binding uses
+unchanged native PDK converter and12 actual model corruptions. MOS widths
+remain8x8um,2x32um,32x36um,4x64um. Compact model new header
+`nssoc_cdr_pd484_power_compact_v4`, filepd484-compact.spice.
+Fresh wire RC retains all point/edge/capacitance conservation gates and13raw
+corruptions. Do NOT assume old3515R4027C or3538R4038C apply to new geometry.
+Read actual new extraction counts. Then adapt fresh intrinsic-MIM parent
+capture, independent raw audit, composition and original full loaded early/late
+and clock-stopped/VI-off tests. The old full-parent wave remains rejected until
+real new transients pass. FullPHY/closedloop/fourlanes still open.
 
-## Why CDR local access is the next repair
+Current scripts: cloud_cdr_retimed_power_v4_binding.py,
+cloud_cdr_retimed_power_v4_rc.py; unchanged converter
+build_cdr_parallel_v3_native_models.py. Original next-stage methods are
+cloud_cdr_parallel_v3_mim_parent_rc.py,
+cloud_cdr_parallel_v3_mim_parent_audit.py,
+cloud_cdr_parallel_v3_mim_composition.py,
+cloud_cdr_parallel_v3_mim_loaded.py. Inspect their current source contracts;
+retain every original check, derive new expected RC census from actual results.
 
-CDR fullparent39132945859 FAILED original data/phase and50/47HBT early/late
-limits;46MOS voltage gates pass. Its484device3538R4038C/11MIM composition
-and extraction are verified, but not its loaded operation. Nativepathreview
-39133993258 and powerreview39135161442 identify actual losses.
-XOR y XD0044 source hasReff60.9574ohm and223.77mV meanrise; localR2412 alone
-is50.2884ohm, between native T044_S(1653.75,4032.45)um and retained D21
-M4/M6 riser start(1644.6,4000.85)um. The old64um MOS stripe was contacted
-only nearbottom through onecolumnvia and0.4um M3 escape; parentM6 begins
-after this loss. XD0259 AVDD load has16.3443ohm localescape beforeD6riser
-and311.824mV peak rail loss. Nativepower receipt includes originalcoordinates.
-No ideal clamps, altered clocks, RC scaling, relaxed limits or blind drivescaling.
+## Repaired CDR physical chain now verified
 
-Current hosted snapshot:
+1. XOR59 leaf39137767974 at6c5863e11f800e78aadc1169fc9642f7ac6c7847:
+   native560DRC0,deep/flat59LVS,sevenfaults. Native MOS source vias distributed
+   at4um pitch including center,0.4umM3 source strap; only AVDD rppd M3escape
+   widened0.4→1.2um. All native devices/sizes/schematic unchanged.
+   Firstcandidate39137391978 failed15spacingmarkers due0.4um-neighbor vias;
+   repair retainsmidpoint/endpoints and enforces1.5um minimum via separation.
+2. FullPD484 **39139188554** atc4f64d97ba80ac27c153ef34c4900a309ad90759:
+   native560DRC0,unsimplifieddeep/flat484LVS,fivefaults. Independent XOR leaf
+   proof checks all22drawinglayers, only five metal/via layers gained geometry,
+   original devices/routes/ports/boundary/reference remain. Three actual region
+   faults rejected. GDS **368e53fe143b53024c0d7fcd34e5319ddeead34de99751996a0ad1e25e6ae8db**,
+   top **nssoc_cdr_pd484_power_access_v4**.
+   Receipt cdr-power484-parent-physical-pass-20261018.json:
+   summary653763201 SHA f273caeb95ad97aa423c5a4b43a925347b2c69c202f00d35709c3755cb934f67,
+   parts653763265 SHA a527172d4ec599ed1280ba8f210d48e9e53aabb07af6ece0897f8c3cf90b8e98.
+3. Fullparent drawing/planes **39139774141** at4b724d35e998849b0177b84ec87edb5b955763fd:
+   all28drawinglayers exactly oldparent plus only two actual XOR leaf additions.
+   All16placements/routes/ports/supplyoverlay and484referenceconnections equal.
+   Three parentgeometry faults and original19nativeplane faults rejected.
+   158planes,51nets,1394terminals. Receipt cdr-retimed-power-v4-planes-pass-20261018.json.
+4. Wireinputs **39140115416** atdd4b9a6d4861a7338cdb1a65fb5cd67dfa4cc08e:
+   111wirecomponents,484devices,1394terminals,921metal+473body+25public=
+   946 actualreferencepoints. Exactnative primitive pin recovery passed.
+   Receipt cdr-retimed-power-v4-wire-inputs-pass-20261018.json:
+   summary653781518 SHA90242cf51b00fc420a42e1765136d2b510cef5eafe01468c6855ac9da018e151,
+   parts653781583 SHA6029b8366986b14a970f2647915954e92414e2b58df34e2cbdf6177975d4d812.
+
+Preparation failures39138404526/39138731845 were checker coordinate bugs,
+not physical fails: DTrans(int,int) selected unintended overload. Forcing float
+coordinates restored full native pin containment and entire MOSMetal1 match.
+Both failures archived. Preserve strict full drawing comparison. The leaf fault
+legacy label changed_original_device_layer actually removedMetal4; report it
+as an unrelated drawing mutation. Parent proof explicitly adds active-layer
+corruption. Design docs/pcie-cdr-xor-power-access-repair-20261018.md.
+
+CDR old loaded39132945859 remains early/late data/phase FAIL with50/47HBT
+failures,0MOSvoltagefailures. Nativepower39135161442 identifies local XOR
+MOSsourceR2412=50.2884ohm/Reff60.9574ohm and~224mV meanrailrise;
+AVDDloadXD0259 local16.3443ohm and~312mV peakdrop. New sourceaccess aims
+at those actual losses. No ideal clamps, clock/threshold relaxation or RCscaling.
+
+## Preserve running TX and mainchip
+
+- **TX39137607059**, sourceb8a1b3ebe3047ab21fd9a0824787246a37ea5e24.
+  Controls117705216679 passed; native nominal117705290956 and
+  actualleafselectfault117705290938 reachedsimulation. Original256bits/34ns,
+  604HBT512MOS/124legs andeverygate unchanged. No new electrical result yet.
+  Actual11clockreferences included; externalCMOS/modulation/outputboundaries
+  remain, so even a pass is notfullPHY. Workflowtx-v5-return-repair-loaded-wave-cloud.yml.
+  Physical39134428243 and25layergeometry39134989214 passed; freshRC39135318667
+  has1674devices116611R77471C; composition39136227539 passedsixfaults+twoendpoints.
+  Same run DCsolve E1145.55999885→4.89422435ohm,E1155.57383303→4.90805853ohm
+  (~12%lower). Compactequivalence39137222470 passed all1674deviceparameters/
+  orderedterminals under11internalnetrenames andpublicportreordering; notbyteidentical.
+  Newcompact393dbc4f0f339658c98bf0c50955b894344c767d659ec432b4b8f0dc2e3dd7ee,
+  wire86e2641c5795d299d0b611ece77ab848c4340a993a62b207acd2a81fc73d90b2.
+  Oldfull32wave39112087217 still181/768wrong and24HBTfail.
+- **Mainchip39121691046**, source3b415c02d11ac763fd081412b34234103772d347,
+  native117658413515. Proven50buffer candidate reroute, thenantenna/DRC/
+  disconnected checks,freshnominalRC/threecellcorners. Original20/4/8/8ns and
+  5%derate remain. No improvedtiming result. Baseline setup9687/7650/3698 and
+  hold4/13/51 slow/typ/fast stillFAIL. Neverrestart onobservationtimeout.
+
+Hosted snapshot:
 
 ```json
 [
+  {
+    "id": 39140348526,
+    "status": "queued",
+    "conclusion": null,
+    "head_sha": "f6fb89236042a8cc57c45badb603fd2eec5c0313"
+  },
+  {
+    "id": 39140348431,
+    "status": "queued",
+    "conclusion": null,
+    "head_sha": "f6fb89236042a8cc57c45badb603fd2eec5c0313"
+  },
   {
     "id": 39137607059,
     "status": "in_progress",
     "conclusion": null,
     "head_sha": "b8a1b3ebe3047ab21fd9a0824787246a37ea5e24"
-  },
-  {
-    "id": 39137767974,
-    "status": "in_progress",
-    "conclusion": null,
-    "head_sha": "6c5863e11f800e78aadc1169fc9642f7ac6c7847"
   },
   {
     "id": 39121691046,
@@ -104,7 +129,7 @@ Current hosted snapshot:
 ]
 ```
 
-Observed 2026-10-18T14:51:54.459452+00:00.
+Observed 2026-10-18T15:26:49.844886+00:00.
 
 ---
 
