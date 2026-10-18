@@ -55,3 +55,22 @@ loads,50fF output loads and all device/data/phase/current gates. No loaded
 improvement is established until those new native waves are inspected. This
 screen still uses an external8GHz clock and does not establish recovered-clock
 closed-loop operation, full serial Gen3x4 or production qualification.
+
+
+## Measured resistance improvement does not close loaded operation
+
+Run39142081183 matched all484 primitive transforms, parameters and ordered
+native terminal topology under an internal-net bijection. Three corrupted
+identity cases were rejected. Actual DC matrix solves at every supply terminal
+passed KCL, energy and reciprocity checks. XD0044 source access fell from
+60.95742793 to31.63822793ohm (48.10%); XD0259 AVDD access fell from26.91409541
+to24.76529541ohm (7.98%). Other terminal increases were numerical roundoff,
+not measured physical worsening. These are unit-current effective resistances,
+not actual waveform rail losses or a transient acceptance claim.
+
+The complete loaded run39141648105 nevertheless rejected both nominal early
+and late phases. The actual stopped-clock and VI-off faults were detected.
+Original data, phase, headroom and current limits remain unchanged. New
+source-bound native waveform diagnosis must reproduce the failures and locate
+the remaining sampling/interface/headroom problem before another physical
+candidate is accepted. Original and new failed waveforms remain in Releases.
