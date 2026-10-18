@@ -1,3 +1,11 @@
+# Current: hybrid406 native interface planes launched
+
+This commit launches `cdr-retimed-hybrid-planes-cloud.yml` against the actual verified parent39107027934. It restores the immutable native GDS/flat LVS and binds all158 public/child interface anchors to51 actual native nets, with19 corruption controls and the new406-device census. No394 RC/device IDs are reused. Inspect exact new run before wire-input extraction. Follow with actual MOS terminal anchor support, native406 model binding, fresh whole MIM-aware RC and unchanged original loaded gates. Do not call physical proof electrical or fullPHY acceptance.
+
+Saved-route39107161430 remains the existing live handle; no duplicate routing. Cloud-only, local workspace empty. Full objective OPEN.
+
+Earlier checkpoint follows:
+
 # Current: cloud-only workspace; hybrid406 native physical proof passed
 
 Checked 2026-10-18T07:26:25.381824+00:00. The local task workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty and no local OpenROAD/Yosys/KLayout/ngspice/Magic/Netgen/LibreLane CAD process was found. All source edits use GitHub API and all CAD, restoration and generated archives stay on hosted runners. Do not recreate a local checkout or download native archives. Preserve unrelated directories.
