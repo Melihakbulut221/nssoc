@@ -60,8 +60,17 @@ def audit():
         i=block.findInst(name);now=signature(i)
         if name in changes:
             assert now['master']==changes[name]['new_master']and now['pins']==before['pins']
-            assert i.isPlaced()and now['orientation']==before['orientation']
-            observed.append(dict(instance=name,before=before,after=now))
+            # A larger cell may move to a neighboring row. Its orientation must
+            # follow that actual row, not the orientation of its abandoned site.
+            box=i.getBBox();rows=[]
+            for row in block.getRows():
+                rb=row.getBBox()
+                if rb.xMin()<=box.xMin() and box.xMax()<=rb.xMax() and rb.yMin()==box.yMin() and rb.yMax()==box.yMax():
+                    rows.append(dict(name=row.getName(),orientation=str(row.getOrient()),site=row.getSite().getName()))
+            observed.append(dict(instance=name,before=before,after=now,containing_rows=rows))
+            (OUT/'target-placement-observation.json').write_text(json.dumps(observed,indent=2)+'\n')
+            assert i.isPlaced(),('Unplaced resized instance',name,now)
+            assert any(row['orientation']==now['orientation'] and row['site']==i.getMaster().getSite().getName() for row in rows),('Resized instance not aligned to native row orientation/site',name,now,rows)
         else:assert now==dict(before,status='FIRM'),('Untargeted instance changed',name)
         i.setPlacementStatus(before['status'])
     assert topology(block)==old['topology']and fixed_data(db)==old['fixed']
