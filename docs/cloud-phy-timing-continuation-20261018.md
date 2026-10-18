@@ -1,3 +1,11 @@
+# Current: complete hybrid406 native model verified; original loaded simulations launched
+
+Composition39109025537/source448b580ec8fe75129691ec78c5be2ad75d861f49 passed all406 devices/9970R7795C with exactly11 intrinsic MIM models, no duplicate extractor devices and19 actual corruption controls. Full receipt `cdr-hybrid-mim-composition-pass-20261018.json`. This commit launches `cdr-hybrid-mim-loaded-cloud.yml`: exact byte-delta gate first, then nominal early/late and clock-stop/VI-bias-off controls. The new evaluator preserves original external8GHz clocks,256bits,34.25ns,150fF sampler/50fF XOR loads, phase/current/HBT/MIM acceptance. It binds all12native MOS/actual diffusion geometry, checks alltime1.32V terminal limits and nonnegative activeVDS, eightMOS tail currents plusfourHBT tails >=0.5mA. Inspect actual native results; physical/model passes are not waveform/fullPHY closure. If rejected, preserve exact new native-ID waveform evidence and repair actual circuit; no threshold, phase, RC scaling or old394 ID reuse.
+
+Mainchip39107161430 remains existing live saved-route handle; preserve it. After valid route/antenna/connectivity completion, adapt prepared RCX/STA to exact new receipt. Full serial Gen3 x4, mainchip final route and setup/hold still OPEN. Cloud-only; no local CAD/artifacts.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 strict native RC audit passed; complete composition launched
 
 Raw MIM audit39108832356/source0a42220d42ef98c5a20e4268ad322437e71cc4f7 verified9970R7795C/11nativeMIM identities with all13wire+9intrinsic faults rejected and unchanged source. Full receipt `cdr-hybrid-mim-parent-audit-pass-20261018.json`. This commit launches `cdr-hybrid-mim-composition-cloud.yml`: actual406 devices, all9970R7795C tokens and exactly one compact model per nativeMIM; original15 composition controls plus four actual MOS faults=19. Next inspect composition and then launch prepared `cloud_cdr_hybrid_mim_loaded.py` with its exact source delta record. It preserves original external clock/bit/load/HBT/phase gates and adds actual12MOS voltage/diffusion/current binding, eightMOS+fourHBT tailcurrent checks. Loaded workflow not yet created/launched; source prepared inae043d39721ad75f8ce728ad9fcc0b66fec64559.

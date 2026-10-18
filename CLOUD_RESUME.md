@@ -1,8 +1,8 @@
 # Authoritative current continuation
 
-Read [docs/cloud-phy-timing-continuation-20261018.md](docs/cloud-phy-timing-continuation-20261018.md) first. Work is cloud-only; the local workspace is empty. Preserve full serial Gen3 x4/PCIe-Ethernet mainchip/final timing goals and original acceptance gates. Older live-job entries below are historical and must not trigger restarts.
+Read [docs/cloud-phy-timing-continuation-20261018.md](docs/cloud-phy-timing-continuation-20261018.md) first. Work is cloud-only; local workspace empty. Preserve full serial Gen3x4, PCIe/Ethernet mainchip routing and final setup/hold goals. Historical entries must not trigger restarts.
 
-Latest verified: hybrid406 parent39107027934 passed native560-rule DRC, unsimplified deep/flat406-device LVS and five physical/reference fault controls. Fresh406 RC and original loaded waveforms are next; no fullPHY acceptance. Mainchip saved-route continuation39107161430 is the current handle; recheck its actual status, not cancelled39084569446. Exact receipts, immutable hashes and next steps are in the authoritative continuation.
+Hybrid406 physical, native planes/terminals, binding, fresh whole RC, MIM-aware raw audit and complete406device/9970R7795C composition have passed their explicit scopes. Original loaded early/late and two fault cases are being launched; inspect the newest `cdr-hybrid-mim-loaded-cloud.yml` run. Physical/model proof is not electrical/fullPHY closure. Mainchip saved-route39107161430 is the existing live handle; preserve it. Current exact receipts and next steps are in the authoritative continuation.
 
 ---
 
