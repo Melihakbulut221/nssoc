@@ -18,3 +18,10 @@ The spacing-corrected run39137767974 passed all560 DRC categories with zero viol
 ## Full parent integration candidate
 
 The next cloud run restores the verified new XOR cell and the seven unchanged child types. An independent KLayout comparison reconstructs every leaf drawing layer from the original cell plus only native source-via stacks, source Metal3 straps and AVDD rppd Metal3 widening. It checks original device/route/port/boundary metadata and identical schematic/LEF except the top name, and rejects three actual drawing mutations. The16-macro/41-card parent plan changes only the XOR physical master; all484 devices and25 public ports remain. The established base placement and supply-riser methods are unchanged. Fresh native parent DRC/LVS and physical faults precede any new extraction or loaded waveform acceptance.
+
+
+## Full parent physical result
+
+Run39139188554 passed the independent22-drawing-layer XOR reconstruction, native560-category DRC with zero violations, unsimplified deep/flat484-device LVS and five actual parent faults. The checker coordinate issue was an integer-overload ambiguity in DTrans, not a defective PDK pin: explicitly floating-point translation restored exact full pin containment and actual native MOS Metal1 conservation. Both failed preparation runs are retained. The leaf comparison's legacy fault label `changed_original_device_layer` removed Metal4 geometry; it is an unrelated original-drawing fault, not an active-device fault.
+
+The next stage independently compares every whole-parent drawing layer against the original parent plus only the two placed XOR leaf deltas, then binds all158 child/public planes,51 nets and1394 device terminals with the original19 corruption controls. Physical acceptance does not establish lower loaded rail loss or correct sampling; fresh MIM-awareRC and full original transients remain required.
