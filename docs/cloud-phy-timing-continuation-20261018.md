@@ -1,3 +1,11 @@
+# Current: full420 parent generated; four actual via DRC markers require overlay repair
+
+Parent39116370809/source3ac59f5b73b3d13ee455cef8fdf508266b54e2da passed exactsourceguards/childrestores/geometrygeneration, butnative560DRC reports4markers:2TV1.a and2TV2.b. LVS not reached; no parentphysicalacceptance. Fullfailure `cdr-hybrid420-parent-overlay-rejection-20261018.json` pins summary653100519 SHA39bafba0ae69fbc6046aff8c1fe78299a6a08041656845c8232e78e8e6301773 andparts653100571. Thiscommit launches cloud-only marker readback fromexactlythatreport +actualsupplyoverlay metadata. Inspect coordinates beforegeometryrepair; likelyadjacent/redundant shunt/riser via stacks, butdo notinfer exactcause untilnativeitems read. Preserve currentnew420source; no count/thresholdrelaxation. Select18/XOR59 leafproofs remainpassed.
+
+Existing mainchipround4 39115222502 andTX39112087217 live; preserve. Fresh420RC/composition/loadedwaves/retimedinput/fullPHY/finaltiming OPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual XOR59 physical passed; complete parent420 integration launched
 
 ActualXOR59 run39115862679/sourcea9ddef55b4ba2058d6a13f5440dc31d063fb5861 passed560DRC0markers, strictdeep/flat59deviceLVS, sevenactualfaults, sourcesunchanged. Fullreceipt `cdr-xor-hybrid-v3-physical-pass-20261018.json` pins summary653085954 andparts653086040. EarlierXOR57LU.b rejection retained; five real localMOSbodycontacts close this leafcoverage failure. This is notparent/RC/closedloop acceptance.
