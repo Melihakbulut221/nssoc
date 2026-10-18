@@ -1,3 +1,13 @@
+# Current: fresh TX columns RC passed; compose actual native1674device model
+
+Extraction39110863847/sourcede7165ec7a1fcd4a9a7b6785fd66c8d320b08182 passed original native graph/point/C-conservation and13raw corruption controls. Fresh116611R77471C,377conductors,4774terminals/3262probes. Same element counts as prior geometry do not establish same values. Exactreceipt `tx-v5-columns-extraction-pass-20261018.json` pins newlayout/archive/summary. This commit launches tx-v5-columns-composition-cloud with newGDS TOP/source anchors, allnative devices, six original composition faults and two actual endpoint faults; requires all124legs/372bases and377component ownership. Then original loaded fullwire TX screen, no oldRC reused.
+
+Mainchip round3 now39111280543 atf667bcc365c7d58b8aad7b4087a1d125891931fb; preserve live job. Completedround2 has14remainingantenna nets,DRC0/disconnected0. CDR diagnosis full two-case receipts saved `cdr-hybrid-path-diagnosis-20261018.json`: sampler retiming-pair baseRMS19-23mV versusdirect-data122mV; six remaining current-source HBTs .184-.200V minimumVCE. These are rejected fullwire captures, no acceptance. Actualcircuit/physicalrepair remains.
+
+Cloud-only; previous andcurrent goalturns PROGRESS. FullserialPHY/routedchipacceptance/finalsetuphold OPEN.
+
+Earlier checkpoint follows:
+
 # Current: completed mainchip round2 leaves14 antennas; resume actual round3
 
 Native39107161430/sourcee268d89f3212e5ae695757d223fb9e5fd94e0ad3 completed with return0, DRT DRC0 and critical disconnected pins0. Antenna nets172 to14;384 new native diodes,3327total. This is progress, not antenna/signoff closure. Compact receipt `replay-onehot-antenna-round2-result-20261018.json` pins full1.78MB report and alloutputs. Final ODB8125f35c..., intermediate completed pre-write-views round2ODB97e0feeb... both preserved.
