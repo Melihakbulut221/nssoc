@@ -1,3 +1,15 @@
+# Current: actual hybrid select18 leaf passes physical and isolated component gates
+
+Physical39113006603/source4f062550bde39df936e3a8ce2635f9c896a64dfa: new2HBT/2LVNMOS/4rppd/10ptap=18device GDS,466x194.63um; all560DRC categories0markers, unsimplifieddeep/flat18deviceLVS matched, seven realfaults rejected (includingMOSwidth/gate), sourcesunchanged. Receipt `cdr-select-hybrid-v2-physical-pass-20261018.json` pins summary652987657 SHA23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb and parts652987769. TOPnssoc_cdr_select_hybrid_tail_layout_v2, eightlowercaseports, separateSUB/AVSS, actuallocalMOSbodycontacts. No leafRC, postlayoutwave or parentintegration yet.
+
+Separate v2 native component39113006592 samehead: nominal/hot/cold0wrong, allHBT/MOS/currentlimits; actualswap768wrong andbiasoff amplitude failure detected. Full5case receipt `cdr-select-hybrid-v2-component-pass-20261018.json`. Standalone externalgrounds0 and50fF/output are NOT parent extracted loading. These passes do notclosewholeCDR/PHY.
+
+Next actual CDR repair/integration: physicalparentcurrently406devices stilluses originalselect16, whose twoHBTtails43/66fail; newselect18 can replaceboth onlyafter exactsource/childproof binding. This alone changes parentto410 (106HBT16MOS102R11MIM175taps), but fourXORtails27/35/50/58 remain. Source `hw/soc/analog/pcie/cdr_xor_core_shunt_v4.spice` exposes originalreferenceXD0009 Nx1 andtailsXD0049/XD0053 eachNx8; all19HBT8R27taps=54. A nativeMOStail/reference candidate must retain actualXORdata/select/load topology and receiveitsown electrical/physical proof; no oldnativeID/model reuse. RetimedSC/SD inputRMS19-23mV vsdirect122mV remainsanotherfailure; select-tail successdoesnotfixit. Inspect nativeXORwrappers `cdr_xor_hbt_shunt_v4.spice` and `cdr_xor_shunt_v4_layout_core.spice` beforechanges. Afterrealnewleaves, parentDRC/LVS/freshMIM-awareRC/nativebinding/composition/fullloadedcaptures are mandatory.
+
+TX newcolumns fullwire39112087217 and mainchipround3 39111280543 remain exactlive handles atlatestrecord `cloud-active-phy-route-20261018.json`. Preserve them. Mainchip lastcompletedround2 had14antennas,DRC0,criticaldisconnected0. AdaptpreparedRCX/STA ONLYaftervalidactualfinalroute, originalcontroller'scancelled39084569446 source isinvalid. FullserialGen3x4/mainchipfinalroute/setupholdOPEN. Cloud-only;localworkspaceempty. PreviousgoalturnPROGRESS,currentPROGRESS withverifiedlivewait.
+
+Earlier checkpoint follows:
+
 # Current live cloud handles and complete select-component v1 evidence
 
 CDRselectv1 run39112422867 now allfive actualcases retained in `cdr-select-hybrid-v1-component-pass-20261018.json`: nominal/cold/hot0wrong, minmargin223.266/232.798/201.722mV, settling9.219/8.594/10.156ps; alloriginalHBT/MOS/current gates pass. Outputswap768wrong andbiasoffbelow100mV detected. This is ONLY isolatedcomponent, NOT parent/layout/PVTqualification.
