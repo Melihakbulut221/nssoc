@@ -91,3 +91,5 @@ Parent484 run39127789321 at36e1c530d71671261e2380e5ba7b57a213208b7b generated ac
 
 
 Native54marker review39128067557 reproduced allTM1.b errors. ActualsamplerM_T3/S_T0/S_RP supplyspans run0.085/0.965/1.17um from fixedQP/QN M6via patches; nativeTM1.b requires1.64um. This commit shifts onlythose12spans(+2um, fourcopies) and addsactualM6 endpointbridges tooriginalnativevias. Existingchilddrawing/terminalnets retained. Same-net redundantshunt omission radius4→5um prevents endpointnotches; everyomission stillbindstoactualsame-net retainedriser, originaltwoXOR omissions preserved. Fullparent physical rerun starts; noacceptanceuntilnativeDRC/deepflatLVS/faults pass. Receipt cdr-parallel484-native-tm1-diagnosis-20261018.json.
+
+Parent39128392958 generation guard correctly stopped beforephysicalchecks: global5um shunt radius changed an unintendednon-sampler leaf. Newfix limits5um radius tosampler; allotherleaves retain4um exactly. Recorded cdr-parallel484-shunt-scope-rejection-20261018.json. Native2um span reroute andallgates unchanged. Inspectnew cdr-retimed-parallel-v3-parent-cloud run.
