@@ -1,3 +1,13 @@
+# Current: actual mainchip route/antenna closure passed; freshRCX/STA launched
+
+Completedround4 run39115222502/source85c2a70f1d625fab59bc7266aa5ef6894e3aa575:0nativeantennanets,0DRTDRC,0criticaldisconnected,10newdiodes(total3384),1077.43s. Fullsummary653106838 SHA f7a5c4951a3c4f3b0aa91c81f2cf7ceb33f6e3e0fbe3515bcc8b2fd3b343b1e5 andparts653106959 bound by `replay-onehot-antenna-round4-result-20261018.json`. FinalODB b5a244a5e24109c2c5fb0ed5e92d98b999e7adbed50eaa9e70db5cdc50531835;DEF e8de141aae397aab233dc32b6c3733e2212f506be2b33f2dc29243cdb9f0a896;NL f7bb33ce5ea9c1f947ea582151e2086b4b031f284ee50ba667c4c291f3ee0846. This is routing/antenna evidence, notfullchipmanufacturingDRC/LVS orfinaltiming.
+
+Thiscommit launches `replay-onehot-round4-routed-extraction-cloud.yml` fromexactcompletedround4. Revalidate originalboot/RTL/logic/GRTprovenance and actualfinalODB3384diode-only topology (threefaults); freshnominalOpenRCX andoriginalslow/typ/fastcellcornerSTA, propagated20/4/8/8ns clocks5percentderate, no inheritedSPEF/metrics. OriginalnativeRCX/STAflow/guards unchanged. No cancelled39084569446 source is accepted. Inspect actualmetrics; workflowcompletion alone isnotsetupholdclosure. RCmin/max/SI/SRAMinterior/fullPHY remainseparateopenqualification.
+
+CDR420 planes39117334854/source2e839d5ee052c01173a9105318b044592c8b2f69 passed158planes/51nets/19faults and1186actualnative terminals. Receipt `cdr-retimed-hybrid-v2-planes-pass-20261018.json`. Nextfreshwholewireinputs expected777metal/409body/802anchors including25ports, nativeMOS64geometrybinding, newMIM-awareRC/composition/originalloadedcaptures. Physical420DRC/LVS proof alreadypassed. Retimedinputattenuation/fullserialPHY remainOPEN. TX39112087217 still existinglive fullwire handle; preserve. Allcloud,localempty;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: complete physical parent420 passed; native interface planes launched
 
 Parent39116999945/source7dba75ee15df751efe48a69843a73848a656b43c passed560DRC0markers, strictdeep/flat420deviceLVS, original5actualfaults, sourcesunchanged. Exact100HBT22MOS102R11MIM185finitecontacts. Fullreceipt `cdr-hybrid420-parent-physical-pass-20261018.json` pins summary653124953 andparts653125005. Actualtwo redundantAVSSshuntstacks removed, all102risers/endpoints preserved. Old420failure/markerdiagnosis retained; newsourceguards and allchildgeometryconservation passed. This is fullPDphysical integration, not loaded/closedloop/fullPHY acceptance.
