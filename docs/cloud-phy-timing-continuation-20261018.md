@@ -1,3 +1,13 @@
+# Current: complete physical parent420 passed; native interface planes launched
+
+Parent39116999945/source7dba75ee15df751efe48a69843a73848a656b43c passed560DRC0markers, strictdeep/flat420deviceLVS, original5actualfaults, sourcesunchanged. Exact100HBT22MOS102R11MIM185finitecontacts. Fullreceipt `cdr-hybrid420-parent-physical-pass-20261018.json` pins summary653124953 andparts653125005. Actualtwo redundantAVSSshuntstacks removed, all102risers/endpoints preserved. Old420failure/markerdiagnosis retained; newsourceguards and allchildgeometryconservation passed. This is fullPDphysical integration, not loaded/closedloop/fullPHY acceptance.
+
+Thiscommit launches `cdr-retimed-hybrid-v2-planes-cloud.yml` fromexactpassedparent: all158interfaceplanes/51logicalnets/19corruptions, actual420devicecensus and1186native terminals required. AfterplanesPASS adaptwholewireinputs toactualnewlayout andobservedterminalcounts; expected metal777/body409/total1186,802anchors including25publicports. These are derivedexpectations, notnativeobservations yet. Preservefullgraph/sourcepinrecovery; newMOS64diffusionmustbindactualPDKgeometry. Nativeconvertercurrentlyallows8/32 andneeds actual64extension. FreshMIM-awareRC/rawaudit/composition/originalloadedwaveforms mandatory; no old406IDs/RC/captures. Retimedinputattenuation remains.
+
+Mainchipround4 39115222502 andTX39112087217 existinglivejobs; preserve. FullserialPHY/mainchipfinalrouteacceptance/setupholdOPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual420 overlay collision diagnosed; exact two-via repair launched
 
 Cloud diagnosis39116669163/source80f0765be68b015797de92985ebd49053f28f8ee read exactfour nativeTV1.a/TV2.b markers atX1644.81-1645.39um,Y3547.19/4126.45um. EachmatchesactualXORAVSSshuntcenter1645.6 andD21risercenter1644.6,1um apart. Fullreport `cdr-hybrid420-overlay-diagnosis-20261018.json` pins actualmarkerXML andsupplymetadata. Thiscommit removes onlytwo redundant horizontal-shuntvia stacks; unchangedactualD21riserendpoint vias remain. Independentlyderiveplannedrisers fromnativechildmetadata, requireexactmatch withphysicallywrittenM4-validatedrisers andexacttwo x/yAVSSD21 suppressions. Originalallchildgeometry/420devices/sourceclocks/gates unchanged. Strictsource-delta includesactualrepairandnewgeneratorhash. Workflowlaunches newwholeparent560DRC/deepflatLVS/faultcampaign; no passyet.

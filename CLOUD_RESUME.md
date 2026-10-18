@@ -2,6 +2,6 @@
 
 Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. Workspaceempty;allCADinGitHub.
 
-Fullparent420 firstgenerated but4viaDRCfailed; actualdiagnosis39116669163 found two same-net AVSSvia pairs1umapart. Thiscommit launches exacttwo-redundant-shunt repair via `cdr-retimed-hybrid-v2-parent-cloud.yml`; preserveactualnewhandle and inspect nativegates. Select18/XOR59leafproofspassed. New420RC/model/full-loadedgates remainmandatory.
+FullCDRparent420 nativephysicalpassed run39116999945/source7dba75ee15df751efe48a69843a73848a656b43c (560DRC0,deep/flatLVS420,5faults). Thiscommit launches `cdr-retimed-hybrid-v2-planes-cloud.yml`; inspectactualnewhandle then freshwholeRC/model/loadedcaptures. FullPHY notaccepted.
 
-Mainchipround4 39115222502 andTX39112087217 live; preserveboth. FullserialPHY/routedchipacceptance/finalsetuphold remainOPEN.
+Mainchipround4 39115222502 andTX39112087217 live; preserveboth. Retimedinputattenuation/fullserialPHY/mainchipfinalroute/setuphold remainOPEN.
