@@ -1,78 +1,72 @@
 # Latest authoritative continuation: cloud-only
 
-This section supersedes older live-status paragraphs below. No local checkout,
-CAD execution, raw waveform download or task artifacts: the user explicitly
-requested all work and storage in the cloud. Preserve healthy hosted jobs.
+The user requires cloud-only execution and storage. The local task directory
+`/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified empty this turn.
+Do not create a local checkout, CAD runtime, waveform, archive, test output or
+self-hosted runner. Source changes use GitHub Git Data API; all CAD, tests and
+artifacts stay on GitHub-hosted runners/releases. Preserve healthy jobs.
 Full serial Gen3 x4 PHY, integrated mainchip routing and final setup/hold remain
-OPEN. This goal turn made progress; no completion or external blocker is claimed.
+OPEN. This section supersedes older statuses below.
 
-## Resume in this order
+## Resume priorities
 
-1. Inspect TX physical run **39134428243**, source
-   `f4d800262d2fd3da4e0aaa0835c6543df8515dbc`, native job **117695943500**.
-   It retains a widened 128 um final-column AVSS trunk moved 80 um outward,
-   but restores the local 4 um emitter strap and 2-by-2 top via exactly to baseline.
-   The first combined candidate **39133699199** failed LVS. Native review
-   **39134192384** proved an AVSS–SUB short, no opens, with all 1,674 devices
-   preserved. Do not infer success until native LVS/DRC/faults actually pass.
-   If it passes, independently inspect the allowed geometry delta and extract
-   fresh native RC before another unchanged full32 waveform. Local return,
-   selector headroom and level-4/final data failures still require repair.
-   Design: `docs/pcie-tx-native-return-repair-20261018.md`.
-2. CDR **39132945859 is terminal failure**, not running. All four transients
-   completed without simulator diagnostics. Early/late normal cases fail data
-   and 50/47 HBT gates; all 46 MOS voltage gates pass. Both actual faults are
-   detected. Standalone sampler success did not transfer to the full parent.
-   Receipt: `cdr-parallel-v3-full-wire-rejection-20261018.json`.
-   Read-only path review **39133993258** reproduced both unchanged waveforms.
-   Worst actual AVDD loss is about 312 mV at load resistor XD0259; several
-   load rails lose about 283 mV on average. Hold HBT49 reaches VCE 0.1712 V
-   at C/B/E = 1.6376/2.3376/1.4663 V. Signal wire differences peak near150 mV.
-   Receipt: `cdr-parallel-v3-native-path-review-20261018.json`.
-   Next: locate the dominant real supply R segments and repair the actual
-   power distribution / hold-node wiring. No more blind drive scaling,
-   ideal internal supply clamps, RC scaling, phase fitting or relaxed gates.
-   Existing generators are `generate_cdr_retimed_parallel_v3_base.py` and
-   `generate_cdr_retimed_parallel_v3_risers.py`: AVDD bus64um, macro supply
-   connections/M7 shunts3.2um and M6 risers3.2um. Inspect actual voltage and
-   native geometry before selecting widths; the exact dimensional source
-   guards and all original physical/electrical checks must remain.
-3. Preserve and inspect mainchip **39121691046**, source
-   `3b415c02d11ac763fd081412b34234103772d347`, native job **117658413515**.
-   Proven50-buffer candidate reroute, antenna/DRC/disconnected checks,
-   fresh nominal RC and three cell corners. No improved setup/hold result yet.
+1. TX isolated final return trunk physical run39134428243 PASSED native560-rule
+   DRC with zero violations, deep/flat LVS1674 and five physical fault controls.
+   Independent geometry run39134989214 PASSED exact reconstruction of all25
+   drawing layers: only three parent rectangles and two identical via moves.
+   Physical and geometry receipts are in docs/evidence. Fresh native extraction
+   run39135318667 uses those immutable inputs. Inspect its actual R/C counts,
+   graph/capacitance checks and13 raw fault controls before composition and
+   unchanged full32 waveform. Never reuse baseline116611R/77471C as new results.
+   The old full32 waveform still fails181/768 data samples and24HBT gates.
+2. CDR native power review39135161442 completed successfully as a DIAGNOSIS,
+   not electrical acceptance. Receipt:
+   docs/evidence/cdr-parallel-v3-native-power-review-20261018.json.
+   Actual AVDD graph488nodes/697R: XD0259 supply Reff26.9140954ohm,
+   original-wave peak/mean loss311.824/292.854mV. Dominant branchR1478
+   T259_rppd_1--P_avdd.n443 is16.3443ohm, thenR1471 is8.40668ohm.
+   XD0249 Reff26.0834042ohm is dominated byR1479=24.8374ohm.
+   Actual AVSS graph964nodes/1353R: XD0044 MOS source Reff60.9574279ohm,
+   original-wave mean rise223.771mV; dominant localR2412=50.2884ohm,
+   T044_S--P_avss.n771. XD0043 has the same50.2884ohm localbranchR2571.
+   KCL/energy/reciprocity checks passed. Native coordinates are bound in the
+   receipt/full hosted summary. These are DC unit-current calculations, not
+   inferred actual currents or transient passes. Next inspect these actual
+   terminal stubs and power geometry in generate_cdr_retimed_parallel_v3_base.py
+   and generate_cdr_retimed_parallel_v3_risers.py, then make an isolated physical
+   repair, rerun native LVS/DRC, freshRC and original full-parent loaded gates.
+   Do not blindly scale more drive, clamp internal rails, scaleRC or relax gates.
+   Fullparent39132945859 remains rejected: early/late50/47HBT failures and
+   sampling/phase failures. All46MOS voltage gates pass; this does not fix
+   source degeneration caused by the measured rail rise.
+3. Preserve mainchip39121691046 at3b415c02d11ac763fd081412b34234103772d347.
+   This is the native50-buffer proven candidate route, then antenna/DRC/
+   disconnected checks, fresh nominalRC and three cell corners. Original
+   clocks20/4/8/8ns and5%derate remain. No improved timing result is claimed.
+   Baseline slow/typ/fast setup9687/7650/3698 and hold4/13/51 remain failures.
 
-CDR model/extraction milestones now passed: binding39131028585,
-MIM capture39131886057, raw audit39132239771 (22 corruptions),
-composition39132443095 (19 corruptions), actual484devices/3538R/4038C,
-11 intrinsic MIMs emitted once. These are not electrical acceptance.
-
-TX evidence: extrema39132058371 reproduces all604HBT metrics from every original
-sample; return39133064102 proves effective DC AVSS resistance5.56/5.57ohm at
-final E114/E115 (KCL/energy/reciprocity checked). Coordinate39133346816 binds
-shared1.4131ohm branch R105585 to the long final-column return trunk. Original
-failed full32 wave39112087217 and every rejected geometry remain archived.
-
-Latest observed hosted states (not promises of future completion):
+Observed hosted states (snapshot, not promised completion):
 
 ```json
 [
   {
-    "id": 39134428243,
-    "status": "in_progress",
-    "conclusion": null,
-    "head_sha": "f4d800262d2fd3da4e0aaa0835c6543df8515dbc"
-  },
-  {
     "id": 39121691046,
     "status": "in_progress",
     "conclusion": null,
-    "head_sha": "3b415c02d11ac763fd081412b34234103772d347"
+    "head_sha": "3b415c02d11ac763fd081412b34234103772d347",
+    "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39121691046"
+  },
+  {
+    "id": 39135318667,
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "ada805308e5373c1964d43a9728b05044d984bdc",
+    "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39135318667"
   }
 ]
 ```
 
-Observation time: 2026-10-18T14:08:10.835417+00:00.
+Observation time: 2026-10-18T14:24:05.616620+00:00.
 
 ---
 
