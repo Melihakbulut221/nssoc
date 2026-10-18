@@ -1,3 +1,113 @@
+## Current cloud continuation — real CDR current recording repaired (2026-10-19)
+
+**Cloud only.** Local project directory is empty. Do not restore local checkout, native archives, CAD, tests or waves. Use GitHub API source edits in RAM, hosted Actions and permanent Release evidence. No completion claim is justified.
+
+### Current real live work
+
+- **39168430864**, source `581e6ff9bd18355d887b8ac9b18f8c02deefd887`, workflow `cdr-via-rich-v7-mim-streamed-cloud.yml`: full34.25ns/256bit actual484device13186R10127C loaded early/late and clock_stopped/vi_bias_off matrix. Source/delta guards passed. Four native simulations are live as last verified; preserve them. All original UI125ps/step.3125ps, loads, sample/phase/VI/device voltage-current gates remain unchanged. Only bounded save commands and strict binary transport plus explicit command-error detection changed. Parse actual full electrical reports after completion. Nominal may still fail; do not infer closure from the short transport control.
+- **39161219456**, mainchip50buffer-resized full routing/RC/all-cell-cornerSTA remains live. Original146728cells/provenance and20/4/8/8ns clocks/5%derate retained. Inspect actual routing, antenna, DRC, connectivity and STA gates when terminal; no final acceptance yet.
+- **39158584151**, full native TX fast-stage-isolated nominal and swap_leaf_select cases remain live; preserve both original full34ns runs and all gates.
+
+### Root cause and successful actual transport proof
+
+The unbounded CDR `save` statement had1107arguments, exceeding ngspice's1000argument command limit. Original native log explicitly says `save: too many args.` Header review **39167449500** found10137raw columns rather than1108:945requested voltages present but all162HBT/MOS current histories missing. Original ASCII expressions for those162currents were constant, not a valid native transient current history. Do not rely on older unbounded-save CDR current-limit claims. Original failed captures remain retained.
+
+The existing pinned `run_cloud_tx_mux4.native_save_commands` helper now emits nine commands of at most128vectors, preserving all1107 in order. `cloud_tx_stream.streaming_deck` and its strict binary reader preserve every requested sample without interpolation/decimation; the required column count remains1108, never relaxed to accept missing currents.
+
+**39167905272**, source `052a821570faa1843ec94b4cb160e7eedf2683b8`, PASSED same-full-model3ns transport validation.9722native rows×1107vectors match corrected ASCII versus binary; all945original voltage histories match the prior capture. All162new device current histories vary, whereas all162old histories were constant. Same solver/options,116HBT native flags, zero-source OPs; no native warnings. Changed actual sample/missing vector controls rejected. Receipt `docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json` (summary654534771,parts654534852).3ns validates transport only; original full waveform gates still required.
+
+Initial transport attempt39166618949 failed before simulation because Ubuntu22 lackedGLIBC_2.38/GLIBCXX_3.4.32; actual log was recovered on the runner and retained. Ubuntu24 attempt39166994182 simulated both versions without warnings but failed the strict raw census, revealing the save overflow. These are retained failures, not waived passes. Full original unbounded-save matrix39165464508 is terminal rejected in allfourcases for max-data warnings. Do not keep polling/restarting those old runs.
+
+### Actual physical improvement, separate from electrical acceptance
+
+Comparison **39165970043** verified484physical-device position/parameter correspondence and bijective net topology and reproduced all64old resistance calculations. Matched supply effectiveR fell45.27–49.41%; load-to-collector46.17–48.34%. These are two-terminal DC wire calculations with other terminals floating, not operating current or transient delay. Receipt `cdr-via-rich-wire-comparison-pass-20261019.json`.
+
+Full via-rich physical/planes/anchors/binding/RC/MIM audit/composition chain passed its original gates; details and source receipts are in `docs/cdr-via-rich-native-rc-and-loaded-handoff-20261018.md`. Final native model has484devices/13186R/10127C/11intrinsicMIM; all22rawRC and19composition faults retained. Full recovered-clock Gen3x4PHY, qualified body/RF PEX, mainchip accepted routing/setup/hold and production signoff remain OPEN.
+
+Next: inspect current full streamed nominal/fault results using real current histories, then diagnose actual preserved voltage/current trajectories if rejected. Continue mainchip and TX results in parallel, never restart a verified-live job merely because observation ended.
+
+Observed UTC: 2026-10-18T21:36:47.693838+00:00
+
+```json
+{
+  "39168430864": {
+    "status": "in_progress",
+    "conclusion": null,
+    "source_head": "581e6ff9bd18355d887b8ac9b18f8c02deefd887",
+    "jobs": [
+      {
+        "id": 117796211390,
+        "name": "syntax-controls",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117796342003,
+        "name": "native-current (vi_bias_off)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117796342018,
+        "name": "native-current (nominal_late)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117796342080,
+        "name": "native-current (clock_stopped)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117796342216,
+        "name": "native-current (nominal_early)",
+        "status": "in_progress",
+        "conclusion": null
+      }
+    ]
+  },
+  "39161219456": {
+    "status": "in_progress",
+    "conclusion": null,
+    "source_head": "a9c9ecee024f996bac6979c5fc80fd6deabc79d5",
+    "jobs": [
+      {
+        "id": 117774772210,
+        "name": "native-routed-extraction",
+        "status": "in_progress",
+        "conclusion": null
+      }
+    ]
+  },
+  "39158584151": {
+    "status": "in_progress",
+    "conclusion": null,
+    "source_head": "dd36669f1fad978cc5c26b4fa81210231511749e",
+    "jobs": [
+      {
+        "id": 117766870186,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117766953321,
+        "name": "native-full32 (wire, nominal, swap_leaf_select)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117766953332,
+        "name": "native-full32 (wire, nominal, none)",
+        "status": "in_progress",
+        "conclusion": null
+      }
+    ]
+  }
+}
+```
+
 ## Cloud continuation: measured wire improvement, full capture memory rejection (2026-10-19)
 
 Keep all work cloud-only; local project folder stays empty. SourceHEAD and actual Actions are authoritative.
