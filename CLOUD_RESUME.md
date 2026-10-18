@@ -7,3 +7,5 @@ Mainchip round4 run39115222502 passed 0 antenna / 0 DRT DRC / 0 critical disconn
 CDR420 physical39116999945, planes39117334854, wholewire inputs39117796759 and native model binding39118454522 PASSED. Binding source94789e90690b45b4a2ed643af3ea262bd2d5d041, receipt `docs/evidence/cdr-retimed-hybrid-v2-binding-pass-20261018.json`: all420 devices/1186 terminals and12 corruption controls, including actual64um MOS. Next fresh MIM-aware RC capture/audit/composition and original loaded waveform gates. Actual802 anchors/111 physical conductors; never reuse406 device IDs or old RC counts. Model conversion is not waveform acceptance.
 
 TX fullwire run39112087217 remains in progress; preserve nominal and swapped-select trajectories. Full serial PHY, retimed sampler attenuation, closed loop, qualified RC and final setup/hold remain OPEN.
+
+This commit launches `onehot-round4-path-diagnosis-cloud.yml` (restore exact native path reports only) and `cdr-retimed-hybrid-v2-rc-cloud.yml` (fresh420 wire RC and all13 raw corruption controls). Inspect exact handles and results before next ECO/MIM composition. All execution cloud-only.
