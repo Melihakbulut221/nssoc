@@ -150,3 +150,6 @@ Binding39131028585 at3c8cb98bc8d7a42e40dbea8709009f62736d78ee PASSED actual484na
 
 
 Thiscommit launches tx-v5-columns-extrema-review-cloud: restore original failed nominalrun39112087217 nativefull34ns/77618row/3004vector wave ONLY onGitHubhost; verifyimmutablearchive/rawSHA and reproduceall604originalHBTmetrics exactly. Map24minVCE extrema toactualnativeC/B/E/S,clockcommonmode,bias/supplynodes andneighboringsamples. Diagnostic only; noSPICErerun/gatemodification. Runnerrestoredrawcopy removed onlyaftervalidation; originalcloudreleaseparts preserved. Useactualextrema fornextcircuit/clock repair, notanotherblind4hsimulation.
+
+
+NativeMIMcapture39131886057 at121e1ac810782f6b174080dfa258cfbd353b8a09 PASSED:3538R/4038C,11actualintrinsicMIM,111components/946points,exactnativeplategeometry andallfivecapturefaults. Receipt cdr-parallel-v3-mim-parent-capture-pass-20261018.json pinsfullreport/archive. Thiscommit launches cdr-parallel-v3-mim-parent-audit-cloud with actualnewcounts, original13rawwire+9intrinsiccorruptions, newbindinghelper andexactsourceguard. Rawvalue/topology/capattachment conservation must actuallypass; capturealoneisnotacceptance. Nextcomposition andoriginalloadedwaves.
