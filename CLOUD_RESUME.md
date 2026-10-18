@@ -268,3 +268,6 @@ TXisolatedtrunk39134428243 PASSED actual560DRC0/deepflat1674LVS/fivefaults. GDSd
 
 
 CDRnextaction launched cdr-parallel-v3-power-review-cloud: actualPD4843538R/4038C composedgraph, originalfailedwave railobservations, top20worstmeasuredterminalsperrail, exactunit-currenteffectiveR/KCL/energy/reciprocity andnative.extcoordinatebindings. Noresimulation/RCscale/idealclamp. Useactualbranchlocations todeterminepowergeometryrepair. TXfinaltrunknativephysicalpassed; independentgeometryreviewpendingbeforefreshRC.
+
+
+IndependentTXgeometry39134989214 PASSED all25drawinglayers. Actualdifference ONLY threeparentrectangles(finalM6trunk,M7stub,bottomM7bus)andtwoidenticalnativeviamoves80um; everyotherpolygon/31placements/162publicports/60signals/1674referencecards unchanged. Threeactualgeometrymutationsrejected. Receipt tx-v5-return-geometry-pass-20261018.json. Thiscommit launches tx-v5-return-repair-extraction-cloud with immutablephysicalreceipt39134428243 andindependentgeometryproof; originalnativegraph/probe/capconservation/13rawfaults unchanged. WaitactualfreshRCcounts/values thencomposition/newfullwaves. No reuseold116611R77471C.
