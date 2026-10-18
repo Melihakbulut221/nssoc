@@ -4,10 +4,17 @@
 import argparse,copy,hashlib,json
 from pathlib import Path
 
+def identity(d):
+    # Local taps follow their MOS in placement order; TAP numbers are not circuit identities.
+    return 'TAP_LOCAL_'+d['local_mos'] if d['kind']=='substrate_tap' and 'local_mos' in d else d['name']
+
 def check_records(a,b):
-    def canonical(d):return {k:v for k,v in d.items()if k not in ('placement_um','bbox_um')}
-    x={d['name']:canonical(d)for d in a['instances']};y={d['name']:canonical(d)for d in b['instances']}
-    assert len(x)==len(y)==54 and x==y
+    def canonical(d):
+        r={k:v for k,v in d.items()if k not in ('placement_um','bbox_um')}
+        r['name']=identity(d)
+        return r
+    x={identity(d):canonical(d)for d in a['instances']};y={identity(d):canonical(d)for d in b['instances']}
+    assert len(a['instances'])==len(b['instances'])==len(x)==len(y)==54 and x==y, 'Native primitive identity or parameters changed'
     assert a['primitive_counts']==b['primitive_counts']==dict(hbt=16,nmos=9,rppd=12,physical_tap=17)
     assert a['source_circuit_sha256']==b['source_circuit_sha256']
     assert set(a['ports'])==set(b['ports']) and len(a['ports'])==10
@@ -34,7 +41,7 @@ def main():
                 if info.datatype!=0:continue
                 region=pya.Region(cell.begin_shapes_rec(li)).merged()
                 if not region.is_empty():regions[(info.layer,info.datatype)]=region
-            assert regions;shapes[d['name']]=regions
+            assert regions;assert identity(d) not in shapes;shapes[identity(d)]=regions
         all_data.append(data);all_shapes.append(shapes)
     check_records(*all_data)
     a,b=all_shapes
