@@ -1,3 +1,116 @@
+# Current authoritative continuation — repaired CDR loaded test in cloud
+
+Latest user instruction: ALL work CLOUD ONLY. Local task workspace
+`/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty. No local checkout, CAD,
+tests, source edits, archives or waveforms. Source changes use GitHub Git Data
+API; all verification uses GitHub-hosted runners and permanent Release assets.
+The cloud-migration-final-checkout-20261013 retirement-progress.json is
+COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. Existing eight-hour
+heartbeat is ACTIVE and already explicitly cloud-only. Do not touch unrelated
+projects. Full serial PHY/mainchip routing/final setup/hold are still OPEN.
+This turn made actual progress; no repeated external blocker.
+
+## First inspect new full loaded CDR test39141648105
+
+Source eef0018f7b71b622c2d0fa4c2f0853ed9b786d7b.
+Workflow cdr-power-v4-mim-loaded-cloud.yml.
+Controller scripts/cloud_cdr_power_v4_mim_loaded.py.
+Guard scripts/check_cdr_power_v4_loaded_sources.py;
+exact delta scripts/cdr-power-v4-loaded-source-delta.json.
+
+Syntax/source guard117717134492 passed. Native jobs:
+- nominal_early117717224849
+- nominal_late117717224876
+- clock_stopped117717224860
+- vi_bias_off117717224852
+
+Original256bits,150fF sampler collector loads,50fF XOR output loads, fixed
+sampling phases,116HBT/46MOS voltage/current gates and actual VI currents
+are unchanged. New model nssoc_cdr_pd484_power_mim_wire_v4 includes all
+484 devices,3538R4038C and exactly11MIM. External8GHz clock remains; even a
+screen pass is NOT recovered-clock closed-loop, four lanes or fullPHY signoff.
+Inspect real results and failures; preserve original failed waves. If rejected,
+use actual native rail/data/device observations to identify next physical repair,
+not changed thresholds, ideal clamps or arbitrary RC scaling. If it passes,
+continue original PVT/timestep/fault and full-loop qualification.
+
+## Fresh repaired CDR extraction and composition chain
+
+Physical full parent39139188554 and independent whole-parent geometry/planes
+39139774141 passed. Wire inputs39140115416 preserve111components946points,
+484devices1394terminals. Details in design document and older checkpoint below.
+New model binding39140348526 and wire RC39140348431 atf6fb89236042a8cc57c45badb603fd2eec5c0313 passed12model/13rawfaults.
+Actual fresh wire-only census is3515R4027C, measured from the new extraction,
+not inferred from the old model. Receipts:
+- cdr-retimed-power-v4-binding-pass-20261018.json
+- cdr-retimed-power-v4-rc-pass-20261018.json
+
+Full native MIM capture39140954617 atfe0467c478a46a5b5bbcdd80f07a72bb09414b2f
+passed actual11MIM geometry/terminal binding and5faults. Fresh MIM-aware
+census3538R4038C. Receipt cdr-power-v4-mim-parent-capture-pass-20261018.json
+contains report and immutable summary/parts hashes (assets653803419/653803486).
+
+Strict raw audit39141321189 at609cd18c217a6b38e69fa6e89595387d53221c72
+passed13wire+9intrinsicfaults and exact raw topology/value/capacitance
+conservation. Receipt cdr-power-v4-mim-parent-audit-pass-20261018.json
+(assets653812188/653812272).
+IMPORTANT: previous39141181389 was green but its reused helper still read the
+old binding receipt. Do not accept that provenance. Saved correction receipt
+cdr-power-v4-intrinsic-provenance-correction-20261018.json. New helper
+scripts/audit_cdr_power_v4_mim_intrinsic.py changes only the receipt and is
+exact-delta guarded; new audit independently binds candidate39140348526.
+All original expected values and22fault controls retained.
+
+Composition39141466637 atfb60f87f8b62315af37dc402b9abd223be391760 passed
+all19faults, every raw wire token/terminal and exactly11MIM model instances.
+Receipt cdr-power-v4-mim-composition-pass-20261018.json (assets653816156/
+653816247). Do not reuse old model hashes. Restores pd484-mim-wire.spice and
+composition.json using immutable receipts. New loaded test binds current
+native planes and transistor model receipts with all original acceptance gates.
+
+## Preserve healthy TX/mainchip jobs
+
+TX39137607059 atb8a1b3ebe3047ab21fd9a0824787246a37ea5e24 remains in native
+nominal117705290956 and swap_leaf_select117705290938 full32 simulation.
+Source guard117705216679 passed. No new waveform acceptance yet.
+
+Mainchip39121691046 at3b415c02d11ac763fd081412b34234103772d347 remains in
+native job117658413515 reroute of proven50buffers then antenna/DRC/connectivity,
+freshRC/threecornerSTA. No improved timing result yet. Original20/4/8/8ns and
+5%derate preserved. Baseline setup9687/7650/3698,hold4/13/51 remains FAIL.
+Do not restart healthy computations because of an observation timeout.
+
+Current snapshot:
+
+```json
+[
+  {
+    "id": 39141648105,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "eef0018f7b71b622c2d0fa4c2f0853ed9b786d7b"
+  },
+  {
+    "id": 39137607059,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "b8a1b3ebe3047ab21fd9a0824787246a37ea5e24"
+  },
+  {
+    "id": 39121691046,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "3b415c02d11ac763fd081412b34234103772d347"
+  }
+]
+```
+
+Observed 2026-10-18T15:43:44.987307+00:00.
+
+---
+
+## Historical checkpoint (new results above supersede running states)
+
 # Latest authoritative continuation: cloud-only
 
 Latest direct user instruction: ALL work and artifacts CLOUD ONLY. Local task

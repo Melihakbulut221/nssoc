@@ -31,3 +31,27 @@ Run39139774141 verified all28 parent drawing layers against the original parent 
 
 
 Run39140115416 independently recovered native primitive pin annotations and established111 metal conductor components,484 devices,1394 terminals and946 actual metal/public reference points. All921 metal terminal and473 retained intrinsic body classifications are unchanged. The new cloud model-binding and wire-extraction jobs retain the original native converter,12 malformed-model controls,13 raw-R/C controls and point-capacitance conservation checks. Actual new resistor/capacitor counts must be read from the new extraction; old counts and waveforms are not evidence for the repaired geometry.
+
+
+## Fresh extraction and loaded candidate screen
+
+Native binding39140348526 passed12 malformed-model controls. Fresh wire
+extraction39140348431 measured3515R4027C with13 raw corruption controls.
+MIM-aware capture39140954617 measured3538R4038C and bound the actual11
+capacitors to native geometry. These counts happen to equal the preceding
+candidate counts; the source hashes and all actual R/C values are freshly
+extracted, independently audited and retained in immutable receipts.
+
+Audit39141321189 passed13 wire and9 intrinsic corruption controls. The earlier
+green39141181389 is not accepted as candidate provenance: its reused intrinsic
+helper read the previous model receipt. A new exact-delta helper binds the
+repaired model receipt; every numerical/terminal comparison remains unchanged.
+Composition39141466637 passed19 controls, preserved all raw wire tokens and
+emitted exactly one model for each of11 native capacitors.
+
+Full loaded run39141648105 starts nominal early/late phase and actual stopped
+clock/VI-off faults. It preserves the original256bits,150fF sampler collector
+loads,50fF output loads and all device/data/phase/current gates. No loaded
+improvement is established until those new native waves are inspected. This
+screen still uses an external8GHz clock and does not establish recovered-clock
+closed-loop operation, full serial Gen3x4 or production qualification.
