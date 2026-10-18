@@ -143,7 +143,7 @@ def main():
         assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5
         assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']
         assert cfg['PNR_SDC_FILE']==cfg['SIGNOFF_SDC_FILE']==str(PLACE/'prepared/physical.sdc')
-        assert cfg['GRT_ALLOW_CONGESTION']is False and cfg['GRT_ADJUSTMENT']==.2
+        assert cfg.get('GRT_ALLOW_CONGESTION',False)is False and cfg['GRT_ADJUSTMENT']==.2
         assert cfg['RT_CLOCK_MIN_LAYER']=='Metal4'and cfg['RT_CLOCK_MAX_LAYER']=='TopMetal2'
         assert len(before['preparation']['macros'])==20
         state_path=grt_root/grt['global_route_state'];state=json.loads(state_path.read_text())
