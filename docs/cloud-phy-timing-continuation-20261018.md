@@ -1,3 +1,11 @@
+# Latest TX physical localization complete — electrical rejection retained
+
+Run39102430979 atfdf4610a24eb6d378c4f10a3e2f2ed99fc11bdf2 completed exact physical source/path mapping for all28 failed TX HBTs. Receipt `tx-return64-physical-paths-pass-20261018.json`; analysis `tx-return64-native-rejection-analysis-20261018.md`. Failures distribute across final f6,p4_3 four,p8_1/3/7/5 four each,p8_6 two. Final tail emitter means104mV and shortest return paths13.98/14.02ohm; VCE still356–357mV. Shortest paths are not effective impedance/delay. Need actual bias/headroom and level4/final timing repair; do not repeat return widening without evidence. Full native original gates remain failed.
+
+CDR left-output loaded39102038200 and mainchip route39084569446 remain existing live handles at last verified check. Poll those exact runs. If CDR fails, retain all original cases and diagnose new captures/IDs; if it passes, continue full-loop/PVT/timestep qualification. Route must independently pass native routing gates before prepared current-route RCX/STA is dispatched with exact artifact hashes. Full serial Gen3 x4 and final mainchip timing remain open. All work cloud-only; no local checkout/native artifacts.
+
+Earlier checkpoint follows:
+
 # Latest TX diagnosis complete; actual physical paths next
 
 TX return64 path diagnosis39102156220 at87dec08e69f69a4f9e788642ab1d297092a803dd passed exact original gate reproduction. Full receipt `tx-return64-path-review-pass-20261018.json`. All28 failed HBT terminals were measured. Final tail emittersxd0114/115 mean about104mV after widening, versus prior172mV; their original minimum VCE still fails around356–357mV. The repair therefore changed actual rail behavior but did not close the waveform or device gates. Other failed devices need exact current native-ID-to-macro mapping before changing them.
