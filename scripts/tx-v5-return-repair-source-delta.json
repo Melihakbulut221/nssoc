@@ -1,0 +1,43 @@
+{
+  "baseline_path": "scripts/cloud_tx_v5_columns_assembly.py",
+  "baseline_sha256": "1794b0db5a4f3e0fbef080f5b35730a3b10f7a07e345f2485b5e602faf6fb71e",
+  "candidate_path": "scripts/cloud_tx_v5_return_repair_assembly.py",
+  "candidate_sha256": "e79c67f84204fdc15e49ded92206a6d8be83b4522ea78dbbeff60c5c6379e22a",
+  "edits": [
+    {
+      "before": "cloud-tx-v5-columns-assembly",
+      "after": "cloud-tx-v5-return-repair-assembly",
+      "count": 1
+    },
+    {
+      "before": "nssoc_tx_tree32_budget_balanced_v5_columns_return64_core_v1",
+      "after": "nssoc_tx_tree32_budget_balanced_v5_finalreturn_core_v1",
+      "count": 1
+    },
+    {
+      "before": "('avss',return_width,x0-40. if level<4 else right+260.,-200.)",
+      "after": "('avss',return_width if level<4 else 128.,x0-40. if level<4 else right+340.,-200.)",
+      "count": 1
+    },
+    {
+      "before": "box('TopMetal1',x-2,yy+130.230,x+2,end_y+2);via(x,end_y,params=dict(vt2_columns=2,vt2_rows=2))",
+      "after": "box('TopMetal1',x-6,yy+130.230,x+6,end_y+2);via(x,end_y,params=dict(vt2_columns=4,vt2_rows=4))",
+      "count": 1
+    },
+    {
+      "before": "local_final_strap_width_um=4.,power_vias_columns=4",
+      "after": "local_final_strap_width_um=12.,final_column_trunk_width_um=128.,final_column_trunk_offset_from_right_um=340.,final_strap_top_via_columns=4,final_strap_top_via_rows=4,power_vias_columns=4",
+      "count": 1
+    },
+    {
+      "before": "scope='Only external AVSS TM1 trunks and bottom TM2 return bus widen. Child stubs, local final strap, AVDD, SUB, signal routes and devices unchanged. No resistance scaling or electrical claim.'",
+      "after": "scope='Final-column AVSS TM1 trunk widens64to128um and moves80um outward; local final AVSS TM1 strap widens4to12um with4x4 topvia array. Other column trunks, bottom bus width, child stubs/drawings, lower emitter vias, AVDD/SUB, signals, topology and devices stay unchanged. No resistance scaling or electrical claim.'",
+      "count": 1
+    },
+    {
+      "before": "# Same physically anchored final-emitter return strap as the verified4:1\n    # parent, transformed with the mirrored final macro; no child edits.",
+      "after": "# Widen the actual final-emitter return strap at its original physical anchor.\n    # Lower Metal2 emitter accesses and every child drawing stay unchanged.",
+      "count": 1
+    }
+  ]
+}
