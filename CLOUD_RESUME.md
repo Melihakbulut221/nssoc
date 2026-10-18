@@ -1,3 +1,81 @@
+# Latest authoritative continuation: cloud-only
+
+This section supersedes older live-status paragraphs below. No local checkout,
+CAD execution, raw waveform download or task artifacts: the user explicitly
+requested all work and storage in the cloud. Preserve healthy hosted jobs.
+Full serial Gen3 x4 PHY, integrated mainchip routing and final setup/hold remain
+OPEN. This goal turn made progress; no completion or external blocker is claimed.
+
+## Resume in this order
+
+1. Inspect TX physical run **39134428243**, source
+   `f4d800262d2fd3da4e0aaa0835c6543df8515dbc`, native job **117695943500**.
+   It retains a widened 128 um final-column AVSS trunk moved 80 um outward,
+   but restores the local 4 um emitter strap and 2-by-2 top via exactly to baseline.
+   The first combined candidate **39133699199** failed LVS. Native review
+   **39134192384** proved an AVSS–SUB short, no opens, with all 1,674 devices
+   preserved. Do not infer success until native LVS/DRC/faults actually pass.
+   If it passes, independently inspect the allowed geometry delta and extract
+   fresh native RC before another unchanged full32 waveform. Local return,
+   selector headroom and level-4/final data failures still require repair.
+   Design: `docs/pcie-tx-native-return-repair-20261018.md`.
+2. CDR **39132945859 is terminal failure**, not running. All four transients
+   completed without simulator diagnostics. Early/late normal cases fail data
+   and 50/47 HBT gates; all 46 MOS voltage gates pass. Both actual faults are
+   detected. Standalone sampler success did not transfer to the full parent.
+   Receipt: `cdr-parallel-v3-full-wire-rejection-20261018.json`.
+   Read-only path review **39133993258** reproduced both unchanged waveforms.
+   Worst actual AVDD loss is about 312 mV at load resistor XD0259; several
+   load rails lose about 283 mV on average. Hold HBT49 reaches VCE 0.1712 V
+   at C/B/E = 1.6376/2.3376/1.4663 V. Signal wire differences peak near150 mV.
+   Receipt: `cdr-parallel-v3-native-path-review-20261018.json`.
+   Next: locate the dominant real supply R segments and repair the actual
+   power distribution / hold-node wiring. No more blind drive scaling,
+   ideal internal supply clamps, RC scaling, phase fitting or relaxed gates.
+   Existing generators are `generate_cdr_retimed_parallel_v3_base.py` and
+   `generate_cdr_retimed_parallel_v3_risers.py`: AVDD bus64um, macro supply
+   connections/M7 shunts3.2um and M6 risers3.2um. Inspect actual voltage and
+   native geometry before selecting widths; the exact dimensional source
+   guards and all original physical/electrical checks must remain.
+3. Preserve and inspect mainchip **39121691046**, source
+   `3b415c02d11ac763fd081412b34234103772d347`, native job **117658413515**.
+   Proven50-buffer candidate reroute, antenna/DRC/disconnected checks,
+   fresh nominal RC and three cell corners. No improved setup/hold result yet.
+
+CDR model/extraction milestones now passed: binding39131028585,
+MIM capture39131886057, raw audit39132239771 (22 corruptions),
+composition39132443095 (19 corruptions), actual484devices/3538R/4038C,
+11 intrinsic MIMs emitted once. These are not electrical acceptance.
+
+TX evidence: extrema39132058371 reproduces all604HBT metrics from every original
+sample; return39133064102 proves effective DC AVSS resistance5.56/5.57ohm at
+final E114/E115 (KCL/energy/reciprocity checked). Coordinate39133346816 binds
+shared1.4131ohm branch R105585 to the long final-column return trunk. Original
+failed full32 wave39112087217 and every rejected geometry remain archived.
+
+Latest observed hosted states (not promises of future completion):
+
+```json
+[
+  {
+    "id": 39134428243,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "f4d800262d2fd3da4e0aaa0835c6543df8515dbc"
+  },
+  {
+    "id": 39121691046,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "3b415c02d11ac763fd081412b34234103772d347"
+  }
+]
+```
+
+Observation time: 2026-10-18T14:08:10.835417+00:00.
+
+---
+
 # Current cloud-only continuation — 2026-10-18
 
 All work is CLOUD ONLY under the latest user instruction. Local task workspace is empty. Do not clone, download native archives/waves, write source locally, run local CAD/tests or start a self-hosted runner. Use GitHub Git Data API for source edits and GitHub-hosted Actions for execution. Preserve healthy jobs and all original failure evidence. Do not mark the active goal complete: full serial Gen3x4 PHY, integrated mainchip routing and final setup/hold are still OPEN.
