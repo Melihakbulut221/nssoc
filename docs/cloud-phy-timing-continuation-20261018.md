@@ -1,3 +1,17 @@
+# Current cloud continuation — hosted validation and loaded rejection
+
+The local NSSOC workspace is empty and has no running CAD process. Verified handoff receipt asset 636387277 records nine batches and 3008078533 logical bytes transferred. All future source edits, simulations, archive restores and CAD runs stay in GitHub. Do not recreate a local checkout.
+
+**CI correction validated:** run 39093810293 at 672a0fdac578ff1cf7fe0c9c19fe90df52fb03b9 passed base/full lint and the actual asynchronous CPU/PCIe/Ethernet test. Exact receipts retain the original failure, the missing full-profile setup failure, and the corrected pass. This is not warning-free RTL or physical signoff.
+
+**Compact PD394 loaded rejection:** run 39093685328 at 596f28e75a1dfdfa47277bbda69486c741c898f1 ran original early/late 256-bit, 34.25 ns waveforms on all394 devices and the newly audited9655R7555C model. Both nominal cases were rejected with unchanged source and no simulator diagnostics. Four sampler bit/sign gates and fourteen HBT operating limits still fail. Late phase/VI direction passed but does not override data/device failures. Clock-stopped fault was detected; inspect VI-off terminal result separately. Preserve raw full waveforms and original gates.
+
+The new `cdr-compact-path-review-cloud` workflow reads those exact early/late waves on hosted runners, reproduces original sampler counts and transistor voltages, then diagnoses actual supply drops and clock/data paths. No new stimulus, fitted latency, changed threshold or ideal internal waveform is permitted. It uses fresh compact native IDs and source-bound artifact digests. Shortest resistor paths are not effective resistance; wire capacitance excludes intrinsic device load.
+
+Continue existing mainchip detailed routing39084569446 and TX return64 loaded run39087664998 without duplicate restarts. They were still running at this checkpoint. Mainchip requires successful route/antenna/connectivity, independent physical checks and full extracted all-corner timing. Complete serial PHY, clock recovery, qualified PEX and final setup/hold remain open.
+
+Earlier checkpoint for provenance:
+
 # Cloud continuation — compact CDR audit passed
 
 All work remains on GitHub-hosted runners. Local workspace is empty; do not restore native archives or run CAD locally. Branch `codex/complete-open-work`.

@@ -1,0 +1,80 @@
+{
+  "run": 39093810293,
+  "source_head": "672a0fdac578ff1cf7fe0c9c19fe90df52fb03b9",
+  "summary_sha256": "c48521ddfcf7633011123f4060508b0489ab5adba6fd46a93c9fd52d9bf6a8d2",
+  "parts_sha256": "84bc76ad05551e6ea1a2030db570794e4168ef36d448512cafbc728c1be3148b",
+  "report": {
+    "status": "PASS_BASE_FULL_LINT_AND_ACTUAL_ASYNC_PCIE_ETHERNET_RTL",
+    "source_head": "672a0fdac578ff1cf7fe0c9c19fe90df52fb03b9",
+    "commands": [
+      {
+        "name": "lint-base",
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "scripts/check_soc_lint.py",
+          "--profile",
+          "base",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-ci-prepared-rtl-lint-20261018/lint-base"
+        ],
+        "returncode": 0,
+        "log_sha256": "15b8765554a664bcb6093901f637fe4d75a852a0e07f3a16884b412248f2c13e"
+      },
+      {
+        "name": "lint-full",
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "scripts/check_soc_lint.py",
+          "--profile",
+          "full",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-ci-prepared-rtl-lint-20261018/lint-full"
+        ],
+        "returncode": 0,
+        "log_sha256": "0318f1095fa77eeb054d98b4e6870f0f8c814de37e79e7c1f66c9ae1e4f66673"
+      },
+      {
+        "name": "async-pcie-ethernet",
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "scripts/check_pcie_ethernet_soc.py",
+          "--out",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-ci-prepared-rtl-lint-20261018/joint",
+          "--iverilog-dir",
+          "/home/runner/work/_temp/oss-cad-suite/bin",
+          "--async-pcie"
+        ],
+        "returncode": 0,
+        "log_sha256": "e903a3dd7792999a3df72fb79861d3574d4ef9b2ea104b2511cba24e0f9fcb42"
+      }
+    ],
+    "full_phy_accepted": false,
+    "physical_timing_accepted": false,
+    "outputs": {
+      "async-pcie-ethernet.log": "e903a3dd7792999a3df72fb79861d3574d4ef9b2ea104b2511cba24e0f9fcb42",
+      "lint-full.log": "0318f1095fa77eeb054d98b4e6870f0f8c814de37e79e7c1f66c9ae1e4f66673",
+      "lint-base.log": "15b8765554a664bcb6093901f637fe4d75a852a0e07f3a16884b412248f2c13e",
+      "joint/run.log": "fac9634549e903c73c4ca4b970941c5678c2d952c9e5fb3cad9aff21e475d942",
+      "joint/inputs.tar.gz": "2b129cde211a63c207dd183e964ac58a59a1e22bb0568679a078cfbfaabbfb63",
+      "joint/rom.hex": "16e77150a5a261ecb7a4853c435219c95742b59d4f8c6e9ce26535e6fa2f39c5",
+      "joint/results.xml": "1f2b10fcc1a5b078f717e618648296407c5add845c284d1f80f87fd48666339e",
+      "joint/result.json": "f0ad41e875ed69862925d492f92b59e98c04af143ceecbb8d4d2672231b086d4",
+      "lint-base/verilator.log": "7f7ffbb97389c8d97d45ba3d32ad7ae169b109218ef8b8ac85713a8e8403f41e",
+      "lint-base/result.json": "644d993533dca87e045e552000747a554349e32ec3008d5a3172151db6c38e77",
+      "lint-full/verilator.log": "d4313ca71f7cdf6d5f4186abef536bf7aa957e2bab1e8d7aebf3b50ae2b1a0ab",
+      "lint-full/result.json": "ca2720af47c102fa5c5da53aa3902deff17a3ed640b2e2b282765d5a50d77b2a",
+      "joint/sim/cmds.f": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94",
+      "joint/sim/sim.vvp": "38ad4ddbaff30962b6714eba414ca6490be654e0572aa03f6dc1a855af45d68e",
+      "joint/runtime/vvp": "8459b28b5839ea04ef57da64146f8151cf2e405cfef0e5350834985634d8edee",
+      "joint/runtime/iverilog": "e5c7365941b212324f22513d8b2f8e0404b10aab25cfe03600bb07a84c490090",
+      "lint-base/frozen-nettypes/guarded.v": "8c2a95ec556935ed8d4e6c51ea8bd7b02af02ac579cb52102e2bd3c316d42043",
+      "lint-base/frozen-nettypes/yosys.log": "3c3778f7c606bd4020ec2966b2a434eb486eb5dc1d9f3b627d3f8ec1c61e8402",
+      "lint-base/frozen-nettypes/read.ys": "0888b65a8ea8fc416a4898c03dd338413f4b9664b07f50ce858a662a44326df6",
+      "lint-base/frozen-nettypes/result.json": "67b06b56d965122a8b361ba152df9d1767aebee8494edf54c5905fd2d0f0b23a",
+      "lint-full/frozen-nettypes/guarded.v": "8c2a95ec556935ed8d4e6c51ea8bd7b02af02ac579cb52102e2bd3c316d42043",
+      "lint-full/frozen-nettypes/yosys.log": "cdc1cce4f5bd264f57e9b4a0cdad30dcae5915c887bf288309bb7174e755a3e0",
+      "lint-full/frozen-nettypes/read.ys": "782782d2cdd4dc799fdc91798b4eaab2ffda579deabcaddc0003b550d7388184",
+      "lint-full/frozen-nettypes/result.json": "38221d97400e5ee11e813b673ecc7976e6a075d81f4168e86fdac12555bce175"
+    }
+  }
+}

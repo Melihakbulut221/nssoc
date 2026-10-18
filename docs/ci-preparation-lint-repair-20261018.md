@@ -11,3 +11,7 @@ The compact PD394 native MIM capture 39092549964 independently completed with 96
 ## First focused result and preparation follow-up
 
 Hosted run 39093269754 passed base lint and the actual asynchronous joint CPU/PCIe/Ethernet test. The added full lint profile failed before elaboration because the focused workflow prepared only the default base interface bundle. Its log identifies missing `hw/soc/gen/interfaces-full.bundle.json`. The workflow now additionally calls the existing `soc-interfaces-prepare SOC_INTERFACE_PROFILE=full` target. All three checks rerun on fresh outputs; no validator or source-warning acceptance changed. The failed report and archive are pinned in `ci-prepared-rtl-lint-first-20261018.json`.
+
+## Corrected hosted result
+
+Run 39093810293 passed all three original checks: base lint, full lint, and actual asynchronous CPU/PCIe/Ethernet simulation. The controller required each lint report to have an empty diagnostic delta, unchanged sources, no immutable drift and no unaccepted owned warning; the joint simulation required exactly two passes and zero failed/skipped cases with unchanged runtime. Receipt `docs/evidence/ci-prepared-rtl-lint-pass-20261018.json` pins the successful report and archive. This focused result does not close any full-chip timing or serial PHY gate.
