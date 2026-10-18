@@ -6,7 +6,7 @@ import difflib,hashlib,importlib.util,json,os,re,subprocess,sys
 from pathlib import Path
 from unittest.mock import patch
 import compare_cloud_routed_endpoints as reports
-import audit_cdr_parallel_v3_mim_intrinsic
+import audit_cdr_power_v4_mim_intrinsic
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-cdr-power-v4-mim-parent-audit'
 def main():
@@ -33,13 +33,13 @@ def main():
         def replace(a,b):
             nonlocal text
             assert text.count(a)==1,(a,text.count(a));text=text.replace(a,b);edits.append(dict(before=a,after=b))
-        replace('import networkx as nx','import networkx as nx\nimport sys\nsys.path.insert(0,str(Path.cwd()/"scripts"))\nfrom audit_cdr_parallel_v3_mim_intrinsic import validate_mim')
+        replace('import networkx as nx','import networkx as nx\nimport sys\nsys.path.insert(0,str(Path.cwd()/"scripts"))\nfrom audit_cdr_power_v4_mim_intrinsic import validate_mim')
         replace("require(not after['devices'] and not before['devices'] and not before['resistors'],'Device insertion into wire-only graph')","require(not before['resistors'],'Unexpected baseline resistor insertion')")
         replace("require(native_r==export_r,'Native/export resistor topology/value differs')","require(native_r==export_r,'Native/export resistor topology/value differs')\n mim_proof=validate_mim(rows,rep,before,after,original,owners,anchors)")
         replace('original_devices=484,','native_mim_intrinsic=mim_proof,original_devices=484,')
         target=B/'audit-rc48.py';assert not target.exists();target.write_text(text)
         mutations=B/'mutations48.py';assert not mutations.exists();mutations.write_bytes((OUT/'capture/source/wire/mutations48.py').read_bytes())
-        r['adaptations']=dict(original_auditor_sha256=sha(source),new_auditor_sha256=sha(target),edits=edits,unchanged_wire_mutations_sha256=sha(mutations),intrinsic_helper_sha256=sha(Path(audit_cdr_parallel_v3_mim_intrinsic.__file__)))
+        r['adaptations']=dict(original_auditor_sha256=sha(source),new_auditor_sha256=sha(target),edits=edits,unchanged_wire_mutations_sha256=sha(mutations),intrinsic_helper_sha256=sha(Path(audit_cdr_power_v4_mim_intrinsic.__file__)))
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text());raw=ROOT/'hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py';raw.parent.mkdir(parents=True,exist_ok=True);fetch(spec['raw_parser']['url'],spec['raw_parser']['sha256'],raw)
         save();run([sys.executable,target,P,B/'anchors08.json',B/'mim-audit.json'],'strict-native-mim-wire-audit')
         r['audit']=json.loads((B/'mim-audit.json').read_text());save();assert r['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
@@ -75,7 +75,7 @@ def main():
             r['intrinsic_controls'].append(dict(name=name,rejected=True,reason=reason,sha256=hashlib.sha256(changed.encode()).hexdigest(),diff=''.join(difflib.unified_diff(texts[filename].splitlines(True),changed.splitlines(True)))))
         assert len(r['intrinsic_controls'])==9
         assert all(sha(OUT/'capture'/n)==v for n,v in prior['outputs'].items())and sha(raw)==spec['raw_parser']['sha256']
-        assert sha(target)==r['adaptations']['new_auditor_sha256']and sha(mutations)==r['adaptations']['unchanged_wire_mutations_sha256']and sha(Path(audit_cdr_parallel_v3_mim_intrinsic.__file__))==r['adaptations']['intrinsic_helper_sha256']
+        assert sha(target)==r['adaptations']['new_auditor_sha256']and sha(mutations)==r['adaptations']['unchanged_wire_mutations_sha256']and sha(Path(audit_cdr_power_v4_mim_intrinsic.__file__))==r['adaptations']['intrinsic_helper_sha256']
         r['sources_unchanged']=True;r['status']='PASS_PD484_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES'
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:

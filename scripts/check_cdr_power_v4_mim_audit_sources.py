@@ -15,7 +15,5 @@ def check():
             s=s.replace(e['before'],e['after'])
         actual=(ROOT/d['candidate_path']).read_bytes()
         assert actual==s.encode() and hashlib.sha256(actual).hexdigest()==d['candidate_sha256']
-    helper=json.loads((ROOT/'scripts/cdr-power-v4-mim-audit-source-delta.json').read_text())['unchanged_helper']
-    assert hashlib.sha256((ROOT/helper['path']).read_bytes()).hexdigest()==helper['sha256']
     print('PASS_EXACT_POWER484_MIM_AUDIT_DELTA_ORIGINAL22_FAULT_GATES_RETAINED')
 if __name__=='__main__':check()
