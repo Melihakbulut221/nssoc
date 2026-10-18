@@ -1,3 +1,19 @@
+# Current cloud continuation — AVSS256 physical pass
+
+Cloud only: local workspace remains empty. Last meaningful progress is actual geometry modification and native physical proof, not full PHY closure.
+
+Run39094373443 completed both original compact CDR wave diagnoses. Full receipt `cdr-compact-path-review-pass-20261018.json` reproduces failed sampling and fourteen HBT violations. Both nominal compact waveforms in39093685328 remain rejected; actual clock-stop and VI-bias-off fault cases passed their negative-control gates.
+
+The next physical candidate widens only the global TopMetal1 AVSS rail64um to256um, preserves original32um Y end extensions, all394 devices, original child drawings, via arrays and public pins. A first generation failed because square caps crossed the origin;39095085264 is preserved in `cdr-avss256-origin-rejection-20261018.json`. Attempt39095164547 predates the cap fix and also failed. Neither failure is suppressed.
+
+Corrected native physical run**39095310936** at4e54a64dfdc700cad7f27574f4f0438d983d00e6 passed560 DRC, deep/flat394-device LVS and five original physical faults. Receipt `cdr-retimed-avss256-parent-physical-pass-20261018.json` binds the new GDS/LEF, all sources and native evidence. New top: `nssoc_cdr_pd394_compact_avss256_v1`.
+
+Fresh `cdr-retimed-avss256-planes-cloud` is being launched. Continue with newly bound intrinsic terminals, full metal/MIM RC, native raw-wire controls, composition, and original early/late256-bit34.25ns tests. Do not reuse prior native IDs, R/C values or adjust acceptance gates. Four signal routes lengthened192um, so improved electrical behavior is unproven.
+
+Mainchip route39084569446 and TX return64 waves39087664998 remain live at this checkpoint. Keep those handles; do not restart on polling timeouts. Full serial PHY, recovered clock and extracted final setup/hold remain open. Focused hosted CPU/PCIe/Ethernet plus base/full lint39093810293 passed; this is not whole-chip signoff.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — hosted validation and loaded rejection
 
 The local NSSOC workspace is empty and has no running CAD process. Verified handoff receipt asset 636387277 records nine batches and 3008078533 logical bytes transferred. All future source edits, simulations, archive restores and CAD runs stay in GitHub. Do not recreate a local checkout.

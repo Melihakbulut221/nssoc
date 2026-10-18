@@ -11,3 +11,7 @@ This is an unqualified physical candidate. After physical success it requires fr
 The first generator wrapper assumed all signal buses followed AVSS. Source-plan inspection showed the four earlier signals; the wrapper was corrected to require their exact192um extension before interpreting native results. This changes the coordinate verifier, not the placement algorithm, DRC/LVS or electrical gates.
 
 Native generation39095085264 rejected the first wide-rail geometry before physical checking: the generic wire helper extends both endpoints by half the width, so the256um rail at the fixed112um feed extended to-16um. The actual AVSS polygon now retains the original32um vertical end extension while widening in X. Public pins and global origin remain unchanged; the mandatory zero-origin assertion is retained. A later queued attempt from before this fix is not evidence for the corrected geometry.
+
+## Native physical result
+
+Corrected run39095310936 at4e54a64dfdc700cad7f27574f4f0438d983d00e6 passed560 DRC categories, deep/flat394-device LVS and the original five physical fault controls. All sixteen children retained their drawings and moved192um in X. Eighty intermacro signal route records translated identically; four earlier signal nets had the declared192um extension. Source graph and public pins are unchanged. The passing report/archive is pinned in `cdr-retimed-avss256-parent-physical-pass-20261018.json`. This is only the physical prerequisite for fresh extraction and original loaded evaluation.
