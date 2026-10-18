@@ -1,7 +1,7 @@
 # Current cloud-only continuation
 
-Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. Localworkspaceempty;allCADinGitHub.
+Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. Workspaceempty;allCADinGitHub.
 
-Select18 andXOR59 actualnativephysicalproofs passed. Fullparent39116370809 generated420devices butrejected4nativeviaDRCmarkers. Thiscommit launches `cdr-hybrid420-overlay-diagnosis-cloud.yml` toreadexactmarkercoordinates andsupplyoverlay beforegeometryrepair. Fullfailurepreserved. FreshRC/nativeMOS64binding/full-loadedcaptures mandatory.
+Fullparent420 firstgenerated but4viaDRCfailed; actualdiagnosis39116669163 found two same-net AVSSvia pairs1umapart. Thiscommit launches exacttwo-redundant-shunt repair via `cdr-retimed-hybrid-v2-parent-cloud.yml`; preserveactualnewhandle and inspect nativegates. Select18/XOR59leafproofspassed. New420RC/model/full-loadedgates remainmandatory.
 
-Mainchipround4 39115222502 andTXfullwire39112087217 areexistinglivejobs; preserveboth. Retimedinputattenuation/fullserialPHY/mainchipfinalacceptance/setuphold remainOPEN.
+Mainchipround4 39115222502 andTX39112087217 live; preserveboth. FullserialPHY/routedchipacceptance/finalsetuphold remainOPEN.

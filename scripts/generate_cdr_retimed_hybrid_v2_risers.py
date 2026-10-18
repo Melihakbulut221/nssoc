@@ -48,6 +48,20 @@ def generate(out):
         b=c.dbbox();dx=round((x-b.center().x)/.005)*.005;dy=round((y-b.center().y)/.005)*.005
         overlay.insert(pya.DCellInstArray(c.cell_index(),pya.DTrans(dx,dy)))
         overlay.shapes(L.layer(126,0)).insert(pya.DBox(x-1.6,y-1.6,x+1.6,y+1.6));cuts+=1
+    # Plan same-net riser endpoints from the exact native child metadata.
+    # Every endpoint below is independently checked against actual M4 and
+    # physically written by the unchanged riser construction later.
+    child_manifest=json.loads((out/'children.json').read_text())
+    planned_riser_ends=[];suppressed_shunt_vias=[]
+    for tag,placed in data['placements'].items():
+        kind=placed['kind'];bounds=rect(placed['bbox_um'])
+        child=json.loads((out/child_manifest['children'][kind]['directory']/'result.json').read_text())
+        dx=child['origin_translation_um'][0]if kind=='sampler'else 0.
+        for route in child['routes']:
+            pin=route['net'];net=pin.lower()
+            if net not in ('avdd','avss'):continue
+            x=route['escape_lane_um']if kind=='sampler'else route['escape'][0]
+            planned_riser_ends.append(dict(tag=tag,net=net,device=route['device'],point=[x+dx+bounds.left,rect(placed['ports'][pin]).center().y]))
     for tag,placed in data['placements'].items():
         if TYPES[placed['kind']]['layer']!=67:continue
         bounds=rect(placed['bbox_um'])
@@ -66,7 +80,13 @@ def generate(out):
             overlay.shapes(L.layer(134,0)).insert(strap)
             xs=[];x=x0+(4 if placed['kind']=='sampler' else 12)
             while x<=x1-4:
-                via(x,y);xs.append(x);x+=20
+                nearby=[r for r in planned_riser_ends if r['tag']==tag and r['net']==pin.lower()and abs(r['point'][1]-y)<1e-6 and abs(r['point'][0]-x)<4.]
+                if nearby:
+                    assert len(nearby)==1
+                    suppressed_shunt_vias.append(dict(tag=tag,net=pin.lower(),omitted_shunt_center_um=[x,y],retained_riser=nearby[0]))
+                else:
+                    via(x,y);xs.append(x)
+                x+=20
             assert xs
             straps.append(dict(tag=tag,kind=placed['kind'],net=pin.lower(),original_m5_bus_bbox_um=str(region_box),new_m7_box_um=str(strap),via_centers_um=[[x,y]for x in xs]))
     # Reinforce the actual long M4 device-to-rail escapes with native M6.
@@ -105,6 +125,11 @@ def generate(out):
             overlay.shapes(L.layer(126,0)).insert(riser)
             via(x,ey)
             risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser)))
+    actual_riser_ends={(r['tag'],r['net'],r['device'],tuple(r['supply_end_um']))for r in risers}
+    assert {(r['tag'],r['net'],r['device'],tuple(r['point']))for r in planned_riser_ends}==actual_riser_ends
+    assert len(suppressed_shunt_vias)==2
+    assert {(r['tag'],r['net'],r['retained_riser']['device'])for r in suppressed_shunt_vias}=={('x','avss','D21'),('y','avss','D21')}
+    assert all(abs(r['omitted_shunt_center_um'][0]-r['retained_riser']['point'][0])==1. for r in suppressed_shunt_vias)
     assert len({r['tag']for r in risers})==16 and len(risers)>=80
     assert len(straps)==27 and cuts>100,(len(straps),cuts)
 
@@ -130,7 +155,7 @@ def generate(out):
     (dest/(TOP+'.lef')).write_text(lef.replace(base.TOP,TOP))
     assert all(base.sha(Path(p))==h for p,h in frozen.items())
     data.update(status='GENERATED_PD420_NATIVE_SUPPLY_RISERS_REQUIRES_PHYSICAL_RC_AND_LOADED_VALIDATION',baseline_v2_inputs=frozen,
-        supply_overlay=dict(straps=straps,risers=risers,riser_width_um=3.2,riser_count=len(risers),via_stacks_m5_m7=cuts,via_stacks_m4_m6=len(risers),width_um=3.2,pitch_um=20.,geometry_delta=delta,all_original_drawing_geometry_retained=True,only_native_vias_and_supply_metal_added=True,all_device_layers_unchanged=True,placements_signals_ports_and_schematic_unchanged_except_top_name=True,
+        supply_overlay=dict(straps=straps,risers=risers,suppressed_redundant_shunt_vias=suppressed_shunt_vias,all_planned_riser_endpoints_written=True,riser_width_um=3.2,riser_count=len(risers),via_stacks_m5_m7=cuts,via_stacks_m4_m6=len(risers),width_um=3.2,pitch_um=20.,geometry_delta=delta,all_original_drawing_geometry_retained=True,only_native_vias_and_supply_metal_added=True,all_device_layers_unchanged=True,placements_signals_ports_and_schematic_unchanged_except_top_name=True,
             scope='Candidate to reduce measured local supply losses through physical M4-to-M6 risers in sixteen macros. Horizontal shunt via X offsets are4um for samplers and12um for other leaves to avoid opposite-rail riser crossings. Does not bypass any wire model or intrinsic device. Native fresh extraction and loaded gate remeasurement required. New XOR children have Metal5 ports and receive actual supply shunts and risers.'))
     data['inputs'].update({str(Path(__file__)):base.sha(Path(__file__)),str(ROOT/'scripts/generate_cdr_retimed_avss256_base.py'):base.sha(ROOT/'scripts/generate_cdr_retimed_avss256_base.py')})
     data['outputs']={p.name:base.sha(p)for p in dest.iterdir()if p.is_file()}

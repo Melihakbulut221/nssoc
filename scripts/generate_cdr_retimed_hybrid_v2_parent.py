@@ -11,7 +11,7 @@ from check_cdr_hybrid_v2_parent_sources import check
 TOP='nssoc_cdr_pd420_hybrid_tail_v2'
 def generate(out):
     check()
-    assert hashlib.sha256(Path(original.__file__).read_bytes()).hexdigest()=='edb0c0b1cb1056a507f49dc90b193c204d1ea4d7205cb9d35961b07d79104d16'
+    assert hashlib.sha256(Path(original.__file__).read_bytes()).hexdigest()=='8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6'
     assert hashlib.sha256(Path(base.__file__).read_bytes()).hexdigest()=='c63fd6f5c37e927cdb26f29d4b7786bb0ebdbeaeb9f63c1ac09124d13eb113e9'
     original.base=base;original.plan=plan;original.TYPES=plan.TYPES;original.TOP=TOP
     original.generate(out)

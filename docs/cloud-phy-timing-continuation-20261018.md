@@ -1,3 +1,11 @@
+# Current: actual420 overlay collision diagnosed; exact two-via repair launched
+
+Cloud diagnosis39116669163/source80f0765be68b015797de92985ebd49053f28f8ee read exactfour nativeTV1.a/TV2.b markers atX1644.81-1645.39um,Y3547.19/4126.45um. EachmatchesactualXORAVSSshuntcenter1645.6 andD21risercenter1644.6,1um apart. Fullreport `cdr-hybrid420-overlay-diagnosis-20261018.json` pins actualmarkerXML andsupplymetadata. Thiscommit removes onlytwo redundant horizontal-shuntvia stacks; unchangedactualD21riserendpoint vias remain. Independentlyderiveplannedrisers fromnativechildmetadata, requireexactmatch withphysicallywrittenM4-validatedrisers andexacttwo x/yAVSSD21 suppressions. Originalallchildgeometry/420devices/sourceclocks/gates unchanged. Strictsource-delta includesactualrepairandnewgeneratorhash. Workflowlaunches newwholeparent560DRC/deepflatLVS/faultcampaign; no passyet.
+
+Mainchipround4 39115222502 andTX39112087217 remain existinglivejobs. Select18 andXOR59 nativeleafproofs passed. Fullparent420/freshnativeMOS64binding/MIM-awareRC/loadedcaptures/retimedinputrepair/fullserialPHY/finaltimingOPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: full420 parent generated; four actual via DRC markers require overlay repair
 
 Parent39116370809/source3ac59f5b73b3d13ee455cef8fdf508266b54e2da passed exactsourceguards/childrestores/geometrygeneration, butnative560DRC reports4markers:2TV1.a and2TV2.b. LVS not reached; no parentphysicalacceptance. Fullfailure `cdr-hybrid420-parent-overlay-rejection-20261018.json` pins summary653100519 SHA39bafba0ae69fbc6046aff8c1fe78299a6a08041656845c8232e78e8e6301773 andparts653100571. Thiscommit launches cloud-only marker readback fromexactlythatreport +actualsupplyoverlay metadata. Inspect coordinates beforegeometryrepair; likelyadjacent/redundant shunt/riser via stacks, butdo notinfer exactcause untilnativeitems read. Preserve currentnew420source; no count/thresholdrelaxation. Select18/XOR59 leafproofs remainpassed.

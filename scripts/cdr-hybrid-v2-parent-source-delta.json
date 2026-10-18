@@ -123,7 +123,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_risers_parent.py",
       "baseline_sha256": "66524d4eafb105a1a7f1a0a956ccfe34b9ffe494d20a3facf6a1501b51f7a750",
       "candidate_path": "scripts/generate_cdr_retimed_hybrid_v2_risers.py",
-      "candidate_sha256": "edb0c0b1cb1056a507f49dc90b193c204d1ea4d7205cb9d35961b07d79104d16",
+      "candidate_sha256": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
       "edits": [
         {
           "before": "import generate_cdr_retimed_avss256_base as base",
@@ -174,6 +174,26 @@
           "before": "PD394",
           "after": "PD420",
           "count": 2
+        },
+        {
+          "before": "    for tag,placed in data['placements'].items():\n        if TYPES[placed['kind']]['layer']!=67:continue\n",
+          "after": "    # Plan same-net riser endpoints from the exact native child metadata.\n    # Every endpoint below is independently checked against actual M4 and\n    # physically written by the unchanged riser construction later.\n    child_manifest=json.loads((out/'children.json').read_text())\n    planned_riser_ends=[];suppressed_shunt_vias=[]\n    for tag,placed in data['placements'].items():\n        kind=placed['kind'];bounds=rect(placed['bbox_um'])\n        child=json.loads((out/child_manifest['children'][kind]['directory']/'result.json').read_text())\n        dx=child['origin_translation_um'][0]if kind=='sampler'else 0.\n        for route in child['routes']:\n            pin=route['net'];net=pin.lower()\n            if net not in ('avdd','avss'):continue\n            x=route['escape_lane_um']if kind=='sampler'else route['escape'][0]\n            planned_riser_ends.append(dict(tag=tag,net=net,device=route['device'],point=[x+dx+bounds.left,rect(placed['ports'][pin]).center().y]))\n    for tag,placed in data['placements'].items():\n        if TYPES[placed['kind']]['layer']!=67:continue\n",
+          "count": 1
+        },
+        {
+          "before": "                via(x,y);xs.append(x);x+=20\n",
+          "after": "                nearby=[r for r in planned_riser_ends if r['tag']==tag and r['net']==pin.lower()and abs(r['point'][1]-y)<1e-6 and abs(r['point'][0]-x)<4.]\n                if nearby:\n                    assert len(nearby)==1\n                    suppressed_shunt_vias.append(dict(tag=tag,net=pin.lower(),omitted_shunt_center_um=[x,y],retained_riser=nearby[0]))\n                else:\n                    via(x,y);xs.append(x)\n                x+=20\n",
+          "count": 1
+        },
+        {
+          "before": "    assert len({r['tag']for r in risers})==16 and len(risers)>=80\n",
+          "after": "    actual_riser_ends={(r['tag'],r['net'],r['device'],tuple(r['supply_end_um']))for r in risers}\n    assert {(r['tag'],r['net'],r['device'],tuple(r['point']))for r in planned_riser_ends}==actual_riser_ends\n    assert len(suppressed_shunt_vias)==2\n    assert {(r['tag'],r['net'],r['retained_riser']['device'])for r in suppressed_shunt_vias}=={('x','avss','D21'),('y','avss','D21')}\n    assert all(abs(r['omitted_shunt_center_um'][0]-r['retained_riser']['point'][0])==1. for r in suppressed_shunt_vias)\n    assert len({r['tag']for r in risers})==16 and len(risers)>=80\n",
+          "count": 1
+        },
+        {
+          "before": "supply_overlay=dict(straps=straps,risers=risers,",
+          "after": "supply_overlay=dict(straps=straps,risers=risers,suppressed_redundant_shunt_vias=suppressed_shunt_vias,all_planned_riser_endpoints_written=True,",
+          "count": 1
         }
       ]
     },
@@ -181,7 +201,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_parent.py",
       "baseline_sha256": "9f5ad0f98168a47b930dc65edc57022f57fac111c9428581a99b760ac025b28e",
       "candidate_path": "scripts/generate_cdr_retimed_hybrid_v2_parent.py",
-      "candidate_sha256": "a42f04c3507662d1964db4f6fedcdf3310684c5bc45f7eb53a7f30797c58fdd2",
+      "candidate_sha256": "f9c52a7fdd0d94a1ef7194941c0faa10edd371a435254e7edceed690b41d2a3b",
       "edits": [
         {
           "before": "generate_cdr_retimed_risers_parent",
@@ -231,6 +251,11 @@
         {
           "before": "hybrid406",
           "after": "hybrid420",
+          "count": 1
+        },
+        {
+          "before": "edb0c0b1cb1056a507f49dc90b193c204d1ea4d7205cb9d35961b07d79104d16",
+          "after": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
           "count": 1
         }
       ]
