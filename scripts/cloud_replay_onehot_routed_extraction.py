@@ -168,6 +168,7 @@ def main():
         restored,route_proof=reports.restore_report('replay-onehot-detailed-route',39084569446,digest,parts,route_root,list(route['outputs']))
         assert restored==route
         r['actual_detailed_route_source']=route_proof
+        r['detailed_route_complete']=True
         state_path=route_root/relative(route['detailed_route_state']);state=json.loads(state_path.read_text())
         final=json.loads((route_root/relative(route['final_state'])).read_text())
         odb=Path(state['odb']);deffile=Path(state['def']);netlist=Path(state['nl'])

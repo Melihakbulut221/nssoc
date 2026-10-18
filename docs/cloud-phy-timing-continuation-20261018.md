@@ -1,3 +1,13 @@
+# Current cloud continuation — supply-risers nominal failures retained
+
+Cloud only. Loaded run39099179881 at8668ffd75d5d2b8b754bc869560dafdd6b7265bc completed: both nominal cases remain rejected despite physical/RC/model passes. Early wrong-sign counts98/282/368/398 of765; late108/74/370/396. Both still have14 failed HBT operating points. Early phase direction fails; late passes. No numerical warnings; source hashes unchanged. Full receipts in `cdr-risers-full-wire-rejection-20261018.json`. New `cdr-risers-path-review-cloud` reads those exact native captures and reproduces every original gate before identifying the next physical/circuit change. Do not treat84 added supply risers as a successful electrical repair.
+
+The exact-route extraction/STA downstream code is prepared. Native preflight39099942605 at a0d535237ed6f16f4aaddb192208466b6788b8b4 passed the actual bundled STA transform and3 malformed-script controls (`onehot-routed-extraction-preflight-20261018.json`). Actual RCX/STA has NOT executed. Only dispatch `replay-onehot-routed-extraction-cloud.yml` after detailed route39084569446 succeeds and its exact summary/parts SHA256 are bound. Do not use the older113791-instance extractor. See `onehot-routed-extraction-preparation-20261018.md` for scope and nominal-RC qualification limits.
+
+Existing mainchip detailed route39084569446 and nominal TX return64 case39087664998 remain live. TX swapped-leaf fault job117557594283 completed, with original-bit rejection recorded in asset652523864, but its normal case is still required. Keep all handles. Full serial Gen3 x4, routed integration and final setup/hold remain open.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — supply-risers loaded tests launched
 
 Cloud only; local workspace stays empty. Actual local supply repair adds84 physical3.2um TopMetal1 risers in14 leaves and23 TopMetal2 shunts. All394 intrinsic devices, source circuit, signal routes and public interfaces are preserved. Physical top: `nssoc_cdr_pd394_supply_risers_v1`.
