@@ -1,3 +1,11 @@
+# Current: fresh420 whole-wire reference-plane campaign launched
+
+Actual420 nativeplanes39117334854 passed158interfaces/51nets/19faults and1186terminals. Thiscommit launches `cdr-retimed-hybrid-v2-wire-inputs-cloud.yml` fromexact420physical39116999945 andplanesreceipt. Originalnativeconductor/probe/locate/sourceidenticaldrawing pinrecovery/anchors/dedupmethods retained; onlyprovenance/top/census adaptation. Expected420devices,1186terminals,777metal/409bodyreferences and802anchors including25publicpins mustbe confirmedbyactualnativeoutputs. Read results before modelbinding/RC; no oldgraph reuse.
+
+Mainchip finalround4 passed0antennas/0DRTDRC/0criticaldisconnected. FreshRCX/STA workflow `replay-onehot-round4-routed-extraction-cloud.yml` at378b1fd258c51ed1eaa8200e6f746cd409b0a29a launched; inspect exacthandle and actual3384diode-only finalODBproof/nominalRC/slowtypfastSTAgates. TX39112087217 existinglive; preserve. FullPHY/retimedinput/qualifiedRC/finaltiming remainOPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual mainchip route/antenna closure passed; freshRCX/STA launched
 
 Completedround4 run39115222502/source85c2a70f1d625fab59bc7266aa5ef6894e3aa575:0nativeantennanets,0DRTDRC,0criticaldisconnected,10newdiodes(total3384),1077.43s. Fullsummary653106838 SHA f7a5c4951a3c4f3b0aa91c81f2cf7ceb33f6e3e0fbe3515bcc8b2fd3b343b1e5 andparts653106959 bound by `replay-onehot-antenna-round4-result-20261018.json`. FinalODB b5a244a5e24109c2c5fb0ed5e92d98b999e7adbed50eaa9e70db5cdc50531835;DEF e8de141aae397aab233dc32b6c3733e2212f506be2b33f2dc29243cdb9f0a896;NL f7bb33ce5ea9c1f947ea582151e2086b4b031f284ee50ba667c4c291f3ee0846. This is routing/antenna evidence, notfullchipmanufacturingDRC/LVS orfinaltiming.
