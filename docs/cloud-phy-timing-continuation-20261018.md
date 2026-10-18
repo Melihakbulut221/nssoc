@@ -1,3 +1,13 @@
+# Current cloud continuation — native supply risers physical pass
+
+Cloud only. The actual supply-risers candidate run39097910516 at057a9722af88ba51845fbac2640c19257a610faf passed560-category DRC,394-device deep/flat LVS and all five original physical faults. The new physical top is `nssoc_cdr_pd394_supply_risers_v1`; native geometry adds local M6 supply risers plus23 M7 shunts. The full receipt is `cdr-retimed-risers-parent-physical-pass-20261018.json`. This proves physical topology within the stated decks, not electrical improvement or full PHY acceptance.
+
+The `cdr-retimed-risers-planes-cloud` workflow is being launched to bind all actual new terminals. Continue with fresh native wire inputs, intrinsic binding, raw wire/MIM extraction/audit/composition and original loaded early/late gates. Do not reuse AVSS256 RC or IDs. Original AVSS256 cases39096665471 remain rejected and their wave diagnosis39097444345 remains retained.
+
+Mainchip39084569446 and TX39087664998 were live at last check; keep the same handles. Full PHY, mainchip routed signoff and final setup/hold remain open.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — native local supply risers under physical test
 
 Cloud only; local workspace empty. AVSS256 path diagnosis39097444345 reproduced both failed nominal captures,14 HBT failures and original gates. Full receipt `cdr-avss256-path-review-pass-20261018.json` preserves raw capture identities and detailed voltage measurements. Latest repair is actual local supply routing, documented in `cdr-supply-risers-20261018.md`.
