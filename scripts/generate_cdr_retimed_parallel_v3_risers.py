@@ -80,7 +80,7 @@ def generate(out):
             overlay.shapes(L.layer(134,0)).insert(strap)
             xs=[];x=x0+(4 if placed['kind']=='sampler' else 12)
             while x<=x1-4:
-                nearby=[r for r in planned_riser_ends if r['tag']==tag and r['net']==pin.lower()and abs(r['point'][1]-y)<1e-6 and abs(r['point'][0]-x)<(5. if kind=='sampler' else 4.)]
+                nearby=[r for r in planned_riser_ends if r['tag']==tag and r['net']==pin.lower()and abs(r['point'][1]-y)<1e-6 and abs(r['point'][0]-x)<(5. if placed['kind']=='sampler' else 4.)]
                 if nearby:
                     assert len(nearby)==1
                     suppressed_shunt_vias.append(dict(tag=tag,net=pin.lower(),omitted_shunt_center_um=[x,y],retained_riser=nearby[0]))

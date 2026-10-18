@@ -11,7 +11,7 @@ from check_cdr_parallel_v3_parent_sources import check
 TOP='nssoc_cdr_pd484_parallel_tail_v2'
 def generate(out):
     check()
-    assert hashlib.sha256(Path(original.__file__).read_bytes()).hexdigest()=='e9c3fa6553d797fec0c216c0ae4d3e6d9d4759666a0b0e77e7160c30a5eaa116'
+    assert hashlib.sha256(Path(original.__file__).read_bytes()).hexdigest()=='3cf7f802a2af1caf07ca144f8570ba2cd481b02c3cb23a5163f7908dab72da69'
     assert hashlib.sha256(Path(base.__file__).read_bytes()).hexdigest()=='42e71e6995a4fbcabe4b320a0e0fca2e24c8904bfbfb2f2da7ab62c9a5f36b3e'
     original.base=base;original.plan=plan;original.TYPES=plan.TYPES;original.TOP=TOP
     original.generate(out)

@@ -113,7 +113,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_risers.py",
       "baseline_sha256": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
       "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_risers.py",
-      "candidate_sha256": "e9c3fa6553d797fec0c216c0ae4d3e6d9d4759666a0b0e77e7160c30a5eaa116",
+      "candidate_sha256": "3cf7f802a2af1caf07ca144f8570ba2cd481b02c3cb23a5163f7908dab72da69",
       "edits": [
         {
           "before": "cdr_retimed_hybrid_v2",
@@ -154,6 +154,11 @@
           "before": "abs(r['point'][0]-x)<5.",
           "after": "abs(r['point'][0]-x)<(5. if kind=='sampler' else 4.)",
           "count": 1
+        },
+        {
+          "before": "abs(r['point'][0]-x)<(5. if kind=='sampler' else 4.)",
+          "after": "abs(r['point'][0]-x)<(5. if placed['kind']=='sampler' else 4.)",
+          "count": 1
         }
       ]
     },
@@ -161,7 +166,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_parent.py",
       "baseline_sha256": "f9c52a7fdd0d94a1ef7194941c0faa10edd371a435254e7edceed690b41d2a3b",
       "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_parent.py",
-      "candidate_sha256": "466b1d5ab312ea67eef3481fb01a8cca927df5e95f996ded40a0beaff16840ae",
+      "candidate_sha256": "b4240c45435364e9a46f81c02119ac498d095efa0d7854adacd4e3dee68a9ef6",
       "edits": [
         {
           "before": "cdr_retimed_hybrid_v2",
@@ -211,6 +216,11 @@
         {
           "before": "9db15d7f4e2854d0f07434b60f332a843ae2aabecf145b0c08b077f304778d06",
           "after": "e9c3fa6553d797fec0c216c0ae4d3e6d9d4759666a0b0e77e7160c30a5eaa116",
+          "count": 1
+        },
+        {
+          "before": "e9c3fa6553d797fec0c216c0ae4d3e6d9d4759666a0b0e77e7160c30a5eaa116",
+          "after": "3cf7f802a2af1caf07ca144f8570ba2cd481b02c3cb23a5163f7908dab72da69",
           "count": 1
         }
       ]
