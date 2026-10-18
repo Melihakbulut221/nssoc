@@ -1,3 +1,11 @@
+# Current: mainchip round3 completed with2 antennas; continue exact saved round4
+
+Run39111280543/sourcef667bcc365c7d58b8aad7b4087a1d125891931fb completed actual native routing:14 to2 antenna nets,47newdiodes,total3374. DRTDRC0,criticaldisconnected0,3000.05s. Receipt `replay-onehot-antenna-round3-result-20261018.json` pins summary653045475 SHA584a883f95765eb2f9e52376847eaec7a82fc18886fed43a13f851a62487ba4d,parts653045580 andeveryoutput. Saved pre-writeviews drt-run-3 ODBc96f5e3c557e1851fc530b450b731aac4ce09e50b06ffdd426f4cbc694256e2d; finalODB73c54ca2dd206af929c15858f075f5a085c1665b32dde226479f83c1181c588a. This commit launches exact round4 fromsavedODB: independently verify3374diodes/alloriginalpins, reproduce2initialantennas, preserve64DRTiters/max8rounds/originalclocks5percent, executeonlyround4. No source restart, no relaxation. FreshRCX/STA needs eventualzeroantenna route and adaptedexactsource.
+
+XORv2 allfive native component cases passed andfullreports retained `cdr-xor-hybrid-v2-component-pass-20261018.json`; coldmaxVBE.978633653V versus1Vlimit, allcorners0wrong. ActualXOR57 physical39114864609/source7dfc5bb7166db09c3e8e3b96d74e1161abe2a4f0 islive; inspect nativeDRC/LVS/faultresults. TX39112087217 remains existinglive fullwire. Select18proofs complete butparent/freshRC/retimedinput repair/fullPHY/finaltiming OPEN. Allcloud,workspaceempty. GoalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: XOR Nx4 native three-corner component passes; real XOR57 physical candidate launched
 
 XORv2 run39114595894/source1a80f767bb7ab4701843feaf9373107721bc05e7 has nominal/cold/hot successful native component jobs; inspect allfive reports, including finalfault case, before recording completecampaign. Coldv1 failure is preserved and1V bound unchanged. This commit generates actual XOR57 GDS:16HBT/3MOS/8rppd/27original finite contacts plus3localMOScontacts. Crossed data inputs/XOR polarity are actual metal connections, separate SUB/AVSS,30umdevicecolumnpitch. Native560DRC/deep-flat57LVS and seven actualfaults required; no pass inferred. Do not use54device ideal component model for this57device layout: freshphysicalbinding/RC/model/loadedwaves/fullparentintegration required.
