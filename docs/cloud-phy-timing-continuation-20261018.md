@@ -1,3 +1,15 @@
+# Cloud continuation — compact CDR audit passed
+
+All work remains on GitHub-hosted runners. Local workspace is empty; do not restore native archives or run CAD locally. Branch `codex/complete-open-work`.
+
+Compact CDR capture 39092549964 passed. Independent raw RC audit 39093269827 passed with **9655 R, 7555 C, 11 native MIM devices, 13 unchanged wire corruption controls and 9 intrinsic MIM controls**. Receipt `docs/evidence/cdr-compact-mim-parent-audit-pass-20261018.json` pins complete report and archive. Composition is being launched with the fresh compact binding (39091922547), never the old v3 native IDs. After composition, run original 256-bit early/late waveforms and actual faults using the compact planes (39091442653) and new R/C counts. Original clock/common mode/load/device thresholds must stay unchanged. Physical and raw RC passes are not loaded electrical acceptance or qualified PEX.
+
+Hosted CI diagnosis 39092549976 identified missing generated Ibex RTL in the broad RTL preparation, and two stale warning locations. Commit de827731830dd919dba41e730f4add89608e4070 fixes preparation via `soc-rtl-prepare` and relocates the same two ledger entries in all eight profiles. Focused validation 39093269754 is running; inspect its actual result before claiming a pass. No older CI run was cancelled. Full CI may remain queued behind existing jobs.
+
+Keep the existing mainchip detailed-route run **39084569446** and TX return64 native-wave run **39087664998**; do not restart while live. Neither routing closure nor serial PHY is established by dispatch. Mainchip needs routed RC and unchanged all-corner STA after native route completes. Prior placement-estimated setup/hold violations are still open. PLL acquisition and full recovered-clock/device qualification remain open.
+
+Prior continuation notes follow unchanged for provenance:
+
 # Cloud-only continuation state
 
 All execution, CAD outputs, native waves and source changes remain on GitHub. The local workspace is empty. Do not clone or restore artifacts locally. The goal remains complete serial PCIe Gen3 x4, routed PCIe/Ethernet mainchip and final setup/hold. None is closed by this checkpoint.
