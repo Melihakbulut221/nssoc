@@ -20,7 +20,7 @@ def main():
         with tarfile.open(archive)as tar:
             names=tar.getnames()
             def extract(rel,expected):
-                hits=[n for n in names if n==rel or n.endswith('/'+rel)];assert len(hits)==1,(rel,hits)
+                hits=[n for n in names if n=='cloud-tx-v5-columns-assembly/'+rel];assert len(hits)==1,(rel,hits)
                 raw=tar.extractfile(hits[0]).read();assert hashlib.sha256(raw).hexdigest()==expected
                 path=inputs/rel;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
                 receipts[rel]=dict(sha256=expected,bytes=len(raw),member=hits[0]);return json.loads(raw)
