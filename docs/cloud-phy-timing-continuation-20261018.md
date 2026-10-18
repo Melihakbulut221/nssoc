@@ -1,3 +1,15 @@
+# Current live handles: original hybrid406 loaded trajectories and mainchip route
+
+Checked 2026-10-18T07:52:15.784989+00:00. Goal turn classification: PROGRESS, followed by verified wait on actual live cloud jobs. Hybrid406 physical/planes/1158terminal bindings/whole RC/MIM audit/composition chain completed and source changes are committed remotely; local workspace remains empty.
+
+Loaded run39109172338/source80520fa4ba8b1b18f89d566b728baa29cef06797: exact source-delta and syntax job117621384922 passed. Native jobs nominal_early117621447931, nominal_late117621447969, clock_stopped117621447979, vi_bias_off117621447953 are live. Preserve those handles. Read actual complete reports before accepting or repairing the candidate; if a preparation error occurs, retain it and fix exact cause; if waveform gates reject, retain new native IDs/voltage/data evidence. No pass is claimed yet. After nominal success, full-loop/PVT/timestep/RF/body/four-lane/mainchip qualification still required.
+
+Mainchip saved-route39107161430/sourcee268d89f3212e5ae695757d223fb9e5fd94e0ad3 job117615420694 remains live. No restart or duplicate. When terminal inspect native topology/172initialantenna reproduction, round2 route and output DRC/antenna/connectivity. A partial antenna reduction is not closure. Bind eventual successful actual route to fresh RCX/STA; original39084569446 is terminal cancelled and not a valid successful extraction source.
+
+Exact live snapshot: `docs/evidence/hybrid406-loaded-route-live-20261018.json`. Full serial Gen3x4, routed mainchip acceptance and final setup/hold remain OPEN. Cloud-only instruction remains in force.
+
+Earlier checkpoint follows:
+
 # Current: complete hybrid406 native model verified; original loaded simulations launched
 
 Composition39109025537/source448b580ec8fe75129691ec78c5be2ad75d861f49 passed all406 devices/9970R7795C with exactly11 intrinsic MIM models, no duplicate extractor devices and19 actual corruption controls. Full receipt `cdr-hybrid-mim-composition-pass-20261018.json`. This commit launches `cdr-hybrid-mim-loaded-cloud.yml`: exact byte-delta gate first, then nominal early/late and clock-stop/VI-bias-off controls. The new evaluator preserves original external8GHz clocks,256bits,34.25ns,150fF sampler/50fF XOR loads, phase/current/HBT/MIM acceptance. It binds all12native MOS/actual diffusion geometry, checks alltime1.32V terminal limits and nonnegative activeVDS, eightMOS tail currents plusfourHBT tails >=0.5mA. Inspect actual native results; physical/model passes are not waveform/fullPHY closure. If rejected, preserve exact new native-ID waveform evidence and repair actual circuit; no threshold, phase, RC scaling or old394 ID reuse.

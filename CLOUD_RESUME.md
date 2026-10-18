@@ -2,7 +2,7 @@
 
 Read [docs/cloud-phy-timing-continuation-20261018.md](docs/cloud-phy-timing-continuation-20261018.md) first. Work is cloud-only; local workspace empty. Preserve full serial Gen3x4, PCIe/Ethernet mainchip routing and final setup/hold goals. Historical entries must not trigger restarts.
 
-Hybrid406 physical, native planes/terminals, binding, fresh whole RC, MIM-aware raw audit and complete406device/9970R7795C composition have passed their explicit scopes. Original loaded early/late and two fault cases are being launched; inspect the newest `cdr-hybrid-mim-loaded-cloud.yml` run. Physical/model proof is not electrical/fullPHY closure. Mainchip saved-route39107161430 is the existing live handle; preserve it. Current exact receipts and next steps are in the authoritative continuation.
+Hybrid406 physical, native planes/terminals, binding, fresh whole RC, MIM-aware raw audit and complete406device/9970R7795C composition have passed their explicit scopes. Original loaded early/late and two fault cases are running as39109172338 at80520fa4ba8b1b18f89d566b728baa29cef06797; exact source-delta/syntax controls passed. Inspect those existing native jobs. Physical/model proof is not electrical/fullPHY closure. Mainchip saved-route39107161430 is the existing live handle; preserve it. Current exact receipts and next steps are in the authoritative continuation.
 
 ---
 
