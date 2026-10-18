@@ -27,3 +27,10 @@ The next candidate retains the proposed 128 um final-column trunk at its outward
 ## Isolated trunk physical and extraction result
 
 Physical39134428243 passed all560 DRC categories with zero violations,1674-device deep/flat LVS and five actual geometry faults. Independent39134989214 reconstructed all25 drawing layers exactly from the old geometry plus three parent rectangles and two identical via moves. All child devices and signal routes are unchanged. Fresh extraction39135318667 passed native conductor ownership, exact R/value and per-point/mutual-C conservation and13 raw fault controls. It contains116611R and77471C; equal counts alone do not imply equal parasitic values. The new composition and static resistance comparison preserve the original checkers. Electrical waveform acceptance remains open.
+
+
+## Static resistance result and compact topology proof
+
+Composition39136227539 passed original native reparse, six composition faults and two physical endpoint faults. The DC return solver measured E1145.55999885→4.89422435ohm and E1155.57383303→4.90805853ohm (~12% lower); all other tails did not worsen beyond numerical roundoff. These values are static metal resistance, not operating current or waveform acceptance.
+
+Both compact and wire model hashes changed. Independent cloud comparison39137222470 proved every1674 device's ordered terminal topology and parameters equivalent under a bijective11-internal-node rename, with all162 public names fixed. Public port ordering also changed. Files are NOT byte-identical. Actual missing-device, changedNx and wrong-terminal models were rejected. The full transient uses the exact candidate header and newly bound physical probes; no old positional pin ordering is assumed. Original34ns/256bits/all604HBT512MOS/signal/interface/device gates and actual leaf-select fault remain unchanged. This still does not establish fullPHY acceptance.
