@@ -7,7 +7,7 @@ from collections import Counter
 from decimal import Decimal
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
-import build_cdr_hybrid_v2_native_models as models
+import build_cdr_parallel_v3_native_models as models
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-cdr-retimed-parallel-v3-binding'
 TOP='nssoc_cdr_pd484_parallel_tail_v2';MODEL='nssoc_cdr_pd484_parallel_compact_v2'
@@ -49,6 +49,7 @@ def build(native_text,devices,geometry,tech,ports_expected):
     node_map={n:n if n in ports else 'n_'+n.removeprefix('$')for d in devices for n in d['terminals'].values()}
     assert len(node_map)==len({n.lower()for n in node_map.values()})
     bindings=[];out=['* Native PD484 compact model; metal RC and substrate spreading not included.','.subckt '+MODEL+' '+' '.join(ports)]
+    mos_widths=Counter()
     for d in devices:
         kind=d['model'];order=models.NATIVE_ORDER[kind];line=native[d['native_id']];g=geom[d['native_id']]
         assert g['model']==kind and g['parameters']==d['parameters']
@@ -63,6 +64,7 @@ def build(native_text,devices,geometry,tech,ports_expected):
             value=models.number(params[k])/Decimal(10)**exponent
             assert geometry_readback_matches(value,v),(d['native_id'],k,value,v)
             canonical[k]=value
+        if kind=='sg13_lv_nmos':mos_widths[canonical['W']]+=1
         model_device=dict(d,parameters=canonical)
         sim={k.lower():v for k,v in models.model_params(model_device,tech).items()}
         if kind=='npn13G2':assert canonical['Nx']==int(canonical['Nx'])and 1<=int(canonical['Nx'])<=10 and models.number(sim['we'])==Decimal('0.07e-6')and models.number(sim['le'])==Decimal('0.9e-6')
@@ -70,8 +72,9 @@ def build(native_text,devices,geometry,tech,ports_expected):
         model='npn13g2'if kind=='npn13G2'else kind;name=f'XD{d["native_id"]:04d}'
         row=dict(instance=name,native_id=d['native_id'],model=model,native_model=kind,native_terminal_order=order,compact_model_order=models.MODEL_ORDER[kind],native_nodes=d['terminals'],compact_nodes=nets,parameters=sim,native_parameters={k:str(v)for k,v in canonical.items()})
         out.append(' '.join([name,*nets,model,*[k+'='+v for k,v in sim.items()]]));bindings.append(row)
+    assert mos_widths=={Decimal(8):8,Decimal(32):2,Decimal(36):32,Decimal(64):4},mos_widths
     assert sum(len(d['native_nodes'])for d in bindings)==1394
-    return '\n'.join(out+['.ends '+MODEL,'']),dict(native_ports=ports,devices=bindings,node_map=node_map,census=CENSUS)
+    return '\n'.join(out+['.ends '+MODEL,'']),dict(native_ports=ports,devices=bindings,node_map=node_map,census=CENSUS,native_mos_width_census_um={format(w,'f'):n for w,n in mos_widths.items()})
 
 def verify(text,binding):
     rows=models.statements(text);assert rows[0]==['.subckt',MODEL,*binding['native_ports']]and rows[-1]==['.ends',MODEL]

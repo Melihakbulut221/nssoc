@@ -4,7 +4,7 @@
       "baseline_path": "scripts/cloud_cdr_retimed_hybrid_v2_binding.py",
       "baseline_sha256": "708c2b9f42bb53a36cad7ef191cb4de1a947053e696026c3494ed0a51dc291c7",
       "candidate_path": "scripts/cloud_cdr_retimed_parallel_v3_binding.py",
-      "candidate_sha256": "36e64b65aef6082f9ab88020ecc496b1586404db96939e2d9212737039747cba",
+      "candidate_sha256": "602fa65b656dac50763e1502731f34951d2309c378c395111871259dbe634a9a",
       "edits": [
         {
           "before": "PD420",
@@ -39,6 +39,31 @@
         {
           "before": "npn13G2=100,sg13_lv_nmos=22,rppd=102,cap_cmim=11,ptap1=185",
           "after": "npn13G2=116,sg13_lv_nmos=46,rppd=102,cap_cmim=11,ptap1=209",
+          "count": 1
+        },
+        {
+          "before": "import build_cdr_hybrid_v2_native_models as models",
+          "after": "import build_cdr_parallel_v3_native_models as models",
+          "count": 1
+        },
+        {
+          "before": "    for d in devices:\n        kind=d['model'];order=models.NATIVE_ORDER[kind]",
+          "after": "    mos_widths=Counter()\n    for d in devices:\n        kind=d['model'];order=models.NATIVE_ORDER[kind]",
+          "count": 1
+        },
+        {
+          "before": "        model_device=dict(d,parameters=canonical)",
+          "after": "        if kind=='sg13_lv_nmos':mos_widths[canonical['W']]+=1\n        model_device=dict(d,parameters=canonical)",
+          "count": 1
+        },
+        {
+          "before": "    assert sum(len(d['native_nodes'])for d in bindings)==1394",
+          "after": "    assert mos_widths=={Decimal(8):8,Decimal(32):2,Decimal(36):32,Decimal(64):4},mos_widths\n    assert sum(len(d['native_nodes'])for d in bindings)==1394",
+          "count": 1
+        },
+        {
+          "before": "devices=bindings,node_map=node_map,census=CENSUS)",
+          "after": "devices=bindings,node_map=node_map,census=CENSUS,native_mos_width_census_um={format(w,'f'):n for w,n in mos_widths.items()})",
           "count": 1
         }
       ]
@@ -92,6 +117,19 @@
         {
           "before": "original_devices=420",
           "after": "original_devices=484",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/build_cdr_hybrid_v2_native_models.py",
+      "baseline_sha256": "ce7f65aed70d4a9fb85f9b6401dc89841654aa47bda8b69c05e1985f4e165bcb",
+      "candidate_path": "scripts/build_cdr_parallel_v3_native_models.py",
+      "candidate_sha256": "959f47bc142f0c413e83b6a992d3ad15b2f2a5fec2559527106534537be3e632",
+      "edits": [
+        {
+          "before": "(Decimal(8),Decimal(32),Decimal(64))",
+          "after": "(Decimal(8),Decimal(32),Decimal(36),Decimal(64))",
           "count": 1
         }
       ]
