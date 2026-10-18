@@ -91,7 +91,12 @@ def bind_native(text,contract,planes):
         sampler=bias in ('ira','irb','irc','ird')
         assert len(found)==(8 if sampler else 1 if bias.startswith('ibs')else 2)
         by_drain={}
-        for name in found:by_drain.setdefault(native_nodes[name[4:]]['D'],[]).append(name)
+        for name in found:
+            drain=native_nodes[name[4:]]['D']
+            # Only new sampler four-way tails replace one old device.
+            # Existing XOR devices share a drain but retain INDIVIDUAL gates.
+            key=drain if sampler else drain+':'+name
+            by_drain.setdefault(key,[]).append(name)
         assert len(by_drain)==(1 if bias.startswith('ibs')else 2)
         for drain,names in by_drain.items():
             assert len(names)==(4 if sampler else 1)
