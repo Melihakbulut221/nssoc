@@ -1,0 +1,79 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_parallel_drive_v8.py",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_local_order_v9.py",
+      "baseline_sha256": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
+      "candidate_sha256": "eb46f83b54d06aca33d32cc7116cf945814a15e6a8b8656001d970d7d06fd94a",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_parallel_drive_layout_v8",
+          "after": "nssoc_rx_sampler_local_order_layout_v9",
+          "count": 1
+        },
+        {
+          "before": "    previous_right = 0.0\n    for index, row in enumerate(rows):\n",
+          "after": "    # Physical placement only: retain all37 original primitive rows/parameters.\n    # Exact native widths determine locations, avoiding uniform shape scaling.\n    geometry = {}\n    for row in rows:\n        if row[\"kind\"] == \"hbt\":\n            cell = pc(\"npn13G2\", {\"Nx\": row[\"nx\"]})\n        else:\n            params = {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"}\n            if row[\"kind\"] == \"nmos\": params[\"ng\"] = 1\n            cell = pc(\"nmos\" if row[\"kind\"] == \"nmos\" else \"rppd\", params)\n        geometry[row[\"name\"]] = cell.dbbox()\n    original_rows = list(rows)\n    byname = {r[\"name\"]: r for r in rows}\n    assert len(byname) == len(rows) == 37\n    def spans(order):\n        points = {}; right = 0.\n        for index, name in enumerate(order):\n            row = byname[name]; box = geometry[name]\n            x = math.ceil(max(20. + index * 20, right + 18 - box.left) / .005) * .005\n            right = x + box.right\n            for net in set(row[\"nets\"]):\n                if net not in (\"AVDD\", \"AVSS\", \"SUB\", \"IREF\"):\n                    points.setdefault(net, []).append(x + box.center().x)\n        for net in set(PORTS) & points.keys(): points[net].append(0.)\n        return {net: max(v)-min(v) for net,v in points.items()}\n    def cost(order):\n        values = spans(order)\n        return sum(v * (3 if n in (\"M_MP\", \"M_MN\", \"MP\", \"MN\", \"QP\", \"QN\") else 2 if n in (\"CLKP\", \"CLKN\", \"DP\", \"DN\", \"LP\", \"LN\") else 1) for n,v in values.items())\n    baseline = [r[\"name\"] for r in rows]; order = list(baseline)\n    history = [cost(order)]\n    for iteration in range(100):\n        before = cost(order); best = list(order); best_cost = before\n        for i in range(len(order)):\n            for j in range(i+1,len(order)):\n                trial = list(order); trial[i],trial[j] = trial[j],trial[i]\n                for candidate in (trial, order[:i]+list(reversed(order[i:j+1]))+order[j+1:]):\n                    value = cost(candidate)\n                    if value < before-1e-6 and (value,tuple(candidate)) < (best_cost,tuple(best)):\n                        best,best_cost = candidate,value\n        if best == order: break\n        order = best; history.append(best_cost)\n    assert sorted(order)==sorted(baseline) and cost(order)<cost(baseline)\n    rows = [byname[n] for n in order]\n    assert sorted(rows,key=lambda r:r[\"name\"]) == sorted(original_rows,key=lambda r:r[\"name\"])\n    placement_plan = dict(original_order=baseline,candidate_order=order,\n        weighted_span_cost_before=cost(baseline),weighted_span_cost_after=cost(order),\n        original_signal_spans_um=spans(baseline),candidate_signal_spans_um=spans(order),\n        strictly_decreasing_costs=history,unchanged_primitive_rows=True,\n        caveat=\"Native primitive-center span planning only; actual DRC/LVS, fresh parent RC and full original loaded gates remain mandatory.\")\n    assert all(a>b for a,b in zip(history,history[1:]))\n    previous_right = 0.0\n    for index, row in enumerate(rows):\n",
+          "count": 1
+        },
+        {
+          "before": "instances=records, routes=routes, vias=vias, output_shunts=output_shunts,",
+          "after": "instances=records, routes=routes, vias=vias, output_shunts=output_shunts, placement_plan=placement_plan,",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_parallel_drive_v8.py",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_local_order_v9.py",
+      "baseline_sha256": "7bbc87ff97738ce2757000eb5fc9125d5f94da00bad3bb5a053452f955599cd5",
+      "candidate_sha256": "08df56b2f45c82efd558ce5165eea9829e5d0cfc5086ea2502f4d78bfbe08388",
+      "edits": [
+        {
+          "before": "from make_pcie_sampler_parallel_drive_v8 import",
+          "after": "from make_pcie_sampler_local_order_v9 import",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_parallel_physical.py",
+      "candidate_path": "scripts/cloud_cdr_sampler_local_order_physical.py",
+      "baseline_sha256": "e55522ecf84f63bfbbd4e89512f24d386214b399839c349d15e0023dadef87eb",
+      "candidate_sha256": "7746b7add0f28c72519a9c1d42349f42065502c7858b67bc240ea6ccaa27bc2d",
+      "edits": [
+        {
+          "before": "cloud-cdr-sampler-parallel-physical",
+          "after": "cloud-cdr-sampler-local-order-physical",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_parallel_drive_v8.py",
+          "after": "make_pcie_sampler_local_order_v9.py",
+          "count": 3
+        },
+        {
+          "before": "check_pcie_sampler_parallel_drive_v8.py",
+          "after": "check_pcie_sampler_local_order_v9.py",
+          "count": 2
+        },
+        {
+          "before": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
+          "after": "eb46f83b54d06aca33d32cc7116cf945814a15e6a8b8656001d970d7d06fd94a",
+          "count": 1
+        },
+        {
+          "before": "scripts/check_cdr_sampler_parallel_physical_sources.py",
+          "after": "scripts/check_cdr_sampler_local_order_sources.py",
+          "count": 2
+        },
+        {
+          "before": "scripts/cdr-sampler-parallel-physical-delta.json",
+          "after": "scripts/cdr-sampler-local-order-source-delta.json",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Actual native primitive reordering only. Original transistor/passive parameters, circuit, route widths, via arrays, finite taps, original560DRC/deep-flat54LVS/fourteen faults unchanged. Whole parent electrical acceptance not claimed."
+}
