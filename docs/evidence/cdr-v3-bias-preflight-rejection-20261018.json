@@ -1,0 +1,84 @@
+{
+  "run": 39088317707,
+  "source_head": "319e7b0f002bad9c51243905f826ffca97d2999b",
+  "status": "FAILED_BEFORE_NATIVE_SIMULATION",
+  "native_waveforms_started": false,
+  "log_job": 117559520739,
+  "log_sha256": "0fdd0334ea98f4d3c4fdb6d716a8da6168524d6859a1f75c5430269cbbb5a1e5",
+  "reason": "SPICE PWL continuation plus tokens treated as numeric pairs; assertion rejected before restoring native model or invoking simulator.",
+  "cases": {
+    "clock145-nominal_early": {
+      "summary_asset": 652179081,
+      "summary_sha256": "23def6067f14ba27b04ef466968b6051564e5eecf9a1adfea0f1ab910bf69d18",
+      "parts_asset": 652179150,
+      "parts_sha256": "c9898b720419ff12f45fd7954592893b747ecc0d65c2a2e13c4ddbd0a5467f72",
+      "report": {
+        "status": "FAIL_OR_ERROR",
+        "source_head": "319e7b0f002bad9c51243905f826ffca97d2999b",
+        "case": "nominal_early",
+        "accepted": false,
+        "full_phy_accepted": false,
+        "cdr_accepted": false,
+        "qualified_pex": false,
+        "closed_loop": false,
+        "scope": "Actual PD394 complete native MIM-aware wire model:122HBT102rppd11MIM159contacts9979R7761C. External8GHz clock; original256bits and fixed phase/device gates. Added150fF at actual sampler data-pair collectors,50fF at external XOR outputs. No macro-port ideal alias, internal regenerated data or recovered clock. Native per-terminal voltages and actual VI collector currents. Requires full-loop/PVT/timestep/RF/body qualification.",
+        "data_offset_s": -1.875e-11,
+        "corner": "nominal",
+        "boundary_experiment": {
+          "profile": "clock145",
+          "parameters": {
+            "clock_cm_v": 1.45,
+            "select_bias_a": 0.001
+          },
+          "physical_bias_generator_integrated": false,
+          "scope": "Only external clock common mode and/or select reference current varies; actual GDS, all9979R7761C394devices, bits, edge times and original engineering gates unchanged. Diagnostic, not original-boundary acceptance."
+        },
+        "source_change_controls": {
+          "status": "PASS_DECLARED_BOUNDARY_EDITS_ONLY_ORIGINAL_MODEL_BITS_TIMES_AND_GATES_RETAINED",
+          "base_sha256": "aeeff63b92d5ccb55847af6045e7f318211c64175946fb6aa03e15fbd0835bff",
+          "candidate_sha256": "31bb11575a69a2b2fbf8aa8a1b02100000f52ee04b521ca309883b9514e86efc",
+          "boundary_helper_sha256": "bc151a51b4d376bb7fcbfc032f2e7fe1bea1f597bb63fab681002dd06bfaa3e5"
+        },
+        "error": "AssertionError()",
+        "outputs": {}
+      }
+    },
+    "select500-nominal_early": {
+      "summary_asset": 652179060,
+      "summary_sha256": "f6868686dd346e1d31b6cf06deb828f389fc93ae4cf1c76836a5ad0570badb91",
+      "parts_asset": 652179140,
+      "parts_sha256": "84aa746fd3e9006601473af5e3c10f3ad60672b663257fcf4bdd8ca38fa9ab01",
+      "report": {
+        "status": "FAIL_OR_ERROR",
+        "source_head": "319e7b0f002bad9c51243905f826ffca97d2999b",
+        "case": "nominal_early",
+        "accepted": false,
+        "full_phy_accepted": false,
+        "cdr_accepted": false,
+        "qualified_pex": false,
+        "closed_loop": false,
+        "scope": "Actual PD394 complete native MIM-aware wire model:122HBT102rppd11MIM159contacts9979R7761C. External8GHz clock; original256bits and fixed phase/device gates. Added150fF at actual sampler data-pair collectors,50fF at external XOR outputs. No macro-port ideal alias, internal regenerated data or recovered clock. Native per-terminal voltages and actual VI collector currents. Requires full-loop/PVT/timestep/RF/body qualification.",
+        "data_offset_s": -1.875e-11,
+        "corner": "nominal",
+        "boundary_experiment": {
+          "profile": "select500",
+          "parameters": {
+            "clock_cm_v": 1.29,
+            "select_bias_a": 0.0005
+          },
+          "physical_bias_generator_integrated": false,
+          "scope": "Only external clock common mode and/or select reference current varies; actual GDS, all9979R7761C394devices, bits, edge times and original engineering gates unchanged. Diagnostic, not original-boundary acceptance."
+        },
+        "source_change_controls": {
+          "status": "PASS_DECLARED_BOUNDARY_EDITS_ONLY_ORIGINAL_MODEL_BITS_TIMES_AND_GATES_RETAINED",
+          "base_sha256": "aeeff63b92d5ccb55847af6045e7f318211c64175946fb6aa03e15fbd0835bff",
+          "candidate_sha256": "31bb11575a69a2b2fbf8aa8a1b02100000f52ee04b521ca309883b9514e86efc",
+          "boundary_helper_sha256": "bc151a51b4d376bb7fcbfc032f2e7fe1bea1f597bb63fab681002dd06bfaa3e5"
+        },
+        "error": "AssertionError()",
+        "outputs": {}
+      }
+    }
+  },
+  "fix": "Strip only start-of-line SPICE continuation markers; retain signed numbers and exponents. Preserve multiline PWL formatting. Run all12positive/fournegative clock controls before launching any native matrix job."
+}

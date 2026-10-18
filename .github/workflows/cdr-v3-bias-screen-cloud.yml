@@ -25,6 +25,13 @@ jobs:
         run: |
           python3 -m py_compile scripts/cloud_cdr_v3_bias_screen.py scripts/cdr_v3_boundary_experiment.py scripts/check_cdr_v3_bias_screen.py
           python3 scripts/check_cdr_v3_bias_screen.py
+          python3 -m pip install numpy==2.3.3
+          python3 - <<'PYCODE'
+          import sys
+          sys.path.insert(0,'scripts')
+          from cdr_v3_boundary_experiment import controls
+          print(controls())
+          PYCODE
   native-current:
     needs: syntax-controls
     runs-on: ubuntu-24.04

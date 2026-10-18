@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Declared external-boundary sensitivities; no intrinsic or wire model change."""
 from decimal import Decimal
+import re
 import cloud_cdr_pd_vi as original
 PROFILES={
     'clock145':dict(clock_cm_v=1.45,select_bias_a=.001),
@@ -11,7 +12,7 @@ PROFILES={
 }
 def tokens(text):
     assert text.startswith('PWL(')and text.endswith(')')
-    rows=text[4:-1].split();assert len(rows)%2==0
+    rows=re.sub(r'(?m)^\s*\+\s*','',text[4:-1]).split();assert len(rows)%2==0
     return list(zip(rows[::2],rows[1::2],strict=True))
 def verify_clock(before,after,scale,cm):
     a,b=tokens(before),tokens(after);assert len(a)==len(b)
@@ -25,7 +26,7 @@ def clock(scale,positive,stopped,profile):
     cm=PROFILES[profile]['clock_cm_v'];before=original.clock(scale,positive,stopped)
     shift=(Decimal(str(cm))-Decimal('1.29'))*Decimal(str(scale))
     rows=[(t,str(Decimal(v)+(shift if Decimal(t)>0 else Decimal(0))))for t,v in tokens(before)]
-    after='PWL('+' '.join(t+' '+v for t,v in rows)+')'
+    after='PWL(\n+ '+'\n+ '.join(t+' '+v for t,v in rows)+')'
     verify_clock(before,after,scale,cm);return after
 def bias(b,profile):
     assert b in ('ira','irb','irc','ird','irx','iry','ibda','ibdc','ibs0','ibs1')
