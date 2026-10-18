@@ -29,6 +29,33 @@ def main():
             # Full source remains in output archive. Explicitly identify bounded previews.
             limit=800 if a.case=='tx' else 250
             r['reports'][n]=dict(sha256=sha(f),line_count=len(lines),head=lines[:limit],tail=lines[-100:]if len(lines)>limit else [],preview_truncated=len(lines)>limit)
+        if a.case=='tx':
+            layout=json.loads((out/'source/layout/result.json').read_text());segments=[]
+            def rect(raw):
+                x=list(map(float,re.findall(r'-?\d+(?:\.\d+)?',raw)));assert len(x)==4;return x
+            for wire in layout['signal_routes']:
+                net=wire['net'];x=wire['x_um'];y0,y1=wire['y_um'];w=wire['width_um']/2
+                segments.append(dict(net=net,layer='TopMetal1',box=[x-w,min(y0,y1)-w,x+w,max(y0,y1)+w],kind='trunk'))
+                for endpoint,y in zip(wire['endpoints'],wire['y_um'],strict=True):
+                    tag,pin=endpoint.split('.');b=rect(layout['placements'][tag]['ports'][pin]);px=(b[0]+b[2])/2;py=(b[1]+b[3])/2;assert abs(py-y)<1e-8
+                    segments.append(dict(net=net,layer='TopMetal2',box=[min(px,x)-w,y-w,max(px,x)+w,y+w],kind=endpoint))
+            overlaps=[]
+            for i,left in enumerate(segments):
+                for right in segments[i+1:]:
+                    if left['net']==right['net']or left['layer']!=right['layer']:continue
+                    aa=left['box'];bb=right['box'];intersection=[max(aa[0],bb[0]),max(aa[1],bb[1]),min(aa[2],bb[2]),min(aa[3],bb[3])]
+                    if intersection[0]<intersection[2]and intersection[1]<intersection[3]:overlaps.append(dict(left=left,right=right,intersection_um=intersection))
+            r['parent_signal_conductor_overlaps']=overlaps
+            r['overlap_scope']='Exact generator metadata rectangles; excludes vias, supply and child polygons. Native unsimplified LVS remains authoritative.'
+            assert overlaps,'No positive-area parent signal overlap; investigate native LVS independently'
+        else:
+            lines=(out/'source'/selected[0]).read_text().splitlines();blocks=[];start=0
+            for i,line in enumerate(lines):
+                if line.startswith('Net:'):
+                    if i>start:blocks.append(lines[start:i])
+                    start=i
+            blocks.append(lines[start:])
+            r['antenna_violation_sections']=[b for b in blocks if any('VIOLAT' in x.upper() for x in b)]
         assert all(sha(out/'source'/n)==original['outputs'][n]for n in selected)
         r['status']='COMPLETE_IMMUTABLE_NATIVE_REPORT_REVIEW_NOT_ACCEPTANCE'
     except BaseException as e:r.update(status='FAIL_REVIEW',error=repr(e));raise
