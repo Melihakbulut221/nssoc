@@ -1,3 +1,15 @@
+## Cloud continuation: fresh via-rich native graph, model binding and RC (2026-10-18)
+
+All work remains cloud-only. Local project directory verified empty; no local CAD or simulation runs. Preserve healthy cloud jobs and all failed evidence. Source edits use GitHub API in RAM; do not restore local archives/checkout.
+
+- Full484-device via-rich parent39163291382 passed560-category DRC with0markers and unsimplified deep/flatLVS MATCH plus original faults. Receipt cdr-via-rich-v7-parent-physical-pass-20261018.json.
+- Native planes39163773591 passed158planes,1394terminals,51nets and19faults. Receipt cdr-retimed-via-rich-v7-planes-pass-20261018.json.
+- Native graph39163941646 at368903a3ecfcfcf424d8df3782e117576135a356 passed111actual conductor components and946physical/logical anchors. Receipt cdr-retimed-via-rich-v7-wire-inputs-pass-20261018.json preserves complete report/output hashes. Physical-only evidence does not establish electrical closure.
+- This commit adds independent hosted workflows cdr-retimed-via-rich-v7-binding-cloud.yml and cdr-retimed-via-rich-v7-rc-cloud.yml. Their exact deltas change only provenance/path/top/model identities versus strapped-v6, retaining all original12binding/13raw-RC corruption controls, native counts, parameters and tolerances. Inspect actual reports, then save immutable receipts. Fresh MIM-aware capture/audit/composition and original loaded waves still required; never reuse prior geometry RC values.
+- Mainchip39161219456 remains in native routing/STA and TX39158584151 remains in nominal/negative full-wave simulations as last checked. Do not duplicate. Original timing, bit and voltage requirements remain unchanged.
+
+Full serial recovered-clock Gen3x4 PHY, accepted mainchip route/final timing and production signoff remain open.
+
 ## Cloud continuation: via-rich sampler physical closure and PD484 integration (2026-10-18)
 
 **Cloud-only remains mandatory.** Do not create a local checkout, native CAD run, archive or wave file. Latest authoritative source is the remote branch; failed runs and exact source pins remain in GitHub Releases.
