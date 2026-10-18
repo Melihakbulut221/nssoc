@@ -2,7 +2,7 @@
 
 Use [docs/cloud-phy-timing-continuation-20261018.md](docs/cloud-phy-timing-continuation-20261018.md) first for the current PHY/routing/timing checkpoint. Older entries below are historical; their live-job statuses must not trigger restarts. Revalidate exact Actions handles and current branch evidence through GitHub API. Work is cloud-only, local checkout empty. Preserve the full serial Gen3 x4/PCIe-Ethernet mainchip/final timing goal and original acceptance gates.
 
-Latest advancing candidate: `nssoc_cdr_pd394_left_outputs_v1`. Physical39100869702, planes39101130061, wire inputs39101294329, binding39101439659 and wire RC39101439688 have passed their scoped checks. Fresh MIM-aware capture is next; raw audit/composition/original loaded gates still mandatory. Mainchip route39084569446 and nominal TX39087664998 remain existing live handles at this update. Neither full PHY nor final timing is accepted.
+Latest advancing candidate: `nssoc_cdr_pd394_left_outputs_v1`. Physical39100869702, planes39101130061, wire inputs39101294329, binding39101439659 and wire RC39101439688 have passed their scoped checks. Fresh MIM-aware capture is next; raw audit/composition/original loaded gates still mandatory. Mainchip route39084569446 remains the existing live handle. TX39087664998 is terminal rejected; see the authoritative continuation for new CDR loaded tests and TX diagnosis. Neither full PHY nor final timing is accepted.
 
 ---
 

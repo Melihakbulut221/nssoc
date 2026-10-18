@@ -1,3 +1,13 @@
+# Current cloud continuation — full left-output CDR model under original loaded tests
+
+Cloud only; local workspace remains empty. Complete fresh chain: physical39100869702; planes39101130061; wire inputs39101294329; binding39101439659; wire RC39101439688; MIM capture39101632182; strict raw audit39101758700; composition39101898339 at89c27652c1802afd7336278872964cc418edbb9a. Composition394devices9946R7771C,11 intrinsic MIM models,15 fault controls. Full receipts retained. Physical top `nssoc_cdr_pd394_left_outputs_v1`, model `nssoc_cdr_pd394_left_mim_wire_v1`.
+
+`cdr-left-mim-loaded-cloud` is being launched for original early/late256-bit34.25ns cases plus clock-stop/VI-bias-off faults. `cdr-left-loaded-source-delta.json` binds exact adaptation of the original v3 evaluator; clocks, loads, all original acceptance gates remain unchanged. Inspect terminal cases before any geometry/device change; preserve failures. Physical/model checks alone are not electrical or PHY acceptance. If nominal passes, full-loop/PVT/timestep and RF/body qualification remain required.
+
+TX return64 nominal39087664998 is now TERMINAL REJECTED:227/768 wrong signs,253 below100mV,28HBT voltage failures, no MOS failures, native return0/no numerical diagnostics. Lower16/8 and CMOS interfaces pass but level4/final fail. New receipt `tx-return64-full-wire-rejection-20261018.json`. `tx-return64-path-review-cloud` is being launched to reproduce original gates and localize the actual failed terminals; do not reuse old8-device IDs/review. Swapped-leaf negative capture remains correctly rejected. Mainchip detailed route39084569446 is still live; preserve it. After successful native route, dispatch prepared RCX/STA only with that exact route's summary/parts hashes. Full PHY, routed mainchip/final timing remain OPEN.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — complete left-output PD394 physical pass
 
 The full parent39100869702 at9d8c12b19e23dd0e0ebf2e52ce6187b7d52969a2 passed native560-category DRC,394-device deep/flat LVS and five original reference/geometry faults. All four actual left-output samplers are assembled with84 local supply risers. Full receipt `cdr-retimed-left-parent-physical-pass-20261018.json`; new top `nssoc_cdr_pd394_left_outputs_v1`. Fresh actual158-plane/51-net binding is being launched in `cdr-retimed-left-planes-cloud`; after it succeeds, regenerate wire inputs, model binding, raw RC/MIM audit/composition and original loaded gates. This is not electrical acceptance.
