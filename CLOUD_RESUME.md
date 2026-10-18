@@ -24,3 +24,7 @@ Next mainchip action: select actual data-path loads from all saved native report
 Full serial Gen3x4 PHY, full routed PHY/mainchip integration and final setup/hold remain OPEN.
 
 This commit launches onehot-load-prepare-cloud.yml: top50 measured weak data outputs in exact round4 slow native report, positive buf16 isolation, original145038cell geometry fixed, native legalization/equation proof and actual inversion control. This is preparation only; route/RC/allcorner setup+hold still required. Original source chain is revalidated before mutation.
+
+Actual PD420 loaded39119999874 completed: nominal early/late device gates nowPASS(all100HBT/22MOS), but sampling failed and earlyphase wrong. Both actual fault controls detected. Pinned `cdr-hybrid-v2-full-wire-rejection-20261018.json`. This commit launches cdr-hybrid-v2-path-review-cloud.yml to reproduce failures and quantify original distributed inputs/loads without resimulation.
+
+50buffer preparation39120628517 actually placed and legalized50buf16, preserved145038original cell geometry and native pin/NDR/PG topology; stopped because Yosys was absent for logic controls. Failed evidence preserved; no timing or logic acceptance. This commit launches onehot-load-logic-cloud.yml to restore the SAME candidate (no regeneration), install original pinned OSS CAD suite2026-08-04, prove native controls+actual netlist and inversion. Next route only after proof.
