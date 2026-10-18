@@ -1,3 +1,9 @@
+# Latest: hybrid38 DRC passed; native LVS diagnosis required
+
+Hybrid local-tap run39105690621 passed all560 DRC categories with zero markers and rejected actual offgrid fault. Deep LVS extracted exactly38 devices on both sides but NoMatch, so physical acceptance is not granted. Full report preserved `cdr-hybrid-local-taps-lvs-failure-20261018.json`. This commit launches `cdr-hybrid-lvs-diagnosis-cloud.yml` to restore and read exact native extracted/reference/deck/cross-reference files on a hosted runner. Inspect that result before a geometry/source repair; do not rerun unchanged geometry or weaken LVS. Mainchip39084569446 is now terminal cancelled; inspect actual logs and failed publication before preparing resumable routing. All work cloud-only; goal remains OPEN.
+
+Earlier checkpoint follows:
+
 # Latest: hybrid physical LU.b failure retained; local body contacts added
 
 Hybrid physical39105291849 failed two LU.b markers after successful real generation. Native source2f46efe4f1d24c6eb130d43fc2e75e5e266dc71c and full failure are in `cdr-hybrid-tail-initial-latchup-failure-20261018.json`. The successor adds3 real local2x2um substrate contacts alongside the MOS midpoints, retaining8 original contacts. Actual circuit now12HBT+3MOS+12R+11taps=38. Fresh560DRC/unsimplified deep-flat38LVS/twelvefaults/LEF required. This commit's workflow push starts the successor; inspect its exact result, no pass assumed. Cloud-only. Full PHY and final timing OPEN.
