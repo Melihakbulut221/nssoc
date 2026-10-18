@@ -1,3 +1,11 @@
+# Current: first native XOR repair rejected at cold VBE; Nx4 candidate launched
+
+Actual run39114172170/source49e4d2ef84c589702b4d284c28891142f5db5055: nominal/hot data and all bounds pass; cold0/768wrong and223.93mV margin but12dataHBT VBE up to1.002794775V exceed unchanged1V limit. Both actual outputswap and biasoff detected. Full5case reports and original failures retained in `docs/evidence/cdr-xor-hybrid-v1-cold-rejection-20261018.json`; no physical/fullparent acceptance.
+
+This commit adds separate XOR hybrid_tail_v2: exactly twelve data HBT fingers3 to4; threeMOSreference/tails,selectors,load/body topology and external stimulus unchanged. Five native cases re-run with same original data/device limits plus settling. Inspect real results; no tolerance/phase/RC changes. New circuit still needs actualnative physicalgeometry,LVS/freshRC/fullparentcomposition. Retimed sampler input attenuation remains. Existing mainchip39111280543 andTX39112087217 are live; preserve them. Cloud-only, fullserialPHY/routedchipacceptance/finalsetuphold OPEN. Goalturn PROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual XOR native reference/tail repair launched in cloud
 
 New `cdr-xor-hybrid-tail-v1-cloud.yml` screens only three native replacements in `cdr_xor_core_hybrid_tail_v1.spice`: original reference XD0009 becomes 8um/.3um LVNMOS; two original Nx8 tails XD0049/XD0053 become64um/.3um LVNMOS. All16 remaining data/selector HBTs,8loads and27finite body contacts retained; separate SUB/AVSS. Source-delta guard and three actual corruptions required. Five native cases: nominal/hot-low/cold-high/outputswap/biasoff; original500uA bias,256two-input PRBS bits/8GT/s,original sampling phases and100mV plus37.5pssettling, allHBT/MOS bounds including1V VBE. This is an isolated component feasibility screen, not existing fullparent/nativephysicalmodel; preserve actual failure and do not relabel parent acceptance.
