@@ -1,0 +1,146 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_strapped_v10.py",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_via_rich_v11.py",
+      "baseline_sha256": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
+      "candidate_sha256": "7a48825ee5b3c83856d86437fc536c892973d2a6fda7cf19ee1a70572dc3cd7a",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_strapped_layout_v10",
+          "after": "nssoc_rx_sampler_via_rich_layout_v11",
+          "count": 1
+        },
+        {
+          "before": "def escape(pin, metal, net, lane, label, cols, offset=0):",
+          "after": "def escape(pin, metal, net, lane, label, cols, offset=0, wide=False):",
+          "count": 1
+        },
+        {
+          "before": "        via(metal, 3, x, y, net, cols)\n        rect(3, lane - .2, y - .2, x + .2, y + .2)\n        via(3, 4, lane, y, net)",
+          "after": "        # Only the native32um load resistor pins receive the broad local access.\n        # Every other primitive pin/escape keeps its original conductor width.\n        half=1.0 if wide else .2\n        via(metal, 3, x, y, net, 16 if wide else cols)\n        rect(3, lane - half, y - half, x + half, y + half)\n        via(3, 4, lane, y, net, 8)",
+          "count": 1
+        },
+        {
+          "before": "escape_lane_um=lane, escape_y_um=y))",
+          "after": "escape_lane_um=lane, escape_y_um=y, escape_width_um=2*half, pin_via_columns=16 if wide else cols, lane_via_columns=8))",
+          "count": 1
+        },
+        {
+          "before": "1 if row[\"width_um\"] == 1 else 4)",
+          "after": "1 if row[\"width_um\"] == 1 else 4, wide=row[\"width_um\"]==32)",
+          "count": 1
+        },
+        {
+          "before": "via(4, 5, x, y, net, 2)",
+          "after": "via(4, 5, x, y, net, 8)",
+          "count": 1
+        },
+        {
+          "before": "vn_columns=2,vn_rows=1,vt1_columns=1,vt1_rows=1",
+          "after": "vn_columns=8,vn_rows=1,vt1_columns=2,vt1_rows=1",
+          "count": 1
+        },
+        {
+          "before": "vn_columns=2, vn_rows=1, vt1_columns=1, vt1_rows=1,",
+          "after": "vn_columns=8, vn_rows=1, vt1_columns=2, vt1_rows=1,",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_strapped_v10.py",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_via_rich_v11.py",
+      "baseline_sha256": "06f2711cf358c3573e79b694aac7b97640247358b2217672e0d56480ab4e69b9",
+      "candidate_sha256": "c3cb4162c8ddb1c9972c037f4999e7419eb1c519d7182de0f08fa649be16f4e3",
+      "edits": [
+        {
+          "before": "make_pcie_sampler_strapped_v10",
+          "after": "make_pcie_sampler_via_rich_v11",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_sampler_strapped_geometry.py",
+      "candidate_path": "scripts/check_cdr_sampler_via_rich_geometry.py",
+      "baseline_sha256": "3684bad11925d31af1de3c28e3dbd92f84e636814bd1f0361a64f11591882e2c",
+      "candidate_sha256": "a86e022df125f1e5ca4daed97c42aa68d10a251bab63543f047fa00f1ef785eb",
+      "edits": [
+        {
+          "before": "tops=['nssoc_rx_sampler_local_order_layout_v9','nssoc_rx_sampler_strapped_layout_v10']",
+          "after": "tops=['nssoc_rx_sampler_strapped_layout_v10','nssoc_rx_sampler_via_rich_layout_v11']",
+          "count": 1
+        },
+        {
+          "before": "    check_records(*all_data)",
+          "after": "    check_records(*all_data)\n    assert all_data[0]['instances']==all_data[1]['instances'], 'Native primitive placement changed'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_strapped_physical.py",
+      "candidate_path": "scripts/cloud_cdr_sampler_via_rich_physical.py",
+      "baseline_sha256": "0d0c6e35062af840ce1981c20f697cc5304b9d10a2aec25d19b6584096ce06a5",
+      "candidate_sha256": "69599f72e95aaf04dc97111eba453f0efb81c8c62c99fe346f791127c6017d2e",
+      "edits": [
+        {
+          "before": "cloud-cdr-sampler-strapped-physical",
+          "after": "cloud-cdr-sampler-via-rich-physical",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_strapped_v10.py",
+          "after": "make_pcie_sampler_via_rich_v11.py",
+          "count": 3
+        },
+        {
+          "before": "check_pcie_sampler_strapped_v10.py",
+          "after": "check_pcie_sampler_via_rich_v11.py",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_strapped_geometry.py",
+          "after": "check_cdr_sampler_via_rich_geometry.py",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_strapped_sources.py",
+          "after": "check_cdr_sampler_via_rich_sources.py",
+          "count": 2
+        },
+        {
+          "before": "cdr-sampler-strapped-source-delta.json",
+          "after": "cdr-sampler-via-rich-source-delta.json",
+          "count": 1
+        },
+        {
+          "before": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
+          "after": "7a48825ee5b3c83856d86437fc536c892973d2a6fda7cf19ee1a70572dc3cd7a",
+          "count": 1
+        },
+        {
+          "before": "cdr-sampler-local-order-physical-pass-20261018.json",
+          "after": "cdr-sampler-strapped-physical-pass-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "'cdr-sampler-local-order-physical'",
+          "after": "'cdr-sampler-strapped-physical'",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_local_order_layout_v9.gds",
+          "after": "nssoc_rx_sampler_strapped_layout_v10.gds",
+          "count": 1
+        },
+        {
+          "before": "Actual TopMetal1 vertical straps and TopMetal2 horizontal straps on every sampler net; native primitives and original physical gates unchanged.",
+          "after": "Parallel via arrays at local access and strap junctions;32um load-resistor Metal3 escapes widened to2um. All native primitive drawings/positions, devices and original physical gates unchanged.",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
