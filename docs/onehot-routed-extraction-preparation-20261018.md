@@ -1,0 +1,11 @@
+# Exact routed onehot extraction preparation — 2026-10-18
+
+The native route39084569446 is still live. This adds its downstream controller and a cloud preflight only; it does not restart routing or claim extracted timing results.
+
+The controller requires the exact terminal successful route run/source/attempt/workflow plus user-supplied immutable summary/parts hashes. It restores and revalidates placement, CTS repair, targeted buffer repair, zero-overflow GRT and all nine RTL/protocol/native-boot source proofs. Route DRC/antenna/critical-pin counts must be zero. The actual routed ODB/DEF/netlist hashes must match the source receipt and final connectivity state. The old113791-instance route extractor is not used.
+
+The new LibreLane flow uses native RCX and STAPostPNR with one worker. Nominal rules SHAffda02d57a6ecb39b02268be9511d89ef072911f17bd2dcd095f3f3cbeb5a905 is checked. Fresh SPEF integrity is mandatory. Standalone OpenSTA is required: the native script's OpenROAD path, which can estimate placement/global-route parasitics, is explicitly rejected. The original5percent derate and20/4/8/8ns propagated clocks are guarded before measurement. Every slow/typical/fast corner must produce finite setup/hold/count metrics and original reports. Failing timing values are retained for repair, never promoted to final signoff.
+
+Pinned upstream references: [STA implementation](https://raw.githubusercontent.com/librelane/librelane/3.0.5/librelane/steps/openroad.py), [native corner script](https://raw.githubusercontent.com/librelane/librelane/3.0.5/librelane/scripts/openroad/sta/corner.tcl), [RCX script](https://raw.githubusercontent.com/librelane/librelane/3.0.5/librelane/scripts/openroad/rcx.tcl). The AppImage SHA remains the existing bootstrap pin. Cloud preflight checks the bundled native transform plus three malformed-script controls. It is not a substitute for actually running RCX/STA.
+
+After the route passes, bind its two publication hashes and dispatch `replay-onehot-routed-extraction-cloud.yml`. A native preflight pass alone does not qualify this yet-unexecuted controller. Nominal RC across three cell corners is not foundry-qualified RCmin/RCmax, SI, complete SRAM characterization, post-route logic/LVS or full serial PHY/production approval. These remain explicit obligations.
