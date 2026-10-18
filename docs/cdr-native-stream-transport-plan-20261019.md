@@ -1,0 +1,7 @@
+# CDR native waveform transport repair
+
+The via-rich full loaded run39165464508 nominal_early did not pass. Its native solver returned0 but reported approaching the max-data limit at10471.504MB versus10687.379MB. The original gate rejects these diagnostics; no electrical acceptance is inferred. The unchanged full run and all failures remain in Releases.
+
+The ngspice manual documents immediate rawfile storage instead of retaining transient plots in memory (section12.8): https://ngspice.sourceforge.io/docs/ngspice-45-manual.pdf . The project already implements native binary raw streaming in scripts/cloud_tx_stream.py. The new CDR transport control reuses that pinned implementation, moving identical tran parameters to .tran and using run wave.raw. Every save/alter/model/source/solver statement is retained.
+
+Before full-window use, cloud_cdr_via_rich_stream_control.py compares original ASCII and streamed binary output for the same entire484-device13186R10127C model over3ns. All1107 vectors and every unshifted native row must match the existing decimal-format transport bounds. Original solver readbacks,116HBT initialization flags and zero-source operating point remain checked; changed samples and omitted vectors must be rejected. The shortened interval validates transport only, not CDR electrical behavior. Full34.25ns/256bit loaded runs with original timestep, loads and all acceptance gates are still required.
