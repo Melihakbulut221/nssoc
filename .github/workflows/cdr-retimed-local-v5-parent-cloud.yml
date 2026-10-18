@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-retimed-local-v5-parent-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-retimed-local-v5-parent-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-retimed-local-v5-parent-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-physical:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile exact physical methods in the cloud
+        run: python3 -m py_compile scripts/cloud_cdr_retimed_local_v5_parent.py scripts/generate_cdr_retimed_local_v5_parent.py scripts/cdr_retimed_local_v5_parent_plan.py hw/soc/flow/check_pcie_cdr_retimed_local_v5_parent.py
+      - name: Compile independent actual drawing comparison
+        run: python3 -m py_compile scripts/check_cdr_xor_power_access_geometry.py scripts/check_cdr_sampler_local_order_geometry.py
+      - name: Verify exact hybrid parent source and original binding controls
+        run: python3 scripts/check_cdr_local_v5_parent_sources.py
+      - name: Restore pinned native CAD runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Verify full hybridPD484 and corrupt its actual TopMetal2 boundary conductors
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_retimed_local_v5_parent.py
+      - name: Preserve physical results and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-cdr-retimed-local-v5-parent
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="cdr-retimed-local-v5-parent-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','cdr-retimed-local-v5-parent',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-retimed-local-v5-parent-${{ github.run_id }}
+          path: hw/soc/out/cloud-cdr-retimed-local-v5-parent/
+          retention-days: 30
+
+# Verify per-bus displacement: sorted nets before AVSS extend while later buses translate.
+# AVSS uses unchanged32um vertical end caps; the fixed zero-origin gate remains enforced.
+
+# Preserve actual AVSS riser endpoints; omit two measured redundant shunt stacks one micron away.
+
+# Shift measured samplerM_T3/S_T0/S_RP M6 spans2um; retain native endpoints and all physical gates.
+
+# Restrict changed5um shunt search to sampler; preserve original4um decisions for every other leaf.
+
+# Bind per-leaf search radius to current placed record, never the prior planning-loop variable.
+
+# Native LVS proved supply/output shorts: route every samplerM6 span against actual child and overlay M6 with1.645um clearance.
+
+# Compare actual native MOS Metal1 drawing, not a pin annotation bounding box.
+
+# Force DTrans floating-point displacement; preserve full source pin containment and native M1 conservation.

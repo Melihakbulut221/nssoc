@@ -31,3 +31,17 @@ only the eight distributed taps' nearest-safe search to plus/minus20um. All
 nine local MOS taps keep their original search and primitive-clearance checks;
 all taps retain the original2um M4-column separation, area/perimeter and
 finite reference devices. The failed source and logs remain archived.
+
+
+Corrected leaf39143630895 passed560DRC categories, unsimplified deep/flat54LVS,
+all14 actual faults and LEF readback. Weighted planning cost fell15665.54 to
+11095.76; QP span1029.285→302.31um andQN1079.685→377.615um. Some emitter/
+clock nets became longer, so only fresh complete RC/transients can determine
+whether the tradeoff is useful. Native cell sizes/circuit remain unchanged.
+
+Fullparent candidate replaces all four sampler masters, retains repaired XOR
+and all other seven child types, and compares every one of54 native primitive
+drawings and reference independently. Original484-device DRC/LVS and five
+faults remain. The supply-riser code retains every actual clearance/endpoint
+check; the previous placement-specific three shifted-device names are replaced
+by the same1.645um geometric clearance check for every current sampler riser.

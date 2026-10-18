@@ -1,0 +1,120 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cdr_retimed_power_v4_parent_plan.py",
+      "candidate_path": "scripts/cdr_retimed_local_v5_parent_plan.py",
+      "baseline_sha256": "7e2868275f7e17a6c1efeb0af38581ed81189d9f05d86b0fc95e9ec88d45dd48",
+      "candidate_sha256": "1e4d5528d185d8ce9db606ea1986daadc42de0942e12acec023222397c1cc760",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_parallel_drive_layout_v8",
+          "after": "nssoc_rx_sampler_local_order_layout_v9",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_parallel_v3_risers.py",
+      "candidate_path": "scripts/generate_cdr_retimed_local_v5_risers.py",
+      "baseline_sha256": "2c85ef942582f4d9367507f5c36375ba037606b1ec449d4ed165e035167bd264",
+      "candidate_sha256": "9e41e0dd516fafc24d907f79fb91dc56ce5c5fda7fa446d95bfeec47f1fd4dc6",
+      "edits": [
+        {
+          "before": "assert {(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}<=shifted",
+          "after": "# Original collision names belonged to the old primitive order. Require\n    # the same geometric clearance for EVERY current sampler supply riser.\n    assert all(r['actual_m6_clearance_checked'] and r['clearance_um']==1.645 for r in risers if r['kind']=='sampler')",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_power_v4_parent.py",
+      "candidate_path": "scripts/generate_cdr_retimed_local_v5_parent.py",
+      "baseline_sha256": "f1188592e0a5c62396fc534d97318d0d3fb363191c2a61e31ef4cbb0e6ea2027",
+      "candidate_sha256": "9b5ee52b6cdc6cb2cb1026b7c31412fd070a43e397be65da0051cca24f5c33ec",
+      "edits": [
+        {
+          "before": "import generate_cdr_retimed_parallel_v3_risers as original",
+          "after": "import generate_cdr_retimed_local_v5_risers as original",
+          "count": 1
+        },
+        {
+          "before": "cdr_retimed_power_v4_parent_plan",
+          "after": "cdr_retimed_local_v5_parent_plan",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_power_v4_parent_sources",
+          "after": "check_cdr_local_v5_parent_sources",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd484_power_access_v4",
+          "after": "nssoc_cdr_pd484_local_order_v5",
+          "count": 1
+        },
+        {
+          "before": "2c85ef942582f4d9367507f5c36375ba037606b1ec449d4ed165e035167bd264",
+          "after": "9e41e0dd516fafc24d907f79fb91dc56ce5c5fda7fa446d95bfeec47f1fd4dc6",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_power_v4_parent.py",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_local_v5_parent.py",
+      "baseline_sha256": "8a4088003d73b0062cfab42236594cff31fc37386c7c3aef8e7b993d482eb756",
+      "candidate_sha256": "c1c9110f9d742a0b814e062a9541f383f23bb364f9dd5e68c5e3cf6e38e1ff6c",
+      "edits": [
+        {
+          "before": "nssoc_cdr_pd484_power_access_v4",
+          "after": "nssoc_cdr_pd484_local_order_v5",
+          "count": 1
+        },
+        {
+          "before": "cdr_retimed_power_v4_parent",
+          "after": "cdr_retimed_local_v5_parent",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_power_v4_parent.py",
+      "candidate_path": "scripts/cloud_cdr_retimed_local_v5_parent.py",
+      "baseline_sha256": "348e33216fd571aa6f986e4772e1c13723f2df80d1ca005c94959544037f9d63",
+      "candidate_sha256": "4d8e7bbc73f59b979ebe1cdda9e682d41e49b0b977498692410f39abd0f9f442",
+      "edits": [
+        {
+          "before": "cdr_retimed_power_v4_parent",
+          "after": "cdr_retimed_local_v5_parent",
+          "count": 6
+        },
+        {
+          "before": "cdr-retimed-power-v4-parent",
+          "after": "cdr-retimed-local-v5-parent",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_power_v4_parent_sources",
+          "after": "check_cdr_local_v5_parent_sources",
+          "count": 2
+        },
+        {
+          "before": "cdr-power-v4-parent-source-delta",
+          "after": "cdr-local-v5-parent-source-delta",
+          "count": 1
+        },
+        {
+          "before": "ROOT/'scripts/check_cdr_xor_power_access_geometry.py']",
+          "after": "ROOT/'scripts/check_cdr_xor_power_access_geometry.py',ROOT/'scripts/check_cdr_sampler_local_order_geometry.py',ROOT/'scripts/generate_cdr_retimed_local_v5_risers.py']",
+          "count": 1
+        },
+        {
+          "before": "        for name,cmd in [('generation',",
+          "after": "        sampler_pin=json.loads((ROOT/'docs/evidence/cdr-retimed-power-v4-parent-children-20261018.json').read_text())['children']['sampler']\n        sampler_top='nssoc_rx_sampler_parallel_drive_layout_v8';selected=['layout/result.json','layout/schematic.cir','layout/'+sampler_top+'.gds','layout/'+sampler_top+'.lef']\n        original_sampler,sampler_proof=reports.restore_report(sampler_pin['group'],sampler_pin['run'],sampler_pin['summary_sha256'],sampler_pin['parts_sha256'],OUT/'sampler-baseline',selected)\n        assert original_sampler['source_head']==sampler_pin['source_head'] and original_sampler['status']==sampler_pin['status'] and original_sampler['sources_unchanged']\n        proofpath=OUT/'sampler-primitive-conservation.json'\n        with (OUT/'sampler-primitive-conservation.log').open('w')as log:\n            rc=subprocess.call([str(app),'python',str(ROOT/'scripts/check_cdr_sampler_local_order_geometry.py'),'--baseline',str(OUT/'sampler-baseline/layout'),'--candidate',str(OUT/'inputs/sampler/layout'),'--output',str(proofpath)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)\n        if rc:print((OUT/'sampler-primitive-conservation.log').read_text()[-12000:],flush=True)\n        assert rc==0,'Independent sampler primitive drawing comparison failed'\n        sampler_geometry=json.loads(proofpath.read_text());assert sampler_geometry['status']=='PASS_ALL54_NATIVE_PRIMITIVE_DRAWINGS_REFERENCE_AND_THREE_CONTROLS'\n        r['sampler_geometry_conservation']=sampler_geometry;r['sampler_baseline_source']=sampler_proof;save()\n        for name,cmd in [('generation',",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Only sampler master/placement and source provenance change. Historical named shifted-riser expectation replaced by same actual1.645um clearance check on every sampler riser; all physical extraction and endpoint gates retained."
+}
