@@ -61,3 +61,7 @@ Live jobs revalidated at this receipt commit:
   }
 ]
 Full goal remains OPEN; all work/cloud artifacts only.
+
+## New physical-tail candidate v7 to inspect
+
+This commit launches cdr-sampler-parallel-cloud.yml: each128um tail becomes four actual32um/L.3/ng1 native NMOS with identical D/G/S/B, retaining totalwidth128um perstage and reference8um. Counts16HBT/9MOS/12rppd; all HBT/resistor/reference maps exactly compared against passedv6. No electrical equivalence assumption. Original stagecurrentgate uses actual sum of four native currents and all individualMOSvoltagechecks remain. Allfiveoriginal1pF/fullwindow/data/device/fault/source/modeldomain gates rerun. Candidate rx_sampler_parallel_v7.spice and cloud_cdr_sampler_parallel.py. After actualpass, implementreal54devicegeometry incl17taps with fullnativeDRC/LVS/LEF/faults and newparentRC; oldgeometrynotvalid. Mainchip39121691046 and TX39112087217 verifiedin_progress before this change, preserve.

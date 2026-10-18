@@ -1,0 +1,28 @@
+{
+  "baseline_path": "hw/soc/analog/pcie/rx_sampler_balanced_v6.spice",
+  "baseline_sha256": "3f36d9a3d081e3b336572ff51c20e642f3f78a225a327cf70aac62f085cfcece",
+  "candidate_path": "hw/soc/analog/pcie/rx_sampler_parallel_v7.spice",
+  "candidate_sha256": "1e946451daaacfeaed25bed134248b5049a787e0f07c9f9fa7c33f438b9585d3",
+  "edits": [
+    {
+      "before": "balanced_v6",
+      "after": "parallel_v7",
+      "count": 8
+    },
+    {
+      "before": "16HBT/3native",
+      "after": "16HBT/9native",
+      "count": 1
+    },
+    {
+      "before": "tails128um/0.3um; fixed16:1 width ratio.",
+      "after": "tails4x32um/0.3um per stage; total16:1 width ratio.",
+      "count": 1
+    },
+    {
+      "before": "XT te ref avss sub sg13_lv_nmos w=128u l=.3u ng=1",
+      "after": "XT0 te ref avss sub sg13_lv_nmos w=32u l=.3u ng=1\nXT1 te ref avss sub sg13_lv_nmos w=32u l=.3u ng=1\nXT2 te ref avss sub sg13_lv_nmos w=32u l=.3u ng=1\nXT3 te ref avss sub sg13_lv_nmos w=32u l=.3u ng=1",
+      "count": 2
+    }
+  ]
+}

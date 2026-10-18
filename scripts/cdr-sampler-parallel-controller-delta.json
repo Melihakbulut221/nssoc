@@ -1,0 +1,78 @@
+{
+  "baseline_path": "scripts/cloud_cdr_sampler_balanced.py",
+  "baseline_sha256": "9db9d5252428726e8c50059f5c0d92ba3d3d5ebccbf6056b3d453c224cc0c4a7",
+  "candidate_path": "scripts/cloud_cdr_sampler_parallel.py",
+  "candidate_sha256": "13d643610233efc0d8dd12bb8cc80e5f5074bb0ac7e01ae7a0309aac735d35fe",
+  "edits": [
+    {
+      "before": "rx_sampler_balanced_v6.spice",
+      "after": "rx_sampler_parallel_v7.spice",
+      "count": 1
+    },
+    {
+      "before": "3f36d9a3d081e3b336572ff51c20e642f3f78a225a327cf70aac62f085cfcece",
+      "after": "1e946451daaacfeaed25bed134248b5049a787e0f07c9f9fa7c33f438b9585d3",
+      "count": 1
+    },
+    {
+      "before": "balanced_v6",
+      "after": "parallel_v7",
+      "count": 5
+    },
+    {
+      "before": "else'128u'",
+      "after": "else'32u'",
+      "count": 1
+    },
+    {
+      "before": "len(mos)==3",
+      "after": "len(mos)==9",
+      "count": 1
+    },
+    {
+      "before": "{'xsamp.xref','xsamp.xm.xt','xsamp.xs.xt'}",
+      "after": "{'xsamp.xref'}|{'xsamp.x'+stage+'.xt'+str(i)for stage in ('m','s')for i in range(4)}",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-sampler-balanced-",
+      "after": "cloud-cdr-sampler-parallel-",
+      "count": 1
+    },
+    {
+      "before": "Candidate16HBT/3nativeLVNMOS",
+      "after": "Candidate16HBT/9nativeLVNMOS",
+      "count": 1
+    },
+    {
+      "before": "from check_cdr_sampler_balanced_source import check",
+      "after": "from check_cdr_sampler_parallel_source import check",
+      "count": 1
+    },
+    {
+      "before": "        model=lib/'models/models/sg13g2_hbt_mod.lib'",
+      "after": "        from cloud_cdr_sampler_balanced import bind as parent_bind\n        prior=ROOT/'hw/soc/analog/pcie/rx_sampler_balanced_v6.spice'\n        assert sha(prior)=='3f36d9a3d081e3b336572ff51c20e642f3f78a225a327cf70aac62f085cfcece'\n        parent_devices,parent_resistors,parent_mos=parent_bind(prior.read_text(),output)\n        assert devices==parent_devices and resistors==parent_resistors and mos['xsamp.xref']==parent_mos['xsamp.xref']\n        for stage in ('m','s'):\n            original=parent_mos['xsamp.x'+stage+'.xt']\n            assert original['parameters']==dict(w='128u',l='.3u',ng='1')\n            legs=[mos['xsamp.x'+stage+'.xt'+str(i)]for i in range(4)]\n            assert all(leg['nodes']==original['nodes']and leg['parameters']==dict(w='32u',l='.3u',ng='1')for leg in legs)\n        r['parallel_tail_topology']=dict(reference_unchanged=True,hbt_and_resistors_unchanged=True,tail_count=8,width_per_tail_um=32,total_width_per_stage_um=128,terminal_mapping_exact=True,electrical_equivalence_assumed=False)\n        model=lib/'models/models/sg13g2_hbt_mod.lib'",
+      "count": 1
+    },
+    {
+      "before": "tails={name:mos_checks[name]['minimum_active_drain_current_a']for name in ('xsamp.xm.xt','xsamp.xs.xt')}",
+      "after": "tails={'xsamp.x'+stage+'.xt':float(sum(d['@n.xsamp.x'+stage+'.xt'+str(i)+'.nsg13_lv_nmos[ids]']for i in range(4))[active].min())for stage in ('m','s')}",
+      "count": 1
+    },
+    {
+      "before": "Slave-only native emitter bleed",
+      "after": "Each original128um tail is four actual separate32um native NMOS, common D/G/S/B, with actual stage current summed from native vectors. Slave-only native emitter bleed",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_BALANCED_BLEED_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "after": "PASS_NATIVE_PARALLEL_TAIL_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "REJECTED_NATIVE_BALANCED_BLEED_STRESS",
+      "after": "REJECTED_NATIVE_PARALLEL_TAIL_STRESS",
+      "count": 1
+    }
+  ]
+}

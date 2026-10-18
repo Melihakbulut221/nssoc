@@ -107,3 +107,9 @@ Measured values (SI; full exact records retained):
 ```
 
 This is only a standalone external-clock1pF stress screen using the pinned nominalHBT model at three temperature/supply/RES/MOS conditions. It is not full process/mismatch/jitter or qualified thermal/PEX/closed-loop compliance. It does not repair the already rejected actual PD420 parent. Next implement actual physical16HBT/3MOS/12rppd circuit or explicitly revalidate a folded/parallel tail topology, nativeDRC/LVS/LEF/RC and parent reconnection. Preserve every original loaded parent/PHY gate. The128um singlefinger tails do not fit the old<70um generator height; physical fingers/body contacts must be real, extracted and matched.
+
+## Physically realizable tail partition v7
+
+The existing actual PCell generator uses a device row below70um and local body contacts for32um strips. A single128um finger cannot reuse that geometry. V7 explicitly replaces each128um tail by four independent32um/L0.3um/ng1 native NMOS with common D/G/S/B nodes:16HBT/9MOS/12rppd, unchanged total128um tail width/stage and original8um reference. No multiplicity macro or ideal substitute. A topology check binds every new terminal to the exact passingv6 circuit and proves all HBT/resistor/reference records unchanged. Electrical equivalence is NOT assumed; all five full-window1pF screens rerun before physical adoption. The original stage minimum tail-current gate applies to the actual sum of all four native drain-current waveforms; every individual NMOS voltage check remains mandatory. Native current vectors for all nine MOS are retained.
+
+After electrical passage, actual native PCell generation needs16HBT/9MOS/12rppd plus17finite body contacts (8original distributed +9local MOS). Native deep/flat54device LVS, all560DRC rules, real fault controls, LEF and fresh extracted parasitics remain mandatory. Do not reuse v6 acceptance or the old38device layout as proof of v7.
