@@ -1,3 +1,11 @@
+# Current: actual XOR57 DRC rejects two LU.b markers; XOR59 geometry repair launched
+
+Correctedphysical39115444772/source658148915c7a44c8850aa81e8365d84ea28591b8 generated826x224.63um GDS, but560ruleDRC reports2LU.b markers. Fullfailure preserved `cdr-xor-hybrid-v2-physical-latchup-rejection-20261018.json`. Actual pinnedupstreamrule requires every N+active point within20um ofPWell tie;64umMOS centralcontact leavesends uncovered. Newphysicalv3 redistributes each64umtail to contacts16/48um alongactive;8umreference retainscentralcontact. Total5extra contacts+27original=32contacts,59totaldevices; unchanged transistors/data/select/load topology. Fresh actualGDS/DRC/LVS/sevenfaults required, no pass assumed. Nativeelectrical v2 remains54devicecomponent; new59physicalbody network and parasitics must enternewphysicalmodel, not reusedidealmodel.
+
+Mainchipround4 39115222502 source85c2a70f1d625fab59bc7266aa5ef6894e3aa575 andTX39112087217 remainlive. Preservehandles. Select18+XOR59 replacements would make fullparent420devices(100HBT22MOS102R11MIM185taps), requiring fullnativeintegration/newRC/loadeddata gates. Retimedinputattenuation/fullserialPHY/finaltiming remainOPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: correct XOR physical workflow dispatch; saved round4 is live
 
 XORphysical39114864609 terminal failed beforegeneration because copiedmatrix passedselect instead ofxor. Preserve exact failure `cdr-xor-hybrid-physical-dispatch-rejection-20261018.json`; this is NOT a DRC/LVS result. Correct matrix and compilation paths, and explicitly bind actual physical crossed-input/output mapping to SHA-pinned native tested wrapper. Workflow change launches freshactualphysicalcandidate; inspect exactnewhandle. Componentv2 native5cases remainpassed, source/acceptance unchanged.
