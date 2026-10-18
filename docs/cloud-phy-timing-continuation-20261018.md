@@ -1,3 +1,11 @@
+# Current: hybrid406 native binding and wire RC passed; MIM-aware capture launched
+
+Binding39108479550 and RC39108479590, bothsourcea24f1b6123ab93138825e79323952887aadbce3d, completed actual native methods. Exact406-device binding and12 controls passed, including LV MOS native S/G/D/B to compact D/G/S/B, W/L/diffusion/rfmode and explicit model hash. Whole fresh wire RC passed strict native raw R/C conservation and13 corruption controls. Receipts `cdr-retimed-hybrid-binding-pass-20261018.json` and `cdr-retimed-hybrid-rc-pass-20261018.json`. This commit launches `cdr-hybrid-mim-parent-rc-cloud.yml` restoring those immutable exact sources: original metal/vias unchanged, actual11MIM masks and788 points, native intrinsic identities and five controls. Inspect capture before raw MIM audit/composition and original loaded waveforms. Do not reuse left394 output counts or device IDs.
+
+Mainchip39107161430 remains existing live saved-route continuation. Full serial PHY, final routing and setup/hold OPEN. All work cloud-only; no local artifacts.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 actual conductor/terminal proof passed; native models and RC launched
 
 Wire-inputs39108045101/source84e2784a4cc63989ff244baea9ed9f8a3df96b76 verified actual406 devices1158 terminals,111 distinct wire components,788 physical points (763 metal terminals+25 public ports),395 intrinsic bodies. Fresh12 LV MOS native S/G/D/B and exact PCell drawing recovered successfully. Receipt `cdr-retimed-hybrid-wire-inputs-pass-20261018.json`. Substrate spreading is still not modeled; do not claim qualifiedPEX.
