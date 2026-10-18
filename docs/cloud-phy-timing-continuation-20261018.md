@@ -1,3 +1,13 @@
+# Current: hybrid406 loaded candidate rejected; six remaining HBT failures diagnosed next
+
+Loaded39109172338/source80520fa4ba8b1b18f89d566b728baa29cef06797 terminal: early/late native return0, no numerical diagnostics, sources unchanged. All12MOS voltage gates and8MOS tail-current gates pass. Remaining HBT failures6 (previous14): nativeIDs27,35,43,50,58,66. This reduces device violations but does not close electrical gates. Early sampler a/b/c/d wrong115/299/371/404 of765; late126/78/367/399. Early phase+.069355232V has wrong sign; late+.074482607V correct sign but data fails. Both actual clock-stop and VI-bias-off faults detected. Full immutable assets and metrics retained `cdr-hybrid-full-wire-rejection-20261018.json`.
+
+This commit launches `cdr-hybrid-path-review-cloud.yml` to restore exact failed captures in cloud, reproduce original gates, map new406 native terminal/wire losses and six failures with instantaneous worst-VCE voltages. No new waveform, fitted phase, RC scaling or old394 device IDs. Inspect diagnosis before actual next circuit repair.
+
+TX column-only native candidate39110049165/source5ac146781cf625dce9814630842ade3467e4e3f6 is live at last check; inspect native physical/geometry guards, do not assume pass. Mainchip39107161430 still live saved-route; preserve it. Full objective OPEN. Cloud-only, no local CAD/archive.
+
+Earlier checkpoint follows:
+
 # Current: TX column-only physical repair launched alongside existing native jobs
 
 CDR loaded39109172338 and mainchip saved-route39107161430 were verified live; preserve those exact jobs. Independent TX source review found actual low-macro height592.04um forbids old422um row pitch, while maxchild width353.985um plus300um channels fits700um columns. This commit launches `tx-v5-columns-assembly-cloud.yml`: preserve600um rows/31frozen native children/1674devices/719coreemitters/64umAVSS/selector mapping, move parent columns1000 to700um, regenerate actual metal. Expected60connections each300um shorter, total18000um; no electrical pass inferred. Full native560DRC/deep-flatLVS/fivephysicalfaults plus source-delta and new native placement/child-drawing guard required. Old return64 failure227/768 samples and28HBT gates remains retained. After physicalPASS require fresh whole RC/model and original loaded TX gates; no oldRC scaling/reuse.
