@@ -1,0 +1,93 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_stage_review.py",
+      "candidate_path": "scripts/cloud_tx_v5_return_repair_stage_review.py",
+      "baseline_sha256": "187c23b15affbe61472a38558d927cd9ee60f6c59088d34c17e63de52e26cd8a",
+      "candidate_sha256": "a4c42f95d81527dec284a6099d48377690c11cdd2f8e922b7d72eea4f315746d",
+      "edits": [
+        {
+          "before": "tx-v5-columns-stage-review",
+          "after": "tx-v5-return-repair-stage-review",
+          "count": 2
+        },
+        {
+          "before": "tx-v5-columns-native-full-wire-rejection",
+          "after": "tx-v5-return-repair-native-full-wire-rejection",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-columns-assembly",
+          "after": "cloud-tx-v5-return-repair-assembly",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_extrema_review.py",
+      "candidate_path": "scripts/cloud_tx_v5_return_repair_extrema_review.py",
+      "baseline_sha256": "efce0d095ec3f646cbb33af353ac943bb61e3d6f6ab7d1cfdb060329d0ca6aab",
+      "candidate_sha256": "1e161c7ef0d1b31d727b4c99aa54c5eced8cb655892d4d420014940dfa6bbc58",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-columns-extrema-review",
+          "after": "cloud-tx-v5-return-repair-extrema-review",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-columns-native-full-wire-rejection",
+          "after": "tx-v5-return-repair-native-full-wire-rejection",
+          "count": 1
+        },
+        {
+          "before": "cloud_tx_v5_columns_builder",
+          "after": "cloud_tx_v5_return_repair_builder",
+          "count": 2
+        },
+        {
+          "before": "json.loads((ROOT/'docs/evidence/tx-v5-columns-native-stage-diagnosis-20261018.json').read_text())['report']",
+          "after": "json.loads((ROOT/'hw/soc/out/cloud-tx-v5-return-repair-stage-review/result.json').read_text())",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-columns-wave-wire-nominal-none",
+          "after": "tx-v5-return-repair-wave-wire-nominal-none",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_return_review.py",
+      "candidate_path": "scripts/cloud_tx_v5_return_repair_return_review.py",
+      "baseline_sha256": "a9efbc3b24468656da5824f9c45558a3b46d302e2c249637346db2fe78d9f014",
+      "candidate_sha256": "2d3c9c1f90b022e342d81266fbf122792abfc97dbadfa97a705da4080a0bcd86",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-columns-return-review",
+          "after": "cloud-tx-v5-return-repair-return-review",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-columns-stage-review-input",
+          "after": "tx-v5-return-repair-stage-review-input",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-columns-assembly",
+          "after": "cloud-tx-v5-return-repair-assembly",
+          "count": 1
+        },
+        {
+          "before": "extrema=json.loads((ROOT/'docs/evidence/tx-v5-columns-native-extrema-20261018.json').read_text())",
+          "after": "extrema_path=ROOT/'hw/soc/out/cloud-tx-v5-return-repair-extrema-review/result.json'\n        extrema=dict(run=int(os.environ['GITHUB_RUN_ID']),summary_sha256=sha(extrema_path),report=json.loads(extrema_path.read_text()))",
+          "count": 1
+        },
+        {
+          "before": "run=39112087217",
+          "after": "run=39137607059",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
