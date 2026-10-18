@@ -1,3 +1,11 @@
+# Current cloud continuation — complete left-output PD394 physical pass
+
+The full parent39100869702 at9d8c12b19e23dd0e0ebf2e52ce6187b7d52969a2 passed native560-category DRC,394-device deep/flat LVS and five original reference/geometry faults. All four actual left-output samplers are assembled with84 local supply risers. Full receipt `cdr-retimed-left-parent-physical-pass-20261018.json`; new top `nssoc_cdr_pd394_left_outputs_v1`. Fresh actual158-plane/51-net binding is being launched in `cdr-retimed-left-planes-cloud`; after it succeeds, regenerate wire inputs, model binding, raw RC/MIM audit/composition and original loaded gates. This is not electrical acceptance.
+
+Both previous risers path diagnoses39100228873 are now preserved in `cdr-risers-path-review-pass-20261018.json`. Actual TX return64 swapped-leaf fault39087664998 completed and original bits rejected it; receipt `tx-return64-swapped-leaf-fault-20261018.json`. The nominal TX job and mainchip detailed route39084569446 remain live. Preserve their handles. Full PHY, routed all-corner timing, qualified RC and signoff remain open. Everything runs in cloud; local workspace empty.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — left-output sampler passed; full parent under test
 
 Cloud-only; local workspace remains empty. Leaf39100436556 at107da2e6dc973db54cb259db1e3301bd7a98bb98 passed native560-category DRC,35-device deep/flat LVS,LEF and ten faults. Receipt `cdr-sampler-left-v1-physical-pass-20261018.json`. New parent workflow `cdr-retimed-left-parent-cloud` restores all four actual new sampler leaves and regenerates complete394-device placement/routes plus original84 supply risers. See `cdr-left-parent-20261018.md`. First inspect that workflow result; if physical passes, rebuild fresh planes/binding/wire/MIM RC/composition before original loaded electrical gates. No electrical success is asserted.
