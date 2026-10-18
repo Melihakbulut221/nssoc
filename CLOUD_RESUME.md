@@ -164,3 +164,6 @@ PD484composition39132443095 at36a735880cb24251800c1bf0355dd43efcf346af PASSED ex
 
 
 Loaded39132645570 terminalFAIL beforeSPICE: XORtwo64umdevices alreadyshareaDnet, so bydraincountassumption failed. Fullfourcase receipts cdr-parallel484-loaded-tail-binding-rejection-20261018.json. FixaggregatesONLYnewfour36um samplerMOS; eacholdXOR/selectMOS remains individuallycheckedat0.5mA. Eightparallel-samplergroups+sixexistingindividualMOS monitors=14currentgates (12distinctphysicaldrainnets, NOT14distincttails). Newloadedworkflowstarts; alloriginalphase/data/devicechecks unchanged. Thiscorrects previouscheckpointwordingabout14physicalstages.
+
+
+TXnextdiagnostic launches tx-v5-columns-return-review-cloud: fromimmutableactual116611R graph, computeDCunit-injectioneffectiveAVSSresistance for allnativeHBT emitterpoints namedavss; validateKCL/energy/reciprocity andrankactualresistorlosscontributions. Pinfinal114/115 observed93mVterminalrise tosamephysicalmodels. DiagnosticDC only; noR/Cscaling,noSPICErerun,noactualcurrentguess,noacceptance. Useactualbranchfindings tochooseparent/localreturngeometryrepair.
