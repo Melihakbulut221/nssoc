@@ -1,3 +1,29 @@
+## Cloud continuation: proven driver sizing, fresh route, CDR wire diagnosis (2026-10-18)
+
+Local work remains prohibited by the user's latest instruction. The local project directory is empty. Use API edits in RAM, GitHub-hosted CAD/tests and permanent Releases; do not reconstruct a local checkout or native archives.
+
+### Mainchip
+
+- Native preparation **39160200022**, source `9eb5f112210e144d8d8b58b46725ea569913ebcf`, passed. Fifty original positive data buffers were resized; 146728 instances/net membership preserved; all other instances and PG/ports/NDR unchanged. Thirty-six targets legally changed orientation to match their new actual row. Native placement/check_placement, 102646-cell equation proof and actual inverted-driver rejection passed. Receipt `docs/evidence/onehot-resize-prepare-pass-20261018.json` contains immutable summary/parts hashes and full preparation proof.
+- Candidate ODB `3112f7db61f5f439f1827ac9a947c29b567086a0a1f4bb85bc8bd811ffa1626c`; netlist `51ed3101e6ce27b128c1fd55655334accd156535aae566b07f2795354b4b0a70`. All signal routes/guides/SPEF/metrics discarded. This is preparation, not LVS or timing closure.
+- Route **39160714386** failed before native routing because inherited exact propagated SDC was not restored. It launched no accepted route. Source `a9c9ecee024f996bac6979c5fc80fd6deabc79d5` now restores missing state views from the exact latest routed archive with SHA checks; no constraint replacement.
+- Corrected route **39161219456**, job117774772210, is live in the route/physical/STA step. Workflow `onehot-resize-route-cloud.yml`. The entire old boot/RTL/placement/logic/route provenance is revalidated, followed by exact sizing proof. It reruns global/detail routing, one actual saved antenna cycle, fresh nominal RC and all original cell corners with original20/4/8/8ns clocks and5%derating. Check actual engineering gates; green Actions is not signoff. Keep native checkpoints if hosted time expires; never restart a healthy live job.
+- Earlier failed preparation attempts39158947092(nestedAppImage),39159593744(path type),39159839767(target orientation invariant) remain retained. JSON tuple/list equality was corrected before the successful preparation.
+
+### TX
+
+- **39158584151** remains live: nominal and swap_leaf_select full native wire simulations. Controls passed. Preserve both jobs, original256bits/34ns/125psUI and all voltage/device thresholds. New fast-stage track isolation already passed native1674device deep/flatLVS and560categoryDRC; waveform acceptance remains unproven.
+
+### CDR
+
+- New read-only **39161087313**, source `8982630aeb5ee49d4ef751f7fb5ed6982859f1f4`, passed analytic linear-wire controls and reproduced the exact original failed native sampler/HBT results. Receipt `docs/evidence/cdr-strapped-v6-wire-bottleneck-20261018.json` binds all64 resistance evaluations.
+- Worst supply example external AVDD toXD0210 rppd_1: effective wireR31.667977ohm; rawR2408 (`P_avdd.n66` to `T210_rppd_1`)19.3317ohm contributes61.0%. Actual mean supply drop0.244292V. RawR2386 adds6.21653ohm.
+- Worst load-to-collector exampleXD0174→XD0052: effective wireR40.798657ohm; R163 (`T052_C` to `T174_rppd_2.n4`)19.1467ohm andR148 (`T174_rppd_2.n0` to `T174_rppd_2`)18.6069ohm contribute92.536% combined. The same repeated terminal pattern occurs on other samplers. Actual mean wire drop0.092463V.
+- These are exact two-terminal linear-wire DC sensitivities with other terminals floating, not actual operating currents or transient delay. Original electrical failures remain. Next: map these exact raw resistor/node names to native `.ext/.res.ext` coordinates, terminal anchors, via/metal geometry and technology resistance definitions before changing geometry. Do not scale/remove R or alter thresholds to pass.
+- The exact raw capture is39153832093, source6fd1eb9fa7ab7ff487355ec705d26258875890e9, receipt `cdr-strapped-v6-mim-parent-capture-pass-20261018.json`. Relevant outputs: `wire/rc03/pump_wires.ext`, `wire/rc03/pump_wires.res.ext`, `wire/anchors08.json`, `wire/rc03/wires.spice`, `ngspice-mim-tech/ihp-sg13g2-extract.tech`, `source/wire/native05/result.json`. Inspect only on a GitHub-hosted runner; retain byte hashes.
+
+Full serial Gen3x4 PHY, full mainchip routing/timing acceptance and production signoff remain open. Prior checkpoints below retain the complete physical/RC proof chain.
+
 ## Cloud-only continuation: native runtime launch correction, 2026-10-18
 
 - The local project directory remains empty; no native CAD or simulation process is running locally. Continue API-only source edits and GitHub-hosted execution. Do not restore a local checkout or native results.
