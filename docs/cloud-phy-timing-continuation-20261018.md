@@ -1,3 +1,13 @@
+# Current cloud continuation — native local supply risers under physical test
+
+Cloud only; local workspace empty. AVSS256 path diagnosis39097444345 reproduced both failed nominal captures,14 HBT failures and original gates. Full receipt `cdr-avss256-path-review-pass-20261018.json` preserves raw capture identities and detailed voltage measurements. Latest repair is actual local supply routing, documented in `cdr-supply-risers-20261018.md`.
+
+The `cdr-retimed-risers-parent-cloud` workflow is being launched. It adds native3.2um TopMetal1 risers to existing Metal4 supply escapes in14 leaves plus regenerated23 M7 supply shunts. Public pins/circuit394 devices remain. Check generation, full560-category DRC, deep/flat LVS and all original physical faults. Only after a physical pass rebuild planes/binding/raw MIM RC/composition and unchanged loaded tests. Do not promote earlier AVSS256 nominal failures or reuse their RC/native IDs.
+
+Mainchip route39084569446 and TX return64 waves39087664998 are still live; preserve those handles. Full serial PHY, routing and final setup/hold remain open.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — AVSS256 loaded rejection retained
 
 Cloud only. The local workspace remains empty; no native archive, scratch source or CAD process belongs on this computer.
