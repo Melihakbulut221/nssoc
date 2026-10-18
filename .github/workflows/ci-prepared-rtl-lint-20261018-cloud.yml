@@ -37,6 +37,7 @@ jobs:
           python3 -m venv hw/.venv
           hw/.venv/bin/pip install -r hw/requirements.txt
           make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+          make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
       - name: Run base and full lint plus actual asynchronous PCIe and Ethernet traffic
         env:
           GH_TOKEN: ${{ github.token }}

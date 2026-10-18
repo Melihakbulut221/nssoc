@@ -7,3 +7,7 @@ The base lint result from run 39089804846 has return code zero, unchanged source
 The focused hosted workflow reruns both base/full lint and the actual asynchronous PCIe/Ethernet joint CPU test with the pinned OSS CAD suite. Success requires the original two passing, zero failed, zero skipped integration tests and unchanged source/runtime checks. A dispatch is not proof of a pass; inspect the published result. This does not qualify serial PHY, layout, or timing.
 
 The compact PD394 native MIM capture 39092549964 independently completed with 9655 resistors, 7555 capacitors, eleven explicit intrinsic MIM devices, 111 wire components and 776 points. Its raw-wire and intrinsic identity audit is the next gate. The corrected geometry has not yet passed the original loaded waveforms.
+
+## First focused result and preparation follow-up
+
+Hosted run 39093269754 passed base lint and the actual asynchronous joint CPU/PCIe/Ethernet test. The added full lint profile failed before elaboration because the focused workflow prepared only the default base interface bundle. Its log identifies missing `hw/soc/gen/interfaces-full.bundle.json`. The workflow now additionally calls the existing `soc-interfaces-prepare SOC_INTERFACE_PROFILE=full` target. All three checks rerun on fresh outputs; no validator or source-warning acceptance changed. The failed report and archive are pinned in `ci-prepared-rtl-lint-first-20261018.json`.

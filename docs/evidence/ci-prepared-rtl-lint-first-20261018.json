@@ -1,0 +1,76 @@
+{
+  "run": 39093269754,
+  "source_head": "de827731830dd919dba41e730f4add89608e4070",
+  "summary_sha256": "df62110d422f7f9e24f22f56379ac7ab5df988b1c0004347f4bf4b5bf5d657f1",
+  "parts_sha256": "5873b6924006bd198f1af1148ae872e8fb8f11e524087e4323f495ed370b5066",
+  "report": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "de827731830dd919dba41e730f4add89608e4070",
+    "commands": [
+      {
+        "name": "lint-base",
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "scripts/check_soc_lint.py",
+          "--profile",
+          "base",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-ci-prepared-rtl-lint-20261018/lint-base"
+        ],
+        "returncode": 0,
+        "log_sha256": "15b8765554a664bcb6093901f637fe4d75a852a0e07f3a16884b412248f2c13e"
+      },
+      {
+        "name": "lint-full",
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "scripts/check_soc_lint.py",
+          "--profile",
+          "full",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-ci-prepared-rtl-lint-20261018/lint-full"
+        ],
+        "returncode": 1,
+        "log_sha256": "9beb55612726aa99acdfef40836627965eabdef6fd2231a85f08c4fe22b50ed4"
+      },
+      {
+        "name": "async-pcie-ethernet",
+        "argv": [
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "scripts/check_pcie_ethernet_soc.py",
+          "--out",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-ci-prepared-rtl-lint-20261018/joint",
+          "--iverilog-dir",
+          "/home/runner/work/_temp/oss-cad-suite/bin",
+          "--async-pcie"
+        ],
+        "returncode": 0,
+        "log_sha256": "26b6125b5a6277e4126211cbe2a41d0655d6875c88399cba1a54366a2a255657"
+      }
+    ],
+    "full_phy_accepted": false,
+    "physical_timing_accepted": false,
+    "error": "AssertionError()",
+    "outputs": {
+      "async-pcie-ethernet.log": "26b6125b5a6277e4126211cbe2a41d0655d6875c88399cba1a54366a2a255657",
+      "lint-full.log": "9beb55612726aa99acdfef40836627965eabdef6fd2231a85f08c4fe22b50ed4",
+      "lint-base.log": "15b8765554a664bcb6093901f637fe4d75a852a0e07f3a16884b412248f2c13e",
+      "joint/run.log": "3b4b22bbea3d883d43b02bd0385a336aeee4ef67541554da11b38581900c3c2a",
+      "joint/inputs.tar.gz": "7398431ce03f508b96320badc4cf5589ab565a9ceb96e0b9746b1e89308bdd4e",
+      "joint/rom.hex": "16e77150a5a261ecb7a4853c435219c95742b59d4f8c6e9ce26535e6fa2f39c5",
+      "joint/results.xml": "50b8b9daa0cbc86f202d58bdfe19e277570b0aa8ae5dd2b63cff8de9cef8882d",
+      "joint/result.json": "41fa78882fa1d89a86d3209b401cb91f8ff1cc89f3bab7e5c941c10356595412",
+      "lint-base/verilator.log": "acbe0136af9682fe079b7851c94025cf51a7440a8673de1edd9b72f48932ad61",
+      "lint-base/result.json": "74f744edd9f97f80974ec3af18f3f8e1f61adbfe1f86db7f73098fc974c2455e",
+      "joint/sim/cmds.f": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94",
+      "joint/sim/sim.vvp": "ccb85ff3e546a355923922ed7794b3a9cb7781c168cff6b1ec6c4bc663dda8db",
+      "joint/runtime/vvp": "8459b28b5839ea04ef57da64146f8151cf2e405cfef0e5350834985634d8edee",
+      "joint/runtime/iverilog": "e5c7365941b212324f22513d8b2f8e0404b10aab25cfe03600bb07a84c490090",
+      "lint-base/frozen-nettypes/guarded.v": "8c2a95ec556935ed8d4e6c51ea8bd7b02af02ac579cb52102e2bd3c316d42043",
+      "lint-base/frozen-nettypes/yosys.log": "3c3778f7c606bd4020ec2966b2a434eb486eb5dc1d9f3b627d3f8ec1c61e8402",
+      "lint-base/frozen-nettypes/read.ys": "0888b65a8ea8fc416a4898c03dd338413f4b9664b07f50ce858a662a44326df6",
+      "lint-base/frozen-nettypes/result.json": "67b06b56d965122a8b361ba152df9d1767aebee8494edf54c5905fd2d0f0b23a"
+    }
+  },
+  "failure": "Full lint profile not prepared: interfaces-full.bundle.json absent. Base lint and actual asynchronous joint CPU/PCIe/Ethernet test returned zero. Add explicit full-profile preparation; retain failed run."
+}
