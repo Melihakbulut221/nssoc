@@ -15,3 +15,9 @@ Native generation39095085264 rejected the first wide-rail geometry before physic
 ## Native physical result
 
 Corrected run39095310936 at4e54a64dfdc700cad7f27574f4f0438d983d00e6 passed560 DRC categories, deep/flat394-device LVS and the original five physical fault controls. All sixteen children retained their drawings and moved192um in X. Eighty intermacro signal route records translated identically; four earlier signal nets had the declared192um extension. Source graph and public pins are unchanged. The passing report/archive is pinned in `cdr-retimed-avss256-parent-physical-pass-20261018.json`. This is only the physical prerequisite for fresh extraction and original loaded evaluation.
+
+## Fresh native electrical model
+
+Planes39095575427 passed158 native planes,51 nets,1134 terminals and19 controls. Wire input binding39095714858 retained111 independent conductors and776 actual points. Native model binding39095906267 passed394 devices and8 controls. Fresh wire RC39095906254 passed9632R7544C and13 controls. MIM-aware capture39096104344 emitted9655R7555C and11 intrinsic MIM identities; strict audit39096272120 passed13 wire and9 MIM controls. Composition39096513384 passed15 malformed-model controls and retains394 devices, every raw R/C token and exactly11 intrinsic MIM models. These results use the new wide-rail geometry, not reused parasitic values. All complete or compact source-bound receipts are in `docs/evidence/cdr-*avss256*`.
+
+The loaded workflow now runs the original nominal early/late256-bit34.25ns scenarios and the actual clock-stop/VI-bias-off controls. Its source-delta preflight checks exact equivalence to the original v3 evaluator except new model/evidence names and observed element counts. No loaded pass is claimed by this launch.

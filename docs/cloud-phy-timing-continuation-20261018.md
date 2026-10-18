@@ -1,3 +1,15 @@
+# Current cloud continuation — AVSS256 fresh model ready for loaded tests
+
+All work remains in GitHub; local workspace is empty. Do not clone or restore archives locally. The full serial PHY, routed mainchip and final setup/hold goal remains active and incomplete.
+
+Actual AVSS256 physical39095310936 and fresh plane39095575427/wire-input39095714858 proofs passed. Binding39095906267 passed394 devices/8 controls. Wire RC39095906254 passed9632R7544C/13 controls. MIM capture39096104344 passed9655R7555C/11 native MIM identities; strict audit39096272120 passed22 controls. Composition**39096513384** at68e0b52e1f0ff3256bbf0327090d6e9d3ebdb752 passed15 controls and all raw wire tokens. New model `nssoc_cdr_pd394_avss256_mim_wire_v1`; physical top `nssoc_cdr_pd394_compact_avss256_v1`.
+
+The `cdr-avss256-mim-loaded-cloud` workflow is being launched with original early/late256bits34.25ns and clock-stop/VI-bias-off faults. Check terminal reports, all native warnings, sampler counts,122 HBT operating points, VI direction and source hashes. Do not infer success from workflow dispatch, physical passes or unchanged R/C counts. If nominal cases fail, diagnose exact raw waves before changing geometry; keep all prior failures. Original compact cases39093685328 remain rejected with14 failed HBTs, despite its successful physical and raw-RC chain.
+
+Existing mainchip DRT39084569446 and TX return64 waves39087664998 were still live at the last authoritative check. Continue the same handles. DRT needs native route/antenna/connectivity gates followed by fresh route logic/geometry/LVS and extracted all-corner STA. The old113791-instance RC extractor source38788529905 is not this141654-instance candidate and must not be reused. Original20/4/8/8ns clocks and5percent derate remain fixed. Current placement-estimated timing is not final closure.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — AVSS256 physical pass
 
 Cloud only: local workspace remains empty. Last meaningful progress is actual geometry modification and native physical proof, not full PHY closure.
