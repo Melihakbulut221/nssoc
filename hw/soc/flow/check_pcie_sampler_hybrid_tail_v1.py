@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Native hybrid sampler DRC and unsimplified35device LVS with twelve fault controls."""
+"""Native hybrid sampler DRC and unsimplified38device LVS with twelve fault controls."""
 
 import argparse
 import json
@@ -93,13 +93,13 @@ def validate_lvs(step, text, positive):
             matched = [m for m in census if m in fields]
             assert len(matched) == 1, ("Unexpected extracted primitive", line)
             census[matched[0]] += 1
-        assert census == {"npn13g2": 12, "sg13_lv_nmos": 3, "rppd": 12, "ptap1": 8}, census
+        assert census == {"npn13g2": 12, "sg13_lv_nmos": 3, "rppd": 12, "ptap1": 11}, census
         step["native_primitive_census"] = census
         if (audit["extraction_diagnostics"] or audit["circuit_status_counts"] != {"Match": 1} or
                 audit["status"] != "PASS within comparison scope" or step["audit_execution"]["returncode"] != 0 or
                 extracted_ports(text, TOP) != set(PORTS) or len(audit["circuits"]) != 1 or
-                audit["circuits"][0]["layout_devices_recursive"] != 35 or
-                audit["circuits"][0]["schematic_devices_recursive"] != 35):
+                audit["circuits"][0]["layout_devices_recursive"] != 38 or
+                audit["circuits"][0]["schematic_devices_recursive"] != 38):
             raise ValueError("Positive sampler LVS/port/device census did not pass")
     elif audit["status"] != "FAIL" or step["audit_execution"]["returncode"] != 1:
         raise ValueError("Native sampler negative was accepted")
@@ -128,7 +128,7 @@ def main():
     gds, schematic = layout / (TOP + ".gds"), layout / "schematic.cir"
     if schematic.read_text() != physical_reference((root / CIRCUIT).read_text()):
         raise ValueError("Physical reference differs from frozen sampler")
-    assert generated["primitive_counts"] == dict(hbt=12,nmos=3,rppd=12,physical_tap=8)
+    assert generated["primitive_counts"] == dict(hbt=12,nmos=3,rppd=12,physical_tap=11)
     pins = {Path(k): v for k, v in generated["input_sha256"].items()}
     pins[Path(__file__).resolve()] = digest(Path(__file__).resolve())
     for name, expected in generated["output_sha256"].items():
@@ -230,7 +230,7 @@ def main():
             save()
         if any(digest(p) != h for p, h in pins.items()):
             raise ValueError("Physical inputs changed during native validation")
-        record["status"] = "PASS_HYBRID_SAMPLER35_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS"
+        record["status"] = "PASS_HYBRID_SAMPLER38_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS"
         record["outputs"] = {str(p.relative_to(out)): digest(p) for p in sorted(out.rglob("*"))
                                if p.is_file() and p != out / "result.json"}
         save()

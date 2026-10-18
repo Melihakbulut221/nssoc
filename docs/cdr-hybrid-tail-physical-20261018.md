@@ -7,3 +7,10 @@ The physical proof must pass all560 main-rule DRC categories, unsimplified deep 
 Native MOS construction reference: https://github.com/IHP-GmbH/IHP-Open-PDK/blob/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/nmos_code.py . Gate access follows the already used PFD construction but requires fresh native LV-device DRC/LVS here.
 
 No physical pass is assumed before actual runner results. Even a physical pass needs fresh parent geometry, native terminals, full raw RC and original loaded waveform gates; it is not complete CDR, recovered-clock, PVT, PHY or chip signoff. All generation, compilation, CAD and artifact restoration happen on hosted runners. No local CAD or source checkout.
+
+
+## First native physical result and actual tap repair
+
+Run39105291849/source2f46efe4f1d24c6eb130d43fc2e75e5e266dc71c generated the real MOS layout, then failed two LU.b markers out of560 DRC categories. No LVS acceptance was reached. Exact summary/parts/report are preserved in `docs/evidence/cdr-hybrid-tail-initial-latchup-failure-20261018.json`. Native NMOS active lengths span8/32/32um vertically; the original remote tap row leaves upper tail regions too far from a body contact. This disproves reuse of the original eight-tap geometry for these MOS devices.
+
+Successor adds one native2um by2um ptap1 beside the vertical midpoint of each MOS, physically routed to SUB. All original eight taps remain:11 finite contacts and38 total devices. Reference, native extracted census and deep/flat LVS requirements are updated to that actual circuit addition; no rule or electrical limit is relaxed. Original twelve negative controls remain. Await actual native proof before parent integration. All other MOS widths, lengths, gates and signal circuit remain unchanged.

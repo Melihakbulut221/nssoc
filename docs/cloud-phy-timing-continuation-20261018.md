@@ -1,3 +1,9 @@
+# Latest: hybrid physical LU.b failure retained; local body contacts added
+
+Hybrid physical39105291849 failed two LU.b markers after successful real generation. Native source2f46efe4f1d24c6eb130d43fc2e75e5e266dc71c and full failure are in `cdr-hybrid-tail-initial-latchup-failure-20261018.json`. The successor adds3 real local2x2um substrate contacts alongside the MOS midpoints, retaining8 original contacts. Actual circuit now12HBT+3MOS+12R+11taps=38. Fresh560DRC/unsimplified deep-flat38LVS/twelvefaults/LEF required. This commit's workflow push starts the successor; inspect its exact result, no pass assumed. Cloud-only. Full PHY and final timing OPEN.
+
+Earlier checkpoint follows:
+
 # Latest: real hybrid sampler physical workflow prepared
 
 New `cdr-sampler-hybrid-physical-cloud.yml` is push-triggered by this commit. Find its exact new run and inspect actual generation/DRC/LVS/12-fault results. It uses the exact schematic source that passed39104163004, native single-finger LVNMOS with real gate contact, finite taps and bbox-aware placement. No physical pass yet. Source/checker geometry deltas are pinned in `cdr-sampler-hybrid-physical-delta.json`; original gates remain. See `cdr-hybrid-tail-physical-20261018.md`. Preserve any failure before repair; do not accept old sampler/parent proof for this changed circuit. Mainchip39084569446 is still the existing handle; recheck terminal state, no duplicate live run. Cloud-only; full goal OPEN.

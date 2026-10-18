@@ -15,7 +15,7 @@ TOP = "nssoc_rx_sampler_hybrid_tail_layout_v1"
 PORTS = ("DP", "DN", "QP", "QN", "CLKP", "CLKN", "AVDD", "AVSS", "SUB", "IREF")
 CIRCUIT = "hw/soc/analog/pcie/rx_sampler_hybrid_tail_v1.spice"
 CIRCUIT_SHA256 = "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5"
-TAPS = 8
+TAPS = 11
 
 
 def sha(path):
@@ -238,8 +238,24 @@ def main():
                 escape(pin, 1, row["nets"][k], x - 6 + 3*k, row["name"],
                        1 if row["width_um"] == 1 else 4)
         records.append(dict(**row, placement_um=[x, y], bbox_um=str(cell.dbbox().transformed(t))))
+    # One real local body contact beside the middle of each MOS active strip.
+    # The32um tails exceeded LU.b with only the original remote tap row.
+    mos_rows = [r for r in records if r["kind"] == "nmos"]
+    assert len(mos_rows) == 3
+    for index, row in enumerate(mos_rows, start=TAPS-3):
+        x = row["placement_um"][0] + 5
+        y = row["placement_um"][1] + row["width_um"]/2 - 1
+        cell = pc("ptap1", {"w": "2u", "l": "2u"})
+        t = instance(cell, x, y)
+        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]
+        assert len(ps) == 1
+        pin = ps[0]
+        via(1,4,pin.center().x,pin.center().y,"SUB",3)
+        terminals.setdefault("SUB",[]).append((pin.center().x,pin.center().y))
+        records.append(dict(kind="substrate_tap",name=f"TAP{index}",nets=["SUB","BULK"],
+                            placement_um=[x,y],area_um2=4,perimeter_um=8,local_mos=row["name"]))
     # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.
-    for index in range(TAPS):
+    for index in range(TAPS - 3):
         x, y = 22 + index * 60.0, 4.0
         cell = pc("ptap1", {"w": "2u", "l": "2u"})
         t = instance(cell, x, y)

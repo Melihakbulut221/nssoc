@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-"""Fresh exact sampler layout with unsimplified35device native deep/flat LVS."""
+"""Fresh exact sampler layout with unsimplified38device native deep/flat LVS."""
 import hashlib,json,os,subprocess,sys,tarfile
 from pathlib import Path
 from run_cloud_tx_layout_repair import fetch,sha
@@ -15,13 +15,13 @@ def main():
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,
            full_phy_accepted=False,closed_loop=False,qualified_pex=False,
            main_chip_integrated=False,
-           scope='Actual left-edge sampler output pins with physical M7 signal shunts. New12HBT3LVNMOS12rppd8taps, original560DRC/deep-flat35deviceLVS/LEF gates, MOS dimension/connectivity faults; twelve actual negative controls. Fresh parent RC and original loaded gates required; no electrical or full PHY acceptance.')
+           scope='Actual left-edge sampler output pins with physical M7 signal shunts. New12HBT3LVNMOS12rppd11taps, original560DRC/deep-flat38deviceLVS/LEF gates, MOS dimension/connectivity faults; twelve actual negative controls. Fresh parent RC and original loaded gates required; no electrical or full PHY acceptance.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
         analog=ROOT/'hw/soc/analog/pcie/rx_sampler_hybrid_tail_v1.spice'
         assert sha(analog)=='dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5'
-        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py')=='c5ef7b367b160fa8322d189697ff8c9e1e05cbf4508c02b86de473801623e780'
+        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py')=='d11adc981b7fa7dcc0ce0cc5483ba623bcaa59bdd6ab502b68cc81b346778b04'
         paths=[Path(__file__),analog,*[ROOT/p for p in ('hw/soc/flow/make_pcie_sampler_compact_v1.py','hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py','hw/soc/flow/check_pcie_sampler_compact_v1.py','hw/soc/flow/check_pcie_sampler_hybrid_tail_v1.py','scripts/check_cdr_sampler_hybrid_physical_sources.py','scripts/cdr-sampler-hybrid-physical-delta.json','hw/soc/flow/check_pcie_sampler_left_v1.py')]]
         subprocess.run([sys.executable,ROOT/'scripts/check_cdr_sampler_hybrid_physical_sources.py'],check=True)
         protected={str(p):sha(p) for p in paths};r['protected_inputs']=protected
@@ -51,9 +51,9 @@ def main():
             if code:print((OUT/(name+'.log')).read_text()[-18000:],flush=True)
             assert code==0,name+' failed; retain actual geometry and reports'
         physical=json.loads((OUT/'physical/result.json').read_text())
-        assert physical['status']=='PASS_HYBRID_SAMPLER35_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS'
+        assert physical['status']=='PASS_HYBRID_SAMPLER38_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS'
         assert all(sha(Path(p))==h for p,h in protected.items())
-        r.update(status='PASS_HYBRID_SAMPLER35_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES',sources_unchanged=True)
+        r.update(status='PASS_HYBRID_SAMPLER38_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES',sources_unchanged=True)
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         for name in ('layout','physical'):

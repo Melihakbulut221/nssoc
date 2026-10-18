@@ -37,7 +37,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Restore exact PDK technology LEF and verify all35sampler devices and faults
+      - name: Restore exact PDK technology LEF and verify all38sampler devices and faults
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_cdr_sampler_hybrid_physical.py
@@ -67,3 +67,5 @@ jobs:
           name: cdr-sampler-hybrid-physical-${{ github.run_id }}
           path: hw/soc/out/cloud-cdr-sampler-hybrid-physical/
           retention-days: 30
+
+# Add actual local substrate taps after native LU.b failure39105291849.
