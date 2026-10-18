@@ -1,3 +1,11 @@
+# Current: hybrid406 planes verified; actual MOS terminal extraction launched
+
+Native planes39107834199/source00a3e7f278dc1cd6d8b5c01c6ef77c72fa79c181 PASSED all158 interface anchors/51 actual nets/19 fault controls, census406 and1158 intrinsic terminals. Receipt `cdr-retimed-hybrid-planes-pass-20261018.json`. This commit launches `cdr-retimed-hybrid-wire-inputs-cloud.yml`: fresh whole conductor graph, native406 PCell enclosure, recovered pin annotations only on byte-equivalent drawing and actual MOS S/D/G/B references. Census expected763 metal terminals395 intrinsic bodies plus25 public points. No numerical electrical pass assumed. Next native model binding and fresh whole MIM-aware RC, then original loaded gates. Preserve actual failures.
+
+Mainchip39107161430 is still the existing live cloud routing handle; no restart. Full objective remains OPEN and all work cloud-only.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 native interface planes launched
 
 This commit launches `cdr-retimed-hybrid-planes-cloud.yml` against the actual verified parent39107027934. It restores the immutable native GDS/flat LVS and binds all158 public/child interface anchors to51 actual native nets, with19 corruption controls and the new406-device census. No394 RC/device IDs are reused. Inspect exact new run before wire-input extraction. Follow with actual MOS terminal anchor support, native406 model binding, fresh whole MIM-aware RC and unchanged original loaded gates. Do not call physical proof electrical or fullPHY acceptance.
