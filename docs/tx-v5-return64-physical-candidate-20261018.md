@@ -13,3 +13,9 @@ Next gates after physical success: regenerate native device/interface ownership,
 Run39086629991 passed all560 DRC categories with zero markers, deep/flat1674device LVS and all five deliberate physical faults. The exact geometry comparison passed: only the six external AVSS rectangle unions changed; all three geometric corruption controls were rejected. The full receipt pins the native reports and every archive member. This does not prove electrical improvement.
 
 The tx-v5-return64-extraction-cloud workflow now restores that exact archive, verifies every physical member, regenerates all4774 terminal references/3262probes and377wire components, then extracts fresh native R/C and repeats the unchanged13 raw RC corruption controls. No old resistance scaling or old extracted model is used.
+
+## Fresh extraction result and composition
+
+Run39086995085 passed complete native RC/ownership/capacitance conservation and all13 raw corruption controls. The actual377conductors/3262probes cover1674devices/4774terminals. Export contains116611R77471C, coincidentally the same element counts as the baseline; values and geometry are freshly extracted and must not be substituted with old tokens. Intrinsic body spreading and RF distribution remain unqualified.
+
+The new tx-v5-return64-composition-cloud workflow binds all native device identities and source R/C rows, repeats six malformed-composition tests and checks resistor connectivity against original native nets. It also probes all124 input legs/372actual HBT bases from the widened physical GDS/LVS and rejects two wrong endpoint pairings. Original256-bit loaded tests follow only after this exact model is verified.
