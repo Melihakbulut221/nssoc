@@ -5,7 +5,7 @@
 import json,os,re
 from pathlib import Path
 import numpy as np
-import cloud_tx_balanced_v5_builder as tree
+import cloud_tx_v5_return64_builder as tree
 from cloud_tx_stream import read_streamed_wave
 import compare_cloud_routed_endpoints as reports
 from route_cloud_newer_postcts import sha
@@ -20,13 +20,15 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
+        from check_tx_v5_return64_builder import check
+        r['builder_source_guard']=check();save()
         pin=json.loads((ROOT/'docs/evidence/tx-return64-full-wire-rejection-20261018.json').read_text())
         source=ROOT/'cloud-tx-return64-path-review-input'
         selected=['native/wave.raw','native/op.dat','native/contract.json','all-interfaces.json']
         prior,proof=reports.restore_report('tx-v5-return64-wave-wire-nominal-none',pin['run'],pin['summary_sha256'],pin['parts_sha256'],source,selected)
         assert prior['source_head']==pin['source_head']and prior['source_unchanged']and not prior['electrical_screen_passed']
         assert prior['core_counts']==dict(devices=1674,R=116611,C=77471)
-        for path in (ROOT/'scripts/cloud_tx_balanced_v5_builder.py',ROOT/'scripts/cloud_tx_stream.py'):
+        for path in (ROOT/'scripts/cloud_tx_v5_return64_builder.py',ROOT/'scripts/cloud_tx_stream.py'):
             match=[h for p,h in prior['protected_inputs'].items()if p.endswith('/scripts/'+path.name)]
             assert match==[sha(path)]
         contract=json.loads((source/'native/contract.json').read_text())

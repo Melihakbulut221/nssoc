@@ -22,7 +22,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Compile read-only native path review
-        run: python3 -m py_compile scripts/cloud_tx_return64_path_review.py
+        run: |
+          python3 -m py_compile scripts/cloud_tx_return64_path_review.py
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/check_tx_v5_return64_builder.py
   native-current:
     needs: syntax-controls
     runs-on: ubuntu-24.04
