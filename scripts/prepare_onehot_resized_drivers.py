@@ -23,7 +23,7 @@ def load(path):
 
 
 def topology(block):
-    return {n.getName():dict(kind=str(n.getSigType()),pins=sorted((t.getInst().getName(),t.getMTerm().getName())for t in n.getITerms()),ports=sorted(p.getName()for p in n.getBTerms()))for n in block.getNets()}
+    return {n.getName():dict(kind=str(n.getSigType()),pins=sorted([t.getInst().getName(),t.getMTerm().getName()]for t in n.getITerms()),ports=sorted(p.getName()for p in n.getBTerms()))for n in block.getNets()}
 def prepare():
     db=load(SOURCE);block=db.getChip().getBlock();targets=json.loads((OUT/'targets.json').read_text())['targets']
     original={i.getName():signature(i)for i in block.getInsts()};fixed=fixed_data(db);nets=topology(block);changes=[]
