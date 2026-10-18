@@ -258,6 +258,27 @@ def main():
         assert odb==sized_root/'candidate.odb'and netlist==sized_root/'candidate.v'
         assert sha(odb)==sized['candidate_odb_sha256']and sha(netlist)==sized['candidate_netlist_sha256']
         assert state['spef']is None and state['def']is None and not state['metrics']
+        # State views also retain the original propagated SDC. Restore exact
+        # missing views from the routed source archive instead of replacing
+        # constraints or requiring its old route to be inherited by this ECO.
+        latest_root=ROOT/'hw/soc/out/cloud-onehot-load-resume';missing=set()
+        def inspect_view(value):
+            if isinstance(value,dict):
+                for v in value.values():inspect_view(v)
+            elif isinstance(value,list):
+                for v in value:inspect_view(v)
+            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():
+                view=Path(value)
+                assert view.is_relative_to(latest_root),('Unbound missing candidate-state dependency',value)
+                rel=str(view.relative_to(latest_root));assert rel in latest['outputs'];missing.add(rel)
+        inspect_view(state)
+        assert missing,'Expected archived propagated SDC dependency'
+        restored_latest,dependency_proof=reports.restore_report('onehot-load-resume',latest_pin['run_id'],latest_sha,latest_parts,latest_root,sorted(missing))
+        assert restored_latest==latest
+        dependency_hashes={str(latest_root/n):latest['outputs'][n]for n in sorted(missing)}
+        assert all(sha(p)==v for p,v in dependency_hashes.items())
+        r['restored_exact_state_dependencies']=dict(source=dependency_proof,files=dependency_hashes)
+
         r['resize_source']=sized_proof;r['resize_geometry']=sized['geometry'];r['resize_equation_proof']=sized['proof'];r['source_routed_measurements']=latest['measurements']
         saved_candidate_odb=odb
         trial=OUT/'trial-config.json';trial.write_text(json.dumps(cfg,indent=2)+'\n')
@@ -288,6 +309,7 @@ def main():
         r['native_physical_gates_met']=count==0 and r['native_routing_drc_errors']==0 and r['critical_disconnected_pins']==0
         assert all(sha(source_root/n)==v for n,v in prepared['outputs'].items())
         assert all(sha(sized_root/n)==v for n,v in sized['outputs'].items())
+        assert all(sha(p)==v for p,v in dependency_hashes.items())
         rcdirs=list((OUT/'run').glob('*-nssoc-onehotroutercx'));stadirs=list((OUT/'run').glob('*-nssoc-onehotroutedsta'))
         assert len(rcdirs)==len(stadirs)==1
         r['native_spef_integrity']=json.loads((rcdirs[0]/'native-spef-integrity.json').read_text())
