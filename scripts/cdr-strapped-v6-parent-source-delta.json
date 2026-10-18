@@ -1,0 +1,134 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cdr_retimed_local_v5_parent_plan.py",
+      "candidate_path": "scripts/cdr_retimed_strapped_v6_parent_plan.py",
+      "baseline_sha256": "1e4d5528d185d8ce9db606ea1986daadc42de0942e12acec023222397c1cc760",
+      "candidate_sha256": "092491fbbd43d13845afd23512e0d0e7b6c3d45f054fb8d463852ee951b00e21",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_local_order_layout_v9",
+          "after": "nssoc_rx_sampler_strapped_layout_v10",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_local_v5_risers.py",
+      "candidate_path": "scripts/generate_cdr_retimed_strapped_v6_risers.py",
+      "baseline_sha256": "9e41e0dd516fafc24d907f79fb91dc56ce5c5fda7fa446d95bfeec47f1fd4dc6",
+      "candidate_sha256": "93c6e0ebe227572d19a3a403fa0f8e323cfb83630bbcae20dd0892f58560159d",
+      "edits": [
+        {
+          "before": "planned_riser_ends=[];suppressed_shunt_vias=[]",
+          "after": "planned_riser_ends=[];suppressed_shunt_vias=[];retained_sampler_supply=[]",
+          "count": 1
+        },
+        {
+          "before": "        dx=child['origin_translation_um'][0]if kind=='sampler'else 0.\n",
+          "after": "        if kind=='sampler':\n            dx,dy=child['origin_translation_um'];owned=[]\n            existing_m6=pya.Region(top.begin_shapes_rec(L.layer(126,0))).merged()\n            existing_m7=pya.Region(top.begin_shapes_rec(L.layer(134,0))).merged()\n            assert child['primitive_counts']==dict(hbt=16,nmos=9,rppd=12,physical_tap=17)\n            for route in child['routes']:\n                if route['net'].lower()not in ('avdd','avss'):continue\n                x=route['escape_lane_um']+dx+bounds.left\n                sy=route['escape_y_um']+dy+bounds.bottom\n                ey=rect(placed['ports'][route['net']]).center().y\n                strip=pya.Region(pya.DBox(x-.8,sy,x+.8,ey).to_itype(L.dbu))\n                assert not strip.is_empty()and (strip-existing_m6).is_empty(),(tag,route['device'],'missing native child M6 strap')\n                owned.append(dict(device=route['device'],net=route['net'].lower(),m6_start_um=[x,sy],m6_end_um=[x,ey]))\n            buses=[]\n            for strap in child['output_shunts']:\n                if strap['net'].lower()not in ('avdd','avss'):continue\n                box=rect(strap['box_um']).transformed(pya.DTrans(dx+bounds.left,dy+bounds.bottom))\n                region=pya.Region(box.to_itype(L.dbu))\n                assert not region.is_empty()and (region-existing_m7).is_empty(),(tag,strap['net'],'missing native child M7 supply bus')\n                buses.append(dict(net=strap['net'].lower(),actual_m7_box_um=str(box)))\n            assert len(owned)==19 and len(buses)==2\n            retained_sampler_supply.append(dict(tag=tag,actual_child_m6_risers=owned,actual_child_m7_buses=buses))\n            continue\n        dx=child['origin_translation_um'][0]if kind=='sampler'else 0.\n",
+          "count": 1
+        },
+        {
+          "before": "        if TYPES[placed['kind']]['layer']!=67:continue",
+          "after": "        if placed['kind']=='sampler':continue  # Already native M6/M7 strapped and checked above.\n        if TYPES[placed['kind']]['layer']!=67:continue",
+          "count": 1
+        },
+        {
+          "before": "        kind=placed['kind']\n        child=json.loads",
+          "after": "        kind=placed['kind']\n        if kind=='sampler':continue  # Preserve verified native child routing without duplicate overlay.\n        child=json.loads",
+          "count": 1
+        },
+        {
+          "before": "    assert len({r['tag']for r in risers})==16 and len(risers)>=80\n    assert len(straps)==27 and cuts>100,(len(straps),cuts)",
+          "after": "    assert len({r['tag']for r in risers})==12 and len(risers)==50\n    assert len(straps)==19 and cuts>100,(len(straps),cuts)\n    assert {r['tag']for r in retained_sampler_supply}=={'sa','sb','sc','sd'}\n    assert sum(len(r['actual_child_m6_risers'])for r in retained_sampler_supply)==76\n    assert sum(len(r['actual_child_m7_buses'])for r in retained_sampler_supply)==8",
+          "count": 1
+        },
+        {
+          "before": "supply_overlay=dict(straps=straps,risers=risers,",
+          "after": "supply_overlay=dict(straps=straps,risers=risers,retained_sampler_supply=retained_sampler_supply,",
+          "count": 1
+        },
+        {
+          "before": "Candidate to reduce measured local supply losses through physical M4-to-M6 risers in sixteen macros.",
+          "after": "Twelve leaves retain parent-added supply risers; four new sampler leaves retain their physically verified native upper-metal routing. Exact actual child M6/M7 supply coverage is rechecked in the parent.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_local_v5_parent.py",
+      "candidate_path": "scripts/generate_cdr_retimed_strapped_v6_parent.py",
+      "baseline_sha256": "9b5ee52b6cdc6cb2cb1026b7c31412fd070a43e397be65da0051cca24f5c33ec",
+      "candidate_sha256": "b1eed280b4b08372e5c5e3ff3f6f90dfd3da76ae30544c806dc1183a09422065",
+      "edits": [
+        {
+          "before": "local_v5",
+          "after": "strapped_v6",
+          "count": 3
+        },
+        {
+          "before": "nssoc_cdr_pd484_local_order_v5",
+          "after": "nssoc_cdr_pd484_strapped_v6",
+          "count": 1
+        },
+        {
+          "before": "9e41e0dd516fafc24d907f79fb91dc56ce5c5fda7fa446d95bfeec47f1fd4dc6",
+          "after": "93c6e0ebe227572d19a3a403fa0f8e323cfb83630bbcae20dd0892f58560159d",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_local_v5_parent.py",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_strapped_v6_parent.py",
+      "baseline_sha256": "c1c9110f9d742a0b814e062a9541f383f23bb364f9dd5e68c5e3cf6e38e1ff6c",
+      "candidate_sha256": "71b9f0f6f09dd3f5b77de9f5b8c5aa03ebd31232d2df68f08bff7e88665310ba",
+      "edits": [
+        {
+          "before": "local_v5",
+          "after": "strapped_v6",
+          "count": 3
+        },
+        {
+          "before": "nssoc_cdr_pd484_local_order_v5",
+          "after": "nssoc_cdr_pd484_strapped_v6",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_local_v5_parent.py",
+      "candidate_path": "scripts/cloud_cdr_retimed_strapped_v6_parent.py",
+      "baseline_sha256": "4d8e7bbc73f59b979ebe1cdda9e682d41e49b0b977498692410f39abd0f9f442",
+      "candidate_sha256": "16d7e2a4038e3c03149df115f7d48818b60e47609a4030b5cf0c5dac87ee8cea",
+      "edits": [
+        {
+          "before": "local_v5",
+          "after": "strapped_v6",
+          "count": 9
+        },
+        {
+          "before": "local-v5",
+          "after": "strapped-v6",
+          "count": 3
+        },
+        {
+          "before": "check_cdr_sampler_local_order_geometry.py",
+          "after": "check_cdr_sampler_strapped_geometry.py",
+          "count": 2
+        },
+        {
+          "before": "cdr-retimed-power-v4-parent-children-20261018.json",
+          "after": "cdr-retimed-local-v5-parent-children-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_parallel_drive_layout_v8",
+          "after": "nssoc_rx_sampler_local_order_layout_v9",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
