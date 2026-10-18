@@ -201,7 +201,7 @@ def main():
         points = {}; right = 0.
         for index, name in enumerate(order):
             row = byname[name]; box = geometry[name]
-            x = math.ceil(max(40. + index * 24, right + 24 - box.left) / .005) * .005
+            x = math.ceil(max(40. + index * 30, right + 30 - box.left) / .005) * .005
             right = x + box.right
             for net in set(row["nets"]):
                 if net not in ("AVDD", "AVSS", "SUB", "IREF"):
@@ -243,11 +243,11 @@ def main():
                 params["ng"] = 1
             cell = pc("nmos" if row["kind"] == "nmos" else "rppd", params)
         raw = cell.dbbox()
-        x = math.ceil(max(40.0 + index * 24, previous_right + 24 - raw.left) / .005) * .005
+        x = math.ceil(max(40.0 + index * 30, previous_right + 30 - raw.left) / .005) * .005
         y = 20.0
         t = instance(cell, x, y)
         actual = raw.transformed(t)
-        assert actual.left >= previous_right + 24 - 1e-8 and actual.top < 70
+        assert actual.left >= previous_right + 30 - 1e-8 and actual.top < 70
         previous_right = actual.right
         if row["kind"] == "hbt":
             m1 = sorted([s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],

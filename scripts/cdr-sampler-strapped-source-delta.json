@@ -4,7 +4,7 @@
       "baseline_path": "hw/soc/flow/make_pcie_sampler_local_order_v9.py",
       "candidate_path": "hw/soc/flow/make_pcie_sampler_strapped_v10.py",
       "baseline_sha256": "b06df57184d75786aed41da98cdd4795af602d7028f7e8ff512bbf1c25d1813a",
-      "candidate_sha256": "7d268d2a42c79398438c821e95e5e820f11a86ad330aab34eb61a887deecdb45",
+      "candidate_sha256": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
       "edits": [
         {
           "before": "nssoc_rx_sampler_local_order_layout_v9",
@@ -85,6 +85,16 @@
           "before": "assert min(xs) > shunt_left + 2",
           "after": "assert net not in PORTS or min(xs) > shunt_left + 2",
           "count": 1
+        },
+        {
+          "before": "index * 24",
+          "after": "index * 30",
+          "count": 2
+        },
+        {
+          "before": "right + 24",
+          "after": "right + 30",
+          "count": 3
         }
       ]
     },
@@ -123,7 +133,7 @@
       "baseline_path": "scripts/cloud_cdr_sampler_local_order_physical.py",
       "candidate_path": "scripts/cloud_cdr_sampler_strapped_physical.py",
       "baseline_sha256": "fa9d8205ff08d540d19dece04fc5aad27143a4e16afb528eae177506df4f2fd1",
-      "candidate_sha256": "13e5317b90a791f72e86d7a5e1d0e5852246a6433e552681df99c68f2092eb0c",
+      "candidate_sha256": "0d0c6e35062af840ce1981c20f697cc5304b9d10a2aec25d19b6584096ce06a5",
       "edits": [
         {
           "before": "cloud-cdr-sampler-local-order-physical",
@@ -173,6 +183,11 @@
         {
           "before": "Actual left-edge sampler output pins with physical M7 signal shunts.",
           "after": "Actual TopMetal1 vertical straps and TopMetal2 horizontal straps on every sampler net; native primitives and original physical gates unchanged.",
+          "count": 1
+        },
+        {
+          "before": "7d268d2a42c79398438c821e95e5e820f11a86ad330aab34eb61a887deecdb45",
+          "after": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
           "count": 1
         }
       ]
