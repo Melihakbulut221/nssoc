@@ -1,3 +1,13 @@
+# Current: actual XOR59 physical passed; complete parent420 integration launched
+
+ActualXOR59 run39115862679/sourcea9ddef55b4ba2058d6a13f5440dc31d063fb5861 passed560DRC0markers, strictdeep/flat59deviceLVS, sevenactualfaults, sourcesunchanged. Fullreceipt `cdr-xor-hybrid-v3-physical-pass-20261018.json` pins summary653085954 andparts653086040. EarlierXOR57LU.b rejection retained; five real localMOSbodycontacts close this leafcoverage failure. This is notparent/RC/closedloop acceptance.
+
+This commit launches `cdr-retimed-hybrid-v2-parent-cloud.yml`: replacebothselect16 withverifiedselect18 andbothXOR54 withverifiedXOR59, allother six childtypes unchanged. Actualsourcepin-order mapping replacesoldwiremodel wrapper;25physicalports/41sourcecards/16macros retained. Expected420native devices(100HBT22MOS102R11MIM185taps). NewXORMetal5ports receive nativeTopMetal2supplyshunts/M6risers,16macro risers/27rails. Source-delta guard, original six bindingfaults, allchildgeometryconservation, wholeparent560DRC/LVS/actualfaults required. No physicalpass inferred. AfterparentPASS requirefreshterminalplanes/nativeMOS64diffusionbinding/wholeMIM-awareRC/composition/originalfull-loadedcaptures; never reuse406nativeIDs/9970R7795C or54deviceidealXOR.
+
+Mainchipround4 39115222502 andTX39112087217 remain existinglivejobs; preserve. Retimedinputattenuation, fullserialPHY andfinalsetuphold stillOPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual XOR57 DRC rejects two LU.b markers; XOR59 geometry repair launched
 
 Correctedphysical39115444772/source658148915c7a44c8850aa81e8365d84ea28591b8 generated826x224.63um GDS, but560ruleDRC reports2LU.b markers. Fullfailure preserved `cdr-xor-hybrid-v2-physical-latchup-rejection-20261018.json`. Actual pinnedupstreamrule requires every N+active point within20um ofPWell tie;64umMOS centralcontact leavesends uncovered. Newphysicalv3 redistributes each64umtail to contacts16/48um alongactive;8umreference retainscentralcontact. Total5extra contacts+27original=32contacts,59totaldevices; unchanged transistors/data/select/load topology. Fresh actualGDS/DRC/LVS/sevenfaults required, no pass assumed. Nativeelectrical v2 remains54devicecomponent; new59physicalbody network and parasitics must enternewphysicalmodel, not reusedidealmodel.

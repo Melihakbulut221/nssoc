@@ -1,0 +1,277 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_retimed_hybrid_pd_vi_v1.spice",
+      "baseline_sha256": "6d11a0ad036f1aba5be8b306d75c2c5c6dfc103c845711d63cd6ddbd2e4c2bb6",
+      "candidate_path": "hw/soc/analog/pcie/cdr_retimed_hybrid_pd_vi_v2.spice",
+      "candidate_sha256": "b0edf644ca6ddb0f341e4041e4921976cf696fea070fdb415450acf751bd73f7",
+      "edits": [
+        {
+          "before": "nssoc_cdr_retimed_hybrid_pd_vi_v1",
+          "after": "nssoc_cdr_retimed_hybrid_pd_vi_v2",
+          "count": 2
+        },
+        {
+          "before": "nssoc_cdr_select_buffer_v4",
+          "after": "nssoc_cdr_select_hybrid_tail_v2",
+          "count": 2
+        },
+        {
+          "before": "XX xp xn avdd sub adp adn s0p s0n irx avss wire_cref nssoc_cdr_xor54_wire_v4",
+          "after": "XX adp adn s0p s0n xp xn avdd avss sub irx nssoc_cdr_xor_hybrid_tail_v2",
+          "count": 1
+        },
+        {
+          "before": "XY yp yn avdd sub cdp cdn s1p s1n iry avss wire_cref nssoc_cdr_xor54_wire_v4",
+          "after": "XY cdp cdn s1p s1n yp yn avdd avss sub iry nssoc_cdr_xor_hybrid_tail_v2",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cdr_retimed_hybrid_parent_plan.py",
+      "baseline_sha256": "237cc432a8f6ccc516553bbea57e640eab7d5d444b0a8afa01c4064c750afecc",
+      "candidate_path": "scripts/cdr_retimed_hybrid_v2_parent_plan.py",
+      "candidate_sha256": "1572bf5ad8debf8cf170ca7d57e9b86c9a596547ee7ae14fbd74d9cf0b5ebd7c",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_pd_vi_v1",
+          "after": "cdr_retimed_hybrid_pd_vi_v2",
+          "count": 2
+        },
+        {
+          "before": "6d11a0ad036f1aba5be8b306d75c2c5c6dfc103c845711d63cd6ddbd2e4c2bb6",
+          "after": "b0edf644ca6ddb0f341e4041e4921976cf696fea070fdb415450acf751bd73f7",
+          "count": 1
+        },
+        {
+          "before": "SOURCES={",
+          "after": "SOURCES={\n 'cdr_select_hybrid_tail_v2.spice':'4ea83a8d48cf38626234bb8530d9cca51eaa88c529369a37486a243e4614e4ba',\n 'cdr_xor_core_hybrid_tail_v2.spice':'47dbcf055d732456f9b5c199e8deedd0a2fc402546c5c464ab315862bd70b660',\n 'cdr_xor_hybrid_tail_v2.spice':'39d055605d72b6aa586b058c5492e17ae5bffe2dffc0942c07258dcb7137cddc',",
+          "count": 1
+        },
+        {
+          "before": "top='nssoc_cdr_select_buffer_layout_v4',devices=16",
+          "after": "top='nssoc_cdr_select_hybrid_tail_layout_v2',devices=18",
+          "count": 1
+        },
+        {
+          "before": "top='nssoc_cdr_xor_load_parent_v4',devices=54,layer=134",
+          "after": "top='nssoc_cdr_xor_hybrid_tail_layout_v3',devices=59,layer=67",
+          "count": 1
+        },
+        {
+          "before": "for instance,kind in [('xda','data'),('xdc','data'),('xs0','select'),('xs1','select')]:direct(instance,kind,'nssoc_cdr_'+kind+'_buffer_v4')",
+          "after": "for instance in ('xda','xdc'):direct(instance,'data','nssoc_cdr_data_buffer_v4')\n    for instance in ('xs0','xs1'):direct(instance,'select','nssoc_cdr_select_hybrid_tail_v2')",
+          "count": 1
+        },
+        {
+          "before": "    formal=['qp','qn','avdd','sub','dp','dn','ep','en','iref','avss','wire_cref']\n    for instance in ('xx','xy'):direct(instance,'xor','nssoc_cdr_xor54_wire_v4',formal=formal)",
+          "after": "    for instance in ('xx','xy'):direct(instance,'xor','nssoc_cdr_xor_hybrid_tail_v2')",
+          "count": 1
+        },
+        {
+          "before": "==406",
+          "after": "==420",
+          "count": 1
+        },
+        {
+          "before": "expected_devices=406",
+          "after": "expected_devices=420",
+          "count": 1
+        },
+        {
+          "before": "npn13g2=110,sg13_lv_nmos=12,rppd=102,cap_cmim=11,ptap1=171",
+          "after": "npn13g2=100,sg13_lv_nmos=22,rppd=102,cap_cmim=11,ptap1=185",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_hybrid_base.py",
+      "baseline_sha256": "39e6d0346d896a93b3cea6570ff8a63bf0ce7c911c510abc4f52bc4885535b4f",
+      "candidate_path": "scripts/generate_cdr_retimed_hybrid_v2_base.py",
+      "candidate_sha256": "c63fd6f5c37e927cdb26f29d4b7786bb0ebdbeaeb9f63c1ac09124d13eb113e9",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_parent_plan",
+          "after": "cdr_retimed_hybrid_v2_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "nssoc_cdr_pd406_hybrid_base_v1",
+          "after": "nssoc_cdr_pd420_hybrid_base_v2",
+          "count": 1
+        },
+        {
+          "before": "and406devices",
+          "after": "and420devices",
+          "count": 1
+        },
+        {
+          "before": "len(reference)==406",
+          "after": "len(reference)==420",
+          "count": 1
+        },
+        {
+          "before": "PD406",
+          "after": "PD420",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_risers_parent.py",
+      "baseline_sha256": "66524d4eafb105a1a7f1a0a956ccfe34b9ffe494d20a3facf6a1501b51f7a750",
+      "candidate_path": "scripts/generate_cdr_retimed_hybrid_v2_risers.py",
+      "candidate_sha256": "edb0c0b1cb1056a507f49dc90b193c204d1ea4d7205cb9d35961b07d79104d16",
+      "edits": [
+        {
+          "before": "import generate_cdr_retimed_avss256_base as base",
+          "after": "import generate_cdr_retimed_hybrid_v2_base as base",
+          "count": 1
+        },
+        {
+          "before": "cdr_retimed_compact_parent_plan",
+          "after": "cdr_retimed_hybrid_v2_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "TOP='nssoc_cdr_pd394_supply_risers_v1'",
+          "after": "TOP='nssoc_cdr_pd420_hybrid_supply_risers_v2'",
+          "count": 1
+        },
+        {
+          "before": "nssoc_pd394_supply_risers_v1",
+          "after": "nssoc_pd420_hybrid_supply_risers_v2",
+          "count": 1
+        },
+        {
+          "before": "        if kind=='xor':continue\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "before": "len({r['tag']for r in risers})==14",
+          "after": "len({r['tag']for r in risers})==16",
+          "count": 1
+        },
+        {
+          "before": "len(straps)==23",
+          "after": "len(straps)==27",
+          "count": 1
+        },
+        {
+          "before": "fourteen macros",
+          "after": "sixteen macros",
+          "count": 1
+        },
+        {
+          "before": "XOR children already using TopMetal2 ports receive no internal overlay.",
+          "after": "New XOR children have Metal5 ports and receive actual supply shunts and risers.",
+          "count": 1
+        },
+        {
+          "before": "PD394",
+          "after": "PD420",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_hybrid_parent.py",
+      "baseline_sha256": "9f5ad0f98168a47b930dc65edc57022f57fac111c9428581a99b760ac025b28e",
+      "candidate_path": "scripts/generate_cdr_retimed_hybrid_v2_parent.py",
+      "candidate_sha256": "a42f04c3507662d1964db4f6fedcdf3310684c5bc45f7eb53a7f30797c58fdd2",
+      "edits": [
+        {
+          "before": "generate_cdr_retimed_risers_parent",
+          "after": "generate_cdr_retimed_hybrid_v2_risers",
+          "count": 1
+        },
+        {
+          "before": "generate_cdr_retimed_hybrid_base",
+          "after": "generate_cdr_retimed_hybrid_v2_base",
+          "count": 1
+        },
+        {
+          "before": "cdr_retimed_hybrid_parent_plan",
+          "after": "cdr_retimed_hybrid_v2_parent_plan",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_hybrid_parent_sources",
+          "after": "check_cdr_hybrid_v2_parent_sources",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd406_hybrid_tail_v1",
+          "after": "nssoc_cdr_pd420_hybrid_tail_v2",
+          "count": 1
+        },
+        {
+          "before": "66524d4eafb105a1a7f1a0a956ccfe34b9ffe494d20a3facf6a1501b51f7a750",
+          "after": "edb0c0b1cb1056a507f49dc90b193c204d1ea4d7205cb9d35961b07d79104d16",
+          "count": 1
+        },
+        {
+          "before": "39e6d0346d896a93b3cea6570ff8a63bf0ce7c911c510abc4f52bc4885535b4f",
+          "after": "c63fd6f5c37e927cdb26f29d4b7786bb0ebdbeaeb9f63c1ac09124d13eb113e9",
+          "count": 1
+        },
+        {
+          "before": "==406",
+          "after": "==420",
+          "count": 1
+        },
+        {
+          "before": "HYBRID406",
+          "after": "HYBRID420",
+          "count": 1
+        },
+        {
+          "before": "hybrid406",
+          "after": "hybrid420",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_hybrid_parent.py",
+      "baseline_sha256": "814c6768ef1bc07678d2546e5e394a2f8596a12b68d3ad3ddd679d105eb34ade",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_hybrid_v2_parent.py",
+      "candidate_sha256": "a5b238c7d218216995ab0700f28983e64fb1c2748474c707a1aff9cdb34b2bbf",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_parent_plan",
+          "after": "cdr_retimed_hybrid_v2_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "generate_cdr_retimed_hybrid_parent",
+          "after": "generate_cdr_retimed_hybrid_v2_parent",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd406_hybrid_tail_v1",
+          "after": "nssoc_cdr_pd420_hybrid_tail_v2",
+          "count": 1
+        },
+        {
+          "before": "len(hits)==110",
+          "after": "len(hits)==100",
+          "count": 1
+        },
+        {
+          "before": "!= 406",
+          "after": "!= 420",
+          "count": 1
+        },
+        {
+          "before": "PD406",
+          "after": "PD420",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}
