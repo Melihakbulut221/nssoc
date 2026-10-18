@@ -1,0 +1,298 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_retimed_hybrid_pd_vi_v2.spice",
+      "baseline_sha256": "b0edf644ca6ddb0f341e4041e4921976cf696fea070fdb415450acf751bd73f7",
+      "candidate_path": "hw/soc/analog/pcie/cdr_retimed_parallel_pd_vi_v3.spice",
+      "candidate_sha256": "11c7f3e5b0c9a55f9c3adde71873b2d9947a4ec4cbfbfb65a6d53e53baf860ec",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_pd_vi_v2",
+          "after": "cdr_retimed_parallel_pd_vi_v3",
+          "count": 2
+        },
+        {
+          "before": "nssoc_rx_sampler_hybrid_tail_v1",
+          "after": "nssoc_rx_sampler_parallel_drive_v8",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cdr_retimed_hybrid_v2_parent_plan.py",
+      "baseline_sha256": "1572bf5ad8debf8cf170ca7d57e9b86c9a596547ee7ae14fbd74d9cf0b5ebd7c",
+      "candidate_path": "scripts/cdr_retimed_parallel_v3_parent_plan.py",
+      "candidate_sha256": "8f02e6c93cdbdd6b5b52bb78f22228199579d9e993992a19707b5e84c63c4744",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_pd_vi_v2",
+          "after": "cdr_retimed_parallel_pd_vi_v3",
+          "count": 2
+        },
+        {
+          "before": "rx_sampler_hybrid_tail_v1.spice",
+          "after": "rx_sampler_parallel_drive_v8.spice",
+          "count": 1
+        },
+        {
+          "before": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+          "after": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "count": 1
+        },
+        {
+          "before": "b0edf644ca6ddb0f341e4041e4921976cf696fea070fdb415450acf751bd73f7",
+          "after": "11c7f3e5b0c9a55f9c3adde71873b2d9947a4ec4cbfbfb65a6d53e53baf860ec",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_hybrid_tail_layout_v1",
+          "after": "nssoc_rx_sampler_parallel_drive_layout_v8",
+          "count": 1
+        },
+        {
+          "before": "devices=38",
+          "after": "devices=54",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_hybrid_tail_v1",
+          "after": "nssoc_rx_sampler_parallel_drive_v8",
+          "count": 1
+        },
+        {
+          "before": "==420",
+          "after": "==484",
+          "count": 1
+        },
+        {
+          "before": "expected_devices=420",
+          "after": "expected_devices=484",
+          "count": 1
+        },
+        {
+          "before": "npn13g2=100,sg13_lv_nmos=22,rppd=102,cap_cmim=11,ptap1=185",
+          "after": "npn13g2=116,sg13_lv_nmos=46,rppd=102,cap_cmim=11,ptap1=209",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_base.py",
+      "baseline_sha256": "c63fd6f5c37e927cdb26f29d4b7786bb0ebdbeaeb9f63c1ac09124d13eb113e9",
+      "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_base.py",
+      "candidate_sha256": "42e71e6995a4fbcabe4b320a0e0fca2e24c8904bfbfb2f2da7ab62c9a5f36b3e",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_v2",
+          "after": "cdr_retimed_parallel_v3",
+          "count": 2
+        },
+        {
+          "before": "pd420_hybrid",
+          "after": "pd484_parallel",
+          "count": 1
+        },
+        {
+          "before": "PD420",
+          "after": "PD484",
+          "count": 1
+        },
+        {
+          "before": "420devices",
+          "after": "484devices",
+          "count": 1
+        },
+        {
+          "before": "len(reference)==420",
+          "after": "len(reference)==484",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_risers.py",
+      "baseline_sha256": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
+      "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_risers.py",
+      "candidate_sha256": "48e94924c7f39ff36bb5109e9a5cbecb4c2c95d56e40ee21dd402cc69f92d690",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_v2",
+          "after": "cdr_retimed_parallel_v3",
+          "count": 3
+        },
+        {
+          "before": "pd420_hybrid",
+          "after": "pd484_parallel",
+          "count": 2
+        },
+        {
+          "before": "PD420",
+          "after": "PD484",
+          "count": 2
+        },
+        {
+          "before": "    assert len(suppressed_shunt_vias)==2\n    assert {(r['tag'],r['net'],r['retained_riser']['device'])for r in suppressed_shunt_vias}=={('x','avss','D21'),('y','avss','D21')}\n    assert all(abs(r['omitted_shunt_center_um'][0]-r['retained_riser']['point'][0])==1. for r in suppressed_shunt_vias)",
+          "after": "    # Preserve the two measured XOR collisions; new sampler widths can place\n    # additional redundant same-net shunt stacks near real retained risers.\n    xor_suppressed=[r for r in suppressed_shunt_vias if r['tag'] in ('x','y')]\n    assert len(xor_suppressed)==2\n    assert {(r['tag'],r['net'],r['retained_riser']['device'])for r in xor_suppressed}=={('x','avss','D21'),('y','avss','D21')}\n    assert all(abs(r['omitted_shunt_center_um'][0]-r['retained_riser']['point'][0])==1. for r in xor_suppressed)\n    for r in suppressed_shunt_vias:\n        keep=r['retained_riser']\n        assert r['tag']==keep['tag'] and r['net']==keep['net']\n        assert r['omitted_shunt_center_um'][1]==keep['point'][1]\n        assert abs(r['omitted_shunt_center_um'][0]-keep['point'][0])<4.\n        assert r['tag'] in ('x','y','sa','sb','sc','sd')",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_parent.py",
+      "baseline_sha256": "f9c52a7fdd0d94a1ef7194941c0faa10edd371a435254e7edceed690b41d2a3b",
+      "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_parent.py",
+      "candidate_sha256": "62e16efd979ac0c561b1a226914d90026a7508269778ef8b3453b32edd875f0b",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_v2",
+          "after": "cdr_retimed_parallel_v3",
+          "count": 3
+        },
+        {
+          "before": "cdr_hybrid_v2_parent",
+          "after": "cdr_parallel_v3_parent",
+          "count": 1
+        },
+        {
+          "before": "pd420_hybrid",
+          "after": "pd484_parallel",
+          "count": 1
+        },
+        {
+          "before": "HYBRID420",
+          "after": "PARALLEL484",
+          "count": 1
+        },
+        {
+          "before": "hybrid420",
+          "after": "parallel484",
+          "count": 1
+        },
+        {
+          "before": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
+          "after": "48e94924c7f39ff36bb5109e9a5cbecb4c2c95d56e40ee21dd402cc69f92d690",
+          "count": 1
+        },
+        {
+          "before": "c63fd6f5c37e927cdb26f29d4b7786bb0ebdbeaeb9f63c1ac09124d13eb113e9",
+          "after": "42e71e6995a4fbcabe4b320a0e0fca2e24c8904bfbfb2f2da7ab62c9a5f36b3e",
+          "count": 1
+        },
+        {
+          "before": "==420",
+          "after": "==484",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_hybrid_v2_parent.py",
+      "baseline_sha256": "a5b238c7d218216995ab0700f28983e64fb1c2748474c707a1aff9cdb34b2bbf",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_parallel_v3_parent.py",
+      "candidate_sha256": "7b4ab825ec95e0c8b520011f377500f0ccb5e921d7cd0b1b6a8256d5fc152cda",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_v2",
+          "after": "cdr_retimed_parallel_v3",
+          "count": 3
+        },
+        {
+          "before": "pd420_hybrid",
+          "after": "pd484_parallel",
+          "count": 1
+        },
+        {
+          "before": "PD420",
+          "after": "PD484",
+          "count": 2
+        },
+        {
+          "before": "len(hits)==100",
+          "after": "len(hits)==116",
+          "count": 1
+        },
+        {
+          "before": "[key] != 420",
+          "after": "[key] != 484",
+          "count": 1
+        },
+        {
+          "before": "                    if extracted_ports(\n",
+          "after": "                    from collections import Counter\n                    census=Counter()\n                    for line in (directory / \"extracted.cir\").read_text().lower().splitlines():\n                        f=line.split()\n                        if not f or f[0][0] not in \"qmr c\".replace(\" \", \"\"):\n                            continue\n                        models=[m for m in (\"npn13g2\",\"sg13_lv_nmos\",\"rppd\",\"cap_cmim\",\"ptap1\") if m in f]\n                        assert len(models)==1, (\"Unexpected extracted primitive\",line)\n                        census[models[0]]+=1\n                    assert dict(census)==build()[\"primitive_census\"], census\n                    step[\"native_primitive_census\"]=dict(census)\n                    if extracted_ports(\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_hybrid_v2_parent.py",
+      "baseline_sha256": "f34f17821762da94e55831546b2f0fa984bfaf831fd5c72112766c8ffd2454f9",
+      "candidate_path": "scripts/cloud_cdr_retimed_parallel_v3_parent.py",
+      "candidate_sha256": "d262277e5f3f9b3edc9a2e27707c09eef3625350b662d85a9e79700784e6b582",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_v2",
+          "after": "cdr_retimed_parallel_v3",
+          "count": 8
+        },
+        {
+          "before": "cdr_hybrid_v2_parent",
+          "after": "cdr_parallel_v3_parent",
+          "count": 2
+        },
+        {
+          "before": "cdr-retimed-hybrid-v2",
+          "after": "cdr-retimed-parallel-v3",
+          "count": 2
+        },
+        {
+          "before": "cdr-hybrid-v2-parent",
+          "after": "cdr-parallel-v3-parent",
+          "count": 1
+        },
+        {
+          "before": "PD420",
+          "after": "PD484",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_hybrid_v2_parent_sources.py",
+      "baseline_sha256": "846ffc4c68d03c7b975bbcf9c4f536bef5a425d4dfa795f63e79bbb6acca748b",
+      "candidate_path": "scripts/check_cdr_parallel_v3_parent_sources.py",
+      "candidate_sha256": "c7bd062e779d51dbda30ca79d140bd28259c5e8ca56a4ee65b83caf95ae2f2e8",
+      "edits": [
+        {
+          "before": "cdr_retimed_hybrid_v2",
+          "after": "cdr_retimed_parallel_v3",
+          "count": 1
+        },
+        {
+          "before": "cdr-hybrid-v2-parent",
+          "after": "cdr-parallel-v3-parent",
+          "count": 1
+        },
+        {
+          "before": "HYBRID420",
+          "after": "PARALLEL484",
+          "count": 1
+        },
+        {
+          "before": "==420",
+          "after": "==484",
+          "count": 1
+        },
+        {
+          "before": "npn13g2=100,sg13_lv_nmos=22,rppd=102,cap_cmim=11,ptap1=185",
+          "after": "npn13g2=116,sg13_lv_nmos=46,rppd=102,cap_cmim=11,ptap1=209",
+          "count": 1
+        },
+        {
+          "before": "def check():",
+          "after": "def check():\n    from check_cdr_hybrid_v2_parent_sources import check as original_check\n    original_check()",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

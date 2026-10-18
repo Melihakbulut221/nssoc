@@ -134,3 +134,12 @@ Run39126125731 at43e3002bbc2f87a523f9cb2a5bb0dc65cbd518b0 restored allfive elect
 ## Native tap overlap repair, pending fresh physical validation
 
 Read-only run39126723857 at5604b9caf2fda8ebda5d56851149deb1d78594c1 reproduced all193markers. The192contact errors locate six local taps shifted onto their own MOS strips; source32/36um electrical topology was not the cause. One same-SUB M4 pair has only0.14um edge separation. The generator now reserves18um between primitive bboxes, rejects localtap overlap with every actualprimitive bbox (1um clearance), and spaces all M4 columns including same-net SUB. Electricalv8 source,54device census,560native rules, unsimplifieddeep/flatLVS and14faults unchanged. This commit triggers fresh cdr-sampler-parallel-physical-cloud; inspect actual result, not workflow submission. No samplerphysical/parent/fullPHY acceptance yet. Mainchip39121691046 and TX39112087217 still in_progress, preserve. All modifications through GitHub API in RAM; localworkspace remains empty.
+
+
+## Authoritative sampler physical pass and new parent484
+
+Run39127236215 at0d73c02a6311a7abf3d99a774a510d2857917829 passed actual560-rule DRC with zero markers, unsimplified deep/flat54-deviceLVS, nativeLEF and all14actualfaults. GDS a361748f617e202e509cb78489c0593d4596200a0c6621f096c01485b2dc7341; bbox1134.69x191.03um. Fullreceipt cdr-sampler-parallel-physical-native-pass-20261018.json. Prior193marker rejection remains archived.
+
+This commit launches cdr-retimed-parallel-v3-parent-cloud: replace exactlyfourold38device sampler leaves with verified54device v8 leaves. Exact sourceplan41cards/16macros, expected484devices =116HBT+46NMOS+102rppd+11MIM+209taps. Allotherleafreceipt hashes and native560rules/deep-flatLVS/fivephysicalfaults remain; add explicit extractedprimitive-kind census. Actualleafshapes must be conserved. Supplyoverlay retains the two verified XOR redundant-via omissions and independently binds any new sampler omissions to actualsame-net retainedrisers within4um. Original420source/failedloadedwave evidence unchanged. No newparent electrical acceptance until actualfreshgeometry/RC/modelbinding and ORIGINALfull loadedearly/late/fault gates pass.
+
+Mainchip39121691046 and TX39112087217 remain in_progress at this checkpoint. Cloud-only; localworkspace empty. Full serialPHY/mainchip/finaltiming remain OPEN.
