@@ -1,3 +1,11 @@
+# Latest: route continuation runtime correction; hybrid406 parent live
+
+Antenna-round2 preparation39106777319 restored the exact round1 ODB and passed the actual native Tcl transform/three controls, but the topology helper could not import odb under plain bundled Python. It did NOT run or restart routing. Exact failure is retained `replay-onehot-round2-python-runtime-failure-20261018.json`. This commit changes only the helper invocation to OpenROAD's embedded Python with explicit before/after/output paths. All original pin/master/net/NDR/2943diode gates,172 initial antennas and final physical gates remain unchanged. The workflow push starts a corrected successor; inspect that exact new job, not the failed old one.
+
+Hybrid406 parent39107027934/sourcee5e4fa609db875df7177b2bfdc772a7395b2b00a is currently live. Inspect native generation/DRC/deep-flatLVS before new406 RC. Hybrid38 leaf is already fully verified within its physical scope. Cloud-only, full PHY/mainchip/final timing OPEN.
+
+Earlier checkpoint follows:
+
 # Latest: verified hybrid38 leaf integrated into new406-device parent candidate
 
 Hybrid leaf39106371033 fully inspected:560DRC zero markers, deep+flat38-device LVS PASS with exact12HBT/3MOS/12R/11taps, LEF PASS and twelve real faults rejected. Full receipt `cdr-hybrid-sampler38-physical-pass-20261018.json`. This commit launches `cdr-retimed-hybrid-parent-cloud.yml`: actual new source with4hybrid leaves,406 devices110HBT/12MOS/102R/11MIM/171taps,41cards,16macros. Preserve alloriginal circuit connections and gates; fresh physical proof required. See `cdr-hybrid-parent-integration-20261018.md`. After actualPASS, implement new406 native planes/binding/fullMIMRC/loaded tests; never reuse394 RC or accept schematic screen as physical timing.

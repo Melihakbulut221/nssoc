@@ -177,7 +177,7 @@ def main():
         proof_path=OUT/'saved-route-topology.json'
         topology_method=ROOT/'scripts/check_onehot_saved_route_topology.py'
         with (OUT/'saved-route-topology.log').open('w')as log:
-            code=subprocess.call(list(map(str,[app,'python',topology_method,'--before',odb,'--after',saved,'--out',proof_path])),cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
+            code=subprocess.call(list(map(str,[app,'openroad','-exit','-python',topology_method])),cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,env={**{k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')},'NSSOC_TOPOLOGY_BEFORE':str(odb),'NSSOC_TOPOLOGY_AFTER':str(saved),'NSSOC_TOPOLOGY_OUT':str(proof_path)})
         if code:print((OUT/'saved-route-topology.log').read_text()[-12000:],flush=True)
         assert code==0,'Actual saved ODB topology proof failed'
         topology=json.loads(proof_path.read_text());assert topology['status']=='PASS_NATIVE_SAVED_ROUTE_TOPOLOGY_ONLY_NOT_TIMING_OR_LVS'

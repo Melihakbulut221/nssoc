@@ -32,7 +32,7 @@ def compare(before,after):
     return dict(original_instances=len(before['instances']),retained_instances=len(before['instances']),added_diode_count=len(added),added_diodes=added,ports=len(before['ports']),nets=len(before['nets']),original_masters_all_pin_connections_nets_ndrs_preserved=True)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--before',type=Path,required=True);p.add_argument('--after',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--before',type=Path,required=True);p.add_argument('--after',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args(['--before',os.environ['NSSOC_TOPOLOGY_BEFORE'],'--after',os.environ['NSSOC_TOPOLOGY_AFTER'],'--out',os.environ['NSSOC_TOPOLOGY_OUT']]if 'NSSOC_TOPOLOGY_BEFORE'in os.environ else None)
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     pinned={str(v):digest(v)for v in (a.before,a.after,Path(__file__))}
     before=capture(a.before);after=capture(a.after);positive=compare(before,after)
