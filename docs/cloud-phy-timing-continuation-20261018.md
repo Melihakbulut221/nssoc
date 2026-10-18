@@ -1,3 +1,11 @@
+# Current: TX column-only physical repair launched alongside existing native jobs
+
+CDR loaded39109172338 and mainchip saved-route39107161430 were verified live; preserve those exact jobs. Independent TX source review found actual low-macro height592.04um forbids old422um row pitch, while maxchild width353.985um plus300um channels fits700um columns. This commit launches `tx-v5-columns-assembly-cloud.yml`: preserve600um rows/31frozen native children/1674devices/719coreemitters/64umAVSS/selector mapping, move parent columns1000 to700um, regenerate actual metal. Expected60connections each300um shorter, total18000um; no electrical pass inferred. Full native560DRC/deep-flatLVS/fivephysicalfaults plus source-delta and new native placement/child-drawing guard required. Old return64 failure227/768 samples and28HBT gates remains retained. After physicalPASS require fresh whole RC/model and original loaded TX gates; no oldRC scaling/reuse.
+
+Cloud-only, full objective OPEN. This is a concrete physical candidate, not closure.
+
+Earlier checkpoint follows:
+
 # Current live handles: original hybrid406 loaded trajectories and mainchip route
 
 Checked 2026-10-18T07:52:15.784989+00:00. Goal turn classification: PROGRESS, followed by verified wait on actual live cloud jobs. Hybrid406 physical/planes/1158terminal bindings/whole RC/MIM audit/composition chain completed and source changes are committed remotely; local workspace remains empty.

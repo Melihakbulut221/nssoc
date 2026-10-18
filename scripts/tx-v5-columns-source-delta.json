@@ -1,0 +1,64 @@
+{
+  "baseline_path": "scripts/cloud_tx_v5_return64_assembly.py",
+  "baseline_sha256": "b82afab00f20dda122c1f3218caf64cdf59779ea03b8ef5c2937dbe14e720508",
+  "candidate_path": "scripts/cloud_tx_v5_columns_assembly.py",
+  "candidate_sha256": "1794b0db5a4f3e0fbef080f5b35730a3b10f7a07e345f2485b5e602faf6fb71e",
+  "edits": [
+    {
+      "before": "--placement-pitch',choices=('original',),default='original'",
+      "after": "--placement-pitch',choices=('compact_columns',),default='compact_columns'",
+      "count": 1
+    },
+    {
+      "before": "a.placement_pitch=='original'",
+      "after": "a.placement_pitch=='compact_columns'",
+      "count": 1
+    },
+    {
+      "before": "a.placement_pitch=='tight'",
+      "after": "a.placement_pitch=='compact_columns'",
+      "count": 3
+    },
+    {
+      "before": "(700.,422.)",
+      "after": "(700.,600.)",
+      "count": 2
+    },
+    {
+      "before": "n['y_um']/422.*600.",
+      "after": "n['y_um']/600.*600.",
+      "count": 1
+    },
+    {
+      "before": "cloud-tx-balanced-v5-return64-assembly",
+      "after": "cloud-tx-v5-columns-assembly",
+      "count": 1
+    },
+    {
+      "before": "nssoc_tx_tree32_budget_balanced_v5_original_return64_core_v1",
+      "after": "nssoc_tx_tree32_budget_balanced_v5_columns_return64_core_v1",
+      "count": 1
+    },
+    {
+      "before": "check_tx_v5_return64_geometry.py",
+      "after": "check_tx_v5_columns_geometry.py",
+      "count": 1
+    },
+    {
+      "before": "exact-return-geometry",
+      "after": "exact-column-geometry",
+      "count": 1
+    },
+    {
+      "before": "return-geometry-delta.json",
+      "after": "column-geometry-delta.json",
+      "count": 1
+    },
+    {
+      "before": "PASS_EXACT_SIX_AVSS_EXPANSIONS_ALL_OTHER_DRAWING_GEOMETRY_UNCHANGED",
+      "after": "PASS_COLUMNS700_ROWS600_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+      "count": 1
+    }
+  ],
+  "scope": "Actual parent column pitch1000 to700um only;600um row pitch and frozen native children/selector topology/64um return widths and native physical gates retained. New native RC and original loaded waveforms required."
+}
