@@ -1,3 +1,12 @@
+## Cloud-only continuation: native runtime launch correction, 2026-10-18
+
+- The local project directory remains empty; no native CAD or simulation process is running locally. Continue API-only source edits and GitHub-hosted execution. Do not restore a local checkout or native results.
+- Mainchip sizing preparation run 39158947092 failed before native sizing: invoking the AppImage from inside its runtime attempted a second FUSE mount (exit 127). Failure evidence remains published by that run.
+- Commit 8e6618d043aecd677c795ca46398ad24fcc5c894 calls OpenROAD from the already verified runtime PATH, records its binary hash, and leaves all geometry, connectivity, logic, and timing requirements unchanged.
+- Replacement preparation: https://github.com/Melihakbulut221/nssoc/actions/runs/39159593744 . Check its actual engineering report before any routing handoff.
+- TX full native waveform run 39158584151 remains active; preserve both nominal and swap_leaf_select jobs. Do not duplicate or restart healthy simulations.
+- Full serial PHY, final mainchip routing/timing and production signoff remain unaccepted. Prior checkpoints below retain all evidence and next steps.
+
 # Current cloud continuation — isolated TX passes physical checks; full waves running
 
 All work remains CLOUD ONLY. Local task workspace stays empty. No local CAD,
