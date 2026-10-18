@@ -1,3 +1,11 @@
+# Latest: verified hybrid38 leaf integrated into new406-device parent candidate
+
+Hybrid leaf39106371033 fully inspected:560DRC zero markers, deep+flat38-device LVS PASS with exact12HBT/3MOS/12R/11taps, LEF PASS and twelve real faults rejected. Full receipt `cdr-hybrid-sampler38-physical-pass-20261018.json`. This commit launches `cdr-retimed-hybrid-parent-cloud.yml`: actual new source with4hybrid leaves,406 devices110HBT/12MOS/102R/11MIM/171taps,41cards,16macros. Preserve alloriginal circuit connections and gates; fresh physical proof required. See `cdr-hybrid-parent-integration-20261018.md`. After actualPASS, implement new406 native planes/binding/fullMIMRC/loaded tests; never reuse394 RC or accept schematic screen as physical timing.
+
+Mainchip saved round1→antenna-round2 continuation39106777319/source8b58f39f3a2dc586579c826aff1cb1bbdcf4c281 is live at last check. Inspect actual native topology proof and172-net remeasurement before claiming continuation works. No new mainchip job should be started while it is live. Full objective OPEN; all native work cloud-only and workspace empty.
+
+Earlier checkpoint follows:
+
 # Latest: saved mainchip route continuation at antenna round2
 
 Native diagnosis39106213346 confirmed DRT39084569446 completed initial routing and round1 with0routingDRC; antenna nets1141→172,2943 actual diodes added. It timed out during round2 routing. Last complete round1 ODB is retained. This commit launches `replay-onehot-antenna-round2-cloud.yml`: require native ODB topology/three controls and exact172 antenna reproduction, then perform only round2 while preserving original maximum8 and zero final gates. No cold restart. Save pre-repair/post-insertion databases and completed route. Inspect actual success/failure; a stage with remaining antenna nets is not closure. `replay-onehot-antenna-continuation-20261018.md` has exact rationale and source bindings.

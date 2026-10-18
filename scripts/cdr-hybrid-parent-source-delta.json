@@ -1,0 +1,166 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_retimed_pd_vi_v1.spice",
+      "baseline_sha256": "5d2f451b0c5d428e7e96bb1b06929e7960a384777ac6b4e6a197c8334b5fcf41",
+      "candidate_path": "hw/soc/analog/pcie/cdr_retimed_hybrid_pd_vi_v1.spice",
+      "candidate_sha256": "6d11a0ad036f1aba5be8b306d75c2c5c6dfc103c845711d63cd6ddbd2e4c2bb6",
+      "edits": [
+        {
+          "before": "nssoc_cdr_retimed_pd_vi_v1",
+          "after": "nssoc_cdr_retimed_hybrid_pd_vi_v1",
+          "count": 2
+        },
+        {
+          "before": "nssoc_rx_sampler_hbt",
+          "after": "nssoc_rx_sampler_hybrid_tail_v1",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cdr_retimed_parent_plan.py",
+      "baseline_sha256": "31a27bc9f103826dedd2b7c56b16565ddedeec92f522219e81e9e5cf55843c91",
+      "candidate_path": "scripts/cdr_retimed_hybrid_parent_plan.py",
+      "candidate_sha256": "237cc432a8f6ccc516553bbea57e640eab7d5d444b0a8afa01c4064c750afecc",
+      "edits": [
+        {
+          "before": "cdr_retimed_pd_vi_v1.spice",
+          "after": "cdr_retimed_hybrid_pd_vi_v1.spice",
+          "count": 1
+        },
+        {
+          "before": "5d2f451b0c5d428e7e96bb1b06929e7960a384777ac6b4e6a197c8334b5fcf41",
+          "after": "6d11a0ad036f1aba5be8b306d75c2c5c6dfc103c845711d63cd6ddbd2e4c2bb6",
+          "count": 1
+        },
+        {
+          "before": "rx_sampler_hbt_v2.spice",
+          "after": "rx_sampler_hybrid_tail_v1.spice",
+          "count": 1
+        },
+        {
+          "before": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
+          "after": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+          "count": 1
+        },
+        {
+          "before": "top='nssoc_rx_sampler_hbt_v2_layout',devices=35",
+          "after": "top='nssoc_rx_sampler_hybrid_tail_layout_v1',devices=38",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_retimed_pd_vi_v1",
+          "after": "nssoc_cdr_retimed_hybrid_pd_vi_v1",
+          "count": 1
+        },
+        {
+          "before": "'nssoc_rx_sampler_hbt'",
+          "after": "'nssoc_rx_sampler_hybrid_tail_v1'",
+          "count": 1
+        },
+        {
+          "before": "==394",
+          "after": "==406",
+          "count": 1
+        },
+        {
+          "before": "expected_devices=394",
+          "after": "expected_devices=406",
+          "count": 1
+        },
+        {
+          "before": "npn13g2=122,rppd=102,cap_cmim=11,ptap1=159",
+          "after": "npn13g2=110,sg13_lv_nmos=12,rppd=102,cap_cmim=11,ptap1=171",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_avss256_base.py",
+      "baseline_sha256": "99164485c73839e825e0d5ddb44fa5429df81ee06af2abc573a3b605bffa05d8",
+      "candidate_path": "scripts/generate_cdr_retimed_hybrid_base.py",
+      "candidate_sha256": "39e6d0346d896a93b3cea6570ff8a63bf0ce7c911c510abc4f52bc4885535b4f",
+      "edits": [
+        {
+          "before": "from cdr_retimed_parent_plan import",
+          "after": "from cdr_retimed_hybrid_parent_plan import",
+          "count": 1
+        },
+        {
+          "before": "scripts/cdr_retimed_parent_plan.py",
+          "after": "scripts/cdr_retimed_hybrid_parent_plan.py",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd394_avss256_base_v1",
+          "after": "nssoc_cdr_pd406_hybrid_base_v1",
+          "count": 1
+        },
+        {
+          "before": "            if kind=='q':count,model=4,'npn13g2'",
+          "after": "            if kind=='m':count,model=4,'sg13_lv_nmos'\n            elif kind=='q':count,model=4,'npn13g2'",
+          "count": 1
+        },
+        {
+          "before": "len(reference)==394",
+          "after": "len(reference)==406",
+          "count": 1
+        },
+        {
+          "before": "PD394",
+          "after": "PD406",
+          "count": 1
+        },
+        {
+          "before": "and394devices",
+          "after": "and406devices",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_parent_v3.py",
+      "baseline_sha256": "9b6972cd9c7c1b153eb57c1dfc58d1f3c5168f764e38c81ae9ce09f24ff9ddbe",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_hybrid_parent.py",
+      "candidate_sha256": "814c6768ef1bc07678d2546e5e394a2f8596a12b68d3ad3ddd679d105eb34ade",
+      "edits": [
+        {
+          "before": "PD394",
+          "after": "PD406",
+          "count": 2
+        },
+        {
+          "before": "nssoc_cdr_retimed_pd394_layout_v3",
+          "after": "nssoc_cdr_pd406_hybrid_tail_v1",
+          "count": 1
+        },
+        {
+          "before": "from cdr_retimed_parent_plan import",
+          "after": "from cdr_retimed_hybrid_parent_plan import",
+          "count": 1
+        },
+        {
+          "before": "len(hits)==122",
+          "after": "len(hits)==110",
+          "count": 1
+        },
+        {
+          "before": "!= 394",
+          "after": "!= 406",
+          "count": 1
+        },
+        {
+          "before": "scripts/cdr_retimed_parent_plan.py",
+          "after": "scripts/cdr_retimed_hybrid_parent_plan.py",
+          "count": 1
+        },
+        {
+          "before": "scripts/generate_cdr_retimed_parent_v2.py",
+          "after": "scripts/generate_cdr_retimed_hybrid_parent.py",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
