@@ -1,3 +1,13 @@
+# Live cloud handles — 2026-10-18 continuation
+
+Goal turn classification: PROGRESS. Full fresh left-output CDR physical/RC/model chain completed and original loaded tests are running as39102038200 at89c79686f7140e8d4700048fe825acf984864432. Syntax/source-delta guard passed; four native cases are live. Preserve these handles; do not start duplicates.
+
+TX return64 remains electrically rejected. Fresh path diagnosis39102156220 at87dec08e69f69a4f9e788642ab1d297092a803dd is live after exact builder-source guard passed. Its predecessor39102038162 failed before waveform evaluation because the reader referenced the previous builder filename. Exact log/summary/manifest failure is retained in `tx-return64-reader-source-failure-20261018.json`; the successor binds the actual module pinned by the waveform. No numerical result or acceptance threshold changed. Once diagnosis succeeds, inspect all28 failed native HBT terminal voltages and actual interface groups before any next TX geometry/device change; old8-device mapping is stale.
+
+Mainchip detailed route39084569446 remains live at this check, job117548333285. No routed timing result yet. All compute remains GitHub-hosted. Local workspace is empty. Eight-hour heartbeat remains ACTIVE/cloud-only and now reaches this current checkpoint from CLOUD_RESUME.md. Full serial Gen3 x4, mainchip final routed verification and setup/hold closure are not yet achieved.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — full left-output CDR model under original loaded tests
 
 Cloud only; local workspace remains empty. Complete fresh chain: physical39100869702; planes39101130061; wire inputs39101294329; binding39101439659; wire RC39101439688; MIM capture39101632182; strict raw audit39101758700; composition39101898339 at89c27652c1802afd7336278872964cc418edbb9a. Composition394devices9946R7771C,11 intrinsic MIM models,15 fault controls. Full receipts retained. Physical top `nssoc_cdr_pd394_left_outputs_v1`, model `nssoc_cdr_pd394_left_mim_wire_v1`.
