@@ -1,0 +1,9 @@
+# TX fast-stage placement candidate
+
+The actual full32 native return-repair waveform remains rejected:181/768wrong-sign output samples,24HBT headroom failures, noMOS failures. Read-only path review39153187411 reproduced every original gate. Native inputs a/b have1366wrong-sign samples, level4has18, level8/16andCMOS have zero. Device/extrema/DC review39153635231 reproduced all604HBT metrics; final-tail effective return resistance remains4.8942/4.9081ohm. This DC measurement does not replace transient RC.
+
+Actual parent layout places a at y2100um and b at y6900um while f is at y4500um. The fast-stage candidate moves a/b to4200/4800um; p4_0,p4_2,p4_1,p4_3 to3600,4200,4800,5400um. It regenerates real parent conductors with unchanged frozen cells, circuit,1674devices,719HBT emitters, selector topology, clocks, reference currents, dimensions and native physical gates. All other cell rows and all column positions remain unchanged. This is a placement hypothesis, not an electrical pass.
+
+The independent checker proves the exact prescribed native placements, all child drawing layers, unchanged reference cards and60logical connections. It checks actual per-route Y endpoints and Manhattan length against the prescribed row changes and requires all12routes feeding f/a/b to shorten relative to the prior compact-column coordinates. Some earlier slower-stage routes grow; no global delay improvement is assumed. It also rejects wrong column, moved row and actual removed child conductor, and checks native body separation.
+
+Fresh native DRC/LVS, new raw RC/terminal binding and the complete original34ns/256bit waveform with all interface and device gates are required. No source-bit oracle, sampling phase or latency is adjusted. Return routing dimensions are retained to isolate the placement change. FullPHY and mainchip acceptance remain open.
