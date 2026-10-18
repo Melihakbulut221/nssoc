@@ -1,3 +1,11 @@
+# Current: actual XOR native reference/tail repair launched in cloud
+
+New `cdr-xor-hybrid-tail-v1-cloud.yml` screens only three native replacements in `cdr_xor_core_hybrid_tail_v1.spice`: original reference XD0009 becomes 8um/.3um LVNMOS; two original Nx8 tails XD0049/XD0053 become64um/.3um LVNMOS. All16 remaining data/selector HBTs,8loads and27finite body contacts retained; separate SUB/AVSS. Source-delta guard and three actual corruptions required. Five native cases: nominal/hot-low/cold-high/outputswap/biasoff; original500uA bias,256two-input PRBS bits/8GT/s,original sampling phases and100mV plus37.5pssettling, allHBT/MOS bounds including1V VBE. This is an isolated component feasibility screen, not existing fullparent/nativephysicalmodel; preserve actual failure and do not relabel parent acceptance.
+
+Select18 physical/component proofs passed and retained below, but newselect and newXOR still require actual fullparent integration/freshRC/loadedcapture. Retimed sampler input attenuation remains another repair. Existing TX39112087217 andmainchipround3 39111280543 verifiedlive; preserve them. FullserialPHY/routedchipacceptance/finalsetuphold OPEN. AllCAD/cloud-only;workspaceempty. Goalturn PROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual hybrid select18 leaf passes physical and isolated component gates
 
 Physical39113006603/source4f062550bde39df936e3a8ce2635f9c896a64dfa: new2HBT/2LVNMOS/4rppd/10ptap=18device GDS,466x194.63um; all560DRC categories0markers, unsimplifieddeep/flat18deviceLVS matched, seven realfaults rejected (includingMOSwidth/gate), sourcesunchanged. Receipt `cdr-select-hybrid-v2-physical-pass-20261018.json` pins summary652987657 SHA23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb and parts652987769. TOPnssoc_cdr_select_hybrid_tail_layout_v2, eightlowercaseports, separateSUB/AVSS, actuallocalMOSbodycontacts. No leafRC, postlayoutwave or parentintegration yet.

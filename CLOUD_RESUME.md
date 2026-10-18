@@ -1,7 +1,7 @@
 # Current cloud-only continuation
 
-Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. No local checkout/CAD/archive; localworkspaceempty.
+Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. No local checkout/CAD/archive; local workspace empty.
 
-New actual CDR select18 leaf passed native560DRC/deep-flatLVS/sevenfaults (39113006603) and independent5casecomponent screen (39113006592). It is not yet composed into fullPD. Complete remainingXORtail/retimedinput repairs and actualparentintegration withfreshRC/loadedgates. Exactnextsourcepaths/receipts inlinkedrecord.
+New native XOR MOS-reference/tail candidate workflow `cdr-xor-hybrid-tail-v1-cloud.yml` is launched by this commit; inspect actual source-bound results before physical integration. Select18 physical/component proofs passed but fullparent remains open. Retimed input attenuation remains.
 
-TX fullwire39112087217 andmainchipantenna-round3 39111280543 areexistinglivejobs; preserve them. Do not rerun completed rounds. FullserialPHY/routedchipacceptance/finalsetuphold remainOPEN; no fullPHY/productionclaim.
+TX39112087217 and mainchipantenna-round3 39111280543 are existing live jobs; preserve them. Full serialPHY/routedchipacceptance/finalsetuphold remain OPEN.
