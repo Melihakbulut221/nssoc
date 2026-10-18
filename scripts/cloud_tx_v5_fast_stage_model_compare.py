@@ -71,7 +71,8 @@ def main():
         # independently hashed primitive positions inside unchanged named macros,
         # before looking at any electrical node or parameter values.
         assert physical_keys['baseline'].keys()==physical_keys['candidate'].keys()
-        rename={physical_keys['candidate'][k]:physical_keys['baseline'][k]for k in physical_keys['baseline']}
+        original_names={row[0].lower():row[0]for row in a[1:-1]};assert len(original_names)==1674
+        rename={physical_keys['candidate'][k]:original_names[physical_keys['baseline'][k]]for k in physical_keys['baseline']}
         assert len(rename)==len(set(rename.values()))==1674
         assert set(rename)=={r[0].lower()for r in b[1:-1]}
         b=copy.deepcopy(b)
@@ -89,6 +90,12 @@ def main():
             try:compare(a,bad)
             except AssertionError as e:controls.append(dict(fault=fault,rejected=True,reason=str(e)))
             else:raise AssertionError('Real compact model fault accepted: '+fault)
+        # Actual physical identity corruption must also fail, independently of node spelling.
+        bad=copy.deepcopy(b);left=next(row for row in bad[1:-1]if 'npn13g2'in row);right=next(row for row in bad[1:-1]if 'rppd'in row)
+        left[0],right[0]=right[0],left[0]
+        try:compare(a,bad)
+        except AssertionError:result['physical_identity_swap_rejected']=True
+        else:raise AssertionError('Wrong physical-device correspondence accepted')
         assert len(controls)==3
         result.update(status='PASS_NATIVE1674_COMPACT_MODEL_TOPOLOGY_EQUIVALENCE_WITH_THREE_FAULTS',controls=controls)
     except BaseException as e:result.update(status='FAIL_COMPACT_MODEL_COMPARISON',error=repr(e));raise
