@@ -1,0 +1,88 @@
+{
+  "baseline_path": "scripts/cloud_cdr_hybrid_mim_loaded.py",
+  "baseline_sha256": "d4fa5fb8299ee56cdeff4f5f6b918a08060acfcaa60cb27a40b56e7378a9f008",
+  "candidate_path": "scripts/cloud_cdr_hybrid_v2_mim_loaded.py",
+  "candidate_sha256": "238a2dfd391f44b27ab0bcbfe1317639aa0b01e99bef7de83039a31ef5b1d235",
+  "edits": [
+    {
+      "before": "406",
+      "after": "420",
+      "count": 12
+    },
+    {
+      "before": "9970",
+      "after": "2530",
+      "count": 3
+    },
+    {
+      "before": "7795",
+      "after": "3270",
+      "count": 3
+    },
+    {
+      "before": "pd420_hybrid_mim_wire_v1",
+      "after": "pd420_hybrid_mim_wire_v2",
+      "count": 1
+    },
+    {
+      "before": "cdr-hybrid-mim-loaded",
+      "after": "cdr-hybrid-v2-mim-loaded",
+      "count": 1
+    },
+    {
+      "before": "cdr-hybrid-mim-composition",
+      "after": "cdr-hybrid-v2-mim-composition",
+      "count": 2
+    },
+    {
+      "before": "cdr-retimed-hybrid-planes",
+      "after": "cdr-retimed-hybrid-v2-planes",
+      "count": 2
+    },
+    {
+      "before": "cdr-retimed-hybrid-binding",
+      "after": "cdr-retimed-hybrid-v2-binding",
+      "count": 1
+    },
+    {
+      "before": "(Decimal('8e-6'),Decimal('32e-6'))",
+      "after": "(Decimal('8e-6'),Decimal('32e-6'),Decimal('64e-6'))",
+      "count": 1
+    },
+    {
+      "before": "npn13g2=110,sg13_lv_nmos=12,rppd=102,cap_cmim=11,ptap1=171",
+      "after": "npn13g2=100,sg13_lv_nmos=22,rppd=102,cap_cmim=11,ptap1=185",
+      "count": 1
+    },
+    {
+      "before": "for bias in ('ira','irb','irc','ird'):",
+      "after": "for bias in ('ira','irb','irc','ird','irx','iry','ibs0','ibs1'):",
+      "count": 1
+    },
+    {
+      "before": "assert len(found)==2;mos_tails+=found",
+      "after": "assert len(found)==(1 if bias.startswith('ibs')else 2);mos_tails+=found",
+      "count": 1
+    },
+    {
+      "before": "for bias in ('ibda','ibdc','ibs0','ibs1'):",
+      "after": "for bias in ('ibda','ibdc'):",
+      "count": 1
+    },
+    {
+      "before": "assert len(tails)==4 and len(mos_tails)==8",
+      "after": "assert len(tails)==2 and len(mos_tails)==14",
+      "count": 1
+    },
+    {
+      "before": "assert len(mos_checks)==12 and len(mos_tails)==8",
+      "after": "assert len(mos_checks)==22 and len(mos_tails)==14",
+      "count": 1
+    },
+    {
+      "before": "110HBT12LVNMOS102rppd11MIM171contacts",
+      "after": "100HBT22LVNMOS102rppd11MIM185contacts",
+      "count": 1
+    }
+  ]
+}
