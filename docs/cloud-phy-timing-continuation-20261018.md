@@ -593,3 +593,7 @@ Both RCX/STA39117700521 and PD420 model binding39118454522 completed. New pinned
 ## Fresh PD420 loaded native campaign39119999874
 
 The full new RC/model chain is now verified through composition39119795848; raw audit39119562797 passed22controls and composition passed19. Native loaded run39119999874 at9983399ba530ee13708be851b94dd8bd91d4d3b9 has four live native trajectories and source-delta controls passed. `CLOUD_RESUME.md` now replaces stale dispatch prose with exact live handles, all receipts, original remaining waveform gates and concrete routed timing causes. TX39112087217 is still live. Local task directory remains empty. Full goal OPEN.
+
+## Current native sampler repair and authoritative checkpoint
+
+CLOUD_RESUME.md has been rewritten around current verified handles and supersedes older live-status paragraphs above. PD420 full-parent remains rejected, native50 mainchip route39121691046 and full-wireTX39112087217 are live. Native sampler v3 fixed invalidNx16/startup, v4 passed nominal/cold/device/data but hotfourVCEfail; native review39124255052 reconstructs exact extrema. New v5 only strengthens actual slave emitter bleeds, retaining every original waveform/device gate and1pF stress. Follow its exact cloud job before new geometry. All source changes use GitHub API; no local checkout/artifacts/CAD.
