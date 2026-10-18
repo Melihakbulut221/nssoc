@@ -113,7 +113,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_risers.py",
       "baseline_sha256": "8a20854668fa808ef80cc599e43f767bae85c10ad24753ae043411886bf0e6b6",
       "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_risers.py",
-      "candidate_sha256": "3cf7f802a2af1caf07ca144f8570ba2cd481b02c3cb23a5163f7908dab72da69",
+      "candidate_sha256": "2c85ef942582f4d9367507f5c36375ba037606b1ec449d4ed165e035167bd264",
       "edits": [
         {
           "before": "cdr_retimed_hybrid_v2",
@@ -159,6 +159,11 @@
           "before": "abs(r['point'][0]-x)<(5. if kind=='sampler' else 4.)",
           "after": "abs(r['point'][0]-x)<(5. if placed['kind']=='sampler' else 4.)",
           "count": 1
+        },
+        {
+          "before": "            overlay.insert(pya.DCellInstArray(c.cell_index(),pya.DTrans(vx,vy)))\n            # Measured TM1.b failures: these three actual sampler rails pass\n            # 0.085/0.965/1.17um from fixed QP/QN via patches (minimum1.64um).\n            # Keep both original electrical endpoints and shift only the span.\n            shift=2.0 if kind=='sampler' and route['device'] in ('M_T3','S_T0','S_RP') else 0.0\n            rx=x+shift\n            riser=pya.DBox(rx-1.6,sy-1.6,rx+1.6,ey+1.6)\n            overlay.shapes(L.layer(126,0)).insert(riser)\n            bridges=[]\n            if shift:\n                for by in (sy,ey):\n                    bridge=pya.DBox(x-1.6,by-1.6,rx+1.6,by+1.6)\n                    overlay.shapes(L.layer(126,0)).insert(bridge);bridges.append(str(bridge))\n            via(x,ey)\n            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser),span_shift_um=shift,new_m6_endpoint_bridges_um=bridges))\n    shifted={(r['tag'],r['device']) for r in risers if r['span_shift_um']}\n    assert shifted=={(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}\n    assert all(len(r['new_m6_endpoint_bridges_um'])==2 for r in risers if r['span_shift_um'])",
+          "after": "            # Compare against REAL existing M6, including child QP/QN via\n            # patches and already inserted supply patches/risers. Even a\n            # DRC-clean merged conductor may short different logical nets.\n            blockers=(pya.Region(top.begin_shapes_rec(L.layer(126,0)))+\n                      pya.Region(overlay.begin_shapes_rec(L.layer(126,0)))).merged()\n            clearance=round(1.645/L.dbu)  # native1.64um + one5nm routing grid\n            shift=0.0;clearance_checked=False;bridges=[]\n            def span(offset):\n                rx=x+offset\n                vertical=pya.DBox(rx-1.6,sy-1.6,rx+1.6,ey+1.6)\n                joins=[] if offset==0 else [pya.DBox(min(x,rx)-1.6,by-1.6,max(x,rx)+1.6,by+1.6)for by in (sy,ey)]\n                reg=pya.Region(vertical.to_itype(L.dbu))\n                for join in joins:reg+=pya.Region(join.to_itype(L.dbu))\n                return vertical,joins,reg.merged()\n            if kind=='sampler':\n                chosen=None\n                for step in range(2001):\n                    for candidate in ([0.]if step==0 else[step*.005,-step*.005]):\n                        vertical,joins,reg=span(candidate)\n                        if vertical.left<bounds.left or vertical.right>bounds.right:continue\n                        if (reg.sized(clearance)&blockers).is_empty():\n                            chosen=(candidate,vertical,joins);break\n                    if chosen is not None:break\n                assert chosen is not None,('No actual M6 clearance corridor',tag,net,route['device'])\n                shift,riser,joins=chosen;clearance_checked=True\n                assert (span(shift)[2].sized(clearance)&blockers).is_empty()\n            else:riser,joins,_=span(0.)\n            # Actual original M4 start and M5 supply end remain connected.\n            overlay.insert(pya.DCellInstArray(c.cell_index(),pya.DTrans(vx,vy)))\n            overlay.shapes(L.layer(126,0)).insert(riser)\n            for bridge in joins:\n                overlay.shapes(L.layer(126,0)).insert(bridge);bridges.append(str(bridge))\n            via(x,ey)\n            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser),span_shift_um=shift,new_m6_endpoint_bridges_um=bridges,actual_m6_clearance_checked=clearance_checked,clearance_um=1.645 if clearance_checked else None))\n    shifted={(r['tag'],r['device'])for r in risers if r['span_shift_um']}\n    assert {(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}<=shifted\n    assert all(r['actual_m6_clearance_checked'] for r in risers if r['kind']=='sampler')\n    assert all(r['span_shift_um']==0 for r in risers if r['kind']!='sampler')\n    assert all(len(r['new_m6_endpoint_bridges_um'])==2 and abs(r['span_shift_um'])<=10 for r in risers if r['span_shift_um'])",
+          "count": 1
         }
       ]
     },
@@ -166,7 +171,7 @@
       "baseline_path": "scripts/generate_cdr_retimed_hybrid_v2_parent.py",
       "baseline_sha256": "f9c52a7fdd0d94a1ef7194941c0faa10edd371a435254e7edceed690b41d2a3b",
       "candidate_path": "scripts/generate_cdr_retimed_parallel_v3_parent.py",
-      "candidate_sha256": "b4240c45435364e9a46f81c02119ac498d095efa0d7854adacd4e3dee68a9ef6",
+      "candidate_sha256": "22f04187d600c184c924a48cfce7b8e24079268574d4c295d0f7b92c0374441e",
       "edits": [
         {
           "before": "cdr_retimed_hybrid_v2",
@@ -221,6 +226,11 @@
         {
           "before": "e9c3fa6553d797fec0c216c0ae4d3e6d9d4759666a0b0e77e7160c30a5eaa116",
           "after": "3cf7f802a2af1caf07ca144f8570ba2cd481b02c3cb23a5163f7908dab72da69",
+          "count": 1
+        },
+        {
+          "before": "3cf7f802a2af1caf07ca144f8570ba2cd481b02c3cb23a5163f7908dab72da69",
+          "after": "2c85ef942582f4d9367507f5c36375ba037606b1ec449d4ed165e035167bd264",
           "count": 1
         }
       ]

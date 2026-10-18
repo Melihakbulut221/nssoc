@@ -120,24 +120,45 @@ def generate(out):
             c=L.create_cell('via_stack','SG13_dev',dict(b_layer='Metal4',t_layer='TopMetal1',vn_columns=2,vn_rows=1,vt1_columns=2,vt1_rows=1))
             assert c is not None and not c.is_empty()
             b=c.dbbox();vx=round((x-b.center().x)/.005)*.005;vy=round((sy-b.center().y)/.005)*.005
+            # Compare against REAL existing M6, including child QP/QN via
+            # patches and already inserted supply patches/risers. Even a
+            # DRC-clean merged conductor may short different logical nets.
+            blockers=(pya.Region(top.begin_shapes_rec(L.layer(126,0)))+
+                      pya.Region(overlay.begin_shapes_rec(L.layer(126,0)))).merged()
+            clearance=round(1.645/L.dbu)  # native1.64um + one5nm routing grid
+            shift=0.0;clearance_checked=False;bridges=[]
+            def span(offset):
+                rx=x+offset
+                vertical=pya.DBox(rx-1.6,sy-1.6,rx+1.6,ey+1.6)
+                joins=[] if offset==0 else [pya.DBox(min(x,rx)-1.6,by-1.6,max(x,rx)+1.6,by+1.6)for by in (sy,ey)]
+                reg=pya.Region(vertical.to_itype(L.dbu))
+                for join in joins:reg+=pya.Region(join.to_itype(L.dbu))
+                return vertical,joins,reg.merged()
+            if kind=='sampler':
+                chosen=None
+                for step in range(2001):
+                    for candidate in ([0.]if step==0 else[step*.005,-step*.005]):
+                        vertical,joins,reg=span(candidate)
+                        if vertical.left<bounds.left or vertical.right>bounds.right:continue
+                        if (reg.sized(clearance)&blockers).is_empty():
+                            chosen=(candidate,vertical,joins);break
+                    if chosen is not None:break
+                assert chosen is not None,('No actual M6 clearance corridor',tag,net,route['device'])
+                shift,riser,joins=chosen;clearance_checked=True
+                assert (span(shift)[2].sized(clearance)&blockers).is_empty()
+            else:riser,joins,_=span(0.)
+            # Actual original M4 start and M5 supply end remain connected.
             overlay.insert(pya.DCellInstArray(c.cell_index(),pya.DTrans(vx,vy)))
-            # Measured TM1.b failures: these three actual sampler rails pass
-            # 0.085/0.965/1.17um from fixed QP/QN via patches (minimum1.64um).
-            # Keep both original electrical endpoints and shift only the span.
-            shift=2.0 if kind=='sampler' and route['device'] in ('M_T3','S_T0','S_RP') else 0.0
-            rx=x+shift
-            riser=pya.DBox(rx-1.6,sy-1.6,rx+1.6,ey+1.6)
             overlay.shapes(L.layer(126,0)).insert(riser)
-            bridges=[]
-            if shift:
-                for by in (sy,ey):
-                    bridge=pya.DBox(x-1.6,by-1.6,rx+1.6,by+1.6)
-                    overlay.shapes(L.layer(126,0)).insert(bridge);bridges.append(str(bridge))
+            for bridge in joins:
+                overlay.shapes(L.layer(126,0)).insert(bridge);bridges.append(str(bridge))
             via(x,ey)
-            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser),span_shift_um=shift,new_m6_endpoint_bridges_um=bridges))
-    shifted={(r['tag'],r['device']) for r in risers if r['span_shift_um']}
-    assert shifted=={(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}
-    assert all(len(r['new_m6_endpoint_bridges_um'])==2 for r in risers if r['span_shift_um'])
+            risers.append(dict(tag=tag,kind=kind,net=net,device=route['device'],m4_start_um=[x,sy],supply_end_um=[x,ey],new_m6_box_um=str(riser),span_shift_um=shift,new_m6_endpoint_bridges_um=bridges,actual_m6_clearance_checked=clearance_checked,clearance_um=1.645 if clearance_checked else None))
+    shifted={(r['tag'],r['device'])for r in risers if r['span_shift_um']}
+    assert {(tag,device)for tag in ('sa','sb','sc','sd')for device in ('M_T3','S_T0','S_RP')}<=shifted
+    assert all(r['actual_m6_clearance_checked'] for r in risers if r['kind']=='sampler')
+    assert all(r['span_shift_um']==0 for r in risers if r['kind']!='sampler')
+    assert all(len(r['new_m6_endpoint_bridges_um'])==2 and abs(r['span_shift_um'])<=10 for r in risers if r['span_shift_um'])
     actual_riser_ends={(r['tag'],r['net'],r['device'],tuple(r['supply_end_um']))for r in risers}
     assert {(r['tag'],r['net'],r['device'],tuple(r['point']))for r in planned_riser_ends}==actual_riser_ends
     # Preserve the two measured XOR collisions; new sampler widths can place
