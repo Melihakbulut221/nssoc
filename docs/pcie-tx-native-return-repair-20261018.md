@@ -22,3 +22,8 @@ All source changes, receipts and artifacts are cloud-only. The original failed d
 Physical run 39133699199 rejected the combined change: unsimplified LVS found 1,674 devices on each side but a connectivity mismatch. Native cluster review 39134192384 then probed all 534 public/child reference planes and found AVSS shorted to SUB, with no opened logical net. The failed GDS and complete native records remain immutable cloud artifacts.
 
 The next candidate retains the proposed 128 um final-column trunk at its outward location but restores the local emitter strap and its top via to the exact original 4 um / 2-by-2 geometry. This isolates the local widening from the parent-trunk change and requires fresh full native physical gates. No successful geometry or RC reduction is assumed. The local return contribution still needs repair after the isolated result; the full serial PHY objective remains unchanged.
+
+
+## Isolated trunk physical and extraction result
+
+Physical39134428243 passed all560 DRC categories with zero violations,1674-device deep/flat LVS and five actual geometry faults. Independent39134989214 reconstructed all25 drawing layers exactly from the old geometry plus three parent rectangles and two identical via moves. All child devices and signal routes are unchanged. Fresh extraction39135318667 passed native conductor ownership, exact R/value and per-point/mutual-C conservation and13 raw fault controls. It contains116611R and77471C; equal counts alone do not imply equal parasitic values. The new composition and static resistance comparison preserve the original checkers. Electrical waveform acceptance remains open.

@@ -265,3 +265,6 @@ CDRnextaction launched cdr-parallel-v3-power-review-cloud: actualPD4843538R/4038
 
 
 IndependentTXgeometry39134989214 PASSED all25drawinglayers. Actualdifference ONLY threeparentrectangles(finalM6trunk,M7stub,bottomM7bus)andtwoidenticalnativeviamoves80um; everyotherpolygon/31placements/162publicports/60signals/1674referencecards unchanged. Threeactualgeometrymutationsrejected. Receipt tx-v5-return-geometry-pass-20261018.json. Thiscommit launches tx-v5-return-repair-extraction-cloud with immutablephysicalreceipt39134428243 andindependentgeometryproof; originalnativegraph/probe/capconservation/13rawfaults unchanged. WaitactualfreshRCcounts/values thencomposition/newfullwaves. No reuseold116611R77471C.
+
+
+TX fresh extraction39135318667 PASSED original native graph/capacitance checks and13 raw corruptions with1674devices/116611R/77471C. Counts equal baseline but actual new values remain to be assessed. Receipt tx-v5-return-repair-extraction-pass-20261018.json. This commit launches tx-v5-return-repair-composition-cloud: original full native device binding/reparse/six composition faults/two physical endpoint faults, followed by unchanged sparse return solver and KCL/energy/reciprocity comparing real E114/E115 and all tail returns to baseline39133064102. All workcloudonly. No new waveform accepted; fullPHY/timing stillOPEN.
