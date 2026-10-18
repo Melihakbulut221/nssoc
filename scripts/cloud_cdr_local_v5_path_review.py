@@ -182,6 +182,23 @@ def main():
                     delta=stats(v(global_node(a['node']))-v(global_node(b['node'])))
                     drops.append(dict(logical_net=g['logical_net'],collector=a,base=b,wire_voltage_difference=delta))
         r['collector_to_base_wire_differences']=sorted(drops,key=lambda x:x['wire_voltage_difference']['rms_v'],reverse=True)
+        # Separate the measured intrinsic load drop from the actual wire drop
+        # to each collector. No DC current approximation or adjusted sampling.
+        load_reviews=[];load_ids=[]
+        for name,dev in records.items():
+            if dev['model']!='rppd':continue
+            if parser.number(dev['parameters']['w'])!=parser.number('32u') or parser.number(dev['parameters']['l'])!=parser.number('2.12u'):continue
+            ts={z['terminal']:z for z in dev['terminals']};a=ts['rppd_1'];b=ts['rppd_2']
+            assert a['native_net']=='avdd'
+            sinks=[q for q in hbts if q['terminals']['C']['native_cluster']==b['native_cluster'] and q['terminals']['C']['native_net']==b['native_net']]
+            assert len(sinks)==2
+            load_ids.append(name)
+            va,vb=v(global_node(a['node'])),v(global_node(b['node']))
+            for q in sinks:
+                vc=v(q['terminals']['C']['node'])
+                load_reviews.append(dict(load=name,collector=q['device'],native_net=b['native_net'],logical_net=logical.get((b['native_cluster'],b['native_net'])),native_parameters=dev['parameters'],supply_wire_drop=stats(v('avdd')-va),intrinsic_load_drop=stats(va-vb),load_to_collector_wire_drop=stats(vb-vc),total_external_to_collector_drop=stats(v('avdd')-vc)))
+        assert len(load_ids)==16 and len(set(load_ids))==16 and len(load_reviews)==32
+        r['sampler_load_and_collector_wire_drop_review']=load_reviews
         assert all(sha(source/n)==prior['outputs'][n]for n in selected)
         r['sources_unchanged']=True;r['status']='COMPLETE_NATIVE_CDR_HYBRID_PATH_DIAGNOSIS_ORIGINAL_GATES_REMAIN_FAILED'
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
