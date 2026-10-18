@@ -1,0 +1,43 @@
+{
+  "base_sha256": "aeeff63b92d5ccb55847af6045e7f318211c64175946fb6aa03e15fbd0835bff",
+  "candidate_sha256": "31bb11575a69a2b2fbf8aa8a1b02100000f52ee04b521ca309883b9514e86efc",
+  "boundary_helper_sha256": "bc151a51b4d376bb7fcbfc032f2e7fe1bea1f597bb63fab681002dd06bfaa3e5",
+  "edits": [
+    {
+      "before": "import cloud_cdr_pd_vi as legacy",
+      "after": "import cloud_cdr_pd_vi as legacy\nimport cdr_v3_boundary_experiment as boundary"
+    },
+    {
+      "before": "p.add_argument('--case',choices=CASES,required=True);args=p.parse_args()",
+      "after": "p.add_argument('--case',choices=['nominal_early','nominal_late'],required=True);p.add_argument('--profile',choices=list(boundary.PROFILES),required=True);args=p.parse_args()"
+    },
+    {
+      "before": "out=ROOT/('cloud-cdr-mim-loaded-v3-'+args.case)",
+      "after": "out=ROOT/('cloud-cdr-v3-bias-screen-'+args.profile+'-'+args.case)"
+    },
+    {
+      "before": "    save()\n    try:\n",
+      "after": "    r['boundary_experiment']=dict(profile=args.profile,parameters=boundary.PROFILES[args.profile],physical_bias_generator_integrated=False,scope='Only external clock common mode and/or select reference current varies; actual GDS, all9979R7761C394devices, bits, edge times and original engineering gates unchanged. Diagnostic, not original-boundary acceptance.')\n    save()\n    try:\n        from check_cdr_v3_bias_screen import check as check_source\n        r['source_change_controls']=check_source()\n        r['boundary_controls']=boundary.controls()\n"
+    },
+    {
+      "before": "('.001)'if bias.startswith('ib')else'.0005)')",
+      "after": "boundary.bias(bias,args.profile)"
+    },
+    {
+      "before": "legacy.clock(scale,True,args.case=='clock_stopped')",
+      "after": "boundary.clock(scale,True,False,args.profile)"
+    },
+    {
+      "before": "legacy.clock(scale,False,args.case=='clock_stopped')",
+      "after": "boundary.clock(scale,False,False,args.profile)"
+    },
+    {
+      "before": "[Path(__file__),Path(legacy.__file__),model,pinpath,pp,",
+      "after": "[Path(__file__),Path(boundary.__file__),ROOT/'scripts/check_cdr_v3_bias_screen.py',ROOT/'scripts/cdr-v3-bias-screen-source-delta.json',ROOT/'scripts/cloud_cdr_mim_loaded_v3.py',Path(legacy.__file__),model,pinpath,pp,"
+    },
+    {
+      "before": "r['status']='PASS_WHOLE_MIM_PD394_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF'if passed else'REJECTED_WHOLE_MIM_PD394_LOADED'",
+      "after": "r['status']='PASS_EXTERNAL_BOUNDARY_EXPERIMENT_REQUIRES_PHYSICAL_BIAS_AND_ORIGINAL_INTERFACE_REVIEW'if passed else'REJECTED_EXTERNAL_BOUNDARY_EXPERIMENT'"
+    }
+  ]
+}
