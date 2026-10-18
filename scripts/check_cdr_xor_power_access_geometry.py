@@ -36,7 +36,14 @@ def main():
         c=e.create_cell('nmos','SG13_dev',dict(w=params['w'],l=params['l'],ng=1));assert c is not None
         pins=sorted([s.dbbox().transformed(pya.DTrans(x,y))for s in c.each_shape(e.layer(8,2))],key=lambda b:b.center().x)
         assert len(pins)==2;pin=pins[0];assert record['nets'][2]=='avss'
-        nativepin=pya.Region(pin.transformed(pya.DTrans(0,dy)).to_itype(e.dbu));assert (nativepin-before[(8,0)]).is_empty()
+        nativepin=pya.Region(pin.transformed(pya.DTrans(0,dy)).to_itype(e.dbu))
+        native_m1=pya.Region(c.begin_shapes_rec(e.layer(8,0))).transformed(pya.Trans(round(x/e.dbu),round((y+dy)/e.dbu))).merged()
+        pin_metal=(nativepin & native_m1).merged()
+        diagnostic=dict(device=record['instance'],annotation_um=str(pin),origin_y_um=dy,native_m1_area_dbu2=native_m1.area(),annotation_area_dbu2=nativepin.area(),annotation_outside_native_m1_dbu2=(nativepin-native_m1).area(),native_m1_outside_baseline_dbu2=(native_m1-before[(8,0)]).area(),pin_actual_metal_area_dbu2=pin_metal.area())
+        print(json.dumps(diagnostic),flush=True)
+        assert not pin_metal.is_empty(),'Source annotation has no actual native metal'
+        assert (native_m1-before[(8,0)]).is_empty(),('Recreated native MOS Metal1 drawing is absent from baseline',diagnostic)
+
         sx=round(pin.center().x/.005)*.005;lower=round((pin.bottom+.4)/.005)*.005;upper=round((pin.top-1.2)/.005)*.005;middle=round(pin.center().y/.005)*.005
         mandatory={lower,middle,upper};periodic={round((lower+4*k)/.005)*.005 for k in range(1,100)if lower+4*k<upper}
         ys=sorted(mandatory|{v for v in periodic if all(abs(v-q)>=1.5 for q in mandatory)})
@@ -49,7 +56,7 @@ def main():
             dx=round((sx-bb.center().x)/.005)*.005;ty=round((yy-bb.center().y)/.005)*.005+dy
             overlay.insert(pya.DCellInstArray(stack.cell_index(),pya.DTrans(dx,ty)))
         box(30,sx-.2,lower-.2,sx+.2,upper+.2)
-        source_records.append(dict(device=record['instance'],source_x_um=sx,via_y_um=ys,added_vias=len(ys)-1))
+        source_records.append(dict(device=record['instance'],source_x_um=sx,via_y_um=ys,added_vias=len(ys)-1,native_pin_diagnostic=diagnostic))
     assert len(source_records)==3
     loads={v['instance']for v in old['core_devices']if v['model']=='rppd'and'avdd'in v['nets'][:2]};widened=[]
     for route in old['routes']:
