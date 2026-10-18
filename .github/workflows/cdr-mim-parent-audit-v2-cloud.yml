@@ -28,7 +28,7 @@ jobs:
         run: python3 -m py_compile scripts/cloud_cdr_mim_parent_audit_v2.py
       - name: Install pinned audit graph dependency
         run: python3 -m pip install networkx==3.4.2
-      - name: Audit actual MIM source and replacement devices plus native wire RC and22corruptions
+      - name: Audit v2-bound native MIM identities and all22 raw RC corruptions
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_cdr_mim_parent_audit_v2.py
