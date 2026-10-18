@@ -28,7 +28,7 @@ def validate_mapping(old,new,mapping):
             if not n.startswith('$'):assert n==m
     return dict(old_to_new_native_nets=nets,device_count=len(mapping))
 
-def load(version):
+def load_model(version):
     prefix='cdr-'+version+'-mim-composition';pin=json.loads((ROOT/('docs/evidence/'+prefix+'-pass-20261018.json')).read_text())
     selected=['pd484-mim-wire.spice','composition.json'];dest=OUT/version
     prior,proof=reports.restore_report(prefix,pin['run'],pin['summary_sha256'],pin['parts_sha256'],dest,selected)
@@ -61,7 +61,7 @@ def main():
     save()
     try:
         assert sha(Path(linear.__file__))==SOLVER_SHA;r['linear_controls']=linear.controls()
-        old=load('strapped-v6');new=load('via-rich-v7')
+        old=load_model('strapped-v6');new=load_model('via-rich-v7')
         a={physical_key(d):d['native_id']for d in old['locations']};b={physical_key(d):d['native_id']for d in new['locations']}
         assert len(a)==len(b)==484 and set(a)==set(b)
         mapping={a[k]:b[k]for k in a};r['physical_mapping']=validate_mapping(old['locations'],new['locations'],mapping)
