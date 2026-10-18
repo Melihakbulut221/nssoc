@@ -7,3 +7,8 @@ This is an initial schematic feasibility test, not a layout fix. Use original256
 The exact source and controller deltas are independently guarded. Native PSP model instance/probe semantics follow the pinned [IHP SG13 LV model](https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod.lib) and [IHP native drain-current example](https://github.com/IHP-GmbH/IHP-Open-PDK/issues/360). The restored PSP binaries must match the existing model manifest.
 
 No GDS/LVS/RC exists for this candidate yet. A schematic pass is only a prerequisite to actual primitive layout, native DRC/LVS and a fresh complete PD model under its original loaded tests. Full-loop/PVT/convergence/body/RF and serial PHY/mainchip acceptance remain open. Do not reuse all-HBT physical evidence as proof of this changed circuit.
+
+
+## Verified native schematic result
+
+Run39104163004/source0be3c44ebcb97d145774f80788401f4d998a1f1d passed three original positive cases and both actual fault detections. Nominal/hot_low/cold_high margins183.632/173.642/180.392mV, clock-to-valid20.469/23.281/18.594ps, each768 samples and zero data failures. All12HBT/3MOS gates pass. Full immutable reports/hashes: `docs/evidence/cdr-hybrid-tail-schematic-pass-20261018.json`. This does not qualify PVT, physical geometry, RC, recovered-clock CDR or full PHY. Real hybrid layout and its independent native physical proof are next; existing all-HBT sampler GDS is not this circuit.
