@@ -38,14 +38,22 @@ def generate(out):
         assert all(shifted(v,old['ports'][k])for k,v in item['ports'].items())
     assert r['child_geometry_conservation']==prior['child_geometry_conservation']
     assert len(r['routes'])==len(prior['routes'])
-    signals=0
+    nets=prior['source_plan']['nets'];cut=nets.index('avss')
+    bus_offsets={net:192 if i>cut else 96 if net=='avss'else 0 for i,net in enumerate(nets)}
+    assert r['ports']==prior['ports']
+    translated=0;extended=set()
     for item,old in zip(r['routes'],prior['routes'],strict=True):
         assert {k:v for k,v in item.items()if k!='box_um'}=={k:v for k,v in old.items()if k!='box_um'}
+        aa,bb=box(item['box_um']),box(old['box_um'])
+        assert all(abs(x-y-z)<1e-6 for x,y,z in zip(aa,bb,[bus_offsets[item['net']],0,192,0],strict=True))
         if item['net']not in ('avdd','avss','sub'):
-            assert shifted(item['box_um'],old['box_um']);signals+=1
+            if bus_offsets[item['net']]==192:translated+=1
+            else:extended.add(item['net'])
+    assert extended=={'adn','adp','aqn','aqp'}
     r['inputs'].update({str(x):placement.sha(x)for x in [Path(__file__),Path(plan.__file__),manifest,ROOT/delta['baseline_path'],ROOT/'docs/evidence/cdr-retimed-compact-parent-physical-pass-20261018.json']})
     r['avss256_candidate']=dict(global_avss_m6_width_before_um=64,global_avss_m6_width_after_um=256,
-        child_translation_um=[192,0],all_child_drawings_preserved=True,intermacro_signal_routes_translated_unchanged=signals,
+        child_translation_um=[192,0],all_child_drawings_preserved=True,intermacro_signal_routes_translated_unchanged=translated,
+        extended_signal_nets=sorted(extended),extra_signal_route_length_um=192,exact_bus_offsets_um=bus_offsets,
         public_signal_feeds_regenerated=True,public_supply_pin_width_um=64,original_supply_via_arrays_preserved=True,
         source_delta=delta,old_rc_reusable=False,loaded_wave_accepted=False,qualified_pex=False,full_phy_accepted=False)
     p.write_text(json.dumps(r,indent=2)+'\n')
