@@ -1,0 +1,7 @@
+# Actual v3 whole-wire loaded rejection
+
+Run39086822540 completed all four native captures. Both nominal cases failed the original sampler/device gates; stopped-clock and VI-off controls detected their faults. Simulator exits were zero, diagnostics empty and all protected sources unchanged. Failure evidence, complete34.25ns native waves and original thresholds are retained in release archives. The summary/manifest receipt does not claim an independent local archive download.
+
+The actual394device9979R7761C model includes the physical23shunt/569via supply overlay and eleven MIMs once. Early sampler wrong-sign counts are109/299/368/394; late151/82/374/393, each765samples. Fourteen HBTs per nominal case fail VCE>=0.4V, compared with seven in v2. Both nominal cases remain rejected. The early phase average+0.0718258926V has the wrong sign; the late+0.0721466018V passes its phase gate but does not rescue sampler/device failures.
+
+The v3 native path review restores the original complete waves on GitHub, reproduces all original sampler counts/margins and all122HBT minimum VCE values, checks the exact fourteen failing identities, and records real terminal/rail voltages with actual resistor-graph paths. Path sums are not effective resistance. No new transient, RC scaling, timing realignment or changed engineering limit is introduced. The supply-only repair is not accepted as an electrical solution. Use this diagnosis before the next physical/bias change. Full-loop/PVT/body/RF/x4/mainchip validation remains open.
