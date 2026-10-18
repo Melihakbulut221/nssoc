@@ -167,3 +167,6 @@ Loaded39132645570 terminalFAIL beforeSPICE: XORtwo64umdevices alreadyshareaDnet,
 
 
 TXnextdiagnostic launches tx-v5-columns-return-review-cloud: fromimmutableactual116611R graph, computeDCunit-injectioneffectiveAVSSresistance for allnativeHBT emitterpoints namedavss; validateKCL/energy/reciprocity andrankactualresistorlosscontributions. Pinfinal114/115 observed93mVterminalrise tosamephysicalmodels. DiagnosticDC only; noR/Cscaling,noSPICErerun,noactualcurrentguess,noacceptance. Useactualbranchfindings tochooseparent/localreturngeometryrepair.
+
+
+TXreturn39133064102 at187996d7066e06199a1b52e9786042f8936a6d8a PASSED diagnosticKCL/energy/reciprocity onactualAVSS5823nodes/9140R. ActualfinalE114/115effectiveR5.559999/5.573833ohm; sharedbranchR105585=1.4131ohm(P_avss.n5354/n5353) carriesentireunitinjection. WorstotherE504(p8_7)7.839604ohm, mainlocalbranchR107989=2.10978ohm(n4189/n4100). Receipt tx-v5-columns-native-return-diagnosis-20261018.json. DCdiagnosticnotloadedacceptance. Newtx-v5-columns-return-coordinates-cloud restoresimmutableauditednative.ext/.res.ext andbindsfocusedbranchendpoints toexactcoordinate/layerrecords foractualgeometryrepair. NoRscaling/simrerun. CDRloaded39132945859 remainsliveafterfixedtailgrouping; preserve.
