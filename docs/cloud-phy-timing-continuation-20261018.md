@@ -1,3 +1,13 @@
+# Current live cloud handles and complete select-component v1 evidence
+
+CDRselectv1 run39112422867 now allfive actualcases retained in `cdr-select-hybrid-v1-component-pass-20261018.json`: nominal/cold/hot0wrong, minmargin223.266/232.798/201.722mV, settling9.219/8.594/10.156ps; alloriginalHBT/MOS/current gates pass. Outputswap768wrong andbiasoffbelow100mV detected. This is ONLY isolatedcomponent, NOT parent/layout/PVTqualification.
+
+Existing actual v2jobs at4f062550bde39df936e3a8ce2635f9c896a64dfa: component39113006592; physical18/560DRC/deepflatLVS/sevenfaults39113006603 (nativejob117632916831). Observe these exact runs; preserve failures and fix actual cause. SeparateSUBbody connection is required for parentphysicaldesign; v1 is retained historicalscreen, not eventualphysicalsource. Parentintegration,freshRC,XORtailreplacement andretiminginputattenuation remain.
+
+TX fullwire39112087217 controlspassed, bothnominal/faultnativejobs active atlastverifiedsnapshot. Mainchipround3 existing39111280543 remainslive; round2 had14antennas andDRC0/criticaldisconnected0. Exact current states in `cloud-active-phy-route-20261018.json`. No healthy job restart. Prepared routedRCXcontroller still points to cancelledoriginalroute; adaptonlyaftervalidnewroute andbindactualnewODB/NL/DEF/proof. FullserialPHY, finalrouteacceptance andsetuphold OPEN. Cloud-only, no localCAD/archives/files. GoalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: select-tail v2 separate substrate and actual physical18 candidate launched
 
 Componentv1 run39112422867/sourcefe4427f163d5cc0a99de99958fc943a6d41189a9 nominal/cold_high passed native256bit data and all device bounds, no numericaldiagnostics, zeroOP0. Nominal0wrong/768,minmargin223.266mV,9.219ps; cold232.798mV/8.594ps. Partialreceipt `cdr-select-hybrid-v1-initial-screen-20261018.json` retains exact reports; inspect remainingthreecases beforeclaiming all5.
