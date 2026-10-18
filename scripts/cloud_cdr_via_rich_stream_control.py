@@ -36,7 +36,10 @@ def main():
             dest=OUT/mode;dest.mkdir();(dest/'bench.cir').write_text(body);(dest/'spinit').write_bytes((source/'native/spinit').read_bytes())
             env={k:v for k,v in os.environ.items()if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')};env.update(SPICE_SCRIPTS=str(dest),OMP_NUM_THREADS='1')
             with(dest/'native.log').open('w')as f:p=subprocess.run([str(engine),'-n','-b','bench.cir'],cwd=dest,env=env,stdout=f,stderr=subprocess.STDOUT)
-            log=(dest/'native.log').read_text();options,notes,_=backend_readback(log,'klu')
+            log=(dest/'native.log').read_text()
+            r.setdefault('native_processes',{})[mode]=dict(returncode=p.returncode,log_sha256=sha(dest/'native.log'));save()
+            if p.returncode or 'NSSOC_BACKEND_OPTIONS_BEGIN'not in log:print(log[-12000:],flush=True)
+            options,notes,_=backend_readback(log,'klu')
             captures[mode]=dict(returncode=p.returncode,native_options=options,diagnostics=notes,deck_sha256=sha(dest/'bench.cir'));r['captures']=captures;save()
             assert p.returncode==0 and not notes
             flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
