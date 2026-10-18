@@ -1,3 +1,107 @@
+# Current authoritative cloud continuation — sampler physical reordering candidate
+
+ALL work remains CLOUD ONLY, per latest direct user instruction. Local task
+workspace is empty; no local checkout/CAD/tests/archives/waves. Use GitHub
+Git Data API for edits, hosted Actions for all verification, Releases for native
+results. Existing eight-hour heartbeat is already cloud-only. Full serial PHY,
+mainchip routing and final setup/hold remain OPEN. This turn made concrete
+progress; no repeated external blocker.
+
+## Inspect sampler placement candidate39143329188 first
+
+Source de68d3509c7801756e1c1f6ae43ea4fe452171c5.
+Workflow cdr-sampler-local-order-physical-cloud.yml.
+Generator hw/soc/flow/make_pcie_sampler_local_order_v9.py.
+Checker hw/soc/flow/check_pcie_sampler_local_order_v9.py changes only imported
+generator identity from original parallel-drive checker. Controller
+scripts/cloud_cdr_sampler_local_order_physical.py. Exact-delta guard
+scripts/check_cdr_sampler_local_order_sources.py and manifest
+scripts/cdr-sampler-local-order-source-delta.json.
+Design docs/pcie-cdr-sampler-local-order-20261018.md.
+
+Changes only physical order of37 unchanged active/passive primitives, preserving
+all16HBT9LVNMOS12rppd17finite-taps=54devices. Deterministic pair swaps/segment
+reversals minimize weighted actual-native-center wire spans; output/feedback,
+clock/data get priority. It uses actual PCell widths,18um original clearance and
+unchanged route widths/via arrays. NOT a timing model. Metadata placement_plan
+records old/new order/spans/costs; original primitive rows compare exactly.
+All560DRC/unsimplifieddeep-flat54LVS/fourteen actual faults/LEFreadback remain.
+Inspect actual native failures; preserve evidence and correct real geometry.
+A physical pass requires independent primitive conservation, full-parent
+integration replacing four samplers (keep repaired XOR), fresh planes/models/
+MIM-awareRC, original full loaded early/late/fault waveforms. Never accept area
+or span improvement alone or reuse old RC/native IDs after a placement change.
+The parent currently remains power484, NOT integrated with new sampler yet.
+
+## CDR power repair has real resistance improvement but FAILED loaded screen
+
+Full loaded39141648105/sourceeef0018f7b71b622c2d0fa4c2f0853ed9b786d7b terminalFAILED:
+- early wronga/b/c/d101/305/357/388 of765;53HBTfails,0MOSfails;phase+0.07517294V wrongdirection.
+- late wrong199/128/362/366;52HBTfails,0MOSfails;phase+0.08442585V but VI/data/devicefail.
+- clock_stopped andvi_bias_off actually detected faults. These are negative
+  controls, NOT healthy electrical acceptance. All original256bits/150fF/50fF,
+  phase/voltage/current gates unchanged. Native failures preserved in
+  cdr-power-v4-full-wire-rejection-20261018.json withimmutable releases.
+
+DCcomparison39142081183/sourceff081123448aee3287d97e4b021363f340b99ea7 passed
+484native transforms/parameter/orderedterminal topology bijection and3identity
+corruptions. Every actual rail-terminal matrix solve passesKCL/energy/reciprocity.
+XD0044 sourceReff60.95742793→31.63822793ohm (48.10%); XD0259AVDD26.91409541→
+24.76529541ohm (7.98%). Other rises <=1.1e-13ohm roundoff. No operating-current
+or waveform acceptance inferred. Receipt cdr-power-v4-resistance-comparison-20261018.json
+(fullreport,assets653842012/653842121).
+
+Actual newwave diagnosis39142648950/source3e9102aa847d03220572b6602bd5d6790746fb4f
+passed bothcases, reproduced all original failed sampler counts and HBT minima,
+and measured per-terminal/supply/collector-to-base voltages. Receipt
+cdr-power-v4-native-path-review-20261018.json. Earlysummary653854784/parts653854835;
+latesummary653855153/parts653855217. Remaining worstXD0049VCE~0.1713V,
+collector~1.637V/base~2.337V/emitter~1.466V. XORAVDDXD0259 still~0.290V mean
+rail loss, so lower singleterminalDCresistance did not solve all shared supply
+losses. Sampler data/clock internal and feedback wires remain important.
+Original sampler leaf circuit passes isolated loaded screens; fullparent fails.
+The new placement candidate addresses actual long internal wiring without
+changing transistor currents, parameters, clocks, bits or acceptance gates.
+
+## Preserve TX and mainchip
+
+TX39137607059/sourceb8a1b3ebe3047ab21fd9a0824787246a37ea5e24 still native
+full32 nominal117705290956 andswap_leaf_select117705290938. Controls passed.
+Mainchip39121691046/source3b415c02d11ac763fd081412b34234103772d347 stillnative
+117658413515 proven50buffer reroute then antenna/DRC/connectivity/freshRC and
+threecellcorners. Started11:03UTC, hosted360min limit. Do NOT restart/cancel a
+healthy job due to observation timeout. No improvedtiming result yet; baseline
+setup9687/7650/3698 andhold4/13/51 stillFAIL, original20/4/8/8ns+5%derate retained.
+
+Live snapshot:
+```json
+[
+  {
+    "id": 39143329188,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "de68d3509c7801756e1c1f6ae43ea4fe452171c5"
+  },
+  {
+    "id": 39137607059,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "b8a1b3ebe3047ab21fd9a0824787246a37ea5e24"
+  },
+  {
+    "id": 39121691046,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "3b415c02d11ac763fd081412b34234103772d347"
+  }
+]
+```
+Observed 2026-10-18T16:05:51.030871+00:00.
+
+---
+
+## Prior checkpoint (latest facts above supersede running states)
+
 # Current authoritative continuation — repaired CDR loaded test in cloud
 
 Latest user instruction: ALL work CLOUD ONLY. Local task workspace
