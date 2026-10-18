@@ -49,7 +49,13 @@ def main():
         assert set(x)==set(y)and len(x)==54
         for name in x:
             assert set(x[name])==set(y[name])
-            for layer in x[name]:assert (x[name][layer]^y[name][layer]).is_empty(),(name,layer)
+            for layer in x[name]:
+                delta=x[name][layer]^y[name][layer]
+                if not delta.is_empty():
+                    report=dict(name=name,layer=layer,baseline_bbox=str(x[name][layer].bbox()),candidate_bbox=str(y[name][layer].bbox()),baseline_area=x[name][layer].area(),candidate_area=y[name][layer].area(),xor_area=delta.area(),baseline_polygons=[str(p) for p in x[name][layer].each()],candidate_polygons=[str(p) for p in y[name][layer].each()])
+                    print(json.dumps(report),flush=True)
+                    args.output.with_name('primitive-drawing-mismatch.json').write_text(json.dumps(report,indent=2)+'\n')
+                assert delta.is_empty(),(name,layer)
     compare(a,b)
     old=(args.baseline/'schematic.cir').read_text();new=(args.candidate/'schematic.cir').read_text()
     assert old.replace(tops[0],tops[1])==new
