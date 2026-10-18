@@ -16,10 +16,14 @@ def main():
         pin=json.loads((ROOT/'docs/evidence/onehot-load-route-interrupted-20261018.json').read_text())
         prior,proof=reports.restore_report('onehot-load-route',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',pin['selected'])
         assert prior['status']==pin['status'] and prior['source_head']==pin['source_head'] and not prior['accepted']
-        r['interrupted_source']=proof;r['logs']={};r['states']={};r['configs']={}
+        r['interrupted_source']=proof;r['logs']={};r['states']={};r['configs']={};r['native_scripts']={};r['drc_files']={};r['native_checkpoint_odb_sha256']=pin['native_checkpoint_odb_sha256']
         for n in pin['selected']:
             p=OUT/'source'/n;assert sha(p)==pin['selected_sha256'][n]==prior['outputs'][n]
-            if n.endswith(('.log','.rpt')):
+            if n.endswith('.tcl') or n.endswith('/COMMANDS'):
+                r['native_scripts'][n]=p.read_text()
+            elif n.endswith('.drc'):
+                text=p.read_text();r['drc_files'][n]=dict(bytes=p.stat().st_size,lines=len(text.splitlines()),text=text)
+            elif n.endswith(('.log','.rpt')):
                 lines=p.read_text(errors='replace').splitlines()
                 milestones=[l for l in lines if re.search(r'iter|violation|elapsed|memory|error|warning|rout|congest|percent|repair',l,re.I)]
                 r['logs'][n]=dict(line_count=len(lines),tail=lines[-100:],milestones=milestones[-150:])
