@@ -1,3 +1,13 @@
+# Current: TX column native composition passed; original full-wire trajectory launched
+
+Composition39111549216/source2994d0a065720eb69d740bada3a1eed3f1e87a3c passed full1674device/116611R77471C binding, six original malformed composition controls,377native conductor ownership, all124input legs/372bases and two actual endpoint faults. Full39.3MB summary and complete archive retained remotely; compact receipt `tx-v5-columns-composition-pass-20261018.json` pins both. Compact and wire model hashes changed and are independently fixed in the new builder; no old model accepted.
+
+This commit launches `tx-v5-columns-loaded-wave-cloud.yml`: nominal fullwire and actual swapped-leaf fault. Source delta checks prove only geometry bindings/controller paths changed; original256bits/34ns/threephase data/device/solver/44clock controls remain exact. All604HBT/512MOS and11physical clock reference/feed macros retained, including l5p7 firstgroup. FullPHY remains open: external modulation/CMOS/output frontend, RF/body/PVT/fourlanes/PLL/CDR/mainchip integration not proven. Inspect actual trajectories before further repair or acceptance.
+
+Mainchip round3 existing39111280543/sourcef667bcc365c7d58b8aad7b4087a1d125891931fb remains live. Completedround2 DRC0/disconnected0/14antennas is not finalclosure. CDR exact failure/terminal diagnosis retained; real circuit repair still required. Cloud-only. GoalturnPROGRESS, fullobjectiveOPEN.
+
+Earlier checkpoint follows:
+
 # Current: fresh TX columns RC passed; compose actual native1674device model
 
 Extraction39110863847/sourcede7165ec7a1fcd4a9a7b6785fd66c8d320b08182 passed original native graph/point/C-conservation and13raw corruption controls. Fresh116611R77471C,377conductors,4774terminals/3262probes. Same element counts as prior geometry do not establish same values. Exactreceipt `tx-v5-columns-extraction-pass-20261018.json` pins newlayout/archive/summary. This commit launches tx-v5-columns-composition-cloud with newGDS TOP/source anchors, allnative devices, six original composition faults and two actual endpoint faults; requires all124legs/372bases and377component ownership. Then original loaded fullwire TX screen, no oldRC reused.
