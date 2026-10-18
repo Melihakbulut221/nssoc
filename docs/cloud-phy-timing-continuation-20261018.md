@@ -1,3 +1,11 @@
+# Current: hybrid406 strict native RC audit passed; complete composition launched
+
+Raw MIM audit39108832356/source0a42220d42ef98c5a20e4268ad322437e71cc4f7 verified9970R7795C/11nativeMIM identities with all13wire+9intrinsic faults rejected and unchanged source. Full receipt `cdr-hybrid-mim-parent-audit-pass-20261018.json`. This commit launches `cdr-hybrid-mim-composition-cloud.yml`: actual406 devices, all9970R7795C tokens and exactly one compact model per nativeMIM; original15 composition controls plus four actual MOS faults=19. Next inspect composition and then launch prepared `cloud_cdr_hybrid_mim_loaded.py` with its exact source delta record. It preserves original external clock/bit/load/HBT/phase gates and adds actual12MOS voltage/diffusion/current binding, eightMOS+fourHBT tailcurrent checks. Loaded workflow not yet created/launched; source prepared inae043d39721ad75f8ce728ad9fcc0b66fec64559.
+
+Mainchip39107161430 still existing live route handle. Full PHY/mainchip final timing remain OPEN. Cloud-only.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 native MIM-aware capture passed; strict raw audit launched
 
 Capture39108665356/sourced86602e1803f39052b4bc5eae651323385be96f6 has 9970R/7795C and exactly11 matched native intrinsic MIM devices,111 conductor components/788 points. Metal/via geometry unchanged, actual MIM masks and bottom access points verified, five faults rejected, sources unchanged. Receipt `cdr-hybrid-mim-parent-capture-pass-20261018.json`. This commit launches strict raw audit with13 wire and9 intrinsic MIM corruption controls; capture alone is not raw RC audit or qualifiedPEX. After successful audit compose all406 devices with every actual R/C token and one model per native capacitor, then original loaded phase/data/device tests with added12MOS gates.
