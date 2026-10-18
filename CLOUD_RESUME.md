@@ -329,3 +329,6 @@ Thiscommit starts cdr-retimed-power-v4-parent-cloud. It restores exactnewXOR59ph
 
 
 CDR parentpreparation39138404526 failedbeforegeneration inindependentleafproof: fullnativepinannotationrectanglewasassumedcontainedinMetal1. Failedrunreceipt cdr-power-v4-geometry-pin-review-rejection-20261018.json preserved. Nextretrychecks entireactualrecreatednativeMOSMetal1drawingagainstbaseline and requiresannotationintersectactualnativeMetal1; reportsallareas beforeasserting. Exactall-layeroverlayreconstruction, unchangedschematic/device/routingmetadata andthreefaults remain. Do notinferannotationmismatchisphysicalfailureorwaiveactualdrawingchecks; inspectdiagnostics ifretryfails.
+
+
+CDR geometryretry39138731845 failedbeforeparentgeneration. Native diagnostic conclusivelyshowedD8annotationstilllocal(-0.91,0;-0.75,8)whileactualtranslatedMOSM1perfectlycontainedinbaseline(areaoutside=0). Cause: DTrans(x,y)integersfromplacementmetadata selectedunintendedoverload, notaninvalidPDKpinannotation. Previousannotation-boxhypothesisissuperseded. FixforcesDTrans(float(x),float(y)); retainsbothfullnativepincontainmentandentirenativeM1drawingconservation, plusall-layeroverlaycomparison/threefaults. Failure preserved cdr-power-v4-native-transform-review-rejection-20261018.json. Newretryrequired; no parentpassyet.
