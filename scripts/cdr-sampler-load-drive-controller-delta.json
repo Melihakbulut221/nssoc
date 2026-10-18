@@ -1,0 +1,68 @@
+{
+  "baseline_path": "scripts/cloud_cdr_sampler_hybrid_tail.py",
+  "baseline_sha256": "3b22c28f84a5cce2f82c2557fe7b5ba21195a93ce0ef137f0629f7c066abd2a7",
+  "candidate_path": "scripts/cloud_cdr_sampler_load_drive.py",
+  "candidate_sha256": "c2df89c55e95f8aa9a0a25222c828d21006767fa944304589c01edb14d25869b",
+  "edits": [
+    {
+      "before": "Native sampler startup/load measurement before physical XOR integration.",
+      "after": "Fourfold native drive with explicit1pF stress; no physical integration claim.",
+      "count": 1
+    },
+    {
+      "before": "rx_sampler_hybrid_tail_v1.spice",
+      "after": "rx_sampler_load_drive_v2.spice",
+      "count": 1
+    },
+    {
+      "before": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+      "after": "973930e61f732a729c751c9a7048e41f6eb81720aac23e620efa0a120b192f70",
+      "count": 1
+    },
+    {
+      "before": "hybrid_tail_v1",
+      "after": "load_drive_v2",
+      "count": 4
+    },
+    {
+      "before": "else'32u'",
+      "after": "else'128u'",
+      "count": 1
+    },
+    {
+      "before": "sum(x['nx']for x in devices.values())==32",
+      "after": "sum(x['nx']for x in devices.values())==128",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-sampler-hybrid-tail-",
+      "after": "cloud-cdr-sampler-load-drive-",
+      "count": 1
+    },
+    {
+      "before": "and150fF/output.",
+      "after": "and1pF/output stress. Fourfold HBT Nx/tail width/collector resistor width relative to original hybrid sampler. This lumped stress is not the distributed extracted parent load.",
+      "count": 1
+    },
+    {
+      "before": "from check_cdr_hybrid_tail_source import check",
+      "after": "from check_cdr_sampler_load_drive_source import check",
+      "count": 1
+    },
+    {
+      "before": "'CQP qp 0 150f','CQN qn 0 150f'",
+      "after": "'CQP qp 0 1p','CQN qn 0 1p'",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_HYBRID_TAIL_SCREEN_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "after": "PASS_NATIVE_LOAD_DRIVE_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "REJECTED_NATIVE_HYBRID_TAIL_SCREEN",
+      "after": "REJECTED_NATIVE_LOAD_DRIVE_STRESS",
+      "count": 1
+    }
+  ]
+}
