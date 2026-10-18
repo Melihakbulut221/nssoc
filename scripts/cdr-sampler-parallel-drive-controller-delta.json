@@ -1,0 +1,63 @@
+{
+  "baseline_path": "scripts/cloud_cdr_sampler_parallel.py",
+  "baseline_sha256": "13d643610233efc0d8dd12bb8cc80e5f5074bb0ac7e01ae7a0309aac735d35fe",
+  "candidate_path": "scripts/cloud_cdr_sampler_parallel_drive.py",
+  "candidate_sha256": "9054a564e3c7b243168a0d683480a925c77b54d20ea7b2389466d12044f34197",
+  "edits": [
+    {
+      "before": "rx_sampler_parallel_v7.spice",
+      "after": "rx_sampler_parallel_drive_v8.spice",
+      "count": 1
+    },
+    {
+      "before": "1e946451daaacfeaed25bed134248b5049a787e0f07c9f9fa7c33f438b9585d3",
+      "after": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+      "count": 1
+    },
+    {
+      "before": "parallel_v7",
+      "after": "parallel_drive_v8",
+      "count": 5
+    },
+    {
+      "before": "else'32u'",
+      "after": "else'36u'",
+      "count": 1
+    },
+    {
+      "before": "dict(w='32u',l='.3u',ng='1')",
+      "after": "dict(w='36u',l='.3u',ng='1')",
+      "count": 1
+    },
+    {
+      "before": "width_per_tail_um=32,total_width_per_stage_um=128",
+      "after": "width_per_tail_um=36,total_width_per_stage_um=144,original_width_per_stage_um=128",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-sampler-parallel-",
+      "after": "cloud-cdr-sampler-parallel-drive-",
+      "count": 1
+    },
+    {
+      "before": "from check_cdr_sampler_parallel_source import check",
+      "after": "from check_cdr_sampler_parallel_drive_source import check",
+      "count": 1
+    },
+    {
+      "before": "four actual separate32um native NMOS",
+      "after": "four actual separate36um native NMOS (144um totalwidth vs128um original)",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_PARALLEL_TAIL_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "after": "PASS_NATIVE_PARALLEL_DRIVE_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "REJECTED_NATIVE_PARALLEL_TAIL_STRESS",
+      "after": "REJECTED_NATIVE_PARALLEL_DRIVE_STRESS",
+      "count": 1
+    }
+  ]
+}
