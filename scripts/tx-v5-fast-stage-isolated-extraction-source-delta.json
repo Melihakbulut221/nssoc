@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_return_repair_extraction.py",
+      "baseline_sha256": "dbb81a0c3c52b977d1dbfbd0acd78060bb23b95957987802e83640028508f70c",
+      "candidate_path": "scripts/cloud_tx_v5_fast_stage_isolated_extraction.py",
+      "candidate_sha256": "696a3b751ffeef5ea2bf987b516a1ddb27f7e3982850b7f6cc356d9077f6a2a0",
+      "edits": [
+        {
+          "before": "_finalreturn_core_v1",
+          "after": "_faststage_isolated_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-return-repair-physical-pass-20261018.json",
+          "after": "tx-v5-fast-stage-isolated-physical-pass-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "receipt['source_run']==39134428243 and receipt['source_head']=='f4d800262d2fd3da4e0aaa0835c6543df8515dbc'",
+          "after": "receipt['source_run']==39156383821 and receipt['source_head']=='4d9516cc5f2ce25ed4123be9426aef6912ff4988'",
+          "count": 1
+        },
+        {
+          "before": "ef1518d2b71ff637f0ef4fa46abd2e62aa17215e35621a5c523ca0d6463f5f26",
+          "after": "e1c75799b04645647e12b078dbc26e2b829ef3e92f9faedc67d371b04d09ddef",
+          "count": 1
+        },
+        {
+          "before": "6380a0369f27621d8efc16945bb659888588751fd159b16488b2bc8c3624c2b3",
+          "after": "7c415e44d33ce74bdef89ee8c15cd204aa2f288de041cc9be06a3cf9bc6a971c",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-return-repair-assembly",
+          "after": "cloud-tx-v5-fast-stage-isolated-assembly",
+          "count": 1
+        },
+        {
+          "before": "        gp=json.loads((ROOT/'docs/evidence/tx-v5-return-geometry-pass-20261018.json').read_text())['report']\n        assert gp['status']=='PASS_INDEPENDENT_NATIVE_TX_RETURN_GEOMETRY_DELTA_REQUIRES_FRESH_RC'and gp['sources_unchanged']\n        assert gp['sources']['candidate']['run']==receipt['source_run'] and gp['sources']['candidate']['summary_sha256']==receipt['summary_sha256']\n        assert all(sha(out/n)==v for n,v in gp['sources']['candidate']['selected'].items())\n        assert gp['native']['all_drawing_layers_checked']==25 and len(gp['native']['controls'])==3\n        assert physical['return_rail']['final_column_trunk_width_um']==128. and physical['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert physical['return_rail']['local_final_strap_width_um']==4. and physical['return_rail']['final_strap_top_via_columns']==physical['return_rail']['final_strap_top_via_rows']==2\n        result['independent_return_geometry']=gp['native']\n",
+          "after": "        gp=json.loads((out/'column-geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']\n        assert gp['status']=='PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT'\n        assert gp['controls']==['wrong_column','moved_row','actual_child_conductor_removed']\n        assert gp['actual_macro_instances']==31 and gp['actual_cells_unchanged']and gp['all_reference_device_cards_unchanged']\n        assert gp['signal_connections']==60 and gp['fast_stage_routes_shorter']==12\n        assert physical['signal_track_shift_um']=={'p8_2p':48.,'p8_2n':48.,'p8_7p':24.,'p8_7n':24.}\n        assert gp['fast_stage_rows_um']=={'a':4200.,'b':4800.,'p4_0':3600.,'p4_2':4200.,'p4_1':4800.,'p4_3':5400.}\n        assert physical['return_rail']['final_column_trunk_width_um']==128. and physical['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert physical['return_rail']['local_final_strap_width_um']==4. and physical['return_rail']['final_strap_top_via_columns']==physical['return_rail']['final_strap_top_via_rows']==2\n        # Revalidate the exact generation/geometry code used by the new native pass.\n        from check_tx_v5_fast_stage_isolated_sources import check\n        check()\n        for method in ['scripts/cloud_tx_v5_fast_stage_isolated_assembly.py','scripts/check_tx_v5_fast_stage_isolated_geometry.py']:\n            bound=physical['layout']['inputs']if method.endswith('_assembly.py')else gp['inputs']\n            assert sha(ROOT/method)==bound[str(ROOT/method)]\n        result['independent_fast_stage_geometry']=gp\n",
+          "count": 1
+        },
+        {
+          "before": "PASS_COLUMNS700_ROWS600_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+          "after": "PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
