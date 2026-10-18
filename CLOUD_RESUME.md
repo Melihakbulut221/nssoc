@@ -2,7 +2,7 @@
 
 Read [docs/cloud-phy-timing-continuation-20261018.md](docs/cloud-phy-timing-continuation-20261018.md) first. Work is cloud-only; the local workspace is empty. Preserve full serial Gen3 x4/PCIe-Ethernet mainchip/final timing goals and original acceptance gates. Older live-job entries below are historical and must not trigger restarts.
 
-Latest verified result: hybrid-tail sampler39104163004 passed three native schematic cases and two actual fault controls. Real hybrid layout/DRC/LVS/parent RC is next; no physical/full-PHY acceptance. TX bias-return diagnosis39103565940 completed, original28-device failure remains. Mainchip route39084569446 is the existing handle; recheck its current terminal/live status before action. Exact receipts and next steps are in the authoritative continuation.
+Latest verified: hybrid406 parent39107027934 passed native560-rule DRC, unsimplified deep/flat406-device LVS and five physical/reference fault controls. Fresh406 RC and original loaded waveforms are next; no fullPHY acceptance. Mainchip saved-route continuation39107161430 is the current handle; recheck its actual status, not cancelled39084569446. Exact receipts, immutable hashes and next steps are in the authoritative continuation.
 
 ---
 

@@ -1,3 +1,15 @@
+# Current: cloud-only workspace; hybrid406 native physical proof passed
+
+Checked 2026-10-18T07:26:25.381824+00:00. The local task workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` is empty and no local OpenROAD/Yosys/KLayout/ngspice/Magic/Netgen/LibreLane CAD process was found. All source edits use GitHub API and all CAD, restoration and generated archives stay on hosted runners. Do not recreate a local checkout or download native archives. Preserve unrelated directories.
+
+Hybrid406 parent run39107027934/sourcee5e4fa609db875df7177b2bfdc772a7395b2b00a is verified SUCCESS:560-rule DRC0, unsimplified deep/flat LVS406/406 Match with no extraction diagnostics, five genuine physical/reference faults rejected and six source binding controls passed. Sources unchanged. Full receipt `docs/evidence/cdr-hybrid406-parent-physical-pass-20261018.json`; summary652782686, parts652782743, archive652782793. This is physical proof for this subcircuit only. Next implement fresh406 native planes/binding/whole MIM-aware RC/model and original loaded tests. Do not reuse394 device IDs/RC or claim closed-loop/full PHY/mainchip acceptance.
+
+Saved-route continuation39107161430/sourcee268d89f3212e5ae695757d223fb9e5fd94e0ad3 is in_progress/None at this check. Preserve its existing job117615420694. Native topology and172 initial antenna reproduction must pass before routing is considered resumed. Do not duplicate live jobs. The prior complete round1 reduced antenna nets1141 to172 with2943 real diodes and0 routingDRC; that is not final route acceptance. After true final route/antenna/connectivity gates, adapt the prepared RCX/STA workflow to its exact proof and artifacts; the old original39084569446 handle is terminal cancelled.
+
+Full serial Gen3 x4 PHY, mainchip routing acceptance and final setup/hold remain OPEN. The eight-hour automation is the continuation mechanism. Cloud-only instruction supersedes earlier local-work wording.
+
+Earlier checkpoint follows:
+
 # Latest: route continuation runtime correction; hybrid406 parent live
 
 Antenna-round2 preparation39106777319 restored the exact round1 ODB and passed the actual native Tcl transform/three controls, but the topology helper could not import odb under plain bundled Python. It did NOT run or restart routing. Exact failure is retained `replay-onehot-round2-python-runtime-failure-20261018.json`. This commit changes only the helper invocation to OpenROAD's embedded Python with explicit before/after/output paths. All original pin/master/net/NDR/2943diode gates,172 initial antennas and final physical gates remain unchanged. The workflow push starts a corrected successor; inspect that exact new job, not the failed old one.
