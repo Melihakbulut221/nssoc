@@ -1,3 +1,14 @@
+## Cloud continuation: measured wire improvement, full capture memory rejection (2026-10-19)
+
+Keep all work cloud-only; local project folder stays empty. SourceHEAD and actual Actions are authoritative.
+
+- **39165970043**, source162f85ff259d28c2dc8f5b1752fc4f6e828ef388: native linear-wire comparison passed484physical device positions/parameters and bijective net topology, reproduced64old calculations. Supply effectiveR decreased45.27–49.41%; load-to-collector46.17–48.34%. This does not prove loaded behavior. Receipt cdr-via-rich-wire-comparison-pass-20261019.json. First controller attempt39165775679 failed before loading due to a shadowed function name; retained failure receipt; fix changes only loader name.
+- **39165464508** is TERMINAL FAILURE in all four cases (nominal_early, nominal_late, clock_stopped, vi_bias_off). Each native process returned0 but reported approaching max-data size; original diagnostic gate rejected before electrical acceptance. Matrix receipt cdr-via-rich-v7-loaded-memory-matrix-rejection-20261019.json preserves all reports and archive hashes. Do not poll or restart this unchanged controller.
+- **39166618949**, source026dbe29a4ec2a3d438807700aac597842a57c6a: cloud-cdr-via-rich-stream-control. New all1107vector/all-sample same-full484device13186R10127C comparison over3ns between old ASCII and pinned cloud_tx_stream binary transport.3ns is transport-only; after pass, use original34.25ns256bitsUI125psstep.3125ps and all original physical/signal gates for full streamed early/late/fault matrix. Preserve solver/native flag/op/readback requirements and hash the helper. Do not drop warnings or samples. See docs/cdr-native-stream-transport-plan-20261019.md.
+- Mainchip **39161219456** and TX **39158584151** remain verified live. Preserve actual ongoing routes/nominal/fault waveforms. Original clocks/derate and full32bit/device gates unchanged.
+
+Full recovered-clock serial Gen3x4PHY, accepted mainchip routing/setup/hold and production signoff remain OPEN.
+
 ## Cloud continuation: via-rich CDR full model ready for original loaded screen (2026-10-18)
 
 Cloud-only is mandatory; no local checkout/CAD/results. Last local project check was empty. Do not duplicate healthy work.
