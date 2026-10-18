@@ -23,7 +23,7 @@ def main():
             old,proof=reports.restore_report('cdr-sampler-load-drive-'+case,pin['run'],p['summary_sha256'],p['parts_sha256'],destination,wanted)
             assert old==report
             log=(destination/'native/native.log').read_text()
-            r['cases'][case]=dict(archive=proof,original_status=report['status'],diagnostics=report.get('diagnostics'),native_log=log,deck=(destination/'native/bench.cir').read_text(),op=(destination/'native/op.dat').read_text()if(destination/'native/op.dat').exists()else None,models={n:(destination/n).read_text()for n in wanted if n.startswith('models/')})
+            r['cases'][case]=dict(archive=proof,original_status=report['status'],diagnostics=report.get('diagnostics'),native_log=log,deck=(destination/'native/bench.cir').read_text(),op=(destination/'native/op.dat').read_text()if(destination/'native/op.dat').exists()else None,models={n:(destination/n).read_bytes().decode('latin-1')for n in wanted if n.startswith('models/')})
             import numpy as np
             wave=np.loadtxt(destination/'native/wave.dat',skiprows=1)
             assert np.isfinite(wave).all() and wave.ndim==2 and wave.shape[1]==len(report['vectors'])+1
