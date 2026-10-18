@@ -14,3 +14,10 @@ No physical pass is assumed before actual runner results. Even a physical pass n
 Run39105291849/source2f46efe4f1d24c6eb130d43fc2e75e5e266dc71c generated the real MOS layout, then failed two LU.b markers out of560 DRC categories. No LVS acceptance was reached. Exact summary/parts/report are preserved in `docs/evidence/cdr-hybrid-tail-initial-latchup-failure-20261018.json`. Native NMOS active lengths span8/32/32um vertically; the original remote tap row leaves upper tail regions too far from a body contact. This disproves reuse of the original eight-tap geometry for these MOS devices.
 
 Successor adds one native2um by2um ptap1 beside the vertical midpoint of each MOS, physically routed to SUB. All original eight taps remain:11 finite contacts and38 total devices. Reference, native extracted census and deep/flat LVS requirements are updated to that actual circuit addition; no rule or electrical limit is relaxed. Original twelve negative controls remain. Await actual native proof before parent integration. All other MOS widths, lengths, gates and signal circuit remain unchanged.
+
+
+## Native LVS identified real metal shorts
+
+Cloud reader39106052671 reproduced the exact native extraction of39105690621: top pin AVDD|SUB, and a sampler tail joined to that physical net. Source diode MOS dimensions8u/.3u and both tails32u/.3u were extracted correctly; matching device count was insufficient. Actual metadata shows local SUB M4 columns253.35/473.355um only1.18um from AVDD columns254.53/474.535um. Both columns are1.2um wide, creating a real overlap that DRC cannot distinguish from a legal metal union. Legacy SUB column443um also overlaps tail column443.455um after bbox-aware placement.
+
+Successor places the actual taps in nearby available columns and requires at least2um center spacing between every pair of different-net M4 columns. Local tap placement stays close to each MOS; exact LU.b and all other native DRC/LVS gates are rerun. All38 physical devices, dimensions, source circuit and twelve negative controls are retained. No net alias or comparison relaxation is applied.

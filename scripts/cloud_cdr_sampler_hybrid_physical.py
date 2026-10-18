@@ -21,7 +21,7 @@ def main():
     try:
         analog=ROOT/'hw/soc/analog/pcie/rx_sampler_hybrid_tail_v1.spice'
         assert sha(analog)=='dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5'
-        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py')=='d11adc981b7fa7dcc0ce0cc5483ba623bcaa59bdd6ab502b68cc81b346778b04'
+        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py')=='dacc174b0adc1d90f691b20e5d37c0e0d4dd5a723e5aac6e6c9619d138a5071d'
         paths=[Path(__file__),analog,*[ROOT/p for p in ('hw/soc/flow/make_pcie_sampler_compact_v1.py','hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py','hw/soc/flow/check_pcie_sampler_compact_v1.py','hw/soc/flow/check_pcie_sampler_hybrid_tail_v1.py','scripts/check_cdr_sampler_hybrid_physical_sources.py','scripts/cdr-sampler-hybrid-physical-delta.json','hw/soc/flow/check_pcie_sampler_left_v1.py')]]
         subprocess.run([sys.executable,ROOT/'scripts/check_cdr_sampler_hybrid_physical_sources.py'],check=True)
         protected={str(p):sha(p) for p in paths};r['protected_inputs']=protected

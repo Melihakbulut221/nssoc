@@ -238,12 +238,21 @@ def main():
                 escape(pin, 1, row["nets"][k], x - 6 + 3*k, row["name"],
                        1 if row["width_um"] == 1 else 4)
         records.append(dict(**row, placement_um=[x, y], bbox_um=str(cell.dbbox().transformed(t))))
+    def safe_tap_x(desired):
+        # Reserve an independent M4 column before placing the actual tap.
+        # DRC alone cannot detect an accidental union of two labelled nets.
+        foreign = [x for net, points in terminals.items() if net != "SUB" for x, _ in points]
+        for offset in [0, *[v for k in range(1,7) for v in (-.5*k,.5*k)]]:
+            x = round((desired+offset)/.005)*.005
+            if all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):
+                return x
+        raise ValueError("No independent local body-contact routing column")
     # One real local body contact beside the middle of each MOS active strip.
     # The32um tails exceeded LU.b with only the original remote tap row.
     mos_rows = [r for r in records if r["kind"] == "nmos"]
     assert len(mos_rows) == 3
     for index, row in enumerate(mos_rows, start=TAPS-3):
-        x = row["placement_um"][0] + 5
+        x = safe_tap_x(row["placement_um"][0] + 3)
         y = row["placement_um"][1] + row["width_um"]/2 - 1
         cell = pc("ptap1", {"w": "2u", "l": "2u"})
         t = instance(cell, x, y)
@@ -256,7 +265,7 @@ def main():
                             placement_um=[x,y],area_um2=4,perimeter_um=8,local_mos=row["name"]))
     # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.
     for index in range(TAPS - 3):
-        x, y = 22 + index * 60.0, 4.0
+        x, y = safe_tap_x(22 + index * 60.0), 4.0
         cell = pc("ptap1", {"w": "2u", "l": "2u"})
         t = instance(cell, x, y)
         ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))]
@@ -267,6 +276,10 @@ def main():
         terminals.setdefault("SUB", []).append((pin.center().x, pin.center().y))
         records.append(dict(kind="substrate_tap", name=f"TAP{index}", nets=["SUB", "BULK"],
                             placement_um=[x, y], area_um2=4, perimeter_um=8))
+    columns = [(net,x) for net,points in terminals.items() for x,_ in points]
+    for i,(net,x) in enumerate(columns):
+        for other,ox in columns[i+1:]:
+            assert net == other or abs(x-ox) >= 2.0-1e-8, ("Distinct M4 routing columns overlap",net,other,x,ox)
     output_shunts = []
     nets = list(PORTS) + sorted(set(terminals) - set(PORTS))
     for index, net in enumerate(nets):

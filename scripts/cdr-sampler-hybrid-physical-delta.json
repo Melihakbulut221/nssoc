@@ -4,7 +4,7 @@
       "baseline_path": "hw/soc/flow/make_pcie_sampler_left_v1.py",
       "baseline_sha256": "9abadbdde0ea5af68ebaf7da06876053acbc73b463725ee1fd36b9f09757441a",
       "candidate_path": "hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py",
-      "candidate_sha256": "d11adc981b7fa7dcc0ce0cc5483ba623bcaa59bdd6ab502b68cc81b346778b04",
+      "candidate_sha256": "dacc174b0adc1d90f691b20e5d37c0e0d4dd5a723e5aac6e6c9619d138a5071d",
       "edits": [
         {
           "before": "Left output pins and real TopMetal2 output shunts for the unchanged HBT sampler.",
@@ -84,6 +84,26 @@
         {
           "before": "    # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.\n",
           "after": "    # One real local body contact beside the middle of each MOS active strip.\n    # The32um tails exceeded LU.b with only the original remote tap row.\n    mos_rows = [r for r in records if r[\"kind\"] == \"nmos\"]\n    assert len(mos_rows) == 3\n    for index, row in enumerate(mos_rows, start=TAPS-3):\n        x = row[\"placement_um\"][0] + 5\n        y = row[\"placement_um\"][1] + row[\"width_um\"]/2 - 1\n        cell = pc(\"ptap1\", {\"w\": \"2u\", \"l\": \"2u\"})\n        t = instance(cell, x, y)\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]\n        assert len(ps) == 1\n        pin = ps[0]\n        via(1,4,pin.center().x,pin.center().y,\"SUB\",3)\n        terminals.setdefault(\"SUB\",[]).append((pin.center().x,pin.center().y))\n        records.append(dict(kind=\"substrate_tap\",name=f\"TAP{index}\",nets=[\"SUB\",\"BULK\"],\n                            placement_um=[x,y],area_um2=4,perimeter_um=8,local_mos=row[\"name\"]))\n    # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.\n",
+          "count": 1
+        },
+        {
+          "before": "    # One real local body contact beside the middle of each MOS active strip.\n",
+          "after": "    def safe_tap_x(desired):\n        # Reserve an independent M4 column before placing the actual tap.\n        # DRC alone cannot detect an accidental union of two labelled nets.\n        foreign = [x for net, points in terminals.items() if net != \"SUB\" for x, _ in points]\n        for offset in [0, *[v for k in range(1,7) for v in (-.5*k,.5*k)]]:\n            x = round((desired+offset)/.005)*.005\n            if all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):\n                return x\n        raise ValueError(\"No independent local body-contact routing column\")\n    # One real local body contact beside the middle of each MOS active strip.\n",
+          "count": 1
+        },
+        {
+          "before": "x = row[\"placement_um\"][0] + 5",
+          "after": "x = safe_tap_x(row[\"placement_um\"][0] + 3)",
+          "count": 1
+        },
+        {
+          "before": "x, y = 22 + index * 60.0, 4.0",
+          "after": "x, y = safe_tap_x(22 + index * 60.0), 4.0",
+          "count": 1
+        },
+        {
+          "before": "    output_shunts = []\n",
+          "after": "    columns = [(net,x) for net,points in terminals.items() for x,_ in points]\n    for i,(net,x) in enumerate(columns):\n        for other,ox in columns[i+1:]:\n            assert net == other or abs(x-ox) >= 2.0-1e-8, (\"Distinct M4 routing columns overlap\",net,other,x,ox)\n    output_shunts = []\n",
           "count": 1
         }
       ]

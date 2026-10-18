@@ -1,3 +1,11 @@
+# Latest: real hybrid38 metal short identified and geometry corrected
+
+Reader39106052671 found actual AVDD|SUB and tail short in native extraction, despite zero DRC. Metadata shows1.18um center spacing between1.2um-wide local SUB and AVDD columns, plus one legacy tap overlapping a tail column. New generator physically moves taps into available columns and enforces2um spacing for all distinct-net M4 columns. Source,38devices and native gates unchanged. This commit triggers the next `cdr-sampler-hybrid-physical-cloud` run; inspect it before parent integration. Evidence `cdr-hybrid-native-short-diagnosis-20261018.json` retains actual failing netlists.
+
+Mainchip39084569446 terminal cancelled at six hours, with real `drt-run-0/soc_top.odb` and `drt-run-1/soc_top.odb` saved in the published archive (not final signoff). Reader39106213346 completed in cloud; inspect logs/state inventory to continue from a real saved route, not cold restart. Its result has not yet been reviewed. Existing RCX/STA workflow still awaits successful route/antenna/connectivity gates. Cloud-only, full objective OPEN.
+
+Earlier checkpoint follows:
+
 # Latest: hybrid38 DRC passed; native LVS diagnosis required
 
 Hybrid local-tap run39105690621 passed all560 DRC categories with zero markers and rejected actual offgrid fault. Deep LVS extracted exactly38 devices on both sides but NoMatch, so physical acceptance is not granted. Full report preserved `cdr-hybrid-local-taps-lvs-failure-20261018.json`. This commit launches `cdr-hybrid-lvs-diagnosis-cloud.yml` to restore and read exact native extracted/reference/deck/cross-reference files on a hosted runner. Inspect that result before a geometry/source repair; do not rerun unchanged geometry or weaken LVS. Mainchip39084569446 is now terminal cancelled; inspect actual logs and failed publication before preparing resumable routing. All work cloud-only; goal remains OPEN.
