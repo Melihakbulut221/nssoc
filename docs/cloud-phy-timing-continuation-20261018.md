@@ -1,31 +1,34 @@
 # Cloud-only continuation state
 
-All work stays in GitHub-hosted jobs and releases. The local workspace remains empty. Do not restore a local checkout, waveform or CAD outputs. The active goal remains complete serial PCIe Gen3 x4, routed PCIe/Ethernet mainchip and final setup/hold; none is closed by this checkpoint.
+All execution, CAD outputs, native waves and source changes remain on GitHub. The local workspace is empty. Do not clone or restore artifacts locally. The goal remains complete serial PCIe Gen3 x4, routed PCIe/Ethernet mainchip and final setup/hold. None is closed by this checkpoint.
 
-## Active computations at this checkpoint
+## Current native jobs
 
-- Mainchip detailed routing: run 39084569446, source 92c6161af3fbb040ce6433ccae32ee614e6db1ab, native job 117548333285. This starts from exact zero-overflow GRT 39082708488 and revalidates original source/boot/protocol/logic proofs. Do not restart while live. Earlier 39084143703 stopped before the router at a missing optional configuration key; its failure is retained, and the corrected controller uses the same native false default as GRT.
-- CDR v3 native interface binding39085138687 completed:158 planes,51 nets,1134 terminals and19 rejected faults. The fresh `cdr-retimed-wire-inputs-v3-cloud` workflow now prepares whole native geometry/terminal references. Do not reuse v2 native IDs or extracted RC for the changed geometry.
-- TX v5 full-wire path review39084981409 has completed, reproducing every original gate exactly. No TX transient or review process remains live. Failure localization is recorded in `tx-v5-path-review-20261018.md` and its full receipt; next map the eight failed HBTs onto actual v5 geometry and return conductors.
+- Mainchip detailed routing39084569446 (source92c6161af3fbb040ce6433ccae32ee614e6db1ab, nativejob117548333285) is live. Never restart while live. It restores exact zero-overflow GRT39082708488, preserves original20/4/8/8ns clocks,5percent derate,20SRAM and native NDR. Final route/antenna/disconnected-pin gates must pass before independent route geometry/LVS and extracted STA. Earlier39084143703 stopped before routing on an optional config key; rejection is retained.
+- TX v5 original-placement return64 physical39086629991 (source671f86f8d41fafc474ecb879ba4438ced28c1ff7) is live. It widens only six external AVSS rectangles, with fresh native DRC/LVS/faults and exact geometry comparison against original v5. See tx-v5-return64-physical-candidate-20261018.md. No fresh RC or loaded electrical acceptance exists yet.
+- The new cdr-mim-loaded-v3-cloud workflow runs the original early/late nominal cases plus stopped-clock and VI-off controls against the newly composed actual v3 model. Discover its run by this commit/workflow; do not duplicate a live run. All thresholds and256-bit stimuli are unchanged; every394device9979R7761C element is retained. Nominal failures must remain failures.
 
-## Completed physical progress
+## Completed CDR v3 chain
 
-- Mainchip targeted repair 39080594759 retained all 97622 original logic cells. Slow setup8037/WS-5.54096ns; fast setup663/WS-0.901378ns; fast hold24/WS-0.391465ns (three r2r hold failures). These are placement estimates, not final timing.
-- Mainchip GRT39082708488 completed: 141375 routed nets, zero final overflow, original native NDR preserved, 20 SRAM macros. Source 1eed365029e07ccc65680e5e30a2adb3e46c116d. See `replay-onehot-global-route-result-20261018.md` and its pinned full receipt. DRT, extracted STA and physical signoff are still required.
-- CDR v3 physical39084708980 completed: all560 DRC categories pass; deep/flat LVS each match394 devices without extraction diagnostics; five intentional faults rejected. Source735f37517a12c8e651312d1bff0f7216ef000bc7. The actual candidate adds23 TopMetal2 supply shunts and569 native via stacks. Region-union checks preserve every old drawing and all device layers. It is not an electrical pass. See `cdr-v3-supply-overlay-20261018.md` and `evidence/cdr-retimed-parent-v3-physical-pass-20261018.json`.
+Physical39084708980:23 actual TopMetal2 supply shunts,569via stacks; all560DRC categories pass; deep/flat394device LVS and five deliberate faults pass. Full flattened drawing delta is controlled. Native planes39085138687:158planes51nets1134terminals19faults. Whole-wire inputs39085392184 and native binding39085569056 pin actual v3 native IDs and dimensions.
 
-## Terminal electrical failures and diagnosis
+Wire-only RC39085569087 is diagnostic only. MIM-aware capture39085974150 contains9979R7761C,11native MIMs,111components776points, five capture fault controls. Strict raw audit39086426677 passes native resistor identity/value, per-point C attachments, collapsed C conservation and22controls. Complete composition39086629993 passes15controls, preserves every wire token and binds each native MIM once. Full receipts under docs/evidence pin summaries/manifests and original output hashes. This is not RF/body PEX qualification, recovered-clock CDR or loaded-wave acceptance. Do not reuse old v2RC or native IDs.
 
-- CDR v2 whole MIM-aware loaded39081843889 FAILED both nominal cases. Early sampler wrong counts100/277/345/365; late133/84/347/349, each765 samples per sampler. Seven HBT active-VCE failures per case. Fault controls passed detection, not nominal acceptance. Full failure receipt is `evidence/cdr-v2-full-wire-rejection-20261018.json`.
-- CDR v2 path review39083732157 completed both cases and reproduced original counts/margins and every HBT minimumVCE from full captures. Native select-tail emitters on AVSS rise to approximately0.229/0.234V above external return; select inputs already have weak swing. This motivates v3 real supply reinforcement but is not proof that all defects will be fixed. See `evidence/cdr-v2-path-review-pass-20261018.json`.
-- TX full-wire39067769686 completed and FAILED:227/768 wrong-sign samples; level_4 and final interfaces fail; eight HBT VCE failures. Compact PVT passes cannot replace this physical-wire failure. See `tx-v5-full-wire-rejection-20261018.md`.
-- PLL refined full1us capture39078674197 completed and FAILED the fixed800–900ns100ppm gate (135.380ppm; later900–1000ns89.850ppm). No native process/checkpoint remains to resume. Do not cold-rerun unchanged parameters or substitute overlapping windows. See `pll-c8-half-full-capture-20261018.md`.
+## Mainchip completed and still unclosed
+
+Targeted39080594759 retains97622logic cells. Slow setup8037/WS-5.54096ns; fast setup663/WS-0.901378ns; fast hold24/WS-0.391465ns including3r2r violations. These are placement estimates only. GRT39082708488 routes141375nets with zero final overflow and preserved NDR. Detailed routing and actual extracted final all-corner setup/hold are still pending.
+
+## Preserved electrical failures
+
+- CDRv2 loaded39081843889 failed both nominal cases: early sampler wrong100/277/345/365, late133/84/347/349 of765samples each; seven HBT active-VCE failures per case. Original fault detection passed. Full-wave review39083732157 reproduced every metric and found select-tail return rise about0.229/0.234V and already weak selector inputs. V3 supply reinforcement is an actual experiment, not an assumed complete cure.
+- TX full-wire39067769686 failed227/768wrong-sign samples, level4/final interfaces and eight HBT VCE gates. Full-wave review39084981409 reproduced original results. Physical paths39085786545 maps six failures to final f and two to p8_7; final tail emitter return rise about0.172V with shortest raw return paths16.18605/16.22470ohm. Shortest path sums are not effective resistance. Do not reuse old high3/tight return64 models.
+- PLL full1us39078674197 failed original800-900ns100ppm acquisition gate at135.380ppm; later900-1000ns89.850ppm cannot replace it. No native process/capsule remains. Local MIM-window capture is not complete clock RC.
 
 ## Required next work
 
-1. Inspect native DRT39084569446 only when terminal. Preserve all native failure reports, zero routing-DRC/antenna/disconnected-pin gates and exact source linkage. Then perform actual route connectivity/geometry/LVS and extracted all-corner timing; no inherited placement metric is final evidence.
-2. After v3 planes pass, regenerate whole wire inputs from v3 native geometry and reference planes. Bind all394 intrinsic devices, capture full MIM-aware RC with actual new counts, audit native values/identities/matrix conservation, compose once per intrinsic MIM and re-run unchanged loaded nominal gates. Successful v3 DRC/LVS does not permit reusing v2 RC or declaring electrical success. Then PVT/convergence and native full-loop integration remain.
-3. Inspect TX path-review terminal output; use the actual failed level_4/final paths and HBT terminal voltages to select physical repairs. Preserve raw capture and all original acceptance thresholds.
-4. Extend PLL MIM semantics from local windows to complete clock RC before adopting loop changes. Full serial PHY includes recovered-clock CDR/PLL, all x4 lanes and real mainchip/analog-pad links; none is implied by the external-clock phase detector or digital mainchip route.
+1. Inspect terminal DRT once available; preserve failures and original zero DRC/antenna/disconnected-pin gates. Verify route logic, geometry/LVS, complete RC and extracted all-corner timing before acceptance.
+2. Inspect v3 loaded original nominal/fault results, preserving raw waves. Diagnose remaining failures with native terminal data; then original PVT/convergence and actual recovered-clock loop integration remain.
+3. Inspect TX return64 physical result and exact six-rectangle delta. If successful, regenerate native interfaces/device ownership and entire RC/composition before original loaded256-bit test.
+4. Extend full PLL/clock MIM-aware RC and correct original acquisition failure. Full serial PHY requires actual clock distribution, recovered-clock CDR, all x4 lanes, analog pads/ESD and real mainchip links. External-clock PD tests or digital route alone do not prove this.
 
-The full serial PHY, physical mainchip integration, final extracted setup/hold and manufacturing qualification remain open. Never use green workflow completion alone as acceptance.
+No goal completion, qualified PEX, final timing or manufacturing approval is claimed. Green workflow status alone is insufficient.
