@@ -1,72 +1,108 @@
 # Latest authoritative continuation: cloud-only
 
-The user requires cloud-only execution and storage. The local task directory
-`/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified empty this turn.
-Do not create a local checkout, CAD runtime, waveform, archive, test output or
-self-hosted runner. Source changes use GitHub Git Data API; all CAD, tests and
-artifacts stay on GitHub-hosted runners/releases. Preserve healthy jobs.
+The latest direct user instruction is CLOUD ONLY. The local task directory is
+empty. No checkout, CAD, tests, archives or waveforms locally. Use GitHub Git
+Data API for source edits and GitHub-hosted runners/releases for all execution
+and artifacts. Preserve healthy jobs and original failure evidence.
 Full serial Gen3 x4 PHY, integrated mainchip routing and final setup/hold remain
-OPEN. This section supersedes older statuses below.
+OPEN. This goal turn made concrete progress; no blocker or completion claim.
 
-## Resume priorities
+## Live jobs: inspect these first
 
-1. TX isolated final return trunk physical run39134428243 PASSED native560-rule
-   DRC with zero violations, deep/flat LVS1674 and five physical fault controls.
-   Independent geometry run39134989214 PASSED exact reconstruction of all25
-   drawing layers: only three parent rectangles and two identical via moves.
-   Physical and geometry receipts are in docs/evidence. Fresh native extraction
-   run39135318667 uses those immutable inputs. Inspect its actual R/C counts,
-   graph/capacitance checks and13 raw fault controls before composition and
-   unchanged full32 waveform. Never reuse baseline116611R/77471C as new results.
-   The old full32 waveform still fails181/768 data samples and24HBT gates.
-2. CDR native power review39135161442 completed successfully as a DIAGNOSIS,
-   not electrical acceptance. Receipt:
-   docs/evidence/cdr-parallel-v3-native-power-review-20261018.json.
-   Actual AVDD graph488nodes/697R: XD0259 supply Reff26.9140954ohm,
-   original-wave peak/mean loss311.824/292.854mV. Dominant branchR1478
-   T259_rppd_1--P_avdd.n443 is16.3443ohm, thenR1471 is8.40668ohm.
-   XD0249 Reff26.0834042ohm is dominated byR1479=24.8374ohm.
-   Actual AVSS graph964nodes/1353R: XD0044 MOS source Reff60.9574279ohm,
-   original-wave mean rise223.771mV; dominant localR2412=50.2884ohm,
-   T044_S--P_avss.n771. XD0043 has the same50.2884ohm localbranchR2571.
-   KCL/energy/reciprocity checks passed. Native coordinates are bound in the
-   receipt/full hosted summary. These are DC unit-current calculations, not
-   inferred actual currents or transient passes. Next inspect these actual
-   terminal stubs and power geometry in generate_cdr_retimed_parallel_v3_base.py
-   and generate_cdr_retimed_parallel_v3_risers.py, then make an isolated physical
-   repair, rerun native LVS/DRC, freshRC and original full-parent loaded gates.
-   Do not blindly scale more drive, clamp internal rails, scaleRC or relax gates.
-   Fullparent39132945859 remains rejected: early/late50/47HBT failures and
-   sampling/phase failures. All46MOS voltage gates pass; this does not fix
-   source degeneration caused by the measured rail rise.
-3. Preserve mainchip39121691046 at3b415c02d11ac763fd081412b34234103772d347.
-   This is the native50-buffer proven candidate route, then antenna/DRC/
-   disconnected checks, fresh nominalRC and three cell corners. Original
-   clocks20/4/8/8ns and5%derate remain. No improved timing result is claimed.
-   Baseline slow/typ/fast setup9687/7650/3698 and hold4/13/51 remain failures.
+1. TX repaired full32 waveform **39137607059**, source
+   `b8a1b3ebe3047ab21fd9a0824787246a37ea5e24`.
+   Controls117705216679 passed. Nominal117705290956 and actual leaf-select
+   fault117705290938 reached native simulation. Preserve both; no restart on
+   polling timeout. Original256bits/34ns/604HBT512MOS/124inputlegs and all
+   original gates remain. Eleven actual clock references are included but
+   external CMOS/modulation/output boundaries remain, so this is not fullPHY.
+   Controller cloud_tx_v5_return_repair_wave.py; workflow
+   tx-v5-return-repair-loaded-wave-cloud.yml. No new waveform result yet.
+2. CDR XOR local source/power access **39137767974**, source
+   `6c5863e11f800e78aadc1169fc9642f7ac6c7847`, physical candidate.
+   Generator hw/soc/flow/make_pcie_cdr_xor_power_access_v4.py adds actual
+   distributed M1-M3 source vias plus0.4um M3 strap on threeMOS, and widens
+   only AVDD rppd M3 escape0.4→1.2um. Native59devices/schematic unchanged.
+   Native560DRC/deep-flat59LVS/sevenfaults remain unchanged. Firstcandidate
+   **39137391978 FAILED DRC15markers**(M1.b6,M2.b3,V1.b3,V2.b3), LVSnotreached.
+   Actual recorded source-via centers had0.4um-close pairs on allthreeMOS.
+   Currentcandidate retains midpoint/endpoints and skips periodic via within
+   1.5um of any retained center. Originalfailure archived at
+   docs/evidence/cdr-xor-power-access-v4-spacing-rejection-20261018.json.
+   If it passes, require independent drawing/device conservation, parent484
+   integration, native planes/model binding, fresh MIM-awareRC and original
+   full loaded transients. A leaf pass is not a parent/electrical pass.
+   Design: docs/pcie-cdr-xor-power-access-repair-20261018.md.
+3. Mainchip **39121691046**, source
+   `3b415c02d11ac763fd081412b34234103772d347`, native117658413515.
+   Proven50-buffer candidate reroute is live; original20/4/8/8ns clocks and
+   5%derate preserved. It must finish antenna/DRC/disconnected checks, fresh
+   nominalRC and three cell corners. No improved timing result yet. Baseline
+   slow/typ/fast setup9687/7650/3698; hold4/13/51 remain FAILURES.
 
-Observed hosted states (snapshot, not promised completion):
+## TX verified chain for the live repaired waveform
+
+- Physical39134428243:560DRC0,deep/flat1674LVS,five physicalfaults.
+- Exactgeometry39134989214:all25drawinglayers; only threeparentrectangles
+  and two identical nativevia moves. All31children/60signals unchanged.
+- FreshRC39135318667:actual1674devices/116611R77471C, original native
+  topology/point-C/mutual-C conservation and13 rawcorruptions passed.
+- Composition39136227539:allnativebindings, sixactualcompositionfaults and
+  two physicalendpointfaults passed. Receipt
+  tx-v5-return-repair-composition-pass-20261018.json.
+- Same run independentDCsolve: E1145.55999885→4.89422435ohm;
+  E1155.57383303→4.90805853ohm(~12% lower). No other tail worsened beyond
+  numericalroundoff. OriginalKCL/energy/reciprocity preserved. Receipt
+  tx-v5-return-repair-resistance-20261018.json. DC is not waveform acceptance.
+- Compact model bytes also changed. Independentcomparison39137222470
+  proved every1674device parameter/orderedterminal topology equivalent,
+ 162public namesfixed, with11internalnode renames and publicport reordering.
+  Three actualmalformedmodels rejected. Files are NOT byte-identical.
+  Receipt tx-v5-return-model-equivalence-pass-20261018.json.
+- New compact SHA393dbc4f0f339658c98bf0c50955b894344c767d659ec432b4b8f0dc2e3dd7ee;
+  wire SHA86e2641c5795d299d0b611ece77ab848c4340a993a62b207acd2a81fc73d90b2.
+  Old full32 waveform39112087217 remains181/768wrong and24HBTfail.
+
+## Why CDR local access is the next repair
+
+CDR fullparent39132945859 FAILED original data/phase and50/47HBT early/late
+limits;46MOS voltage gates pass. Its484device3538R4038C/11MIM composition
+and extraction are verified, but not its loaded operation. Nativepathreview
+39133993258 and powerreview39135161442 identify actual losses.
+XOR y XD0044 source hasReff60.9574ohm and223.77mV meanrise; localR2412 alone
+is50.2884ohm, between native T044_S(1653.75,4032.45)um and retained D21
+M4/M6 riser start(1644.6,4000.85)um. The old64um MOS stripe was contacted
+only nearbottom through onecolumnvia and0.4um M3 escape; parentM6 begins
+after this loss. XD0259 AVDD load has16.3443ohm localescape beforeD6riser
+and311.824mV peak rail loss. Nativepower receipt includes originalcoordinates.
+No ideal clamps, altered clocks, RC scaling, relaxed limits or blind drivescaling.
+
+Current hosted snapshot:
 
 ```json
 [
   {
+    "id": 39137607059,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "b8a1b3ebe3047ab21fd9a0824787246a37ea5e24"
+  },
+  {
+    "id": 39137767974,
+    "status": "in_progress",
+    "conclusion": null,
+    "head_sha": "6c5863e11f800e78aadc1169fc9642f7ac6c7847"
+  },
+  {
     "id": 39121691046,
     "status": "in_progress",
     "conclusion": null,
-    "head_sha": "3b415c02d11ac763fd081412b34234103772d347",
-    "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39121691046"
-  },
-  {
-    "id": 39135318667,
-    "status": "completed",
-    "conclusion": "success",
-    "head_sha": "ada805308e5373c1964d43a9728b05044d984bdc",
-    "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39135318667"
+    "head_sha": "3b415c02d11ac763fd081412b34234103772d347"
   }
 ]
 ```
 
-Observation time: 2026-10-18T14:24:05.616620+00:00.
+Observed 2026-10-18T14:51:54.459452+00:00.
 
 ---
 
