@@ -1,3 +1,15 @@
+# Current: cloud-only; TX column geometry verified and fresh RC extraction launched
+
+All source edits and evidence are committed directly to GitHub; no local checkout, CAD simulation, native archive download or scratch files. Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified empty on2026-10-18; no local OpenROAD/ngspice/KLayout/Yosys work is running. Preserve unrelated repositories and application runtime. User cloud-only instruction takes precedence over historical local instructions.
+
+TX native physical39110049165/source5ac146781cf625dce9814630842ade3467e4e3f6 passed560DRC categories with0markers, deep and flat1674device LVS, five actual physical faults, and allthree exact column/row/child-conductor geometry controls. All31child geometries and reference device cards unchanged. Actual60signal centerlines104983.2 to86983.2um; this is geometry improvement, NOT electrical success. Full receipt `docs/evidence/tx-v5-columns-physical-pass-20261018.json` pins summary, archive and each native output.
+
+This commit launches `tx-v5-columns-extraction-cloud.yml` from exact physical archive, retaining complete native terminal/graph/C-conservation and13corruption gates. Require actual new RC counts/values; never reuse or scale original-return64 RC. After extraction PASS adapt complete composition/native terminal binding to the new TOP and observed counts, preserve original composition faults, then original loaded TX acceptance. Full serial PHY remains OPEN.
+
+CDR diagnostic39110321899 at8aef467f5b205bbcab0f475f2ab22c00325a68da now workflowSUCCESS. Inspect its per-case native reports and preserve terminal evidence before making actual circuit changes; diagnostic success does not reverse hybrid406 loaded rejection39109172338 (six HBT failures and data errors). Mainchip saved-route39107161430 still in progress; preserve it, no duplicate. Full routed chip acceptance and final setup/hold remain OPEN.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 loaded candidate rejected; six remaining HBT failures diagnosed next
 
 Loaded39109172338/source80520fa4ba8b1b18f89d566b728baa29cef06797 terminal: early/late native return0, no numerical diagnostics, sources unchanged. All12MOS voltage gates and8MOS tail-current gates pass. Remaining HBT failures6 (previous14): nativeIDs27,35,43,50,58,66. This reduces device violations but does not close electrical gates. Early sampler a/b/c/d wrong115/299/371/404 of765; late126/78/367/399. Early phase+.069355232V has wrong sign; late+.074482607V correct sign but data fails. Both actual clock-stop and VI-bias-off faults detected. Full immutable assets and metrics retained `cdr-hybrid-full-wire-rejection-20261018.json`.
