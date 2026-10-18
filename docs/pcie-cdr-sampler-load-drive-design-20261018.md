@@ -129,3 +129,8 @@ The physical workflow now generates actual separate native PCells,17finite subst
 ## Actual54device first physical rejection
 
 Run39126125731 at43e3002bbc2f87a523f9cb2a5bb0dc65cbd518b0 restored allfive electrical proofs and generated actual946.125x191.03um geometry. Native560category DRC completed and rejected193markers:Cnt.b60, Cnt.g1=12, CntB.a48, CntB.a1=24, CntB.h1=48, M4.b1. LVS/remaining controls were not reached. The generatedGDS and failures remain in cdr-sampler-parallel-first-drc-rejection-20261018.json and its pinned native archive; do not adopt it. The new cloud-only read-only review restores exact native marker coordinates/cells and source geometry, with no regeneration or rule waiver, before choosing contact/route repair.
+
+
+## Native tap overlap repair, pending fresh physical validation
+
+Read-only run39126723857 at5604b9caf2fda8ebda5d56851149deb1d78594c1 reproduced all193markers. The192contact errors locate six local taps shifted onto their own MOS strips; source32/36um electrical topology was not the cause. One same-SUB M4 pair has only0.14um edge separation. The generator now reserves18um between primitive bboxes, rejects localtap overlap with every actualprimitive bbox (1um clearance), and spaces all M4 columns including same-net SUB. Electricalv8 source,54device census,560native rules, unsimplifieddeep/flatLVS and14faults unchanged. This commit triggers fresh cdr-sampler-parallel-physical-cloud; inspect actual result, not workflow submission. No samplerphysical/parent/fullPHY acceptance yet. Mainchip39121691046 and TX39112087217 still in_progress, preserve. All modifications through GitHub API in RAM; localworkspace remains empty.

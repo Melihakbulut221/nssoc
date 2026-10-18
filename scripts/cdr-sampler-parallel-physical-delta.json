@@ -4,7 +4,7 @@
       "baseline_path": "hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py",
       "baseline_sha256": "dacc174b0adc1d90f691b20e5d37c0e0d4dd5a723e5aac6e6c9619d138a5071d",
       "candidate_path": "hw/soc/flow/make_pcie_sampler_parallel_drive_v8.py",
-      "candidate_sha256": "4e97bf24c5e8ab05f8e982888c02ad9304f4b57b0ad0b3f72f545a6ce41bca6c",
+      "candidate_sha256": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
       "edits": [
         {
           "before": "Native12HBT/3LVNMOS/12rppd hybrid sampler",
@@ -90,6 +90,46 @@
           "before": "Hybrid-tail external-clock sampler, not the original all-HBT layout.",
           "after": "Parallel-drive external-clock sampler with separate36um tail MOS and actual local body contacts.",
           "count": 1
+        },
+        {
+          "before": "previous_right + 12",
+          "after": "previous_right + 18",
+          "count": 2
+        },
+        {
+          "before": "def safe_tap_x(desired):",
+          "after": "def safe_tap_x(desired, min_x=None):",
+          "count": 1
+        },
+        {
+          "before": "foreign = [x for net, points in terminals.items() if net != \"SUB\" for x, _ in points]",
+          "after": "foreign = [x for points in terminals.values() for x, _ in points]",
+          "count": 1
+        },
+        {
+          "before": "if all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):",
+          "after": "if (min_x is None or x >= min_x) and all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):",
+          "count": 1
+        },
+        {
+          "before": "x = safe_tap_x(row[\"placement_um\"][0] + 3)",
+          "after": "x = safe_tap_x(row[\"placement_um\"][0] + 3, row[\"placement_um\"][0] + 1.98)",
+          "count": 1
+        },
+        {
+          "before": "        t = instance(cell, x, y)\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]",
+          "after": "        t = instance(cell, x, y)\n        tap_box = cell.dbbox().transformed(t)\n        # Native tap diffusion/contacts must stay outside every primitive.\n        for primitive in records:\n            if primitive[\"kind\"] == \"substrate_tap\":\n                continue\n            values = [float(v) for v in primitive[\"bbox_um\"].strip(\"()\").replace(\";\", \",\").split(\",\")]\n            left, bottom, right, upper = values\n            assert (tap_box.left >= right + 1 - 1e-8 or tap_box.right <= left - 1 + 1e-8 or\n                    tap_box.bottom >= upper + 1 - 1e-8 or tap_box.top <= bottom - 1 + 1e-8), (\n                    \"Local substrate contact overlaps native primitive clearance\", row[\"name\"], primitive[\"name\"])\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]",
+          "count": 1
+        },
+        {
+          "before": "assert net == other or abs(x-ox) >= 2.0-1e-8",
+          "after": "assert abs(x-ox) < 1e-8 or abs(x-ox) >= 2.0-1e-8",
+          "count": 1
+        },
+        {
+          "before": "# The32um tails exceeded LU.b with only the original remote tap row.",
+          "after": "# Actual36um tails need local contacts; reserve diffusion AND all M4 column spacing.",
+          "count": 1
         }
       ]
     },
@@ -170,7 +210,7 @@
       "baseline_path": "scripts/cloud_cdr_sampler_hybrid_physical.py",
       "baseline_sha256": "7766c5bd847cce7fcc3ab3140b28de0b1b7eb4b066e7487c2bbe1f21e1739364",
       "candidate_path": "scripts/cloud_cdr_sampler_parallel_physical.py",
-      "candidate_sha256": "7fb8ee9b40f0db878c9b90941ecfa8b01fc465952c2dfb68b5a5b3d8ad73bca4",
+      "candidate_sha256": "e55522ecf84f63bfbbd4e89512f24d386214b399839c349d15e0023dadef87eb",
       "edits": [
         {
           "before": "unsimplified38device",
@@ -235,6 +275,11 @@
         {
           "before": "PASS_HYBRID_SAMPLER38_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
           "after": "PASS_PARALLEL_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "count": 1
+        },
+        {
+          "before": "4e97bf24c5e8ab05f8e982888c02ad9304f4b57b0ad0b3f72f545a6ce41bca6c",
+          "after": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
           "count": 1
         }
       ]

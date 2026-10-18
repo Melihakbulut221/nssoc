@@ -193,11 +193,11 @@ def main():
                 params["ng"] = 1
             cell = pc("nmos" if row["kind"] == "nmos" else "rppd", params)
         raw = cell.dbbox()
-        x = math.ceil(max(20.0 + index * 20, previous_right + 12 - raw.left) / .005) * .005
+        x = math.ceil(max(20.0 + index * 20, previous_right + 18 - raw.left) / .005) * .005
         y = 20.0
         t = instance(cell, x, y)
         actual = raw.transformed(t)
-        assert actual.left >= previous_right + 12 - 1e-8 and actual.top < 70
+        assert actual.left >= previous_right + 18 - 1e-8 and actual.top < 70
         previous_right = actual.right
         if row["kind"] == "hbt":
             m1 = sorted([s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],
@@ -239,24 +239,34 @@ def main():
                 escape(pin, 1, row["nets"][k], x - 6 + 3*k, row["name"],
                        1 if row["width_um"] == 1 else 4)
         records.append(dict(**row, placement_um=[x, y], bbox_um=str(cell.dbbox().transformed(t))))
-    def safe_tap_x(desired):
+    def safe_tap_x(desired, min_x=None):
         # Reserve an independent M4 column before placing the actual tap.
         # DRC alone cannot detect an accidental union of two labelled nets.
-        foreign = [x for net, points in terminals.items() if net != "SUB" for x, _ in points]
+        foreign = [x for points in terminals.values() for x, _ in points]
         for offset in [0, *[v for k in range(1,7) for v in (-.5*k,.5*k)]]:
             x = round((desired+offset)/.005)*.005
-            if all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):
+            if (min_x is None or x >= min_x) and all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):
                 return x
         raise ValueError("No independent local body-contact routing column")
     # One real local body contact beside the middle of each MOS active strip.
-    # The32um tails exceeded LU.b with only the original remote tap row.
+    # Actual36um tails need local contacts; reserve diffusion AND all M4 column spacing.
     mos_rows = [r for r in records if r["kind"] == "nmos"]
     assert len(mos_rows) == 9
     for index, row in enumerate(mos_rows, start=TAPS-9):
-        x = safe_tap_x(row["placement_um"][0] + 3)
+        x = safe_tap_x(row["placement_um"][0] + 3, row["placement_um"][0] + 1.98)
         y = row["placement_um"][1] + row["width_um"]/2 - 1
         cell = pc("ptap1", {"w": "2u", "l": "2u"})
         t = instance(cell, x, y)
+        tap_box = cell.dbbox().transformed(t)
+        # Native tap diffusion/contacts must stay outside every primitive.
+        for primitive in records:
+            if primitive["kind"] == "substrate_tap":
+                continue
+            values = [float(v) for v in primitive["bbox_um"].strip("()").replace(";", ",").split(",")]
+            left, bottom, right, upper = values
+            assert (tap_box.left >= right + 1 - 1e-8 or tap_box.right <= left - 1 + 1e-8 or
+                    tap_box.bottom >= upper + 1 - 1e-8 or tap_box.top <= bottom - 1 + 1e-8), (
+                    "Local substrate contact overlaps native primitive clearance", row["name"], primitive["name"])
         ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]
         assert len(ps) == 1
         pin = ps[0]
@@ -280,7 +290,7 @@ def main():
     columns = [(net,x) for net,points in terminals.items() for x,_ in points]
     for i,(net,x) in enumerate(columns):
         for other,ox in columns[i+1:]:
-            assert net == other or abs(x-ox) >= 2.0-1e-8, ("Distinct M4 routing columns overlap",net,other,x,ox)
+            assert abs(x-ox) < 1e-8 or abs(x-ox) >= 2.0-1e-8, ("Distinct M4 routing columns overlap",net,other,x,ox)
     output_shunts = []
     nets = list(PORTS) + sorted(set(terminals) - set(PORTS))
     for index, net in enumerate(nets):
