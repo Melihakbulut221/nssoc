@@ -1,0 +1,95 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: onehot-resize-route-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      resize_run:
+        description: Passed native sizing preparation run
+        required: true
+        type: string
+      resize_head:
+        description: Exact preparation source commit
+        required: true
+        type: string
+      resize_summary_sha:
+        description: SHA256 of immutable preparation summary
+        required: true
+        type: string
+      resize_parts_sha:
+        description: SHA256 of immutable preparation parts manifest
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: onehot-resize-route-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-routed-extraction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned physical runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Compile controller and validate against actual native STA script
+        run: |
+          python3 -m py_compile scripts/check_onehot_resize_routed_topology.py hw/soc/pnr/onehot_load_route_flow.py scripts/cloud_onehot_resize_route.py scripts/check_onehot_routed_extraction_native.py hw/soc/pnr/replay_onehot_routed_extraction_flow.py
+          "$CLOUD_APPIMAGE" python scripts/check_onehot_routed_extraction_native.py
+      - name: Route resized measured data drivers and remeasure original physical and timing gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESIZE_RUN: ${{ inputs.resize_run }}
+          RESIZE_HEAD: ${{ inputs.resize_head }}
+          RESIZE_SUMMARY_SHA: ${{ inputs.resize_summary_sha }}
+          RESIZE_PARTS_SHA: ${{ inputs.resize_parts_sha }}
+          ROUTE_SUMMARY_SHA: f7a5c4951a3c4f3b0aa91c81f2cf7ceb33f6e3e0fbe3515bcc8b2fd3b343b1e5
+          ROUTE_PARTS_SHA: e6b84fd57e6ddd2f31e79daa381aafaa8bb608147262320c7e25bcaa31f03859
+        run: |
+          python3 scripts/cloud_onehot_resize_route.py --summary-sha256 "$ROUTE_SUMMARY_SHA" --parts-sha256 "$ROUTE_PARTS_SHA" --resize-run "$RESIZE_RUN" --resize-head "$RESIZE_HEAD" --resize-summary-sha256 "$RESIZE_SUMMARY_SHA" --resize-parts-sha256 "$RESIZE_PARTS_SHA"
+      - name: Preserve every native state and any rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-onehot-resize-route
+          mkdir -p "$root"
+          python3 - "$root" <<'PYCODE'
+          import hashlib,json,pathlib,sys
+          p=pathlib.Path(sys.argv[1]);f=p/'result.json'
+          r=json.loads(f.read_text()) if f.is_file() else {'accepted':False,'status':'FAIL_MISSING_REPORT'}
+          if r['status'].startswith(('RUNNING','RESTORING')):
+              r.update(status='INTERRUPTED_NATIVE_STAGE_RETAINED_NOT_ACCEPTED',accepted=False)
+          r['outputs']={str(x.relative_to(p)):hashlib.file_digest(x.open('rb'),'sha256').hexdigest()for x in p.rglob('*')if x.is_file()and x!=f}
+          f.write_text(json.dumps(r,indent=2)+'\n')
+          PYCODE
+          stem="onehot-resize-route-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','onehot-resize-route',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain states if permanent publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: onehot-resize-route-${{ github.run_id }}
+          path: hw/soc/out/cloud-onehot-resize-route/
+          retention-days: 30
