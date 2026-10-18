@@ -1,0 +1,24 @@
+{
+  "baseline_path": "scripts/generate_cdr_retimed_parent_v2.py",
+  "baseline_sha256": "4c12d9172d7cc9189fdf60194d64bfb4bd0d6e17a57d6ee0a6c9efefc9cfc6f2",
+  "candidate_path": "scripts/generate_cdr_retimed_avss256_base.py",
+  "candidate_sha256": "411b3ad61edba7fbb749b9f2cb0dcf7d979fdbe0526f200408c34dce16b45a9a",
+  "edits": [
+    {
+      "before": "TOP='nssoc_cdr_retimed_pd394_layout_v2'",
+      "after": "TOP='nssoc_cdr_pd394_avss256_base_v1'",
+      "count": 1
+    },
+    {
+      "before": "width=64. if net in ('avdd','avss','sub')else 3.2",
+      "after": "width=256. if net=='avss'else 64. if net in ('avdd','sub')else 3.2",
+      "count": 1
+    },
+    {
+      "before": "extent=24 if bus['width']==64 else 0",
+      "after": "extent=24 if bus['width']>=64 else 0",
+      "count": 1
+    }
+  ],
+  "scope": "Only global native TopMetal1 AVSS bus width64um to256um; retain original via arrays for all supply connections. Actual routing regenerates around increased bus span; original ordering optimizer, devices, child geometry, pin directions, public feed widths and clocks remain."
+}
