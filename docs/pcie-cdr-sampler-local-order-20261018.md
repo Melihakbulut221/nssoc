@@ -59,3 +59,10 @@ The new parent has four reordered sampler leaves. Its old wire RC and failed-wav
 Runs39146048020 and39146048128 atf63d92772632e117c68d918bace534ad09c3340e completed the new geometry's whole-parent wire-only extraction and484-device PDK compact-model binding. The raw wire network contains3227 resistors and3830 capacitors with111 conductor components and946 physical points;13 raw-network corruptions and12 model-binding corruptions were rejected. These element counts describe an extracted network, not timing improvement or electrical acceptance.
 
 The next capture restores this exact RC and model binding, adds all11 actual MIM masks, rebinds the native bottom-contact points and preserves the original geometry/ownership controls. Substrate spreading, RF distribution and full loaded electrical behavior remain unqualified.
+
+
+## Complete native loaded model dispatched
+
+Capture39146340843 measured3250R/3841C with eleven MIM devices; audit39146624541 rejected all13 raw wire and nine intrinsic-device corruptions. Composition39146784611 retained all484 devices and every extracted resistor/capacitor, with each native MIM included exactly once, and rejected all19 composition corruptions. The native layout geometry, model conversion and every original waveform acceptance gate remain unchanged except the verified sampler placement and its freshly extracted wiring.
+
+The new full loaded workflow runs nominal early/late data plus real clock-stopped and VI-bias-off controls. It retains256 source bits, fixed sampling phases,150fF sampler-collector loads,50fF output loads, and the original per-device voltage/current and VI direction gates. Physical and netlist passes do not imply any of these four waveforms passed. Full closed-loop recovery, PVT/timestep/RF/substrate qualification, four-lane serial PHY and mainchip final timing remain open.
