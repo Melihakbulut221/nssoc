@@ -597,3 +597,7 @@ The full new RC/model chain is now verified through composition39119795848; raw 
 ## Current native sampler repair and authoritative checkpoint
 
 CLOUD_RESUME.md has been rewritten around current verified handles and supersedes older live-status paragraphs above. PD420 full-parent remains rejected, native50 mainchip route39121691046 and full-wireTX39112087217 are live. Native sampler v3 fixed invalidNx16/startup, v4 passed nominal/cold/device/data but hotfourVCEfail; native review39124255052 reconstructs exact extrema. New v5 only strengthens actual slave emitter bleeds, retaining every original waveform/device gate and1pF stress. Follow its exact cloud job before new geometry. All source changes use GitHub API; no local checkout/artifacts/CAD.
+
+## V6 native sampler five-screen pass, physical work next
+
+The repaired balanced sampler39125008269/source13e670e3b356924603e18e7cc4fd4e16d0ae4d7b passed actual five native screens with original1pF/data/device/startup gates. Receipt cdr-sampler-balanced-native-pass-20261018.json stores all five reports. This is a component result only. CLOUD_RESUME.md records exact next physical work and warns that old38device geometry cannot represent16HBT/128umtail repair. Existing actualPD420 parent remains electrically failed; require new physical/model/RC chain and original full-parent/closed-loop validation. Mainchip route/TX handles remain separately verified there.

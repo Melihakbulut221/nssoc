@@ -49,3 +49,61 @@ V5 keeps the master latch unchanged and explicitly duplicates its native subcirc
 Run39124621809 passes nominal/hot_low and both faults with no diagnostics; all three normal data tests pass. Hot slave data minimumVCE0.41926V and hold0.40415V now exceed0.4V. Cold remains rejected for exactly one HBT: slaveDP maximum|VBE|1.000106822V exceeds1V; no rounding or epsilon waiver is applied. Nominal margin145.156mV/delay29.531ps, hot118.112mV/34.219ps, cold162.101mV/26.719ps. Receipt cdr-sampler-bleed-cold-vbe-rejection-20261018.json retains all5cases.
 
 V6 changes only slave DATA emitter bleeder length9.6→12.8um(width1um); HOLD bleeder stays9.6um to retain its smaller hot VCE margin. This reduces data-branch bleed strength from4x to3x baseline with more hot data headroom available. Master, input bias, native model, source boundaries, full-window waveform and device acceptance thresholds are unchanged. Three temperatures/supplies and actual faults must rerun. These screens still use the pinned nominalHBT model; full process/mismatch/jitter/qualifiedPEX/closed-loop validation is not established.
+
+## Verified v6 component milestone
+
+Run39125008269/source13e670e3b356924603e18e7cc4fd4e16d0ae4d7b passes all five native screens. Every normal condition has768correct samples, minimum100mV margin and maximum37.5ps delay limits met; all16HBT/3MOS retained device checks and clean zeroOP/startup/diagnostic/domain/source controls pass. Both actual faults are detected and their device checks also pass. Exact full reports, model/runtime/input hashes and native archive digests: cdr-sampler-balanced-native-pass-20261018.json.
+
+Measured values (SI; full exact records retained):
+
+```json
+{
+  "nominal": {
+    "minimum_signed_margin_v": 0.14217847259138994,
+    "maximum_clock_to_valid_s": 3.0156249999994135e-11,
+    "devices_passed": true,
+    "data_passed": true,
+    "actual_fault_detected": false,
+    "minimum_hbt_vce_v": 0.4505560322188863,
+    "maximum_hbt_abs_vbe_v": 0.9413524352396969
+  },
+  "hot_low": {
+    "minimum_signed_margin_v": 0.1155084677485214,
+    "maximum_clock_to_valid_s": 3.4843749999993246e-11,
+    "devices_passed": true,
+    "data_passed": true,
+    "actual_fault_detected": false,
+    "minimum_hbt_vce_v": 0.40692920104936237,
+    "maximum_hbt_abs_vbe_v": 0.851124069036306
+  },
+  "cold_high": {
+    "minimum_signed_margin_v": 0.158880029880191,
+    "maximum_clock_to_valid_s": 2.7031250000161818e-11,
+    "devices_passed": true,
+    "data_passed": true,
+    "actual_fault_detected": false,
+    "minimum_hbt_vce_v": 0.5005378235904757,
+    "maximum_hbt_abs_vbe_v": 0.999419126227099
+  },
+  "swap_output": {
+    "minimum_signed_margin_v": -0.2426777388662699,
+    "maximum_clock_to_valid_s": 1.189062500003487e-10,
+    "devices_passed": true,
+    "data_passed": false,
+    "actual_fault_detected": true,
+    "minimum_hbt_vce_v": 0.4505560322188863,
+    "maximum_hbt_abs_vbe_v": 0.9413524352396969
+  },
+  "clock_stopped": {
+    "minimum_signed_margin_v": -0.23364639544578442,
+    "maximum_clock_to_valid_s": 1.1890625000113618e-10,
+    "devices_passed": true,
+    "data_passed": false,
+    "actual_fault_detected": true,
+    "minimum_hbt_vce_v": 0.5499849619339559,
+    "maximum_hbt_abs_vbe_v": 0.9105858067038834
+  }
+}
+```
+
+This is only a standalone external-clock1pF stress screen using the pinned nominalHBT model at three temperature/supply/RES/MOS conditions. It is not full process/mismatch/jitter or qualified thermal/PEX/closed-loop compliance. It does not repair the already rejected actual PD420 parent. Next implement actual physical16HBT/3MOS/12rppd circuit or explicitly revalidate a folded/parallel tail topology, nativeDRC/LVS/LEF/RC and parent reconnection. Preserve every original loaded parent/PHY gate. The128um singlefinger tails do not fit the old<70um generator height; physical fingers/body contacts must be real, extracted and matched.

@@ -38,3 +38,26 @@ Full PLL/CDR acquisition, SERDES/PCS/LTSSM/replay integration, all four serial l
 ## Latest actual v5 result and v6 run to inspect
 
 V5 cdr-sampler-bleed39124621809 at2dc72303010a7aa87641693fca162f5f5c21e01d completed. Nominal/hot and faults pass; cold onlyslaveDPVBE1.000106822V>1V fails. Every normal data test passes. Exactreceipt cdr-sampler-bleed-cold-vbe-rejection-20261018.json. V6 cdr-sampler-balanced-cloud launches from this commit: ONLYslaveDATA emitter bleederL9.6→12.8um, HOLDstays9.6um, allboundaries/gates/native models unchanged. Inspect its real outcome next. Physicalwork remains mandatory after electricalscreen; do not adopt v5 or claimfullPHY/timeclosure.
+
+## Latest authoritative v6 milestone — supersedes pending v6 status
+
+V6 native balanced sampler39125008269 at13e670e3b356924603e18e7cc4fd4e16d0ae4d7b is terminalSUCCESS with actual allfive reports verified, not merely green workflow. All3normalconditions768correctsamples/1pF/100mV/37.5ps and all16HBT/3MOSdevicegates pass. Both actualfaultsdetected and devicesafe under retainedscreen. No diagnostics,16nativeOFFreadbacks, zeroOP, sourceimmutability, sourceNx0/11/16mutationrejections pass. Receipt docs/evidence/cdr-sampler-balanced-native-pass-20261018.json contains all5full reports and archive pins. Candidate source hw/soc/analog/pcie/rx_sampler_balanced_v6.spice, controller scripts/cloud_cdr_sampler_balanced.py.
+
+NEXT ACTUAL WORK: physical implementation of this repaired sampler, including viable128um tail realization and actual body contacts. Existing generator needs geometry changes; possible separate4x32um NMOS or foldednativePCell changes require their own electrical revalidation before use. Exact v6 topology16HBT/3MOS/12rppd, allHBTNx8(total128), reference8um/tails128um,L.3um, collectorW32L2.12, inputpullupsW1L2.4; onlyslavebleedsDATAW1L12.8/HOLDW1L9.6; masterbleedsW1L38.4. Use actualgeometry560DRC/deepflatLVS/faults/LEF/freshRC, rebuild parent with new IDs/RC, and replay originalwholeloaded andlooptests. Do not substitute thisscreen for fullPD420 previouslyfailed loadedwaves. Native model is nominalHBT with three temperature/supplyconditions, not completeprocessqualification.
+
+Live jobs revalidated at this receipt commit:
+[
+  {
+    "run": 39121691046,
+    "status": "in_progress",
+    "conclusion": null,
+    "head": "3b415c02d11ac763fd081412b34234103772d347"
+  },
+  {
+    "run": 39112087217,
+    "status": "in_progress",
+    "conclusion": null,
+    "head": "65d48a27773e891f289c6a9a534290a16623fd56"
+  }
+]
+Full goal remains OPEN; all work/cloud artifacts only.
