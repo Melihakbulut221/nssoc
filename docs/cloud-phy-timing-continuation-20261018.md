@@ -1,3 +1,13 @@
+# Current: select-tail v2 separate substrate and actual physical18 candidate launched
+
+Componentv1 run39112422867/sourcefe4427f163d5cc0a99de99958fc943a6d41189a9 nominal/cold_high passed native256bit data and all device bounds, no numericaldiagnostics, zeroOP0. Nominal0wrong/768,minmargin223.266mV,9.219ps; cold232.798mV/8.594ps. Partialreceipt `cdr-select-hybrid-v1-initial-screen-20261018.json` retains exact reports; inspect remainingthreecases beforeclaiming all5.
+
+Physical v2 explicitly keeps nativeMOSbody on separate SUB pin rather than v1AVSSbody. Standalone bench ties both externalgrounds0, but actual routedchip must preserve distinct body/return conductors. New v2 component5case screen repeats unchangedgates; oldsource/results retained. New physicalgenerator uses2HBT/2nativeLVNMOS/4rppd and10finiteSUBcontacts including two localMOScontacts (18devices). NativeMOSsource/drain andpolycontact geometry follow existing verified sampler technique. All8edgepins, original2HBT/loadvalues;560DRC/deepflat18LVS, originalfivefaults plusMOSwidth/gate faults required. New cdr-select-hybrid-v2-physical-cloud launched, no pass inferred. AfteractualleafPASS composefullparentwithfreshRC beforeelectricalacceptance; XORtail andretimingattenuation remain.
+
+TX columns fullwire39112087217/source65d48a27773e891f289c6a9a534290a16623fd56 controlsPASS andbothnativejobs running. Mainchipround3 existing39111280543 stilllive. No restart. FullobjectiveOPEN. Cloud-only;goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: actual CDR select-tail repair candidate screened in cloud
 
 Fullhybrid406 diagnosis identified select tails native43/66 with .198-.200V minimumVCE while requiring.4V, and XOR tails27/35/50/58 with .184-.191V. This commit develops `cdr_select_hybrid_tail_v1.spice`: only reference/tail change from HBT to nativeLVNMOS8/32um/.3um; original2HBT differential pair and fourrppd loads unchanged. Source-delta guard and three corruptions retain this scope.
