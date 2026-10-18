@@ -1,3 +1,15 @@
+# Current cloud continuation — AVSS256 loaded rejection retained
+
+Cloud only. The local workspace remains empty; no native archive, scratch source or CAD process belongs on this computer.
+
+AVSS256 loaded run **39096665471** at240fe07e683b058f72890888840c7cfec66ceba9 completed with both nominal cases rejected. Early sampler wrong-sign counts are103/282/366/390 of765; late115/76/367/398. Both retain14 HBT operating-point failures. Late phase direction passes; early direction fails. No numerical warnings were reported and source readback stayed unchanged. Actual clock-stop and VI-bias-off cases pass their negative-control gates; these do not turn a failed nominal model into an accepted PHY.
+
+The fresh native geometry/RC chain remains valid as a development model, not electrical acceptance. In particular a wider global AVSS rail did not close the data problem. Preserve all raw captures and controls in `cdr-avss256-full-wire-rejection-20261018.json`. The new `cdr-avss256-path-review-cloud` workflow replays the original sample/device checks from those captures and measures actual rail drops, collector/base differences and differential-pair voltages. It changes no RC, timing, stimulus, gate or native waveform. Choose further geometry changes from that diagnosis, not from the physical pass alone.
+
+Mainchip route **39084569446** and TX return64 **39087664998** remain live. Keep their handles and inspect final native receipts before any downstream RC/STA. Full serial PHY, mainchip routing and final setup/hold remain incomplete.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — AVSS256 fresh model ready for loaded tests
 
 All work remains in GitHub; local workspace is empty. Do not clone or restore archives locally. The full serial PHY, routed mainchip and final setup/hold goal remains active and incomplete.
