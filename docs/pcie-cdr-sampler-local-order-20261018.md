@@ -45,3 +45,10 @@ drawings and reference independently. Original484-device DRC/LVS and five
 faults remain. The supply-riser code retains every actual clearance/endpoint
 check; the previous placement-specific three shifted-device names are replaced
 by the same1.645um geometric clearance check for every current sampler riser.
+
+
+## Full parent physical result and fresh extraction boundary
+
+Run39145031468 at55d7f857dd60d8757f8bcb8352287c7f151d58f5 passed the actual560-category native DRC and unsimplified484-device deep/flat LVS with five physical fault controls. The54-primitive sampler drawing comparison and its three corruption controls also passed after retaining both native Layout owners. Earlier comparison failures and polygon diagnostics remain in their original cloud releases. The diagnostic JSON emitted during a deliberately removed-HBT fault in the successful run is a negative-control artifact, not an accepted geometry mismatch.
+
+The new parent has four reordered sampler leaves. Its old wire RC and failed-wave results must not be reused as this candidate's extracted result. The next cloud stage independently compares all eight copied leaf drawings and all16 actual macro transforms, then binds158 planes and1394 native terminals to51 logical nets with the original19 fault controls. Fresh wire RC, intrinsic-device binding, MIM composition and unchanged full loaded electrical gates remain mandatory. No closed-loop or full serial PHY acceptance is claimed.
