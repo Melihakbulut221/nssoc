@@ -265,3 +265,6 @@ CDRpathreview39133993258 PASSED unchangedwave reproduction forbothfailednormalca
 
 
 TXisolatedtrunk39134428243 PASSED actual560DRC0/deepflat1674LVS/fivefaults. GDSd8ce0ce4e70bcb8bb641144127fea0b665a3074fed8fc48032902a21d823b27c. Receipt tx-v5-return-repair-physical-pass-20261018.json. Thiscommit launches tx-v5-return-geometry-cloud: independentlyreconstruct allnativeGDSdrawingdifference fromfailedbaseline using onlythreeactualparentrectangles(trunk/stub/bus)andtwo4x4via moves80um; same31placements,162publicports,60signals,1674referencecards. Localstrap/via restoredexactbaseline. Requiregeometrypass thennewRC beforefullloadedwave. Doesnotcloseelectricalfailures.
+
+
+CDRnextaction launched cdr-parallel-v3-power-review-cloud: actualPD4843538R/4038C composedgraph, originalfailedwave railobservations, top20worstmeasuredterminalsperrail, exactunit-currenteffectiveR/KCL/energy/reciprocity andnative.extcoordinatebindings. Noresimulation/RCscale/idealclamp. Useactualbranchlocations todeterminepowergeometryrepair. TXfinaltrunknativephysicalpassed; independentgeometryreviewpendingbeforefreshRC.
