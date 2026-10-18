@@ -215,8 +215,11 @@ def main():
                     ys={py,round(pin.center().y/.005)*.005,upper}
                     yy=py+4.
                     while yy<upper:
-                        ys.add(round(yy/.005)*.005);yy+=4.
+                        candidate=round(yy/.005)*.005
+                        if all(abs(candidate-kept)>=1.5 for kept in ys):ys.add(candidate)
+                        yy+=4.
                     ys=sorted(ys);assert ys[0]==py and ys[-1]==upper
+                    assert all(b-a>=1.5 for a,b in zip(ys,ys[1:]))
                     assert all(pin.bottom+.2<yy<pin.top-.2 for yy in ys)
                     for yy in ys[1:]:via(1,3,sx,yy,1)
                     box(3,sx-.2,py-.2,sx+.2,upper+.2)

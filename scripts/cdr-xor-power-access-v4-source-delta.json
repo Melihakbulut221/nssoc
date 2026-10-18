@@ -4,7 +4,7 @@
       "baseline_path": "hw/soc/flow/make_pcie_cdr_xor_hybrid_v3.py",
       "candidate_path": "hw/soc/flow/make_pcie_cdr_xor_power_access_v4.py",
       "baseline_sha256": "ea62828f2088da79a1127ee1fc7f63d29a3a83d97dd0d4ffd1bc4b473c86b529",
-      "candidate_sha256": "f1d07dcc72ec8e60825ced36dab509991cb41973c17bb1f9babf7111b51a2ea3",
+      "candidate_sha256": "c77c79ee0c82ed520025b52f234a23f71825f880bb31614e53e1627e1b90ccba",
       "edits": [
         {
           "before": "nssoc_cdr_xor_hybrid_tail_layout_v3",
@@ -34,6 +34,16 @@
         {
           "before": "                local_mos_contacts=local_mos_contacts,",
           "after": "                local_mos_contacts=local_mos_contacts,\n                distributed_source_access=distributed_source_access,\n                avdd_rppd_escape_width_um=1.2,\n                local_power_repair_scope=\"Only real MOS source M1-M3 vias/M3 strap and AVDD rppd M3 escape width; all intrinsic devices, source schematic, original routes and contacts retained.\",",
+          "count": 1
+        },
+        {
+          "before": "                        ys.add(round(yy/.005)*.005);yy+=4.",
+          "after": "                        candidate=round(yy/.005)*.005\n                        if all(abs(candidate-kept)>=1.5 for kept in ys):ys.add(candidate)\n                        yy+=4.",
+          "count": 1
+        },
+        {
+          "before": "                    ys=sorted(ys);assert ys[0]==py and ys[-1]==upper",
+          "after": "                    ys=sorted(ys);assert ys[0]==py and ys[-1]==upper\n                    assert all(b-a>=1.5 for a,b in zip(ys,ys[1:]))",
           "count": 1
         }
       ]
