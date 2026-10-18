@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Prepare an actual source-measured native sizing ECO; never claim timing from it."""
-import json,os,re,subprocess,sys
+import json,os,re,shutil,subprocess,sys
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from route_cloud_newer_postcts import sha
@@ -39,14 +39,17 @@ def main():
         selection=dict(source_report_sha256=sha(OUT/'source'/rel),controls=controls(),eligible=len(candidates),targets=targets,scope='Existing selector: negative source-measured slow data paths, cap>=0.1pF delay>=1ns. Positive buf1/buf2 only. At most50; no clock/logic/state/macro changes. Not exhaustive closure.')
         (OUT/'targets.json').write_text(json.dumps(selection,indent=2)+'\n');r.update(source=proof,selection=selection,original_route=dict(odb_sha256=sha(odb),netlist_sha256=sha(netlist)),original_measurements=source['measurements']);save()
         app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64');helper=ROOT/'scripts/prepare_onehot_resized_drivers.py'
+        # Already inside the verified AppImage environment; do not nest FUSE mounts.
+        openroad=shutil.which('openroad');assert openroad, 'Pinned runtime did not expose OpenROAD'
+        r['native_openroad']=dict(path=openroad,sha256=sha(openroad));save()
         protected={str(p):sha(p)for p in [Path(__file__),helper,ROOT/'scripts/select_onehot_routed_loads.py',*[OUT/'source'/n for n in names],OUT/'targets.json']}
-        run([app,'openroad','-exit','-python',helper],'native-resize')
+        run([openroad,'-exit','-python',helper],'native-resize')
         tcl=OUT/'legalize.tcl';tcl.write_text('read_db {'+str(OUT/'proposed.odb')+'}\nset_thread_count 2\ndetailed_placement -max_displacement {1000 200}\ncheck_placement -verbose\nwrite_db {'+str(OUT/'legalized.odb')+'}\n')
-        run([app,'openroad','-exit',tcl],'legalize-resized-drivers')
-        run([app,'openroad','-exit','-python',helper],'native-geometry-proof','audit')
+        run([openroad,'-exit',tcl],'legalize-resized-drivers')
+        run([openroad,'-exit','-python',helper],'native-geometry-proof','audit')
         r['geometry']=json.loads((OUT/'geometry-proof.json').read_text());assert len(r['geometry']['changes'])==len(targets)
         tcl=OUT/'export.tcl';tcl.write_text('read_db {'+str(OUT/'candidate.odb')+'}\nwrite_verilog {'+str(OUT/'candidate.v')+'}\n')
-        run([app,'openroad','-exit',tcl],'export-resized-netlist')
+        run([openroad,'-exit',tcl],'export-resized-netlist')
         run([sys.executable,ROOT/'hw/soc/flow/prepare_ihp_native_boot.py'],'native-models')
         pdk=ROOT/'hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2';lib=pdk/'libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib'
         assert sha(lib)=='968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4'
