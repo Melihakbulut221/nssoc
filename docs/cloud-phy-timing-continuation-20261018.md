@@ -1,3 +1,11 @@
+# Current: hybrid406 native MIM-aware capture passed; strict raw audit launched
+
+Capture39108665356/sourced86602e1803f39052b4bc5eae651323385be96f6 has 9970R/7795C and exactly11 matched native intrinsic MIM devices,111 conductor components/788 points. Metal/via geometry unchanged, actual MIM masks and bottom access points verified, five faults rejected, sources unchanged. Receipt `cdr-hybrid-mim-parent-capture-pass-20261018.json`. This commit launches strict raw audit with13 wire and9 intrinsic MIM corruption controls; capture alone is not raw RC audit or qualifiedPEX. After successful audit compose all406 devices with every actual R/C token and one model per native capacitor, then original loaded phase/data/device tests with added12MOS gates.
+
+Mainchip39107161430 live at last check. Keep existing job; full objective OPEN. Cloud-only.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 native binding and wire RC passed; MIM-aware capture launched
 
 Binding39108479550 and RC39108479590, bothsourcea24f1b6123ab93138825e79323952887aadbce3d, completed actual native methods. Exact406-device binding and12 controls passed, including LV MOS native S/G/D/B to compact D/G/S/B, W/L/diffusion/rfmode and explicit model hash. Whole fresh wire RC passed strict native raw R/C conservation and13 corruption controls. Receipts `cdr-retimed-hybrid-binding-pass-20261018.json` and `cdr-retimed-hybrid-rc-pass-20261018.json`. This commit launches `cdr-hybrid-mim-parent-rc-cloud.yml` restoring those immutable exact sources: original metal/vias unchanged, actual11MIM masks and788 points, native intrinsic identities and five controls. Inspect capture before raw MIM audit/composition and original loaded waveforms. Do not reuse left394 output counts or device IDs.
