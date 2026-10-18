@@ -1,0 +1,42 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_local_v5_mim_loaded.py",
+      "candidate_path": "scripts/cloud_cdr_load_resistor_screen.py",
+      "baseline_sha256": "4f8ddb5de13d13d60acf6db18efbf2d996704a2c183369cf4b91da6e4f084d49",
+      "candidate_sha256": "0a09dab91dd785a25b1e864f57e8ed6e2ae5a5dbff7735ab50380ba0bd8dbb13",
+      "edits": [
+        {
+          "before": "p.add_argument('--case',choices=CASES,required=True);args=p.parse_args()",
+          "after": "p.add_argument('--case',choices=['nominal_early','nominal_late'],required=True);p.add_argument('--load-length-um',choices=['1.2','1.6'],required=True);args=p.parse_args()",
+          "count": 1
+        },
+        {
+          "before": "'cloud-cdr-local-v5-mim-loaded-'+args.case",
+          "after": "'cloud-cdr-load-resistor-screen-'+args.load_length_um+'-'+args.case",
+          "count": 1
+        },
+        {
+          "before": "scope='Actual PD484 complete native MIM-aware wire model:",
+          "after": "scope='Exploratory native-PDK sampler load-resistor length screen on frozen baseline wiring; candidate dimensions have NOT been laid out or freshly extracted. NOT actual candidate post-layout acceptance. Baseline MIM-aware model:",
+          "count": 1
+        },
+        {
+          "before": "        fetch(pump.BASE+'cloud-results-39029337682-1-pll-pump-current/pll-pump-current-39029337682-1.summary.json',primitive.SUMMARY,out/'models-pin.json')",
+          "after": "        # Deliberate circuit-parameter experiment, never an assertion of changed-layout PEX.\n        baseline_model=model;baseline_text=baseline_model.read_text();rows=parser.statements(baseline_text)\n        targets={d['instance'] for d in contract['device_records'] if d['model']=='rppd' and parser.number(d['parameters']['w'])==Decimal('32e-6') and parser.number(d['parameters']['l'])==Decimal('2.12e-6')}\n        assert len(targets)==16\n        candidate_rows=[];changed=[]\n        for row in rows:\n            updated=list(row)\n            if row[0] in targets:\n                assert row[4]=='rppd'\n                positions=[i for i,v in enumerate(row)if v.startswith('l=')];assert len(positions)==1\n                i=positions[0];assert parser.number(row[i][2:])==Decimal('2.12e-6')\n                updated[i]='l='+args.load_length_um+'u'\n                assert all(x==y for j,(x,y)in enumerate(zip(row,updated,strict=True))if j!=i)\n                changed.append(dict(instance=row[0],old_parameter=row[i],new_parameter=updated[i]))\n            else:assert updated==row\n            candidate_rows.append(updated)\n        assert {d['instance']for d in changed}==targets and len(candidate_rows)==len(rows)\n        model=out/'candidate-load-resistors.spice';model.write_text('\\n'.join(' '.join(row)for row in candidate_rows)+'\\n')\n        r['load_resistor_screen']=dict(original_model_sha256=sha(baseline_model),candidate_model_sha256=sha(model),changes=changed,wire_geometry='Frozen local-v5 baseline; no regenerated candidate layout or RC',all_other_model_cards_and_nodes_unchanged=True,actual_candidate_layout_verified=False,original_acceptance_gates_unchanged=True)\n        save()\n        fetch(pump.BASE+'cloud-results-39029337682-1-pll-pump-current/pll-pump-current-39029337682-1.summary.json',primitive.SUMMARY,out/'models-pin.json')",
+          "count": 1
+        },
+        {
+          "before": "Path(legacy.__file__),model,pinpath",
+          "after": "Path(legacy.__file__),model,baseline_model,pinpath",
+          "count": 1
+        },
+        {
+          "before": "r['status']='PASS_WHOLE_MIM_PD484_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF'if passed else'REJECTED_WHOLE_MIM_PD484_LOADED'",
+          "after": "r['status']='PASS_LOAD_RESISTOR_SCREEN_REQUIRES_NEW_LAYOUT_AND_RC'if passed else'REJECTED_LOAD_RESISTOR_SCREEN'",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
