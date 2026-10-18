@@ -1,3 +1,29 @@
+## Cloud continuation: via-rich sampler physical closure and PD484 integration (2026-10-18)
+
+**Cloud-only remains mandatory.** Do not create a local checkout, native CAD run, archive or wave file. Latest authoritative source is the remote branch; failed runs and exact source pins remain in GitHub Releases.
+
+### Current live handles — revalidate, do not restart healthy work
+
+- **39163291382**, source `020d8ec15a23dd7cc5ca31a7d795c40b274d2b65`, job117780928003: new full CDR parent `nssoc_cdr_pd484_via_rich_v7`, currently in native full484physical verification. Source guard/compilation passed. Workflow `cdr-retimed-via-rich-v7-parent-cloud.yml`. Four new sampler leaves; every other leaf/41sourcecards/16macroconnections unchanged. Controller performs source proofs, primitive drawing conservation, unchanged supply-riser construction, full560DRCcategories and unsimplified deep/flatLVS with original faults. If this passes, record immutable receipt before preparing **fresh** native planes/binding/wire geometry/RC/MIM audit/composition/loaded waves. Do not reuse strapped-v6 RC.
+- **39161219456**, source `a9c9ecee024f996bac6979c5fc80fd6deabc79d5`, job117774772210: mainchip reroute and fresh three-corner STA from proven50resizeddrivers, last verified in progress. Workflow `onehot-resize-route-cloud.yml`. Original20/4/8/8ns clocks and5%derate. Original146728cells protected, only actual additional antenna diodes allowed by post-route geometry proof. All engineering gates need direct inspection; no timing claim yet.
+- **39158584151**, sourcedd36669f1fad978cc5c26b4fa81210231511749e: original full TX native wire simulation nominal and swap_leaf_select both still live; controls passed. Keep both jobs. Original256bits/34ns/125psUI, external clock and all device/voltage gates unchanged. No full serial PHY acceptance yet.
+
+### New actual sampler physical closure
+
+- First via-rich candidate **39162489704**, sourceab83d820f27a6bb1dba8fcc1ce238bae1c2ddc3a, passed native primitive drawing/placement conservation but failed1220TM1.a markers, all other main categories clear. Receipt `docs/evidence/cdr-via-rich-first-drc-rejection-20261018.json` binds retained failure. No LVS acceptance was inferred.
+- Native via PCell's minimum landing adjustment depends on columns, leaving a two-column/one-row TM1 landing too thin. Generator now adds actual top-level TM1 covering each full native landing bounding box, expanded outward on the5nmgrid to>=1.64um in both directions. The PCell, rules and circuit were not changed or waived.
+- Corrected **39162925227**, source `a278acbd11a215e88d14e56558da9166c3e4f421`, **passed**:560DRCcategories0markers, native54device deep+flatLVS MATCH, all14originalfaults rejected, nativeLEF/missingpin control. All54primitive drawings/positions are unchanged. GDS SHA`fe7c42ccbdf69d579f98f75f1c652d3e45673813200ed1971c53278c646c420c`; bbox[0,0,1588.695,191.63]um.
+- Receipt `docs/evidence/cdr-sampler-via-rich-physical-pass-20261018.json` has full report and summary/parts pins (summaryasset654403671, parts654403740, archive654403831). Summary SHA`3cb2765cdc9ec344a4bfa5b8770d1f01b41fbb86b4d4aac5606560c4a57781f2`.
+- Actual generator `hw/soc/flow/make_pcie_sampler_via_rich_v11.py`:32um load-resistor pin via stacks16columns instead4 and M3escape2um instead0.4um; other primitive-pin escape widths unchanged. M3→M4 lanes8columns instead2; M4→M5/TM1 and M5→TM2 junctions8lower-via columns and2TopVia1 columns; row counts andTopVia2 unchanged. Exact source delta/old source chain preserved. This is a physical candidate only; full parent loaded electrical gates remain to be measured.
+
+### Evidence behind the change
+
+- Raw location **39161858974**, sourceafce6567cb826b499eef198633c1865f32181eb9, passed exact3286resistor identity/value-to-native raw matching; no requested raw node unmatched. Receipt `docs/evidence/cdr-native-wire-location-20261018.json` (summaryasset654369151,parts654369211,archive654369262) preserves full relevant native records and anchors. Actual tech style ngspice(),scale1000/1/0.5, nominal metal1sheet110milliohm,metal2–5sheet88milliohm,via1–4 contact9000milliohm. Original wire values were not scaled.
+- SupplyR2408=P_avdd.n66→T210_rppd_1,19.3317ohm; native rnodes(346325,264254)→(351925,264254). AnchorT210_rppd_1 atDBU[1759625,1321270]. This is local finite device access.
+- CollectorR163=T052_C→T174_rppd_2.n4,19.1467ohm; rnodes(308378,101580)→(303483,101588). R148=T174_rppd_2.n0→T174_rppd_2,18.6069ohm; rnodes(347525,101812)→(351925,101812). Combined92.5%of that40.798657ohm two-terminal wire-only effectiveR. Original measured native waveform failures remain the electrical authority.
+
+Full recovered-clock serial Gen3x4 PHY, mainchip accepted routing/setup/hold, qualified PEX and production signoff remain open. Continue the actual parent RC/wave chain and mainchip route result review; never mark these closed from leaf-only DRC/LVS.
+
 ## Cloud continuation: proven driver sizing, fresh route, CDR wire diagnosis (2026-10-18)
 
 Local work remains prohibited by the user's latest instruction. The local project directory is empty. Use API edits in RAM, GitHub-hosted CAD/tests and permanent Releases; do not reconstruct a local checkout or native archives.
