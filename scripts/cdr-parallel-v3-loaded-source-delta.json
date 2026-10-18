@@ -1,0 +1,92 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_hybrid_v2_mim_loaded.py",
+      "baseline_sha256": "238a2dfd391f44b27ab0bcbfe1317639aa0b01e99bef7de83039a31ef5b1d235",
+      "candidate_path": "scripts/cloud_cdr_parallel_v3_mim_loaded.py",
+      "candidate_sha256": "037e36292314163ab0b1a4be9d174dea6c203c740fc8762d51894a557f7d2fcd",
+      "edits": [
+        {
+          "before": "PD420",
+          "after": "PD484",
+          "count": 6
+        },
+        {
+          "before": "cdr-hybrid-v2",
+          "after": "cdr-parallel-v3",
+          "count": 3
+        },
+        {
+          "before": "cdr-retimed-hybrid-v2",
+          "after": "cdr-retimed-parallel-v3",
+          "count": 3
+        },
+        {
+          "before": "pd420_hybrid",
+          "after": "pd484_parallel",
+          "count": 1
+        },
+        {
+          "before": "pd420",
+          "after": "pd484",
+          "count": 2
+        },
+        {
+          "before": "2530",
+          "after": "3538",
+          "count": 3
+        },
+        {
+          "before": "3270",
+          "after": "4038",
+          "count": 3
+        },
+        {
+          "before": "420",
+          "after": "484",
+          "count": 3
+        },
+        {
+          "before": "npn13g2=100,sg13_lv_nmos=22,rppd=102,cap_cmim=11,ptap1=185",
+          "after": "npn13g2=116,sg13_lv_nmos=46,rppd=102,cap_cmim=11,ptap1=209",
+          "count": 1
+        },
+        {
+          "before": "100HBT22LVNMOS102rppd11MIM185contacts",
+          "after": "116HBT46LVNMOS102rppd11MIM209contacts",
+          "count": 1
+        },
+        {
+          "before": "(Decimal('8e-6'),Decimal('32e-6'),Decimal('64e-6'))",
+          "after": "(Decimal('8e-6'),Decimal('32e-6'),Decimal('36e-6'),Decimal('64e-6'))",
+          "count": 1
+        },
+        {
+          "before": "    tails=[];mos_tails=[]",
+          "after": "    tails=[];mos_tails=[];mos_tail_groups={}\n    assert Counter(parser.number(d['parameters']['w'])for d in groups['sg13_lv_nmos'].values())=={Decimal('8e-6'):8,Decimal('32e-6'):2,Decimal('36e-6'):32,Decimal('64e-6'):4}",
+          "count": 1
+        },
+        {
+          "before": "        assert len(found)==(1 if bias.startswith('ibs')else 2);mos_tails+=found",
+          "after": "        sampler=bias in ('ira','irb','irc','ird')\n        assert len(found)==(8 if sampler else 1 if bias.startswith('ibs')else 2)\n        by_drain={}\n        for name in found:by_drain.setdefault(native_nodes[name[4:]]['D'],[]).append(name)\n        assert len(by_drain)==(1 if bias.startswith('ibs')else 2)\n        for drain,names in by_drain.items():\n            assert len(names)==(4 if sampler else 1)\n            if sampler:assert all(parser.number(groups['sg13_lv_nmos'][n]['parameters']['w'])==Decimal('36e-6')for n in names)\n            mos_tail_groups[bias+':'+drain]=names\n        mos_tails+=found",
+          "count": 1
+        },
+        {
+          "before": "assert len(tails)==2 and len(mos_tails)==14",
+          "after": "assert len(tails)==2 and len(mos_tails)==38 and len(mos_tail_groups)==14",
+          "count": 1
+        },
+        {
+          "before": "mos_tail_names=mos_tails,vi_names=vi",
+          "after": "mos_tail_names=mos_tails,mos_tail_groups=mos_tail_groups,vi_names=vi",
+          "count": 1
+        },
+        {
+          "before": "        assert len(mos_checks)==22 and len(mos_tails)==14\n        safe=safe and all(x['passed']for x in mos_checks.values())and min(mos_tails.values())>=.0005\n        r['mos_checks']=mos_checks;r['minimum_active_mos_tail_current_a']=mos_tails",
+          "after": "        assert len(mos_checks)==46 and len(mos_tails)==38\n        # Parallel devices are one physical stage tail. Sum their instantaneous\n        # native currents before applying the unchanged 0.5mA stage-current gate.\n        # Every individual MOS still passes the original terminal-voltage gates.\n        stage_tail_currents={key:float(sum((d['@n.'+n+'.nsg13_lv_nmos[ids]']for n in names),np.zeros(len(t)))[active].min())for key,names in bound['mos_tail_groups'].items()}\n        assert len(stage_tail_currents)==14\n        safe=safe and all(x['passed']for x in mos_checks.values())and min(mos_tails.values())>=0 and min(stage_tail_currents.values())>=.0005\n        r['mos_checks']=mos_checks;r['minimum_active_mos_tail_current_a']=mos_tails\n        r['minimum_active_stage_tail_current_a']=stage_tail_currents\n        r['stage_tail_current_gate_a']=.0005",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
