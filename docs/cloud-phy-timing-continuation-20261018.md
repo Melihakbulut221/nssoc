@@ -1,3 +1,11 @@
+# Current: correct XOR physical workflow dispatch; saved round4 is live
+
+XORphysical39114864609 terminal failed beforegeneration because copiedmatrix passedselect instead ofxor. Preserve exact failure `cdr-xor-hybrid-physical-dispatch-rejection-20261018.json`; this is NOT a DRC/LVS result. Correct matrix and compilation paths, and explicitly bind actual physical crossed-input/output mapping to SHA-pinned native tested wrapper. Workflow change launches freshactualphysicalcandidate; inspect exactnewhandle. Componentv2 native5cases remainpassed, source/acceptance unchanged.
+
+Round4 run39115222502/source85c2a70f1d625fab59bc7266aa5ef6894e3aa575 launched exactcompletedround3 (2antennas); preserve its actualhandle. TX39112087217 remainslive. FullPHY/fullparent/finaltimingOPEN. Cloud-only; goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: mainchip round3 completed with2 antennas; continue exact saved round4
 
 Run39111280543/sourcef667bcc365c7d58b8aad7b4087a1d125891931fb completed actual native routing:14 to2 antenna nets,47newdiodes,total3374. DRTDRC0,criticaldisconnected0,3000.05s. Receipt `replay-onehot-antenna-round3-result-20261018.json` pins summary653045475 SHA584a883f95765eb2f9e52376847eaec7a82fc18886fed43a13f851a62487ba4d,parts653045580 andeveryoutput. Saved pre-writeviews drt-run-3 ODBc96f5e3c557e1851fc530b450b731aac4ce09e50b06ffdd426f4cbc694256e2d; finalODB73c54ca2dd206af929c15858f075f5a085c1665b32dde226479f83c1181c588a. This commit launches exact round4 fromsavedODB: independently verify3374diodes/alloriginalpins, reproduce2initialantennas, preserve64DRTiters/max8rounds/originalclocks5percent, executeonlyround4. No source restart, no relaxation. FreshRCX/STA needs eventualzeroantenna route and adaptedexactsource.

@@ -37,6 +37,12 @@ def devices(text, kind):
     assert raw[-1]==['.ends','nssoc_cdr_xor_core_hybrid_tail_v2']and len(raw)==56
     # Physically cross both data pairs and preserve XOR output polarity.
     mapping=dict(zip(ports,['sub','dp','dn','dn','dp','iref','ep','en','qp','qn','avss','avdd'],strict=True))
+    wrapper=Path(__file__).resolve().parents[3]/'hw/soc/analog/pcie/cdr_xor_hybrid_tail_v2.spice'
+    assert sha(wrapper)=='39d055605d72b6aa586b058c5492e17ae5bffe2dffc0942c07258dcb7137cddc'
+    wr=[l.lower().split()for l in wrapper.read_text().splitlines()if l and not l.startswith('*')]
+    assert wr[0]==['.subckt','nssoc_cdr_xor_hybrid_tail_v2',*PORTS]
+    assert wr[2]==['.ends','nssoc_cdr_xor_hybrid_tail_v2']and len(wr)==3
+    assert wr[1]==['xcore',*[mapping[p]for p in ports],'nssoc_cdr_xor_core_hybrid_tail_v2'],'Physical XOR cross-connection/polarity differs from native tested wrapper'
     rows=[];taps=[]
     for f in raw[1:-1]:
         if f[3]=='ptap1':
@@ -80,6 +86,7 @@ def main():
     inputs = [
         Path(__file__).resolve(),
         source,
+        R / "hw/soc/analog/pcie/cdr_xor_hybrid_tail_v2.spice",
         R / "hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py",
         *src.rglob("*.py"),
         *src.rglob("*.json"),

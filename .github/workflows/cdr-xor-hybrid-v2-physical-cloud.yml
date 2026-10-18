@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kind: [select]
+        kind: [xor]
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     permissions:
@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Compile exact physical methods in the cloud
-        run: python3 -m py_compile scripts/cloud_cdr_xor_hybrid_v2_physical.py hw/soc/flow/make_pcie_cdr_select_hybrid_v2.py hw/soc/flow/check_pcie_cdr_select_hybrid_v2.py
+        run: python3 -m py_compile scripts/cloud_cdr_xor_hybrid_v2_physical.py hw/soc/flow/make_pcie_cdr_xor_hybrid_v2.py hw/soc/flow/check_pcie_cdr_xor_hybrid_v2.py
       - name: Restore pinned native CAD runtime
         run: |
           sudo apt-get update -qq
@@ -38,7 +38,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Generate native buffer HBT and rppd geometry and test DRC LVS actual faults
+      - name: Generate native XOR HBT MOS and rppd geometry and test DRC LVS actual faults
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_cdr_xor_hybrid_v2_physical.py --kind ${{ matrix.kind }}
