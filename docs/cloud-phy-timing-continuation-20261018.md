@@ -1,3 +1,13 @@
+# Current: completed mainchip round2 leaves14 antennas; resume actual round3
+
+Native39107161430/sourcee268d89f3212e5ae695757d223fb9e5fd94e0ad3 completed with return0, DRT DRC0 and critical disconnected pins0. Antenna nets172 to14;384 new native diodes,3327total. This is progress, not antenna/signoff closure. Compact receipt `replay-onehot-antenna-round2-result-20261018.json` pins full1.78MB report and alloutputs. Final ODB8125f35c..., intermediate completed pre-write-views round2ODB97e0feeb... both preserved.
+
+This commit launches replay-onehot-antenna-round3-cloud from that exact completed drt-run-2 ODB/empty DRC. Recheck original GRT topology plus exactly3327native antenna diodes and three mutations; require actual initial14antenna reproduction, run only round3 under original max8/64DRTiters/20-4-8-8ns/5percent rules. No restart of earlier routing or lowered final acceptance. After terminal result inspect actual antenna/DRC/connectivity gates; only then bind actual valid final state to fresh RCX/STA (old extraction controller's cancelled source must be replaced).
+
+TX columns extraction39110863847 remains live. CDR diagnostic39110321899 passed reproduction: six remaining low-VCE devices are HBT tails at iry(27/35), irx(50/58), select ibs1(43), ibs0(66), active minimum .184-.200V. Sampler data failures remain. Detailed native cases published; further true circuit repair and fresh physical/electrical validation required. Full serialPHY and finalsetup/hold OPEN. Cloud-only. Previous goal turn PROGRESS; this turn PROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: cloud-only; TX column geometry verified and fresh RC extraction launched
 
 All source edits and evidence are committed directly to GitHub; no local checkout, CAD simulation, native archive download or scratch files. Local workspace `/home/hasanmelih/Documents/ChatGPT/nnsoc` was verified empty on2026-10-18; no local OpenROAD/ngspice/KLayout/Yosys work is running. Preserve unrelated repositories and application runtime. User cloud-only instruction takes precedence over historical local instructions.

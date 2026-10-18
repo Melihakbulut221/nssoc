@@ -1,7 +1,5 @@
 # Current cloud-only continuation
 
-Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. Work exclusively in GitHub-hosted runners. Local workspace is empty; do not recreate a checkout or download CAD archives locally.
+Read [the authoritative continuation](docs/cloud-phy-timing-continuation-20261018.md) first. Local workspace empty; no local checkout, CAD or archive download.
 
-TX columns physical39110049165 passed its exact native DRC/LVS/geometry scope; inspect newly triggered tx-v5-columns-extraction-cloud before fresh composition and loaded waveforms. CDR hybrid path diagnostic39110321899 completed; read actual reports and fix remaining physical/electrical failures. Preserve existing live mainchip saved-route39107161430. Historical handles must not trigger duplicate/restarted jobs.
-
-Full serial Gen3x4 PHY, routed PCIe/Ethernet mainchip acceptance and final setup/hold remain OPEN. No production approval or full PHY pass is claimed. All continuation evidence and exact next steps are in the linked document.
+Mainchip round2 completed: DRC0, disconnected0, antennas172 to14. Inspect new replay-onehot-antenna-round3-cloud; never restart round1/2. TX columns extraction39110863847 remains live. CDR hybrid path diagnostic39110321899 complete; retain failures and repair actual circuit. Full serial Gen3x4, final chip route acceptance and setup/hold remain OPEN. Exact receipts and next steps are in the linked document.
