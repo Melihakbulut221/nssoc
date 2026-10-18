@@ -98,3 +98,27 @@ Parent39128692386 at646ef87aa354f31551a4772f73716f7cf9021325 now passes560-ruleD
 
 
 NativeLVS review39129071316 at85d8a92da366a663321dc6a8541d567c63a60b91 proved onecluster joins aqp/aqn/bqp/bqn/cqp/cqn/dqp/dqn/avdd/avss; noopenedpublic/childnet. Exact484device census preserved. DRC0 alone was insufficient: overlappingM6 conductors merged asshorts. Fullreceipt cdr-parallel484-native-lvs-short-diagnosis-20261018.json. Newrepair checksEVERY sampler supplyspan plus endpointbridges against actualbaselineM6 and already-added overlayM6 with1.645um clearance. Deterministic nearest5nm-grid offset within10um; originalM4/M5 endpoints preserved; allnon-sampler spans unchanged; fixedthree-path patch replaced. Native560DRC/unsimplifieddeepflatLVS/faults remain mandatory. Inspectnewparentrun beforeanyfreshRC acceptance.
+
+
+Latest native-job checkpoint after actualM6 obstacle routing:
+[
+  {
+    "run": 39129347291,
+    "status": "in_progress",
+    "conclusion": null,
+    "source_head": "8136ace492152f1f91e4e355a7c164bd24059e08"
+  },
+  {
+    "run": 39121691046,
+    "status": "in_progress",
+    "conclusion": null,
+    "source_head": "3b415c02d11ac763fd081412b34234103772d347"
+  },
+  {
+    "run": 39112087217,
+    "status": "completed",
+    "conclusion": "failure",
+    "source_head": "65d48a27773e891f289c6a9a534290a16623fd56"
+  }
+]
+Read parent39129347291 at8136ace492152f1f91e4e355a7c164bd24059e08 next. TX actualswap_leaf_select job117631094041 finished: full34ns/256bit capture detects fault,24HBTfaildevicegates; doNOTinfer nominal acceptance. Complete rawwaves remaincloud release parts (about1.6GB), never downloadedlocally. Receipt tx-v5-columns-actual-fault-observation-20261018.json. NominalTX117631094117/mainchip117658413515 remainindependent; preservehealthyjobs. FullgoalOPEN.
