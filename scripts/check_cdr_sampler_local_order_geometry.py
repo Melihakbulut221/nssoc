@@ -22,9 +22,10 @@ def check_records(a,b):
 def main():
     import pya
     p=argparse.ArgumentParser();p.add_argument('--baseline',type=Path,required=True);p.add_argument('--candidate',type=Path,required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
-    tops=['nssoc_rx_sampler_parallel_drive_layout_v8','nssoc_rx_sampler_local_order_layout_v9'];all_data=[];all_shapes=[];inputs={}
+    tops=['nssoc_rx_sampler_parallel_drive_layout_v8','nssoc_rx_sampler_local_order_layout_v9'];all_data=[];all_shapes=[];inputs={};native_layouts=[];area_snapshots=[]
     for folder,topname in zip((args.baseline,args.candidate),tops,strict=True):
         data=json.loads((folder/'result.json').read_text());L=pya.Layout();L.read(str(folder/(topname+'.gds')));T=L.cell(topname);assert L.dbu==.001 and T is not None
+        native_layouts.append(L)  # Region iterators retain native geometry owned by this Layout.
         for n in ('result.json','schematic.cir',topname+'.gds'):inputs[str(folder/n)]=hashlib.sha256((folder/n).read_bytes()).hexdigest()
         dx,dy=data['origin_translation_um'];insts=list(T.each_inst());shapes={}
         for d in data['instances']:
@@ -43,6 +44,10 @@ def main():
                 if not region.is_empty():regions[(info.layer,info.datatype)]=region
             assert regions;assert identity(d) not in shapes;shapes[identity(d)]=regions
         all_data.append(data);all_shapes.append(shapes)
+        area_snapshots.append({n:{li:r.area() for li,r in layers.items()}for n,layers in shapes.items()})
+    assert len(native_layouts)==2
+    for shapes,snapshot in zip(all_shapes,area_snapshots,strict=True):
+        assert {n:{li:r.area() for li,r in layers.items()}for n,layers in shapes.items()}==snapshot, 'Native region changed after reading second layout'
     check_records(*all_data)
     a,b=all_shapes
     def compare(x,y):
