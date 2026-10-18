@@ -4,7 +4,7 @@ All work stays in GitHub-hosted jobs and releases. Do not restore a local checko
 
 ## Current computations and terminal outcomes
 
-- Mainchip exact onehot critical-branch repair: run 39080594759, source ca47b86ea376a8404c4d8ed95baff292748c3ba6, native job 117536552310. Nine observed internal data buffers only; original periods, 5% derate, all-corner baseline, source proofs and equation proof retained. Review new counts/slacks and logic before adoption. Do not restart a live job.
+- Mainchip targeted repair 39080594759 completed with retained-equation proof. Slow setup8037/WS-5.54096ns; fast setup663/WS-0.901378ns; fast hold24/WS-0.391465ns (three r2r hold failures). See `replay-onehot-targeted-result-20261018.md`. A fresh `replay-onehot-global-route-cloud` workflow now routes its exact ODB, with source proofs, native NDR and zero-overflow gates. It does not reuse old regional coordinates or claim final timing.
 - CDR v2 real full-wire loaded screen: run 39081843889, source 34cc19546680b2662983355e0241a324cc66adb4. Jobs 117540291525 (nominal early), 117540291526 (nominal late), 117540291431 (stopped clock), 117540291517 (VI bias off). Model SHA256 96ddeb52f12e3efc40046b228cb5b3d45cb4af3e7776e5f338eaa65421fc3f2d. All 394 devices, 8956 R and 7079 C are physical, unscaled. Read actual pass/fail gates after captures; successful fault detection does not imply positive-case acceptance.
 - TX full-wire nominal run 39067769686/job 117498996909 has now completed and FAILED its electrical gates: 227/768 wrong-sign samples; level_4 and final interface checks fail, with native HBT VCE failures. It is no longer a live process. See `tx-v5-full-wire-rejection-20261018.md`; do not rerun unchanged or substitute compact PVT passes.
 
