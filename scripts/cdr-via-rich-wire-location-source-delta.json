@@ -1,0 +1,58 @@
+{
+  "baseline_path": "scripts/cloud_cdr_wire_location.py",
+  "candidate_path": "scripts/cloud_cdr_via_rich_wire_location.py",
+  "baseline_sha256": "0c9c82d3a3a88f493bda478f2899c16a8275e3bcd5814ec7ba8eb0c886e95dea",
+  "candidate_sha256": "ae3a66812c3cee509ba7aa1af43347274bf5104b41f521c2a96ce9976c09009e",
+  "edits": [
+    {
+      "before": "cloud-cdr-wire-location",
+      "after": "cloud-cdr-via-rich-wire-location",
+      "count": 1
+    },
+    {
+      "before": "cdr-strapped-v6-wire-bottleneck-20261018.json",
+      "after": "cdr-via-rich-wire-comparison-pass-20261019.json",
+      "count": 1
+    },
+    {
+      "before": "'cdr-strapped-v6-wire-bottleneck-nominal_early'",
+      "after": "'cdr-via-rich-wire-comparison'",
+      "count": 1
+    },
+    {
+      "before": "['original-path-result.json']",
+      "after": "['via-rich-v7/pd484-mim-wire.spice']",
+      "count": 1
+    },
+    {
+      "before": "assert diagnosis['source_head']==p['source_head']and diagnosis['sources_unchanged']and diagnosis['status']==p['report_excerpt']['status']\n        assert diagnosis['linear_wire_resistance_diagnosis']==p['report_excerpt']['linear_wire_resistance_diagnosis']",
+      "after": "assert diagnosis==p['report']and diagnosis['sources_unchanged']\n        assert len(diagnosis['evaluations'])==64 and not diagnosis['electrical_waveform_acceptance']",
+      "count": 1
+    },
+    {
+      "before": "cdr-strapped-v6-mim-parent-capture-pass-20261018.json",
+      "after": "cdr-via-rich-v7-mim-parent-capture-pass-20261018.json",
+      "count": 1
+    },
+    {
+      "before": "'cdr-strapped-v6-mim-parent-rc'",
+      "after": "'cdr-via-rich-v7-mim-parent-rc'",
+      "count": 1
+    },
+    {
+      "before": "diagnosis['linear_wire_resistance_diagnosis']['evaluations']",
+      "after": "diagnosis['evaluations']",
+      "count": 1
+    },
+    {
+      "before": "ev['wire_solution']['dominant_edges']",
+      "after": "ev['models']['via-rich-v7']['solution']['dominant_edges']",
+      "count": 1
+    },
+    {
+      "before": "len(spice)==3286",
+      "after": "len(spice)==13186",
+      "count": 1
+    }
+  ]
+}

@@ -1,3 +1,9 @@
+# Latest cloud-only continuation — 2026-10-19
+
+CDR path diagnosis 39170038075 PASSED read-only reproduction after the variable-name fix. Both nominal electrical gates remain rejected, 8/6 HBT below minimum VCE, sampler errors unchanged. Complete reports pinned in docs/evidence/cdr-via-rich-v7-native-path-review-20261019.json. New cdr-via-rich-wire-location-cloud workflow binds the actual new dominant resistor branches to native raw coordinates before geometry repair. Resolve its run and inspect output; no new transistor simulation or acceptance claimed. Mainchip39161219456/TX39158584151 revalidated in progress; preserve. Local project stays empty, all calculation/archive processing cloud-only.
+
+---
+
 # Current cloud continuation — 2026-10-19
 
 All design, simulation and archive processing stays on GitHub-hosted runners. The local project directory is empty and no local CAD/simulator process is running. Do not recreate a local checkout or download native archives locally.
