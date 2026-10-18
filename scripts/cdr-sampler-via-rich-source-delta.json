@@ -4,7 +4,7 @@
       "baseline_path": "hw/soc/flow/make_pcie_sampler_strapped_v10.py",
       "candidate_path": "hw/soc/flow/make_pcie_sampler_via_rich_v11.py",
       "baseline_sha256": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
-      "candidate_sha256": "7a48825ee5b3c83856d86437fc536c892973d2a6fda7cf19ee1a70572dc3cd7a",
+      "candidate_sha256": "d761657ff3545c1cad2b5431f10f41abeaebac4b12bd8317f8af211966308120",
       "edits": [
         {
           "before": "nssoc_rx_sampler_strapped_layout_v10",
@@ -45,6 +45,21 @@
           "before": "vn_columns=2, vn_rows=1, vt1_columns=1, vt1_rows=1,",
           "after": "vn_columns=8, vn_rows=1, vt1_columns=2, vt1_rows=1,",
           "count": 1
+        },
+        {
+          "before": "    def escape(pin, metal, net, lane, label, cols, offset=0, wide=False):",
+          "after": "    def cover_topmetal1(cell, trans):\n        # The native two-column/one-row via PCell has a narrow TM1 landing.\n        # Add actual top-level metal; never waive TM1.a or edit the PCell/deck.\n        li=layout.layer(126,0);region=pya.Region(cell.begin_shapes_rec(li))\n        assert not region.is_empty()\n        b=region.bbox().to_dtype(layout.dbu).transformed(trans)\n        cx,cy=b.center().x,b.center().y;hw=max(b.width(),1.64)/2;hh=max(b.height(),1.64)/2\n        left=math.floor((cx-hw)/.005+1e-8)*.005;right=math.ceil((cx+hw)/.005-1e-8)*.005\n        bottom=math.floor((cy-hh)/.005+1e-8)*.005;upper=math.ceil((cy+hh)/.005-1e-8)*.005\n        assert right-left>=1.64-1e-8 and upper-bottom>=1.64-1e-8\n        top.shapes(li).insert(pya.DBox(left,bottom,right,upper))\n\n    def escape(pin, metal, net, lane, label, cols, offset=0, wide=False):",
+          "count": 1
+        },
+        {
+          "before": "                vias.append(dict(net=net,bottom=4,top=6,center_um=[x,vy],bbox_um=str(raw.transformed(trans))))",
+          "after": "                cover_topmetal1(cell,trans)\n                vias.append(dict(net=net,bottom=4,top=6,center_um=[x,vy],bbox_um=str(raw.transformed(trans))))",
+          "count": 1
+        },
+        {
+          "before": "            vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))",
+          "after": "            cover_topmetal1(cell,trans)\n            vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))",
+          "count": 1
         }
       ]
     },
@@ -83,7 +98,7 @@
       "baseline_path": "scripts/cloud_cdr_sampler_strapped_physical.py",
       "candidate_path": "scripts/cloud_cdr_sampler_via_rich_physical.py",
       "baseline_sha256": "0d0c6e35062af840ce1981c20f697cc5304b9d10a2aec25d19b6584096ce06a5",
-      "candidate_sha256": "69599f72e95aaf04dc97111eba453f0efb81c8c62c99fe346f791127c6017d2e",
+      "candidate_sha256": "d77f9b419ef15eb52e566b63d5cf914eb0794611069af2e5eecfecc76649481a",
       "edits": [
         {
           "before": "cloud-cdr-sampler-strapped-physical",
@@ -138,6 +153,11 @@
         {
           "before": "Actual TopMetal1 vertical straps and TopMetal2 horizontal straps on every sampler net; native primitives and original physical gates unchanged.",
           "after": "Parallel via arrays at local access and strap junctions;32um load-resistor Metal3 escapes widened to2um. All native primitive drawings/positions, devices and original physical gates unchanged.",
+          "count": 1
+        },
+        {
+          "before": "7a48825ee5b3c83856d86437fc536c892973d2a6fda7cf19ee1a70572dc3cd7a",
+          "after": "d761657ff3545c1cad2b5431f10f41abeaebac4b12bd8317f8af211966308120",
           "count": 1
         }
       ]

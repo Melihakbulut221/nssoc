@@ -173,6 +173,18 @@ def main():
         vias.append(dict(net=net, bottom=bottom, top=upper, center_um=[x, y], bbox_um=str(b)))
         return b
 
+    def cover_topmetal1(cell, trans):
+        # The native two-column/one-row via PCell has a narrow TM1 landing.
+        # Add actual top-level metal; never waive TM1.a or edit the PCell/deck.
+        li=layout.layer(126,0);region=pya.Region(cell.begin_shapes_rec(li))
+        assert not region.is_empty()
+        b=region.bbox().to_dtype(layout.dbu).transformed(trans)
+        cx,cy=b.center().x,b.center().y;hw=max(b.width(),1.64)/2;hh=max(b.height(),1.64)/2
+        left=math.floor((cx-hw)/.005+1e-8)*.005;right=math.ceil((cx+hw)/.005-1e-8)*.005
+        bottom=math.floor((cy-hh)/.005+1e-8)*.005;upper=math.ceil((cy+hh)/.005-1e-8)*.005
+        assert right-left>=1.64-1e-8 and upper-bottom>=1.64-1e-8
+        top.shapes(li).insert(pya.DBox(left,bottom,right,upper))
+
     def escape(pin, metal, net, lane, label, cols, offset=0, wide=False):
         y = round((pin.center().y + offset) / .005) * .005
         x = round(pin.center().x / .005) * .005
@@ -360,6 +372,7 @@ def main():
                 cell=pc("via_stack",dict(b_layer="Metal4",t_layer="TopMetal1",
                         vn_columns=8,vn_rows=1,vt1_columns=2,vt1_rows=1))
                 raw=cell.dbbox();trans=instance(cell,x-raw.center().x,vy-raw.center().y)
+                cover_topmetal1(cell,trans)
                 vias.append(dict(net=net,bottom=4,top=6,center_um=[x,vy],bbox_um=str(raw.transformed(trans))))
             xs.append(x)
         left, right = min(xs) - 1, max(xs) + 1
@@ -385,6 +398,7 @@ def main():
                       vt2_columns=1, vt2_rows=1))
             raw = cell.dbbox()
             trans = instance(cell, x-raw.center().x, y-raw.center().y)
+            cover_topmetal1(cell,trans)
             vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))
             centers.append([x,y])
         output_shunts.append(dict(net=net,metal=134,width_um=3.2,box_um=str(shunt),via_centers_um=centers))

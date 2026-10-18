@@ -7,3 +7,9 @@ This physical candidate changes only local wiring: native32um resistor pin via s
 Device parameters, all54primitive drawings and positions, reference circuit, external pin boundary cuts and the physical validation gates remain unchanged. The exact source delta is hashed and checked against the prior strapped generator; independent native drawing comparison, all560DRCcategories, unsimplified deep/flatLVS and all14originalfaults must pass. A physical pass alone is not electrical acceptance. The new parent must receive fresh RC extraction and original full native loaded wave tests; no old RC can be reused or scaled.
 
 The raw records and [Magic extraction documentation](https://opencircuitdesign.com/magic/commandref/extresist.html) are retained as provenance. Geometry must pass its real native decks before further integration.
+
+## Native rejection and explicit metal correction
+
+Run39162489704 rejected the first candidate with1220TM1.a markers across the original560categories; all other main categories were clear. Native primitive drawing/placement comparison passed. No LVS or electrical acceptance was inferred. The native via-stack implementation checks minimum landing size using column count, so the two-column/one-row TopVia1 combination can leave a TM1 landing thinner than1.64um. The revised generator adds actual top-level TM1 covering each junction's full native landing bounding box, padded outward on the5nm grid to at least1.64um in each direction. Original vias, cuts, circuits, native primitive drawings and DRC rules remain unchanged. New DRC/LVS must still pass.
+
+Code basis: [pinned IHP via-stack PCell](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/via_stack_code.py), and [IHP main rules](https://ihp-open-pdk-docs.readthedocs.io/en/latest/verification/drc/02_main_rules.html). The actual native deck remains the acceptance authority.
