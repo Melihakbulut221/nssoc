@@ -1,0 +1,83 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_cdr_xor_hybrid_v3.py",
+      "candidate_path": "hw/soc/flow/make_pcie_cdr_xor_power_access_v4.py",
+      "baseline_sha256": "ea62828f2088da79a1127ee1fc7f63d29a3a83d97dd0d4ffd1bc4b473c86b529",
+      "candidate_sha256": "f1d07dcc72ec8e60825ced36dab509991cb41973c17bb1f9babf7111b51a2ea3",
+      "edits": [
+        {
+          "before": "nssoc_cdr_xor_hybrid_tail_layout_v3",
+          "after": "nssoc_cdr_xor_power_access_layout_v4",
+          "count": 1
+        },
+        {
+          "before": "    local_mos_contacts = []",
+          "after": "    local_mos_contacts = []\n    distributed_source_access = []\n    avdd_load_labels={\"D\"+str(i)for i,r in enumerate(rows)if r[\"model\"]==\"rppd\" and \"avdd\"in r[\"nets\"][:2]}",
+          "count": 1
+        },
+        {
+          "before": "        box(3, lane - 0.2, y - 0.2, x + 0.2, y + 0.2)",
+          "after": "        half=.6 if net==\"avdd\" and label in avdd_load_labels else .2\n        box(3, lane - 0.2, y - half, x + 0.2, y + half)",
+          "count": 1
+        },
+        {
+          "before": "                escape(tiny,1,net,x-9+3*k,name,1)",
+          "after": "                escape(tiny,1,net,x-9+3*k,name,1)\n                if k==0:\n                    assert net=='avss'\n                    # The native64um source stripe was contacted only at its\n                    # bottom. Add real distributed M1-M3 vias and an M3 rail;\n                    # keep the existing M3 escape, intrinsic MOS and drain.\n                    sx=round(pin.center().x/.005)*.005\n                    upper=round((pin.top-1.2)/.005)*.005\n                    ys={py,round(pin.center().y/.005)*.005,upper}\n                    yy=py+4.\n                    while yy<upper:\n                        ys.add(round(yy/.005)*.005);yy+=4.\n                    ys=sorted(ys);assert ys[0]==py and ys[-1]==upper\n                    assert all(pin.bottom+.2<yy<pin.top-.2 for yy in ys)\n                    for yy in ys[1:]:via(1,3,sx,yy,1)\n                    box(3,sx-.2,py-.2,sx+.2,upper+.2)\n                    distributed_source_access.append(dict(device=name,native_source_pin=str(pin),source_x_um=sx,via_y_um=ys,added_vias=len(ys)-1,m3_width_um=.4,original_source_escape_retained=True))\n",
+          "count": 1
+        },
+        {
+          "before": "    assert len(rows)==27 and len(local_mos_contacts)==5",
+          "after": "    assert len(rows)==27 and len(local_mos_contacts)==5\n    assert {r[\"device\"]for r in distributed_source_access}=={\"D8\",\"D21\",\"D25\"}\n    assert all(r[\"added_vias\"]>=2 for r in distributed_source_access)",
+          "count": 1
+        },
+        {
+          "before": "                local_mos_contacts=local_mos_contacts,",
+          "after": "                local_mos_contacts=local_mos_contacts,\n                distributed_source_access=distributed_source_access,\n                avdd_rppd_escape_width_um=1.2,\n                local_power_repair_scope=\"Only real MOS source M1-M3 vias/M3 strap and AVDD rppd M3 escape width; all intrinsic devices, source schematic, original routes and contacts retained.\",",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_xor_hybrid_v3.py",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_xor_power_access_v4.py",
+      "baseline_sha256": "fed9b0cd45d8fcc9e0b6b53590c2ec5ac1b8eb09a6c65dfcf4985918e0579a16",
+      "candidate_sha256": "22d573ca7d26913d3d90396aab9706426372cdebddc4a34bc3683e712b89ead5",
+      "edits": [
+        {
+          "before": "nssoc_cdr_xor_hybrid_tail_layout_v3",
+          "after": "nssoc_cdr_xor_power_access_layout_v4",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_cdr_xor_hybrid_v3.py",
+          "after": "make_pcie_cdr_xor_power_access_v4.py",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_xor_hybrid_v3_physical.py",
+      "candidate_path": "scripts/cloud_cdr_xor_power_access_v4_physical.py",
+      "baseline_sha256": "46b75bdf5d91e680c869522a1446a60ab2dff05751ba6ddaf83f670580ebb40f",
+      "candidate_sha256": "171f68cd9158bf8983dfbe0e8fa611f3129225d793fdfb1c7a1111c217281ac1",
+      "edits": [
+        {
+          "before": "cloud-cdr-xor-hybrid-v3-physical",
+          "after": "cloud-cdr-xor-power-access-v4-physical",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_cdr_xor_hybrid_v3.py",
+          "after": "make_pcie_cdr_xor_power_access_v4.py",
+          "count": 2
+        },
+        {
+          "before": "check_pcie_cdr_xor_hybrid_v3.py",
+          "after": "check_pcie_cdr_xor_power_access_v4.py",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}
