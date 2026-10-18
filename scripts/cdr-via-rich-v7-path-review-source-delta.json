@@ -4,7 +4,7 @@
       "baseline_path": "scripts/cloud_cdr_strapped_v6_path_review.py",
       "candidate_path": "scripts/cloud_cdr_via_rich_v7_path_review.py",
       "baseline_sha256": "8999ce699141bca8ed5333f7205d9af443666fb6d7674eba5e946e99e752a253",
-      "candidate_sha256": "c43207265978ca0c40d5a8691d4644d2dc0467f99c5e400f9118c9ee0d44c100",
+      "candidate_sha256": "fb8f09d09241ca8c9113f6215cfd5a133fd874826d5c6720c01eb72ceb3b46f8",
       "edits": [
         {
           "before": "strapped-v6",
@@ -69,6 +69,26 @@
         {
           "before": "        r['native_shared_emitter_pair_review']=pair_reviews",
           "after": "        r['native_shared_emitter_pair_review']=pair_reviews\n        clock_reviews=[]\n        reference=v('cp')-v('cn')\n        for i,a in enumerate(hbts):\n            for b in hbts[i+1:]:\n                aa,bb=a['terminals'],b['terminals'];nets={aa['B']['logical_net'],bb['B']['logical_net']}\n                if aa['E']['native_cluster']!=bb['E']['native_cluster']or nets not in ({'cp','cn'},{'s0p','s0n'},{'s1p','s1n'}):continue\n                plus,minus=(aa,bb)if aa['B']['logical_net'].endswith('p')else(bb,aa)\n                delta=v(plus['B']['node'])-v(minus['B']['node']);cross=np.flatnonzero(np.signbit(delta[:-1])!=np.signbit(delta[1:]));crossings=[]\n                for index in cross:\n                    when=float(t[index]-delta[index]*(t[index+1]-t[index])/(delta[index+1]-delta[index]))\n                    if when>=START:crossings.append(dict(time_s=when,rising=bool(delta[index+1]>delta[index])))\n                phases={}\n                for phase in (0.,.1,.25,.4,.5,.6,.75,.9):\n                    times=START+(np.arange(1,256)+phase)*UI;local=np.interp(times,t,delta);external=np.interp(times,t,reference)\n                    phases[str(phase)]=dict(min_v=float(local.min()),max_v=float(local.max()),mean_v=float(local.mean()),external_min_v=float(external.min()),external_max_v=float(external.max()),different_sign_samples=int(np.count_nonzero(np.signbit(local)!=np.signbit(external))))\n                clock_reviews.append(dict(devices=[a['device'],b['device']],positive_base=plus['B'],negative_base=minus['B'],differential=stats(delta),first16_zero_crossings=crossings[:16],active_zero_crossing_count=len(crossings),fixed_UI_phase_samples=phases))\n        assert clock_reviews\n        r['clock_distribution_review']=dict(pairs=clock_reviews,interpretation='Actual native base voltages at fixed original source-clock phases. Zero crossings are listed without fitting or shifting any acceptance window; no new acceptance claim.')",
+          "count": 1
+        },
+        {
+          "before": "external=np.interp(times,t,reference)",
+          "after": "reference_samples=np.interp(times,t,reference)",
+          "count": 1
+        },
+        {
+          "before": "float(external.min())",
+          "after": "float(reference_samples.min())",
+          "count": 1
+        },
+        {
+          "before": "float(external.max())",
+          "after": "float(reference_samples.max())",
+          "count": 1
+        },
+        {
+          "before": "np.signbit(external)",
+          "after": "np.signbit(reference_samples)",
           "count": 1
         }
       ]

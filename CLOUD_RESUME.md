@@ -1,3 +1,14 @@
+# Current cloud continuation — 2026-10-19
+
+All design, simulation and archive processing stays on GitHub-hosted runners. The local project directory is empty and no local CAD/simulator process is running. Do not recreate a local checkout or download native archives locally.
+
+- CDR full native streamed matrix 39168430864 completed. All four simulations returned 0 without diagnostics. The two nominal cases still fail sampling and device gates (8/6 HBT below 0.4 V); the two fault cases were correctly rejected. Full receipts: docs/evidence/cdr-via-rich-v7-streamed-native-input-20261019.json. This is not PHY acceptance.
+- Read-only path diagnosis 39169474972 failed because a clock sample array overwrote the external-node lookup dictionary. This commit renames only that array and its references, updates the exact source-delta guard, and triggers a retry. No models, native waves, thresholds or acceptance windows changed. Inspect the new run before choosing a physical repair.
+- Mainchip route 39161219456 and TX full native wave 39158584151 remain in progress at this checkpoint. Preserve both; do not launch duplicates.
+- Complete serial PHY, mainchip routing and final timing remain OPEN. Retain failed evidence and use actual new results before claiming closure.
+
+---
+
 ## Current cloud continuation — real CDR current recording repaired (2026-10-19)
 
 **Cloud only.** Local project directory is empty. Do not restore local checkout, native archives, CAD, tests or waves. Use GitHub API source edits in RAM, hosted Actions and permanent Release evidence. No completion claim is justified.

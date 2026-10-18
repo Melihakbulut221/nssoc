@@ -186,8 +186,8 @@ def main():
                     if when>=START:crossings.append(dict(time_s=when,rising=bool(delta[index+1]>delta[index])))
                 phases={}
                 for phase in (0.,.1,.25,.4,.5,.6,.75,.9):
-                    times=START+(np.arange(1,256)+phase)*UI;local=np.interp(times,t,delta);external=np.interp(times,t,reference)
-                    phases[str(phase)]=dict(min_v=float(local.min()),max_v=float(local.max()),mean_v=float(local.mean()),external_min_v=float(external.min()),external_max_v=float(external.max()),different_sign_samples=int(np.count_nonzero(np.signbit(local)!=np.signbit(external))))
+                    times=START+(np.arange(1,256)+phase)*UI;local=np.interp(times,t,delta);reference_samples=np.interp(times,t,reference)
+                    phases[str(phase)]=dict(min_v=float(local.min()),max_v=float(local.max()),mean_v=float(local.mean()),external_min_v=float(reference_samples.min()),external_max_v=float(reference_samples.max()),different_sign_samples=int(np.count_nonzero(np.signbit(local)!=np.signbit(reference_samples))))
                 clock_reviews.append(dict(devices=[a['device'],b['device']],positive_base=plus['B'],negative_base=minus['B'],differential=stats(delta),first16_zero_crossings=crossings[:16],active_zero_crossing_count=len(crossings),fixed_UI_phase_samples=phases))
         assert clock_reviews
         r['clock_distribution_review']=dict(pairs=clock_reviews,interpretation='Actual native base voltages at fixed original source-clock phases. Zero crossings are listed without fitting or shifting any acceptance window; no new acceptance claim.')
