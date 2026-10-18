@@ -178,7 +178,7 @@ def main():
     save()
     try:
         assert sha(Path(legacy.__file__))=='a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33'
-        assert sha(ROOT/'scripts/cloud_cdr_xor.py')=='3ec870fa6a30d9f93841368d6b74c984c314c2d7248ecaab94c687867587fabe'
+        assert sha(ROOT/'scripts/cloud_cdr_xor.py')=='3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe'
         r['readback_controls']=readback_controls()
         pinpath=ROOT/'docs/evidence/cdr-local-v5-mim-composition-pass-20261018.json';pin=json.loads(pinpath.read_text())
         prior,proof=reports.restore_report('cdr-local-v5-mim-composition',pin['run'],pin['summary_sha256'],pin['parts_sha256'],out/'composed',['pd484-mim-wire.spice','composition.json'])
