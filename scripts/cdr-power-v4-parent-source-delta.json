@@ -1,0 +1,116 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cdr_retimed_parallel_v3_parent_plan.py",
+      "candidate_path": "scripts/cdr_retimed_power_v4_parent_plan.py",
+      "baseline_sha256": "8f02e6c93cdbdd6b5b52bb78f22228199579d9e993992a19707b5e84c63c4744",
+      "candidate_sha256": "7e2868275f7e17a6c1efeb0af38581ed81189d9f05d86b0fc95e9ec88d45dd48",
+      "edits": [
+        {
+          "before": "nssoc_cdr_xor_hybrid_tail_layout_v3",
+          "after": "nssoc_cdr_xor_power_access_layout_v4",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_parallel_v3_parent.py",
+      "candidate_path": "scripts/generate_cdr_retimed_power_v4_parent.py",
+      "baseline_sha256": "22f04187d600c184c924a48cfce7b8e24079268574d4c295d0f7b92c0374441e",
+      "candidate_sha256": "f1188592e0a5c62396fc534d97318d0d3fb363191c2a61e31ef4cbb0e6ea2027",
+      "edits": [
+        {
+          "before": "import cdr_retimed_parallel_v3_parent_plan as plan",
+          "after": "import cdr_retimed_power_v4_parent_plan as plan",
+          "count": 1
+        },
+        {
+          "before": "from check_cdr_parallel_v3_parent_sources import check",
+          "after": "from check_cdr_power_v4_parent_sources import check",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd484_parallel_tail_v2",
+          "after": "nssoc_cdr_pd484_power_access_v4",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_parallel_v3_parent.py",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_power_v4_parent.py",
+      "baseline_sha256": "7b4ab825ec95e0c8b520011f377500f0ccb5e921d7cd0b1b6a8256d5fc152cda",
+      "candidate_sha256": "8a4088003d73b0062cfab42236594cff31fc37386c7c3aef8e7b993d482eb756",
+      "edits": [
+        {
+          "before": "nssoc_cdr_pd484_parallel_tail_v2",
+          "after": "nssoc_cdr_pd484_power_access_v4",
+          "count": 1
+        },
+        {
+          "before": "cdr_retimed_parallel_v3_parent_plan",
+          "after": "cdr_retimed_power_v4_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "generate_cdr_retimed_parallel_v3_parent",
+          "after": "generate_cdr_retimed_power_v4_parent",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_parallel_v3_parent.py",
+      "candidate_path": "scripts/cloud_cdr_retimed_power_v4_parent.py",
+      "baseline_sha256": "d262277e5f3f9b3edc9a2e27707c09eef3625350b662d85a9e79700784e6b582",
+      "candidate_sha256": "348e33216fd571aa6f986e4772e1c13723f2df80d1ca005c94959544037f9d63",
+      "edits": [
+        {
+          "before": "cdr_retimed_parallel_v3_parent_plan",
+          "after": "cdr_retimed_power_v4_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "cloud-cdr-retimed-parallel-v3-parent",
+          "after": "cloud-cdr-retimed-power-v4-parent",
+          "count": 1
+        },
+        {
+          "before": "cdr-retimed-parallel-v3-parent-children-20261018.json",
+          "after": "cdr-retimed-power-v4-parent-children-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "generate_cdr_retimed_parallel_v3_parent",
+          "after": "generate_cdr_retimed_power_v4_parent",
+          "count": 2
+        },
+        {
+          "before": "check_pcie_cdr_retimed_parallel_v3_parent",
+          "after": "check_pcie_cdr_retimed_power_v4_parent",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_parallel_v3_parent_sources",
+          "after": "check_cdr_power_v4_parent_sources",
+          "count": 2
+        },
+        {
+          "before": "cdr-parallel-v3-parent-source-delta.json",
+          "after": "cdr-power-v4-parent-source-delta.json",
+          "count": 1
+        },
+        {
+          "before": "        for name,cmd in [('generation'",
+          "after": "        baseline_pin=json.loads((ROOT/'docs/evidence/cdr-retimed-parallel-v3-parent-children-20261018.json').read_text())['children']['xor']\n        oldtop='nssoc_cdr_xor_hybrid_tail_layout_v3';selected=['layout/result.json','layout/schematic.cir','layout/'+oldtop+'.gds','layout/'+oldtop+'.lef']\n        prior,proof=reports.restore_report(baseline_pin['group'],baseline_pin['run'],baseline_pin['summary_sha256'],baseline_pin['parts_sha256'],OUT/'geometry-baseline',selected)\n        assert prior['source_head']==baseline_pin['source_head'] and prior['status']==baseline_pin['status']\n        proofpath=OUT/'xor-geometry-conservation.json'\n        with (OUT/'xor-geometry-conservation.log').open('w')as log:\n            rc=subprocess.call([str(app),'python',str(ROOT/'scripts/check_cdr_xor_power_access_geometry.py'),'--baseline',str(OUT/'geometry-baseline/layout'),'--candidate',str(OUT/'inputs/xor/layout'),'--output',str(proofpath)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)\n        if rc:print((OUT/'xor-geometry-conservation.log').read_text()[-12000:],flush=True)\n        assert rc==0,'Independent XOR drawing conservation failed'\n        geometry=json.loads(proofpath.read_text());assert geometry['status']=='PASS_EXACT_NATIVE_XOR59_POWER_ADDITIONS_AND_THREE_GEOMETRY_FAULTS'\n        r['xor_geometry_conservation']=geometry;r['xor_baseline_source']=proof;save()\n        for name,cmd in [('generation'",
+          "count": 1
+        },
+        {
+          "before": "ROOT/'scripts/cdr-power-v4-parent-source-delta.json']",
+          "after": "ROOT/'scripts/cdr-power-v4-parent-source-delta.json',ROOT/'scripts/check_cdr_xor_power_access_geometry.py']",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

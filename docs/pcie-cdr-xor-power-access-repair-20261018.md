@@ -13,3 +13,8 @@ Run39137391978 generated the candidate, then failed the real560-category DRC wit
 
 
 The spacing-corrected run39137767974 passed all560 DRC categories with zero violations, unsimplified deep and flat59-device LVS without extraction diagnostics, and all seven real faults. This proves only the leaf physical checks. Independent drawing conservation and full PD484 integration/extraction/transient validation remain mandatory.
+
+
+## Full parent integration candidate
+
+The next cloud run restores the verified new XOR cell and the seven unchanged child types. An independent KLayout comparison reconstructs every leaf drawing layer from the original cell plus only native source-via stacks, source Metal3 straps and AVDD rppd Metal3 widening. It checks original device/route/port/boundary metadata and identical schematic/LEF except the top name, and rejects three actual drawing mutations. The16-macro/41-card parent plan changes only the XOR physical master; all484 devices and25 public ports remain. The established base placement and supply-riser methods are unchanged. Fresh native parent DRC/LVS and physical faults precede any new extraction or loaded waveform acceptance.
