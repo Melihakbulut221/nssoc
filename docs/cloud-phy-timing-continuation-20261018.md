@@ -1,3 +1,11 @@
+# Current: XOR Nx4 native three-corner component passes; real XOR57 physical candidate launched
+
+XORv2 run39114595894/source1a80f767bb7ab4701843feaf9373107721bc05e7 has nominal/cold/hot successful native component jobs; inspect allfive reports, including finalfault case, before recording completecampaign. Coldv1 failure is preserved and1V bound unchanged. This commit generates actual XOR57 GDS:16HBT/3MOS/8rppd/27original finite contacts plus3localMOScontacts. Crossed data inputs/XOR polarity are actual metal connections, separate SUB/AVSS,30umdevicecolumnpitch. Native560DRC/deep-flat57LVS and seven actualfaults required; no pass inferred. Do not use54device ideal component model for this57device layout: freshphysicalbinding/RC/model/loadedwaves/fullparentintegration required.
+
+Mainchip39111280543 andTX39112087217 remain existinglive jobs. Preserve them. Retimedinputattenuation and fullserialPHY/finalroutedacceptance/setuphold remainOPEN. Cloud-only; goalturnPROGRESS.
+
+Earlier checkpoint follows:
+
 # Current: first native XOR repair rejected at cold VBE; Nx4 candidate launched
 
 Actual run39114172170/source49e4d2ef84c589702b4d284c28891142f5db5055: nominal/hot data and all bounds pass; cold0/768wrong and223.93mV margin but12dataHBT VBE up to1.002794775V exceed unchanged1V limit. Both actual outputswap and biasoff detected. Full5case reports and original failures retained in `docs/evidence/cdr-xor-hybrid-v1-cold-rejection-20261018.json`; no physical/fullparent acceptance.
