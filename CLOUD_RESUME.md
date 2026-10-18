@@ -9,3 +9,7 @@ CDR420 physical39116999945, planes39117334854, wholewire inputs39117796759 and n
 TX fullwire run39112087217 remains in progress; preserve nominal and swapped-select trajectories. Full serial PHY, retimed sampler attenuation, closed loop, qualified RC and final setup/hold remain OPEN.
 
 This commit launches `onehot-round4-path-diagnosis-cloud.yml` (restore exact native path reports only) and `cdr-retimed-hybrid-v2-rc-cloud.yml` (fresh420 wire RC and all13 raw corruption controls). Inspect exact handles and results before next ECO/MIM composition. All execution cloud-only.
+
+Fresh wire RC39118996010 passed2507R/3259C/111conductors/802points and all13 corruption controls. Pinned v2 RC receipt committed; this commit launches cdr-hybrid-v2-mim-parent-rc-cloud.yml to capture actual11 MIM masks and exact bottom access points, followed by raw22controls and composition19controls. No loaded-wave acceptance yet.
+
+Exact routed path diagnosis39118996064 completed: slow worst mainclock path starts Ibex checked register file through a long combinational cone; fast worst PCIe replay tail path has multiple heavily capacitive weak gates/buffers; worst hold starts pcie_rx_valid_i. Original20/4/8/8ns constraints unchanged. Detailed source reports pinned in onehot-round4-path-diagnosis-20261018.json. Next actual routed repair must address electrical loading/logic depth and hold branches, preserve equation proof and re-extract RC after routing.
