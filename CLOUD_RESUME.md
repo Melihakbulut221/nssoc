@@ -1,3 +1,13 @@
+## Cloud continuation: via-rich CDR full model ready for original loaded screen (2026-10-18)
+
+Cloud-only is mandatory; no local checkout/CAD/results. Last local project check was empty. Do not duplicate healthy work.
+
+Fresh via-rich parent/planes/anchors, native binding39164390482, nativeRC39164390476, MIMcapture39164761407, raw audit39165053573 and composition39165288792 all passed their actual unchanged gates. Final composed native model has484devices,13186R,10127C and exactly11intrinsicMIM models. The actual captures,22raw faults and19composition faults are pinned in docs/evidence. See docs/cdr-via-rich-native-rc-and-loaded-handoff-20261018.md.
+
+This commit starts cdr-via-rich-v7-mim-loaded-cloud.yml: original nominal_early/nominal_late/clock_stopped/vi_bias_off cases. Find its run by this commit and retain all four cases. Test and operating thresholds are unchanged; only geometry-specific model/provenance/RC counts differ. Inspect full actual sampler/comparator/VI/device results; job success alone is insufficient. External8GHzclock and body/RF qualification remain limitations. If nominal fails, diagnose original preserved native vectors and actual terminal wiring, never relax thresholds.
+
+Mainchip39161219456 remains live in native routing/STA; TX39158584151 remains live in nominal and swap_leaf_select full32 transient simulations. Preserve both until terminal. The mainchip keeps original20/4/8/8ns clocks and5%derate. Full recovered-clock Gen3x4 PHY, accepted mainchip routing/final timing and production signoff remain open.
+
 ## Cloud continuation: fresh via-rich native graph, model binding and RC (2026-10-18)
 
 All work remains cloud-only. Local project directory verified empty; no local CAD or simulation runs. Preserve healthy cloud jobs and all failed evidence. Source edits use GitHub API in RAM; do not restore local archives/checkout.
