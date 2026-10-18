@@ -1,3 +1,15 @@
+# Current cloud continuation — supply-risers loaded tests launched
+
+Cloud only; local workspace stays empty. Actual local supply repair adds84 physical3.2um TopMetal1 risers in14 leaves and23 TopMetal2 shunts. All394 intrinsic devices, source circuit, signal routes and public interfaces are preserved. Physical top: `nssoc_cdr_pd394_supply_risers_v1`.
+
+The complete fresh proof chain passed: physical39097910516 (560-category DRC,394-device deep/flat LVS,5 physical faults); planes39098142196 (158 planes,51 nets,19 controls); wire inputs39098288016 (1134 terminals,776 points,111 wire components); binding39098476742 (394 devices,8 controls); wire RC39098476688 (9839R7682C,13 controls); MIM capture39098638452 (9862R7693C,11 actual MIMs,5 controls); raw MIM audit39098788457 (13 wire+9 MIM controls); composition39098971322 at8105b9e4011dc880bc5290d272be20d195b38fe3 (15 controls, all raw tokens preserved, one intrinsic model per actual device).
+
+New simulation model `nssoc_cdr_pd394_risers_mim_wire_v1`. `cdr-risers-mim-loaded-cloud` is being launched for original early/late256-bit34.25ns tests and actual clock-stop/VI-bias-off faults. `cdr-risers-loaded-source-delta.json` binds byte-exact adaptation of the original v3 evaluator: only artifact/model identities and fresh independently audited RC counts change. All original sampling/phase/current/device gates, transistor models, clocks and loads remain unchanged. A physical/model pass does not prove loaded behavior. If nominal runs fail, inspect exact new raw captures before any next change; never reuse old native IDs, RC, hardcoded failure counts or altered acceptance windows. If nominal runs pass, the remaining PVT/constant/timestep and real recovered-clock loop gates are still required.
+
+Mainchip detailed route39084569446 and TX return64 waves39087664998 remain the existing live handles at last check. Preserve them; fresh routed geometry/logic/RC and final all-corner setup/hold are still required after the route terminates. Previous placement-estimated timing is not final signoff. Full serial Gen3 x4 PHY/mainchip integration and final timing remain open.
+
+Earlier checkpoint follows:
+
 # Current cloud continuation — native supply risers physical pass
 
 Cloud only. The actual supply-risers candidate run39097910516 at057a9722af88ba51845fbac2640c19257a610faf passed560-category DRC,394-device deep/flat LVS and all five original physical faults. The new physical top is `nssoc_cdr_pd394_supply_risers_v1`; native geometry adds local M6 supply risers plus23 M7 shunts. The full receipt is `cdr-retimed-risers-parent-physical-pass-20261018.json`. This proves physical topology within the stated decks, not electrical improvement or full PHY acceptance.
