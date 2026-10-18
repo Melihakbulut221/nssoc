@@ -19,3 +19,9 @@ The tx-v5-return64-extraction-cloud workflow now restores that exact archive, ve
 Run39086995085 passed complete native RC/ownership/capacitance conservation and all13 raw corruption controls. The actual377conductors/3262probes cover1674devices/4774terminals. Export contains116611R77471C, coincidentally the same element counts as the baseline; values and geometry are freshly extracted and must not be substituted with old tokens. Intrinsic body spreading and RF distribution remain unqualified.
 
 The new tx-v5-return64-composition-cloud workflow binds all native device identities and source R/C rows, repeats six malformed-composition tests and checks resistor connectivity against original native nets. It also probes all124 input legs/372actual HBT bases from the widened physical GDS/LVS and rejects two wrong endpoint pairings. Original256-bit loaded tests follow only after this exact model is verified.
+
+## Native composition and unchanged loaded test
+
+Composition39087377122 passed six malformed-model controls, exact1674device/116611R77471C preservation, all377native-net recovery and124input-leg/372base binding with two incorrect-endpoint controls. The full39MB summary remains in its release; the compact receipt pins its digest, archive and exact model hashes.
+
+The return64 builder permits only these new model hashes. A cloud preflight proves every other builder byte, including stimuli, solver and engineering review, is unchanged from verified v5; clock-adapter changes only its builder import, preserving all44clock corruption tests. Two complete34ns/256-bit wire simulations run: nominal and actual swapped-leaf fault. Compact PVT is not substituted for wire acceptance. The nominal workflow now fails explicitly if any original engineering gate or diagnostic fails, preserving all reports and raw samples. Full-wire PVT/convergence and actual clock/PHY integration still remain.
