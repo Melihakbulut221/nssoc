@@ -1,0 +1,30 @@
+{
+  "baseline_path": "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice",
+  "baseline_sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
+  "candidate_path": "hw/soc/analog/pcie/rx_sampler_hybrid_tail_v1.spice",
+  "candidate_sha256": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+  "prefix": "* Hybrid-tail candidate:12HBT/3native LV NMOS/12rppd. No physical or PHY acceptance.\n* MOS reference8um/0.3um, tails32um/0.3um; fixed4:1 width ratio.\n",
+  "edits": [
+    {
+      "before": "nssoc_cml_latch",
+      "after": "nssoc_cml_latch_hybrid_tail_v1",
+      "count": 4
+    },
+    {
+      "before": "nssoc_rx_sampler_hbt",
+      "after": "nssoc_rx_sampler_hybrid_tail_v1",
+      "count": 2
+    },
+    {
+      "before": "XT te ref avss sub npn13G2 Nx=4",
+      "after": "XT te ref avss sub sg13_lv_nmos w=32u l=.3u ng=1",
+      "count": 1
+    },
+    {
+      "before": "XREF iref iref avss sub npn13G2 Nx=1",
+      "after": "XREF iref iref avss sub sg13_lv_nmos w=8u l=.3u ng=1",
+      "count": 1
+    }
+  ],
+  "scope": "Only declared native current-reference/tail device replacements and subcircuit identities. Original HBT switches/latches, all12resistors, stimulus/loading and HBT limits retained. New MOS bounds and native drain-current checks required; no matching layout exists."
+}
