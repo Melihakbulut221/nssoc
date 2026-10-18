@@ -1,3 +1,11 @@
+# Current: hybrid406 actual conductor/terminal proof passed; native models and RC launched
+
+Wire-inputs39108045101/source84e2784a4cc63989ff244baea9ed9f8a3df96b76 verified actual406 devices1158 terminals,111 distinct wire components,788 physical points (763 metal terminals+25 public ports),395 intrinsic bodies. Fresh12 LV MOS native S/G/D/B and exact PCell drawing recovered successfully. Receipt `cdr-retimed-hybrid-wire-inputs-pass-20261018.json`. Substrate spreading is still not modeled; do not claim qualifiedPEX.
+
+This commit launches two independent hosted workflows: `cdr-retimed-hybrid-binding-cloud.yml` uses exact native S/G/D/B to compact D/G/S/B conversion, all native MOS dimensions/diffusion areas/perimeters/rfmode and twelve controls; `cdr-retimed-hybrid-rc-cloud.yml` uses actual new788 points/111 components and original thirteen raw RC corruption gates. Inspect exact new runs. After both pass, fresh MIM-aware capture/audit/composition and original loaded waveforms are required. Old394 output counts/native IDs invalid. Mainchip39107161430 remains the current live handle; no duplicate. Cloud-only; full objective OPEN.
+
+Earlier checkpoint follows:
+
 # Current: hybrid406 planes verified; actual MOS terminal extraction launched
 
 Native planes39107834199/source00a3e7f278dc1cd6d8b5c01c6ef77c72fa79c181 PASSED all158 interface anchors/51 actual nets/19 fault controls, census406 and1158 intrinsic terminals. Receipt `cdr-retimed-hybrid-planes-pass-20261018.json`. This commit launches `cdr-retimed-hybrid-wire-inputs-cloud.yml`: fresh whole conductor graph, native406 PCell enclosure, recovered pin annotations only on byte-equivalent drawing and actual MOS S/D/G/B references. Census expected763 metal terminals395 intrinsic bodies plus25 public points. No numerical electrical pass assumed. Next native model binding and fresh whole MIM-aware RC, then original loaded gates. Preserve actual failures.
