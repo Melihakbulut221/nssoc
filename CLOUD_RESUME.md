@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, mainchip route completed, timing open
+
+Mainchip logic-resize route39202263552 completed successfully as an execution,
+NOT as signoff. Full report pinned in docs/evidence/onehot-logic-resize-route-result-20261019.json.
+Native routeDRC0/disconnect0; antenna32nets. Slow setup9708/WNS-20.186431ns,
+hold4/-0.460968ns;typ setup7864/-8.403845ns,hold9/-0.399642ns;fast setup3808/
+-4.732550ns,hold21/-0.350979ns. Several setup/electrical regressions remain;
+do not accept32-cell resizing as closure. This commit starts
+onehot-logic-resize-path-review-cloud from exact saved reports, no reroute.
+Use its new limiting paths to design the next repair without relaxing gates.
+
+Folded CDR fullwave39237412866(source649e7406fb4ec7e9d2c227115e3587bb5fa7a916)
+is live: original nominalearly/late andclockstop/VIoff. All syntax guards passed.
+Its physical sampler,parent,extraction,MIMcapture/audit/composition passed;
+only actual complete waves can establish electrical progress.
+
+TX strap6 fullwave39221063981 and trunk256 fullwave39226121734 still live at
+latest check; preserve those jobs. All three serialPHY/mainchip/finaltiming
+goals remain OPEN. All CAD/tests/results cloud-only; local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded full loaded waves
 
 Folded full-mask audit/composition39236937640(source6397eecef419be5fab4b82a6a63760cea7cab8de)
