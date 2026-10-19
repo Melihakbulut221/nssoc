@@ -1,0 +1,7 @@
+# Timing-priority TX loaded native waveform
+
+Cloud model-equivalence39308234471 passed all1674native device cards, geometry-bound identities, fixed162public port names and bijective internal nets, with three corrupted-model tests and a swapped-physical-identity test. Native numbering and public port order changed with layout; the simulation builder reads actual formal ports and maps by name. It does not reuse the previous model order.
+
+The new workflow runs both nominal and swapped-leaf-select cases using the complete116611R77538C model, all31mux macros and all11physical clock-reference macros. Original256bits/34ns, .3/.5/.7UI signal sampling,100mV output margin, interface bounds,604HBT/512MOS checks, native solver diagnostics and the original fault must pass without retuning stimuli or thresholds. The new builder only accepts the two exact model SHA256 values established by the composition and independent equivalence receipts. Source delta checks preserve the prior builder, clock adapter and reviews.
+
+This is a fresh electrical experiment. Previous minimax nominal failure remains retained; its swapped-leaf fault job has now completed successfully, which proves only fault detection. Shorter final data paths do not guarantee success because24other legs lengthened. Full serial PHY, recovered-clock CDR/PLL, PVT, qualified PEX, four-lane and mainchip timing are not accepted by this launch. All heavy execution and waveform retention are in GitHub.

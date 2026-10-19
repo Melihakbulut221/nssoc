@@ -1,3 +1,7 @@
+## 2026-10-19 — Timing-priority native equivalence passed; original loaded waveform gates launched
+
+Cloud-only; local project stays empty. Composition39307462428 and native equivalence39308234471 passed. New tx-v5-timing-priority-loaded-wave-cloud workflow launches both wire/nominal/none and wire/nominal/swap_leaf_select on the exact1674device116611R77538C model. Wait for their original full256bit34ns results; preserve both acceptance and failure evidence. Current physical GDS SHA6b8a3d68e6f94cc7a0812ab89c360a8098633d6e41fa238654c8e16c5ea73057; compact model9311e6c8d230c36239ed3994ea0cc93c40ecfc7a7ec4e1f21c0b33d9c3b73b59; wire model6de9b40e5f4a300b9610899c34f0b1f1db636811d322cc9abe030d2735fadc87. Original minimax fault39268446646/job118115200371 now passed; nominal is still rejected. Mainchip route39293720171/job118200712004 remains live. CDR source-access early/late still rejected with6/2HBT VCE failures; map actual failing C/B/E terminals and macro ownership before any new change. No fullPHY, routing or final timing closure has been claimed.
+
 ## 2026-10-19 — Timing-priority composition passed; verify native model identity
 
 Cloud-only. Composition39307462428 passed original full1674device/116611R77538C and physical interface/fault gates. Exact pinned receipt committed. Run the new timing-priority model comparison, pin its evidence, then adapt builder only to the exact newly proven compact/wire hashes and rerun original loaded nominal/fault waveform checks. All earlier electrical failures remain open; no fullPHY or mainchip timing acceptance.
