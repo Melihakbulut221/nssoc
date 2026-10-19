@@ -1,3 +1,10 @@
+## 2026-10-19 XOR collector v15 extraction passed; native MIM capture next
+- Fresh extraction39316979013 passed all four stages:17811R/12794C,111conductors,946points,13RCfault controls.
+- New xor-collector-v15 MIM capture consumes only this exact run, binding all11actual native MIM masks.
+- TX timing-priority fullwave39308903140 and mainchiproute39293720171 remain live; do not duplicate.
+- No loaded acceptance claim. Full serial PHY, closed-loop CDR/PLL, mainchip routing/final timing remain open.
+- Cloud-only work. Local workspace remains empty.
+
 ## 2026-10-19 — XORcollector physical pass; fresh whole-parent extraction launched
 
 Physical39315947252(source01e65a2e18ab42e01a67b08db7df212e8650b532)passed560DRC0/deepflat484LVS/originalfaults. ActualGDS8a8a25b61c4f9edb092a37caf137f4442191bd78f848d588c1886a2f50a086cf. Overlay:36paths,6buses,576native single-cut stacks/108groups,36Metal2landings. Four rejected predecessors preserved.
