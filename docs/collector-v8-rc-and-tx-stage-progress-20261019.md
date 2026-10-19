@@ -1,0 +1,11 @@
+# Collector-v8 RC and actual TX stage localization
+
+All computation runs on GitHub-hosted runners. Local project directory remains empty.
+
+CDR runs 39200042565 and 39200042548 passed the original native wire extraction and model-binding gates. The new actual layout exports 15,467 resistors and 11,524 capacitors; all 111 conductors and 946 anchor points are retained. Thirteen real raw-RC corruption controls and twelve model corruption controls remain enforced. These results do not qualify RF/substrate PEX or establish a working CDR. The next run restores the same geometry and binds the eleven actual MIM devices before independent raw audit, composition and original loaded 256-bit waveforms.
+
+TX full capture 39158584151 remains rejected. Diagnostic run 39199027825 exactly reproduced its original gates from the unchanged native waveform. CMOS input and level-16 pass; level-8 has no wrong signs but fails 1,044 samples below 150mV (minimum 77.49mV). Level-4 has 450 wrong-sign samples; final interface has 1,152. These interface totals include physical terminal-pair observations, not unique transmitted bits. The final output still has 140/768 wrong samples and 164 below 100mV.
+
+Twenty-four HBTs fail original voltage gates. For example XD0110 at its actual minimum VCE sample has C=0.918759V, B=1.443575V, E=0.561123V; VCE=0.357637V. The current review maps these measured failing devices to the actual updated 31-macro placement, instead of assigning ownership from historical coordinates. This diagnostic is not a circuit repair or acceptance.
+
+Mainchip setup/hold, antenna closure, complete serial Gen3 x4 PHY, final routed integration and qualified signoff remain OPEN. Preserve all original failures and clocks/thresholds.

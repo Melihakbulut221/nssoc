@@ -1,3 +1,13 @@
+# Cloud-only continuation — 2026-10-19
+
+CDR collector-v8 native wire RC39200042565 and native device binding39200042548 PASS. Full pinned receipts in docs/evidence/cdr-retimed-collector-v8-{rc,binding}-pass-20261019.json. Actual15467R11524C,111conductors946points; all original13RC/12binding controls preserved.
+
+This commit starts cdr-collector-v8-mim-parent-rc-cloud and tx-v5-fast-stage-isolated-stage-review-cloud via push. Retrieve their actual run IDs. CDR next: fresh MIM capture -> raw audit -> composition -> original full256bit streamed waves. TX next: exact physical ownership of24failed HBTs + previous actual62inputgroup diagnosis -> measured circuit/layout repair. Current TX all nominal gates remain failed; diagnostic pass is NOT electrical pass.
+
+All computation/artifact restoration on hosted runners only. No local checkout or output. Mainchip thousands setup/22fast hold,43antenna nets51pins still OPEN; same saved routedODB native critical paths preserved. FullPHY/finaltiming goals remain OPEN.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19
 
 CDR collector-v8 wireinputs39199027912 PASSED actual484devices1394terminals/111conductors/946anchors,921metal+473body dispositions; source-pins recovered only from identical native primitive drawings. Fullreceipt cdr-retimed-collector-v8-wire-inputs-pass-20261019.json.
