@@ -1,3 +1,22 @@
+# Latest cloud-only continuation — 2026-10-19, dependent native MIM capture
+
+Fresh extraction39249871918 remains live; planesPASS, wire-inputs active at
+latest check. This push starts cdr-localbus-v12-mim-parent-rc-cloud. Its new
+cloud controller WAITs for exact39249871918/source09748dc79e33298c19c339ac5a1ff00c13d566c7,
+requires all4 stage jobs/reports PASS, binds release digests and parent/source
+provenance, then runs namespace-only adapted original MIM capture. It does not
+rerun or replace a live prerequisite. Receipts retained in capture output.
+Do not start duplicate MIM capture manually.
+
+After capture completes: retrieve actual R/C counts and full native report,
+pin extraction/capture receipts; original22 rawRC/19 composition controls
+then unchanged full loaded early/late/fault simulations. All electrical and
+full serialPHY acceptance remain OPEN. Source guards/native geometry retained.
+Mainchip39243328773, TX39221063981/39226121734 continue; preserve healthy jobs.
+All work cloud-only; local checkout remains empty.
+
+---
+
 # Active cloud runs — 2026-10-19, local-bus extraction continuation
 
 Fresh extraction39249871918 on09748dc79e33298c19c339ac5a1ff00c13d566c7:
