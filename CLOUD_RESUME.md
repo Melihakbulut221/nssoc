@@ -1,3 +1,9 @@
+## 2026-10-20 coverage preparation rejected; repair real placement
+- Run39328953817/source43f36da5398077770124228ed3e9138e0d8ae951 failed the unchanged80um driver-pin distance gate: one actual buffer was84.81um away after legalization. Original failure/asset pins retained.
+- New placement searches actual vacant row/site intervals, respects all existing cells and earlier additions, chooses nearest actual input-pin distance and keeps the80um gate. Native legalization and original geometry/topology/equation/inversion controls remain required.
+- Source-delta checks now execute in cloud preflight. Inspect this next preparation; never route the rejected39328953817candidate.
+- All work remains cloud-only; serial PHY and final setup/hold remain incomplete.
+
 ## 2026-10-20 setup repair expanded to all reported paths with hold screening
 - Pathreview39328156931 passed unchanged parser/source guards. Slow critical data path has o21ai/nand4 output delays3.042365/5.439997ns; fast critical path includes weak a22oi omitted by the earlier selector.
 - New onehot-coverage-data-prepare reads all saved max/min path samples, excludes outputs on observed hold paths<=0.2ns, and selects up to128 eligible weak data drivers. All unselected candidates and exclusions retained. This is not exhaustive hold safety.

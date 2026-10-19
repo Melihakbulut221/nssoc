@@ -32,11 +32,60 @@ def topology(b):
 def point(t):
     v=t.getAvgXY();assert len(v)==3 and v[0]
     return v[1],v[2]
+def place_near_driver(block,buffer,driver_term,occupied_rows):
+    import math
+    dx,dy=point(driver_term);width=buffer.getMaster().getWidth();height=buffer.getMaster().getHeight()
+    site=buffer.getMaster().getSite().getName();candidates=[]
+    for row,intervals in occupied_rows:
+        box=row.getBBox();pitch=row.getSite().getWidth()
+        if row.getSite().getName()!=site or box.yMax()-box.yMin()!=height:continue
+        if abs(box.yMin()+height/2-dy)>80*block.getDbUnitsPerMicron()+height:continue
+        assert pitch>0
+        buffer.setOrient(row.getOrient());buffer.setLocation(box.xMin(),box.yMin())
+        ax,ay=point(buffer.findITerm('A'));offset=ax-box.xMin()
+        # Merge actual occupied rectangles intersecting this row. Legal abutment
+        # is allowed; overlap is never allowed. Original instances stay fixed.
+        cursor=box.xMin();gaps=[]
+        for lo,hi in sorted(intervals):
+            lo=max(lo,box.xMin());hi=min(hi,box.xMax())
+            if hi<=box.xMin() or lo>=box.xMax():continue
+            if lo>cursor:gaps.append((cursor,lo))
+            cursor=max(cursor,hi)
+        if cursor<box.xMax():gaps.append((cursor,box.xMax()))
+        for lo,hi in gaps:
+            low=math.ceil((lo-box.xMin())/pitch);high=math.floor((hi-width-box.xMin())/pitch)
+            if low>high:continue
+            ideal=(dx-offset-box.xMin())/pitch
+            for q in {max(low,min(high,math.floor(ideal))),max(low,min(high,math.ceil(ideal)))}:
+                x=box.xMin()+q*pitch
+                distance=abs(x+offset-dx)+abs(ay-dy)
+                candidates.append((distance,row.getName(),x,box.yMin(),row))
+    assert candidates,('No vacant native site',driver_term.getInst().getName())
+    distance,_,x,y,row=min(candidates,key=lambda v:v[:4])
+    assert distance/block.getDbUnitsPerMicron()<=80,('No vacant site within original80um limit',driver_term.getInst().getName(),distance/block.getDbUnitsPerMicron())
+    buffer.setOrient(row.getOrient());buffer.setLocation(x,y);buffer.setPlacementStatus('PLACED')
+    b=buffer.getBBox()
+    for other,intervals in occupied_rows:
+        rb=other.getBBox()
+        if rb.yMin()<b.yMax() and b.yMin()<rb.yMax():intervals.append((b.xMin(),b.xMax()))
+    assert sum(abs(a-c)for a,c in zip(point(driver_term),point(buffer.findITerm('A'))))==distance
+    return dict(row=row.getName(),distance_um=distance/block.getDbUnitsPerMicron(),native_site_width_dbu=row.getSite().getWidth())
+
 def prepare():
     db=load(SOURCE);b=db.getChip().getBlock();assert len(b.getInsts())==150291
     targets=TARGETS
     assert len({(t['instance'],t['pin'])for t in targets})==COUNT
     original={i.getName():signature(i)for i in b.getInsts()}
+    import bisect
+    occupied_rows=sorted([(row,[])for row in b.getRows()],key=lambda pair:pair[0].getBBox().yMin())
+    row_bottoms=[row.getBBox().yMin()for row,_ in occupied_rows]
+    max_row_height=max(row.getBBox().yMax()-row.getBBox().yMin()for row,_ in occupied_rows)
+    for inst in b.getInsts():
+        box=inst.getBBox();start=bisect.bisect_right(row_bottoms,box.yMin()-max_row_height)
+        for index in range(start,len(occupied_rows)):
+            row,intervals=occupied_rows[index];rb=row.getBBox()
+            if rb.yMin()>=box.yMax():break
+            if box.yMin()<rb.yMax():intervals.append((box.xMin(),box.xMax()))
     expected=topology(b);fixed=fixed_data(db);changes=[]
     for i in b.getInsts():i.setPlacementStatus('FIRM')
     master=db.findMaster('sg13g2_buf_16');assert master
@@ -57,8 +106,7 @@ def prepare():
         expected[net.getName()]['pins'].append([added,'X']);expected[net.getName()]['pins'].sort()
         expected[local]=dict(kind='SIGNAL',ndr=None,pins=sorted([[t['instance'],t['pin']],[added,'A']]),ports=[])
         local_net=odb.dbNet.create(b,local);buffer=odb.dbInst.create(b,master,added);assert buffer and local_net
-        buffer.setOrient(driver.getOrient());x,y=driver.getLocation()
-        buffer.setLocation(x+driver.getMaster().getWidth(),y);buffer.setPlacementStatus('PLACED')
+        placement=place_near_driver(b,buffer,term,occupied_rows)
         term.disconnect();term.connect(local_net);buffer.findITerm('A').connect(local_net);buffer.findITerm('X').connect(net)
         for p in buffer.getITerms():
             kind=str(p.getSigType())
@@ -68,7 +116,7 @@ def prepare():
                 p.connect(peers[0].getNet())
                 expected[peers[0].getNet().getName()]['pins'].append([added,p.getMTerm().getName()])
                 expected[peers[0].getNet().getName()]['pins'].sort()
-        changes.append(dict(driver=t['instance'],driver_pin=t['pin'],original_net=net.getName(),local_net=local,buffer=added,buffer_master=master.getName(),initial_buffer_location_dbu=list(buffer.getLocation()),original_terminal_count=t['reported_fanout']+1))
+        changes.append(dict(driver=t['instance'],driver_pin=t['pin'],original_net=net.getName(),local_net=local,buffer=added,buffer_master=master.getName(),initial_buffer_location_dbu=list(buffer.getLocation()),vacant_native_site=placement,original_terminal_count=t['reported_fanout']+1))
     assert topology(b)==expected and fixed_data(db)==fixed
     for n in b.getNets():
         if str(n.getSigType())in ('POWER','GROUND'):continue

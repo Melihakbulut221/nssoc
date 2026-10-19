@@ -91,7 +91,7 @@
     "baseline_path": "scripts/prepare_onehot_critical_data_buffers.py",
     "baseline_sha256": "ed9e901c689ef8845824a4f8fa5ac388fe3318a1e19b589ae79ab8ef0cd5f203",
     "candidate_path": "scripts/prepare_onehot_coverage_data_buffers.py",
-    "candidate_sha256": "ee14226b67ee10c3bfcb90577cf87a39514d249fe6393e44b8119aa32fb6539c",
+    "candidate_sha256": "a2a2f8e72e1f3ff344d4f401e964e309b417bfa20ca3ae8b3f8ea7de8fa1273e",
     "edits": [
       {
         "before": "onehot-critical-data-prepare",
@@ -116,6 +116,26 @@
       {
         "before": "including721latest route diodes",
         "after": "including666latest route diodes",
+        "count": 1
+      },
+      {
+        "before": "def prepare():",
+        "after": "def place_near_driver(block,buffer,driver_term,occupied_rows):\n    import math\n    dx,dy=point(driver_term);width=buffer.getMaster().getWidth();height=buffer.getMaster().getHeight()\n    site=buffer.getMaster().getSite().getName();candidates=[]\n    for row,intervals in occupied_rows:\n        box=row.getBBox();pitch=row.getSite().getWidth()\n        if row.getSite().getName()!=site or box.yMax()-box.yMin()!=height:continue\n        if abs(box.yMin()+height/2-dy)>80*block.getDbUnitsPerMicron()+height:continue\n        assert pitch>0\n        buffer.setOrient(row.getOrient());buffer.setLocation(box.xMin(),box.yMin())\n        ax,ay=point(buffer.findITerm('A'));offset=ax-box.xMin()\n        # Merge actual occupied rectangles intersecting this row. Legal abutment\n        # is allowed; overlap is never allowed. Original instances stay fixed.\n        cursor=box.xMin();gaps=[]\n        for lo,hi in sorted(intervals):\n            lo=max(lo,box.xMin());hi=min(hi,box.xMax())\n            if hi<=box.xMin() or lo>=box.xMax():continue\n            if lo>cursor:gaps.append((cursor,lo))\n            cursor=max(cursor,hi)\n        if cursor<box.xMax():gaps.append((cursor,box.xMax()))\n        for lo,hi in gaps:\n            low=math.ceil((lo-box.xMin())/pitch);high=math.floor((hi-width-box.xMin())/pitch)\n            if low>high:continue\n            ideal=(dx-offset-box.xMin())/pitch\n            for q in {max(low,min(high,math.floor(ideal))),max(low,min(high,math.ceil(ideal)))}:\n                x=box.xMin()+q*pitch\n                distance=abs(x+offset-dx)+abs(ay-dy)\n                candidates.append((distance,row.getName(),x,box.yMin(),row))\n    assert candidates,('No vacant native site',driver_term.getInst().getName())\n    distance,_,x,y,row=min(candidates,key=lambda v:v[:4])\n    assert distance/block.getDbUnitsPerMicron()<=80,('No vacant site within original80um limit',driver_term.getInst().getName(),distance/block.getDbUnitsPerMicron())\n    buffer.setOrient(row.getOrient());buffer.setLocation(x,y);buffer.setPlacementStatus('PLACED')\n    b=buffer.getBBox()\n    for other,intervals in occupied_rows:\n        rb=other.getBBox()\n        if rb.yMin()<b.yMax() and b.yMin()<rb.yMax():intervals.append((b.xMin(),b.xMax()))\n    assert sum(abs(a-c)for a,c in zip(point(driver_term),point(buffer.findITerm('A'))))==distance\n    return dict(row=row.getName(),distance_um=distance/block.getDbUnitsPerMicron(),native_site_width_dbu=row.getSite().getWidth())\n\ndef prepare():",
+        "count": 1
+      },
+      {
+        "before": "    original={i.getName():signature(i)for i in b.getInsts()}",
+        "after": "    original={i.getName():signature(i)for i in b.getInsts()}\n    import bisect\n    occupied_rows=sorted([(row,[])for row in b.getRows()],key=lambda pair:pair[0].getBBox().yMin())\n    row_bottoms=[row.getBBox().yMin()for row,_ in occupied_rows]\n    max_row_height=max(row.getBBox().yMax()-row.getBBox().yMin()for row,_ in occupied_rows)\n    for inst in b.getInsts():\n        box=inst.getBBox();start=bisect.bisect_right(row_bottoms,box.yMin()-max_row_height)\n        for index in range(start,len(occupied_rows)):\n            row,intervals=occupied_rows[index];rb=row.getBBox()\n            if rb.yMin()>=box.yMax():break\n            if box.yMin()<rb.yMax():intervals.append((box.xMin(),box.xMax()))",
+        "count": 1
+      },
+      {
+        "before": "        buffer.setOrient(driver.getOrient());x,y=driver.getLocation()\n        buffer.setLocation(x+driver.getMaster().getWidth(),y);buffer.setPlacementStatus('PLACED')",
+        "after": "        placement=place_near_driver(b,buffer,term,occupied_rows)",
+        "count": 1
+      },
+      {
+        "before": "initial_buffer_location_dbu=list(buffer.getLocation()),original_terminal_count=",
+        "after": "initial_buffer_location_dbu=list(buffer.getLocation()),vacant_native_site=placement,original_terminal_count=",
         "count": 1
       }
     ]
