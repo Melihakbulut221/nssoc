@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, strap6 nominal electrically rejected
+
+TX39221063981 nominal job117956363557 completed native simulation, return0,
+elapsed14866.64s, full77557rows/34ns/3004vectors; source unchanged/no diagnostics.
+REJECTED by original gates:140/768 wrong output,164below100mV,24HBT failures,
+0MOS failures. Interfaces level8:1044low; level4:450wrong/2547low;
+final:1152wrong/2207low (each6912samples). CMOS andlevel16 pass.
+Fullreceipt docs/evidence/tx-v5-final-strap6-nominal-rejection-20261019.json;
+summary656201026 SHA f58e94131e1191f503238f37bc40dc68f32a47c213e418b081cc34e3af099c0c;
+parts656201080 SHA f0a8d3c0cf4d4c527d32180be494d3fc6a45b6c2b3c954e8e9d549788e979d5e.
+Do not rerun identical rejected nominal. Swap-leaf fault117956363421 and
+both trunk256 native jobs39226121734 remain live; preserve.
+
+CDR MIM audit/composition39251956786 source810513b65ee1f02ade79670f517b97675726e22a
+is active; source guards/compile passed, auditjob118057672788 in native stage.
+Freshcapture15482R11490C/11MIM fully pinned; after audit/compositionPASS run
+unchanged full early/late/clock-stopped/VI-off loaded waves.
+Mainchip39-buffer route39243328773 remains active. FullPHY/route/timingOPEN.
+All work cloud-only; local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native MIM capture PASS
 
 Run39250952988/source dfa37e1f272e2726f1f90715fc1b07668fbb9cec PASSED
