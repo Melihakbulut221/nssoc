@@ -1,0 +1,72 @@
+{
+  "baseline_path": "scripts/cloud_cdr_input_drive_v10_mim_streamed.py",
+  "baseline_sha256": "0f690e400ee9c4a7be93aba4fef100a1b026acc77a788501d433c61fd2494cb4",
+  "candidate_path": "scripts/cloud_cdr_input_drive_v10_width_sensitivity.py",
+  "candidate_sha256": "5fd11b6fd8571d0a157a8dbac003d7a37d8adbed218ccfd9d4a226162ecc341c",
+  "edits": [
+    {
+      "before": "\"\"\"Loaded whole PD484 native MIM-aware transient; not a recovered-clock loop.",
+      "after": "\"\"\"DIAGNOSTIC width sensitivity on frozen v10 RC; no matching changed layout.",
+      "count": 1
+    },
+    {
+      "before": "import cloud_tx_stream as stream",
+      "after": "import cloud_tx_stream as stream\nimport cdr_input_drive_v10_width_sensitivity as sizing",
+      "count": 1
+    },
+    {
+      "before": "p.add_argument('--case',choices=CASES,required=True);args=p.parse_args()",
+      "after": "p.add_argument('--case',choices=CASES,required=True);p.add_argument('--width',type=int,choices=[8,16],required=True);args=p.parse_args()",
+      "count": 1
+    },
+    {
+      "before": "out=ROOT/('cloud-cdr-input-drive-v10-mim-streamed-'+args.case)",
+      "after": "out=ROOT/('cloud-cdr-input-drive-v10-width'+str(args.width)+'-sensitivity-'+args.case)",
+      "count": 1
+    },
+    {
+      "before": "closed_loop=False,\n        scope='Actual PD484 complete native MIM-aware wire model:",
+      "after": "closed_loop=False,sensitivity_only=True,geometry_matches_model=False,width_um=args.width,\n        scope='DIAGNOSTIC ONLY: intrinsic resistor widths changed on FROZEN baseline wire RC, no matching new layout. Requires fresh PCell/DRC/LVS/RC/full waveform. PD484 model:",
+      "count": 1
+    },
+    {
+      "before": "        r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)\n        bound=bind_native(model.read_text(),contract,planes);",
+      "after": "        r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)\n        bind_native(model.read_text(),contract,planes)\n        r['sensitivity_controls']=sizing.controls(model.read_text(),contract)\n        original_model=model\n        diagnostic_text,contract,r['sensitivity']=sizing.resize(model.read_text(),contract,args.width)\n        model=out/'diagnostic-model.spice';model.write_text(diagnostic_text)\n        diagnostic_contract=out/'diagnostic-contract.json';diagnostic_contract.write_text(json.dumps(contract,indent=2)+'\\n')\n        bound=bind_native(model.read_text(),contract,planes);",
+      "count": 1
+    },
+    {
+      "before": "deck=['NSSOC actual whole MIM-aware PD484'",
+      "after": "deck=['NSSOC DIAGNOSTIC intrinsic-width change with frozen baseline RC'",
+      "count": 1
+    },
+    {
+      "before": "[Path(__file__),Path(legacy.__file__),model,pinpath,pp,",
+      "after": "[Path(__file__),Path(sizing.__file__),original_model,diagnostic_contract,Path(legacy.__file__),model,pinpath,pp,",
+      "count": 1
+    },
+    {
+      "before": "status='RUNNING_ACTUAL_WHOLE_WIRE_TRANSIENT'",
+      "after": "status='RUNNING_DIAGNOSTIC_WIDTH_SENSITIVITY'",
+      "count": 1
+    },
+    {
+      "before": "'PASS_WHOLE_MIM_PD484_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF'if passed else'REJECTED_WHOLE_MIM_PD484_LOADED'",
+      "after": "'DIAGNOSTIC_ORIGINAL_GATES_PASS_REQUIRES_FRESH_PHYSICAL_AND_PEX'if passed else'DIAGNOSTIC_ORIGINAL_GATES_REJECTED'",
+      "count": 1
+    },
+    {
+      "before": "assert passed,'Actual whole-wire retimed sampling, loaded phase/current or device gate failed'",
+      "after": "assert passed,'Diagnostic intrinsic-width model failed ORIGINAL retimed sampling, loaded phase/current or device gates; not a physical candidate'",
+      "count": 1
+    },
+    {
+      "before": "('RUNNING','RUNNING_ACTUAL_WHOLE_WIRE_TRANSIENT')",
+      "after": "('RUNNING','RUNNING_DIAGNOSTIC_WIDTH_SENSITIVITY')",
+      "count": 1
+    }
+  ],
+  "dependencies": {
+    "scripts/cdr_input_drive_v10_width_sensitivity.py": "7e735d72b799ddd08da440a1bfef1e6db5a6a3d9fa2594ae96d9b3ee4743c20d",
+    ".github/workflows/cdr-input-drive-v10-width-sensitivity-cloud.yml": "fe200009fc8da90ce83c76a482f0f619d08c4b650d632189020ae19f3f3959d9"
+  }
+}
