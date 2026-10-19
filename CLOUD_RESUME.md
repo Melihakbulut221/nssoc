@@ -1,3 +1,7 @@
+## 2026-10-19 — Via checks passed; close intermediate Metal2landing gaps
+
+Run39314980954 proved all actualVia3/Via4cut sizes/gaps, then native560DRC rejected180M2.bmarkers only. Original group pitches measured410nm(two cuts) vs480nm(four cuts). Current generator joins each of36Metal1/3contact groups with a continuous native-sizeMetal2landing derived from actual single-cell shapes; it probes originalMetal2cut centers to the intended wire component. Original484devices/reference/LEF and all prior geometry retained. Wait for the fresh physical run; do not bypassDRC or launchRCuntilpassed. All failure receipts retained. Cloud-only. TX39308903140/mainchip39293720171 confirmed live at last check.
+
 ## 2026-10-19 — Retain exact old via patterns and extend with native single cuts
 
 Third geometry attempt39313937408 found no rigid translation matching old cuts to a larger native multi-cut pattern. All three failures retained;35nm mismatch is not enough to blame bbox centering alone. Current generator retains every original cut and adds576native single-cut stacks across108contact groups, deriving new positions from measured original edges/pitches. M3andM4landings explicitly connect added cuts. Independent190nm/220nmVia3/Via4checks and original560DRC/deepflatLVS/faultgates remain mandatory. Await the fresh XORcollector physical run, then fresh whole-parentRC/MIM+loaded gates only on physical success. Cloud-only; TX39308903140/mainchip39293720171 remain ongoing at last live check.

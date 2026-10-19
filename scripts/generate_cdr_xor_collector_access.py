@@ -48,13 +48,23 @@ def generate(out):
   cuts=list(pya.Region(c.begin_shapes_rec(L.layer(cut_layer,0))).merged().each())
   assert len(cuts)==1 and cuts[0].bbox().width()==cuts[0].bbox().height()==190
   center=cuts[0].bbox().center()
+  intermediate=[]
   for xx,yy in added:
    ox,oy=xx-center.x,yy-center.y;assert ox%5==oy%5==0
    tr=pya.DTrans(ox*L.dbu,oy*L.dbu)
    overlay.insert(pya.DCellInstArray(c.cell_index(),tr))
+   if lo=='Metal1':
+    intermediate.extend(p.bbox().transformed(pya.Trans(ox,oy))for p in pya.Region(c.begin_shapes_rec(L.layer(10,0))).merged().each())
    stitches.append(dict(macro=tag,net=net,bottom=lo,top=hi,columns=1,rows=1,
      reference_cut_layer=cut_layer,target_cut_center_dbu=[xx,yy],bbox_um=str(c.dbbox().transformed(tr)),translation_dbu=[ox,oy]))
-  via_groups.append(dict(macro=tag,net=net,bottom=lo,top=hi,old_cut_boxes=[str(v)for v in oldcuts],
+  if lo=='Metal1':
+   for oldcut in oldcuts:
+    original_net=wire.probe_net(wire.layer_by_name('gds_10'),oldcut.center())
+    assert original_net is not None and original_net.cluster_id==component
+   assert intermediate
+   landing=pya.Box(min(q.left for q in intermediate),min(q.bottom for q in intermediate),max(q.right for q in intermediate),max(q.top for q in intermediate))
+   overlay.shapes(L.layer(10,0)).insert(landing)
+  via_groups.append(dict(intermediate_m2_landing_um=str(landing.to_dtype(L.dbu))if lo=='Metal1'else None,macro=tag,net=net,bottom=lo,top=hi,old_cut_boxes=[str(v)for v in oldcuts],
    old_horizontal_pitch_dbu=[b-a for a,b in zip(original_xs,original_xs[1:])],
    retained_cut_count=len(oldcuts),added_native_single_cut_stacks=len(added),
    aggregate_columns=cols,aggregate_rows=rows,added_cut_center_dbu=[list(p)for p in added],
@@ -106,6 +116,7 @@ def generate(out):
    overlay.shapes(L.layer(67,0)).insert(bus)
    buses.append(dict(macro=tag,net=net,native_wire_component=component,box_um=str(bus)))
  assert len(plan)==36 and len(buses)==6 and len(via_groups)==108 and len(stitches)==576
+ assert sum(v['intermediate_m2_landing_um']is not None for v in via_groups)==36
  assert len({v['native_wire_component']for v in buses})==5
  assert len({v['native_wire_component']for v in buses if v['net']=='avdd'})==1
  top.insert(pya.DCellInstArray(overlay.cell_index(),pya.DTrans()));assert top.dbbox()==oldbox
