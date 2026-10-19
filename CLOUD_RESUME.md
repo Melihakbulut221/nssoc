@@ -1,3 +1,17 @@
+# Latest cloud-only continuation — 2026-10-19, native terminal identity correction
+
+Geometry diagnosis39240031550 finished, but review found a reporting bug:
+OpenDB returned separate Python wrappers for the same driver ITerm; Python
+inequality included the driver in the sink list. Original result preserved
+and explicitly rejected in onehot-routed-load-geometry-proxy-rejection-20261019.json.
+Use native getId(), test proxy aliases, require exact sink census and INPUT
+role. This commit reruns only the read-only geometry diagnosis with those
+checks; it changes no actual netlist, layout or timing gate. Retrieve its new
+run result. TX fullwaves39221063981/39226121734 remain active at latest check.
+Local workspace empty; all compute and generated files remain in GitHub.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded waves rejected
 
 Folded fullwave39237412866 has completed: both nominal early/late REJECTED;
