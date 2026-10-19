@@ -1,3 +1,22 @@
+# Latest cloud-only continuation — 2026-10-19, exact-model solver correction
+
+Cloud diagnostic39265239206/source4a8fc310eebc28bb8c22f10db261c5049cc2b34c
+proves presolve failure on exact31macro MILP: first optimum2326um in both
+modes; second infeasible with presolve but without it gives84266.4um total,
+zeroMIPgap, <5e-13linearresidual, no bound/integer violations. Fullcalls
+stored docs/evidence/tx-minimax-lattice-solver-diagnosis-20261019.json.
+No electrical/physical gate changed. All model constraints remain exact.
+
+This push reruns tx-v5-minimax-assembly-cloud with presolveFalse and explicit
+primal checks. Actual31macro preflight now runs before CAD download.
+Inspect exactrun/fullnativephysical gates. Do not beginRC on planner pass.
+The in-memory prepared extraction mutation still targets failedrun39264686080
+and oldHEAD58f8c952; update only after actualnewphysicalPASS, preserve strict
+fullphysicalpins. Mainchip39243328773 lastlive; fullPHY/route/timing OPEN.
+Cloud-only/localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, lattice solver diagnostic
 
 Lattice physical39264686080/source58f8c9523bc6aea7ec87fa10ef0119160139a65d

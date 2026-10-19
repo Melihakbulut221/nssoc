@@ -66,6 +66,12 @@ jobs:
           p=topology()
           assert len(p['nodes'])==31 and len(p['ports'])==162 and p['selection_fault_rejected']
           print('Native tree selection preflight passed')
+          import json
+          from pathlib import Path
+          from plan_tx_v5_minimax_rows import plan_candidate
+          plan=plan_candidate(json.loads(Path('docs/evidence/tx-v5-final-strap6-physical-pass-20261019.json').read_text())['report']['layout'])
+          Path('minimax-preflight-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+          print(json.dumps({k:plan[k]for k in ('maximum_before_um','maximum_after_um','sum_before_um','sum_after_um','solver','row_targets_um')}))
           PYCODE
       - name: Restore pinned native CAD runtime
         run: |
@@ -111,3 +117,5 @@ jobs:
 # Native two-short repair: p8_7 returns to original600um row lattice; all physical gates rerun.
 
 # Native private-net shorts: global integer600um row-lattice minimax; full physical gates unchanged.
+
+# Identical lattice model: disable demonstrated faulty HiGHS presolve; verify all primal residuals and zero MIP gap.

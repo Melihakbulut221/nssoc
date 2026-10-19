@@ -39,15 +39,25 @@ def solve_rows(labels,fixed,edges,spacing,old,row_quantum=None):
         return milp(objective,integrality=np.array([1]*n+[0]*(m+1)),
                     bounds=Bounds([lo for lo,hi in limits],[np.inf if hi is None else hi for lo,hi in limits]),
                     constraints=LinearConstraint(A,-np.inf,rhs),
-                    options=dict(mip_rel_gap=0.,time_limit=120.))
+                    options=dict(mip_rel_gap=0.,time_limit=120.,presolve=False))
+    def validate(solution,limits):
+        assert solution.success and solution.x is not None
+        assert np.max(A@solution.x-rhs)<1e-7
+        for value,(lo,hi)in zip(solution.x,limits,strict=True):
+            assert value>=lo-1e-7 and (hi is None or value<=hi+1e-7)
+        if row_quantum is not None:
+            assert np.max(np.abs(solution.x[:n]-np.round(solution.x[:n])))<1e-7
+            assert solution.mip_gap==0.
     c=np.zeros(n+m+1);c[-1]=1.
     first=optimize(c,limits)
     assert first.success,('Minimax layout infeasible or optimum unproved',first.message)
+    validate(first,limits)
     optimum=float(first.x[-1])
     # Second objective cannot trade a longer worst wire for lower total length.
     limits[-1]=(0,optimum+.001);c[:]=0;c[n:n+m]=1
     second=optimize(c,limits)
     assert second.success,second.message
+    validate(second,limits)
     if row_quantum is None:
         ys={k:round(round(float(second.x[ix[k]])/.005)*.005,6)for k in labels}
         for a,b,gap in spacing:ys[b]=max(ys[b],round(ys[a]+gap,6))
@@ -65,7 +75,7 @@ def solve_rows(labels,fixed,edges,spacing,old,row_quantum=None):
                    first_mip_dual_bound=None if row_quantum is None else float(first.mip_dual_bound),
                    first_mip_gap=None if row_quantum is None else float(first.mip_gap),
                    second_mip_gap=None if row_quantum is None else float(second.mip_gap),
-                   row_quantum_um=row_quantum,grid_um=.005,
+                   row_quantum_um=row_quantum,mip_presolve=False,independent_solution_residuals_checked=True,grid_um=.005,
                    lexicographic_objectives=['minimum maximum actual-leg length','minimum total length at fixed maximum'])
 
 def allocate(intervals,tracks):

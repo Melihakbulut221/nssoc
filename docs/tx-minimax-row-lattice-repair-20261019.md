@@ -23,3 +23,21 @@ faults. Only after physical pass may fresh RC and the full original native
 waveform gates run. Old RC is invalid for this changed geometry.
 Full serial PHY and mainchip final timing remain open. All execution and
 artifacts stay on GitHub; no local CAD or checkout.
+
+## Exact-model solver failure and correction
+
+The initial lattice run39264686080 stopped before CAD. Diagnostic39265239206
+reproduced the exact31macro model with both HiGHS presolve settings.
+First objective2326um was proven in both modes. The secondary objective
+with the same2326.001um upper bound was declared infeasible with presolve,
+but without presolve produced an optimum84266.4um total with zero MIP gap,
+linear residual below5e-13, zero bound violations and integral row indices.
+This is direct evidence of a solver presolve failure for this model.
+
+The planner now disables presolve, with all original model coefficients,
+row constraints and objective bounds unchanged. Every returned solution
+is independently checked for all linear/bound/integrality constraints and
+zero MIP gap. The actual31macro plan runs before downloading CAD runtime.
+Final allocated route lengths can differ from the fixed-track optimization
+objective; the plan reports both, and native physical/electrical gates remain
+mandatory. No physical verification has passed from this diagnostic alone.
