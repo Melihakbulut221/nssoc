@@ -1,3 +1,11 @@
+## Active checkpoint: receiver-stride-priority physical TX layout
+
+Native minimax data review39303527602 passed passive solver controls and actual124leg/372base binding. Final inputs carry about0.30–0.35pF incident wire C and24–27ohm metal effective resistance; original native rppd devices remain in circuit. Actual a-to-final longest leg2268.8um and b-to-final1690.8um. Combined with failed final/level4 bit gates and intact native clock edges, this motivates a geometry experiment, not a proven causal diagnosis.
+
+New tx-v5-timing-priority-assembly-cloud prioritizes all60legs by16/receiver stride. It retains frozen native1674devices/719reference emitters,16leaf/final fixed rows, macroX,600um residue/separation,rails,selector truth table and every physical/electrical gate. The original maximum-length ceiling remains below80percent of pre-minimax maximum. Reserve is derived from all legal horizontal track choices. Independent actual-route arithmetic must prove weighted and final maxima improve against minimax; every upstream regression is retained. Analytic weighted-chain/lattice controls and all native560DRC/deep+flatLVS/fault controls run in cloud. Then fresh RC/model equivalence/fullwave are mandatory.
+
+CDR source-access loaded39302582087, mainchip route39293720171 and original TX fault job118115200371 remain live at last check. No duplicate jobs. All work/artifacts cloud-only. Full serialPHY and final chip timing not closed.
+
 ## Active checkpoint: minimax clocks measured; data-network review
 
 Clock summary39302582252 passed source/edge binding. All31clock paths have no unmatched native/public edges; paired delay envelope lies between about-0.358ps and1.114ps. This is a diagnostic association, not a timing acceptance claim. It does not support changing clock routing. Native output errors remain123/768,24HBT VCE failures. New tx-minimax-data-network-review-cloud measures metal-only effective resistances and incident wire C at all124data legs/372native bases from the exact failed model, with analytic series/parallel/loop and corruption controls. Original rppd/device models are not replaced.
