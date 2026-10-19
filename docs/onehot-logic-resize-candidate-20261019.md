@@ -9,3 +9,9 @@ The candidate restores the exact completed route ODB (SHA256 4acbb9969285c715969
 All untargeted cells remain fixed through legalization. Complete net membership, pin equations, PG routing, NDRs, ports and native row alignment must remain verified; native Liberty equation comparison and an actual inverted-buffer negative control are required. Original 20/4/8/8ns clocks, 5% timing derate and all-corner setup/hold checks remain unchanged. Existing signal routes are discarded because pin positions change.
 
 Preparation is not timing closure. It must be followed by fresh routing, RC, all-corner STA, unchanged-candidate topology validation and final antenna/DRC checks. Hold regression must be assessed on the resulting routed candidate, not assumed absent. Final PHY and chip signoff remain OPEN.
+
+## Actual candidate verification
+
+Preparation 39201757362 passed native placement/legalization, unchanged net/PG/port/NDR geometry checks, Liberty equation equivalence, and an actual inverted-buffer rejection. Exactly 32 of 172 eligible slow-path candidates were resized, using the real master inventory. All 147,858 instances remain present.
+
+The routing continuation preserves the complete earlier RTL/boot/physical ancestry and binds the new candidate to the exact completed resized route. Original routes/RC/metrics are discarded before fresh route and extraction. Final antenna counts use the independently checked final report and final metrics, preserving the earlier route counter separately. Both physical and timing failures remain reportable; green workflow completion alone is not acceptance.

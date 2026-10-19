@@ -1,5 +1,15 @@
 # Cloud-only continuation — 2026-10-19
 
+Logic-sizing preparation39201757362 PASS:32native gates/147858instances, allconnectivity/PG/NDR/untargetedplacement/row proofs and nativeequation equivalence; invertedactualbuffer rejected. Fullreceipt onehot-logic-resize-prepare-pass-20261019.json. Thiscommit starts onehot-logic-resize-route-cloud: retains original proof ancestry, validates oldresizedroutedbaseline+newcandidate, then freshroute/RC/all3corners with unchanged20/4/8/8ns and5percentderate. Correct final antenna metrics; allgates stillzero. Do not accept before native route and timing results.
+
+CDR fullloaded collector-v8 wave39201328219 confirmedlive; syntaxpassed,clock_stoppedfaultjob completed, remainingnominal/biasoff jobs live. Do notrestarthealthyjobs. Need actual fullreports.
+
+TX current24failures mappedselectors/tails require actualrepair. AllthreegoalsOPEN; cloudonly/localempty.
+
+---
+
+# Cloud-only continuation — 2026-10-19
+
 CDR full loaded streamed matrix39201328219 active for collector-v8 actual484devices15490R11535C. Preserve all original256bit phases/current/device thresholds and faults. Source db15a73fa52bf0c1e30c55015e351fda5329b32f.
 
 This commit starts onehot-logic-resize-prepare-cloud: source-measured stronger NAND/NOR/complex gates and buffers, max32, exact saved routedODB4acbb996... including1130addeddiodes=147858instances. Same original selector, actual available same-pin masters, fixed untargeted geometry, native equation proof and actual inversion control. No timing acceptance until new route/RC/allcorner STA; original clocks/derates untouched. See docs/onehot-logic-resize-candidate-20261019.md. Fanout7880/8443 are instance names (actual loads8/13), not thousands of loads.
