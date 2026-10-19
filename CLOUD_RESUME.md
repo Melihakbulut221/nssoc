@@ -1,3 +1,13 @@
+## 2026-10-19:33critical-data buffers pass native geometry/equations; cloud route next
+
+Preparation39292665637/job118197041696 at173311bb553b200285893690a3feca7aa47fcc36 PASS. Summary656912795 SHA9594bb92e71291f1e9b54ca79507234237193782a5aa20dd2d3a3089bfd40dd5,parts656912935 SHAdf6e0137da3795c985f3e8f32027377f042975d64bf209d96e86c49948971188. Full receipt docs/evidence/onehot-critical-data-prepare-pass-20261019.json.
+
+All149592source instances retain geometry/masters and exact intended pins;33positive nativebuf16cells added, maximum driver-to-input distance76.073um<=80um. Native equation proof PASS within scope; actual inversion fault rejected; output-port-equation changes0. Candidate149625instances, ODB SHAd53c65ecd69fa09f8d0112653fc4c2143ebf0f2116c819408bb784ba37e37d34, netlist SHAbe29f14ebae7a4685b16f854e0db8192f6313ce9ec14a9bcc61c902c4f425ecc.
+
+New onehot-critical-data-route-cloud workflow restores the entire prior boot/placement/route/logic ancestry and exact state dependencies before routing this candidate. Source-delta guard retains original controller gates. It must measure freshRC,3original cell corners,setup/hold/slew/cap/fanout,antenna,disconnectedpins and routed geometry. Preparation is NOT timing/PHY/signoff closure. Original20/4/8/8ns clocks,5percent derate and IO constraints unchanged.
+
+User mandate: EVERYTHING CLOUD-ONLY. Local workspace empty, no CAD processes. Source changes, accepted/rejected evidence and checkpoints are on GitHub. Existing TX minimax39268446646 jobs may still be running; inspect without restarting. Full serialPHY remains open.
+
 ## 2026-10-19:33measured critical-data buffers; native placement search correction
 
 Corrected run39291883236 passed actual-receipt preflight, selected33drivers and passed native source geometry plus exact buffer insertion checks. Native DPL then rejected four buffers(11,2,1,13) within the initial50x20um search. Full failed receipt retained in docs/evidence/onehot-critical-data-placement-failure-20261019.json.
