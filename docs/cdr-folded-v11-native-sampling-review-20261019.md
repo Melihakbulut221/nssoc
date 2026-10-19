@@ -25,3 +25,19 @@ Only actual native waves support voltage/timing observations. Compare the
 new reports with the earlier input-drive-v10 reports before choosing the next
 physical sampler placement/data-tail-clock repair. Complete PHY and recovered
 closed-loop clock remain unproven.
+
+## Native review result
+
+Run39243551295 reproduced the original rejected gates. Early sampler A has
+zero wrong/low observations at0.6/0.9UI but still105wrong/129low at the required
+0.3UI; sampler B still has34wrong/109low at0.6UI. No late phase is substituted
+for the original gate. The failedHBT0129 was reproduced at19.62259375ns:
+VCE0.398285618V, base1.735160571V, emitter1.291549943V, collector1.689835561V.
+Its base is on native logicaladp; its collector/emitter are internal nets.
+
+External clock incident wire capacitance is about1.21354pF(cp)/1.12309pF(cn),
+but internal emitter/tail networks must also be checked. The next read-only
+stage comparison traces actual sampler master/slave input emitter terminals
+to selector collectors and common MOS tail drains through the native111
+conductor groups, then compares wire quantities and saved terminal voltages
+against the original v10 captures. It changes no geometry or acceptance gate.

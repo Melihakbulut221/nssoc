@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19, native CDR stage comparison
+
+Folded native-wave review39243551295 reproduced the failed original gates;
+both immutable early/late review receipts are now committed. Early A passes
+0.6/0.9UI only but still fails original0.3UI; B also has34wrong/109low samples
+at0.6UI. FailedHBT0129 VCE0.398285618V exactly reproduced at19.62259375ns,
+base=adp. Do not move sampling phases or relax0.4V gate.
+
+This commit starts cdr-folded-v11-stage-comparison-cloud using the original
+v10 review39215582013 and folded review39243551295. It traces actual native
+master/slave input emitter networks through clock-selector collectors to
+MOS tail drains, compares internal wireR/C and raw-derived terminal voltages,
+and requires unchanged structural counts. Use the real result before choosing
+a new sampler placement; shorter clock spans alone regressed full sampling.
+
+Mainchip39-buffer route39243328773 remains active on source25874ce85d044e5297a2be157eb078c2f595b9ef.
+TX fullwaves39221063981/39226121734 remain active at latest check. Preserve
+healthy live jobs. All three goal headings remain OPEN. Cloud-only; empty local.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, fresh buffer route and folded wave diagnosis
 
 39-buffer mainchip route39243328773 is live on source
