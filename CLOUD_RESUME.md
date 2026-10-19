@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19, native two-short physical repair
+
+LVSreview39260578443/source31ba954905a76cbcc954b4e45335e0c6af526559
+completed:534native anchors, two shorts/noopens. p16_11n–p8_7p cluster180;
+p16_11p–sp8_7n cluster190. Actual stub-to-macro Y offset1.605um.
+Fullreceipt docs/evidence/tx-v5-minimax-native-short-diagnosis-20261019.json.
+
+This push updates tx-v5-minimax-assembly-cloud to preserve all other solved
+rows and move p8_7 from7808.605 to8100um on its original300mod600 rowlattice.
+All60 routes/tracks regenerated, allnativechildren/devices/clocks/fixed
+leaf/final positions unchanged. Exactsourceguardpinsnewplanner. Rerun original
+560DRC/deep-flat1674LVS/fivefaults and independentgeometrythreefaults.
+Get new exactrun/result; if LVS/DRC rejects, inspect actual failure, no waiver.
+NoRC untilphysicalPASS; then freshRC/full originalwaves/PVT mandatory.
+
+Original rejected39259571215 and native review retained. Mainchip39243328773
+lastconfirmedlive. FullserialPHY/mainchiproute/finaltiming OPEN.
+Cloud-only/localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, minimax native LVS rejection
 
 Minimax physical39259571215/source96b1338572b980892f896a2266e2e00e938225f4

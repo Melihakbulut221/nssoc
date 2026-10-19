@@ -3,6 +3,7 @@
 """Minimax placement of the actual60 routed TX legs; geometry planning only."""
 import json,math,re
 from collections import defaultdict
+from pathlib import Path
 import numpy as np
 from scipy.optimize import linprog
 
@@ -88,6 +89,30 @@ def plan_candidate(record):
         assert abs(h+abs(y1-y0)-r['centerline_length_um'])<1e-7
         edges.append((a,b,(y0-old[a])-(y1-old[b]),h))
     ys,solver=solve_rows(labels,fixed,edges,spacing,old)
+    # Native failed GDS showed two actual shorts where p16_11 stubs cross p8_7.
+    # Preserve every other solved row; move this macro to its original600um
+    # row lattice and regenerate all parent routes. This is a candidate repair,
+    # not proof that all other same-layer interactions are absent.
+    root=Path(__file__).resolve().parents[1]
+    failure=json.loads((root/'docs/evidence/tx-v5-minimax-first-lvs-rejection-20261019.json').read_text())
+    diagnosis=json.loads((root/'docs/evidence/tx-v5-minimax-native-short-diagnosis-20261019.json').read_text())
+    assert failure['summary_sha256']=='25a1eb322fd590ba4b5ed12b0959adeb03a3ec77055b2adbd9a550d16cd87aa5'
+    assert diagnosis['summary_sha256']=='29369447c9776fc3acc6409ac0271e10f32b155067d1e3a23a0f627faf0915fc'
+    assert diagnosis['report']['original_source']['summary_sha256']==failure['summary_sha256']
+    native=diagnosis['report']['native']
+    assert {tuple(sorted({a['logical_net']for a in v}))for v in native['shorted_logical_groups'].values()}=={('p16_11n','p8_7p'),('p16_11p','sp8_7n')}
+    assert not native['opened_logical_nets']
+    assert ys==failure['report']['data_route_plan']['row_targets_um']
+    before_row=ys['p8_7'];phase=old['p8_7']%600
+    ys['p8_7']=phase+600*math.ceil((before_row-phase)/600)
+    assert before_row==7808.605 and ys['p8_7']==8100.
+    assert all(ys[k]==v for k,v in fixed.items())
+    assert all(ys[b]-ys[a]>=gap-1e-8 for a,b,gap in spacing)
+    collision_repair=dict(native_diagnosis_run=diagnosis['run'],summary_sha256=diagnosis['summary_sha256'],
+        macro='p8_7',before_row_um=before_row,after_row_um=ys['p8_7'],
+        other_solved_rows_unchanged=True,original_row_lattice_phase_um=phase,
+        identified_short_pairs=[['p16_11n','p8_7p'],['p16_11p','sp8_7n']],
+        native_verification_required=True)
     routes=[];bycol=defaultdict(list)
     for r in record['signal_routes']:
         child,parent=[s.split('.')[0]for s in r['endpoints']]
@@ -117,6 +142,6 @@ def plan_candidate(record):
     assert after<before*.8,(before,after)
     return dict(status='PLANNED_ALL60_LEG_MINIMAX_ROWS_AND_RAIL_AWARE_CHANNELS_NOT_PHYSICAL_OR_ELECTRICAL_ACCEPTANCE',
         row_targets_um=ys,original_rows_um=old,fixed_rows_um=fixed,track_x_um=tracks,track_inventory=track_inventory,
-        routes=lengths,maximum_before_um=before,maximum_after_um=after,sum_before_um=sum(q['before_um']for q in lengths),
+        collision_repair=collision_repair,routes=lengths,maximum_before_um=before,maximum_after_um=after,sum_before_um=sum(q['before_um']for q in lengths),
         sum_after_um=sum(q['after_um']for q in lengths),solver=solver,
         scope='All60 original intermacro legs planned together; fixed16leaf rows/final row, all macro X coordinates and minimum600um same-column separation. Child geometry, device cards, clocks, source bits, electrical gates unchanged. Original rail widths remain. Every regressed leg retained; actual GDS DRC/LVS and fresh RC/fullwave gates still required.')
