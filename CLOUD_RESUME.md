@@ -1,3 +1,7 @@
+## 2026-10-19 — Align via arrays from actual old cuts, not PCell bbox center
+
+Second XORoverlay run39313200894 rejected beforeDRC: actual Via3 merged width225nm, revealing35nm offset between native PCell bbox and cut-array centers. Failure receipt/log/archive retained. Updated placement matches every existing2/4cut row exactly inside the new array on5nmgrid and bounds shift<=100nm; all actual190nm/220nm guards remain. Await new physical run; native560DRC/deepflatLVS/faults still mandatory before freshRC. No acceptance on generation. All work stays cloud-only.
+
 ## 2026-10-19 — Correct actual XOR overlay via lattice; original DRC failure preserved
 
 First XORcollector physical run39312288662 rejected152markers:76V3.b/76V4.b, all560categories executed. Existing one-row cuts and centered even-row new arrays were half-pitch displaced. New generation uses aligned4x1Via3 and4x3Via4 plus independent actual190nm/220nm cut geometry/spacing assertions; original nativeDRC/LVS/fault gates untouched. Failure receipt and geometry archived. A fresh physical run follows this generator change. Await its actual native result, then fresh parentRC+MIMcomposition and loaded tests only if it passes. TX39308903140/mainchip39293720171 remain running at last check. Cloud-only, no local files.

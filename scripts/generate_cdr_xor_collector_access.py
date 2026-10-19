@@ -29,9 +29,33 @@ def generate(out):
  def via(lo,hi,x,y,cols,rows,tag,net):
   c=L.create_cell('via_stack','SG13_dev',dict(b_layer=lo,t_layer=hi,vn_columns=cols,vn_rows=rows))
   assert c is not None and not c.is_empty()
-  b=c.dbbox();tr=pya.DTrans(round((x-b.center().x)/.005)*.005,round((y-b.center().y)/.005)*.005)
+  b=c.dbbox()
+  # The native cell bounding-box center is not necessarily its cut-array center.
+  # Match real old cuts to real new cuts rather than assuming their centers agree.
+  cut_layer={'Metal3':29,'Metal4':49,'Metal5':66}[hi]
+  old_count=4 if hi=='Metal3'else 2
+  half=.9 if hi=='Metal3'else .6
+  window=pya.DBox(x-half,y-.2,x+half,y+.2).to_itype(L.dbu)
+  oldcuts=[p.bbox()for p in before[(cut_layer,0)].interacting(pya.Region(window)).each()]
+  assert len(oldcuts)==old_count,('Unexpected original cut inventory',tag,net,lo,hi,x,y,[str(v)for v in oldcuts])
+  newcuts=[p.bbox()for p in pya.Region(c.begin_shapes_rec(L.layer(cut_layer,0))).merged().each()]
+  assert len(newcuts)==cols*rows
+  desired=pya.Point(round((x-b.center().x)/L.dbu),round((y-b.center().y)/L.dbu))
+  candidates=[]
+  for target in newcuts:
+   offset=oldcuts[0].center()-target.center()
+   if offset.x%5 or offset.y%5:continue
+   tt=pya.Trans(offset.x,offset.y);mapped={str(v.transformed(tt))for v in newcuts}
+   if not {str(v)for v in oldcuts}<=mapped:continue
+   delta=(offset.x-desired.x)**2+(offset.y-desired.y)**2
+   candidates.append((delta,offset.x,offset.y))
+  assert candidates,('No actual native cut alignment',tag,net,lo,hi)
+  _,ox,oy=min(candidates);assert (ox-desired.x)**2+(oy-desired.y)**2<=100**2
+  tr=pya.DTrans(ox*L.dbu,oy*L.dbu)
   overlay.insert(pya.DCellInstArray(c.cell_index(),tr))
-  stitches.append(dict(macro=tag,net=net,bottom=lo,top=hi,columns=cols,rows=rows,center_um=[x,y],bbox_um=str(b.transformed(tr))))
+  stitches.append(dict(macro=tag,net=net,bottom=lo,top=hi,columns=cols,rows=rows,center_um=[x,y],bbox_um=str(b.transformed(tr)),
+   reference_cut_layer=cut_layer,old_cut_boxes=[str(v)for v in oldcuts],old_cuts_exactly_retained_in_new_array=True,
+   translation_dbu=[ox,oy],shift_from_bbox_center_dbu=[ox-desired.x,oy-desired.y]))
  def probe(metal,x,y):
   n=wire.probe_net(wire.layer_by_name('gds_'+str(metal)),pya.DPoint(x,y).to_itype(L.dbu))
   assert n is not None,('No original wire at planned witness',metal,x,y)
