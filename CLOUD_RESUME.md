@@ -1,3 +1,19 @@
+# Live cloud jobs — 2026-10-19 14:25 UTC
+
+Minimax original fullwave run39268446646/sourcebf4ccee5691545bbbf9a41bfc8d9e4b68fd2dfe7.
+Source/ancestry/compile controls118114096156 PASSED.
+Nominal job118115200444 QUEUED; swap_leaf_select job118115200371 QUEUED.
+Do not call queued work a simulator stall or restart healthy jobs.
+Next inspect these exact handles and preserve fullnative reports/captures.
+Nominal must pass every original signal/interface/device/diagnostic gate;
+then PVT still follows. Actual RC/model binding chain is complete below.
+Mainchip route39243328773/job118029134944 last confirmed IN_PROGRESS.
+Its route/RC/three-cornerSTA/antenna/electrical gates remain required.
+No local checkout or CAD/artifacts; workspace empty. Full serialPHY,
+mainchip routed signoff and finaltiming remain OPEN.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, minimax full-wave launch
 
 Native model comparison39267792841/sourcea73eaacc99d4c9c118873d08a1325580b6327518 PASSED
