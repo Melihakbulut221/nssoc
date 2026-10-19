@@ -23,3 +23,7 @@ Run39218007063 at1912e5b305e90ad4b795dc3e85b54b8faa96398c passed the original na
 ## Full-device model composition
 
 Run39218951433 at0a38fc8312e4d5252038502044653ca493491990 passed full1674-device composition with the fresh116611R/77514C graph, six original composition corruption controls, and native binding of124 input legs to372 data bases. No ideal intermacro aliases or duplicate child parasitics were inserted. The next workflow runs the original full256-bit34ns loaded32:1 waveform and an actual swapped-leaf-select fault. All604 HBT and512 MOS limits, source bits, output phases, driver loads, clock references and solver settings remain unchanged; only the source-bound physical core model changes. This is still not a complete PLL/CDR or four-lane PHY.
+
+## Model identity and simulation preflight
+
+Run39219922079 stopped before SPICE because the old builder correctly rejected the new model hashes. Run39220553663 then independently matched all1674 compact devices using their physical positions within named macros, preserved all parameters and terminal topology, and rejected missing-device, changed-parameter, wrong-terminal and swapped-physical-identity corruptions. A separate strap6 builder now admits only the two verified new model hashes; its stimulus, solver, sample phases, device limits and review code are byte-preserved apart from the declared model binding. Its clock adapter only changes the imported builder module. Earlier preflight failures remain recorded.

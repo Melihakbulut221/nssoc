@@ -24,8 +24,8 @@ jobs:
           python-version: '3.12'
       - name: Parse source-bound continuation controller
         run: |
-          python3 -m py_compile scripts/cloud_tx_v5_fast_stage_isolated_clock_adapter.py scripts/cloud_tx_v5_final_strap6_wave.py scripts/bind_tx_v5_final_strap6_interfaces.py scripts/cloud_tx_v5_fast_stage_isolated_builder.py scripts/check_tx_v5_fast_stage_isolated_builder.py
-          python3 scripts/check_tx_v5_fast_stage_isolated_builder.py
+          python3 -m py_compile scripts/cloud_tx_v5_final_strap6_clock_adapter.py scripts/cloud_tx_v5_final_strap6_wave.py scripts/bind_tx_v5_final_strap6_interfaces.py scripts/cloud_tx_v5_final_strap6_builder.py scripts/check_tx_v5_final_strap6_builder.py
+          python3 scripts/check_tx_v5_final_strap6_builder.py
           python3 scripts/check_tx_v5_final_strap6_wave_sources.py
           python3 scripts/check_tx_v5_final_strap6_composition_sources.py
   native-full32:
@@ -60,7 +60,7 @@ jobs:
           sudo env -u LD_LIBRARY_PATH "$RUNNER_TEMP/librelane.AppImage" python -c "import pya; print(pya.__version__)"
       - name: Simulate all eleven physical clock macros loaded by actual full32 tree
         run: |
-          python3 -m py_compile scripts/cloud_tx_v5_fast_stage_isolated_clock_adapter.py scripts/cloud_tx_v5_fast_stage_isolated_builder.py scripts/check_tx_v5_fast_stage_isolated_builder.py scripts/run_cloud_tx_mux4.py scripts/bind_tx_v5_final_strap6_interfaces.py scripts/cloud_tx_v5_final_strap6_wave.py scripts/cloud_tx_tree32_clock_adapter.py scripts/cloud_tx_tree32_firstclock.py
+          python3 -m py_compile scripts/cloud_tx_v5_final_strap6_clock_adapter.py scripts/cloud_tx_v5_final_strap6_builder.py scripts/check_tx_v5_final_strap6_builder.py scripts/run_cloud_tx_mux4.py scripts/bind_tx_v5_final_strap6_interfaces.py scripts/cloud_tx_v5_final_strap6_wave.py scripts/cloud_tx_tree32_clock_adapter.py scripts/cloud_tx_tree32_firstclock.py
           python3 scripts/cloud_tx_v5_final_strap6_wave.py --mode ${{ matrix.mode }} --fault ${{ matrix.fault }} --placement-pitch compact_columns --return-rail wide64 --physical-clock --first-clock-l5p7 --variant budget_balanced_v5 --condition ${{ matrix.condition }}
       - name: Preserve complete native captures and every failure
         if: always()
