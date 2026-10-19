@@ -1,3 +1,13 @@
+## 2026-10-20 — Actual TX28-route width candidate
+Data network39338196252 passed original native census/solver controls and is pinned.
+This commit launches native GDS mutation for28 fast signal routes4to2.4um,
+preserving4um landings, all vias/children/placements, schematic,LEF and source
+DRC/LVS/fault verifier byte-for-byte. IncreasedR/reducedC is an experiment,
+not a timing or electrical pass. Require newRC and fullwave after physical success.
+CDR39337518790 four native simulations confirmed live; validation39337079644passed.
+Mainchip39331918238 remains live. No local checkout, CAD or output files.
+
+
 ## 2026-10-20 — TX actual data-network review
 Previous goal turn made progress: fresh CDR RC/audit/composition pipeline and TX
 native waveform diagnosis were committed and executed. CDR validation39337079644
