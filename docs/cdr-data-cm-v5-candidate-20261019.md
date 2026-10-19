@@ -53,3 +53,12 @@ data-pair input base to its native collector witness, checks polarity against th
 logical boundary and records terminal voltages around the original acquisition
 edge. Per-phase counts must reproduce every aggregate original sample failure.
 No sample offset or limit is fitted. Diagnostic completion cannot pass the PHY.
+
+## Native whole-parent physical results
+
+Run39204778311 passed the full560-rule DRC and deep/flat484-device transistor
+LVS with both modified data buffers. All six physical/reference faults were
+rejected, including both old header lengths in the full-parent reference.
+The next cloud job binds all158 child/public planes to the unsimplified native
+LVS database, independently checks all16 placed leaf drawings and transforms,
+and retains all19 plane fault controls. Wire RC and loaded waves remain open.
