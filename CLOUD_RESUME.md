@@ -1,3 +1,11 @@
+## 2026-10-20 native sampler transfer diagnosis
+- New cdr-xor-v15-latch-timing extends the passed39324658022 replay; original full waves and all sampler/HBT gates remain unchanged.
+- Reconstruct actual16HBTmaster/slave connectivity including2x2parallel clock selectors, reject real graph corruption, then measure master/slave physical input/output and native selector currents around the original capture edges.
+- Purpose: choose a real repair for late A/B settling and persistent C/D wrong data. Internal100mV markers and simultaneous steering are diagnostic, not new acceptance gates.
+- Wave39320016317 remains rejected; nominal device screens pass only their own scope.
+- PLLwholegeometry39322420374 passed; remaining intrinsic terminal references and whole MIM-aware RC are still required. TX39308903140 and mainchip39293720171 confirmed live at turn start.
+- Cloud-only: no local checkout, CAD, test outputs, downloaded archives or waveforms.
+
 ## 2026-10-20 CDR sampler timing diagnosis completed; native data path is next
 - Diagnostic39324658022 atd2939dfa58f9f480285df10c71876078118bbcd2 passed both cases, reproducing116HBT+4sampler original checks exactly; original electrical rejections retained.
 - A/B wrong signs occur at0.3UI only; C/D retain failures at0.6/0.9UI. Early C/D late-phase wrong counts30/105; late C/D30/98 at0.9UI. LateB still128below100mV at0.3UI.

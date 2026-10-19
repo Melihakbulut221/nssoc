@@ -1,0 +1,53 @@
+{
+  "baseline_path": "scripts/cloud_cdr_xor_v15_sampler_timing.py",
+  "baseline_sha256": "c2da29bbdbb21d2e29719d5b0b77e2853aba48f5bc94c6b601f0bd50f910b17e",
+  "candidate_path": "scripts/cloud_cdr_xor_v15_latch_timing.py",
+  "candidate_sha256": "7c662f16e5a0d0991fdd88ebfe384f988dd3ed60db6ede2d49e9dae74504ad58",
+  "edits": [
+    {
+      "before": "import argparse,hashlib,json,os",
+      "after": "import argparse,copy,hashlib,json,os",
+      "count": 1
+    },
+    {
+      "before": "from collections import defaultdict",
+      "after": "from collections import Counter,defaultdict",
+      "count": 1
+    },
+    {
+      "before": "def main():",
+      "after": "def latch_graph(members,terms,qp_node,qn_node):\n assert len(members)==16 and set(members)==set(terms)\n by_emitter=defaultdict(list)\n for name in members:by_emitter[terms[name]['E']['native_cluster']].append(name)\n assert sorted(map(len,by_emitter.values()))==[2,2,2,2,4,4]\n banks=defaultdict(list)\n for emitter,names in by_emitter.items():\n  if len(names)!=2:continue\n  output=tuple(sorted(terms[n]['C']['native_cluster']for n in names))\n  assert len(set(output))==2\n  banks[output].append(dict(emitter=emitter,members=names))\n assert len(banks)==2 and all(len(v)==2 for v in banks.values())\n classified={}\n for output,groups in banks.items():\n  holds=[g for g in groups if {terms[n]['B']['native_cluster']for n in g['members']}==set(output)]\n  assert len(holds)==1,'Cross-coupled hold pair is not unique'\n  hold=holds[0];data=next(g for g in groups if g is not hold)\n  assert all(terms[n]['B']['native_cluster']!=terms[n]['C']['native_cluster']for n in hold['members'])\n  classified[output]=dict(data=data,hold=hold)\n def collector(node):\n  names=[n for n,d in members.items()if d['nodes'][0]==node];assert len(names)==1\n  return terms[names[0]]['C']['native_cluster']\n qplus,qminus=collector(qp_node),collector(qn_node);assert qplus!=qminus\n slave_key=tuple(sorted([qplus,qminus]));assert slave_key in classified\n slave_data=classified[slave_key]['data']['members']\n sp=next(n for n in slave_data if terms[n]['C']['native_cluster']==qminus)\n sn=next(n for n in slave_data if terms[n]['C']['native_cluster']==qplus)\n mp,mn=terms[sp]['B']['native_cluster'],terms[sn]['B']['native_cluster']\n master_key=tuple(sorted([mp,mn]));assert master_key in classified and master_key!=slave_key\n result={}\n for tag,key,pos,neg in [('master',master_key,mp,mn),('slave',slave_key,qplus,qminus)]:\n  bank=classified[key];dp=next(n for n in bank['data']['members']if terms[n]['C']['native_cluster']==neg)\n  dn=next(n for n in bank['data']['members']if terms[n]['C']['native_cluster']==pos)\n  track=[n for n in members if terms[n]['C']['native_cluster']==bank['data']['emitter']]\n  hold=[n for n in members if terms[n]['C']['native_cluster']==bank['hold']['emitter']]\n  assert len(track)==len(hold)==2 and not set(track)&set(hold)\n  assert len({terms[n]['E']['native_cluster']for n in track+hold})==1\n  assert len({terms[n]['B']['native_cluster']for n in track})==len({terms[n]['B']['native_cluster']for n in hold})==1\n  assert terms[track[0]]['B']['native_cluster']!=terms[hold[0]]['B']['native_cluster']\n  result[tag]=dict(data_positive=dp,data_negative=dn,hold_pair=bank['hold']['members'],\n   track_selectors=track,hold_selectors=hold,positive_output_native=pos,negative_output_native=neg,\n   positive_input_native=terms[dp]['B']['native_cluster'],negative_input_native=terms[dn]['B']['native_cluster'],\n   input_nodes=[members[dp]['nodes'][1],members[dn]['nodes'][1]],\n   output_nodes=[members[dn]['nodes'][0],members[dp]['nodes'][0]])\n assert result['slave']['output_nodes']==[qp_node,qn_node]\n assert [result['slave'][k]for k in ['positive_input_native','negative_input_native']]==[result['master'][k]for k in ['positive_output_native','negative_output_native']]\n return result\ndef latch_graph_faults(members,terms,qp_node,qn_node):\n result=[]\n for label in ['missing_actual_parallel_selector','wrong_actual_slave_input','wrong_actual_collector_reference']:\n  ms=copy.deepcopy(members);ts=copy.deepcopy(terms)\n  good=latch_graph(ms,ts,qp_node,qn_node)\n  if label=='missing_actual_parallel_selector':\n   name=good['master']['track_selectors'][0];del ms[name];del ts[name]\n  elif label=='wrong_actual_slave_input':\n   name=good['slave']['data_positive'];ts[name]['B']['native_cluster']=-991\n  else:qp_node='not_a_native_collector'\n  try:latch_graph(ms,ts,qp_node,qn_node)\n  except (AssertionError,StopIteration):result.append(dict(name=label,rejected=True))\n  else:raise AssertionError('Corrupted native latch topology accepted: '+label)\n return result\ndef main():",
+      "count": 1
+    },
+    {
+      "before": "  stages={}",
+      "after": "  def analyze_latches(tag,members,terms):\n   qp=prior['binding']['sampler_points'][tag+'qp'];qn=prior['binding']['sampler_points'][tag+'qn']\n   graph=latch_graph(members,terms,qp,qn);faults=latch_graph_faults(members,terms,qp,qn)\n   signals={};currents={}\n   for label,bank in graph.items():\n    signals[label+'_input']=v(bank['input_nodes'][0])-v(bank['input_nodes'][1])\n    signals[label+'_output']=v(bank['output_nodes'][0])-v(bank['output_nodes'][1])\n    for side in ['track','hold']:\n     names=bank[side+'_selectors']\n     currents[label+'_'+side]=sum((w['@q.'+name+'.qnpn13g2[ic]']for name in names),np.zeros(len(t)))\n    currents[label+'_track_minus_hold']=currents[label+'_track']-currents[label+'_hold']\n   assert np.array_equal(signals['slave_output'],v('xpd.'+tag+'qp')-v('xpd.'+tag+'qn'))\n   edges=falling if tag=='b'else rising;offsets=(-.5,-.3,-.1,0.,.1,.3,.6,.9)\n   rows=[]\n   for k,(bit,edge)in enumerate(zip(expected[tag],edges,strict=True)):\n    sign=2*bit-1\n    for offset in offsets:\n     when=edge+offset*UI\n     rows.append(dict(bit_index=k+1,expected=bit,offset_ui=offset,time_s=when,\n      signed_differentials_v={key:float(np.interp(when,t,val))*sign for key,val in signals.items()},\n      selector_currents_a={key:float(np.interp(when,t,val))for key,val in currents.items()}))\n   summary=[]\n   for offset in offsets:\n    part=[r for r in rows if r['offset_ui']==offset]\n    summary.append(dict(offset_ui=offset,samples=len(part),signals={name:dict(\n     wrong_sign=sum(r['signed_differentials_v'][name]<=0 for r in part),\n     below_100mv_marker=sum(r['signed_differentials_v'][name]<.1 for r in part),\n     minimum_signed_v=min(r['signed_differentials_v'][name]for r in part))for name in signals}))\n   at_edge={r['bit_index']:r for r in rows if r['offset_ui']==0}\n   late={r['bit_index']:r for r in rows if r['offset_ui']==.9}\n   contingency=Counter()\n   for bit,row in at_edge.items():\n    bad_input=row['signed_differentials_v']['master_input']<.1\n    bad_output=late[bit]['signed_differentials_v']['slave_output']<.1\n    contingency[str((bad_input,bad_output))]+=1\n   steering={}\n   for label in ['master','slave']:\n    delta=currents[label+'_track_minus_hold']\n    on=crossing(t,delta,True);off=crossing(t,delta,False)\n    on=on[on>=timing.START];off=off[off>=timing.START]\n    steering[label]=dict(minimum_track_a=float(currents[label+'_track'][active].min()),maximum_track_a=float(currents[label+'_track'][active].max()),\n     minimum_hold_a=float(currents[label+'_hold'][active].min()),maximum_hold_a=float(currents[label+'_hold'][active].max()),\n     positive_crossings_s=list(map(float,on)),negative_crossings_s=list(map(float,off)),\n     track_on_nearest_expected_edge=nearest_edges(on,np.array(edges))if len(on)else None,\n     track_off_nearest_expected_edge=nearest_edges(off,np.array(edges))if len(off)else None)\n   both=(currents['master_track_minus_hold']>0)&(currents['slave_track_minus_hold']>0)&active\n   dt=np.diff(t);left=both[:-1];right=both[1:]\n   overlap=dict(sample_count=int(both.sum()),duration_lower_bound_s=float(dt[left&right].sum()),\n    duration_upper_bound_s=float(dt[(left|right)&active[:-1]&active[1:]].sum()),\n    scope='Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race')\n   return dict(native_graph=graph,graph_faults=faults,original_expected_capture_edges_s=edges,\n    input_output_observations=rows,phase_summary=summary,\n    master_input_at_edge_vs_slave_output_at_09ui=dict(contingency),steering=steering,simultaneous_track_observation=overlap,\n    full_original_sampler_check_unchanged=True,\n    marker_scope='100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged.')\n  stages={}",
+      "count": 1
+    },
+    {
+      "before": "   pairs=[]",
+      "after": "   latch_data=analyze_latches(tag,members,terms)\n   pairs=[]",
+      "count": 1
+    },
+    {
+      "before": "stages[tag]=dict(physical_macro=macro,",
+      "after": "stages[tag]=dict(latches=latch_data,physical_macro=macro,",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-xor-v15-sampler-timing",
+      "after": "cloud-cdr-xor-v15-latch-timing",
+      "count": 1
+    },
+    {
+      "before": "cdr-xor-v15-sampler-inputs",
+      "after": "cdr-xor-v15-latch-inputs",
+      "count": 1
+    },
+    {
+      "before": "COMPLETE_REJECTED_CDR_SAMPLER_TIMING_REPLAY_AND_NATIVE_INPUT_CLOCK_PAIR_DIAGNOSIS_NOT_ACCEPTANCE",
+      "after": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "count": 1
+    }
+  ]
+}
