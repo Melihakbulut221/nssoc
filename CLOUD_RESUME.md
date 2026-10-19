@@ -1,3 +1,28 @@
+# Latest cloud-only continuation — 2026-10-19, internal CDR buses shortened candidate
+
+Native stage comparison39245298065 PASSED read-only on source
+496732de80a362e5d564405c63968eae130da4b9; full receipt committed.
+It measured folded master input-emitter incidentC256.175→387.457fF and
+non-reference cross-networkC112.265→217.407fF; master tailC358.791→433.623fF.
+All original folded data/device rejection remains. Earlier syntax/path-type
+review failures are preserved, not functional passes.
+
+This commit starts cdr-sampler-localbus-physical-cloud: real v15 geometry
+shortens internal M4/TM1 columns by moving internal M5/TM2 buses nearer their
+actual highest terminal. All folded54primitive drawings/placements/parameters
+and public pins remain identical. Keep20um terminal clearance,6um bus pitch;
+no internal column may lengthen. Original560DRC/deep-flat54LVS/LEF/16faults
+remain. Independent GDS check also binds actual new TM2 rectangles.
+Collect the real result before any parent/RC/electrical continuation.
+If leaf passes, integrate fresh parent, re-extract/MIM-audit and run unchanged
+full loaded waves; never reuse old folded RC.
+
+39-buffer mainchip route39243328773 remains active at latest check.
+TX39221063981/39226121734 remain active. Preserve healthy jobs. No final
+setup/hold, full serialPHY or complete chip acceptance yet. Cloud-only.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native CDR stage comparison
 
 Folded native-wave review39243551295 reproduced the failed original gates;

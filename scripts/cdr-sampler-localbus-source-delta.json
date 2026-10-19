@@ -1,0 +1,122 @@
+{
+  "scope": "Only real shorter internal bus/column geometry, corresponding names/source identity and stronger primitive-placement/port preservation check. Native DRC/LVS/LEF/fault/electrical gates unchanged.",
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_folded_v14.py",
+      "baseline_sha256": "bb2d420156862f54eedcd9aa838061e28ed07c476c7b33556066afbedd8b3c90",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_localbus_v15.py",
+      "candidate_sha256": "a13fb28d2ff245755bc21e5b9bb301634209393e2096fad785406fcfcf7ab7d1",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_folded_layout_v14",
+          "after": "nssoc_rx_sampler_localbus_layout_v15",
+          "count": 1
+        },
+        {
+          "before": "    nets = list(PORTS) + sorted(set(terminals) - set(PORTS))",
+          "after": "    nets = list(PORTS) + sorted(set(terminals) - set(PORTS))\n    # Keep every public pin at its old Y. Move only internal horizontal buses\n    # toward their actual highest terminal, with20um vertical clearance and\n    # unchanged6um bus pitch. All primitive placements/escape columns stay fixed.\n    original_bus_y = {net:180.0+index*6 for index,net in enumerate(nets)}\n    local_bus_y = {net:original_bus_y[net] for net in PORTS}\n    occupied_y = list(local_bus_y.values())\n    for net in nets:\n        if net in PORTS:\n            continue\n        minimum_y = max(start for _,start in terminals[net])+20.\n        y = math.ceil(minimum_y/6.)*6.\n        while any(abs(y-other)<6.-1e-8 for other in occupied_y):\n            y += 6.\n        assert y<=original_bus_y[net]+1e-8, (\"Internal wire would lengthen\",net,y,original_bus_y[net])\n        local_bus_y[net]=y;occupied_y.append(y)\n    before_length = sum(original_bus_y[net]-start for net in nets for _,start in terminals[net])\n    after_length = sum(local_bus_y[net]-start for net in nets for _,start in terminals[net])\n    assert after_length<before_length\n    critical = (\"M_SE\",\"M_TE\",\"S_SE\",\"S_TE\")\n    assert set(critical)<=set(nets)\n    assert any(local_bus_y[n]<original_bus_y[n] for n in critical)\n    placement_plan[\"local_bus_plan\"] = dict(original_bus_y_um=original_bus_y,candidate_bus_y_um=local_bus_y,\n        total_vertical_column_length_before_um=before_length,total_vertical_column_length_after_um=after_length,\n        shortened_internal_nets=[n for n in nets if local_bus_y[n]<original_bus_y[n]],\n        critical_buses={n:dict(before_um=original_bus_y[n],after_um=local_bus_y[n])for n in critical},\n        minimum_terminal_to_bus_clearance_um=20.,minimum_horizontal_bus_pitch_um=6.,\n        primitive_placements_unchanged=True,public_bus_y_unchanged=True,\n        scope=\"Actual shorter internal M4/TM1 columns and lower M5/TM2 buses. No intrinsic or public pin change. Length is not RC/timing acceptance.\")",
+          "count": 1
+        },
+        {
+          "before": "        y = 180.0 + index * 6",
+          "after": "        y = local_bus_y[net]",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_folded_v14.py",
+      "baseline_sha256": "4e69696aa027037506151a32184de3b230b74d364749be1cc728b8f6af52b1b7",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_localbus_v15.py",
+      "candidate_sha256": "957e91e69ea442c774a657b5ba2db6abca80f5bc3f0049b6f251f84679ab158c",
+      "edits": [
+        {
+          "before": "from make_pcie_sampler_folded_v14 import",
+          "after": "from make_pcie_sampler_localbus_v15 import",
+          "count": 1
+        },
+        {
+          "before": "PASS_FOLDED_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "after": "PASS_LOCALBUS_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_sampler_folded_geometry.py",
+      "baseline_sha256": "fde0a8c05d6d7b09a05b0126394d3cb8b453de443f4a51201788932c1cf2c303",
+      "candidate_path": "scripts/check_cdr_sampler_localbus_geometry.py",
+      "candidate_sha256": "9fcf10d6fae2efc7f234f8deb544ffdd336eab92dcaebc7376b4987d424f02d8",
+      "edits": [
+        {
+          "before": "tops=['nssoc_rx_sampler_input_drive_layout_v13','nssoc_rx_sampler_folded_layout_v14']",
+          "after": "tops=['nssoc_rx_sampler_folded_layout_v14','nssoc_rx_sampler_localbus_layout_v15']",
+          "count": 1
+        },
+        {
+          "before": "    r=dict(status='PASS_ALL54_NATIVE_DRAWINGS_UNCHANGED_TWO_ROW_PLACEMENT_AND_THREE_CONTROLS'",
+          "after": "    # The native drawings and their metadata/actual PCell locations were matched\n    # above. This candidate must retain even the folded primitive placement and\n    # public pin positions; only declared internal bus/column geometry can change.\n    assert {identity(d):d[\"placement_um\"]for d in all_data[0][\"instances\"]}=={identity(d):d[\"placement_um\"]for d in all_data[1][\"instances\"]}\n    assert all_data[0][\"origin_translation_um\"]==all_data[1][\"origin_translation_um\"]\n    assert all_data[0][\"ports\"]==all_data[1][\"ports\"]\n    assert all_data[0][\"placement_plan\"][\"folded_rows\"]==all_data[1][\"placement_plan\"][\"folded_rows\"]\n    bus=all_data[1][\"placement_plan\"][\"local_bus_plan\"]\n    old_y={s[\"net\"]:s[\"via_centers_um\"][0][1]for s in all_data[0][\"output_shunts\"]}\n    new_y={s[\"net\"]:s[\"via_centers_um\"][0][1]for s in all_data[1][\"output_shunts\"]}\n    assert old_y==bus[\"original_bus_y_um\"]and new_y==bus[\"candidate_bus_y_um\"]\n    assert set(old_y)==set(new_y)and all(new_y[n]<=old_y[n]for n in old_y)\n    assert bus[\"total_vertical_column_length_after_um\"]<bus[\"total_vertical_column_length_before_um\"]\n    assert all(old_y[n]==new_y[n]for n in all_data[0][\"ports\"])\n    L=native_layouts[1];T=L.cell(tops[1]);dx,dy=all_data[1][\"origin_translation_um\"]\n    metal=pya.Region(T.shapes(L.layer(134,0))).flatten().merged()\n    for shunt in all_data[1][\"output_shunts\"]:\n        net=shunt[\"net\"];points=shunt[\"via_centers_um\"]\n        assert points and all(y==new_y[net]for _,y in points)\n        left=8. if net in all_data[1][\"ports\"] else min(x for x,_ in points)-1.\n        right=max(x for x,_ in points)+1.;y=new_y[net]\n        required=pya.Region(pya.DBox(left+dx,y-1.6+dy,right+dx,y+1.6+dy).to_itype(L.dbu))\n        assert (required-metal).is_empty(),(\"Declared native TM2 bus absent from GDS\",net)\n\n    r=dict(status='PASS_ALL54_NATIVE_DRAWINGS_PLACEMENTS_PORTS_UNCHANGED_SHORTER_INTERNAL_BUSES'",
+          "count": 1
+        },
+        {
+          "before": "intended_changes={'placement':'two rows; all intrinsic parameters unchanged'}",
+          "after": "intended_changes={'wires':'shorter internal columns/buses; all intrinsic parameters, primitive placements and public pins unchanged'}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_folded_physical.py",
+      "baseline_sha256": "a7b9b763cecd71ae59f1eb9d16364077cb31c41dc30cda91765ce247ecf2dfea",
+      "candidate_path": "scripts/cloud_cdr_sampler_localbus_physical.py",
+      "candidate_sha256": "66276becfbcccd9a4ede8970a415577c16e41ad2738e3d3b8db181963fe182a0",
+      "edits": [
+        {
+          "before": "folded_v14",
+          "after": "localbus_v15",
+          "count": 5
+        },
+        {
+          "before": "sampler-folded",
+          "after": "sampler-localbus",
+          "count": 2
+        },
+        {
+          "before": "sampler_folded",
+          "after": "sampler_localbus",
+          "count": 4
+        },
+        {
+          "before": "Actual two-row folding of all37 native sampler primitives; all54 drawings and intrinsic parameters unchanged. Global escape columns and30um same-row gaps preserved. Original560DRC/deep-flat54deviceLVS/LEF and16 faults retained. Width sensitivity rejected; original4um input resistors retained. Requires new full parent RC and unchanged full loaded gates.",
+          "after": "Shorten only internal sampler columns/buses at unchanged folded primitive placement and public pins. All54 drawings/parameters unchanged, original4um input resistors retained. Original560DRC/deep-flat54deviceLVS/LEF and16 faults retained. Requires fresh full parent RC and unchanged full loaded electrical gates.",
+          "count": 1
+        },
+        {
+          "before": "'bb2d420156862f54eedcd9aa838061e28ed07c476c7b33556066afbedd8b3c90'",
+          "after": "'a13fb28d2ff245755bc21e5b9bb301634209393e2096fad785406fcfcf7ab7d1'",
+          "count": 1
+        },
+        {
+          "before": "baseline_pin=json.loads((ROOT/'docs/evidence/cdr-retimed-input-drive-v10-parent-children-20261019.json').read_text())['children']['sampler']",
+          "after": "baseline_pin=json.loads((ROOT/'docs/evidence/cdr-folded-sampler-physical-pass-20261019.json').read_text())\n        baseline_pin.update(group='cdr-sampler-folded-physical',status=baseline_pin['report']['status'])",
+          "count": 1
+        },
+        {
+          "before": "layout/nssoc_rx_sampler_input_drive_layout_v13.gds",
+          "after": "layout/nssoc_rx_sampler_folded_layout_v14.gds",
+          "count": 1
+        },
+        {
+          "before": "PASS_FOLDED_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "after": "PASS_LOCALBUS_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "PASS_FOLDED_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "after": "PASS_LOCALBUS_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

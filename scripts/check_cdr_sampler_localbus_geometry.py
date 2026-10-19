@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+"""Independently compare every native sampler primitive drawing after reordering."""
+import argparse,copy,hashlib,json
+from pathlib import Path
+
+def identity(d):
+    # Local taps follow their MOS in placement order; TAP numbers are not circuit identities.
+    return 'TAP_LOCAL_'+d['local_mos'] if d['kind']=='substrate_tap' and 'local_mos' in d else d['name']
+
+def check_records(a,b):
+    def canonical(d):
+        r={k:v for k,v in d.items()if k not in ('placement_um','bbox_um')}
+        r['name']=identity(d)
+        return r
+    x={identity(d):canonical(d)for d in a['instances']};y={identity(d):canonical(d)for d in b['instances']}
+    assert set(x)==set(y) and len(x)==54
+    for name in ('IP','IN','BP','BN'):
+        assert x[name]['kind']=='resistor' and x[name]['width_um']==4
+    assert x==y,'Unexpected native primitive or parameter change'
+    assert a['primitive_counts']==b['primitive_counts']==dict(hbt=16,nmos=9,rppd=12,physical_tap=17)
+    assert a['source_circuit_sha256']=='aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4' and b['source_circuit_sha256']=='aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4'
+    assert set(a['ports'])==set(b['ports']) and len(a['ports'])==10
+
+def main():
+    import pya
+    p=argparse.ArgumentParser();p.add_argument('--baseline',type=Path,required=True);p.add_argument('--candidate',type=Path,required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
+    tops=['nssoc_rx_sampler_folded_layout_v14','nssoc_rx_sampler_localbus_layout_v15'];all_data=[];all_shapes=[];inputs={};native_layouts=[];area_snapshots=[]
+    for folder,topname in zip((args.baseline,args.candidate),tops,strict=True):
+        data=json.loads((folder/'result.json').read_text());L=pya.Layout();L.read(str(folder/(topname+'.gds')));T=L.cell(topname);assert L.dbu==.001 and T is not None
+        native_layouts.append(L)  # Region iterators retain native geometry owned by this Layout.
+        for n in ('result.json','schematic.cir',topname+'.gds'):inputs[str(folder/n)]=hashlib.sha256((folder/n).read_bytes()).hexdigest()
+        dx,dy=data['origin_translation_um'];insts=list(T.each_inst());shapes={}
+        for d in data['instances']:
+            kind={'hbt':'npn13G2','nmos':'nmos','resistor':'rppd','substrate_tap':'ptap1'}[d['kind']]
+            x,y=d['placement_um'];found=[]
+            for i in insts:
+                tr=i.dcplx_trans
+                if i.cell.name.lower().startswith(kind.lower())and abs(tr.disp.x-x-dx)<1e-7 and abs(tr.disp.y-y-dy)<1e-7:
+                    assert tr.angle==0 and not tr.is_mirror() and tr.mag==1;found.append(i.cell)
+            assert len(found)==1,(d['name'],kind,len(found),[x+dx,y+dy])
+            cell=found[0];regions={}
+            for li in L.layer_indexes():
+                info=L.get_info(li)
+                if info.datatype!=0:continue
+                region=pya.Region(cell.begin_shapes_rec(li)).flatten().merged()
+                if not region.is_empty():regions[(info.layer,info.datatype)]=region
+            assert regions;assert identity(d) not in shapes;shapes[identity(d)]=regions
+        all_data.append(data);all_shapes.append(shapes)
+        area_snapshots.append({n:{li:r.area() for li,r in layers.items()}for n,layers in shapes.items()})
+    assert len(native_layouts)==2
+    for shapes,snapshot in zip(all_shapes,area_snapshots,strict=True):
+        assert {n:{li:r.area() for li,r in layers.items()}for n,layers in shapes.items()}==snapshot, 'Native region changed after reading second layout'
+    check_records(*all_data)
+    # Every actual primitive drawing must remain identical after placement.
+    # No golden replacement or parameter exception is allowed.
+    a,b=all_shapes
+    def compare(x,y):
+        assert set(x)==set(y)and len(x)==54
+        for name in x:
+            assert set(x[name])==set(y[name])
+            for layer in x[name]:
+                delta=x[name][layer]^y[name][layer]
+                if not delta.is_empty():
+                    report=dict(name=name,layer=layer,baseline_bbox=str(x[name][layer].bbox()),candidate_bbox=str(y[name][layer].bbox()),baseline_area=x[name][layer].area(),candidate_area=y[name][layer].area(),xor_area=delta.area(),baseline_polygons=[str(p) for p in x[name][layer].each()],candidate_polygons=[str(p) for p in y[name][layer].each()])
+                    print(json.dumps(report),flush=True)
+                    args.output.with_name('primitive-drawing-mismatch.json').write_text(json.dumps(report,indent=2)+'\n')
+                assert delta.is_empty(),(name,layer)
+    compare(a,b)
+    old=(args.baseline/'schematic.cir').read_text();new=(args.candidate/'schematic.cir').read_text()
+    expected=old.replace(tops[0],tops[1])
+    assert expected==new
+    faults=[]
+    altered=copy.deepcopy(all_data[1]);next(d for d in altered['instances']if d['kind']=='resistor')['width_um']=999
+    try:check_records(all_data[0],altered)
+    except AssertionError:faults.append('wrong_resistor_width')
+    else:raise AssertionError('Accepted metadata width fault')
+    altered=dict(b);del altered[next(n for n in altered if n.startswith('TAP'))]
+    try:compare(a,altered)
+    except AssertionError:faults.append('missing_native_tap')
+    else:raise AssertionError('Accepted missing tap')
+    altered={n:dict(v)for n,v in b.items()};name=next(d['name']for d in all_data[1]['instances']if d['kind']=='hbt');layer=next(iter(altered[name]));altered[name][layer]=pya.Region()
+    try:compare(a,altered)
+    except AssertionError:faults.append('removed_native_hbt_drawing')
+    else:raise AssertionError('Accepted primitive drawing corruption')
+    plan=all_data[1]['placement_plan'];assert plan['unchanged_primitive_rows']
+    fold=plan['folded_rows'];assert fold['rows']==2 and fold['row_y_um']==[20.,120.]
+    assert all(fold['signal_horizontal_spans_um'][n]<.8*fold['original_single_row_spans_um'][n]for n in ('CLKP','CLKN'))
+    # Metadata has already been matched to actual PCell instances and translations above.
+    for d in all_data[1]['instances']:
+        if d['kind']!='substrate_tap':assert d['placement_um']==fold['positions'][d['name']]
+    assert all_data[1]['bbox_um'][2]<1202.,all_data[1]['bbox_um']
+    # The native drawings and their metadata/actual PCell locations were matched
+    # above. This candidate must retain even the folded primitive placement and
+    # public pin positions; only declared internal bus/column geometry can change.
+    assert {identity(d):d["placement_um"]for d in all_data[0]["instances"]}=={identity(d):d["placement_um"]for d in all_data[1]["instances"]}
+    assert all_data[0]["origin_translation_um"]==all_data[1]["origin_translation_um"]
+    assert all_data[0]["ports"]==all_data[1]["ports"]
+    assert all_data[0]["placement_plan"]["folded_rows"]==all_data[1]["placement_plan"]["folded_rows"]
+    bus=all_data[1]["placement_plan"]["local_bus_plan"]
+    old_y={s["net"]:s["via_centers_um"][0][1]for s in all_data[0]["output_shunts"]}
+    new_y={s["net"]:s["via_centers_um"][0][1]for s in all_data[1]["output_shunts"]}
+    assert old_y==bus["original_bus_y_um"]and new_y==bus["candidate_bus_y_um"]
+    assert set(old_y)==set(new_y)and all(new_y[n]<=old_y[n]for n in old_y)
+    assert bus["total_vertical_column_length_after_um"]<bus["total_vertical_column_length_before_um"]
+    assert all(old_y[n]==new_y[n]for n in all_data[0]["ports"])
+    L=native_layouts[1];T=L.cell(tops[1]);dx,dy=all_data[1]["origin_translation_um"]
+    metal=pya.Region(T.shapes(L.layer(134,0))).flatten().merged()
+    for shunt in all_data[1]["output_shunts"]:
+        net=shunt["net"];points=shunt["via_centers_um"]
+        assert points and all(y==new_y[net]for _,y in points)
+        left=8. if net in all_data[1]["ports"] else min(x for x,_ in points)-1.
+        right=max(x for x,_ in points)+1.;y=new_y[net]
+        required=pya.Region(pya.DBox(left+dx,y-1.6+dy,right+dx,y+1.6+dy).to_itype(L.dbu))
+        assert (required-metal).is_empty(),("Declared native TM2 bus absent from GDS",net)
+
+    r=dict(status='PASS_ALL54_NATIVE_DRAWINGS_PLACEMENTS_PORTS_UNCHANGED_SHORTER_INTERNAL_BUSES',inputs=inputs,primitive_count=54,checked_layer_pairs=sum(len(v)for v in a.values()),native_parameters_and_reference_unchanged=True,intended_changes={'wires':'shorter internal columns/buses; all intrinsic parameters, primitive placements and public pins unchanged'},rejected=faults,placement_plan=plan,qualified_pex=False,full_phy_accepted=False)
+    args.output.write_text(json.dumps(r,indent=2)+'\n')
+if __name__=='__main__':main()
