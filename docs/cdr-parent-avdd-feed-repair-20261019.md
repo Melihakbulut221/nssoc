@@ -30,3 +30,23 @@ intrinsic composition and the original complete early/late and fault waveforms.
 No old RC, ideal rail clamp, phase shift or electrical gate waiver is allowed.
 Full serial Gen3 x4 PHY, closed-loop operation, mainchip integration and final
 setup/hold are still open. All execution and evidence storage are in GitHub.
+
+## Actual cloud result
+
+[Physical run39272561102](https://github.com/Melihakbulut221/nssoc/actions/runs/39272561102)
+at source8e61c5cc94db9205ab3bc37a1dc2e898161f8e51 passed all560DRC categories
+with no violations, strict deep/flat484-device LVS and all nine original fault
+controls. The independent complete-layer comparison passed all three actual
+geometry corruptions. It proves11feeds/33native via stacks and preservation of
+all original drawings,16macro placements, reference cards and LEF.
+
+Candidate GDS SHA256:
+`cd8449ff46b64ed92e7d250428504c11fed735170ce4273e40d8f769bec34605`.
+Full immutable summary/parts pin:
+`evidence/cdr-parent-avdd-v13-physical-pass-20261019.json`.
+
+[Fresh extraction run39274072607](https://github.com/Melihakbulut221/nssoc/actions/runs/39274072607)
+started at source5cdaf593c2cda949dba3aa7e759c116d99f3037c. The native interface
+stage is running after the original source/ancestry guards passed. New R/C,
+MIM composition and loaded electrical gates remain pending; this physical pass
+is not a fullPHY or final timing acceptance.
