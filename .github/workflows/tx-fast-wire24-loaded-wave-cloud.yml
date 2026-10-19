@@ -69,6 +69,9 @@ jobs:
         run: |
           root=cloud-tx-fast-wire24-wave-${{ matrix.mode }}-${{ matrix.condition }}-${{ matrix.fault }}
           mkdir -p "$root"
+          if [ -d hw/soc/out/cloud-tx-fast-wire24-model-compare ]; then
+            cp -a hw/soc/out/cloud-tx-fast-wire24-model-compare "$root/native-model-equivalence"
+          fi
           if [ ! -f "$root/result.json" ]; then
             printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
           fi

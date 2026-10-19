@@ -1,3 +1,13 @@
+## 2026-10-20 — Preserve comparison failures before native waves
+Wave39344347509 passed source controls; both workers were still setting up,
+and native simulation had not started when cancellation was requested.
+Replacement workflow adds only unconditional archival of the native-model
+comparison directory before publication, including rejection reports/models.
+All source hashes, native comparison and waveform gates unchanged.
+Use the replacement run for the actual nominal/swap experiments; do not
+restart mainchip39331918238. Cloud-only.
+
+
 ## 2026-10-20 — Wire24 composition passed; launch loaded native waves
 Composition39343496964 passed, source1ff43e1646adadb7deae1a1cdc9c683f15d36cb8.
 Summary657750493 SHA4fddd0e0d4a865be5f3e62db351414d1c0cb3823f619a47c02e887e7bc40fb2b;
