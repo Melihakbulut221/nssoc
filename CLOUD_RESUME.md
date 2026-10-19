@@ -1,5 +1,13 @@
 # Latest cloud-only continuation — 2026-10-19
 
+Thiscommit launches onehot-resize-saved-validation-cloud: restore exact terminal39161219456 routedODB/nativeRCSTA reports and original39160200022 resizedcandidateODB; run unchanged actual146728-cell topology/geometry/diode-only addition proof withfourcontrols. New finalantenna validator binds actualVIOLATED pinsections + ANT0001/0002 totals to antenna__violating__nets/pins, preserves stale routecounter36 separately; seven malformed-report controls. Original43net/51pin violations are not waived. Read all3corner max/min originalpaths for next targeted repair; no reroute.
+
+CDR collector-v8 parent fromce53fca689922977874f8979e007cb89764ebf0c is launched; resolve handle and preserve healthy run. Samplerleafpassed but parent/freshRC/fullwaves pending. TX normalfailed. AllthreegoalsOPEN; cloudonly/no localcheckout.
+
+---
+
+# Latest cloud-only continuation — 2026-10-19
+
 This commit launches cdr-retimed-collector-v8-parent-cloud: integrate four proven sampler54collector-v12 leaves into original16macro/484device parent. Seven other child types and41sourcecards, native parent generation/DRC/LVS/fault gates unchanged; inspect newrun. Requires fresh native geometry/planes/binding/MIM-awareRC/audit/composition/fullwaves after physicalpass.
 
 Mainchip report review39180024857 PASS diagnostic: final antenna43nets51pins, stale route metric36. NativeDRC0/criticaldisconnect0. Slow setup9676 WNS-20.719766ns/hold5 -0.509508ns; typ setup7865 -6.616752ns/hold13 -0.429901ns; fast setup3720 -3.039382ns/hold22 -0.372231ns. Full saved report pinned onehot-resize-native-report-diagnosis-20261019.json. Next correct parser to independently validate final net/pin violation markers against final antenna metrics (not stale route count), inspect original max/min paths before further ECO. No reroute needed to analyze saved states; topology proof after route still required.
