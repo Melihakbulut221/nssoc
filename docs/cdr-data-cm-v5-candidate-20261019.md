@@ -95,3 +95,12 @@ alone does not prove a delay or prescribe a passing replacement.
 Current cloud work: new data-cm-v9 wire inputs39205842770; full-chip logic
 resize routing39202263552. The physical data-header repair remains electrically
 unproven until fresh full native RC/MIM composition and original loaded waves.
+
+## New conductor and intrinsic-anchor proof
+
+Run39205842770 reconstructed111 actual conductor components and946 physical
+reference points, covering all1394 terminals with921 metal and473 retained
+intrinsic-body dispositions. Native model conversion and fresh wire-only RC
+now run as independent hosted jobs. The12 binding fault controls and13 raw
+R/C corruption controls remain unchanged. This stage does not include
+substrate spreading resistance, RF qualification or intrinsic MIM composition.
