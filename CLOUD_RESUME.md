@@ -1,3 +1,11 @@
+## 2026-10-19 CDR v15 completed: device headroom fixed, original sampling still fails
+- Fullwave39320016317 finished. Both nominal native processes exit0/no diagnostics; all nominal HBT/MOS/current screens pass; minVCE0.436889/0.436757V.
+- Original nominal sampling still fails: early69/129/186/339wrong-signs, late89/0/188/319. Early phase0.0156253V and VI36.5923uA fail; late phase/VI pass only their own gates. Preserve regressions and both rejected nominal runs.
+- Both actual fault cases detected their faults; not nominal PHY acceptance. Four exact release receipts are committed.
+- New cdr-xor-v15-sampler-timing cloud diagnostic replays all original sampler/HBT checks and measures actual shared-emitter base-pair edges, phase breakdown and native worst samples. No new simulation or shifted gates.
+- PLLwholegeometry39322420374 passed845devices/2737terminals/235metalcomponents and all26MIM masks/52plate references with five fault controls. Next bind remaining intrinsic terminals then fresh complete MIM-aware RC/audit/composition.
+- TX39308903140 and mainchip39293720171 remain separate live jobs. Continue cloud-only, with no local checkout/CAD/waveform/archive.
+
 ## 2026-10-19 full PLL MIM-aware physical model work
 - New cloud job pll845-mim-full-geometry binds complete actual845parent metal/vias and26MIM masks to unsimplified native LVS. This extends the prior clipped-window study to complete parent geometry.
 - Immutable source39005910789/GDS79b2f5869f620cb5d6ce57756bab18f6ef10743aee953fb9c140202a6b225cdc; no circuit/geometry/value change or acceptance-gate relaxation.
