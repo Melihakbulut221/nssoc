@@ -76,3 +76,8 @@ The hosted extraction workflow now runs planes, then wire inputs, then independe
 The hosted chain39212026475 at9037bd2010e204d1949a5ad2db2ec9201fb2f3bd passed all four stages:158native reference planes and19fault controls, whole484device/1394terminal graph with946actual anchors, native compact-model binding, and wire-only RC with13raw corruption controls. The exact full reports and release digests are committed. The next workflow captures actual11MIM masks and dimensions together with the new complete wire graph; the original MIM terminal and device ownership checks are unchanged. This remains unqualified for substrate/RF extraction or electrical/fullPHY acceptance.
 
 Measured wire-only R/C census: 15459 resistors, 11516 capacitors. These are extraction counts, not timing or signal-quality pass criteria.
+
+
+## Complete MIM-aware native capture
+
+Run39212674566 atde16e2d03279c8e3a9eb75ac3a85f82bf6ec7e21 captured15482R,11527C and11actual native MIM devices from the new parent and rejected all5 intrinsic/ownership corruptions. The new raw-audit and composition adapters bind these measured counts, rather than the prior geometry's15490R/11535C. Original exact raw-value, topology, point-capacitance, intrinsic terminal/dimension and no-double-counting checks remain unchanged, with22raw and19composition fault controls. Changing this geometry census is not a relaxation of any waveform or device-voltage acceptance gate.
