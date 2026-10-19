@@ -43,13 +43,17 @@ def generate(out):
    # This is a conservative placement clearance, not a replacement DRC rule.
    # Only native560-rule DRC and deep/flat LVS can accept the result.
    proposed=(original.sized(250)-foreign.sized(800))&pya.Region(oldbox)
-   added=(proposed-original).merged()
+   # Remove only newly proposed sub200nm necks/slivers. Preserve the
+   # complete known-good original conductor by adding the cleaned delta.
+   # The native width/spacing deck is still the final independent gate.
+   cleaned=(proposed.sized(-100).sized(100)&proposed).merged()
+   added=(cleaned-original).merged()
    assert (added&foreign).is_empty()
    if not added.is_empty():overlay.shapes(L.layer(metal,0)).insert(added)
    growth_by_layer[metal]=(growth_by_layer.get(metal,pya.Region())+added).merged()
    plan.append(dict(native_cluster=native,wire_component=info['component'],native_name=info['native_name'],
     chain=clusters[native],gds_layer=metal,original_area_dbu2=original.area(),added_area_dbu2=added.area(),
-    requested_growth_nm=250,foreign_original_metal_clearance_nm=800))
+    requested_growth_nm=250,foreign_original_metal_clearance_nm=800,minimum_proposed_feature_nm=200,removed_proposed_sliver_area_dbu2=(proposed-cleaned).area()))
  assert len(plan)>=12 and all(any(p['native_cluster']==n and p['added_area_dbu2']>0 for p in plan)for n in clusters)
  top.insert(pya.DCellInstArray(overlay.cell_index(),pya.DTrans()))
  assert top.bbox()==oldbox

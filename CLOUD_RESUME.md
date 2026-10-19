@@ -1,3 +1,8 @@
+## 2026-10-20 retime data overlay native width repair
+- Physical39333599063 rejected:8M3.a markers across560native DRCcategories. CandidateGDSd52b624e4c243a61352b8a630cc598c43a628192162f95346f96ad5d82cb56d9 retained; no LVS/electrical acceptance.
+- Clean only proposed enlargement with100nm erosion/dilation and subset intersection, then union original conductor untouched. Original200nm native width rule/PDK deck and all controls unchanged. Re-run complete native DRC/LVS.
+- Mainchip route39331918238 and TX39308903140 still live at last authoritative check. No duplicate restarts. All execution/storage cloud-only.
+
 ## 2026-10-20 actual retime data metal repair candidate
 - Both39332192573retime-chain diagnostics passed replay/binding/fault controls, original fullwave still rejected.
 - Late D median differential at capture: Bcollector277.397mV -> filterinput110.633mV -> Dmasterbase-0.507mV. Intrinsic resistor attenuation also remains; do not claim wiring is sole cause.
