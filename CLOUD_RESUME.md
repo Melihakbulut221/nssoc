@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, minimax full-wave launch
+
+Native model comparison39267792841/sourcea73eaacc99d4c9c118873d08a1325580b6327518 PASSED
+all1674 actualdevice identities/parameters/bijective topology; threefaults+
+physicalidentityswap rejected.174internalname changes/publicformalorder
+change are mapped from actualgeometry/names; builder already binds by formal
+name order. Fullpin docs/evidence/tx-v5-minimax-model-equivalence-pass-20261019.json.
+
+This push starts tx-v5-minimax-loaded-wave-cloud, original full34ns/256bits
+nominal+swap_leaf_select, all116611R77516C/604HBT512MOS/11physicalclockmacros,
+124legs372bases, originalsourcebits/clocks/phases/solver/devicegates.
+Builder changes ONLY exact two modelSHA values/comment; clockadapter import
+only. Existing sourceguard ancestry and native topologyproof are retained.
+Get exactnewrun/jobIDs. Preserve livejobs and allfailures. If nominal passes,
+PVT stillrequired; iffails inspect true worstinterfaces/devicebounds before
+changing actualgeometry/circuit. No sampledphase shifting or RC reuse.
+
+Mainchip39243328773 lastlive. FullPHY/mainchiproute/finaltiming OPEN.
+Cloud-only/localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, minimax composition/native identity
 
 Composition39267396114/source53b14ab7e3a5d924d7535840b3ab9c69fec3fd60 PASSED all1674devices/116611R/77516C,
