@@ -24,11 +24,25 @@ def infer(report):
             expected[(f[2],nx,f[1]==f[2])].append(dict(name=f[0],C=f[1],B=f[2],E=f[3],S=f[4]))
     hbts=[d for d in native['devices']if d['model']=='npn13G2']
     assert len(hbts)==589==sum(map(len,expected.values()))
+    physical_role_changes=[]
     for d in hbts:
         t=d['terminals'];assert t['B']['cluster']in logical,('Unbound actual HBT base',d['id'])
-        key=(logical[t['B']['cluster']],int(d['parameters']['Nx']),t['C']['cluster']==t['B']['cluster'])
-        actual[key].append(d)
-    assert set(expected)==set(actual)
+        base=logical[t['B']['cluster']];nx=int(d['parameters']['Nx'])
+        observed_diode=t['C']['cluster']==t['B']['cluster']
+        roles={key[2]for key in expected if key[:2]==(base,nx)}
+        assert roles,('Unexpected native base/emitter group',base,nx,d['id'])
+        # A real C-to-B short must not be used to redefine the device's role.
+        # For a unique reference role, base/Nx and full parallel census suffice.
+        # Mixed reference/tail groups retain the native role distinction and
+        # fail closed if its physical corruption prevents an unambiguous bind.
+        role=next(iter(roles))if len(roles)==1 else observed_diode
+        if role!=observed_diode:
+            physical_role_changes.append(dict(device=d['id'],base=base,nx=nx,
+                expected_diode_connected=role,native_diode_connected=observed_diode,
+                collector_cluster=t['C']['cluster'],base_cluster=t['B']['cluster']))
+        actual[(base,nx,role)].append(d)
+    assert set(expected)==set(actual),('Native group identities differ',
+        sorted(set(expected)-set(actual)),sorted(set(actual)-set(expected)))
     assignments=defaultdict(list)
     for cluster,name in logical.items():assignments[name].append(dict(cluster=cluster,source='independent_native_macro_pin_probe'))
     witnesses=[]
@@ -55,7 +69,7 @@ def infer(report):
     assert not opens,('Private net open or ambiguous identity',opens)
     return dict(native_hbts=589,reference_hbts=589,derived_net_identities=len(assignments),
                 native_clusters=len(groups),merged_private_or_public_nets=merges,opened_private_nets=opens,
-                assignments=dict(assignments),group_witnesses=witnesses,
+                assignments=dict(assignments),group_witnesses=witnesses,physical_role_changes=physical_role_changes,
                 method='Group native HBTs by independently probed base net, Nx and diode-connected C=B role. Parallel devices share C/E/S reference nets, yielding private net identities without using the failing LVS equivalence mapping. All589 native HBTs and378 intended nets are covered.')
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'

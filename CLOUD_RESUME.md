@@ -1,3 +1,18 @@
+# Latest cloud-only continuation — 2026-10-19, private-net diagnostic binding fix
+
+Read-only private review39262885916 failed closed on native/reference C=B
+role mismatch before assigning nets; failure saved as
+docs/evidence/tx-minimax-private-review-first-method-rejection-20261019.json.
+A native C-to-B short must not redefine reference device identity.
+This push reruns the JSON-only diagnostic with a unique reference base/Nx role
+bound by fullparallel census, records every unexpected native diodeconnection.
+Ambiguous reference/tail groups still failclosed. All589HBT/378net/control
+requirements remain. Get new exactrun/result and mergedprivate nets.
+No newGDS/reference/acceptance edit. Mainchip39243328773 lastlive;
+fullPHY/route/timing OPEN; cloud-only/localempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, public shorts fixed/private mismatch remains
 
 Second native review39262021607/source9054f5ec8a97b564c033cf7fc558d34b822856bf
