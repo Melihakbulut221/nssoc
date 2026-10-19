@@ -1,3 +1,9 @@
+## 2026-10-19 — Measured XOR wire drops; physical collector-access overlay launched
+
+Cloud-only. Terminal diagnosis39311024780 passed both original captures: at early worst sample XOR x pullup AVDD2.219458V from2.5V public supply, collector-side pullup1.994027V, failing HBTcollector1.699017V. About0.28Vsupply and0.295Vsame-conductor collector loss; original minVCE0.386162V remains rejected. Two pinned diagnosis receipts committed.
+
+New cdr-xor-collector-access-cloud generates a parent-only overlay on exact source-contact-v14 parent:36collector/supply access routes,6buses,108nativevias. All original484devices/geometry/schematic/LEF retained. It must pass original560DRC/deep+flatLVS/faults, then fresh whole-parentR/C+MIMcomposition and original loaded tests. Do not adopt on geometry alone. TX39308903140 and mainchip39293720171 continue; avoid duplicates. No fullPHY/finaltiming completion.
+
 ## 2026-10-19 — Distinguish actual XOR supply and load terminal drops
 
 Cloud-only. Added cdr-xor-headroom-paths-cloud to reproduce all116original HBT checks then snapshot all59actual native devices in each XOR x/y at its worst VCE. Original51logical planes identify the two real pullup supply terminals per macro. Compare actual public-supply-to-pullup drop with intrinsic resistor terminal drop before choosing physical/circuit repairs. Every original failure and acceptance gate remains unchanged. TX fullwave39308903140 and mainchip route39293720171 are confirmed live; do not duplicate.
