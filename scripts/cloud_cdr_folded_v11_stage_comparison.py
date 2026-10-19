@@ -77,7 +77,7 @@ def main():
                         values[net]={k:dict(before=a[net][k],after=b[net][k],delta=b[net][k]-a[net][k])for k in ('sum_wire_R_ohm','incident_wire_C_f','cref_wire_C_f')}
                     changes[tag][stage]=values
             differences[case]=changes
-        assert all(sha(p)==v for p,v in preserved.items())
+        assert all(sha(Path(p))==v for p,v in preserved.items())
         r.update(status='COMPLETE_NATIVE_SAMPLER_STAGE_NETWORK_COMPARISON_NOT_ACCEPTANCE',native_stages=observed,differences=differences,sources_unchanged=True)
     except BaseException as e:r.update(status='FAIL_NATIVE_STAGE_COMPARISON',error=repr(e));raise
     finally:r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
