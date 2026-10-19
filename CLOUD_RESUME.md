@@ -1,3 +1,26 @@
+# Latest cloud-only continuation — 2026-10-19, native AVDD MIM capture PASS
+
+Native MIM capture39275348623/source3911ab4f84b30ec297c4f9df68d33e329f4df920
+PASSED all11actual MIM masks/946points and5capturefaults. Actual16010R11677C,
+not old15482R11490C and not wire-only15987R11666C. Fullcapture/planes/binding
+receipts now pinned. Capture summary656614341
+SHA64e5d22c420f6adb083a44b2599e43ed6d550d68b42735c02a409d2d3a838ddb;
+parts656614417. Real parent geometry and allnative primitive sizes retained.
+
+This push starts cdr-parent-avdd-v13-mim-validation-cloud:
+original13rawR/C+9intrinsicfaults followed by19compositionfaults, exactly one
+native model per MIM. Exactsource-delta only source/modelnamespace and measured
+RCcensus updates. Newmodel nssoc_cdr_pd484_parent_avdd_mim_wire_v13.
+Inspect bothnewjobs; pin actualaudit/compositionpass before originalfullwaves.
+Then adapt exactloadedcontroller count/source names only, keep allbit/source/
+phase/voltage/current/backend gates and four originalcases. No layout/PHY/
+fullchip electrical acceptance inferred from capture or audit.
+
+TX39268446646/mainchip39243328773 lastlive; preserve/revalidate.
+Allworkcloudonly; localworkspace empty. FullPHY/route/finaltiming remainOPEN.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, fresh AVDD extraction PASS/MIM capture
 
 Fresh extraction39274072607/source5cdaf593c2cda949dba3aa7e759c116d99f3037c
