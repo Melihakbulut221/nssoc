@@ -48,3 +48,10 @@ project screen a foundry reliability approval. The
 [IHP stress study](https://www.iee.et.tu-dresden.de/iee/eb/forsch/AK-Bipo/2021/6_Fischer_IHP_AKB2021_MaximumTolerableCurrentDensityHBT.pdf)
 also distinguishes voltage/current operating regions and self-heating limits.
 Neither source is used to relax any current gate or claim qualified lifetime.
+
+
+## Input-drive physical checker repair
+
+Run 39209252154 stopped before native LVS/DRC: the IN resistor layer-28 region reported cached area 15840000 but an empty bounding box and polygon iterator after independent PCell registration. This is not accepted physical evidence. The complete rejected result remains in release cloud-results-39209252154-1-cdr-sampler-input-drive-physical.
+
+The checker now freezes every primitive region with `flatten()` before merging and checks candidate polygon/bounding-box/area identity again after golden PCell generation. Exact XOR comparison and all original physical/fault gates remain. This addresses an original-layer view lifetime hypothesis; a fresh cloud run must validate the repair and actual geometry. KLayout's maintainer documents original-layer views and explicit freezing here: https://www.klayout.de/forum/discussion/2659/value-of-begin-shapes-rec-variable-changes-if-new-shapes-added-to-cell . No local CAD or output files are created.

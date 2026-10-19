@@ -99,7 +99,7 @@
       "baseline_path": "scripts/check_cdr_sampler_collector_access_geometry.py",
       "baseline_sha256": "a4956d41e6da26fa87c2ff652c9ea4425d2de8143a9e7755cabe0dbb13c56da5",
       "candidate_path": "scripts/check_cdr_sampler_input_drive_geometry.py",
-      "candidate_sha256": "f086ae06b15b1510dfd55c26f7d73365877c9be8ef3e1ea08dfbb8280ee6fbba",
+      "candidate_sha256": "ca5be1aaaea89c48cd103fbf081abbcc55b41c2cebe9fe10971fe5037ea96647",
       "edits": [
         {
           "before": "    assert len(a['instances'])==len(b['instances'])==len(x)==len(y)==54 and x==y, 'Native primitive identity or parameters changed'",
@@ -139,6 +139,21 @@
         {
           "before": "native_parameters_and_reference_unchanged=True",
           "after": "native_parameters_and_reference_unchanged=False,intended_changes={n:dict(old_width_um=1,new_width_um=4)for n in sorted(changed_names)}",
+          "count": 1
+        },
+        {
+          "before": "pya.Region(cell.begin_shapes_rec(li)).merged()",
+          "after": "pya.Region(cell.begin_shapes_rec(li)).flatten().merged()",
+          "count": 2
+        },
+        {
+          "before": "    a,b=all_shapes\n    a=dict(a)\n",
+          "after": "    a,b=all_shapes\n    def geometry_snapshot(shapes):\n        return {n:{li:(r.area(),str(r.bbox()),tuple(sorted(str(p) for p in r.each())))\n                   for li,r in layers.items()} for n,layers in shapes.items()}\n    frozen_candidate=geometry_snapshot(b)\n    # Freeze original-layer views before registering or regenerating PCells.\n    # Area alone can be cached after the underlying layout changes.\n    a=dict(a)\n",
+          "count": 1
+        },
+        {
+          "before": "    def compare(x,y):\n",
+          "after": "    assert geometry_snapshot(b)==frozen_candidate, 'Candidate drawing changed during independent PCell generation'\n    def compare(x,y):\n",
           "count": 1
         }
       ]

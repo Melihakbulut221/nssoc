@@ -44,7 +44,7 @@ def main():
             for li in L.layer_indexes():
                 info=L.get_info(li)
                 if info.datatype!=0:continue
-                region=pya.Region(cell.begin_shapes_rec(li)).merged()
+                region=pya.Region(cell.begin_shapes_rec(li)).flatten().merged()
                 if not region.is_empty():regions[(info.layer,info.datatype)]=region
             assert regions;assert identity(d) not in shapes;shapes[identity(d)]=regions
         all_data.append(data);all_shapes.append(shapes)
@@ -57,6 +57,12 @@ def main():
     # primitive drawings remain exact; the four resistor shapes are independently
     # reconstructed from the pinned native PCell, not trusted from metadata.
     a,b=all_shapes
+    def geometry_snapshot(shapes):
+        return {n:{li:(r.area(),str(r.bbox()),tuple(sorted(str(p) for p in r.each())))
+                   for li,r in layers.items()} for n,layers in shapes.items()}
+    frozen_candidate=geometry_snapshot(b)
+    # Freeze original-layer views before registering or regenerating PCells.
+    # Area alone can be cached after the underlying layout changes.
     a=dict(a)
     import sys
     src=Path(__file__).resolve().parents[1]/'pdk/libs.tech/klayout/python'
@@ -72,10 +78,11 @@ def main():
         for li in G.layer_indexes():
             info=G.get_info(li)
             if info.datatype!=0:continue
-            region=pya.Region(cell.begin_shapes_rec(li)).merged()
+            region=pya.Region(cell.begin_shapes_rec(li)).flatten().merged()
             if not region.is_empty():regions[(info.layer,info.datatype)]=region
         assert regions
         a[d['name']]=regions
+    assert geometry_snapshot(b)==frozen_candidate, 'Candidate drawing changed during independent PCell generation'
     def compare(x,y):
         assert set(x)==set(y)and len(x)==54
         for name in x:
