@@ -1,3 +1,11 @@
+## 2026-10-20 critical data route completed; review new max/min paths
+- Route39293720171 passed execution, not timing acceptance. Native DRC0/disconnected0;25antenna nets remain.
+- SetupWNS slow/typ/fast -18.542956/-5.466296/-2.539953ns improved from -20.665470/-7.882026/-3.799566ns. Setupcounts9691/7619/3917; holdcounts6/9/17. Worsthold -0.451715/-0.387717/-0.338548ns all regressed.
+- Exact summary206246763d36b45f2d6ab03ec9b4a022531dd3233db4a1530af32c51b8bdbfea and parts47093e5e6e4dbf9df7809a75a803b69552a3784af6ecb68fb54ef4c408cacff2 are recorded with full report.
+- New onehot-critical-data-path-review uses the unchanged native parser and original all-corner metrics. Inspect its actual max/min reports before selecting another repair.
+- TX39308903140 confirmed live; CDRlatch39326235115 complete. Continue remaining CDR data-transfer and PLL full RC work. Full PHY/final timing still open.
+- Cloud-only execution/storage; workspace stays empty.
+
 ## Cloud-only cleanup verified 2026-10-19T21:26:32.544025+00:00
 - User instruction: all work and project artifacts remain in the cloud; do not recreate a local checkout, CAD environment, test outputs, downloaded archives, waveforms, or extraction files.
 - Current workspace /home/hasanmelih/Documents/ChatGPT/nnsoc is empty. No local OpenROAD, ngspice, KLayout or Yosys processes were found. No project-specific residue was found in the inspected temporary locations. RAM-only GitHub API orchestration is permitted.
