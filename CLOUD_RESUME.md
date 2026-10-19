@@ -1,3 +1,30 @@
+# Latest cloud-only continuation — 2026-10-19,39-buffer physical/logic PASS; new route
+
+Preparation39242341481(source6163ef917ff57f346f88b873dd5df0f019e7fe5b) PASSED:
+39positive buf16 legally placed, maximum driver-to-buffer pin Manhattan44.72um;
+all148832original cells/geometry and exact expected net topology preserved.
+Native buffer count34348→34387; retained equations/state/macro inputs passed;
+actual new-buffer inversion rejected. Receipt:
+docs/evidence/onehot-routed-drive-prepare-pass-20261019.json.
+CandidateODB d993b84034eef280356ebb68c65320159890e6ced9c99ad728736a1fdd05bb0b.
+CandidateNL da5f7a6f60d1a7927e102e9454c8f6931318a57fcb787a93fef7f94e5b9dd19a.
+
+This commit starts onehot-routed-drive-route-cloud. It restores all previous
+boot/RTL/route ancestry plus this exact148871-cell candidate, preserving
+original20/4/8/8ns clocks,5%derate, native flow/RC and all three corner gates.
+Source adaptation guard proves only the new candidate ancestry/state/count
+and namespace were added; no STA/physical acceptance gate was relaxed.
+Collect real new route results; do not call preparation or topology LVS or
+timing closure. Baseline route39202263552 has remaining setup/hold/electrical/
+antenna violations. New candidate has no routed result yet.
+
+TX fullwaves39221063981/39226121734 remained active at latest check; preserve.
+Folded CDR39237412866 nominal waves remain rejected and require internal
+saved-wave/geometry diagnosis. All three goal headings remain OPEN.
+All CAD/tests/outputs cloud-only; local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19,39 near-driver buffers being prepared
 
 This commit starts onehot-routed-drive-prepare-cloud from exact route

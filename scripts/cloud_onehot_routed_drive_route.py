@@ -1,0 +1,458 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Extract the exact completed onehot route; never reuse another candidate or placement RC."""
+import argparse,json,math,os,re,subprocess,time
+from pathlib import Path
+import cloud_replay_onehot_logic as logic
+import compare_cloud_routed_endpoints as reports
+from cloud_corrpre_banked_handoff import api,wait_success
+from cloud_replay_onehot_postcts import require_candidate,relative,sha
+from route_cloud_newer_postcts import native_ndr_screen
+from bootstrap_flow import verify
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/'hw/soc/out/cloud-onehot-routed-drive-route'
+PLACE=ROOT/'hw/soc/out/cloud-corrpre-mbist-placement'
+REPAIR=ROOT/'hw/soc/out/cloud-replay-onehot-postcts'
+PROOF_RUN=39079184710
+PROOF_HEAD='35eea50cae3ec44fae90dd179b369e103630e6a2'
+PROOF_STATUS='PASS_NEW_BANKED_CTS_TO_REPAIR_LOGIC_NOT_ROUTE_OR_TIMING_SIGNOFF'
+
+def proof_source(result,save,wait):
+    run=wait_success(PROOF_RUN,'.github/workflows/replay-onehot-logic-cloud.yml',
+        time.monotonic()+(18000 if wait else 0),result,save)
+    assert run['head_sha']==PROOF_HEAD and run['run_attempt']==1
+    proof,digest,parts=logic.summary('replay-onehot-logic',run)
+    assert proof['status']==PROOF_STATUS and proof['source_head']==PROOF_HEAD
+    assert proof['sources_unchanged'] is True
+    assert proof['proof']['status']=='PASS within scope'and proof['proof']['retained_cells']>10000
+    assert proof['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'
+    assert proof['proof']['macro_verilog_defines']==['FUNCTIONAL']
+    assert [s['archive']['run']for s in proof['sources']]==[logic.PLACEMENT_RUN,logic.REPAIR_RUN]
+    result['logic_source']=dict(run=PROOF_RUN,head=PROOF_HEAD,summary_sha256=digest,parts_sha256=parts)
+    save()
+    return proof,digest,parts
+
+def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--summary-sha256',required=True);parser.add_argument('--parts-sha256',required=True);parser.add_argument('--resize-run',required=True,type=int);parser.add_argument('--resize-head',required=True);parser.add_argument('--resize-summary-sha256',required=True);parser.add_argument('--resize-parts-sha256',required=True);args=parser.parse_args()
+    assert all(re.fullmatch('[0-9a-f]{64}',v)for v in (args.summary_sha256,args.parts_sha256))
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    OUT.mkdir(parents=True,exist_ok=False);logic.OUT=OUT;reports.OUT=OUT
+    r=dict(status='RESTORING_EXACT_ROUTED_SOURCE',
+        source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False,
+        detailed_route_complete=False,final_timing_complete=False,qualified_pex=False,
+        scope='Route39 measured positive near-driver buffers with native geometry and logic proofs. All148832 source cells including antenna diodes retained. Original20/4/8/8ns clocks,5percent derate,20SRAM and complete RTL/route ancestry remain. Fresh nominal OpenRCX and three cell corners; topology is not LVS, qualifiedRC or fullPHY/signoff.')
+    def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
+    save()
+    try:
+        proof,proof_sha,proof_parts=proof_source(r,save,False)
+        original,proof_archive=reports.restore_report('replay-onehot-logic',PROOF_RUN,
+            proof_sha,proof_parts,OUT/'logic-proof',('proof/result.json','controls/result.json'))
+        assert original==proof
+        assert json.loads((OUT/'logic-proof/proof/result.json').read_text())==proof['proof']
+        assert json.loads((OUT/'logic-proof/controls/result.json').read_text())==proof['controls']
+        r['logic_archive']=proof_archive
+        source_reports={}
+        for label,group,run_id,head,destination in (
+            ('placement','replay-onehot-placement',logic.PLACEMENT_RUN,logic.PLACEMENT_HEAD,PLACE),
+            ('repair','replay-onehot-postcts',logic.REPAIR_RUN,logic.REPAIR_HEAD,REPAIR)):
+            run=api('actions/runs/'+str(run_id))
+            assert run['status']=='completed'and run['conclusion']=='success'and run['head_sha']==head
+            assert run['path']=='.github/workflows/'+group+'-cloud.yml'and run['run_attempt']==1
+            report,digest,parts=logic.summary(group,run)
+            bound=proof['sources'][0 if label=='placement'else 1]['archive']
+            assert digest==bound['summary_sha256']and parts==bound['manifest_sha256']
+            restored,archive=reports.restore_report(group,run_id,digest,parts,destination,tuple(report['outputs']))
+            assert restored==report and report['source_head']==head
+            source_reports[label]=report;r[label+'_source']=archive;save()
+        before=source_reports['placement'];after=source_reports['repair']
+        spec=require_candidate(before,logic.PLACEMENT_HEAD)
+        assert spec==proof['boot_spec']==after['placement_source']['boot_spec']
+        assert after['status']==logic.REPAIR_STATUS and after['sources_unchanged']and after['returncode']==0
+        assert after['placement_source']['run']==logic.PLACEMENT_RUN
+        # Revalidate all current RTL/protocol/native-boot receipts before mutation.
+        from cloud_replay_onehot_postcts import require_same_proofs
+        import cloud_replay_onehot_handoff as handoff
+        handoff.OUT.mkdir(exist_ok=False)
+        for number,workflow,source_head in handoff.SOURCES:
+            observed=api('actions/runs/'+str(number))
+            assert observed['status']=='completed' and observed['conclusion']=='success'
+            assert observed['head_sha']==source_head and observed['event']=='push' and observed['run_attempt']==1
+            assert observed['path']=='.github/workflows/'+workflow+'.yml'
+        r['nine_source_proof_revalidation']=handoff.collect_proofs()
+        verified=OUT/'verified-current-boot.json'
+        subprocess.run(list(map(str,[os.sys.executable,ROOT/'scripts/check_pcie_onehot_banked_boot_source.py',
+            '--boot-run',spec['run'],'--boot-head',spec['head'],'--artifact',spec['artifact'],
+            '--zip-sha256',spec['zip_sha256'],'--protocol-run',spec['protocol_run'],'--out',verified])),check=True,cwd=ROOT)
+        current_spec=json.loads(verified.read_text())
+        require_same_proofs(spec,current_spec)
+        require_same_proofs(spec,proof['current_boot_source_revalidation'])
+        r['current_boot_source_revalidation']=current_spec
+        save()
+        state_path=REPAIR/relative(after['repaired_state']);state=json.loads(state_path.read_text())
+        odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb.is_relative_to(REPAIR)and netlist.is_relative_to(REPAIR)
+        assert sha(odb)==after['repaired_odb_sha256']==proof['sources'][1]['native_odb_sha256']
+        assert sha(netlist)==proof['sources'][1]['netlist_sha256']
+        # The original CTS/repair proof is provenance only. Route the newer,
+        # independently proven targeted state and bind its old/new netlists.
+        tp=json.loads((ROOT/'docs/evidence/replay-onehot-targeted-pass-20261018.json').read_text())
+        tr=api('actions/runs/'+str(tp['run']))
+        assert tr['status']=='completed' and tr['conclusion']=='success' and tr['head_sha']==tp['source_head'] and tr['run_attempt']==1
+        assert tr['path']=='.github/workflows/replay-onehot-targeted-cloud.yml'
+        target_root=ROOT/'hw/soc/out/cloud-replay-onehot-targeted'
+        target,target_proof=reports.restore_report('replay-onehot-targeted',tp['run'],tp['summary_sha256'],tp['parts_sha256'],target_root,list(tp['report']['outputs']))
+        assert target==tp['report'] and target['sources_unchanged'] and target['returncode']==0
+        assert target['status']=='COMPLETE_NATIVE_TARGETED_REBUFFER_AND_LOGIC_REQUIRES_TIMING_REVIEW'
+        assert target['proof']['status']=='PASS within scope' and target['proof']['retained_cells']==97622
+        assert target['controls']['status']=='PASS_NATIVE_ECO_CONTROLS' and target['targeted_removed']==9
+        assert json.loads((target_root/'proof/result.json').read_text())==target['proof']
+        assert json.loads((target_root/'controls/result.json').read_text())==target['controls']
+        assert target['protected_inputs'][str(netlist)]==sha(netlist)
+        assert target['repair_source']['summary_sha256']==proof['sources'][1]['archive']['summary_sha256']
+        require_same_proofs(current_spec,target['current_boot_source_revalidation'])
+        for corner,values in target['measurements']['before'].items():
+            assert values['metrics']==after['measurements']['after'][corner]['metrics']
+        original_odb=odb;original_netlist=netlist
+        state_path=target_root/relative(target['candidate_state']);state=json.loads(state_path.read_text())
+        odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb.is_relative_to(target_root) and netlist.is_relative_to(target_root)
+        assert sha(odb)==target['candidate_odb_sha256'] and sha(netlist)==target['candidate_netlist_sha256']
+        config_path=target_root/'trial-config.json';cfg=json.loads(config_path.read_text())
+        r['routed_candidate_source']=target_proof
+        r['routed_candidate_logic']=target['proof']
+        r['placement_estimate_before_route']=target['measurements']['after']
+
+        gp=json.loads((ROOT/'docs/evidence/replay-onehot-global-route-pass-20261018.json').read_text())
+        gr=api('actions/runs/'+str(gp['run']))
+        assert gr['status']=='completed'and gr['conclusion']=='success'and gr['head_sha']==gp['source_head']and gr['run_attempt']==1
+        assert gr['path']=='.github/workflows/replay-onehot-global-route-cloud.yml'
+        grt_root=ROOT/'hw/soc/out/cloud-replay-onehot-global-route'
+        grt,gproof=reports.restore_report('replay-onehot-global-route',gp['run'],gp['summary_sha256'],gp['parts_sha256'],grt_root,list(gp['report']['outputs']))
+        assert grt==gp['report']and grt['sources_unchanged']and grt['returncode']==0
+        assert grt['status']=='COMPLETE_NATIVE_ONEHOT_GLOBAL_ROUTE_REQUIRES_DRT_EXTRACTED_STA_AND_SIGNOFF'
+        assert grt['native_ndr_screen']['preserved']and grt['native_final_congestion_total'].split()[-1]=='0'
+        assert grt['routed_candidate_source']['summary_sha256']==tp['summary_sha256']and grt['routed_candidate_logic']==target['proof']
+        require_same_proofs(current_spec,grt['current_boot_source_revalidation'])
+        prior_target_config=dict(cfg)
+        cfg=json.loads((grt_root/'trial-config.json').read_text())
+        allowed={'RT_CLOCK_MIN_LAYER','RT_CLOCK_MAX_LAYER','GRT_OVERFLOW_ITERS'}
+        assert {k:v for k,v in cfg.items()if k not in allowed}=={k:v for k,v in prior_target_config.items()if k not in allowed}
+        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']
+        assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5
+        assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']
+        assert cfg['PNR_SDC_FILE']==cfg['SIGNOFF_SDC_FILE']==str(PLACE/'prepared/physical.sdc')
+        assert cfg.get('GRT_ALLOW_CONGESTION',False)is False and cfg['GRT_ADJUSTMENT']==.2
+        assert cfg['RT_CLOCK_MIN_LAYER']=='Metal4'and cfg['RT_CLOCK_MAX_LAYER']=='TopMetal2'
+        assert len(before['preparation']['macros'])==20
+        state_path=grt_root/grt['global_route_state'];state=json.loads(state_path.read_text())
+        odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb.is_relative_to(grt_root)and sha(odb)==grt['global_route_odb_sha256']
+        assert sha(netlist)==target['candidate_netlist_sha256']
+        guide=state_path.parent/'after_grt.guide';assert sha(guide)==grt['guide_sha256']
+        r['global_route_source']=gproof
+        r['global_route_input']=dict(odb_sha256=sha(odb),guide_sha256=sha(guide),netlist_sha256=sha(netlist),native_ndr_screen=grt['native_ndr_screen'])
+        grt_odb=odb
+        route_run=api('actions/runs/39115222502')
+        assert route_run['status']=='completed' and route_run['conclusion']=='success'
+        assert route_run['head_sha']=='85c2a70f1d625fab59bc7266aa5ef6894e3aa575' and route_run['run_attempt']==1
+        assert route_run['path']=='.github/workflows/replay-onehot-antenna-round4-cloud.yml'
+        route,digest,parts=logic.summary('replay-onehot-antenna-round4',route_run)
+        assert digest==args.summary_sha256 and parts==args.parts_sha256
+        route_pin=json.loads((ROOT/'docs/evidence/replay-onehot-antenna-round4-result-20261018.json').read_text())
+        assert route_pin['run']==39115222502 and route_pin['source_head']==route_run['head_sha']
+        assert digest==route_pin['summary_sha256']and parts==route_pin['parts_sha256']
+        assert {k:route[k]for k in route_pin['report_excerpt']}==route_pin['report_excerpt']
+        assert route['completed_antenna_round']==4 and route['antenna_closure_proven']
+        assert route['source_head']==route_run['head_sha'] and route['sources_unchanged'] and route['returncode']==0
+        assert route['status']=='COMPLETE_NATIVE_ROUND4_ROUTE_NEEDS_EXTRACTED_STA_AND_SIGNOFF'
+        assert route['detailed_route_complete'] and route['native_routing_drc_errors']==0 and route['native_antenna_nets']==0 and route['critical_disconnected_pins']==0
+        assert route['global_route_source']['summary_sha256']==gp['summary_sha256']
+        assert route['global_route_input']==dict(odb_sha256=sha(odb),guide_sha256=sha(guide),netlist_sha256=sha(netlist),native_ndr_screen=grt['native_ndr_screen'])
+        require_same_proofs(current_spec,route['current_boot_source_revalidation'])
+        route_root=ROOT/'hw/soc/out/cloud-replay-onehot-antenna-round4'
+        restored,route_proof=reports.restore_report('replay-onehot-antenna-round4',39115222502,digest,parts,route_root,list(route['outputs']))
+        assert restored==route
+        r['actual_detailed_route_source']=route_proof
+        r['detailed_route_complete']=True
+        state_path=route_root/relative(route['detailed_route_state']);state=json.loads(state_path.read_text())
+        final=json.loads((route_root/relative(route['final_state'])).read_text())
+        odb=Path(state['odb']);deffile=Path(state['def']);netlist=Path(state['nl'])
+        assert all(p.is_relative_to(route_root)for p in (odb,deffile,netlist))
+        assert sha(odb)==route['routed_odb_sha256'] and sha(deffile)==route['routed_def_sha256']
+        assert sha(final['odb'])==sha(odb) and sha(final['def'])==sha(deffile) and sha(final['nl'])==sha(netlist)
+        for p in (odb,deffile,netlist):assert sha(p)==route['outputs'][str(p.relative_to(route_root))]
+        assert sha(netlist)=='f7bb33ce5ea9c1f947ea582151e2086b4b031f284ee50ba667c4c291f3ee0846'
+        assert sha(odb)=='b5a244a5e24109c2c5fb0ed5e92d98b999e7adbed50eaa9e70db5cdc50531835'
+        app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
+        topology_method=ROOT/'scripts/check_onehot_round4_saved_topology.py'
+        topology_path=OUT/'final-route-topology.json'
+        with(OUT/'final-route-topology.log').open('w')as stream:
+            code=subprocess.call(list(map(str,[app,'openroad','-exit','-python',topology_method])),cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,env={**{k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')},'NSSOC_TOPOLOGY_BEFORE':str(grt_odb),'NSSOC_TOPOLOGY_AFTER':str(odb),'NSSOC_TOPOLOGY_OUT':str(topology_path)})
+        if code:print((OUT/'final-route-topology.log').read_text()[-12000:],flush=True)
+        assert code==0,'Actual final route topology proof failed; never extract an unproven candidate'
+        topology=json.loads(topology_path.read_text());assert topology['status']=='PASS_NATIVE_SAVED_ROUTE_TOPOLOGY_ONLY_NOT_TIMING_OR_LVS'
+        assert topology['proof']['added_diode_count']==3384 and len(topology['rejected'])==3
+        r['actual_final_topology']=topology;save()
+        cfg=json.loads((route_root/'trial-config.json').read_text())
+        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']
+        assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5
+        assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']
+        assert cfg['PNR_SDC_FILE']==cfg['SIGNOFF_SDC_FILE']==str(PLACE/'prepared/physical.sdc')
+        r['execution_config_changes']={'STA_THREADS':dict(before=cfg.get('STA_THREADS'),after=1)}
+        cfg['STA_THREADS']=1;cfg['TIME_DERATING_CONSTRAINT']=5.0
+        lp=json.loads((ROOT/'docs/evidence/onehot-load-logic-pass-20261018.json').read_text())
+        source_root=ROOT/'hw/soc/out/cloud-onehot-load-logic'
+        prepared,pproof=reports.restore_report('onehot-load-logic',lp['run'],lp['summary_sha256'],lp['parts_sha256'],source_root,list(lp['report']['outputs']))
+        assert prepared==lp['report']and prepared['sources_unchanged']and prepared['inversion_control']['rejected']
+        assert prepared['proof']['status']=='PASS within scope'and prepared['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'
+        assert prepared['proof']['positive_buffers_after']-prepared['proof']['positive_buffers_before']==50
+        assert prepared['original_route_source']['summary_sha256']==route_pin['summary_sha256']
+        assert prepared['preparation_source']['run']==39120628517 and prepared['geometry']['original_instances']==145038
+        candidate_config=json.loads((source_root/'prepared/trial-config.json').read_text());assert candidate_config==cfg
+        original_odb_for_comparison=odb
+        state=json.loads((source_root/'candidate-state.json').read_text());odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb.is_relative_to(source_root)and netlist.is_relative_to(source_root)
+        assert sha(odb)==prepared['candidate_odb_sha256']=='ef4a2cd71dcb448a104b2abacaf6a44848e3342b1ac0b23461ad926070a116ae'
+        assert sha(netlist)==prepared['candidate_netlist_sha256']=='547eee3ac9cf503723f78b985f87841c2bde5277808f8716d0b6459bac55a62a'
+        r['native_load_preparation']=pproof;r['native_load_equation_proof']=prepared['proof'];r['native_load_geometry_proof']=prepared['geometry']
+        r['detailed_route_complete']=False
+        # All original boot/placement/logic/route ancestry above remains mandatory.
+        # Bind the new sizing proof to the intervening actually routed baseline.
+        assert re.fullmatch('[0-9a-f]{40}',args.resize_head)
+        assert all(re.fullmatch('[0-9a-f]{64}',v)for v in (args.resize_summary_sha256,args.resize_parts_sha256))
+        latest_pin=json.loads((ROOT/'docs/evidence/onehot-load-resume-route-result-20261018.json').read_text())
+        latest_run=api('actions/runs/'+str(latest_pin['run_id']))
+        assert latest_run['status']=='completed'and latest_run['conclusion']=='success'and latest_run['head_sha']==latest_pin['source_head']and latest_run['run_attempt']==1
+        assert latest_run['path']=='.github/workflows/onehot-load-resume-cloud.yml'
+        latest,latest_sha,latest_parts=logic.summary('onehot-load-resume',latest_run)
+        assert latest_sha==latest_pin['summary_sha256']and latest_parts==latest_pin['parts_sha256']
+        assert latest['sources_unchanged']and latest['detailed_route_complete']and latest['native_routing_drc_errors']==0 and latest['critical_disconnected_pins']==0
+        assert latest['native_load_preparation']['summary_sha256']==lp['summary_sha256']
+        assert latest['native_load_equation_proof']==prepared['proof']and latest['native_load_geometry_proof']==prepared['geometry']
+        assert latest['routed_candidate_topology']['proof']['retained_instances']==145088 and len(latest['routed_candidate_topology']['rejected'])==4
+        assert latest['routed_candidate_topology']['inputs'][str(odb)]==sha(odb)
+        sized_run=api('actions/runs/'+str(args.resize_run))
+        assert sized_run['status']=='completed'and sized_run['conclusion']=='success'and sized_run['head_sha']==args.resize_head and sized_run['run_attempt']==1
+        assert sized_run['path']=='.github/workflows/onehot-resize-prepare-cloud.yml'
+        sized,sized_sha,sized_parts=logic.summary('onehot-resize-prepare',sized_run)
+        assert sized_sha==args.resize_summary_sha256 and sized_parts==args.resize_parts_sha256
+        assert sized['source_head']==args.resize_head and sized['sources_unchanged']
+        assert sized['status']=='PASS_NATIVE_MEASURED_BUFFER_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA'
+        assert sized['proof']['status']=='PASS within scope'and sized['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'and sized['inversion_control']['rejected']
+        assert sized['source']['summary_sha256']==latest_sha and sized['source']['manifest_sha256']==latest_parts
+        assert sized['original_route']['odb_sha256']==latest['routed_odb_sha256']and sized['original_route']['netlist_sha256']==latest['routed_netlist_sha256']
+        assert sized['original_measurements']==latest['measurements']
+        assert sized['geometry']['instances']==146728 and 1<=len(sized['geometry']['changes'])<=50
+        assert all(sized['geometry'][k]for k in ('all_net_memberships_unchanged','all_other_instances_unchanged','pg_ports_ndr_unchanged'))
+        sized_root=ROOT/'hw/soc/out/cloud-onehot-resize-prepare'
+        restored,sized_proof=reports.restore_report('onehot-resize-prepare',args.resize_run,sized_sha,sized_parts,sized_root,list(sized['outputs']))
+        assert restored==sized
+        assert json.loads((sized_root/'proof/result.json').read_text())==sized['proof']and json.loads((sized_root/'geometry-proof.json').read_text())==sized['geometry']
+        new_cfg=json.loads((sized_root/'trial-config.json').read_text())
+        assert {k:v for k,v in new_cfg.items()if k!='DRT_ANTENNA_REPAIR_ITERS'}=={k:v for k,v in cfg.items()if k!='DRT_ANTENNA_REPAIR_ITERS'}
+        assert cfg['DRT_ANTENNA_REPAIR_ITERS']==8 and new_cfg['DRT_ANTENNA_REPAIR_ITERS']==1
+        cfg=new_cfg
+        r['execution_config_changes']['DRT_ANTENNA_REPAIR_ITERS']=dict(before=8,after=1,reason='Continue one saved native antenna repair round per hosted run; zero-violation acceptance unchanged.')
+        state_path=sized_root/'candidate-state.json';state=json.loads(state_path.read_text());odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb==sized_root/'candidate.odb'and netlist==sized_root/'candidate.v'
+        assert sha(odb)==sized['candidate_odb_sha256']and sha(netlist)==sized['candidate_netlist_sha256']
+        assert state['spef']is None and state['def']is None and not state['metrics']
+        # State views also retain the original propagated SDC. Restore exact
+        # missing views from the routed source archive instead of replacing
+        # constraints or requiring its old route to be inherited by this ECO.
+        latest_root=ROOT/'hw/soc/out/cloud-onehot-load-resume';missing=set()
+        def inspect_view(value):
+            if isinstance(value,dict):
+                for v in value.values():inspect_view(v)
+            elif isinstance(value,list):
+                for v in value:inspect_view(v)
+            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():
+                view=Path(value)
+                assert view.is_relative_to(latest_root),('Unbound missing candidate-state dependency',value)
+                rel=str(view.relative_to(latest_root));assert rel in latest['outputs'];missing.add(rel)
+        inspect_view(state)
+        assert missing,'Expected archived propagated SDC dependency'
+        restored_latest,dependency_proof=reports.restore_report('onehot-load-resume',latest_pin['run_id'],latest_sha,latest_parts,latest_root,sorted(missing))
+        assert restored_latest==latest
+        dependency_hashes={str(latest_root/n):latest['outputs'][n]for n in sorted(missing)}
+        assert all(sha(p)==v for p,v in dependency_hashes.items())
+        r['restored_exact_state_dependencies']=dict(source=dependency_proof,files=dependency_hashes)
+
+        # Chain the newly legalized logic candidate to the exact completed
+        # resized baseline. Old route/boot/RTL ancestry above is preserved.
+        r['previous_resize_source']=sized_proof
+        r['previous_resize_geometry']=sized['geometry']
+        old_route_pin=json.loads((ROOT/'docs/evidence/onehot-resize-route-report-rejection-20261019.json').read_text())
+        verified_route=json.loads((ROOT/'docs/evidence/onehot-resize-saved-validation-20261019.json').read_text())['report']
+        assert old_route_pin['report']['returncode']==0 and old_route_pin['report']['status']=='FAIL_OR_ERROR_NO_SOURCE_RESTART'
+        assert old_route_pin['report']['resize_source']['summary_sha256']==sized_sha
+        assert verified_route['sources_unchanged'] and verified_route['source']['summary_sha256']==old_route_pin['summary_sha256']
+        assert verified_route['physical']==dict(drc_errors=0,critical_disconnected_pins=0)
+        assert verified_route['routed_topology']['proof']['retained_instances']==146728
+        assert verified_route['routed_topology']['proof']['added_diode_count']==1130
+        np=json.loads((ROOT/'docs/evidence/onehot-logic-resize-prepare-pass-20261019.json').read_text())
+        nr=api('actions/runs/'+str(np['run']))
+        assert nr['status']=='completed' and nr['conclusion']=='success' and nr['head_sha']==np['source_head'] and nr['run_attempt']==1
+        assert nr['path']=='.github/workflows/onehot-logic-resize-prepare-cloud.yml'
+        new_root=ROOT/'hw/soc/out/cloud-onehot-logic-resize-prepare'
+        new_sized,new_proof=reports.restore_report('onehot-logic-resize-prepare',np['run'],np['summary_sha256'],np['parts_sha256'],new_root,list(np['report']['outputs']))
+        assert new_sized==np['report'] and new_sized['sources_unchanged']
+        assert new_sized['status']=='PASS_NATIVE_MEASURED_LOGIC_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA'
+        assert new_sized['proof']['status']=='PASS within scope' and new_sized['controls']['status']=='PASS_NATIVE_ECO_CONTROLS' and new_sized['inversion_control']['rejected']
+        assert new_sized['source']['summary_sha256']==old_route_pin['summary_sha256'] and new_sized['source']['manifest_sha256']==old_route_pin['parts_sha256']
+        assert new_sized['original_route']==dict(odb_sha256='4acbb9969285c715969619795ec7a45305de1bd4a3f6ac97a91139cf0024b723',netlist_sha256='c05e6321a4aed063e5e69b902a3b7ed08863bd2a39189f8b17ded5bfc33b9756')
+        assert new_sized['original_measurements']==verified_route['corners']
+        assert new_sized['geometry']['instances']==147858 and len(new_sized['geometry']['changes'])==32
+        assert all(new_sized['geometry'][k] for k in ('all_net_memberships_unchanged','all_other_instances_unchanged','pg_ports_ndr_unchanged'))
+        assert json.loads((new_root/'proof/result.json').read_text())==new_sized['proof']
+        assert json.loads((new_root/'geometry-proof.json').read_text())==new_sized['geometry']
+        assert json.loads((new_root/'trial-config.json').read_text())==cfg
+        sized=new_sized;sized_proof=new_proof;sized_root=new_root
+        state_path=sized_root/'candidate-state.json';state=json.loads(state_path.read_text())
+        odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb==sized_root/'candidate.odb' and netlist==sized_root/'candidate.v'
+        assert sha(odb)==sized['candidate_odb_sha256'] and sha(netlist)==sized['candidate_netlist_sha256']
+        assert state['spef']is None and state['def']is None and not state['metrics']
+        # Missing views must belong to a pinned source archive at their original path.
+        old_route_root=ROOT/'hw/soc/out/cloud-onehot-resize-route';new_missing=set()
+        def collect_new_missing(value):
+            if isinstance(value,dict):
+                for v in value.values():collect_new_missing(v)
+            elif isinstance(value,list):
+                for v in value:collect_new_missing(v)
+            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():
+                p=Path(value);assert p.is_relative_to(old_route_root),('Unbound new candidate dependency',value)
+                rel=str(p.relative_to(old_route_root));assert rel in old_route_pin['report']['outputs'];new_missing.add(rel)
+        collect_new_missing(state)
+        if new_missing:
+            old_restored,old_restore_proof=reports.restore_report(old_route_pin['group'],old_route_pin['run'],old_route_pin['summary_sha256'],old_route_pin['parts_sha256'],old_route_root,sorted(new_missing))
+            assert old_restored==old_route_pin['report']
+            dependency_hashes.update({str(old_route_root/n):old_restored['outputs'][n] for n in new_missing})
+            r['new_state_dependency_source']=old_restore_proof
+        assert all(sha(p)==v for p,v in dependency_hashes.items())
+        r['restored_exact_state_dependencies']['files']=dependency_hashes
+        r['source_routed_measurements']=verified_route['corners']
+        r['resize_source']=sized_proof;r['resize_geometry']=sized['geometry'];r['resize_equation_proof']=sized['proof']
+
+        # Bind the physically nearby positive-buffer candidate to the complete
+        # previous native routed design. All older ancestry above still applies.
+        baseline_pin=json.loads((ROOT/'docs/evidence/onehot-logic-resize-route-result-20261019.json').read_text())
+        baseline_run=api('actions/runs/'+str(baseline_pin['run']))
+        assert baseline_run['status']=='completed'and baseline_run['conclusion']=='success'and baseline_run['head_sha']==baseline_pin['source_head']and baseline_run['run_attempt']==1
+        assert baseline_run['path']=='.github/workflows/onehot-logic-resize-route-cloud.yml'
+        baseline,baseline_sha,baseline_parts=logic.summary(baseline_pin['group'],baseline_run)
+        assert baseline==baseline_pin['report']and baseline_sha==baseline_pin['summary_sha256']and baseline_parts==baseline_pin['parts_sha256']
+        assert baseline['sources_unchanged']and baseline['returncode']==0 and baseline['detailed_route_complete']
+        assert baseline['resize_source']['summary_sha256']==np['summary_sha256']
+        assert baseline['resize_equation_proof']==sized['proof']and baseline['resize_geometry']==sized['geometry']
+        assert baseline['routed_candidate_topology']['proof']['retained_instances']==147858
+        assert baseline['routed_candidate_topology']['proof']['added_diode_count']==974
+        assert baseline['routed_candidate_topology']['inputs'][str(odb)]==sha(odb)
+        assert baseline['native_routing_drc_errors']==0 and baseline['critical_disconnected_pins']==0
+        bp=json.loads((ROOT/'docs/evidence/onehot-routed-drive-prepare-pass-20261019.json').read_text())
+        br=api('actions/runs/'+str(bp['run']))
+        assert bp['run']==39242341481 and bp['source_head']=='6163ef917ff57f346f88b873dd5df0f019e7fe5b'
+        assert br['status']=='completed'and br['conclusion']=='success'and br['head_sha']==bp['source_head']and br['run_attempt']==1
+        assert br['path']=='.github/workflows/onehot-routed-drive-prepare-cloud.yml'
+        buffer_root=ROOT/'hw/soc/out/cloud-onehot-routed-drive-prepare'
+        buffer_names=['candidate.odb','candidate.v','candidate-state.json','trial-config.json','proof/result.json','controls/result.json','geometry-proof.json','targets.json','actual-new-buffer-inversion-control.log']
+        buffered,buffer_proof=reports.restore_report(bp['group'],bp['run'],bp['summary_sha256'],bp['parts_sha256'],buffer_root,buffer_names)
+        assert buffered==bp['report']and buffered['sources_unchanged']
+        assert buffered['status']=='PASS_NATIVE_NEAR_DRIVER_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS'
+        assert buffered['source']['summary_sha256']==baseline_sha and buffered['source']['manifest_sha256']==baseline_parts
+        assert buffered['original_route']==dict(odb_sha256=baseline['routed_odb_sha256'],netlist_sha256=baseline['routed_netlist_sha256'])
+        assert buffered['original_measurements']==baseline['measurements']
+        assert buffered['proof']['status']=='PASS within scope'and buffered['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'and buffered['inversion_control']['rejected']
+        assert buffered['proof']['positive_buffers_after']-buffered['proof']['positive_buffers_before']==39
+        assert buffered['proof']['unobserved_output_port_changes']==0
+        bg=buffered['geometry']
+        assert bg['original_instances']==148832 and len(bg['added'])==len(bg['changes'])==39 and bg['maximum_driver_to_buffer_um']<=80
+        assert all(bg[k]for k in ('all_original_cells_geometry_preserved','all_expected_net_memberships_preserved','pg_ports_ndr_unchanged'))
+        assert json.loads((buffer_root/'proof/result.json').read_text())==buffered['proof']
+        assert json.loads((buffer_root/'geometry-proof.json').read_text())==bg
+        assert json.loads((buffer_root/'controls/result.json').read_text())==buffered['controls']
+        assert json.loads((buffer_root/'trial-config.json').read_text())==cfg
+        state_path=buffer_root/'candidate-state.json';state=json.loads(state_path.read_text())
+        odb=Path(state['odb']);netlist=Path(state['nl'])
+        assert odb==buffer_root/'candidate.odb'and netlist==buffer_root/'candidate.v'
+        assert sha(odb)==buffered['candidate_odb_sha256']and sha(netlist)==buffered['candidate_netlist_sha256']
+        assert state['spef']is None and state['def']is None and not state['metrics']
+        baseline_root=ROOT/'hw/soc/out/cloud-onehot-logic-resize-route';buffer_missing=set()
+        def collect_buffer_missing(value):
+            if isinstance(value,dict):
+                for v in value.values():collect_buffer_missing(v)
+            elif isinstance(value,list):
+                for v in value:collect_buffer_missing(v)
+            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():
+                p=Path(value);assert p.is_relative_to(baseline_root),('Unbound buffered candidate dependency',value)
+                rel=str(p.relative_to(baseline_root));assert rel in baseline['outputs'];buffer_missing.add(rel)
+        collect_buffer_missing(state)
+        if buffer_missing:
+            restored_baseline,baseline_view_proof=reports.restore_report(baseline_pin['group'],baseline_pin['run'],baseline_sha,baseline_parts,baseline_root,sorted(buffer_missing))
+            assert restored_baseline==baseline
+            dependency_hashes.update({str(baseline_root/n):baseline['outputs'][n]for n in buffer_missing})
+            r['buffer_state_dependency_source']=baseline_view_proof
+        assert all(sha(p)==v for p,v in dependency_hashes.items())
+        r['restored_exact_state_dependencies']['files']=dependency_hashes
+        r['source_routed_measurements']=baseline['measurements']
+        r['near_driver_buffer_source']=buffer_proof
+        r['near_driver_buffer_geometry']=bg
+        r['near_driver_buffer_equation_proof']=buffered['proof']
+        r['native_routed_baseline']=dict(run=baseline_pin['run'],summary_sha256=baseline_sha,parts_sha256=baseline_parts,antenna=baseline['final_antenna'],timing_and_electrical_counts_met=baseline['all_reported_timing_and_electrical_gates_met'])
+
+        saved_candidate_odb=odb
+        trial=OUT/'trial-config.json';trial.write_text(json.dumps(cfg,indent=2)+'\n')
+        r['discarded_inherited_metric_count']=len(state['metrics']);state['metrics']={}
+        state['spef']=None
+        initial=OUT/'initial-state.json';initial.write_text(json.dumps(state,indent=2)+'\n')
+        app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
+        flow=ROOT/'hw/soc/pnr/onehot_load_route_flow.py'
+        protected={str(p):sha(p)for p in [Path(__file__),flow,topology_method,topology_path,ROOT/'hw/soc/pnr/interface_flow.py',ROOT/'hw/soc/flow/audit_estimated_spef.py',ROOT/'hw/soc/flow/check_timing_derate.tcl',PLACE/'prepared/physical.sdc',state_path,odb,deffile,netlist,trial,initial]}
+        protected.update({str(buffer_root/n):buffered['outputs'][n]for n in buffer_names})
+        command=[str(app),'python',str(flow),'--flow','OnehotLoadRoute','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(trial)]
+        r.update(status='RUNNING_NATIVE_NEAR_DRIVER_BUFFER_ROUTE_AND_FRESH_RC_STA',protected_inputs=protected,command=command);save()
+        (OUT/'run').mkdir();start=time.monotonic()
+        with(OUT/'native.log').open('w')as log:code=subprocess.call(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
+        r.update(returncode=code,elapsed_s=time.monotonic()-start);save()
+        if code:print((OUT/'native.log').read_text(errors='replace')[-16000:],flush=True)
+        assert code==0,'Native extraction or STA failed; retain all outputs'
+        dr=list((OUT/'run').glob('*-openroad-detailedrouting/state_out.json'));ar=list((OUT/'run').glob('*-openroad-checkantennas/state_out.json'));pr=list((OUT/'run').glob('*-odb-reportdisconnectedpins/state_out.json'))
+        assert len(dr)==len(ar)==len(pr)==1
+        routed=json.loads(dr[0].read_text());physical=json.loads(pr[0].read_text())['metrics'];antenna=json.loads(ar[0].read_text())
+        antenna_report=ar[0].parent/'reports/antenna.rpt';count=len(re.findall(r'(?m)^\s*Net:\s*\S+',antenna_report.read_text()))
+        from check_final_native_antenna_counts import validate as final_antenna_counts
+        r['final_antenna']=final_antenna_counts(antenna_report.read_text(),antenna['metrics'])
+        assert count==r['final_antenna']['final_violating_nets']
+        r.update(native_antenna_nets=count,native_routing_drc_errors=physical['route__drc_errors'],critical_disconnected_pins=physical['design__critical_disconnected_pin__count'],detailed_route_complete=True,routed_odb_sha256=sha(routed['odb']),routed_netlist_sha256=sha(routed['nl']));save()
+        method=ROOT/'scripts/check_onehot_routed_drive_routed_topology.py';output=OUT/'routed-candidate-topology.json'
+        with(OUT/'routed-candidate-topology.log').open('w')as log:ret=subprocess.call([str(app),'openroad','-exit','-python',str(method)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,env={**{k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')},'NSSOC_TOPOLOGY_BEFORE':str(saved_candidate_odb),'NSSOC_TOPOLOGY_AFTER':routed['odb'],'NSSOC_TOPOLOGY_OUT':str(output)})
+        if ret:print((OUT/'routed-candidate-topology.log').read_text()[-12000:],flush=True)
+        assert ret==0,'Actual routed candidate geometry or topology changed'
+        r['routed_candidate_topology']=json.loads(output.read_text());assert r['routed_candidate_topology']['proof']['retained_instances']==148871 and len(r['routed_candidate_topology']['rejected'])==4
+        r['native_physical_gates_met']=count==0 and r['native_routing_drc_errors']==0 and r['critical_disconnected_pins']==0
+        assert all(sha(source_root/n)==v for n,v in prepared['outputs'].items())
+        assert all(sha(sized_root/n)==v for n,v in sized['outputs'].items())
+        assert all(sha(p)==v for p,v in dependency_hashes.items())
+        rcdirs=list((OUT/'run').glob('*-nssoc-onehotroutercx'));stadirs=list((OUT/'run').glob('*-nssoc-onehotroutedsta'))
+        assert len(rcdirs)==len(stadirs)==1
+        r['native_spef_integrity']=json.loads((rcdirs[0]/'native-spef-integrity.json').read_text())
+        r['native_sta_script_proof']=json.loads((stadirs[0]/'native-sta-script-proof.json').read_text())
+        final_sta=json.loads((stadirs[0]/'state_out.json').read_text());measurements={};all_met=True
+        for corner in ('nom_slow_1p08V_125C','nom_typ_1p20V_25C','nom_fast_1p32V_m40C'):
+            folder=stadirs[0]/corner
+            assert not(folder/'unpropagated.rpt').read_text().strip()
+            assert 'NSSOC_ROUTED_ORIGINAL_CLOCKS_PROPAGATED'in (folder/'sta.log').read_text()
+            metrics={k:v for k,v in final_sta['metrics'].items()if k.endswith('__corner:'+corner)}
+            keys=['timing__setup__ws','timing__hold__ws','timing__setup_vio__count','timing__hold_vio__count','design__max_cap_violation__count','design__max_slew_violation__count','design__max_fanout_violation__count']
+            assert all(math.isfinite(float(metrics[k+'__corner:'+corner]))for k in keys)
+            passed=all(float(metrics[k+'__corner:'+corner])>=0 for k in keys[:2]) and all(int(metrics[k+'__corner:'+corner])==0 for k in keys[2:])
+            all_met=all_met and passed
+            for name in ('max.rpt','min.rpt','checks.rpt','violator_list.rpt','clock.rpt','ws.max.rpt','ws.min.rpt'):assert(folder/name).is_file()
+            measurements[corner]=dict(metrics=metrics,directory=str(folder.relative_to(OUT)),timing_and_electrical_counts_met=passed)
+        assert all(sha(p)==v for p,v in protected.items())
+        r.update(status='COMPLETE_NATIVE_NEAR_DRIVER_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF',measurements=measurements,all_reported_timing_and_electrical_gates_met=all_met,sources_unchanged=True)
+    except BaseException as error:r.update(status='FAIL_OR_ERROR_NO_SOURCE_RESTART',error=repr(error));raise
+    finally:
+        r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
+if __name__=='__main__':main()

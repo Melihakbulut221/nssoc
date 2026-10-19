@@ -23,3 +23,20 @@ checks remain. This preparation proves only the stated native edit scope.
 Fresh route, RC extraction, setup/hold, slew/capacitance, antenna, full-chip
 LVS and complete PHY evidence remain necessary. No timing improvement is
 claimed from estimated placement or physical proximity.
+
+## Preparation result
+
+[Run39242341481](https://github.com/Melihakbulut221/nssoc/actions/runs/39242341481)
+passed on source6163ef917ff57f346f88b873dd5df0f019e7fe5b. All39 buffers were
+legally placed; maximum actual driver-to-buffer Manhattan distance44.72um.
+All148832 source cells, original placement and expected net topology were
+preserved. Native positive-buffer count34348→34387; all retained equations/
+state/macro inputs passed the existing scope-limited checker. Actual new-buffer
+inversion failed as required. The proof excludes timing, SRAM interiors, CDC
+and analog behavior.
+
+The new route workflow restores this exact candidate and the complete prior
+boot/RTL/placement/route ancestry. It retains the original nominal RC method,
+three cell corners and all setup/hold/electrical/antenna checks. Only a fresh
+result can establish whether the39 buffers improve timing. The candidate
+contains148871 cells before any additional routing antenna repairs.
