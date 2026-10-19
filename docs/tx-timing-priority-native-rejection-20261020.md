@@ -18,7 +18,7 @@ CMOS interfaces and level16 passed. Level8 has no sign errors but 171 samples
 below its original 150 mV interface gate. Level4 has 252 sign errors and
 2763 below-threshold samples; the final interface has 837 and 2188.
 
-The shorter final clock route does not establish timing closure. The next
+The shorter final data routes does not establish timing closure. The next
 cloud path review restores this exact original waveform and must reproduce
 every original gate before reporting stage-specific data margins, actual
 failed HBT terminal voltages, and native resistor-connected clock bases.

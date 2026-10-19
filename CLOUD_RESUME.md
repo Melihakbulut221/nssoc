@@ -1,3 +1,14 @@
+## 2026-10-20 — TX actual data-network review
+Previous goal turn made progress: fresh CDR RC/audit/composition pipeline and TX
+native waveform diagnosis were committed and executed. CDR validation39337079644
+now fully passed. Fullwave39337518790 is live; do not duplicate.
+This commit launches actual124-leg TX resistor-network/load review against
+the current timing-priority geometry and original rejected waveform. It preserves
+every intrinsic rppd and original transient gate. The route-length change is
+correctly documented as DATA routing, not clock routing.
+Mainchip route39331918238 remains live. Cloud-only work; local workspace empty.
+
+
 ## 2026-10-20 — Original v16 fullwaves gated on exact fresh validation
 This commit launches early/late nominal and stopped-clock/VI-off loaded waveforms.
 Every job verifies validation39337079644/sourceb13f9504 first; never bypass failures.
