@@ -17,3 +17,7 @@ Run39223805006 ateebfce6fdadef5921116bae53483407772b73ddf passed the original na
 ## Full model composition
 
 Run39224815994 at aa24170d0ed625a57690805858ba09769edcf1aa passed full1674-device composition with the fresh116611R/77514C graph, six original composition fault controls and physical binding of124 input legs to372 data bases. No ideal intermacro aliases or duplicate child parasitics were introduced. Compact topology equivalence against the verified strap6 model is the next gate before updating the source-bound waveform builder. The electrical result is still unproven.
+
+## Topology and loaded tests
+
+Run39225546587 proved all1674 compact devices equivalent to the strap6 baseline using physical primitive positions, with exact parameters, fixed public nets and a bijective internal-node map. Missing-device, changed-parameter, wrong-terminal and swapped-physical-identity controls were rejected. Candidate-specific builder hashes and a clock-adapter import now select only this proven model; all source bits, sampling phases, solver and device gates remain unchanged. Full nominal256-bit loaded simulation, swapped-leaf fault simulation and independent native return-resistance comparison are launched separately in the cloud. Neither model equivalence nor DC diagnosis establishes waveform or full PHY acceptance.
