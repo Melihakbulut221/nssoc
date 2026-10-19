@@ -1,3 +1,7 @@
+## 2026-10-19 — Correct actual XOR overlay via lattice; original DRC failure preserved
+
+First XORcollector physical run39312288662 rejected152markers:76V3.b/76V4.b, all560categories executed. Existing one-row cuts and centered even-row new arrays were half-pitch displaced. New generation uses aligned4x1Via3 and4x3Via4 plus independent actual190nm/220nm cut geometry/spacing assertions; original nativeDRC/LVS/fault gates untouched. Failure receipt and geometry archived. A fresh physical run follows this generator change. Await its actual native result, then fresh parentRC+MIMcomposition and loaded tests only if it passes. TX39308903140/mainchip39293720171 remain running at last check. Cloud-only, no local files.
+
 ## 2026-10-19 — Measured XOR wire drops; physical collector-access overlay launched
 
 Cloud-only. Terminal diagnosis39311024780 passed both original captures: at early worst sample XOR x pullup AVDD2.219458V from2.5V public supply, collector-side pullup1.994027V, failing HBTcollector1.699017V. About0.28Vsupply and0.295Vsame-conductor collector loss; original minVCE0.386162V remains rejected. Two pinned diagnosis receipts committed.

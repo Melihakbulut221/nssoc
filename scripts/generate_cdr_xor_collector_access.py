@@ -69,8 +69,8 @@ def generate(out):
     overlay.shapes(L.layer(30,0)).insert(bridge)
     overlay.shapes(L.layer(50,0)).insert(column)
     via('Metal1','Metal3',x,y,8,1,tag,net)
-    via('Metal3','Metal4',lane,y,4,2,tag,net)
-    via('Metal4','Metal5',lane,by,4,4,tag,net)
+    via('Metal3','Metal4',lane,y,4,1,tag,net)
+    via('Metal4','Metal5',lane,by,4,3,tag,net)
     xs.append(lane)
     plan.append(dict(macro=tag,net=net,device=row['device'],native_wire_component=component,
       native_pin_um=str(pin.transformed(pya.DTrans(px,py+dy))),witnesses=witnesses,
@@ -89,6 +89,23 @@ def generate(out):
  expected={k:(before.get(k,pya.Region())+addition.get(k,pya.Region())).merged()for k in keys}
  def verdict(got):return all((got.get(k,pya.Region())^expected.get(k,pya.Region())).is_empty()for k in keys|set(got))
  assert verdict(after)and all((before.get(k,pya.Region())-after.get(k,pya.Region())).is_empty()for k in keys)
+ # Preserve the existing even-column/odd-row cut lattice. A centered even-row
+ # overlay shifts every new row half a pitch relative to the original one-row array.
+ # Independently check every actual serialized-plan Via3/Via4 cut before native DRC.
+ cut_lattice={}
+ for metal in (49,66):
+  region=after[(metal,0)];count=0
+  for poly in region.each():
+   b=poly.bbox()
+   assert b.width()==b.height()==190 and poly.area()==190*190,('Non-native merged via cut',metal,str(poly))
+   nearby=region.interacting(pya.Region(pya.Box(b.left-220,b.bottom-220,b.right+220,b.top+220)))
+   for other in nearby.each():
+    q=other.bbox()
+    if q==b:continue
+    dx=max(b.left-q.right,q.left-b.right,0);dy=max(b.bottom-q.top,q.bottom-b.top,0)
+    assert dx*dx+dy*dy>=220*220,('Actual via cuts violate native0.22um Euclidean spacing',metal,str(b),str(q))
+   count+=1
+  cut_lattice[str(metal)]=dict(actual_cuts=count,native_width_nm=190,minimum_euclidean_spacing_nm=220)
  faults=[]
  b=pya.DBox(*rect(buses[0]['box_um']))
  # Remove only a newly added edge of the widened bus, beyond the original0.6um half width.
@@ -108,7 +125,7 @@ def generate(out):
  proof=dict(status='PASS_NATIVE_XOR_COLLECTOR_OVERLAY_REQUIRES_DRC_LVS_AND_FRESH_RC',
    original_devices=484,xor_count=2,route_accesses=len(plan),bus_count=len(buses),native_via_stacks=len(stitches),
    original_geometry_retained=True,all_layers_exact=True,serialized_gds_checked=True,
-   reference_and_lef_byte_identical=True,plan=plan,buses=buses,stitches=stitches,translations=translation,rejected=faults,
+   reference_and_lef_byte_identical=True,via_cut_lattice=cut_lattice,plan=plan,buses=buses,stitches=stitches,translations=translation,rejected=faults,
    source_gds_sha256=sha(baseline/(TOP+'.gds')),candidate_gds_sha256=sha(dest/(TOP+'.gds')),
    electrical_accepted=False,qualified_pex=False,full_phy_accepted=False)
  (out/'geometry-proof.json').write_text(json.dumps(proof,indent=2)+'\n')
