@@ -62,3 +62,11 @@ rejected, including both old header lengths in the full-parent reference.
 The next cloud job binds all158 child/public planes to the unsimplified native
 LVS database, independently checks all16 placed leaf drawings and transforms,
 and retains all19 plane fault controls. Wire RC and loaded waves remain open.
+
+## Fresh terminal-plane proof
+
+Run39205373042 passed all158 native plane bindings,51 logical-net identities,
+1394 terminal bindings and19 fault controls. The independent GDS comparison
+passed all16 actual macro placements and all eight native leaf drawings.
+The next job reconstructs whole-parent conductors and intrinsic terminal
+anchors from this new GDS and unsimplified LVS, without reusing old wire RC.
