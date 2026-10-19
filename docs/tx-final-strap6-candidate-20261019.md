@@ -27,3 +27,7 @@ Run39218951433 at0a38fc8312e4d5252038502044653ca493491990 passed full1674-device
 ## Model identity and simulation preflight
 
 Run39219922079 stopped before SPICE because the old builder correctly rejected the new model hashes. Run39220553663 then independently matched all1674 compact devices using their physical positions within named macros, preserved all parameters and terminal topology, and rejected missing-device, changed-parameter, wrong-terminal and swapped-physical-identity corruptions. A separate strap6 builder now admits only the two verified new model hashes; its stimulus, solver, sample phases, device limits and review code are byte-preserved apart from the declared model binding. Its clock adapter only changes the imported builder module. Earlier preflight failures remain recorded.
+
+## Measured static effect
+
+Run39221326203 reduced the two final Nx8 tail return resistances from4.894224347/4.908058529ohm to4.805920344/4.816902225ohm (mean4.901141438 to4.811411285ohm). The sharedR105585 branch remains0.706551ohm and carries the full diagnostic unit current. The local strap improvement is modest; this does not predict a waveform pass. A read-only cloud review now locates the dominant branch endpoints in the exact native extractor coordinates before choosing another geometry change. Full waveform run39221063981 and mainchip route39202263552 are still running.
