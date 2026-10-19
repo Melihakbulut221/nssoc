@@ -1,3 +1,29 @@
+# Latest cloud-only continuation — 2026-10-19, all-leg minimax physical candidate
+
+This push starts tx-v5-minimax-assembly-cloud. It derives a candidate from
+actual strap6 report31macro/60leg geometry: minimize maximum actual leg
+length then total length, fixed16leaf rows/final row, all X positions and
+600um minimum same-column separation. All native child drawings/devices/
+clocks/source bits unchanged. Rail-aware interval-colored signal channels
+replace the previous four-track exceptions. Every regressed leg retained.
+
+Original560DRC/deep-flat1674LVS/five physical fault gates unchanged. New
+independent native GDS checker covers all31placements/all60trunks+stubs/
+frozen children/reference and three injected corruptions. Exact source delta
+pins planner/checker. Do not call a shorter route electrically accepted.
+Inspect exact run/results. After physicalPASS: fresh extracted RC/intrinsic
+composition, original full256bit34ns nominal/fault/PVT electrical gates.
+Do not reuse strap6 RC for this candidate.
+
+Prior data diagnosis39257226392 and trunk256 rejection39226121734 are pinned
+in docs/evidence/tx-strap6-data-network-review-20261019.json and
+tx-trunk256-nominal-rejection-20261019.json. No identical trunk reruns.
+Mainchip39243328773 still live lastcheck; preserve. CDRlocalbus remains
+electrically rejected. Full serialPHY/mainchiproute/finaltiming OPEN.
+Cloud-only; local workspace remains empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, actual data-path bottleneck evidence
 
 Run39257226392/source9655b5c8af84ea2f306b9463d92065bda0da2b4e PASSED

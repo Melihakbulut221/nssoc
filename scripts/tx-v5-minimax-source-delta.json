@@ -1,0 +1,61 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_final_strap6_assembly.py",
+      "baseline_sha256": "96b690a30fb4958aee9d98a2c76b4c9f86c70694ff486f76b904ff72e097589d",
+      "candidate_path": "scripts/cloud_tx_v5_minimax_assembly.py",
+      "candidate_sha256": "7055e92bd0c8c43d93b648fdcecfbd386caf5dbe866cebdca3716c2f4c3ab3f9",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-final-strap6-assembly",
+          "after": "cloud-tx-v5-minimax-assembly",
+          "count": 1
+        },
+        {
+          "before": "nssoc_tx_tree32_budget_balanced_v5_final_strap6_core_v1",
+          "after": "nssoc_tx_tree32_budget_balanced_v5_minimax_core_v1",
+          "count": 1
+        },
+        {
+          "before": "            x=right+40+12*k+shift;y0=stub(child,op,x,4);y1=stub(parent,ip,x,4)",
+          "after": "            x=plan['data_route_plan']['track_x_um'][maps[child][op]];y0=stub(child,op,x,4);y1=stub(parent,ip,x,4)",
+          "count": 1
+        },
+        {
+          "before": "        row_targets={'a':4200.,'b':4800.,'p4_0':3600.,'p4_2':4200.,'p4_1':4800.,'p4_3':5400.}",
+          "after": "        from plan_tx_v5_minimax_rows import plan_candidate,controls\n        baseline_pin=json.loads((ROOT/'docs/evidence/tx-v5-final-strap6-physical-pass-20261019.json').read_text())\n        result['planner_controls']=controls()\n        candidate_plan=plan_candidate(baseline_pin['report']['layout'])\n        result['data_route_plan']=candidate_plan\n        result['planner_sha256']=sha(ROOT/'scripts/plan_tx_v5_minimax_rows.py')\n        row_targets=candidate_plan['row_targets_um']",
+          "count": 1
+        },
+        {
+          "before": "        plan['fast_stage_rows_um']=row_targets;result['fast_stage_rows_um']=row_targets",
+          "after": "        plan['fast_stage_rows_um']=row_targets;result['fast_stage_rows_um']=row_targets\n        plan['data_route_plan']=candidate_plan",
+          "count": 1
+        },
+        {
+          "before": "        result['signal_track_shift_um']={'p8_2p':48.,'p8_2n':48.,'p8_7p':24.,'p8_7n':24.}",
+          "after": "        result['signal_tracks_um']=candidate_plan['track_x_um']",
+          "count": 1
+        },
+        {
+          "before": "Six final-stage macro rows change explicitly; parent routes are regenerated. Other macro rows and all cell sizes stay fixed. Frozen child drawings, devices, topology and acceptance rules unchanged. New RC and loaded waveforms mandatory; no parasitic or electrical pass inferred.",
+          "after": "All60 actual legs are planned together by minimax row placement and rail-aware channel allocation. The16 leaf rows and final row, all macro X coordinates, all native child drawings, devices, selection topology, clocks and acceptance gates stay fixed. Every lengthened upstream connection remains recorded; fresh RC/fullwaves required.",
+          "count": 1
+        },
+        {
+          "before": "        run([app,'python',ROOT/'scripts/check_tx_v5_final_strap6_geometry.py',OUT],'exact-strap6-geometry')\n        result['strap_geometry_delta']=json.loads((OUT/'strap6-geometry-delta.json').read_text())",
+          "after": "        run([app,'python',ROOT/'scripts/check_tx_v5_minimax_geometry.py',OUT],'exact-minimax-geometry')\n        result['geometry_delta']=json.loads((OUT/'minimax-geometry-delta.json').read_text())",
+          "count": 1
+        },
+        {
+          "before": "        run([app,'python',ROOT/'scripts/check_tx_v5_fast_stage_isolated_geometry.py',OUT],'exact-column-geometry')\n        result['geometry_delta']=json.loads((OUT/'column-geometry-delta.json').read_text())\n        assert result['geometry_delta']['status']=='PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT'",
+          "after": "        assert result['geometry_delta']['status']=='PASS_MINIMAX_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n        assert sha(ROOT/'scripts/plan_tx_v5_minimax_rows.py')==result['planner_sha256']",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "helpers": {
+    "scripts/plan_tx_v5_minimax_rows.py": "ef8ac5ebd2020afab13f49dd5360eddd3bcc0f6780e44c1e2c7034a3ea6de967",
+    "scripts/check_tx_v5_minimax_geometry.py": "e6ea60b8c2674ac028154de985d633fa4f2d2154e2047cdd1c020305f39df714"
+  }
+}
