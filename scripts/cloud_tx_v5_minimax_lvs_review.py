@@ -54,7 +54,7 @@ def main():
     if args.native:native();return
     OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT;r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False)
     try:
-        pin=json.loads((ROOT/'docs/evidence/tx-v5-minimax-first-lvs-rejection-20261019.json').read_text())
+        pin=json.loads((ROOT/'docs/evidence/tx-v5-minimax-second-lvs-rejection-20261019.json').read_text())
         selected=['plan.json','layout/result.json','layout/schematic.cir','layout/'+TOP+'.gds',*['physical/lvs/'+n for n in ('result.lvsdb','extracted.cir','deck.log','run.log','audit.json')]]
         prior,proof=reports.restore_report('tx-v5-minimax-assembly',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',selected)
         assert prior==pin['report']and prior['source_head']==pin['source_head'];r['original_source']=proof

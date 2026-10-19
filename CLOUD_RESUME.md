@@ -1,3 +1,19 @@
+# Latest cloud-only continuation — 2026-10-19, second native LVS diagnostic
+
+Corrected minmax39261200416/source348fa4453323f7f70537e70780cadac96154ea20
+still REJECTED by strictdeepLVS,1674vs1674/nativeNoMatch/no extraction warnings.
+Maxroute2260.8um. Independent intendedgeometry/threefaults pass; DRC not reached.
+Do not presume the first two shorts are fixed or beginRC.
+Fullreceipt docs/evidence/tx-v5-minimax-second-lvs-rejection-20261019.json.
+
+This push reruns ONLY the read-only nativeLVS review against this new failed
+GDS/database, through exactsource-delta. Oldfirstfailure/diagnosis remain pinned.
+Inspect new534anchor connectivity to identify remaining short/private-net
+interactions before further geometry edits. Originaldecks/reference unchanged.
+Mainchip39243328773 lastlive. FullPHY/route/finaltiming OPEN; cloud-only.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native two-short physical repair
 
 LVSreview39260578443/source31ba954905a76cbcc954b4e45335e0c6af526559
