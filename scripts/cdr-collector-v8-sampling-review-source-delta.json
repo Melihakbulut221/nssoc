@@ -1,0 +1,22 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_collector_v8_path_review.py",
+      "baseline_sha256": "90347b15d7650636c589a865cef79208b6c752548815bafe7bb6baf7fb249af0",
+      "candidate_path": "scripts/cloud_cdr_collector_v8_sampling_review.py",
+      "candidate_sha256": "c084d6685b385884ff1d457d7533a0ee94069848f349ae18b180c042fe66585d",
+      "edits": [
+        {
+          "before": "cdr-collector-v8-path-review",
+          "after": "cdr-collector-v8-sampling-review",
+          "count": 2
+        },
+        {
+          "before": "        r['original_sampler_reproduction']=repro\n",
+          "after": "        r['original_sampler_reproduction']=repro\n        # Preserve the original three sampling phases. Resolve the actual native\n        # data-pair bases through the same collector witnesses; never fit latency.\n        sampling={};phase_summary={}\n        expected_bases={'a':('dp','dn'),'b':('dp','dn'),'c':('cup','cun'),'d':('dup','dun')}\n        for tag in 'abcd':\n            positive=records[bound['probe_witnesses'][tag+'qn']['device']]\n            negative=records[bound['probe_witnesses'][tag+'qp']['device']]\n            pt={z['terminal']:z for z in positive['terminals']};nt={z['terminal']:z for z in negative['terminals']}\n            assert pt['E']['native_cluster']==nt['E']['native_cluster']\n            nets=tuple(logical[(z['native_cluster'],z['native_net'])]for z in (pt['B'],nt['B']))\n            assert nets==expected_bases[tag],(tag,nets)\n            nodes=[global_node(z['node'])for z in (pt['B'],nt['B'])]\n            input_delta=v(nodes[0])-v(nodes[1]);output_delta=v('xpd.'+tag+'qp')-v('xpd.'+tag+'qn')\n            expected=np.array(prior['expected_samples'][tag]);sign=expected*2-1\n            edges=START+(np.arange(1,256)+(0 if tag=='b'else .5))*UI\n            phases={};records_by_phase={}\n            for phase in (.3,.6,.9):\n                times=edges+phase*UI;output=np.interp(times,t,output_delta)*sign\n                phases[str(phase)]=dict(samples=255,wrong_sign_samples=int(np.count_nonzero(output<=0)),below_100mv_samples=int(np.count_nonzero(output<.1)),minimum_signed_margin_v=float(output.min()))\n                records_by_phase[str(phase)]=dict(time_s=times.tolist(),signed_output_v=output.tolist())\n            assert sum(z['wrong_sign_samples']for z in phases.values())==repro[tag]['wrong_sign_samples']\n            assert sum(z['below_100mv_samples']for z in phases.values())==repro[tag]['below_100mv_samples']\n            assert abs(min(z['minimum_signed_margin_v']for z in phases.values())-repro[tag]['minimum_signed_margin_v'])<1e-12\n            inputs={}\n            for phase in (-.1,0.,.1,.2,.3,.6,.9):\n                times=edges+phase*UI;di=np.interp(times,t,input_delta);cm=np.interp(times,t,(v(nodes[0])+v(nodes[1]))/2)\n                inputs[str(phase)]=dict(time_s=times.tolist(),differential_v=di.tolist(),commonmode_v=cm.tolist(),signed_against_original_expected_v=(di*sign).tolist())\n            sampling[tag]=dict(actual_native_input_devices=[positive['instance'],negative['instance']],actual_native_base_nodes=nodes,logical_base_nets=list(nets),expected_bits=expected.tolist(),output=records_by_phase,inputs=inputs)\n            phase_summary[tag]=dict(output_at_original_phases=phases,input_at_nominal_edge=dict(minimum_signed_v=float(min(inputs['0.0']['signed_against_original_expected_v'])),different_sign_count=sum(x<=0 for x in inputs['0.0']['signed_against_original_expected_v'])))\n        r['fixed_sampling_phase_review']=phase_summary\n        (out/'fixed-sampling-review.json').write_text(json.dumps(dict(samples=sampling,interpretation='Read-only native terminal samples at fixed original edges/phases. Input signs outside acquisition are diagnostic only, not a new acceptance gate. No changed latency, stimulus, threshold or original rejection.'),indent=2)+'\\n')\n",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -44,3 +44,12 @@ source verifier preserves all six topology fault controls. In addition to the
 original physical faults, the new parent LVS check must reject both old2um
 header references against the new layout. Parent proof and fresh full loaded
 transients remain pending; no timing or serial PHY closure is claimed.
+
+## Sampling-path localization
+
+A separate read-only hosted diagnostic partitions the original rejected collector-v8
+waveforms by the unchanged0.3/0.6/0.9UI sample phases. It binds each sampler actual
+data-pair input base to its native collector witness, checks polarity against the
+logical boundary and records terminal voltages around the original acquisition
+edge. Per-phase counts must reproduce every aggregate original sample failure.
+No sample offset or limit is fitted. Diagnostic completion cannot pass the PHY.
