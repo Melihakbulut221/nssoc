@@ -1,3 +1,11 @@
+## 2026-10-19: supply points mapped; actual sampler source-contact repair
+
+CDR supply geometry39295620005/job118207229828 PASS diagnostic only. Summary656962625 SHAde3939b92e947d88823c438f6192c2cc53ee1088b571ee77ddfc590e1a7076db,parts656962703. All91selectedAVDD/AVSSedges mapped without unresolved points. Receipt docs/evidence/cdr-supply-geometry-pass-20261019.json.
+
+MeasuredR15966(33.6787ohm) joins a sampler sb source-column region to native MOS source midpointT001_S onMetal1. Many of the36samplerMOS source accesses share the same long-strip/end-contact pattern. New cdr-sampler-source-access-cloud candidate adds real midpoint1x16M1-to-M3via arrays,1.2umM3bridges and8x1M3-to-M4column ties,36of each access pair. Native source midpoint/column AVSSidentity checked before edits. All484devices/original geometry/reference/LEF retained. No ideal aliases or altered device values. Must pass original560DRC,deep/flat484deviceLVS and all original fault controls, then freshRC and unchanged loaded wave gates.
+
+Mainchip route39293720171 and TX39268446646 remain separate live work; inspect authoritative status before any restart. EVERYTHING CLOUD-ONLY; local workspace remains empty. FullPHY/finaltiming goal remains ACTIVE.
+
 ## 2026-10-19: exact CDR supply resistor-to-layout mapping alongside live route/TX
 
 Mainchip critical-data route39293720171/job118200712004 confirmed in_progress. TX minimax39268446646 nominal118115200444 and swap_leaf_select118115200371 also confirmed in_progress; do not restart based on blank status or unavailable active logs.
