@@ -91,14 +91,20 @@ def main():
             selected.append(entry)
             if d['native_id']in (114,115):solutions[d['native_id']]=(point,volts.copy())
         assert len(selected)==len(prior)
+        # Native IDs are extraction-local and changed with the physical rows.
+        # Compare macro/finger-group distributions, never arbitrary ID pairs.
+        r['return_paths']=sorted(selected,key=lambda x:x['effective_return_resistance_ohm'],reverse=True)
+        old_groups={};new_groups={}
+        for value in prior.values():old_groups.setdefault((value['physical_macro'],value['nx']),[]).append(value['effective_return_resistance_ohm'])
+        for value in selected:new_groups.setdefault((value['physical_macro'],value['nx']),[]).append(value['effective_return_resistance_ohm'])
+        assert set(old_groups)==set(new_groups)
         delta=[]
-        for v in selected:
-            old=prior[v['physical_macro'],v['native_id']]
-            assert old['nx']==v['nx'] and old['instance']==v['instance']
-            before=old['effective_return_resistance_ohm'];after=v['effective_return_resistance_ohm']
-            delta.append(dict(instance=v['instance'],native_id=v['native_id'],physical_macro=v['physical_macro'],before_ohm=before,after_ohm=after,change_ohm=after-before,change_percent=100*(after/before-1)))
-        r['resistance_comparison']=delta
-        r['comparison_scope']='Static metal return resistance only. Original failed waveform is not a measurement of this repaired geometry. No electrical acceptance.'
+        for key in sorted(old_groups):
+            before=sorted(old_groups[key]);after=sorted(new_groups[key]);assert len(before)==len(after)
+            def summarize(values):return dict(min_ohm=min(values),max_ohm=max(values),mean_ohm=sum(values)/len(values))
+            delta.append(dict(physical_macro=key[0],nx=key[1],emitter_count=len(before),before=summarize(before),after=summarize(after)))
+        r['resistance_comparison_by_macro_finger_group']=delta
+        r['comparison_scope']='Static metal return resistance distribution per physical macro and finger count. Extraction IDs are not stable across layouts; no one-to-one device correspondence or dynamic electrical acceptance is claimed.'
         assert set(solutions)=={114,115}
         pa,va=solutions[114];pb,vb=solutions[115];ab=float(va[index[pb]]);ba=float(vb[index[pa]]);assert abs(ab-ba)<1e-8*max(1,abs(ab))
         r.update(status='COMPLETE_NATIVE_RETURN_DC_GRAPH_DIAGNOSIS_NOT_WAVEFORM_ACCEPTANCE',source=source,verified_files=receipts,native_census=dict(counts),return_graph_nodes=len(component),return_graph_resistors=len(edges),emitter_points=len(selected),return_paths=sorted(selected,key=lambda x:x['effective_return_resistance_ohm'],reverse=True),reciprocity=dict(inject114_observe115_ohm=ab,inject115_observe114_ohm=ba),method_sha256=sha(Path(__file__)))

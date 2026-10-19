@@ -5,7 +5,7 @@
       "baseline_path": "scripts/cloud_tx_v5_return_repair_resistance.py",
       "baseline_sha256": "817e80393e1f48ff8dfc4ae37466975361b0ec0e718335416566573d2dec611c",
       "candidate_path": "scripts/cloud_tx_v5_fast_stage_isolated_return_resistance.py",
-      "candidate_sha256": "6091c00969e1caa2212e43e8adc4fd33e94958dfaf201c0f9c1afc34bab8d5df",
+      "candidate_sha256": "4661b4749efdb059b9b4ac0bcbfb6c7a83354acd04f0dd7843a524e17d01c5bf",
       "edits": [
         {
           "before": "OUT=ROOT/'hw/soc/out/cloud-tx-v5-return-repair-resistance'",
@@ -25,6 +25,11 @@
         {
           "before": "assert all(sha(inputs/p)==v['sha256']for p,v in receipts.items());r['sources_unchanged']=True",
           "after": "assert all(sha(inputs/p)==v['sha256']for p,v in receipts.items());assert sha(sourcepath)==r['source_receipt_sha256'];r['sources_unchanged']=True",
+          "count": 1
+        },
+        {
+          "before": "        delta=[]\n        for v in selected:\n            old=prior[v['physical_macro'],v['native_id']]\n            assert old['nx']==v['nx'] and old['instance']==v['instance']\n            before=old['effective_return_resistance_ohm'];after=v['effective_return_resistance_ohm']\n            delta.append(dict(instance=v['instance'],native_id=v['native_id'],physical_macro=v['physical_macro'],before_ohm=before,after_ohm=after,change_ohm=after-before,change_percent=100*(after/before-1)))\n        r['resistance_comparison']=delta\n        r['comparison_scope']='Static metal return resistance only. Original failed waveform is not a measurement of this repaired geometry. No electrical acceptance.'\n",
+          "after": "        # Native IDs are extraction-local and changed with the physical rows.\n        # Compare macro/finger-group distributions, never arbitrary ID pairs.\n        r['return_paths']=sorted(selected,key=lambda x:x['effective_return_resistance_ohm'],reverse=True)\n        old_groups={};new_groups={}\n        for value in prior.values():old_groups.setdefault((value['physical_macro'],value['nx']),[]).append(value['effective_return_resistance_ohm'])\n        for value in selected:new_groups.setdefault((value['physical_macro'],value['nx']),[]).append(value['effective_return_resistance_ohm'])\n        assert set(old_groups)==set(new_groups)\n        delta=[]\n        for key in sorted(old_groups):\n            before=sorted(old_groups[key]);after=sorted(new_groups[key]);assert len(before)==len(after)\n            def summarize(values):return dict(min_ohm=min(values),max_ohm=max(values),mean_ohm=sum(values)/len(values))\n            delta.append(dict(physical_macro=key[0],nx=key[1],emitter_count=len(before),before=summarize(before),after=summarize(after)))\n        r['resistance_comparison_by_macro_finger_group']=delta\n        r['comparison_scope']='Static metal return resistance distribution per physical macro and finger count. Extraction IDs are not stable across layouts; no one-to-one device correspondence or dynamic electrical acceptance is claimed.'\n",
           "count": 1
         }
       ]
