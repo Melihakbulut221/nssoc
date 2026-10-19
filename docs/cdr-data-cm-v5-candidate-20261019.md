@@ -70,3 +70,28 @@ Run39205373042 passed all158 native plane bindings,51 logical-net identities,
 passed all16 actual macro placements and all eight native leaf drawings.
 The next job reconstructs whole-parent conductors and intrinsic terminal
 anchors from this new GDS and unsimplified LVS, without reusing old wire RC.
+
+## Original sampler failures localized without changing gates
+
+Run39205681729 successfully re-read both original collector-v8 captures, traced
+the actual slave bases through the master pair and native input resistors, and
+reproduced every original aggregate error at the unchanged0.3/0.6/0.9UI phases.
+The earlier failed diagnostic39205141662 is preserved separately.
+
+At nominal early, sampler A has121 wrong signs at0.3UI and zero at0.6/0.9UI,
+but37 and8 samples respectively still miss the100mV margin. Sampler B remains
+wrong91 times at each later phase. At nominal late, sampler B has128 wrong
+signs at0.3UI and zero later, whereas sampler A remains wrong69 and61 times
+at0.6/0.9UI. Both retimed samplers C/D still fail at all three phases. This
+is a measured settling/acquisition problem, not an opportunity to discard the
+early sampling phase. No gate was relaxed.
+
+The unchanged sampler leaf is1588.695um wide by191.63um high; its recorded
+clock spans are1002.405um and1263.805um. These measured geometric spans warrant
+checking clock distribution and master/slave path delay against the native
+waveforms before selecting the next placement/interconnect repair. Geometry
+alone does not prove a delay or prescribe a passing replacement.
+
+Current cloud work: new data-cm-v9 wire inputs39205842770; full-chip logic
+resize routing39202263552. The physical data-header repair remains electrically
+unproven until fresh full native RC/MIM composition and original loaded waves.
