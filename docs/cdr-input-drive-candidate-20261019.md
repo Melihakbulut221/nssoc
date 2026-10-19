@@ -62,3 +62,10 @@ The checker now freezes every primitive region with `flatten()` before merging a
 Sampler run39210361374 at3516bc984adc46b99ae5cc501bac861dec5db647 passed exact native drawing comparison with three corruption controls,560-category DRC,unsimplified deep/flat54deviceLVS and16physical fault controls. Retime run39209600711 at37ef8347e55818db81ccffd37b68e01ac8ec52bf passed560-category DRC,unsimplified deep/flat12deviceLVS and7physical fault controls. Full reports and SHA256-bound receipts accompany the child manifest. Neither leaf result is electrical/fullPHY acceptance.
 
 The input-drive-v10 parent substitutes only these two leaf types in the16macro/484device/25port hierarchy, preserving the measured2.4um data-header repair and six other leaf types. It reruns original native physical gates plus explicit rejection of rolled-back16sampler resistor widths,8retime resistor widths and4retime MIM dimensions. Fresh full-parent wire/MIM extraction and original loaded nominal/fault simulations remain mandatory. All computation runs on GitHub-hosted runners; local workspace remains empty.
+
+
+## Whole-parent native physical pass and hosted extraction chain
+
+Parent run39211268312 passed at6022f4da7d52df977974e2cbf894bd59a54a53a3:560-category DRC, unsimplified deep/flat484device transistor LVS and all9 physical corruption controls. The original data-header rollback control and three new input/retime rollback controls all reject. The receipt stores the complete report and immutable release digests.
+
+The hosted extraction workflow now runs planes, then wire inputs, then independent model-binding and raw wire-RC jobs. Each dependent job reads the exact same-run published summary/parts manifest, binds the source SHA, and delegates archive integrity checks to the original restore methods. Original158plane/1394terminal geometry checks,12model controls and13raw-RC controls are retained. Failures stop dependent work and preserve raw outputs. Full MIM-aware extraction, loaded sampling and phase/device tests still follow; neither physical success nor wire-only RC means completePHY acceptance.
