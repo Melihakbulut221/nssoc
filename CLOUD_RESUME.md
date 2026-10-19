@@ -1,3 +1,33 @@
+# Latest cloud-only continuation — 2026-10-19, folded sampler retry
+
+All work remains on GitHub-hosted runners; local workspace empty. This commit
+starts the corrected cdr-sampler-folded-physical-cloud run. Find its run by this
+commit SHA. Do not repeat any live run.
+
+CDR width experiment39228293871 completed: all four width8/16 early/late nominal
+cases rejected original data gates; all116HBT/46MOS safety gates passed.
+Comparison39230396864 verified original bits/phases/vectors and preserved all
+four summaries. Width8 wrong totals early745/late670; width16 early719/late665;
+baseline796/759. Both changed widths regress early sampler A worst timing to the
+measurement cap. Neither is adopted in layout. Full immutable comparison:
+[receipt](docs/evidence/cdr-width-sensitivity-comparison-20261019.json).
+
+New sampler retains original4um dividers and exact54 native drawings, folds37
+primitives into two rows to shorten the >1mm clock routes. First run39231848138
+failed the unchanged20percent clock-span planning gate before GDS generation;
+its report is preserved. Corrected candidate puts all8 actual clock-selector
+HBTs first in row2 while retaining independent columns and original DRC/LVS/fault
+checks. See [candidate](docs/cdr-folded-sampler-candidate-20261019.md).
+On physical success, fresh parent assembly and complete RC/MIM extraction plus
+original full loaded waves are mandatory; placement span is not electrical pass.
+
+Verified live TX strap6 fullwave39221063981, TX trunk256 fullwave39226121734 and
+mainchip logic-resize route39202263552 continue unchanged. Preserve their jobs.
+All three overall full serial PHY, routed mainchip signoff and final setup/hold
+goals remain OPEN. No new local artifacts or computation.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, input-drive v10 and TX return repair
 
 Use this entry before the historical entries below. All CAD, tests, waveforms,

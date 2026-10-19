@@ -250,8 +250,15 @@ def main():
     assert all(a>b for a,b in zip(history,history[1:]))
     # Fold only placement into two rows; keep every native device and spacing.
     # Reserve all M4/TM1 escape columns globally, including the opposite row.
+    # Keep both clock polarities in the leading part of row2; a blind half split
+    # left two master selectors at the far end of row1 and failed the span gate.
+    clock_rows=[r for r in rows if set(r["nets"])&{"CLKP","CLKN"}]
+    ordinary=[r for r in rows if not(set(r["nets"])&{"CLKP","CLKN"})]
+    assert len(clock_rows)==8 and all(r["kind"]=="hbt"for r in clock_rows)
+    split=(len(rows)+1)//2
+    rows=ordinary[:split]+clock_rows+ordinary[split:]
+    assert sorted(rows,key=lambda r:r["name"])==sorted(original_rows,key=lambda r:r["name"])
     folded = {}; reserved = []; right_by_row = [0., 0.]
-    split = (len(rows)+1)//2
     for index, row in enumerate(rows):
         row_index = 0 if index < split else 1
         local_index = index if row_index == 0 else index-split
@@ -284,6 +291,7 @@ def main():
         minimum_global_escape_column_gap_um=5.,positions=folded,
         signal_horizontal_spans_um=folded_spans,original_single_row_spans_um=baseline_spans,
         rightmost_native_primitive_um=max(right_by_row),
+        actual_order=[r["name"]for r in rows],clock_primitives=[r["name"]for r in clock_rows],
         scope="Real two-row geometry with unchanged intrinsic devices. Horizontal spans are not delay or electrical acceptance.")
     previous_right_by_row = [0.,0.]
     for index, row in enumerate(rows):
