@@ -1,3 +1,9 @@
+## 2026-10-20 setup repair expanded to all reported paths with hold screening
+- Pathreview39328156931 passed unchanged parser/source guards. Slow critical data path has o21ai/nand4 output delays3.042365/5.439997ns; fast critical path includes weak a22oi omitted by the earlier selector.
+- New onehot-coverage-data-prepare reads all saved max/min path samples, excludes outputs on observed hold paths<=0.2ns, and selects up to128 eligible weak data drivers. All unselected candidates and exclusions retained. This is not exhaustive hold safety.
+- Source39293720171 exactODB782c6fb2990e35dd422f817eaab7a5aa7a98bab35b8da1ee2c15dcc2f8bc3d90 and all150291cells retained; existing native geometry/equation/inversion checks remain. Next inspect preparation then route with full ancestry and original all-corner gates.
+- TX39308903140 remains a separate active simulation. CDR/PLL fullPHY work remains open. All work stays cloud-only.
+
 ## 2026-10-20 critical data route completed; review new max/min paths
 - Route39293720171 passed execution, not timing acceptance. Native DRC0/disconnected0;25antenna nets remain.
 - SetupWNS slow/typ/fast -18.542956/-5.466296/-2.539953ns improved from -20.665470/-7.882026/-3.799566ns. Setupcounts9691/7619/3917; holdcounts6/9/17. Worsthold -0.451715/-0.387717/-0.338548ns all regressed.
