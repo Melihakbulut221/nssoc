@@ -1,3 +1,21 @@
+# Latest cloud-only continuation — 2026-10-19, minimax composition/native identity
+
+Composition39267396114/source53b14ab7e3a5d924d7535840b3ab9c69fec3fd60 PASSED all1674devices/116611R/77516C,
+sixcompositionfaults,377native-net recovery and124legs/372data-base binding
+with twoactualendpointfaults. Fullpin docs/evidence/tx-v5-minimax-composition-pass-20261019.json.
+Summary656482742 SHAf4a0e91e091d67b5cb60435ad3213d9ed3463592727445b9df2e64755a9b534c; parts656482865 SHA243f07d70a52ac2f90a7817c22f75c529bdf6717860a349501a5814fdd95f5ba.
+
+This push starts tx-v5-minimax-model-compare-cloud: independently anchored
+primitive localgeometry establishes deviceidentity across rowmovement.
+Require unchanged parameters/bijective topology and threefaults+identityswap.
+Then adapt only exactmodelSHA bindings in original strap6 builder/clockadapter,
+update guard with this comparison receipt, and start original full34ns256bit
+nominal/swap-leaf fault waveforms. Preserve allclocks/phases/devicevoltage
+gates; freshlayout RC only. Mainchip39243328773 lastlive.
+FullPHY/route/timing OPEN; cloud-only/localempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, fresh minimax RC/composition
 
 Extraction39266340959/source6c9d4e17692580caa4154781d714cdf18b228792 PASSED actualnative graph/C conservation
