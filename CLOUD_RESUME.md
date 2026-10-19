@@ -1,3 +1,11 @@
+## Active checkpoint: timing-priority TX physical PASS; CDR source-contact nominal rejection
+
+TX actual layout39304550527 passed native560DRC/deep+flat1674LVS/original faults. Final-stage maximum2268.8to1090.8um; global2374um unchanged.24upstream legs lengthened, total90615.2um. New tx-v5-timing-priority-extraction-cloud starts fresh native RC, same terminal/graph/C conservation and13corruptions. Continue composition, topology equivalence and original full loaded signal/interface/device gates after extraction. Receipt docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json.
+
+CDR fullwave39302582087 completed all four cases. Nominal early/late rejected with zero numerical diagnostics. Early sampler errors69/129/186/339; late89/0/188/319.6early and2late HBTs fall below0.4V; worst xpd.xd0129 has0.386162V/0.386461V. Earlyphase0.0204668V and38.2316uA fail; latephase0.0422986V and88.9548uA pass, data/device stillfail. Both negative fault controls detect failures. All4receipts and comparison doc are committed. Do not promote this candidate over prior safe parentAVDDv13 or rerun unchanged. Next CDR repair must localize actual failing devices/headroom and remaining data/retime delays with original gates.
+
+Mainchip route39293720171 and TX swap_leaf_select118115200371 remain live at last check. All work/artifacts cloud-only. Full serialPHY and final chip timing remain open.
+
 ## Active checkpoint: receiver-stride-priority physical TX layout
 
 Native minimax data review39303527602 passed passive solver controls and actual124leg/372base binding. Final inputs carry about0.30–0.35pF incident wire C and24–27ohm metal effective resistance; original native rppd devices remain in circuit. Actual a-to-final longest leg2268.8um and b-to-final1690.8um. Combined with failed final/level4 bit gates and intact native clock edges, this motivates a geometry experiment, not a proven causal diagnosis.
