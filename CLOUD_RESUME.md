@@ -1,3 +1,28 @@
+# Latest cloud-only continuation — 2026-10-19, physical parent AVDD bypass
+
+Completed native localbus diagnosis39269746336/sourcea78fadb9 reproduces both
+failed original full captures and all116HBT gates unchanged. Full early/late
+receipts under docs/evidence/cdr-localbus-v12-native-diagnosis-*.json.
+Sampler load supply-wire loss averages220–230mV; HBT129/147 still below0.4V.
+The actual parent has ~930um-long 3.2um-wide TM2 AVDD branches.
+
+This push starts cdr-parent-avdd-v13-cloud: eleven actual parent AVDD bypasses
+using32um TM2 gap feeds,16um TM1 side columns,native4x4/4x1 vias.
+Exact passed parent is restored and regenerated geometry compared across all
+layers. All484 intrinsic devices/16macros/signals/ports/reference remain.
+Independent overlay reconstruction/three faults precede unchanged560DRC,
+deep/flat484LVS/nine original faults. Do not call candidate accepted until
+results prove it. Then fresh native MIM-aware RC/composition and original
+early/late/fullfault waveforms are mandatory; no old RC reuse.
+
+TX fullwave39268446646 jobs118115200444/118115200371 currently IN_PROGRESS.
+Mainchip route39243328773/job118029134944 currently IN_PROGRESS. Preserve.
+FullserialPHY/mainchiproute/finaltiming OPEN. Latest user says allcloudonly;
+localworkspace remains empty, no local CAD/test/archive activity.
+Resolve the new physicalrun before preparing downstream extraction.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, localbus CDR native diagnosis
 
 TX minimax fullwaves39268446646/job118115200444 nominal and118115200371
