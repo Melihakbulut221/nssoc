@@ -55,3 +55,10 @@ The pipeline retains158 planes/51 logical nets/1394 native terminals, independen
 16macro/eight-child geometry checks, source-pin recovery on identical primitives
 and all prior binding/RC corruption tests. Actual R/C census will be measured,
 not copied from the prior layout. No timing or full-PHY acceptance follows yet.
+
+Fresh extraction39235222638 passed native planes, wire-inputs, device binding
+and raw wire RC audits with all original fault controls. All four complete
+source-bound receipts are committed. The full-mask MIM capture now uses this
+actual new parent RC and device binding, preserving all11 intrinsic MIM devices
+and their native terminal ownership. Wire-only RC is not a qualified full-PHY
+parasitic model; full-mask audit/composition and loaded waves remain required.

@@ -1,3 +1,27 @@
+# Latest cloud-only continuation — 2026-10-19, folded extraction passed
+
+Folded-v11 extraction39235222638(source22274fd866643abd5344a4e2c7a07f2fe72e9e4e)
+PASSED all four stages: native planes, wire-inputs, device binding and raw RC.
+All four full receipts docs/evidence/cdr-retimed-folded-v11-*-pass-20261019.json
+are committed; use actual report census, never the old layout values.
+
+This commit launches cdr-folded-v11-mim-parent-rc-cloud. Exact new parent masks,
+11intrinsic MIMs, native terminal ownership and original5capture controls.
+After capture, inspect measured R/C counts then preserve strict full-mask/raw
+audit and composition gates before original full256bit loaded waves. The wire
+capture pass is not full RF/body PEX qualification or an electrical pass.
+
+Parent39234425893 and sampler39232996365 passed physical gates. All analog
+circuits unchanged; width8/16 diagnosis rejected and never adopted. Shorter
+clock spans and some increased internal spans require real loaded wave proof.
+
+Existing TX strap6 fullwave39221063981,TX trunk256 fullwave39226121734 and
+mainchip logic-resize route39202263552 remain separate live checks; do not
+restart healthy jobs. All three full serialPHY/mainchip signoff/finaltiming
+goals OPEN. All CAD/tests/artifacts cloud-only; local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded CDR parent pass
 
 Full folded-v11 parent39234425893(source4128c1eedf61e8039b6eb761cea38cec00b3a375)
