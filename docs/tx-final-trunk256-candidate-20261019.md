@@ -13,3 +13,7 @@ Run39222629402 at3e0b1192107823f3e80bdbfb332da8ea761bf038 passed the exact whole
 ## Fresh native RC pass
 
 Run39223805006 ateebfce6fdadef5921116bae53483407772b73ddf passed the original native graph, terminal ownership, capacitance conservation and13 raw-corruption controls. It extracted116611 resistors and77514 capacitors across377 metal components with1674 devices and3262 probes. Counts match the predecessor, but values are newly extracted from the wider trunk. Full-model composition, measured return resistance and unchanged loaded waveform gates remain pending; no electrical improvement is inferred from the extraction pass.
+
+## Full model composition
+
+Run39224815994 at aa24170d0ed625a57690805858ba09769edcf1aa passed full1674-device composition with the fresh116611R/77514C graph, six original composition fault controls and physical binding of124 input legs to372 data bases. No ideal intermacro aliases or duplicate child parasitics were introduced. Compact topology equivalence against the verified strap6 model is the next gate before updating the source-bound waveform builder. The electrical result is still unproven.
