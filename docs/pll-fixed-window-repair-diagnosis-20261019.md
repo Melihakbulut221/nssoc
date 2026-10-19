@@ -30,3 +30,8 @@ physical pump/filter/PFD repair and then rerun unchanged full native gates.
 Run [39278718492](https://github.com/Melihakbulut221/nssoc/actions/runs/39278718492) stopped before analysis at the baseline SHA256 guard. Its failure and published FAIL_MISSING_REPORT remain retained. The recorded baseline hash was for the immutable source plus one extra final LF. The actual baseline is unchanged from commit a88f83134de3c47b396c86c39f5c7edd3caf40e4.
 
 The manifest now pins the actual baseline bytes. Removing the extra final LF from the candidate makes it exactly the declared transformation of that baseline. No Python statements, native model, acquisition windows, numerical thresholds or original rejection were changed. The cloud retry must pass the same exact source guard, reproduce the original capture and then perform the diagnostic review. This correction is not PLL acceptance.
+
+
+## Top-level deck parser correction
+
+Source inspection identified a second diagnostic-only error before the retry ran: `review_cloud_pll_loop.records` requires one `.subckt`/`.ends` model and accepts only X/R/C cards. It cannot parse the native test deck, which has a SPICE title, sources and a control section. The new helper uses a distinct test-deck lexical reader that joins continuation cards and excludes control commands. The strict native model parser remains unchanged. A cloud preflight checks source/instance cards, continuation handling and four malformed-deck rejections before restoring the large capture. These checks do not change any analog analysis or acceptance criterion.

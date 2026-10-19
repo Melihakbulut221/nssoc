@@ -30,6 +30,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/cloud_pll_c8_half_loop_review.py scripts/cloud_pll_c8_native_cycle_review.py scripts/check_pll_c8_half_loop_review_sources.py
           python3 scripts/check_pll_c8_half_loop_review_sources.py
+          PYTHONPATH=scripts python3 -c "from cloud_pll_c8_native_cycle_review import bench_controls; print(bench_controls())"
           python3 scripts/cloud_pll_c8_half_loop_review.py
       - name: Preserve native results and failures
         if: always()

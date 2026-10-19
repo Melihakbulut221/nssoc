@@ -1,3 +1,7 @@
+## 2026-10-19: PLL diagnostic deck parser correction
+
+While reviewing queued PLL retry39281586716, found the new helper incorrectly used the strict single-subcircuit parser on a top-level test deck. Dedicated title/control/continuation-aware reader and cloud preflight controls now added; original model parser and original 800–900ns/900–1000ns gates unchanged. Discover fresh pll-c8-half-loop-review-cloud run at this commit. Older preflight failure39278718492 remains retained. CDR/TX/mainchip jobs are unaffected. All calculations/files remain in GitHub.
+
 ## 2026-10-19: cloud PLL preflight repair and CDR negative control
 
 All work remains cloud-only; local workspace stays empty. PLL review run39278718492 failed before analysis because the baseline SHA256 accidentally included an extra final LF. Immutable baseline history verified; only candidate EOF and byte pins corrected, same source guard and original acquisition failures retained. The workflow change starts a fresh diagnostic run; discover by the new commit and pll-c8-half-loop-review-cloud.yml. Failure receipt: docs/evidence/pll-c8-half-loop-review-source-pin-failure-20261019.json.

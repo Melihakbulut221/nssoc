@@ -4,7 +4,43 @@
 from collections import Counter,defaultdict
 import numpy as np
 from cloud_pll_terminal_diagnosis import crossing_times
-from review_cloud_pll_loop import records
+
+def bench_records(text):
+    # A SPICE test deck starts with a title, unlike a single .subckt model.
+    # Control commands are not circuit elements and must not enter the inventory.
+    lines=text.splitlines();assert lines
+    rows=[];control=False
+    for line in lines[1:]:
+        line=line.strip()
+        if not line or line.startswith('*'):continue
+        key=line.split()[0].lower()
+        if key=='.control':
+            assert not control;control=True;continue
+        if key=='.endc':
+            assert control;control=False;continue
+        if control:continue
+        if line.startswith('+'):
+            assert rows;rows[-1]+=line[1:].split()
+        else:rows.append(line.split())
+    assert not control
+    return rows
+
+def bench_controls():
+    example='\n'.join(['native acquisition test','* comment','Vref reference 0 DC 0',
+        'Xloop reference vctrl','+ parent845','.control','reset','Vignored not_a_source 0 99',
+        '.endc','.end'])
+    expected=[['Vref','reference','0','DC','0'],['Xloop','reference','vctrl','parent845'],['.end']]
+    assert bench_records(example)==expected
+    rejected=[]
+    for name,bad in [('orphan_continuation','title\n+ node'),
+                     ('unterminated_control','title\n.control\nrun'),
+                     ('orphan_endc','title\n.endc'),
+                     ('nested_control','title\n.control\n.control\n.endc')]:
+        try:bench_records(bad)
+        except AssertionError:rejected.append(name)
+        else:raise AssertionError('Undetected parser fault: '+name)
+    return dict(positive_title_continuation_and_control_exclusion=True,rejected=rejected,
+        scope='Test-deck lexical inventory only; native model parser and electrical gates unchanged')
 
 def observe(data,cycles,inventory,bench):
     t=data['time'];up=data['v(up)'];down=data['v(down)'];control=data['v(vctrl)']
@@ -53,7 +89,7 @@ def observe(data,cycles,inventory,bench):
             period_control_correlation=corr,control_range_v=[float(v.min()),float(v.max())],
             control_state_partition=state_stats,pfd_threshold_crossings_relative_s=edge_rows))
     assert len(rows)>70
-    public=inventory['ports'];cards=records(bench)
+    public=inventory['ports'];cards=bench_records(bench)
     calls=[c for c in cards if c[0].lower()=='xloop'];assert len(calls)==1 and len(calls[0])==len(public)+2
     mapping=dict(zip(public,calls[0][1:-1],strict=True))
     def voltage(node):
@@ -86,7 +122,7 @@ def observe(data,cycles,inventory,bench):
     assert incident
     external=[c for c in cards if c[0][0].lower()in ('r','c','i','v') and len(c)>2 and c[0].lower()not in ('run','reset','resume')]
     return dict(status='COMPLETE_NATIVE_PLL_CYCLE_AND_CONTROL_NODE_OBSERVATIONS_NOT_ACCEPTANCE',
-        cycles=rows,control_component_wire_capacitance=dict(incident_sum_f=sum(x['capacitance_f']for x in incident),
+        bench_parser_controls=bench_controls(),cycles=rows,control_component_wire_capacitance=dict(incident_sum_f=sum(x['capacitance_f']for x in incident),
           incident=incident,internal_resistor_connected_component_caps=internal,
           scope='Resistor connectivity inventory only. Mutual capacitances are not grounded; the sum is not effective loop capacitance or an RC time constant.'),
         actual_top_level_source_and_passive_cards=external,actual_parent_port_binding=mapping,
