@@ -1,3 +1,18 @@
+## 2026-10-20 — Wire24 composition passed; launch loaded native waves
+Composition39343496964 passed, source1ff43e1646adadb7deae1a1cdc9c683f15d36cb8.
+Summary657750493 SHA4fddd0e0d4a865be5f3e62db351414d1c0cb3823f619a47c02e887e7bc40fb2b;
+parts657750608 SHAc751ced8fe47f51ee0f65975878b198722427c637f7e587f5f6a4e2a0b57ca9a.
+Model compact d04cfc43564d69e5d09fe7629abc65f501f7497062a2233f6a106630b4efc720;
+wire92797a39882e9ace4a11d393f44b5c1494540001723746254a871b3965f16dca.
+All1674device/116611R/77538C composition gates, six faults,377components and
+124legs/372bases passed. New tx-fast-wire24-loaded-wave workflow runs native
+topology comparison and four real corruption checks before unchanged nominal
+and swapped-select transient jobs. No PHY/timing acceptance inferred yet.
+Mainchip39331918238 already active; do not duplicate. CDR sampling still fails;
+next independent work is actual CDR retime geometry/loading repair.
+Cloud-only; no local checkout, CAD or waveform artifacts.
+
+
 ## 2026-10-20 — Wire24 composition download repair
 Composition39343145933 rejected before CAD at input SHA check: curl fetched
 GitHub API asset metadata instead of the binary (no octet-stream header).
