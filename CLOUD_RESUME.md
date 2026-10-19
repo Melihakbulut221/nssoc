@@ -1,3 +1,10 @@
+## 2026-10-20 native CDR retime input-chain loss diagnosis
+- New cdr-xor-v15-retime-chain replays both original39320016317fullwaves and all prior116HBT/4sampler/latch checks.
+- Bind exact A/B collectors -> ac/bd resistor/shunt/MIM -> C/D sampler series/bias -> native master bases by physical ownership and native clusters, with three actual graph corruption controls.
+- Measure differential/common-mode and terminal voltage differences at unchanged offsets. No inferred linearized currents, changed clocks or acceptance relaxation. Use results to choose a real circuit/interconnect repair.
+- Mainchip coverage route39331918238/source5a623eb7b9e873093809884e8bde6d36d20e6ca5 is active; do not duplicate. Proven128buffers (124buf16/4buf8), all150291oldcells preserved, maxdistance62.07um. TX39308903140 remains separate.
+- Cloud-only; full serialPHY and final timing remain open.
+
 ## 2026-10-20 coverage preparation passed; fresh routed timing next
 - Preparation39330987654/sourcef98f85cc304119f256c1406ffda6774f5d43d32c PASS:128positive buffers (124buf16/4buf8), all150291original cells/geometry preserved, maxdriver-input62.07um<=80. Native equation/controls and actual inversion rejection passed.
 - CandidateODB6e9ee73448e4cfb0e63129984278b084605f314bc5caa5054b0a72a1e66a5a3b; netlist97cdc9677282fa0330a752de12b66be3f5ab1659e02d2245184b69ab8d98e97e.
