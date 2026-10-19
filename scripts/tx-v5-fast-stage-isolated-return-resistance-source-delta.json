@@ -1,0 +1,33 @@
+{
+  "scope": "Read only current verified native wire graph. Original grounded conductance solve, KCL/energy/reciprocity checks and comparisons unchanged. No new transient or acceptance.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_return_repair_resistance.py",
+      "baseline_sha256": "817e80393e1f48ff8dfc4ae37466975361b0ec0e718335416566573d2dec611c",
+      "candidate_path": "scripts/cloud_tx_v5_fast_stage_isolated_return_resistance.py",
+      "candidate_sha256": "6091c00969e1caa2212e43e8adc4fd33e94958dfaf201c0f9c1afc34bab8d5df",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-tx-v5-return-repair-resistance'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-tx-v5-fast-stage-isolated-return-resistance'",
+          "count": 1
+        },
+        {
+          "before": "        inputs=ROOT/'hw/soc/out/cloud-tx-v5-return-repair-assembly'\n        source=json.loads((inputs/'composition-result.json').read_text())\n        assert source['status']=='PASS_ACTUAL_TREE1674_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT'\n        assert source['source_head']==os.environ['GITHUB_SHA']\n        assert source['source']['source_run']==39135318667\n        assert all(sha(inputs/p)==v for p,v in source['outputs'].items())\n        receipts={p:dict(sha256=sha(inputs/p)) for p in ['composition-result.json','binding96/binding01.json','layout/result.json','wire96/device-locations01.json','wire96/tree1674-wire01.spice']}\n        binding=json.loads((inputs/'binding96/binding01.json').read_text())\n        interface=json.loads((inputs/'wire96/all-interface-probes.json').read_text())\n        layout=json.loads((inputs/'layout/result.json').read_text())\n        locations=json.loads((inputs/'wire96/device-locations01.json').read_text())\n        for rel in ['layout/result.json','wire96/device-locations01.json']:\n            expected=[v for p,v in interface['inputs'].items() if p.endswith('/'+rel)]\n            assert expected==[sha(inputs/rel)]\n",
+          "after": "        sourcepath=ROOT/'docs/evidence/tx-v5-fast-stage-isolated-composition-pass-20261018.json'\n        source=json.loads(sourcepath.read_text())\n        assert source['source_run']==39157450167 and source['source_head']=='aa94559c5be215eae142e4146d3fde6c35e6994d'\n        assert source['counts']==dict(devices=1674,R=116611,C=77514)\n        assert source['model_sha256']['wire']=='5ba39517abf8f1d0d85bdb36501d6ddd5ab6c52b4fcb54d1af2fd0ee927f3509'\n        assert len(source['controls'])==6\n        r['source_receipt_sha256']=sha(sourcepath)\n        archive=OUT/'source.tar.gz';fetch(source['url'],source['sha256'],archive);assert archive.stat().st_size==source['bytes']\n        inputs=OUT/'inputs';inputs.mkdir();receipts={}\n        with tarfile.open(archive)as tar:\n            names=tar.getnames()\n            def extract(rel,expected):\n                member='cloud-tx-v5-fast-stage-isolated-assembly/'+rel\n                assert names.count(member)==1\n                data=tar.extractfile(member).read();assert hashlib.sha256(data).hexdigest()==expected\n                path=inputs/rel;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)\n                receipts[rel]=dict(sha256=expected,bytes=len(data),member=member)\n                return data\n            binding=json.loads(extract('binding96/binding01.json',source['outputs']['binding96/binding01.json']))\n            interface=json.loads(extract('wire96/all-interface-probes.json',source['outputs']['wire96/all-interface-probes.json']))\n            assert interface['status']=='PASS_ALL124_PHYSICAL_INPUT_LEGS_AND372_DATA_BASES'\n            def dependency(rel):\n                hits=[h for p,h in interface['inputs'].items()if p.endswith('/'+rel)];assert len(hits)==1\n                return json.loads(extract(rel,hits[0]))\n            layout=dependency('layout/result.json');locations=dependency('wire96/device-locations01.json')\n            extract('wire96/tree1674-wire01.spice',source['model_sha256']['wire'])\n        archive.unlink()\n",
+          "count": 1
+        },
+        {
+          "before": "dict(X=1674,R=116611,C=77471)",
+          "after": "dict(X=1674,R=116611,C=77514)",
+          "count": 1
+        },
+        {
+          "before": "assert all(sha(inputs/p)==v['sha256']for p,v in receipts.items());r['sources_unchanged']=True",
+          "after": "assert all(sha(inputs/p)==v['sha256']for p,v in receipts.items());assert sha(sourcepath)==r['source_receipt_sha256'];r['sources_unchanged']=True",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
