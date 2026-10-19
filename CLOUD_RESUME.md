@@ -1,3 +1,20 @@
+# Latest cloud-only continuation — 2026-10-19, fresh minimax RC/composition
+
+Extraction39266340959/source6c9d4e17692580caa4154781d714cdf18b228792 PASSED actualnative graph/C conservation
+and13rawcorruptioncontrols: 116611R/77516C,377wirecomponents/
+378nets/1674devices/4774terminals. Physicalparent39265712814.
+Fullpin docs/evidence/tx-v5-minimax-extraction-pass-20261019.json.
+Summary656474029 SHA4ef6f8ba13bf63adea2abf78a43b0e279d020ebfc34beeee3522b31e1d807b2c; parts656474136 SHAc2a1655e05d10ba6386c80f05d335a899822fc90f5b20e85e653d32e3b74ad92.
+
+This push starts tx-v5-minimax-composition-cloud. All original native
+intrinsic binding, sixcompositionfaults,377net recovery and124legs/372bases/
+twoendpointfaults unchanged. FreshRC counts/sourcepins/actualgeometry proof
+updated exactly. Inspect newrun/results,then bind originalfullwave builder/
+nominal+swapfault/native clock adapter. No oldRC reuse or electrical claim.
+Mainchip39243328773 lastlive; fullPHY/route/timing OPEN. Cloud-only/localempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, minimax native physicalPASS/freshRC
 
 Corrected physical39265712814/sourcedc89fcfbd2ae748dab23e25dbe6401966932ea99 PASSED560DRC zero,

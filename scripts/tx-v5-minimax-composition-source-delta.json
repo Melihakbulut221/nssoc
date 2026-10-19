@@ -1,0 +1,90 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_final_strap6_composition.py",
+      "baseline_sha256": "cffba3caf0be1f5f9a3e5344eac2a0cd636eaa07224ef9e6b840d0a8151ce315",
+      "candidate_path": "scripts/cloud_tx_v5_minimax_composition.py",
+      "candidate_sha256": "f21f233301f73128153742c5e319776650eb3e12340673eaa7ca0556f256ad47",
+      "edits": [
+        {
+          "before": "_final_strap6_core_v1",
+          "after": "_minimax_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-final-strap6-extraction-pass-20261019.json",
+          "after": "tx-v5-minimax-extraction-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "39218007063",
+          "after": "39266340959",
+          "count": 1
+        },
+        {
+          "before": "1912e5b305e90ad4b795dc3e85b54b8faa96398c",
+          "after": "6c9d4e17692580caa4154781d714cdf18b228792",
+          "count": 2
+        },
+        {
+          "before": "3a688c760f7c8e70b6823ff3c1315f56a8703e2d4cb4a60ce3c9b0d8d46b1cd0",
+          "after": "4ef6f8ba13bf63adea2abf78a43b0e279d020ebfc34beeee3522b31e1d807b2c",
+          "count": 1
+        },
+        {
+          "before": "779ae245f4fe8f2b0fbfb9c3428d46c43ca702a8e1fc991eb89cf415ce44c3ac",
+          "after": "a9ed5db8bdeab173bbf075db9baa42e8783c5993cee2b0511327f49220bae919",
+          "count": 1
+        },
+        {
+          "before": "dict(devices=1674,R=116611,C=77514)",
+          "after": "{'devices': 1674, 'R': 116611, 'C': 77516}",
+          "count": 1
+        },
+        {
+          "before": "434b4ac63466d194c814a918d3f5d42a0e87ad249f0fb42d1ae8e61e16987068",
+          "after": "5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-final-strap6-assembly",
+          "after": "cloud-tx-v5-minimax-assembly",
+          "count": 1
+        },
+        {
+          "before": "            assert extraction['geometry_delta']['status']=='PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT'\n            assert len(extraction['geometry_delta']['controls'])==3\n            assert extraction['geometry_delta']['controls']==['wrong_column','moved_row','actual_child_conductor_removed']\n            result['return_rail']=extraction['return_rail']\n            result['geometry_delta']=extraction['geometry_delta']\n        assert extraction['independent_fast_stage_geometry']==receipt['independent_fast_stage_geometry']\n        assert extraction['independent_fast_stage_geometry']['actual_cells_unchanged']\n        assert extraction['independent_fast_stage_geometry']['all_reference_device_cards_unchanged']\n        assert extraction['independent_fast_stage_geometry']['signal_connections']==60\n        assert extraction['independent_fast_stage_geometry']['fast_stage_routes_shorter']==12\n        assert extraction['return_rail']['final_column_trunk_width_um']==128.\n        assert extraction['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert extraction['return_rail']['local_final_strap_width_um']==6.\n        assert extraction['independent_strap_geometry']==receipt['independent_strap_geometry']\n        assert extraction['independent_strap_geometry']['status']=='PASS_ONLY_FINAL_TM1_STRAP4TO6_GDS_DELTA'\n        assert extraction['independent_strap_geometry']['controls']==['old_width','removed_strap','unrelated_metal']\n        result['independent_strap_geometry']=extraction['independent_strap_geometry']\n",
+          "after": "            assert extraction['geometry_delta']['status']=='PASS_MINIMAX_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n            assert extraction['geometry_delta']['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n            result['return_rail']=extraction['return_rail']\n            result['geometry_delta']=extraction['geometry_delta']\n        gp=extraction['independent_data_route_geometry']\n        assert gp==receipt['independent_data_route_geometry']==extraction['geometry_delta']\n        assert gp['actual_native_children_unchanged']and gp['reference_devices_unchanged']\n        assert gp['fixed_leaf_and_final_rows']==17 and gp['signal_legs']==60\n        assert gp['plan']['row_lattice']['quantum_um']==600.\n        assert all(abs((v-gp['plan']['original_rows_um'][k])/600.-round((v-gp['plan']['original_rows_um'][k])/600.))<1e-9 for k,v in gp['plan']['row_targets_um'].items())\n        assert gp['plan']['solver']['first_mip_gap']==gp['plan']['solver']['second_mip_gap']==0.\n        assert extraction['return_rail']['final_column_trunk_width_um']==128.\n        assert extraction['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert extraction['return_rail']['local_final_strap_width_um']==6.\n        result['independent_data_route_geometry']=gp\n",
+          "count": 1
+        },
+        {
+          "before": "bind_tx_v5_final_strap6_interfaces.py",
+          "after": "bind_tx_v5_minimax_interfaces.py",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/bind_tx_v5_final_strap6_interfaces.py",
+      "baseline_sha256": "2df9d0fd7bdad12ed63786fbb99191d60b13ab7774839b7db90d1afd89397960",
+      "candidate_path": "scripts/bind_tx_v5_minimax_interfaces.py",
+      "candidate_sha256": "d411d62bf9376073b9e66ad1efa9cb8fcc0c8bc61e22afda98857340f69bbdf4",
+      "edits": [
+        {
+          "before": "9be1ff7728c315c8b895ac02a7359e4ff1cabc03",
+          "after": "dc89fcfbd2ae748dab23e25dbe6401966932ea99",
+          "count": 1
+        },
+        {
+          "before": "4a88f78de7d5e189622f93fb5c7cd5bfe0a5a2efaeb0fd056d74dc8231c47ee0",
+          "after": "29c4eb72b54ab2127d1b1cf5753449e394e8191e2b4b7545d3928aca6835cb72",
+          "count": 1
+        },
+        {
+          "before": "_final_strap6",
+          "after": "_minimax",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}
