@@ -1,0 +1,44 @@
+{
+  "scope": "New source, composed model and measured native RC census only. Original input bits, timing, loading, phase/current and every device safety gate remain identical.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_data_cm_v9_mim_streamed.py",
+      "baseline_sha256": "1d2b47a1657681670cdde35c4f063ef32f0d2e699095f973fac675b950cfa73a",
+      "candidate_path": "scripts/cloud_cdr_input_drive_v10_mim_streamed.py",
+      "candidate_sha256": "0f690e400ee9c4a7be93aba4fef100a1b026acc77a788501d433c61fd2494cb4",
+      "edits": [
+        {
+          "before": "data-cm-v9",
+          "after": "input-drive-v10",
+          "count": 6
+        },
+        {
+          "before": "data_cm_mim_wire_v9",
+          "after": "input_drive_mim_wire_v10",
+          "count": 1
+        },
+        {
+          "before": "15490 R, 11535 C",
+          "after": "15482 R, 11527 C",
+          "count": 1
+        },
+        {
+          "before": "R=15490,C=11535",
+          "after": "R=15482,C=11527",
+          "count": 1
+        },
+        {
+          "before": "15490R11535C",
+          "after": "15482R11527C",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "unchanged_dependencies": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/run_cloud_tx_mux4.py": "bb7f5c5ef736dd54c5ed560424d97d248894f4aa6fa6119f1e95c5f5c3df4b52",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_xor.py": "3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe"
+  }
+}

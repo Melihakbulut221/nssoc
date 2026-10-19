@@ -81,3 +81,10 @@ Measured wire-only R/C census: 15459 resistors, 11516 capacitors. These are extr
 ## Complete MIM-aware native capture
 
 Run39212674566 atde16e2d03279c8e3a9eb75ac3a85f82bf6ec7e21 captured15482R,11527C and11actual native MIM devices from the new parent and rejected all5 intrinsic/ownership corruptions. The new raw-audit and composition adapters bind these measured counts, rather than the prior geometry's15490R/11535C. Original exact raw-value, topology, point-capacitance, intrinsic terminal/dimension and no-double-counting checks remain unchanged, with22raw and19composition fault controls. Changing this geometry census is not a relaxation of any waveform or device-voltage acceptance gate.
+
+
+## Full raw audit and composition passed; loaded waveform test launched
+
+Run39213136693 at98897e38f07913e19884d085a004db2a8b1325b8 passed the full native wire/MIM audit with13wire and9intrinsic corruptions and composition with19controls. The composed source contains exactly484native devices,15482R,11527C and one model for each of11MIM capacitors. Full SHA256-bound reports are preserved.
+
+The next native run tests nominal_early, nominal_late, clock_stopped and vi_bias_off with the unchanged256bits,8GHz external clock,150fF physical sampler collector loads,50fF comparator loads,1107observables, original fixed sampling phases and all original voltage/current gates. Every original simulator/helper SHA256 literal is unchanged. No threshold or phase was fitted to this candidate. Real loaded results determine whether the input-drive repair helps; physical and composition passes do not imply successful serial data or closed-loopPHY.
