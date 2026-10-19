@@ -31,3 +31,9 @@ The original span gate remains. The revised real placement groups all eight
 unchanged clock-selector HBTs at the front of row2; other devices retain their
 relative order within their group. All54 native drawings,30um row clearances,
 5um global escape-column clearance and all physical faults remain required.
+
+Second generation39232466808 passed the clock-span/outline planning checks but
+rejected a local MOS body-contact route before producing GDS. The revised planner
+reserves each real local MOS contact center (x+4um) together with all escape
+columns before the other row is placed. The5um separation and native tap geometry
+are unchanged; this is an actual placement reservation, not a waived check.

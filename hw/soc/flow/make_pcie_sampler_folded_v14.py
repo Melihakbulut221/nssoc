@@ -267,7 +267,9 @@ def main():
         offsets = [-18.,-12.,-6.] if row["kind"] in ("hbt","nmos") else [-12.,-6.]
         for step in range(20001):
             x = round((start+step*.005)/.005)*.005
-            lanes = [x+v for v in offsets]
+            # Reserve the real local MOS substrate-contact center too. Its
+            # native2um tap is placed at x+3, so its M4 column is x+4.
+            lanes = [x+v for v in offsets]+([x+4.]if row["kind"]=="nmos"else[])
             if all(abs(a-b)>=5.-1e-8 for a in lanes for b in reserved):
                 break
         else:
@@ -292,6 +294,7 @@ def main():
         signal_horizontal_spans_um=folded_spans,original_single_row_spans_um=baseline_spans,
         rightmost_native_primitive_um=max(right_by_row),
         actual_order=[r["name"]for r in rows],clock_primitives=[r["name"]for r in clock_rows],
+        local_body_columns_reserved=True,
         scope="Real two-row geometry with unchanged intrinsic devices. Horizontal spans are not delay or electrical acceptance.")
     previous_right_by_row = [0.,0.]
     for index, row in enumerate(rows):
