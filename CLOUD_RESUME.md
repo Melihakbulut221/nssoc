@@ -1,5 +1,15 @@
 # Latest cloud-only continuation — 2026-10-19
 
+CDR collector-v8 planes39198567441 PASSED original158planes/51nets/1394terminals/19faults plus all16 actual macro placements/eight childdrawings. Receipt cdr-retimed-collector-v8-planes-pass-20261019.json. Thiscommit launches cdr-retimed-collector-v8-wire-inputs-cloud: original native source-pin recovery and484device conductor/946anchor extraction, then needs freshbinding/RC/MIMcapture/audit/composition/fullwaves. No electricalacceptance.
+
+Thiscommit also launches tx-v5-fast-stage-isolated-path-review-cloud from exactfailed nominal39158584151 fullnativebinary. Reproduce all original signal/interface/HBT/MOS gates via pinned actualbuilder; split stage/inputlegs and record actual failing-HBT C/B/E/S/current at minVCE. No SPICErerun, phasefit or thresholdschange. Original24HBTfailures/140wrong/164below100mV retained. Use results for actual clock/data-headroom repair.
+
+Mainchip savedtopology/finalantenna/timingpath validation39198113984 completed;43nets51pins and allcorner failuresremain. Next measuredcriticalpath sizing/logicdepth and inputhold repair, fullconstraints unchanged. Cloudonlylocalempty. AllgoalsOPEN.
+
+---
+
+# Latest cloud-only continuation — 2026-10-19
+
 CDR collector-v8 parent39197930769 PASSED actual560DRC0/484device deepflatLVS/fivefaults, same16macros/41cards. Fullreceipt cdr-collector-v8-parent-physical-pass-20261019.json. Thiscommit launches cdr-retimed-collector-v8-planes-cloud: actualnewGDS/nativeLVS anchors, independentall16placement/eightleafdrawings,158planes51nets1394terminals19faults. Must then freshwireinputs/binding/RC/MIMaudit/composition/originalfullwaves. No oldwire reuse, no electricalacceptance.
 
 Savedroute39198113984 PASSED native146728original-cell topology/geometry plusfourfaults, correct43net51pin finalantenna parser+sevenfaults; originalstale36preserved. DRC0/disconnect0. Nativeall3corner max/minpaths now in onehot-resize-saved-validation-20261019.json. Slowcritical Ibex regfileword9bit22 includes overloadedfanout7880 buf1 thenXNOR/XOR/NORlogic; fastcritical replay_read_onehot44→pcie_tx_data_o4 includesloadedbuf1/NAND4/NOR4; worsthold pcie_rx_valid_i→slice1192852 input/AND/buf/mux path. See docs/onehot-resize-saved-state-validation-20261019.md. Need targeted allcorner ECO/logicdepthrepair, no constraintsrelaxation.
