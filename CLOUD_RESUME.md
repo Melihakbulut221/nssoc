@@ -1,3 +1,11 @@
+## 2026-10-19 full PLL MIM-aware physical model work
+- New cloud job pll845-mim-full-geometry binds complete actual845parent metal/vias and26MIM masks to unsimplified native LVS. This extends the prior clipped-window study to complete parent geometry.
+- Immutable source39005910789/GDS79b2f5869f620cb5d6ce57756bab18f6ef10743aee953fb9c140202a6b225cdc; no circuit/geometry/value change or acceptance-gate relaxation.
+- Next after successful whole-geometry binding: every intrinsic terminal reference plane, fresh complete MIM-aware RC and raw audit/composition, then unchanged PLL acquisition.
+- PLL original800–900ns135.380ppm failure remains; no clock or physical signoff claim.
+- CDR39320016317, TX39308903140 and mainchip39293720171 confirmed live this turn; do not duplicate or change their pinned inputs.
+- Cloud-only work remains mandatory. Local workspace remains empty. Automation persistence problem is unresolved; do not claim an8hour setting was saved.
+
 ## 2026-10-19 cloud-only live handoff after XOR collector v15 model validation
 - CDRloadedwave39320016317 at cb5959ee34233dd5c1c99b767bc53e587d4c8186: syntax controls passed; nominal early/late, clock stopped and VI bias off native simulations are running.
 - Fresh physical39315947252, extraction39316979013, MIMcapture39318436586, validation39319103832 all passed their stated scopes. These are not full PHY electrical acceptance.
