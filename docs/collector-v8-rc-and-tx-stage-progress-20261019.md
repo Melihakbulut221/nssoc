@@ -21,3 +21,11 @@ Native ownership run 39200492051 places six failing HBTs in final macro f and ei
 Run 39200773873 passed all thirteen raw wire and nine intrinsic MIM corruption controls. Composition 39200983805 passed all nineteen original corruption controls, preserving every one of the 15,490 R and 11,535 C cards, 484 native devices and exactly eleven MIM models. These are model-construction checks, not electrical acceptance.
 
 The new streamed matrix uses nominal early/late and clock-stopped/VI-bias-off cases, unchanged 256-bit source sequence, original 34.25ns window, 0.3125ps maximum step, 150fF sampler collector loads and 50fF comparator loads. All 1,107 voltage/current vectors remain requested through the previously validated bounded-save binary transport. Every original sampler/phase/VI-current/HBT/MOS/capacitor threshold is unchanged. No operating waveform from the previous geometry is reused as acceptance for this geometry. Full PVT, convergence, recovered-clock loop, RF/substrate/ESD and final x4 integration remain required.
+
+## Full loaded waveform rejection
+
+Full matrix 39201328219 reached native simulator exit zero without numerical diagnostics in all four cases. Both nominal cases remain rejected. Early sampler wrong-sign counts a/b/c/d are 121/311/358/396, late 251/128/377/372 (765 samples per sampler). Eight HBTs fail early, six late; all 46 MOS voltage checks pass. Early phase average is +0.07501515V, still the wrong direction. Late phase average +0.06274041V has correct direction but data/device gates still fail. Clock-stopped and bias-off cases detected the injected faults; their green workflow results do not mean the nominal device works.
+
+Each nominal capture retains all 1,107 signals over 113,475 rows, 34.25ns with 0.3125ps maximum step. Early raw SHA256: 298fac1b3be57172c43e9bebe88ed7e59841b538eed16fb881d25ff50d275ff1. Late: 11f0b497c5b6eff7347822680294f95eeac4f1a75ee345a5f81f674bf480ef50.
+
+The collector geometry repair has not established a meaningful sampling improvement. Preserve it as a physically verified but electrically rejected candidate; do not present it as the accepted PHY. A read-only review now restores the exact new native captures to reproduce all failures and separate fixed-phase local clock behavior, actual rail losses and data-path drops. No time fitting or reclassification of failed gates is permitted.

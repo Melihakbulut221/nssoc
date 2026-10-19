@@ -1,5 +1,13 @@
 # Cloud-only continuation — 2026-10-19
 
+Collector-v8 fullwave39201328219 TERMINAL native results preserved in cdr-collector-v8-streamed-native-input-20261019.json: nominal early/late rejected (121/311/358/396 and251/128/377/372 wrongsamplers),8/6HBTfail; all46MOSpass. 0nativeexit/nodiagnostics/full113475rows1108cols. Faultcontrols detected failures. No electricalacceptance/meaningfulsamplingimprovement proven. Thiscommit launches cdr-collector-v8-path-review-cloud (two nominal rawcaptures read-only; original reproduction/clock/rail/data losses).
+
+Mainchip route39202263552 confirmedlive from native-equivalent32gate sizing candidate39201757362. Preserve runningwork; inspect exact steps. Originalconstraints and allcorners/finalantenna zeroacceptance remain. No local checkout/artifacts. TX24selector/tailfailures and allthreegoalheadingsOPEN.
+
+---
+
+# Cloud-only continuation — 2026-10-19
+
 Logic-sizing preparation39201757362 PASS:32native gates/147858instances, allconnectivity/PG/NDR/untargetedplacement/row proofs and nativeequation equivalence; invertedactualbuffer rejected. Fullreceipt onehot-logic-resize-prepare-pass-20261019.json. Thiscommit starts onehot-logic-resize-route-cloud: retains original proof ancestry, validates oldresizedroutedbaseline+newcandidate, then freshroute/RC/all3corners with unchanged20/4/8/8ns and5percentderate. Correct final antenna metrics; allgates stillzero. Do not accept before native route and timing results.
 
 CDR fullloaded collector-v8 wave39201328219 confirmedlive; syntaxpassed,clock_stoppedfaultjob completed, remainingnominal/biasoff jobs live. Do notrestarthealthyjobs. Need actual fullreports.
