@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, minimax native physicalPASS/freshRC
+
+Corrected physical39265712814/sourcedc89fcfbd2ae748dab23e25dbe6401966932ea99 PASSED560DRC zero,
+deep/flat1674LVS/fiveoriginalfaults and independent31macro/60route/frozen
+childgeometry/threefaults. Actual maxroute4174.000→2374.000um,
+sum91746.400→83306.400um. Public/private predecessor shorts repaired by global600um row-lattice placement,
+originalfailedGDS/reviews retained. Allnativecells/devicecards fixed.
+
+Fullreceipt docs/evidence/tx-v5-minimax-physical-pass-20261019.json.
+Summary656456882 SHA5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9
+parts656457018 SHAe14d6aa625bcdf052a40ee434369527d3ba45cc6f27fb99033359dc1622541f2.
+
+This push starts tx-v5-minimax-extraction-cloud on exactnewGDS. Original
+377wirecomponents/378nets/1674devices/4774terminals/3262probes and13rawfaults
+retained. Inspect exactrun/result/actualRCcounts,then bind allnativeintrinsics
+with originalcompositionfaults and originalfull256bit34ns nominal/fault/PVT.
+Do not reuse oldstrap6 RC or callphysicalPASS electricalclosure.
+Mainchip39243328773 lastlive; CDRlocalbus stillreject. FullserialPHY/mainchip/
+finaltiming OPEN. Cloud-only/localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, exact-model solver correction
 
 Cloud diagnostic39265239206/source4a8fc310eebc28bb8c22f10db261c5049cc2b34c
