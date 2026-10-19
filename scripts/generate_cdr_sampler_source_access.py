@@ -27,7 +27,7 @@ def generate(out):
         v=old['placements'][tag];assert v['kind']=='sampler'
         box=list(map(float,re.findall(r'-?\d+(?:\.\d+)?',v['bbox_um'])));assert len(box)==4
         placement[tag]=pya.DBox(*box)
-    plan=[]
+    plan=[];inventory=[]
     for d in devices:
         if d['model']!='sg13_lv_nmos':continue
         row=terminals[d['native_id'],'S'];a=anchors[row['wire_anchor']]
@@ -44,7 +44,17 @@ def generate(out):
         assert (witness-region).is_empty()
         hit=list(region.interacting(witness).each());assert len(hit)==1
         pin=hit[0].bbox().to_dtype(L.dbu)
-        assert pin.width()<=.5 and pin.height()>20
+        observed=dict(native_id=d['native_id'],tag=tags[0],source_anchor=row['wire_anchor'],
+            source_pin_um=str(pin),width_um=pin.width(),height_um=pin.height(),native_pcell=d['pcell'])
+        inventory.append(observed)
+        (out/'source-pin-inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')
+        assert pin.width()<=.5,('Unexpected source strip width',observed)
+        # The unchanged reference has eight 36um tails and one 8um reference per sampler.
+        if 7<pin.height()<9:
+            observed['selection']='unchanged_8um_reference'
+            continue
+        assert 35<pin.height()<37,('Unexpected tail source strip height',observed)
+        observed['selection']='36um_tail_midpoint_access'
         x=round(pin.center().x/.005)*.005;y=round(pin.center().y/.005)*.005
         lane=round((dt.disp.x-18)/.005)*.005
         for metal,px in [(8,x),(50,lane)]:
@@ -54,7 +64,10 @@ def generate(out):
         plan.append(dict(native_id=d['native_id'],tag=tags[0],source_anchor=row['wire_anchor'],
             native_source_net=row['native_net'],wire_component=a['wire_component'],source_pin_um=str(pin),
             source_center_um=[x,y],original_source_column_x_um=lane,native_pcell=d['pcell']))
-    assert len(plan)==36 and all(sum(p['tag']==tag for p in plan)==9 for tag in placement)
+    (out/'source-pin-inventory.json').write_text(json.dumps(inventory,indent=2)+'\n')
+    assert len(inventory)==36 and len(plan)==32
+    assert all(sum(p['tag']==tag for p in plan)==8 for tag in placement)
+    assert all(sum(p['tag']==tag and p['selection']=='unchanged_8um_reference' for p in inventory)==1 for tag in placement)
     assert any(p['native_id']==1 and p['source_anchor']=='T001_S'for p in plan)
     overlay=L.create_cell('nssoc_cdr_sampler_source_midpoint_access_v14')
     stitches=[]
@@ -67,6 +80,9 @@ def generate(out):
     for p in plan:
         x,y=p['source_center_um'];lane=p['original_source_column_x_um']
         via('Metal1','Metal3',x,y,1,16,p['native_id'])
+        vb=list(map(float,re.findall(r'-?\d+(?:\.\d+)?',stitches[-1]['bbox_um'])))
+        sb=list(map(float,re.findall(r'-?\d+(?:\.\d+)?',p['source_pin_um'])))
+        assert len(vb)==len(sb)==4 and sb[1]+.5<vb[1]<vb[3]<sb[3]-.5,('Native via does not fit tail source height',p,stitches[-1])
         via('Metal3','Metal4',lane,y,8,1,p['native_id'])
         bridge=pya.DBox(lane-.6,y-.6,x+.3,y+.6)
         overlay.shapes(L.layer(30,0)).insert(bridge)
@@ -97,7 +113,7 @@ def generate(out):
     saved={(check.get_info(i).layer,check.get_info(i).datatype):pya.Region(check.cell(TOP).begin_shapes_rec(i)).merged()for i in check.layer_indexes()}
     assert check.dbu==.001 and verdict(saved)
     proof=dict(status='PASS_NATIVE_SOURCE_MIDPOINT_OVERLAY_GEOMETRY_REQUIRES_DRC_LVS_AND_FRESH_RC',
-        original_devices=484,sampler_count=4,source_accesses=len(plan),native_via_stacks=len(stitches),
+        original_devices=484,sampler_count=4,observed_source_pins=len(inventory),unchanged_reference_sources=4,source_accesses=len(plan),native_via_stacks=len(stitches),
         original_geometry_retained=True,all_layers_exact=True,serialized_gds_checked=True,
         reference_and_lef_byte_identical=True,plan=plan,stitches=stitches,rejected=faults,
         source_gds_sha256=sha(baseline/(TOP+'.gds')),candidate_gds_sha256=sha(dest/(TOP+'.gds')),

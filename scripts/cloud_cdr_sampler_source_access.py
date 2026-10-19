@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Physically bypass long sampler source access with native midpoint contacts."""
-import json,os,subprocess,sys,tarfile
+import json,os,shutil,subprocess,sys,tarfile
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from run_cloud_tx_layout_repair import fetch,sha
@@ -28,11 +28,19 @@ def main():
         r['measured_source_path']=dict(run=geometry_pin['run'],summary_sha256=geometry_pin['summary_sha256'],edge=measured)
         pin=json.loads((ROOT/'docs/evidence/cdr-parent-avdd-v13-physical-pass-20261019.json').read_text())
         names=['layout/result.json','layout/schematic.cir','layout/'+TOP+'.gds','layout/'+TOP+'.lef']
+        leaves=[n for n in pin['report']['outputs'] if n=='children.json' or n.startswith('inputs/')]
+        assert 'children.json' in leaves and len([n for n in leaves if n.endswith('.gds')])==8
+        names+=leaves
         original,proof=reports.restore_report('cdr-parent-avdd-v13',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'baseline',names)
         assert original==pin['report']and original['sources_unchanged']
         assert original['status']=='PASS_PD484_PARENT_AVDD_FEEDS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'
         assert original['physical']['status']=='PASS_NATIVE_PDK_CDR_PD484_DRC_LVS_AND_FAULT_CONTROLS'
         r['physical_source']=proof
+        for n in leaves:
+            source=OUT/'baseline'/n;dest=OUT/n
+            assert sha(source)==original['outputs'][n]
+            dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,dest)
+        r['retained_child_sources']={n:sha(OUT/n)for n in leaves}
         capture_pin=json.loads((ROOT/'docs/evidence/cdr-parent-avdd-v13-mim-parent-capture-pass-20261019.json').read_text())
         selected=['wire/anchors08.json','source/wire/device-locations01.json','source/wire/native05/wires.l2n']
         capture,cp=reports.restore_report('cdr-parent-avdd-v13-mim-parent-rc',capture_pin['run'],capture_pin['summary_sha256'],capture_pin['parts_sha256'],OUT/'capture',selected)
@@ -64,16 +72,18 @@ def main():
             if code:print((OUT/(name+'.log')).read_text()[-16000:],flush=True)
             assert code==0,('Native source-access stage failed',name,code)
         geometry=r['geometry']
-        assert geometry['original_devices']==484 and geometry['source_accesses']==36 and geometry['native_via_stacks']==72
+        assert geometry['original_devices']==484 and geometry['source_accesses']==32 and geometry['native_via_stacks']==64
+        assert geometry['observed_source_pins']==36 and geometry['unchanged_reference_sources']==4
         assert all(geometry[k]for k in ('original_geometry_retained','all_layers_exact','serialized_gds_checked','reference_and_lef_byte_identical'))
         assert len(geometry['rejected'])==3
         r['physical']=json.loads((OUT/'physical/result.json').read_text())
         assert r['physical']['status']=='PASS_NATIVE_PDK_CDR_PD484_DRC_LVS_AND_FAULT_CONTROLS'
         assert all(sha(Path(n))==v for n,v in protected.items())
         assert all(sha(ROOT/n)==v['sha256']for n,v in runtime['files'].items())
+        assert all(sha(OUT/n)==v for n,v in r['retained_child_sources'].items())
         r.update(status='PASS_PD484_NATIVE_SOURCE_MIDPOINT_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',
             sources_unchanged=True,protected_inputs=protected,
-            scope='Add36source midpoint Metal1-to-Metal3 arrays and36Metal3-to-Metal4 column ties on four original samplers. Preserve all original484devices,geometry,ports and reference. Original native560DRC/deep+flatLVS/fault gates. Fresh parasitics and loaded data/phase/device checks still required; no recovery clock or fullPHY acceptance.')
+            scope='Add32tail source midpoint Metal1-to-Metal3 arrays and32Metal3-to-Metal4 column ties; preserve4short reference sources on four original samplers. Preserve all original484devices,geometry,ports and reference. Original native560DRC/deep+flatLVS/fault gates. Fresh parasitics and loaded data/phase/device checks still required; no recovery clock or fullPHY acceptance.')
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         for name in ('layout','physical'):

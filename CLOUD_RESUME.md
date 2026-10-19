@@ -1,3 +1,11 @@
+## Active checkpoint: sampler source-access size correction (cloud only)
+
+The source-access run39297515142 failed before drawing: all36sampler MOS sources were incorrectly assumed long. The unchanged reference has32tail devices of36um and4reference devices of8um. This change inventories all36native source pins and adds64native via stacks only to32long tails, with actual vertical footprint checks. Four reference sources stay unchanged. Original484device reference and geometry,560DRC categories and deep/flatLVS/fault controls remain mandatory. Leaf source files and children.json are retained with their original hashes for fresh extraction.
+
+Failure receipt: docs/evidence/cdr-sampler-source-access-generation-failure-20261019.json. The physical workflow starts on this commit. After physical PASS, perform fresh native RC, composition and all original loaded data/phase/device acceptance checks; do not treat topology or physical PASS as fullPHY acceptance.
+
+Mainchip route39293720171 and TX loaded run39268446646 were still in_progress at this checkpoint. Do not duplicate them. Work is cloud-only; local workspace verified empty with no local CAD jobs. All generated evidence belongs in GitHub cloud artifacts/releases. Keep original clocks, timing and waveform gates.
+
 ## 2026-10-19: supply points mapped; actual sampler source-contact repair
 
 CDR supply geometry39295620005/job118207229828 PASS diagnostic only. Summary656962625 SHAde3939b92e947d88823c438f6192c2cc53ee1088b571ee77ddfc590e1a7076db,parts656962703. All91selectedAVDD/AVSSedges mapped without unresolved points. Receipt docs/evidence/cdr-supply-geometry-pass-20261019.json.
