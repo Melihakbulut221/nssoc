@@ -1,3 +1,9 @@
+## 2026-10-19 — XORcollector physical pass; fresh whole-parent extraction launched
+
+Physical39315947252(source01e65a2e18ab42e01a67b08db7df212e8650b532)passed560DRC0/deepflat484LVS/originalfaults. ActualGDS8a8a25b61c4f9edb092a37caf137f4442191bd78f848d588c1886a2f50a086cf. Overlay:36paths,6buses,576native single-cut stacks/108groups,36Metal2landings. Four rejected predecessors preserved.
+
+New cdr-xor-collector-v15-extraction-cloud binds actual planes, wire inputs, native compact model and freshRC with unchanged gates. Await allfour stages; pin exact receipts and counts. Then adapt the source-access-v14 MIMcapture/audit/composition/loaded pipeline to the v15 source; do not reuse older parasitics or declare electrical closure from physical pass. TX39308903140/mainchip39293720171 continue. No local checkout or CAD files. Full serial PHY and final timing remain open.
+
 ## 2026-10-19 — Via checks passed; close intermediate Metal2landing gaps
 
 Run39314980954 proved all actualVia3/Via4cut sizes/gaps, then native560DRC rejected180M2.bmarkers only. Original group pitches measured410nm(two cuts) vs480nm(four cuts). Current generator joins each of36Metal1/3contact groups with a continuous native-sizeMetal2landing derived from actual single-cell shapes; it probes originalMetal2cut centers to the intended wire component. Original484devices/reference/LEF and all prior geometry retained. Wait for the fresh physical run; do not bypassDRC or launchRCuntilpassed. All failure receipts retained. Cloud-only. TX39308903140/mainchip39293720171 confirmed live at last check.
