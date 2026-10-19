@@ -1,3 +1,11 @@
+## 2026-10-19 sampler diagnosis parallel-device reader correction
+- CDRdiagnostic39324077387 failed its one-to-one physical-pair assumption; both failures retained with exact receipts.
+- Actual sampler has2parallel clock HBTs per polarity/stage. Updated reader analyzes allsame-emitter positive/negative base combinations without averaging or choosing a representative.
+- Cloud preflight covers4required two-by-two combinations, different-emitter exclusion and duplicate-device rejection.
+- No SPICE rerun, circuit change or original electrical gate relaxation. Fullwave39320016317 remains nominally rejected despite both device screens passing.
+- PLLwholegeometry39322420374 passed; remaining intrinsic terminal anchors and fresh wholeRC still open. TX39308903140/mainchip39293720171 remain pending.
+- Cloud-only; local workspace remains empty.
+
 ## 2026-10-19 CDR v15 completed: device headroom fixed, original sampling still fails
 - Fullwave39320016317 finished. Both nominal native processes exit0/no diagnostics; all nominal HBT/MOS/current screens pass; minVCE0.436889/0.436757V.
 - Original nominal sampling still fails: early69/129/186/339wrong-signs, late89/0/188/319. Early phase0.0156253V and VI36.5923uA fail; late phase/VI pass only their own gates. Preserve regressions and both rejected nominal runs.

@@ -26,6 +26,21 @@ def nearest_edges(a,b):
   j=min(candidates,key=lambda j:abs(float(b[j]-x)));out.append(float(x-b[j]))
  return dict(count=len(out),minimum_s=min(out),maximum_s=max(out),median_s=float(np.median(out)),
   scope='Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance',values_s=out)
+def physical_pairs(positive,negative,terms):
+ assert len(positive)==len(set(positive))and len(negative)==len(set(negative))and not set(positive)&set(negative)
+ # Every physical positive/negative base combination on the same actual
+ # emitter bank is retained. No arbitrary representative or averaged base.
+ return [(p,n)for p in positive for n in negative if terms[p]['E']['native_cluster']==terms[n]['E']['native_cluster']]
+def parallel_controls():
+ terms={name:{'E':{'native_cluster':7}}for name in ('p0','p1','n0','n1')}
+ expected=[('p0','n0'),('p0','n1'),('p1','n0'),('p1','n1')]
+ assert physical_pairs(['p0','p1'],['n0','n1'],terms)==expected
+ terms['n1']['E']['native_cluster']=8
+ assert physical_pairs(['p0','p1'],['n0','n1'],terms)==[('p0','n0'),('p1','n0')]
+ try:physical_pairs(['p0','p0'],['n0'],terms)
+ except AssertionError:pass
+ else:raise AssertionError('Duplicate physical device accepted')
+ return dict(two_by_two_bank_keeps_all_four_combinations=True,different_emitter_not_paired=True,duplicate_device_rejected=True)
 def main():
  p=argparse.ArgumentParser();p.add_argument('--case',choices=tuple(PINS),required=True);args=p.parse_args()
  assert os.environ.get('GITHUB_ACTIONS')=='true'
@@ -35,7 +50,7 @@ def main():
  def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  save()
  try:
-  r['controls']=controls()
+  r['controls']=controls();r['parallel_bank_controls']=parallel_controls()
   tx=np.array([0.,1.,2.,3.]);dx=np.array([-1.,1.,-1.,1.])
   assert list(crossing(tx,dx,True))==[.5,2.5]and list(crossing(tx,dx,False))==[1.5]
   pin=json.loads((ROOT/('docs/evidence/cdr-xor-collector-v15-fullwave-'+args.case+'-20261019.json')).read_text())
@@ -114,15 +129,14 @@ def main():
     if lp not in logical or ln not in logical:continue
     positive=[n for n in members if terms[n]['B']['native_cluster']==logical[lp][0]]
     negative=[n for n in members if terms[n]['B']['native_cluster']==logical[ln][0]]
-    for pn in positive:
-     ns=[nn for nn in negative if terms[nn]['E']['native_cluster']==terms[pn]['E']['native_cluster']]
-     assert len(ns)<=1,('Ambiguous shared-emitter differential pair',tag,lp,pn,ns)
-     if not ns:continue
-     nn=ns[0];pv=v(members[pn]['nodes'][1]);nv=v(members[nn]['nodes'][1]);delta=pv-nv
+    for pn,nn in physical_pairs(positive,negative,terms):
+     pv=v(members[pn]['nodes'][1]);nv=v(members[nn]['nodes'][1]);delta=pv-nv
      edges={direction:crossing(t,delta,direction=='rising')for direction in ('rising','falling')}
      edges={k:x[x>=timing.START]for k,x in edges.items()}
      pairs.append(dict(logical_pair=[lp,ln],positive_device=pn,negative_device=nn,
-      native_shared_emitter=terms[pn]['E']['native_cluster'],positive_base_node=members[pn]['nodes'][1],negative_base_node=members[nn]['nodes'][1],
+      native_shared_emitter=terms[pn]['E']['native_cluster'],
+      parallel_positive_devices=[n for n in positive if terms[n]['E']['native_cluster']==terms[pn]['E']['native_cluster']],
+      parallel_negative_devices=[n for n in negative if terms[n]['E']['native_cluster']==terms[pn]['E']['native_cluster']],positive_base_node=members[pn]['nodes'][1],negative_base_node=members[nn]['nodes'][1],
       differential_range_v=[float(delta[active].min()),float(delta[active].max())],
       commonmode_range_v=[float(((pv+nv)/2)[active].min()),float(((pv+nv)/2)[active].max())],
       edges={k:list(map(float,x))for k,x in edges.items()},

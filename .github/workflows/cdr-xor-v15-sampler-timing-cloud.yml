@@ -33,7 +33,7 @@ jobs:
       - name: Compile source-bound diagnosis in cloud
         run: |
           python3 -m py_compile scripts/cloud_cdr_xor_v15_sampler_timing.py
-          PYTHONPATH=scripts python3 -c "from cloud_cdr_xor_v15_sampler_timing import controls; print(controls())"
+          PYTHONPATH=scripts python3 -c "from cloud_cdr_xor_v15_sampler_timing import controls,parallel_controls; print(controls()); print(parallel_controls())"
       - name: Reproduce all original sampler gates and measure physical data and clock base pairs
         env:
           GH_TOKEN: ${{ github.token }}
@@ -67,3 +67,5 @@ jobs:
 
 # Read only both original failed full CDR captures. The large immutable waveforms
 # stay in their original releases; publish only this new diagnostic and source pins.
+
+# Retain all physical parallel clock-selector base combinations; no representative averaging.

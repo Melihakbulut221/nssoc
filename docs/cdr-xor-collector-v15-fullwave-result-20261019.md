@@ -11,3 +11,8 @@ Early phase magnitude regresses from0.0204668V to0.0156253V against0.03V; signed
 The two injected-fault cases passed only because their faults were detected; they are not nominal link passes.
 
 The physical collector-access repair recovered device headroom; it did not close the complete CDR. Preserve both nominal rejections and prior failures. Next replay the original sampler checks and map actual shared-emitter HBT data/clock base pairs and worst samples to physical sampler instances. This is diagnosis of existing full waves, not a new stimulus, shifted window or acceptance relaxation.
+
+## Reader correction for actual parallel clock-selector devices
+Diagnostic39324077387 rejected both nominal captures at its one-to-one shared-emitter-pair assumption. Actual sampler a has one examined positive selectorxd0075 sharing its emitter with two real negative selectorsxd0073/xd0074. The native sampler schematic intentionally has two parallel selectors per polarity and stage.
+
+The corrected reader retains every positive/negative physical base combination in the same emitter bank; it neither selects an arbitrary device nor averages the terminal voltages. A two-by-two regression case requires all four combinations, rejects duplicate devices and excludes different-emitter pairs. Both original reader failures remain pinned. The native circuit, complete waveform, original sampler and HBT checks are unchanged.
