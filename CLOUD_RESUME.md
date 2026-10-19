@@ -1,3 +1,64 @@
+# Latest cloud-only continuation — 2026-10-19, input-drive v10 and TX return repair
+
+Use this entry before the historical entries below. All CAD, tests, waveforms,
+archives and source files stay in GitHub cloud. The local NSSOC workspace was
+rechecked empty; no local CAD or tests were run. GitHub API orchestration alone
+uses local process memory. Do not restore a local checkout or download artifacts.
+Live API snapshot: [cloud-current-state.json](docs/evidence/cloud-current-state.json).
+
+## Running or queued work: preserve these exact runs
+
+- **Mainchip logic resize route [39202263552](https://github.com/Melihakbulut221/nssoc/actions/runs/39202263552)**,
+  source84063da15c34482d07f05b7efae85a27d95ab52c. Fresh routing/RC/three-corner STA
+  after 32 native gate size changes, 147858 retained instances. Original clocks,
+  5% derates, zero setup/hold/electrical/antenna acceptance are unchanged. Do not
+  restart the live route. Prior routed baseline had 43 antenna nets/51 pins and
+  failing timing; its zero route-DRC/disconnect counts are not timing acceptance.
+- **TX strap6 full wave [39221063981](https://github.com/Melihakbulut221/nssoc/actions/runs/39221063981)**,
+  source39892a3f20b9b9c2ea1c3812b9559b53e835b1b7. Original nominal and swap-leaf
+  fault jobs. Real physical strap change passed DRC/LVS, extraction, composition
+  and model identity proof. Final tail mean DC return 4.90114 -> 4.81141 ohm;
+  no electrical waveform pass established. See [candidate](docs/tx-final-strap6-candidate-20261019.md).
+- **TX trunk256 full wave [39226121734](https://github.com/Melihakbulut221/nssoc/actions/runs/39226121734)**,
+  source9cf70e156f60cc02e9721b6bce2a54d650d61326. Both nominal/fault jobs running
+  at the latest inspection. Actual final TM1 trunk widened 128 -> 256 um;
+  all other geometry apart from established strap6 unchanged. DRC/LVS, fresh RC,
+  composition and model identity controls passed. The measured long trunk
+  resistor fell .706551 -> .353275 ohm; final tail mean 4.81141 -> 4.45790 ohm.
+  Static reduction is not waveform acceptance. See [candidate](docs/tx-final-trunk256-candidate-20261019.md).
+- **CDR width diagnosis [39228293871](https://github.com/Melihakbulut221/nssoc/actions/runs/39228293871)**,
+  sourceccb82a7c18db220e5d20e1c9ca949d42a1dc2d41. Exact source/syntax guards passed;
+  four native simulations queued at inspection (width8/16 x early/late). This
+  is explicitly an intrinsic sizing experiment on frozen v10 wire RC, NOT a new
+  physical model or signoff. Exactly 24 rppd widths change; every original bit,
+  sample phase, impedance, load and device/current gate remains. See
+  [scope and required next validation](docs/cdr-width-sensitivity-20261019.md).
+
+## Latest completed CDR baseline
+
+Input-drive v10 physical sampler/retime/parent, native full RC, MIM audit and
+composition passed. Full wave39213606544 rejected both nominal cases, despite
+all116HBT/46MOS device gates passing. Original wrong-sign totals early796/late759.
+Read-only fixed-phase review39215582013 showed A/B correct at .6/.9 UI but failing
+required .3 UI; C/D remain late. Do not shift acceptance phases. Physical and
+wave receipts are linked in [input-drive candidate](docs/cdr-input-drive-candidate-20261019.md).
+
+Next: collect actual completed native results, retain failures, compare unchanged
+original gates. Width diagnostic improvements require actual new PCells/layout,
+DRC/LVS, fresh wire RC and complete loaded wave/corner checks before adoption.
+TX results require all original output/interface/device checks; do not infer an
+HBT headroom pass from static resistance. Mainchip route needs final topology,
+antenna, native RC/STA and full-chip verification, not only process exit success.
+Live job logs can return404; that is not evidence of a stall. Do not duplicate
+healthy jobs or relax gates to make a candidate pass.
+
+**All three overall goals remain open:** full serial Gen3 x4 PHY including real
+closed-loop recovery, final routed PCIe/Ethernet mainchip integration/signoff,
+and final setup/hold/electrical closure. Full RF/body PEX, ESD and production
+acceptance require their actual evidence. Separate macro passes do not close them.
+
+---
+
 # Cloud-only continuation — 2026-10-19
 
 Collector-v8 fullwave39201328219 TERMINAL native results preserved in cdr-collector-v8-streamed-native-input-20261019.json: nominal early/late rejected (121/311/358/396 and251/128/377/372 wrongsamplers),8/6HBTfail; all46MOSpass. 0nativeexit/nodiagnostics/full113475rows1108cols. Faultcontrols detected failures. No electricalacceptance/meaningfulsamplingimprovement proven. Thiscommit launches cdr-collector-v8-path-review-cloud (two nominal rawcaptures read-only; original reproduction/clock/rail/data losses).
