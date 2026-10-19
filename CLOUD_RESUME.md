@@ -1,3 +1,9 @@
+## 2026-10-20 coverage preparation passed; fresh routed timing next
+- Preparation39330987654/sourcef98f85cc304119f256c1406ffda6774f5d43d32c PASS:128positive buffers (124buf16/4buf8), all150291original cells/geometry preserved, maxdriver-input62.07um<=80. Native equation/controls and actual inversion rejection passed.
+- CandidateODB6e9ee73448e4cfb0e63129984278b084605f314bc5caa5054b0a72a1e66a5a3b; netlist97cdc9677282fa0330a752de12b66be3f5ab1659e02d2245184b69ab8d98e97e.
+- New onehot-coverage-data-route restores complete original provenance and exact candidate; all original clocks/derate/SRAM/routing/RC/three-corner gates retained. Do not claim timing closure from preparation.
+- Preserve earlier failed placements; TX39308903140 still live at latest observation. Full serialPHY/CDR/PLL and final timing remain open. Cloud-only execution/storage mandatory.
+
 ## 2026-10-20 coverage buffer drive-size fit
 - Vacant-site run39329794073 rejected native buf16 nearest110.174um for driver1846591, preserving the80um gate.
 - Try actual positive buf16/buf8/buf4 per selected driver, strongest fitting first. Keep all128targets, every old cell fixed, real site/pin geometry, explicit failed attempt distances and all original geometry/equation/inversion controls. No target silently dropped; fail if none fits.
