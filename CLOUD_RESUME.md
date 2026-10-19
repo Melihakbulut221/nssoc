@@ -1,3 +1,14 @@
+## 2026-10-20 — Launch new wire24 native model composition
+Recovered extraction39340687625 now supplies new model inputs; do not use old
+timing-priority RC. New workflow tx-fast-wire24-composition-cloud.yml restores
+the exact recovered archive and checks new geometry plus immutable ancestry.
+Original1674device/116611R/77538C composition, six faults,124inputlegs/372bases,
+two actual endpoint controls and377component topology recovery remain.
+After success: pin model evidence, bind original clocks and run unchanged
+loaded-wave/device gates in cloud. Mainchip39331918238 already live; no duplicate.
+Cloud only: no local checkout, native CAD or artifacts.
+
+
 ## 2026-10-20 — Cloud-only checkpoint and recovered TX evidence
 Latest user instruction: all work in cloud; no local checkout, CAD or artifacts.
 Local project folder confirmed empty, no local CAD processes. API work in RAM.
