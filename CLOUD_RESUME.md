@@ -1,3 +1,41 @@
+# Latest cloud-only continuation — 2026-10-19, native routed geometry verified
+
+Read-only geometry run39241091888 PASSED on source
+ af374dc465d190c0bce30b65a46ea22a76283ce5. Its full source/summary/parts hashes
+and report are pinned in docs/evidence/onehot-routed-load-geometry-pass-20261019.json.
+39 source-measured weak data nets inspected across all three corners; exact
+native instance/pin keys, sink census and INPUT roles verified. No layout edit.
+PCIe nand4_1 driver1834059:2375.000um total wire,290.505um endpoint Manhattan,
+1actual sink. Slow o21ai_1 driver1824966:2073.740um total wire,979.113um Manhattan,
+1actual sink. See docs/onehot-routed-load-geometry-result-20261019.md.
+
+Next: inspect legal buffer sites and obstacles near these real critical
+connections; prepare a positive-buffer/shorter-route candidate with original
+logic/geometry/clock proofs, then fresh route,RC,all-corner setup/hold and
+antenna checks. Do not repeat blind32-cell sizing or claim the read-only
+geometry diagnosis closes timing. Earlier proxy and binding failures remain
+explicitly preserved;39241091888 supersedes only those diagnostics.
+
+Folded CDR fullwave39237412866 nominal early/late REJECTED; early wrong phase,
+885wrong/1148low sampler observations, HBT0129 VCE0.398285618V below0.4V gate.
+Late745wrong/970low. Clock-stop/VI-off negative controls passed. Full receipts
+and comparison are committed. Next CDR work must use the saved native waves
+and actual internal geometry to diagnose the data/clock/tail delays; no phase
+fitting or device-limit relaxation. Full serial PHY remains OPEN.
+
+TX strap6 fullwave39221063981 and trunk25639226121734 statuses and job IDs
+were freshly checked in docs/evidence/cloud-current-state.json. Preserve any
+healthy live jobs and collect completed results before starting replacements.
+The previous completed mainchip route still has setup/hold, electrical and
+antenna violations. Full PHY, mainchip closure and production approval are OPEN.
+
+All source changes, failure evidence and resume instructions are on GitHub.
+Local /home/hasanmelih/Documents/ChatGPT/nnsoc was verified EMPTY again. No
+local checkout, CAD, tests, downloads or archive extraction; only API control
+and JSON/text review in memory. User instruction is cloud-only execution.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, pinned binding compatibility
 
 The corrected read-only geometry run39240623218 rejected because this pinned
