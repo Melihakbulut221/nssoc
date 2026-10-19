@@ -1,3 +1,35 @@
+# Latest cloud-only continuation — 2026-10-19, actual data-path bottleneck evidence
+
+Run39257226392/source9655b5c8af84ea2f306b9463d92065bda0da2b4e PASSED
+actual124data legs/372native bases passive network analysis and controls.
+Summary656309033 SHA6c6da630c789ec20b5e919c092f6373efa0da9a966d6a030d90f16a69f1c44e3;
+parts656309180 SHAadb7291996898e4c56e24082c7858eb5f163b7ba52c39bd4181daa7547fde41a.
+Fullreceipt docs/evidence/tx-strap6-data-network-review-20261019.json.
+p8_0/p8_7 wireC522–546fF/metalR33.86–34.83ohm vs p8_1/p8_6
+230–257fF/20.24–21.45ohm. Driver wireC identical per polarity84.07/91.22fF.
+Clock review previously found no missing edges and<=1.1122ps bracket envelope.
+
+Trunk256 nominal39226121734/job117974418583 is now terminal electrically
+REJECTED:140wrong/164low output,24HBTfail,0MOSfail; original34ns/256bits
+completed14618.29s/native0/no diagnostics/sourceunchanged. Fullreceipt
+docs/evidence/tx-trunk256-nominal-rejection-20261019.json. Faultcase detected.
+Do not rerun identical rejected design or keep widening the return trunk.
+
+NEXT: data-path-aware placement/routing (long p8_0/p8_7) with all p16 paths/
+routing channels evaluated, or actual native drive redesign under measured
+loads and unchanged device/emitter limits. Current six fast-stage row moves
+did not move p8/p16; simply moving p8 transfers load upstream and can overfill
+tracks. See docs/tx-data-network-load-diagnosis-20261019.md for concrete
+evidence and constraints. New physical candidate requires full DRC/deep-flat
+LVS, freshRC, original fullwaves, then PVT. No existing RC reuse or gate waiver.
+
+CDR localbus four fullwave reports committed: early725wrong/837low and
+late595wrong/822low stillreject; both faults detected; two HBTVCEfail both.
+Mainchip39-buffer39243328773 last confirmed live. Preserve healthy route.
+All three goal headings OPEN; cloud-only; localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, clock cause narrowed / CDR waves preserved
 
 Clock summary39254883221 completed:31clocks/124actualselectorbases, no
