@@ -1,3 +1,9 @@
+## 2026-10-19: near-driver mainchip route complete, timing still rejected
+
+Run39243328773 published complete native detailed route/RC/three-corner evidence: summary656791923 SHA86ca4f8ba0c1fb15fdcd01dcf6e61837fb2ab54194f8b6c5e38c88e309406251,parts656792028. Full receipt docs/evidence/onehot-near-driver-route-result-20261019.json. DRC0,critical disconnected0,antenna32nets. Slow setup9684/hold5,WNS−20.6654699ns/−0.4316940ns,slew4122,cap802;typ setup7627/hold7,WNS−7.8820259ns/−0.3727272ns,slew822,cap811;fast setup3733/hold19,WNS−3.7995661ns/−0.3259454ns,slew207,cap828. Fanout1993all. Slow worst setup worsened versus previous routed state, despite count improvements; candidate is not final timing closure. New onehot-near-driver-path-review-cloud workflow extracts actual worst paths without rerouting or weakening gates.
+
+Early CDR diagnosis39282864029 also completes; receipt docs/evidence/cdr-parent-avdd-v13-early-native-diagnosis-20261019.json. Both early/late diagnoses reproduce A/B0.3UI failures and later C/D failures. Supply graph review39287266456 is queued at03fb34ca; it identifies actual wire-graph bottlenecks from small composition/plane bundles. TX fullwaves39268446646 remain live. All work/cloud evidence preserved; local workspace empty.
+
 ## 2026-10-19: PLL review and late CDR diagnosis complete; native supply-path review next
 
 HEAD before this change99d0e190. PLL review39281988033 PASS as diagnostic only: original135.3800ppm800–900ns failure reproduced, final control ripple87.0855mV;34saved probes insufficient for full845-device safety (12/1680voltage nodes covered). Full receipt docs/evidence/pll-c8-half-loop-review-pass-20261019.json pins summary656733669,parts656733721.
