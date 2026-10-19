@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def check():
     from check_cdr_data_cm_v9_parent_sources import check as parent
-    from check_cdr_collector_v8_planes_source import check as baseline
+    from check_cdr_collector_v8_planes_source import main as baseline
     parent();baseline()
     for d in json.loads((ROOT/'scripts/cdr-data-cm-v9-planes-source-delta.json').read_text())['files']:
         raw=(ROOT/d['baseline_path']).read_bytes();assert hashlib.sha256(raw).hexdigest()==d['baseline_sha256'];s=raw.decode()

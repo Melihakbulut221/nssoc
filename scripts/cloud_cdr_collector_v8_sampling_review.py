@@ -139,9 +139,36 @@ def main():
             negative=records[bound['probe_witnesses'][tag+'qp']['device']]
             pt={z['terminal']:z for z in positive['terminals']};nt={z['terminal']:z for z in negative['terminals']}
             assert pt['E']['native_cluster']==nt['E']['native_cluster']
-            nets=tuple(logical[(z['native_cluster'],z['native_net'])]for z in (pt['B'],nt['B']))
-            assert nets==expected_bases[tag],(tag,nets)
+            def cluster(term):return (term['native_cluster'],term['native_net'])
+            # The observed output pair is the slave. Its bases are master mp/mn,
+            # not public dp/dn. Trace the two real master collectors first.
+            def master_driver(collector,opposite):
+                found=[]
+                for dev in records.values():
+                    if dev['model']!='npn13g2':continue
+                    ts={z['terminal']:z for z in dev['terminals']}
+                    if cluster(ts['C'])==cluster(collector) and cluster(ts['B'])!=cluster(opposite):found.append((dev,ts))
+                assert len(found)==1
+                return found[0]
+            mp,mpt=master_driver(nt['B'],pt['B'])
+            mn,mnt=master_driver(pt['B'],nt['B'])
+            assert cluster(mpt['E'])==cluster(mnt['E'])
+            input_witnesses=[]
+            for term,net in zip((mpt['B'],mnt['B']),expected_bases[tag],strict=True):
+                links=[]
+                for dev in records.values():
+                    if dev['model']!='rppd':continue
+                    ts=[z for z in dev['terminals']if z['terminal']in ('rppd_1','rppd_2')]
+                    assert len(ts)==2
+                    for i,z in enumerate(ts):
+                        if cluster(z)==cluster(term) and logical.get(cluster(ts[1-i]))==net:
+                            assert parser.number(dev['parameters']['w'])==parser.number('1u') and parser.number(dev['parameters']['l'])==parser.number('3.6u')
+                            links.append(dict(resistor=dev['instance'],parameters=dev['parameters'],public_net=net,public_terminal=ts[1-i],intrinsic_terminal=z))
+                assert len(links)==1,(tag,net,links)
+                input_witnesses.append(links[0])
+            nets=expected_bases[tag]
             nodes=[global_node(z['node'])for z in (pt['B'],nt['B'])]
+            master_nodes=[global_node(z['node'])for z in (mpt['B'],mnt['B'])]
             input_delta=v(nodes[0])-v(nodes[1]);output_delta=v('xpd.'+tag+'qp')-v('xpd.'+tag+'qn')
             expected=np.array(prior['expected_samples'][tag]);sign=expected*2-1
             edges=START+(np.arange(1,256)+(0 if tag=='b'else .5))*UI
@@ -157,7 +184,11 @@ def main():
             for phase in (-.1,0.,.1,.2,.3,.6,.9):
                 times=edges+phase*UI;di=np.interp(times,t,input_delta);cm=np.interp(times,t,(v(nodes[0])+v(nodes[1]))/2)
                 inputs[str(phase)]=dict(time_s=times.tolist(),differential_v=di.tolist(),commonmode_v=cm.tolist(),signed_against_original_expected_v=(di*sign).tolist())
-            sampling[tag]=dict(actual_native_input_devices=[positive['instance'],negative['instance']],actual_native_base_nodes=nodes,logical_base_nets=list(nets),expected_bits=expected.tolist(),output=records_by_phase,inputs=inputs)
+            master_inputs={}
+            for phase in (-.1,0.,.1,.2,.3,.6,.9):
+                times=edges+phase*UI;di=np.interp(times,t,v(master_nodes[0])-v(master_nodes[1]))
+                master_inputs[str(phase)]=dict(differential_v=di.tolist(),signed_against_original_expected_v=(di*sign).tolist())
+            sampling[tag]=dict(slave_input_devices=[positive['instance'],negative['instance']],slave_base_nodes=nodes,master_input_devices=[mp['instance'],mn['instance']],master_base_nodes=master_nodes,public_input_witnesses=input_witnesses,public_input_nets=list(nets),expected_bits=expected.tolist(),output=records_by_phase,slave_inputs=inputs,master_inputs=master_inputs)
             phase_summary[tag]=dict(output_at_original_phases=phases,input_at_nominal_edge=dict(minimum_signed_v=float(min(inputs['0.0']['signed_against_original_expected_v'])),different_sign_count=sum(x<=0 for x in inputs['0.0']['signed_against_original_expected_v'])))
         r['fixed_sampling_phase_review']=phase_summary
         (out/'fixed-sampling-review.json').write_text(json.dumps(dict(samples=sampling,interpretation='Read-only native terminal samples at fixed original edges/phases. Input signs outside acquisition are diagnostic only, not a new acceptance gate. No changed latency, stimulus, threshold or original rejection.'),indent=2)+'\n')
