@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19,39 near-driver buffers being prepared
+
+This commit starts onehot-routed-drive-prepare-cloud from exact route
+39202263552 and passed measured geometry39241091888. Actual routed source
+has148832cells:147858 retained plus974 route-added antenna diodes. Preserve
+all148832, not only the pre-route count. The older geometry-result prose is
+corrected. Add39positive buf16 near source-measured weak data drivers; only
+new cells may move; <=80um actual driver/output-to-buffer/input distance,
+legal placement, expected topology, original PG/ports/NDR and native equation
+proof plus inversion control are required. Clock/state/macro logic unchanged.
+
+Collect preparation result before routing. A PASS is not timing closure.
+Next restore the original source ancestry/dependencies and candidate state,
+run fresh routing/RC/all original corners, compare against source route,
+and preserve any regressions. Do not count un-routed candidate proximity as
+setup/hold proof. TX39221063981/39226121734 remained live at latest check;
+preserve them. Folded CDR39237412866 remains rejected. All three goal headings
+remain OPEN; user instruction is cloud-only, local workspace remains empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native routed geometry verified
 
 Read-only geometry run39241091888 PASSED on source

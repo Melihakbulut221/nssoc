@@ -2,7 +2,7 @@
 
 [Run39241091888](https://github.com/Melihakbulut221/nssoc/actions/runs/39241091888)
 passed on sourceaf374dc465d190c0bce30b65a46ea22a76283ce5. It read the exact
-147858-instance routed database of run39202263552 and all three original
+148832-instance routed database (147858 retained cells plus974 route-added antenna diodes) of run39202263552 and all three original
 maximum-path reports. Native pin-key uniqueness, INPUT sink role, exact
 reported fanout and unchanged-source byte checks passed for39 selected nets.
 Alias-proxy controls ensure the driver is not counted as a sink.
