@@ -1,3 +1,11 @@
+## 2026-10-19 XOR collector v15 complete model passed; original loaded screen next
+- Validation39319103832 passed raw13wire+9MIMfault controls and19compositionfaults.
+- Exact model:484native devices,17834R/12805C,11intrinsic MIM emitted once. Both stage receipts committed.
+- New xor-collector-v15 streamed fullwave workflow runs nominal early/late and two actual fault cases; no bit/load/device/phase/current gate relaxation.
+- TXtimingpriority39308903140 and mainchiproute39293720171 remain live; do not duplicate.
+- Full serial PHY, recovered-clockCDR/PLL, RF-qualifiedPEX and final chip setup/hold still unproven.
+- All execution/artifacts on GitHub. Workspace,/tmp,/dev/shm contain no matching project build residue; no local CAD process.
+
 ## 2026-10-19 XOR collector v15 MIM capture passed; raw audit/composition next
 - Native capture39318436586 passed: measured17834R/12805C,11actual MIM,111conductors/946points,5capturefaults rejected.
 - Four fresh extraction stage receipts and complete capture receipt are now committed.
