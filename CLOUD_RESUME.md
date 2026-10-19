@@ -1,3 +1,26 @@
+# Latest cloud-only continuation — 2026-10-19, immutable PLL loop diagnosis
+
+Original PLL fixed800–900ns100ppm gate still rejects:
+C9coarse132.847ppm, C8coarse134.051ppm, C8half135.380ppm.
+Allpass the separate900–1000ns window. C8cap reduction did not improve failure.
+Do not repeat capacitor shrinking without actual loop/pump evidence.
+
+This push starts pll-c8-half-loop-review-cloud on exact fullnative capture
+39078674197/sourceefdac8be7756e543a0e4ebbde19b2f93a92b3dbd.
+No new simulation or changedgates: reproduce full1us/6,401,211rows, original
+acquisition/cycle failures, then actual within-cycleVCO/control/PFD observations,
+nativepump/passive/top-levelsource inventory and missingall-device probes.
+34savedvectors do not establish845device safety. Original archive staysintact.
+Read actualnewreport before choosingphysical repair; no fitting or idealclamps.
+
+CDRfullwave39276673160/source43c870a9: controls118142654106PASS;
+clock_stopped118145370074/nominal_early118145370108 confirmedSIMULATING;
+nominal_late118145370034/vi_bias_off118145369918 lastQUEUED.
+Preserve/revalidate TX39268446646 and mainchip39243328773 (lastlive).
+FullPHY/mainchip/finaltiming OPEN. Cloudonly/localempty.
+
+---
+
 # Live cloud continuation — 2026-10-19, original full CDR waves dispatched
 
 Newfullwave39276673160/source43c870a944bb87cf6bffdbf1a8cdddd1cf8c86b8.

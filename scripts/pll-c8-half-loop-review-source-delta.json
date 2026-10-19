@@ -1,0 +1,60 @@
+{
+  "baseline_path": "scripts/cloud_pll_c8_c9_comparison.py",
+  "candidate_path": "scripts/cloud_pll_c8_half_loop_review.py",
+  "helper_path": "scripts/cloud_pll_c8_native_cycle_review.py",
+  "baseline_sha256": "2a046822a6cffc21a4fe4bb948c96e9917b78471de2b951eae56012c05243f14",
+  "candidate_sha256": "9fb2aa665627e970e72c3c170b253b21915934d256ffd62b2e70e38dd43f6198",
+  "helper_sha256": "8cdb7f34c21c968b96365b5409de46ea629d83a47708031fdff151b837f3277b",
+  "edits": [
+    {
+      "before": "cloud-pll-c8-c9-comparison",
+      "after": "cloud-pll-c8-half-loop-review",
+      "count": 1
+    },
+    {
+      "before": "SOURCES={\n 'c9':dict(group='pll-v2-native-acquisition-continuation',run=38982797234,\n  head='ae5d3668d130616a49e0f9592ae49f4f1c98ffc9',\n  summary='ceeaf1d0a8ec3ced107d1428e423e7686a3bfa66e75bad7755ecf75ddca9e289',\n  parts='4a4cdd8d044bcd2117aa38054e64940f953d9bb0ae268373d8f178b3f1bff987'),\n 'c8':dict(group='pll-c8-v2-native-acquisition-continuation',run=39007535633,\n  head='1b0abf2140259b6f75d192893dcfd980418ef245',\n  summary='436914ae3ef1e1727b31e799317cfd92354cf00a00839527f49fcb079b9da1a6',\n  parts='52b00bf1ee020974a7da752a52b19f460dfbf7d495892aab0f48e915a8a108ae')}",
+      "after": "SOURCES={\n 'c8_half':dict(group='pll-c8-half-native-acquisition-initial',run=39078674197,\n  head='efdac8be7756e543a0e4ebbde19b2f93a92b3dbd',\n  summary='f4dc3f9e0bb63321e6b9fa13755334ddcd0ef97b356dbeb19187b34bd0d9dc36',\n  parts='0d91ec2056e66c41649b32b4282dca9ec22a0ec1e25aaf928781a25555a4d0fd')}",
+      "count": 1
+    },
+    {
+      "before": "from route_cloud_newer_postcts import sha",
+      "after": "from route_cloud_newer_postcts import sha\nfrom cloud_pll_c8_native_cycle_review import observe\nfrom check_pll_c8_half_loop_review_sources import check",
+      "count": 1
+    },
+    {
+      "before": "old['stage']=='continuation'",
+      "after": "old['stage']=='initial'",
+      "count": 1
+    },
+    {
+      "before": "body.count('.tran 3.125e-13 1e-06 0 3.125e-13')",
+      "after": "body.count('.tran 1.5625e-13 1e-06 0 1.5625e-13')",
+      "count": 1
+    },
+    {
+      "before": "    (OUT/(label+'-review.json')).write_text",
+      "after": "    r['native_cycle_review']=observe(data,cycles,inv,body)\n    (OUT/(label+'-review.json')).write_text",
+      "count": 1
+    },
+    {
+      "before": "    OUT.mkdir(exist_ok=False);reports.OUT=OUT",
+      "after": "    check()\n    OUT.mkdir(exist_ok=False);reports.OUT=OUT",
+      "count": 1
+    },
+    {
+      "before": "r['method_hashes']={p:sha(ROOT/p)for p in METHODS}",
+      "after": "r['method_hashes']={p:sha(ROOT/p)for p in (*METHODS,'scripts/cloud_pll_c8_native_cycle_review.py','scripts/cloud_pll_c8_half_loop_review.py')}",
+      "count": 1
+    },
+    {
+      "before": "        r['comparison']=compare(cases['c9'],cases['c8'])",
+      "after": "        r['native_cycle_review']=cases['c8_half']['native_cycle_review']\n        assert all(sha(ROOT/p)==h for p,h in r['method_hashes'].items())\n        check()",
+      "count": 1
+    },
+    {
+      "before": "COMPLETE_BOTH_EXACT_PHYSICAL_PLL_CAPTURE_COMPARISON_NOT_REPAIR_OR_ACCEPTANCE",
+      "after": "COMPLETE_PINNED_HALF_STEP_PLL_LOOP_REVIEW_ORIGINAL_GATES_REMAIN_FAILED",
+      "count": 1
+    }
+  ]
+}
