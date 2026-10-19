@@ -55,3 +55,10 @@ Neither source is used to relax any current gate or claim qualified lifetime.
 Run 39209252154 stopped before native LVS/DRC: the IN resistor layer-28 region reported cached area 15840000 but an empty bounding box and polygon iterator after independent PCell registration. This is not accepted physical evidence. The complete rejected result remains in release cloud-results-39209252154-1-cdr-sampler-input-drive-physical.
 
 The checker now freezes every primitive region with `flatten()` before merging and checks candidate polygon/bounding-box/area identity again after golden PCell generation. Exact XOR comparison and all original physical/fault gates remain. This addresses an original-layer view lifetime hypothesis; a fresh cloud run must validate the repair and actual geometry. KLayout's maintainer documents original-layer views and explicit freezing here: https://www.klayout.de/forum/discussion/2659/value-of-begin-shapes-rec-variable-changes-if-new-shapes-added-to-cell . No local CAD or output files are created.
+
+
+## Verified leaves and new parent integration
+
+Sampler run39210361374 at3516bc984adc46b99ae5cc501bac861dec5db647 passed exact native drawing comparison with three corruption controls,560-category DRC,unsimplified deep/flat54deviceLVS and16physical fault controls. Retime run39209600711 at37ef8347e55818db81ccffd37b68e01ac8ec52bf passed560-category DRC,unsimplified deep/flat12deviceLVS and7physical fault controls. Full reports and SHA256-bound receipts accompany the child manifest. Neither leaf result is electrical/fullPHY acceptance.
+
+The input-drive-v10 parent substitutes only these two leaf types in the16macro/484device/25port hierarchy, preserving the measured2.4um data-header repair and six other leaf types. It reruns original native physical gates plus explicit rejection of rolled-back16sampler resistor widths,8retime resistor widths and4retime MIM dimensions. Fresh full-parent wire/MIM extraction and original loaded nominal/fault simulations remain mandatory. All computation runs on GitHub-hosted runners; local workspace remains empty.
