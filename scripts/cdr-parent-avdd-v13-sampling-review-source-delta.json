@@ -1,0 +1,48 @@
+{
+  "baseline_path": "scripts/cloud_cdr_localbus_v12_sampling_review.py",
+  "baseline_sha256": "c50732477896e57538bf2f7cd649bda9e40876325101422de50e40bc388e6575",
+  "candidate_path": "scripts/cloud_cdr_parent_avdd_v13_sampling_review.py",
+  "candidate_sha256": "18212174e91859d9c7f0ade4b7e0a55904493bd26ffa11149b7658b538bfe2a0",
+  "edits": [
+    {
+      "before": "cdr-localbus-v12",
+      "after": "cdr-parent-avdd-v13",
+      "count": 4
+    },
+    {
+      "before": "from cloud_cdr_localbus_v12_mim_streamed import",
+      "after": "from cloud_cdr_parent_avdd_v13_mim_streamed import",
+      "count": 1
+    },
+    {
+      "before": "not prior['data_passed'] and not prior['devices_passed']",
+      "after": "not prior['data_passed'] and prior['devices_passed']",
+      "count": 1
+    },
+    {
+      "before": "dict(devices=484,R=15482,C=11490)",
+      "after": "dict(devices=484,R=16010,C=11677)",
+      "count": 1
+    },
+    {
+      "before": "len(resistors)==15482 and len(capacitors)==11490",
+      "after": "len(resistors)==16010 and len(capacitors)==11677",
+      "count": 1
+    },
+    {
+      "before": "expected_failed=={'xpd.xd0129','xpd.xd0147'},'Saved original device failure identity changed'",
+      "after": "expected_failed==set(),'Saved parent-feed capture has no HBT device safety failures'",
+      "count": 1
+    },
+    {
+      "before": "COMPLETE_NATIVE_CDR_LOCALBUS_PATH_DIAGNOSIS_ORIGINAL_GATES_REMAIN_FAILED",
+      "after": "COMPLETE_NATIVE_CDR_PARENT_AVDD_PATH_DIAGNOSIS_ORIGINAL_DATA_PHASE_GATES_REMAIN_FAILED",
+      "count": 1
+    }
+  ],
+  "dependencies": {
+    "scripts/cloud_cdr_parent_avdd_v13_mim_streamed.py": "d3ff54e9216a58b9b195d33ee6c16b051af63a5e8e597e602ec3ebdaf8e166a9",
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/build_pcie_local_vco_hybrid_v6.py": "ab2962f0c47cc89029866761992bfdd87ab1d5649920b8bc8edaa1c54bbe5a3f"
+  }
+}

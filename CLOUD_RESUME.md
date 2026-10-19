@@ -1,3 +1,9 @@
+## 2026-10-19: parent AVDD nominal early device pass, data/phase rejection
+
+CDR run39276673160 nominal_early job118145370108 finished REJECTED_WHOLE_MIM_PD484_LOADED. Source summary656668897 SHA09ea88ef6da880a8daf559e9a240239a35ea527195fb25e005d7dca86b6a54c6; parts656668961. Full receipt at docs/evidence/cdr-parent-avdd-v13-fullwave-nominal_early-20261019.json. Devices now pass; minimum HBT VCE0.4105773V. A/B/C/D wrong-sign77/129/198/325, comparator X/Y135/364, phase0.0189025V, VI35.1745uA: original data/phase gates still fail. New cdr-parent-avdd-v13-sampling-review-cloud workflow diagnoses the actual immutable early capture without another simulation. Late and VI-off cases still await terminal evidence.
+
+PLL source/deck fixes are in2ba9d890; corrected diagnostic run39281988033/job118158418590 was queued. Obsolete queued retry39281586716 was cancelled after finding its deterministic top-level-deck parser error, before doing the costly restore. Original failure39278718492 is retained. TX39268446646 and mainchip39243328773 remain live. All work cloud-only; local directory empty.
+
 ## 2026-10-19: PLL diagnostic deck parser correction
 
 While reviewing queued PLL retry39281586716, found the new helper incorrectly used the strict single-subcircuit parser on a top-level test deck. Dedicated title/control/continuation-aware reader and cloud preflight controls now added; original model parser and original 800–900ns/900–1000ns gates unchanged. Discover fresh pll-c8-half-loop-review-cloud run at this commit. Older preflight failure39278718492 remains retained. CDR/TX/mainchip jobs are unaffected. All calculations/files remain in GitHub.
