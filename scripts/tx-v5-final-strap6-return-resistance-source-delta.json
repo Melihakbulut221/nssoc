@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_fast_stage_isolated_return_resistance.py",
+      "baseline_sha256": "4661b4749efdb059b9b4ac0bcbfb6c7a83354acd04f0dd7843a524e17d01c5bf",
+      "candidate_path": "scripts/cloud_tx_v5_final_strap6_return_resistance.py",
+      "candidate_sha256": "7c05d78802c9ef4024f5a4eafb55123c06e845d07417db9c7eaa78b6dc4b7412",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-fast-stage-isolated-return-resistance",
+          "after": "cloud-tx-v5-final-strap6-return-resistance",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/tx-v5-fast-stage-isolated-composition-pass-20261018.json",
+          "after": "docs/evidence/tx-v5-final-strap6-composition-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "source['source_run']==39157450167 and source['source_head']=='aa94559c5be215eae142e4146d3fde6c35e6994d'",
+          "after": "source['source_run']==39218951433 and source['source_head']=='0a38fc8312e4d5252038502044653ca493491990'",
+          "count": 1
+        },
+        {
+          "before": "5ba39517abf8f1d0d85bdb36501d6ddd5ab6c52b4fcb54d1af2fd0ee927f3509",
+          "after": "9d1a958a1628f969cb172d051bde9ec4e3587210d8ae8eebb2a4d03bd18a6d1b",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-fast-stage-isolated-assembly",
+          "after": "cloud-tx-v5-final-strap6-assembly",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/tx-v5-columns-native-return-diagnosis-20261018.json",
+          "after": "docs/evidence/tx-v5-fast-stage-isolated-return-diagnosis-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "baseline['run']==39133064102 and baseline['summary_sha256']=='696c27c19cab691a46dc1f48a1f72c12574e8cf78cf226df0741419a804cf41a'",
+          "after": "baseline['run']==39215983203 and baseline['summary_sha256']=='b15691a1d2fbe52f0440830227cf68dcda4501758fec3332d06d50fdef8ba079'",
+          "count": 1
+        },
+        {
+          "before": "assert set(solutions)=={114,115}",
+          "after": "eq=json.loads((ROOT/'docs/evidence/tx-v5-final-strap6-model-equivalence-pass-20261019.json').read_text())\n        assert eq['run']==39220553663 and eq['report']['sources']['candidate']['compact_sha256']==source['model_sha256']['compact']\n        correspondence=eq['report']['native_instance_correspondence']['pairs']\n        assert correspondence['xd0114']=='XD0114'and correspondence['xd0115']=='XD0115'\n        assert set(solutions)=={114,115}",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
