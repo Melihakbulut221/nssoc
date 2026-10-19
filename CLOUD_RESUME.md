@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, global row-lattice repair
+
+Private review39263440258/source88e80c4df4ae14d6f6a9f2b96488c63763f1a8ab
+completed:589native/referenceHBT,378intendednets/376actualclusters.
+Two real private shorts: p16_8p–p8_0_qn and p16_8n–p8_0_qp; no opens.
+Fullreceipt docs/evidence/tx-minimax-private-net-diagnosis-20261019.json.
+Preserve previous failedGDS and both diagnostic methods.
+
+This push starts tx-v5-minimax-assembly-cloud with global integer600um
+row-lattice minimax placement. Every originalrow residue preserved; all17
+leaf/final rows, allX/nativechildren/devices/clocks/gates fixed.
+Removes previous one-off p8_7 correction in favor of one constrained solve
+for all60legs. Independent actualgeometry verifies row lattice.
+Get exactrun/results. Original560DRC/deep-flat1674LVS/allfaults mustpass
+before freshRC/fulloriginalwaveforms. Prepared extraction from prior session
+targets FAILED39261200416 and is STALE; do not replay unchanged.
+
+Mainchip39243328773 stilllive lastcheck; preserve. FullPHY/route/timing OPEN.
+Cloud-only/localworkspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, private-net diagnostic binding fix
 
 Read-only private review39262885916 failed closed on native/reference C=B

@@ -57,6 +57,9 @@ def verify(L,record):
     for tag,p in record['placements'].items():
         o=old['placements'][tag];before=box(o['bbox_um']);delta=plan['row_targets_um'][tag]-before[1];dy_by_tag[tag]=delta
         assert plan['original_rows_um'][tag]==before[1]
+        assert plan['row_lattice']['quantum_um']==600.
+        assert plan['row_lattice']['original_residue_um'][tag]==before[1]%600.
+        assert abs(delta/600.-round(delta/600.))<1e-9,('Macro left original row lattice',tag,delta)
         if tag.startswith('p16_')or tag=='f':assert delta==0 and tag in plan['fixed_rows_um']
         assert p['kind']==o['kind']and set(p['ports'])==set(o['ports'])
         expected=shifted(o['bbox_um'],delta);eq(box(p['bbox_um']),expected)
