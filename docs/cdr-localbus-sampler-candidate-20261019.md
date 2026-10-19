@@ -35,3 +35,18 @@ This is a real geometry candidate intended to reduce internal wire loading.
 It has no accepted electrical result. Passing leaf DRC/LVS requires fresh
 parent integration, native extraction and the complete unchanged loaded
 waveform gates before any timing claim. Full CDR recovery and Gen3x4 remain open.
+
+## First native physical result and correction
+
+Run39246967295 passed generation and the independent54-drawing/placement/
+public-pin check. Total vertical column length fell18796.26→12592.26um.
+The native main deck completed all560 categories but found10 M5.b markers;
+this candidate was rejected before LVS/fault completion.
+
+The corrected planner reads the exact native Metal4-to-TM1 via PCell's Metal5
+landing geometry. Internal horizontal buses avoid every other-net start
+landing within their actual X span, with an additional2um planning margin.
+The original6um bus pitch,20um own-terminal clearance and all shortening/
+primitive/public-pin checks remain. No DRC deck or physical fault was waived.
+The exact first failed report and geometry remain pinned. Fresh native DRC,
+unsimplified LVS and every original negative control must pass.

@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19, local-bus M5 spacing repair
+
+Local-bus physical39246967295 passed generation and independent54-native-
+drawing/placement/public-pin conservation. Total vertical columns reduced
+18796.26→12592.26um. Native560-category DRC found10 M5.b markers and rejected
+the geometry; no LVS/complete physical acceptance was claimed. Full failure:
+docs/evidence/cdr-localbus-first-drc-rejection-20261019.json.
+
+This commit reruns only the local-bus physical candidate with actual native
+M5 start-landing avoidance. The planner reads the native4-to-TM1 via PCell's
+M5 rectangle and excludes other-net landing conflicts within each bus X span,
+with2um extra planning margin. Original6um bus pitch,20um own-terminal
+clearance, no lengthening, fixed54primitive placement/public pins and all
+560DRC/deep-flat54LVS/16fault gates remain. Get the new run before continuing
+to parent/extraction/electrical stages. Never reuse old folded RC.
+
+Mainchip39-buffer route39243328773 and TX39221063981/39226121734 remain live
+at latest check; preserve. All three goal headings OPEN. Cloud-only; empty local.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, internal CDR buses shortened candidate
 
 Native stage comparison39245298065 PASSED read-only on source

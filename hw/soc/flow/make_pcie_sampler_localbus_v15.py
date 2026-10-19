@@ -412,12 +412,40 @@ def main():
     original_bus_y = {net:180.0+index*6 for index,net in enumerate(nets)}
     local_bus_y = {net:original_bus_y[net] for net in PORTS}
     occupied_y = list(local_bus_y.values())
+    # Every vertical TM1 strap has a real M5 landing at its native start.
+    # A shortened horizontal M5 bus must avoid OTHER-net start landings,
+    # including ones whose terminals lie in the opposite folded row.
+    landing_cell = pc("via_stack", dict(b_layer="Metal4",t_layer="TopMetal1",
+        vn_columns=8,vn_rows=1,vt1_columns=2,vt1_rows=1))
+    landing_all = landing_cell.dbbox()
+    landing_region = pya.Region(landing_cell.begin_shapes_rec(layout.layer(layers["Metal5"],0)))
+    assert not landing_region.is_empty()
+    landing_box = landing_region.bbox().to_dtype(layout.dbu)
+    landing_offsets = [landing_box.left-landing_all.center().x,
+        landing_box.bottom-landing_all.center().y,landing_box.right-landing_all.center().x,
+        landing_box.top-landing_all.center().y]
+    start_landings = [(other,x+landing_offsets[0],start+landing_offsets[1],
+        x+landing_offsets[2],start+landing_offsets[3]) for other,points in terminals.items()
+        for x,start in points]
+    # This2um is an additional geometric planning margin, not a changed DRC rule.
+    landing_margin = 2.
+    skipped_landings = []
+    def landing_conflicts(net,y):
+        left=min(x for x,_ in terminals[net])-1.
+        right=max(x for x,_ in terminals[net])+1.
+        return [dict(net=other,box_um=[x1,y1,x2,y2]) for other,x1,y1,x2,y2 in start_landings
+            if other!=net and left<x2+landing_margin and right>x1-landing_margin
+            and y-1.<y2+landing_margin and y+1.>y1-landing_margin]
     for net in nets:
         if net in PORTS:
             continue
         minimum_y = max(start for _,start in terminals[net])+20.
         y = math.ceil(minimum_y/6.)*6.
-        while any(abs(y-other)<6.-1e-8 for other in occupied_y):
+        while True:
+            collision=landing_conflicts(net,y)
+            if not any(abs(y-other)<6.-1e-8 for other in occupied_y) and not collision:
+                break
+            if collision:skipped_landings.append(dict(net=net,bus_y_um=y,conflicts=collision))
             y += 6.
         assert y<=original_bus_y[net]+1e-8, ("Internal wire would lengthen",net,y,original_bus_y[net])
         local_bus_y[net]=y;occupied_y.append(y)
@@ -432,6 +460,8 @@ def main():
         shortened_internal_nets=[n for n in nets if local_bus_y[n]<original_bus_y[n]],
         critical_buses={n:dict(before_um=original_bus_y[n],after_um=local_bus_y[n])for n in critical},
         minimum_terminal_to_bus_clearance_um=20.,minimum_horizontal_bus_pitch_um=6.,
+        actual_native_m5_start_landing_offsets_um=landing_offsets,other_net_landing_margin_um=landing_margin,
+        skipped_native_landing_conflicts=skipped_landings,
         primitive_placements_unchanged=True,public_bus_y_unchanged=True,
         scope="Actual shorter internal M4/TM1 columns and lower M5/TM2 buses. No intrinsic or public pin change. Length is not RC/timing acceptance.")
     for index, net in enumerate(nets):
