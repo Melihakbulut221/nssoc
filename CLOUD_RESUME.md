@@ -1,3 +1,12 @@
+## 2026-10-20 — Repair stopped TX extraction receipt binding
+Run39340008926 stopped terminal beforeRC: new physical report was erroneously
+compared to baseline receipt instead of candidate receipt. Failure archived.
+Corrected only expected receipt variable; strict hashes/source checks remain.
+Dispatch the fresh extraction workflow on this commit; do not rerun oldfailedhead.
+Mainchip39331918238 remains live. CDRv16 nominal rejected; continueactualcircuit diagnosis.
+All CAD and outputs stay in cloud.
+
+
 ## 2026-10-20 — TX wire24 physical passed; freshRC launched; CDR rejection retained
 TX physical39339196396 passed560DRC/0markers,deep-flat1674device LVS and allfaults.
 GDSbab4f236232c592e03a280adee5cc7f4fdc49861e7076c572ec13aa7f704c238.

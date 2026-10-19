@@ -61,7 +61,7 @@ def main():
         assert basepin['run']==39304550527 and basepin['summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'
         baseline=basepin['report']
         assert baseline['variant']==selected
-        assert physical==basepin['report'], 'Exact physical parent summary changed'
+        assert physical==receipt['report'], 'Exact physical parent summary changed'
         assert all(sha(out/n)==v for n,v in physical['outputs'].items()), 'Physical archive member changed'
         assert baseline['placement_pitch']==dict(name='compact_columns',column_um=700.,row_um=600.,inverse_topology_matches_original=True)
         if tight:

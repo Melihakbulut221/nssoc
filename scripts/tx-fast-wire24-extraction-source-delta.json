@@ -4,7 +4,7 @@
       "baseline_path": "scripts/cloud_tx_v5_timing_priority_extraction.py",
       "candidate_path": "scripts/cloud_tx_fast_wire24_extraction.py",
       "baseline_sha256": "5bb0ef05259319236c03311f1df3286f760fbcd9410fca8b314baac7971a0763",
-      "candidate_sha256": "2931709b3b620750f0420a6f65c09cbbdeb90a8d6eb91e13b7cfcc901e4b56c9",
+      "candidate_sha256": "35e3b857a4ac9dbea812b639bb71e6fb32fb807abce2e9ba02f464fb844554a3",
       "edits": [
         {
           "before": "if wide64:receipt_name='tx-v5-timing-priority-physical-pass-20261019.json'",
@@ -44,6 +44,11 @@
         {
           "before": "        if wide64:\n            result['geometry_delta']=json.loads((out/'timing-priority-geometry-delta.json').read_text())\n            assert result['geometry_delta']==physical['geometry_delta']==gp\n            assert result['geometry_delta']['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n            assert result['geometry_delta']['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n",
           "after": "        if wide64:\n            result['geometry_delta']=json.loads((out/'geometry-delta.json').read_text())\n            assert result['geometry_delta']==physical['geometry_delta']==gp\n            assert all(c['rejected']for c in gp['controls'])and len(gp['controls'])==3\n            assert gp['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n",
+          "count": 1
+        },
+        {
+          "before": "assert physical==basepin['report'], 'Exact physical parent summary changed'",
+          "after": "assert physical==receipt['report'], 'Exact physical parent summary changed'",
           "count": 1
         }
       ]
