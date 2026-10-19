@@ -1,0 +1,176 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_input_drive_v13.py",
+      "baseline_sha256": "4d4bc4032e94c390fb60e85734cc736e6edc51f1a9da0009041f10c2029566f4",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_folded_v14.py",
+      "candidate_sha256": "87829775c87d11c2710d2cbc335e9075ec4abdbc9b7224d20e394e6723ef303e",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_input_drive_layout_v13",
+          "after": "nssoc_rx_sampler_folded_layout_v14",
+          "count": 1
+        },
+        {
+          "before": "    previous_right = 0.0\n    for index, row in enumerate(rows):",
+          "after": "    # Fold only placement into two rows; keep every native device and spacing.\n    # Reserve all M4/TM1 escape columns globally, including the opposite row.\n    folded = {}; reserved = []; right_by_row = [0., 0.]\n    split = (len(rows)+1)//2\n    for index, row in enumerate(rows):\n        row_index = 0 if index < split else 1\n        local_index = index if row_index == 0 else index-split\n        box = geometry[row[\"name\"]]\n        start = math.ceil(max(40.+local_index*30, right_by_row[row_index]+30-box.left)/.005)*.005\n        offsets = [-18.,-12.,-6.] if row[\"kind\"] in (\"hbt\",\"nmos\") else [-12.,-6.]\n        for step in range(20001):\n            x = round((start+step*.005)/.005)*.005\n            lanes = [x+v for v in offsets]\n            if all(abs(a-b)>=5.-1e-8 for a in lanes for b in reserved):\n                break\n        else:\n            raise ValueError(\"No independent folded-row escape columns\")\n        folded[row[\"name\"]] = [x,20.+row_index*100.]\n        right_by_row[row_index] = x+box.right\n        reserved.extend(lanes)\n    assert len(folded)==len(rows)==37\n    folded_points={}\n    for row in rows:\n        x,y=folded[row[\"name\"]];box=geometry[row[\"name\"]]\n        for net in set(row[\"nets\"]):\n            if net not in (\"AVDD\",\"AVSS\",\"SUB\",\"IREF\"):\n                folded_points.setdefault(net,[]).append(x+box.center().x)\n    for net in set(PORTS)&folded_points.keys():folded_points[net].append(0.)\n    folded_spans={n:max(v)-min(v)for n,v in folded_points.items()}\n    baseline_spans=spans(order)\n    assert all(folded_spans[n]<.8*baseline_spans[n]for n in (\"CLKP\",\"CLKN\")), (folded_spans,baseline_spans)\n    assert max(right_by_row)<1200.,right_by_row\n    placement_plan[\"folded_rows\"] = dict(rows=2,row_y_um=[20.,120.],minimum_same_row_primitive_gap_um=30.,\n        minimum_global_escape_column_gap_um=5.,positions=folded,\n        signal_horizontal_spans_um=folded_spans,original_single_row_spans_um=baseline_spans,\n        rightmost_native_primitive_um=max(right_by_row),\n        scope=\"Real two-row geometry with unchanged intrinsic devices. Horizontal spans are not delay or electrical acceptance.\")\n    previous_right_by_row = [0.,0.]\n    for index, row in enumerate(rows):",
+          "count": 1
+        },
+        {
+          "before": "        x = math.ceil(max(40.0 + index * 30, previous_right + 30 - raw.left) / .005) * .005\n        y = 20.0\n        t = instance(cell, x, y)\n        actual = raw.transformed(t)\n        assert actual.left >= previous_right + 30 - 1e-8 and actual.top < 70\n        previous_right = actual.right",
+          "after": "        x,y = folded[row[\"name\"]]\n        row_index = 0 if index < split else 1\n        t = instance(cell, x, y)\n        actual = raw.transformed(t)\n        assert actual.left >= previous_right_by_row[row_index] + 30 - 1e-8 and actual.top < y+50\n        previous_right_by_row[row_index] = actual.right",
+          "count": 1
+        },
+        {
+          "before": "        y = 80.0 + index * 6",
+          "after": "        y = 180.0 + index * 6",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_input_drive_v13.py",
+      "baseline_sha256": "41ee94c2b130b34eaeebbc1478b5eb2e4cba364958fa4b6e168069b05fe1f5eb",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_folded_v14.py",
+      "candidate_sha256": "4e69696aa027037506151a32184de3b230b74d364749be1cc728b8f6af52b1b7",
+      "edits": [
+        {
+          "before": "from make_pcie_sampler_input_drive_v13 import",
+          "after": "from make_pcie_sampler_folded_v14 import",
+          "count": 1
+        },
+        {
+          "before": "PASS_INPUT_DRIVE_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "after": "PASS_FOLDED_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_sampler_input_drive_geometry.py",
+      "baseline_sha256": "ca5be1aaaea89c48cd103fbf081abbcc55b41c2cebe9fe10971fe5037ea96647",
+      "candidate_path": "scripts/check_cdr_sampler_folded_geometry.py",
+      "candidate_sha256": "fde0a8c05d6d7b09a05b0126394d3cb8b453de443f4a51201788932c1cf2c303",
+      "edits": [
+        {
+          "before": "        assert x[name]['kind']=='resistor' and x[name]['width_um']==1\n        x[name]['width_um']=4",
+          "after": "        assert x[name]['kind']=='resistor' and x[name]['width_um']==4",
+          "count": 1
+        },
+        {
+          "before": "a['source_circuit_sha256']=='876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3'",
+          "after": "a['source_circuit_sha256']=='aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4'",
+          "count": 1
+        },
+        {
+          "before": "tops=['nssoc_rx_sampler_collector_access_layout_v12','nssoc_rx_sampler_input_drive_layout_v13']",
+          "after": "tops=['nssoc_rx_sampler_input_drive_layout_v13','nssoc_rx_sampler_folded_layout_v14']",
+          "count": 1
+        },
+        {
+          "before": "    # Placement may follow the changed native resistor boxes. All other\n    # primitive drawings remain exact; the four resistor shapes are independently\n    # reconstructed from the pinned native PCell, not trusted from metadata.\n    a,b=all_shapes\n    def geometry_snapshot(shapes):\n        return {n:{li:(r.area(),str(r.bbox()),tuple(sorted(str(p) for p in r.each())))\n                   for li,r in layers.items()} for n,layers in shapes.items()}\n    frozen_candidate=geometry_snapshot(b)\n    # Freeze original-layer views before registering or regenerating PCells.\n    # Area alone can be cached after the underlying layout changes.\n    a=dict(a)\n    import sys\n    src=Path(__file__).resolve().parents[1]/'pdk/libs.tech/klayout/python'\n    sys.path[:0]=[str(src),str(src/'pycell4klayout-api/source/python')]\n    import sg13g2_pycell_lib\n    G=pya.Layout();native_layouts.append(G)\n    changed_names={'IP','IN','BP','BN'}\n    for d in all_data[1]['instances']:\n        if d['name']not in changed_names:continue\n        assert d['kind']=='resistor' and d['width_um']==4\n        cell=G.create_cell('rppd','SG13_dev',dict(w='4u',l=str(d['length_um'])+'u'));assert cell is not None\n        regions={}\n        for li in G.layer_indexes():\n            info=G.get_info(li)\n            if info.datatype!=0:continue\n            region=pya.Region(cell.begin_shapes_rec(li)).flatten().merged()\n            if not region.is_empty():regions[(info.layer,info.datatype)]=region\n        assert regions\n        a[d['name']]=regions\n    assert geometry_snapshot(b)==frozen_candidate, 'Candidate drawing changed during independent PCell generation'\n",
+          "after": "    # Every actual primitive drawing must remain identical after placement.\n    # No golden replacement or parameter exception is allowed.\n    a,b=all_shapes\n",
+          "count": 1
+        },
+        {
+          "before": "    for name,nodes,length in [('IP','DP LP','3.6'),('IN','DN LN','3.6'),('BP','AVDD LP','2.4'),('BN','AVDD LN','2.4')]:\n        arow='R'+name+' '+nodes+' BULK rppd w=1u l='+length+'u'\n        assert expected.count(arow)==1\n        expected=expected.replace(arow,arow.replace('w=1u','w=4u'))\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "before": "    plan=all_data[1]['placement_plan'];assert plan['unchanged_primitive_rows']and plan['weighted_span_cost_after']<plan['weighted_span_cost_before']",
+          "after": "    plan=all_data[1]['placement_plan'];assert plan['unchanged_primitive_rows']\n    fold=plan['folded_rows'];assert fold['rows']==2 and fold['row_y_um']==[20.,120.]\n    assert all(fold['signal_horizontal_spans_um'][n]<.8*fold['original_single_row_spans_um'][n]for n in ('CLKP','CLKN'))\n    # Metadata has already been matched to actual PCell instances and translations above.\n    for d in all_data[1]['instances']:\n        if d['kind']!='substrate_tap':assert d['placement_um']==fold['positions'][d['name']]\n    assert all_data[1]['bbox_um'][2]<1202.,all_data[1]['bbox_um']",
+          "count": 1
+        },
+        {
+          "before": "status='PASS_50_UNCHANGED_AND_FOUR_NATIVE_RESIZED_RESISTOR_DRAWINGS_AND_THREE_CONTROLS'",
+          "after": "status='PASS_ALL54_NATIVE_DRAWINGS_UNCHANGED_TWO_ROW_PLACEMENT_AND_THREE_CONTROLS'",
+          "count": 1
+        },
+        {
+          "before": "native_parameters_and_reference_unchanged=False,intended_changes={n:dict(old_width_um=1,new_width_um=4)for n in sorted(changed_names)}",
+          "after": "native_parameters_and_reference_unchanged=True,intended_changes={'placement':'two rows; all intrinsic parameters unchanged'}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_input_drive_physical.py",
+      "baseline_sha256": "71c64fe349107611dc75e7fd87d82fa697df7311fabec031aa41c5c26af82203",
+      "candidate_path": "scripts/cloud_cdr_sampler_folded_physical.py",
+      "candidate_sha256": "164320910bfb569cfa6dd9b6b9cd91d0ec44e36267cec6f78ccd9b724bdc42bf",
+      "edits": [
+        {
+          "before": "cloud-cdr-sampler-input-drive-physical",
+          "after": "cloud-cdr-sampler-folded-physical",
+          "count": 1
+        },
+        {
+          "before": "           scope='Four actual sampler input-divider rppd widths1to4um to match the existing fourfold HBT drive candidate. All HBTs, MOS, loads and contacts unchanged; placement follows native PCell boxes. Independent50 unchanged and4 golden native resistor drawings, original560DRC/deep-flat54deviceLVS/LEF gates and14 original faults plus2 old-width faults. Earlier electrical screens are ancestry only, not candidate acceptance. Fresh parent RC and original full loaded gates remain required.')",
+          "after": "           scope='Actual two-row folding of all37 native sampler primitives; all54 drawings and intrinsic parameters unchanged. Global escape columns and30um same-row gaps preserved. Original560DRC/deep-flat54deviceLVS/LEF and16 faults retained. Width sensitivity rejected; original4um input resistors retained. Requires new full parent RC and unchanged full loaded gates.')",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_input_drive_v13.py",
+          "after": "make_pcie_sampler_folded_v14.py",
+          "count": 3
+        },
+        {
+          "before": "'4d4bc4032e94c390fb60e85734cc736e6edc51f1a9da0009041f10c2029566f4'",
+          "after": "'87829775c87d11c2710d2cbc335e9075ec4abdbc9b7224d20e394e6723ef303e'",
+          "count": 1
+        },
+        {
+          "before": "check_pcie_sampler_input_drive_v13.py",
+          "after": "check_pcie_sampler_folded_v14.py",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_input_drive_sources.py",
+          "after": "check_cdr_sampler_folded_sources.py",
+          "count": 2
+        },
+        {
+          "before": "cdr-sampler-input-drive-source-delta.json",
+          "after": "cdr-sampler-folded-source-delta.json",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_sampler_input_drive_geometry.py",
+          "after": "check_cdr_sampler_folded_geometry.py",
+          "count": 2
+        },
+        {
+          "before": "baseline_pin=json.loads((ROOT/'docs/evidence/cdr-sampler-collector-access-physical-pass-20261019.json').read_text())",
+          "after": "baseline_pin=json.loads((ROOT/'docs/evidence/cdr-retimed-input-drive-v10-parent-children-20261019.json').read_text())['children']['sampler']",
+          "count": 1
+        },
+        {
+          "before": "reports.restore_report('cdr-sampler-collector-access-physical',baseline_pin['run']",
+          "after": "reports.restore_report(baseline_pin['group'],baseline_pin['run']",
+          "count": 1
+        },
+        {
+          "before": "layout/nssoc_rx_sampler_collector_access_layout_v12.gds",
+          "after": "layout/nssoc_rx_sampler_input_drive_layout_v13.gds",
+          "count": 1
+        },
+        {
+          "before": "assert baseline_report==baseline_pin['report']and baseline_report['sources_unchanged']",
+          "after": "assert baseline_report['source_head']==baseline_pin['source_head']and baseline_report['status']==baseline_pin['status']and baseline_report['sources_unchanged']",
+          "count": 1
+        },
+        {
+          "before": "PASS_INPUT_DRIVE_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "after": "PASS_FOLDED_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "PASS_INPUT_DRIVE_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "after": "PASS_FOLDED_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
