@@ -4,7 +4,7 @@ name: onehot-critical-data-prepare-cloud
 on:
   push:
     branches: [codex/complete-open-work]
-    paths: [.github/workflows/onehot-critical-data-prepare-cloud.yml]
+    paths: [.github/workflows/onehot-critical-data-prepare-cloud.yml, scripts/select_onehot_critical_data_drivers.py, scripts/cloud_onehot_critical_data_prepare.py, scripts/prepare_onehot_critical_data_buffers.py, scripts/inspect_onehot_critical_data_geometry.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,7 +28,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/cloud_onehot_critical_data_prepare.py scripts/prepare_onehot_critical_data_buffers.py
           python3 -m py_compile scripts/select_onehot_critical_data_drivers.py scripts/inspect_onehot_critical_data_geometry.py
-          python3 scripts/select_onehot_critical_data_drivers.py
+          python3 scripts/select_onehot_critical_data_drivers.py docs/evidence/onehot-near-driver-path-review-pass-20261019.json
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
           python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2

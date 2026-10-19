@@ -1,3 +1,9 @@
+## 2026-10-19: critical-data preparation parser correction
+
+First cloud preparation39291365496 at624fc39b failed before geometry or design edits because the actual startpoint label includes '(input port clocked by pcie_clk_i)'. Full failure receipt preserved in docs/evidence/onehot-critical-data-port-parser-failure-20261019.json. Normalize only the exact supported native input-port annotation, keep unknown forms rejected, and add regression controls plus actual-receipt preflight before installing CAD. The corrected workflow reruns on its script changes; do not rerun the obsolete commit.
+
+Cloud-only remains mandatory. Local workspace empty and no local CAD processes observed. No routing, timing or PHY closure claimed.
+
 ## 2026-10-19: cloud-only measured critical-data physical repair
 
 New onehot-critical-data-prepare-cloud workflow selects actual weak DATA output drivers from all3corners of path review39288404219, then restores routed ODB39243328773 and adds positive nativebuf16cells near them. The measured o21ai_1 driver$1824847/Y must be selected. Native source geometry, fixed original cells, placement, exact topology/equations and real inversion negative control are mandatory. Preparation is not timing closure; route/RC/three-corner setup+hold remain next.

@@ -11,7 +11,9 @@ def data_rows(path):
     assert text.count('data arrival time')==2, 'Unexpected native path format'
     body=text.split('data arrival time',1)[0]
     assert 'Path Type: max' in body
-    start=path['startpoint'];launched=False;rows=[]
+    identity=re.fullmatch(r'(\S+)(?: \(input port clocked by (\S+)\))?',path['startpoint'])
+    assert identity, ('Unknown native startpoint description',path['startpoint'])
+    start=identity[1];input_port=identity[2] is not None;launched=False;rows=[]
     for line in body.splitlines():
         m=ROW.fullmatch(line)
         if not m:continue
@@ -19,6 +21,7 @@ def data_rows(path):
         values=[float(v)for v in (cap,slew,delay,arrival)]
         assert all(math.isfinite(v)for v in values) and values[0]>=0 and values[1]>=0
         if terminal==start or terminal.startswith(start+'/'):
+            assert (terminal==start and master=='in') if input_port else terminal.startswith(start+'/')
             assert not launched, 'Multiple launch output rows'
             launched=True
             continue
@@ -69,6 +72,12 @@ Path Type: max
     report=dict(reports={c:dict(max=dict(worst_paths=[path]))for c in CORNERS})
     rows=select(report)['targets']
     assert len(rows)==1 and rows[0]['instance']=='gate'
+    port_sample=sample.replace('ff/Q (sg13g2_dfrbpq_1)','port (in)')
+    port_path=dict(path,startpoint='port (input port clocked by pcie_clk_i)',native_report=port_sample)
+    assert data_rows(port_path)==data_rows(path)
+    try:data_rows(dict(port_path,startpoint='port (unrecognized description)'))
+    except AssertionError:pass
+    else:raise AssertionError('Unknown startpoint annotation accepted')
     for bad in (sample.replace('ff/Q','wrong/Q'),sample.replace('0.3','nan'),sample.replace('data arrival time','missing')):
         try:data_rows(dict(path,native_report=bad))
         except AssertionError:pass
@@ -76,6 +85,10 @@ Path Type: max
     for master in ('sg13g2_dfrbpq_1','sg13g2_lgcp_1','sg13g2_buf_16','RM_IHPSG13_2P_256x16_c2_bm_bist'):
         assert not MASTER.fullmatch(master)
     return dict(launch_and_capture_clock_trees_excluded=True,missing_launch_nonfinite_malformed_paths_rejected=True,
+        annotated_input_port_identity_and_unknown_annotation_controls=True,
         sequential_macro_strong_buffers_excluded=True,all_corners_retained=True)
 if __name__=='__main__':
     print(json.dumps(controls()))
+    if len(sys.argv)>1:
+        selection=select(json.loads(Path(sys.argv[1]).read_text())['report'])
+        print(json.dumps(dict(selected_count=len(selection['targets']),path_sample_counts=selection['path_sample_counts'])))
