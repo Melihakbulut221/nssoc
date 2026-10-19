@@ -1,3 +1,20 @@
+# Latest cloud-only continuation — 2026-10-19, actual TX clock-terminal diagnosis
+
+This push starts tx-v5-final-strap6-path-review-cloud: restore completed
+strap6 nominal39221063981 exact nativewave/model, reproduce original gates,
+retain failed-device/stage sampling review, additionally bind31clockports
+through actual116611R graph to124 selector bases; measure native edgebrackets,
+commonmode and incident wireC. No new transient, phasefit or gate relaxation.
+Get exact run/results. Previous baseline18 of24failedHBTs were in p8 macros;
+current strap6 still140wrong/164low output and24failedHBTs.
+
+CDR localbus fullwaves39252773409/source08748785d358f2207574a4209fdf475a6a5bc33c
+all4 confirmed native in progress. Preserve. Mainchip39243328773 and
+TXtrunk25639226121734 plus strap6swapfault117956363421 still live lastcheck.
+All three goal headings OPEN; cloud-only/localempty. Do not restart live jobs.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, local-bus audited model/full waves
 
 MIM validation39251956786 source810513b65ee1f02ade79670f517b97675726e22a
