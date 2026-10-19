@@ -1,3 +1,12 @@
+## 2026-10-20 CDR sampler timing diagnosis completed; native data path is next
+- Diagnostic39324658022 atd2939dfa58f9f480285df10c71876078118bbcd2 passed both cases, reproducing116HBT+4sampler original checks exactly; original electrical rejections retained.
+- A/B wrong signs occur at0.3UI only; C/D retain failures at0.6/0.9UI. Early C/D late-phase wrong counts30/105; late C/D30/98 at0.9UI. LateB still128below100mV at0.3UI.
+- All actual parallel clock-base combinations are included;258rising crossings each, nearest-external-rising medians~4.4–9.4ps. These are observations, not a passing timing correction.
+- Next reconstruct master/slave data/hold/clock banks from actual native connectivity; measure physical master input/output, slave input/output and clock-steering currents around unchanged expected edges. Do not replace the gates or launch an identical waveform rerun.
+- Original wave39320016317/sourcecb5959ee34233dd5c1c99b767bc53e587d4c8186 and model17834R/12805C/484devices remain pinned. Device headroom passed both nominal cases; data and early phase/VI still fail.
+- PLLwholegeometry39322420374 passed235components/2737terminals/all26MIM masks. Full intrinsic-terminal anchors and whole MIM-aware RC/audit/composition are next before original PLL acquisition.
+- Check TX39308903140 and mainchip39293720171 authoritative state; no duplicates. Cloud-only; local workspace empty.8hour automation persistence problem remains unresolved.
+
 ## 2026-10-19 sampler diagnosis parallel-device reader correction
 - CDRdiagnostic39324077387 failed its one-to-one physical-pair assumption; both failures retained with exact receipts.
 - Actual sampler has2parallel clock HBTs per polarity/stage. Updated reader analyzes allsame-emitter positive/negative base combinations without averaging or choosing a representative.
