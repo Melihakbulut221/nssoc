@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19, folded full loaded waves
+
+Folded full-mask audit/composition39236937640(source6397eecef419be5fab4b82a6a63760cea7cab8de)
+PASSED original22raw/19composition controls. Both full receipts committed.
+Final model484native devices15482R11590C/11MIM, actual new layout; no wire reuse.
+
+This commit starts cdr-folded-v11-mim-streamed-cloud: original full256bit
+nominal_early/nominal_late/clock_stopped/vi_bias_off matrix,34.25ns/.3125ps,
+1107vectors,150fFsampler/50fFXORloads, original source impedance and every fixed
+phase/device/current gate. Only new model/source names and measuredC census
+changed. Obtain real run IDs/results. Retain failures; no clock or sampling
+phase fit. If nominal passes, original PVT and closed-loop/RF qualification
+still required. All three overall serialPHY/mainchip/finaltiming goals OPEN.
+
+Physical sampler39232996365,parent39234425893,extraction39235222638 and full-mask
+capture39236131141 passed their limited scopes. Width8/16 diagnosis rejected.
+Live TX39221063981/39226121734 and route39202263552 must continue unchanged.
+All computation and archives on GitHub-hosted runners; local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded MIM capture passed
 
 Folded full-mask capture39236131141(source81465e39f66bbc283f08004c9ff402678d3d0c4b)

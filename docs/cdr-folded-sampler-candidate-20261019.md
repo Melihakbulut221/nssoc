@@ -69,3 +69,12 @@ the new geometry; they replace only the old census fields in downstream
 auditing. All raw value/point/ownership/conservation and22 corruption gates,
 plus19 composition controls, remain unchanged. Strict audit and composition
 run next; capture alone does not qualify body/RF PEX or full-PHY timing.
+
+Full-mask audit/composition39236937640 passed original22 raw and19 composition
+controls. The complete fresh model contains484 native devices,15482R/11590C and
+11 intrinsic MIM models, with each cap projected exactly once. The full loaded
+streamed matrix now tests nominal early/late plus clock-stopped and VI-bias-off
+faults, retaining all original256 bits/34.25ns/.3125ps,1107 vectors,150fF/50fF
+loads, source impedances and fixed sampling/device/phase/current gates.
+Only model identities and the measured C census changed in the test runner.
+No pass is assumed before the actual complete waveforms are reviewed.
