@@ -1,5 +1,15 @@
 # Latest cloud-only continuation — 2026-10-19
 
+CDR collector-v8 parent39197930769 PASSED actual560DRC0/484device deepflatLVS/fivefaults, same16macros/41cards. Fullreceipt cdr-collector-v8-parent-physical-pass-20261019.json. Thiscommit launches cdr-retimed-collector-v8-planes-cloud: actualnewGDS/nativeLVS anchors, independentall16placement/eightleafdrawings,158planes51nets1394terminals19faults. Must then freshwireinputs/binding/RC/MIMaudit/composition/originalfullwaves. No oldwire reuse, no electricalacceptance.
+
+Savedroute39198113984 PASSED native146728original-cell topology/geometry plusfourfaults, correct43net51pin finalantenna parser+sevenfaults; originalstale36preserved. DRC0/disconnect0. Nativeall3corner max/minpaths now in onehot-resize-saved-validation-20261019.json. Slowcritical Ibex regfileword9bit22 includes overloadedfanout7880 buf1 thenXNOR/XOR/NORlogic; fastcritical replay_read_onehot44→pcie_tx_data_o4 includesloadedbuf1/NAND4/NOR4; worsthold pcie_rx_valid_i→slice1192852 input/AND/buf/mux path. See docs/onehot-resize-saved-state-validation-20261019.md. Need targeted allcorner ECO/logicdepthrepair, no constraintsrelaxation.
+
+TX latestnominal remains140wrong/164below100mV,24HBTfailed,0MOSfailed; CMOSinterfacepasses, level8margin77.5mV (no signerrors), level4/finalsignerrors. Stage2+clockheadroom diagnosis needed. No nativejobshouldbereportedlive exceptnewplanes verifiedafterlaunch. AllgoalsOPEN; cloudonly/localempty.
+
+---
+
+# Latest cloud-only continuation — 2026-10-19
+
 Thiscommit launches onehot-resize-saved-validation-cloud: restore exact terminal39161219456 routedODB/nativeRCSTA reports and original39160200022 resizedcandidateODB; run unchanged actual146728-cell topology/geometry/diode-only addition proof withfourcontrols. New finalantenna validator binds actualVIOLATED pinsections + ANT0001/0002 totals to antenna__violating__nets/pins, preserves stale routecounter36 separately; seven malformed-report controls. Original43net/51pin violations are not waived. Read all3corner max/min originalpaths for next targeted repair; no reroute.
 
 CDR collector-v8 parent fromce53fca689922977874f8979e007cb89764ebf0c is launched; resolve handle and preserve healthy run. Samplerleafpassed but parent/freshRC/fullwaves pending. TX normalfailed. AllthreegoalsOPEN; cloudonly/no localcheckout.
