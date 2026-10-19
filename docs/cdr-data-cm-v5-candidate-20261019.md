@@ -117,3 +117,12 @@ The next hosted capture restores those exact new sources and includes the11
 actual MIM masks, moving bottom reference points only onto measured native
 bottom-metal access. Every reference remains bound to the original native
 conductor. Raw point/value audit and full loaded transients remain pending.
+
+## Actual MIM-aware capture
+
+Run39206881702 captured15490 resistors,11535 wire capacitors and11 explicit
+native MIM devices. All946 physical points and111 conductor identities match
+the new native geometry. Five intrinsic/device/wire corruptions were rejected.
+The next hosted audit retains every raw R/C point and value, checks the11
+MIM identities against this candidate binding and runs13 wire plus9 intrinsic
+corruptions. The wire-only counts are not reused as MIM-aware counts.
