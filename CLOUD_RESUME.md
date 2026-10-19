@@ -1,3 +1,19 @@
+## 2026-10-20 — Cloud-only checkpoint and recovered TX evidence
+Latest user instruction: all work in cloud; no local checkout, CAD or artifacts.
+Local project folder confirmed empty, no local CAD processes. API work in RAM.
+TX recovery39341750762 succeeded: original39340687625 stays workflow-failed
+(publication HTTP500) but native extraction passed. Original summary657719288
+SHA38c4acb3606e4e8f58a1721ac40bf75bbef0516b24da9dafe9acb33ef60622ba;
+parts657719352 SHA9c949ada35fe06c2c4ad140c030ea69cd6acbc8e4596dc5ba2ffb1b4580e9a41.
+Fresh RC116611R/77538C/377components, original13controls; needs composition and
+original fullwave gates. No CAD rerun needed for the publication failure.
+CDR passive39341051275 passed diagnosis; complete receipt committed. Original
+early/late sampling remains rejected. Source wireC~821/894fF(C),469/518fF(D);
+metalR~46--63ohm. Inspect geometry/loading before substantive repair.
+Mainchip39331918238 still live, do not duplicate.
+Full PHY and final timing remain open. See docs/cloud-only-continuation-20261020.md.
+
+
 ## 2026-10-20 — TX native extraction passed; publication-only recovery
 Previous turn made progress: nativeRC39340687625 actually passed original13faults.
 Run failed only at release creationHTTP500; fallbackartifact12228916534 preserved
