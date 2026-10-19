@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19, folded MIM capture passed
+
+Folded full-mask capture39236131141(source81465e39f66bbc283f08004c9ff402678d3d0c4b)
+PASSED actual15482R/11590C/11MIM identities,111components946points. Receipt
+docs/evidence/cdr-folded-v11-mim-parent-capture-pass-20261019.json.
+Wire-only previous extraction had15459R/11579C. Never substitute either census.
+
+This commit launches cdr-folded-v11-mim-validation-cloud: strict raw MIM-aware
+audit then composition. Preserve original22raw and19composition controls.
+Only new source names and independently measured raw census updated. Next
+requires original full256bit streamed early/late/fault/PVT wave tests with all
+1107 vectors, unchanged phase/load/device/VI gates. No electrical pass yet.
+
+Physical sampler39232996365,parent39234425893 and extraction39235222638 passed.
+All circuits unchanged; width8/16 diagnostic failures retained, not adopted.
+All three overall serialPHY/mainchip signoff/finaltiming goals OPEN.
+Keep existing TX39221063981/39226121734 and route39202263552 live jobs; verify
+their actual results without restarts. Cloud-only/local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded extraction passed
 
 Folded-v11 extraction39235222638(source22274fd866643abd5344a4e2c7a07f2fe72e9e4e)

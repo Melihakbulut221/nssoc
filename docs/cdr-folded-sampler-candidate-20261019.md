@@ -62,3 +62,10 @@ source-bound receipts are committed. The full-mask MIM capture now uses this
 actual new parent RC and device binding, preserving all11 intrinsic MIM devices
 and their native terminal ownership. Wire-only RC is not a qualified full-PHY
 parasitic model; full-mask audit/composition and loaded waves remain required.
+
+Fresh full-mask capture39236131141 passed:15482R/11590C and exactly11 native
+MIM identities,111 components and946 points. These are measured counts from
+the new geometry; they replace only the old census fields in downstream
+auditing. All raw value/point/ownership/conservation and22 corruption gates,
+plus19 composition controls, remain unchanged. Strict audit and composition
+run next; capture alone does not qualify body/RF PEX or full-PHY timing.
