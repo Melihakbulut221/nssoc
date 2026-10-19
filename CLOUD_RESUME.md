@@ -1,3 +1,9 @@
+## Active checkpoint: fresh source-access extraction and MIM continuation
+
+New cdr-source-access-v14-mim-parent-rc-cloud is pinned to prerequisite extraction39299984679/source b184485e08d6a1f928ad25dda13e88cb65a9015d. It must wait for that exact run and verify planes,wire-inputs,binding,rc success and their release hashes before capturing actual MIM-aware parent RC. It preserves all original11MIM identities,946points,111wire components and mask/terminal controls. Do not start a duplicate extraction if prerequisite observation times out.
+
+Extraction39299984679 planes and wire-inputs passed; binding and rc were running. TX minimax path review39300351985 passed source controls and is reviewing original raw capture in cloud. Mainchip routing39293720171 still live. After MIM capture completes, inspect measured R/C census and run strict MIM-aware audit/composition with original fault controls, then the unchanged loaded early/late waveform checks. All execution and artifacts remain cloud-only; no fullPHY or chip timing acceptance.
+
 ## Active checkpoint: exact TX minimax waveform localization
 
 The nominal TX minimax capture is rejected:123/768wrong-sign samples,146below100mV,24HBTs below0.4V VCE (worst0.362661847V), no failedMOS and zero solver diagnostics. Level16/level8 inputs pass while level4/final inputs fail. Full receipt retained in docs/evidence/tx-v5-minimax-wave-nominal-rejected-20261019.json. The new tx-v5-minimax-path-review-cloud reads the existing raw capture in cloud, reproduces all original gates, then localizes terminal minima and31native clock paths; no resimulation or gate relaxation.
