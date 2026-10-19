@@ -1,3 +1,26 @@
+# Latest cloud-only continuation — 2026-10-19, local-bus audited model/full waves
+
+MIM validation39251956786 source810513b65ee1f02ade79670f517b97675726e22a
+PASSED original22raw/MIM+19composition controls. Actual484devices15482R11490C,
+11MIM exactly once. Full audit/composition receipts committed:
+docs/evidence/cdr-localbus-v12-mim-{parent-audit,composition}-pass-20261019.json.
+Audit summary656208157 /parts656208228; composition656210481 /parts656210590.
+
+This push starts cdr-localbus-v12-mim-streamed-cloud with unchanged full256bit/
+34.25ns nominal_early,nominal_late,clock_stopped,vi_bias_off. Originalphase/
+load/device/current/startup/solvergates preserved by exact source delta.
+No waveform acceptance yet. Retrieve exact run and individual actualreports.
+If nominal rejects, preserve fullwaves and inspect actual stage timing/loading
+against original and folded models; never relax phases or limit gates.
+
+TXstrap6 nominal39221063981 rejected140wrong/164low output,24HBTfail.
+Fullreceipt committed; swapfault and trunk25639226121734 still active lastcheck.
+Mainchip39-buffer39243328773 active. Preserve healthy jobs.
+Full serialPHY, recoveredclock, mainchiproute/finaltiming OPEN. Cloud-only;
+local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, strap6 nominal electrically rejected
 
 TX39221063981 nominal job117956363557 completed native simulation, return0,
