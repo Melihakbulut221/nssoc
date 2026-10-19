@@ -1,3 +1,9 @@
+## 2026-10-19: cloud PLL preflight repair and CDR negative control
+
+All work remains cloud-only; local workspace stays empty. PLL review run39278718492 failed before analysis because the baseline SHA256 accidentally included an extra final LF. Immutable baseline history verified; only candidate EOF and byte pins corrected, same source guard and original acquisition failures retained. The workflow change starts a fresh diagnostic run; discover by the new commit and pll-c8-half-loop-review-cloud.yml. Failure receipt: docs/evidence/pll-c8-half-loop-review-source-pin-failure-20261019.json.
+
+CDR run39276673160 clock_stopped job118145370074 published summary656666382: actual_fault_detected=true, native exit0, diagnostics empty, sources unchanged. This is a negative-control success only; devices_passed=false and data_passed=false are deliberately observed rejection, not nominal electrical success. Nominal CDR, TX39268446646 and mainchip39243328773 still require terminal evidence. No full PHY/final timing closure claimed.
+
 # Latest cloud-only continuation — 2026-10-19, immutable PLL loop diagnosis
 
 Original PLL fixed800–900ns100ppm gate still rejects:

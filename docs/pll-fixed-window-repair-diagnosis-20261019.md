@@ -23,3 +23,10 @@ Mutual capacitances are not grounded; a resistor-connectivity inventory is not
 an effective loop RC model. No fitted target, changed transient, new acceptance
 window or signoff claim is introduced. Use actual results to select the next
 physical pump/filter/PFD repair and then rerun unchanged full native gates.
+
+
+## Exact source-byte repair after cloud preflight rejection
+
+Run [39278718492](https://github.com/Melihakbulut221/nssoc/actions/runs/39278718492) stopped before analysis at the baseline SHA256 guard. Its failure and published FAIL_MISSING_REPORT remain retained. The recorded baseline hash was for the immutable source plus one extra final LF. The actual baseline is unchanged from commit a88f83134de3c47b396c86c39f5c7edd3caf40e4.
+
+The manifest now pins the actual baseline bytes. Removing the extra final LF from the candidate makes it exactly the declared transformation of that baseline. No Python statements, native model, acquisition windows, numerical thresholds or original rejection were changed. The cloud retry must pass the same exact source guard, reproduce the original capture and then perform the diagnostic review. This correction is not PLL acceptance.

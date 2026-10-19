@@ -164,4 +164,3 @@ def main():
         r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
         save()
 if __name__=='__main__':main()
-
