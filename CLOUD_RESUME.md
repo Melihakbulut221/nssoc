@@ -1,3 +1,13 @@
+## 2026-10-20 — Fresh v16 MIM capture passed; original audit/composition launched
+Capture39336054657 passed with17674R/12709C/11MIM/111conductors/946points.
+Extraction39335172776 and all source receipts are now pinned in this commit.
+The next workflow runs unchanged13wire+9MIM controls and19composition controls
+on fresh native data. After success, use the v16 composition for original
+256-bit loaded fullwaves, never claim full PHY from extraction alone.
+TX timing-priority rejected; native path review is launched by8d0582eb.
+Mainchip route39331918238 remains live. No local CAD or output files.
+
+
 ## 2026-10-20 — TX timing-priority rejection; cloud diagnosis continues
 TX run39308903140 native nominal finished and failed original electrical gates:
 120/768 incorrect signs,144 below100mV,24HBT failures,minVCE0.3561842V.
