@@ -1,3 +1,9 @@
+## Active checkpoint: exact TX minimax waveform localization
+
+The nominal TX minimax capture is rejected:123/768wrong-sign samples,146below100mV,24HBTs below0.4V VCE (worst0.362661847V), no failedMOS and zero solver diagnostics. Level16/level8 inputs pass while level4/final inputs fail. Full receipt retained in docs/evidence/tx-v5-minimax-wave-nominal-rejected-20261019.json. The new tx-v5-minimax-path-review-cloud reads the existing raw capture in cloud, reproduces all original gates, then localizes terminal minima and31native clock paths; no resimulation or gate relaxation.
+
+CDR source-access physical PASS39298976233 is now in fresh extraction run39299984679 at b184485e08d6a1f928ad25dda13e88cb65a9015d. Mainchip route39293720171 remains live. Keep all artifacts cloud-only and do not duplicate active jobs. Continue actual repairs after new evidence; no fullPHY or final chip timing closure.
+
 ## Active checkpoint: source-access physical PASS, fresh extraction; TX nominal rejected
 
 Source-access physical run39298976233 passed native560categoryDRC, deep/flat484deviceLVS and original fault controls. Actual GDS9c959ff18ce0d2d54b26acc430860f243d9c6fba7383287fce5eb0c41b2c75a6 has32long tail midpoint contacts/64nativevia stacks,4short references unchanged. Receipt docs/evidence/cdr-source-access-v14-physical-pass-20261019.json. New cdr-source-access-v14-extraction-cloud runs planes, wire inputs, model binding and fresh RC; original exact source deltas and all corruption gates remain mandatory. After PASS, continue MIM-aware composition and unchanged full loaded early/late data,phase and device tests. Raw counts must be measured from new geometry.
