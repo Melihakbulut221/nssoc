@@ -149,3 +149,11 @@ voltage and current limit. It runs nominal early/late, clock-stopped and
 V/I-bias-off cases. Electrical results are pending, not inferred from DRC/LVS
 or model composition. Full closed-loop, PVT, RF/body qualification and serial
 PHY/mainchip acceptance still require separate proof.
+
+## Stage-input summary while new native simulations run
+
+A read-only cloud job summarizes the existing collector-v8 master/slave input
+samples by original phase and changed/held bit class. It restores only the
+verified fixed-sampling artifact from39205681729, rechecks every output error
+count and uses the proved native transistor/resistor input mapping. This
+localizes acquisition/settling problems without changing a waveform or gate.
