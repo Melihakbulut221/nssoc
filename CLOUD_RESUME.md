@@ -1,3 +1,9 @@
+## 2026-10-19: both parent-feed CDR nominal captures complete
+
+Fullwave39276673160 finished: early/late nominal rejected on data; both nominal device safety checks pass. Early phase and VI-current also fail; late phase/VI pass (0.03980685V,87.9278uA). Late A/B/C/D wrong-sign91/0/194/308 and below100mV129/128/238/331. Full late receipt docs/evidence/cdr-parent-avdd-v13-fullwave-nominal_late-20261019.json pins summary656677730 and parts656677830. VI-off and clock-stopped negative controls detect their faults. No nominal CDR/PHY success.
+
+Read-only early diagnosis39282864029 remains queued; this workflow revision starts only the new late diagnosis, preserving the early job. PLL diagnostic39281988033, TX39268446646 and mainchip39243328773 remain to be inspected. All work is cloud-only, no local checkout or CAD.
+
 ## 2026-10-19: parent AVDD nominal early device pass, data/phase rejection
 
 CDR run39276673160 nominal_early job118145370108 finished REJECTED_WHOLE_MIM_PD484_LOADED. Source summary656668897 SHA09ea88ef6da880a8daf559e9a240239a35ea527195fb25e005d7dca86b6a54c6; parts656668961. Full receipt at docs/evidence/cdr-parent-avdd-v13-fullwave-nominal_early-20261019.json. Devices now pass; minimum HBT VCE0.4105773V. A/B/C/D wrong-sign77/129/198/325, comparator X/Y135/364, phase0.0189025V, VI35.1745uA: original data/phase gates still fail. New cdr-parent-avdd-v13-sampling-review-cloud workflow diagnoses the actual immutable early capture without another simulation. Late and VI-off cases still await terminal evidence.
