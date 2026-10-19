@@ -1,3 +1,13 @@
+## 2026-10-20 — Cloud-only v16 MIM capture continuation
+Previous turn made progress: v16 physical repair passed and fresh extraction was launched.
+Live checked: extraction 39335172776 has planes/wire-inputs successful; binding/RC running.
+Mainchip route39331918238 and TX nominal39308903140 remain live; do not duplicate.
+This commit adds the MIM-aware capture workflow with exact prerequisite run/head/physical
+summary pin. It waits for all four stages and fails closed if any rejects. After capture,
+continue original raw-RC/MIM audit, composition and fullwave; no electrical gate is relaxed.
+Do not create local checkout, CAD output or waveform files. Keep failed evidence.
+
+
 ## 2026-10-20 retime data physical gates passed; fresh extraction launched
 - Physical39334427158/source93bd54c05201d089babb5cc9049f174dd5338ca4 PASS:560native DRCcategories/0markers, hierarchical+flat484LVS and original fault controls. GDS c920186862bde235868d3fa009fedcff868246750f0fa38874e3c6b42ba7255e.
 - Earlier8M3.a rejection39333599063 retained. Original geometry/vias/devices/reference preserved; only proposed data-metal enlargement cleaned.
