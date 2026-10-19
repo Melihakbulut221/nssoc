@@ -21,3 +21,7 @@ Run39224815994 at aa24170d0ed625a57690805858ba09769edcf1aa passed full1674-devic
 ## Topology and loaded tests
 
 Run39225546587 proved all1674 compact devices equivalent to the strap6 baseline using physical primitive positions, with exact parameters, fixed public nets and a bijective internal-node map. Missing-device, changed-parameter, wrong-terminal and swapped-physical-identity controls were rejected. Candidate-specific builder hashes and a clock-adapter import now select only this proven model; all source bits, sampling phases, solver and device gates remain unchanged. Full nominal256-bit loaded simulation, swapped-leaf fault simulation and independent native return-resistance comparison are launched separately in the cloud. Neither model equivalence nor DC diagnosis establishes waveform or full PHY acceptance.
+
+## Measured native return improvement
+
+Run 39226121549 measured the intended common branch R105585 at 0.353275 ohm, down from 0.706551 ohm in the strap6 layout. Final Nx8 tail return resistances fell from 4.805920344/4.816902225 ohm to 4.452406108/4.463387989 ohm; their mean fell from 4.811411285 to 4.457897049 ohm. The grounded native-network solver retained its KCL, energy-conservation and reciprocity checks. These are static measurements; the nominal and swapped-leaf full loaded waveforms in run 39226121734 are still pending. Strap6 comparison waveforms run 39221063981 and mainchip route 39202263552 remain live. No full PHY or final timing acceptance is claimed.
