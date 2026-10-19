@@ -1,3 +1,14 @@
+## 2026-10-20 — TX wire24 physical passed; freshRC launched; CDR rejection retained
+TX physical39339196396 passed560DRC/0markers,deep-flat1674device LVS and allfaults.
+GDSbab4f236232c592e03a280adee5cc7f4fdc49861e7076c572ec13aa7f704c238.
+This commit launches freshRC377conductors/4774terminals/original13faults.
+Do not reuse oldRC; compare measured wireR/C and rerun original fullwave aftercomposition.
+CDR39337518790 nominal early/late rejected originalsampling; nativeexit0/nodiagnostics,
+all device gates passed. Complete failed reports pinned. Widened data metal did notfixit.
+Next CDR work: actual retime RC/input divider/latch circuit, keep originalfixed gates.
+Mainchip39331918238 remains live; no duplicate. All CAD and artifacts cloud-only.
+
+
 ## 2026-10-20 — Actual TX28-route width candidate
 Data network39338196252 passed original native census/solver controls and is pinned.
 This commit launches native GDS mutation for28 fast signal routes4to2.4um,
