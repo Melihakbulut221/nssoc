@@ -1,3 +1,22 @@
+# Latest cloud-only continuation — 2026-10-19, native MIM capture PASS
+
+Run39250952988/source dfa37e1f272e2726f1f90715fc1b07668fbb9cec PASSED
+fresh native MIM capture. Actual15482R11490C,11MIM/111conductors/946points.
+Summary656198142 SHAc3824e9f3a5774063a35b4ea288735386c7c0839af3f255c21647ebe8d805ecc;
+parts656198229 SHA7a7f548c8dca073ff11bf52ccaa4d054e442dd12089f92a2a27d5aae7b848555.
+Fullreceipt docs/evidence/cdr-localbus-v12-mim-parent-capture-pass-20261019.json.
+All4 prerequisite extraction receipts are already committed.
+
+This push starts cdr-localbus-v12-mim-validation-cloud: original22raw/MIM
+and19composition controls, namespace-only adaptation plus actual measured
+C11590→11490 and R+C27072→26972. No device, value or acceptance gate changes.
+Get exact run/result, then unchanged full loaded early/late/clock-stopped/
+VI-off waves. New model name nssoc_cdr_pd484_localbus_mim_wire_v12.
+Full serialPHY/closedloop/mainchiproute/finaltiming OPEN. Cloud-only.
+Preserve healthy mainchip39243328773 and TX39221063981/39226121734.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, fresh extraction all4 PASS
 
 Run39249871918/source09748dc79e33298c19c339ac5a1ff00c13d566c7 passed planes,
