@@ -69,3 +69,10 @@ The input-drive-v10 parent substitutes only these two leaf types in the16macro/4
 Parent run39211268312 passed at6022f4da7d52df977974e2cbf894bd59a54a53a3:560-category DRC, unsimplified deep/flat484device transistor LVS and all9 physical corruption controls. The original data-header rollback control and three new input/retime rollback controls all reject. The receipt stores the complete report and immutable release digests.
 
 The hosted extraction workflow now runs planes, then wire inputs, then independent model-binding and raw wire-RC jobs. Each dependent job reads the exact same-run published summary/parts manifest, binds the source SHA, and delegates archive integrity checks to the original restore methods. Original158plane/1394terminal geometry checks,12model controls and13raw-RC controls are retained. Failures stop dependent work and preserve raw outputs. Full MIM-aware extraction, loaded sampling and phase/device tests still follow; neither physical success nor wire-only RC means completePHY acceptance.
+
+
+## Fresh extraction and model binding
+
+The hosted chain39212026475 at9037bd2010e204d1949a5ad2db2ec9201fb2f3bd passed all four stages:158native reference planes and19fault controls, whole484device/1394terminal graph with946actual anchors, native compact-model binding, and wire-only RC with13raw corruption controls. The exact full reports and release digests are committed. The next workflow captures actual11MIM masks and dimensions together with the new complete wire graph; the original MIM terminal and device ownership checks are unchanged. This remains unqualified for substrate/RF extraction or electrical/fullPHY acceptance.
+
+Measured wire-only R/C census: 15459 resistors, 11516 capacitors. These are extraction counts, not timing or signal-quality pass criteria.
