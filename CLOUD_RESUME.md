@@ -1,3 +1,11 @@
+## 2026-10-19 XOR collector v15 MIM capture passed; raw audit/composition next
+- Native capture39318436586 passed: measured17834R/12805C,11actual MIM,111conductors/946points,5capturefaults rejected.
+- Four fresh extraction stage receipts and complete capture receipt are now committed.
+- New validation keeps all13wire+9MIMrawfaults and19compositionfaults. No electrical gate changes.
+- TXfullwave39308903140 and mainchiproute39293720171 are still live; avoid duplicates.
+- Loaded CDR electrical acceptance, closed-loop PLL/CDR, full serial PHY and final mainchip setup/hold remain open.
+- Cloud-only; no checkout/CAD/output retained locally.
+
 ## 2026-10-19 XOR collector v15 extraction passed; native MIM capture next
 - Fresh extraction39316979013 passed all four stages:17811R/12794C,111conductors,946points,13RCfault controls.
 - New xor-collector-v15 MIM capture consumes only this exact run, binding all11actual native MIM masks.
