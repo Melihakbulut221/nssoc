@@ -1,5 +1,13 @@
 # Cloud-only continuation — 2026-10-19
 
+Fresh collector-v8 full-mask audit39200773873 PASS22faults and composition39200983805 PASS19faults. Full receipts saved. Native model exactly484devices15490R11535C/11MIM, same physical source. This commit launches cdr-collector-v8-mim-streamed-cloud matrix(nominal_early,nominal_late,clock_stopped,vi_bias_off). Confirm real run IDs and preserve all actual results/failures. Original256bits34.25ns/.3125ps and fixed loads/phases/device/current gates;1107vectors. No local CAD or artifacts.
+
+Inspect native waves before next collector/clock/supply geometry repair. Previous via-rich nominal failures remain immutable baseline. TX actual24failures mapped: f selectors+tails6 and18selectors in five p8 macros. Need simultaneous select/tail headroom repair; not blind clock commonmode reduction. Mainchip setup/hold/antenna still OPEN. Full serial Gen3x4, final integration and timing goals not achieved.
+
+---
+
+# Cloud-only continuation — 2026-10-19
+
 Collector-v8 full-mask raw audit39200773873 PASSED actual15490R11535C/11MIM with all13wire+9intrinsic corruption controls. Receipt cdr-collector-v8-mim-parent-audit-pass-20261019.json preserves complete native report.
 
 This commit starts cdr-collector-v8-mim-composition-cloud: exact484native model binding + all27025raw R/C cards + exactly11intrinsic MIM models, original19composition corruption controls. On actual success pin receipt then run original full256bit streamed nominal early/late and fault cases with new planes/binding/model; retain original time, thresholds and1107recorded vectors. Later PVT/closed-loop/fullPHY still required.
