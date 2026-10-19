@@ -9,3 +9,7 @@ Exact whole-GDS delta, three corruption controls, original1674-device deep/flat 
 ## Native physical pass
 
 Run39222629402 at3e0b1192107823f3e80bdbfb332da8ea761bf038 passed the exact whole-GDS delta (693022.72um2 added TM1), three geometry corruption controls, deep/flat1674-device LVS, zero-marker560-category DRC and the five original device/connectivity/grid fault controls. The verifier bound the measuredR105585 endpoints to the prior final trunk, checked unchanged6um local strap and all via layers, and allowed no other drawing change after normalizing origin translation. Fresh native RC extraction is now required; no resistance reduction or electrical pass is inferred from this physical result.
+
+## Fresh native RC pass
+
+Run39223805006 ateebfce6fdadef5921116bae53483407772b73ddf passed the original native graph, terminal ownership, capacitance conservation and13 raw-corruption controls. It extracted116611 resistors and77514 capacitors across377 metal components with1674 devices and3262 probes. Counts match the predecessor, but values are newly extracted from the wider trunk. Full-model composition, measured return resistance and unchanged loaded waveform gates remain pending; no electrical improvement is inferred from the extraction pass.
