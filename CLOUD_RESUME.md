@@ -1,3 +1,23 @@
+# Latest cloud-only continuation — 2026-10-19, AVDD MIM validation PASS/fullwaves
+
+Validation39276003536/sourcea555ca8c6863ea3fc66a7799f57a010b0b449e13
+passed strict13raw+9intrinsic MIM faults and19composition faults.
+Exactnew model484devices16010R11677C and11MIMs once, allrawtokens preserved.
+Fullaudit/composition receipts pinned in docs/evidence/cdr-parent-avdd-v13-*.
+
+This push starts cdr-parent-avdd-v13-mim-streamed-cloud, four original
+nominal_early/nominal_late/clock_stopped/vi_bias_off full256bit34.25ns captures.
+Only source/model namespaces and exact newRCcensus change; originalbit/phases/
+loads/stimulus/backend/dependencySHA/device/current gates remain. Full1107
+nativevectors,116HBT46MOS; everyoriginalfault/safetygate preserved.
+Resolve exactnewrun/jobIDs and inspect actual fullnative results. No oldwave
+reuse. If nominal passes, PVT/full-loop stillrequired; ifrejected, read actual
+supply/clock/interface waveforms and failingdevice identities before nextrepair.
+FullGen3x4/mainchip/finaltiming remainOPEN. Allworkcloudonly; localempty.
+Preserve/revalidate TX39268446646 and mainchip39243328773.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native AVDD MIM capture PASS
 
 Native MIM capture39275348623/source3911ab4f84b30ec297c4f9df68d33e329f4df920
