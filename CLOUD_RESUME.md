@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, fresh buffer route and folded wave diagnosis
+
+39-buffer mainchip route39243328773 is live on source
+25874ce85d044e5297a2be157eb078c2f595b9ef. Preparation39242341481 passed actual
+legal geometry and native equation/inversion controls; no timing result yet.
+Preserve this healthy route. It carries all original source ancestry, clocks,
+RC and three-corner/electrical/antenna checks.
+
+This commit starts cdr-folded-v11-sampling-review-cloud (early/late). It reads
+the exact failed whole-wave captures of39237412866, reproduces fixed original
+sampling and device failures, and maps actual master/slave/clock/load/rail
+voltages plus native resistor paths. Known earlyHBT0129 VCE rejection is
+required to reproduce exactly; late requires zero failedHBT. This is read-only
+diagnosis, not a new simulation or relaxed acceptance. Obtain new run IDs and
+compare with old v10 diagnosis to choose the next actual physical repair.
+
+TX fullwaves39221063981/39226121734 were still active at latest check.
+All serialPHY, mainchip and finaltiming goal headings remain OPEN.
+Cloud-only execution and evidence; local workspace remains empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19,39-buffer physical/logic PASS; new route
 
 Preparation39242341481(source6163ef917ff57f346f88b873dd5df0f019e7fe5b) PASSED:
