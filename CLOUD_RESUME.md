@@ -1,3 +1,13 @@
+# Latest cloud-only continuation — 2026-10-19
+
+This commit launches cdr-retimed-collector-v8-parent-cloud: integrate four proven sampler54collector-v12 leaves into original16macro/484device parent. Seven other child types and41sourcecards, native parent generation/DRC/LVS/fault gates unchanged; inspect newrun. Requires fresh native geometry/planes/binding/MIM-awareRC/audit/composition/fullwaves after physicalpass.
+
+Mainchip report review39180024857 PASS diagnostic: final antenna43nets51pins, stale route metric36. NativeDRC0/criticaldisconnect0. Slow setup9676 WNS-20.719766ns/hold5 -0.509508ns; typ setup7865 -6.616752ns/hold13 -0.429901ns; fast setup3720 -3.039382ns/hold22 -0.372231ns. Full saved report pinned onehot-resize-native-report-diagnosis-20261019.json. Next correct parser to independently validate final net/pin violation markers against final antenna metrics (not stale route count), inspect original max/min paths before further ECO. No reroute needed to analyze saved states; topology proof after route still required.
+
+TX39158584151 terminal nominal rejection,140wrong/164below100mV; negative correctly detected. Retain native evidence. All three closure goals OPEN. Cloud-only; local checkout remains empty.
+
+---
+
 # Latest verified cloud state — 2026-10-19 00:11 UTC heartbeat
 
 Collector access leaf39170920428 PASSED actual560DRC0/54device deep-flatLVS/LEF and14 negative controls. Full receipt cdr-sampler-collector-access-physical-pass-20261019.json. Next integrate new sampler v12 into PD484 via a new source-bound parent plan, retain all original child/parent physical gates, fresh RC and original full loaded waves. Physical leaf pass is NOT electrical acceptance.
