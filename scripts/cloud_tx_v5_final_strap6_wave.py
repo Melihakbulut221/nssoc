@@ -57,10 +57,10 @@ def main():
    assert report['geometry_delta']['status']==receipt['geometry_delta_status']=='PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT'
    assert report['extraction_source_sha256']=='3a688c760f7c8e70b6823ff3c1315f56a8703e2d4cb4a60ce3c9b0d8d46b1cd0'
   assert report['return_rail']['local_final_strap_width_um']==6.
-   assert report['independent_strap_geometry']==receipt['independent_strap_geometry']
-   assert report['independent_strap_geometry']['status']=='PASS_ONLY_FINAL_TM1_STRAP4TO6_GDS_DELTA'
-   assert report['independent_strap_geometry']['original_vias_unchanged']
-   assert len(report['controls']['controls'])==6
+  assert report['independent_strap_geometry']==receipt['independent_strap_geometry']
+  assert report['independent_strap_geometry']['status']=='PASS_ONLY_FINAL_TM1_STRAP4TO6_GDS_DELTA'
+  assert report['independent_strap_geometry']['original_vias_unchanged']
+  assert len(report['controls']['controls'])==6
   assert {c['case']for c in report['controls']['controls']}=={'missing_contact','wrong_hbt_size','bypassed_terminal_rc','wrong_cap_reference','missing_wire_resistor','changed_wire_cap'}
   assert report['controls']['counts']==counts
   assert report['topology']['no_intermacro_ideal_alias'] and report['topology']['no_duplicate_child_rc']
