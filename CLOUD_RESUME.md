@@ -1,3 +1,15 @@
+## 2026-10-20 — Original v16 fullwaves gated on exact fresh validation
+This commit launches early/late nominal and stopped-clock/VI-off loaded waveforms.
+Every job verifies validation39337079644/sourceb13f9504 first; never bypass failures.
+Original484-device/17674R/12709C model,256bits,loads,phases and safety gates retained.
+CDR capture39336054657 passed; fullwave acceptance remains unknown.
+TX diagnosis39336705951 passed reproduction/localization only; actual TX electrical
+gates remain rejected. Pinned full diagnostic and physical-terminal evidence recorded.
+Mainchip128-buffer route39331918238 remains live. All calculations and files cloud-only.
+Next: inspect new fullwave outcomes without dropping failed evidence, repair actual
+TX p4/final path/headroom problems based on native graph, finish mainchip STA and PLL.
+
+
 ## 2026-10-20 — Fresh v16 MIM capture passed; original audit/composition launched
 Capture39336054657 passed with17674R/12709C/11MIM/111conductors/946points.
 Extraction39335172776 and all source receipts are now pinned in this commit.
