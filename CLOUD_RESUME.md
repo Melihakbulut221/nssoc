@@ -1,3 +1,11 @@
+## Active checkpoint: source-contact loaded tests and TX native clock summary
+
+Source-access raw MIM audit/composition39301709096 passed22raw and19composition controls. Actual composed484device17258R12445C model is committed with receipts. New cdr-source-access-v14-mim-streamed-cloud launches nominal_early,nominal_late,clock_stopped,vi_bias_off with all original phase,bit,load,device and dependency hashes unchanged. It remains externally clocked; no recovered-clock/fullPHY/mainchip timing acceptance.
+
+TX minimax exact path review39301708644 passed after dedicated77516C helper binding. It reproduces the original123wrong samples/24HBT failures and maps31clocks/124selector bases. New tx-minimax-clock-summary-cloud summarizes the actual retained clock edges to guide the next physical repair. Report receipt docs/evidence/tx-minimax-native-path-review-20261019.json. No new TX simulation or oracle changes.
+
+Mainchip route39293720171 and swap_leaf_select job118115200371 were still active at last check; revalidate their exact handles, never restart on observation delay. Cloud-only work; local workspace remains empty. After loaded results, preserve rejection evidence and repair actual design. Goal remains open.
+
 ## Active checkpoint: actual source-contact17258R12445C audit/composition; TX diagnostic census fix
 
 CDR source-access MIM capture39300720018 passed at a801812992a1826776161dc13c2e98c0b5bc33cd, with17258R12445C and11exact native MIM identities. All four extraction39299984679 receipts and capture receipt are now committed. The new cdr-source-access-v14-mim-validation-cloud keeps22raw audit and19composition fault controls unchanged, using measured new census only. After pass, bind its model and run original loaded early/late tests. FullPHY and final chip timing remain open.
