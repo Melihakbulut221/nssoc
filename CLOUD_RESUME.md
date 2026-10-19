@@ -1,3 +1,26 @@
+# Active cloud runs — 2026-10-19, local-bus extraction continuation
+
+Fresh extraction39249871918 on09748dc79e33298c19c339ac5a1ff00c13d566c7:
+planes job118050759621 completedPASS, summary656172681. Actual16macro
+placements and8leafdrawings conserved;158planes/51nets/1394terminals,
+19plane faultcontrols and3native drawing/placement controls passed.
+Wire-inputs job118051380515 now active. Binding and rawRC depend on it.
+Do not restart healthy jobs. Inspect all4 native reports before MIM work.
+
+Next after all4 PASS: pin complete immutable reports in docs/evidence/
+cdr-retimed-localbus-v12-{planes,wire-inputs,binding,rc}-pass-20261019.json;
+adapt folded_v11 MIM capture namespaces to localbus_v12, preserving native
+masks/points/11MIM and all original gates. Use actual new measured R/C counts
+only after capture. Then original22raw/19composition controls and unchanged
+full early/late/clock-stopped/VI-off loaded waves. No reused foldedRC.
+
+Mainchip39243328773, TX39221063981 and39226121734 all confirmed live in this
+turn. Parent39249146302 and leaf39247903547 physical passes are committed.
+Full serial Gen3x4, mainchip route, final setup/hold remain OPEN. Latest user
+cloud-only instruction overrides older goal wording: local nnsoc stays empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, local-bus PD484 parent PASS
 
 Parent39249146302 source99913550040b2c41e36802633b47a59da1ac51c1 PASSED
