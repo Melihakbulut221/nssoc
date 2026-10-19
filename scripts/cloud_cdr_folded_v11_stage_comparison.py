@@ -42,7 +42,7 @@ def main():
             wire=json.loads((dst/names[0]).read_text());sampling=json.loads((dst/names[1]).read_text())['samples'];volt=json.loads((dst/names[2]).read_text())
             groups=wire['conductors'];assert len(groups)==111
             assert len({key(g)for g in groups})==111
-            assert wire['native_counts']==dict(R=15482,C=11590 if label.startswith('folded')else11527)
+            assert wire['native_counts']==dict(R=15482,C=11590 if label.startswith('folded') else 11527)
             stages={}
             for tag,s in sampling.items():
                 assert tag in 'abcd';stages[tag]={}
