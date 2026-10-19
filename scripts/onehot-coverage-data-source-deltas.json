@@ -3,7 +3,7 @@
     "baseline_path": "scripts/cloud_onehot_critical_data_prepare.py",
     "baseline_sha256": "84f21ae778fa3d9bc9c62c48960d661cacc4d5ce0a14d4df8de5667384bb42cb",
     "candidate_path": "scripts/cloud_onehot_coverage_data_prepare.py",
-    "candidate_sha256": "e797d8d0398f722b1b8d5dac9bcf87f2db4916716dfce3f7b5c2d981af560a6b",
+    "candidate_sha256": "823f5c7c590736030c6a6ffb181a5b1f9dde199e9edd4189fe200e131dede1ce",
     "edits": [
       {
         "before": "onehot-critical-data-prepare",
@@ -84,6 +84,11 @@
         "before": "PASS_NATIVE_CRITICAL_DATA_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS",
         "after": "PASS_NATIVE_HOLD_SCREENED_COVERAGE_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS",
         "count": 1
+      },
+      {
+        "before": "        pattern=r'sg13g2_buf_16\\s+'+name+r'\\s*\\((.*?)\\);';match=re.search(pattern,text,re.S);assert match",
+        "after": "        first_master=r['geometry']['changes'][0]['buffer_master'];assert first_master in ('sg13g2_buf_16','sg13g2_buf_8','sg13g2_buf_4')\n        pattern=first_master+r'\\s+'+name+r'\\s*\\((.*?)\\);';match=re.search(pattern,text,re.S);assert match",
+        "count": 1
       }
     ]
   },
@@ -91,7 +96,7 @@
     "baseline_path": "scripts/prepare_onehot_critical_data_buffers.py",
     "baseline_sha256": "ed9e901c689ef8845824a4f8fa5ac388fe3318a1e19b589ae79ab8ef0cd5f203",
     "candidate_path": "scripts/prepare_onehot_coverage_data_buffers.py",
-    "candidate_sha256": "a2a2f8e72e1f3ff344d4f401e964e309b417bfa20ca3ae8b3f8ea7de8fa1273e",
+    "candidate_sha256": "687cfbd1754a2da1e4b742b557d2dd5ac85f01f047f97c45cbe750a4a7a134f0",
     "edits": [
       {
         "before": "onehot-critical-data-prepare",
@@ -136,6 +141,36 @@
       {
         "before": "initial_buffer_location_dbu=list(buffer.getLocation()),original_terminal_count=",
         "after": "initial_buffer_location_dbu=list(buffer.getLocation()),vacant_native_site=placement,original_terminal_count=",
+        "count": 1
+      },
+      {
+        "before": "    assert candidates,('No vacant native site',driver_term.getInst().getName())",
+        "after": "    if not candidates:return dict(accepted=False,reason='no_vacant_site',distance_um=None)",
+        "count": 1
+      },
+      {
+        "before": "    assert distance/block.getDbUnitsPerMicron()<=80,('No vacant site within original80um limit',driver_term.getInst().getName(),distance/block.getDbUnitsPerMicron())",
+        "after": "    if distance/block.getDbUnitsPerMicron()>80:return dict(accepted=False,reason='nearest_site_exceeds80um',distance_um=distance/block.getDbUnitsPerMicron())",
+        "count": 1
+      },
+      {
+        "before": "    return dict(row=row.getName(),distance_um=",
+        "after": "    return dict(accepted=True,row=row.getName(),distance_um=",
+        "count": 1
+      },
+      {
+        "before": "    master=db.findMaster('sg13g2_buf_16');assert master\n    assert {p.getName():str(p.getIoType())for p in master.getMTerms()if str(p.getSigType())=='SIGNAL'}=={'A':'INPUT','X':'OUTPUT'}",
+        "after": "    masters=[db.findMaster('sg13g2_buf_'+str(strength))for strength in (16,8,4)]\n    assert all(masters)\n    for master in masters:\n        assert {p.getName():str(p.getIoType())for p in master.getMTerms()if str(p.getSigType())=='SIGNAL'}=={'A':'INPUT','X':'OUTPUT'}",
+        "count": 1
+      },
+      {
+        "before": "        local_net=odb.dbNet.create(b,local);buffer=odb.dbInst.create(b,master,added);assert buffer and local_net\n        placement=place_near_driver(b,buffer,term,occupied_rows)",
+        "after": "        local_net=odb.dbNet.create(b,local);assert local_net\n        attempts=[]\n        for master in masters:\n            buffer=odb.dbInst.create(b,master,added);assert buffer\n            placement=place_near_driver(b,buffer,term,occupied_rows)\n            attempts.append(dict(master=master.getName(),**placement))\n            if placement['accepted']:break\n            odb.dbInst.destroy(buffer);buffer=None\n        observations=OUT/'native-site-attempts.json'\n        previous=json.loads(observations.read_text())if observations.is_file()else[]\n        previous.append(dict(driver=t['instance'],attempts=attempts))\n        observations.write_text(json.dumps(previous,indent=2)+'\\n')\n        assert buffer is not None,('No buf16/buf8/buf4 vacant site within original80um',t['instance'],attempts)",
+        "count": 1
+      },
+      {
+        "before": "assert i and i.getMaster().getName()=='sg13g2_buf_16'and i.isPlaced()",
+        "after": "assert i and i.getMaster().getName()==r['buffer_master'] and r['buffer_master'] in ('sg13g2_buf_16','sg13g2_buf_8','sg13g2_buf_4')and i.isPlaced()",
         "count": 1
       }
     ]

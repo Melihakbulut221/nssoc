@@ -1,3 +1,9 @@
+## 2026-10-20 coverage buffer drive-size fit
+- Vacant-site run39329794073 rejected native buf16 nearest110.174um for driver1846591, preserving the80um gate.
+- Try actual positive buf16/buf8/buf4 per selected driver, strongest fitting first. Keep all128targets, every old cell fixed, real site/pin geometry, explicit failed attempt distances and all original geometry/equation/inversion controls. No target silently dropped; fail if none fits.
+- Reroute/RC/STA still required after successful preparation. This is not a timing closure claim.
+- All work remains cloud-only; CDR/PLL/TX and full serialPHY remain open.
+
 ## 2026-10-20 both CDR native latch diagnoses preserved
 - Diagnostic39326235115 succeeded both cases and reproduced all116HBT/4sampler checks; fullwave39320016317 remains rejected.
 - C/D master inputs below internal100mV diagnostic marker at all8phases; late0.9UI outputs still30/98wrong, early30/105wrong. A/B later settling does not meet original37.5ps gate.

@@ -60,16 +60,16 @@ def place_near_driver(block,buffer,driver_term,occupied_rows):
                 x=box.xMin()+q*pitch
                 distance=abs(x+offset-dx)+abs(ay-dy)
                 candidates.append((distance,row.getName(),x,box.yMin(),row))
-    assert candidates,('No vacant native site',driver_term.getInst().getName())
+    if not candidates:return dict(accepted=False,reason='no_vacant_site',distance_um=None)
     distance,_,x,y,row=min(candidates,key=lambda v:v[:4])
-    assert distance/block.getDbUnitsPerMicron()<=80,('No vacant site within original80um limit',driver_term.getInst().getName(),distance/block.getDbUnitsPerMicron())
+    if distance/block.getDbUnitsPerMicron()>80:return dict(accepted=False,reason='nearest_site_exceeds80um',distance_um=distance/block.getDbUnitsPerMicron())
     buffer.setOrient(row.getOrient());buffer.setLocation(x,y);buffer.setPlacementStatus('PLACED')
     b=buffer.getBBox()
     for other,intervals in occupied_rows:
         rb=other.getBBox()
         if rb.yMin()<b.yMax() and b.yMin()<rb.yMax():intervals.append((b.xMin(),b.xMax()))
     assert sum(abs(a-c)for a,c in zip(point(driver_term),point(buffer.findITerm('A'))))==distance
-    return dict(row=row.getName(),distance_um=distance/block.getDbUnitsPerMicron(),native_site_width_dbu=row.getSite().getWidth())
+    return dict(accepted=True,row=row.getName(),distance_um=distance/block.getDbUnitsPerMicron(),native_site_width_dbu=row.getSite().getWidth())
 
 def prepare():
     db=load(SOURCE);b=db.getChip().getBlock();assert len(b.getInsts())==150291
@@ -88,8 +88,10 @@ def prepare():
             if box.yMin()<rb.yMax():intervals.append((box.xMin(),box.xMax()))
     expected=topology(b);fixed=fixed_data(db);changes=[]
     for i in b.getInsts():i.setPlacementStatus('FIRM')
-    master=db.findMaster('sg13g2_buf_16');assert master
-    assert {p.getName():str(p.getIoType())for p in master.getMTerms()if str(p.getSigType())=='SIGNAL'}=={'A':'INPUT','X':'OUTPUT'}
+    masters=[db.findMaster('sg13g2_buf_'+str(strength))for strength in (16,8,4)]
+    assert all(masters)
+    for master in masters:
+        assert {p.getName():str(p.getIoType())for p in master.getMTerms()if str(p.getSigType())=='SIGNAL'}=={'A':'INPUT','X':'OUTPUT'}
     for index,t in enumerate(targets):
         driver=b.findInst(t['instance']);assert driver and driver.getMaster().getName()==t['master']
         term=driver.findITerm(t['pin']);assert term and str(term.getIoType())=='OUTPUT'
@@ -105,8 +107,19 @@ def prepare():
         expected[net.getName()]['pins'].remove([t['instance'],t['pin']])
         expected[net.getName()]['pins'].append([added,'X']);expected[net.getName()]['pins'].sort()
         expected[local]=dict(kind='SIGNAL',ndr=None,pins=sorted([[t['instance'],t['pin']],[added,'A']]),ports=[])
-        local_net=odb.dbNet.create(b,local);buffer=odb.dbInst.create(b,master,added);assert buffer and local_net
-        placement=place_near_driver(b,buffer,term,occupied_rows)
+        local_net=odb.dbNet.create(b,local);assert local_net
+        attempts=[]
+        for master in masters:
+            buffer=odb.dbInst.create(b,master,added);assert buffer
+            placement=place_near_driver(b,buffer,term,occupied_rows)
+            attempts.append(dict(master=master.getName(),**placement))
+            if placement['accepted']:break
+            odb.dbInst.destroy(buffer);buffer=None
+        observations=OUT/'native-site-attempts.json'
+        previous=json.loads(observations.read_text())if observations.is_file()else[]
+        previous.append(dict(driver=t['instance'],attempts=attempts))
+        observations.write_text(json.dumps(previous,indent=2)+'\n')
+        assert buffer is not None,('No buf16/buf8/buf4 vacant site within original80um',t['instance'],attempts)
         term.disconnect();term.connect(local_net);buffer.findITerm('A').connect(local_net);buffer.findITerm('X').connect(net)
         for p in buffer.getITerms():
             kind=str(p.getSigType())
@@ -143,7 +156,7 @@ def audit():
     additions=[];scale=b.getDbUnitsPerMicron();assert scale>0
     for r in old['changes']:
         i=b.findInst(r['buffer']);driver=b.findInst(r['driver'])
-        assert i and i.getMaster().getName()=='sg13g2_buf_16'and i.isPlaced()
+        assert i and i.getMaster().getName()==r['buffer_master'] and r['buffer_master'] in ('sg13g2_buf_16','sg13g2_buf_8','sg13g2_buf_4')and i.isPlaced()
         assert i.findITerm('A').getNet().getName()==r['local_net']and i.findITerm('X').getNet().getName()==r['original_net']
         distance=sum(abs(a-c)for a,c in zip(point(driver.findITerm(r['driver_pin'])),point(i.findITerm('A'))))/scale
         box=i.getBBox();rows=[]

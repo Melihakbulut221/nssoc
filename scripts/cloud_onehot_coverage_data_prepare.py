@@ -87,7 +87,8 @@ def main():
         assert r['proof']['positive_buffers_after']-r['proof']['positive_buffers_before']==count
         assert r['proof']['unobserved_output_port_changes']==0
         text=(OUT/'candidate.v').read_text();name='nssoc_coverage_data_buffer_0'
-        pattern=r'sg13g2_buf_16\s+'+name+r'\s*\((.*?)\);';match=re.search(pattern,text,re.S);assert match
+        first_master=r['geometry']['changes'][0]['buffer_master'];assert first_master in ('sg13g2_buf_16','sg13g2_buf_8','sg13g2_buf_4')
+        pattern=first_master+r'\s+'+name+r'\s*\((.*?)\);';match=re.search(pattern,text,re.S);assert match
         bad=text[:match.start()]+'sg13g2_inv_1 '+name+' ('+re.sub(r'\.X\s*\(','.Y(',match[1])+');'+text[match.end():]
         (OUT/'inverted.v').write_text(bad)
         negative=list(cmd);negative[negative.index(OUT/'candidate.v')]=OUT/'inverted.v';negative[negative.index(OUT/'proof')]=OUT/'negative-proof'
