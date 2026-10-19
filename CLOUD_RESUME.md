@@ -1,3 +1,7 @@
+## 2026-10-19 — Distinguish actual XOR supply and load terminal drops
+
+Cloud-only. Added cdr-xor-headroom-paths-cloud to reproduce all116original HBT checks then snapshot all59actual native devices in each XOR x/y at its worst VCE. Original51logical planes identify the two real pullup supply terminals per macro. Compare actual public-supply-to-pullup drop with intrinsic resistor terminal drop before choosing physical/circuit repairs. Every original failure and acceptance gate remains unchanged. TX fullwave39308903140 and mainchip route39293720171 are confirmed live; do not duplicate.
+
 ## 2026-10-19 — CDR failures located in actual XOR macros; cloud-only continuation
 
 CDR headroom review39309462607 passed early+late and reproduced all116original HBT checks. Six early/two late failures are in physical XOR x/y, not in sampler transistors. Worst xd0129 early VCE0.386162075932V at19.62640625ns; VC1.699017099127/VB1.732865874653/VE1.312855023195V, IC -0.127067448microampere (nearly off, not evidence of damage). Both immutable reports and exact geometry are committed. Next inspect shared XOR collector supply/load and emitter/input commonmode at those samples; preserve original0.4V gate and all sampler failures. No blind source-contact promotion.
