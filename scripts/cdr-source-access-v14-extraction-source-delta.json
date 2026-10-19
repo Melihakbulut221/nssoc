@@ -1,0 +1,95 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_parent_avdd_v13_planes.py",
+      "candidate_path": "scripts/cloud_cdr_source_access_v14_planes.py",
+      "edits": [
+        {
+          "before": "cdr-parent-avdd-v13",
+          "after": "cdr-source-access-v14",
+          "count": 3
+        },
+        {
+          "before": "reports.restore_report('cdr-source-access-v14',",
+          "after": "reports.restore_report('cdr-sampler-source-access',",
+          "count": 1
+        },
+        {
+          "before": "        assert prior['status']=='PASS_PD484_PARENT_AVDD_FEEDS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'\n        overlay=prior['parent_avdd_geometry']\n        assert overlay['status']=='PASS_FROZEN_PARENT_PLUS_ELEVEN_NATIVE_AVDD_FEEDS_AND_THREE_FAULTS'\n        assert overlay['immutable_passed_parent_geometry_reproduced'] and overlay['all_layers_exact']\n        assert overlay['native_via_stacks']==33 and len(overlay['rejected'])==3\n        assert set(overlay['feed_tags'])=={'sa','sb','sc','sd','da','dc','s0','s1','x','y','vi'}\n        r['parent_avdd_geometry']=overlay\n",
+          "after": "        assert prior['status']=='PASS_PD484_NATIVE_SOURCE_MIDPOINT_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'\n        assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD484_DRC_LVS_AND_FAULT_CONTROLS'\n        overlay=prior['geometry']\n        assert overlay['status']=='PASS_NATIVE_SOURCE_MIDPOINT_OVERLAY_GEOMETRY_REQUIRES_DRC_LVS_AND_FRESH_RC'\n        assert overlay['original_devices']==484 and overlay['sampler_count']==4\n        assert overlay['observed_source_pins']==36 and overlay['unchanged_reference_sources']==4\n        assert overlay['source_accesses']==32 and overlay['native_via_stacks']==64\n        assert all(overlay[k]for k in ('original_geometry_retained','all_layers_exact','serialized_gds_checked','reference_and_lef_byte_identical'))\n        assert set(overlay['rejected'])=={'cut_actual_new_source_bridge','remove_actual_new_source_vias','unrelated_gate_geometry_added'}\n        assert sha(OUT/'parent/layout'/(TOP+'.gds'))==overlay['candidate_gds_sha256']\n        assert all(prior['outputs'][n]==v for n,v in prior['retained_child_sources'].items())\n        r['source_access_geometry']=overlay\n",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "3f2e9de5fa4e5e7edc7248016e52f9350ab814edddefa1665120eb6b13766a0d",
+      "candidate_sha256": "dabcea6ff5b632768c8898dc7a1925541a8c59251874ad8bf8b69cfecd05f8ac"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_parent_avdd_v13_wire_inputs.py",
+      "candidate_path": "scripts/cloud_cdr_source_access_v14_wire_inputs.py",
+      "edits": [
+        {
+          "before": "cdr-parent-avdd-v13",
+          "after": "cdr-source-access-v14",
+          "count": 5
+        },
+        {
+          "before": "reports.restore_report('cdr-source-access-v14',",
+          "after": "reports.restore_report('cdr-sampler-source-access',",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "e17556c0cfd3d4bad95660591cf82f0f2af5837b8fcb312769fe6cd89e2d4710",
+      "candidate_sha256": "2b527670f64f40cb7652ff1583aa8de199a8b653cd57eed5c8817a3fd5f724f6"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_parent_avdd_v13_binding.py",
+      "candidate_path": "scripts/cloud_cdr_source_access_v14_binding.py",
+      "edits": [
+        {
+          "before": "cdr-parent-avdd-v13",
+          "after": "cdr-source-access-v14",
+          "count": 3
+        },
+        {
+          "before": "nssoc_cdr_pd484_parent_avdd_compact_v13",
+          "after": "nssoc_cdr_pd484_source_access_compact_v14",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "63551e21a091480f9895c4bc7af91de6ae57aa9bdbee63d305923edc0cee60de",
+      "candidate_sha256": "7a6e637b53da6846aaec94099ee312dd3a4cf9694265f125acf45cba5a5a381e"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_parent_avdd_v13_rc.py",
+      "candidate_path": "scripts/cloud_cdr_source_access_v14_rc.py",
+      "edits": [
+        {
+          "before": "cdr-parent-avdd-v13",
+          "after": "cdr-source-access-v14",
+          "count": 4
+        }
+      ],
+      "baseline_sha256": "1b53b4597786d7d076cb5d07dd0a3c53d5bc1492634cce6eaa25c7e26a392aa0",
+      "candidate_sha256": "708f87f95e6bbd15e959856cc0bb332d194b59115336fe50a4c090de4782e6b7"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_parent_avdd_v13_extraction_stage.py",
+      "candidate_path": "scripts/cloud_cdr_source_access_v14_extraction_stage.py",
+      "edits": [
+        {
+          "before": "cdr-parent-avdd-v13",
+          "after": "cdr-source-access-v14",
+          "count": 4
+        },
+        {
+          "before": "cdr_parent_avdd_v13",
+          "after": "cdr_source_access_v14",
+          "count": 2
+        }
+      ],
+      "baseline_sha256": "36231b9bd3e8d24b09aed38fb2f8a4ec380e6da344cf03771a202ab59aa6851c",
+      "candidate_sha256": "f37be11c9519997058ed745a0e374b889e52868322cacbcb372cda7ae8746c6d"
+    }
+  ],
+  "scope": "Exact source and physical overlay adaptations; all original extraction and corruption gates preserved."
+}

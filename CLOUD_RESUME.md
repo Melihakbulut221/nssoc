@@ -1,3 +1,11 @@
+## Active checkpoint: source-access physical PASS, fresh extraction; TX nominal rejected
+
+Source-access physical run39298976233 passed native560categoryDRC, deep/flat484deviceLVS and original fault controls. Actual GDS9c959ff18ce0d2d54b26acc430860f243d9c6fba7383287fce5eb0c41b2c75a6 has32long tail midpoint contacts/64nativevia stacks,4short references unchanged. Receipt docs/evidence/cdr-source-access-v14-physical-pass-20261019.json. New cdr-source-access-v14-extraction-cloud runs planes, wire inputs, model binding and fresh RC; original exact source deltas and all corruption gates remain mandatory. After PASS, continue MIM-aware composition and unchanged full loaded early/late data,phase and device tests. Raw counts must be measured from new geometry.
+
+TX run39268446646 nominal job118115200444 completed with a real waveform rejection (ngspice exit0,12507s,zero diagnostics). Complete failure receipt retained at docs/evidence/tx-v5-minimax-wave-nominal-rejected-20261019.json;1.61GB raw archive remains cloud-only. Inspect review.signals,interfaces,failed_hbts,failed_mos; do not rerun unchanged or infer acceptance from solver completion. The swap_leaf_select fault job118115200371 was still running. Mainchip route39293720171/job118200712004 remains live; do not restart.
+
+All execution remains cloud-only per newest user instruction. Local workspace is empty. Full serialPHY and final chip timing are not closed.
+
 ## Active checkpoint: sampler source-access size correction (cloud only)
 
 The source-access run39297515142 failed before drawing: all36sampler MOS sources were incorrectly assumed long. The unchanged reference has32tail devices of36um and4reference devices of8um. This change inventories all36native source pins and adds64native via stacks only to32long tails, with actual vertical footprint checks. Four reference sources stay unchanged. Original484device reference and geometry,560DRC categories and deep/flatLVS/fault controls remain mandatory. Leaf source files and children.json are retained with their original hashes for fresh extraction.
