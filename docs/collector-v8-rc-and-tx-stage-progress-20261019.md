@@ -9,3 +9,9 @@ TX full capture 39158584151 remains rejected. Diagnostic run 39199027825 exactly
 Twenty-four HBTs fail original voltage gates. For example XD0110 at its actual minimum VCE sample has C=0.918759V, B=1.443575V, E=0.561123V; VCE=0.357637V. The current review maps these measured failing devices to the actual updated 31-macro placement, instead of assigning ownership from historical coordinates. This diagnostic is not a circuit repair or acceptance.
 
 Mainchip setup/hold, antenna closure, complete serial Gen3 x4 PHY, final routed integration and qualified signoff remain OPEN. Preserve all original failures and clocks/thresholds.
+
+## Full-mask capture and measured failing-device ownership
+
+MIM-aware capture 39200491952 passed actual eleven-capacitor identity/terminal checks and five injected faults. Its actual full-mask network is 15,490 R / 11,535 C, distinct from the earlier wire-only 15,467 R / 11,524 C. The next independent raw audit pins these measured counts and retains all thirteen wire and nine intrinsic-device corruption controls. No count was inferred from the old geometry.
+
+Native ownership run 39200492051 places six failing HBTs in final macro f and eighteen in p8_1/p8_3/p8_5/p8_6/p8_7. The final four select devices XD0109–112 use actual sp/sn bases; XD0114–115 are tail devices with base mr and emitter on avss. The other eighteen failing devices are select branches with sp8_* bases. This rules out treating the failed devices as the data-input transistors. Final select and tail constraints must be solved together; merely reducing select common mode could improve select headroom while hurting the tail. Preserve original thresholds and rerun the full loaded tree after a real circuit/geometry change.

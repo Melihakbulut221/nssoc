@@ -1,3 +1,13 @@
+# Latest cloud-only continuation — 2026-10-19
+
+MIM capture39200491952 PASSED: full actual masks15490R11535C/11MIM,111conductors946points and5controls. Different from wire-only15467R11524C. Full receipt cdr-collector-v8-mim-parent-capture-pass-20261019.json. This commit starts cdr-collector-v8-mim-parent-audit-cloud with original13wire+9intrinsic controls and independently measured full-mask counts. Next: successful raw audit -> fresh composition -> original complete streamed 256bit nominal early/late + fault controls. Do not reuse old RC or claim current waves passed.
+
+TX physical ownership39200492051 PASSED diagnostic only. Fullreceipt tx-v5-fast-stage-isolated-stage-review-20261019.json maps actual24failedHBTs: f6 and p8_1/3/5/7 foureach,p8_6 two. Four final selectors plus two tail devices; other18select devices, not data inputs. Need real circuit/geometry repair with simultaneous tail/select headroom and original waveform gates. CMOS+level16pass,level8marginfails,level4wrongbits. No electrical acceptance.
+
+All three overall goals OPEN. Cloud-only; no local checkout or CAD/results. Native mainchip timing/antenna failures remain as recorded below.
+
+---
+
 # Cloud-only continuation — 2026-10-19
 
 CDR collector-v8 native wire RC39200042565 and native device binding39200042548 PASS. Full pinned receipts in docs/evidence/cdr-retimed-collector-v8-{rc,binding}-pass-20261019.json. Actual15467R11524C,111conductors946points; all original13RC/12binding controls preserved.
