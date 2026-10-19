@@ -38,7 +38,7 @@ def main():
     # Normalize storage metadata only; source report and original failure remain intact.
     receipt=dict(source_run=pin['run'],source_head=pin['source_head'],
         summary_sha256=pin['summary_sha256'],
-        url='https://api.github.com/repos/Melihakbulut221/nssoc/releases/assets/657719407',
+        url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-39340687625-1-tx-fast-wire24-extraction/tx-fast-wire24-extraction-39340687625-1.tar.gz.part0000',
         sha256='bcf58ad5044105b25379f39c3de24b7b5b92f4937ca047034e8914f73a1bfce9',
         bytes=19732285,resistors=e['audit']['actual_exported_resistors'],
         capacitors=e['audit']['actual_exported_capacitors'],devices=1674,ports=162,conductors=377,probes=3262,

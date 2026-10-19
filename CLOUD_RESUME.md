@@ -1,3 +1,12 @@
+## 2026-10-20 — Wire24 composition download repair
+Composition39343145933 rejected before CAD at input SHA check: curl fetched
+GitHub API asset metadata instead of the binary (no octet-stream header).
+Use the asset's authoritative browser_download_url; original archive SHA and
+all source/native gates unchanged. Failed report committed. New workflow
+revision starts corrected composition. Mainchip39331918238 remains live.
+Cloud only; do not restore files or run CAD locally.
+
+
 ## 2026-10-20 — Launch new wire24 native model composition
 Recovered extraction39340687625 now supplies new model inputs; do not use old
 timing-priority RC. New workflow tx-fast-wire24-composition-cloud.yml restores
