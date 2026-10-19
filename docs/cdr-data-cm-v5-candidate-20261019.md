@@ -104,3 +104,16 @@ intrinsic-body dispositions. Native model conversion and fresh wire-only RC
 now run as independent hosted jobs. The12 binding fault controls and13 raw
 R/C corruption controls remain unchanged. This stage does not include
 substrate spreading resistance, RF qualification or intrinsic MIM composition.
+
+## Fresh wire RC and model binding
+
+Run39206431723 passed all484 native device/1394 terminal model bindings and
+12 corruptions. Run39206431729 passed the fresh wire-only graph audit with
+15467 native resistors and11524 capacitors,111 conductors and946 points. All
+13 raw corruption controls were rejected. This is wire-only RC, not qualified
+substrate/RF PEX or electrical acceptance.
+
+The next hosted capture restores those exact new sources and includes the11
+actual MIM masks, moving bottom reference points only onto measured native
+bottom-metal access. Every reference remains bound to the original native
+conductor. Raw point/value audit and full loaded transients remain pending.
