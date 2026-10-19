@@ -1,3 +1,32 @@
+# Latest cloud-only continuation — 2026-10-19, folded sampler physical pass
+
+Folded sampler39232996365(source6fe7a218daeb5d059a00dfe82f4211d34afadcd2)
+PASSED native560DRC0markers, deep/flat54device LVS,16original physical faults,
+LEF and all54native primitive drawing conservation. Summary655885666,parts655885756;
+complete receipt docs/evidence/cdr-folded-sampler-physical-pass-20261019.json.
+Outline1003.0x291.63um; clock spans477.985/263.480um. Circuit unchanged4um input
+dividers. Earlier first/second generation rejections remain saved. Native
+internal M_SE span increased; do not claim timing improved before full RC/waves.
+
+This commit launches cdr-retimed-folded-v11-parent-cloud. Bind exact source SHA
+and run from Actions. Four folded sampler macros replace their old physical
+views; all seven other child types and all analog circuits unchanged. Preserve
+original16macros/41sourcecards/484native devices and full parent DRC/LVS/faults.
+On physical success: new planes/wire-inputs/device binding/RC/MIM capture+audit/
+composition and original full loaded256bit early/late/fault/PVT tests. Never
+reuse old RC for the new layout.
+
+TX strap6 wave39221063981,TX trunk256 wave39226121734 and mainchip logic-resize
+route39202263552 were verified live; preserve existing jobs. CDR width8/16
+diagnosis39228293871 rejected allfour originaldata gates; comparison39230396864
+preserved original bits/phases/vectors. Neither resistor width is adopted.
+
+All work/cloud archives stay on GitHub-hosted runners. Local NSSOC workspace
+remains empty. Full serial PHY, routed mainchip signoff and finalsetup/hold
+goals remain OPEN. Do not mark complete based on the leaf physical pass.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded sampler retry
 
 All work remains on GitHub-hosted runners; local workspace empty. This commit

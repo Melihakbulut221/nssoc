@@ -37,3 +37,13 @@ rejected a local MOS body-contact route before producing GDS. The revised planne
 reserves each real local MOS contact center (x+4um) together with all escape
 columns before the other row is placed. The5um separation and native tap geometry
 are unchanged; this is an actual placement reservation, not a waived check.
+
+Native leaf run39232996365 passed:560mainDRC categories/zero markers,
+unsimplified deep/flat54device LVS, all16 original corruption controls and
+independent all54 primitive drawing conservation. GDS outline1003.0x291.63um;
+CLKP/CLKN horizontal spans477.985/263.480um. Some internal spans increased
+(M_SE454.12->761.45um); no electrical improvement is inferred from clock span.
+The folded-v11 parent workflow now restores this exact leaf four times with
+the seven other child types unchanged, keeping the original41 source cards,
+16 macro instances,484 native devices and all parent physical fault tests.
+Fresh full parent RC and original loaded waves remain mandatory.
