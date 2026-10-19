@@ -1,3 +1,9 @@
+## 2026-10-20 actual retime data metal repair candidate
+- Both39332192573retime-chain diagnostics passed replay/binding/fault controls, original fullwave still rejected.
+- Late D median differential at capture: Bcollector277.397mV -> filterinput110.633mV -> Dmasterbase-0.507mV. Intrinsic resistor attenuation also remains; do not claim wiring is sole cause.
+- New cdr-retime-data-access grows only real M3/M4/M5 on12native A/B-output, filter-output and C/D-base conductors, with250nm growth/800nm foreign-original-metal exclusion. Keep every original device/via/shape/reference. Native DRC/LVS and fresh completeRC/fullwave mandatory.
+- Mainchip route39331918238 and TX39308903140 active at latest observation. No duplicates. Cloud-only storage/execution remains mandatory; fullPHY/finaltiming open.
+
 ## 2026-10-20 native CDR retime input-chain loss diagnosis
 - New cdr-xor-v15-retime-chain replays both original39320016317fullwaves and all prior116HBT/4sampler/latch checks.
 - Bind exact A/B collectors -> ac/bd resistor/shunt/MIM -> C/D sampler series/bias -> native master bases by physical ownership and native clusters, with three actual graph corruption controls.
