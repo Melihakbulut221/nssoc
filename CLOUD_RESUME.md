@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, local-bus PD484 parent PASS
+
+Parent39249146302 source99913550040b2c41e36802633b47a59da1ac51c1 PASSED
+native560DRC/deep-flat484LVS and9original fault controls. Census116HBT,
+46MOS,102rppd,11MIM,209taps. Full receipt:
+docs/evidence/cdr-localbus-v12-parent-physical-pass-20261019.json.
+Summary656162539 SHA5e8de0af2d01bef3c71f3402bebe63660814b51a9ef33b2af4a0647944b1c240;
+parts656162635 SHA5fff3e3ef38f091d26f9fd827f606b50d213dc8ee7bd195226930a119e4dda3f.
+
+This commit starts cdr-localbus-v12-extraction-cloud with fresh planes,
+wire-inputs, binding and rawRC. Namespace-only method adaptation is guarded
+against folded_v11; all original native gates retained. Same-run dependent
+receipts bind immutable release bytes. Get exact run/results; never rerun a
+healthy job or reuse foldedRC. After all4 stages PASS, pin their reports,
+then perform fresh MIM capture/audit/composition and unchanged loaded waves.
+
+Mainchip39-buffer route39243328773 and TX39221063981/39226121734 confirmed
+live this turn. Full serialPHY, mainchip route and final timing remain OPEN.
+Cloud-only: no local checkout/tests/CAD/artifacts; local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, local-bus native leaf PASS
 
 Run39247903547 source d9ed1af569fafda42ee686fdede28f2a5c263628 PASSED:
