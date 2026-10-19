@@ -1,0 +1,240 @@
+{
+  "scope": "Only four physical input-divider resistor widths change; original native physical and full loaded gates retained.",
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/rx_sampler_parallel_drive_v8.spice",
+      "baseline_sha256": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+      "candidate_path": "hw/soc/analog/pcie/rx_sampler_input_drive_v13.spice",
+      "candidate_sha256": "aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4",
+      "edits": [
+        {
+          "before": "parallel_drive_v8",
+          "after": "input_drive_v13",
+          "count": 8
+        },
+        {
+          "before": "XIP dp lp sub rppd w=1u l=3.6u",
+          "after": "XIP dp lp sub rppd w=4u l=3.6u",
+          "count": 1
+        },
+        {
+          "before": "XIN dn ln sub rppd w=1u l=3.6u",
+          "after": "XIN dn ln sub rppd w=4u l=3.6u",
+          "count": 1
+        },
+        {
+          "before": "XBP avdd lp sub rppd w=1u l=2.4u",
+          "after": "XBP avdd lp sub rppd w=4u l=2.4u",
+          "count": 1
+        },
+        {
+          "before": "XBN avdd ln sub rppd w=1u l=2.4u",
+          "after": "XBN avdd ln sub rppd w=4u l=2.4u",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_collector_access_v12.py",
+      "baseline_sha256": "d4ff035905430a7e50afb2ec6488f66d3c645720507705a9861f391ecf56d718",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_input_drive_v13.py",
+      "candidate_sha256": "4d4bc4032e94c390fb60e85734cc736e6edc51f1a9da0009041f10c2029566f4",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_collector_access_layout_v12",
+          "after": "nssoc_rx_sampler_input_drive_layout_v13",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/analog/pcie/rx_sampler_parallel_drive_v8.spice",
+          "after": "hw/soc/analog/pcie/rx_sampler_input_drive_v13.spice",
+          "count": 1
+        },
+        {
+          "before": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "after": "aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4",
+          "count": 1
+        },
+        {
+          "before": "NSSOC_RX_SAMPLER_PARALLEL_DRIVE_V8",
+          "after": "NSSOC_RX_SAMPLER_INPUT_DRIVE_V13",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_collector_access_v12.py",
+      "baseline_sha256": "ffc8dffc8973da89bf777eb4cabcc2c8f8f8da771c0c59bb7898680b98738cca",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_input_drive_v13.py",
+      "candidate_sha256": "41ee94c2b130b34eaeebbc1478b5eb2e4cba364958fa4b6e168069b05fe1f5eb",
+      "edits": [
+        {
+          "before": "make_pcie_sampler_collector_access_v12",
+          "after": "make_pcie_sampler_input_drive_v13",
+          "count": 1
+        },
+        {
+          "before": "fourteen fault controls",
+          "after": "sixteen fault controls",
+          "count": 1
+        },
+        {
+          "before": "REFERENCE_FAULTS = (\"wrong_load\",",
+          "after": "REFERENCE_FAULTS = (\"old_input_width\", \"old_bias_width\", \"wrong_load\",",
+          "count": 1
+        },
+        {
+          "before": "    changes = {\n",
+          "after": "    changes = {\n        \"old_input_width\": (\"RIP DP LP BULK rppd w=4u l=3.6u\", \"RIP DP LP BULK rppd w=1u l=3.6u\"),\n        \"old_bias_width\": (\"RBP AVDD LP BULK rppd w=4u l=2.4u\", \"RBP AVDD LP BULK rppd w=1u l=2.4u\"),\n",
+          "count": 1
+        },
+        {
+          "before": "PASS_PARALLEL_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_FOURTEEN_FAULTS",
+          "after": "PASS_INPUT_DRIVE_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_sampler_collector_access_geometry.py",
+      "baseline_sha256": "a4956d41e6da26fa87c2ff652c9ea4425d2de8143a9e7755cabe0dbb13c56da5",
+      "candidate_path": "scripts/check_cdr_sampler_input_drive_geometry.py",
+      "candidate_sha256": "f086ae06b15b1510dfd55c26f7d73365877c9be8ef3e1ea08dfbb8280ee6fbba",
+      "edits": [
+        {
+          "before": "    assert len(a['instances'])==len(b['instances'])==len(x)==len(y)==54 and x==y, 'Native primitive identity or parameters changed'",
+          "after": "    assert set(x)==set(y) and len(x)==54\n    for name in ('IP','IN','BP','BN'):\n        assert x[name]['kind']=='resistor' and x[name]['width_um']==1\n        x[name]['width_um']=4\n    assert x==y,'Unexpected native primitive or parameter change'",
+          "count": 1
+        },
+        {
+          "before": "    assert a['source_circuit_sha256']==b['source_circuit_sha256']",
+          "after": "    assert a['source_circuit_sha256']=='876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3' and b['source_circuit_sha256']=='aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4'",
+          "count": 1
+        },
+        {
+          "before": "tops=['nssoc_rx_sampler_via_rich_layout_v11','nssoc_rx_sampler_collector_access_layout_v12']",
+          "after": "tops=['nssoc_rx_sampler_collector_access_layout_v12','nssoc_rx_sampler_input_drive_layout_v13']",
+          "count": 1
+        },
+        {
+          "before": "    assert all_data[0]['instances']==all_data[1]['instances'], 'Native primitive placement changed'\n    # Bind precisely the16 actual collector escape metadata changes; all\n    # original primitive geometry/placement and other routing metadata remain.\n    before,after=all_data\n    assert before['ports']==after['ports']and before['bbox_um']==after['bbox_um']\n    assert before['output_shunts']==after['output_shunts']and before['placement_plan']==after['placement_plan']\n    hbt={x['name']:x for x in before['instances']if x['kind']=='hbt'}\n    changed=[]\n    assert len(before['routes'])==len(after['routes'])\n    for a,b in zip(before['routes'],after['routes'],strict=True):\n        expected=dict(a)\n        device=hbt.get(a['device'])\n        if device and abs(a['escape_lane_um']-(device['placement_um'][0]-18))<1e-8:\n            assert a['source_layer']==1 and a['net']==device['nets'][0]\n            assert a['escape_width_um']==.4 and a['pin_via_columns']==4\n            expected.update(escape_width_um=1.2,pin_via_columns=16);changed.append(a['device'])\n        assert b==expected,('Unexpected routing metadata delta',a,b)\n    assert len(changed)==len(set(changed))==16 and set(changed)==set(hbt)\n",
+          "after": "    # Placement may follow the changed native resistor boxes. All other\n    # primitive drawings remain exact; the four resistor shapes are independently\n    # reconstructed from the pinned native PCell, not trusted from metadata.\n",
+          "count": 1
+        },
+        {
+          "before": "    a,b=all_shapes\n",
+          "after": "    a,b=all_shapes\n    a=dict(a)\n    import sys\n    src=Path(__file__).resolve().parents[1]/'pdk/libs.tech/klayout/python'\n    sys.path[:0]=[str(src),str(src/'pycell4klayout-api/source/python')]\n    import sg13g2_pycell_lib\n    G=pya.Layout();native_layouts.append(G)\n    changed_names={'IP','IN','BP','BN'}\n    for d in all_data[1]['instances']:\n        if d['name']not in changed_names:continue\n        assert d['kind']=='resistor' and d['width_um']==4\n        cell=G.create_cell('rppd','SG13_dev',dict(w='4u',l=str(d['length_um'])+'u'));assert cell is not None\n        regions={}\n        for li in G.layer_indexes():\n            info=G.get_info(li)\n            if info.datatype!=0:continue\n            region=pya.Region(cell.begin_shapes_rec(li)).merged()\n            if not region.is_empty():regions[(info.layer,info.datatype)]=region\n        assert regions\n        a[d['name']]=regions\n",
+          "count": 1
+        },
+        {
+          "before": "    assert old.replace(tops[0],tops[1])==new",
+          "after": "    expected=old.replace(tops[0],tops[1])\n    for name,nodes,length in [('IP','DP LP','3.6'),('IN','DN LN','3.6'),('BP','AVDD LP','2.4'),('BN','AVDD LN','2.4')]:\n        arow='R'+name+' '+nodes+' BULK rppd w=1u l='+length+'u'\n        assert expected.count(arow)==1\n        expected=expected.replace(arow,arow.replace('w=1u','w=4u'))\n    assert expected==new",
+          "count": 1
+        },
+        {
+          "before": "PASS_ALL54_NATIVE_PRIMITIVE_DRAWINGS_REFERENCE_AND_THREE_CONTROLS",
+          "after": "PASS_50_UNCHANGED_AND_FOUR_NATIVE_RESIZED_RESISTOR_DRAWINGS_AND_THREE_CONTROLS",
+          "count": 1
+        },
+        {
+          "before": "native_parameters_and_reference_unchanged=True",
+          "after": "native_parameters_and_reference_unchanged=False,intended_changes={n:dict(old_width_um=1,new_width_um=4)for n in sorted(changed_names)}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_collector_access_physical.py",
+      "baseline_sha256": "3f9f6150e26222497957b6b47a98a17c90f7152e9c040ecd2aa1a24ac4325ac1",
+      "candidate_path": "scripts/cloud_cdr_sampler_input_drive_physical.py",
+      "candidate_sha256": "71c64fe349107611dc75e7fd87d82fa697df7311fabec031aa41c5c26af82203",
+      "edits": [
+        {
+          "before": "cloud-cdr-sampler-collector-access-physical",
+          "after": "cloud-cdr-sampler-input-drive-physical",
+          "count": 1
+        },
+        {
+          "before": "Only16 HBT collector Metal3 escapes widened0.4to1.2um and native pin via columns4to16; other routes retained. All native primitive drawings/positions, devices and original physical gates unchanged. New16HBT9LVNMOS12rppd17taps, original560DRC/deep-flat54deviceLVS/LEF gates, MOS dimension/connectivity faults plus missing split devices; fourteen actual negative controls. Fresh parent RC and original loaded gates required; no electrical or full PHY acceptance.",
+          "after": "Four actual sampler input-divider rppd widths1to4um to match the existing fourfold HBT drive candidate. All HBTs, MOS, loads and contacts unchanged; placement follows native PCell boxes. Independent50 unchanged and4 golden native resistor drawings, original560DRC/deep-flat54deviceLVS/LEF gates and14 original faults plus2 old-width faults. Earlier electrical screens are ancestry only, not candidate acceptance. Fresh parent RC and original full loaded gates remain required.",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/analog/pcie/rx_sampler_parallel_drive_v8.spice",
+          "after": "hw/soc/analog/pcie/rx_sampler_input_drive_v13.spice",
+          "count": 1
+        },
+        {
+          "before": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "after": "aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4",
+          "count": 1
+        },
+        {
+          "before": "d4ff035905430a7e50afb2ec6488f66d3c645720507705a9861f391ecf56d718",
+          "after": "4d4bc4032e94c390fb60e85734cc736e6edc51f1a9da0009041f10c2029566f4",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_collector_access_v12",
+          "after": "make_pcie_sampler_input_drive_v13",
+          "count": 3
+        },
+        {
+          "before": "check_pcie_sampler_collector_access_v12",
+          "after": "check_pcie_sampler_input_drive_v13",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_collector_access_sources",
+          "after": "check_cdr_sampler_input_drive_sources",
+          "count": 2
+        },
+        {
+          "before": "cdr-sampler-collector-access-source-delta.json",
+          "after": "cdr-sampler-input-drive-source-delta.json",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_sampler_collector_access_geometry",
+          "after": "check_cdr_sampler_input_drive_geometry",
+          "count": 2
+        },
+        {
+          "before": "native_electrical_screens",
+          "after": "baseline_native_electrical_screens",
+          "count": 3
+        },
+        {
+          "before": "assert report['protected_inputs'][str(analog)]==sha(analog)",
+          "after": "assert report['protected_inputs'][str(ROOT/'hw/soc/analog/pcie/rx_sampler_parallel_drive_v8.spice')]==sha(ROOT/'hw/soc/analog/pcie/rx_sampler_parallel_drive_v8.spice')",
+          "count": 1
+        },
+        {
+          "before": "cdr-sampler-via-rich-physical-pass-20261018.json",
+          "after": "cdr-sampler-collector-access-physical-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "reports.restore_report('cdr-sampler-via-rich-physical'",
+          "after": "reports.restore_report('cdr-sampler-collector-access-physical'",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_via_rich_layout_v11.gds",
+          "after": "nssoc_rx_sampler_collector_access_layout_v12.gds",
+          "count": 1
+        },
+        {
+          "before": "PASS_PARALLEL_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_FOURTEEN_FAULTS",
+          "after": "PASS_INPUT_DRIVE_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_SIXTEEN_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "PASS_PARALLEL_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "after": "PASS_INPUT_DRIVE_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
