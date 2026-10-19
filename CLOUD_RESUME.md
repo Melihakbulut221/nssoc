@@ -1,3 +1,27 @@
+# Latest cloud-only continuation — 2026-10-19, folded waves rejected
+
+Folded fullwave39237412866 has completed: both nominal early/late REJECTED;
+clock_stopped and vi_bias_off pass as negative-control fault detection only.
+Early885 wrong/1148 low sampler observations versus previous796/942.
+Late745wrong/970low. Early VI/phase has wrong sign and HBT xpd.xd0129 has
+minimum activeVCE0.398285618V below original0.4V gate. All original gates
+retained. Complete receipts plus comparison are committed in
+docs/evidence/cdr-folded-v11-*.json; see docs/cdr-folded-v11-fullwave-result-20261019.md.
+Do not infer electrical acceptance from folded physical DRC/LVS passes.
+
+Mainchip path review39238138792 completed read-only; its receipt is now pinned.
+This commit starts onehot-routed-load-geometry-cloud to inspect actual ODB
+wire lengths/pin geometry on measured weak data drivers in all three corners.
+It changes no layout and launches no duplicate reroute. Retrieve its results
+before selecting the next physical buffering/placement repair.
+
+TX strap6 fullwave39221063981 and trunk256 fullwave39226121734 remain live
+at latest check; preserve their jobs. All PHY/mainchip/final timing closure
+remains OPEN. Local workspace verified empty. No local CAD/test/archive
+extraction or source checkout; source edits and evidence are on GitHub.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, mainchip route completed, timing open
 
 Mainchip logic-resize route39202263552 completed successfully as an execution,
