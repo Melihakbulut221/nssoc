@@ -1,3 +1,13 @@
+## 2026-10-20 — CDR native passive network diagnosis
+This commit launches a read-only native R/C component measurement of v16
+collector→filter→sampler→master-base and bias/return paths, with original
+latch/retime-graph and passive-solver controls. No intrinsic resistor linearization
+or waveform/threshold edits. Decide next actual circuit/geometry fix from evidence.
+TX extraction was terminally rejected by a receipt-variable bug; fixed in1b51dd2
+and freshly dispatched. Locate exact latest1b51dd2 workflow run; never duplicate.
+Mainchip39331918238 remains live. All CAD/artifacts remain cloud-only.
+
+
 ## 2026-10-20 — Repair stopped TX extraction receipt binding
 Run39340008926 stopped terminal beforeRC: new physical report was erroneously
 compared to baseline receipt instead of candidate receipt. Failure archived.
