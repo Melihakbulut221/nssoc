@@ -1,3 +1,13 @@
+## 2026-10-20 — TX native extraction passed; publication-only recovery
+Previous turn made progress: nativeRC39340687625 actually passed original13faults.
+Run failed only at release creationHTTP500; fallbackartifact12228916534 preserved
+19967840bytes SHA d4cd6d865458e1bc69ff3545105bc52ac93e9ea0186b33258cdceac89f471bbe.
+This commit launches recovery in GitHub only. DO NOT rerun nativeCAD.
+Publish original unchanged report/files with explicit separate recoveryprovenance.
+CDR passive-network39341051275 confirmedlive; mainchip39331918238 confirmedlive.
+All localworkspacefiles remain absent.
+
+
 ## 2026-10-20 — CDR native passive network diagnosis
 This commit launches a read-only native R/C component measurement of v16
 collector→filter→sampler→master-base and bias/return paths, with original
