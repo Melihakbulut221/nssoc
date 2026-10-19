@@ -1,3 +1,15 @@
+# Latest verified cloud state — 2026-10-19 00:11 UTC heartbeat
+
+Collector access leaf39170920428 PASSED actual560DRC0/54device deep-flatLVS/LEF and14 negative controls. Full receipt cdr-sampler-collector-access-physical-pass-20261019.json. Next integrate new sampler v12 into PD484 via a new source-bound parent plan, retain all original child/parent physical gates, fresh RC and original full loaded waves. Physical leaf pass is NOT electrical acceptance.
+
+Mainchip39161219456 is TERMINAL FAILURE, native flow returned0 after routing/RC/STA; controller rejected antenna report heading count versus native metric at line302. All native outputs retained. This commit launches onehot-resize-report-review-cloud to recover exact antenna and all3corner timing reports in cloud without rerouting or weakening original assertion. Read actual discrepancy before fixing validator. Receipt onehot-resize-route-report-rejection-20261019.json.
+
+TX39158584151 is TERMINAL: nominal electrical rejection (140/768wrong signs,164below100mV); negative swap_leaf_select detected successfully. Full native rc0/no diagnostics. Both archived in tx-v5-fast-stage-isolated-wave-rejection-20261019.json. Do not report either old job as running or blindly restart. Need actual per-stage/device trajectory diagnosis next.
+
+Local retirement authoritative Release retirement-progress.json was checked and says COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE. Continue cloud-only. No goal closure: serial PHY/mainchip/finaltiming OPEN.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19
 
 Native wire coordinate39170551593 passed; full receipt docs/evidence/cdr-via-rich-native-wire-location-20261019.json. This commit launches cdr-sampler-collector-access-physical-cloud: only16 HBT collector escapes0.4to1.2um/pin-via columns4to16, primitive placement and all original physical gates unchanged. Exact source guard and independent primitive/route metadata checks required. Inspect actual nativeDRC/LVS before parent integration/freshRC/fullwave; no electrical acceptance yet. Remaining supply feederR10067=6.21653ohm is separate. CDR normal cases still fail. Mainchip39161219456 andTX39158584151 lastverifiedlive; preserve. All calculation/archive processing cloud-only; localprojectempty. FullgoalOPEN.
