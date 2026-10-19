@@ -1,0 +1,177 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_xor_collector_v15_planes.py",
+      "baseline_sha256": "d4f9546bfb8510ddc505ae63267048c9cf8a3f2b99f2bd2253fc792b23467031",
+      "candidate_path": "scripts/cloud_cdr_retime_data_v16_planes.py",
+      "candidate_sha256": "f540402b799fae426ec172f954217a4ec4633bb124ab5003dfa7fb2fb434b666",
+      "edits": [
+        {
+          "before": "cdr-xor-collector-v15",
+          "after": "cdr-retime-data-v16",
+          "count": 2
+        },
+        {
+          "before": "cdr-xor-collector-access",
+          "after": "cdr-retime-data-access",
+          "count": 1
+        },
+        {
+          "before": "39315947252",
+          "after": "39334427158",
+          "count": 1
+        },
+        {
+          "before": "01e65a2e18ab42e01a67b08db7df212e8650b532",
+          "after": "93bd54c05201d089babb5cc9049f174dd5338ca4",
+          "count": 1
+        },
+        {
+          "before": "32fbc18167effe66c3f9c8bf15200d9dfc3adf41e9ea0c1696df1634a407099c",
+          "after": "e1eac820df0d11888ee2a8b1b588e9e01bb17b20dbb110240b2687b45787e3f2",
+          "count": 1
+        },
+        {
+          "before": "pin['report']['geometry']['candidate_gds_sha256']=='8a8a25b61c4f9edb092a37caf137f4442191bd78f848d588c1886a2f50a086cf'",
+          "after": "pin['report']['geometry']['candidate_gds_sha256']=='c920186862bde235868d3fa009fedcff868246750f0fa38874e3c6b42ba7255e'",
+          "count": 1
+        },
+        {
+          "before": "PASS_PD484_NATIVE_XOR_COLLECTOR_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "after": "PASS_PD484_NATIVE_RETIME_DATA_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "count": 1
+        },
+        {
+          "before": "        assert overlay['status']=='PASS_NATIVE_XOR_COLLECTOR_OVERLAY_REQUIRES_DRC_LVS_AND_FRESH_RC'\n        assert overlay['original_devices']==484 and overlay['xor_count']==2\n        assert overlay['route_accesses']==36 and overlay['bus_count']==6\n        assert overlay['native_via_stacks']==576 and overlay['via_group_count']==108\n        assert set(overlay['via_cut_lattice'])=={'49','66'}\n        assert all(v['native_width_nm']==190 and v['minimum_euclidean_spacing_nm']==220 and v['actual_cuts']>0 for v in overlay['via_cut_lattice'].values())",
+          "after": "        assert overlay['status']=='PASS_NATIVE_RETIME_DATA_METAL_OVERLAY_REQUIRES_DRC_LVS_AND_FRESH_RC'\n        assert overlay['original_devices']==484 and overlay['selected_data_conductors']==12\n        assert overlay['allowed_added_layers']==[30,50,67]\n        assert overlay['source_gds_sha256']=='8a8a25b61c4f9edb092a37caf137f4442191bd78f848d588c1886a2f50a086cf'\n        assert all(p['requested_growth_nm']==250 and p['foreign_original_metal_clearance_nm']==800 and p['minimum_proposed_feature_nm']==200 for p in overlay['plan'])",
+          "count": 1
+        },
+        {
+          "before": "{'cut_actual_new_collector_bus_edge','remove_actual_added_collector_vias','unrelated_gate_geometry_added'}",
+          "after": "{'removed_actual_new_data_metal','changed_unrelated_gate_geometry','unplanned_data_layer_geometry'}",
+          "count": 1
+        },
+        {
+          "before": "r['xor_collector_geometry']",
+          "after": "r['retime_data_geometry']",
+          "count": 1
+        },
+        {
+          "before": "cdr-retime-data-v16-physical-pass-20261019.json",
+          "after": "cdr-retime-data-v16-physical-pass-20261020.json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_xor_collector_v15_wire_inputs.py",
+      "baseline_sha256": "c4899ca7c46b94eab894fffd2599aa738199bbec4c062d57d1c4094173073adc",
+      "candidate_path": "scripts/cloud_cdr_retime_data_v16_wire_inputs.py",
+      "candidate_sha256": "7e4f234176cdfcc8648ea9730fb8285ce83179204001022ad118153eedcd462a",
+      "edits": [
+        {
+          "before": "cdr-xor-collector-v15",
+          "after": "cdr-retime-data-v16",
+          "count": 4
+        },
+        {
+          "before": "cdr-xor-collector-access",
+          "after": "cdr-retime-data-access",
+          "count": 1
+        },
+        {
+          "before": "cdr-retime-data-v16-physical-pass-20261019.json",
+          "after": "cdr-retime-data-v16-physical-pass-20261020.json",
+          "count": 1
+        },
+        {
+          "before": "cdr-retime-data-v16-planes-pass-20261019.json",
+          "after": "cdr-retime-data-v16-planes-pass-20261020.json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_xor_collector_v15_binding.py",
+      "baseline_sha256": "5dd9a871cf123d6935cc12cb55e34ab1cb48aa2c11b8dae46fe8ed4d4e1a7462",
+      "candidate_path": "scripts/cloud_cdr_retime_data_v16_binding.py",
+      "candidate_sha256": "afc19642026a6e0cb54f6dad813bca95bf6768863ca79988f6e695ed70d72999",
+      "edits": [
+        {
+          "before": "cdr-xor-collector-v15",
+          "after": "cdr-retime-data-v16",
+          "count": 3
+        },
+        {
+          "before": "xor_collector_compact_v15",
+          "after": "retime_data_compact_v16",
+          "count": 1
+        },
+        {
+          "before": "cdr-retime-data-v16-wire-inputs-pass-20261019.json",
+          "after": "cdr-retime-data-v16-wire-inputs-pass-20261020.json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_xor_collector_v15_rc.py",
+      "baseline_sha256": "30d2d2b5430bd614ad6d6e1e7d7cae6a289a1bd69f48e0c8244bd5c0e3aa7b4d",
+      "candidate_path": "scripts/cloud_cdr_retime_data_v16_rc.py",
+      "candidate_sha256": "f9242ba47cd9b9b6eecd6966d8fae3a020d0e16dc000c5c63a9f4cb0ecc6d0b0",
+      "edits": [
+        {
+          "before": "cdr-xor-collector-v15",
+          "after": "cdr-retime-data-v16",
+          "count": 4
+        },
+        {
+          "before": "cdr-retime-data-v16-wire-inputs-pass-20261019.json",
+          "after": "cdr-retime-data-v16-wire-inputs-pass-20261020.json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_xor_collector_v15_extraction_stage.py",
+      "baseline_sha256": "585156fc5c8d737d9cf3c9c6ee5d9884531d6b1ead652106afc498b7b78a186b",
+      "candidate_path": "scripts/cloud_cdr_retime_data_v16_extraction_stage.py",
+      "candidate_sha256": "a6d2635a53e7aa640d4e097d1f6f22c922dcec3fd09c9ae505600bb3b2567818",
+      "edits": [
+        {
+          "before": "cdr_xor_collector_v15",
+          "after": "cdr_retime_data_v16",
+          "count": 2
+        },
+        {
+          "before": "cdr-xor-collector-v15",
+          "after": "cdr-retime-data-v16",
+          "count": 4
+        },
+        {
+          "before": "'+stage+'-pass-20261019.json'",
+          "after": "'+stage+'-pass-20261020.json'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/cdr-xor-collector-v15-extraction-cloud.yml",
+      "baseline_sha256": "f2c848e1a605aa09d27fffb683e59fd2258b1b442f17ff8f3f29522db16e9ef1",
+      "candidate_path": ".github/workflows/cdr-retime-data-v16-extraction-cloud.yml",
+      "candidate_sha256": "41e09d10bc66a3d0185b5cca5dc5cd9bbd5400f66cc5d97164b77cadc6545f4a",
+      "edits": [
+        {
+          "before": "cdr_xor_collector_v15",
+          "after": "cdr_retime_data_v16",
+          "count": 20
+        },
+        {
+          "before": "cdr-xor-collector-v15",
+          "after": "cdr-retime-data-v16",
+          "count": 15
+        }
+      ]
+    }
+  ]
+}

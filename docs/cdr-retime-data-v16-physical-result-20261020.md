@@ -1,0 +1,6 @@
+# Twelve-conductor CDR repair: native physical gates passed
+Run39334427158/source93bd54c05201d089babb5cc9049f174dd5338ca4 passed all560native DRC categories with zero markers, hierarchical and flat484device LVS, and the original physical fault controls. GDSSHA256c920186862bde235868d3fa009fedcff868246750f0fa38874e3c6b42ba7255e. The earlier eight-M3.a-marker failure remains in run39333599063.
+
+The fixed geometry retains every original device/metal/via/placement, reference and LEF; only twelve measured retime data conductors receive cleaned M3/M4/M5 enlargement. Width cleanup affected proposed additions only. This proves the stated physical scope, not electrical timing improvement or fullPHY acceptance.
+
+Fresh cloud extraction is bound to this exact passing GDS and native flat LVS database. The unchanged158physical planes/51logical nets, all484devices/1394terminals, source-recovered intrinsic reference points and raw-wire graph corruption controls remain mandatory. Native compact binding and complete wire extraction run against the new geometry; old wire values are not reused. The subsequent whole MIM-aware capture/audit/composition and all original loaded waveform gates remain required.

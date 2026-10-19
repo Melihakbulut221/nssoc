@@ -1,3 +1,9 @@
+## 2026-10-20 retime data physical gates passed; fresh extraction launched
+- Physical39334427158/source93bd54c05201d089babb5cc9049f174dd5338ca4 PASS:560native DRCcategories/0markers, hierarchical+flat484LVS and original fault controls. GDS c920186862bde235868d3fa009fedcff868246750f0fa38874e3c6b42ba7255e.
+- Earlier8M3.a rejection39333599063 retained. Original geometry/vias/devices/reference preserved; only proposed data-metal enlargement cleaned.
+- New cdr-retime-data-v16-extraction retains158planes/51nets,484devices/1394terminals, all original intrinsic-reference and rawRC fault gates. Inspect all4stages; then fresh whole MIM-aware capture/audit/composition and unchanged fullwave.
+- Mainchip route39331918238 and TX39308903140 remain active at latest check. Full serialPHY and finaltiming remain open. Cloud-only execution/storage.
+
 ## 2026-10-20 retime data overlay native width repair
 - Physical39333599063 rejected:8M3.a markers across560native DRCcategories. CandidateGDSd52b624e4c243a61352b8a630cc598c43a628192162f95346f96ad5d82cb56d9 retained; no LVS/electrical acceptance.
 - Clean only proposed enlargement with100nm erosion/dilation and subset intersection, then union original conductor untouched. Original200nm native width rule/PDK deck and all controls unchanged. Re-run complete native DRC/LVS.
