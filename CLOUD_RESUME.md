@@ -1,3 +1,9 @@
+## Active checkpoint: minimax clocks measured; data-network review
+
+Clock summary39302582252 passed source/edge binding. All31clock paths have no unmatched native/public edges; paired delay envelope lies between about-0.358ps and1.114ps. This is a diagnostic association, not a timing acceptance claim. It does not support changing clock routing. Native output errors remain123/768,24HBT VCE failures. New tx-minimax-data-network-review-cloud measures metal-only effective resistances and incident wire C at all124data legs/372native bases from the exact failed model, with analytic series/parallel/loop and corruption controls. Original rppd/device models are not replaced.
+
+CDR loaded tests39302582087 and mainchip route39293720171 remain live. No duplicate simulations. Consider physically prioritizing the failed final and level4 data paths while retaining all original child geometry, native DRC/LVS and full loaded gates. All work and artifacts remain cloud-only; full serialPHY and chip timing are not closed.
+
 ## Active checkpoint: source-contact loaded tests and TX native clock summary
 
 Source-access raw MIM audit/composition39301709096 passed22raw and19composition controls. Actual composed484device17258R12445C model is committed with receipts. New cdr-source-access-v14-mim-streamed-cloud launches nominal_early,nominal_late,clock_stopped,vi_bias_off with all original phase,bit,load,device and dependency hashes unchanged. It remains externally clocked; no recovered-clock/fullPHY/mainchip timing acceptance.
