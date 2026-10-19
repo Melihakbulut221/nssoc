@@ -126,3 +126,11 @@ the new native geometry. Five intrinsic/device/wire corruptions were rejected.
 The next hosted audit retains every raw R/C point and value, checks the11
 MIM identities against this candidate binding and runs13 wire plus9 intrinsic
 corruptions. The wire-only counts are not reused as MIM-aware counts.
+
+## Full MIM raw audit
+
+Run39207200884 passed raw resistor topology/value and every point-capacitance
+attachment/conservation check for the new15490R/11535C capture, plus all13
+wire and9 intrinsic MIM fault controls. The next composition retains all484
+native devices and exactly one model per native capacitor; it must pass the
+same19 composition controls before any loaded transient starts.
