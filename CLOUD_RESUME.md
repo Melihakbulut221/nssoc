@@ -1,5 +1,15 @@
 # Cloud-only continuation — 2026-10-19
 
+CDR full loaded streamed matrix39201328219 active for collector-v8 actual484devices15490R11535C. Preserve all original256bit phases/current/device thresholds and faults. Source db15a73fa52bf0c1e30c55015e351fda5329b32f.
+
+This commit starts onehot-logic-resize-prepare-cloud: source-measured stronger NAND/NOR/complex gates and buffers, max32, exact saved routedODB4acbb996... including1130addeddiodes=147858instances. Same original selector, actual available same-pin masters, fixed untargeted geometry, native equation proof and actual inversion control. No timing acceptance until new route/RC/allcorner STA; original clocks/derates untouched. See docs/onehot-logic-resize-candidate-20261019.md. Fanout7880/8443 are instance names (actual loads8/13), not thousands of loads.
+
+TX concrete failed selector/tail ownership recorded below. Three overall goals OPEN. All compute/artifacts cloud-only; local workspace empty.
+
+---
+
+# Cloud-only continuation — 2026-10-19
+
 Fresh collector-v8 full-mask audit39200773873 PASS22faults and composition39200983805 PASS19faults. Full receipts saved. Native model exactly484devices15490R11535C/11MIM, same physical source. This commit launches cdr-collector-v8-mim-streamed-cloud matrix(nominal_early,nominal_late,clock_stopped,vi_bias_off). Confirm real run IDs and preserve all actual results/failures. Original256bits34.25ns/.3125ps and fixed loads/phases/device/current gates;1107vectors. No local CAD or artifacts.
 
 Inspect native waves before next collector/clock/supply geometry repair. Previous via-rich nominal failures remain immutable baseline. TX actual24failures mapped: f selectors+tails6 and18selectors in five p8 macros. Need simultaneous select/tail headroom repair; not blind clock commonmode reduction. Mainchip setup/hold/antenna still OPEN. Full serial Gen3x4, final integration and timing goals not achieved.
