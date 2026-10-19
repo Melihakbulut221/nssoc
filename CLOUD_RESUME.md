@@ -1,3 +1,9 @@
+## 2026-10-19 — CDR failures located in actual XOR macros; cloud-only continuation
+
+CDR headroom review39309462607 passed early+late and reproduced all116original HBT checks. Six early/two late failures are in physical XOR x/y, not in sampler transistors. Worst xd0129 early VCE0.386162075932V at19.62640625ns; VC1.699017099127/VB1.732865874653/VE1.312855023195V, IC -0.127067448microampere (nearly off, not evidence of damage). Both immutable reports and exact geometry are committed. Next inspect shared XOR collector supply/load and emitter/input commonmode at those samples; preserve original0.4V gate and all sampler failures. No blind source-contact promotion.
+
+TX timing-priority fullwave39308903140 controls passed and nominal118253296756/fault118253296782 reached native simulation. Mainchip route39293720171/job118200712004 remains in native route. Do not duplicate either running job. Local nnsoc directory has zero entries and ps shows no local CAD process. All code, receipts, large captures and continuation state are in GitHub. No local checkout/archive restoration. Full serial PHY and final mainchip timing remain open.
+
 ## 2026-10-19 — Cloud jobs launched and local workspace empty
 
 Timing-priority TX fullwave39308903140 passed source controls118253081242; nominal118253296756 and swapped-leaf118253296782 are running against exact source2ee3e11f6d0644e1751a407d8342b3197fcb2d25. Do not restart unchanged. Added cdr-source-access-headroom-cloud to reproduce both original rejected captures and bind all116HBTs to their exact physical macros; inspect actual C/B/E values and ownership before changing CDR. Original waveforms stay in original cloud releases, and diagnostic reports are separately preserved. Mainchip route39293720171/job118200712004 still live at last check. FullPHY and final timing remain open. Local workspace was verified empty; do not clone, run CAD or restore archives locally. All continuation source and results live on GitHub.
