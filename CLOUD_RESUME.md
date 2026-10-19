@@ -1,3 +1,26 @@
+# Latest cloud-only continuation — 2026-10-19, folded CDR parent pass
+
+Full folded-v11 parent39234425893(source4128c1eedf61e8039b6eb761cea38cec00b3a375)
+PASSED original native560DRC,484device deep/flat LVS and fault controls. Complete
+receipt docs/evidence/cdr-folded-v11-parent-physical-pass-20261019.json.
+
+This commit starts cdr-folded-v11-extraction-cloud: planes -> wire-inputs ->
+parallel native binding/RC. Bind actual same-run immutable stage receipts. All
+158planes/51nets/1394terminals,16macros/eightleaf drawings, native pin recovery,
+device counts and original corruption gates remain. Measure new raw R/C census;
+never copy the old layout RC. Then fresh full-mask MIM capture/audit/composition
+and original full256bit loaded early/late/fault/PVT wave checks are required.
+
+Folded sampler39232996365 passed original54device physical gates with unchanged
+intrinsic circuit. Shorter clock spans are not electrical acceptance; M_SE and
+some other spans increased. Width8/16 diagnosis rejected and not adopted.
+
+Mainchip route39202263552,TX strap6 wave39221063981 and TX trunk256 wave39226121734
+must be checked live and preserved while healthy. All three overall goals OPEN.
+All CAD/tests/artifacts on GitHub-hosted runners only. Local workspace empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, folded sampler physical pass
 
 Folded sampler39232996365(source6fe7a218daeb5d059a00dfe82f4211d34afadcd2)

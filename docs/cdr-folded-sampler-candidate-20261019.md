@@ -47,3 +47,11 @@ The folded-v11 parent workflow now restores this exact leaf four times with
 the seven other child types unchanged, keeping the original41 source cards,
 16 macro instances,484 native devices and all parent physical fault tests.
 Fresh full parent RC and original loaded waves remain mandatory.
+
+Full parent39234425893 passed native560-category DRC, unsimplified deep/flat484
+device LVS and original parent fault controls. The new physical source is now
+bound to fresh planes, wire-inputs, native device binding and raw RC extraction.
+The pipeline retains158 planes/51 logical nets/1394 native terminals, independent
+16macro/eight-child geometry checks, source-pin recovery on identical primitives
+and all prior binding/RC corruption tests. Actual R/C census will be measured,
+not copied from the prior layout. No timing or full-PHY acceptance follows yet.
