@@ -1,3 +1,11 @@
+## 2026-10-19: cloud-only measured critical-data physical repair
+
+New onehot-critical-data-prepare-cloud workflow selects actual weak DATA output drivers from all3corners of path review39288404219, then restores routed ODB39243328773 and adds positive nativebuf16cells near them. The measured o21ai_1 driver$1824847/Y must be selected. Native source geometry, fixed original cells, placement, exact topology/equations and real inversion negative control are mandatory. Preparation is not timing closure; route/RC/three-corner setup+hold remain next.
+
+Important corrected source count: the latest routed ODB contains149592cells, consisting of148871retained preparationcells plus721new route diodes. Preserve all of them. Original20/4/8/8ns clocks,5percent derate and all acceptance gates unchanged. Current source has32antenna nets and failing setup/hold. No fullPHY/signoff claim.
+
+All execution/evidence cloud-only per user request. Local workspace verified empty. TX minimax39268446646 nominal and swap_leaf_select were both still in_progress when checked; do not restart them. No local CAD, test, archive or waveform files.
+
 ## 2026-10-19: native path diagnoses complete; next repair targets now measured
 
 CDR supply-path review39287266456/job118177712427 PASS as diagnostic only. Summary656816630 SHA398812061d64066b4114044638d2778c1af21cb33a6df86c5fc6547ac2ca22b0,parts656816783. Receipt docs/evidence/cdr-parent-avdd-supply-paths-pass-20261019.json. AVDD has34terminals/1083wire nodes; public common bridge R12487 is only0.29478ohm, whereas several local bridges are3.04839ohm and sampler load shortest paths~20ohm. AVSS has92terminals/1284nodes; example source-terminal path51.581ohm includes final33.6787ohm segment. These are wire-graph path/bridge values, not effective R or transistor branch currents. Do not assume widening the global rail alone removes local drops. Next analog repair needs native edge-to-geometry mapping from the existing extraction bundle, preserving every waveform gate.
