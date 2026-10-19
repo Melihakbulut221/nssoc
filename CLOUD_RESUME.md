@@ -1,3 +1,16 @@
+# Latest cloud-only continuation — 2026-10-19, pinned binding compatibility
+
+The corrected read-only geometry run39240623218 rejected because this pinned
+OpenDB Python binding lacks dbITerm.getId(). No physical design was changed.
+Use unique native(instance name,MTerm name) tuples, whose APIs were already
+verified in the first native run; assert uniqueness, actual INPUT sink roles
+and exact source fanout. Alias-proxy plus same-instance/different-pin controls
+are included. This commit starts that compatible cloud-only diagnostic.
+The previous two results remain preserved as rejected diagnostics. Collect
+the new run before choosing any data-net geometry repair.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native terminal identity correction
 
 Geometry diagnosis39240031550 finished, but review found a reporting bug:

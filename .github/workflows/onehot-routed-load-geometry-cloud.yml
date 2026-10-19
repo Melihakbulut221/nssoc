@@ -34,7 +34,7 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Inspect routed data geometry with native terminal identity and sink census
+      - name: Inspect routed data geometry with unique instance pin keys and exact sink census
         run: |
           "$CLOUD_APPIMAGE" python scripts/cloud_onehot_routed_load_geometry.py
       - name: Preserve physical results including rejected geometry

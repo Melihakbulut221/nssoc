@@ -9,18 +9,26 @@ OUT=ROOT/'hw/soc/out/cloud-onehot-routed-load-geometry'
 SOURCE=OUT/'source/run/2-openroad-detailedrouting/soc_top.odb'
 EXPECTED='1f6f3a87a157e8829d4248faef249907712d8ec1d33b87ee01271fc3a8be4236'
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def terminal_key(t):
+    # Names form a unique native instance/MTerm key in this flat routed block.
+    # The pinned OpenDB binding exposes no dbITerm.getId().
+    return (t.getInst().getName(),t.getMTerm().getName())
 def different_native_terminal(t,driver):
-    # SWIG can return different Python proxies for the same database terminal.
-    return t.getId()!=driver.getId()
+    return terminal_key(t)!=terminal_key(driver)
 def controls():
-    class Proxy:
+    class Named:
         def __init__(self,n):self.n=n
-        def getId(self):return self.n
-    driver=Proxy(1);alias=Proxy(1);sink=Proxy(2)
+        def getName(self):return self.n
+    class Proxy:
+        def __init__(self,i,p):self.i=i;self.p=p
+        def getInst(self):return Named(self.i)
+        def getMTerm(self):return Named(self.p)
+    driver=Proxy('gate1','Y');alias=Proxy('gate1','Y')
     assert driver is not alias and driver!=alias
     assert not different_native_terminal(alias,driver)
-    assert different_native_terminal(sink,driver)
-    return dict(distinct_proxies_of_same_terminal_excluded=True,distinct_native_sink_retained=True)
+    assert different_native_terminal(Proxy('gate2','Y'),driver)
+    assert different_native_terminal(Proxy('gate1','A'),driver)
+    return dict(distinct_proxies_of_same_terminal_excluded=True,distinct_native_sink_retained=True,same_instance_other_pin_retained=True)
 def main():
     tested=controls()
     assert digest(SOURCE)==EXPECTED
@@ -37,6 +45,7 @@ def main():
         pin=inst.findITerm(target['pin']);assert pin and str(pin.getIoType())=='OUTPUT'
         net=pin.getNet();assert net and str(net.getSigType())=='SIGNAL'
         terms=list(net.getITerms());ports=list(net.getBTerms())
+        assert len({terminal_key(t)for t in terms})==len(terms)
         assert len(terms)+len(ports)-1==target['reported_fanout'],('Reported/native fanout mismatch',target,net.getName(),len(terms),len(ports))
         assert sum(str(t.getIoType())=='OUTPUT'for t in terms)==1
         driver=terminal(pin);sinks=[terminal(t)for t in terms if different_native_terminal(t,pin)]
