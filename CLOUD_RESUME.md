@@ -1,3 +1,28 @@
+# Latest cloud-only continuation — 2026-10-19, clock cause narrowed / CDR waves preserved
+
+Clock summary39254883221 completed:31clocks/124actualselectorbases, no
+unmatched edges, association envelope about[-.3582,1.1122]ps. Source model/
+original failed gates unchanged. Fullclockreceipt committed. Do not conclude
+that clock-wire delay explains140wrong/164low TX output and24HBTfail.
+
+This push starts tx-strap6-data-network-review-cloud: immutable native model/
+contract,124data legs/372bases, actual output resistor boundaries, per-net
+wireC and metal effective pairR with KCL checks. No waveform/SPICE rerun or
+sumR*C delay claim. Inspect run/result to choose next physical data-path repair.
+All original source, phase, device, voltage and PVT acceptance limits retained.
+
+CDR39252773409 all4 terminal. BothnominalREJECTED: early725wrong/837low,
+late595wrong/822low; two HBT minVCE failures in both. Early phase/currentfail;
+late phase/currentpass but samplersfail. Both injected faults detected.
+Fullfourreports now docs/evidence/cdr-localbus-v12-fullwave-*-20261019.json.
+Strap6swap and trunk256swap faults also terminal/detected, receipts committed.
+Mainchip39243328773 and trunk256nominal117974418583 still live lastcheck.
+Do not restart healthy jobs. Full serialPHY/mainchiproute/finaltiming OPEN.
+All work cloud-only; localworkspaceempty. See
+docs/tx-clock-and-cdr-localbus-fullwave-result-20261019.md.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, native clock review proof
 
 TX path review39253815340/sourcea1279a0d50f1c2cb1b2ef60bbca292592af6ed98
