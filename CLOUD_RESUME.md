@@ -1,3 +1,23 @@
+# Latest cloud-only continuation — 2026-10-19, minimax native LVS rejection
+
+Minimax physical39259571215/source96b1338572b980892f896a2266e2e00e938225f4
+completed generation/independentgeometry but FAILED strictdeepLVS.1674native/
+reference devices,NoMatch,noextractiondiagnostics. DRC/remainingfault stages
+notreached. Actual maxroute4174→2017.405um,total91746.4→77805.58um.
+Allnativechildren/placements/reference unchanged by independentchecker;
+threegeometrycorruptioncontrols detected. Shorter routes are not acceptance.
+Fullreceipt docs/evidence/tx-v5-minimax-first-lvs-rejection-20261019.json.
+
+This push starts tx-v5-minimax-lvs-review-cloud to restore exact failedGDS/
+LVSdb and probe534actual macro/public metal anchors,reportmergedlogicalnets,
+opensandactualdeviceclusters. Get exactrun/results,then repair actual
+routing/placement; preserve failure, no reference edit/waiver.
+Do not begin RC until fullnativephysicalgates pass. Mainchip39243328773
+lastconfirmedlive; do not restart. CDRlocalbus and TXtrunk256 remainfailed.
+AllgoalheadingsOPEN; cloud-only/localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, all-leg minimax physical candidate
 
 This push starts tx-v5-minimax-assembly-cloud. It derives a candidate from
