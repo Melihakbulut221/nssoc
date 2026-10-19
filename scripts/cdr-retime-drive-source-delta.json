@@ -1,0 +1,231 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_retimed_data_cm_pd_vi_v9.spice",
+      "baseline_sha256": "dc8e9b7ff879780f2568161649e5bf2258fc1c8b8490994f0e3953d0beb57c26",
+      "candidate_path": "hw/soc/analog/pcie/cdr_retimed_input_drive_pd_vi_v10.spice",
+      "candidate_sha256": "92f3456be30328010ebacdae2046205fe96e60d70379068e4042aecba0dc6503",
+      "edits": [
+        {
+          "before": "nssoc_cdr_retimed_data_cm_pd_vi_v9",
+          "after": "nssoc_cdr_retimed_input_drive_pd_vi_v10",
+          "count": 2
+        },
+        {
+          "before": "nssoc_rx_sampler_parallel_drive_v8",
+          "after": "nssoc_rx_sampler_input_drive_v13",
+          "count": 4
+        },
+        {
+          "before": "XRACSP aqp cup sub rppd w=1u l=5.4u b=0 sw_et=1",
+          "after": "XRACSP aqp cup sub rppd w=4u l=5.4u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XRACGP cup avss sub rppd w=1u l=12.6u b=0 sw_et=1",
+          "after": "XRACGP cup avss sub rppd w=4u l=12.6u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XCACP aqp cup cap_cmim w=3.6u l=3.6u",
+          "after": "XCACP aqp cup cap_cmim w=7.2u l=7.2u",
+          "count": 1
+        },
+        {
+          "before": "XRACSN aqn cun sub rppd w=1u l=5.4u b=0 sw_et=1",
+          "after": "XRACSN aqn cun sub rppd w=4u l=5.4u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XRACGN cun avss sub rppd w=1u l=12.6u b=0 sw_et=1",
+          "after": "XRACGN cun avss sub rppd w=4u l=12.6u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XCACN aqn cun cap_cmim w=3.6u l=3.6u",
+          "after": "XCACN aqn cun cap_cmim w=7.2u l=7.2u",
+          "count": 1
+        },
+        {
+          "before": "XRBDSP bqp dup sub rppd w=1u l=5.4u b=0 sw_et=1",
+          "after": "XRBDSP bqp dup sub rppd w=4u l=5.4u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XRBDGP dup avss sub rppd w=1u l=12.6u b=0 sw_et=1",
+          "after": "XRBDGP dup avss sub rppd w=4u l=12.6u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XCBDP bqp dup cap_cmim w=3.6u l=3.6u",
+          "after": "XCBDP bqp dup cap_cmim w=7.2u l=7.2u",
+          "count": 1
+        },
+        {
+          "before": "XRBDSN bqn dun sub rppd w=1u l=5.4u b=0 sw_et=1",
+          "after": "XRBDSN bqn dun sub rppd w=4u l=5.4u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XRBDGN dun avss sub rppd w=1u l=12.6u b=0 sw_et=1",
+          "after": "XRBDGN dun avss sub rppd w=4u l=12.6u b=0 sw_et=1",
+          "count": 1
+        },
+        {
+          "before": "XCBDN bqn dun cap_cmim w=3.6u l=3.6u",
+          "after": "XCBDN bqn dun cap_cmim w=7.2u l=7.2u",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_cdr_feedforward_v1.py",
+      "baseline_sha256": "95dbff99325524ff3d10c741e0e27cad2be5df35ed0e60f928c882dfc2503a1c",
+      "candidate_path": "hw/soc/flow/make_pcie_cdr_retime_drive_v2.py",
+      "candidate_sha256": "7dea59c729cd882923e22954d7a44f83084f6656e5a0975c04e6d09da2d64ae9",
+      "edits": [
+        {
+          "before": "hw/soc/analog/pcie/cdr_retimed_pd_vi_v1.spice",
+          "after": "hw/soc/analog/pcie/cdr_retimed_input_drive_pd_vi_v10.spice",
+          "count": 1
+        },
+        {
+          "before": "5d2f451b0c5d428e7e96bb1b06929e7960a384777ac6b4e6a197c8334b5fcf41",
+          "after": "92f3456be30328010ebacdae2046205fe96e60d70379068e4042aecba0dc6503",
+          "count": 1
+        },
+        {
+          "before": "'retime':(('5.4u','12.6u'),'3.6u')",
+          "after": "'retime':(('5.4u','12.6u'),'7.2u')",
+          "count": 1
+        },
+        {
+          "before": "params=dict(w='1u',l=lengths[0]",
+          "after": "params=dict(w='4u' if kind=='retime' else '1u',l=lengths[0]",
+          "count": 1
+        },
+        {
+          "before": "g['params']==dict(w='1u',l=lengths[1]",
+          "after": "g['params']==dict(w='4u' if kind=='retime' else '1u',l=lengths[1]",
+          "count": 1
+        },
+        {
+          "before": "choices=(\"retime\", \"data\", \"select\")",
+          "after": "choices=(\"retime\",)",
+          "count": 1
+        },
+        {
+          "before": "TOP = \"nssoc_cdr_\" + args.kind + \"_feedforward_layout_v1\"",
+          "after": "TOP = \"nssoc_cdr_retime_drive_feedforward_layout_v2\"",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_feedforward_v1.py",
+      "baseline_sha256": "289d0a4da874a2d20bed4d9e8c590365e8a3718b938c4f359ce46fd0bc11555c",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retime_drive_v2.py",
+      "candidate_sha256": "64c19d78799756e595f10bfda2a04e9b663afc9645bd68168ce2d0a9630ecad6",
+      "edits": [
+        {
+          "before": "prefix='RD0 ' if name=='wrong_resistor' else 'CD2 '",
+          "after": "prefix='RD0 ' if name in ('wrong_resistor','old_resistor_width') else 'CD2 '",
+          "count": 1
+        },
+        {
+          "before": "    if name=='wrong_resistor':\n",
+          "after": "    if name=='old_resistor_width':\n        assert ' w=4u ' in lines[i];lines[i]=lines[i].replace(' w=4u ',' w=1u ')\n    elif name=='old_mim_dimensions':\n        assert ' w=7.2u l=7.2u ' in lines[i];lines[i]=lines[i].replace(' w=7.2u l=7.2u ',' w=3.6u l=3.6u ')\n    elif name=='wrong_resistor':\n",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_cdr_feedforward_v1.py",
+          "after": "make_pcie_cdr_retime_drive_v2.py",
+          "count": 1
+        },
+        {
+          "before": "            \"wrong_resistor\",\n",
+          "after": "            \"old_resistor_width\",\n            \"old_mim_dimensions\",\n            \"wrong_resistor\",\n",
+          "count": 1
+        },
+        {
+          "before": "if name in (\"wrong_resistor\", \"missing_capacitor\"):",
+          "after": "if name in (\"old_resistor_width\", \"old_mim_dimensions\", \"wrong_resistor\", \"missing_capacitor\"):",
+          "count": 1
+        },
+        {
+          "before": "choices=(\"retime\", \"data\", \"select\")",
+          "after": "choices=(\"retime\",)",
+          "count": 1
+        },
+        {
+          "before": "TOP=\"nssoc_cdr_\"+KIND+\"_feedforward_layout_v1\"",
+          "after": "TOP=\"nssoc_cdr_retime_drive_feedforward_layout_v2\"",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_PDK_CDR_FEEDFORWARD12_DRC_LVS_AND_FAULT_CONTROLS",
+          "after": "PASS_NATIVE_PDK_CDR_RETIME_DRIVE12_DRC_LVS_AND_SEVEN_FAULT_CONTROLS",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_feedforward_physical.py",
+      "baseline_sha256": "6e4929bb830fac76148c2e5a84f8a354b04d7d89a994d77be452d5fa0bd2f414",
+      "candidate_path": "scripts/cloud_cdr_retime_drive_physical.py",
+      "candidate_sha256": "cfa3b7024360a106630cae88bbcc160fc686938d59f89dd9ab373729d2cfb37a",
+      "edits": [
+        {
+          "before": "choices=('retime','data','select')",
+          "after": "choices=('retime',)",
+          "count": 1
+        },
+        {
+          "before": "'hw/soc/out/cloud-cdr-feedforward-'+args.kind+'-physical'",
+          "after": "'hw/soc/out/cloud-cdr-retime-drive-physical'",
+          "count": 1
+        },
+        {
+          "before": "Exact retimed PD feed-forward differential networks: four native rppd, two native MIM and six separate contacts per leaf. All dimensions and connections derive from fixed native PD/V-I source. Three leaf types cover five real parent instances. Native560rule DRC/deep-flat12device LVS and five actual/reference faults. Full parent/RC/closed-loop remain open.",
+          "after": "Actual retime input-drive candidate: four rppd widths1to4um with unchanged lengths, two MIM dimensions3.6to7.2um per side and six finite contacts. Both retime parent instances derive identically from the new PD source. Baseline native campaign is ancestry only. Original560DRC/deep-flat12deviceLVS and five faults plus old resistor/MIM geometry faults. Full parent RC and original loaded waveform gates remain required.",
+          "count": 1
+        },
+        {
+          "before": "    assert os.environ.get('GITHUB_ACTIONS')=='true'\n",
+          "after": "    assert os.environ.get('GITHUB_ACTIONS')=='true'\n    from check_cdr_retime_drive_sources import check\n    check()\n",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/analog/pcie/cdr_retimed_pd_vi_v1.spice",
+          "after": "hw/soc/analog/pcie/cdr_retimed_input_drive_pd_vi_v10.spice",
+          "count": 1
+        },
+        {
+          "before": "5d2f451b0c5d428e7e96bb1b06929e7960a384777ac6b4e6a197c8334b5fcf41",
+          "after": "92f3456be30328010ebacdae2046205fe96e60d70379068e4042aecba0dc6503",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/flow/make_pcie_cdr_feedforward_v1.py",
+          "after": "hw/soc/flow/make_pcie_cdr_retime_drive_v2.py",
+          "count": 2
+        },
+        {
+          "before": "hw/soc/flow/check_pcie_cdr_feedforward_v1.py",
+          "after": "hw/soc/flow/check_pcie_cdr_retime_drive_v2.py",
+          "count": 2
+        },
+        {
+          "before": "PASS_NATIVE_PDK_CDR_FEEDFORWARD12_DRC_LVS_AND_FAULT_CONTROLS",
+          "after": "PASS_NATIVE_PDK_CDR_RETIME_DRIVE12_DRC_LVS_AND_SEVEN_FAULT_CONTROLS",
+          "count": 1
+        },
+        {
+          "before": "r.update(status='PASS_CDR_FEEDFORWARD_LEAF_PHYSICAL_NOT_PARENT_RC_OR_CLOSED_LOOP',sources_unchanged=True)",
+          "after": "check()\n        r.update(status='PASS_CDR_RETIME_DRIVE_LEAF_PHYSICAL_REQUIRES_PARENT_RC_AND_LOADED_WAVES',sources_unchanged=True)",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
