@@ -1,5 +1,15 @@
 # Latest cloud-only continuation — 2026-10-19
 
+CDR collector-v8 wireinputs39199027912 PASSED actual484devices1394terminals/111conductors/946anchors,921metal+473body dispositions; source-pins recovered only from identical native primitive drawings. Fullreceipt cdr-retimed-collector-v8-wire-inputs-pass-20261019.json.
+
+Thiscommit launches independent cdr-retimed-collector-v8-binding-cloud and cdr-retimed-collector-v8-rc-cloud. Same nativePDK converter/MOSwidth census/12model controls and strict actual point/R/C/topology/13rawcorruption controls. Do not assume newRCcounts. Then freshMIMcapture/audit/composition/original256bitloadedwaves required. No electrical/fullPHYacceptance.
+
+TX nativepathreview39199027825 COMPLETED: original failed full32 signal and interface gates exactly reproduced; all24failed HBT terminal samples,62physicalinputgroups and11clockreferences preserved in tx-v5-fast-stage-isolated-path-review-20261019.json. This diagnostic success is NOT electrical acceptance. Mainchip nativecriticalpaths known, final43net51pin antenna and thousands setup/22fast hold remain. AllgoalsOPEN. All calculations and archives cloudonly/localempty.
+
+---
+
+# Latest cloud-only continuation — 2026-10-19
+
 CDR collector-v8 planes39198567441 PASSED original158planes/51nets/1394terminals/19faults plus all16 actual macro placements/eight childdrawings. Receipt cdr-retimed-collector-v8-planes-pass-20261019.json. Thiscommit launches cdr-retimed-collector-v8-wire-inputs-cloud: original native source-pin recovery and484device conductor/946anchor extraction, then needs freshbinding/RC/MIMcapture/audit/composition/fullwaves. No electricalacceptance.
 
 Thiscommit also launches tx-v5-fast-stage-isolated-path-review-cloud from exactfailed nominal39158584151 fullnativebinary. Reproduce all original signal/interface/HBT/MOS gates via pinned actualbuilder; split stage/inputlegs and record actual failing-HBT C/B/E/S/current at minVCE. No SPICErerun, phasefit or thresholdschange. Original24HBTfailures/140wrong/164below100mV retained. Use results for actual clock/data-headroom repair.
