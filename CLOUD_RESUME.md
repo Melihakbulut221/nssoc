@@ -1,3 +1,13 @@
+# Cloud-only continuation — 2026-10-19
+
+Collector-v8 full-mask raw audit39200773873 PASSED actual15490R11535C/11MIM with all13wire+9intrinsic corruption controls. Receipt cdr-collector-v8-mim-parent-audit-pass-20261019.json preserves complete native report.
+
+This commit starts cdr-collector-v8-mim-composition-cloud: exact484native model binding + all27025raw R/C cards + exactly11intrinsic MIM models, original19composition corruption controls. On actual success pin receipt then run original full256bit streamed nominal early/late and fault cases with new planes/binding/model; retain original time, thresholds and1107recorded vectors. Later PVT/closed-loop/fullPHY still required.
+
+TX failed-device ownership and mainchip timing remain OPEN; prior evidence below. No local checkout/calculation/artifacts. All three goals OPEN.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19
 
 MIM capture39200491952 PASSED: full actual masks15490R11535C/11MIM,111conductors946points and5controls. Different from wire-only15467R11524C. Full receipt cdr-collector-v8-mim-parent-capture-pass-20261019.json. This commit starts cdr-collector-v8-mim-parent-audit-cloud with original13wire+9intrinsic controls and independently measured full-mask counts. Next: successful raw audit -> fresh composition -> original complete streamed 256bit nominal early/late + fault controls. Do not reuse old RC or claim current waves passed.
