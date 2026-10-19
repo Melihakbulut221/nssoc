@@ -1,3 +1,19 @@
+# Latest cloud-only continuation — 2026-10-19, lattice solver diagnostic
+
+Lattice physical39264686080/source58f8c9523bc6aea7ec87fa10ef0119160139a65d
+FAILED before CAD: first MILP returns success but second lexicographic solve
+reports infeasible. No native physical result exists for this candidate.
+Full rejection retained in docs/evidence/tx-minimax-lattice-solver-rejection-20261019.json.
+This push runs a cheap cloud-only model diagnostic with identical actual
+31macro constraints, both HiGHS presolve settings, full solution vectors and
+independent residuals. It returns the original solve result to reproduce
+the failure, never treats diagnostic completion as acceptance.
+Read exact job log/artifact, fix cause, rerun planner preflight before CAD.
+No geometry/electrical/physical acceptance gate changes.
+Mainchip39243328773 lastlive. FullPHY/route/timing OPEN; localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, global row-lattice repair
 
 Private review39263440258/source88e80c4df4ae14d6f6a9f2b96488c63763f1a8ab
