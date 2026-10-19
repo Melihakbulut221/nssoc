@@ -35,3 +35,11 @@ The manifest now pins the actual baseline bytes. Removing the extra final LF fro
 ## Top-level deck parser correction
 
 Source inspection identified a second diagnostic-only error before the retry ran: `review_cloud_pll_loop.records` requires one `.subckt`/`.ends` model and accepts only X/R/C cards. It cannot parse the native test deck, which has a SPICE title, sources and a control section. The new helper uses a distinct test-deck lexical reader that joins continuation cards and excludes control commands. The strict native model parser remains unchanged. A cloud preflight checks source/instance cards, continuation handling and four malformed-deck rejections before restoring the large capture. These checks do not change any analog analysis or acceptance criterion.
+
+## Completed native cycle review
+
+Run39281988033 reproduced the original6,401,211-row,1us half-step capture, fixed135.3800/89.8495ppm results and89native feedback cycles. Source-byte and test-deck controls passed. The final cycle control range is0.4871821–0.5742676V; its voltage increments partition across both-high/up-only/down-only/both-low states without dropping samples. These are voltage observations, not measured pump currents or a causal fit.
+
+The stored34vectors cover only12of1680distinct native terminal-voltage vectors required by the actual845-device inventory. Full device safety remains unproved. The earlier standalone pump current run39029337682 has usable nominal/hot DC measurements, but its overall run failed cold startup diagnostics. Those static measurements exclude the dynamic PFD, parent wires and VCO loading and do not establish a repair of this full loop.
+
+The successful review is diagnostic only. Original acquisition failure and full PHY limitations remain.

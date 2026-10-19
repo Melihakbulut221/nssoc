@@ -1,3 +1,11 @@
+## 2026-10-19: PLL review and late CDR diagnosis complete; native supply-path review next
+
+HEAD before this change99d0e190. PLL review39281988033 PASS as diagnostic only: original135.3800ppm800–900ns failure reproduced, final control ripple87.0855mV;34saved probes insufficient for full845-device safety (12/1680voltage nodes covered). Full receipt docs/evidence/pll-c8-half-loop-review-pass-20261019.json pins summary656733669,parts656733721.
+
+Late CDR diagnosis39283371662 completes and reproduces original failure. A/B only fail0.3UI; C/D also fail later phases. Clock wires have~1.20/1.11pF incident C and AQ wires~0.87/0.80pF; these are not effective loading estimates. Native supply drops remain up to~0.20V at sampler loads/~0.28V at XOR loads. Receipt docs/evidence/cdr-parent-avdd-v13-late-native-diagnosis-20261019.json pins summary656754306,parts656754482. New cdr-parent-avdd-supply-paths-cloud workflow traces actual resistor paths and unavoidable wire-graph bridges before another geometry repair. It uses small composition/planes artifacts, not another full transient. Early diagnosis39282864029 was in progress; inspect its terminal report next.
+
+TX39268446646 and mainchip39243328773 remain live; do not restart on API delays. GitHub reported Actions/Pages/Webhooks degradation starting15:49UTC (https://www.githubstatus.com/incidents/8tzbpcnl75jp); check current service state before attributing queue delays to repository code. All work remains cloud-only; local workspace empty. No full PHY or timing closure claim.
+
 ## 2026-10-19: both parent-feed CDR nominal captures complete
 
 Fullwave39276673160 finished: early/late nominal rejected on data; both nominal device safety checks pass. Early phase and VI-current also fail; late phase/VI pass (0.03980685V,87.9278uA). Late A/B/C/D wrong-sign91/0/194/308 and below100mV129/128/238/331. Full late receipt docs/evidence/cdr-parent-avdd-v13-fullwave-nominal_late-20261019.json pins summary656677730 and parts656677830. VI-off and clock-stopped negative controls detect their faults. No nominal CDR/PHY success.

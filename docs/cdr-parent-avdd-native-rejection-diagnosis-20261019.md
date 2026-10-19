@@ -15,3 +15,11 @@ The late capture from job118145370034 has native exit0, no diagnostics and uncha
 The same source-pinned native diagnosis now runs on the late capture. The already queued early review39282864029 remains intact; this new workflow revision selects only nominal_late to avoid duplicating the early analysis.
 
 The disabled-VI fault job118145369918 is detected with mean signed VI current0.224093uA and bias_passed=false. Its green job denotes successful fault detection, not a working nominal CDR. Both original failed nominal captures and both detected faults remain preserved in cloud releases.
+
+## Late native diagnosis and next physical target
+
+Run39283371662 reproduced the original sampler and HBT metrics from the immutable late capture. A/B fail the0.3UI measurements but pass all255samples at0.6UI and0.9UI. C/D retain wrong-sign samples even at those later phases. No gate or sampling edge is moved.
+
+Actual extracted clock conductors have approximately1.20pF/1.11pF incident wire capacitance; AQn/AQp about0.87pF/0.80pF. These are incident wire sums including coupling, not effective lumped loads. Supply-to-load drops still reach about0.20V at sampler loads and0.28V at some XOR loads. The new cloud path review identifies exact resistor paths and bridges shared by actual supply terminals, reproducing prior path metrics. It restores only the small composed model and native-plane bundles; the original full waveform remains in its immutable release.
+
+This is intended to distinguish shared supply bottlenecks from local wire paths before choosing the next actual geometry repair. A bridge in the extracted wire graph is not a complete transistor-circuit current path; no current or effective resistance is inferred from it.

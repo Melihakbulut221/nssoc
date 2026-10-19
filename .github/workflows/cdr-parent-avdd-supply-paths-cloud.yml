@@ -1,0 +1,61 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-parent-avdd-supply-paths-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-parent-avdd-supply-paths-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-parent-avdd-supply-paths-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-paths:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore analysis dependencies
+        run: python3 -m pip install numpy==2.3.3
+      - name: Trace original native supply paths and resistor bridges without a new simulation
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_parent_avdd_supply_paths.py
+          PYTHONPATH=scripts python3 -c "from cloud_cdr_parent_avdd_supply_paths import controls; print(controls())"
+          python3 scripts/cloud_cdr_parent_avdd_supply_paths.py
+      - name: Preserve native results and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-cdr-parent-avdd-supply-paths
+          if [ ! -f cloud-cdr-parent-avdd-supply-paths/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > cloud-cdr-parent-avdd-supply-paths/result.json
+          fi
+          stem="cdr-parent-avdd-supply-paths-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-cdr-parent-avdd-supply-paths/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-cdr-parent-avdd-supply-paths --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','cdr-parent-avdd-supply-paths',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-parent-avdd-supply-paths-${{ github.run_id }}
+          retention-days: 30
+          path: cloud-cdr-parent-avdd-supply-paths/
+
+
+# Reproduce prior native supply path metrics; no waveform or acceptance changes.
