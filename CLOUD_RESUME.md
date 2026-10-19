@@ -1,3 +1,11 @@
+## 2026-10-19: exact CDR supply resistor-to-layout mapping alongside live route/TX
+
+Mainchip critical-data route39293720171/job118200712004 confirmed in_progress. TX minimax39268446646 nominal118115200444 and swap_leaf_select118115200371 also confirmed in_progress; do not restart based on blank status or unavailable active logs.
+
+New cdr-supply-geometry-cloud job binds the measured local supply bottlenecks from review39287266456 to raw native extresist node coordinates and actual wire L2N conductor/layer witnesses. PrioritiesR15966,R13797,R13791,R14027,R12487,R14125. It preserves all16010R values/topology and validates946port quantization references. Native rnode type0 is a placeholder, NOT a metal layer. Coordinates are representative points, not uniquely reconstructed resistor polygons or effectiveR/branch-current measurements. Use actual layer/macro/terminal evidence before the next physical metal repair.
+
+All computation remains cloud-only. Local workspace empty. FullPHY/mainchip timing remain ACTIVE and unproven; no acceptance gate changes.
+
 ## 2026-10-19:33critical-data buffers pass native geometry/equations; cloud route next
 
 Preparation39292665637/job118197041696 at173311bb553b200285893690a3feca7aa47fcc36 PASS. Summary656912795 SHA9594bb92e71291f1e9b54ca79507234237193782a5aa20dd2d3a3089bfd40dd5,parts656912935 SHAdf6e0137da3795c985f3e8f32027377f042975d64bf209d96e86c49948971188. Full receipt docs/evidence/onehot-critical-data-prepare-pass-20261019.json.
