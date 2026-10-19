@@ -1,3 +1,12 @@
+## 2026-10-19 cloud-only live handoff after XOR collector v15 model validation
+- CDRloadedwave39320016317 at cb5959ee34233dd5c1c99b767bc53e587d4c8186: syntax controls passed; nominal early/late, clock stopped and VI bias off native simulations are running.
+- Fresh physical39315947252, extraction39316979013, MIMcapture39318436586, validation39319103832 all passed their stated scopes. These are not full PHY electrical acceptance.
+- Actual complete network484devices/17834R/12805C; all22rawfault+19compositionfault controls preserved. Original sampler/phase/current/device gates unchanged.
+- TXtimingpriority39308903140 and mainchiproute39293720171 remain live; inspect existing runs, do not restart duplicates.
+- Local workspace empty; no project-matching /tmp or /dev/shm residue and no local CAD processes found. Keep all CAD/test/extraction/archive/waveform execution and storage on GitHub; RAM-only API orchestration is allowed.
+- Automation tool reported successful updates twice, but readback retained old prompt and weekly Sunday09:00 schedule, not the requested8hours. Existing prompt already begins with cloud-only override. Do not claim interval repair; use supported automation tool, never manually edit scheduler files.
+- Next: assess original loaded gates when native runs finish; retain failure details and exact source/geometry/model identities. Full serialPHY, recovered-clockCDR/PLL, qualifiedRFPEX and finalchip setup/hold remain open.
+
 ## 2026-10-19 XOR collector v15 complete model passed; original loaded screen next
 - Validation39319103832 passed raw13wire+9MIMfault controls and19compositionfaults.
 - Exact model:484native devices,17834R/12805C,11intrinsic MIM emitted once. Both stage receipts committed.
