@@ -1,3 +1,26 @@
+# Latest cloud-only continuation — 2026-10-19, native clock review proof
+
+TX path review39253815340/sourcea1279a0d50f1c2cb1b2ef60bbca292592af6ed98
+completed with every original waveform gate reproduced and source unchanged.
+31actual clocks/124native selector bases bound through exact116611R model.
+Fullreceipt docs/evidence/tx-strap6-native-path-review-20261019.json.
+Native clock detail is saved in immutable review archive, hash
+314dbdabc423c3d9f55a630702e194e625241aa60b1eed3dab4b28c5c2dad41d.
+This push runs tx-strap6-clock-summary-cloud to expose per-clock native
+delay brackets/commonmode/wireC and full raw report as release JSON. It
+restores only that small already measured JSON; no full-wave or SPICE rerun.
+
+CDR localbus39252773409 early electrically rejected despite samplerwrong
+885→725 and low1148→837 vs folded; two HBT minimumVCE failures remain
+xd0129 .394714V,xd0147 .398763V. Late now terminal failure but report still
+needs inspection; clock_stopped detects fault; vi_bias_off still live lastcheck.
+Preserve all fullwave reports; do not relax fixed phase or device gates.
+Mainchip39243328773 and TXtrunk25639226121734 still live. Strap6swap job
+117956363421 entered evidence publication at last check. All goalheadingsOPEN.
+Cloud-only; localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, actual TX clock-terminal diagnosis
 
 This push starts tx-v5-final-strap6-path-review-cloud: restore completed
