@@ -1,3 +1,7 @@
+## 2026-10-19 — Timing-priority composition passed; verify native model identity
+
+Cloud-only. Composition39307462428 passed original full1674device/116611R77538C and physical interface/fault gates. Exact pinned receipt committed. Run the new timing-priority model comparison, pin its evidence, then adapt builder only to the exact newly proven compact/wire hashes and rerun original loaded nominal/fault waveform checks. All earlier electrical failures remain open; no fullPHY or mainchip timing acceptance.
+
 ## 2026-10-19 — Timing-priority native extraction passed; compose actual R/C next
 
 Cloud-only operation remains mandatory; local workspace is empty. Native extraction39305590019 passed:1674devices,116611R77538C, original13corruptions. Receipt and exact source deltas are committed below. New composition workflow binds this exact physical source and all124real input legs/372data-base terminals; unchanged six composition and two endpoint fault gates. Wait for composition, record immutable model/summary/archive hashes, run native topology equivalence, then the original full loaded nominal/fault waveform checks without relaxing any threshold. The earlier minimax nominal is rejected; its fault39268446646 and mainchip route39293720171 remain live at last check. CDR source-contact candidate is electrically rejected with6/2HBT headroom failures; do not adopt it. Full serial PHY and final mainchip timing are still open.
