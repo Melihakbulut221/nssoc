@@ -69,7 +69,7 @@ def main():
         r['source_geometry']=measured
         protected[str(OUT/'geometry.json')]=sha(OUT/'geometry.json')
         run([openroad,'-exit','-python',helper],'native-near-driver-buffers')
-        tcl=OUT/'legalize.tcl';tcl.write_text('read_db {'+str(OUT/'proposed.odb')+'}\nset_thread_count 2\ndetailed_placement -max_displacement {50 20}\ncheck_placement -verbose\nwrite_db {'+str(OUT/'legalized.odb')+'}\n')
+        tcl=OUT/'legalize.tcl';tcl.write_text('read_db {'+str(OUT/'proposed.odb')+'}\nset_thread_count 2\ndetailed_placement -max_displacement {80 80}\ncheck_placement -verbose\nwrite_db {'+str(OUT/'legalized.odb')+'}\n')
         run([openroad,'-exit',tcl],'legalize-near-driver-buffers')
         run([openroad,'-exit','-python',helper],'native-buffer-geometry-proof','audit')
         r['geometry']=json.loads((OUT/'geometry-proof.json').read_text());assert len(r['geometry']['added'])==count and r['geometry']['original_instances']==149592

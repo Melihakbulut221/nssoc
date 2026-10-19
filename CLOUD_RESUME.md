@@ -1,3 +1,11 @@
+## 2026-10-19:33measured critical-data buffers; native placement search correction
+
+Corrected run39291883236 passed actual-receipt preflight, selected33drivers and passed native source geometry plus exact buffer insertion checks. Native DPL then rejected four buffers(11,2,1,13) within the initial50x20um search. Full failed receipt retained in docs/evidence/onehot-critical-data-placement-failure-20261019.json.
+
+Next revision searches80x80um while keeping the independent maximum driver-pin-to-buffer-input Manhattan distance<=80um unchanged. All149592original instances remain fixed and identically placed. A successful DPL exit is insufficient: original geometry/topology, row alignment,80um limit, native equations and actual inversion control must still pass. No timing or geometry acceptance criteria relaxed. OpenROAD documents max_displacement in microns: https://openroad.readthedocs.io/en/latest/main/src/dpl/README.html
+
+Everything remains on GitHub; local workspace empty. No route/RC/all-corner STA on this33buffer candidate yet. Do not call preparation timing closure.
+
 ## 2026-10-19: critical-data preparation parser correction
 
 First cloud preparation39291365496 at624fc39b failed before geometry or design edits because the actual startpoint label includes '(input port clocked by pcie_clk_i)'. Full failure receipt preserved in docs/evidence/onehot-critical-data-port-parser-failure-20261019.json. Normalize only the exact supported native input-port annotation, keep unknown forms rejected, and add regression controls plus actual-receipt preflight before installing CAD. The corrected workflow reruns on its script changes; do not rerun the obsolete commit.
