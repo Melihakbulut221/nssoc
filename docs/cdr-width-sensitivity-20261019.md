@@ -34,3 +34,9 @@ The two TX physical candidates and mainchip route continue independently:
 
 All CAD execution, simulation captures and result archives stay in GitHub cloud.
 The local NSSOC workspace remains empty.
+
+A separate cloud comparison restores only the four immutable summary/parts
+manifests from source run39228293871, checks source identity and original bit,
+phase and vector equality, and reports each sampler's wrong bits, low margins,
+worst clock-to-valid and device failures against the actual width4 baseline.
+It does not approve a physical candidate or change any source result.
