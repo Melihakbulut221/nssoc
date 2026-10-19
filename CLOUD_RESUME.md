@@ -1,3 +1,17 @@
+# Live cloud continuation — 2026-10-19, original full CDR waves dispatched
+
+Newfullwave39276673160/source43c870a944bb87cf6bffdbf1a8cdddd1cf8c86b8.
+Observed jobs: [{"id": 118142654106, "name": "syntax-controls", "status": "queued", "conclusion": null}].
+Preserve this exact run and inspect actual normal/fault results after completion;
+queued work is not a stalled simulator. Original waveform/device/source controls
+must pass before the four native cases start. Parent physical/extraction/MIM
+capture/audit/composition are passed and pinned below. FullPHY NOT accepted.
+TX39268446646 jobs118115200444/118115200371 and mainchip39243328773/
+118029134944 revalidated IN_PROGRESS in native simulation/routing respectively.
+Localworkspace checked empty; every CAD/test/archive stays in cloud.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, AVDD MIM validation PASS/fullwaves
 
 Validation39276003536/sourcea555ca8c6863ea3fc66a7799f57a010b0b449e13
