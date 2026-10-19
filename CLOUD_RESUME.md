@@ -1,3 +1,15 @@
+## 2026-10-20 — TX timing-priority rejection; cloud diagnosis continues
+TX run39308903140 native nominal finished and failed original electrical gates:
+120/768 incorrect signs,144 below100mV,24HBT failures,minVCE0.3561842V.
+No simulator diagnostics; complete raw capture retained remotely. Do not rerun unchanged.
+This commit pins the full rejected summary and starts a native path review that
+must reproduce all original gates before localizing failures. It examines actual
+clock selector bases and data interfaces, without phase/threshold relaxation.
+CDR all four v16 extraction stages passed39335172776; MIM capture39336054657
+was running at last check. Mainchip route39331918238 remains live; do not duplicate.
+All work remains cloud-only. Full serial PHY, routed timing and signoff remain open.
+
+
 ## 2026-10-20 — Cloud-only v16 MIM capture continuation
 Previous turn made progress: v16 physical repair passed and fresh extraction was launched.
 Live checked: extraction 39335172776 has planes/wire-inputs successful; binding/RC running.
