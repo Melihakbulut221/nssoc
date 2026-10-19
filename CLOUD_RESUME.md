@@ -1,3 +1,10 @@
+## Cloud-only cleanup verified 2026-10-19T21:26:32.544025+00:00
+- User instruction: all work and project artifacts remain in the cloud; do not recreate a local checkout, CAD environment, test outputs, downloaded archives, waveforms, or extraction files.
+- Current workspace /home/hasanmelih/Documents/ChatGPT/nnsoc is empty. No local OpenROAD, ngspice, KLayout or Yosys processes were found. No project-specific residue was found in the inspected temporary locations. RAM-only GitHub API orchestration is permitted.
+- Two separately owned repositories under Documents have different remotes (neuromorphic-space-soc and tt-um-melihakbulut-nssoc); they are outside this nssoc cleanup and were not removed.
+- Authoritative GitHub refresh: CDR master/slave diagnostic39326235115 completed successfully; inspect both case reports and preserve the rejected original electrical gates. Mainchip route39293720171 completed successfully; inspect final routed setup/hold/DRC/antenna reports before claiming closure. TX loaded-wave39308903140 remains in progress; do not duplicate it.
+- Prior detailed evidence and next technical steps below remain in force. Full serial PHY and final chip timing are not marked complete. All further CAD and verification must execute on GitHub-hosted runners, with persistent results stored remotely.
+
 ## 2026-10-20 native sampler transfer diagnosis
 - New cdr-xor-v15-latch-timing extends the passed39324658022 replay; original full waves and all sampler/HBT gates remain unchanged.
 - Reconstruct actual16HBTmaster/slave connectivity including2x2parallel clock selectors, reject real graph corruption, then measure master/slave physical input/output and native selector currents around the original capture edges.
