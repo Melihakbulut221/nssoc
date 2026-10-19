@@ -7,7 +7,8 @@ non-reference cross-networkC112.265→217.407fF; master tailC358.791→433.623fF
 All original folded data/device rejection remains. Earlier syntax/path-type
 review failures are preserved, not functional passes.
 
-This commit starts cdr-sampler-localbus-physical-cloud: real v15 geometry
+Run39246967295(source464f65b4fce8dc02376995f3534604ff3c60fab8) executes
+cdr-sampler-localbus-physical-cloud: real v15 geometry
 shortens internal M4/TM1 columns by moving internal M5/TM2 buses nearer their
 actual highest terminal. All folded54primitive drawings/placements/parameters
 and public pins remain identical. Keep20um terminal clearance,6um bus pitch;
