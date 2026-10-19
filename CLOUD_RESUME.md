@@ -1,3 +1,23 @@
+# Latest cloud-only continuation — 2026-10-19, public shorts fixed/private mismatch remains
+
+Second native review39262021607/source9054f5ec8a97b564c033cf7fc558d34b822856bf
+completed: all534macro/public anchors now show NO shorted logical groups and
+NO opens. The first two native shorts are fixed by p8_7 movement. However
+strict fullLVS remains NoMatch, native terminal graph has376clusters versus
+378intendednets. Do not call fullLVS closed from macro-pin connectivity.
+Fullreceipt docs/evidence/tx-v5-minimax-second-native-lvs-diagnosis-20261019.json.
+
+This push starts tx-minimax-private-net-review-cloud, reading exactnative
+review JSON only. Bind all589 actual HBTs through independently probed base
+nets,Nx,C=B roles; parallel groups identify private C/E/S nets. Require all
+378intendednet identities and include missing-HBT/wrongNx/unbound-base faults.
+Get newrun/results to locate remaining internal merged nets. No newCAD/SPICE
+or reference replacement. Continue actualphysicalrepair,then fullnative
+DRC/deep-flatLVS/faults before freshRC. Mainchip39243328773 remainslive lastcheck.
+AllgoalheadingsOPEN; cloud-only/localworkspaceempty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, second native LVS diagnostic
 
 Corrected minmax39261200416/source348fa4453323f7f70537e70780cadac96154ea20
