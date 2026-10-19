@@ -68,10 +68,25 @@
           "before": "\"\"\"Physically bypass long sampler source access with native midpoint contacts.\"\"\"",
           "after": "\"\"\"Reduce measured native XOR collector/supply access resistance in real geometry.\"\"\"",
           "count": 1
+        },
+        {
+          "before": "geometry['native_via_stacks']==108",
+          "after": "geometry['native_via_stacks']==576",
+          "count": 1
+        },
+        {
+          "before": "assert geometry['xor_count']==2 and geometry['bus_count']==6",
+          "after": "assert geometry['xor_count']==2 and geometry['bus_count']==6 and geometry['via_group_count']==108",
+          "count": 1
+        },
+        {
+          "before": "with108native via stacks.",
+          "after": "with576native single-cut stacks across108existing access groups.",
+          "count": 1
         }
       ],
       "baseline_sha256": "2d3bd01b34cba88c65af84ccc60e45b91655f7ee13ee9b725020ff13173ffafa",
-      "candidate_sha256": "ffa314d6c25a73b42bcc1b6bfd72dd3a95fb24e386c6c6747acd068a9aa1d2e7"
+      "candidate_sha256": "d4659f4d251cdf33c569e95846b9e6c1468a14e581ff93c64a48438ad70d122b"
     }
   ]
 }

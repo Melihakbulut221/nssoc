@@ -77,8 +77,8 @@ def main():
             if code:print((OUT/(name+'.log')).read_text()[-16000:],flush=True)
             assert code==0,('Native source-access stage failed',name,code)
         geometry=r['geometry']
-        assert geometry['original_devices']==484 and geometry['route_accesses']==36 and geometry['native_via_stacks']==108
-        assert geometry['xor_count']==2 and geometry['bus_count']==6
+        assert geometry['original_devices']==484 and geometry['route_accesses']==36 and geometry['native_via_stacks']==576
+        assert geometry['xor_count']==2 and geometry['bus_count']==6 and geometry['via_group_count']==108
         assert all(geometry[k]for k in ('original_geometry_retained','all_layers_exact','serialized_gds_checked','reference_and_lef_byte_identical'))
         assert len(geometry['rejected'])==3
         r['physical']=json.loads((OUT/'physical/result.json').read_text())
@@ -88,7 +88,7 @@ def main():
         assert all(sha(OUT/n)==v for n,v in r['retained_child_sources'].items())
         r.update(status='PASS_PD484_NATIVE_XOR_COLLECTOR_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',
             sources_unchanged=True,protected_inputs=protected,
-            scope='Widen36actual collector/pullup access routes and6local buses in two original XORs with108native via stacks. Retain all original484devices,source-contact additions,geometry,ports and reference. Original native560DRC/deep+flatLVS/fault gates remain. Fresh RC and all original loaded data/phase/device checks required; no recovered clock or fullPHY acceptance.')
+            scope='Widen36actual collector/pullup access routes and6local buses in two original XORs with576native single-cut stacks across108existing access groups. Retain all original484devices,source-contact additions,geometry,ports and reference. Original native560DRC/deep+flatLVS/fault gates remain. Fresh RC and all original loaded data/phase/device checks required; no recovered clock or fullPHY acceptance.')
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         for name in ('layout','physical'):

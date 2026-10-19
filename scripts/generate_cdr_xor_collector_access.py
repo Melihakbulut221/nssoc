@@ -25,37 +25,40 @@ def generate(out):
  devices=json.loads((out/'capture/source/wire/device-locations01.json').read_text())['devices']
  wire=pya.LayoutToNetlist();wire.read(str(out/'capture/source/wire/native05/wires.l2n'))
  overlay=L.create_cell('nssoc_cdr_xor_collector_access_v15')
- plan=[];buses=[];stitches=[];translation={}
+ plan=[];buses=[];stitches=[];via_groups=[];translation={}
  def via(lo,hi,x,y,cols,rows,tag,net):
-  c=L.create_cell('via_stack','SG13_dev',dict(b_layer=lo,t_layer=hi,vn_columns=cols,vn_rows=rows))
-  assert c is not None and not c.is_empty()
-  b=c.dbbox()
-  # The native cell bounding-box center is not necessarily its cut-array center.
-  # Match real old cuts to real new cuts rather than assuming their centers agree.
+  # Keep every old cut at its measured coordinate. Add only missing native
+  # single-cut stacks; native multi-cut PCells need not share the old pitch.
   cut_layer={'Metal3':29,'Metal4':49,'Metal5':66}[hi]
-  old_count=4 if hi=='Metal3'else 2
-  half=.9 if hi=='Metal3'else .6
+  old_count=4 if hi=='Metal3'else 2;half=.9 if hi=='Metal3'else .6
   window=pya.DBox(x-half,y-.2,x+half,y+.2).to_itype(L.dbu)
   oldcuts=[p.bbox()for p in before[(cut_layer,0)].interacting(pya.Region(window)).each()]
-  assert len(oldcuts)==old_count,('Unexpected original cut inventory',tag,net,lo,hi,x,y,[str(v)for v in oldcuts])
-  newcuts=[p.bbox()for p in pya.Region(c.begin_shapes_rec(L.layer(cut_layer,0))).merged().each()]
-  assert len(newcuts)==cols*rows
-  desired=pya.Point(round((x-b.center().x)/L.dbu),round((y-b.center().y)/L.dbu))
-  candidates=[]
-  for target in newcuts:
-   offset=oldcuts[0].center()-target.center()
-   if offset.x%5 or offset.y%5:continue
-   tt=pya.Trans(offset.x,offset.y);mapped={str(v.transformed(tt))for v in newcuts}
-   if not {str(v)for v in oldcuts}<=mapped:continue
-   delta=(offset.x-desired.x)**2+(offset.y-desired.y)**2
-   candidates.append((delta,offset.x,offset.y))
-  assert candidates,('No actual native cut alignment',tag,net,lo,hi)
-  _,ox,oy=min(candidates);assert (ox-desired.x)**2+(oy-desired.y)**2<=100**2
-  tr=pya.DTrans(ox*L.dbu,oy*L.dbu)
-  overlay.insert(pya.DCellInstArray(c.cell_index(),tr))
-  stitches.append(dict(macro=tag,net=net,bottom=lo,top=hi,columns=cols,rows=rows,center_um=[x,y],bbox_um=str(b.transformed(tr)),
-   reference_cut_layer=cut_layer,old_cut_boxes=[str(v)for v in oldcuts],old_cuts_exactly_retained_in_new_array=True,
-   translation_dbu=[ox,oy],shift_from_bbox_center_dbu=[ox-desired.x,oy-desired.y]))
+  assert len(oldcuts)==old_count and all(v.width()==v.height()==190 for v in oldcuts)
+  ys={v.center().y for v in oldcuts};assert len(ys)==1 and rows%2==1
+  cy=next(iter(ys));original_xs=sorted(v.center().x for v in oldcuts)
+  xs=list(original_xs)
+  while len(xs)<cols:xs=[xs[0]-410,*xs,xs[-1]+410]
+  assert len(xs)==cols
+  old_positions={(v.center().x,v.center().y)for v in oldcuts}
+  desired={(xx,cy+dy*410)for xx in xs for dy in range(-(rows//2),rows//2+1)}
+  assert old_positions<=desired
+  added=sorted(desired-old_positions)
+  c=L.create_cell('via_stack','SG13_dev',dict(b_layer=lo,t_layer=hi,vn_columns=1,vn_rows=1))
+  assert c is not None and not c.is_empty()
+  cuts=list(pya.Region(c.begin_shapes_rec(L.layer(cut_layer,0))).merged().each())
+  assert len(cuts)==1 and cuts[0].bbox().width()==cuts[0].bbox().height()==190
+  center=cuts[0].bbox().center()
+  for xx,yy in added:
+   ox,oy=xx-center.x,yy-center.y;assert ox%5==oy%5==0
+   tr=pya.DTrans(ox*L.dbu,oy*L.dbu)
+   overlay.insert(pya.DCellInstArray(c.cell_index(),tr))
+   stitches.append(dict(macro=tag,net=net,bottom=lo,top=hi,columns=1,rows=1,
+     reference_cut_layer=cut_layer,target_cut_center_dbu=[xx,yy],bbox_um=str(c.dbbox().transformed(tr)),translation_dbu=[ox,oy]))
+  via_groups.append(dict(macro=tag,net=net,bottom=lo,top=hi,old_cut_boxes=[str(v)for v in oldcuts],
+   old_horizontal_pitch_dbu=[b-a for a,b in zip(original_xs,original_xs[1:])],
+   retained_cut_count=len(oldcuts),added_native_single_cut_stacks=len(added),
+   aggregate_columns=cols,aggregate_rows=rows,added_cut_center_dbu=[list(p)for p in added],
+   original_cut_geometry_untouched=True))
  def probe(metal,x,y):
   n=wire.probe_net(wire.layer_by_name('gds_'+str(metal)),pya.DPoint(x,y).to_itype(L.dbu))
   assert n is not None,('No original wire at planned witness',metal,x,y)
@@ -88,8 +91,8 @@ def generate(out):
     assert abs(y-(py+dy+pin.center().y))<=.04000001
     witnesses=[(8,x,y),(30,(lane+x)/2,y),(50,lane,(y+by)/2),(67,lane,by)]
     assert all(probe(m,xx,yy)==component for m,xx,yy in witnesses),('Original path conductor mismatch',tag,net,row)
-    bridge=pya.DBox(lane-.2,y-.6,x+.2,y+.6)
-    column=pya.DBox(lane-1.2,min(y,by)-.2,lane+1.2,max(y,by)+.2)
+    bridge=pya.DBox(lane-1.0,y-.6,x+1.8,y+.6)
+    column=pya.DBox(lane-1.2,min(y-.2,by-1.0),lane+1.2,max(y+.2,by+1.0))
     overlay.shapes(L.layer(30,0)).insert(bridge)
     overlay.shapes(L.layer(50,0)).insert(column)
     via('Metal1','Metal3',x,y,8,1,tag,net)
@@ -102,7 +105,7 @@ def generate(out):
    bus=pya.DBox(px,by-2,max(xs)+1,by+2)
    overlay.shapes(L.layer(67,0)).insert(bus)
    buses.append(dict(macro=tag,net=net,native_wire_component=component,box_um=str(bus)))
- assert len(plan)==36 and len(buses)==6 and len(stitches)==108
+ assert len(plan)==36 and len(buses)==6 and len(via_groups)==108 and len(stitches)==576
  assert len({v['native_wire_component']for v in buses})==5
  assert len({v['native_wire_component']for v in buses if v['net']=='avdd'})==1
  top.insert(pya.DCellInstArray(overlay.cell_index(),pya.DTrans()));assert top.dbbox()==oldbox
@@ -113,9 +116,8 @@ def generate(out):
  expected={k:(before.get(k,pya.Region())+addition.get(k,pya.Region())).merged()for k in keys}
  def verdict(got):return all((got.get(k,pya.Region())^expected.get(k,pya.Region())).is_empty()for k in keys|set(got))
  assert verdict(after)and all((before.get(k,pya.Region())-after.get(k,pya.Region())).is_empty()for k in keys)
- # Preserve the existing even-column/odd-row cut lattice. A centered even-row
- # overlay shifts every new row half a pitch relative to the original one-row array.
- # Independently check every actual serialized-plan Via3/Via4 cut before native DRC.
+ # Preserve actual old cut positions and check the union of all original and
+ # additional Via3/Via4 cuts before the unchanged native physical gates.
  cut_lattice={}
  for metal in (49,66):
   region=after[(metal,0)];count=0
@@ -147,9 +149,9 @@ def generate(out):
  saved={(check.get_info(i).layer,check.get_info(i).datatype):pya.Region(check.cell(TOP).begin_shapes_rec(i)).merged()for i in check.layer_indexes()}
  assert check.dbu==.001 and verdict(saved)
  proof=dict(status='PASS_NATIVE_XOR_COLLECTOR_OVERLAY_REQUIRES_DRC_LVS_AND_FRESH_RC',
-   original_devices=484,xor_count=2,route_accesses=len(plan),bus_count=len(buses),native_via_stacks=len(stitches),
+   original_devices=484,xor_count=2,route_accesses=len(plan),bus_count=len(buses),native_via_stacks=len(stitches),via_group_count=len(via_groups),
    original_geometry_retained=True,all_layers_exact=True,serialized_gds_checked=True,
-   reference_and_lef_byte_identical=True,via_cut_lattice=cut_lattice,plan=plan,buses=buses,stitches=stitches,translations=translation,rejected=faults,
+   reference_and_lef_byte_identical=True,via_cut_lattice=cut_lattice,plan=plan,buses=buses,stitches=stitches,via_groups=via_groups,translations=translation,rejected=faults,
    source_gds_sha256=sha(baseline/(TOP+'.gds')),candidate_gds_sha256=sha(dest/(TOP+'.gds')),
    electrical_accepted=False,qualified_pex=False,full_phy_accepted=False)
  (out/'geometry-proof.json').write_text(json.dumps(proof,indent=2)+'\n')

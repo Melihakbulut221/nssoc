@@ -1,3 +1,7 @@
+## 2026-10-19 — Retain exact old via patterns and extend with native single cuts
+
+Third geometry attempt39313937408 found no rigid translation matching old cuts to a larger native multi-cut pattern. All three failures retained;35nm mismatch is not enough to blame bbox centering alone. Current generator retains every original cut and adds576native single-cut stacks across108contact groups, deriving new positions from measured original edges/pitches. M3andM4landings explicitly connect added cuts. Independent190nm/220nmVia3/Via4checks and original560DRC/deepflatLVS/faultgates remain mandatory. Await the fresh XORcollector physical run, then fresh whole-parentRC/MIM+loaded gates only on physical success. Cloud-only; TX39308903140/mainchip39293720171 remain ongoing at last live check.
+
 ## 2026-10-19 — Align via arrays from actual old cuts, not PCell bbox center
 
 Second XORoverlay run39313200894 rejected beforeDRC: actual Via3 merged width225nm, revealing35nm offset between native PCell bbox and cut-array centers. Failure receipt/log/archive retained. Updated placement matches every existing2/4cut row exactly inside the new array on5nmgrid and bounds shift<=100nm; all actual190nm/220nm guards remain. Await new physical run; native560DRC/deepflatLVS/faults still mandatory before freshRC. No acceptance on generation. All work stays cloud-only.
