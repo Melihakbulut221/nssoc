@@ -1,3 +1,24 @@
+# Latest cloud-only continuation — 2026-10-19, fresh extraction all4 PASS
+
+Run39249871918/source09748dc79e33298c19c339ac5a1ff00c13d566c7 passed planes,
+wire-inputs,binding,rawRC. Complete immutable receipts now committed at
+docs/evidence/cdr-retimed-localbus-v12-{planes,wire-inputs,binding,rc}-pass-20261019.json.
+Actual wire-only15459R11479C,111connected components/946points; no disconnected
+probes; original19plane/12binding/13rawRC fault controls retained.
+
+MIM capture39250952988 (job118054318806), source
+dfa37e1f272e2726f1f90715fc1b07668fbb9cec is now active in native capture.
+All prerequisites succeeded; do not start a duplicate. It uses its older
+source commit without these newly archived receipts and binds them in the
+cloud before native execution. Get full result/actualcensus, then original
+22 raw audit/19composition controls and unchanged full loaded waves.
+
+Mainchip39243328773 and TX39221063981/39226121734 remain live at last check.
+Full serialPHY, mainchiproute and finaltiming OPEN. Keep workspace empty;
+all tests/CAD/artifacts are cloud-only. Earlier failures stay preserved.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, dependent native MIM capture
 
 Fresh extraction39249871918 remains live; planesPASS, wire-inputs active at
