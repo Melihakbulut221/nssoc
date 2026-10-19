@@ -134,3 +134,18 @@ attachment/conservation check for the new15490R/11535C capture, plus all13
 wire and9 intrinsic MIM fault controls. The next composition retains all484
 native devices and exactly one model per native capacitor; it must pass the
 same19 composition controls before any loaded transient starts.
+
+## New full-wire model composed; original loaded gates retained
+
+Run39207461374 passed all19 composition controls with exactly484 devices,
+15490 resistors and11535 wire capacitors. Exactly11 native MIM devices are
+included once each. The geometry, intrinsic model binding and wire provenance
+all refer to the data-cm-v9 parent.
+
+The new hosted waveform campaign keeps the original256-bit stimulus,34.25ns
+transient,0.3125ps maximum step,150fF sampler collector loads,50fF comparator
+loads,1107 saved native vectors, early/late offsets and every sampling, phase,
+voltage and current limit. It runs nominal early/late, clock-stopped and
+V/I-bias-off cases. Electrical results are pending, not inferred from DRC/LVS
+or model composition. Full closed-loop, PVT, RF/body qualification and serial
+PHY/mainchip acceptance still require separate proof.
