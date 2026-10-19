@@ -1,3 +1,10 @@
+## 2026-10-20 both CDR native latch diagnoses preserved
+- Diagnostic39326235115 succeeded both cases and reproduced all116HBT/4sampler checks; fullwave39320016317 remains rejected.
+- C/D master inputs below internal100mV diagnostic marker at all8phases; late0.9UI outputs still30/98wrong, early30/105wrong. A/B later settling does not meet original37.5ps gate.
+- Actual parent plan confirms all4samplers use input_drive_v13; trace physical ac/bd rc_retime feeds and sampler bias/input terminal waveforms next. No sampled track-current overlap is not race/signoff proof.
+- Coverage preparation39329794073 is running the vacant-native-site repair of rejected39328953817; inspect its real proof before any route. TX39308903140 was last confirmed running.
+- Cloud-only remains mandatory; no local checkout or outputs.
+
 ## 2026-10-20 coverage preparation rejected; repair real placement
 - Run39328953817/source43f36da5398077770124228ed3e9138e0d8ae951 failed the unchanged80um driver-pin distance gate: one actual buffer was84.81um away after legalization. Original failure/asset pins retained.
 - New placement searches actual vacant row/site intervals, respects all existing cells and earlier additions, chooses nearest actual input-pin distance and keeps the80um gate. Native legalization and original geometry/topology/equation/inversion controls remain required.
