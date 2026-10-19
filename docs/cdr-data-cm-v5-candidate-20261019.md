@@ -31,3 +31,16 @@ composition, and the same loaded256-bit early/late and fault waveforms.
 No standalone idealized-buffer transient can substitute for those checks.
 Sampling errors, TX32-tree electrical failures, closed-loop CDR, complete PHY,
 mainchip integration and final timing remain open.
+
+## Native leaf results and full-parent candidate
+
+Run39204220474 passed the560-rule leaf DRC and deep/flat14-device transistor
+LVS. All six faults were rejected, including a reference with the old2um header.
+The actual native D4 rppd PCell is8um by2.4um. This proves leaf geometry only.
+
+The data-cm-v9 parent replaces both da and dc leaves while retaining all other
+14 macro instances, all484 primitive devices and all25 boundary ports. Its
+source verifier preserves all six topology fault controls. In addition to the
+original physical faults, the new parent LVS check must reject both old2um
+header references against the new layout. Parent proof and fresh full loaded
+transients remain pending; no timing or serial PHY closure is claimed.
