@@ -15,3 +15,7 @@ All execution and artifacts stay on GitHub-hosted runners. Mainchip route3920226
 ## Native physical result
 
 Run39217390888 at9be1ff7728c315c8b895ac02a7359e4ff1cabc03 passed the exact whole-GDS strap delta and its three corruption controls, deep/flat1674-device LVS,560-category DRC with zero markers, and the five original transistor/connectivity/grid fault controls. The original via geometry is unchanged. Fresh native RC extraction is the next gate; electrical acceptance remains false.
+
+## Fresh native RC
+
+Run39218007063 at1912e5b305e90ad4b795dc3e85b54b8faa96398c passed the original native graph, terminal ownership and capacitance conservation checks and13 raw-corruption controls. The new graph has116611 resistors and77514 capacitors across377 metal components, with1674 devices and3262 physical probes. Counts happen to match the old graph; values come from the new geometry and are not copied or scaled. Intrinsic body spreading and RF qualification remain outside this extractor. Full-device composition and loaded electrical tests are still required.
