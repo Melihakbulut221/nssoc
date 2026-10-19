@@ -19,3 +19,7 @@ Run39217390888 at9be1ff7728c315c8b895ac02a7359e4ff1cabc03 passed the exact whole
 ## Fresh native RC
 
 Run39218007063 at1912e5b305e90ad4b795dc3e85b54b8faa96398c passed the original native graph, terminal ownership and capacitance conservation checks and13 raw-corruption controls. The new graph has116611 resistors and77514 capacitors across377 metal components, with1674 devices and3262 physical probes. Counts happen to match the old graph; values come from the new geometry and are not copied or scaled. Intrinsic body spreading and RF qualification remain outside this extractor. Full-device composition and loaded electrical tests are still required.
+
+## Full-device model composition
+
+Run39218951433 at0a38fc8312e4d5252038502044653ca493491990 passed full1674-device composition with the fresh116611R/77514C graph, six original composition corruption controls, and native binding of124 input legs to372 data bases. No ideal intermacro aliases or duplicate child parasitics were inserted. The next workflow runs the original full256-bit34ns loaded32:1 waveform and an actual swapped-leaf-select fault. All604 HBT and512 MOS limits, source bits, output phases, driver loads, clock references and solver settings remain unchanged; only the source-bound physical core model changes. This is still not a complete PLL/CDR or four-lane PHY.
