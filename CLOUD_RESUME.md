@@ -1,3 +1,22 @@
+# Latest cloud-only continuation — 2026-10-19, localbus CDR native diagnosis
+
+TX minimax fullwaves39268446646/job118115200444 nominal and118115200371
+swap_leaf_select confirmed IN_PROGRESS; controls118114096156 PASS.
+Mainchip39243328773/job118029134944 confirmed IN_PROGRESS. Preserve.
+
+CDR localbus wholecaptures39252773409 remain failed. Allsamplers fail
+originalphases; actualHBT129/147 VCEmin below0.4V in both early/late.
+Nativebase plane maps identify adp/cdp XORdata-input pairs, not samplers.
+No change to clocks/oracles/gates. This push starts
+cdr-localbus-v12-sampling-review-cloud for both immutable fullraw captures.
+Same proven folded-review method, exactsource-delta permits only newsource/
+namespace11490C/knownfailureidentities. Reproduce alloriginalsampler and
+116HBT gates, report actualmaster/slave/clock/supply/load/wire measurements.
+Inspect exactnewrun/results, then choose evidence-based physicalrepair.
+FullserialPHY/mainchiproute/finaltiming OPEN. Cloud-only/localworkspaceempty.
+
+---
+
 # Live cloud jobs — 2026-10-19 14:25 UTC
 
 Minimax original fullwave run39268446646/sourcebf4ccee5691545bbbf9a41bfc8d9e4b68fd2dfe7.
