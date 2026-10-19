@@ -1,3 +1,25 @@
+# Latest cloud-only continuation — 2026-10-19, local-bus native leaf PASS
+
+Run39247903547 source d9ed1af569fafda42ee686fdede28f2a5c263628 PASSED:
+560-categoryDRC, deep/flat54-device native LVS,LEF,16negative controls.
+All54native drawings/placements/public pins unchanged. Actual native M5
+landing avoidance fixed the initial10M5.b markers; no rule waiver.
+Summary656146607 SHAe7133046ddebefd552dbe9045a47150613305db9071370e308d73981abceb8b6;
+parts656146676 SHAed7fb1734ee7de223c08e84715cbc762fc9cc65095036d7c0c949eca30f2e29b.
+Fullreceipt: docs/evidence/cdr-localbus-sampler-physical-pass-20261019.json.
+
+This push starts cdr-retimed-localbus-v12-parent-cloud. Only the sampler
+physicalview changes relative to folded_v11;41cards/16macros/484devices and
+all original parent nativeDRC/LVS/fault gates remain. Retrieve exact run and
+result before extraction. Next: fresh planes/wire/binding/rawRC/MIMaudit/
+composition and unchanged full loaded waves; NEVER reuse old foldedRC.
+
+Mainchip39-buffer route39243328773 and TX39221063981/39226121734 are live at
+latest check. Preserve healthy jobs. FullPHY/mainchiproute/finaltiming OPEN.
+All CAD/tests/artifacts remain cloud-only. Local nnsoc directory is empty.
+
+---
+
 # Latest cloud-only continuation — 2026-10-19, local-bus M5 spacing repair
 
 Local-bus physical39246967295 passed generation and independent54-native-
