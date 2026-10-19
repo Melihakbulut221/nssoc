@@ -88,3 +88,21 @@ Run39212674566 atde16e2d03279c8e3a9eb75ac3a85f82bf6ec7e21 captured15482R,11527C 
 Run39213136693 at98897e38f07913e19884d085a004db2a8b1325b8 passed the full native wire/MIM audit with13wire and9intrinsic corruptions and composition with19controls. The composed source contains exactly484native devices,15482R,11527C and one model for each of11MIM capacitors. Full SHA256-bound reports are preserved.
 
 The next native run tests nominal_early, nominal_late, clock_stopped and vi_bias_off with the unchanged256bits,8GHz external clock,150fF physical sampler collector loads,50fF comparator loads,1107observables, original fixed sampling phases and all original voltage/current gates. Every original simulator/helper SHA256 literal is unchanged. No threshold or phase was fitted to this candidate. Real loaded results determine whether the input-drive repair helps; physical and composition passes do not imply successful serial data or closed-loopPHY.
+
+
+## Actual full-wave result: improved but rejected
+
+Run39213606544 completed all four native cases. Both nominal cases preserve all original device voltage/current gates, and both deliberate faults are detected. Nominal data and phase requirements still fail, so the candidate is not accepted. The256source bits, expected sampled bits and phase gates are verified identical to data-cm-v9.
+
+| Case | Sampler | Previous wrong/765 | New wrong/765 | New below100mV/765 |
+|---|---|---:|---:|---:|
+| nominal_early | A | 121 | 113 | 129 |
+| nominal_early | B | 311 | 129 | 129 |
+| nominal_early | C | 358 | 231 | 310 |
+| nominal_early | D | 396 | 323 | 374 |
+| nominal_late | A | 251 | 129 | 129 |
+| nominal_late | B | 128 | 94 | 128 |
+| nominal_late | C | 377 | 238 | 318 |
+| nominal_late | D | 372 | 298 | 360 |
+
+A read-only native sampling review replays these same saved waves, reproduces every original sampler count, traces actual master/slave input bases through the4um resistor drawings and reports actual clock crossing times at unchanged source phases. It makes no new transient and does not shift latency, stimulus or acceptance windows. This separates remaining input acquisition and clock distribution losses before the next physical repair.
