@@ -23,8 +23,8 @@ jobs:
           python-version: '3.12'
       - name: Verify unchanged review and engineering gates
         run: python3 scripts/check_tx_v5_minimax_path_review_source.py
-      - name: Compile read-only native path review
-        run: python3 -m py_compile scripts/cloud_tx_v5_minimax_path_review.py
+      - name: Compile minimax census-bound native path review
+        run: python3 -m py_compile scripts/cloud_tx_v5_minimax_path_review.py scripts/review_tx_minimax_native_clock_terminals.py
   native-current:
     needs: syntax-controls
     runs-on: ubuntu-24.04

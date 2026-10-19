@@ -1,3 +1,11 @@
+## Active checkpoint: actual source-contact17258R12445C audit/composition; TX diagnostic census fix
+
+CDR source-access MIM capture39300720018 passed at a801812992a1826776161dc13c2e98c0b5bc33cd, with17258R12445C and11exact native MIM identities. All four extraction39299984679 receipts and capture receipt are now committed. The new cdr-source-access-v14-mim-validation-cloud keeps22raw audit and19composition fault controls unchanged, using measured new census only. After pass, bind its model and run original loaded early/late tests. FullPHY and final chip timing remain open.
+
+TX path review39300351985 reproduced all original rejected waveform gates, localized24HBT minima and input groups, then failed at a legacy clock helper hardcoded77514C. The dedicated minimax helper changes only the verified census to77516; original31clocks/124selector bases and all waveform/physical gates are unchanged. Full failed review receipt retained. Updated workflow starts a new diagnosis, not a new simulation.
+
+Mainchip route39293720171 and original swap_leaf_select fault job118115200371 remain active at last check. Do not restart live jobs. All CAD, captures and artifacts remain cloud-only and local workspace stays empty.
+
 ## Active checkpoint: fresh source-access extraction and MIM continuation
 
 New cdr-source-access-v14-mim-parent-rc-cloud is pinned to prerequisite extraction39299984679/source b184485e08d6a1f928ad25dda13e88cb65a9015d. It must wait for that exact run and verify planes,wire-inputs,binding,rc success and their release hashes before capturing actual MIM-aware parent RC. It preserves all original11MIM identities,946points,111wire components and mask/terminal controls. Do not start a duplicate extraction if prerequisite observation times out.

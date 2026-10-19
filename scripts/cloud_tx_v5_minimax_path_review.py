@@ -80,7 +80,7 @@ def main():
         r['clock_references']=contract.get('clock_refs',[])
         r['external_clock_commonmodes']=review['clock_common_mode_range_v']
         (OUT/'all-hbt-terminal-voltages.json').write_text(json.dumps({name:{label:dict(node=node,voltage=stats(v(node)))for label,node in zip(('C','B','E','S'),dev['terminals'],strict=True)}for name,dev in contract['hbt'].items()},indent=2)+'\n')
-        from review_tx_native_clock_terminals import inspect
+        from review_tx_minimax_native_clock_terminals import inspect
         clock_review=inspect(source/'source/cloud-tx-v5-minimax-assembly/wire96/tree1674-wire01.spice',contract,t,values,tree.START)
         (OUT/'native-clock-terminals.json').write_text(json.dumps(clock_review,indent=2)+'\n')
         r['native_clock_review']={k:v for k,v in clock_review.items()if k!='clocks'}
