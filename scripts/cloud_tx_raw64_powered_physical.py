@@ -45,6 +45,7 @@ def main():
         ('handoff_open','faults/handoff_open.gds','layout/schematic.cir','deep',False),
         ('body_supply_short','faults/body_supply_short.gds','layout/schematic.cir','deep',False),
         ('wrong_width','layout/layout.gds','faults/wrong_width.cir','deep',False),
+        ('internal_port_alias','faults/internal_port_alias.gds','layout/schematic.cir','flat',False),
         ('offgrid','faults/offgrid.gds',None,'deep',False)]
   results=[]
   for name,geometry,reference,mode,positive in jobs:

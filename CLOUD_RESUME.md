@@ -1,3 +1,6 @@
+## 2026-10-20 — Powered raw64 native DRC/deep LVS pass; flat port annotation fix
+Powered39464090686: full560 DRC zero, deep LVS8074/8074 and163ports; all real faults detected. Flat device comparison matched but native strict ports rejected227ports:64 former internal core labels and shared din/dout aliases. Removed only66 datatype25 standalone child labels; material/pin/device geometry unchanged. New actual internal-port-alias fault must reject in flat mode, and all original gates rerun. No deck/audit waiver. CDR v22 latch review39464720493 live; existing TX/PLL/mainchip jobs preserved. Cloud-only.
+
 ## 2026-10-20 — CDR v22 both nominal cases rejected; exact-wave latch diagnosis
 Run39458941860 is terminal: early/late sampling and phase failed, all device gates passed, both actual clock/VI fault cases detected. Full immutable receipts pinned. New cdr-v22-latch-timing-cloud reproduces original captures and native latch/selector measurements with only run/source/count bindings changed. Powered raw64 physical39464090686 is live; TX39460427396/39453950816, PLL39423618115 and mainchip39436610858 preserved. Cloud-only; fullPHY and final timing remain unaccepted.
 

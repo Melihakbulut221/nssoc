@@ -17,6 +17,23 @@ def main(out):
  def regs(l,t):
   return {(l.get_info(i).layer,l.get_info(i).datatype):pya.Region(t.begin_shapes_rec(i)).merged()
    for i in l.layer_indexes()if not pya.Region(t.begin_shapes_rec(i)).is_empty()}
+ # Former standalone input/output labels are now internal handoff nets.
+ # Retain every metal, pin rectangle and device-recognition annotation.
+ # Flat strict-port extraction must see only the163 explicit parent pins.
+ internal={f'd{i}{p}'for i in range(32)for p in ('p','n')}
+ annotation_changes=[]
+ for cellname,names in [('native_core',internal),('native_driver',{'din','dout'})]:
+  cell=L.cell(cellname);assert cell is not None
+  found=[]
+  for index in L.layer_indexes():
+   info=L.get_info(index)
+   if info.datatype!=25:continue
+   for shape in cell.shapes(index).each():
+    if shape.is_text()and shape.text.string in names:
+     found.append((shape,dict(cell=cellname,layer=info.layer,datatype=25,text=shape.text.string,position=str(shape.text.trans.disp))))
+  assert len(found)==len(names)and {row['text']for _,row in found}==names
+  for shape,row in found:shape.delete();annotation_changes.append(row)
+ assert len(annotation_changes)==66
  before=regs(L,T);metals=(67,126,134)
  flat={m:pya.Region(T.begin_shapes_rec(L.layer(m,0))).merged()for m in metals}
  cm=json.loads((source/'core/layout/result.json').read_text())
@@ -108,6 +125,11 @@ def main(out):
  (dest/'schematic.cir').write_text(text)
  assert sum(s.startswith(('Q','R','M'))for s in refs)==8074
  faults=out/'faults';faults.mkdir()
+ # Keep the native strict-port gate: reintroducing one internal public label
+ # must fail flat LVS even when all8074 devices and connectivity still match.
+ pin=cp['d0p'].center()
+ alias=T.shapes(L.layer(134,25)).insert(pya.Text('d0p',pin.x,pin.y))
+ L.write(str(faults/'internal_port_alias.gds'));alias.delete()
  # Real parent metal open, with original native cells untouched.
  li=L.layer(134,0);saved=pya.Region(T.shapes(li));y=cp['d0p'].center().y
  cut=pya.Region(pya.Box(499000,y-3000,501000,y+3000));assert not(saved&cut).is_empty()
@@ -124,7 +146,7 @@ def main(out):
  shape.transform(pya.Trans(1,0));L.write(str(faults/'offgrid.gds'));shape.transform(pya.Trans(-1,0))
  result=dict(status='GENERATED_POWERED_RAW64_CORE8074_REQUIRES_NATIVE_DRC_LVS_AND_FRESH_RC',
   source_gds_sha256=sha(src),power_routes=proof,external_ports={n:dict(layer=m,box_dbu=str(p))for n,(m,p)in ports.items()},
-  reference_devices=8074,reference_mapping=mapping,native_material_preserved=True,serialized_geometry_verified=True,
+  reference_devices=8074,reference_mapping=mapping,internal_port_annotation_changes=annotation_changes,native_material_preserved=True,serialized_geometry_verified=True,
   main_chip_integrated=False,full_phy_accepted=False,qualified_pex=False,electrical_accepted=False,
   outputs={str(p.relative_to(out)):sha(p)for folder in(dest,faults)for p in folder.iterdir()})
  (out/'power-result.json').write_text(json.dumps(result,indent=2)+'\n')
