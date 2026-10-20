@@ -13,10 +13,10 @@ def replay(rows):
     native=defaultdict(float);exact=defaultdict(float)
     for row in rows:
         if row[0]=='node':
-            n=row[1];v=float(row[3]);native[n]=f32(native[n]+v);exact[n]+=v
+            n=row[1];v=float(row[3]);native[n]=f32(native[n]+f32(v));exact[n]+=v
         elif row[0]=='cap':
             x,y=row[1:3];v=float(row[3])
-            native[x]=f32(native[x]+v);native[y]=f32(native[y]+v)
+            native[x]=f32(native[x]+f32(v));native[y]=f32(native[y]+f32(v))
             exact[x]+=v;exact[y]+=v
     return dict(native),dict(exact)
 def assess(rows,markers):
@@ -45,6 +45,15 @@ def main():
         found=re.findall(r'^NSSOC_V2_INTRINSIC_DISTRIBUTION (\S+) total=(\S+) intrinsic=(\S+)$',log,re.M)
         assert len(found)==698 and len({n for n,t,i in found})==698
         markers={n:(float(t),float(i))for n,t,i in found}
+        # Native MagAtof returns float before the float accumulation assignment.
+        upstream='https://raw.githubusercontent.com/RTimothyEdwards/magic/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/'
+        declarations=[{'path': 'utils/utils.h', 'sha256': '370a729004d2ebab3dc660b1eff8dfd9c56258a528cc006737feb06d7a523d89'}, {'path': 'resis/ResReadExt.c', 'sha256': '30d2e85324d33b7f20074697518e37eeaf1398f921ad5854ea683323bc5497ae'}]
+        for declaration in declarations:
+            dest=OUT/'upstream'/declaration['path'];dest.parent.mkdir(parents=True,exist_ok=True)
+            fetch(upstream+declaration['path'],declaration['sha256'],dest)
+        assert 'extern float MagAtof(const char *s);'in (OUT/'upstream/utils/utils.h').read_text()
+        assert 'node1->capacitance += MagAtof(argv[COUPLEVALUE]);'in (OUT/'upstream/resis/ResReadExt.c').read_text()
+        result['upstream_arithmetic_source']=dict(commit='fd12c39c37f26a0fe6e04698b1011e31b8bd3229',files=declarations,conversion='MagAtof binary32 conversion before binary32 accumulation; unchanged raw audit acceptance.')
         result['all_native_totals']=assess(rows,markers)
         wanted={x['node']:x for x in a['wrong_native_branch_witnesses']}
         result['rejected_rails']=[x for x in result['all_native_totals']if x['node']in wanted]

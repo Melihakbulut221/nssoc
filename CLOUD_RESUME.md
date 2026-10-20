@@ -1,3 +1,11 @@
+## 2026-10-20 cloud loaded handoff and TX reader correction
+
+Follower476 loaded pipeline waits for exact39478830833 audit/composition: original nominal early/late and clock-stopped/VI-bias-off cases, all120HBT46MOS,1103vectors, same256bits and physical loads. Do not call this closed-loop or fullPHY acceptance.
+
+TX diagnosis39479283561 rejected exact replay. Native MagAtof returns float; corrected diagnostic includes binary32 input conversion before binary32 addition. Fresh workflow launches here. All698 totals must match and4corruptions must fail; original RC13controls/gates remain unchanged and still await producer correction.
+
+Local workspace empty; all new code/reports/jobs on GitHub. Preserve long live mainchip/PLL/TX-wave jobs.
+
 ## 2026-10-20 next cloud evidence: native total-load arithmetic
 
 CDR follower476 MIM validation run39478830833 is active from96b626896b0e85c0d9946f633f96de3bd81e0cfe. Observe both raw audit and composition; prepare original loaded cases only after both pass.
