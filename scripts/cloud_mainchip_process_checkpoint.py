@@ -73,7 +73,7 @@ def main():
         r['run_id']=int(os.environ['GITHUB_RUN_ID']);r['job']=os.environ['GITHUB_JOB'];r['cpu_index']=min(os.sched_getaffinity(0))
         run('kernel',['uname','-a']);run('cpu',['lscpu','--json']);run('criu-check',['sudo','criu','check','--all'],False)
         build=json.loads((Path(os.environ['RUNNER_TEMP'])/'criu-build.json').read_text())
-        assert build['source_commit']==CRIU_COMMIT and sha('/usr/sbin/criu')==build['binary_sha256'];r['criu_build']=build
+        assert build['source_commit']==CRIU_COMMIT and sha(Path('/usr/sbin/criu'))==build['binary_sha256'];r['criu_build']=build
         assert not run('empty-containers',['docker','ps','-aq']).stdout.strip()
         config="import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))"
         run('docker-experimental',['sudo','python3','-c',config]);run('docker-restart',['sudo','systemctl','restart','docker'])

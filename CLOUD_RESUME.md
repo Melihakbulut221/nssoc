@@ -1,3 +1,9 @@
+## 2026-10-21 — checkpoint controller correction
+
+Initial checkpoint probe39496744489 failed before any checkpoint at a controller Path/type mismatch while hashing CRIU. Exact failure receipt retained; changed only the argument to pathlib.Path and updated frozen source hashes. Native image, actual database, checkpoint/journal gates and cross-runner requirements unchanged. New workflow rerun is authorized by this actual terminal failure and correction, not by an observation timeout.
+
+V24 loaded screen prepared atc6d06da249dd52f5a0a629dd62d0942bd438f033; exact MIM composition prerequisite39495976408 must finish first. Cloud-only; no full PHY/route/final timing acceptance.
+
 ## 2026-10-21 — original loaded v24 CDR screen
 
 Fresh raw MIM audit39495976408 passed; composition was queued at last check. New v24 fullwave workflow waits for this exact validation run and all original controls before running nominal early/late and stopped-clock/VI-off cases. Only immutable paths/model identifier changed; original256bits,loads,timestep,phase/timing/current/voltage gates retained. Later PVT/full-loop remains mandatory.
