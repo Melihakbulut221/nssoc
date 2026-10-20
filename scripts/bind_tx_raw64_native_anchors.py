@@ -21,17 +21,20 @@ def generate(source=None,physical_source=None):
     body={('npn13G2','S'),('sg13_hv_nmos','B'),('sg13_lv_nmos','B'),('sg13_lv_pmos','B'),('rppd','rppd_sub'),('ptap1','WELL'),('ntap1','WELL')}
     # Walk real GDS hierarchy for resistor pin witnesses; never infer an
     # access point from an invented transistor model or reference label.
-    resistor_instances=[]
+    resistor_instances=[];hbt_instances=[]
     def walk(cell,tr):
-        if cell.name.split('$')[0]=='rppd':
+        name=cell.name.split('$')[0].lower()
+        if name=='rppd':
             resistor_instances.append((cell,tr));return
+        if name=='npn13g2':
+            hbt_instances.append((cell,tr));return
         for inst in cell.each_inst():
             for i in range(max(1,inst.na)):
                 for j in range(max(1,inst.nb)):
                     offset=pya.Trans(i*inst.a.x+j*inst.b.x,i*inst.a.y+j*inst.b.y)
                     walk(inst.cell,tr*offset*inst.trans)
     walk(top,pya.Trans())
-    assert len(resistor_instances)==504
+    assert len(resistor_instances)==504 and len(hbt_instances)==589
     rows=[];anchors=[];by_point={};allowed={}
     def witness(m,point,expected,label=None):
         wn=wire.probe_net(wire.layer_by_name('gds_'+str(m)),point)
@@ -42,7 +45,9 @@ def generate(source=None,physical_source=None):
             a=by_point[key];assert a['native_cluster']==expected;return a
         a=dict(label=label or 'A'+str(len(anchors)).zfill(4),metal=m,point_dbu=[point.x,point.y],wire_component=wn.cluster_id,native_cluster=expected)
         by_point[key]=a;anchors.append(a);return a
-    for did,d in devices.items():
+    # Visit HBTs first so an HBT access failure does not wait for all MOS probes.
+    # The census and every geometry/native ownership predicate remain unchanged.
+    for did,d in sorted(devices.items(),key=lambda item:(item[1].device_class().name!='npn13G2',item[0])):
         cls=d.device_class()
         for td in cls.terminal_definitions():
             net=d.net_for_terminal(td.id());key=(did,td.name)
@@ -70,6 +75,26 @@ def generate(source=None,physical_source=None):
                     if polygon.area()!=box.area()or box.width()<2 or box.height()<2:continue
                     point=box.center();nn=native.probe_net(native.layer_by_index(mapping[8]),point)
                     if nn is not None and nn.cluster_id==net.cluster_id:candidates.append((8,point,'native_hbt_terminal_metal_intersection'))
+            if not candidates and cls.name=='npn13G2':
+                # Native extractor terminal polygons need not include the full
+                # PCell collector access. Find the actual unique PCell enclosing
+                # all three native C/B/E terminal regions, then probe its actual
+                # metal pin rectangles. No inferred nominal pin coordinates.
+                bounds=pya.Box()
+                for term in cls.terminal_definitions():
+                    if term.name=='S':continue
+                    for r in native.shapes_of_terminal(d.terminal_ref(term.id())).values():bounds+=r.bbox()
+                instances=[(cell,tr)for cell,tr in hbt_instances if (cell.bbox().transformed(tr)&bounds)==bounds]
+                assert len(instances)==1,('HBT physical enclosure',did,len(instances),str(bounds))
+                cell,tr=instances[0]
+                for metal in (8,10):
+                    for shape in cell.each_shape(layout.layer(metal,2)):
+                        if not shape.is_box():continue
+                        box=shape.box.transformed(tr);point=box.center()
+                        nn=native.probe_net(native.layer_by_index(mapping[metal]),point)
+                        wn=wire.probe_net(wire.layer_by_name('gds_'+str(metal)),point)
+                        if nn is not None and nn.cluster_id==net.cluster_id and wn is not None and owner[wn.cluster_id]==net.cluster_id:
+                            candidates.append((metal,point,'original_hbt_pin_dual_native_probe'))
             if not candidates and cls.name=='rppd':
                 # Original PCell port rectangles are an independent resistor access witness.
                 bounds=pya.Box()
@@ -107,6 +132,7 @@ def generate(source=None,physical_source=None):
         a=witness(metal,box.center(),net.cluster_id,'P_'+name);assert a['label']=='P_'+name;public.append(dict(name=name,reference_label=a['label']))
     assert len(rows)==28582 and sum('reference_label'in r for r in rows)==20508 and len(public)==163
     assert {a['wire_component'] for a in anchors}==set(owner),'Unanchored physical component'
+    anchor_by_label={a["label"]:a for a in anchors};assert len(anchor_by_label)==len(anchors)
     def verify(observed):
         assert len(observed)==28582 and len({(r['device'],r['terminal']) for r in observed})==28582,'Missing or duplicate terminal'
         for row in observed:
@@ -115,7 +141,7 @@ def generate(source=None,physical_source=None):
             if(cls.name,td.name)in body:
                 assert 'reference_label'not in row and row['disposition']=='RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R';continue
             x,y=row['point_dbu'];assert (row['metal'],x,y)in allowed[(row['device'],row['terminal'])],'Point is not an actual contact for this terminal'
-            a=next(a for a in anchors if a['label']==row['reference_label'])
+            a=anchor_by_label[row['reference_label']]
             assert a['metal']==row['metal'] and a['point_dbu']==row['point_dbu'] and a['native_cluster']==net.cluster_id,'Anchor association changed'
             wn=wire.probe_net(wire.layer_by_name('gds_'+str(row['metal'])),pya.Point(x,y));assert wn is not None and owner[wn.cluster_id]==net.cluster_id
     verify(rows);faults=[]

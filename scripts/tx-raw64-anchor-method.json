@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_tx_driver_localpins_anchors.py",
   "baseline_sha256": "c874a890be0479652574f81bf6be888513b4adeecfc4b57118edafc53c8ca0b0",
   "baseline_function_sha256": "574aeae1b56f71e8d288d1d56b3d6d78bd916dcb408ea8f097fe87cb8a9e6265",
-  "candidate_sha256": "ffadec7a3128cf2ebb28f12659c376909206fd108c2a043a93d51abd6ae80872",
+  "candidate_sha256": "59cf65bc2f8e05c2588338f733e2b8c8e35463545ae957aa96cc848f17e24ab3",
   "edits": [
     {
       "before": "source=Path(source) if source is not None else OUT/'inputs/tx-driver-localpins-wires/cloud-tx-driver-localpins-wires'",
@@ -105,5 +105,47 @@
       "count": 1
     }
   ],
-  "scope": "Full native HBT plus raw MOS terminal support; actual hierarchical resistor access and163 parent pins. Original four corruption controls retained."
+  "scope": "Full native HBT plus raw MOS terminal support; actual hierarchical resistor access and163 parent pins. Original four corruption controls retained.",
+  "initial_candidate_sha256": "ffadec7a3128cf2ebb28f12659c376909206fd108c2a043a93d51abd6ae80872",
+  "native_hbt_access_correction": {
+    "baseline_sha256": "ffadec7a3128cf2ebb28f12659c376909206fd108c2a043a93d51abd6ae80872",
+    "edits": [
+      {
+        "before": "resistor_instances=[]",
+        "after": "resistor_instances=[];hbt_instances=[]",
+        "count": 1
+      },
+      {
+        "before": "        if cell.name.split('$')[0]=='rppd':\n            resistor_instances.append((cell,tr));return",
+        "after": "        name=cell.name.split('$')[0].lower()\n        if name=='rppd':\n            resistor_instances.append((cell,tr));return\n        if name=='npn13g2':\n            hbt_instances.append((cell,tr));return",
+        "count": 1
+      },
+      {
+        "before": "assert len(resistor_instances)==504",
+        "after": "assert len(resistor_instances)==504 and len(hbt_instances)==589",
+        "count": 1
+      },
+      {
+        "before": "for did,d in devices.items():",
+        "after": "# Visit HBTs first so an HBT access failure does not wait for all MOS probes.\n    # The census and every geometry/native ownership predicate remain unchanged.\n    for did,d in sorted(devices.items(),key=lambda item:(item[1].device_class().name!='npn13G2',item[0])):",
+        "count": 1
+      },
+      {
+        "before": "            if not candidates and cls.name=='rppd':\n                # Original PCell port rectangles",
+        "after": "            if not candidates and cls.name=='npn13G2':\n                # Native extractor terminal polygons need not include the full\n                # PCell collector access. Find the actual unique PCell enclosing\n                # all three native C/B/E terminal regions, then probe its actual\n                # metal pin rectangles. No inferred nominal pin coordinates.\n                bounds=pya.Box()\n                for term in cls.terminal_definitions():\n                    if term.name=='S':continue\n                    for r in native.shapes_of_terminal(d.terminal_ref(term.id())).values():bounds+=r.bbox()\n                instances=[(cell,tr)for cell,tr in hbt_instances if (cell.bbox().transformed(tr)&bounds)==bounds]\n                assert len(instances)==1,('HBT physical enclosure',did,len(instances),str(bounds))\n                cell,tr=instances[0]\n                for metal in (8,10):\n                    for shape in cell.each_shape(layout.layer(metal,2)):\n                        if not shape.is_box():continue\n                        box=shape.box.transformed(tr);point=box.center()\n                        nn=native.probe_net(native.layer_by_index(mapping[metal]),point)\n                        wn=wire.probe_net(wire.layer_by_name('gds_'+str(metal)),point)\n                        if nn is not None and nn.cluster_id==net.cluster_id and wn is not None and owner[wn.cluster_id]==net.cluster_id:\n                            candidates.append((metal,point,'original_hbt_pin_dual_native_probe'))\n            if not candidates and cls.name=='rppd':\n                # Original PCell port rectangles",
+        "count": 1
+      },
+      {
+        "before": "    def verify(observed):",
+        "after": "    anchor_by_label={a[\"label\"]:a for a in anchors};assert len(anchor_by_label)==len(anchors)\n    def verify(observed):",
+        "count": 1
+      },
+      {
+        "before": "a=next(a for a in anchors if a['label']==row['reference_label'])",
+        "after": "a=anchor_by_label[row['reference_label']]",
+        "count": 1
+      }
+    ],
+    "scope": "Unique actual HBT PCell enclosure and Metal1/Metal2 pin witnesses, independently probed in both native databases. HBT-first traversal and indexed identical verification. Four fault gates unchanged."
+  }
 }

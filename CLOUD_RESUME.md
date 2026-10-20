@@ -1,3 +1,7 @@
+## 2026-10-20 — TX native HBT witness rejection preserved, actual pin binding corrected
+Anchor39468302827 failed on native HBT5377 collector contact access; no RC or acceptance claimed. Published failure receipt. New same-geometry binding finds each actual HBT PCell by native C/B/E enclosure and probes original Metal1/Metal2 pin rectangles in both independent native conductor databases. HBT-first traversal detects failures promptly; indexed identical association verification avoids quadratic scans. All28582 terminals and four corruption gates still required. cdr-follower-v23-physical39470863624 live; original TX/mainchip/PLL jobs remain active. Cloud only.
+
+
 ## 2026-10-20 — Active CDR retime follower candidate, physical evidence pending
 v22 exact diagnosis remains rejected. New cdr-follower-v23-physical-cloud builds two real Nx4 HBT emitter followers, two native pull-down resistors and four substrate contacts; full560DRC/deep-flat8deviceLVS and seven actual faults required. No waveform thresholds or old rejected sources changed. Leaf physical success is not parent/electrical/PHY acceptance. TX8074 anchor39468302827, rawdriver39460427396, originalTX39453950816, mainchip39436610858 and PLL39423618115 confirmed live; do not restart. Cloud only, workspace empty.
 
