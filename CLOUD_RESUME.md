@@ -1,3 +1,15 @@
+## 2026-10-20: measure v21 residual retime wire loads
+
+cdr-v21-retime-passive-networks-cloud.yml now measures exact fresh collector and
+filter wire C/R from the rejected v21 late composed model, with unchanged native
+graph reconstruction and passive solver controls. Full late receipt committed.
+Run alongside cdr-v21-latch-timing-cloud.yml to distinguish remaining input load
+from latch transfer delay; no sampling/phase change or new simulation here.
+
+TX p4-drive3 composition at b47b573b1f5d609409215e53a8c9c41b75b61f70 remains to verify.
+Mainchip39436610858 and PLL39423618115 live. All CAD/evidence remain cloud-only.
+
+
 ## 2026-10-20: v21 CDR normal cases rejected; new native latch review
 
 Full run39444824145 completed: nominal early/late fail sampling+phase, all normal
