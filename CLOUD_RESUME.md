@@ -1,3 +1,8 @@
+## 2026-10-21 CDR v24 complete captures and physical timing diagnosis
+Cloud-only; local workspace remains empty. Both original nominal CDR cases completed: transistor gates now pass, but all four sampler timing/margin gates and phase/current gates still reject. Both native fault controls detect the injected faults. Exact summaries, parts manifests and unchanged gates are pinned in docs/evidence/cdr-selector-small-v24-electrical-rejection-20261021.json.
+New cdr-v24-latch-timing-cloud workflow reads the same whole native waveforms and physical terminal graph; it must reproduce all120 HBT and all4 sampler measurements before internal timing diagnosis. No smaller or shifted-window acceptance.
+Mainchip active DRT 39502505171 and exact PLL continuation 39502073954 were verified live; do not restart live native processes. PLL continues the saved source descriptor from run39423618115 continuation. Full PHY/routing/final STA are still open.
+
 ## 2026-10-21 — original full-flow timing config restored
 
 Active DRT run39501256712 stopped in preflight before routing: Librelane's DRT-only config omits SETUP/HOLD_VIOLATION_CORNERS. The controller now restores exact original trial-config.json from39436610858 and keeps the same all-corner guard there; overlapping native step/full-flow clock/derate settings must agree. No timing guard relaxed/defaulted. Raw failure retained.
