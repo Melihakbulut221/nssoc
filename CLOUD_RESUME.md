@@ -1,3 +1,6 @@
+## 2026-10-20 — TX wire20 fresh RC
+Start tx-fast-wire20-extraction-cloud once from this push. It consumes only verified physical39401920232 and preserves all native1674-device,4774-terminal,377-conductor ownership and original13raw-RC corruption gates. No old wire24 RC is reused. After immutable extraction publication, fresh native binding/composition and unchanged loaded waveforms remain required. Native mainchip repair39404356943 and PLL39390580356 were confirmed live; do not restart them. Local workspace is empty and all CAD/evidence remains cloud-only.
+
 ## 2026-10-20 — Native fanout data-input guard fix
 
 39403242252 matched all six exact routed worst slacks, then RSZ-3006 stopped on protected Ethernet SRAM A_ADDR[5]/net4517 during buffer insertion. Restore original whole-instance dont-touch before repair, preserve clock-net flags, and exclude all actual clock-pin and hard-macro cell drive families from resizing. Independent geometry/clock/SRAM/PG/logic checks remain unchanged. Save unchecked electrical results on any future native error. New push reruns this failed native repair only; no live simulation is restarted. TXwire20 physical passed and needs freshRC; CDRv19 nominal failures and faults are recorded; PLL39390580356 remains publishing.
