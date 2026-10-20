@@ -1,3 +1,6 @@
+## Paired clock geometry and RC passed; physical candidate continues
+39365314065 verifies exact source pin identities, native geometry and nominal SPEF: offending clock wire1142.070→2996.810um, wire C0.222630→0.612160pF, branch6_46 shortest seriesR1067.1716→2404.3016ohm. No qualifiedPEX claim. Transfer attempt39365732494 rejected indentation in native DEF; fix only leading-whitespace recognition, keep exact non-target DEF/logic and pin/via proof. New cloud transfer run follows. TX original live run39344566214 unchanged.
+
 ## Physical clock-route repair candidate
 Prepare transfer of actual 1142.070 um clknet_3_5_0_pcie_clk_i route from run39293720171 into latest run39331918238, whose same net is 2996.810 um. Native pin, placement, NDR and via identities must match. Incremental DEF imports only the old physical route and fixes that wire for subsequent physical legalization. Prove all unrelated DEF content and exported logic identical; require real cell-motion and wire-type fault rejection. Candidate remains unaccepted until fresh physical DRC/connectivity, RC and all-corner STA. No source clock, derate, constraint or gate changes. Cloud-only; original source artifacts unchanged.
 

@@ -26,7 +26,7 @@ def scan_def(path):
     with path.open('rb')as f:
         for line in f:
             if line.startswith(b'NETS '):inside=True
-            if inside and re.match(rb'^-\s+'+NET.encode()+rb'\s',line):
+            if inside and re.match(rb'^\s*-\s+'+NET.encode()+rb'\s',line):
                 assert record is None;record=[]
             if record is not None:
                 record.append(line)

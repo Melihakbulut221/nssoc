@@ -35,3 +35,30 @@ current design. Next compare actual ODB geometry and exported nominal wire RC,
 then validate a physical repair with fresh routing, extraction and all corners.
 No clock period, external delay, derating, exception or acceptance threshold
 has been changed. The 128-buffer layout remains rejected for final timing.
+
+## Actual paired geometry and nominal wire RC
+
+[Cloud run 39365314065](https://github.com/Melihakbulut221/nssoc/actions/runs/39365314065)
+passed the read-only paired native geometry and SPEF checks. Source ODBs and SPEFs
+are immutable and all selected native pin identities/directions, graph
+connectivity and serialized capacitance sums are checked. Literal SPEF-escaped
+flip-flop names are decoded without omitting terminals.
+
+The offending clknet_3_5_0_pcie_clk_i retained its original pin locations and NDR,
+but total native wire length grew from 1142.070 to 2996.810 um.
+Its exported nominal wire capacitance grew from 0.222630 to 0.612160 pF.
+The lowest series-resistance path to branch 6_46 rose from 1067.1716 to
+2404.3016 ohm. This path resistance is an upper bound on effective resistance,
+not an STA delay or qualified RC extraction.
+
+A physical candidate now restores the actual original shorter clock route
+within the latest routed chip. It must retain exact via definitions, every
+unrelated DEF byte and native exported logic. Fixing this physical wire for
+legalization does not change any timing constraint. DRC, connectivity, fresh RC
+and all-corner STA remain mandatory after import; this preparation cannot
+establish timing closure.
+
+The first transfer attempt 39365732494 was rejected because its DEF reader
+assumed unindented net declarations. The native exporter uses leading spaces
+([OpenDB DEF writer](https://github.com/The-OpenROAD-Project/OpenROAD/blob/master/src/odb/src/defout/defout_impl.cpp)).
+Recognizing that whitespace leaves the raw non-target DEF hash comparison intact.
