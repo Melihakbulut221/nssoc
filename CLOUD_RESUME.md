@@ -1,3 +1,10 @@
+## 2026-10-20 — v24 fresh extraction and saved mainchip recovery
+
+Cloud-only. Local project directory verified empty. Actual v24 parent39490302719 now has a fresh four-stage extraction workflow; no old RC is reused. Wait for its planes/wire-inputs/binding/rc publications, then run explicit MIM capture and original loaded fullwaves.
+
+Mainchip recovery39491419606 PASS: saved global ODB/guides intact and native readback passed152762 instances. No detailed-route process checkpoint recovered; prove portable OpenROAD checkpoint across runners before restarting long route. Full PHY, route and final setup/hold remain open.
+
+
 ## 2026-10-20 20:20 UTC cloud handoff checkpoint
 Localworkspaceempty. HEADcontains: TX composition39490645237PASS8074devices137221R98241C/20faults; exact producer39486998309doubleorderspassed. NextTX: loaded native full32 waves usingwhole8074parent;11clockmacros/15extraHBTstillphysicallyseparate, bodies/device-access/RFnotqualified. CDRv24parent39490302719passed476deep-flatLVS/560DRC0/9faults;allparenttrunksretained,32Nx4->2selectors;next fresh planes/wire/binding/RC/MIM/composition/fullwaves byadaptingv23chain, neverreuseoldRC. Mainchip39436610858cancelledat360min,savedfreshglobalODB+guides;DRTiterations173847->98150->87219,noDRTprocesscheckpoint/finalODB.Newmainchip-route-recoveryworkflowverifiessavedODB+actualruntimeinventorybeforeportableOpenROADcheckpointproof. PLL39423618115continuationpublishing,TX39460427396/39453950816live lastcheck: inspectterminalstate,neverrestartlivejobs. Allnewsource/evidencecloudonly.
 
