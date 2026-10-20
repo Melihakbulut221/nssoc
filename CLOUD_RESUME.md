@@ -1,3 +1,7 @@
+## 2026-10-20 — TX2.0um critical-route candidate
+
+Exact g234 path review39399643386 confirms residual data loading/arrival failures atp8_7,p4_0,p4_3,a,b; all original gates reproduce. Create the same28 parent data routes at2.0um versus wire24's2.4um, retaining all1674 devices, child geometry, vias,4um landings, placements, clocks, supplies, pins and source schematic. Published IHP TM2 minimum2.0um supports the candidate, but native560-category DRC/deep+flatLVS and all faults must pass. No transient benefit assumed; fresh RC/fullwave required. CDR selector4 fullwaves39400191012 remain live after actual22fault rawRC+19fault composition success. Mainchip39392483151 remains live. PLL39390580356 is publishing a new native result; do not restore it before immutable publication completes.
+
 ## 2026-10-20 — Fresh CDR full-wave chain and TX bridge rejection
 
 Selector4 streamed tests consume only audit/composition39399444981 at7b452101d3d64572a1a9b58a0f1f1e1844f11084 after both stages succeed; original34.25ns/256bits/loads/phases/device gates and all simulator/model hashes remain unchanged. Fresh parent planes receipt is committed. TX bridge39376417214 nominal completed but rejected:87wrong/768,107below100mV,6HBTfail,0MOSfail. Selector worstVCE improved0.356462to0.392282V, still below0.4V; upstream interface failures persist. Preserve both original captures. Exact baseline path review39399643386 is live; mainchip route39392483151 and PLL39390580356 remain live. No fullPHY/finaltiming claim.
