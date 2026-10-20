@@ -1,3 +1,6 @@
+## 2026-10-20 — Actual raw64 driver/core handoff construction
+New tx-raw64-physical-handoffs-cloud places original native64 drivers with p4drive3 core, attempts all64 actual metal/via handoffs against flattened foreign metal, preserves obstruction geometry, and checks serialized material and missing/swapped controls. This is not DRC/LVS/electrical acceptance: power/body distribution, full parent reference, fresh RC and unchanged fullwave gates remain. Live jobs39460427396,39458941860,39453950816,39423618115,39436610858 preserved. All CAD and artifacts remain on GitHub; local workspace empty.
+
 ## 2026-10-20 — Full32 all64 native drivers now ready for full waveform
 Preparation39459369542 passed:5376MOS604HBT,11708columns, >=6369245664raw bytes. Original nominal deck/contract hashes pinned. New tx-full32-rawdrivers-loaded-cloud runs nominal and actual leaf-swap fault with original34ns256bits/all gates, full binary capture, exact chunked OP and32GiBfile/72GiBfree disk checks. Preparation is not electrical acceptance. CDR validation39457813038 passed all41faults; fullwave39458941860 live. Original core TX39453950816, PLL39423618115 and mainchip39436610858 live. Cloud-only, local workspace empty.
 
