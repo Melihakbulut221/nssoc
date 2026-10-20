@@ -38,3 +38,20 @@ in cloud storage; no local checkout is needed.
 Native lookup 39435510210 confirms exactly sixteen child instances and flattened parent via cuts. The failed instance lookup is retained; v21 now translates the existing 0.9 um square cut and its exact native enclosures without recreating or deleting a physical junction. All sixteen instances remain unchanged.
 
 Run 39436963107 showed that native via metal enclosures are merged into the route rectangles. The candidate therefore proves the complete original and translated 3.2 um metal squares and absence of unaccounted old junction metal, then moves only each existing 0.9 um Via2 cut. No new via geometry or increased lookup tolerance is introduced. Full native enclosure DRC remains required.
+
+## Native AVDD short and corridor repair
+
+The first serialized candidate passed DRC but native LVS diagnosis39439752247
+proved aqp/bqn/bqp shorted to AVDD. Wide parent supply metal extends left of
+the macro bboxes into the initially selected channel, beginning at x963.6um
+in the observed intersection. No logical net was open.
+
+The repaired generator now reads the full native TM1 region, subtracts only
+the four original trunks and selects shorter corridors with1.645um geometric
+clearance from all retained metal and previously selected overlapping spans.
+This planning margin does not replace native DRC. Disjoint A/B vertical spans
+can reuse columns; endpoints, original cuts and complete via enclosure proofs
+stay fixed in topology. The measured bad AVDD-overlap rectangle is a negative
+control for the planner. The exact original schematic and full native
+DRC/deep/flat LVS/fault controls remain mandatory. Earlier coordinates above
+describe the rejected candidate, not a passed implementation.

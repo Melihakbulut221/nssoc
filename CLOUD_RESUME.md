@@ -1,3 +1,17 @@
+## 2026-10-20 — actual AVDD short located and corridor selection repaired
+
+Native diagnosis39439752247 passed exact source checks: no opens, aqp/bqn/bqp
+shorted toAVDD through parentTM1 protruding left of macro boxes. Current
+candidate chooses actual empty TM1 corridors using full original geometry,
+1.645um clearance, prior selected trunk shapes and the measured short as a
+negative control. Disjoint A/B Y spans may reuse X. No rule/schematic change.
+New cdr-collector-trunks-v21-parent run must pass native full physical gates
+before any new extraction. Failed candidate/diagnosis receipts retained.
+
+TX path39438335576 reproduced all79wrong/97low/6HBT failures; earliest wrong
+interface groups p4_0 andp4_3, final a/b also fail. Full dataset remains cloud.
+Mainchip39436610858 and PLL39423618115 live. No local files/CAD; goals open.
+
 ## 2026-10-20 — v21 native DRC0 but strict transistor LVS rejected
 
 39438730794 at7f5d43... passed generation, serialized delta and all16child

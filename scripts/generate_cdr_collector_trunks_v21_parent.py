@@ -4,7 +4,7 @@
 import argparse,copy,hashlib,json,re,shutil
 from pathlib import Path
 TOP='nssoc_cdr_pd484_localbus_v12'
-TARGETS={'aqn':959.,'aqp':965.,'bqn':971.,'bqp':977.}
+TARGET_NETS=('aqn','aqp','bqn','bqp')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  import pya
@@ -12,7 +12,7 @@ def main():
  old=out/'baseline/layout';dest=out/'layout';dest.mkdir(exist_ok=False)
  meta=json.loads((old/'result.json').read_text())
  assert sha(old/(TOP+'.gds'))=='56733ea37cc7dc7fc6e8b2180d122511cfddd4a3bc9e1917a8f280f0d7604636'
- assert not(set(TARGETS)&set(meta['source_plan']['ports']))
+ assert not(set(TARGET_NETS)&set(meta['source_plan']['ports']))
  L=pya.Layout();L.read(str(old/(TOP+'.gds')));T=L.cell(TOP)
  assert T is not None and L.dbu==.001
  def rect(s):
@@ -33,6 +33,39 @@ def main():
   instances=sorted((i.cell.name,str(i.dcplx_trans),i.na,i.nb,str(i.a),str(i.b))for i in top.each_inst())
   return shapes,labels,instances
  before=snapshot(L,T);old_bbox=T.dbbox()
+ # Plan against actual flattened native metal, including wide AVDD shapes
+ # outside macro bboxes. Disjoint vertical spans may reuse an X coordinate.
+ retained_tm1=pya.Region(T.begin_shapes_rec(L.layer(126,0))).merged()
+ spans={}
+ for net in TARGET_NETS:
+  boxes=[rect(r['box_um'])for r in meta['routes']if r['net']==net]
+  xs={round(b.left+1.6,6)for b in boxes};assert len(xs)==1
+  ox=xs.pop();ys=[b.center().y for b in boxes]
+  original=pya.DBox(ox-1.6,min(ys)-1.6,ox+1.6,max(ys)+1.6)
+  retained_tm1-=pya.Region(original.to_itype(L.dbu))
+  spans[net]=(ox,min(ys),max(ys))
+ clearance=1645 # conservative native1.64um spacing plus one5nm planning grid
+ def corridor(x,y0,y1):
+  return pya.Region(pya.DBox(x-1.6,y0-1.6,x+1.6,y1+1.6).to_itype(L.dbu))
+ planned=pya.Region();targets={};selection=[]
+ start=min(rect(p['bbox_um']).left for p in meta['placements'].values())-12.
+ for net in TARGET_NETS:
+  ox,y0,y1=spans[net];chosen=None
+  for step in range(2000):
+   x=round((start-step)/.005)*.005
+   if x<=ox+20:break
+   candidate=corridor(x,y0,y1)
+   if (candidate.sized(clearance)&(retained_tm1+planned).merged()).is_empty():
+    chosen=x;break
+  assert chosen is not None,('No shorter DRC-spaced native TM1 corridor',net)
+  targets[net]=chosen;planned+=corridor(chosen,y0,y1)
+  selection.append(dict(net=net,original_x_um=ox,new_x_um=chosen,y_span_um=[y0,y1],skipped_grid_positions=step))
+ assert (planned.sized(clearance)&retained_tm1).is_empty()
+ known_short=pya.Region(pya.Box(963400,1324320,966600,2189410))
+ assert not(known_short&retained_tm1).is_empty(),'Known native AVDD short must be rejected by corridor proof'
+ corridor_proof=dict(actual_original_tm1_checked=True,foreign_metal_clearance_dbu=clearance,
+   original_gds_sha256=sha(old/(TOP+'.gds')),selection=selection,
+   prior_measured_avdd_short_rejected=True,disjoint_y_spans_may_reuse_x=True)
  changes=[];junction_changes=[];moved=[];total=0.;new_meta=copy.deepcopy(meta)
  def encloses(outer,inner):
   return outer.left<=inner.left and outer.bottom<=inner.bottom and outer.right>=inner.right and outer.top>=inner.top
@@ -43,7 +76,7 @@ def main():
   assert len(found)==1,('Expected one exact parent wire rectangle',layer,str(ib),len(found))
   found[0].delete();T.shapes(li).insert(nb)
   changes.append(dict(layer=layer,before_box_dbu=str(ib),after_box_dbu=str(nb)))
- for net,nx in TARGETS.items():
+ for net,nx in targets.items():
   rows=[r for r in meta['routes']if r['net']==net]
   assert len(rows)==(3 if net.startswith('a')else 2)
   boxes=[rect(r['box_um'])for r in rows];xs={round(b.left+1.6,6)for b in boxes}
@@ -122,7 +155,7 @@ def main():
  else:raise AssertionError('Extra metal accepted')
  for name in ('schematic.cir',TOP+'.lef'):shutil.copyfile(old/name,dest/name);assert sha(old/name)==sha(dest/name)
  proof=dict(status='SERIALIZED_FOUR_INTERNAL_COLLECTOR_TRUNKS_REQUIRES_NATIVE_DRC_LVS_AND_FRESH_RC',
-  targets_um=TARGETS,changed_rectangles=changes,junction_rectangles=junction_changes,moved_native_tm1_tm2_vias=moved,
+  targets_um=targets,native_corridor_proof=corridor_proof,changed_rectangles=changes,junction_rectangles=junction_changes,moved_native_tm1_tm2_vias=moved,
   horizontal_length_removed_um=total,primitive_parameters_unchanged=True,all_leaf_transforms_unchanged=True,
   schematic_and_lef_byte_identical=True,external_ports_unchanged=True,controls=faults,
   sources_unchanged=True,full_phy_accepted=False,qualified_pex=False)
