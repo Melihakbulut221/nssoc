@@ -1,3 +1,17 @@
+## Cloud CDR v20 data/hold candidate
+V19 diagnostic confirms late A/B outputs and weak C/D inputs. Fresh v20 leaf
+reduces only eight data/hold HBTs per sampler Nx8 to Nx4; selectors remain Nx4,
+all tail/load/bias geometry unchanged. Native54-device PCells, exact46
+unchanged drawings,560DRC,deep/flatLVS and18faults required. Electrical
+improvement is unproven; full parent integration/freshRC/loaded waves follow
+only a verified leaf. Original source captures and rejection remain immutable.
+
+Mainchip fresh guide route39415055626 is live. TXwire20 39409002976 is live.
+PLL39390580356 is publishing continuation; wait successful terminal status,
+then use latest continuation descriptor with validated bounded-stream flow.
+No local CAD files or processes; changes are RAM/API authored and cloud tested.
+
+
 ## Cloud-only native fanout fresh route and CDR diagnosis
 Mainchip run 39409367521 failed DRT-0206 before RC/STA; evidence is preserved.
 New route removes only stale data wires with native DEF/readback audit and
