@@ -1,3 +1,9 @@
+## Cloud checkpoint: saved mainchip audit passed; actual timing now exposed
+
+Read-only audit39382009151 passed alloriginal topology/geometry+4faults and exactfixedclock. Truepre-routecount150996 (notstale150419); retainedall150996 andadded26diodes. LatestmainchipODBbde963927da325e3f66c1c62d6f78f5db4c60b1344670ebabd04d3339c1a5850 has0DRT/0criticaldisconnects,2ANTnets. Timing slow9660setup/3hold,typ7027/10,fast3151/20. Fasthold improved95→20 butfastsetup worsened3107→3151; notclosed. Fullreceipt docs/evidence/onehot-clock-postroute-audit-pass-20261020.json and docs/onehot-clock-postroute-audit-20261020.md. Next identifyremaining actualworstpaths andtwoANTnets fromsavedartifacts; do notreroutejusttorecoverreports.
+
+CDRv18 wholemodelpassedstrictnativevalidation39380893611; full4casewave39381284126 islive with originalgates. PLL39370629792 continuation118489379688 started after firststage checkpoint. TX39372036289 and39376417214 remainlive. No fullPHY orfinaltiming acceptance. All work cloud-only, localprojectempty.
+
 ## Cloud checkpoint: CDR native validation passed; full-wave and saved-mainchip audit live
 
 CDRv18 physical39379285294, extraction39379894690, MIMcapture39380388968, and strictaudit/composition39380893611 passed scoped gates. Finalnative484device/17674R/12712C modelSHA46452abe7eca2751d59767db8fc32a1dfcb9cf0c2cd627fad3a9434c7e668cde. Fullwave39381284126(sourcee599a5ea...) sourcecontrols passed; all4original cases running. No loaded nominal sampling result yet.
