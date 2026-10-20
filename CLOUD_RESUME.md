@@ -1,3 +1,14 @@
+## 2026-10-21 — passed physical model and native process proof; TX rejection retained
+
+CDR v24 MIM validation39495976408 PASS:13raw-wire+9intrinsic controls,19composition controls,476devices17654R12682C. Four original loaded cases run in39497247685 (sourcec6d06da249dd52f5a0a629dd62d0942bd438f033).
+
+Corrected OpenROAD process test39497563699 initial PASS:actual ELF hash,152762-instance design,open journal/memory counter,120rows,unchanged finalODB and5faults. Cross-runner stage live at last check. Active DRT-worker checkpoint remains unproven.
+
+Original TX full32 nominal39453950816 finished and REJECTED:13wrong-sign/20below100mV samples,18HBT minimumVCE failures,noMOS failures or simulator diagnostics;77580full rows preserved. New8074-parent waveform and active separate-driver39460427396 remain distinct required work. Diagnose actual failures before physical optimization; no gate changes.
+
+All calculations/results remain cloud-only. Full serial PHY,actual routed mainchip and final setup/hold are still open.
+
+
 ## 2026-10-21 — checkpoint controller correction
 
 Initial checkpoint probe39496744489 failed before any checkpoint at a controller Path/type mismatch while hashing CRIU. Exact failure receipt retained; changed only the argument to pathlib.Path and updated frozen source hashes. Native image, actual database, checkpoint/journal gates and cross-runner requirements unchanged. New workflow rerun is authorized by this actual terminal failure and correction, not by an observation timeout.
