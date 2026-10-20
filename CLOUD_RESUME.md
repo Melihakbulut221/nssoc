@@ -1,3 +1,10 @@
+## 2026-10-20 — actual OpenROAD runtime portability
+
+CDR v24 fresh extraction started in39493004118 at8fa3cac1e15cae9ce307fa53f9642a3474ce24c5. Check its four immutable stage publications; do not reuse v23 RC.
+
+New mainchip-portable-runtime workflow captures the real running OpenROAD ELF (the previous inventory saw a16KB launcher), copies its exact runtime closure in cloud, and requires byte-identical saved-DB serialization in original and isolated container environments. Archive the image and source routing Tcl for actual checkpoint proof next. This is not DRT or timing completion. All local project files remain absent.
+
+
 ## 2026-10-20 — v24 fresh extraction and saved mainchip recovery
 
 Cloud-only. Local project directory verified empty. Actual v24 parent39490302719 now has a fresh four-stage extraction workflow; no old RC is reused. Wait for its planes/wire-inputs/binding/rc publications, then run explicit MIM capture and original loaded fullwaves.
