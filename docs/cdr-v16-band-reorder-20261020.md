@@ -33,3 +33,9 @@ The next pipeline independently audits raw R/C with the original thirteen corrup
 The new fullwave workflow is bound to validation run39380893611 at source762861b4b1b13b5baf6c9634a87a731ab6e613fa. It requires successful independent raw audit and composition, verifies their capture/assembly chain, and checks all13 wire,9 intrinsic and19 composition controls before invoking the simulator.
 
 All four original cases are retained: nominal_early, nominal_late, clock_stopped and vi_bias_off. The256-bit sequence,34.25ns capture, external8GHz clock, fixed sample phases, actual collector loads, safety/current checks, startup handling, tool/model hashes and waveform acceptance logic are unchanged. The exact source delta changes only artifact paths, the candidate model name and the independently measured C census12709→12712. The complete new17674R/12712C/484-device model is used; there is no wire pruning or reuse of old placement parasitics. Full-PHY and recovered-clock acceptance remain separate.
+
+## Independent validation result
+
+Validation39380893611 passed raw-MIM/R/C auditing with all13 wire and9 intrinsic corruptions rejected, then actual model assembly with all19 composition corruptions rejected. The final484-device/17674R/12712C model SHA256 is46452abe7eca2751d59767db8fc32a1dfcb9cf0c2cd627fad3a9434c7e668cde. [Digest-pinned validation assets](evidence/cdr-retime-bands-v18-validation-assets-20261020.json) retain both independent reports and archives.
+
+[Full waveform run39381284126](https://github.com/Melihakbulut221/nssoc/actions/runs/39381284126), sourcee599a5ea4840b5ff51637559594c250ea780f14c, passed source controls and started all four original cases. These results are pending. No electrical sampling, recovered-clock, full-PHY or final-mainchip timing acceptance is asserted.

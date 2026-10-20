@@ -1,3 +1,11 @@
+## Cloud checkpoint: CDR native validation passed; full-wave and saved-mainchip audit live
+
+CDRv18 physical39379285294, extraction39379894690, MIMcapture39380388968, and strictaudit/composition39380893611 passed scoped gates. Finalnative484device/17674R/12712C modelSHA46452abe7eca2751d59767db8fc32a1dfcb9cf0c2cd627fad3a9434c7e668cde. Fullwave39381284126(sourcee599a5ea...) sourcecontrols passed; all4original cases running. No loaded nominal sampling result yet.
+
+Mainchip39373842033 completed nativeDRT/RC/3cornerSTA with0routingDRC/0criticaldisconnects and2antenna nets, then rejected by outdated before-count150419. Saved-output audit39382009151(sourcebecae092...) is live, using exactbefore/afterODB hashes, unchanged complete conservation+4faults, fixedclockgeometrycheck and originalSTAreadout. Do not restart routing or waive real topology mismatches.
+
+PLL39370629792 initial savednativeprocess completed; continuation118489379688 started. TXg23439372036289 andTXg234+bridge39376417214 remain live. Next read these actual jobs, diagnose actual failures, and continue repair. All work cloud-only; localproject empty. FullserialPHY, mainchipfinaltiming and production acceptance remain unproven.
+
 ## Cloud checkpoint: mainchip native route finished; saved-output audit dispatched
 
 Run39373842033 native CAD returned0 after routing+RC+three-cornerSTA, with0routingDRC/0criticaldisconnects but2antenna nets. Final Pythoncheck failed before comparison at old before-instance-count literal150419. Preserveoriginalfailedrun. New onehot-clock-postroute-audit-cloud restores exactbeforec13a87d9... andafterbde96392... ODBs, retains entireoriginalcell/pin/net/geometrycompareand4faults, separatelychecksoriginalfixedclockroute, andreadsactualcompletedSTA. No routingrestart or waivedgates.
