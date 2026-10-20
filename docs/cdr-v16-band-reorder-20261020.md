@@ -19,3 +19,11 @@ All generation and verification execute in GitHub Actions. No local CAD output o
 The selected prefix is sd,bd,sb,sa,sc,ac. Total targeted retime-net span fell from5387.34um to3455.56um (35.86%). Input dp/dn spans remain323.63um. The tradeoffs are retained: cp grows964.89→1189.52um, cn976.89→1189.52um, and D-output dqp/dqn grow by865.89um. These are geometrical measurements, not measured electrical delay or accepted timing.
 
 The new v18 extraction pipeline restores this exact physical result and reruns all158 native interface bindings, all484-device/1394-terminal model bindings, actual terminal-plane recovery and full wire graph/R/C auditing. It retains the original nineteen interface faults, twelve model faults and thirteen raw-R/C corruption controls. Original v16 extraction sources remain unchanged; an exact source-delta checker permits only the new physical provenance, model/view names and artifact paths. No old RC is reused for this placement. Whole-parent MIM composition and the original full loaded early/late electrical checks must follow.
+
+## Fresh extraction completed; MIM-aware audit and assembly continue
+
+[Fresh extraction39379894690](https://github.com/Melihakbulut221/nssoc/actions/runs/39379894690) passed all four stages:158 interfaces,484 devices/1394 terminals,111 physical conductors, native compact-model binding and strict wire-only RC checks. The wire-only extraction contains17651R/12701C.
+
+[Whole-MIM capture39380388968](https://github.com/Melihakbulut221/nssoc/actions/runs/39380388968) then completed with all eleven actual MIM devices and946 physical points:17674R/12712C. These counts differ from the old placement and are bound to the new native capture receipt. They are not substitutes for raw geometry/ownership/value auditing.
+
+The next pipeline independently audits raw R/C with the original thirteen corruption controls, validates MIM identities/plates/dimensions with the original nine intrinsic corruptions, and composes the actual484-device model while retaining all nineteen assembly faults. MIM devices must appear exactly once. Original v16 methods remain intact; only source identities, paths, model name and the newly measured capacitance/token census change. Loaded electrical waveforms are still pending.

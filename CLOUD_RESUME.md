@@ -1,3 +1,9 @@
+## Cloud checkpoint: fresh CDR extraction and whole-MIM capture complete
+
+Fresh extraction39379894690 passed158planes,484device/1394terminal/111conductor graph, native binding and wireRC17651R12701C. Whole-MIM capture39380388968 passed with actual17674R12712C and11MIM/946points. New cdr-retime-bands-v18-mim-validation-cloud performs strict rawaudit+MIMidentity and composition with original13wire,9MIM,19assembly faults. Pin receipts now under docs/evidence/cdr-retime-bands-v18-{binding,mim-parent-capture}-pass-20261020.json.
+
+Next: verify independent audit/composition, adapt original v16 full loaded early/late waveform source to the actual new composition and fresh terminal geometry, retaining all original phases/oracle/loads/device gates and fullcapture. Candidate geometrypass is not timing/PHY acceptance. Other nativejobs remain active; cloud-only operation and emptylocal project remain in force.
+
 ## Cloud checkpoint: fresh CDR extraction and dependent whole-MIM capture
 
 Physical reordered candidate39379285294 passed originalDRC/LVS. Fresh extraction39379894690(sourcea18a9c6c672df04a852ea620052013c488fbc846) passed native158planes and wire-inputs; binding andRC are live. The new cdr-retime-bands-v18-mim-parent-rc-cloud waits on this exact run, verifies all four successful jobs and physical receipt links, then captures all eleven actualMIMs with their real bottom-contact reference planes. Original MIM/terminal and corruption checks are unchanged. A completed capture still needs independent rawR/C audit, wholemodel composition and full loaded early/late electrical checks. No fullPHY/timing acceptance. Preserve all failures and cloud-only operation.
