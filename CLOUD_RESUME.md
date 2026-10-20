@@ -1,3 +1,10 @@
+## 2026-10-20 — cloud-only salicide reference investigation
+- User requires all NSSOC work/artifacts in the cloud; local project directory is empty.
+- Run39348680934 failed with exactly30 unresolved MOS rail terminals; all178 resistor ends now resolved. Immutable failure pins: docs/evidence/pll845-thirty-mos-reference-rejection-20261020.json.
+- New native candidate proves actual shared salicide boundaries to local tap contacts with three physical fault cases per reference plus existing eight controls. Do not accept until native result passes.
+- TX fullwave39344566214 and mainchip128-buffer route39331918238 remain in progress; do not duplicate.
+- Full serial PHY, routed chip and final timing are still open; CDR v17 remains rejected.
+
 ## 2026-10-20 — PLL2737 reference access repair
 PLL39347984074 failed with208unresolved, preservingall235wire components:
 1652metal+819body+58shared intrinsic diffusion.102HBTnowmatchedcorrectly.

@@ -29,6 +29,13 @@ def generate(out):
  metals={m:pya.Region(T.begin_shapes_rec(L.layer(m,0))).merged()for m in METALS}
  poly=pya.Region(T.begin_shapes_rec(L.layer(5,0))).merged()
  contacts=pya.Region(T.begin_shapes_rec(L.layer(6,0))).merged()
+ def mask(layer,datatype=0):return pya.Region(T.begin_shapes_rec(L.layer(layer,datatype))).merged()
+ active=(mask(1)+mask(1,22)).merged();gate=(poly+mask(5,22)).merged()
+ psd=mask(14);nsd_block=mask(7,21);well=mask(31);salblock=mask(28)
+ excluded_tap=(mask(46,21)+mask(40)).merged()
+ pdk_pins={'general_derivations.lvs':'f2c2ce6c039b1e28fedd3f5c94fc1dddb6194f19917e19b68f1a3750737894fb',
+           'general_connections.lvs':'d8698e0b7f38cddd1750341e8e72ad020bb9c89fa6d68b82a63c9ddcf1e74ebb'}
+ for filename,digest in pdk_pins.items():assert sha(out/filename)==digest
  hbt_cells=[];rppd_cells=[];hierarchy=Counter()
  def visit(cell,tr):
   hierarchy[cell.name]+=1
@@ -57,7 +64,7 @@ def generate(out):
  assert len(terminals)==2737
  mimpins={(d['native_id'],p['terminal']):p for d in mim['native_mim_bindings']for p in d['points']}
  assert len(mimpins)==52
- rows=[];anchors=[];unresolved=[];shared={};used_hbt={};used_rppd={}
+ rows=[];anchors=[];unresolved=[];shared={};used_hbt={};used_rppd={};salicide_bound={}
  def point_probe(m,p,nid):
   wn=wire.probe_net(wire.layer_by_name('gds_'+str(m)),p)
   nn=native.probe_net(native.layer_by_index(mapping[m]),p)
@@ -77,6 +84,43 @@ def generate(out):
    except AssertionError:continue
    found.append((8,q,component))
   return found
+ def salicide_access(reg,cls,nid,blocked=None,available_contacts=None,implant=None):
+  # Pinned IHP rule: unblocked S/D and opposite-type tap can join only at a
+  # positive-length shared salicide edge. Never traverse a well or a PN junction
+  # without this actual drawn salicide boundary and a local tap contact.
+  blocked=salblock if blocked is None else blocked
+  available_contacts=contacts if available_contacts is None else available_contacts
+  implant=psd if implant is None else implant
+  nactive=active-(implant+nsd_block);pactive=active&implant
+  is_n=cls.endswith('_nmos');assert is_n or cls.endswith('_pmos')
+  sd_domain=(nactive-well-gate)if is_n else(pactive&well)-gate
+  tap_domain=(pactive-well-gate-excluded_tap)if is_n else(nactive&well)-gate-excluded_tap
+  assert (reg-sd_domain).is_empty(),'Terminal is not wholly inside the correct S/D diffusion domain'
+  sd=(reg-blocked).merged();tap_domain=(tap_domain-blocked).merged()
+  assert not sd.is_empty(),'Salicide source region blocked'
+  matches=[]
+  for polygon in tap_domain.interacting(sd.sized(1)).each():
+   tap=pya.Region(polygon)
+   boundary=sd.edges()&tap.edges()
+   if boundary.length()<=0:continue
+   joined=(sd+tap).merged()
+   if joined.count()!=1:continue
+   local=[]
+   for contact in available_contacts.inside(tap).each():
+    box=contact.bbox()
+    if contact.area()!=box.area()or not(pya.Region(contact)-metals[8]).is_empty():continue
+    q=box.center();component=point_probe(8,q,nid)
+    local.append((8,q,component))
+   if not local:continue
+   assert len({v[2]for v in local})==1,'Multiple actual metal components on an unmodeled tap access'
+   proof=dict(kind='actual_unblocked_salicide_shared_edge_to_local_tap_contact',
+    boundary_edges_dbu=sorted(e.to_s()for e in boundary.each()),boundary_length_dbu=boundary.length(),
+    sd_shapes=sorted(p.to_s()for p in sd.each()),tap_shapes=[polygon.to_s()],
+    contact_points_dbu=sorted([q.x,q.y]for m,q,cid in local),
+    native_cluster=nid,salicide_diffusion_access_resistance_modeled=False)
+   matches.append((local,proof,tap))
+  assert len(matches)==1,('Unique actual salicide-to-tap access required',len(matches))
+  return matches[0]
  def shared_diffusion(nid):
   keys=by_net[nid];assert len(keys)>=2 and not net_wires[nid]
   assert all(terminals[k]['model'].startswith('sg13_')and k[1]in ('S','D')for k in keys)
@@ -136,6 +180,10 @@ def generate(out):
    else:
     area=poly.interacting(reg).merged()if cls.startswith('sg13_')and name=='G'else reg
     choices=access_contacts(area,nid);selection='actual_gate_poly_contact'if name=='G'else'actual_native_terminal_contact'
+    if not choices and cls.startswith('sg13_')and name in ('S','D')and net_wires[nid]:
+     choices,proof,tap=salicide_access(reg,cls,nid)
+     row['salicide_access_proof']=proof;salicide_bound[did,name]=(reg,cls,nid,tap,proof)
+     selection='actual_salicide_abutment_to_local_tap_contact'
     if not choices and cls.startswith('sg13_')and name in ('S','D')and not net_wires[nid]:
      proof=shared_diffusion(nid);shared[nid]=proof
      row.update(disposition='RETAINED_SHARED_INTRINSIC_DIFFUSION_NO_METAL_OR_DIFFUSION_R',shared_node=nid)
@@ -172,7 +220,7 @@ def generate(out):
   negative_controls=[],qualified_pex=False,wire_rc_extracted=False,full_phy_accepted=False,
   substrate_spreading_included=False,poly_diffusion_resistance_included=False,
   scope='All2737 native terminal identities; metal anchors only where geometry proves them. Body and contiguous shared diffusion retained explicitly. No modeled substrate/diffusion spreading, wire RC or electrical acceptance.',
-  inputs={str(p):sha(p)for p in [Path(__file__).resolve(),gds,db,source/'parent/integrated/result.json',source/'wire/native05/result.json',source/'wire/native05/wires.l2n',source/'native-mim-geometry.json',out/'npn13G2_code.py']})
+  inputs={str(p):sha(p)for p in [Path(__file__).resolve(),gds,db,source/'parent/integrated/result.json',source/'wire/native05/result.json',source/'wire/native05/wires.l2n',source/'native-mim-geometry.json',out/'npn13G2_code.py',*[out/name for name in pdk_pins]]})
  target=out/'anchors.json'
  def save():target.write_text(json.dumps(result,indent=2)+'\n')
  save()
@@ -192,6 +240,9 @@ def generate(out):
    if r['disposition']=='ACTUAL_TERMINAL_METAL_POINT_REFERENCE':
     a=lookup[r['reference_label']];assert a['point_dbu']==r['point_dbu']and a['metal']==r['metal']
     assert point_probe(r['metal'],pya.Point(*r['point_dbu']),r['native_cluster'])==r['wire_component']
+    if r.get('selection')=='actual_salicide_abutment_to_local_tap_contact':
+     reg,cls,nid,tap,proof=salicide_bound[key]
+     assert salicide_access(reg,cls,nid)[1]==proof==r['salicide_access_proof']
    elif r['disposition'].startswith('RETAINED_SHARED'):
     assert shared_diffusion(r['native_cluster'])==shared[r['native_cluster']]
  verify(rows)
@@ -212,10 +263,28 @@ def generate(out):
   try:verify(bad)
   except (AssertionError,KeyError):result['negative_controls'].append(dict(fault=fault,rejected=True))
   else:raise AssertionError('Actual terminal corruption accepted '+fault)
- assert len(result['negative_controls'])==8
+ assert len(salicide_bound)==30,'Expected precisely the30 previously unresolved actual MOS references'
+ for fault in ('salicide_boundary_cut','local_tap_contacts_removed','opposite_implant_removed'):
+  rejected=0
+  for reg,cls,nid,tap,proof in salicide_bound.values():
+   kwargs={}
+   if fault=='salicide_boundary_cut':
+    seam=reg.sized(2)&tap.sized(2)
+    assert not seam.is_empty();kwargs['blocked']=(salblock+seam).merged()
+   elif fault=='local_tap_contacts_removed':
+    kwargs['available_contacts']=contacts-tap
+   else:
+    kwargs['implant']=(psd-tap)if cls.endswith('_nmos')else(psd+tap).merged()
+   try:salicide_access(reg,cls,nid,**kwargs)
+   except AssertionError:rejected+=1
+   else:raise AssertionError('Actual salicide geometry corruption accepted '+fault)
+  assert rejected==30
+  result['negative_controls'].append(dict(fault=fault,rejected=True,actual_geometry_cases=rejected))
+ assert len(result['negative_controls'])==11
+ result['salicide_reference_count']=len(salicide_bound)
  assert all(sha(Path(n))==digest for n,digest in result['inputs'].items())
  result['status']='PASS_ALL2737_PLL_TERMINAL_IDENTITIES_AND_ACTUAL_METAL_REFERENCES_REQUIRES_FULL_RC'
- save();print(json.dumps(dict(status=result['status'],counts=result['counts'],controls=8)))
+ save();print(json.dumps(dict(status=result['status'],counts=result['counts'],controls=11,salicide_references=len(salicide_bound))))
 if __name__=='__main__':
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  generate(Path(sys.argv[1]).resolve())
