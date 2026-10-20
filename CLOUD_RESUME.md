@@ -1,3 +1,10 @@
+## 2026-10-20 fixed-clock ANT failure and bounded metadata repair
+Mainchip run39369450310 stopped after native DRT reported0markers, before RC/STA: repair_antennas attempted to create the already-existing FIXED clock wire (ANT-0016). All failed output remains pinned.
+Successor flow wraps only the original antenna call: temporarily report the existing net as ROUTED, retain encoded FIXED geometry, restore FIXED immediately including errors, reject changed wire object. Full post-route fixed geometry, antenna, DRC, topology, RC and STA gates remain unchanged.
+The workflow edit starts the corrected route. No gate disabled and no antenna closure claimed.
+Final-clock bridge physical job118464936425/run39373038910 completed successfully; inspect/pin its actual native DRC/LVS/fault results next, then extract two-device terminal/model/RC.
+PLL39370629792 and TXg23439372036289 are still live. Everything cloud-only.
+
 ## 2026-10-20 final-selector physical bridge candidate
 The current failed final four selectors and two tails need a different intervention from the18 middle-stage selectors.
 New tx-final-clock-bridge-cloud generates a native W6/L1.2 rppd across two differential clock terminals plus one ptap. Requires unchanged full560-category DRC, deep/flat native2-device LVS, actual ports and six physical/reference faults.
