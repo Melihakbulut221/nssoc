@@ -1,3 +1,10 @@
+## Fresh CDR data4 MIM capture chained to native extraction
+
+Run 39422106468 at 63bb44ee4ae7a5b841126ab3253a6975c5c35775: planes passed, wire-inputs running when this continuation was prepared. The new cdr-data-v20-mim-parent-rc-cloud job waits on this exact complete successful run and verifies all four stage receipts before native MIM capture. No failed extraction can advance.
+
+Next: inspect extraction, MIM capture; prepare fresh MIM audit/composition then unchanged loaded fullwave gates. Preserve every failed capture. Mainchip 39415055626, TX 39409002976 and PLL 39390580356 remain live; PLL publication must finish before selecting latest continuation capsule. Cloud-only; no local checkout or CAD artifacts.
+
+
 ## CDR data v20 parent physical pass; fresh extraction dispatched
 
 Parent run 39420628714 at 87b35ff5bc80630cb4ad4614bd644ed37d5e77e8 passed native DRC/LVS and faults after declared obsolete M3 cleanup. GDS 56733ea37cc7dc7fc6e8b2180d122511cfddd4a3bc9e1917a8f280f0d7604636. Full immutable receipt: docs/evidence/cdr-data-v20-parent-physical-pass-20261020.json.
