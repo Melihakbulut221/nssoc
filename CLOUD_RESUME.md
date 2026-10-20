@@ -1,3 +1,17 @@
+## 2026-10-20: v21 MIM capture passed; raw audit and composition next
+
+All stages of extraction 39441534722 passed. Capture 39443205735 passed with
+17674 R / 12704 C / eleven native MIM devices and 946 physical terminal points.
+Pinned capture and binding receipts are committed. The new
+cdr-collector-trunks-v21-mim-validation-cloud.yml applies original raw audit,
+13+9 fault controls and 19 composition controls to the fresh model.
+
+After success, run original full early/late waveforms and negative controls.
+Do not precommit same-run dynamic audit/composition receipts. Mainchip route
+39436610858 and PLL 39423618115 remain live. TX rejection is not closed.
+All compute and archives remain in GitHub; workspace empty.
+
+
 ## 2026-10-20: v21 MIM continuation armed after exact fresh extraction
 
 Cloud only. Parent physical pass 39440691879 is proven; extraction 39441534722
