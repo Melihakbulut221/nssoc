@@ -1,3 +1,11 @@
+## 2026-10-20 cloud-only continuation: current route report loader
+Local project directory is empty; no local CAD computations are running. Do not clone or store project outputs locally.
+Run 39368178274 stopped before routing with KeyError report: the current-route receipt is intentionally compact.
+Restore the full original report with exact run/workflow/head/attempt and summary/manifest hashes. Keep all physical, timing and source guards unchanged.
+The workflow edit starts the corrected native route/RC/STA run in GitHub. Find it by this commit; do not duplicate.
+TX normal job 118374075924 in run 39344566214 is still running; intentional-fault job passed by rejecting the fault, not by validating normal operation.
+Full serial PHY and final timing remain open. Preserve the previous detailed PLL continuation plan; no new PLL process has been launched.
+
 ## Active cloud runs and exact continuation, 2026-10-20
 
 Previous goal turn made native physical progress: clock transfer39367665103 passed.

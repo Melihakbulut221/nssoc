@@ -3,7 +3,7 @@
     "baseline_path": "scripts/cloud_onehot_coverage_data_route.py",
     "baseline_sha256": "5d3d4b8498aca7eb363d0fed959a11da3c307cc762832a12b48ffb3f71bd9bc4",
     "candidate_path": "scripts/cloud_onehot_clock_restore_route.py",
-    "candidate_sha256": "10084c3c2cc21c508f30db65850da2725ff378b94811c3c7c563f7d2cfa6abb0",
+    "candidate_sha256": "b84287347c1c5a9e493ca8fcbb035869f41d683e55cef73af2e0002245b88f1d",
     "edits": [
       {
         "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-coverage-data-route'",
@@ -43,6 +43,11 @@
       {
         "before": "COMPLETE_NATIVE_COVERAGE_DATA_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
         "after": "COMPLETE_NATIVE_FIXED_CLOCK_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+        "count": 1
+      },
+      {
+        "before": "        current=current_pin['report']",
+        "after": "        current_run=api('actions/runs/'+str(current_pin['run']))\n        assert current_run['status']=='completed'and current_run['conclusion']=='success'\n        assert current_run['head_sha']==current_pin['source_head']and current_run['run_attempt']==1\n        assert current_run['path']=='.github/workflows/onehot-coverage-data-route-cloud.yml'\n        # This receipt deliberately contains metrics, not the full report.\n        # Restore the immutable report and verify both pinned asset digests.\n        current,current_summary_sha,current_parts_sha=logic.summary(current_pin['group'],current_run)\n        assert current_summary_sha==current_pin['summary_sha256']==clock['sources']['after']['summary']\n        assert current_parts_sha==current_pin['parts_sha256']==clock['sources']['after']['parts']\n        assert current['source_head']==current_pin['source_head']\n        r['clock_current_route_report_source']=dict(run=current_pin['run'],\n            summary_sha256=current_summary_sha,parts_sha256=current_parts_sha)",
         "count": 1
       }
     ]

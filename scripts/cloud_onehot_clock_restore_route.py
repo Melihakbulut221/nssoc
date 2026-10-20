@@ -581,7 +581,18 @@ def main():
         assert json.loads((clock_root/'transfer-proof.json').read_text())==transfer
         current_pin=json.loads((ROOT/'docs/evidence/onehot-coverage-data-route-result-20261020.json').read_text())
         assert current_pin['run']==39331918238 and current_pin['summary_sha256']==clock['sources']['after']['summary']
-        current=current_pin['report']
+        current_run=api('actions/runs/'+str(current_pin['run']))
+        assert current_run['status']=='completed'and current_run['conclusion']=='success'
+        assert current_run['head_sha']==current_pin['source_head']and current_run['run_attempt']==1
+        assert current_run['path']=='.github/workflows/onehot-coverage-data-route-cloud.yml'
+        # This receipt deliberately contains metrics, not the full report.
+        # Restore the immutable report and verify both pinned asset digests.
+        current,current_summary_sha,current_parts_sha=logic.summary(current_pin['group'],current_run)
+        assert current_summary_sha==current_pin['summary_sha256']==clock['sources']['after']['summary']
+        assert current_parts_sha==current_pin['parts_sha256']==clock['sources']['after']['parts']
+        assert current['source_head']==current_pin['source_head']
+        r['clock_current_route_report_source']=dict(run=current_pin['run'],
+            summary_sha256=current_summary_sha,parts_sha256=current_parts_sha)
         assert current['sources_unchanged']and current['returncode']==0 and current['detailed_route_complete']
         assert current['native_routing_drc_errors']==0 and current['critical_disconnected_pins']==0
         assert current['measurements']==clock['original_measurements']
