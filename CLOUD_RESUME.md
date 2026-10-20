@@ -1,3 +1,8 @@
+## 2026-10-21 v25 independent RC/MIM and composition PASS; native tests next
+Validation39513890526 passed both actual stages. Fresh17654R/12682C/sevenMIM raw identities and13wire+9intrinsic corruption cases passed; actual476-device composition retains every raw R/C token, exactly seven intrinsic MIM models and19composition corruption cases. Immutable summary/parts pins and compact native proofs are in cdr-data3-v25-mim-validation-pass-20261021.json.
+Fullwave39514312697 sourcef336dd36b3ed8e66622dd1cf5bf187121117fff3 passed source/receipt preflight; four original full loaded nominal/fault cases now proceed. Do not commit its dynamically generated per-stage audit/composition receipt paths. No loaded electrical pass yet.
+Mainchip continuation39515176239 atf28c39f04b4e58221f7bd1a5121f72b0e4541b10 passed15descriptor controls and is live, consuming latest39502505171 cross process for7200native seconds. Never replay an older state while it runs. PLL39502073954 also needs ongoing exact-state observation. FullPHY/mainchip route/finalSTA remain open. Cloud-only; workspace empty.
+
 ## 2026-10-21 Actual active router progressed across distinct cloud VMs
 Run39502505171 completed successfully. The original saved native process was restored on another boot, advanced through native DRT iteration0 to its50% progress marker, and was captured again. Single entrypoint/frozen prefix/exact ELF and original route settings were preserved. Full immutable report and next-source descriptor: docs/evidence/mainchip-active-drt-cross-checkpoint-pass-20261021.json.
 The in-progress marker reports39778 violations at50% of iteration0; this is NOT a completed iteration or final DRC count and must not be compared as a final improvement. No completed iteration counts yet.
