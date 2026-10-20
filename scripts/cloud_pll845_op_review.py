@@ -36,10 +36,10 @@ def main():
         r['operating_point']=reader.read(raw,coverage['vectors']);save()
         assert r['operating_point']['native_columns']==5105
         r['controls']=reader.controls(raw,coverage['vectors'])
-        assert len(r['controls'])==10 and all(x['rejected']for x in r['controls'])
+        assert len(r['controls'])==12 and all(x['rejected']for x in r['controls'])
         assert all(sha(OUT/'source'/n)==prior['outputs'][n]for n in files)
         assert sha(Path(__file__))==r['controller_sha256']and sha(Path(reader.__file__))==r['reader_sha256']
-        r.update(status='PASS_WHOLE_PLL_ALL_NATIVE_ZERO_SOURCE_OP_AND10_CONTROLS_REQUIRES_FULL_LOADED_TRANSIENT',
+        r.update(status='PASS_WHOLE_PLL_ALL_NATIVE_ZERO_SOURCE_OP_AND12_CONTROLS_REQUIRES_FULL_LOADED_TRANSIENT',
           sources_unchanged=True,zero_source_op_passed=True,biased_operation_accepted=False)
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:

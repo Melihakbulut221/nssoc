@@ -24,7 +24,15 @@ def read(raw,required):
     assert all(re.fullmatch(r'v\([^()]+\)',n)for n in required)
     for _,name,kind in table:
         assert kind in ('voltage','current')
-        assert re.fullmatch(('v'if kind=='voltage'else'i')+r'\([^()]+\)',name),(name,kind)
+        prefix='v('if kind=='voltage'else'i('
+        assert name.startswith(prefix)and name.endswith(')')and not any(c.isspace()for c in name),(name,kind)
+        inner=name[2:-1];assert inner
+        depth=0
+        for c in inner:
+            if c=='(':depth+=1
+            elif c==')':depth-=1
+            assert depth>=0,('Unbalanced native name',name)
+        assert depth==0,('Unbalanced native name',name)
         if name in required:assert kind=='voltage'
     assert len(raw)-offset==width*8,'Truncated/extra native OP payload'
     values=np.frombuffer(raw[offset:],dtype='<f8')
@@ -58,11 +66,14 @@ def controls(raw,required):
      ('duplicate_identity',h.replace(names[1],names[0],1).encode()+raw[offset:]),
      ('wrong_point_count',h.replace('No. Points: 1','No. Points: 2',1).encode()+raw[offset:]),
      ('wrong_unit',h.replace('voltage','current',1).encode()+raw[offset:])]
+    nested=next(n for n in names if '('in n[2:-1])
+    cases.append(('unbalanced_native_internal_name',h.replace(nested,nested[:-1],1).encode()+raw[offset:]))
+    cases.append(('extra_closing_native_internal_name',h.replace(nested,nested+')',1).encode()+raw[offset:]))
     result=[]
     for name,data in cases:
         assert data!=raw
         try:read(data,required)
         except (AssertionError,ValueError):result.append(dict(name=name,rejected=True))
         else:raise AssertionError('Accepted '+name)
-    assert len(result)==10
+    assert len(result)==12
     return result

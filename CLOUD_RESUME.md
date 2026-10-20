@@ -1,3 +1,9 @@
+## 2026-10-20 — preserve native OSDI internal-name syntax
+- OP review39361233183 rejected a valid native label v(n.xloop.xd0480.nr1#flow(b_re1)) because the draft reader assumed flat parentheses.
+- New reader validates outer voltage/current type plus balanced internal labels; all required1694 probes, exact payload/header, every-column finite/zero bounds remain unchanged. Added2 malformed-name controls;12controls total.
+- Same untouched native capture39360539378. No CAD rerun, no electrical tolerances changed.
+- After OP review: full1us loaded transport and all-device/lock checks. TX39344566214/mainchip39331918238 preserved. Cloud-only.
+
 ## 2026-10-20 — native compile passed; preserved write-all OP needs full-column reader
 - Run39360539378 native ngspice exit0, no diagnostics, all102OFF readbacks=1, exact KLU solver settings. Original selected-only OP reader rejected5105native columns versus1694requested terminal voltages.
 - Every1694required voltage is present;3411extra columns are native internal nodes and source currents from write-all. Failure retained; no new native run needed.

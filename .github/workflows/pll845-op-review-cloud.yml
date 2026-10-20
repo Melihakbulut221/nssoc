@@ -28,7 +28,7 @@ jobs:
         run: python3 -m pip install numpy==2.3.3
       - name: Compile hosted whole845 stimulus preparation
         run: python3 -m py_compile scripts/cloud_pll845_op_review.py
-      - name: Read every preserved native OP column and reject10 capture corruptions
+      - name: Read every preserved native OP column and reject12 capture corruptions
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_pll845_op_review.py
@@ -63,3 +63,5 @@ jobs:
 # Preserve102 interleaved OFF/echo/show records at their original positions.
 
 # Keep literal alter @ device syntax and verify38 recovered original input hashes.
+
+# Preserve balanced native OSDI internal labels, including #flow(b_re1).
