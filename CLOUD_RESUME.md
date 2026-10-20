@@ -1,3 +1,9 @@
+## Cloud checkpoint: v16 latch diagnosis completed
+
+All work remains cloud-only; local project directory rechecked empty. CDR analysis39376994817 reproduced all original gates, retained rejection, and identified late A/B slave output plus weak/late C/D incoming data. See docs/cdr-v16-latch-timing-review-20261020.md and its digest-pinned evidence receipt. Do not adopt rejected v17 resistor edits or move capture phases. Next candidate requires regenerated physical routing and new extraction, not translated children with stale wires.
+
+Active: mainchip39373842033, fullPLL39370629792 (publishing initial-stage evidence at latest check), TXg23439372036289 and TXg234+bridge39376417214. Wait for actual artifacts before claiming outcomes; preserve native checkpoint continuation. No full PHY or final timing acceptance.
+
 ## 2026-10-20 current CDR latch transfer diagnosis
 Read-only cdr-v16-latch-timing-cloud restores exact early/late native waves39337518790 and geometry39336054657, reproduces all116HBT/all4sampler original checks, then derives native master/slave/selector graphs and measures real data/clock/current timing.
 No sampling phase, expected bits, loading, waveform or engineering gate changed. V17 divider experiment remains rejected; this current-layout diagnosis selects the next actual loading/latch repair.
