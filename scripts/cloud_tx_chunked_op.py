@@ -62,6 +62,8 @@ def native_pilot(engine,out):
         'wrdata reference.dat '+' '.join(vectors[:256]),'quit','.endc','.end']
     deck=out/'pilot.cir';deck.write_text('\n'.join(lines)+'\n')
     env={k:v for k,v in os.environ.items()if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')}
+    (out/'spinit').write_text('set num_threads=1\n')
+    env.update(SPICE_SCRIPTS=str(out),OMP_NUM_THREADS='1',RAYON_NUM_THREADS='1')
     with (out/'native.log').open('w')as log:
         code=subprocess.call([str(engine),'-n','-b',deck.name],cwd=out,env=env,stdout=log,stderr=subprocess.STDOUT)
     assert code==0,'Native OP pilot failed'

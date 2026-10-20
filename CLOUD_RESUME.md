@@ -1,3 +1,6 @@
+## 2026-10-20 — Native OP control initialization warning repaired
+Raw64 preparation39458613068 completed its native10032-node OP but was correctly rejected for missing spinit. Added explicit initialization file/path with one thread; strict diagnostics and every transport fault/control retained. New push repeats preparation without restarting any live simulation. CDR fullwave39458941860 is live after exact validation; TX39453950816, PLL39423618115 and mainchip39436610858 remain intact. Cloud-only.
+
 ## 2026-10-20 — CDR v22 fullwave exact-run continuation
 Prepared original34.25ns256-bit early/late/clock-stopped/VI-off tests on fresh17674R12700C. cdr-retime-trunks-v22-mim-streamed-cloud waits for exact validation39457813038 and every original fault control. Fresh planes receipt pinned; dynamic audit/composition receipts remain worker-only. New TX raw64 OP transport preparation is on sourced322a4df. Running TX39453950816, PLL39423618115 and mainchip39436610858 are preserved. Electrical/fullPHY/final timing not accepted. Cloud-only.
 
