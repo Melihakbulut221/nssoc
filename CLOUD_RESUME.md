@@ -1,3 +1,6 @@
+## Physical clock-route repair candidate
+Prepare transfer of actual 1142.070 um clknet_3_5_0_pcie_clk_i route from run39293720171 into latest run39331918238, whose same net is 2996.810 um. Native pin, placement, NDR and via identities must match. Incremental DEF imports only the old physical route and fixes that wire for subsequent physical legalization. Prove all unrelated DEF content and exported logic identical; require real cell-motion and wire-type fault rejection. Candidate remains unaccepted until fresh physical DRC/connectivity, RC and all-corner STA. No source clock, derate, constraint or gate changes. Cloud-only; original source artifacts unchanged.
+
 ## Native SPEF identity correction
 39364939117 exposed literal SPEF backslash quoting in auto-generated flip-flop instance names. Three buffer-only nets matched; clknet_leaf_256_pcie_clk_i was rejected because quoted native names were not decoded. Decode quoted characters and retain exact full ODB membership/direction, connectivity, capacitance and immutable-source checks; reject truncated quoting. This is a reader correction, not a changed wire model or timing acceptance.
 
