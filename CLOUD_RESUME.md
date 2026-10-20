@@ -1,3 +1,10 @@
+## 2026-10-20 — native compile passed; preserved write-all OP needs full-column reader
+- Run39360539378 native ngspice exit0, no diagnostics, all102OFF readbacks=1, exact KLU solver settings. Original selected-only OP reader rejected5105native columns versus1694requested terminal voltages.
+- Every1694required voltage is present;3411extra columns are native internal nodes and source currents from write-all. Failure retained; no new native run needed.
+- New pll845-op-review-cloud audits untouched capture: all1694required identities, every native voltage/current finite and below original zero-source voltage1nV/current1pA limits, unique complete header/payload and10corruptions. Never silently discard extra columns.
+- OP remains unaccepted until review. Full loaded1us/all-device safety/PLL lock still open. Native transient column count must be verified independently before planning lossless cloud streaming.
+- TX39344566214/mainchip39331918238 remain active handles. Cloud-only.
+
 ## 2026-10-20 — whole loaded input binding PASSED; native OP preflight dispatched
 - Run39360285698 /cb2f3f79f7593303e8e8eda36624c7305a98c115 SUCCESS.38original PDK/deck inputs restored by exact hashes; original stimulus/load/solver/full1us/.3125ps preserved by reversible source transform.
 - Instrumentation covers2737native terminal records plus4regular contacts using1694unique voltage vectors. All102OFF/echo/show identities rebound with literal alter @ syntax. Public reference/fb/vctrl retained.
