@@ -200,7 +200,16 @@ def prepare():
     actual,proof=reports.restore_report('pll845-loaded-preparation',PREP_RUN,PREP_SUMMARY,PREP_PARTS,OUT/'prepared',files)
     assert actual==prepared
     for n,digest in prepared['source_inputs'].items():
-        assert sha(OUT/'prepared/model-sources'/n)==sha(LIB/n)==digest
+        source=OUT/'prepared/model-sources'/n
+        assert sha(source)==digest
+        # The loaded-deck proof also retains its source bench, which was not
+        # a runtime dependency of the older portable engine capsule.
+        for dest in (LIB/n,OUT/'model-sources'/n):
+            if dest.exists():assert sha(dest)==digest
+            else:
+                dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,dest)
+            assert sha(dest)==digest
+        receipt['model_sources'][n]=digest
     shutil.copy2(OUT/'prepared/candidate-circuit.cir',CASE/'circuit.cir')
     shutil.copy2(OUT/'prepared/composition/pll845-mim-wire.spice',CASE/'parent865.spice')
     vectors=validate_bound_deck((CASE/'circuit.cir').read_text())

@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_pll_c8_v2_native_acquisition.py",
   "baseline_sha256": "e3570ec29531ecfda342afccdc3c5ab77b8731ac3f7ab132415b8863f78ec2fd",
   "candidate_path": "scripts/cloud_pll845_native_acquisition.py",
-  "candidate_sha256": "6ec8b0f9f47ccfe67124b33a8adc8e739f45e2033cb6ccd47302540bdb8ae016",
+  "candidate_sha256": "185b78aa506cf5fbd84d171ac58ddc5bf3c7e415f91139dbbb1fbe320c05f4f3",
   "edits": [
     {
       "before": "Original physical845 1us native trajectory",
@@ -67,6 +67,11 @@
     {
       "before": "names,values,cap=acquisition.capture(raw,vectors)",
       "after": "names,values,cap=full_wave.capture(raw,vectors)",
+      "count": 1
+    },
+    {
+      "before": "    for n,digest in prepared['source_inputs'].items():\n        assert sha(OUT/'prepared/model-sources'/n)==sha(LIB/n)==digest",
+      "after": "    for n,digest in prepared['source_inputs'].items():\n        source=OUT/'prepared/model-sources'/n\n        assert sha(source)==digest\n        # The loaded-deck proof also retains its source bench, which was not\n        # a runtime dependency of the older portable engine capsule.\n        for dest in (LIB/n,OUT/'model-sources'/n):\n            if dest.exists():assert sha(dest)==digest\n            else:\n                dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,dest)\n            assert sha(dest)==digest\n        receipt['model_sources'][n]=digest",
       "count": 1
     }
   ]

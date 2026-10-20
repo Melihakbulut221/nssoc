@@ -1,3 +1,12 @@
+## 2026-10-20 full-terminal controls passed; native source restoration corrected
+PLL run39370195978 controls job118456096780 passed all13 streaming-reader faults and original acquisition/backend/prefix controls.
+Initial job118456251294 failed before starting SPICE: the older runtime capsule omitted source/bench.cir, an additional hash-pinned file in loaded preparation39360285698.
+Restore each complete source file from that exact loaded-deck archive, check every byte hash, and retain in the next-host model bundle. No solver/stimulus/model/gate changes.
+The workflow edit launches a corrected full-terminal PLL trajectory. Find it by this commit.
+TX normal39344566214/job118374075924 now completed and REJECTED. Native exit0, no diagnostics,77569rows,34ns,83/768wrong-sign and104below100mV;24HBT failures,0MOS. Improvement versus120/144 does not meet acceptance. Every waveform byte is retained in pinned release parts.
+Next TX action: reproduce original gates and locate physical-stage/clock/headroom failures in this actual new waveform before another physical change.
+Mainchip route39369450310/job118453762985 remains live. Local project stays empty.
+
 ## 2026-10-20 whole-PLL full-terminal cloud trajectory
 The new pll845-native-acquisition-cloud workflow validates controls before launching actual original1us acquisition of the whole845+4-contact model with all1694 terminal vectors.
 Preparation39360285698 and zeroOP review39361546966 remain immutable. No new full transient or lock result is claimed at publication.
