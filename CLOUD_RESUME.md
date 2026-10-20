@@ -1,3 +1,10 @@
+## 2026-10-21 — original loaded v24 CDR screen
+
+Fresh raw MIM audit39495976408 passed; composition was queued at last check. New v24 fullwave workflow waits for this exact validation run and all original controls before running nominal early/late and stopped-clock/VI-off cases. Only immutable paths/model identifier changed; original256bits,loads,timestep,phase/timing/current/voltage gates retained. Later PVT/full-loop remains mandatory.
+
+Mainchip actual process checkpoint workflow39496744489 is live. Do not restart it or claim active DRT continuation before its evidence passes. Local project remains empty; all calculations/results are cloud-only.
+
+
 ## 2026-10-20 — exact mainchip runtime passed; process portability next
 
 Portable runtime39494338440 passed: actual103633024-byte native OpenROAD ELF and152762-instance ODB serialize byte-identically in original and isolated runtime. Immutable2.66GB image archive and full source hashes pinned.
