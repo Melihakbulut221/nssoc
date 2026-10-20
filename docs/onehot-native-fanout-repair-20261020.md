@@ -48,3 +48,23 @@ repair, OpenRCX, all three timing corners and the unchanged zero-violation
 acceptance gates. No estimate is substituted for routed timing. Qualified
 min/max PEX, transistor LVS, full serialPHY and manufacturing approval remain
 outside this result. Everything runs and is archived in GitHub.
+
+## Actual first-pass rejection and data-input protection repair
+
+Run39403242252 reproduced the six saved worst slacks and began native
+electrical repair. It then stopped atRSZ-3006 because the protected SRAM
+u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[0].u_mem/A_ADDR[5] prevented native
+InsertBufferBeforeLoads onnet4517. This is an optimizer integration failure,
+not timing closure. The failed logs and source baseline are retained.
+
+Whole-instance dont-touch was stronger than the intended geometry constraint.
+Before electrical repair, restore each instance's original flag while keeping
+all protected clock nets dont-touch. Exclude every drive strength in each
+actual clock-pin cell family, and each hard-macro family, from resizing.
+Buffering a data input is thus permitted; resizing/moving SRAM or sequential
+clock cells remains forbidden by independent post-repair geometry checks.
+The original netlist equation proof, actual inversion control and fixed
+physical clock proof are unchanged. No clock, SDC or acceptance gate changed.
+
+If electrical repair itself errors again, save its unchecked ODB and netlist
+before propagating the error; no partial repair is accepted automatically.

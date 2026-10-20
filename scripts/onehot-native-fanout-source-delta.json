@@ -577,7 +577,7 @@
       "baseline_path": "hw/soc/flow/onehot_native_resizer.tcl",
       "baseline_sha256": "73105fcda621a0ea627489f548b097160e64376ace544a519915cb5ee3f5b4c7",
       "candidate_path": "hw/soc/flow/onehot_native_fanout.tcl",
-      "candidate_sha256": "a6b3fe35655c735db5f08e7856b676876499a359107c8d2fd7ca20832bb26324",
+      "candidate_sha256": "d12ad0e97180e7a65add6f23929e77fd7396434d26b5917d60333c20c11aadaa",
       "changes": [
         {
           "start": 673,
@@ -586,48 +586,83 @@
         },
         {
           "start": 2793,
+          "end": 2794,
+          "replacement": "Whol"
+        },
+        {
+          "start": 2795,
           "end": 2795,
-          "replacement": "R"
+          "replacement": "-instanc"
+        },
+        {
+          "start": 2796,
+          "end": 2796,
+          "replacement": " dont-touch also "
         },
         {
           "start": 2797,
           "end": 2797,
-          "replacement": "air"
+          "replacement": "rohibits inserting a data-input buffer.\n    # Retain original user flags and"
         },
         {
-          "start": 2798,
-          "end": 2803,
-          "replacement": "a"
+          "start": 2799,
+          "end": 2799,
+          "replacement": "l"
         },
         {
-          "start": 2805,
-          "end": 2805,
-          "replacement": "ual extracted h"
+          "start": 2800,
+          "end": 2800,
+          "replacement": "ck-"
+        },
+        {
+          "start": 2801,
+          "end": 2802,
+          "replacement": "et prot"
         },
         {
           "start": 2806,
+          "end": 2806,
+          "replacement": "on, but forbid e"
+        },
+        {
+          "start": 2807,
+          "end": 2807,
+          "replacement": "ery\n    # dr"
+        },
+        {
+          "start": 2808,
           "end": 2808,
-          "replacement": "gh-fanou"
+          "replacement": "ve s"
         },
         {
           "start": 2809,
-          "end": 2810,
-          "replacement": "/slew/cap"
+          "end": 2809,
+          "replacement": "rength of clock-pin cell families from native resizing.\n    # Hard macro geometr"
         },
         {
-          "start": 2811,
+          "start": 2810,
+          "end": 2810,
+          "replacement": " and every sequential clock pin remain"
+        },
+        {
+          "start": 2813,
           "end": 2813,
-          "replacement": "loads"
+          "replacement": "dependently\n"
         },
         {
           "start": 2814,
+          "end": 2814,
+          "replacement": "   # checked after repair and legalization.\n    foreach inst [$block getInsts] {\n        set preserve_family [[$inst getMaster] isBlock]\n        foreach pin [$inst getITerms] {\n            if {[[$pin getMTerm] getSigType] eq \"CLOCK\"} {set preserve_family 1}\n        }\n        if {$preserve_family} {\n            set master [[$inst getMaster] getName]\n            regsub {_[0-9]+$} $master {_*} family\n            set family_cells [get_lib_cells \"*/$family\"]\n            if {[lleng"
+        },
+        {
+          "start": 2816,
           "end": 2816,
-          "replacement": "befor"
+          "replacement": " $family_cells] == 0} {error \"Missing protected clock-pin/macro family: $master\"}\n            set_dont_use $family_cells\n        }\n        set n [$inst getName]\n        $inst setDoNotTouch $original_touch($n)\n    }\n    # Repair actual extracted high-fanout/slew/cap loads befor"
         },
         {
           "start": 2823,
           "end": 2823,
-          "replacement": ".\n    # All clock/SRAM guards and original clocks/constraints remain in force.\n    # Keep a real checkpoint even if subsequent timing/proof rejects the candidate.\n    repair_design -slew_margin 10 -cap_margin 10 -max_utilization 80 -verbose\n    write_db \"$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.odb\"\n    write_verilog \"$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.v\"\n    # Setup may add"
+          "replacement": ".\n    # All clock/SRAM guards and original clocks/constraints remain in force.\n    # Keep a real checkpoint even if subsequent timing/proof rejects the candidate.\n    if {[catch {repair_design -slew_margin 10 -cap_margin 10 -max_utilization 80 -verbose} failure options]} {\n        write_db \"$::env(NSSOC_RESIZER_OUT)/electrical-unchecked.odb\"\n        write_verilog \"$::env(NSSOC_RESIZER_OUT)/electrical-unchecked.v\"\n        return -options $options $failure\n    }\n    write_db \"$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.odb\"\n    write_verilog \"$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.v\"\n    # Setup may add"
         },
         {
           "start": 2825,

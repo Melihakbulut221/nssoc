@@ -60,10 +60,34 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
             if {![$inst isDoNotTouch]} {error "Native instance protection failed"}
         }
     }
+    # Whole-instance dont-touch also prohibits inserting a data-input buffer.
+    # Retain original user flags and clock-net protection, but forbid every
+    # drive strength of clock-pin cell families from native resizing.
+    # Hard macro geometry and every sequential clock pin remain independently
+    # checked after repair and legalization.
+    foreach inst [$block getInsts] {
+        set preserve_family [[$inst getMaster] isBlock]
+        foreach pin [$inst getITerms] {
+            if {[[$pin getMTerm] getSigType] eq "CLOCK"} {set preserve_family 1}
+        }
+        if {$preserve_family} {
+            set master [[$inst getMaster] getName]
+            regsub {_[0-9]+$} $master {_*} family
+            set family_cells [get_lib_cells "*/$family"]
+            if {[llength $family_cells] == 0} {error "Missing protected clock-pin/macro family: $master"}
+            set_dont_use $family_cells
+        }
+        set n [$inst getName]
+        $inst setDoNotTouch $original_touch($n)
+    }
     # Repair actual extracted high-fanout/slew/cap loads before setup.
     # All clock/SRAM guards and original clocks/constraints remain in force.
     # Keep a real checkpoint even if subsequent timing/proof rejects the candidate.
-    repair_design -slew_margin 10 -cap_margin 10 -max_utilization 80 -verbose
+    if {[catch {repair_design -slew_margin 10 -cap_margin 10 -max_utilization 80 -verbose} failure options]} {
+        write_db "$::env(NSSOC_RESIZER_OUT)/electrical-unchecked.odb"
+        write_verilog "$::env(NSSOC_RESIZER_OUT)/electrical-unchecked.v"
+        return -options $options $failure
+    }
     write_db "$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.odb"
     write_verilog "$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.v"
     # Setup may add positive buffers/load splits; no clone/remove/swap/retime.
