@@ -1,3 +1,6 @@
+## Clock transfer native fixed metadata correction
+39366144342 imported the clock DEF but was rejected because the existing native net metadata was not FIXED. Explicitly set this single native net wire type before import; still require the imported decoder opcode to be FIXED, exact old route and via geometry, unchanged non-target DEF and exported logic. Neither validation nor timing constraints are relaxed. The fixed-route fault control must continue to reject a routed metadata mutation.
+
 ## Paired clock geometry and RC passed; physical candidate continues
 39365314065 verifies exact source pin identities, native geometry and nominal SPEF: offending clock wire1142.070→2996.810um, wire C0.222630→0.612160pF, branch6_46 shortest seriesR1067.1716→2404.3016ohm. No qualifiedPEX claim. Transfer attempt39365732494 rejected indentation in native DEF; fix only leading-whitespace recognition, keep exact non-target DEF/logic and pin/via proof. New cloud transfer run follows. TX original live run39344566214 unchanged.
 

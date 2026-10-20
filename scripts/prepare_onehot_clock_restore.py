@@ -76,6 +76,8 @@ def main():
            full_timing_complete=False,accepted=False)
         # Remove only this wire. All other native routing remains present.
         odb.dbWire.destroy(b.getWire());assert b.getWire()is None
+        b.setWireType('FIXED')
+        assert str(b.getWireType())=='FIXED','Unable to set actual native fixed net metadata'
         odb.write_db(db,str(OUT/'import-base.odb'))
         plan['import_base_sha256']=sha(OUT/'import-base.odb')
         (OUT/'transfer-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
@@ -90,7 +92,7 @@ def main():
             x,y=inst.getLocation();inst.setLocation(x+block.getDbUnitsPerMicron(),y)
         elif fault=='wire_type':net.setWireType('ROUTED')
         assert identity(net)==plan['native_pin_identity']
-        assert str(net.getWireType())=='FIXED','Clock route is not physically fixed'
+        assert str(net.getWireType())=='FIXED',('Clock route is not physically fixed',str(net.getWireType()))
         assert net.getWire().getLength()==plan['old_length_dbu']
         actual,unrelated=export(block,'candidate.def'if fault=='none'else 'fault-'+fault+'.def')
         assert unrelated==plan['current_unrelated_def_sha256'],'Unrelated DEF geometry, cells or connectivity changed'
