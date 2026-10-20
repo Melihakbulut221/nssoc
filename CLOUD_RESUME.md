@@ -1,3 +1,11 @@
+## 2026-10-20 cloud continuation: follower476 RC audit/composition
+
+CDR clean extraction39476228473 and MIM capture39477040744 passed; exact17654R12682C,7MIM. New cdr-follower-v23-mim-validation-cloud workflow launches on this commit and must pass13wire+9MIM+19composition controls before loaded-wave preparation. All electrical gates remain original; no PHY acceptance.
+
+Whole TX RC39477040508 REJECTED by two native total-C witnesses (P_avss/P_avdd), despite698connectedcomponents and exact exported R/C conservation. Diagnose native accumulation; never relax thresholds.
+
+Do not restart live mainchip39436610858, PLL39423618115, TXwaves39460427396/39453950816. Cloud only; local workspace empty. See immutable receipts and docs/cdr-follower-v23-mim-validation-20261020.md.
+
 ## 2026-10-20 — Full TX8074 terminal binding passed; complete physical parent RC dispatched
 TX anchor39471428433 passed all28582 terminals,163ports,13344actual planes and four faults. Exact receipt pinned. New tx-raw64-native-rc-cloud extracts698conductors from powered full32core+64drivers, preserving native R/C audits and13corruptions. No ideal interconnect substituted. Clean CDR extraction39476228473 is active; MIM capture now waits for that exact run/head and clean-parent hash, never failed39474349718. Original loaded waves/mainchip/PLL remain live; fullPHY/final timing open. Cloud only.
 
