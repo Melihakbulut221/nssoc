@@ -15,3 +15,9 @@ The prior composition also proved that14 of52 native MIM terminal nodes differ f
 Run39356172553 rejected the draft's incorrect130-device target before any body-access model was accepted. The immutable composition records show exactly125 LV PMOS body terminals on cluster203 (native IDs195 through319). The whole PLL still contains130 LV PMOS; the remaining five already belong to other body groups with named contact models.
 
 The revised native verifier derives the complete target identity set from the frozen composition, requires exactly125 IDs, and requires exact equality with the native KLayout device set. It separately retains the full130 LV PMOS census. This corrects the scope of the body-access check; it does not remove a missing device or weaken the original845-device model binding.
+
+## Actual missing reference points
+
+Run39356595862 passed the corrected125-device identity scope, then rejected a real regular tap on NWELL_003 because no original RC point lies on its drawn contact. The previous immutable wire model therefore cannot represent every required body-access plane.
+
+The revised generator chooses new points only at actual drawn contacts wholly inside the physical tap and Metal1, independently probes native LVS and wire ownership, and preserves every original1604 physical/1877 logical reference unchanged. Extended anchors and the contact plan are separate artifacts. Adding a point explicitly requires fresh native RC and a fresh raw audit before composition. This changes extraction reference points, not the GDS or the original failed/captured evidence.

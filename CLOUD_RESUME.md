@@ -1,3 +1,10 @@
+## 2026-10-20 — actual missing body reference requires fresh RC
+- Run39356595862 passed125target identities but found a real regular tap with no original contact anchor (NWELL_003 at[2622400,1509150,2625280,1509450]nm). Original1604point mesh cannot be treated as containing it.
+- Native generator now adds only actual fully contacted Metal1 points after independent LVS/wire-owner probes. Original1877logical/1604physical anchors remain byte-equivalent as data; added points are explicit in extended-anchors.json.
+- REQUIRED NEXT after geometry proof: rerun full immutable whole-PLL MIM RC with extended anchors, all235components/26MIMs; repeat per-point/raw R/C audit and13+9controls. Compare collapsed C by physical conductor against old capture. No GDS changes.
+- Then integrate actual separate n-well islands and auxiliary ntap1 access models; keep845native-device census distinct from geometry-derived access models.46base composition controls plus access-specific corruption controls. Avoid direct body/supply aliases.
+-14MIM actual attachment-plane differences preserved; audit CDR equivalent later. Cloud-only, liveTX39344566214/mainchip39331918238 unchanged.
+
 ## 2026-10-20 — regular-body target census corrected from immutable evidence
 - Run39356172553 rejected the draft130-target assumption. Frozen composition proves125 actual LV PMOS body terminals on cluster203, IDs195..319;5other LV PMOS already have named body contact models.
 - Revised native proof requires the exact125-ID set from the frozen composition plus the full130-LVPMOS/845-device source census. No omitted device or weakened global gate.

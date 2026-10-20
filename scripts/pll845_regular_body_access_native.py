@@ -62,7 +62,7 @@ def main(out):
  selected=pya.Region()
  for r in islands.values():selected+=r
  selected=selected.merged()
- planned_taps=[];access=[];tech=json.loads((out/'sg13g2_tech.json').read_text())['techParams']
+ planned_taps=[];access=[];new_points=[];tech=json.loads((out/'sg13g2_tech.json').read_text())['techParams']
  for name,island in sorted(islands.items()):
   pieces=(ntap&island).merged();assert not pieces.is_empty(),('No actual regular tap on well island',name)
   for polygon in sorted(list(pieces.each()),key=lambda p:(p.bbox().left,p.bbox().bottom,p.to_s())):
@@ -74,7 +74,26 @@ def main(out):
     nn=N.probe_net(N.layer_by_index(mapping[8]),point);wn=wire.probe_net(wire.layer_by_name('gds_8'),point)
     assert nn is not None and wn is not None and nn.cluster_id==203 and wn.cluster_id==a['wire_component']and owners[wn.cluster_id]==203
     candidates.append((label,a,point))
-   assert candidates,('New actual tap reference plane/RC extraction required; no existing contact anchor',name,polygon.to_s())
+   if not candidates:
+    # Add a genuinely new reference only at an actual drawn contact. The original
+    # RC capture cannot be reused as if it already contained this point.
+    real=[]
+    for contact in contacts.inside(tap).each():
+     box=contact.bbox()
+     if contact.area()!=box.area()or not(pya.Region(contact)-metal).is_empty():continue
+     point=box.center()
+     nn=N.probe_net(N.layer_by_index(mapping[8]),point);wn=wire.probe_net(wire.layer_by_name('gds_8'),point)
+     assert nn is not None and wn is not None and nn.cluster_id==203 and owners[wn.cluster_id]==203
+     real.append((point,wn.cluster_id))
+    assert real,('No actual contacted regular n-well tap',name,polygon.to_s())
+    center=polygon.bbox().center()
+    point,component=min(real,key=lambda x:((x[0].x-center.x)**2+(x[0].y-center.y)**2,x[0].x,x[0].y))
+    assert not any(a['metal']==8 and a['point_dbu']==[point.x,point.y]for a in physical.values())
+    label='BULK_ACCESS_'+str(len(new_points)+1).zfill(3)
+    assert label not in physical
+    a=dict(label=label,metal=8,point_dbu=[point.x,point.y],wire_component=component,native_cluster=203,
+     logical_labels=[label],kind='GEOMETRY_EXTRACTED_REGULAR_BODY_CONTACT_REFERENCE')
+    physical[label]=a;new_points.append(a);candidates=[(label,a,point)]
    center=polygon.bbox().center()
    label,a,point=min(candidates,key=lambda x:((x[2].x-center.x)**2+(x[2].y-center.y)**2,x[0]))
    area=Decimal(tap.area())/Decimal(1000000);perimeter=Decimal(tap.perimeter())/Decimal(1000)
@@ -85,7 +104,9 @@ def main(out):
     wire_component=a['wire_component'],point_dbu=a['point_dbu'],metal=8,
     area_um2=str(area),perimeter_um=str(perimeter),parameters={k.lower():v for k,v in params.items()},
     actual_tap_polygon_dbu=polygon.to_s(),actual_contact_anchor_candidates=len(candidates),
-    reference_plane='existing exact native contact point; audited R/C mesh unchanged',
+    rectangular=(tap^pya.Region(tap.bbox())).is_empty(),
+    bbox_dbu=[tap.bbox().left,tap.bbox().bottom,tap.bbox().right,tap.bbox().top],
+    reference_plane='new actual contact point; fresh RC mandatory'if label.startswith('BULK_ACCESS_')else'existing exact audited native contact point',
     distributed_well_or_tap_spreading_modeled=False)
    access.append(row);planned_taps.append((row,tap))
  plan=dict(native_body_cluster=203,native_net='core_vdd',native_pmos_body_terminals=len(expected_body),
@@ -93,7 +114,11 @@ def main(out):
    island=island_ids[assigned[did]],body_node='body_203_'+island_ids[assigned[did]].lower())for did,sd in body_devices],
   islands=[dict(name=name,polygons_dbu=[p.to_s()for p in r.each()],area_dbu2=r.area())for name,r in sorted(islands.items())],
   access_models=access,original_named_native_devices=845,auxiliary_geometry_extracted_contact_models=len(access),
-  existing_audited_wire_points_only=True,wire_geometry_changed=False,wire_rc_changed=False,qualified_pex=False,
+  existing_audited_wire_points_only=not new_points,original_audited_wire_points_preserved=True,
+  new_physical_points=new_points,new_reference_count=len(new_points),fresh_wire_rc_required=bool(new_points),
+  original_logical_points=1877,original_physical_points=1604,
+  extended_logical_points=1877+len(new_points),extended_physical_points=1604+len(new_points),
+  wire_geometry_changed=False,old_wire_rc_not_rewritten=True,qualified_pex=False,
   substrate_spreading_modeled=False,within_tap_and_well_distributed_resistance_modeled=False)
  def validate(well_mask,tap_mask,contact_mask,metal_mask,override=None):
   union=pya.Region()
@@ -134,10 +159,28 @@ def main(out):
   except AssertionError:count+=1
   else:raise AssertionError('Missing actual body well accepted')
  assert count==len(islands);controls.append(dict(name='actual_nwell_island_removed',rejected=True,cases=count))
- result=dict(status='PASS_ACTUAL_REGULAR_NWELL_CONTACT_GEOMETRY_REQUIRES_COMPOSITION_AND_LOADED_WAVES',
+ result=dict(status='PASS_ACTUAL_REGULAR_NWELL_CONTACT_GEOMETRY_REQUIRES_FRESH_RC_AND_COMPOSITION',
   source_gds_sha256=sha(gds),plan=plan,controls=controls,qualified_pex=False,full_phy_accepted=False,
   inputs={str(p):sha(p)for p in [Path(__file__).resolve(),gds,db,source/'wire/native05/result.json',
    source/'wire/native05/wires.l2n',composition/'composition.json',composition/'audit/capture/wire/anchors08.json',out/'sg13g2_tech.json']})
+ extended=copy.deepcopy(anchors)
+ extended['original_native_reference_counts']=copy.deepcopy(anchors['counts'])
+ extended['anchors']+=copy.deepcopy(new_points)
+ for a in new_points:extended['logical_anchor_aliases'][a['label']]=a['label']
+ extended['logical_anchor_count']=1877+len(new_points);extended['physical_anchor_count']=1604+len(new_points)
+ extended['counts']['anchors']=1877+len(new_points)
+ extended['counts']['regular_body_contact_references']=len(new_points)
+ extended['inputs']=dict(result['inputs'])
+ extended['inputs'][str(composition/'result.json')]=sha(composition/'result.json')
+ extended['status']='PASS_EXTENDED_ACTUAL_REGULAR_BODY_POINTS_FRESH_RC_REQUIRED'
+ extended['fresh_wire_rc_required']=bool(new_points)
+ assert extended['anchors'][:1604]==anchors['anchors']
+ assert len(extended['anchors'])==len({(a['metal'],*a['point_dbu'])for a in extended['anchors']})
+ assert len(extended['logical_anchor_aliases'])==1877+len(new_points)
+ assert all(extended['logical_anchor_aliases'][k]==v for k,v in anchors['logical_anchor_aliases'].items())
+ assert extended['rows']==anchors['rows']and extended['public']==anchors['public']
+ (out/'extended-anchors.json').write_text(json.dumps(extended,indent=2)+'\n')
+ result['extended_anchors_sha256']=sha(out/'extended-anchors.json')
  (out/'regular-body-access.json').write_text(json.dumps(result,indent=2)+'\n')
  print(json.dumps(dict(status=result['status'],body_terminals=len(expected_body),islands=len(islands),tap_models=len(access),
   actual_geometry_fault_cases=sum(x['cases']for x in controls))))

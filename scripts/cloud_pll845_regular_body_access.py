@@ -46,7 +46,9 @@ def main():
   assert rc==0
   data=r['body_access'];assert data['plan']['native_pmos_body_terminals']==125
   assert len(data['controls'])==5 and all(x['rejected']for x in data['controls'])
-  assert data['plan']['existing_audited_wire_points_only']
+  assert data['plan']['original_audited_wire_points_preserved']and not data['plan']['wire_geometry_changed']
+  assert data['plan']['fresh_wire_rc_required']==bool(data['plan']['new_reference_count'])
+  assert sha(OUT/'extended-anchors.json')==data['extended_anchors_sha256']
   assert all(sha(OUT/'composition'/n)==failed['outputs'][n]for n in names)
   assert all(sha(OUT/'planes'/n)==prior['outputs'][n]for n in selected)
   assert all(sha(Path(n))==digest for n,digest in data['inputs'].items())
