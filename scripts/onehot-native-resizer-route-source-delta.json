@@ -1,0 +1,279 @@
+{
+  "files": [
+    {
+      "baseline": "scripts/cloud_onehot_clock_restore_route.py",
+      "baseline_sha256": "b84287347c1c5a9e493ca8fcbb035869f41d683e55cef73af2e0002245b88f1d",
+      "candidate": "scripts/cloud_onehot_native_resizer_route.py",
+      "candidate_sha256": "485a903bf51ded411a09b6e1ada8c66b10743e35cfa388debb1e9fbccded9496",
+      "changes": [
+        {
+          "start": 665,
+          "end": 670,
+          "replacement": "native"
+        },
+        {
+          "start": 674,
+          "end": 676,
+          "replacement": "ize"
+        },
+        {
+          "start": 677,
+          "end": 678,
+          "replacement": ""
+        },
+        {
+          "start": 2726,
+          "end": 2779,
+          "replacement": "R"
+        },
+        {
+          "start": 2784,
+          "end": 2787,
+          "replacement": "ex"
+        },
+        {
+          "start": 2790,
+          "end": 2791,
+          "replacement": " n"
+        },
+        {
+          "start": 2792,
+          "end": 2794,
+          "replacement": "tive-"
+        },
+        {
+          "start": 2795,
+          "end": 2798,
+          "replacement": ""
+        },
+        {
+          "start": 2799,
+          "end": 2808,
+          "replacement": "siz"
+        },
+        {
+          "start": 2812,
+          "end": 2812,
+          "replacement": "andidate wit"
+        },
+        {
+          "start": 2813,
+          "end": 2825,
+          "replacement": ""
+        },
+        {
+          "start": 2831,
+          "end": 2831,
+          "replacement": "1"
+        },
+        {
+          "start": 2832,
+          "end": 2833,
+          "replacement": "5"
+        },
+        {
+          "start": 2834,
+          "end": 2842,
+          "replacement": ""
+        },
+        {
+          "start": 2853,
+          "end": 2859,
+          "replacement": ""
+        },
+        {
+          "start": 2864,
+          "end": 2865,
+          "replacement": "-"
+        },
+        {
+          "start": 2879,
+          "end": 2880,
+          "replacement": ""
+        },
+        {
+          "start": 2881,
+          "end": 2925,
+          "replacement": "p"
+        },
+        {
+          "start": 2928,
+          "end": 2929,
+          "replacement": "erved."
+        },
+        {
+          "start": 2930,
+          "end": 2933,
+          "replacement": "Fu"
+        },
+        {
+          "start": 2934,
+          "end": 2946,
+          "replacement": ""
+        },
+        {
+          "start": 2948,
+          "end": 2948,
+          "replacement": "prior RTL/"
+        },
+        {
+          "start": 2953,
+          "end": 2953,
+          "replacement": " ancestry revalidated"
+        },
+        {
+          "start": 3003,
+          "end": 3035,
+          "replacement": ""
+        },
+        {
+          "start": 55929,
+          "end": 55929,
+          "replacement": "\n        # The complete original route/RTL ancestry above is provenance only.\n        # Route the independently checked native-resizer result, never its source ODB.\n        eco_pin=json.loads((ROOT/'docs/evidence/onehot-native-resizer-pass-20261020.json').read_text())\n        eco_run=api('actions/runs/'+str(eco_pin['run']))\n        assert eco_pin['run']==39390580378 and eco_pin['source_head']=='c793becc651afe70e201ab2c83da19228da87d69'\n        assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['run_attempt']==1\n        assert eco_run['head_sha']==eco_pin['source_head']and eco_run['path']=='.github/workflows/onehot-native-resizer-cloud.yml'\n        eco_root=ROOT/'hw/soc/out/cloud-onehot-native-resizer'\n        eco_names=['candidate.odb','candidate.v','geometry.json','proof/result.json','controls/result.json',\n            'fixed-clock.json','source/trial-config.json','source/run/1-openroad-detailedrouting/soc_top.sdc',\n            'source/run/1-openroad-detailedrouting/soc_top.odb']\n        eco,eco_source=reports.restore_report(eco_pin['group'],eco_pin['run'],eco_pin['summary_sha256'],\n            eco_pin['parts_sha256'],eco_root,eco_names)\n        assert eco['source_head']==eco_pin['source_head']and eco['sources_unchanged']\n        assert eco['status']=='PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA'\n        assert eco['proof']==eco_pin['proof']and eco['proof']['status']=='PASS within scope'\n        assert eco['proof']['unobserved_output_port_changes']==0 and eco['actual_inversion_control_rejected']\n        assert eco['logic_controls']['status']=='PASS_NATIVE_ECO_CONTROLS'\n        assert eco['source_odb_sha256']=='bde963927da325e3f66c1c62d6f78f5db4c60b1344670ebabd04d3339c1a5850'\n        assert eco['geometry']['original_instances']==151022 and len(eco['geometry']['added'])==29\n        assert eco['fixed_clock']['original_physical_route_preserved']\n        assert eco['routing_initialization']['physical_def_preserved_excluding_gcellgrid']\n        assert len(eco['routing_initialization']['six_native_reports_literal_identity'])==6\n        for c in eco['native_baseline']:\n            for mode in ('max','min'):\n                assert abs(eco['native_baseline'][c][mode]-eco['expected_baseline'][c][mode])<=.001\n        for p,key in [('geometry.json','geometry'),('proof/result.json','proof'),\n            ('controls/result.json','logic_controls'),('fixed-clock.json','fixed_clock')]:\n            assert json.loads((eco_root/p).read_text())==eco[key]\n        assert json.loads((eco_root/'source/trial-config.json').read_text())==cfg\n        odb=eco_root/'candidate.odb';netlist=eco_root/'candidate.v'\n        assert sha(odb)==eco['candidate_odb_sha256']==eco_pin['candidate_odb_sha256']=='e2eef1214e78bf5143a6192633260b004542d1b6830372a983b457e9501e0386'\n        assert sha(netlist)==eco['candidate_netlist_sha256']==eco_pin['candidate_netlist_sha256']=='43e6347112bbbfa1c4fd0eb8384bf7ca90d7f8b78e5b9150e63dd8ffd639dbbb'\n        # Keep valid header views; discard stale generated physical/timing views.\n        # The exact saved SDC from the measured source remains the constraint input.\n        state=dict(state)\n        state.update(odb=str(odb),nl=str(netlist),sdc=str(eco_root/'source/run/1-openroad-detailedrouting/soc_top.sdc'))\n        for key in ('def','spef','pnl','sdf'):state[key]=None\n        r['native_resizer_source']=eco_source\n        r['native_resizer_candidate_geometry']=eco['geometry']\n        r['native_resizer_candidate_logic']=eco['proof']\n        r['native_resizer_source_baseline']=eco['native_baseline']\n        r['native_resizer_candidate_instances']=151051\n        r['source_routed_measurements']=eco['original_measurements']\n        r['native_routed_baseline']=dict(run=39373842033,summary_sha256=eco['source']['summary_sha256'])\n\n"
+        },
+        {
+          "start": 57358,
+          "end": 57358,
+          "replacement": "protected.update({str(eco_root/p):eco['outputs'][p]for p in eco_names})\n        protected[str(ROOT/'docs/evidence/onehot-native-resizer-pass-20261020.json')]=sha(ROOT/'docs/evidence/onehot-native-resizer-pass-20261020.json')\n        "
+        },
+        {
+          "start": 57648,
+          "end": 57649,
+          "replacement": "RES"
+        },
+        {
+          "start": 57650,
+          "end": 57651,
+          "replacement": "Z"
+        },
+        {
+          "start": 57652,
+          "end": 57653,
+          "replacement": "R"
+        },
+        {
+          "start": 57655,
+          "end": 57663,
+          "replacement": ""
+        },
+        {
+          "start": 57664,
+          "end": 57665,
+          "replacement": "ND"
+        },
+        {
+          "start": 57666,
+          "end": 57667,
+          "replacement": "D"
+        },
+        {
+          "start": 57669,
+          "end": 57670,
+          "replacement": "E_R"
+        },
+        {
+          "start": 57671,
+          "end": 57672,
+          "replacement": "UTE"
+        },
+        {
+          "start": 59266,
+          "end": 59268,
+          "replacement": "nati"
+        },
+        {
+          "start": 59270,
+          "end": 59270,
+          "replacement": "_"
+        },
+        {
+          "start": 59271,
+          "end": 59273,
+          "replacement": ""
+        },
+        {
+          "start": 59274,
+          "end": 59279,
+          "replacement": "sizer"
+        },
+        {
+          "start": 60041,
+          "end": 60041,
+          "replacement": "1"
+        },
+        {
+          "start": 60042,
+          "end": 60043,
+          "replacement": "5"
+        },
+        {
+          "start": 60044,
+          "end": 60045,
+          "replacement": ""
+        },
+        {
+          "start": 63118,
+          "end": 63119,
+          "replacement": "RES"
+        },
+        {
+          "start": 63120,
+          "end": 63121,
+          "replacement": "Z"
+        },
+        {
+          "start": 63122,
+          "end": 63129,
+          "replacement": "R"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/check_onehot_coverage_data_routed_topology.py",
+      "baseline_sha256": "bce3b29357722b067264b17000dbf5ade0f436c8f1f4cbc048a8a33552ac0faa",
+      "candidate": "scripts/check_onehot_native_resizer_routed_topology.py",
+      "candidate_sha256": "808fd7ff8640694b8ccdcc0fe7b4ce2be65cd9cdd169330b5329e67aef40ec4b",
+      "changes": [
+        {
+          "start": 2194,
+          "end": 2194,
+          "replacement": "1051\n    assert digest(a)=='e2eef1214e78bf5143a6192633260b0"
+        },
+        {
+          "start": 2196,
+          "end": 2196,
+          "replacement": "542d"
+        },
+        {
+          "start": 2197,
+          "end": 2197,
+          "replacement": "b6830372a"
+        },
+        {
+          "start": 2198,
+          "end": 2198,
+          "replacement": "83b457e9501e0386'"
+        },
+        {
+          "start": 3340,
+          "end": 3343,
+          "replacement": "R"
+        },
+        {
+          "start": 3344,
+          "end": 3358,
+          "replacement": "SIZ"
+        }
+      ]
+    }
+  ],
+  "unchanged_physical_methods": {
+    "hw/soc/pnr/onehot_clock_restore_route_flow.py": "dbe01493ece403c6a09edae160531a65f1bb25e0503de82a3c337baada4a793a",
+    "hw/soc/pnr/replay_onehot_detailed_route_flow.py": "cd7af8549715dfba87ac0d676688b3a3a05cdb923cd86b148bc4e83339ba4ac2",
+    "hw/soc/pnr/replay_onehot_routed_extraction_flow.py": "2710ee19080cc184219eaa99f715920f213bf1fa569f8642a2460130369a0e06",
+    "hw/soc/pnr/interface_flow.py": "f131aac5fc797b0abd69ce11dab59e1a807e41b5f2b67f5bae92b3b40653b289",
+    "hw/soc/flow/audit_estimated_spef.py": "5f69d0c7efb5b30ce4b24edcd850b0926715c61e760465ecfa239d726b53e357",
+    "hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+    "scripts/check_onehot_fixed_clock_route.py": "9d7515d21cc75fdf8f4824560495272629e60ae864953094587106fc69e3b078"
+  }
+}

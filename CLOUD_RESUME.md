@@ -1,3 +1,6 @@
+## Cloud-only mainchip routing handoff
+New onehot-native-resizer-route-cloud routes only the proven 39390580378 candidate ODB e2eef1214e78bf5143a6192633260b004542d1b6830372a983b457e9501e0386 (151051 instances). Full previous ancestry and real candidate proof are revalidated; original constraints and physical/timing scripts remain hash-pinned. Do not manually dispatch a duplicate: the new workflow starts on this push. PLL 39390580356 and CDR selector-v19 physical workflow remain independent cloud work; retain all failures. Local workspace stays empty.
+
 ## Cloud-only handoff: verified native chip ECO and selector geometry candidate
 Native resizer 39390580378 passed baseline, geometry/power/fixed-clock and actual Boolean proof plus inversion fault. Its actual candidate has 151051 instances: 151022 retained and 29 new sg13g2_dlygate4sd3_1 cells. Candidate ODB e2eef1214e78bf5143a6192633260b004542d1b6830372a983b457e9501e0386; fresh route/RC/all-corner STA is next. PLL continuation 39390580356 passed controls and is restoring the exact saved process with storage repair. New CDR v19 leaf changes only eight clock selectors Nx8->4, requires real54-device DRC/LVS then full fresh parent extraction and unchanged loaded tests. Do not reuse old RC as new geometry proof. No local project/CAD files.
 
