@@ -1,3 +1,7 @@
+## 2026-10-20 — Native follower leaf passed; both CDR parent replacements in cloud
+Follower39470863624 passed560DRC/deep-flat8deviceLVS and all seven faults. Receipt pinned. New cdr-follower-v23-parent-cloud replaces actual ac/bd leaves, routes added AVDD with native vias, retains14other instances and original parent geometry, and requires full476device physical suite. Leaf success is not parent RC/electrical/PHY acceptance. Corrected TX HBT binding39471428433 is live; mainchip/TX/PLL jobs remain active. Cloud only.
+
+
 ## 2026-10-20 — TX native HBT witness rejection preserved, actual pin binding corrected
 Anchor39468302827 failed on native HBT5377 collector contact access; no RC or acceptance claimed. Published failure receipt. New same-geometry binding finds each actual HBT PCell by native C/B/E enclosure and probes original Metal1/Metal2 pin rectangles in both independent native conductor databases. HBT-first traversal detects failures promptly; indexed identical association verification avoids quadratic scans. All28582 terminals and four corruption gates still required. cdr-follower-v23-physical39470863624 live; original TX/mainchip/PLL jobs remain active. Cloud only.
 
