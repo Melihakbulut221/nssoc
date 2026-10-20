@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Replace four actual sampler children while retaining all parent wires and transforms."""
+"""Replace four native sampler children with explicitly bounded obsolete parent M3 cleanup."""
 import argparse,copy,hashlib,json,re,shutil
 from pathlib import Path
 TOP='nssoc_cdr_pd484_localbus_v12'
@@ -86,7 +86,13 @@ def main():
   removed_rows.append(dict(macro=macro,polygon_dbu=str(poly),area_dbu2=poly.area(),marker_indices=hits))
  assert covered==set(range(24))and {r['macro']for r in removed_rows}==set(bounds)
  replacement_m3=(original_m3-removed_region).merged()
- assert (replacement_m3&removed_region).is_empty()and (replacement_m3+removed_region).merged()==original_m3
+ overlap=replacement_m3&removed_region
+ combined=(replacement_m3+removed_region).merged()
+ difference=combined^original_m3
+ assert overlap.is_empty(),('Removed and retained native regions overlap',overlap.area())
+ assert difference.is_empty(),('Native geometric reconstruction differs',difference.area())
+ corrupt=combined+pya.Region(pya.Box(10000000,10000000,10000001,10000001))
+ assert not(corrupt^original_m3).is_empty(),'One-grid native geometry fault accepted'
  T.shapes(m3).clear();T.shapes(m3).insert(replacement_m3)
  expected_shapes=dict(snap[0])
  if replacement_m3.is_empty():del expected_shapes[(30,0)]

@@ -1,3 +1,10 @@
+## Native M3 geometric proof correction
+Run39420127278 rejected Region object equality before serialization.
+Use exact empty XOR for geometric reconstruction, separate disjointness
+and a one-grid extra-polygon negative control. Keep all full DRC/LVS gates.
+Do not confuse this code-level rejection with repaired physical acceptance.
+
+
 ## CDR v20 parent native M3 repair
 Parent39418862656 passed generation/child geometry but rejected24 native
 Metal3 markers (16M3.a,8M3.b). Preserve its evidence. The revised generator

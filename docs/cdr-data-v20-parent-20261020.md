@@ -43,3 +43,9 @@ whole-parent-metal-unchanged claim does not apply to this revised candidate.
 Unchanged full DRC and unsimplified deep/flat LVS must still pass. Fresh
 extraction must include the removal. No rule waiver or electrical acceptance
 is introduced by this repair.
+
+The cleanup attempt in run 39420127278 stopped before serialization because
+Region object equality did not establish geometric union identity. The proof
+now uses exact empty symmetric difference, independently requires empty
+removed/retained intersection, and rejects a one-grid added polygon. No
+geometric tolerance, DRC rule or native LVS gate is relaxed.

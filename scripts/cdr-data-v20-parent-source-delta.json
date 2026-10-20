@@ -4,8 +4,63 @@
       "baseline": "scripts/generate_cdr_selector_v19_parent.py",
       "baseline_sha256": "d559d7fbc6b65f95f8acba331f50c21c49224e0f41eab3e28950217d61ad3d74",
       "candidate": "scripts/generate_cdr_data_v20_parent.py",
-      "candidate_sha256": "ce69e3f5ce9d2c62c46e2435837d0d99bdbf0d4062e76c803fa80364957a7026",
+      "candidate_sha256": "ad1142f72c21cb49cd825b1575ece13eae11156edc17369745490933e6954eb0",
       "changes": [
+        {
+          "start": 77,
+          "end": 77,
+          "replacement": "n"
+        },
+        {
+          "start": 78,
+          "end": 79,
+          "replacement": ""
+        },
+        {
+          "start": 80,
+          "end": 83,
+          "replacement": "ive"
+        },
+        {
+          "start": 102,
+          "end": 102,
+          "replacement": "it"
+        },
+        {
+          "start": 103,
+          "end": 103,
+          "replacement": " expl"
+        },
+        {
+          "start": 104,
+          "end": 104,
+          "replacement": "citly bounded obso"
+        },
+        {
+          "start": 106,
+          "end": 108,
+          "replacement": "t"
+        },
+        {
+          "start": 109,
+          "end": 120,
+          "replacement": ""
+        },
+        {
+          "start": 128,
+          "end": 131,
+          "replacement": "M3 cl"
+        },
+        {
+          "start": 132,
+          "end": 134,
+          "replacement": ""
+        },
+        {
+          "start": 136,
+          "end": 148,
+          "replacement": "up"
+        },
         {
           "start": 280,
           "end": 285,
@@ -89,7 +144,7 @@
         {
           "start": 2799,
           "end": 2799,
-          "replacement": "# Previous v20 native DRC identifies obsolete parent-level M3 access overlays.\n # Keep the independently verified new leaf untouched; remove whole obsolete\n # parent polygons only inside sampler interiors and touching measured markers.\n marker_path=out/'failed-v20/physical/drc/drc.lyrdb'\n assert sha(marker_path)=='90881765db42ac4499d84d40cac7827f165346e27f243c7ed9a6d16a7f3b9faf'\n import xml.etree.ElementTree as ET\n markers=[];categories={}\n for item in ET.parse(marker_path).findall('.//items/item'):\n  category=item.findtext('category');assert category in (\"'M3.a'\",\"'M3.b'\")\n  categories[category]=categories.get(category,0)+1\n  values=item.findall('values/value');assert len(values)==1\n  nums=list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',values[0].text)))\n  assert len(nums)==8\n  xs=nums[::2];ys=nums[1::2]\n  markers.append(pya.Region(pya.Box(round(min(xs)/L.dbu)-300,round(min(ys)/L.dbu)-300,\n      round(max(xs)/L.dbu)+300,round(max(ys)/L.dbu)+300)))\n assert categories=={\"'M3.a'\":16,\"'M3.b'\":8}and len(markers)==24\n m3=L.layer(30,0);original_m3=pya.Region(T.shapes(m3)).flatten().merged()\n assert not original_m3.is_empty()\n bounds={name:list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',before['placements'][name]['bbox_um'])))for name in ('sa','sb','sc','sd')}\n def sampler_owner(poly):\n  b=poly.bbox().to_dtype(L.dbu)\n  found=[name for name,(x0,y0,x1,y1)in bounds.items()if b.left>=x0+5 and b.bottom>=y0+5 and b.right<=x1-5 and b.top<=y1-5]\n  assert len(found)==1,'Attempt to remove non-interior or non-sampler parent M3'\n  return found[0]\n removed_region=pya.Region();removed_rows=[];covered=set()\n for poly in original_m3.each():\n  region=pya.Region(poly);hits=[i for i,marker in enumerate(markers)if not(region&marker).is_empty()]\n  if not hits:continue\n  macro=sampler_owner(poly)\n  removed_region+=region;covered.update(hits)\n  removed_rows.append(dict(macro=macro,polygon_dbu=str(poly),area_dbu2=poly.area(),marker_indices=hits))\n assert covered==set(range(24))and {r['macro']for r in removed_rows}==set(bounds)\n replacement_m3=(original_m3-removed_region).merged()\n assert (replacement_m3&removed_region).is_empty()and (replacement_m3+removed_region).merged()==original_m3\n T.shapes(m3).clear();T.shapes(m3).insert(replacement_m3)\n expected_shapes=dict(snap[0])\n if replacement_m3.is_empty():del expected_shapes[(30,0)]\n else:expected_shapes[(30,0)]=replacement_m3\n snap=(expected_shapes,snap[1],snap[2])\n try:sampler_owner(next(removed_region.each()).transformed(pya.Trans(10000000,0)))\n except AssertionError:outside_control=True\n else:raise AssertionError('Out-of-sampler metal-removal control accepted')\n cleanup_proof=dict(status='REMOVED_ONLY_OBSOLETE_PARENT_M3_TOUCHING_MEASURED_NATIVE_MARKERS',\n  source_run=39418862656,source_report_sha256=sha(marker_path),source_categories=categories,\n  removed_polygons=removed_rows,removed_area_dbu2=removed_region.area(),\n  retained_parent_m3_area_dbu2=replacement_m3.area(),all24markers_covered=True,\n  native_child_geometry_untouched=True,all_other_parent_layers_unchanged=True,\n  out_of_sampler_removal_rejected=outside_control,requires_full_drc_lvs=True)\n "
+          "replacement": "# Previous v20 native DRC identifies obsolete parent-level M3 access overlays.\n # Keep the independently verified new leaf untouched; remove whole obsolete\n # parent polygons only inside sampler interiors and touching measured markers.\n marker_path=out/'failed-v20/physical/drc/drc.lyrdb'\n assert sha(marker_path)=='90881765db42ac4499d84d40cac7827f165346e27f243c7ed9a6d16a7f3b9faf'\n import xml.etree.ElementTree as ET\n markers=[];categories={}\n for item in ET.parse(marker_path).findall('.//items/item'):\n  category=item.findtext('category');assert category in (\"'M3.a'\",\"'M3.b'\")\n  categories[category]=categories.get(category,0)+1\n  values=item.findall('values/value');assert len(values)==1\n  nums=list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',values[0].text)))\n  assert len(nums)==8\n  xs=nums[::2];ys=nums[1::2]\n  markers.append(pya.Region(pya.Box(round(min(xs)/L.dbu)-300,round(min(ys)/L.dbu)-300,\n      round(max(xs)/L.dbu)+300,round(max(ys)/L.dbu)+300)))\n assert categories=={\"'M3.a'\":16,\"'M3.b'\":8}and len(markers)==24\n m3=L.layer(30,0);original_m3=pya.Region(T.shapes(m3)).flatten().merged()\n assert not original_m3.is_empty()\n bounds={name:list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',before['placements'][name]['bbox_um'])))for name in ('sa','sb','sc','sd')}\n def sampler_owner(poly):\n  b=poly.bbox().to_dtype(L.dbu)\n  found=[name for name,(x0,y0,x1,y1)in bounds.items()if b.left>=x0+5 and b.bottom>=y0+5 and b.right<=x1-5 and b.top<=y1-5]\n  assert len(found)==1,'Attempt to remove non-interior or non-sampler parent M3'\n  return found[0]\n removed_region=pya.Region();removed_rows=[];covered=set()\n for poly in original_m3.each():\n  region=pya.Region(poly);hits=[i for i,marker in enumerate(markers)if not(region&marker).is_empty()]\n  if not hits:continue\n  macro=sampler_owner(poly)\n  removed_region+=region;covered.update(hits)\n  removed_rows.append(dict(macro=macro,polygon_dbu=str(poly),area_dbu2=poly.area(),marker_indices=hits))\n assert covered==set(range(24))and {r['macro']for r in removed_rows}==set(bounds)\n replacement_m3=(original_m3-removed_region).merged()\n overlap=replacement_m3&removed_region\n combined=(replacement_m3+removed_region).merged()\n difference=combined^original_m3\n assert overlap.is_empty(),('Removed and retained native regions overlap',overlap.area())\n assert difference.is_empty(),('Native geometric reconstruction differs',difference.area())\n corrupt=combined+pya.Region(pya.Box(10000000,10000000,10000001,10000001))\n assert not(corrupt^original_m3).is_empty(),'One-grid native geometry fault accepted'\n T.shapes(m3).clear();T.shapes(m3).insert(replacement_m3)\n expected_shapes=dict(snap[0])\n if replacement_m3.is_empty():del expected_shapes[(30,0)]\n else:expected_shapes[(30,0)]=replacement_m3\n snap=(expected_shapes,snap[1],snap[2])\n try:sampler_owner(next(removed_region.each()).transformed(pya.Trans(10000000,0)))\n except AssertionError:outside_control=True\n else:raise AssertionError('Out-of-sampler metal-removal control accepted')\n cleanup_proof=dict(status='REMOVED_ONLY_OBSOLETE_PARENT_M3_TOUCHING_MEASURED_NATIVE_MARKERS',\n  source_run=39418862656,source_report_sha256=sha(marker_path),source_categories=categories,\n  removed_polygons=removed_rows,removed_area_dbu2=removed_region.area(),\n  retained_parent_m3_area_dbu2=replacement_m3.area(),all24markers_covered=True,\n  native_child_geometry_untouched=True,all_other_parent_layers_unchanged=True,\n  out_of_sampler_removal_rejected=outside_control,requires_full_drc_lvs=True)\n "
         },
         {
           "start": 3407,
