@@ -1,3 +1,7 @@
+## Cloud checkpoint: fresh CDR extraction and dependent whole-MIM capture
+
+Physical reordered candidate39379285294 passed originalDRC/LVS. Fresh extraction39379894690(sourcea18a9c6c672df04a852ea620052013c488fbc846) passed native158planes and wire-inputs; binding andRC are live. The new cdr-retime-bands-v18-mim-parent-rc-cloud waits on this exact run, verifies all four successful jobs and physical receipt links, then captures all eleven actualMIMs with their real bottom-contact reference planes. Original MIM/terminal and corruption checks are unchanged. A completed capture still needs independent rawR/C audit, wholemodel composition and full loaded early/late electrical checks. No fullPHY/timing acceptance. Preserve all failures and cloud-only operation.
+
 ## Cloud checkpoint: reordered CDR passes physical gates, fresh extraction dispatched
 
 Physical run39379285294 passed560-rule DRC, deep/flat484-device LVS and original physical/reference faults. ActualGDS27321a65507bccd81228e05933676158794b3c099186535fd4f9b892afacb37e retains all v16 local accesses. Targeted retime spans reduced35.86%; clock and D-output spans increase, so electrical acceptance is still unproven. See docs/cdr-v16-band-reorder-20261020.md.
