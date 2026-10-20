@@ -1,3 +1,6 @@
+## 2026-10-20 — Verified latch diagnosis and live continuation checkpoint
+CDR review39464720493 reproduces every original sampler/device result. A/B slave transfer remains late; C/D master inputs remain weak/wrong at capture. Compact exact-source diagnosis receipt committed; no gate changes. PLL39423618115 initial stage saved91,335,790,523-byte native prefix and published all parts; continuation is live, full1us capture/lock not accepted. TX8074 graph passed; terminal binding39468302827 live. TX39460427396/39453950816 and mainchip39436610858 remain live. FullPHY/final timing open; all CAD and artifacts on GitHub, local workspace empty.
+
 ## 2026-10-20 — Full8074 native wire graph passed; all-terminal binding next
 Graph39467260490 proves8074devices28582terminals698conductors763electricalnets; exact native geometry and ownership preserved. Pinned full graph receipt. New tx-raw64-native-anchors-cloud binds20508metal+8074body terminals and163actual parent pins, retaining four corruption controls. Fresh RC/composition/fullwaves still required. PLL39423618115 initial checkpoint published and continuation now active; do not restart. CDRv22 remains electrically rejected despite successful diagnosis. TX39460427396/39453950816 and mainchip39436610858 remain live. Cloud-only.
 
