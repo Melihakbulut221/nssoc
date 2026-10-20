@@ -1,3 +1,17 @@
+## Cloud-only continuation: CDR v19 timing diagnosis
+The original early/late v19 electrical rejection is preserved. A cloud-only
+read-only diagnosis now restores both complete raw captures and exact v19
+geometry, reproduces original HBT/sampler gates, and measures physical latch
+data/clock terminals. Results pending; not PHY acceptance.
+
+Live work at publication: mainchip fresh fanout routing 39409367521,
+TX wire20 loaded fullwaves 39409002976, original PLL continuation 39390580356.
+Do not restart those live jobs. Bounded-stream PLL continuation controls passed
+39411344148; dispatch it only after the old PLL run is terminal successful,
+using its latest verified continuation descriptor (not the older initial capsule).
+Local project directory remains empty; authoring uses RAM/API only.
+
+
 ## 2026-10-20 — Streamed migration controls verified
 Controls39411344148/job118589586967 passed: reversible storage-only edit,11unchanged native methods, full1695-column reader and original acquisition/option/prefix controls,6method migration corruptions,12archive corruptions and6publisher ownership cases. Initial/continuation jobs skipped on push as required. Exact receipt committed. To continue PLL, wait for39390580356 currentcontinuation to finish and publish latest capsule; then dispatch pll845-streamed-continuation-cloud with that exact terminal-successful descriptor. Never use its older initial capsule while continuation is live. Mainchip route39409367521 and TXwire20wave39409002976 are confirmed live. FullPHY/finaltiming unproven. Local workspace empty/cloud-only.
 

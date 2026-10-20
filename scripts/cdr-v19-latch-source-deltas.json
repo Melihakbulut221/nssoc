@@ -1,0 +1,107 @@
+{
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/check_cdr_v16_latch_sources.py": "bb0ca8c9e0869d7e05cd7f4eb4267f785734227ab21b2ad7d4897f484aa46e4e"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v16_latch_timing.py",
+    "baseline_sha256": "ef9bc8e289f7629a406cff646387eaffc27869a96d3a38da0678edf01ce4bc3e",
+    "candidate_path": "scripts/cloud_cdr_v19_latch_timing.py",
+    "candidate_sha256": "6b150d4094c515575ccce7bf190094c4b28d0dccc0ad1dd7f2cb2d919f1eb1f6",
+    "edits": [
+      {
+        "before": "cloud-cdr-v16-latch-timing-",
+        "after": "cloud-cdr-v19-latch-timing-",
+        "count": 1
+      },
+      {
+        "before": "cdr-v16-latch-inputs-",
+        "after": "cdr-v19-latch-inputs-",
+        "count": 1
+      },
+      {
+        "before": "2d08a8b5ea569ce63d9f3dc1022a615e99089e11caec62c00c9dea2af8372323",
+        "after": "d6fff523643739a4cb4a8b874b051136b276649ca47c3a4ffd421f7aa137f218",
+        "count": 1
+      },
+      {
+        "before": "10dc8359c57378069f611898802881e63342609fe6f90a99b30cba8dc5e3cb76",
+        "after": "b3fd5126fdc9dff64552c88a3198d9140898ab8df0c7a99d2d94b98a281f2362",
+        "count": 1
+      },
+      {
+        "before": "560f1a52e83dbe5f3e3e70bab7e14522b5234f583c51510a062d5049e806fb25",
+        "after": "87d0555e988bba6f5e5dee04172ad074ad962e6cb5cb83e0100e8ee43595f501",
+        "count": 1
+      },
+      {
+        "before": "ca8e4a8763ed0c8c7aa220449630ccca4a03cfc121039deeb3f0e636c3a5e3b8",
+        "after": "f6dfb02d877a216aaf025101b852bf79517847a6428b8c3d54ac574d22543d24",
+        "count": 1
+      },
+      {
+        "before": "  pin=json.loads((ROOT/('docs/evidence/cdr-retime-data-v16-fullwave-'+args.case+'-20261020.json')).read_text())",
+        "after": "  receipt=json.loads((ROOT/'docs/evidence/cdr-selector-v19-electrical-rejection-20261020.json').read_text())\n  pin=receipt['cases'][args.case];assert receipt['run']==39400191012",
+        "count": 1
+      },
+      {
+        "before": "pin['run']==39337518790",
+        "after": "receipt['run']==39400191012",
+        "count": 1
+      },
+      {
+        "before": "reports.restore_report('cdr-retime-data-v16-mim-streamed-'+args.case,pin['run']",
+        "after": "reports.restore_report('cdr-selector-v19-mim-streamed-'+args.case,receipt['run']",
+        "count": 1
+      },
+      {
+        "before": "  assert prior==pin['report']and prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'",
+        "after": "  assert prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'\n  for key in ('case','source_head','status','raw_capture','validation_prerequisite','source_bits_sha256','data_offset_s','devices_passed','phase_passed','sources_unchanged'):\n   assert prior[key]==pin[key],('Pinned native report mismatch',key)\n  for tag,check in pin['sampler_checks'].items():\n   assert {key:prior['sampler_checks'][tag][key]for key in check}==check",
+        "count": 1
+      },
+      {
+        "before": "bab737cf0d337337bfa0341b998bc8a0c8e025ab",
+        "after": "604b0fbf89e27619220422b41a068de0dfc144e4",
+        "count": 1
+      },
+      {
+        "before": "cdr-retime-data-v16-mim-parent-capture-pass-20261020.json",
+        "after": "cdr-selector-v19-mim-parent-capture-pass-20261020.json",
+        "count": 1
+      },
+      {
+        "before": "39336054657",
+        "after": "39397118280",
+        "count": 1
+      },
+      {
+        "before": "d167fa8f639970a85cf810f4f2b2e182f40731e31eecb9bae5a59ba9c72859ee",
+        "after": "d3ecd598c271fa0b7771b5287267cf33c088d2a328c374931dac793dc84362a8",
+        "count": 1
+      },
+      {
+        "before": "cdr-retime-data-v16-mim-parent-rc",
+        "after": "cdr-selector-v19-mim-parent-rc",
+        "count": 1
+      },
+      {
+        "before": "8799c2176f1748a054be66bead981b4eaa405e49",
+        "after": "0c06e3e9c600006fdd9b7ac7639ce617d3f93ae1",
+        "count": 1
+      },
+      {
+        "before": "dict(devices=484,R=17674,C=12709)",
+        "after": "dict(devices=484,R=17674,C=12712)",
+        "count": 1
+      },
+      {
+        "before": "   latch_data=analyze_latches(tag,members,terms)",
+        "after": "   latch_data=analyze_latches(tag,members,terms)\n   selector_names={n for bank in latch_data['native_graph'].values()for key in ('track_selectors','hold_selectors')for n in bank[key]}\n   assert len(selector_names)==8 and all(members[n]['nx']==4 for n in selector_names)\n   assert len(members)==16 and all(members[n]['nx']==8 for n in set(members)-selector_names)\n   latch_data['actual_selector_nx']={n:members[n]['nx']for n in sorted(selector_names)}",
+        "count": 1
+      }
+    ]
+  }
+}
