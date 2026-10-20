@@ -1,3 +1,9 @@
+## 2026-10-20 native final-clock bridge model
+Physical39373038910 verified: 0markers/560categories, deep/flat two-device LVS, six actual fault rejections. Receipt pins all artifact identities and actual extracted circuits.
+New tx-final-clock-bridge-native-cloud exports all five terminals from both native LVS databases and builds exact rppd + finite tap intrinsic model. Thirty binding/model corruptions must reject before any use. No RC or electrical acceptance claimed.
+Next: inspect this job, extract actual wire anchors/RC, then compose into original full32 TX bench without clock source/phase/gate changes.
+Independent live jobs: mainchip39373842033, PLL39370629792, TXg23439372036289. Do not duplicate live computations. Local project remains empty; all work/results cloud-only.
+
 ## 2026-10-20 fixed-clock ANT failure and bounded metadata repair
 Mainchip run39369450310 stopped after native DRT reported0markers, before RC/STA: repair_antennas attempted to create the already-existing FIXED clock wire (ANT-0016). All failed output remains pinned.
 Successor flow wraps only the original antenna call: temporarily report the existing net as ROUTED, retain encoded FIXED geometry, restore FIXED immediately including errors, reject changed wire object. Full post-route fixed geometry, antenna, DRC, topology, RC and STA gates remain unchanged.
