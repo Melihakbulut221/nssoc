@@ -1,3 +1,13 @@
+## 2026-10-20 — whole native zero-source OP PASSED; full loaded waveform next
+- Native OP39360539378 was execution-success with all102OFF readbacks and KLU settings; review39361546966 /bf36c7f6ded101970cc3a256c1596b267eaf1e48 now PASSED on the unchanged raw capture.
+- Every1694required voltage probe present, covering2737native terminal records. All5088native voltages and17source currents are finite and exactly0 at zero sources.12corruption controls rejected. RawSHA6c6e5aae821d0416bdb98c8b0fddd88173b86c3d2b27415ab8d419ad24ed48be.
+- Receipt docs/evidence/pll845-native-zero-op-pass-20261020.json; prior failed reader/source-binding attempts remain pinned, never rewritten.
+- Passed dependency chain: bodygeometry39357065697 -> freshRC39357622740 -> rawRC39358698811 -> composition39359081592 -> loadedinputs39360285698 -> nativeOP39360539378/review39361546966.
+- NEXT actual work: full original1us/.3125ps loaded whole-model capture and all-device review.1694required vectors imply~43GB minimum uncompressed; first verify transient-native column census, then lossless cloud chunking and native process checkpoints if needed. Preserve every sample, original gates and source hashes. Existing selected34probe checkpoint controller cannot be reused without adapting coverage/model identities.
+- This is not biased-operation/PLL-lock or fullPHY acceptance. CDR actual-MIM attachment audit still pending; PLL revealed14of52nativeMIMplanes differed from inspection anchors.
+- TX39344566214 and mainchip128buffer39331918238 still running at latest authoritative check. Poll same handles, never duplicate/restart on observation timeout.
+- All execution/artifacts remain hosted. Local workspace empty; stale local migration units archived and removed. Full serial Gen3x4 PHY, routed mainchip and finalsetup/hold goal remains ACTIVE.
+
 ## 2026-10-20 — preserve native OSDI internal-name syntax
 - OP review39361233183 rejected a valid native label v(n.xloop.xd0480.nr1#flow(b_re1)) because the draft reader assumed flat parentheses.
 - New reader validates outer voltage/current type plus balanced internal labels; all required1694 probes, exact payload/header, every-column finite/zero bounds remain unchanged. Added2 malformed-name controls;12controls total.
