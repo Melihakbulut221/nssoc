@@ -1,3 +1,9 @@
+## 2026-10-20 final-clock bridge actual3R8C passed; compose exact model
+Run39375552658 passed fresh native RC:3R8C,3independentconductors,6exactgridreferenceplanes,all native/export R values/topology and point/mutual capacitances preserved.13saved raw/anchor faults rejected. Receipt pins report/parts/archive and full audit metrics.
+New tx-final-clock-bridge-compose-cloud binds these exact elements to both native devices/all5terminals, retains finitebodycontact and independent wire_cref, and rejects12actual composed-model corruptions.
+Next: verify composition, then incorporate bridge2-wire.spice across finalsp/sn in the original full32TX loaded test while preserving PWL/25ohm/data/phases/all limits. Do not claim electrical or assembled-layout success from model checks.
+Mainchip39373842033, PLL39370629792 and TXg23439372036289 remain independent live cloud jobs. Local project stays empty.
+
 ## 2026-10-20 final-clock bridge physical planes passed; fresh wire RC launched
 Run39375124889 passed exact conductor ownership and all5 device terminal planes:3metal/2body,3publicports,6referenceplanes,3connectedwires; six native faults rejected. Receipt pins original source/summary/parts/GDS.
 New tx-final-clock-bridge-rc-cloud uses the same pinned native extraction runtime and full graph/point-C/mutual-C audits, with13 saved raw-output/anchor corruptions. No synthetic RC or nominal electrical pass claimed.
