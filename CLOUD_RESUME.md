@@ -1,3 +1,11 @@
+## 2026-10-20 — all845 native model binding dispatched
+- Whole wire raw RC passed run39353209044; now bind all845 actual intrinsic devices before composition.
+- New pll845-native-binding-cloud: four LV/HV NMOS/PMOS classes,102HBT,89rppd,26MIM,251tap instances,2737terminals,17ports. All native terminal/parameter/cluster identities checked against original SPICE and frozen geometry inventory.
+- Tap R derives from actual A/P and pinned coefficients; native TIE polygon area/perimeter checked. PDK w/l unused, no fixed2x2 dimensions. Actual CbTapCalc checked for rectangular shapes.
+-35 model corruption controls required. No wire composition/electrical acceptance yet.
+- NEXT after native binding pass: compose all845 devices with audited3380R/5104C; preserve body/diffusion/salicide limitations and avoid double-counting26 MIMs.
+- TX39344566214 and mainchip39331918238 remain live. Latest cloud-only instruction overrides stale local-work goal text.
+
 ## 2026-10-20 — whole PLL native raw RC audit PASSED
 - Run39353209044 / source2add3d6d68a43e058e9de9d55fee7307e69de4d2 SUCCESS.3380R/5104C,235physicalconductors,1604physicalpoints/1877logicalreferences,26MIMs;0disconnected.
 - Exact raw R edge/value, every native point groundC, mutual attachment/value, full collapsed matrix and branch/retirement witnesses passed.13wire+9MIM corruption controls rejected.
