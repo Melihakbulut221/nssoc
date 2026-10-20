@@ -1,3 +1,9 @@
+## 2026-10-20 native TX diagnosis passed; three fixed bias groups
+Native review39370785088 passed and exactly reproduced all original failed gates. Its native resistor-component graph binds18 failed selectors to clkbias_g2/g3/g4, four final selectors to group0 and two additional final tails.
+New tx-wire24-g234-loaded-wave-cloud composes existing independently verified physical l5p7 macros in groups2/3/4, preserving group0 and all other models. Explicit fixed candidate, not measured improvement or full layout acceptance.
+Before native full34ns execution, revalidate exact diagnosis and all55 actual clock-binding corruptions. Original bits/phases/solver/all604HBT512MOS limits unchanged. Normal plus actual leaf fault run independently.
+PLL39370629792/job118457601687 and mainchip39369450310/job118453762985 were confirmed live. Keep all three workstreams cloud-only. No local CAD files.
+
 ## 2026-10-20 TX wire24 failed-waveform diagnostic
 New tx-fast-wire24-path-review-cloud reuses the existing strict path review against the exact normal failed waveform39344566214.
 It first must reproduce every original engineering gate exactly, then map24HBT failures to native terminal voltages, input stages and actual selector-clock edge brackets. No SPICE rerun, phase fit, oracle change or threshold adjustment.
