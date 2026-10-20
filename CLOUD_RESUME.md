@@ -1,3 +1,12 @@
+## Data4 original loaded waveform workflow dispatched behind exact validation
+
+Fresh audit/composition39425717815 at271d7849a81ae07c89f18e96cf17e938deeab90e is the only allowed prerequisite. The new cdr-data-v20-mim-streamed-cloud workflow waits for both successful native stages, verifies immutable source receipts, then runs nominal_early, nominal_late, clock_stopped and vi_bias_off.
+
+Original34.25ns256bits,150fF sampler loads,50fF output loads, fixed phases,116HBT/46MOS device gates and1108columns preserved exactly. Only source identities/model names changed. No closed-loop/fullPHY acceptance inferred.
+
+Next: inspect audit/composition and new waveform jobs; use actual raw failures to guide subsequent physical edits. PLL39423618115, mainchip39415055626 and TX39409002976 remain live authoritative processes. Cloud-only.
+
+
 ## Data4 native MIM capture passed; audit/composition dispatched
 
 Run39424942579 at a1d92377ce17f2589e2c42eea729e4015203b681 passed native MIM capture. Actual fresh extraction:17674R,12712C,11MIM,946points,111components. Full immutable capture/binding receipts committed. The new cdr-data-v20-mim-validation-cloud workflow retains13 wire faults,9 intrinsic faults and19 composition faults.
