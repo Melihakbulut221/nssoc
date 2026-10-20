@@ -1,3 +1,7 @@
+## 2026-10-20 — TX group234 full-wave result
+
+39372036289 nominal no-fault completed the original full34ns capture (native exit0), but remains rejected:83 wrong/768 output samples and104 below100mV. All18 formerly failing group234 selectors now pass;6 final-stage HBTs still fail VCE>=0.4V. Complete immutable summary/parts receipt and unchanged rejection are committed. A read-only exact-capture path review is added; existing physical bridge comparison39376417214 remains live and must not restart. CDR extraction39396626134 has now passed all4 jobs; capture39397118280 can consume only those pinned fresh results. Mainchip route and PLL saved native process remain independent live jobs.
+
 ## 2026-10-20 — Fresh selector4 MIM capture continuation
 
 Cloud-only capture is bound to extraction 39396626134 at 8789725da417537488b307aa0f76c08624822ac2 and successful physical parent 39394475994. It requires all four native extraction stages to succeed, with report, archive and lineage hashes preserved. Original eleven MIM masks, 946 terminal points, 111 physical components and five capture fault controls are unchanged. Strict raw RC audit, exact-once composition and original full-wave electrical gates remain required; no PHY closure is claimed. Mainchip route and PLL saved-process continuation remain live separately.
