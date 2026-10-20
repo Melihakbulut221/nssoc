@@ -1,3 +1,11 @@
+## 2026-10-20 full TX intrinsic handoff
+
+TX precision rebuild39481658422 is live fromed71a75ed58826890ff6dacd270f7f9944de7a28. Do not restart. Baseline must reproduce old R/C and failed witnesses; candidate must pass unchanged original13controls.
+
+This commit launches tx-raw64-intrinsic-cloud: actual8074-device/28582terminal/163port LVS,5376rawMOSfinger junctions,589HBT,65 independent body nets;15corruption controls. Whole-parent RC composition and original loaded gates still required.
+
+CDR476 fullwaves39479905700 live, all4original cases. Mainchip39436610858, PLL39423618115 and old TXwave comparisons39460427396/39453950816 live. All compute/storage cloud-only; local workspace remains empty.
+
 ## 2026-10-20 native producer repair
 
 CDR audit/composition39478830833 PASSED13wire+9MIM+19composition controls. Loaded follower476 job39479905700 is live fromd873cde28d768838e68af35917da5d8e92814a15; do not restart.
