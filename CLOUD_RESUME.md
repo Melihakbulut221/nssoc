@@ -1,3 +1,10 @@
+## 2026-10-20 final-selector physical bridge candidate
+The current failed final four selectors and two tails need a different intervention from the18 middle-stage selectors.
+New tx-final-clock-bridge-cloud generates a native W6/L1.2 rppd across two differential clock terminals plus one ptap. Requires unchanged full560-category DRC, deep/flat native2-device LVS, actual ports and six physical/reference faults.
+No electrical success or full-tree/mainchip placement is claimed. Next: if physical gates pass, extract actual terminals and wire RC, then compose the genuine macro with original PWL/25ohm sources unchanged and run full32 original gates.
+Separate live runs: group2/3/4 fixed lower-bias experiment39372036289 (normal118461938478, actual-fault118461938293); full-terminal PLL39370629792/job118457601687; mainchip route39369450310/job118453762985.
+Keep failed captures and every source receipt. All CAD stays in GitHub; local project empty.
+
 ## 2026-10-20 native TX diagnosis passed; three fixed bias groups
 Native review39370785088 passed and exactly reproduced all original failed gates. Its native resistor-component graph binds18 failed selectors to clkbias_g2/g3/g4, four final selectors to group0 and two additional final tails.
 New tx-wire24-g234-loaded-wave-cloud composes existing independently verified physical l5p7 macros in groups2/3/4, preserving group0 and all other models. Explicit fixed candidate, not measured improvement or full layout acceptance.
