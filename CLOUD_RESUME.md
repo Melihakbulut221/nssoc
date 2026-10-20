@@ -1,3 +1,12 @@
+## 2026-10-21 — active detailed-route checkpoint workflow prepared
+
+Loaded-design native process portability already PASS39497563699. New mainchip-active-drt workflow restores immutable globalODB/guides/original environment from39436610858 via portable image39494338440. Exact native DRT setup/arguments/seed42 and original clock timing contract retained. Initial stage waits for actual native optimization, checkpoints after a bounded segment; cross stage resumes on another VM, requires new native progress, and checkpoints again. It does not yet claim routing or STA completion.
+
+Next inspect native settings and actual process results. On successful cross stage continue its exact saved process using the recorded continuation descriptor. Keep original final fixed-clock/topology/antenna/disconnect/RC/three-corner STA gates mandatory.
+
+CDR v24 four-case electrical39497247685, separate-driver TX39460427396 and PLL39423618115 were reverified live this turn; do not restart on observation timeout. Original TX full32 rejection is already pinned. Cloud-only; no local CAD/source/output files.
+
+
 ## 2026-10-21 — distinct-runner OpenROAD process continuation PASS
 
 Run39497563699 cross stage PASS on different VM boot IDs:single entrypoint,120exact journal rows,152762instances,unchanged ODBhash,5corruption controls. Exact immutable receipt and actual native logs retained. This proves loaded-design process portability, not yet active detailed-router worker state.
