@@ -35,8 +35,23 @@ def main():
   return shapes,texts,instances
  snap=parent_snapshot(L,T)
  assert sum(i.cell.name=='pd_child_sampler'for i in T.each_inst())==4
+ # Original parent construction strips child port-purpose annotations.
+ metals=(8,10,30,50,67,126,134)
+ for cell in L.each_cell():
+  if cell.cell_index()==T.cell_index():continue
+  for layer in metals:
+   for dt in (2,25):assert cell.shapes(L.layer(layer,dt)).is_empty(),('Unexpected original child port annotation',cell.name,layer,dt)
  # Copy from actual newly verified PCell hierarchy, never from an ideal primitive.
  C.clear();C.copy_tree(S)
+ removed=[]
+ for cell in list(L.each_cell()):
+  if cell.cell_index()==T.cell_index():continue
+  for layer in metals:
+   for dt in (2,25):
+    shapes=cell.shapes(L.layer(layer,dt))
+    if not shapes.is_empty():removed.append(dict(cell=cell.name,layer=layer,datatype=dt,count=shapes.size()))
+    shapes.clear()
+ assert removed and all(row['datatype']in (2,25)for row in removed)
  L.write(str(dest/(TOP+'.gds')))
  R=pya.Layout();R.read(str(dest/(TOP+'.gds')));U=R.cell(TOP)
  after=parent_snapshot(R,U)
@@ -77,6 +92,7 @@ def main():
  assert len(faults)==2
  proof=dict(status='PASS_SERIALIZED_PARENT_WIRES_AND_TRANSFORMS_PRESERVED_WITH_FOUR_NATIVE_SELECTOR_SAMPLERS',
   actual_sampler_instances=4,changed_reference_devices=sorted(changed),parent_geometry_unchanged=True,
+  removed_child_port_annotations=removed,original_children_had_no_port_annotations=True,
   external_leaf_ports_and_bbox_unchanged=True,serialized_native_check=True,controls=faults,
   full_phy_accepted=False,qualified_pex=False)
  (out/'replacement-proof.json').write_text(json.dumps(proof,indent=2)+'\n')

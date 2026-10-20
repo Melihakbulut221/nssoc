@@ -1,3 +1,6 @@
+## CDR parent flat LVS rejection fixed at source
+Run39393494957: zero-marker560-rule DRC and all484 deep-LVS devices passed; strict flat LVS rejected extra copied child pin labels. New generation matches the original parent policy: prove original non-top port annotations absent, then strip only newly copied metal purpose2/25 child annotations. Top ports and physical drawing geometry stay exact; strict flat/deep LVS gates remain unchanged. Push starts one new parent run. Mainchip39392483151 and PLL39390580356 are still live; no duplicate native jobs or local artifacts.
+
 ## Cloud-only CDR parent integration
 Leaf run39391984326 passed native54-device DRC/LVS/LEF/faults and exact46-unchanged/8-changed primitive checks. New cdr-selector-v19-parent-cloud replaces four actual sampler children in the pinned v18 parent, preserves all parent shapes/transforms and changes exactly32 flattened Nx parameters. Full484-device DRC/LVS and fresh whole-parent RC plus original loaded electrical cases are still required. Mainchip fresh-route run39392483151 and PLL saved-process continuation39390580356 remain live; do not duplicate or restart them. All artifacts remain cloud-only.
 
