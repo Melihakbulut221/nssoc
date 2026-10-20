@@ -1,3 +1,11 @@
+## 2026-10-20 — composition rejected one missing regular well access
+- Run39355410610 /8aef441d948ed54ae0e82276dcbbb19852578a41 FAILED intentionally at physical body-access gate: core_vdd nativecluster203 / body_203 lacks named tap-model connection.61otherbodygroups have contacts;29shared diffusion groups retained. Do not tie it to supply by net name or accept floating bulks.
+-14of52 actual native MIM attachment nodes differ from inspection anchors; current composer correctly preserves those actual nodes.26MIMs emitted once with3380R/5104C.
+- New pll845-regular-body-access-cloud proves130LVPMOS bulk assignments to actual n-well islands and regular tap/contact geometry, requires existing exact audited anchors and derives auxiliary PDK ntap1 R from actual area/perimeter. Five geometry/ownership fault families mandatory.
+- After proof: integrate separate well-island body nodes and geometry-derived contact models; original845native instances remain845, additional contacts separately counted. Then rerun46composition faults plus access-specific corruptions and loaded waveforms.
+- ALSO audit earlier CDR MIM attachment-plane mapping before further CDR geometry tuning; raw RC intrinsic terminal nodes must survive composition.
+- Cloud only. TX39344566214/mainchip39331918238 remain active; no duplicates.
+
 ## 2026-10-20 — all845 model binding passed; full RC composition dispatched
 - Run39354573228 SUCCESS at0e9cfd53cb8562f0b27ac09add5ede1f164ab37d:845devices/2737terminals/17ports,35controls. All251tap polygons actually2x2um and all251 pinned CbTapCalc evaluations matched.
 - New pll845-native-composition-cloud preserves845intrinsics+3380R+5104C. MIM models use actual native extracted R-network terminal nodes; same-owner arbitrary anchor substitution is forbidden.26MIMs emitted once.
