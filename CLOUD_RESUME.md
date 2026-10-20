@@ -1,3 +1,7 @@
+## 2026-10-20 — Active-follower full parent physical campaign passed; fresh extraction dispatched
+Parent39473538977 passed560DRC zero, deep/flat476-device LVS, all nine faults and16-instance/eight-leaf geometry controls. Exact GDS e06bfb08c8ab9db6cf21560975b6bcd48afed0395d353fc258d1d853073ff3ec pinned. New cdr-follower-v23-extraction-cloud binds160interfaces,1382terminals and actual native models, then extracts fresh full wire RC with original13corruptions. Independent expected census120HBT46MOS98R7MIM205contacts; no thresholds relaxed. MIM-aware composition and original loaded gates remain required. TX anchor39471428433 and existing mainchip/TX/PLL live. Cloud only.
+
+
 ## 2026-10-20 — Active-follower parent DRC and deep LVS passed; stale census assertion fixed
 Parent39472536253 reached full560DRC zero and actual476-device deep LVS Match, then correctly stopped on an overlooked old484 primitive-census assertion. Failure receipt preserved; no flat-LVS/fault campaign success claimed. Fixed checker derives the previously declared design delta from frozen baseline: two old4R+2MIM+6tap leaves become two2HBT+2R+4tap leaves. No geometry, extracted result or acceptance thresholds changed. Rerun full parent suite. TX native anchor39471428433 and existing mainchip/TX/PLL jobs remain live. Cloud only.
 
