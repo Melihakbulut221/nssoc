@@ -1,3 +1,11 @@
+## 2026-10-20 — cloud-only execution and residual local service retirement
+- User instruction: all work in cloud, clean this project's local files. The local NSSOC workspace is empty and no NSSOC CAD process is running.
+- Fresh body-contact RC run39357622740 at ec86f33452dc9bb737e5b209f432013670e991bc completed SUCCESS. This is capture acceptance only; inspect its measured counts and repeat the strict raw audit before composition.
+- TX39344566214 and mainchip39331918238 are still running. Preserve their handles; do not dispatch duplicates.
+- Four inactive local migration-service configurations are archived in docs/evidence/cloud-only-local-service-retirement-20261020.json before removal. They refer to scripts no longer present in the empty workspace.
+- Other repositories (neuromorphic-space-soc and tt-um-melihakbulut-nssoc), their logs, and unrelated gh caches are outside this cleanup scope.
+- NEXT: fresh RC raw audit, four geometry-derived body-contact integration, loaded closed-loop waves; full serial PHY and final setup/hold remain open. All execution and resulting files must stay on hosted runners/GitHub.
+
 ## 2026-10-20 — regular body geometry PASSED; fresh RC dispatched
 - Run39357065697 /bf687e183858e8cf29ae89a9f9e2e5890178939c SUCCESS:125PMOS bodies,4actual n-well islands,4regular tap polygons,2new actual contact anchors.20geometry/ownership corruptions rejected.
 - Extended1606physical/1879logical points retain all original1604/1877 and273exact aliases. Receipt docs/evidence/pll845-regular-body-access-pass-20261020.json; geometry remainsoriginal79b2f586...

@@ -1,0 +1,37 @@
+{
+  "timestamp_utc": "2026-10-20T02:19:21.034136+00:00",
+  "scope": "Melihakbulut221/nssoc only",
+  "execution_policy": "All CAD, simulations, tests, builds and artifacts run on GitHub-hosted runners. Local access limited to API orchestration and authorized cleanup; no local checkout or artifact downloads.",
+  "local_workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
+  "workspace_entries": [],
+  "retired_local_service_configurations": {
+    "nssoc-cloud-tools-transfer-20261013.service": "[Unit]\nDescription=NSSOC verified CAD tool migration to cloud (no local CAD)\nStartLimitIntervalSec=0\n\n[Service]\nType=simple\nWorkingDirectory=/home/hasanmelih/Documents/ChatGPT/nnsoc\nExecStart=/usr/bin/python3 scripts/migrate_outputs_to_cloud.py --scope tools --apply\nRestart=on-failure\nRestartSec=60\nTimeoutStopSec=90\n\n[Install]\nWantedBy=default.target\n",
+    "nssoc-cloud-output-transfer-20261012.service": "[Unit]\nDescription=NSSOC cloud transfer and verification orchestration (no local CAD)\nStartLimitIntervalSec=0\n\n[Service]\nType=simple\nWorkingDirectory=/home/hasanmelih/Documents/ChatGPT/nnsoc\nExecStart=/usr/bin/python3 scripts/migrate_outputs_to_cloud.py --apply\nRestart=on-failure\nRestartSec=60\nTimeoutStopSec=90\n\n[Install]\nWantedBy=default.target\n",
+    "nssoc-cloud-pnr-transfer-20261013.service": "[Unit]\nDescription=NSSOC cloud transfer and verification orchestration (no local CAD)\nStartLimitIntervalSec=0\n\n[Service]\nType=simple\nWorkingDirectory=/home/hasanmelih/Documents/ChatGPT/nnsoc\nExecStart=/usr/bin/python3 scripts/migrate_outputs_to_cloud.py --scope pnr-runs --apply\nRestart=on-failure\nRestartSec=60\nTimeoutStopSec=90\n\n[Install]\nWantedBy=default.target\n",
+    "nssoc-cloud-migration-finalize-20261013.service": "[Unit]\nDescription=NSSOC cloud transfer and verification orchestration (no local CAD)\nStartLimitIntervalSec=0\n\n[Service]\nType=simple\nWorkingDirectory=/home/hasanmelih/Documents/ChatGPT/nnsoc\nExecStart=/usr/bin/python3 scripts/finish_cloud_output_migration.py\nRestart=on-failure\nRestartSec=60\nTimeoutStopSec=90\n\n[Install]\nWantedBy=default.target\n"
+  },
+  "cleanup_sequence": "Archive and verify these configurations in GitHub, then disable inactive migration units and remove their exact local service files. Do not remove unrelated repositories or their logs.",
+  "runs": [
+    {
+      "id": 39357622740,
+      "head_sha": "ec86f33452dc9bb737e5b209f432013670e991bc",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39357622740"
+    },
+    {
+      "id": 39344566214,
+      "head_sha": "13a1a1c4685d53763b1a972e82196cc45ceb2201",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39344566214"
+    },
+    {
+      "id": 39331918238,
+      "head_sha": "5a623eb7b9e873093809884e8bde6d36d20e6ca5",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39331918238"
+    }
+  ]
+}
