@@ -1,3 +1,9 @@
+## 2026-10-20 current CDR latch transfer diagnosis
+Read-only cdr-v16-latch-timing-cloud restores exact early/late native waves39337518790 and geometry39336054657, reproduces all116HBT/all4sampler original checks, then derives native master/slave/selector graphs and measures real data/clock/current timing.
+No sampling phase, expected bits, loading, waveform or engineering gate changed. V17 divider experiment remains rejected; this current-layout diagnosis selects the next actual loading/latch repair.
+TXg234+bridge39376417214 passed source controls and both native runs are live; keep originalg23439372036289, PLL39370629792 and mainchip39373842033 running without duplication.
+All work is cloud-only. Current local project directory remains empty.
+
 ## 2026-10-20 final-clock bridge composed; full loaded TX experiment launched
 Composition39375939797 passed native2/all3R8C/all5terminals/finitecontact and12 actual faults. Model ad89ed29fe7507aad77844e2bdc4eec1e1aef224403ac34a3f321df5a53e61ff and archive/report hashes are pinned.
 New tx-wire24-g234-bridge-loaded-wave-cloud adds this real model across finalsp/sn to the fixed g234 candidate; original PWL/25ohm sources,full34ns256bits3phases,all604HBT/512MOS and original gates remain. Six deck/probe faults and prior55clockinstance controls precede actual normal and leaf-fault runs. No loaded-waveform success yet.
