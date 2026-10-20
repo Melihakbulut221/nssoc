@@ -34,9 +34,19 @@ def prepare_deck(old,parent,model,contract):
     hbts=[d for d in contract['device_records']if d['model']=='npn13g2']
     assert len(hbts)==102
     flags=['alter q.xloop.'+d['instance'].lower()+'.qnpn13g2[off] = 1'for d in hbts]
-    start=next(i for i,l in enumerate(lines)if l==old_flags[0])
-    assert lines[start:start+102]==old_flags,'OFF block must remain at its original execution point'
-    lines[start:start+102]=flags
+    # Each OFF is followed by its native echo/show readback. Preserve all
+    # command positions; rebind all102 identical OFF=1 targets and their probes.
+    target_map={}
+    for old_flag,new_flag in zip(old_flags,flags):
+        old_target=old_flag.split()[1].split('[off]')[0]
+        new_target=new_flag.split()[1].split('[off]')[0]
+        assert old_target not in target_map and new_target not in target_map.values()
+        assert sum(l.count(old_target)for l in lines)==3
+        target_map[old_target]=new_target
+        lines=[l.replace(old_target,new_target)for l in lines]
+    assert len(target_map)==102
+    assert sum(l.startswith('echo NSSOC_NATIVE_FLAG_BEGIN ')for l in lines)==102
+    assert sum(l.startswith('show ')and l.endswith(' : off')for l in lines)==102
     saves=[(i,l)for i,l in enumerate(lines)if l.startswith('save ')]
     assert len(saves)==1
     save_index,save_line=saves[0];oldvectors=save_line[5:].split();assert len(oldvectors)==34
@@ -65,7 +75,9 @@ def prepare_deck(old,parent,model,contract):
     # Reversibility proves all stimuli, loads, solver settings and transient
     # duration are exactly retained. Only model call, OFF identities and saves move.
     reverse=text.replace(candidate_line,line,1)
-    reverse=reverse.replace('\n'.join(flags),'\n'.join(old_flags),1)
+    for old_target,new_target in target_map.items():
+        assert reverse.count(new_target)==3
+        reverse=reverse.replace(new_target,old_target)
     reverse=reverse.replace('save '+' '.join(vectors),save_line,1)
     assert reverse==old or reverse.rstrip('\n')==old.rstrip('\n')
     assert all(n in vectors for n in ('v(reference)','v(fb)','v(vctrl)'))
@@ -120,16 +132,16 @@ def main():
         assert found==set(wanted);packed.unlink()
         old=(SOURCE/'circuit.cir').read_text();parent=(SOURCE/'parent865.spice').read_text()
         model=(OUT/'composition/pll845-mim-wire.spice').read_text()
-        r['original_stimulus_lines']=[l for l in old.splitlines()if l and not l.startswith(('*','alter ','save '))]
+        r['original_stimulus_lines']=[l for l in old.splitlines()if l and not l.startswith(('*','alter ','save ','echo ','show '))]
         r['original_parent_interface']=parser.statements(parent)[0]
         r['native_candidate_interface']=parser.statements(model)[0]
         save()
-        deck,coverage=prepare_deck(old,parent,model,contract)
-        (OUT/'candidate-circuit.cir').write_text(deck)
-        (OUT/'terminal-instrumentation.json').write_text(json.dumps(coverage,indent=2)+'\n')
         # Retain only the protected input files, never the old waveform payload.
         for rel in sorted(wanted):
             dest=OUT/'model-sources'/rel;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes((SOURCE/rel).read_bytes())
+        deck,coverage=prepare_deck(old,parent,model,contract)
+        (OUT/'candidate-circuit.cir').write_text(deck)
+        (OUT/'terminal-instrumentation.json').write_text(json.dumps(coverage,indent=2)+'\n')
         assert all(sha(SOURCE/n)==h for n,h in wanted.items())
         assert all(sha(OUT/'composition'/n)==composition['outputs'][n]for n in selected)
         r.update(status='PASS_WHOLE_PLL_LOADED_DECK_AND2737_TERMINAL_INSTRUMENTATION_REQUIRES_NATIVE_EXECUTION',

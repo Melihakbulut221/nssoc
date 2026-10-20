@@ -1,3 +1,9 @@
+## 2026-10-20 — loaded-deck preparation source-layout correction
+- Run39359595928 failed the draft contiguous-OFF assumption: actual source interleaves each of102OFF commands with echo/show readbacks.
+- Keep all command positions. Rebind each actual HBT target in OFF/echo/show together;102unique targets and complete reverse-transform required. No changed stimulus, solver, duration or removed readback.
+- Failure pinned in docs/evidence/pll845-loaded-preparation-source-layout-rejection-20261020.json. Re-run cloud preparation before native electrical simulation.
+- Four-contact whole composition39359081592 remains passed; TX39344566214/mainchip39331918238 preserved. All cloud-only.
+
 ## 2026-10-20 — whole body-contact composition PASSED; loaded input binding underway
 - Run39359081592 /12240f7368bd9ad11da675b68741ea61bd9e1530 SUCCESS.845native+4actual regular contacts,3381R/5105C,26MIM,65bodygroups all contacted.62corruption controls passed.14actual MIM planes remain distinct from inspection anchors.
 - New pll845-loaded-preparation-cloud restores only hashed original PDK/deck inputs on the hosted runner. It binds unchanged1us/.3125ps stimuli/load/solver to the exact new interface and102nativeHBT OFF identities, and expands selected instrumentation to all2737native terminals plus4contacts.
