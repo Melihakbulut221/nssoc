@@ -1,3 +1,7 @@
+## 2026-10-20 — Fresh selector4 RC ready for strict audit
+
+All4 extraction jobs39396626134 and capture39397118280 passed. Capture has17674R12712C, eleven native MIMs,946 points and111 components; all5 intrinsic capture faults rejected. Commit exact capture/binding receipts and launch original13wire+9MIM audit then19fault exact-once composition. Fullwave electrical rejection criteria remain unchanged. Also fix TX g234 read-only reviewer source-check entrypoint: its predecessor is a script, not a check() function; invoke via runpy. Dispatch that reviewer after this fix without restarting any native waveform.
+
 ## 2026-10-20 — TX group234 full-wave result
 
 39372036289 nominal no-fault completed the original full34ns capture (native exit0), but remains rejected:83 wrong/768 output samples and104 below100mV. All18 formerly failing group234 selectors now pass;6 final-stage HBTs still fail VCE>=0.4V. Complete immutable summary/parts receipt and unchanged rejection are committed. A read-only exact-capture path review is added; existing physical bridge comparison39376417214 remains live and must not restart. CDR extraction39396626134 has now passed all4 jobs; capture39397118280 can consume only those pinned fresh results. Mainchip route and PLL saved native process remain independent live jobs.

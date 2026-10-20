@@ -5,8 +5,8 @@ import hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def check():
-    from check_tx_fast_wire24_path_review_source import check as original
-    original()
+    import runpy
+    runpy.run_path(str(ROOT/'scripts/check_tx_fast_wire24_path_review_source.py'),run_name='__main__')
     d=json.loads((ROOT/'scripts/tx-wire24-g234-path-review-source-delta.json').read_text())
     raw=(ROOT/d['baseline_path']).read_bytes()
     assert hashlib.sha256(raw).hexdigest()==d['baseline_sha256']
