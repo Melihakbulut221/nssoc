@@ -1,3 +1,6 @@
+## 2026-10-20 — CDR v22 both nominal cases rejected; exact-wave latch diagnosis
+Run39458941860 is terminal: early/late sampling and phase failed, all device gates passed, both actual clock/VI fault cases detected. Full immutable receipts pinned. New cdr-v22-latch-timing-cloud reproduces original captures and native latch/selector measurements with only run/source/count bindings changed. Powered raw64 physical39464090686 is live; TX39460427396/39453950816, PLL39423618115 and mainchip39436610858 preserved. Cloud-only; fullPHY and final timing remain unaccepted.
+
 ## 2026-10-20 — All64 actual handoffs constructed; powered native8074 gates next
 Handoff39462833818 passed construction with64/64 real routes, zero obstruction, unchanged native children and three controls. GDSb1349b9209f5bde68219ac9ad03f925df84ea68646c598962dc251da68dcf02a pinned. New powered workflow adds256 power/body connections and runs full560 DRC,8074-device deep/flat LVS and real open/short/width/offgrid faults. This is not yet an accepted physical or electrical assembly. CDRv22 late39458941860 rejected data/phase despite D improvements; rejection receipt preserved. Early case remains live. Existing TX/PLL/mainchip jobs preserved. Cloud-only; no local CAD/source files.
 
