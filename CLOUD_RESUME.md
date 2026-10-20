@@ -1,3 +1,7 @@
+## 2026-10-20 — Twenty floating metal components removed; complete physical suite passed again
+Clean parent39475461885 removed20 zero-terminal/zero-port exclusively parent-owned components;111 retained wire components match prior design expectation. Full560DRC zero, deep/flat476-device LVS, all nine faults and16-child geometry passed. Exact GDS cb96ccb956903a12e0237ec98e51cfe0aaa8108334942d096f9130fb0d68b6e0 pinned. Extraction retry now restores this exact clean parent, keeping original strict no-floating/RC gates. Failed39474349718 and dependent39474781983 preserved, never accepted. TX anchor39471428433 and original mainchip/TX/PLL jobs live. Cloud only.
+
+
 ## 2026-10-20 — Fresh CDR graph rejected floating metal; real geometry cleanup dispatched
 Extraction39474349718 planes passed but wire-inputs failed strict no-terminal-metal gate; binding/RC skipped and dependent MIM39474781983 must not accept it. Failure receipt preserved. New clean-parent campaign rebuilds native wire ownership, records all floating component polygons, removes only zero-terminal/zero-port exclusively parent-owned metal, rejects child intersections, then reruns full560DRC/deep-flat476LVS and nine faults. Original extraction gate unchanged. TX anchor39471428433 and mainchip/TX/PLL remain live. Cloud only.
 

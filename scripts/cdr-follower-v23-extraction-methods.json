@@ -2,7 +2,7 @@
   "scripts/cloud_cdr_follower_v23_planes.py": {
     "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_planes.py",
     "baseline_sha256": "af1c0ede80555be39d3140093545addb23826dafb6595e065f9aea66a9ec24e4",
-    "candidate_sha256": "b085df53b6540b1d877c553121caed452d3cb7f9e2948d1ecb043cfc7f9e85fb",
+    "candidate_sha256": "5b7406948bcb48240a9d83df5cd0e484868de5bb860350f50f45af6e75dbea87",
     "changes": [
       {
         "before": "cdr-retime-trunks-v22",
@@ -98,12 +98,18 @@
         "after": "e06bfb08c8ab9db6cf21560975b6bcd48afed0395d353fc258d1d853073ff3ec",
         "count": 1
       }
-    ]
+    ],
+    "floating_cleanup_input_revision": {
+      "previous_sha256": "b085df53b6540b1d877c553121caed452d3cb7f9e2948d1ecb043cfc7f9e85fb",
+      "new_sha256": "5b7406948bcb48240a9d83df5cd0e484868de5bb860350f50f45af6e75dbea87",
+      "physical_run": 39475461885,
+      "scope": "Exact physically reverified GDS after removing only20 native terminal-free parent components; all extraction gates unchanged."
+    }
   },
   "scripts/cloud_cdr_follower_v23_wire_inputs.py": {
     "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_wire_inputs.py",
     "baseline_sha256": "ed9035fd631c2c0d23b6e11063c3008d0bd52c40f3ba80952de6d44198d9f10d",
-    "candidate_sha256": "5d1e04704c47af56fe31fa13543c2bc649265ac25cc8361cf1862b1dc0c8f88f",
+    "candidate_sha256": "a130ba98718829706b7f69c1873165c2c5a833555c6204bd51fe3c792d4abcc7",
     "changes": [
       {
         "before": "cdr-retime-trunks-v22",
@@ -185,7 +191,13 @@
         "after": "    # v23 serializes only the selected parent hierarchy. A historical orphan\n    # need not survive that serialization, but no reachable primitive may be\n    # excluded. complete(mapped) and the missing-primitive fault remain above.\n    assert all(not x['referenced_from_top']and x['cell']not in mapped for x in excluded)",
         "count": 1
       }
-    ]
+    ],
+    "floating_cleanup_input_revision": {
+      "previous_sha256": "5d1e04704c47af56fe31fa13543c2bc649265ac25cc8361cf1862b1dc0c8f88f",
+      "new_sha256": "a130ba98718829706b7f69c1873165c2c5a833555c6204bd51fe3c792d4abcc7",
+      "physical_run": 39475461885,
+      "scope": "Exact physically reverified GDS after removing only20 native terminal-free parent components; all extraction gates unchanged."
+    }
   },
   "scripts/cloud_cdr_follower_v23_binding.py": {
     "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_binding.py",

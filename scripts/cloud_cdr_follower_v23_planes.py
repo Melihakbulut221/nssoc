@@ -65,7 +65,7 @@ def native():
             assert x['logical_net']==expected[x['label']]
             groups.setdefault(x['logical_net'],set()).add(x['native_cluster'])
         assert set(groups)==set(plan['nets']) and len(groups)==51
-        assert all(len(v)==1for v in groups.values()),'Open logical net'
+        assert all(len(v)==1 for v in groups.values()),'Open logical net'
         assert len(set.union(*groups.values()))==51,'Different logical nets shorted'
         public={p.name():circuit.net_for_pin(p.id()).cluster_id for p in circuit.each_pin()}
         assert set(public)==set(plan['ports'])
@@ -108,24 +108,24 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        pin=json.loads((ROOT/'docs/evidence/cdr-follower-v23-parent-physical-pass-20261020.json').read_text())
-        assert pin['run']==39473538977 and pin['source_head']=='bd1af5d7130678914fdef4d5f00443aa6dc5de8f'
-        assert pin['summary_sha256']=='0b2217d4de1216336207650076be7431b585c3401441057d46f789a35598f945'
-        assert pin['parts_sha256']=='c33776e2f42b308cf75f4fd58218303aa582eab4543d9f0767612fc7a87bee24'
+        pin=json.loads((ROOT/'docs/evidence/cdr-follower-v23-clean-parent-physical-pass-20261020.json').read_text())
+        assert pin['run']==39475461885 and pin['source_head']=='5b34d55845f7bd2b746aebc4f817f3b65ecd7ca6'
+        assert pin['summary_sha256']=='e9d565ba3bb36c335392f57cb8845c8a6677f04769e56217eec8a7b1e5ff1c56'
+        assert pin['parts_sha256']=='c2e459959502806124fff1595f9d48d26685ef81d95965c03d58e9a5859fe37f'
         selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]
-        prior,proof=reports.restore_report('cdr-follower-v23-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
+        prior,proof=reports.restore_report('cdr-follower-v23-clean-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
         assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']
-        assert prior['status']=='PASS_PD476_ACTIVE_FOLLOWER_V23_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'
+        assert prior['status']=='PASS_PD476_NATIVE_FLOATING_METAL_CLEANUP_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'
         assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD476_DRC_LVS_AND_FAULT_CONTROLS'
-        geometry=prior['replacement']
-        assert geometry['replaced_instances']==['ac','bd'] and geometry['retained_other_instances']==14
-        assert geometry['old_parent_shapes_retained']and geometry['external_ports_unchanged']and geometry['old_six_leaf_pin_coordinates_unchanged']
-        assert len(geometry['actual_added_avdd_routes'])==2 and len(geometry['controls'])==2
-        assert all(x['original_rail_witness'] and len(x['native_via_centers_um'])==2 for x in geometry['actual_added_avdd_routes'])
-        assert geometry['new_native_device_census']==dict(npn13g2=120,sg13_lv_nmos=46,rppd=98,cap_cmim=7,ptap1=205)
+        geometry=prior['cleanup']
+        assert geometry['native_devices']==476 and geometry['no_device_or_public_terminal_removed']
+        assert len(geometry['floating_components'])==20 and geometry['original_wire_components']==131 and geometry['retained_wire_components']==111
+        assert all(not x['device_terminals']and not x['public_ports']for x in geometry['floating_components'])
+        assert geometry['native_device_census']==dict(npn13G2=120,sg13_lv_nmos=46,rppd=98,cap_cmim=7,ptap1=205)
+        assert prior['original_parent_source']['summary_sha256']=='0b2217d4de1216336207650076be7431b585c3401441057d46f789a35598f945'
         assert prior['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_EIGHT_NATIVE_LEAF_DRAWINGS'
         assert len(prior['child_geometry']['controls'])==3
-        assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='e06bfb08c8ab9db6cf21560975b6bcd48afed0395d353fc258d1d853073ff3ec'
+        assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='cb96ccb956903a12e0237ec98e51cfe0aaa8108334942d096f9130fb0d68b6e0'
         r['retime_parent_geometry']=geometry
         r['physical_source']=proof
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
