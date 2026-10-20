@@ -1,3 +1,10 @@
+## 2026-10-20 — exact-GDS MIM dimension comparison
+- Whole native capture39352067225 produced3380R/5104C/235components/1604physicalpoints retaining1877logicalreferences; original native exit0.
+- Diagnostic review39352510835 isolated the sole mismatch:11.200000000000001um versus11.2um at components7/38, same11um length. Both failed reports remain pinned and immutable.
+- Candidate review derives dimensions from actual integer mask boxes and permits only one binary64 ULP in matching native floats.52 one-nanometre metadata corruption cases plus8 prior raw-capture fault cases are mandatory.
+- No CAD rerun; replay only immutable captured data. Native raw R/C audit and full845-device composition still next.
+- Cloud-only; TX39344566214 and mainchip39331918238 remain live, no duplicates.
+
 ## 2026-10-20 — whole PLL RC captured, MIM comparison rejected
 - Native run39352067225 at8045ebfecb88064453c1311b4fad8f606d354dd7: actual input geometry passed,1604 distinct physical points retain1877 logical references. All235 resistor components passed capture ownership checks. Native capture exit0 in3.51s.
 -26-MIM terminal-owner/dimension multiset comparison FAILED. Preserve original failure and all raw artifacts; do not accept or repeat native CAD merely for diagnosis.

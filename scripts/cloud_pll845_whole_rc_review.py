@@ -35,9 +35,10 @@ def main():
   text=(OUT/'capture/wire/rc03/wires.spice').read_text()
   r['intrinsic_capture_binding']=checks.check_capture(text,anchors,mim,OUT/'mim-comparison.json')
   r['capture_controls']=checks.fault_controls(text,anchors,mim)
+  r['dimension_controls']=checks.dimension_controls(mim)
   assert all(sha(OUT/'capture'/n)==prior['outputs'][n]for n in names)
   assert sha(Path(__file__))==r['controller_sha256']and sha(Path(checks.__file__))==r['checker_sha256']
-  r.update(status='PASS_PLL845_PRESERVED_NATIVE_CAPTURE_AND8_CONTROLS_REQUIRES_RAW_RC_AUDIT',sources_unchanged=True)
+  r.update(status='PASS_PLL845_PRESERVED_NATIVE_CAPTURE_AND10_CONTROL_FAMILIES_REQUIRES_RAW_RC_AUDIT',sources_unchanged=True)
  except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
  finally:
   if(OUT/'mim-comparison.json').exists():r['mim_comparison']=json.loads((OUT/'mim-comparison.json').read_text())
