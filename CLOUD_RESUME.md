@@ -1,3 +1,11 @@
+## 2026-10-20 — mainchip128buffer route finished; timing still fails, fresh path diagnosis started
+- Run39331918238 /5a623eb7b9e873093809884e8bde6d36d20e6ca5 execution SUCCESS,17333s. Fresh routed nominalRC/3cellcorners;0routeDRC,0criticaldisconnect,16antenna nets (previous25). Not signoff.
+- Slow:9660setup/3hold, WNS−15.804086/−.513457ns. Typical7027/17, WNS−6.502159/−.425457ns. Fast3107/95, WNS−3.161205/−.437994ns.
+- Against prior33buffer39293720171 setup counts improve9691→9660,7619→7027,3917→3107 but typical/fast setupWNS worsens; hold fast17→95,typ9→17. Reject any timing-closure claim or unconditional candidate promotion.
+- New onehot-coverage-data-path-review-cloud restores actual immutable native reports and compares previous measurements with unchanged parser/negative controls. No reroute or relaxed clock/hold gates. NEXT inspect worst/new hold paths and setup regressions, choose measured targeted repair with all-corner checks.
+- Native PLL zero-source OP review39361546966 passed (previous section); full loaded1us and fullserialPHY still open.
+- TX39344566214 still running. Mainchip39331918238 is terminal now: do not wait or restart it; consume its pinned evidence. Cloud-only.
+
 ## 2026-10-20 — whole native zero-source OP PASSED; full loaded waveform next
 - Native OP39360539378 was execution-success with all102OFF readbacks and KLU settings; review39361546966 /bf36c7f6ded101970cc3a256c1596b267eaf1e48 now PASSED on the unchanged raw capture.
 - Every1694required voltage probe present, covering2737native terminal records. All5088native voltages and17source currents are finite and exactly0 at zero sources.12corruption controls rejected. RawSHA6c6e5aae821d0416bdb98c8b0fddd88173b86c3d2b27415ab8d419ad24ed48be.
