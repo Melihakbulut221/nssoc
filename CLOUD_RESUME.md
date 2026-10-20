@@ -1,3 +1,6 @@
+## Native clock wire imported; retain strict physical comparison
+39367210485 imported actual1142.070um fixed wire and passed unchanged non-target DEF and native pin/via identity, but raw whole-net token equality rejected serialization. Canonicalize only unordered connection records; require every fixed-route token and non-connection prefix token exactly unchanged. Preserve before/after statement and explicit diff on any physical mismatch. Candidate remains unaccepted pending successful native proof, actual negative controls, DRC/RC/STA. CDR follow-up review: archived39337079644 composition summary SHA58708b1f418bd13a1fa930cc974ea7afed61c00c6912d601af631e26c3beca11 maps all22 native MIM plate export nodes to assembled nodes identically; PLL anchor mismatch hypothesis is not supported for this CDR report, not a new loaded simulation pass.
+
 ## Correct native clock DEF import mode
 39366605396 proved incremental DEF mode omitted the clock wire entirely; no candidate accepted. Primary OpenDB reader source registers NETS callbacks in FLOORPLAN mode, not INCREMENTAL. Use floorplan_initialize only for the one-net patch, retaining strict exact non-target DEF, native netlist, pin/via and fixed-wire proofs and real fault controls. Re-run natively on hosted runner; no timing gate relaxed.
 

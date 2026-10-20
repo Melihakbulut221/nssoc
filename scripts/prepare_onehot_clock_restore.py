@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Prepare and audit one actual historical clock route in the latest routed chip."""
-import hashlib,json,os,re
+import hashlib,json,os,re,difflib
 from pathlib import Path
 import odb
 ROOT=Path(__file__).resolve().parents[1]
@@ -40,6 +40,15 @@ def scan_def(path):
 def export(block,name):
     path=OUT/name;odb.write_def(block,str(path))
     return scan_def(path)
+
+def route_signature(text):
+    assert text.count('+ FIXED')==1
+    head,route=text.split('+ FIXED')
+    pins=re.findall(r'\(\s*(\S+)\s+(\S+)\s*\)',head)
+    assert pins and len(pins)==len(set(pins))
+    prefix=re.sub(r'\(\s*\S+\s+\S+\s*\)','',head)
+    return dict(prefix=prefix.split(),pins=sorted(pins),fixed_route=route.split())
+
 def main():
     pins=json.loads((OUT/'sources.json').read_text())
     for tag,pin in pins.items():assert sha(OUT/tag/ODB)==pin['odb_sha256']
@@ -97,7 +106,14 @@ def main():
         assert net.getWire().getLength()==plan['old_length_dbu']
         actual,unrelated=export(block,'candidate.def'if fault=='none'else 'fault-'+fault+'.def')
         assert unrelated==plan['current_unrelated_def_sha256'],'Unrelated DEF geometry, cells or connectivity changed'
-        assert actual.split()==plan['expected_statement'].split(),'Imported native route differs from original physical route'
+        expected=plan['expected_statement']
+        actual_signature=route_signature(actual);expected_signature=route_signature(expected)
+        if actual_signature!=expected_signature:
+            print(''.join(list(difflib.unified_diff(expected.splitlines(True),actual.splitlines(True)))[:80]),flush=True)
+        assert actual_signature==expected_signature,'Imported native route differs from original physical route'
+        (OUT/'clock-statement-proof.json').write_text(json.dumps(dict(expected=expected,actual=actual,
+           normalized_only_unordered_connection_list=True,exact_fixed_route_tokens=True,
+           exact_net_prefix_and_pin_membership=True),indent=2)+'\n')
         d=odb.dbWireDecoder();d.begin(net.getWire());d.next();assert str(d.getWireType())=='FIXED'
         r=dict(status='PASS_NATIVE_SINGLE_CLOCK_ROUTE_TRANSFER_REQUIRES_DRC_RC_AND_STA',
            net=NET,source_pin_positions_unchanged=True,all_unrelated_def_content_unchanged=True,
