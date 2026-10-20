@@ -1,3 +1,12 @@
+## 2026-10-20 — whole PLL native raw RC audit PASSED
+- Run39353209044 / source2add3d6d68a43e058e9de9d55fee7307e69de4d2 SUCCESS.3380R/5104C,235physicalconductors,1604physicalpoints/1877logicalreferences,26MIMs;0disconnected.
+- Exact raw R edge/value, every native point groundC, mutual attachment/value, full collapsed matrix and branch/retirement witnesses passed.13wire+9MIM corruption controls rejected.
+- Immutable compact receipt docs/evidence/pll845-whole-raw-rc-audit-pass-20261020.json. Summaryasset657927876 sha2ac5579638869d9099c868d91d48d1ac676459c0830e2b8ff66022cea1bfc25b; parts657927943 sha8b26b49da6f69a6af22fde32509c6491eef38831f2dd2c3761f9b2d4485d912a.
+- NEXT: full845 intrinsic binding/composition, all377 LV/HV NMOS/PMOS,102HBT,89rppd,26MIM,251tap instances. Existing base converter supports onlyHVPMOS and fixed2x2tap: extend with actual native A/P and pinned PDK equations/models; no fixed-size substitution. Preserve819body+58shared diffusion boundaries and30unmodeled salicide accesses explicitly.
+- Then loaded full closed-loop PLL waveforms; no electrical or full PEX acceptance yet.
+- TX39344566214 and mainchip39331918238 remain active; check same handles. CDR v17 rejected.
+- User cloud-only override active; no local CAD/artifacts, project directory empty.
+
 ## 2026-10-20 — whole PLL capture review passed; raw audit dispatched
 - Review39352788481 SUCCESS atc9d331e8ae3cf316c225e66bfa331161e1f05160.3380R/5104C,235components,1604physicalpoints retaining1877logicalreferences,26 unique MIM identities.8 capture faults+52 one-nanometre dimension metadata corruptions rejected.
 - Original native capture39352067225 and failed review39352510835 remain immutable. No CAD rerun.
