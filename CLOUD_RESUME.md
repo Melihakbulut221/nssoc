@@ -1,3 +1,17 @@
+## 2026-10-20: actual p4 drive3 layout passed; fresh RC launched
+
+TX39447746971 passed all560 DRC categories with0markers, full deep/flat1674device
+LVS and native faults. Exact geometry preserves all parent routes and twelve
+pins per changed cell. NewGDS d202185d3691cd7778b8040492bab73492f44a1cfb0896c5f0b8f31350e6bdff.
+tx-p4-drive3-extraction-cloud.yml measures fresh complete R/C with original13
+faults. Follow with actual-device composition and original full TX waves.
+863coreemitters; full-chip budget remains open. No electrical acceptance yet.
+
+CDR39444824145 remains in full tests. PLL39423618115 is publishing its initial
+result/checkpoint; inspect its same-run continuation before considering a restart.
+Mainchip39436610858 remains live. Cloud-only; local workspace empty.
+
+
 ## 2026-10-20: v21 raw audit/composition proven; electrical runs live
 
 CDR39444363134 passed all13 wire +9 MIM audit faults and19 composition faults.

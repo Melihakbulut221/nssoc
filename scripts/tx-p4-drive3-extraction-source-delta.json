@@ -1,0 +1,85 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_fast_wire20_extraction.py",
+      "baseline_sha256": "18bfa29c7be452669c2dcc14c3c6eb13795a4d07a42c53df56c3c4fbf59d0bf7",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_extraction.py",
+      "candidate_sha256": "8b75f82568fbdfe6400ace47043a41782cdd818f0ea9213e82688dee48086cd2",
+      "edits": [
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 4
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 1
+        },
+        {
+          "before": "39401920232",
+          "after": "39447746971",
+          "count": 3
+        },
+        {
+          "before": "d8e768c22fd7c1caec0db12239387238dbfdc5db",
+          "after": "4e9d1b6ecca60dd61b808a9d54de185f190f827c",
+          "count": 1
+        },
+        {
+          "before": "8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a",
+          "after": "f351c3ab008b764155594fe395f83b319ca384c32073c1106d7bebbb508319cc",
+          "count": 1
+        },
+        {
+          "before": "83fc6607218448e26bbb1d7ddb708365cb0e8035b748e810a96bb7851571a648",
+          "after": "7850dbc653187dd4e5832e56bf611d1caa069ea6f331717aecea801311d18f0e",
+          "count": 2
+        },
+        {
+          "before": "bytes=2996093",
+          "after": "bytes=2990489",
+          "count": 1
+        },
+        {
+          "before": "PASS_TX28_FAST_DATA_WIRE20_NATIVE_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES",
+          "after": "PASS_TX_FOUR_P4_NATIVE_DRIVE3_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES",
+          "count": 1
+        },
+        {
+          "before": "        # Preserve every prior placement/return/child gate on the immutable baseline.\n        # New physical verification independently proves the only allowed width delta.\n        result['baseline_data_route_geometry']=gp\n        gp=json.loads((out/'geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']and physical['sources_unchanged']\n        assert gp['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n        assert gp['original_vias_children_placements_pins_and_other_layers_equal']and gp['serialized_gds_verified']\n        assert gp['widths_um']==dict(original=4.,candidate=2.,retained_landings=4.)\n        assert {x['name']for x in gp['controls']}=={'restore_removed_wide_metal','cut_actual_narrow_trunk','change_native_child_geometry'}\n        assert all(x['rejected']for x in gp['controls'])and len(gp['controls'])==3\n        assert gp['source_gds_sha256']==basepin['layout_outputs'][top+'.gds']\n        assert gp['candidate_gds_sha256']==physical['layout']['outputs'][top+'.gds']\n        assert physical['physical_source']['summary_sha256']==basepin['summary_sha256']\n        assert physical['outputs']['source/verify-tree32.py']==basepin['outputs']['verify-tree32.py']\n        assert physical['layout']['outputs']==receipt['layout_outputs']\n        for key in ('ports','bbox_um','placements','origin_translation_um','total_devices','core_devices','substrate_contacts','parent_signal_centerline_sum_um','parent_signal_centerline_max_um'):\n            assert physical['layout'][key]==baseline['layout'][key],key\n        for ext in ('.lef',):\n            assert physical['layout']['outputs'][top+ext]==baseline['layout']['outputs'][top+ext]\n        assert physical['layout']['outputs']['schematic.cir']==baseline['layout']['outputs']['schematic.cir']\n        changed=[]\n        for old,new in zip(baseline['layout']['signal_routes'],physical['layout']['signal_routes'],strict=True):\n            wanted=dict(old)\n            if not old['net'].startswith('p16_'):\n                wanted.update(width_um=2.,landing_width_um=4.);changed.append(old['net'])\n            assert new==wanted\n        assert changed==gp['changed_routes']and len(changed)==28\n        from check_tx_p4_drive3_sources import check as current_geometry\n        current_geometry()\n        result['independent_data_route_geometry']=gp\n",
+          "after": "        # Retain the original timing-priority and wire20 evidence independently.\n        # The candidate changes exactly four native masters, not only wire width.\n        result['baseline_data_route_geometry']=gp\n        wirepin=json.loads((ROOT/'docs/evidence/tx-fast-wire20-physical-pass-20261020.json').read_text())\n        assert wirepin['run']==39401920232 and wirepin['summary_sha256']=='8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a'\n        wirebase=wirepin['report']\n        assert wirebase['sources_unchanged']and wirebase['physical_source']['summary_sha256']==basepin['summary_sha256']\n        assert wirebase['geometry_delta']['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n        gp=json.loads((out/'geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']and physical['sources_unchanged']\n        assert gp['status']=='PASS_FOUR_P4_NATIVE_MASTER_REPLACEMENTS_ALL_PINS_PARENT_ROUTES_AND_THREE_FAULTS'\n        assert gp['original_master_drawings_unchanged']and gp['parent_drawings_routes_and_pins_unchanged']and gp['serialized_gds_verified']and gp['lef_byte_identical']\n        assert gp['reference_hbts']==589 and gp['reference_emitters']==863 and gp['four_lane_core_emitter_projection']==3452\n        assert not gp['whole_chip_emitter_budget_qualified']\n        assert {x['name']for x in gp['controls']}=={'wrong_native_macro','shift_native_pins_5nm','missing_parent_metal'}\n        assert all(x['rejected']for x in gp['controls'])and len(gp['controls'])==3\n        assert gp['source_gds_sha256']==wirebase['layout']['outputs'][top+'.gds']\n        assert gp['candidate_gds_sha256']==physical['layout']['outputs'][top+'.gds']=='d202185d3691cd7778b8040492bab73492f44a1cfb0896c5f0b8f31350e6bdff'\n        assert physical['physical_source']['summary_sha256']==wirepin['summary_sha256']\n        assert physical['outputs']['source/source/verify-tree32.py']==basepin['outputs']['verify-tree32.py']\n        assert physical['layout']['outputs']==receipt['layout_outputs']\n        for key in ('ports','bbox_um','origin_translation_um','total_devices','core_devices','substrate_contacts','parent_signal_centerline_sum_um','parent_signal_centerline_max_um','signal_routes'):\n            assert physical['layout'][key]==wirebase['layout'][key],key\n        assert physical['layout']['outputs'][top+'.lef']==wirebase['layout']['outputs'][top+'.lef']\n        assert physical['layout']['outputs']['schematic.cir']!=wirebase['layout']['outputs']['schematic.cir']\n        wanted={x['tag']:x for x in gp['changes']}\n        assert set(wanted)=={'p4_0','p4_1','p4_2','p4_3'}\n        assert set(physical['layout']['placements'])==set(wirebase['layout']['placements'])\n        for tag,before in wirebase['layout']['placements'].items():\n            candidate=physical['layout']['placements'][tag]\n            if tag not in wanted:assert candidate==before\n            else:\n                q=wanted[tag]\n                assert q['original_kind']=='pre_low'and q['candidate_kind']=='pre'and q['original_emitters']==19 and q['candidate_emitters']==55\n                assert q['public_pin_rectangles_identical']and q['before_transform']==before['transform']and q['before_bbox']==before['bbox_um']\n                assert candidate==dict(before,kind='pre',transform=q['after_transform'],bbox_um=q['after_bbox'])\n        assert len(gp['circuit_changes'])==4 and {x['tag']for x in gp['circuit_changes']}==set(wanted)\n        assert all(len(x['original_cards'])==len(x['candidate_cards'])==54 for x in gp['circuit_changes'])\n        from check_tx_fast_wire20_sources import check as wire_geometry\n        from check_tx_p4_drive3_sources import check as current_geometry\n        wire_geometry();current_geometry()\n        result['independent_data_route_geometry']=gp\n        result['actual_emitter_budget']=dict(core_emitters=863,four_lane_core_projection=3452,whole_chip_qualified=False,source=gp['candidate_gds_sha256'])\n",
+          "count": 1
+        },
+        {
+          "before": "sum(v['kind']=='pre_low'for v in layout['placements'].values())==28",
+          "after": "sum(v['kind']=='pre_low'for v in layout['placements'].values())==24",
+          "count": 1
+        },
+        {
+          "before": "gp['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'",
+          "after": "gp['status']=='PASS_FOUR_P4_NATIVE_MASTER_REPLACEMENTS_ALL_PINS_PARENT_ROUTES_AND_THREE_FAULTS'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-fast-wire20-extraction-cloud.yml",
+      "baseline_sha256": "8628fb15d142d3a481a8752f46a629dfb1c21022a42e32db8c0786a103dea794",
+      "candidate_path": ".github/workflows/tx-p4-drive3-extraction-cloud.yml",
+      "candidate_sha256": "33822dbddcfc164b027b81ca655de42c6f1e99d5fb5b4723da30d55403e9ad19",
+      "edits": [
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 8
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 3
+        }
+      ]
+    }
+  ]
+}
