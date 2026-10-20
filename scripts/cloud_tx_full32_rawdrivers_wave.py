@@ -148,7 +148,7 @@ def main():
   driver_root=out/'raw-drivers'
   deck,contract,result['physical_driver_binding']=restore_and_adapt(driver_root,inputs,deck,contract)
   assert len(contract['hbt'])==604 and len(contract['mos'])==5376 and len(contract['interface_probes'])==124
-  result['scope']+=' All64 CMOS input drivers now use actual native100-device models with each260R295C; driver/core interconnect and supply boundaries still ideal. No composite fullPHY layout acceptance.'
+  result['scope']=result['scope'].replace('External schematic CMOS, ideal modulation and output frontends remain.','Input CMOS layouts and local RC included; ideal differential clock modulation and output frontends remain.')+' All64 CMOS input drivers now use actual native100-device models with each260R295C; driver/core interconnect and supply boundaries still ideal. No composite fullPHY layout acceptance.'
   result['native_binding']=dict(actual_input_legs=124,actual_data_bases=372,hbt_count=604,mos_count=5376,public_data_pins=64,all_interface_probes_are_bound_terminals=True);save()
   assert contract['source_bits_sha256']=='5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825'
   assert len(contract['tree_plan']['nodes'])==30 and tree.BITS==256 and tree.UI==125e-12 and abs(tree.STOP-34e-9)<1e-22
@@ -171,8 +171,24 @@ def main():
    result.update(status='READY_FULL32_RAW64_DRIVER_DECK_NOT_SIMULATED',source_unchanged=True,simulator_checked=False)
    save();return
 
+  pin=json.loads((ROOT/'docs/evidence/tx-full32-rawdrivers-preparation-pass-20261020.json').read_text())
+  assert pin['source_run']==39459369542 and pin['source_head']=='36b2250c75b4ba514969b57acf66020c14ff321e'
+  assert pin['.summary.json']['sha256']=='e29e16dcae6c9dc76af22e308bfbdd4e5faa1e8baab0246699f6c891018a03ef'
+  assert columns==pin['result']['capture_preflight']['columns']==11708
+  assert columns*minimum_rows*8==pin['result']['capture_preflight']['minimum_raw_payload_bytes']==6369245664
+  assert len(result['op_transport_control']['controls'])==5 and all(c['rejected']for c in result['op_transport_control']['controls'])
+  if args.fault=='none':
+   assert sha(native/'bench.cir')==pin['out_hashes']['native/bench.cir']=='d8624b2bc9d4c233716851d84ed2a792afa1d9564816fb0aa43c44b975786e26'
+   assert sha(native/'contract.json')==pin['out_hashes']['native/contract.json']=='37c865f5f4cafc40af22ba14e23b7c6bc5902ae12e8b50c2d050fcbbdf7df8c0'
+  raw_limit=32*1024**3
+  required_free=2*raw_limit+8*1024**3
+  assert shutil.disk_usage(out).free>=required_free,'Insufficient cloud disk for all raw bytes, complete archive and8GiB reserve'
+  result['capture_storage_contract']=dict(raw_file_limit_bytes=raw_limit,minimum_free_bytes=required_free,
+   observed_free_bytes=shutil.disk_usage(out).free,prepared_nominal_deck_byte_identical=(args.fault=='none'),
+   unchanged_all_original_samples=True,preparation_summary_sha256=pin['.summary.json']['sha256'])
+  save()
   def limits():
-   resource.setrlimit(resource.RLIMIT_AS,(12*1024**3,)*2);resource.setrlimit(resource.RLIMIT_FSIZE,(8*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
+   resource.setrlimit(resource.RLIMIT_AS,(12*1024**3,)*2);resource.setrlimit(resource.RLIMIT_FSIZE,(raw_limit,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})
   env={k:v for k,v in os.environ.items()if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')};env.update(SPICE_SCRIPTS=str(native),OMP_NUM_THREADS='1',RAYON_NUM_THREADS='1')
   start=time.monotonic()
   with (native/'run.log').open('w')as log:rc=subprocess.call([str(paths['patched']),'-n','-b','bench.cir'],cwd=native,env=env,preexec_fn=limits,stdout=log,stderr=subprocess.STDOUT)

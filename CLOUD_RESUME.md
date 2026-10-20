@@ -1,3 +1,6 @@
+## 2026-10-20 — Full32 all64 native drivers now ready for full waveform
+Preparation39459369542 passed:5376MOS604HBT,11708columns, >=6369245664raw bytes. Original nominal deck/contract hashes pinned. New tx-full32-rawdrivers-loaded-cloud runs nominal and actual leaf-swap fault with original34ns256bits/all gates, full binary capture, exact chunked OP and32GiBfile/72GiBfree disk checks. Preparation is not electrical acceptance. CDR validation39457813038 passed all41faults; fullwave39458941860 live. Original core TX39453950816, PLL39423618115 and mainchip39436610858 live. Cloud-only, local workspace empty.
+
 ## 2026-10-20 — Native OP control initialization warning repaired
 Raw64 preparation39458613068 completed its native10032-node OP but was correctly rejected for missing spinit. Added explicit initialization file/path with one thread; strict diagnostics and every transport fault/control retained. New push repeats preparation without restarting any live simulation. CDR fullwave39458941860 is live after exact validation; TX39453950816, PLL39423618115 and mainchip39436610858 remain intact. Cloud-only.
 
