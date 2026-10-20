@@ -1,3 +1,7 @@
+## 2026-10-20 — Fresh CDR graph rejected floating metal; real geometry cleanup dispatched
+Extraction39474349718 planes passed but wire-inputs failed strict no-terminal-metal gate; binding/RC skipped and dependent MIM39474781983 must not accept it. Failure receipt preserved. New clean-parent campaign rebuilds native wire ownership, records all floating component polygons, removes only zero-terminal/zero-port exclusively parent-owned metal, rejects child intersections, then reruns full560DRC/deep-flat476LVS and nine faults. Original extraction gate unchanged. TX anchor39471428433 and mainchip/TX/PLL remain live. Cloud only.
+
+
 ## 2026-10-20 — Fresh active-follower interface binding passed; dependent MIM capture queued
 Extraction39474349718 at0712729a5c5177b0f6017b2abadc14dd97b0c0dd passed planes; wire inputs is live. New MIM capture waits for all four exact stages, verifies immutable cross-stage provenance, and retains seven actual MIMs/938 physical references/five corruption checks. Raw RC audit/composition and original loaded electrical gates remain mandatory. Full PHY/mainchip timing remain open; all work cloud-only.
 
