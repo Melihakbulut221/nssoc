@@ -1,3 +1,9 @@
+## 2026-10-20 — regular-body target census corrected from immutable evidence
+- Run39356172553 rejected the draft130-target assumption. Frozen composition proves125 actual LV PMOS body terminals on cluster203, IDs195..319;5other LV PMOS already have named body contact models.
+- Revised native proof requires the exact125-ID set from the frozen composition plus the full130-LVPMOS/845-device source census. No omitted device or weakened global gate.
+- Continue native well/tap geometry proof, then integrate separate actual well-island nodes and auxiliary geometry-derived contact models. Do not accept core_vdd bulk floating or direct name-based shorts.
+- Preserve failure pins and14MIM attachment-plane differences. All cloud-only.
+
 ## 2026-10-20 — composition rejected one missing regular well access
 - Run39355410610 /8aef441d948ed54ae0e82276dcbbb19852578a41 FAILED intentionally at physical body-access gate: core_vdd nativecluster203 / body_203 lacks named tap-model connection.61otherbodygroups have contacts;29shared diffusion groups retained. Do not tie it to supply by net name or accept floating bulks.
 -14of52 actual native MIM attachment nodes differ from inspection anchors; current composer correctly preserves those actual nodes.26MIMs emitted once with3380R/5104C.

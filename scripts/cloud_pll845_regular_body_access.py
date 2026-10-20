@@ -44,7 +44,7 @@ def main():
   save()
   if rc:print(log.read_text(errors='replace')[-15000:],flush=True)
   assert rc==0
-  data=r['body_access'];assert data['plan']['native_pmos_body_terminals']==130
+  data=r['body_access'];assert data['plan']['native_pmos_body_terminals']==125
   assert len(data['controls'])==5 and all(x['rejected']for x in data['controls'])
   assert data['plan']['existing_audited_wire_points_only']
   assert all(sha(OUT/'composition'/n)==failed['outputs'][n]for n in names)

@@ -43,7 +43,14 @@ def main(out):
    for piece in pieces.values():sd+=piece
   sd=sd.merged();assert not sd.is_empty()
   body_devices.append((d.id(),sd))
- assert len(body_devices)==130,'Exact missing LV PMOS bulk census changed'
+ expected_body={d['native_id']for d in contract['device_records']if any(t['terminal']=='B'and t['native_cluster']==203 for t in d['terminals'])}
+ assert len(expected_body)==125
+ assert all(d['native_model']=='sg13_lv_pmos'for d in contract['device_records']if d['native_id']in expected_body)
+ assert sum(d.device_class().name=='sg13_lv_pmos'for d in c.each_device())==130,'Whole native LV PMOS census changed'
+ census=dict(all_native_lv_pmos=130,expected_regular_body_count=125,
+  expected_native_ids=sorted(expected_body),observed_native_ids=sorted(did for did,sd in body_devices))
+ (out/'body-census.json').write_text(json.dumps(census,indent=2)+'\n')
+ assert {did for did,sd in body_devices}==expected_body and len(body_devices)==125,'Exact native body-device identity set changed'
  all_wells=sorted(list(well.each()),key=lambda p:(p.bbox().left,p.bbox().bottom,p.bbox().right,p.bbox().top,p.to_s()))
  assigned={};used=set()
  for did,sd in body_devices:
@@ -81,7 +88,7 @@ def main(out):
     reference_plane='existing exact native contact point; audited R/C mesh unchanged',
     distributed_well_or_tap_spreading_modeled=False)
    access.append(row);planned_taps.append((row,tap))
- plan=dict(native_body_cluster=203,native_net='core_vdd',native_pmos_body_terminals=130,
+ plan=dict(native_body_cluster=203,native_net='core_vdd',native_pmos_body_terminals=len(expected_body),
   island_count=len(islands),tap_count=len(access),body_terminals=[dict(device=did,terminal='B',native_cluster=203,
    island=island_ids[assigned[did]],body_node='body_203_'+island_ids[assigned[did]].lower())for did,sd in body_devices],
   islands=[dict(name=name,polygons_dbu=[p.to_s()for p in r.each()],area_dbu2=r.area())for name,r in sorted(islands.items())],
@@ -132,7 +139,7 @@ def main(out):
   inputs={str(p):sha(p)for p in [Path(__file__).resolve(),gds,db,source/'wire/native05/result.json',
    source/'wire/native05/wires.l2n',composition/'composition.json',composition/'audit/capture/wire/anchors08.json',out/'sg13g2_tech.json']})
  (out/'regular-body-access.json').write_text(json.dumps(result,indent=2)+'\n')
- print(json.dumps(dict(status=result['status'],body_terminals=130,islands=len(islands),tap_models=len(access),
+ print(json.dumps(dict(status=result['status'],body_terminals=len(expected_body),islands=len(islands),tap_models=len(access),
   actual_geometry_fault_cases=sum(x['cases']for x in controls))))
 if __name__=='__main__':
  assert os.environ.get('GITHUB_ACTIONS')=='true'

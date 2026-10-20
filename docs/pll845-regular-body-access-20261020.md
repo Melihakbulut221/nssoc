@@ -9,3 +9,9 @@ The auxiliary contact model is the pinned PDK ntap1 resistance equation applied 
 The native verifier must reject removal of each selected contact, selected metal, actual tap diffusion and well island, plus each wrong conductor-owner assignment. Original GDS, LVS and the3380R/5104C wire mesh remain immutable.
 
 The prior composition also proved that14 of52 native MIM terminal nodes differ from the corresponding inspection-anchor node. The composer preserves the actual raw extracted node for each of these; it never replaces that node merely because an alternate anchor lies on the same conductor. All26 MIMs are emitted once. This attachment-plane check should also be applied to the earlier CDR composition before more CDR physical tuning.
+
+## Corrected target census
+
+Run39356172553 rejected the draft's incorrect130-device target before any body-access model was accepted. The immutable composition records show exactly125 LV PMOS body terminals on cluster203 (native IDs195 through319). The whole PLL still contains130 LV PMOS; the remaining five already belong to other body groups with named contact models.
+
+The revised native verifier derives the complete target identity set from the frozen composition, requires exactly125 IDs, and requires exact equality with the native KLayout device set. It separately retains the full130 LV PMOS census. This corrects the scope of the body-access check; it does not remove a missing device or weaken the original845-device model binding.
