@@ -1,3 +1,14 @@
+## 2026-10-20 — wire20 TX original-capture diagnosis added
+
+TX nominal39409002976 rejected with79wrong/768 and97low output samples,
+6HBT/0MOS failures. New tx-wire20-g234-path-review-cloud workflow reproduces
+every original review gate and maps actual stage/base/clock/device failures;
+no resimulation or phase/threshold changes. Native inputs and full rejection
+are hash-pinned in docs/evidence/tx-wire20-g234-nominal-rejected-20261020.json.
+CDR39437494902, mainchip39436610858 and PLL39423618115 were confirmed live.
+Continue from their native results; no duplicate dispatch. All CAD cloud-only;
+full PHY/mainchip/final timing unaccepted.
+
 ## 2026-10-20 — v21 merged via enclosures accounted for
 
 39436963107 retained pre-DRC rejection: native via metal already merged into
