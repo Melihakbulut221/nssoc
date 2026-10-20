@@ -1,3 +1,10 @@
+## 2026-10-20 TX wire24 failed-waveform diagnostic
+New tx-fast-wire24-path-review-cloud reuses the existing strict path review against the exact normal failed waveform39344566214.
+It first must reproduce every original engineering gate exactly, then map24HBT failures to native terminal voltages, input stages and actual selector-clock edge brackets. No SPICE rerun, phase fit, oracle change or threshold adjustment.
+The source-delta checker binds only new builder/artifact identities and the compact pinned receipt schema; analog review algorithms stay unchanged.
+Corrected full-terminal PLL run39370629792 uses source c4b7793b2feac249a63bc46f6f00d4393d328a44. Monitor controls/preparation/native startup; do not launch a duplicate.
+Mainchip route39369450310/job118453762985 remains the live repair/RC/STA handle.
+
 ## 2026-10-20 full-terminal controls passed; native source restoration corrected
 PLL run39370195978 controls job118456096780 passed all13 streaming-reader faults and original acquisition/backend/prefix controls.
 Initial job118456251294 failed before starting SPICE: the older runtime capsule omitted source/bench.cir, an additional hash-pinned file in loaded preparation39360285698.
