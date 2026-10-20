@@ -1,3 +1,6 @@
+## Paired clock-route geometry and RC
+Cloud-only read-only analysis restores exact 33-buffer run 39293720171 and 128-buffer run 39331918238 routed ODB and nominal SPEF. Inspect four measured PCIe clock nets with pinned OpenDB, exact cell/pin/NDR geometry and native RC membership. No clocks, constraints, original routes or acceptance gates change. Series resistance is not timing or qualified PEX. Same-endpoint report attribution is running separately. Local workspace remains empty.
+
 ## Clock attribution continuation
 Native run 39363436397 rejected actual delaybuf_51..57_clk_i capture clock cells on an asynchronous removal path. These are sg13g2_buf_16 clock stages in the original report. Accept the measured CTS naming with an explicit buffer master allowlist; preserve slack equations, all corners and SRAM data-pin rejection. Routing and timing remain unaccepted. All work remains cloud-only.
 
