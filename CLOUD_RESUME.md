@@ -1,3 +1,12 @@
+## CDR data v20 parent physical pass; fresh extraction dispatched
+
+Parent run 39420628714 at 87b35ff5bc80630cb4ad4614bd644ed37d5e77e8 passed native DRC/LVS and faults after declared obsolete M3 cleanup. GDS 56733ea37cc7dc7fc6e8b2180d122511cfddd4a3bc9e1917a8f280f0d7604636. Full immutable receipt: docs/evidence/cdr-data-v20-parent-physical-pass-20261020.json.
+
+Next: monitor cdr-data-v20-extraction-cloud; fresh planes -> wire inputs -> binding and RC. Do not reuse v19 RC or claim electrical closure. Then fresh whole MIM audit/composition and unchanged loaded early/late/fault simulations.
+
+Other authoritative runs: fresh mainchip route 39415055626; TX wire20 39409002976; PLL 39390580356 continuation still publishing. Do not restart or fork the PLL before its latest continuation capsule is successfully published. Cloud-only work; local workspace empty.
+
+
 ## Native M3 geometric proof correction
 Run39420127278 rejected Region object equality before serialization.
 Use exact empty XOR for geometric reconstruction, separate disjointness
