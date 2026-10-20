@@ -1,3 +1,11 @@
+## 2026-10-20 whole-parent RC composition handoff
+
+New tx-raw64-composition-cloud waits exact native precision run39484218799/headfe89458c0096fd9b50ca712456e7930583c1d37f. It cannot simulate or compose if prerequisite rejects. Passed intrinsic source39482960779 is pinned separately.
+
+Contract:8074devices28582terminals13344metalplanes65bodies698conductors137221R98241C;163physicalports+independentwire_cref. Every native model and R/C endpoint/value preserved;20 corruption controls including same-conductor moved terminal. No ideal driver/core interconnect. Full clock physical integration, original loaded waves and fullPHY remain open.
+
+Continue live CDR39479905700, route39436610858, PLL39423618115 and old TXwaves39460427396/39453950816. Local workspace empty; all source/results/cloud jobs remote.
+
 ## 2026-10-20 exact native runtime reconstruction
 
 TX intrinsic39482960779 PASSED8074devices28582terminals163ports65body nets5376rawMOS,15model faults+negative-spacing control; receipt pinned. Use this whole-parent model for future RC composition.
