@@ -320,7 +320,7 @@
       "baseline_path": "scripts/cloud_cdr_selector_v19_wire_inputs.py",
       "baseline_sha256": "69640d16c26f71b15be03a61a8c122683b6e77ad82d159bf7c1aa1e7a09b761e",
       "candidate_path": "scripts/cloud_cdr_data_v20_wire_inputs.py",
-      "candidate_sha256": "b88bd6be075ad5cdccab69468c6d5e8aa11841cb122971d2540f6f5e0c9a291d",
+      "candidate_sha256": "2903d2d51ca0665c92872dce60d6f4fa71e09a70557ddb3825a94cedc4ba7dd4",
       "changes": [
         {
           "start": 664,
@@ -331,6 +331,26 @@
           "start": 674,
           "end": 676,
           "replacement": "20"
+        },
+        {
+          "start": 2239,
+          "end": 2239,
+          "replacement": "top=L.cell(TOP);assert top is not None\n    reachable=set()\n    def visit(c):\n        if c.cell_index() in reachable:return\n        reachable.add(c.cell_index())\n        for instance in c.each_inst():visit(instance.cell)\n    visit(top)\n    excluded=[];required={}\n    "
+        },
+        {
+          "start": 2392,
+          "end": 2392,
+          "replacement": "\n        if c.cell_index() not in reachable:\n            excluded.append(dict(cell=c.name,kind=kind,drawing_sha256=key[1],referenced_from_top=False))\n            continue\n        required[c.name]=key"
+        },
+        {
+          "start": 2639,
+          "end": 2639,
+          "replacement": "\n    expected={name:key for name,key in required.items()if key[0]!='cmim'}\n    def complete(candidate):\n        assert set(candidate)==set(expected),'Missing or extraneous reachable primitive'\n        for name,key in expected.items():assert candidate[name]['drawing_sha256']==key[1]\n    complete(mapped)\n    omitted=dict(mapped);omitted.pop(next(iter(omitted)))\n    try:complete(omitted)\n    except AssertionError:missing_referenced_primitive_rejected=True\n    else:raise AssertionError('Accepted missing reachable primitive annotation')\n    assert any(x['cell']=='npn13G2'and x['drawing_sha256']=='0f068860a3d6570665f9534cf14c7346fa99f214c8d4648bcc3cfdd578f6c89c'for x in excluded),'The failed primitive must be proven unreachable, never bypassed'\n"
+        },
+        {
+          "start": 2803,
+          "end": 2803,
+          "replacement": ",reachable_cell_count=len(reachable),unreferenced_primitive_cells=excluded,missing_referenced_primitive_rejected=missing_referenced_primitive_rejected"
         },
         {
           "start": 3823,

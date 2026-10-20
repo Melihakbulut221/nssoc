@@ -42,15 +42,38 @@ def recover():
             if key in sources:assert sources[key]['pins']==row['pins'],'Identical drawing has inconsistent source annotation'
             else:sources[key]=row
     L=pya.Layout();L.read(str(G));mapped={}
+    top=L.cell(TOP);assert top is not None
+    reachable=set()
+    def visit(c):
+        if c.cell_index() in reachable:return
+        reachable.add(c.cell_index())
+        for instance in c.each_inst():visit(instance.cell)
+    visit(top)
+    excluded=[];required={}
     for c in L.each_cell():
         kind=c.name.split('$')[0]
         if kind not in MODELS or list(c.each_inst()):continue
         key=(kind,signature(L,c))
+        if c.cell_index() not in reachable:
+            excluded.append(dict(cell=c.name,kind=kind,drawing_sha256=key[1],referenced_from_top=False))
+            continue
+        required[c.name]=key
         if kind=='cmim':continue # Its intrinsic plates are bound directly from actual drawing.
         assert key in sources,(c.name,key)
         mapped[c.name]=sources[key]
     assert mapped and {c.split('$')[0]for c in mapped}==MODELS-{'cmim'}
-    r=dict(status='PASS_RECOVERED_SOURCE_PIN_BOXES_ON_IDENTICAL_PRIMITIVE_DRAWING',cells=mapped,inputs=inputs,target_gds_sha256=sha(G),target_geometry_edited=False)
+    expected={name:key for name,key in required.items()if key[0]!='cmim'}
+    def complete(candidate):
+        assert set(candidate)==set(expected),'Missing or extraneous reachable primitive'
+        for name,key in expected.items():assert candidate[name]['drawing_sha256']==key[1]
+    complete(mapped)
+    omitted=dict(mapped);omitted.pop(next(iter(omitted)))
+    try:complete(omitted)
+    except AssertionError:missing_referenced_primitive_rejected=True
+    else:raise AssertionError('Accepted missing reachable primitive annotation')
+    assert any(x['cell']=='npn13G2'and x['drawing_sha256']=='0f068860a3d6570665f9534cf14c7346fa99f214c8d4648bcc3cfdd578f6c89c'for x in excluded),'The failed primitive must be proven unreachable, never bypassed'
+
+    r=dict(status='PASS_RECOVERED_SOURCE_PIN_BOXES_ON_IDENTICAL_PRIMITIVE_DRAWING',cells=mapped,inputs=inputs,target_gds_sha256=sha(G),target_geometry_edited=False,reachable_cell_count=len(reachable),unreferenced_primitive_cells=excluded,missing_referenced_primitive_rejected=missing_referenced_primitive_rejected)
     (OUT/'wire/source-pins.json').write_text(json.dumps(r,indent=2)+'\n')
 
 def main():

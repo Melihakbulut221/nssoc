@@ -1,3 +1,12 @@
+## CDR extraction annotation recovery rejected; reachable-cell fix under cloud verification
+
+Extraction 39422106468 passed planes then rejected missing exact source annotation for npn13G2 drawing 0f068860a3d6570665f9534cf14c7346fa99f214c8d4648bcc3cfdd578f6c89c. Failed immutable evidence retained in docs/evidence/cdr-data-v20-annotation-rejection-20261020.json. MIM prerequisite correctly rejects this failed run.
+
+Fresh extraction traverses only actual parent TOP instance hierarchy. It explicitly requires the failed cell to be proven unreachable; all reachable primitive signatures must still match exact annotated native source drawings. Extra control rejects omission of any reachable primitive. No GDS changes or pin geometry guesses.
+
+Next: inspect new extraction; only after its success bind a new exact MIM capture prerequisite. Existing MIM run 39422787044 refers to failed extraction and must not be reused. Mainchip 39415055626, TX 39409002976, PLL 39390580356 remain authoritative. Cloud-only.
+
+
 ## Fresh CDR data4 MIM capture chained to native extraction
 
 Run 39422106468 at 63bb44ee4ae7a5b841126ab3253a6975c5c35775: planes passed, wire-inputs running when this continuation was prepared. The new cdr-data-v20-mim-parent-rc-cloud job waits on this exact complete successful run and verifies all four stage receipts before native MIM capture. No failed extraction can advance.
