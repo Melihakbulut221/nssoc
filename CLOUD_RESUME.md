@@ -1,3 +1,11 @@
+## 2026-10-20 whole-PLL full-terminal cloud trajectory
+The new pll845-native-acquisition-cloud workflow validates controls before launching actual original1us acquisition of the whole845+4-contact model with all1694 terminal vectors.
+Preparation39360285698 and zeroOP review39361546966 remain immutable. No new full transient or lock result is claimed at publication.
+CRIU stages preserve the actual simulator process and every waveform byte. Reader uses bounded chunks and a read-only memory map; full duration and frozen final100ns gates remain unchanged.
+Find the new workflow run by this commit, inspect controls and native startup, then retain checkpoint descriptors for exact continuation.
+Mainchip corrected route39369450310/job118453762985 and normal TX39344566214/job118374075924 were confirmed live. Do not duplicate.
+All files and computations remain in GitHub; local project folder stays empty.
+
 ## 2026-10-20 cloud-only continuation: current route report loader
 Local project directory is empty; no local CAD computations are running. Do not clone or store project outputs locally.
 Run 39368178274 stopped before routing with KeyError report: the current-route receipt is intentionally compact.

@@ -1,0 +1,218 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: pll845-native-acquisition-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/pll845-native-acquisition-cloud.yml]
+  workflow_dispatch:
+    inputs:
+      seconds:
+        description: Native host seconds per checkpoint stage; original simulation remains full1us
+        type: string
+        default: '14400'
+      source_checkpoint:
+        description: Optional immutable prior capsule JSON with run/attempt/stage/summary_sha256/parts_sha256
+        type: string
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: pll845-native-acquisition-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Full-terminal reader, frozen acquisition gates and native prefix controls
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 -m py_compile scripts/cloud_pll845_native_acquisition.py scripts/read_pll845_full_native_transient.py
+          python3 scripts/check_pll845_native_acquisition_sources.py
+          python3 scripts/cloud_pll845_native_acquisition.py --controls
+  initial:
+    needs: controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    permissions:
+      contents: write
+    outputs:
+      pending: ${{ steps.publish.outputs.pending }}
+      checkpoint: ${{ steps.publish.outputs.checkpoint }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install cloud-only checkpoint dependencies
+        run: |
+          # Hosted disposable image SDKs are unrelated to this CAD job.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          df -h "$GITHUB_WORKSPACE"
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_repository='https://github.com/checkpoint-restore/criu',source_tag='v4.2.1',source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),version=subprocess.check_output([str(p),'--version'],text=True),libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
+          python3 -m pip install numpy==2.3.3
+          python3 -m py_compile scripts/cloud_pll845_native_acquisition.py scripts/read_pll845_full_native_transient.py
+          python3 scripts/check_pll845_native_acquisition_sources.py
+      - name: Run whole845+4-contact full1us with every physical terminal or resume exact native capsule
+        id: native
+        env:
+          SOURCE_CHECKPOINT: ${{ inputs.source_checkpoint }}
+          NATIVE_SECONDS: ${{ inputs.seconds || '14400' }}
+        run: python3 scripts/cloud_pll845_native_acquisition.py --stage initial --seconds "$NATIVE_SECONDS"
+      - name: Publish every native byte and durable next-stage descriptor
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NATIVE_OUTCOME: ${{ steps.native.outcome }}
+          CAPSULE_STAGE: initial
+        run: |
+          mkdir -p cloud-pll845-native-acquisition
+          if [ ! -f cloud-pll845-native-acquisition/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","full_phy_accepted":false}' > cloud-pll845-native-acquisition/result.json
+          fi
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess,sys
+          sys.path.insert(0,'scripts')
+          from cloud_chunked_results import pack
+          stage=os.environ['CAPSULE_STAGE'];run=os.environ['GITHUB_RUN_ID'];attempt=os.environ['GITHUB_RUN_ATTEMPT']
+          group='pll845-native-acquisition-'+stage;stem=f'{group}-{run}-{attempt}'
+          root=pathlib.Path('cloud-pll845-native-acquisition').resolve()
+          report_path=root/'result.json';report=json.loads(report_path.read_text())
+          owned=report.get('run_id')==run and report.get('run_attempt')==attempt and report.get('stage')==stage
+          if not owned:
+              (root/'unclaimed-source-report.json').write_bytes(report_path.read_bytes())
+              report=dict(status='FAIL_BEFORE_CURRENT_NATIVE_REPORT',native_outcome=os.environ['NATIVE_OUTCOME'],run_id=run,run_attempt=attempt,stage=stage,checkpoint_saved=False,full_phy_accepted=False,reason='Retained source report is not an outcome of this stage; never consume it as new progress.')
+              report_path.write_text(json.dumps(report,indent=2)+'\n')
+          summary=pathlib.Path(stem+'.summary.json');summary.write_bytes(report_path.read_bytes())
+          manifest=pack(root,stem,pathlib.Path.cwd())
+          parts=pathlib.Path(stem+'.parts.json')
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,str(summary),str(parts),*[r['name']for r in manifest['parts']]],check=True)
+          digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+          checkpoint=dict(run=run,attempt=attempt,stage=stage,summary_sha256=digest(summary),parts_sha256=digest(parts))
+          pending=owned and os.environ['NATIVE_OUTCOME']=='success' and report.get('status')=='SAVED_ACTUAL_PHYSICAL845_ONE_US_PROCESS_NOT_FULL_CAPTURE_OR_ACCEPTANCE' and report.get('checkpoint_saved') is True
+          with open(os.environ['GITHUB_OUTPUT'],'a')as f:
+              f.write('pending='+str(pending).lower()+'\n')
+              f.write('checkpoint='+json.dumps(checkpoint,separators=(',',':'))+'\n')
+          print(json.dumps(dict(checkpoint=checkpoint,pending=pending,status=report.get('status'))))
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll845-native-acquisition-initial-${{ github.run_id }}
+          retention-days: 30
+          path: cloud-pll845-native-acquisition/
+  continuation:
+    needs: initial
+    if: needs.initial.outputs.pending == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    permissions:
+      contents: write
+    outputs:
+      pending: ${{ steps.publish.outputs.pending }}
+      checkpoint: ${{ steps.publish.outputs.checkpoint }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install cloud-only checkpoint dependencies
+        run: |
+          # Hosted disposable image SDKs are unrelated to this CAD job.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          df -h "$GITHUB_WORKSPACE"
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_repository='https://github.com/checkpoint-restore/criu',source_tag='v4.2.1',source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),version=subprocess.check_output([str(p),'--version'],text=True),libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
+          python3 -m pip install numpy==2.3.3
+          python3 -m py_compile scripts/cloud_pll845_native_acquisition.py scripts/read_pll845_full_native_transient.py
+          python3 scripts/check_pll845_native_acquisition_sources.py
+      - name: Restore exact published process on the next hosted runner
+        id: native
+        env:
+          SOURCE_CHECKPOINT: ${{ needs.initial.outputs.checkpoint }}
+          NATIVE_SECONDS: ${{ inputs.seconds || '14400' }}
+        run: python3 scripts/cloud_pll845_native_acquisition.py --stage continuation --seconds "$NATIVE_SECONDS"
+      - name: Publish every native byte and durable next-stage descriptor
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NATIVE_OUTCOME: ${{ steps.native.outcome }}
+          CAPSULE_STAGE: continuation
+        run: |
+          mkdir -p cloud-pll845-native-acquisition
+          if [ ! -f cloud-pll845-native-acquisition/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","full_phy_accepted":false}' > cloud-pll845-native-acquisition/result.json
+          fi
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess,sys
+          sys.path.insert(0,'scripts')
+          from cloud_chunked_results import pack
+          stage=os.environ['CAPSULE_STAGE'];run=os.environ['GITHUB_RUN_ID'];attempt=os.environ['GITHUB_RUN_ATTEMPT']
+          group='pll845-native-acquisition-'+stage;stem=f'{group}-{run}-{attempt}'
+          root=pathlib.Path('cloud-pll845-native-acquisition').resolve()
+          report_path=root/'result.json';report=json.loads(report_path.read_text())
+          owned=report.get('run_id')==run and report.get('run_attempt')==attempt and report.get('stage')==stage
+          if not owned:
+              (root/'unclaimed-source-report.json').write_bytes(report_path.read_bytes())
+              report=dict(status='FAIL_BEFORE_CURRENT_NATIVE_REPORT',native_outcome=os.environ['NATIVE_OUTCOME'],run_id=run,run_attempt=attempt,stage=stage,checkpoint_saved=False,full_phy_accepted=False,reason='Retained source report is not an outcome of this stage; never consume it as new progress.')
+              report_path.write_text(json.dumps(report,indent=2)+'\n')
+          summary=pathlib.Path(stem+'.summary.json');summary.write_bytes(report_path.read_bytes())
+          manifest=pack(root,stem,pathlib.Path.cwd())
+          parts=pathlib.Path(stem+'.parts.json')
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,str(summary),str(parts),*[r['name']for r in manifest['parts']]],check=True)
+          digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+          checkpoint=dict(run=run,attempt=attempt,stage=stage,summary_sha256=digest(summary),parts_sha256=digest(parts))
+          pending=owned and os.environ['NATIVE_OUTCOME']=='success' and report.get('status')=='SAVED_ACTUAL_PHYSICAL845_ONE_US_PROCESS_NOT_FULL_CAPTURE_OR_ACCEPTANCE' and report.get('checkpoint_saved') is True
+          with open(os.environ['GITHUB_OUTPUT'],'a')as f:
+              f.write('pending='+str(pending).lower()+'\n')
+              f.write('checkpoint='+json.dumps(checkpoint,separators=(',',':'))+'\n')
+          print(json.dumps(dict(checkpoint=checkpoint,pending=pending,status=report.get('status'))))
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll845-native-acquisition-continuation-${{ github.run_id }}
+          retention-days: 30
+          path: cloud-pll845-native-acquisition/
