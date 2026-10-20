@@ -29,15 +29,17 @@ def generate(out):
  metals={m:pya.Region(T.begin_shapes_rec(L.layer(m,0))).merged()for m in METALS}
  poly=pya.Region(T.begin_shapes_rec(L.layer(5,0))).merged()
  contacts=pya.Region(T.begin_shapes_rec(L.layer(6,0))).merged()
- hbt_cells=[]
+ hbt_cells=[];hierarchy=Counter()
  def visit(cell,tr):
-  if cell.name.split('$')[0]=='npn13G2':
+  hierarchy[cell.name]+=1
+  if cell.name.split('$')[0].endswith('npn13G2'):
    hbt_cells.append((cell,tr));return
   for inst in cell.each_inst():
    assert not inst.is_regular_array(),'Explicit expansion of physical arrays required'
    visit(inst.cell,tr*inst.cplx_trans)
  visit(T,pya.ICplxTrans())
- assert len(hbt_cells)==102
+ (out/'hierarchy.json').write_text(json.dumps(dict(visited_cells=dict(hierarchy),matched_hbt_instances=len(hbt_cells),matched_hbt_cells=sorted({cell.name for cell,tr in hbt_cells})),indent=2)+'\n')
+ assert len(hbt_cells)==102,('Actual namespaced HBT instance census',len(hbt_cells))
  terminals={};by_net=defaultdict(list)
  for did,d in devices.items():
   cls=d.device_class()

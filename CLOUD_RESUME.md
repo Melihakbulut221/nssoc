@@ -1,3 +1,16 @@
+## 2026-10-20 — CDR v17 rejected; PLL namespace census repair
+CDR39345807451 nominal early/late both nativeexit0/nodiagnostics/devicespass,
+but original sampling failed and C/D wrong-sign counts worsened:
+early189/339to218/365;late188/310to224/349. Do NOT adopt or lay out v17.
+Clock-stopped and VI-bias-off faults detected. All4complete reports committed.
+Next CDR repair: actual loading/latch timing, not relaxed gates or same rerun.
+PLL39347411640 failed before binding at hierarchy HBT count; native845 LVS
+census is unchanged. Permit parent prefixes before npn13G2, keepexact102 and
+allphysical plane controls, add hierarchy report before countassert. Replacement
+workflow starts. Failed evidence retained. TX39344566214/mainchip39331918238
+remain live; no duplicates. Cloud-only.
+
+
 ## 2026-10-20 — Launch whole PLL845 terminal reference binding
 Previous goal turn progressed: CDR v17 diagnostic39345807451 source gates passed
 and four native jobs launched. TX39344566214 andmainchip39331918238 remain live.
