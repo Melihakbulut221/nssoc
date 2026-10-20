@@ -1,3 +1,6 @@
+## 2026-10-20 — Storage fixture manifest distinction
+Archive control39410274302 failed because *.part* counted the valid .parts.json manifest as a leftover compressed part. Restrict the census to numbered tar.gz.part files; preserve12 corruption gates and real hosted roundtrip. No native methods changed. Existing mainchip39409367521/TX39409002976/PLL39390580356 jobs remain separate.
+
 ## 2026-10-20 — PLL storage-only controls
 Actual PLL39390580356 initial saved49.18GBraw after2281.91hostseconds; full1us/lock still false.42part44.71GBarchive published; continuation118578922230 is active, do not restart. Add cloud_streamed_native_archive with bounded256MiB compressed staging, per-part remote digest verification before temporary deletion, exact complete ordered restore before activation,12 corruption controls and real hosted roundtrip. Run new pll-stream-archive-controls-cloud; helper not yet adopted by native controller. Mainchip route39409367521 and TXwave39409002976 remain live. Cloud-only, local workspace empty.
 

@@ -125,12 +125,12 @@ def controls():
         remote={};maximum=0
         def send(path):
             nonlocal maximum
-            size=sum(p.stat().st_size for p in stage.glob('*.part*'))
-            maximum=max(maximum,size);assert len(list(stage.glob('*.part*')))==1 and size<=127
+            size=sum(p.stat().st_size for p in stage.glob('*.tar.gz.part[0-9]*'))
+            maximum=max(maximum,size);assert len(list(stage.glob('*.tar.gz.part[0-9]*')))==1 and size<=127
             remote[path.name]=path.read_bytes()
             return dict(name=path.name,bytes=path.stat().st_size,sha256=sha(path))
         m=stream_pack(source,'fixture',stage,send,127)
-        assert len(m['parts'])>1 and maximum<=127 and not list(stage.glob('*.part*'))
+        assert len(m['parts'])>1 and maximum<=127 and not list(stage.glob('*.tar.gz.part[0-9]*'))
         joined=b''.join(remote[p['name']]for p in m['parts'])
         assert hashlib.sha256(joined).hexdigest()==m['sha256']
         with tarfile.open(fileobj=io.BytesIO(joined),mode='r:gz')as t:assert t.extractfile('source/native.raw').read()==payload
@@ -138,7 +138,7 @@ def controls():
         proof=extract_verified(m,root/'input',root/'restored',download)
         assert proof['whole_ordered_archive_verified_before_native_activation']
         assert (root/'restored/source/native.raw').read_bytes()==payload
-        assert not list((root/'input').glob('*.part*'))
+        assert not list((root/'input').glob('*.tar.gz.part[0-9]*'))
         for label in ('wrong-hosted-name','wrong-hosted-size','wrong-hosted-digest','failed-upload'):
             def badsend(path):
                 if label=='failed-upload':raise OSError('injected upload failure')
@@ -149,7 +149,7 @@ def controls():
             try:stream_pack(source,label,bad,badsend,127)
             except (AssertionError,OSError):rejected.append(label)
             else:raise AssertionError(label+' accepted')
-            assert not(bad/(label+'.parts.json')).exists()and list(bad.glob('*.part*')),'Failed part lost'
+            assert not(bad/(label+'.parts.json')).exists()and list(bad.glob('*.tar.gz.part[0-9]*')),'Failed part lost'
         for label in ('wrong-order','missing-part','wrong-size','wrong-part-digest','wrong-whole-digest','unsafe-part','corrupt-download','truncated-download'):
             broken=copy.deepcopy(m)
             if label=='wrong-order':broken['parts']=broken['parts'][::-1]
