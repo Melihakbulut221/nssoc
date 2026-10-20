@@ -42,14 +42,20 @@ def generate(out):
         assert len(set(deltas))==1,(tag,'Not a single exact all-pin translation',deltas)
         sx,sy=deltas[0];newtr=pya.DTrans(sx,sy)*exemplar.dtrans
         i=find(B,tag);assert B.cell(i.cell_index).name=='core_pre_low'
-        oldcell=i.cell_index;oldtr=str(i.dtrans)
+        oldcell=i.cell_index;oldtr=str(i.dtrans);before_native_bbox=i.bbox()
         i.cell_index=B.cell('core_pre').cell_index();i.dtrans=newtr
         expected[tag]=(oldcell,oldtr,i.cell_index,str(newtr))
         local=pya.DTrans(-dx,-dy)*newtr
-        footprint=B.cell('core_pre').dbbox().transformed(local);oldbox=box(before['bbox_um'])
-        assert oldbox.left<=footprint.left and oldbox.right>=footprint.right
-        assert oldbox.bottom<=footprint.bottom and oldbox.top>=footprint.top
-        assert footprint.height()<oldbox.height()
+        native_footprint=i.bbox()
+        expected_old=box(before['bbox_um']).to_itype(A.dbu).transformed(pya.Trans(round(dx/A.dbu),round(dy/A.dbu)))
+        assert before_native_bbox==expected_old,('Original native/metadata bounds differ',tag,str(before_native_bbox),str(expected_old))
+        footprint=native_footprint.transformed(pya.Trans(-round(dx/A.dbu),-round(dy/A.dbu))).to_dtype(A.dbu)
+        oldbox=box(before['bbox_um'])
+        probe=dict(tag=tag,before_native_bbox_dbu=str(before_native_bbox),candidate_native_bbox_dbu=str(native_footprint),candidate_transform=str(newtr),old_float_bbox=str(oldbox),new_float_bbox=str(footprint))
+        (out/'placement-candidate.json').write_text(json.dumps(probe,indent=2)+'\n')
+        assert before_native_bbox.left<=native_footprint.left and before_native_bbox.right>=native_footprint.right,probe
+        assert before_native_bbox.bottom<=native_footprint.bottom and before_native_bbox.top>=native_footprint.top,probe
+        assert native_footprint.height()<before_native_bbox.height(),probe
         meta['placements'][tag].update(kind='pre',transform=str(local),bbox_um=str(footprint))
         changes.append(dict(tag=tag,original_kind='pre_low',candidate_kind='pre',
             before_transform=before['transform'],after_transform=str(local),

@@ -1,3 +1,15 @@
+## 2026-10-20: p4 replacement bounds failure preserved
+
+TX candidate39446815154 stopped at generator floating X-bound containment before
+DRC/LVS. Exact failure receipt committed. The generator now measures both actual
+instance boxes in integer database units and records coordinates before checking;
+strict containment, all twelve pins and original physical gates remain required.
+The new native run must determine whether the replacement is physically valid.
+
+CDR39444824145 now runs all four electrical cases after successful validation
+39444363134. Mainchip39436610858 and PLL39423618115 remain live. Cloud only.
+
+
 ## 2026-10-20: native p4 drive candidate and live CDR tests
 
 New tx-p4-drive3-physical-cloud.yml replaces four actual p4 low-drive macros with
