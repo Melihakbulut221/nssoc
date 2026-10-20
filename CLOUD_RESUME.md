@@ -1,3 +1,16 @@
+## 2026-10-20: v21 original full-wave handoff
+
+Capture 39443205735 passed with 17674R12704C and eleven intrinsic MIM devices.
+Validation 39444363134 is the sole audit/composition prerequisite.
+cdr-collector-trunks-v21-mim-streamed-cloud.yml waits for it and runs the unchanged
+nominal_early, nominal_late, clock_stopped and vi_bias_off cases. Fresh plane
+receipt is committed; dynamic audit/composition receipts must not be precommitted.
+
+Mainchip route 39436610858 and PLL continuation 39423618115 remain live.
+TX wire20 is still rejected. No claim of full PHY or setup/hold closure.
+GitHub-only execution and evidence; local workspace remains empty.
+
+
 ## 2026-10-20: v21 MIM capture passed; raw audit and composition next
 
 All stages of extraction 39441534722 passed. Capture 39443205735 passed with
