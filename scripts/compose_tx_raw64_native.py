@@ -108,7 +108,11 @@ def controls(text,contract):
             rows.insert(-1,['R_INJECTED_SHORT','d0p0','d0n0','1'])
         else:
             kind='npn13g2'if'hbt'in fault else'ptap1'if'contact'in fault else'sg13_lv_pmos'if fault=='cross_driver_well_short'else'rppd'if fault=='wrong_physical_resistor_width'else'sg13_lv_nmos'
-            i=next(i for i,r in enumerate(rows)if kind in r)
+            # Pick a real device whose selected terminals differ. Diode/tied
+            # devices are legitimate circuit records but cannot witness a swap.
+            i=next(i for i,r in enumerate(rows)if kind in r
+                and (fault!='swapped_mos_drain_source'or r[1]!=r[3])
+                and (fault!='swap_hbt_collector_base'or r[1]!=r[2]))
             if fault.startswith('missing_'):del rows[i]
             elif fault in ('wrong_mos_junction','wrong_hbt_size','wrong_contact_R','wrong_physical_resistor_width'):
                 key={'wrong_mos_junction':'ad','wrong_hbt_size':'nx','wrong_contact_R':'R','wrong_physical_resistor_width':'w'}[fault]
@@ -126,6 +130,7 @@ def controls(text,contract):
                 destination=next(label for label,n in contract['owner'].items()if n==cluster and label!=source and label in contract['reference_planes'])
                 assert contract['wire_map'][destination]!=rows[i][1]
                 rows[i][1]=contract['wire_map'][destination]
+        assert rows!=original,('Fault did not change actual circuit records',fault)
         changed='\n'.join(' '.join(r)for r in rows)+'\n'
         try:verify(changed,contract)
         except (AssertionError,ValueError):results.append(dict(name=fault,rejected=True,sha256=hashlib.sha256(changed.encode()).hexdigest()))

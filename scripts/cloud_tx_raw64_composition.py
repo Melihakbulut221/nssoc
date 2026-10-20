@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Wait for exact native producer evidence, then compose every actual TX wire."""
-import hashlib,json,os,subprocess,sys,time
+import hashlib,json,os,subprocess,sys,time,traceback
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 import compose_tx_raw64_native as compose
@@ -76,7 +76,7 @@ def main():
         assert all(sha(OUT/'rc'/n)==prior['outputs'][n]for n in selected)
         assert all(sha(OUT/'intrinsic'/n)==bound['outputs'][n]for n in names)
         result.update(status='PASS_ACTUAL_FULL8074_PARENT_WIRE_COMPOSITION_AND20_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES',sources_unchanged=True,counts=formal['counts'],model_sha256=sha(final),composition_sha256=sha(OUT/'composition.json'),methods={p:sha(ROOT/p)for p in ['scripts/cloud_tx_raw64_composition.py','scripts/compose_tx_raw64_native.py','scripts/cloud_tx_raw64_intrinsic.py']})
-    except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    except BaseException as error:result.update(status='FAIL_OR_ERROR',error=repr(error),traceback=traceback.format_exc());raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
 if __name__=='__main__':main()

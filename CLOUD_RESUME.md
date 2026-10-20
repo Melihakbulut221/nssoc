@@ -1,3 +1,6 @@
+## 2026-10-20 composition fault binding correction
+Cloud-only. TX39489499896 positive model verification reachedcontrols but a swap fixture selectedtiedterminals andaborted. Newcontrols selectdistinctrealterminals,requireeverymutationchangesrecords; all20requiredandpositiveverifierunchanged. Failedreceiptretained. CDRv24parentnewworkflowdispatchfrom8fdcb264eedb6eeadf1c87211b1e02b2e6c39705. Mainchip39436610858 savedfreshglobalODB/guides; DRT finishediteration2with87219violations, nofinalroutedODB; needcross-runnerprocesscheckpointbeforeanotherlongDRT, donotblindlyrepeat6h.
+
 ## 2026-10-20 v24 leaf PASS, actual parent replacement next
 Cloud-only. Leaf39489042777/f098ea7bc7f868dcb982859048dbfa2ab8580bdc passed560DRC,54deviceLVS,18faults;8changed clockselectors and46unchanged drawings,original ports/positions. New parent workflow replaces4samplers in exact cleaned v23 parent, keepsallparentpolygons/trunks/16transforms andusesunchanged476devicephysicalgate. TX8074composition launched afterproducerPASS39486998309. Mainchip39436610858 endedcancelled at6h, retained cloudrelease summary660361367/4daa6ba4a1d8b7336cb667938c9bea12385a0e994b40145766e55e9f7e4e310f; fresh-fanout-global.odb andguidesexist, needinspectDRTlogbeforecontinuing. No finaltimingpass.
 
