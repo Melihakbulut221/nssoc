@@ -1,3 +1,10 @@
+## 2026-10-20 — fresh body-contact RC capture passed, raw audit dispatched
+- Native run39357622740 SUCCESS:3381R/5105C,1606physical/1879logical references,235conductors,26MIMs. The two actual body-contact points changed the network; original3380R/5104C must not be substituted.
+- New pll845-body-raw-audit-cloud checks all raw R edges/values, every ground-C point, mutual attachments, all conductor totals;13wire+9MIM corruptions retained. A complete old/new collapsed-C comparison with3additional faults checks unchanged geometry.
+- Source capture and baseline hashes pinned. No local CAD/tests/artifacts.
+- NEXT after successful raw audit: four geometry-derived ntap1 access models, four actual n-well body nodes for125PMOS, original845 native instances separately counted, exact native MIM attachment nodes; then full loaded PLL waveforms.
+- Full serial PHY, mainchip routing and final setup/hold remain unaccepted. Existing TX39344566214/mainchip39331918238 preserved.
+
 ## 2026-10-20 — cloud-only execution and residual local service retirement
 - User instruction: all work in cloud, clean this project's local files. The local NSSOC workspace is empty and no NSSOC CAD process is running.
 - Fresh body-contact RC run39357622740 at ec86f33452dc9bb737e5b209f432013670e991bc completed SUCCESS. This is capture acceptance only; inspect its measured counts and repeat the strict raw audit before composition.
