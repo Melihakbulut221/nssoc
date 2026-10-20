@@ -36,3 +36,5 @@ mainchip closure and final setup/hold remain unaccepted. All CAD/evidence stays
 in cloud storage; no local checkout is needed.
 
 Native lookup 39435510210 confirms exactly sixteen child instances and flattened parent via cuts. The failed instance lookup is retained; v21 now translates the existing 0.9 um square cut and its exact native enclosures without recreating or deleting a physical junction. All sixteen instances remain unchanged.
+
+Run 39436963107 showed that native via metal enclosures are merged into the route rectangles. The candidate therefore proves the complete original and translated 3.2 um metal squares and absence of unaccounted old junction metal, then moves only each existing 0.9 um Via2 cut. No new via geometry or increased lookup tolerance is introduced. Full native enclosure DRC remains required.

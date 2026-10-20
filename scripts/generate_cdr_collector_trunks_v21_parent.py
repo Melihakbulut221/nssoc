@@ -60,18 +60,27 @@ def main():
    window=pya.DBox(ox-2,y-2,ox+2,y+2).to_itype(L.dbu)
    cut=pya.DBox(ox-.45,y-.45,ox+.45,y+.45).to_itype(L.dbu)
    junction=[]
-   for layer in (126,133,134):
+   # Native serialization merged metal enclosures into the long route
+   # rectangles. Prove the full 3.2um enclosure square exists before/after;
+   # the independent native deck still checks actual enclosure rules.
+   enclosure=pya.DBox(ox-1.6,y-1.6,ox+1.6,y+1.6).to_itype(L.dbu)
+   translated=enclosure.transformed(pya.Trans(round((nx-ox)/L.dbu),0))
+   for metal in (126,134):
+    assert (pya.Region(enclosure)-before[0][(metal,0)]).is_empty(),('Original enclosure absent',net,metal)
+    current=pya.Region(T.shapes(L.layer(metal,0))).merged()
+    assert (pya.Region(translated)-current).is_empty(),('New enclosure absent',net,metal)
+    assert (pya.Region(cut)&current).is_empty(),('Unaccounted old junction metal',net,metal)
+   for layer in (133,):
     found=[sh for sh in T.shapes(L.layer(layer,0)).each()
       if not sh.is_text() and encloses(window,sh.bbox()) and encloses(sh.bbox(),cut)]
-    assert found,('Missing flattened native junction layer',net,layer,ox,y)
-    if layer==133:assert len(found)==1 and found[0].bbox()==cut
+    assert len(found)==1 and found[0].bbox()==cut,('Expected exact flattened native cut',net,ox,y)
     for sh in found:
      oldbox=sh.bbox();assert pya.Region(sh.polygon).area()==oldbox.area()
      newbox=oldbox.transformed(pya.Trans(round((nx-ox)/L.dbu),0))
      sh.delete();T.shapes(L.layer(layer,0)).insert(newbox)
      change=dict(layer=layer,before_box_dbu=str(oldbox),after_box_dbu=str(newbox))
      junction_changes.append(change);junction.append(change)
-   moved.append(dict(net=net,representation='flattened_native_cut_and_enclosures',
+   moved.append(dict(net=net,representation='flattened_native_cut_with_enclosures_merged_in_route_rectangles',
       old_center_um=[ox,y],new_center_um=[nx,y],rectangles=junction))
    target=[v for v in new_meta['routes']if (v['net'],v['tag'],v['pin'])==(row['net'],row['tag'],row['pin'])]
    assert len(target)==1;target[0]['box_um']=str(n);total+=nx-ox

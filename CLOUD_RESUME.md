@@ -1,3 +1,14 @@
+## 2026-10-20 — v21 merged via enclosures accounted for
+
+39436963107 retained pre-DRC rejection: native via metal already merged into
+the long route rectangles, so no independent enclosure polygon exists.
+Current generator proves entire old/new3.2um metal squares and no orphan old
+junction metal, moves exactly ten existing0.9um cuts, then serializes native
+DRC/LVS candidate. No altered leaf or geometry tolerance. Follow new run.
+Mainchip39436610858 and PLL39423618115 are live. TX39409002976 now terminal:
+nominal electrical failure, swap negative control detected. All reports kept.
+Cloud-only; full PHY/routing/timing remain open.
+
 ## 2026-10-20 — v21 KLayout containment API corrected
 
 39436410429 stopped before physical checks because Box.contains accepts a Point,
