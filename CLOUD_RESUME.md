@@ -1,3 +1,17 @@
+## 2026-10-20: native p4 drive candidate and live CDR tests
+
+New tx-p4-drive3-physical-cloud.yml replaces four actual p4 low-drive macros with
+the existing native high-drive master, only if all twelve pins align exactly.
+Parent routes and master drawings are frozen; full native DRC/LVS and all faults
+must pass. Then extract fresh R/C and run original complete TX electrical gates.
+This is not accepted yet; emitter budget rises to863/core and remains unqualified
+at whole-chip scope. Original wire20 electrical rejection is retained.
+
+CDR raw audit in39444363134 passed; composition is live. Original v21 fullwave
+39444824145 is live at988791ad0d2ad90932473a4dcc649c79f063ce0f.
+Mainchip39436610858 and PLL39423618115 remain live. Cloud only, empty workspace.
+
+
 ## 2026-10-20: v21 original full-wave handoff
 
 Capture 39443205735 passed with 17674R12704C and eleven intrinsic MIM devices.
