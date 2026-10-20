@@ -1,3 +1,10 @@
+## 2026-10-20 — whole loaded input binding PASSED; native OP preflight dispatched
+- Run39360285698 /cb2f3f79f7593303e8e8eda36624c7305a98c115 SUCCESS.38original PDK/deck inputs restored by exact hashes; original stimulus/load/solver/full1us/.3125ps preserved by reversible source transform.
+- Instrumentation covers2737native terminal records plus4regular contacts using1694unique voltage vectors. All102OFF/echo/show identities rebound with literal alter @ syntax. Public reference/fb/vctrl retained.
+- pll845-loaded-op-cloud now performs native compile and zero-source OP only, with original complete1us deck preserved. Requires all102OFF readbacks, all1694native voltage columns, zero-source OP and exact backend settings. Does not claim biased OP, lock, full transient or PHY.
+- NEXT after OP: full loaded waveform transport must preserve every terminal sample without overflowing runner disk (~43GB uncompressed minimum at1us). Use validated lossless streaming/checkpoint approach; never shorten stop time or drop native probes to claim acceptance.
+- TX39344566214/mainchip39331918238 remain active handles. Cloud-only, empty local workspace; all results GitHub.
+
 ## 2026-10-20 — preserve actual alter @ syntax, recover immutable inputs
 - Run39359917098 rejected incorrect matching of @ in alter against bare echo/show device identities. Actual source: alter @q... [off]; echo/show bare q... .
 - Preserve literal alter @ syntax and all3 occurrences of each102device identities. Reverse transformation still required.
