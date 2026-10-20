@@ -1,3 +1,18 @@
+## 2026-10-20 — v21 collector routing candidate queued in cloud
+
+Fresh passive measurement 39432130535 completed: source collector conductors
+0.465–0.857 pF, filter-output conductors 0.231–0.266 pF; no electrical pass.
+Receipts and immutable hashes are in docs/evidence/cdr-v20-retime-passive-networks-20261020.json.
+New workflow cdr-collector-trunks-v21-parent-cloud.yml moves ONLY four internal
+collector trunks and ten original junctions to shorten ten actual horizontal
+arms. Native leaves/placement/intrinsics/pins/schematic remain fixed. Follow its
+native DRC/LVS and serialize-delta proof. On success perform fresh parent
+extraction/MIM audit/composition and original whole early/late waveform gates;
+do not claim completion from geometry. On failure inspect native markers.
+PLL39423618115, TX39409002976 and mainchip39427183963 confirmed live; do not
+restart them because observation is slow. Cloud only; no local CAD/files.
+Full PHY/mainchip/final timing remain unaccepted.
+
 ## V20 latch diagnosis passed; actual retime wire/load measurement dispatched
 
 Both read-only diagnoses39430120656 passed exact116HBT and4sampler result reproduction. At+.3UI A/B slave inputs are valid(>=165mV) but outputs late. C/D master input signed minima are only a fewmV; all255 per sampler below internal100mV diagnostic marker (not a new acceptance gate). Original electrical rejection preserved.
