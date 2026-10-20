@@ -10,6 +10,9 @@ REPO='repos/Melihakbulut221/nssoc'
 DEPS={'planes':[],'wire-inputs':['planes'],'binding':['wire-inputs'],'rc':['wire-inputs']}
 def sha(raw):return hashlib.sha256(raw).hexdigest()
 def api(path):return json.loads(subprocess.check_output(['gh','api',REPO+'/'+path]))
+def receipt_path(stage):
+    assert stage in DEPS
+    return ROOT/('docs/evidence/cdr-data3-v25-'+stage+'-pass-20261021.json')
 def bind(stage):
     run=int(os.environ['GITHUB_RUN_ID']);group='cdr-data3-v25-'+stage
     tag=f'cloud-results-{run}-1-{group}'
@@ -23,7 +26,7 @@ def bind(stage):
     a,raw=assets['.summary.json'];b,parts=assets['.parts.json'];r=json.loads(raw)
     assert r['source_head']==os.environ['GITHUB_SHA']and r['sources_unchanged']and r['status'].startswith('PASS_')
     receipt=dict(run=run,source_head=r['source_head'],summary_asset=a['id'],summary_sha256=sha(raw),parts_asset=b['id'],parts_sha256=sha(parts),status=r['status'],outputs=r['outputs'],report=r)
-    path=ROOT/('docs/evidence/cdr-data3-v25-'+stage+'-pass-20261020.json')
+    path=receipt_path(stage)
     assert not path.exists(),'Never overwrite a pinned receipt'
     path.write_text(json.dumps(receipt,indent=2)+'\n')
     return receipt
