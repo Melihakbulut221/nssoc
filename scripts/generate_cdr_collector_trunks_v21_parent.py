@@ -33,7 +33,7 @@ def main():
   instances=sorted((i.cell.name,str(i.dcplx_trans),i.na,i.nb,str(i.a),str(i.b))for i in top.each_inst())
   return shapes,labels,instances
  before=snapshot(L,T);old_bbox=T.dbbox()
- changes=[];moved=[];total=0.;new_meta=copy.deepcopy(meta)
+ changes=[];junction_changes=[];moved=[];total=0.;new_meta=copy.deepcopy(meta)
  def replace_rectangle(layer,oldbox,newbox):
   li=L.layer(layer,0);ib=oldbox.to_itype(L.dbu);nb=newbox.to_itype(L.dbu)
   found=[s for s in T.shapes(li).each() if not s.is_text() and not s.is_edge() and s.bbox()==ib
@@ -53,39 +53,39 @@ def main():
   for row,b,y in zip(rows,boxes,ys,strict=True):
    assert row['layer']==134
    n=pya.DBox(nx-1.6,b.bottom,b.right,b.top);replace_rectangle(134,b,n)
-   matching=[i for i in T.each_inst()if not i.cell.name.startswith('pd_child_')
-      and abs(i.dbbox().center().x-ox)<.003 and abs(i.dbbox().center().y-y)<.003]
-   if len(matching)!=1:
-    nearest=sorted([dict(cell=i.cell.name,center_um=[i.dbbox().center().x,i.dbbox().center().y],
-      transform=str(i.dcplx_trans),distance_um=abs(i.dbbox().center().x-ox)+abs(i.dbbox().center().y-y))for i in T.each_inst()],key=lambda v:v['distance_um'])[:12]
-    cut_region=pya.Region(T.shapes(L.layer(133,0))).interacting(pya.Region(pya.DBox(ox-4,y-4,ox+4,y+4).to_itype(L.dbu)))
-    diagnostic=dict(net=net,requested_um=[ox,y],nearest_instances=nearest,
-      top_level_via2_cuts_dbu=[str(q)for q in cut_region.each()],
-      top_instance_names=sorted({i.cell.name for i in T.each_inst()}))
-    (out/'junction-lookup.json').write_text(json.dumps(diagnostic,indent=2)+'\\n')
-    print(json.dumps(diagnostic),flush=True)
-   assert len(matching)==1,('Expected exact native collector via',net,ox,y,len(matching))
-   inst=matching[0];tr=inst.dcplx_trans
-   assert tr.mag==1 and tr.angle==0 and not tr.is_mirror() and (inst.na,inst.nb)in ((0,0),(1,1))
-   present={L.get_info(li).layer for li in L.layer_indexes()if not pya.Region(inst.cell.begin_shapes_rec(li)).is_empty()}
-   assert present=={126,133,134},('Only native TM1/TM2 junction may move',present)
-   old_trans=str(tr);inst.dcplx_trans=pya.DCplxTrans(1,0,False,tr.disp.x+nx-ox,tr.disp.y)
-   moved.append(dict(net=net,cell=inst.cell.name,before=old_trans,after=str(inst.dcplx_trans),old_center_um=[ox,y],new_center_um=[nx,y]))
+   # Native v20 parent flattened junctions into top-level drawing polygons.
+   # Move their exact cut and enclosure rectangles, not an invented via cell.
+   window=pya.DBox(ox-2,y-2,ox+2,y+2).to_itype(L.dbu)
+   cut=pya.DBox(ox-.45,y-.45,ox+.45,y+.45).to_itype(L.dbu)
+   junction=[]
+   for layer in (126,133,134):
+    found=[sh for sh in T.shapes(L.layer(layer,0)).each()
+      if not sh.is_text() and window.contains(sh.bbox()) and sh.bbox().contains(cut)]
+    assert found,('Missing flattened native junction layer',net,layer,ox,y)
+    if layer==133:assert len(found)==1 and found[0].bbox()==cut
+    for sh in found:
+     oldbox=sh.bbox();assert pya.Region(sh.polygon).area()==oldbox.area()
+     newbox=oldbox.transformed(pya.Trans(round((nx-ox)/L.dbu),0))
+     sh.delete();T.shapes(L.layer(layer,0)).insert(newbox)
+     change=dict(layer=layer,before_box_dbu=str(oldbox),after_box_dbu=str(newbox))
+     junction_changes.append(change);junction.append(change)
+   moved.append(dict(net=net,representation='flattened_native_cut_and_enclosures',
+      old_center_um=[ox,y],new_center_um=[nx,y],rectangles=junction))
    target=[v for v in new_meta['routes']if (v['net'],v['tag'],v['pin'])==(row['net'],row['tag'],row['pin'])]
    assert len(target)==1;target[0]['box_um']=str(n);total+=nx-ox
  assert len(changes)==14 and len(moved)==10 and total>6000
  assert T.dbbox()==old_bbox
  # The unchanged native deck independently checks all new spacing and connectivity.
  expected=snapshot(L,T)
- allowed={(126,0),(134,0)}
- assert before[1]==expected[1]
+ allowed={(126,0),(133,0),(134,0)}
+ assert before[1:]==expected[1:],'All original labels and sixteen child instances must remain unchanged'
  assert before[0].keys()==expected[0].keys()
  for key in before[0]:
   if key not in allowed:assert (before[0][key]^expected[0][key]).is_empty()
  # Prove exact region delta consists only of the fourteen declared rectangles.
  for key in allowed:
   r=pya.Region(before[0][key])
-  for c in changes:
+  for c in [*changes,*junction_changes]:
    if c['layer']==key[0]:
     r-=pya.Region(pya.Box.from_s(c['before_box_dbu']))
     r+=pya.Region(pya.Box.from_s(c['after_box_dbu']))
@@ -101,7 +101,7 @@ def main():
  try:equal(expected,bad)
  except AssertionError:faults.append('missing_parent_tm1')
  else:raise AssertionError('Missing trunk accepted')
- bad=(actual[0],actual[1],actual[2][:-1])
+ bad=(dict(actual[0]),actual[1],actual[2]);bad[0][(133,0)]=pya.Region()
  try:equal(expected,bad)
  except AssertionError:faults.append('missing_native_via')
  else:raise AssertionError('Missing via accepted')
@@ -111,7 +111,7 @@ def main():
  else:raise AssertionError('Extra metal accepted')
  for name in ('schematic.cir',TOP+'.lef'):shutil.copyfile(old/name,dest/name);assert sha(old/name)==sha(dest/name)
  proof=dict(status='SERIALIZED_FOUR_INTERNAL_COLLECTOR_TRUNKS_REQUIRES_NATIVE_DRC_LVS_AND_FRESH_RC',
-  targets_um=TARGETS,changed_rectangles=changes,moved_native_tm1_tm2_vias=moved,
+  targets_um=TARGETS,changed_rectangles=changes,junction_rectangles=junction_changes,moved_native_tm1_tm2_vias=moved,
   horizontal_length_removed_um=total,primitive_parameters_unchanged=True,all_leaf_transforms_unchanged=True,
   schematic_and_lef_byte_identical=True,external_ports_unchanged=True,controls=faults,
   sources_unchanged=True,full_phy_accepted=False,qualified_pex=False)

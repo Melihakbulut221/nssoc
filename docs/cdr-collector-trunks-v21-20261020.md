@@ -13,7 +13,7 @@ The exact physical route metadata shows that aqn/aqp leave their macro at
 x=987.6 um and detour to x=32/43.2 um; bqn/bqp detour to x=390.4/401.6 um.
 The candidate moves only these four internal TopMetal1 trunks to
 x=959/965/971/977 um in the existing channel. Ten existing TopMetal2 horizontal
-arms become shorter; their ten original native TM1/TM2 junction cells move with
+arms become shorter; their ten original flattened native TM1/TM2 junction cut/enclosure polygons move with
 the trunks. No extra ideal connection is created. Device parameters, all 16
 child placements, child drawings, the schematic, public ports and LEF are fixed.
 
@@ -34,3 +34,5 @@ PLL 39423618115, TX 39409002976 and mainchip route 39427183963 were independentl
 confirmed live while this candidate was prepared. Full serial PHY, routed
 mainchip closure and final setup/hold remain unaccepted. All CAD/evidence stays
 in cloud storage; no local checkout is needed.
+
+Native lookup 39435510210 confirms exactly sixteen child instances and flattened parent via cuts. The failed instance lookup is retained; v21 now translates the existing 0.9 um square cut and its exact native enclosures without recreating or deleting a physical junction. All sixteen instances remain unchanged.

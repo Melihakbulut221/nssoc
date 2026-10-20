@@ -1,3 +1,20 @@
+## 2026-10-20 — physical junction representation and actual GRT settings repaired
+
+CDR lookup39435510210 proves all parent junctions are flattened; only16macro
+instances exist. v21 now translates original top-level native cuts/enclosures
+with fourteen declared wire rectangles; all macro instances stay byte-equivalent
+in transform. Follow new cdr-collector-trunks-v21-parent run for actual DRC/LVS.
+
+Mainchip39427183963 retained the same eight overflow edges as20% run: wildcard0
+did not clear persisted per-layer reductions. New fresh route flow explicitly
+reads, zeroes and verifies each native layer field before global routing.
+Dispatch a fresh fanout-route run with unchanged ancestor inputs; no waiver.
+
+TX wire20 nominal39409002976 rejected:79wrong/768,97below100mV,6HBT failures,
+0MOS failures. Keep full native evidence and analyze the remaining late stages;
+not adopted as accepted PHY. Swap job118581992937 and PLL39423618115 were live.
+No local files/CAD. Full serialPHY/mainchip routing/final timing still open.
+
 ## 2026-10-20 — native junction lookup failed before DRC
 
 39434757393 retained generation rejection: no top-level via instance centered

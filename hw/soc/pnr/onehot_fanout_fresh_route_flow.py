@@ -12,6 +12,19 @@ FRESH_GUIDES=r'''
 # power and clock wires were independently checked before this native step.
 set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
 set_global_routing_layer_adjustment * 0.0
+# General adjustment does not overwrite persisted per-layer adjustments.
+set nssoc_adjustment_report [open "$::env(STEP_DIR)/native-layer-adjustments.tsv" w]
+puts $nssoc_adjustment_report "layer\tbefore\tafter"
+foreach nssoc_layer_name {Metal2 Metal3 Metal4 Metal5 TopMetal1 TopMetal2} {
+    set nssoc_layer [[ord::get_db_tech] findLayer $nssoc_layer_name]
+    set nssoc_before [$nssoc_layer getLayerAdjustment]
+    set_global_routing_layer_adjustment $nssoc_layer_name 0.0
+    set nssoc_after [$nssoc_layer getLayerAdjustment]
+    puts $nssoc_adjustment_report "$nssoc_layer_name\t$nssoc_before\t$nssoc_after"
+    puts "NSSOC_LAYER_ADJUSTMENT $nssoc_layer_name $nssoc_before -> $nssoc_after"
+    if {abs($nssoc_after) > 1e-9} { error "Persisted layer adjustment was not cleared" }
+}
+close $nssoc_adjustment_report
 set_macro_extension 0
 global_route -congestion_iterations 200 -verbose
 write_guides "$::env(STEP_DIR)/fresh-fanout.guide"

@@ -104,14 +104,14 @@
   ],
   "fresh_route_support": {
     "scripts/prepare_onehot_fanout_fresh_route.py": "08e99ad97a82e6ee42b1c7f6107d54f7bc394351707bc774114f86af70af5fa4",
-    "hw/soc/pnr/onehot_fanout_fresh_route_flow.py": "9ff5698308c50be62435f28300cb2cf5bdaf699901264075b12a1b1603e6f57e"
+    "hw/soc/pnr/onehot_fanout_fresh_route_flow.py": "5b80b562460d8257ba8c7c504af83a22e137322892f94e2857a8294ddef4a53a"
   },
   "fresh_route_capacity_change": {
     "baseline_commit": "b1dcf87fb2e5b85d88f397185f3eeae775e546cc",
     "baseline_sha256": "7d49462ff63fcbe2352b63e0bf2200b552511ebbed3b87068b53e857b7b466d6",
-    "candidate_sha256": "9ff5698308c50be62435f28300cb2cf5bdaf699901264075b12a1b1603e6f57e",
+    "candidate_sha256": "5b80b562460d8257ba8c7c504af83a22e137322892f94e2857a8294ddef4a53a",
     "before": "set_global_routing_layer_adjustment * 0.2",
-    "after": "set_global_routing_layer_adjustment * 0.0",
-    "reason": "GRT-0116 with8overflow; nativeGRT-0704 recommends20percent to0percent adjustment. Full actual DRC/connectivity/antenna/STA gates unchanged."
+    "after": "set_global_routing_layer_adjustment * 0.0\n# General adjustment does not overwrite persisted per-layer adjustments.\nset nssoc_adjustment_report [open \"$::env(STEP_DIR)/native-layer-adjustments.tsv\" w]\nputs $nssoc_adjustment_report \"layer\\tbefore\\tafter\"\nforeach nssoc_layer_name {Metal2 Metal3 Metal4 Metal5 TopMetal1 TopMetal2} {\n    set nssoc_layer [[ord::get_db_tech] findLayer $nssoc_layer_name]\n    set nssoc_before [$nssoc_layer getLayerAdjustment]\n    set_global_routing_layer_adjustment $nssoc_layer_name 0.0\n    set nssoc_after [$nssoc_layer getLayerAdjustment]\n    puts $nssoc_adjustment_report \"$nssoc_layer_name\\t$nssoc_before\\t$nssoc_after\"\n    puts \"NSSOC_LAYER_ADJUSTMENT $nssoc_layer_name $nssoc_before -> $nssoc_after\"\n    if {abs($nssoc_after) > 1e-9} { error \"Persisted layer adjustment was not cleared\" }\n}\nclose $nssoc_adjustment_report",
+    "reason": "Native39427183963 retained20percent layer capacity and8overflows despite wildcard0.0. Explicit per-layer native readback/zeroing now required; no negative capacity, congestion waiver, geometry or STA gate change."
   }
 }
