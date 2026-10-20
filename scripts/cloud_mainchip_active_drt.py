@@ -99,13 +99,26 @@ def main():
         settings=dict(re.findall(r'^NSSOC_SETTING (\w+)=(.*)$',observed,re.M))
         assert set(settings)=={'DESIGN_NAME','DRT_THREADS','DRT_OPT_ITERS','DRT_SAVE_SNAPSHOTS','DRT_SAVE_DRC_REPORT_ITERS','DRT_ANTENNA_REPAIR_ITERS','DIODE_CELL'}
         threads=int(settings['DRT_THREADS']);iterations=int(settings['DRT_OPT_ITERS']);assert threads>=1 and 1<=iterations<=64
+        r['original_native_settings']=settings;save()
         original_cfg=json.loads((source/'config.json').read_text())
+        # Librelane's per-step config intentionally omits STA-only options.
+        # Bind those guards to the exact full flow config, never a default.
+        fp=json.loads((ROOT/'docs/evidence/mainchip-native-route-interruption-20261020.json').read_text())
+        assert fp['run']==runtime['source']['run'] and fp['summary_sha256']==runtime['source']['summary_sha256']
+        full,full_proof=reports.restore_report(fp['group'],fp['run'],fp['summary_sha256'],fp['parts_sha256'],BASE/'flow-config',['trial-config.json'])
+        assert full['source_head']==fp['source_head'] and full['status']=='INTERRUPTED_NATIVE_STAGE_RETAINED_NOT_ACCEPTED'
+        assert sha(BASE/'flow-config/trial-config.json')==fp['outputs']['trial-config.json']==full['outputs']['trial-config.json']
+        flow_cfg=json.loads((BASE/'flow-config/trial-config.json').read_text())
+        for key in ('CLOCK_PORT','CLOCK_PERIOD','TIME_DERATING_CONSTRAINT'):
+            assert original_cfg[key]==flow_cfg[key],('Step and original full-flow config differ',key)
+        r['full_flow_config_source']=full_proof
+
         assert int(original_cfg['DRT_OPT_ITERS'])==iterations
         assert original_cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']
         assert float(original_cfg['CLOCK_PERIOD'])==20 and float(original_cfg['TIME_DERATING_CONSTRAINT'])==5
-        assert original_cfg['SETUP_VIOLATION_CORNERS']==original_cfg['HOLD_VIOLATION_CORNERS']==['*']
+        assert flow_cfg['SETUP_VIOLATION_CORNERS']==flow_cfg['HOLD_VIOLATION_CORNERS']==['*']
         r['retained_timing_contract']=dict(clock_periods_ns=[20,4,8,8],derating_percent=5,
-            new_native_sta_run_required=True,configuration_sha256=sha(source/'config.json'))
+            new_native_sta_run_required=True,step_configuration_sha256=sha(source/'config.json'),full_flow_configuration_sha256=sha(BASE/'flow-config/trial-config.json'))
         assert re.fullmatch(r'[A-Za-z0-9_]+',settings['DESIGN_NAME'])
         cpus=sorted(os.sched_getaffinity(0));assert len(cpus)>=threads
         r['cpuset']=','.join(map(str,cpus[:threads]));r['original_native_settings']=settings
@@ -239,6 +252,7 @@ exit
         shutil.copytree(case,out/'work')
         assert all(sha(BASE/'input'/n)==runtime['outputs'][n]for n in names)
         if args.stage=='cross':assert r['consumed_downloads_removed_after_verified_restore'] and r['restored_work_prefixes_verified']
+        assert sha(BASE/'flow-config/trial-config.json')==full['outputs']['trial-config.json']
         assert sha(Path(__file__))==r['controller_sha256']and sha(tcl)==r['route_script']['sha256'];r['sources_unchanged']=True
         r['status']=('COMPLETE_NATIVE_DRT_REQUIRES_ALL_POSTROUTE_PHYSICAL_RC_STA_GATES'if r['route_complete']else
             'SAVED_ACTUAL_ACTIVE_DRT_PROCESS_REQUIRES_CROSS_RUNNER_CONTINUATION'if args.stage=='initial'else

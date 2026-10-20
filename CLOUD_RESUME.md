@@ -1,3 +1,12 @@
+## 2026-10-21 — original full-flow timing config restored
+
+Active DRT run39501256712 stopped in preflight before routing: Librelane's DRT-only config omits SETUP/HOLD_VIOLATION_CORNERS. The controller now restores exact original trial-config.json from39436610858 and keeps the same all-corner guard there; overlapping native step/full-flow clock/derate settings must agree. No timing guard relaxed/defaulted. Raw failure retained.
+
+PLL39423618115 completed with a real pending continuation descriptor; a new workflow was dispatched from its exact continuation summary63ea9b.../parts fde1ed... after confirming no live prior continuation. Resolve its run ID from workflow list.
+
+CDR v24 nominal_early completed rejected:device safety passes, original sampling/fixed-phase tests still fail. Other exact cases remain live; inspect all before next physical change. Cloud-only; goals remain open.
+
+
 ## 2026-10-21 — active detailed-route checkpoint workflow prepared
 
 Loaded-design native process portability already PASS39497563699. New mainchip-active-drt workflow restores immutable globalODB/guides/original environment from39436610858 via portable image39494338440. Exact native DRT setup/arguments/seed42 and original clock timing contract retained. Initial stage waits for actual native optimization, checkpoints after a bounded segment; cross stage resumes on another VM, requires new native progress, and checkpoints again. It does not yet claim routing or STA completion.
