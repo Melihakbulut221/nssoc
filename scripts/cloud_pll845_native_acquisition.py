@@ -30,13 +30,14 @@ COMPLETE_STATUS='COMPLETE_ACTUAL_PHYSICAL845_ONE_US_NATIVE_CONTINUATION_NOT_PHY_
 MARKER=b'Binary:\n'
 import read_pll845_full_native_op as full_op
 import read_pll845_full_native_transient as full_wave
+import cloud_pll845_disk_budget as host_disk
 sha=full_wave.sha
 def method_hashes():
     paths=[Path(__file__),Path(native.__file__),Path(portable.__file__),Path(acquisition.__file__),
         Path(physical_pll.__file__),Path(pll.__file__),ROOT/'scripts/cloud_vbic_tree32_backend.py',
         ROOT/'scripts/review_pcie_pll_acquisition_v1.py',
         ROOT/'scripts/cloud_pll_divider_load3p2v2_diagnostic.py',ROOT/'scripts/compare_cloud_routed_endpoints.py',
-        Path(full_op.__file__),Path(full_wave.__file__)]
+        Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__)]
     return {str(p.relative_to(ROOT)):sha(p)for p in paths}
 
 def payload_info(path):
@@ -244,19 +245,15 @@ def restore_source(spec):
     fetch(url+stem+'.parts.json',spec['parts_sha256'],staging/(stem+'.parts.json'))
     report=json.loads((staging/'source-summary.json').read_text())
     assert report['status']==CHECKPOINT_STATUS and report['checkpoint_saved']
-    assert report['controller_sha256']==sha(__file__),'Resume the exact controller revision'
-    assert report['method_hashes']==method_hashes(),'Resume exact parser, physical and native methods'
+    resume_methods=host_disk.verify_resume_methods(report,method_hashes(),ROOT)
     assert report['run_id']==str(spec['run'])and report['run_attempt']==str(spec['attempt'])and report['stage']==spec['stage']
     manifest=json.loads((staging/(stem+'.parts.json')).read_text());assert manifest['source_directory']==OUT.name and manifest['stem']==stem
     for i,part in enumerate(manifest['parts']):
         assert part['index']==i and part['name']==stem+'.tar.gz.part'+str(i).zfill(4)
         fetch(url+part['name'],part['sha256'],staging/part['name'])
-    verify_parts(manifest,staging);packed=staging/'source.tar.gz'
-    with packed.open('wb')as dest:
-        for part in manifest['parts']:
-            with(staging/part['name']).open('rb')as src:shutil.copyfileobj(src,dest)
-    assert sha(packed)==manifest['sha256']
-    with tarfile.open(packed)as tar:
+    verify_parts(manifest,staging)
+    # Consume the verified ordered bytes without a second compressed disk copy.
+    with host_disk.joined_parts(manifest,staging)as packed,tarfile.open(fileobj=packed,mode='r|gz')as tar:
         seen=set()
         for m in tar:
             p=Path(m.name);assert not p.is_absolute()and'..'not in p.parts and p.parts[0]==OUT.name
@@ -271,6 +268,7 @@ def restore_source(spec):
     history=OUT/'history';history.mkdir(exist_ok=True)
     shutil.copyfile(OUT/'result.json',history/(stem+'.json'))
     shutil.rmtree(staging)
+    report['_resume_methods']=resume_methods
     return report
 
 def command(name,image,cpu,create):
@@ -291,7 +289,8 @@ def execute(stage,seconds,spec=None):
     result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],controller_sha256=sha(__file__),
         method_hashes=method_hashes(),run_id=os.environ['GITHUB_RUN_ID'],run_attempt=os.environ['GITHUB_RUN_ATTEMPT'],stage=stage,
         boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),preparation=preparation,
-        source_checkpoint=spec,checkpoint_saved=False,full_capture=False,acquisition_accepted=False,
+        source_checkpoint=spec,resume_methods=prior.get('_resume_methods')if prior else None,
+        checkpoint_saved=False,full_capture=False,acquisition_accepted=False,
         full_device_safety_accepted=False,full_phy_accepted=False,qualified_pex=False,
         scope='Whole845+4-contact physical RC model, all1694 terminal vectors, original1us/.3125ps/KLU/zeroOP/102OFF and original stimuli/loads. Native process continuation only. Frozen both final100ns acquisition windows. Full-terminal capture alone does not prove device safety/PVT/qualifiedPEX/CDR/x4/mainchip or PHY.',
         controls=prior['controls']if prior else controls())
@@ -352,8 +351,8 @@ def execute(stage,seconds,spec=None):
             print(json.dumps(progress),flush=True);result['last_progress']=progress;save()
             if not state['Running']:break
             free=shutil.disk_usage(OUT).free
-            reserve=max(12*1024**3,2*progress['raw_bytes'])
-            result['disk_budget']=dict(free_bytes=free,archive_reserve_bytes=reserve)
+            storage=host_disk.disk_plan(OUT);reserve=storage['archive_reserve_bytes']
+            result['disk_budget']=dict(free_bytes=free,**storage)
             if elapsed>=seconds or free<reserve:
                 result['checkpoint_reason']='host_budget'if elapsed>=seconds else'preserve_before_disk_exhaustion'
                 checkpoints=OUT/'checkpoints'

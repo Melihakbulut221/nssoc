@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_pll_c8_v2_native_acquisition.py",
   "baseline_sha256": "e3570ec29531ecfda342afccdc3c5ab77b8731ac3f7ab132415b8863f78ec2fd",
   "candidate_path": "scripts/cloud_pll845_native_acquisition.py",
-  "candidate_sha256": "185b78aa506cf5fbd84d171ac58ddc5bf3c7e415f91139dbbb1fbe320c05f4f3",
+  "candidate_sha256": "6252d868f362e7e638c61c55703eeb83c2505f87f7a48759bbb57d86a2f0395f",
   "edits": [
     {
       "before": "Original physical845 1us native trajectory",
@@ -72,6 +72,41 @@
     {
       "before": "    for n,digest in prepared['source_inputs'].items():\n        assert sha(OUT/'prepared/model-sources'/n)==sha(LIB/n)==digest",
       "after": "    for n,digest in prepared['source_inputs'].items():\n        source=OUT/'prepared/model-sources'/n\n        assert sha(source)==digest\n        # The loaded-deck proof also retains its source bench, which was not\n        # a runtime dependency of the older portable engine capsule.\n        for dest in (LIB/n,OUT/'model-sources'/n):\n            if dest.exists():assert sha(dest)==digest\n            else:\n                dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,dest)\n            assert sha(dest)==digest\n        receipt['model_sources'][n]=digest",
+      "count": 1
+    },
+    {
+      "before": "import read_pll845_full_native_transient as full_wave",
+      "after": "import read_pll845_full_native_transient as full_wave\nimport cloud_pll845_disk_budget as host_disk",
+      "count": 1
+    },
+    {
+      "before": "Path(full_op.__file__),Path(full_wave.__file__)]",
+      "after": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__)]",
+      "count": 1
+    },
+    {
+      "before": "    assert report['controller_sha256']==sha(__file__),'Resume the exact controller revision'\n    assert report['method_hashes']==method_hashes(),'Resume exact parser, physical and native methods'",
+      "after": "    resume_methods=host_disk.verify_resume_methods(report,method_hashes(),ROOT)",
+      "count": 1
+    },
+    {
+      "before": "    verify_parts(manifest,staging);packed=staging/'source.tar.gz'\n    with packed.open('wb')as dest:\n        for part in manifest['parts']:\n            with(staging/part['name']).open('rb')as src:shutil.copyfileobj(src,dest)\n    assert sha(packed)==manifest['sha256']\n    with tarfile.open(packed)as tar:",
+      "after": "    verify_parts(manifest,staging)\n    # Consume the verified ordered bytes without a second compressed disk copy.\n    with host_disk.joined_parts(manifest,staging)as packed,tarfile.open(fileobj=packed,mode='r|gz')as tar:",
+      "count": 1
+    },
+    {
+      "before": "    shutil.rmtree(staging)\n    return report",
+      "after": "    shutil.rmtree(staging)\n    report['_resume_methods']=resume_methods\n    return report",
+      "count": 1
+    },
+    {
+      "before": "        source_checkpoint=spec,checkpoint_saved=False,full_capture=False,acquisition_accepted=False,",
+      "after": "        source_checkpoint=spec,resume_methods=prior.get('_resume_methods')if prior else None,\n        checkpoint_saved=False,full_capture=False,acquisition_accepted=False,",
+      "count": 1
+    },
+    {
+      "before": "            reserve=max(12*1024**3,2*progress['raw_bytes'])\n            result['disk_budget']=dict(free_bytes=free,archive_reserve_bytes=reserve)",
+      "after": "            storage=host_disk.disk_plan(OUT);reserve=storage['archive_reserve_bytes']\n            result['disk_budget']=dict(free_bytes=free,**storage)",
       "count": 1
     }
   ]

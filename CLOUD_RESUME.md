@@ -1,3 +1,6 @@
+## Cloud-only PLL disk reserve repair
+The terminal 39370629792 continuation preserved its process but stopped after 0.014 s because of a redundant two-waveform archive reserve. New storage-only migration keeps every native byte and exact physics/methods, verifies the known legacy controller through reversible edits, and streams verified source parts without a second compressed copy. Dispatch pll845-storage-continuation-cloud with the pinned 39370629792 continuation descriptor. Mainchip resizer run 39389233033 is publishing; TX runs 39372036289 and 39376417214 remain live. Local workspace remains empty.
+
 ## Cloud-only handoff: native optimizer now runs
 Run 39388037634 passed router identity, resized 214 cells and retained four hold buffers, then hit the added-master gate. Exact offending master was not logged. This commit explicitly recognizes only pinned X=A buffers/delay cells and retains unchecked hold ODB/netlist plus useful rejection names. Run the native-resizer workflow at this commit; fresh route/RC/STA still required. PLL/TX cloud jobs must not be restarted while live. Local project directory is empty.
 
