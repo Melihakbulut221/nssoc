@@ -1,3 +1,7 @@
+## 2026-10-20 — Active CDR retime follower candidate, physical evidence pending
+v22 exact diagnosis remains rejected. New cdr-follower-v23-physical-cloud builds two real Nx4 HBT emitter followers, two native pull-down resistors and four substrate contacts; full560DRC/deep-flat8deviceLVS and seven actual faults required. No waveform thresholds or old rejected sources changed. Leaf physical success is not parent/electrical/PHY acceptance. TX8074 anchor39468302827, rawdriver39460427396, originalTX39453950816, mainchip39436610858 and PLL39423618115 confirmed live; do not restart. Cloud only, workspace empty.
+
+
 ## 2026-10-20 — Verified latch diagnosis and live continuation checkpoint
 CDR review39464720493 reproduces every original sampler/device result. A/B slave transfer remains late; C/D master inputs remain weak/wrong at capture. Compact exact-source diagnosis receipt committed; no gate changes. PLL39423618115 initial stage saved91,335,790,523-byte native prefix and published all parts; continuation is live, full1us capture/lock not accepted. TX8074 graph passed; terminal binding39468302827 live. TX39460427396/39453950816 and mainchip39436610858 remain live. FullPHY/final timing open; all CAD and artifacts on GitHub, local workspace empty.
 
