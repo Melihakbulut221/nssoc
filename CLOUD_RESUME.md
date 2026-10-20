@@ -1,3 +1,6 @@
+## 2026-10-20 — TX fullwave receipt path repair; cloud-only
+Run 39452581487 stopped before transient on a nonexistent baseline receipt date. Corrected to the pinned October 20 wire20 receipt; no circuit, solver, stimulus or gate change. Push triggers the replacement TX fullwave workflow. Mainchip 39436610858 and PLL 39423618115 remain running; do not restart them. Local project directory is empty and no local CAD process is running. Full serial PHY and final timing remain unaccepted.
+
 ## 2026-10-20: p4 drive3 composition passed; full TX waves next
 
 Composition39450330853 passed all1674devices117251R77892C, six model faults,

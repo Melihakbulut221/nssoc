@@ -11,7 +11,7 @@ def check():
     from check_tx_p4_drive3_composition_sources import check as composition
     sources();composition()
     pin=json.loads((ROOT/'docs/evidence/tx-p4-drive3-composition-pass-20261020.json').read_text())
-    old=json.loads((ROOT/'docs/evidence/tx-fast-wire20-composition-pass-20261019.json').read_text())
+    old=json.loads((ROOT/'docs/evidence/tx-fast-wire20-composition-pass-20261020.json').read_text())
     path=ROOT/'hw/soc/out/cloud-tx-p4-drive3-model-compare/result.json'
     eq=json.loads(path.read_text())
     assert eq['status']=='PASS_NATIVE1674_FOUR_P4_MASTER_SUBSTITUTION_WITH_THREE_FAULTS'
