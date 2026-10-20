@@ -71,3 +71,24 @@ The patch contains only this one NETS record; all other DEF content must still
 match byte-for-byte and both native wire metadata and wire decoder must say
 FIXED. The first native run of the corrected import must prove this behavior;
 the documentation alone is not validation.
+
+## Actual physical transfer passed; legalization and fresh STA started
+
+[Native transfer 39367665103](https://github.com/Melihakbulut221/nssoc/actions/runs/39367665103)
+passed with both real fault controls. The latest routed chip now has a candidate
+containing the original 1142.070 um clock route. All unrelated DEF content is
+byte-identical and native baseline/candidate Verilog exports are identical.
+Actual via definitions, native pin positions, NDR identity and every fixed-route
+token match. Only the order of the unordered DEF connection list is normalized;
+physical route tokens are not normalized or approximated.
+
+[Physical legalization and timing run 39368178274](https://github.com/Melihakbulut221/nssoc/actions/runs/39368178274)
+uses source 38c785bfbba6bbd55a70f311a66aee99c36f9c89.
+It revalidates the original boot/RTL/logic/placement/route ancestry before native
+DRT, then checks antenna/disconnected pins and performs fresh nominal RC and
+the original slow/typical/fast cell-corner STA. It uses existing real global
+guides and independently verifies that native DRT retains the exact fixed clock
+route. Source-delta checks restrict changes to the prior proven controller.
+
+The imported candidate is not DRC-clean or timing-closed merely because transfer
+passed. No physical or timing acceptance is asserted until those results exist.

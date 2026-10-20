@@ -1,5 +1,35 @@
+## Active cloud runs and exact continuation, 2026-10-20
+
+Previous goal turn made native physical progress: clock transfer39367665103 passed.
+Actual candidate has1142.070um original clock route; all non-target DEF and native
+logic exports preserved; real unrelated-cell-motion and unfixed-clock faults rejected.
+Receipt: docs/evidence/onehot-clock-restore-pass-20261020.json.
+
+Actual next run39368178274 (source38c785bfbba6bbd55a70f311a66aee99c36f9c89),
+onehot-clock-restore-route-cloud, is the physical legalization/DRC/antenna/
+connectivity/fresh nominalRC/original three-corner STA computation. Inspect its
+same live handle; do not duplicate while live. It must also pass exact fixed
+clock-route preservation and original all-cell geometry/topology checks. No
+clock periods, delays, derating, exceptions or acceptance gates were relaxed.
+
+TX original run39344566214: leaf-select fault job118374075980 completed.
+Native return0,14040.784s,full34ns,768samples:98wrong-sign/120below100mV;
+intentional fault caught,24/604HBT failed,0/512MOS failed,no solver diagnostics.
+This is a negative control, never nominal PHY acceptance. Normal job118374075924
+was observed in_progress/None at this checkpoint; keep the same handle and read its actual
+result when terminal. Receipt: docs/evidence/tx-fast-wire24-leaf-fault-result-20261020.json.
+
+CDR hypothesis review: archived39337079644 composition summary
+SHA58708b1f418bd13a1fa930cc974ea7afed61c00c6912d601af631e26c3beca11 maps all22
+raw MIM plate nodes to the same assembled nodes. The PLL-specific anchor
+mismatch hypothesis is not supported in this CDR report. No CDR waveform pass.
+
+All actual computation remains on GitHub-hosted runners. Local project folder
+stays empty. Full serialPHY, qualifiedPEX and final timing/signoff remain open.
+
+
 ## Native single-clock transfer passed; actual physical legalization and fresh STA
-SOURCE_39367665103 passes exact original 1142.070um clock transfer in latest routed chip, native fixed metadata and wire opcodes, pin/via geometry, unrelated DEF content and native netlist identity; actual unrelated-cell motion and unfixed-net faults rejected. New cloud route flow revalidates full unchanged boot/logic/RTL/physical lineage, uses existing actual global guides, preserves this one fixed clock route through native DRT, and performs antenna/connectivity/fresh nominal RC/three original cell corners. Original20/4/8/8ns clocks and5%derate unchanged. Candidate remains unaccepted until actual all gates, qualifiedPEX/fullPHY/signoff remain open. Do not restart ongoing TX run39344566214.
+39367665103 passes exact original 1142.070um clock transfer in latest routed chip, native fixed metadata and wire opcodes, pin/via geometry, unrelated DEF content and native netlist identity; actual unrelated-cell motion and unfixed-net faults rejected. New cloud route flow revalidates full unchanged boot/logic/RTL/physical lineage, uses existing actual global guides, preserves this one fixed clock route through native DRT, and performs antenna/connectivity/fresh nominal RC/three original cell corners. Original20/4/8/8ns clocks and5%derate unchanged. Candidate remains unaccepted until actual all gates, qualifiedPEX/fullPHY/signoff remain open. Do not restart ongoing TX run39344566214.
 
 ## Native clock wire imported; retain strict physical comparison
 39367210485 imported actual1142.070um fixed wire and passed unchanged non-target DEF and native pin/via identity, but raw whole-net token equality rejected serialization. Canonicalize only unordered connection records; require every fixed-route token and non-connection prefix token exactly unchanged. Preserve before/after statement and explicit diff on any physical mismatch. Candidate remains unaccepted pending successful native proof, actual negative controls, DRC/RC/STA. CDR follow-up review: archived39337079644 composition summary SHA58708b1f418bd13a1fa930cc974ea7afed61c00c6912d601af631e26c3beca11 maps all22 native MIM plate export nodes to assembled nodes identically; PLL anchor mismatch hypothesis is not supported for this CDR report, not a new loaded simulation pass.
