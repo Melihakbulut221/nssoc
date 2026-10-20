@@ -713,7 +713,10 @@ def main():
         assert prior['fixed_clock_route_proof']['original_physical_route_preserved']
         assert prior['routed_odb_sha256']==fan['source_odb_sha256']=='df3f0fe0bc20b3f6b31e990b488b467b1d0b445847e13eec2fd3a978cda71f0f'
         assert sha(fan_root/'source/run/1-openroad-detailedrouting/soc_top.odb')==fan['source_odb_sha256']
-        assert fan['original_measurements']==prior['measurements']
+        expected_source_measurements={c:{'timing__'+k+'__ws':prior['measurements'][c]['metrics']['timing__'+k+'__ws__corner:'+c]
+            for k in ('setup','hold')}for c in ('nom_typ_1p20V_25C','nom_slow_1p08V_125C','nom_fast_1p32V_m40C')}
+        assert fan['original_measurements']==expected_source_measurements
+        assert fan['expected_baseline']=={c:dict(max=v['timing__setup__ws'],min=v['timing__hold__ws'])for c,v in expected_source_measurements.items()}
         assert fan['geometry']['original_instances']==151078 and len(fan['geometry']['added'])==1684
         assert fan['geometry']['pg_ndr_ports_preserved']and fan['geometry']['clock_pins_and_clock_sram_geometry_preserved']
         assert fan['fixed_clock']['original_physical_route_preserved']and fan['actual_inversion_control_rejected']
@@ -740,7 +743,8 @@ def main():
         r['native_fanout_candidate_geometry']=fan['geometry']
         r['native_fanout_candidate_logic']=fan['proof']
         r['native_fanout_candidate_instances']=152762
-        r['source_routed_measurements']=fan['original_measurements']
+        r['source_routed_measurements']=prior['measurements']
+        r['native_fanout_source_worst_slacks']=fan['original_measurements']
         r['native_routed_baseline']=dict(run=39392483151,summary_sha256=fan['source']['summary_sha256'])
 
         saved_candidate_odb=odb

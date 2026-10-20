@@ -43,10 +43,20 @@
           "before": "COMPLETE_NATIVE_RESIZER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF',measurements",
           "after": "COMPLETE_NATIVE_FANOUT_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF',measurements",
           "count": 1
+        },
+        {
+          "before": "        assert fan['original_measurements']==prior['measurements']",
+          "after": "        expected_source_measurements={c:{'timing__'+k+'__ws':prior['measurements'][c]['metrics']['timing__'+k+'__ws__corner:'+c]\n            for k in ('setup','hold')}for c in ('nom_typ_1p20V_25C','nom_slow_1p08V_125C','nom_fast_1p32V_m40C')}\n        assert fan['original_measurements']==expected_source_measurements\n        assert fan['expected_baseline']=={c:dict(max=v['timing__setup__ws'],min=v['timing__hold__ws'])for c,v in expected_source_measurements.items()}",
+          "count": 1
+        },
+        {
+          "before": "        r['source_routed_measurements']=fan['original_measurements']",
+          "after": "        r['source_routed_measurements']=prior['measurements']\n        r['native_fanout_source_worst_slacks']=fan['original_measurements']",
+          "count": 1
         }
       ],
       "baseline_sha256": "485a903bf51ded411a09b6e1ada8c66b10743e35cfa388debb1e9fbccded9496",
-      "candidate_sha256": "51f39b4ccae0b82cbab41aa840b9c1ee442f5f93cf953cd04aa1713a323c891e"
+      "candidate_sha256": "5256a62ea3fcfaa78dd387fbfac44dd6207fd2efccc330e0084639d7fb3fdca9"
     },
     {
       "baseline_path": "scripts/check_onehot_native_resizer_routed_topology.py",
