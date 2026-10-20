@@ -1,3 +1,18 @@
+## 2026-10-20 — v21 native DRC0 but strict transistor LVS rejected
+
+39438730794 at7f5d43... passed generation, serialized delta and all16child
+drawings/transforms;7858.4um shorter horizontal wire. DRC560categories0markers.
+LVS484vs484devices NoMatch: candidate NOT accepted. Full report pinned in
+docs/evidence/cdr-v21-collector-lvs-rejection-20261020.json.
+New cdr-v21-connectivity-review-cloud workflow reads failed/original actual
+LVS databases, probes all158interfaces and maps any new-trunk overlap with
+retained original TM1. No new extraction/simulation or geometry edit.
+
+TX path39438335576 completed and reproduced every original failed gate; inspect
+summary659537709 sha976a90a206d4fcf0f8407ead123f9eee420f850fd0f0b4ab4edab0f598be3895,
+parts659537794 sha8ea1539c895c43c1d7cf3a5f3b1d8d09af7f133303cbd72f15964293609e0a63.
+Mainchip39436610858 and PLL39423618115 live. Cloud-only; full goals open.
+
 ## 2026-10-20 — v21 exact region-copy API correction
 
 39437494902 moved/checked all four trunks and ten flattened junctions but stopped
