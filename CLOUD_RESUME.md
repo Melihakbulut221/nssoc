@@ -1,3 +1,12 @@
+## CDR data4 early and late rejected; exact raw latch diagnosis dispatched
+
+Run39426217320 normal cases completed native34.25ns/256bits/1108columns with zero diagnostics and passing device safety, but sampler/data gates fail. Early wrong/low per765: A0/95 B32/129 C184/202 D313/331. Late A0/109 B0/65 C182/200 D291/328. Early phase/VI also fails. Rawrejection receipt docs/evidence/cdr-data-v20-electrical-rejection-20261020.json binds complete original captures.
+
+New cdr-v20-latch-timing-cloud restores these exact waves/geometry and reproduces all116HBT/four sampler checks before actual master/slave transfer analysis. Only physical identities and actual data/holdNx4 assertions change from v19diagnosis. Controls and original acceptance preserved.
+
+Next: inspect diagnosis, especially C/D master inputs and A/B slave transfer at+.3UI; choose physical next change using actual voltages/currents. Mainchip39427183963, PLL39423618115 and TX39409002976 remain live. No fullPHY/finaltiming closure. Cloud-only.
+
+
 ## Latest cloud handoff: CDR loaded simulations and fresh mainchip route live
 
 CDR MIM validation39425717815 passed both stages:13 wire+9 intrinsic controls,19 composition controls. Exact composed model SHA9b087e6c0c67b674b294321dfcfe269e2558b042235d3b48ef4cee2ec1996279,484devices17674R12712C. Compact immutable receipt in docs/evidence/cdr-data-v20-mim-validation-pass-20261020.json. Do NOT precreate individual audit/composition pass receipts: fullwave stage creates them itself from verified immutable assets.

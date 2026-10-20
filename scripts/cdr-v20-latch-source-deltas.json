@@ -1,0 +1,80 @@
+{
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v19_latch_timing.py",
+    "baseline_sha256": "a549a68fe2ff9519c87beacedac927195e776f93c307faea2690bd830029d2f7",
+    "candidate_path": "scripts/cloud_cdr_v20_latch_timing.py",
+    "candidate_sha256": "8fead8dfbbbd778df0654508ab0e3a2b9b8bc79119ce95e5ba964f7e3f2fd710",
+    "edits": [
+      {
+        "before": "cdr-v19-latch",
+        "after": "cdr-v20-latch",
+        "count": 2
+      },
+      {
+        "before": "cdr-selector-v19",
+        "after": "cdr-data-v20",
+        "count": 4
+      },
+      {
+        "before": "d6fff523643739a4cb4a8b874b051136b276649ca47c3a4ffd421f7aa137f218",
+        "after": "cbfbb8563ec622da6fc934025b14059137cc47c3671b6876c2af83292a8b2ea7",
+        "count": 1
+      },
+      {
+        "before": "b3fd5126fdc9dff64552c88a3198d9140898ab8df0c7a99d2d94b98a281f2362",
+        "after": "3f1d7337b8fa173d995f9fc42bf60c532749e43866c362662949a9e56ed9f501",
+        "count": 1
+      },
+      {
+        "before": "87d0555e988bba6f5e5dee04172ad074ad962e6cb5cb83e0100e8ee43595f501",
+        "after": "02aa178de2b228771646e8e1829d30839413f4c7719bf6f9c4304c15095554a7",
+        "count": 1
+      },
+      {
+        "before": "f6dfb02d877a216aaf025101b852bf79517847a6428b8c3d54ac574d22543d24",
+        "after": "db69fbac40979fea7188cb0e6780a3a53fc25770c9f945ff533b81d857d7e806",
+        "count": 1
+      },
+      {
+        "before": "39400191012",
+        "after": "39426217320",
+        "count": 2
+      },
+      {
+        "before": "604b0fbf89e27619220422b41a068de0dfc144e4",
+        "after": "b1dcf87fb2e5b85d88f397185f3eeae775e546cc",
+        "count": 1
+      },
+      {
+        "before": "39397118280",
+        "after": "39424942579",
+        "count": 1
+      },
+      {
+        "before": "d3ecd598c271fa0b7771b5287267cf33c088d2a328c374931dac793dc84362a8",
+        "after": "928261bc7efd065100b19687d8ede3008dd1e086ae89ebee3296d89a981dd740",
+        "count": 1
+      },
+      {
+        "before": "0c06e3e9c600006fdd9b7ac7639ce617d3f93ae1",
+        "after": "a1d92377ce17f2589e2c42eea729e4015203b681",
+        "count": 1
+      },
+      {
+        "before": "assert len(members)==16 and all(members[n]['nx']==8 for n in set(members)-selector_names)",
+        "after": "assert len(members)==16 and all(members[n]['nx']==4 for n in set(members)-selector_names)",
+        "count": 1
+      },
+      {
+        "before": "   latch_data['actual_selector_nx']={n:members[n]['nx']for n in sorted(selector_names)}",
+        "after": "   latch_data['actual_selector_nx']={n:members[n]['nx']for n in sorted(selector_names)}\n   latch_data['actual_data_hold_nx']={n:members[n]['nx']for n in sorted(set(members)-selector_names)}",
+        "count": 1
+      }
+    ]
+  }
+}
