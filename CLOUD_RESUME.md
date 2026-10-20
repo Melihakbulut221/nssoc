@@ -1,3 +1,12 @@
+## V20 latch diagnosis passed; actual retime wire/load measurement dispatched
+
+Both read-only diagnoses39430120656 passed exact116HBT and4sampler result reproduction. At+.3UI A/B slave inputs are valid(>=165mV) but outputs late. C/D master input signed minima are only a fewmV; all255 per sampler below internal100mV diagnostic marker (not a new acceptance gate). Original electrical rejection preserved.
+
+The new cdr-v20-retime-passive-networks-cloud workflow restores exact v20 late waveform composition and physical model, measures actual collector/filter/base/rail wire resistance and capacitance, and retains original graph/solver mutations. Earlier v16 measurements are only historical; v17 intrinsic divider rebalance already worsened C/D, do not redo it as a fix.
+
+Next: inspect new native passive measurements, choose actual routing/placement/load repair with unchanged native devices if metal dominates; A/B slave settling remains separate. Full actual DRC/LVS/extraction/waves still required. Mainchip39427183963, PLL39423618115 and TX39409002976 remain live. Cloud-only.
+
+
 ## CDR data4 early and late rejected; exact raw latch diagnosis dispatched
 
 Run39426217320 normal cases completed native34.25ns/256bits/1108columns with zero diagnostics and passing device safety, but sampler/data gates fail. Early wrong/low per765: A0/95 B32/129 C184/202 D313/331. Late A0/109 B0/65 C182/200 D291/328. Early phase/VI also fails. Rawrejection receipt docs/evidence/cdr-data-v20-electrical-rejection-20261020.json binds complete original captures.
