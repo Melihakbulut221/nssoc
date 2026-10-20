@@ -11,3 +11,11 @@ The serialized GDS must exactly match the conserved parent-band geometry, unchan
 This is a physical repair candidate, **not** electrical acceptance. Geometric span bounds are not timing constraints or new waveform gates. Fresh whole-parent MIM-aware distributed extraction and the original full loaded early/late tests are required even if DRC/LVS passes. There is no change to circuit values, waveform oracle, sample phases, loads or acceptance limits. The rejected v17 resistor-divider experiment is not used.
 
 All generation and verification execute in GitHub Actions. No local CAD output or source checkout is created.
+
+## Measured physical result and next extraction
+
+[Run39379285294](https://github.com/Melihakbulut221/nssoc/actions/runs/39379285294), source6fae6cae4e8242e3436fe8873b5e42bed7e112be, passed the original560-rule DRC, deep/flat484-device LVS with no extraction diagnostics, all nine native physical/reference faults, and exact child/serialized geometry conservation. The actual new GDS SHA256 is27321a65507bccd81228e05933676158794b3c099186535fd4f9b892afacb37e. The [full receipt](evidence/cdr-retime-bands-v18-physical-pass-20261020.json) binds the original report and all geometry controls.
+
+The selected prefix is sd,bd,sb,sa,sc,ac. Total targeted retime-net span fell from5387.34um to3455.56um (35.86%). Input dp/dn spans remain323.63um. The tradeoffs are retained: cp grows964.89→1189.52um, cn976.89→1189.52um, and D-output dqp/dqn grow by865.89um. These are geometrical measurements, not measured electrical delay or accepted timing.
+
+The new v18 extraction pipeline restores this exact physical result and reruns all158 native interface bindings, all484-device/1394-terminal model bindings, actual terminal-plane recovery and full wire graph/R/C auditing. It retains the original nineteen interface faults, twelve model faults and thirteen raw-R/C corruption controls. Original v16 extraction sources remain unchanged; an exact source-delta checker permits only the new physical provenance, model/view names and artifact paths. No old RC is reused for this placement. Whole-parent MIM composition and the original full loaded early/late electrical checks must follow.

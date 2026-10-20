@@ -1,3 +1,9 @@
+## Cloud checkpoint: reordered CDR passes physical gates, fresh extraction dispatched
+
+Physical run39379285294 passed560-rule DRC, deep/flat484-device LVS and original physical/reference faults. ActualGDS27321a65507bccd81228e05933676158794b3c099186535fd4f9b892afacb37e retains all v16 local accesses. Targeted retime spans reduced35.86%; clock and D-output spans increase, so electrical acceptance is still unproven. See docs/cdr-v16-band-reorder-20261020.md.
+
+New cdr-retime-bands-v18-extraction-cloud starts158planes→wire-inputs→binding+RC from the hash-pinned new GDS, using unchanged original native gates. Next: verify these results, complete whole-parent MIM-aware composition/capture and run original full early/late loaded sampling tests. Do not reuse old RC, retime oracle or accept solely on DRC/LVS. Mainchip39373842033, PLL39370629792, TXg23439372036289, TXg234+bridge39376417214 remain independent live jobs. All work remains cloud-only.
+
 ## Cloud checkpoint: actual v16 CDR physical reorder candidate
 
 The new cdr-retime-band-reorder-cloud workflow preserves the actual verified v16 GDS, all native children and all prior local overlays while enumerating720 macro-band orders and rebuilding only global TM1 trunks. See docs/cdr-v16-band-reorder-20261020.md. Native DRC/LVS and conservation proofs are pending; fresh complete RC and original full loaded sampling gates must follow a physical pass. Do not claim timing acceptance from geometry. Independent mainchip39373842033, PLL39370629792, TXg23439372036289 and TXg234+bridge39376417214 remain live at latest check. All work stays cloud-only.
