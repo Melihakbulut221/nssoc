@@ -1,3 +1,6 @@
+## 2026-10-20 — Streamed PLL migration controls
+Storage fixture39410688845 passed12 corruptions plus real hosted upload/download roundtrip. Add separate streamed controller with reversible storage-only delta and11exact unchanged native/reader/physical methods, strict old/current method maps, aggregate archive verification before native activation and12GiB reserve. Push runs controls only; initial native job is skipped unless workflow_dispatch supplies exact terminal-successful source descriptor. Existing39390580356 continuation118578922230 is still live; wait for its latest published checkpoint before dispatching pll845-streamed-continuation-cloud. Mainchip39409367521 and TX39409002976 remain live. No native physics/gate changes; allcloud/localempty.
+
 ## 2026-10-20 — Storage fixture manifest distinction
 Archive control39410274302 failed because *.part* counted the valid .parts.json manifest as a leftover compressed part. Restrict the census to numbered tar.gz.part files; preserve12 corruption gates and real hosted roundtrip. No native methods changed. Existing mainchip39409367521/TX39409002976/PLL39390580356 jobs remain separate.
 

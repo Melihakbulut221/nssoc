@@ -1,0 +1,41 @@
+{
+  "baseline_sha256": "6252d868f362e7e638c61c55703eeb83c2505f87f7a48759bbb57d86a2f0395f",
+  "baseline_method_hashes": {
+    "scripts/cloud_pll845_native_acquisition.py": "6252d868f362e7e638c61c55703eeb83c2505f87f7a48759bbb57d86a2f0395f",
+    "scripts/cloud_native_checkpoint_probe.py": "28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231",
+    "scripts/cloud_native_portable_checkpoint.py": "5c2a6ca0996ffe88b4dd232ed5755f02cd8c9b0ba92f137c78d447f76b8b0b14",
+    "scripts/cloud_pll_vbic_acquisition.py": "841b74f19b10a9596af231a3e5250a0654d55fcc1004286bc20f24e273808a30",
+    "scripts/cloud_pll_filter_physical_acquisition.py": "f7bdad6929eaa5d686229e63c9f6146595cbdb174414f5d68e989fb12716aac4",
+    "scripts/run_cloud_pll865_snapshot.py": "c38656c2e64d5e2ce9902c845020442082b6b605c664644ee1e78ea34195fb9f",
+    "scripts/cloud_vbic_tree32_backend.py": "472c0c14d1a55785c3d0e9823e2bac94a97216781c530fdb8e8562bd0b805639",
+    "scripts/review_pcie_pll_acquisition_v1.py": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+    "scripts/cloud_pll_divider_load3p2v2_diagnostic.py": "8b9ff5b4d4d5ba1d3d8b61535d8b027c2719f423c2cb855aacb6da13796f2f9e",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5",
+    "scripts/read_pll845_full_native_transient.py": "59e4fb382439db1e8d16ecf80d64ae0406d775b41197037494ff60dbe0a3f3c4",
+    "scripts/cloud_pll845_disk_budget.py": "2e0e9a608b383563f17b23a4a3ed91fba47b120ee204b5d4ada508ff35c1be32"
+  },
+  "edits": [
+    {
+      "before": "import cloud_pll845_disk_budget as host_disk",
+      "after": "import cloud_pll845_stream_disk as host_disk\nimport cloud_streamed_native_archive as host_archive",
+      "count": 1
+    },
+    {
+      "before": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__)]",
+      "after": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__),Path(host_archive.__file__)]",
+      "count": 1
+    },
+    {
+      "before": "    for i,part in enumerate(manifest['parts']):\n        assert part['index']==i and part['name']==stem+'.tar.gz.part'+str(i).zfill(4)\n        fetch(url+part['name'],part['sha256'],staging/part['name'])\n    verify_parts(manifest,staging)\n    # Consume the verified ordered bytes without a second compressed disk copy.\n    with host_disk.joined_parts(manifest,staging)as packed,tarfile.open(fileobj=packed,mode='r|gz')as tar:",
+      "after": "    def download_part(part,path):\n        fetch(url+part['name'],part['sha256'],path)\n    # Each part is verified before delivery. The full ordered digest must pass\n    # on context exit, before any native restore or source adoption below.\n    with host_archive.verified_remote_parts(manifest,staging,download_part)as packed,tarfile.open(fileobj=packed,mode='r|gz')as tar:",
+      "count": 1
+    }
+  ],
+  "current_files": {
+    "scripts/cloud_pll845_streamed_acquisition.py": "2ea29c60484f976411ae377fa7300fe7b70fae26efa9184fab1ac67f4e9b19af",
+    "scripts/cloud_pll845_stream_disk.py": "c5a0ff9b54cd2ac22fb74c9cc7e75a04c36551ae0e112b3bf541962b220c8fed",
+    "scripts/publish_pll845_streamed_checkpoint.py": "1a5ae7ddff35e7ce0d2a9d6bbdc3d417759960d8dba2342e851aa790e4552cd8",
+    "scripts/cloud_streamed_native_archive.py": "ed500db932348586efb9a86efd42cacafe2ca3d377de24e60196c6dbbbd2d5d5"
+  }
+}
