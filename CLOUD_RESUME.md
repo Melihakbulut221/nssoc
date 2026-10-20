@@ -1,3 +1,10 @@
+## 2026-10-20 —128buffer path review passed; common PCIe clock branch investigated
+- Path review39362291106 SUCCESS:4101max/3919min report paths per corner; negative min sample3/17/95. Full endpoint census is not inferred from sampled report size.
+- Worst fast hold PCIe training→advertiser refresh:−.437994ns. Common capture branch clkbuf_3_5_0_pcie_clk_i/X→clkbuf_6_46_0_pcie_clk_i/A has native netdelay.684392ns, input slew1.292744ns. Candidate for geometry/RC diagnosis, not yet a proven repair.
+- New onehot-clock-regression-cloud compares actual old33buffer and new128buffer report endpoints, separates data-arrival/required-time deltas, ranks capture branch changes, and includes same-endpoint setup margins across3corners.
+- NEXT: use ranked actual evidence to inspect common-clock route geometry before deciding clock repair versus local hold delay. Preserve all original constraints and perform fresh native route/RC/all-corner timing for any candidate.
+- Native PLL zero-source OP passed; full loaded1us waveform transport still pending. TX39344566214 remains active. All work hosted, no local checkout.
+
 ## 2026-10-20 — mainchip128buffer route finished; timing still fails, fresh path diagnosis started
 - Run39331918238 /5a623eb7b9e873093809884e8bde6d36d20e6ca5 execution SUCCESS,17333s. Fresh routed nominalRC/3cellcorners;0routeDRC,0criticaldisconnect,16antenna nets (previous25). Not signoff.
 - Slow:9660setup/3hold, WNS−15.804086/−.513457ns. Typical7027/17, WNS−6.502159/−.425457ns. Fast3107/95, WNS−3.161205/−.437994ns.
