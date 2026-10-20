@@ -1,3 +1,12 @@
+## 2026-10-20 — v24 fresh extraction passed; native MIM capture next
+
+Run39493004118 passed all four original stages:476devices/1382terminals,111wire components/938points,19interface faults,12binding controls and13rawRC controls. Exact native HBT size census also matches the new parent reference. Immutable summary/part hashes are recorded in the extraction-pass receipt.
+
+New v24 MIM capture workflow uses only this passed run and exact parent39490302719. Seven actual masks/938points/five fault controls unchanged. After capture run raw RC/MIM auditing and whole-parent composition before loaded early/late waves.
+
+OpenROAD exact portable-runtime proof running in39494338440. No checkpoint/routing/timing pass claimed. All native work remains in cloud.
+
+
 ## 2026-10-20 — actual OpenROAD runtime portability
 
 CDR v24 fresh extraction started in39493004118 at8fa3cac1e15cae9ce307fa53f9642a3474ce24c5. Check its four immutable stage publications; do not reuse v23 RC.
