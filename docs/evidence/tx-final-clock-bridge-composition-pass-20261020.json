@@ -1,0 +1,142 @@
+{
+  "status": "PASS_RAW2_AND_ALL3R8C_EXACT_BRIDGE_COMPOSITION_WITH12_FAULTS_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE",
+  "source_head": "37467b505865a6ab2e109bfd294125c92f979d2f",
+  "positive": {
+    "devices": 2,
+    "wire_resistors": 3,
+    "wire_capacitors": 8,
+    "terminals": 5,
+    "wire_components": 3,
+    "body_nodes": 1,
+    "ports": [
+      "sp",
+      "sn",
+      "sub",
+      "wire_cref"
+    ]
+  },
+  "controls": [
+    {
+      "fault": "missing_resistor",
+      "rejected": true,
+      "reason": "Intrinsic device missing"
+    },
+    {
+      "fault": "wrong_width",
+      "rejected": true,
+      "reason": "Native terminal or intrinsic parameter changed"
+    },
+    {
+      "fault": "swap_resistor_planes",
+      "rejected": true,
+      "reason": "Native terminal or intrinsic parameter changed"
+    },
+    {
+      "fault": "body_short",
+      "rejected": true,
+      "reason": "Native terminal or intrinsic parameter changed"
+    },
+    {
+      "fault": "missing_contact",
+      "rejected": true,
+      "reason": "Intrinsic device missing"
+    },
+    {
+      "fault": "wrong_contact_R",
+      "rejected": true,
+      "reason": "Native terminal or intrinsic parameter changed"
+    },
+    {
+      "fault": "drop_wire_R",
+      "rejected": true,
+      "reason": "Native wire record changed"
+    },
+    {
+      "fault": "change_wire_R",
+      "rejected": true,
+      "reason": "Native wire record changed"
+    },
+    {
+      "fault": "change_wire_C",
+      "rejected": true,
+      "reason": "Native wire record changed"
+    },
+    {
+      "fault": "move_wire_C",
+      "rejected": true,
+      "reason": "Native wire record changed"
+    },
+    {
+      "fault": "Cref_as_body",
+      "rejected": true,
+      "reason": "Model boundary changed"
+    },
+    {
+      "fault": "cross_wire_short",
+      "rejected": true,
+      "reason": "Native wire record changed"
+    }
+  ],
+  "model_sha256": "ad89ed29fe7507aad77844e2bdc4eec1e1aef224403ac34a3f321df5a53e61ff",
+  "bindings": [
+    {
+      "instance": "XD1",
+      "native_id": 1,
+      "bindings": [
+        {
+          "terminal": "rppd_1",
+          "node": "w00000",
+          "native_cluster": "3",
+          "reference": "A0000"
+        },
+        {
+          "terminal": "rppd_2",
+          "node": "w00001",
+          "native_cluster": "4",
+          "reference": "A0001"
+        },
+        {
+          "terminal": "rppd_sub",
+          "node": "BULK",
+          "native_cluster": "1",
+          "reference": null
+        }
+      ]
+    },
+    {
+      "instance": "XD2",
+      "native_id": 2,
+      "bindings": [
+        {
+          "terminal": "TIE",
+          "node": "w00002",
+          "native_cluster": "2",
+          "reference": "A0002"
+        },
+        {
+          "terminal": "WELL",
+          "node": "BULK",
+          "native_cluster": "1",
+          "reference": null
+        }
+      ]
+    }
+  ],
+  "wire_node_map": {
+    "A0000": "w00000",
+    "A0001": "w00001",
+    "A0002": "w00002",
+    "P_sn": "sn",
+    "P_sp": "sp",
+    "P_sub": "sub",
+    "sub": "wire_cref"
+  },
+  "run": 39375939797,
+  "summary_sha256": "1006797a382ec2cf682e10a3d75b2906f3262f655a781915f9d521e7e2b520f7",
+  "parts_sha256": "00700140bd18698b88e9a0ce91c5e64a5b21083015d3c2753adde4356c6ea41e",
+  "archive_sha256": "ac1882f3288b5ccb7bbd512d208a49ad14ff5a70659f87d2f7022e3573bee006",
+  "electrical_passed": false,
+  "qualified_pex": false,
+  "serial_phy_complete": false,
+  "mainchip_integrated": false
+}

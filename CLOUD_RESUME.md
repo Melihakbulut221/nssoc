@@ -1,3 +1,9 @@
+## 2026-10-20 final-clock bridge composed; full loaded TX experiment launched
+Composition39375939797 passed native2/all3R8C/all5terminals/finitecontact and12 actual faults. Model ad89ed29fe7507aad77844e2bdc4eec1e1aef224403ac34a3f321df5a53e61ff and archive/report hashes are pinned.
+New tx-wire24-g234-bridge-loaded-wave-cloud adds this real model across finalsp/sn to the fixed g234 candidate; original PWL/25ohm sources,full34ns256bits3phases,all604HBT/512MOS and original gates remain. Six deck/probe faults and prior55clockinstance controls precede actual normal and leaf-fault runs. No loaded-waveform success yet.
+Next: inspect controls and native startup, retain full original waveform, compare all signal/interface/device limits against g234-only and wire24baseline results. Do not accept masked/partial tests.
+Independent live computations: mainchip39373842033, PLL39370629792, g234-only39372036289. No duplicate/restart of live jobs. All CAD/source/results stay in cloud; local project empty.
+
 ## 2026-10-20 final-clock bridge actual3R8C passed; compose exact model
 Run39375552658 passed fresh native RC:3R8C,3independentconductors,6exactgridreferenceplanes,all native/export R values/topology and point/mutual capacitances preserved.13saved raw/anchor faults rejected. Receipt pins report/parts/archive and full audit metrics.
 New tx-final-clock-bridge-compose-cloud binds these exact elements to both native devices/all5terminals, retains finitebodycontact and independent wire_cref, and rejects12actual composed-model corruptions.
