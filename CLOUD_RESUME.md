@@ -1,3 +1,7 @@
+## 2026-10-20 — Active-follower parent DRC and deep LVS passed; stale census assertion fixed
+Parent39472536253 reached full560DRC zero and actual476-device deep LVS Match, then correctly stopped on an overlooked old484 primitive-census assertion. Failure receipt preserved; no flat-LVS/fault campaign success claimed. Fixed checker derives the previously declared design delta from frozen baseline: two old4R+2MIM+6tap leaves become two2HBT+2R+4tap leaves. No geometry, extracted result or acceptance thresholds changed. Rerun full parent suite. TX native anchor39471428433 and existing mainchip/TX/PLL jobs remain live. Cloud only.
+
+
 ## 2026-10-20 — Native follower leaf passed; both CDR parent replacements in cloud
 Follower39470863624 passed560DRC/deep-flat8deviceLVS and all seven faults. Receipt pinned. New cdr-follower-v23-parent-cloud replaces actual ac/bd leaves, routes added AVDD with native vias, retains14other instances and original parent geometry, and requires full476device physical suite. Leaf success is not parent RC/electrical/PHY acceptance. Corrected TX HBT binding39471428433 is live; mainchip/TX/PLL jobs remain active. Cloud only.
 

@@ -19,6 +19,15 @@ TOP = "nssoc_cdr_pd476_follower_v23"
 sys.path.insert(0,str(Path.cwd()/"scripts"))
 from cdr_retimed_localbus_v12_parent_plan import build
 PORTS = build()["ports"]
+# Independent design delta specified before extraction: each old retime leaf
+# has4 rppd+2MIM+6contacts; each new leaf has2HBT+2rppd+4contacts.
+BASELINE_CENSUS=dict(npn13g2=116,sg13_lv_nmos=46,rppd=102,cap_cmim=11,ptap1=209)
+assert build()["primitive_census"]==BASELINE_CENSUS
+DELTA=dict(npn13g2=4,rppd=-4,cap_cmim=-4,ptap1=-4)
+EXPECTED_CENSUS={k:v+DELTA.get(k,0)for k,v in BASELINE_CENSUS.items()}
+assert EXPECTED_CENSUS==dict(npn13g2=120,sg13_lv_nmos=46,rppd=98,cap_cmim=7,ptap1=205)
+assert sum(EXPECTED_CENSUS.values())==476
+
 
 APP_SHA = "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 
@@ -265,7 +274,7 @@ def run(layout, out, app):
                         models=[m for m in ("npn13g2","sg13_lv_nmos","rppd","cap_cmim","ptap1") if m in f]
                         assert len(models)==1, ("Unexpected extracted primitive",line)
                         census[models[0]]+=1
-                    assert dict(census)==build()["primitive_census"], census
+                    assert dict(census)==EXPECTED_CENSUS, census
                     step["native_primitive_census"]=dict(census)
                     if extracted_ports(
                         (directory / "extracted.cir").read_text(), TOP
