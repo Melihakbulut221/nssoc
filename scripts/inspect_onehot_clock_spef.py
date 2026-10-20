@@ -3,7 +3,7 @@
 """Inspect selected immutable nominal SPEF clock networks, not qualified PEX."""
 import json,math,re
 from collections import defaultdict
-import networkx as nx
+import heapq
 def number(s):
     v=float(s);assert math.isfinite(v)and v>=0
     return v
@@ -58,19 +58,30 @@ def review(net,geometry):
     assert net['name']==geometry['net']
     total=sum(c['pf']for c in net['C'])
     assert abs(total-net['declared_cap_pf'])<=max(1e-8,1e-5*max(total,net['declared_cap_pf']))
-    graph=nx.MultiGraph()
+    graph=defaultdict(dict)
     for r in net['R']:
-        a,b=r['nodes'];assert a!=b;graph.add_edge(a,b,weight=r['ohm'])
-    assert graph and nx.is_connected(graph)and set(expected)<=set(graph)
+        a,b=r['nodes'];assert a!=b
+        value=min(r['ohm'],graph[a].get(b,math.inf))
+        graph[a][b]=graph[b][a]=value
+    assert graph and set(expected)<=set(graph)
     for c in net['C']:assert set(c['nodes'])&set(graph),'Capacitance has no node in selected net'
     driver=geometry['driver'].rsplit('/',1);driver=':'.join(driver)
     assert expected[driver]=='O'
+    distance={driver:0.};queue=[(0.,driver)]
+    while queue:
+        cost,node=heapq.heappop(queue)
+        if cost!=distance[node]:continue
+        for other,weight in graph[node].items():
+            nextcost=cost+weight
+            if nextcost<distance.get(other,math.inf):
+                distance[other]=nextcost;heapq.heappush(queue,(nextcost,other))
+    assert set(distance)==set(graph),'Disconnected native resistor graph'
     paths={}
     for node in expected:
         if node==driver:continue
-        paths[node]=nx.shortest_path_length(graph,driver,node,weight='weight')
+        paths[node]=distance[node]
     return dict(net=net['name'],driver=driver,declared_wire_cap_pf=net['declared_cap_pf'],serialized_wire_cap_pf=total,
-      resistor_count=len(net['R']),resistor_nodes=graph.number_of_nodes(),cap_entries=len(net['C']),
+      resistor_count=len(net['R']),resistor_nodes=len(graph),cap_entries=len(net['C']),
       coupling_entries=sum(len(c['nodes'])==2 for c in net['C']),
       lowest_series_resistance_path_ohm=paths,port_membership_exact=True,
       scope='Nominal exported wire RC. Shortest series-R path is an upper bound on effective R, never an STA delay. Pin capacitance excluded; no qualified RF/PEX claim.')

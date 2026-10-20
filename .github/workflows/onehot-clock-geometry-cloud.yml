@@ -29,7 +29,6 @@ jobs:
           python3 -m py_compile scripts/cloud_onehot_clock_geometry.py scripts/inspect_onehot_clock_geometry.py scripts/inspect_onehot_clock_spef.py
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
-          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
           curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
@@ -66,3 +65,5 @@ jobs:
           path: hw/soc/out/cloud-onehot-clock-geometry/
           retention-days: 30
 
+
+# Native AppImage interpreter uses standard-library graph traversal; no host site-packages assumption.

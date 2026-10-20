@@ -1,3 +1,6 @@
+## Native clock geometry runtime fix
+Run 39364226289 failed before analysis because the pinned AppImage Python cannot import host-installed networkx. Replace only the small nonnegative shortest-series-R graph traversal with standard-library Dijkstra, preserving pin membership, capacitance conservation and full graph connectivity checks. No route or timing acceptance. All computation remains on hosted runners.
+
 ## Paired clock-route geometry and RC
 Cloud-only read-only analysis restores exact 33-buffer run 39293720171 and 128-buffer run 39331918238 routed ODB and nominal SPEF. Inspect four measured PCIe clock nets with pinned OpenDB, exact cell/pin/NDR geometry and native RC membership. No clocks, constraints, original routes or acceptance gates change. Series resistance is not timing or qualified PEX. Same-endpoint report attribution is running separately. Local workspace remains empty.
 
