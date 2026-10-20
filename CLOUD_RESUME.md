@@ -1,3 +1,10 @@
+## 2026-10-20 — whole body-contact composition PASSED; loaded input binding underway
+- Run39359081592 /12240f7368bd9ad11da675b68741ea61bd9e1530 SUCCESS.845native+4actual regular contacts,3381R/5105C,26MIM,65bodygroups all contacted.62corruption controls passed.14actual MIM planes remain distinct from inspection anchors.
+- New pll845-loaded-preparation-cloud restores only hashed original PDK/deck inputs on the hosted runner. It binds unchanged1us/.3125ps stimuli/load/solver to the exact new interface and102nativeHBT OFF identities, and expands selected instrumentation to all2737native terminals plus4contacts.
+- Public reference/fb/vctrl probes retained. Historical internal selected-probe semantic remapping is explicitly not claimed; all actual native terminal coverage is prepared for new review.
+- NEXT: inspect prepared deck, run native operating/loaded simulation with full device coverage and original acquisition gates. Whole input preparation is not electrical/PHY acceptance.
+- Cloud-only, no local files. Preserve active TX39344566214/mainchip39331918238.
+
 ## 2026-10-20 — fresh raw audit PASSED; actual regular-body composition dispatched
 - Run39358698811 /9dd5bfdf0ed1d588282213f96b7e56851e90c75c SUCCESS:3381R/5105C,1606points,235conductors,26MIM.13wire+9MIMfaults passed.
 - Complete2075edge old/new collapsed-C matrix agrees for unchanged geometry;3matrix faults passed. Receipt docs/evidence/pll845-body-raw-audit-pass-20261020.json.
