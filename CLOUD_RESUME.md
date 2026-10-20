@@ -1,3 +1,9 @@
+## Cloud checkpoint: mainchip native route finished; saved-output audit dispatched
+
+Run39373842033 native CAD returned0 after routing+RC+three-cornerSTA, with0routingDRC/0criticaldisconnects but2antenna nets. Final Pythoncheck failed before comparison at old before-instance-count literal150419. Preserveoriginalfailedrun. New onehot-clock-postroute-audit-cloud restores exactbeforec13a87d9... andafterbde96392... ODBs, retains entireoriginalcell/pin/net/geometrycompareand4faults, separatelychecksoriginalfixedclockroute, andreadsactualcompletedSTA. No routingrestart or waivedgates.
+
+CDRv18 physical/extraction/MIMcapture passed. Validation39380893611 and fullfour-casewave39381284126 are active/pending; fullwavecontrolsverifynew17674R12712C model with unchangedoriginaltests. PLL39370629792 initialstagecompleted and continuation118489379688 hasstarted. TXg23439372036289 andTXbridge39376417214 remainlive. Allworkcloud-only; no fullPHY/finaltimingclosure.
+
 ## Cloud checkpoint: full reordered-CDR waveform comparison prepared
 
 cdr-retime-bands-v18-mim-streamed-cloud now runs the original four cases(nominal_early,nominal_late,clock_stopped,vi_bias_off), full256bits/34.25ns and original phases/loads/device checks. It waits on exactvalidation39380893611(source762861b4...) and requires original13wire+9MIM+19composition faults before simulating actual17674R12712C/484devices. All PDK/tool hashes and waveform/oracle logic are unchanged.
