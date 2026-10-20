@@ -1,3 +1,6 @@
+## Cloud-only CDR fresh extraction
+Parent39394475994 passed zero-marker560DRC, strict deep+flat484-deviceLVS and9faults after child-annotation fix. GDS247fd159b5a245c9dd8df13082cab62d4f185ea39102a62b9c4491ce230d999b is now pinned. New cdr-selector-v19-extraction-cloud starts on this push: all158planes/1394terminals/model-binding/full-wire-RC gates and faults retained. Fresh MIM/contact composition and original complete loaded cases remain next. Mainchip39392483151 and PLL39390580356 remain live; no restart.
+
 ## CDR parent flat LVS rejection fixed at source
 Run39393494957: zero-marker560-rule DRC and all484 deep-LVS devices passed; strict flat LVS rejected extra copied child pin labels. New generation matches the original parent policy: prove original non-top port annotations absent, then strip only newly copied metal purpose2/25 child annotations. Top ports and physical drawing geometry stay exact; strict flat/deep LVS gates remain unchanged. Push starts one new parent run. Mainchip39392483151 and PLL39390580356 are still live; no duplicate native jobs or local artifacts.
 
