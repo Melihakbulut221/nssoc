@@ -1,3 +1,13 @@
+## CDR v20 parent native M3 repair
+Parent39418862656 passed generation/child geometry but rejected24 native
+Metal3 markers (16M3.a,8M3.b). Preserve its evidence. The revised generator
+removes only whole top-level M3 polygons touching exact hashed markers and
+strictly inside the four sampler outlines; new leaf geometry is untouched.
+Serialized all-other-layer/remaining-metal/placement proof and full native
+DRC/deep-flatLVS remain mandatory. This is not electrical acceptance.
+Mainchip39415055626,TX39409002976,PLL39390580356 were last verified live.
+
+
 ## Verified CDR v20 leaf and full parent integration
 Leaf39417934516 at9fa2d312 passed560DRC,54-device native deep/flatLVS,
 18physical faults,46unchanged primitive drawings and5geometry controls.

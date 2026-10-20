@@ -54,7 +54,17 @@ def main():
   manifest['children']['sampler']=dict(directory='inputs/sampler/layout',
    files={str(p.relative_to(OUT)):sha(p)for p in directory.iterdir()})
   (OUT/'children.json').write_text(json.dumps(manifest,indent=2)+'\n')
-  methods=[Path(__file__),leaf_pin_path,ROOT/'scripts/generate_cdr_data_v20_parent.py',
+  failed,failed_proof=reports.restore_report('cdr-data-v20-parent',39418862656,
+   'a6537b3b827342428af9a489c95e8194fa781ce818dd4d08b9f3e0e9b926034e',
+   '57873e2b2cd575281ac6fb05d7d1f357a29f793826976f1e4a744ba40386fccd',
+   OUT/'failed-v20',['physical/drc/drc.lyrdb'])
+  assert failed['source_head']=='6d96225f23be75bd093216fd5bddbe8801f81384'and failed['status']=='FAIL_OR_ERROR'
+  assert failed['generation_returncode']==failed['child_geometry_returncode']==0 and failed['physical_returncode']==1
+  measurement=failed['physical']['steps']['drc']['measurement']
+  assert measurement['category_count']==560 and measurement['markers']==24
+  assert measurement['categories']=={"'M3.a'":16,"'M3.b'":8}
+  r['prior_native_drc_rejection']=failed_proof;save()
+  methods=[Path(__file__),leaf_pin_path,OUT/'failed-v20/physical/drc/drc.lyrdb',ROOT/'scripts/generate_cdr_data_v20_parent.py',
    ROOT/'scripts/check_cdr_localbus_v12_parent_geometry.py',ROOT/'hw/soc/flow/check_pcie_cdr_retimed_localbus_v12_parent.py']
   protected={str(p):sha(p)for p in [*methods,*[OUT/'baseline'/n for n in names],*[OUT/'data'/n for n in fn]]}
   spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
@@ -83,7 +93,7 @@ def main():
   assert all(sha(Path(n))==v for n,v in protected.items())
   assert all(sha(ROOT/n)==v['sha256']for n,v in runtime['files'].items())
   r.update(status='PASS_PD484_DATA4_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',
-   sources_unchanged=True,protected_inputs=protected,scope='32 actual native data/hold Nx changes in four samplers; original parent metal/transforms and all other children retained. Full native DRC/LVS. Requires fresh whole-parent extraction and original complete early/late and fault waveforms.')
+   sources_unchanged=True,protected_inputs=protected,scope='32 actual native data/hold Nx changes in four samplers; original parent transforms and all other children retained; only obsolete interior parent M3 overlays touching the 24 native DRC markers removed with exact serialized region proof. Full native DRC/LVS. Requires fresh whole-parent extraction and original complete early/late and fault waveforms.')
  except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
  finally:
   for key in ('layout','physical'):

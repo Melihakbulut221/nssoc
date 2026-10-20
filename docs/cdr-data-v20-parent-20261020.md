@@ -23,3 +23,23 @@ No old parasitics are substituted for the changed v20 geometry. Full loaded
 early/late and device gates still decide whether the hypothesis helps.
 Physical integration here is within CDR PD484, not mainchip or full serial x4
 PHY acceptance. All computation and artifacts remain cloud-only.
+
+## First parent DRC rejection and explicit overlay cleanup
+
+Run 39418862656 passed generation and all actual child comparisons but
+failed native DRC with 16 M3.a and 8 M3.b markers. The full report and GDS
+remain in its immutable release. The resized leaf itself had passed DRC.
+
+The next parent removes whole top-level Metal3 polygons only when they touch
+those exact hash-bound markers and lie at least 5 um inside one of the four
+sampler outlines. Every marker and all four samplers must be covered. These
+are obsolete access overlays from the earlier parent wire widening.
+The new leaf hierarchy is not edited. All remaining parent Metal3 polygons,
+all other parent layers, labels and placements must match the declared
+region subtraction after GDS serialization. An out-of-sampler removal
+control must reject. Thus parent Metal3 is explicitly changed; the original
+whole-parent-metal-unchanged claim does not apply to this revised candidate.
+
+Unchanged full DRC and unsimplified deep/flat LVS must still pass. Fresh
+extraction must include the removal. No rule waiver or electrical acceptance
+is introduced by this repair.
