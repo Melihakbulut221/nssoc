@@ -97,6 +97,14 @@ def main():
                     count=text.count(old);assert count>=1,(name,old)
                     text=text.replace(old,new);changes.append(dict(before=old,after=new,count=count))
                 replace('nssoc_tx_mux2_passive_topmetal_layout_v1',TOP)
+                # The replacement leaves unreferenced native PCells in the GDS library.
+                # Select only the physical/LVS-pinned parent; retain the entire drawing.
+                count=text.count('g.top_cell()');assert count==(2 if name=='locate01.py'else 1),(name,count)
+                selected="g.cell("+repr(TOP)+")"
+                text=text.replace('g.top_cell()',selected)
+                changes.append(dict(before='g.top_cell()',after=selected,count=count))
+                read="g.read(str(GDS));"if name=='probe01.py'else"g.read(str(G));"
+                replace(read,read+"assert "+selected+" is not None and "+selected+".cell_index() in [cell.cell_index() for cell in g.top_cells()];")
             if name in ('locate01.py','anchors01.py'):
                 replace("('sg13_hv_nmos','B')", "('sg13_lv_nmos','B'),('sg13_hv_nmos','B')")
             if name=='anchors01.py':

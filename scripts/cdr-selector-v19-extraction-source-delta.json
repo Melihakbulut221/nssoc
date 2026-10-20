@@ -761,7 +761,7 @@
       "baseline_path": "scripts/cloud_cdr_retime_bands_v18_wire_inputs.py",
       "baseline_sha256": "4228165fdf0e635483acc29627984444f1de0ebd3e2fe19abe5c6e6196f99104",
       "candidate_path": "scripts/cloud_cdr_selector_v19_wire_inputs.py",
-      "candidate_sha256": "73c17bf2c21d391256ae68e6ccdd3910d6e846c5579de660c276334bb5a867b1",
+      "candidate_sha256": "69640d16c26f71b15be03a61a8c122683b6e77ad82d159bf7c1aa1e7a09b761e",
       "changes": [
         {
           "start": 664,
@@ -837,6 +837,11 @@
           "start": 5009,
           "end": 5010,
           "replacement": "9"
+        },
+        {
+          "start": 6333,
+          "end": 6333,
+          "replacement": ")\n                # The replacement leaves unreferenced native PCells in the GDS library.\n                # Select only the physical/LVS-pinned parent; retain the entire drawing.\n                count=text.count('g.top_cell()');assert count==(2 if name=='locate01.py'else 1),(name,count)\n                selected=\"g.cell(\"+repr(TOP)+\")\"\n                text=text.replace('g.top_cell()',selected)\n                changes.append(dict(before='g.top_cell()',after=selected,count=count))\n                read=\"g.read(str(GDS));\"if name=='probe01.py'else\"g.read(str(G));\"\n                replace(read,read+\"assert \"+selected+\" is not None and \"+selected+\".cell_index() in [cell.cell_index() for cell in g.top_cells()];\""
         }
       ]
     }

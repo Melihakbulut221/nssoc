@@ -1,3 +1,7 @@
+## 2026-10-20 — Cloud-only CDR extraction root selection
+
+Run 39395228380 passed planes but failed wire-inputs before extraction: KLayout top_cell() saw unreferenced old native PCells after the verified sampler replacement. Select the exact physical/LVS-pinned parent by name and assert it remains a layout root in probe, location and terminal-anchor methods. No GDS, conductor, device, RC or acceptance gate is changed. Original 484-device and 1394-terminal bindings remain mandatory. New push reruns the complete cloud extraction. Mainchip route 39392483151 and saved-process PLL continuation 39390580356 remain independent. Local workspace is empty; no local CAD process is running.
+
 ## Cloud-only CDR fresh extraction
 Parent39394475994 passed zero-marker560DRC, strict deep+flat484-deviceLVS and9faults after child-annotation fix. GDS247fd159b5a245c9dd8df13082cab62d4f185ea39102a62b9c4491ce230d999b is now pinned. New cdr-selector-v19-extraction-cloud starts on this push: all158planes/1394terminals/model-binding/full-wire-RC gates and faults retained. Fresh MIM/contact composition and original complete loaded cases remain next. Mainchip39392483151 and PLL39390580356 remain live; no restart.
 
