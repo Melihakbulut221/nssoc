@@ -748,13 +748,29 @@ def main():
         r['native_routed_baseline']=dict(run=39392483151,summary_sha256=fan['source']['summary_sha256'])
 
         saved_candidate_odb=odb
+        # Resizing/legalization changes pin locations and data-net membership.
+        # Preserve the original candidate and discard only its stale data wires.
+        app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
+        fresh_method=ROOT/'scripts/prepare_onehot_fanout_fresh_route.py'
+        fresh_root=OUT/'fresh-routing-input'
+        fresh_env=dict(os.environ,NSSOC_FRESH_ROUTE_SOURCE=str(odb),NSSOC_FRESH_ROUTE_OUT=str(fresh_root))
+        with (OUT/'fresh-routing-input.log').open('w')as log:
+            subprocess.run([str(app),'openroad','-exit','-python',str(fresh_method)],cwd=ROOT,env=fresh_env,stdout=log,stderr=subprocess.STDOUT,check=True)
+        preparation=json.loads((fresh_root/'result.json').read_text())
+        assert preparation['status']=='PASS_ONLY_STALE_DATA_WIRES_REMOVED_REQUIRES_FRESH_GLOBAL_AND_DETAIL_ROUTE'
+        assert preparation['source_sha256']==sha(odb) and preparation['source_unchanged']
+        assert preparation['proof']['all_non_wire_physical_def_preserved'] and preparation['proof']['all_other_net_records_preserved']
+        assert len(preparation['controls'])==3 and all(x['rejected']for x in preparation['controls'])
+        odb=fresh_root/'candidate.odb';assert sha(odb)==preparation['candidate_sha256']
+        state['odb']=str(odb)
+        r['fresh_route_input']=preparation;save()
         trial=OUT/'trial-config.json';trial.write_text(json.dumps(cfg,indent=2)+'\n')
         r['discarded_inherited_metric_count']=len(state['metrics']);state['metrics']={}
         state['spef']=None
         initial=OUT/'initial-state.json';initial.write_text(json.dumps(state,indent=2)+'\n')
         app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
-        flow=ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py'
-        protected={str(p):sha(p)for p in [Path(__file__),flow,topology_method,topology_path,ROOT/'hw/soc/pnr/interface_flow.py',ROOT/'hw/soc/flow/audit_estimated_spef.py',ROOT/'hw/soc/flow/check_timing_derate.tcl',PLACE/'prepared/physical.sdc',state_path,odb,deffile,netlist,trial,initial]}
+        flow=ROOT/'hw/soc/pnr/onehot_fanout_fresh_route_flow.py'
+        protected={str(p):sha(p)for p in [Path(__file__),flow,fresh_method,fresh_root/'result.json',ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py',topology_method,topology_path,ROOT/'hw/soc/pnr/interface_flow.py',ROOT/'hw/soc/flow/audit_estimated_spef.py',ROOT/'hw/soc/flow/check_timing_derate.tcl',PLACE/'prepared/physical.sdc',state_path,odb,deffile,netlist,trial,initial]}
         protected.update({str(buffer_root/n):buffered['outputs'][n]for n in buffer_names})
         protected.update({str(critical_root/n):critical['outputs'][n]for n in critical_names})
         protected.update({str(coverage_root/n):coverage['outputs'][n]for n in coverage_names})
@@ -766,7 +782,7 @@ def main():
         protected[str(ROOT/'docs/evidence/onehot-native-resizer-pass-20261020.json')]=sha(ROOT/'docs/evidence/onehot-native-resizer-pass-20261020.json')
         protected.update({str(fan_root/p):fan['outputs'][p]for p in fan_names})
         protected[str(ROOT/'docs/evidence/onehot-native-fanout-pass-20261020.json')]=sha(ROOT/'docs/evidence/onehot-native-fanout-pass-20261020.json')
-        command=[str(app),'python',str(flow),'--flow','OnehotClockRestoreRoute','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(trial)]
+        command=[str(app),'python',str(flow),'--flow','OnehotFreshFanoutRoute','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(trial)]
         r.update(status='RUNNING_NATIVE_FANOUT_CANDIDATE_ROUTE_AND_FRESH_RC_STA',protected_inputs=protected,command=command);save()
         (OUT/'run').mkdir();start=time.monotonic()
         with(OUT/'native.log').open('w')as log:code=subprocess.call(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)

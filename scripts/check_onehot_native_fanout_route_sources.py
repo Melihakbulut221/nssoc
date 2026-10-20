@@ -15,3 +15,8 @@ for row in json.loads((root/'scripts/onehot-native-fanout-route-source-delta.jso
     actual=(root/row['candidate_path']).read_bytes()
     assert actual==text.encode()and hashlib.sha256(actual).hexdigest()==row['candidate_sha256']
 print('PASS_EXACT_FANOUT_ROUTE_HANDOFF_UNCHANGED_CLOCK_ROUTE_RC_STA_GATES')
+
+m=json.loads((root/'scripts/onehot-native-fanout-route-source-delta.json').read_text())
+for path,digest in m['fresh_route_support'].items():
+    assert hashlib.sha256((root/path).read_bytes()).hexdigest()==digest
+print('PASS_EXACT_FRESH_ROUTE_PREPARATION_AND_NATIVE_GUIDE_REBUILD_SOURCES')

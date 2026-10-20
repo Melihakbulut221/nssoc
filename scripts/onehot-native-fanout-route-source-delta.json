@@ -53,10 +53,30 @@
           "before": "        r['source_routed_measurements']=fan['original_measurements']",
           "after": "        r['source_routed_measurements']=prior['measurements']\n        r['native_fanout_source_worst_slacks']=fan['original_measurements']",
           "count": 1
+        },
+        {
+          "before": "        saved_candidate_odb=odb\n        trial=",
+          "after": "        saved_candidate_odb=odb\n        # Resizing/legalization changes pin locations and data-net membership.\n        # Preserve the original candidate and discard only its stale data wires.\n        app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')\n        fresh_method=ROOT/'scripts/prepare_onehot_fanout_fresh_route.py'\n        fresh_root=OUT/'fresh-routing-input'\n        fresh_env=dict(os.environ,NSSOC_FRESH_ROUTE_SOURCE=str(odb),NSSOC_FRESH_ROUTE_OUT=str(fresh_root))\n        with (OUT/'fresh-routing-input.log').open('w')as log:\n            subprocess.run([str(app),'openroad','-exit','-python',str(fresh_method)],cwd=ROOT,env=fresh_env,stdout=log,stderr=subprocess.STDOUT,check=True)\n        preparation=json.loads((fresh_root/'result.json').read_text())\n        assert preparation['status']=='PASS_ONLY_STALE_DATA_WIRES_REMOVED_REQUIRES_FRESH_GLOBAL_AND_DETAIL_ROUTE'\n        assert preparation['source_sha256']==sha(odb) and preparation['source_unchanged']\n        assert preparation['proof']['all_non_wire_physical_def_preserved'] and preparation['proof']['all_other_net_records_preserved']\n        assert len(preparation['controls'])==3 and all(x['rejected']for x in preparation['controls'])\n        odb=fresh_root/'candidate.odb';assert sha(odb)==preparation['candidate_sha256']\n        state['odb']=str(odb)\n        r['fresh_route_input']=preparation;save()\n        trial=",
+          "count": 1
+        },
+        {
+          "before": "flow=ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py'",
+          "after": "flow=ROOT/'hw/soc/pnr/onehot_fanout_fresh_route_flow.py'",
+          "count": 1
+        },
+        {
+          "before": "[Path(__file__),flow,topology_method,topology_path",
+          "after": "[Path(__file__),flow,fresh_method,fresh_root/'result.json',ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py',topology_method,topology_path",
+          "count": 1
+        },
+        {
+          "before": "'--flow','OnehotClockRestoreRoute'",
+          "after": "'--flow','OnehotFreshFanoutRoute'",
+          "count": 1
         }
       ],
       "baseline_sha256": "485a903bf51ded411a09b6e1ada8c66b10743e35cfa388debb1e9fbccded9496",
-      "candidate_sha256": "5256a62ea3fcfaa78dd387fbfac44dd6207fd2efccc330e0084639d7fb3fdca9"
+      "candidate_sha256": "9372f18687c05deed6c71a5dc9941b5c669fda9a4197506c838c6835861a8935"
     },
     {
       "baseline_path": "scripts/check_onehot_native_resizer_routed_topology.py",
@@ -81,5 +101,9 @@
       "baseline_sha256": "808fd7ff8640694b8ccdcc0fe7b4ce2be65cd9cdd169330b5329e67aef40ec4b",
       "candidate_sha256": "df81932b78735c0a695bbeaa4989932e57f4d134a862cdd2bed2ddf8b7c66efc"
     }
-  ]
+  ],
+  "fresh_route_support": {
+    "scripts/prepare_onehot_fanout_fresh_route.py": "08e99ad97a82e6ee42b1c7f6107d54f7bc394351707bc774114f86af70af5fa4",
+    "hw/soc/pnr/onehot_fanout_fresh_route_flow.py": "7d49462ff63fcbe2352b63e0bf2200b552511ebbed3b87068b53e857b7b466d6"
+  }
 }

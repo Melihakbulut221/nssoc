@@ -1,3 +1,20 @@
+## Cloud-only native fanout fresh route and CDR diagnosis
+Mainchip run 39409367521 failed DRT-0206 before RC/STA; evidence is preserved.
+New route removes only stale data wires with native DEF/readback audit and
+three corruption controls, then rebuilds native global guides before DRT.
+Original fixed clock, topology, antenna, RC and STA acceptance remain intact.
+
+CDR diagnosis 39413957690 passed both analyses: all 116 HBT and four sampler
+checks reproduced exactly, original electrical rejection preserved. A/B
+still have late output settling; C/D master inputs are below the internal
+100mV marker at +0.3 UI in all 255 observations. This is diagnostic evidence,
+not a changed gate or full PHY acceptance. Raw captures remain in cloud releases.
+
+TX wire20 39409002976 and PLL 39390580356 remain active. Do not restart.
+After PLL terminal success use latest continuation capsule for the validated
+bounded-stream workflow. Local workspace stays empty.
+
+
 ## Cloud CDR receipt projection correction
 Run 39413465640 rejected a compact/full raw metadata shape mismatch before analysis.
 Every compact field remains checked; the complete native raw-capture reproduction

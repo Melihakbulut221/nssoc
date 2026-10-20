@@ -58,7 +58,7 @@ jobs:
           python3 scripts/check_onehot_coverage_route_sources.py
           python3 scripts/check_onehot_clock_restore_route_sources.py
           python3 scripts/check_onehot_native_fanout_route_sources.py
-          python3 -m py_compile scripts/check_onehot_fixed_clock_route.py scripts/check_onehot_native_fanout_routed_topology.py hw/soc/pnr/onehot_clock_restore_route_flow.py scripts/cloud_onehot_native_fanout_route.py scripts/check_onehot_routed_extraction_native.py hw/soc/pnr/replay_onehot_routed_extraction_flow.py
+          python3 -m py_compile scripts/prepare_onehot_fanout_fresh_route.py hw/soc/pnr/onehot_fanout_fresh_route_flow.py scripts/check_onehot_fixed_clock_route.py scripts/check_onehot_native_fanout_routed_topology.py hw/soc/pnr/onehot_clock_restore_route_flow.py scripts/cloud_onehot_native_fanout_route.py scripts/check_onehot_routed_extraction_native.py hw/soc/pnr/replay_onehot_routed_extraction_flow.py
           "$CLOUD_APPIMAGE" python scripts/check_onehot_routed_extraction_native.py
       - name: Route proven native setup/hold ECO and measure original physical and timing gates
         env:
