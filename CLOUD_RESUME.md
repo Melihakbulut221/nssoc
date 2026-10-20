@@ -1,3 +1,7 @@
+## 2026-10-21 Fresh v25 independent MIM/RC validation launched
+Native capture39510847222 and all4 extraction stages39510628948 succeeded. Their exact receipts are now committed after the capture wrapper finished, so no live wrapper collision is introduced. New cdr-data3-v25-mim-validation-cloud retains13 raw-wire,9 intrinsic and19 composition fault controls on the actual fresh17654R12682C/seven-MIM parent. The receipt producer is explicitly evaluated against its consumer path in cloud preflight; no acceptance threshold changes.
+Next require both native audit/composition stages PASS, pin their immutable releases, then run unchanged full loaded early/late/fault captures. Do not claim electrical closure from composition. Mainchip activeDRT39502505171 and PLL39502073954 were verified live; preserve their processes and consume only the latest successful continuation state. Cloud-only; local workspace empty.
+
 ## 2026-10-21 Cloud-only workspace audit and completed fresh v25 capture
 The user reiterates that all native work must run in the cloud and no current-project source/CAD/output should remain locally. The workspace was verified empty; no local native CAD job was observed. No deletion was needed. Similar names outside the workspace resolve to other repositories and were retained; see cloud-only-local-workspace-audit-20261021.json. Use GitHub API with RAM-only orchestration and GitHub-hosted Actions; never restore a local clone or start local native jobs.
 
