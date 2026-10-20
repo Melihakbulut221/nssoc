@@ -1,3 +1,18 @@
+## Verified CDR v20 leaf and full parent integration
+Leaf39417934516 at9fa2d312 passed560DRC,54-device native deep/flatLVS,
+18physical faults,46unchanged primitive drawings and5geometry controls.
+All54 primitive positions, outline and external ports retained. Evidence
+receipt pins raw cloud assets. Fresh GDS f290c143373f7e77b3b6eeff8bb9d43988ea3b1db6cd0ab2c67a50bc13fd3c32.
+New parent workflow integrates four actual leaves into exact v19 parent,
+preserving parent wires/transforms and every other child. Full484-device
+native physical proof is required, then fresh full RC/MIM and unchanged
+loaded electrical gates. No full PHY or mainchip timing claim.
+
+Mainchip39415055626, TX39409002976, PLL39390580356 remain active at last check.
+PLL is publishing; do not fork until terminal success and latest continuation
+descriptor available for validated bounded-stream migration.
+
+
 ## CDR v20 preserve actual source placement
 First leaf run39417031863 failed native generation before DRC/LVS:
 automatic reordered geometry left no free body-contact escape column.
