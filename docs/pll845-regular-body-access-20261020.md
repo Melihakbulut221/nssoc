@@ -21,3 +21,9 @@ The revised native verifier derives the complete target identity set from the fr
 Run39356595862 passed the corrected125-device identity scope, then rejected a real regular tap on NWELL_003 because no original RC point lies on its drawn contact. The previous immutable wire model therefore cannot represent every required body-access plane.
 
 The revised generator chooses new points only at actual drawn contacts wholly inside the physical tap and Metal1, independently probes native LVS and wire ownership, and preserves every original1604 physical/1877 logical reference unchanged. Extended anchors and the contact plan are separate artifacts. Adding a point explicitly requires fresh native RC and a fresh raw audit before composition. This changes extraction reference points, not the GDS or the original failed/captured evidence.
+
+## Native regular-contact geometry passed
+
+Run39357065697 succeeded: the125 PMOS body terminals occupy4 actual n-well islands with4 regular tap regions. Two contact points were already in the audited wire graph; two genuinely new points are required. The extended set contains1606 distinct physical/1879 logical references while preserving every original point, row and alias. All20 region/ownership corruption cases were rejected.
+
+Fresh whole-PLL RC is now required and dispatched through pll845-body-mim-rc-cloud. It restores the exact original whole metal/via/MIM geometry, independently re-probes the two added real contacts and repeats native extraction at all1606 physical points. It retains all235 conductors and26 MIMs and does not yet add auxiliary tap models to the wire-only extraction. Raw R/C auditing must be repeated before the four body-access models and separate well-island nodes are integrated.

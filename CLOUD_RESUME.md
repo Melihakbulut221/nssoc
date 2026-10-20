@@ -1,3 +1,12 @@
+## 2026-10-20 — regular body geometry PASSED; fresh RC dispatched
+- Run39357065697 /bf687e183858e8cf29ae89a9f9e2e5890178939c SUCCESS:125PMOS bodies,4actual n-well islands,4regular tap polygons,2new actual contact anchors.20geometry/ownership corruptions rejected.
+- Extended1606physical/1879logical points retain all original1604/1877 and273exact aliases. Receipt docs/evidence/pll845-regular-body-access-pass-20261020.json; geometry remainsoriginal79b2f586...
+- New pll845-body-mim-rc-cloud reuses original full geometry and repeats native extraction with2newpoints. All235conductors/26MIMs and10capture control families required. No old-RC reuse for added points.
+- NEXT: fresh raw R/C audit using1606points/1879logical references, frozen new nativeR/Ccounts, original13wire+9MIMcontrols; compare conductor-collapsedC matrix against old3380R/5104C baseline (geometry unchanged).
+- THEN extend composer with4geometry-derived ntap1 contact models and split nativecluster203 into4actual well-island body nodes for125PMOS. Keep845original native devices separate from4auxiliary contacts.46base composition controls plus4per-aux contact controls. Preserve14MIM actual attachment nodes.
+- Intrinsic binding39354573228 and old raw audit39353209044 remain valid source proofs, not acceptance of extended RC. Full PHY/closed loop/final timing not done.
+- Cloud-only. TX39344566214/mainchip39331918238 remain live; preserve same jobs.
+
 ## 2026-10-20 — actual missing body reference requires fresh RC
 - Run39356595862 passed125target identities but found a real regular tap with no original contact anchor (NWELL_003 at[2622400,1509150,2625280,1509450]nm). Original1604point mesh cannot be treated as containing it.
 - Native generator now adds only actual fully contacted Metal1 points after independent LVS/wire-owner probes. Original1877logical/1604physical anchors remain byte-equivalent as data; added points are explicit in extended-anchors.json.
