@@ -1,3 +1,16 @@
+## 2026-10-20: p4 drive3 fresh extraction passed; composition next
+
+TX extraction39449073164 passed actual117251R77892C,377conductors,4774terminals,
+3262points and13native raw-corruption controls. tx-p4-drive3-composition-cloud.yml
+binds actual new devices and all124 input legs with original malformed-model and
+endpoint faults. Physical source39447746971 remains pinned. Full waves next.
+
+CDR39444824145 completed: both normal cases rejected; both actual faults detected.
+Late C/D wrong signs improved182to115 and291to252, but phase regressed and all
+sampling gates remain required. Diagnose fresh latch waveform without resimulation.
+PLL39423618115 publishing; mainchip39436610858 live. Cloud only.
+
+
 ## 2026-10-20: actual p4 drive3 layout passed; fresh RC launched
 
 TX39447746971 passed all560 DRC categories with0markers, full deep/flat1674device
