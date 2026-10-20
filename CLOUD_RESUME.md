@@ -1,3 +1,6 @@
+## 2026-10-20 — PLL storage-only controls
+Actual PLL39390580356 initial saved49.18GBraw after2281.91hostseconds; full1us/lock still false.42part44.71GBarchive published; continuation118578922230 is active, do not restart. Add cloud_streamed_native_archive with bounded256MiB compressed staging, per-part remote digest verification before temporary deletion, exact complete ordered restore before activation,12 corruption controls and real hosted roundtrip. Run new pll-stream-archive-controls-cloud; helper not yet adopted by native controller. Mainchip route39409367521 and TXwave39409002976 remain live. Cloud-only, local workspace empty.
+
 ## 2026-10-20 — Match compact fanout timing provenance
 Route39407840101 stopped before native routing on compact-six-slack versus full-metrics object comparison. Compare exact parent setup/hold values at all3corners and expected-baseline mapping, retain native1ps reproduction, and retain full parent metrics in new route provenance. All failures recorded. Push retries only failed route. Fresh wire20 fullwave39409002976 starts from passedcomposition39407840528; do not restart it. PLL39390580356 continuation118578922230 is restoring exact published49.18GBraw native capsule. FullPHY/finaltiming remain open; cloud-only continues.
 
