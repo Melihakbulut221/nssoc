@@ -27,6 +27,8 @@ def check_records(a,b):
     assert a['source_circuit_sha256']=='61e140fee5f40e93e11d159673cdbda65d180e25dd7538e24df9a86ae9385c79'
     assert b['source_circuit_sha256']=='b8f060f20cf9834535b11fb03742b306041e163e37a6c6cff5158dfadd97dcc2'
     assert set(a['ports'])==set(b['ports'])and len(a['ports'])==10
+    assert a['ports']==b['ports']and a['bbox_um']==b['bbox_um'],'Original leaf interface changed'
+    assert {identity(d):d['placement_um']for d in a['instances']}=={identity(d):d['placement_um']for d in b['instances']},'Native primitive moved'
 
 def main():
     import pya
@@ -101,7 +103,11 @@ def main():
     try:check_records(all_data[0],altered)
     except AssertionError:faults.append('wrong_data_nx')
     else:raise AssertionError('Unchanged data/hold size accepted')
-    assert len(faults)==4
+    altered=copy.deepcopy(all_data[1]);altered['instances'][0]['placement_um'][0]+=.005
+    try:check_records(all_data[0],altered)
+    except AssertionError:faults.append('moved_native_primitive')
+    else:raise AssertionError('Changed native primitive position accepted')
+    assert len(faults)==5
     r=dict(status='PASS_EXACT_EIGHT_DATA_HOLD_NX_CHANGES_AND46_UNCHANGED_NATIVE_DRAWINGS',
         inputs=inputs,primitive_count=54,changed_data_pairs=sorted(DATA_PAIRS),
         before_nx=8,after_nx=4,unchanged_primitive_drawings=46,rejected=faults,

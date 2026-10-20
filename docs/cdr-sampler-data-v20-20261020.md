@@ -29,3 +29,15 @@ closed-loop serial Gen3 x4 PHY or mainchip timing acceptance.
 
 Everything executes on GitHub-hosted runners; reports and failures stay in
 cloud releases. The local project remains empty.
+
+## Native generation failure and placement isolation
+
+Run 39417031863 stopped before DRC/LVS: automatic placement optimization on
+the resized HBT dimensions found no independent body-contact routing column.
+The failure is retained. V20 now reads the exact restored v19 leaf metadata
+and preserves every actual primitive position and escape column. Each
+intrinsic row is checked against v19 with only the eight authorized Nx edits.
+The original 5 um global column spacing, native body-contact clearances,
+leaf outline and every external pin rectangle must hold. The independent
+geometry checker additionally rejects a moved primitive. No spacing waiver,
+synthetic contact or golden primitive replacement is introduced.

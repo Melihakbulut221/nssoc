@@ -1,3 +1,13 @@
+## CDR v20 preserve actual source placement
+First leaf run39417031863 failed native generation before DRC/LVS:
+automatic reordered geometry left no free body-contact escape column.
+The replacement preserves exact restored v19 primitive positions and public
+ports, while changing only eight authorized data/hold Nx values. Original
+5um column spacing and body clearances remain. Five independent geometry
+corruption controls now include a moved actual primitive.
+Mainchip fresh route39415055626, TX39409002976 and PLL39390580356 remain live.
+
+
 ## Cloud CDR v20 data/hold candidate
 V19 diagnostic confirms late A/B outputs and weak C/D inputs. Fresh v20 leaf
 reduces only eight data/hold HBTs per sampler Nx8 to Nx4; selectors remain Nx4,

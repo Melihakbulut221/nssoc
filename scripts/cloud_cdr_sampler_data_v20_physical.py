@@ -21,7 +21,7 @@ def main():
     try:
         analog=ROOT/'hw/soc/analog/pcie/rx_sampler_data_drive_v20.spice'
         assert sha(analog)=='b8f060f20cf9834535b11fb03742b306041e163e37a6c6cff5158dfadd97dcc2'
-        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_data_v20.py')=='eb34ea13ff057c2609fe7cf6c8458a98845738952ec10d31d67dd4b53c36c779'
+        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_data_v20.py')=='4ef2fe649cd6509088d3a3b13c9022c9445b326f259c1197896cea08c062faef'
         paths=[Path(__file__),analog,*[ROOT/p for p in ('hw/soc/flow/make_pcie_sampler_compact_v1.py','hw/soc/flow/make_pcie_sampler_data_v20.py','hw/soc/flow/check_pcie_sampler_compact_v1.py','hw/soc/flow/check_pcie_sampler_data_v20.py','scripts/check_cdr_sampler_data_v20_sources.py','scripts/cdr-sampler-data-v20-source-delta.json','hw/soc/flow/check_pcie_sampler_left_v1.py','scripts/check_cdr_sampler_data_v20_geometry.py')]]
         subprocess.run([sys.executable,ROOT/'scripts/check_cdr_sampler_data_v20_sources.py'],check=True)
         protected={str(p):sha(p) for p in paths};r['protected_inputs']=protected
@@ -65,7 +65,7 @@ def main():
         assert baseline_report['source_head']==baseline_pin['source_head']and baseline_report['status']==baseline_pin['status']and baseline_report['sources_unchanged']
         r['baseline_physical_source']=baseline_restore;save()
         for name,command in [
-          ('generation',[app,'python',ROOT/'hw/soc/flow/make_pcie_sampler_data_v20.py','--pdk',ROOT/'pdk','--out',OUT/'layout']),
+          ('generation',[app,'python',ROOT/'hw/soc/flow/make_pcie_sampler_data_v20.py','--pdk',ROOT/'pdk','--out',OUT/'layout','--placement-baseline',OUT/'baseline/layout/result.json']),
           ('primitive_identity',[app,'python',ROOT/'scripts/check_cdr_sampler_data_v20_geometry.py','--baseline',OUT/'baseline/layout','--candidate',OUT/'layout','--output',OUT/'primitive-identity.json']),
           ('physical',[sys.executable,ROOT/'hw/soc/flow/check_pcie_sampler_data_v20.py','--layout',OUT/'layout','--pdk',ROOT/'pdk','--out',OUT/'physical','--app',app])]:
             with (OUT/(name+'.log')).open('w')as log:

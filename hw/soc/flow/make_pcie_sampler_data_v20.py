@@ -124,6 +124,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("pdk", "out"):
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--placement-baseline",type=Path,required=True)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[3]
     out = args.out.resolve()
@@ -134,7 +135,7 @@ def main():
     rows = devices(circuit.read_text())
     source = args.pdk.resolve() / "libs.tech/klayout/python"
     lyp = source.parent / "tech/sg13g2.lyp"
-    inputs = [*source.rglob("*.py"), *source.rglob("*.json"), lyp, circuit, Path(__file__).resolve()]
+    inputs = [args.placement_baseline, *source.rglob("*.py"), *source.rglob("*.json"), lyp, circuit, Path(__file__).resolve()]
     pins = {str(path): sha(path) for path in inputs}
     sys.dont_write_bytecode = True
     sys.path[:0] = [str(source), str(source / "pycell4klayout-api/source/python")]
@@ -226,57 +227,43 @@ def main():
     def cost(order):
         values = spans(order)
         return sum(v * (3 if n in ("M_MP", "M_MN", "MP", "MN", "QP", "QN") else 2 if n in ("CLKP", "CLKN", "DP", "DN", "LP", "LN") else 1) for n,v in values.items())
-    baseline = [r["name"] for r in rows]; order = list(baseline)
-    history = [cost(order)]
-    for iteration in range(100):
-        before = cost(order); best = list(order); best_cost = before
-        for i in range(len(order)):
-            for j in range(i+1,len(order)):
-                trial = list(order); trial[i],trial[j] = trial[j],trial[i]
-                for candidate in (trial, order[:i]+list(reversed(order[i:j+1]))+order[j+1:]):
-                    value = cost(candidate)
-                    if value < before-1e-6 and (value,tuple(candidate)) < (best_cost,tuple(best)):
-                        best,best_cost = candidate,value
-        if best == order: break
-        order = best; history.append(best_cost)
-    assert sorted(order)==sorted(baseline) and cost(order)<cost(baseline)
-    rows = [byname[n] for n in order]
-    assert sorted(rows,key=lambda r:r["name"]) == sorted(original_rows,key=lambda r:r["name"])
-    placement_plan = dict(original_order=baseline,candidate_order=order,
-        weighted_span_cost_before=cost(baseline),weighted_span_cost_after=cost(order),
-        original_signal_spans_um=spans(baseline),candidate_signal_spans_um=spans(order),
-        strictly_decreasing_costs=history,unchanged_primitive_rows=True,
-        caveat="Native primitive-center span planning only; actual DRC/LVS, fresh parent RC and full original loaded gates remain mandatory.")
-    assert all(a>b for a,b in zip(history,history[1:]))
-    # Fold only placement into two rows; keep every native device and spacing.
-    # Reserve all M4/TM1 escape columns globally, including the opposite row.
-    # Keep both clock polarities in the leading part of row2; a blind half split
-    # left two master selectors at the far end of row1 and failed the span gate.
-    clock_rows=[r for r in rows if set(r["nets"])&{"CLKP","CLKN"}]
-    ordinary=[r for r in rows if not(set(r["nets"])&{"CLKP","CLKN"})]
-    assert len(clock_rows)==8 and all(r["kind"]=="hbt"for r in clock_rows)
+    source_layout=json.loads(args.placement_baseline.read_text())
+    assert source_layout['source_circuit_sha256']=='61e140fee5f40e93e11d159673cdbda65d180e25dd7538e24df9a86ae9385c79'
+    assert source_layout['primitive_counts']==dict(hbt=16,nmos=9,rppd=12,physical_tap=17)
+    source_rows={r['name']:r for r in source_layout['instances']if r['kind']!='substrate_tap'}
+    selected={stage+'_'+side for stage in ('M','S')for side in ('DP','DN','LP','LN')}
+    assert set(source_rows)==set(byname)and len(source_rows)==37
+    for name,row in byname.items():
+        old={k:source_rows[name][k]for k in row}
+        expected=dict(old)
+        if name in selected:
+            assert old['kind']=='hbt'and old['nx']==8
+            expected['nx']=4
+        assert row==expected,('Unexpected intrinsic change',name)
+    saved=source_layout['placement_plan']
+    order=list(saved['candidate_order'])
+    assert set(order)==set(byname)and len(order)==37
+    actual_order=saved['folded_rows']['actual_order']
+    assert set(actual_order)==set(byname)and len(actual_order)==37
+    rows=[byname[name]for name in actual_order]
+    folded={name:list(source_rows[name]['placement_um'])for name in actual_order}
+    assert folded==saved['folded_rows']['positions']
     split=(len(rows)+1)//2
-    rows=ordinary[:split]+clock_rows+ordinary[split:]
-    assert sorted(rows,key=lambda r:r["name"])==sorted(original_rows,key=lambda r:r["name"])
-    folded = {}; reserved = []; right_by_row = [0., 0.]
-    for index, row in enumerate(rows):
-        row_index = 0 if index < split else 1
-        local_index = index if row_index == 0 else index-split
-        box = geometry[row["name"]]
-        start = math.ceil(max(40.+local_index*30, right_by_row[row_index]+30-box.left)/.005)*.005
-        offsets = [-18.,-12.,-6.] if row["kind"] in ("hbt","nmos") else [-12.,-6.]
-        for step in range(20001):
-            x = round((start+step*.005)/.005)*.005
-            # Reserve the real local MOS substrate-contact center too. Its
-            # native2um tap is placed at x+3, so its M4 column is x+4.
-            lanes = [x+v for v in offsets]+([x+4.]if row["kind"]=="nmos"else[])
-            if all(abs(a-b)>=5.-1e-8 for a in lanes for b in reserved):
-                break
-        else:
-            raise ValueError("No independent folded-row escape columns")
-        folded[row["name"]] = [x,20.+row_index*100.]
-        right_by_row[row_index] = x+box.right
-        reserved.extend(lanes)
+    clock_rows=[r for r in rows if set(r['nets'])&{'CLKP','CLKN'}]
+    assert len(clock_rows)==8
+    reserved=[];right_by_row=[0.,0.]
+    for index,row in enumerate(rows):
+        row_index=0 if index<split else 1
+        x,y=folded[row['name']]
+        assert y==20.+row_index*100.
+        offsets=[-18.,-12.,-6.]if row['kind']in('hbt','nmos')else[-12.,-6.]
+        lanes=[x+v for v in offsets]+([x+4.]if row['kind']=='nmos'else[])
+        assert all(abs(a-b)>=5.-1e-8 for a in lanes for b in reserved),'Source escape-column separation changed'
+        reserved.extend(lanes);right_by_row[row_index]=max(right_by_row[row_index],x+geometry[row['name']].right)
+    placement_plan=dict(saved)
+    placement_plan.update(unchanged_primitive_rows=False,source_placement_sha256=sha(args.placement_baseline),
+       original_37_primitive_positions_preserved=True,changed_data_hold_nx=sorted(selected),
+       cost_metadata_scope='Inherited v19 planning metadata; no new placement optimization claimed.')
     assert len(folded)==len(rows)==37
     folded_points={}
     for row in rows:

@@ -317,7 +317,7 @@
       "baseline": "hw/soc/flow/make_pcie_sampler_selector_v19.py",
       "baseline_sha256": "7ce1419c66f2e048d9329c0908f96bed708b71f7f8e04fb044de210589bd8e91",
       "candidate": "hw/soc/flow/make_pcie_sampler_data_v20.py",
-      "candidate_sha256": "eb34ea13ff057c2609fe7cf6c8458a98845738952ec10d31d67dd4b53c36c779",
+      "candidate_sha256": "4ef2fe649cd6509088d3a3b13c9022c9445b326f259c1197896cea08c062faef",
       "changes": [
         {
           "start": 352,
@@ -418,6 +418,731 @@
           "start": 2644,
           "end": 2646,
           "replacement": "20"
+        },
+        {
+          "start": 5675,
+          "end": 5675,
+          "replacement": "parser.add_argument(\"--placement-baseline\",type=Path,required=True)\n    "
+        },
+        {
+          "start": 6226,
+          "end": 6226,
+          "replacement": "args.placement_baseline, "
+        },
+        {
+          "start": 11120,
+          "end": 11120,
+          "replacement": "source_layout=json.loads(args.placement_"
+        },
+        {
+          "start": 11128,
+          "end": 11787,
+          "replacement": "."
+        },
+        {
+          "start": 11790,
+          "end": 11802,
+          "replacement": ""
+        },
+        {
+          "start": 11803,
+          "end": 11803,
+          "replacement": "_t"
+        },
+        {
+          "start": 11804,
+          "end": 11811,
+          "replacement": "x"
+        },
+        {
+          "start": 11812,
+          "end": 11828,
+          "replacement": ""
+        },
+        {
+          "start": 11829,
+          "end": 11838,
+          "replacement": ")"
+        },
+        {
+          "start": 11853,
+          "end": 11853,
+          "replacement": "u"
+        },
+        {
+          "start": 11854,
+          "end": 11854,
+          "replacement": "ce_layou"
+        },
+        {
+          "start": 11855,
+          "end": 11855,
+          "replacement": "['sourc"
+        },
+        {
+          "start": 11856,
+          "end": 11859,
+          "replacement": "_ci"
+        },
+        {
+          "start": 11860,
+          "end": 11864,
+          "replacement": "cuit_sha256']"
+        },
+        {
+          "start": 11866,
+          "end": 11870,
+          "replacement": "'61"
+        },
+        {
+          "start": 11871,
+          "end": 11871,
+          "replacement": "140fee5f40e93e11"
+        },
+        {
+          "start": 11872,
+          "end": 11873,
+          "replacement": "159673cd"
+        },
+        {
+          "start": 11874,
+          "end": 11874,
+          "replacement": "d"
+        },
+        {
+          "start": 11875,
+          "end": 11876,
+          "replacement": "65d180"
+        },
+        {
+          "start": 11877,
+          "end": 11880,
+          "replacement": "25dd7538"
+        },
+        {
+          "start": 11881,
+          "end": 11883,
+          "replacement": "24df9"
+        },
+        {
+          "start": 11884,
+          "end": 11887,
+          "replacement": "86ae9385"
+        },
+        {
+          "start": 11888,
+          "end": 11951,
+          "replacement": "79'"
+        },
+        {
+          "start": 11965,
+          "end": 11965,
+          "replacement": "u"
+        },
+        {
+          "start": 11966,
+          "end": 11967,
+          "replacement": "c"
+        },
+        {
+          "start": 11968,
+          "end": 11979,
+          "replacement": "_"
+        },
+        {
+          "start": 11981,
+          "end": 11981,
+          "replacement": "yout['pri"
+        },
+        {
+          "start": 11982,
+          "end": 11991,
+          "replacement": "itive_cou"
+        },
+        {
+          "start": 11992,
+          "end": 11996,
+          "replacement": "ts'"
+        },
+        {
+          "start": 11997,
+          "end": 11999,
+          "replacement": ""
+        },
+        {
+          "start": 12001,
+          "end": 12002,
+          "replacement": "dict(hbt=16,nmo"
+        },
+        {
+          "start": 12003,
+          "end": 12004,
+          "replacement": "=9,"
+        },
+        {
+          "start": 12005,
+          "end": 12007,
+          "replacement": "pp"
+        },
+        {
+          "start": 12008,
+          "end": 12011,
+          "replacement": "=12,phys"
+        },
+        {
+          "start": 12012,
+          "end": 12015,
+          "replacement": "c"
+        },
+        {
+          "start": 12018,
+          "end": 12026,
+          "replacement": "tap"
+        },
+        {
+          "start": 12027,
+          "end": 12045,
+          "replacement": "17"
+        },
+        {
+          "start": 12051,
+          "end": 12051,
+          "replacement": "source_rows={r['name']:r for r in source_layout['instances']if r['kind']!='substrate_tap'}\n    selected={stage+'_'+side for stage in ('M','S')for side in ('DP','DN','LP','LN')}\n    assert set(source_rows)==set(byname)and len(source_rows)==37\n    for name,row in byname.items():\n        old={k:source_rows[name][k]for k in row}\n        expected=dict(old)\n        if name in selected:\n            assert old['kind']=='hbt'and old['nx']==8\n            expected['nx']=4\n        assert row==expected,('Unexpected intrinsic change',name)\n    saved=source_layout['"
+        },
+        {
+          "start": 12065,
+          "end": 12065,
+          "replacement": "']\n"
+        },
+        {
+          "start": 12066,
+          "end": 12067,
+          "replacement": ""
+        },
+        {
+          "start": 12068,
+          "end": 12082,
+          "replacement": "  "
+        },
+        {
+          "start": 12088,
+          "end": 12092,
+          "replacement": ""
+        },
+        {
+          "start": 12094,
+          "end": 12095,
+          "replacement": "st(sav"
+        },
+        {
+          "start": 12096,
+          "end": 12097,
+          "replacement": "d['"
+        },
+        {
+          "start": 12112,
+          "end": 12510,
+          "replacement": "']"
+        },
+        {
+          "start": 12523,
+          "end": 12526,
+          "replacement": "set"
+        },
+        {
+          "start": 12527,
+          "end": 12532,
+          "replacement": ""
+        },
+        {
+          "start": 12534,
+          "end": 12534,
+          "replacement": "der)==set(byname)and"
+        },
+        {
+          "start": 12535,
+          "end": 12540,
+          "replacement": "le"
+        },
+        {
+          "start": 12541,
+          "end": 12545,
+          "replacement": ""
+        },
+        {
+          "start": 12546,
+          "end": 12550,
+          "replacement": ""
+        },
+        {
+          "start": 12552,
+          "end": 12559,
+          "replacement": "de"
+        },
+        {
+          "start": 12560,
+          "end": 12565,
+          "replacement": ""
+        },
+        {
+          "start": 12566,
+          "end": 12567,
+          "replacement": "==37"
+        },
+        {
+          "start": 12572,
+          "end": 12575,
+          "replacement": "actual_order=saved['f"
+        },
+        {
+          "start": 12578,
+          "end": 12578,
+          "replacement": "ed_rows']['actual_order']\n"
+        },
+        {
+          "start": 12579,
+          "end": 12579,
+          "replacement": "   assert set(actual_"
+        },
+        {
+          "start": 12580,
+          "end": 12580,
+          "replacement": "rder)==set(by"
+        },
+        {
+          "start": 12581,
+          "end": 12581,
+          "replacement": "ame)and "
+        },
+        {
+          "start": 12582,
+          "end": 12582,
+          "replacement": "en(actual_order)==37\n    rows=[b"
+        },
+        {
+          "start": 12583,
+          "end": 12583,
+          "replacement": "name[name]for"
+        },
+        {
+          "start": 12584,
+          "end": 12584,
+          "replacement": "name in actual_order]\n    folded={name:list(source_rows[name]['"
+        },
+        {
+          "start": 12593,
+          "end": 12593,
+          "replacement": "_um'])for name"
+        },
+        {
+          "start": 12596,
+          "end": 12596,
+          "replacement": " ac"
+        },
+        {
+          "start": 12597,
+          "end": 12597,
+          "replacement": "ual_"
+        },
+        {
+          "start": 12598,
+          "end": 12603,
+          "replacement": ""
+        },
+        {
+          "start": 12604,
+          "end": 12616,
+          "replacement": "d"
+        },
+        {
+          "start": 12618,
+          "end": 12646,
+          "replacement": "}"
+        },
+        {
+          "start": 12651,
+          "end": 12655,
+          "replacement": "as"
+        },
+        {
+          "start": 12658,
+          "end": 12658,
+          "replacement": "t folded==sa"
+        },
+        {
+          "start": 12660,
+          "end": 12680,
+          "replacement": "d['f"
+        },
+        {
+          "start": 12682,
+          "end": 12685,
+          "replacement": "ded_row"
+        },
+        {
+          "start": 12686,
+          "end": 12713,
+          "replacement": "']['"
+        },
+        {
+          "start": 12718,
+          "end": 12721,
+          "replacement": "i"
+        },
+        {
+          "start": 12722,
+          "end": 12724,
+          "replacement": "ns']"
+        },
+        {
+          "start": 12728,
+          "end": 12799,
+          "replacement": ""
+        },
+        {
+          "start": 12805,
+          "end": 12812,
+          "replacement": "=("
+        },
+        {
+          "start": 12814,
+          "end": 12850,
+          "replacement": ""
+        },
+        {
+          "start": 12851,
+          "end": 12856,
+          "replacement": "("
+        },
+        {
+          "start": 12859,
+          "end": 12859,
+          "replacement": "s)+"
+        },
+        {
+          "start": 12860,
+          "end": 12886,
+          "replacement": ")//2"
+        },
+        {
+          "start": 12928,
+          "end": 12929,
+          "replacement": "'"
+        },
+        {
+          "start": 12933,
+          "end": 12934,
+          "replacement": "'"
+        },
+        {
+          "start": 12938,
+          "end": 12939,
+          "replacement": "'"
+        },
+        {
+          "start": 12943,
+          "end": 12944,
+          "replacement": "'"
+        },
+        {
+          "start": 12945,
+          "end": 12946,
+          "replacement": "'"
+        },
+        {
+          "start": 12950,
+          "end": 12951,
+          "replacement": "'"
+        },
+        {
+          "start": 12952,
+          "end": 13022,
+          "replacement": ""
+        },
+        {
+          "start": 13053,
+          "end": 13098,
+          "replacement": ""
+        },
+        {
+          "start": 13102,
+          "end": 13289,
+          "replacement": ""
+        },
+        {
+          "start": 13298,
+          "end": 13299,
+          "replacement": ""
+        },
+        {
+          "start": 13300,
+          "end": 13301,
+          "replacement": ""
+        },
+        {
+          "start": 13304,
+          "end": 13305,
+          "replacement": ""
+        },
+        {
+          "start": 13317,
+          "end": 13318,
+          "replacement": ""
+        },
+        {
+          "start": 13319,
+          "end": 13320,
+          "replacement": ""
+        },
+        {
+          "start": 13324,
+          "end": 13325,
+          "replacement": ""
+        },
+        {
+          "start": 13343,
+          "end": 13344,
+          "replacement": ""
+        },
+        {
+          "start": 13385,
+          "end": 13386,
+          "replacement": ""
+        },
+        {
+          "start": 13387,
+          "end": 13388,
+          "replacement": ""
+        },
+        {
+          "start": 13398,
+          "end": 13399,
+          "replacement": ""
+        },
+        {
+          "start": 13400,
+          "end": 13401,
+          "replacement": ""
+        },
+        {
+          "start": 13422,
+          "end": 13422,
+          "replacement": "x,y=fo"
+        },
+        {
+          "start": 13423,
+          "end": 13430,
+          "replacement": ""
+        },
+        {
+          "start": 13432,
+          "end": 13438,
+          "replacement": ""
+        },
+        {
+          "start": 13439,
+          "end": 13499,
+          "replacement": ""
+        },
+        {
+          "start": 13504,
+          "end": 13505,
+          "replacement": "'"
+        },
+        {
+          "start": 13509,
+          "end": 13510,
+          "replacement": "'"
+        },
+        {
+          "start": 13521,
+          "end": 13521,
+          "replacement": "a"
+        },
+        {
+          "start": 13522,
+          "end": 13524,
+          "replacement": "se"
+        },
+        {
+          "start": 13527,
+          "end": 13527,
+          "replacement": "y"
+        },
+        {
+          "start": 13528,
+          "end": 13544,
+          "replacement": "=2"
+        },
+        {
+          "start": 13547,
+          "end": 13576,
+          "replacement": ""
+        },
+        {
+          "start": 13585,
+          "end": 13601,
+          "replacement": "*1"
+        },
+        {
+          "start": 13603,
+          "end": 13606,
+          "replacement": ""
+        },
+        {
+          "start": 13607,
+          "end": 13610,
+          "replacement": ""
+        },
+        {
+          "start": 13626,
+          "end": 13627,
+          "replacement": ""
+        },
+        {
+          "start": 13628,
+          "end": 13629,
+          "replacement": ""
+        },
+        {
+          "start": 13644,
+          "end": 13645,
+          "replacement": ""
+        },
+        {
+          "start": 13652,
+          "end": 13653,
+          "replacement": "'"
+        },
+        {
+          "start": 13657,
+          "end": 13658,
+          "replacement": "'"
+        },
+        {
+          "start": 13659,
+          "end": 13660,
+          "replacement": ""
+        },
+        {
+          "start": 13662,
+          "end": 13663,
+          "replacement": ""
+        },
+        {
+          "start": 13664,
+          "end": 13665,
+          "replacement": "'"
+        },
+        {
+          "start": 13668,
+          "end": 13669,
+          "replacement": "'"
+        },
+        {
+          "start": 13670,
+          "end": 13671,
+          "replacement": "'"
+        },
+        {
+          "start": 13675,
+          "end": 13676,
+          "replacement": "'"
+        },
+        {
+          "start": 13677,
+          "end": 13678,
+          "replacement": ""
+        },
+        {
+          "start": 13682,
+          "end": 13683,
+          "replacement": ""
+        },
+        {
+          "start": 13702,
+          "end": 13937,
+          "replacement": ""
+        },
+        {
+          "start": 13942,
+          "end": 13943,
+          "replacement": ""
+        },
+        {
+          "start": 13944,
+          "end": 13945,
+          "replacement": ""
+        },
+        {
+          "start": 13982,
+          "end": 13983,
+          "replacement": "'"
+        },
+        {
+          "start": 13987,
+          "end": 13988,
+          "replacement": "'"
+        },
+        {
+          "start": 13991,
+          "end": 13992,
+          "replacement": "'"
+        },
+        {
+          "start": 13996,
+          "end": 13997,
+          "replacement": "'"
+        },
+        {
+          "start": 14013,
+          "end": 14019,
+          "replacement": "assert"
+        },
+        {
+          "start": 14075,
+          "end": 14094,
+          "replacement": ",'Sou"
+        },
+        {
+          "start": 14095,
+          "end": 14095,
+          "replacement": "c"
+        },
+        {
+          "start": 14096,
+          "end": 14168,
+          "replacement": ""
+        },
+        {
+          "start": 14175,
+          "end": 14176,
+          "replacement": "-"
+        },
+        {
+          "start": 14182,
+          "end": 14182,
+          "replacement": " "
+        },
+        {
+          "start": 14183,
+          "end": 14186,
+          "replacement": "eparation"
+        },
+        {
+          "start": 14187,
+          "end": 14198,
+          "replacement": "chang"
+        },
+        {
+          "start": 14200,
+          "end": 14284,
+          "replacement": "'"
+        },
+        {
+          "start": 14314,
+          "end": 14314,
+          "replacement": ");right_by_row[row_index]=max(right_by_row[row_index],x+geometry[row['name']].right)\n    placement_plan=dict(saved)\n    placement_plan.update(unchanged_primitive_rows=False,source_placement_sha256=sha(args.placement_baseline),\n       original_37_primitive_positions_preserved=True,changed_data_hold_nx=sorted(selected),\n       cost_metadata_scope='Inherited v19 planning metadata; no new placement optimization claimed.'"
         }
       ]
     },
@@ -483,7 +1208,7 @@
       "baseline": "scripts/check_cdr_sampler_selector_v19_geometry.py",
       "baseline_sha256": "b488ff2b09603c8bafd13b0465e1aa13847e2dc94a8c176be1186898673d50bd",
       "candidate": "scripts/check_cdr_sampler_data_v20_geometry.py",
-      "candidate_sha256": "26498e4c34d8c6486146a871462c2b862c18cc882370a9eda02d403c324f49cc",
+      "candidate_sha256": "81fcf8c5083bdaba40bfcbfc2434704e11af51722dd3a937285bc5b051f8e9f8",
       "changes": [
         {
           "start": 423,
@@ -546,9 +1271,14 @@
           "replacement": ""
         },
         {
-          "start": 1513,
-          "end": 1513,
-          "replacement": "'\n    assert b['source_circuit_sha256']=='b8f060f20cf9834535b11fb03742b306041e163e37a6c6cff5158dfadd97dcc2"
+          "start": 1526,
+          "end": 1526,
+          "replacement": "b['source_circuit_sha256']=='b8f060f20cf9834535b11fb03742b306041e163e37a6c6cff5158dfadd97dcc2'\n    assert "
+        },
+        {
+          "start": 1581,
+          "end": 1581,
+          "replacement": "\n    assert a['ports']==b['ports']and a['bbox_um']==b['bbox_um'],'Original leaf interface changed'\n    assert {identity(d):d['placement_um']for d in a['instances']}=={identity(d):d['placement_um']for d in b['instances']},'Native primitive moved'"
         },
         {
           "start": 1848,
@@ -641,6 +1371,16 @@
           "replacement": "d"
         },
         {
+          "start": 6782,
+          "end": 6782,
+          "replacement": " accepted')\n    altered=copy.deepcopy(all_data[1]);altered['instances'][0]['placement_um'][0]+=.005\n    try:check_records(all_data[0],altered)\n    except AssertionError:faults.append('moved_native_primitive')\n    else:raise AssertionError('Changed native primitive position"
+        },
+        {
+          "start": 6818,
+          "end": 6819,
+          "replacement": "5"
+        },
+        {
           "start": 6856,
           "end": 6858,
           "replacement": "DATA_HO"
@@ -676,7 +1416,7 @@
       "baseline": "scripts/cloud_cdr_sampler_selector_v19_physical.py",
       "baseline_sha256": "8d274e78f6c49a0819c182bf409ba6e4a43c7aacb57446f1cd154a7be2daf300",
       "candidate": "scripts/cloud_cdr_sampler_data_v20_physical.py",
-      "candidate_sha256": "524f59e6d0371457f20e78f1872b4e634cd9e4e8fe815af205f4c3bde0c1127a",
+      "candidate_sha256": "d62edb42236385ef1ab8ec91e009d264e5072aa310994166051a68ad18249d18",
       "changes": [
         {
           "start": 442,
@@ -810,51 +1550,61 @@
         },
         {
           "start": 1513,
-          "end": 1513,
-          "replacement": "eb34ea13ff05"
-        },
-        {
-          "start": 1515,
           "end": 1515,
-          "replacement": "2609f"
+          "replacement": "4"
         },
         {
           "start": 1516,
           "end": 1517,
-          "replacement": "7cf6c8"
+          "replacement": "f2fe6"
         },
         {
           "start": 1518,
           "end": 1519,
-          "replacement": "58a"
-        },
-        {
-          "start": 1520,
-          "end": 1524,
-          "replacement": "884573895"
-        },
-        {
-          "start": 1526,
-          "end": 1534,
           "replacement": ""
         },
         {
-          "start": 1535,
-          "end": 1566,
-          "replacement": ""
+          "start": 1521,
+          "end": 1521,
+          "replacement": "d"
         },
         {
-          "start": 1568,
-          "end": 1568,
-          "replacement": "d31d67dd4b"
+          "start": 1522,
+          "end": 1535,
+          "replacement": "5"
         },
         {
-          "start": 1569,
-          "end": 1570,
-          "replacement": "3c36c77"
+          "start": 1539,
+          "end": 1539,
+          "replacement": "8d3a3b13c9022c9445b326"
         },
         {
-          "start": 1571,
+          "start": 1540,
+          "end": 1540,
+          "replacement": "259c11978"
+        },
+        {
+          "start": 1542,
+          "end": 1543,
+          "replacement": "c"
+        },
+        {
+          "start": 1544,
+          "end": 1546,
+          "replacement": "a"
+        },
+        {
+          "start": 1548,
+          "end": 1551,
+          "replacement": "c062"
+        },
+        {
+          "start": 1552,
+          "end": 1553,
+          "replacement": "ae"
+        },
+        {
+          "start": 1554,
           "end": 1577,
           "replacement": ""
         },
@@ -1042,6 +1792,11 @@
           "start": 6114,
           "end": 6116,
           "replacement": "20"
+        },
+        {
+          "start": 6159,
+          "end": 6159,
+          "replacement": "','--placement-baseline',OUT/'baseline/layout/result.json"
         },
         {
           "start": 6242,
