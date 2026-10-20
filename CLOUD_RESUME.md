@@ -1,3 +1,8 @@
+## 2026-10-20 — clock attribution includes actual SRAM capture clocks
+- Run39363009998 correctly stopped at an unhandled endpoint: Ethernet FIFO SRAM B_CLK. The draft guard only covered FF /CLK.
+- Native reports show RM_IHPSG13_2P_256x16_c2_bm_bist A_CLK/B_CLK. Add those exact clock names for that exact endpoint/macro; positive tests for both and rejection of A_D[0]. No relaxed report equation or timing gate.
+- Re-run same immutable old/new report analysis, no routing/CAD repeated. Continue common PCIe clock branch geometry investigation and all-corner repair selection. Cloud-only.
+
 ## 2026-10-20 —128buffer path review passed; common PCIe clock branch investigated
 - Path review39362291106 SUCCESS:4101max/3919min report paths per corner; negative min sample3/17/95. Full endpoint census is not inferred from sampled report size.
 - Worst fast hold PCIe training→advertiser refresh:−.437994ns. Common capture branch clkbuf_3_5_0_pcie_clk_i/X→clkbuf_6_46_0_pcie_clk_i/A has native netdelay.684392ns, input slew1.292744ns. Candidate for geometry/RC diagnosis, not yet a proven repair.
