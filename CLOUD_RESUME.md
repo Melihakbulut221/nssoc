@@ -1,3 +1,10 @@
+## 2026-10-20 — whole PLL capture review passed; raw audit dispatched
+- Review39352788481 SUCCESS atc9d331e8ae3cf316c225e66bfa331161e1f05160.3380R/5104C,235components,1604physicalpoints retaining1877logicalreferences,26 unique MIM identities.8 capture faults+52 one-nanometre dimension metadata corruptions rejected.
+- Original native capture39352067225 and failed review39352510835 remain immutable. No CAD rerun.
+- New pll845-whole-raw-audit-cloud: original strict per-point/value/topology/C conservation auditor with exact PLL census,13 raw-wire+9 MIM corruption controls. Do not call RC audited before native report passes.
+- After audit: all845 intrinsic model binding/composition and actual loaded closed-loop PLL waveform; no parent-only substitution.
+- TX39344566214 and mainchip39331918238 live; CDR v17 rejected. All work/cloud artifacts remain hosted, no local CAD.
+
 ## 2026-10-20 — exact-GDS MIM dimension comparison
 - Whole native capture39352067225 produced3380R/5104C/235components/1604physicalpoints retaining1877logicalreferences; original native exit0.
 - Diagnostic review39352510835 isolated the sole mismatch:11.200000000000001um versus11.2um at components7/38, same11um length. Both failed reports remain pinned and immutable.
