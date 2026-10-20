@@ -1,3 +1,11 @@
+## 2026-10-20 next cloud evidence: native total-load arithmetic
+
+CDR follower476 MIM validation run39478830833 is active from96b626896b0e85c0d9946f633f96de3bd81e0cfe. Observe both raw audit and composition; prepare original loaded cases only after both pass.
+
+This commit launches tx-raw64-totalcap-diagnosis-cloud. It must reproduce all698 native totals from exact failed RC records with binary32 arithmetic and reject4 corruptions. A diagnosis pass is NOT RC acceptance: producer repair and original13 controls remain required. No tolerance edits.
+
+Mainchip39436610858, PLL39423618115 and TXwaves39460427396/39453950816 remain live. No local source/CAD/results; empty local workspace.
+
 ## 2026-10-20 cloud continuation: follower476 RC audit/composition
 
 CDR clean extraction39476228473 and MIM capture39477040744 passed; exact17654R12682C,7MIM. New cdr-follower-v23-mim-validation-cloud workflow launches on this commit and must pass13wire+9MIM+19composition controls before loaded-wave preparation. All electrical gates remain original; no PHY acceptance.
