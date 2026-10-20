@@ -1,3 +1,11 @@
+## 2026-10-20 exact native runtime reconstruction
+
+TX intrinsic39482960779 PASSED8074devices28582terminals163ports65body nets5376rawMOS,15model faults+negative-spacing control; receipt pinned. Use this whole-parent model for future RC composition.
+
+Precision rebuild39481658422 REJECTED: baseline omitted historical HBT/tap/ESD C overlays and did not understand5CIF input statements. Both binaries were compiled but candidate extraction did not run. This commit restores exact existing hash-guarded overlays in BOTH builds, then retains the two-field precision delta and all original gates. Fresh tx-raw64-totalcap-precision-cloud launches.
+
+CDRwaves39479905700, mainchip39436610858, PLL39423618115, TXcomparisonwaves39460427396/39453950816 still require observation. Cloud-only; no local artifacts.
+
 ## 2026-10-20 raw8074 converter correction
 
 TX intrinsic39482444225: native export PASSED8074devices28582terminals163ports65bodies; conversion rejected an incorrect positive-ps assumption. All504rppd are native b=0,ps=0 non-meanders. This commit preserves exactzero spacing and adds negative-spacing control; fresh intrinsic job launches. Failed evidence retained.

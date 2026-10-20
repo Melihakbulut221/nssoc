@@ -76,6 +76,25 @@ def main():
         import patch_magic_cap_precision_v3 as precise
         import patch_magic_area_product_v4 as area
         baseline=OUT/'baseline-source';shutil.copytree(source,baseline)
+        # The archived combined tree predates the separate HBT/tap/ESD native
+        # overlays used by the published runtime. Restore those exact existing
+        # producer patches in BOTH builds before comparing the precision change.
+        import patch_magic_hbt_contract_v2 as hbt_contract
+        import patch_magic_hbt_multiplicity_v3 as hbt_multiplicity
+        import patch_magic_finite_tap_v1 as finite_tap
+        import patch_magic_esd_v1 as esd
+        historical=[]
+        def apply(relative,method):
+            target=baseline/relative;before=sha(target)
+            target.write_bytes(method(target.read_bytes()))
+            historical.append(dict(path=relative,before=before,after=sha(target)))
+        apply('extract/ExtBasic.c',lambda data:hbt_contract.patch('ExtBasic.c',data))
+        apply('extract/ExtBasic.c',hbt_multiplicity.patch)
+        for name in ('ExtBasic.c','ExtTech.c'):
+            apply('extract/'+name,lambda data,name=name:finite_tap.patch(name,data))
+        for name in ('CIFrdtech.c','CIFgen.c'):
+            apply('cif/'+name,lambda data,name=name:esd.patch(name,data))
+        r['restored_historical_device_code']=dict(edits=historical,methods={Path(m.__file__).name:sha(Path(m.__file__))for m in (hbt_contract,hbt_multiplicity,finite_tap,esd)},technology_files_unchanged=True)
         for name in coupled.SOURCES:
             p=baseline/'resis'/name;p.write_bytes(coupled.patch(name,p.read_bytes()))
         patch3=OUT/'patch3';precise.patch(baseline,patch3)
@@ -137,6 +156,8 @@ def main():
             run([sys.executable,b/'run-rc01.py'],OUT/(label+'-native.log'))
             run([sys.executable,b/'audit-rc02.py',b/'rc01',b/'anchors03.json',b/'audit.json'],OUT/(label+'-audit.log'))
             audit=json.loads((b/'audit.json').read_text());r[label+'_audit']=audit;save()
+            expected_status='FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT'if label=='baseline'else'PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
+            assert audit['status']==expected_status,(label,audit['status'],audit.get('error'))
             assert wire_records(b/'rc01/wires.spice')==original_wire,'Rebuilt native R/C records differ from archived failed extraction'
             if label=='baseline':
                 assert audit['status']=='FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT'
