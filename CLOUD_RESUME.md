@@ -1,3 +1,6 @@
+## Verified cloud clock regression evidence
+39364077862 completed: 75 of 95 fast-corner negative reported minimum paths share clkbuf_3_5_0_pcie_clk_i, whose four downstream connections gained 0.513–0.528 ns against original actual routed reports. Includes removal checks, not solely register hold. Same endpoints include existing setup failures; no repair accepted. Paired read-only native clock geometry/SPEF cloud workflow is following commit 58ce99f46edbbfaf6a096e371724bc8b0e7e6743. TX wire24 fullwave remains on original run 39344566214; do not duplicate. Local project directory verified empty; no local CAD or artifacts.
+
 ## Native clock geometry runtime fix
 Run 39364226289 failed before analysis because the pinned AppImage Python cannot import host-installed networkx. Replace only the small nonnegative shortest-series-R graph traversal with standard-library Dijkstra, preserving pin membership, capacitance conservation and full graph connectivity checks. No route or timing acceptance. All computation remains on hosted runners.
 
