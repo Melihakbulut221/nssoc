@@ -1,0 +1,44 @@
+{
+  "baseline_path": "scripts/cloud_tx_full32_rawdrivers_wave.py",
+  "baseline_sha256": "5884d4de00a7e8114f66bc8a21106801892a209f1b9583b6921026e0d21a270e",
+  "candidate_path": "scripts/cloud_tx_raw8074_prepared.py",
+  "candidate_sha256": "d2a8e1832b8aa9ad2ddbfc57200f09374ad7e3ef542c46798f387ab83dbe399d",
+  "edits": [
+    {
+      "before": "cloud-tx-full32-rawdrivers-wave-",
+      "after": "cloud-tx-raw8074-prepared-",
+      "count": 1
+    },
+    {
+      "before": " assert os.environ.get('GITHUB_ACTIONS')=='true'",
+      "after": " assert os.environ.get('GITHUB_ACTIONS')=='true'\n assert args.prepare_only,'Actual8074 native fullwave requires a checkpointed runtime; this controller only prepares its complete deck'\n from check_tx_raw8074_prepared_sources import check\n check()",
+      "count": 1
+    },
+    {
+      "before": "  deck,contract,result['physical_driver_binding']=restore_and_adapt(driver_root,inputs,deck,contract)",
+      "after": "  deck,contract,result['physical_driver_binding']=restore_and_adapt(driver_root,inputs,deck,contract)\n  from cloud_tx_raw8074_fullwave_adapter import restore_and_adapt as whole_adapt\n  whole_root=out/'whole8074'\n  deck,contract,result['whole_parent_binding']=whole_adapt(whole_root,deck,contract)",
+      "count": 1
+    },
+    {
+      "before": "  result['native_binding']=dict(",
+      "after": "  result['core_counts']=dict(devices=8074,R=137221,C=98241)\n  result['model_sha256']=result['whole_parent_binding']['model_sha256']\n  result['scope']='Actual whole8074 parent including64 raw input drivers and physical driver/core interconnect, all137221R98241C, original256-bit34ns stimuli and604HBT5376MOS observations. External11clock macros, modulation and output frontend boundaries remain; no fullPHY/mainchip acceptance.'\n  result['native_binding']=dict(",
+      "count": 1
+    },
+    {
+      "before": "  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+      "after": "  protected += [ROOT/'scripts/cloud_tx_raw8074_fullwave_adapter.py',ROOT/'scripts/check_tx_raw8074_prepared_sources.py',ROOT/'scripts/tx-raw8074-prepared-source-delta.json',*[q for q in whole_root.rglob('*')if q.is_file()]]\n  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+      "count": 1
+    },
+    {
+      "before": "READY_FULL32_RAW64_DRIVER_DECK_NOT_SIMULATED",
+      "after": "READY_ACTUAL8074_PHYSICAL_WIRE_DECK_NOT_SIMULATED",
+      "count": 1
+    }
+  ],
+  "scope": "Original entire bit/stimulus/solver/load/review contract retained. Replace ideal raw-driver/core assembly with actual8074 native wire model. Preparation only; full transient deliberately requires durable process checkpointing.",
+  "frozen_inputs": {
+    "scripts/cloud_tx_raw8074_fullwave_adapter.py": "cd39e71ab7ccf16c6aae87b4d087afa2d717a2660382787a5f5fabad2ff17ae6",
+    ".github/workflows/tx-raw8074-prepared-cloud.yml": "b8991c7f2f5798704028ce9326b43f9b50987c7c9e2bd0967c6cd71c5e563dca",
+    "docs/evidence/tx-raw8074-interfaces-pass-20261021.json": "5fe40f506a92f565633f2f92f414ecdf85075a88585388914aba91308738897f"
+  }
+}
