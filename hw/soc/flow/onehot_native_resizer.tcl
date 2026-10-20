@@ -92,10 +92,10 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
         if {![regexp {^sg13g2_(buf_(1|2|4|8|16)|dlygate4sd[123]_1)$} [[$inst getMaster] getName]]} {
             error "Unexpected new master in hold repair: $n / [[$inst getMaster] getName]"
         }
-        foreach {pin_name net_name} {VPWR VPWR VGND VGND} {
+        foreach {pin_name net_name} {VDD VPWR VSS VGND} {
             set pin [$inst findITerm $pin_name]
             set net [$block findNet $net_name]
-            if {$pin eq "NULL" || $net eq "NULL"} {error "Missing new buffer supply"}
+            if {$pin eq "NULL" || $net eq "NULL"} {error "Missing new buffer supply: $n pin=$pin_name net=$net_name"}
             set prior [$pin getNet]
             if {$prior eq "NULL"} {$pin connect $net}
             if {[$pin getNet] ne $net} {error "New buffer supply connected to wrong net"}

@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: pll845-storage-continuation-cloud
 on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/pll845-storage-continuation-cloud.yml]
   workflow_dispatch:
     inputs:
       seconds:
@@ -79,7 +82,7 @@ jobs:
       - name: Run whole845+4-contact full1us with every physical terminal or resume exact native capsule
         id: native
         env:
-          SOURCE_CHECKPOINT: ${{ inputs.source_checkpoint }}
+          SOURCE_CHECKPOINT: ${{ inputs.source_checkpoint || '{"run":"39370629792","attempt":"1","stage":"continuation","summary_sha256":"48fe723b581ff86e0ef77f0e25902a98de9f6ac7f621e96991330b80b33f64b3","parts_sha256":"183184483bffcfc1964c5c7fe67b484c6963355a8eb2912428f35845dba352a9"}' }}
           NATIVE_SECONDS: ${{ inputs.seconds || '14400' }}
         run: |
           test -n "$SOURCE_CHECKPOINT"

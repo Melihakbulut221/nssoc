@@ -58,3 +58,14 @@ The optimizer's estimated WNS changed from -15.804 to -9.457 ns for setup;
 hold remained -0.513 ns. These are incremental estimates, not freshly routed
 all-corner signoff. No timing closure, route acceptance, LVS or PHY acceptance
 is claimed. All computations and durable results remain on GitHub.
+
+
+## Standard-cell supply pins corrected from the pinned physical library
+Run 39389233033 passed the added positive-cell gate, then stopped with
+"Missing new buffer supply". The pinned SG13G2 LEF defines VDD/VSS pins on
+the ordinary buffers and all three delay cells. The unchanged routed source
+configuration defines SCL_POWER_PINS=[VDD], SCL_GROUND_PINS=[VSS], while
+the actual chip nets are VPWR/VGND. New-instance hookup and independent geometry
+inspection now require VDD -> VPWR and VSS -> VGND. Existing source geometry
+and power routes remain protected. The unchecked hold checkpoint is retained.
+This addresses an integration-script error, not remaining setup/hold violations.

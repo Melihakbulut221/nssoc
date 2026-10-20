@@ -1,3 +1,6 @@
+## Cloud-only continuation: supply pin mapping and saved PLL resume
+Run 39389233033 passed the explicit positive-cell gate but stopped on supply-pin lookup. Pinned LEF and saved config agree VDD/VSS cell pins map to VPWR/VGND chip nets; corrected both hookup and independent geometry audit. The PLL storage workflow now has a branch push trigger with the exact saved 39370629792 continuation descriptor, because a never-triggered branch-only workflow cannot yet be dispatched. Both workflows run once from this push; do not manually dispatch duplicates. No local CAD or project files.
+
 ## Cloud-only PLL disk reserve repair
 The terminal 39370629792 continuation preserved its process but stopped after 0.014 s because of a redundant two-waveform archive reserve. New storage-only migration keeps every native byte and exact physics/methods, verifies the known legacy controller through reversible edits, and streams verified source parts without a second compressed copy. Dispatch pll845-storage-continuation-cloud with the pinned 39370629792 continuation descriptor. Mainchip resizer run 39389233033 is publishing; TX runs 39372036289 and 39376417214 remain live. Local workspace remains empty.
 
