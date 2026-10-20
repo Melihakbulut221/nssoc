@@ -1,3 +1,6 @@
+## 2026-10-20 v24 leaf PASS, actual parent replacement next
+Cloud-only. Leaf39489042777/f098ea7bc7f868dcb982859048dbfa2ab8580bdc passed560DRC,54deviceLVS,18faults;8changed clockselectors and46unchanged drawings,original ports/positions. New parent workflow replaces4samplers in exact cleaned v23 parent, keepsallparentpolygons/trunks/16transforms andusesunchanged476devicephysicalgate. TX8074composition launched afterproducerPASS39486998309. Mainchip39436610858 endedcancelled at6h, retained cloudrelease summary660361367/4daa6ba4a1d8b7336cb667938c9bea12385a0e994b40145766e55e9f7e4e310f; fresh-fanout-global.odb andguidesexist, needinspectDRTlogbeforecontinuing. No finaltimingpass.
+
 ## 2026-10-20 native TX precision gate PASS
 Cloud-only. 39486998309/4036318ae68455de556bcb60e14d3b17520c4288 passed: exact historical float error reproduced, both double input orders pass unchanged raw audit,137221R98241C exact electrical records,13+13 raw faults and4order faults passed. New composition input pins this successful run;20composition controls still required before loaded waves. v24 sampler physical39489042777 running. Mainchip39436610858/PLL39423618115/TX39460427396+39453950816 live; do not restart.
 
