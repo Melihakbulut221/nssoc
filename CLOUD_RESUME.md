@@ -1,3 +1,9 @@
+## 2026-10-20 — preserve actual alter @ syntax, recover immutable inputs
+- Run39359917098 rejected incorrect matching of @ in alter against bare echo/show device identities. Actual source: alter @q... [off]; echo/show bare q... .
+- Preserve literal alter @ syntax and all3 occurrences of each102device identities. Reverse transformation still required.
+- Reuse38 input files archived by failed preparation; every byte hash independently checked against original pinned summary. No repeat1.3GB download, no old waveforms or fresh CAD.
+- NEXT: successful loaded preparation then native zero-source operating point and full loaded1us analysis. Whole contact composition remains passed; TX/mainchip handles unchanged. Cloud-only.
+
 ## 2026-10-20 — loaded-deck preparation source-layout correction
 - Run39359595928 failed the draft contiguous-OFF assumption: actual source interleaves each of102OFF commands with echo/show readbacks.
 - Keep all command positions. Rebind each actual HBT target in OFF/echo/show together;102unique targets and complete reverse-transform required. No changed stimulus, solver, duration or removed readback.

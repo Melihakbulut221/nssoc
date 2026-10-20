@@ -33,15 +33,16 @@ def prepare_deck(old,parent,model,contract):
     assert len(old_flags)==102
     hbts=[d for d in contract['device_records']if d['model']=='npn13g2']
     assert len(hbts)==102
-    flags=['alter q.xloop.'+d['instance'].lower()+'.qnpn13g2[off] = 1'for d in hbts]
+    flags=['alter @q.xloop.'+d['instance'].lower()+'.qnpn13g2[off] = 1'for d in hbts]
     # Each OFF is followed by its native echo/show readback. Preserve all
     # command positions; rebind all102 identical OFF=1 targets and their probes.
     target_map={}
     for old_flag,new_flag in zip(old_flags,flags):
-        old_target=old_flag.split()[1].split('[off]')[0]
-        new_target=new_flag.split()[1].split('[off]')[0]
+        old_target=old_flag.split()[1].split('[off]')[0].removeprefix('@')
+        new_target=new_flag.split()[1].split('[off]')[0].removeprefix('@')
         assert old_target not in target_map and new_target not in target_map.values()
-        assert sum(l.count(old_target)for l in lines)==3
+        assert old_flag=='alter @'+old_target+'[off] = 1'
+        assert sum(l.count(old_target)for l in lines)==3,(old_target,'must occur in alter/echo/show')
         target_map[old_target]=new_target
         lines=[l.replace(old_target,new_target)for l in lines]
     assert len(target_map)==102
@@ -114,22 +115,20 @@ def main():
         assert len(wanted)==35
         wanted.update({'source/bench.cir':prior['source_deck_sha256'],'circuit.cir':prior['relocated_deck_sha256'],
                        'parent865.spice':prior['parent_sha256']})
-        packed=OUT/'original-inputs.tar.gz'
-        fetch(original.URL+'.tar.gz',original.ARCHIVE_SHA,packed)
-        assert packed.stat().st_size==1318040150
+        recovery_names=['model-sources/'+n for n in sorted(wanted)]
+        recovered,recovery=reports.restore_report('pll845-loaded-preparation',39359917098,
+         '14267229577ca22a5b238abd432dac4e7dcc702504bd2241e5696e4b0e748227',
+         '701d1bfd73de0b8a20dc56e647e09b2f0830ba2573ffdfe9c521d18ca0d2efec',OUT/'recovery',recovery_names)
+        assert recovered['status']=='FAIL_OR_ERROR'and recovered['source_head']=='4e93de433261447084e9e2698a4e1fa7805ce39f'
         assert not SOURCE.exists();SOURCE.mkdir()
-        found=set()
-        with tarfile.open(packed)as tar:
-            for item in tar:
-                p=Path(item.name)
-                assert not p.is_absolute()and'..'not in p.parts and p.parts[0]=='cloud-pll-snapshot'
-                relative=str(Path(*p.parts[1:]))
-                if relative not in wanted:continue
-                assert item.isfile()and relative not in found
-                data=tar.extractfile(item).read()
-                assert hashlib.sha256(data).hexdigest()==wanted[relative]
-                target=SOURCE/relative;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data);found.add(relative)
-        assert found==set(wanted);packed.unlink()
+        for relative,digest in wanted.items():
+            data=(OUT/'recovery/model-sources'/relative).read_bytes()
+            assert hashlib.sha256(data).hexdigest()==digest
+            target=SOURCE/relative;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
+        r['hashed_input_recovery']=recovery
+        r['original_archive_re_downloaded']=False
+        r['all38_input_hashes_match_original_source_summary']=len(wanted)==38
+        assert len(wanted)==38
         old=(SOURCE/'circuit.cir').read_text();parent=(SOURCE/'parent865.spice').read_text()
         model=(OUT/'composition/pll845-mim-wire.spice').read_text()
         r['original_stimulus_lines']=[l for l in old.splitlines()if l and not l.startswith(('*','alter ','save ','echo ','show '))]
