@@ -1,3 +1,12 @@
+## 2026-10-20 — exact mainchip runtime passed; process portability next
+
+Portable runtime39494338440 passed: actual103633024-byte native OpenROAD ELF and152762-instance ODB serialize byte-identically in original and isolated runtime. Immutable2.66GB image archive and full source hashes pinned.
+
+New mainchip-process-checkpoint workflow must prove real loaded-design process/open-file continuation first within a runner, then across distinct VM boot IDs. Five negative controls remain required. It explicitly does not yet prove active detailed-router worker continuation.
+
+CDR v24 MIM audit/composition launched atf61558dc1c125b20caa5b3c6d2d1ad82619e3998; inspect both stage receipts before original fullwaves. Cloud-only; full PHY, route and final timing remain open.
+
+
 ## 2026-10-20 — fresh v24 MIM capture passed
 
 Native capture39494983590 PASS:17654R/12682C,seven actual MIM devices,938points,111wire components,five intrinsic corruption checks. Four fresh extraction receipts and full capture are now pinned.
