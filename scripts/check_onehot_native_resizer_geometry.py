@@ -11,7 +11,7 @@ def load(path):
     db=odb.dbDatabase.create();odb.read_db(db,str(path));return db
 def cell(i):
     return dict(master=i.getMaster().getName(),location=list(i.getLocation()),origin=list(i.getOrigin()),
-        orientation=str(i.getOrient()),status=str(i.getPlacementStatus()),
+        orientation=str(i.getOrient()),status=str(i.getPlacementStatus()),dont_touch=i.isDoNotTouch(),
         pins={t.getMTerm().getName():t.getNet().getName()if t.getNet()else None for t in i.getITerms()})
 def protected(i):
     return i.getMaster().isBlock()or any(str(t.getMTerm().getSigType())=='CLOCK'or
@@ -38,6 +38,7 @@ def validate(a,b,guarded):
     assert set(a)<=set(b),'Original instance removed'
     for name,old in a.items():
         new=b[name]
+        assert old['dont_touch']==new['dont_touch'],'Original dont-touch flag changed'
         assert old['pins'].keys()==new['pins'].keys(),'Pin interface changed'
         if name in guarded:
             # Data inputs may acquire a positive hold buffer; clock pin nets

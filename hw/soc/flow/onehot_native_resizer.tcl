@@ -33,9 +33,12 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     # Record every original placement and master before the optimizer runs.
     array set original_status {}
     array set original_master {}
+    array set original_touch {}
+    array set clock_touch {}
     foreach inst [$block getInsts] {
         set n [$inst getName]
         set original_status($n) [$inst getPlacementStatus]
+        set original_touch($n) [$inst isDoNotTouch]
         set original_master($n) [[$inst getMaster] getName]
         set protect [[$inst getMaster] isBlock]
         foreach pin [$inst getITerms] {
@@ -43,14 +46,17 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
             if {[[$pin getMTerm] getSigType] eq "CLOCK"
                 || ($net ne "NULL" && [$net getSigType] eq "CLOCK")} {
                 set protect 1
+                if {$net ne "NULL" && ![info exists clock_touch($net)]} {
+                    set clock_touch($net) [$net isDoNotTouch]
+                    $net setDoNotTouch true
+                }
             }
         }
         if {$protect} {
-            set cell [get_cells -quiet [list $n]]
-            if {[llength $cell] != 1 || [get_full_name $cell] ne $n} {
-                error "Cannot protect exact clock/SRAM instance $n"
-            }
-            set_dont_touch $cell
+            # Native Resizer::setDontTouch uses this same ODB flag.
+            # Object identity avoids STA glob/escape interpretation of Yosys names.
+            $inst setDoNotTouch true
+            if {![$inst isDoNotTouch]} {error "Native instance protection failed"}
         }
     }
     # Keep connectivity in the setup pass; do not clone/remove/swap/retime.
@@ -62,11 +68,22 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
         -verbose
     write_db "$::env(NSSOC_RESIZER_OUT)/setup-checkpoint.odb"
     write_verilog "$::env(NSSOC_RESIZER_OUT)/setup-checkpoint.v"
+    # Restore cell flags before hold: protected clock nets stay immutable,
+    # while a positive buffer may connect to a flip-flop/SRAM DATA input.
+    foreach inst [$block getInsts] {
+        set n [$inst getName]
+        if {[info exists original_touch($n)]} {
+            $inst setDoNotTouch $original_touch($n)
+        }
+    }
     # Setup violations are not authorized by this hold repair.
     repair_timing -hold -setup_margin 0 -hold_margin 0.1 \
         -max_iterations 200 -max_buffer_percent 20 -verbose
     write_db "$::env(NSSOC_RESIZER_OUT)/hold-checkpoint.odb"
     write_verilog "$::env(NSSOC_RESIZER_OUT)/hold-checkpoint.v"
+    foreach net [array names clock_touch] {
+        $net setDoNotTouch $clock_touch($net)
+    }
     # Only changed/new instances are mobile during legalization.
     foreach inst [$block getInsts] {
         set n [$inst getName]

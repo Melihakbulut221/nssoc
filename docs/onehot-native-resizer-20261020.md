@@ -13,3 +13,9 @@ Clock-connected cells and twenty SRAM instances are protected from resizing. Onl
 A successful job only produces a candidate. Its optimizer parasitics after mutation are not signoff evidence. Fresh routing, DRC/antenna/connectivity, RC and all-corner setup/hold measurements remain mandatory; no full PHY, LVS or production claim is made. All computation and artifacts remain in GitHub Actions/releases, with the local workspace empty.
 
 Primary implementation references: [pinned OpenROAD resizer Tcl](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/Resizer.tcl), [pinned native setup repair](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/rsz/src/RepairSetup.cc), and [LibreLane 3.0.5 timing repair](https://github.com/librelane/librelane/blob/3.0.5/librelane/scripts/openroad/rsz_timing_postgrt.tcl).
+
+## First native execution and direct-object fix
+
+Run 39385758586 reproduced all six source worst slacks with maximum difference 0.000000122 ns, then stopped before native optimization: a Yosys cell name containing backslashes did not map through STA's name-pattern lookup. The failure is preserved in evidence/onehot-native-resizer-name-rejection-20261020.json.
+
+The corrected Tcl protects the actual ODB instance using setDoNotTouch, the same underlying flag used by the pinned Resizer::setDontTouch implementation. Original flags are recorded and restored. Clock nets remain protected through both repairs. Instance flags are restored before hold buffering so that clock-connected state elements' data inputs can receive a positive delay buffer. Geometry and clock-net checks remain independent; no timing limit is changed.
