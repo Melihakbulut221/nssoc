@@ -95,7 +95,7 @@ def main():
   if key not in allowed:assert (before[0][key]^expected[0][key]).is_empty()
  # Prove exact region delta consists only of the fourteen declared rectangles.
  for key in allowed:
-  r=pya.Region(before[0][key])
+  r=before[0][key].dup()
   for c in [*changes,*junction_changes]:
    if c['layer']==key[0]:
     r-=pya.Region(pya.Box.from_s(c['before_box_dbu']))

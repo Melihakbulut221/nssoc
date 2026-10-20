@@ -1,3 +1,12 @@
+## 2026-10-20 — v21 exact region-copy API correction
+
+39437494902 moved/checked all four trunks and ten flattened junctions but stopped
+at the independent delta proof: Region(existing_region) is not supported by
+the pinned native runtime. Use documented .dup() only; unchanged geometry,
+delta proof, loads and native physical gates. Prior rejection retained.
+TX path review39438335576 is running; mainchip39436610858 and PLL39423618115
+remain live. Cloud-only; do not restart those handles.
+
 ## 2026-10-20 — wire20 TX original-capture diagnosis added
 
 TX nominal39409002976 rejected with79wrong/768 and97low output samples,
