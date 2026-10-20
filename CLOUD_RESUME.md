@@ -1,3 +1,8 @@
+## 2026-10-21 Actual8074 TX physical interface bridge launched
+New tx-raw8074-interfaces-cloud independently reopens the actual full-parent GDS/flat LVS, matches every native device parameter and28582 terminal to the final wire composition, and binds124 logical input legs/372HBT bases plus64 real driver handoffs. All source summaries, native geometry, composition and topology are hash pinned. Eight record faults and two wrong physical polarity pairs must reject.
+This enables the next whole8074 loaded bench to consume actual137221R98241C with physical driver/core interconnect. Do not reuse the timed-out ideal-interconnect bench as full physical acceptance; next full simulation must preserve native process state before CI limit. External clock macros remain a physical integration requirement.
+CDR fullwave39514312697 and mainchip exact continuation39515176239 remain live; PLL39502073954 initial is publishing its native state. Never restart live work. Cloud-only; no local files.
+
 ## 2026-10-21 v25 independent RC/MIM and composition PASS; native tests next
 Validation39513890526 passed both actual stages. Fresh17654R/12682C/sevenMIM raw identities and13wire+9intrinsic corruption cases passed; actual476-device composition retains every raw R/C token, exactly seven intrinsic MIM models and19composition corruption cases. Immutable summary/parts pins and compact native proofs are in cdr-data3-v25-mim-validation-pass-20261021.json.
 Fullwave39514312697 sourcef336dd36b3ed8e66622dd1cf5bf187121117fff3 passed source/receipt preflight; four original full loaded nominal/fault cases now proceed. Do not commit its dynamically generated per-stage audit/composition receipt paths. No loaded electrical pass yet.
