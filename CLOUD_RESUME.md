@@ -1,3 +1,6 @@
+## 2026-10-20 — CDR v22 physical pass; fresh native extraction
+Physical run39454675485 passed original native484 DRC/LVS and faults. Receipt pins exact GDS and archive. New cdr-retime-trunks-v22-extraction-cloud push runs planes, wire inputs, binding and RC with unchanged algorithms. Do not precommit dynamic stage receipts. Electrical/fullPHY acceptance still open. All work/evidence stays on GitHub; local project remains empty.
+
 ## 2026-10-20 — CDR v22 retime-input physical candidate; cloud-only
 V21 passive and latch reviews reproduce its electrical rejection. Filter-output-to-sampler wire loads remain 0.2305–0.2571pF with 45.73–54.92ohm effective metal resistance. V22 moves cup/cun/dup/dun trunks and eight arms using actual obstacle-checked native geometry while retaining v21 collector routes and all children/pins. New push starts cdr-retime-trunks-v22-parent-cloud; it must pass original full DRC/LVS before fresh RC and unchanged waveforms. TX corrected fullwave39453950816 is live. Mainchip39436610858 and PLL39423618115 remain live; do not restart. Full PHY and final timing are not accepted.
 
