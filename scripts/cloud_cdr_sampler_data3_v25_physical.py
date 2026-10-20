@@ -21,7 +21,7 @@ def main():
     try:
         analog=ROOT/'hw/soc/analog/pcie/rx_sampler_data3_v25.spice'
         assert sha(analog)=='597445e724f01cc81b63d905e64a5a84b6465dbb37cfdc5f476a97982659cb1e'
-        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_data3_v25.py')=='50f406081fc8f6d717c366289465956819538abd240d3b192f3c44ef30e810e7'
+        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_data3_v25.py')=='ecc1f21ffbdea576de3c4215228c401ab292a9f383fbd9944e8a090c66c68f4b'
         paths=[Path(__file__),analog,*[ROOT/p for p in ('hw/soc/flow/make_pcie_sampler_compact_v1.py','hw/soc/flow/make_pcie_sampler_data3_v25.py','hw/soc/flow/check_pcie_sampler_compact_v1.py','hw/soc/flow/check_pcie_sampler_data3_v25.py','scripts/check_cdr_sampler_data3_v25_sources.py','scripts/cdr-sampler-data3-v25-source-delta.json','hw/soc/flow/check_pcie_sampler_left_v1.py','scripts/check_cdr_sampler_data3_v25_geometry.py')]]
         subprocess.run([sys.executable,ROOT/'scripts/check_cdr_sampler_data3_v25_sources.py'],check=True)
         paths.append(ROOT/'docs/evidence/cdr-v24-native-latch-diagnosis-20261021.json')

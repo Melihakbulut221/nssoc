@@ -26,4 +26,20 @@ for before,after in zip(a,b,strict=True):
         assert renamed.endswith('Nx=4')and after==renamed[:-4]+'Nx=3';count+=1
     else:assert after==renamed
 assert count==8
-print('PASS_EXACT_EIGHT_DATA_HOLD_NX4_TO3_CHANGES_AND_BOUND_PHYSICAL_METHODS')
+# Exercise the actual schematic flattener before restoring native CAD.
+prior=runpy.run_path(str(root/'hw/soc/flow/make_pcie_sampler_selector_small_v24.py'))
+nextgen=runpy.run_path(str(root/'hw/soc/flow/make_pcie_sampler_data3_v25.py'))
+rows0=prior['devices'](old);rows1=nextgen['devices'](new)
+assert len(rows0)==len(rows1)==37
+changed=0
+for a,b in zip(rows0,rows1,strict=True):
+    expected=dict(a)
+    if a['kind']=='hbt'and a['name'] in {stage+'_'+side for stage in ('M','S')for side in ('DP','DN','LP','LN')}:
+        assert a['nx']==4;expected['nx']=3;changed+=1
+    assert b==expected,(a['name'],'Unexpected flattened native device change')
+assert changed==8
+reference=nextgen['physical_reference'](new)
+assert '.subckt '+nextgen['TOP']+' ' in reference
+assert len([line for line in reference.splitlines()if line.startswith(('Q','M','R'))])==54
+assert reference.count('npn13G2 Nx=3 ')==reference.count('npn13G2 Nx=2 ')==8
+print('PASS_EXACT_EIGHT_DATA_HOLD_NX4_TO3_CHANGES_AND_BOUND_PHYSICAL_METHODS_AND_NATIVE_FLATTENER')

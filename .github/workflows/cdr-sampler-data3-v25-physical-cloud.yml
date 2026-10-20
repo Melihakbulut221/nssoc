@@ -27,7 +27,7 @@ jobs:
           python-version: '3.12'
       - name: Compile exact physical methods in the cloud
         run: python3 -m py_compile scripts/cloud_cdr_sampler_data3_v25_physical.py hw/soc/flow/make_pcie_sampler_data3_v25.py hw/soc/flow/check_pcie_sampler_data3_v25.py scripts/check_cdr_sampler_data3_v25_geometry.py scripts/check_cdr_sampler_data3_v25_sources.py
-      - name: Verify exact declared geometry delta and unchanged physical gates
+      - name: Verify declared geometry delta, actual schematic flattening and unchanged physical gates
         run: python3 scripts/check_cdr_sampler_data3_v25_sources.py
       - name: Restore pinned native CAD runtime
         run: |

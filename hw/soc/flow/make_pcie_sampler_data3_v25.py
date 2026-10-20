@@ -61,7 +61,7 @@ def devices(text):
                                  width_um=float(fields[5][2:-1]), length_um=float(fields[6][2:-1])))
             else:
                 expand(fields[-1], [net(v) for v in fields[1:-1]], name + "_")
-    expand("NSSOC_RX_SAMPLER_SELECTOR_SMALL_V24", list(PORTS), "")
+    expand("NSSOC_RX_SAMPLER_DATA3_V25", list(PORTS), "")
     if len(rows) != 37 or {k: sum(r["kind"] == k for r in rows) for k in ("hbt", "nmos", "resistor")} != {"hbt": 16, "nmos": 9, "resistor": 12}:
         raise ValueError("Sampler primitive census differs")
     assert all(1 <= r["nx"] <= 10 for r in rows if r["kind"] == "hbt")
