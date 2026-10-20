@@ -1,0 +1,50 @@
+[
+  {
+    "baseline_path": "scripts/cloud_onehot_coverage_data_route.py",
+    "baseline_sha256": "5d3d4b8498aca7eb363d0fed959a11da3c307cc762832a12b48ffb3f71bd9bc4",
+    "candidate_path": "scripts/cloud_onehot_clock_restore_route.py",
+    "candidate_sha256": "10084c3c2cc21c508f30db65850da2725ff378b94811c3c7c563f7d2cfa6abb0",
+    "edits": [
+      {
+        "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-coverage-data-route'",
+        "after": "OUT=ROOT/'hw/soc/out/cloud-onehot-clock-restore-route'",
+        "count": 1
+      },
+      {
+        "before": "scope='Route128 measured hold-screened setup positive buffers with native geometry and logic proofs. All150291 source cells including antenna diodes retained. Original20/4/8/8ns clocks,5percent derate,20SRAM and complete RTL/route ancestry remain. Fresh nominal OpenRCX and three cell corners; topology is not LVS, qualifiedRC or fullPHY/signoff.'",
+        "after": "scope='Legalize one physically proven restored short clock route in actual routed128-buffer chip. Preserve all150419 source cells and exact fixed clock geometry. Reuse actual existing global guides, not a fresh whole-chip global route. Original20/4/8/8ns clocks,5percent derate,20SRAM and complete RTL/route ancestry remain. Fresh nominal OpenRCX and three cell corners; topology is not LVS, qualifiedRC or fullPHY/signoff.'",
+        "count": 1
+      },
+      {
+        "before": "        saved_candidate_odb=odb",
+        "after": "\n        # The source above is the immutable boot-to-128-buffer provenance.\n        # Route only the physically proven single-clock transfer below.\n        clock_pin=json.loads((ROOT/'docs/evidence/onehot-clock-restore-pass-20261020.json').read_text())\n        clock_run=api('actions/runs/'+str(clock_pin['run']))\n        assert clock_run['status']=='completed'and clock_run['conclusion']=='success'\n        assert clock_run['head_sha']==clock_pin['source_head']and clock_run['run_attempt']==1\n        assert clock_run['path']=='.github/workflows/onehot-clock-restore-cloud.yml'\n        clock_root=ROOT/'hw/soc/out/cloud-onehot-clock-restore'\n        clock_names=['candidate.odb','candidate.v','candidate.def','candidate-state.json','trial-config.json',\n          'transfer-plan.json','transfer-proof.json','clock-statement-proof.json','clock-patch.def','sources.json']\n        clock,clock_proof=reports.restore_report(clock_pin['group'],clock_pin['run'],clock_pin['summary_sha256'],\n          clock_pin['parts_sha256'],clock_root,clock_names)\n        assert clock==clock_pin['report']and clock['sources_unchanged']\n        assert clock['status']=='PASS_NATIVE_CLOCK_ROUTE_TRANSFER_REQUIRES_PHYSICAL_LEGALIZATION_RC_AND_STA'\n        assert clock['netlist_literal_identity']and all(clock['controls'].values())\n        assert clock['sources']['before']['run']==39293720171\n        assert clock['sources']['after']['run']==39331918238\n        assert json.loads((clock_root/'trial-config.json').read_text())==cfg\n        transfer=clock['proof']\n        assert transfer['net']=='clknet_3_5_0_pcie_clk_i'\n        assert all(transfer[k]for k in ('source_pin_positions_unchanged','all_unrelated_def_content_unchanged',\n            'original_clock_route_restored_exactly','physical_via_definitions_exact'))\n        assert json.loads((clock_root/'transfer-proof.json').read_text())==transfer\n        current_pin=json.loads((ROOT/'docs/evidence/onehot-coverage-data-route-result-20261020.json').read_text())\n        assert current_pin['run']==39331918238 and current_pin['summary_sha256']==clock['sources']['after']['summary']\n        current=current_pin['report']\n        assert current['sources_unchanged']and current['returncode']==0 and current['detailed_route_complete']\n        assert current['native_routing_drc_errors']==0 and current['critical_disconnected_pins']==0\n        assert current['measurements']==clock['original_measurements']\n        state_path=clock_root/'candidate-state.json';state=json.loads(state_path.read_text())\n        odb=Path(state['odb']);netlist=Path(state['nl'])\n        assert odb==clock_root/'candidate.odb'and netlist==clock_root/'candidate.v'\n        assert sha(odb)==clock['candidate_odb_sha256']==transfer['candidate_odb_sha256']\n        assert sha(netlist)==clock['candidate_netlist_sha256']\n        assert state['spef']is None and not state['metrics']\n        current_root=ROOT/'hw/soc/out/cloud-onehot-coverage-data-route';clock_missing=set()\n        def collect_clock_missing(value):\n            if isinstance(value,dict):\n                for v in value.values():collect_clock_missing(v)\n            elif isinstance(value,list):\n                for v in value:collect_clock_missing(v)\n            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():\n                p=Path(value);assert p.is_relative_to(current_root),('Unbound clock transfer state dependency',value)\n                rel=str(p.relative_to(current_root));assert rel in current['outputs'];clock_missing.add(rel)\n        collect_clock_missing(state)\n        if clock_missing:\n            restored_clock_baseline,clock_dependency_proof=reports.restore_report(current_pin['group'],current_pin['run'],\n              current_pin['summary_sha256'],current_pin['parts_sha256'],current_root,sorted(clock_missing))\n            assert restored_clock_baseline==current\n            dependency_hashes.update({str(current_root/n):current['outputs'][n]for n in clock_missing})\n            r['clock_state_dependency_source']=clock_dependency_proof\n        assert all(sha(p)==v for p,v in dependency_hashes.items())\n        r['restored_exact_state_dependencies']['files']=dependency_hashes\n        r['source_routed_measurements']=current['measurements']\n        r['clock_route_transfer_source']=clock_proof;r['clock_route_transfer_proof']=transfer\n        r['clock_original_native_routed_baseline']=r['native_routed_baseline']\n        r['native_routed_baseline']=dict(run=current_pin['run'],summary_sha256=current_pin['summary_sha256'],\n           parts_sha256=current_pin['parts_sha256'],antenna=current['final_antenna'],\n           timing_and_electrical_counts_met=current['all_reported_timing_and_electrical_gates_met'])\n        r['detailed_route_complete']=False\n\n        saved_candidate_odb=odb",
+        "count": 1
+      },
+      {
+        "before": "flow=ROOT/'hw/soc/pnr/onehot_load_route_flow.py'",
+        "after": "flow=ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py'",
+        "count": 1
+      },
+      {
+        "before": "        command=[str(app),'python',str(flow),'--flow','OnehotLoadRoute'",
+        "after": "        protected.update({str(clock_root/n):clock['outputs'][n]for n in clock_names})\n        for path in (ROOT/'scripts/check_onehot_fixed_clock_route.py',ROOT/'scripts/prepare_onehot_clock_restore.py',\n          ROOT/'docs/evidence/onehot-clock-restore-pass-20261020.json',ROOT/'docs/evidence/onehot-coverage-data-route-result-20261020.json'):\n            protected[str(path)]=sha(path)\n        command=[str(app),'python',str(flow),'--flow','OnehotClockRestoreRoute'",
+        "count": 1
+      },
+      {
+        "before": "RUNNING_NATIVE_COVERAGE_DATA_BUFFER_ROUTE_AND_FRESH_RC_STA",
+        "after": "RUNNING_NATIVE_FIXED_CLOCK_LEGALIZATION_AND_FRESH_RC_STA",
+        "count": 1
+      },
+      {
+        "before": "        r['native_physical_gates_met']=count==0",
+        "after": "        fixed_method=ROOT/'scripts/check_onehot_fixed_clock_route.py';fixed_output=OUT/'fixed-clock-route-proof.json'\n        with(OUT/'fixed-clock-route-proof.log').open('w')as log:\n            fixed_code=subprocess.call([str(app),'openroad','-exit','-python',str(fixed_method)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,\n              env={**{k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')},\n                'NSSOC_TOPOLOGY_BEFORE':str(saved_candidate_odb),'NSSOC_TOPOLOGY_AFTER':routed['odb'],\n                'NSSOC_CLOCK_ROUTE_PROOF_OUT':str(fixed_output)})\n        if fixed_code:print((OUT/'fixed-clock-route-proof.log').read_text()[-12000:],flush=True)\n        assert fixed_code==0,'Native DRT changed original physical fixed clock route'\n        r['fixed_clock_route_proof']=json.loads(fixed_output.read_text())\n        assert r['fixed_clock_route_proof']['original_physical_route_preserved']\n        r['native_physical_gates_met']=count==0",
+        "count": 1
+      },
+      {
+        "before": "COMPLETE_NATIVE_COVERAGE_DATA_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+        "after": "COMPLETE_NATIVE_FIXED_CLOCK_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+        "count": 1
+      }
+    ]
+  }
+]
