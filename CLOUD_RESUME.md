@@ -1,3 +1,6 @@
+## Clock wire geometry measured, RC identity still rejected
+39364493631 native ODB geometry passed: unchanged clknet_3_5_0_pcie_clk_i endpoints and NDR, routed wire total 1142.070 to 2996.810 um. Nominal SPEF pin-membership check failed and remains enforced. Next cloud run preserves exact mismatched identities; do not infer RC pass or timing repair from geometry alone. All sources and failed results archived remotely.
+
 ## Verified cloud clock regression evidence
 39364077862 completed: 75 of 95 fast-corner negative reported minimum paths share clkbuf_3_5_0_pcie_clk_i, whose four downstream connections gained 0.513–0.528 ns against original actual routed reports. Includes removal checks, not solely register hold. Same endpoints include existing setup failures; no repair accepted. Paired read-only native clock geometry/SPEF cloud workflow is following commit 58ce99f46edbbfaf6a096e371724bc8b0e7e6743. TX wire24 fullwave remains on original run 39344566214; do not duplicate. Local project directory verified empty; no local CAD or artifacts.
 

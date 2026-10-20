@@ -54,7 +54,7 @@ def review(net,geometry):
     expected={t['instance']+':'+t['pin']:t['direction'][0]for t in geometry['terminals']}
     connections=net['connections']
     assert len(connections)==len({x['node']for x in connections})
-    assert {x['node']:x['direction']for x in connections}==expected,'Native ODB/SPEF clock pin identity differs'
+    assert {x['node']:x['direction']for x in connections}==expected,dict(error='Native ODB/SPEF clock pin identity differs',net=net['name'],expected=expected,actual=connections)
     assert net['name']==geometry['net']
     total=sum(c['pf']for c in net['C'])
     assert abs(total-net['declared_cap_pf'])<=max(1e-8,1e-5*max(total,net['declared_cap_pf']))
