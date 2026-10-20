@@ -1,3 +1,7 @@
+## 2026-10-20 — Fresh active-follower interface binding passed; dependent MIM capture queued
+Extraction39474349718 at0712729a5c5177b0f6017b2abadc14dd97b0c0dd passed planes; wire inputs is live. New MIM capture waits for all four exact stages, verifies immutable cross-stage provenance, and retains seven actual MIMs/938 physical references/five corruption checks. Raw RC audit/composition and original loaded electrical gates remain mandatory. Full PHY/mainchip timing remain open; all work cloud-only.
+
+
 ## 2026-10-20 — Active-follower full parent physical campaign passed; fresh extraction dispatched
 Parent39473538977 passed560DRC zero, deep/flat476-device LVS, all nine faults and16-instance/eight-leaf geometry controls. Exact GDS e06bfb08c8ab9db6cf21560975b6bcd48afed0395d353fc258d1d853073ff3ec pinned. New cdr-follower-v23-extraction-cloud binds160interfaces,1382terminals and actual native models, then extracts fresh full wire RC with original13corruptions. Independent expected census120HBT46MOS98R7MIM205contacts; no thresholds relaxed. MIM-aware composition and original loaded gates remain required. TX anchor39471428433 and existing mainchip/TX/PLL live. Cloud only.
 
