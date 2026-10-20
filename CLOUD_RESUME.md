@@ -1,3 +1,6 @@
+## Clock attribution continuation
+Native run 39363436397 rejected actual delaybuf_51..57_clk_i capture clock cells on an asynchronous removal path. These are sg13g2_buf_16 clock stages in the original report. Accept the measured CTS naming with an explicit buffer master allowlist; preserve slack equations, all corners and SRAM data-pin rejection. Routing and timing remain unaccepted. All work remains cloud-only.
+
 ## 2026-10-20 — clock attribution includes actual SRAM capture clocks
 - Run39363009998 correctly stopped at an unhandled endpoint: Ethernet FIFO SRAM B_CLK. The draft guard only covered FF /CLK.
 - Native reports show RM_IHPSG13_2P_256x16_c2_bm_bist A_CLK/B_CLK. Add those exact clock names for that exact endpoint/macro; positive tests for both and rejection of A_D[0]. No relaxed report equation or timing gate.

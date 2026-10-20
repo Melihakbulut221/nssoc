@@ -37,7 +37,7 @@ def dissect(path):
     arrival,required=float(arrival[0]),float(required[0])
     assert abs((arrival-required)-path['slack_ns'])<2e-6
     clock=parse_rows(capture)
-    assert all(r['pin'].startswith('clkbuf')or r['pin'].endswith('/CLK')or r['master']=='in'or 'lgcp'in r['master']or(r['master']=='RM_IHPSG13_2P_256x16_c2_bm_bist'and r['pin']in (path['endpoint']+'/A_CLK',path['endpoint']+'/B_CLK'))for r in clock),(path['endpoint'],'unexpected capture data row')
+    assert all((r['pin'].startswith(('clkbuf','delaybuf_'))and re.fullmatch(r'sg13g2_buf_(1|2|4|8|16)',r['master'])is not None)or r['pin'].endswith('/CLK')or r['master']=='in'or 'lgcp'in r['master']or(r['master']=='RM_IHPSG13_2P_256x16_c2_bm_bist'and r['pin']in (path['endpoint']+'/A_CLK',path['endpoint']+'/B_CLK'))for r in clock),(path['endpoint'],'unexpected capture data row')
     nets=[]
     for i,r in enumerate(clock):
         if r['fanout']is not None or i==0:continue
@@ -73,6 +73,8 @@ Path Type: min
         try:dissect(bad)
         except AssertionError:pass
         else:raise AssertionError('Malformed path accepted')
+    delay=dict(p,native_report=text.replace('clkbuf_b','delaybuf_51_clk_i'))
+    assert dissect(delay)['capture_net_segments'][0]['sink']=='delaybuf_51_clk_i/A'
     for pin in ('A_CLK','B_CLK'):
         macro=dict(p,native_report=text.replace('dst/CLK (sg13g2_dfrbpq_1)','dst/'+pin+' (RM_IHPSG13_2P_256x16_c2_bm_bist)'))
         assert dissect(macro)['capture_clock_rows'][-1]['pin']=='dst/'+pin
@@ -80,7 +82,7 @@ Path Type: min
     try:dissect(bad)
     except AssertionError:pass
     else:raise AssertionError('SRAM data pin accepted as capture clock')
-    return dict(correct_capture_segment=True,actual_dual_port_sram_clock_pins_supported=True,wrong_slack_kind_group_capture_data_and_sram_data_rejected=5)
+    return dict(correct_capture_segment=True,actual_dual_port_sram_clock_pins_supported=True,actual_delaybuf_clock_stages_supported=True,wrong_slack_kind_group_capture_data_and_sram_data_rejected=5)
 def endpoint_map(rows):
     out={}
     for p in rows:
