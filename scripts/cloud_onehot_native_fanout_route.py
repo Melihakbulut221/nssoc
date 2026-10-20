@@ -708,7 +708,7 @@ def main():
         assert prior['native_resizer_source']['manifest_sha256']==eco_pin['parts_sha256']
         assert prior['native_resizer_candidate_geometry']==eco['geometry']
         assert prior['native_resizer_candidate_logic']==eco['proof']
-        assert prior['routed_candidate_topology']['proof']['retained_instances']==152762
+        assert prior['routed_candidate_topology']['proof']['retained_instances']==151051
         assert prior['routed_candidate_topology']['proof']['added_diode_count']==27
         assert prior['fixed_clock_route_proof']['original_physical_route_preserved']
         assert prior['routed_odb_sha256']==fan['source_odb_sha256']=='df3f0fe0bc20b3f6b31e990b488b467b1d0b445847e13eec2fd3a978cda71f0f'

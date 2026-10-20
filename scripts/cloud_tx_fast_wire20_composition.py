@@ -280,7 +280,7 @@ def main():
         run([app,'python',interface_helper],'bind-real-final-interface-probes')
         interface=json.loads((wire/'tree-interface-probes.json').read_text())
         assert interface['status']=='PASS_REAL_INTERMACRO_ENDPOINTS_TO_ALL_FINAL_HBT_BASES'
-        run([app,'python',ROOT/'scripts/bind_tx_fast_wire24_interfaces.py',out,wire/'all-interface-probes.json'],'bind-all124-native-input-legs')
+        run([app,'python',ROOT/'scripts/bind_tx_fast_wire20_interfaces.py',out,wire/'all-interface-probes.json'],'bind-all124-native-input-legs')
         all_interfaces=json.loads((wire/'all-interface-probes.json').read_text())
         assert all_interfaces['status']=='PASS_ALL124_PHYSICAL_INPUT_LEGS_AND372_DATA_BASES'
         assert len(all_interfaces['actual_endpoint_faults'])==2 and all(x['rejected']for x in all_interfaces['actual_endpoint_faults'])

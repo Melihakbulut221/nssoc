@@ -4,7 +4,7 @@ name: tx-fast-wire20-composition-cloud
 on:
   push:
     branches: [codex/complete-open-work]
-    paths: [.github/workflows/tx-fast-wire20-composition-cloud.yml]
+    paths: [.github/workflows/tx-fast-wire20-composition-cloud.yml, scripts/cloud_tx_fast_wire20_composition.py, scripts/bind_tx_fast_wire20_interfaces.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
           python-version: '3.12'
       - name: Restore pinned native CAD runtime
         run: |
-          python3 -m py_compile scripts/cloud_tx_fast_wire20_composition.py scripts/bind_tx_fast_wire24_interfaces.py
+          python3 -m py_compile scripts/cloud_tx_fast_wire20_composition.py scripts/bind_tx_fast_wire20_interfaces.py
           python3 scripts/check_tx_fast_wire20_composition_sources.py
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6

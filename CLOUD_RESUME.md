@@ -1,3 +1,6 @@
+## 2026-10-20 — Correct source-bound handoff failures
+Route39406681799 failed before native CAD: a substring edit changed prior151051 retained census to152762. Fixed exact assertion boundary; newcandidate152762 and prior151051+27diodes are distinct. Composition39407119769 failed only at inherited wire24 interface receipt. Dedicated wire20 binder keeps124legs/372bases and both actual faults with exact new physical pins. Both failed archives are committed as receipts. This push retries only these terminal route/composition workflows. No geometry/RC rerun or acceptance relaxation. PLL39390580356 remains live in publication. Local workspace remains empty, all execution cloud-only.
+
 ## 2026-10-20 — Fresh TX2um RC passed
 Native extraction39405777617 completed with1674devices,4774terminals,377conductors,116611R77538C and all13raw corruption controls. Exact complete receipt is committed. New tx-fast-wire20-composition-cloud auto-starts once; consume only this new geometry-bound RC and preserve six composition plus two interface faults. Original full34ns loaded waveforms remain required after composition. Mainchip fanout route39406681799 is live; PLL39390580356 remains publishing. Local workspace remains empty; cloud-only work continues.
 
