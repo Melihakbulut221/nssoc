@@ -1,3 +1,11 @@
+## 2026-10-20 native producer repair
+
+CDR audit/composition39478830833 PASSED13wire+9MIM+19composition controls. Loaded follower476 job39479905700 is live fromd873cde28d768838e68af35917da5d8e92814a15; do not restart.
+
+TX diagnosis39479905356 PASSED all698 exact native total reconstructions and4faults. Native binary32 accumulation explains the failed power-rail total witnesses. This commit launches tx-raw64-totalcap-precision-cloud: restore2057 archived sourcefiles, rebuild baseline and double-field candidate, require identical137221R98241C outputs and original13corruption gates. No tolerance change, no edited output.
+
+Continue original mainchip39436610858, PLL39423618115 and TXwaves39460427396/39453950816. Cloud-only workspace policy unchanged. FullPHY/routing/finaltiming remain incomplete.
+
 ## 2026-10-20 cloud loaded handoff and TX reader correction
 
 Follower476 loaded pipeline waits for exact39478830833 audit/composition: original nominal early/late and clock-stopped/VI-bias-off cases, all120HBT46MOS,1103vectors, same256bits and physical loads. Do not call this closed-loop or fullPHY acceptance.
