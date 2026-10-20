@@ -70,6 +70,8 @@ def main():
     assert len(rejects)==2
     changes=[dict(instance=n,before=old[n],after=new[n])for n in old if old[n]!=new[n]]
     added={n:new[n]for n in new.keys()-old.keys()}
+    for name,item in added.items():
+        assert item['pins']['VPWR']=='VPWR'and item['pins']['VGND']=='VGND',('New buffer supply mismatch',name)
     # Hold repair may only add positive standard buffers. Liberty proof is mandatory.
     assert all(r['master'].startswith('sg13g2_buf_')for r in added.values()),'Unexpected added function'
     r=dict(status='PASS_SCOPED_CANDIDATE_GEOMETRY_NOT_ROUTE_OR_LVS',original_instances=len(old),

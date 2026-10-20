@@ -46,7 +46,7 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     def run(cmd,label,extra=None,required=True):
         env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')}
-        env.update(NSSOC_RESIZER_OUT=str(OUT),NSSOC_CORNERS=' '.join(CORNERS))
+        env.update(NSSOC_RESIZER_OUT=str(OUT),NSSOC_CORNERS=' '.join(CORNERS),NSSOC_ROUTER_INIT_TCL=str(ROOT/'hw/soc/flow/onehot_native_router_init.tcl'))
         if extra:env.update(extra)
         start=time.monotonic()
         with(OUT/(label+'.log')).open('w')as f:
@@ -125,7 +125,7 @@ def main():
         script=OUT/'native.tcl';script.write_text('\n'.join(tcl)+'\n')
         app=Path(os.environ['CLOUD_APPIMAGE'])
         assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-        protected={str(p):sha(p)for p in [Path(__file__),native,script,lockpath,ROOT/'scripts/check_onehot_native_resizer_geometry.py',*[source/n for n in names]]}
+        protected={str(p):sha(p)for p in [Path(__file__),native,ROOT/'hw/soc/flow/onehot_native_router_init.tcl',script,lockpath,ROOT/'scripts/check_onehot_native_resizer_geometry.py',*[source/n for n in names]]}
         protected.update(model_hashes)
         r.update(source=proof,previous_native_rejection=original['error'],verified_postroute_audit_run=audit['run'],
             original_measurements=ar['measurements'],model_hashes=model_hashes,protected_inputs=protected,
@@ -137,6 +137,20 @@ def main():
         r.update(native_baseline=actual,expected_baseline=expected);save();baseline_gate(actual,expected)
         r['status']='RUNNING_NATIVE_SETUP_HOLD_REPAIR_AFTER_MATCHED_BASELINE';save()
         run([app,'openroad','-exit',script],'native-repair',{'NSSOC_RESIZER_STAGE':'repair'})
+        a=(OUT/'router-init-before.def').read_text();b=(OUT/'router-init-after.def').read_text()
+        normalize=lambda s:re.sub(r'(?m)^GCELLGRID[^\n]*\n','',s)
+        assert normalize(a)==normalize(b)
+        assert normalize(a)!=normalize('X'+b[1:])
+        reports_match={}
+        for corner in CORNERS:
+            for mode in ('max','min'):
+                p=OUT/('router-init-before-'+corner+'-'+mode+'.rpt')
+                q=OUT/('router-init-after-'+corner+'-'+mode+'.rpt')
+                assert p.read_bytes()==q.read_bytes()
+                reports_match[corner+'/'+mode]=sha(p)
+        r['routing_initialization']=dict(physical_def_preserved_excluding_gcellgrid=True,
+            six_native_reports_literal_identity=reports_match,changed_def_rejected=True,
+            source_guides_sha256=sha(OUT/'router-init-source.guide'))
         run([app,'openroad','-exit','-python',ROOT/'scripts/check_onehot_native_resizer_geometry.py'],'native-geometry')
         r['geometry']=json.loads((OUT/'geometry.json').read_text())
         env=dict(NSSOC_TOPOLOGY_BEFORE=str(db),NSSOC_TOPOLOGY_AFTER=str(OUT/'candidate.odb'),

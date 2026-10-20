@@ -19,3 +19,14 @@ Primary implementation references: [pinned OpenROAD resizer Tcl](https://github.
 Run 39385758586 reproduced all six source worst slacks with maximum difference 0.000000122 ns, then stopped before native optimization: a Yosys cell name containing backslashes did not map through STA's name-pattern lookup. The failure is preserved in evidence/onehot-native-resizer-name-rejection-20261020.json.
 
 The corrected Tcl protects the actual ODB instance using setDoNotTouch, the same underlying flag used by the pinned Resizer::setDontTouch implementation. Original flags are recorded and restored. Clock nets remain protected through both repairs. Instance flags are restored before hold buffering so that clock-connected state elements' data inputs can receive a positive delay buffer. Geometry and clock-net checks remain independent; no timing limit is changed.
+
+
+## Native routing callback crash and initialization correction
+
+Run 39386565913 again reproduced the original routed baseline, then the pinned engine crashed at the first SizeUpMove. The stack is GlobalRouter::addDirtyNet -> GRouteDbCbk::inDbInstSwapMasterAfter -> dbInst::swapMaster. No candidate checkpoint was produced. The exact rejection remains in evidence/onehot-native-resizer-router-crash-20261020.json.
+
+Inspection of the exact OpenROAD revision shows that IncrementalGRoute installs a callback without populating db_net_map_; addDirtyNet dereferences that map entry. The repair flow now writes and reloads the existing source guides, sets the original signal/clock layer ranges and 0.2 capacity adjustment, and performs an empty start/end incremental session to initialize native grid/net tables before optimization. It does not substitute placement RC or run a new global route over the whole chip.
+
+Before editing any cell, the workflow compares full physical DEF before/after initialization (excluding only GCell grid bookkeeping), and requires literal identity of all six per-corner max/min worst-path reports. A changed-DEF negative control is retained. Native resizer callbacks own subsequent dirty-net updates; final route/RC/STA is still required. All added positive hold buffers must have VPWR/VGND connected to the actual existing supply nets; the independent geometry checker verifies those connections.
+
+Primary evidence: [exact GlobalRouter implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/grt/src/GlobalRouter.cpp) and [exact incremental parasitic update implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/est/src/EstimateParasitics.cpp).

@@ -30,6 +30,7 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
             -violators -digits 9 > "$::env(NSSOC_RESIZER_OUT)/before-$c-checks.rpt"
     }
 } elseif {$::env(NSSOC_RESIZER_STAGE) eq "repair"} {
+    source $::env(NSSOC_ROUTER_INIT_TCL)
     # Record every original placement and master before the optimizer runs.
     array set original_status {}
     array set original_master {}
@@ -79,6 +80,22 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     # Setup violations are not authorized by this hold repair.
     repair_timing -hold -setup_margin 0 -hold_margin 0.1 \
         -max_iterations 200 -max_buffer_percent 20 -verbose
+    # New delay buffers need real supply nets in addition to signal equations.
+    foreach inst [$block getInsts] {
+        set n [$inst getName]
+        if {[info exists original_master($n)]} {continue}
+        if {![string match sg13g2_buf_* [[$inst getMaster] getName]]} {
+            error "Unexpected new master in hold repair"
+        }
+        foreach {pin_name net_name} {VPWR VPWR VGND VGND} {
+            set pin [$inst findITerm $pin_name]
+            set net [$block findNet $net_name]
+            if {$pin eq "NULL" || $net eq "NULL"} {error "Missing new buffer supply"}
+            set prior [$pin getNet]
+            if {$prior eq "NULL"} {$pin connect $net}
+            if {[$pin getNet] ne $net} {error "New buffer supply connected to wrong net"}
+        }
+    }
     write_db "$::env(NSSOC_RESIZER_OUT)/hold-checkpoint.odb"
     write_verilog "$::env(NSSOC_RESIZER_OUT)/hold-checkpoint.v"
     foreach net [array names clock_touch] {
