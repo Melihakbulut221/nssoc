@@ -1,3 +1,15 @@
+## 2026-10-20 — native junction lookup failed before DRC
+
+39434757393 retained generation rejection: no top-level via instance centered
+at aqn (32,1331.92) despite matching horizontal/vertical rectangles. No candidate
+GDS was accepted. New run records nearest actual hierarchy and top-level Via2
+cuts to distinguish flattened junction geometry from a placement mismatch;
+no tolerance, topology, native DRC/LVS or sampling gate is relaxed.
+Mainchip39427183963 is now terminal GRT-0116, and TX39409002976 nominal job
+118581992980 is terminal electrical rejection; inspect their preserved reports
+before choosing follow-ups. PLL39423618115 and TX swap job118581992937 remain
+live. Cloud-only; original three closure goals remain open.
+
 ## 2026-10-20 — v21 collector routing candidate queued in cloud
 
 Fresh passive measurement 39432130535 completed: source collector conductors

@@ -55,6 +55,15 @@ def main():
    n=pya.DBox(nx-1.6,b.bottom,b.right,b.top);replace_rectangle(134,b,n)
    matching=[i for i in T.each_inst()if not i.cell.name.startswith('pd_child_')
       and abs(i.dbbox().center().x-ox)<.003 and abs(i.dbbox().center().y-y)<.003]
+   if len(matching)!=1:
+    nearest=sorted([dict(cell=i.cell.name,center_um=[i.dbbox().center().x,i.dbbox().center().y],
+      transform=str(i.dcplx_trans),distance_um=abs(i.dbbox().center().x-ox)+abs(i.dbbox().center().y-y))for i in T.each_inst()],key=lambda v:v['distance_um'])[:12]
+    cut_region=pya.Region(T.shapes(L.layer(133,0))).interacting(pya.Region(pya.DBox(ox-4,y-4,ox+4,y+4).to_itype(L.dbu)))
+    diagnostic=dict(net=net,requested_um=[ox,y],nearest_instances=nearest,
+      top_level_via2_cuts_dbu=[str(q)for q in cut_region.each()],
+      top_instance_names=sorted({i.cell.name for i in T.each_inst()}))
+    (out/'junction-lookup.json').write_text(json.dumps(diagnostic,indent=2)+'\\n')
+    print(json.dumps(diagnostic),flush=True)
    assert len(matching)==1,('Expected exact native collector via',net,ox,y,len(matching))
    inst=matching[0];tr=inst.dcplx_trans
    assert tr.mag==1 and tr.angle==0 and not tr.is_mirror() and (inst.na,inst.nb)in ((0,0),(1,1))
