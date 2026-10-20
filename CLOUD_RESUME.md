@@ -1,3 +1,11 @@
+## 2026-10-20 — all845 model binding passed; full RC composition dispatched
+- Run39354573228 SUCCESS at0e9cfd53cb8562f0b27ac09add5ede1f164ab37d:845devices/2737terminals/17ports,35controls. All251tap polygons actually2x2um and all251 pinned CbTapCalc evaluations matched.
+- New pll845-native-composition-cloud preserves845intrinsics+3380R+5104C. MIM models use actual native extracted R-network terminal nodes; same-owner arbitrary anchor substitution is forbidden.26MIMs emitted once.
+-273 exact coincident aliases retain1877logical references at1604points. Body and shared diffusion remain distinct physical-boundary groups.
+- IMPORTANT new gate: every body group must have a native ptap1/ntap1 model linking it to actual metal. Any uncontacted body groups are saved and reject composition rather than producing silently floating bulks. If this fires, inspect actual regular tap geometry and extract its access before waveforms.
+-46 corruption controls required before composition pass. Full loaded closed-loop and body/poly/diffusion/salicide qualification remain open.
+- TX39344566214/mainchip39331918238 same live runs; cloud-only no local CAD/artifacts.
+
 ## 2026-10-20 — all845 native model binding dispatched
 - Whole wire raw RC passed run39353209044; now bind all845 actual intrinsic devices before composition.
 - New pll845-native-binding-cloud: four LV/HV NMOS/PMOS classes,102HBT,89rppd,26MIM,251tap instances,2737terminals,17ports. All native terminal/parameter/cluster identities checked against original SPICE and frozen geometry inventory.

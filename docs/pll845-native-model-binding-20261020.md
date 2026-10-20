@@ -9,3 +9,11 @@ The pinned PDK tap subcircuits explicitly use only R; w/l are declared for compa
 All9 model classes must reject a missing device, altered valid numerical parameter and changed terminal (27 cases). All4 MOS classes must additionally reject a swapped gate/source and altered body (8 cases). The compact binding remains separate from distributed wire composition and actual loaded transient validation. No substrate spreading, full PEX, closed-loop PLL, full serial PHY or mainchip timing acceptance follows from a binding pass.
 
 PDK sources are fixed at c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c and checked by existing immutable hashes. The full electrical model archive is manifest-verified. All CAD, tests, outputs and failures remain in GitHub-hosted runners/releases; the local project directory remains empty.
+
+## Native binding passed
+
+[Run39354573228](https://github.com/Melihakbulut221/nssoc/actions/runs/39354573228) completed successfully. All845 devices,2737 terminals and17 ports matched the native LVS SPICE and geometry inventory; all35 corruption cases were rejected.
+
+All251 tap polygons are rectangular and, in this particular layout, all are2x2um (A4um²/P8um). Their dimensions were measured rather than assumed. Every tap's independently executed pinned PDK CbTapCalc result matched the area/perimeter conversion within the documented equation-roundoff bound. All four MOS classes retain their actual parameters and required model pin order. No loaded simulation or full PEX acceptance is claimed.
+
+The composition step preserves each MIM's actual extracted R-network attachment node, not just its conductor owner or a different same-net reference point. The26 native MIM cards are projected exactly once into the corresponding native device models, preserving all3380 R/5104 C tokens. Explicit intrinsic tap models must provide a metal connection for every body group; if regular well contacts remain outside the native device census, composition must fail with an explicit list instead of silently accepting floating bulks.
