@@ -18,7 +18,7 @@ def check():
         actual=(ROOT/d['candidate_path']).read_bytes()
         assert actual==s.encode()and hashlib.sha256(actual).hexdigest()==d['candidate_sha256']
     spec=json.loads((ROOT/'docs/evidence/cdr-data-v20-mim-capture-input-20261020.json').read_text())
-    assert spec['run']==39422106468 and spec['source_head']=='63bb44ee4ae7a5b841126ab3253a6975c5c35775'
+    assert spec['run']==39423976647 and spec['source_head']=='12dff65a6dfcf2c6b6df044f8e6ef9718398c8e2'
     assert spec['workflow_path']=='.github/workflows/cdr-data-v20-extraction-cloud.yml'
     assert spec['stages']==['planes','wire-inputs','binding','rc']
     assert spec['parent_summary_sha256']=='e00f439f650c884950ccc232bca90a26958cce39e93606316834a991e945e463'

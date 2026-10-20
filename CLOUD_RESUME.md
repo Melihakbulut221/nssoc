@@ -1,3 +1,12 @@
+## CDR data4 extraction passed; fresh full MIM capture dispatched
+
+All four jobs of run 39423976647 at 12dff65a6dfcf2c6b6df044f8e6ef9718398c8e2 passed. The exact failed npn13G2 cell was proven unreachable; all actual reachable primitives remain source-geometry matched, and omission of a referenced primitive is rejected. Model binding passed12 controls; fresh wire RC passed13 controls. Immutable summary/parts assets are recorded in docs/evidence/cdr-data-v20-extraction-pass-20261020.json.
+
+MIM capture now pins this successful run (not failed39422106468) and its same passed parent e00f439f650c884950ccc232bca90a26958cce39e93606316834a991e945e463. Next: inspect new MIM capture, record ACTUAL fresh R/C counts, adapt full native MIM audit/composition gates to these counts, then original loaded early/late fullwaves. No electrical or full-PHY acceptance yet.
+
+PLL streamed continuation39423618115 passed controls and is restoring/running exact last native checkpoint; do not duplicate. Mainchip39415055626 and TX39409002976 remain live. Cloud-only; local project empty.
+
+
 ## PLL streamed continuation dispatched; extraction manifest corrected
 
 PLL old run 39390580356 completed successfully publishing its saved continuation capsule, but native progress was negligible because old disk protection immediately checkpointed. New streamed run 39423618115 at 46bc4165c18d4044a86ed8587a745df9d72f0b8e uses the exact latest continuation summary e65d262f4d29ff0b8ab4a57e33d584e8599ed49ab829d68150efbd1d38a8548f and parts 5c79bcbd21f7f2a57a00b1f09a64b081884a0b16490d8cb46b27c48eac2aae26. Controls passed; initial native restore/setup is live. No lock/full-capture acceptance.
