@@ -1,3 +1,6 @@
+## Cloud-only handoff: verified native chip ECO and selector geometry candidate
+Native resizer 39390580378 passed baseline, geometry/power/fixed-clock and actual Boolean proof plus inversion fault. Its actual candidate has 151051 instances: 151022 retained and 29 new sg13g2_dlygate4sd3_1 cells. Candidate ODB e2eef1214e78bf5143a6192633260b004542d1b6830372a983b457e9501e0386; fresh route/RC/all-corner STA is next. PLL continuation 39390580356 passed controls and is restoring the exact saved process with storage repair. New CDR v19 leaf changes only eight clock selectors Nx8->4, requires real54-device DRC/LVS then full fresh parent extraction and unchanged loaded tests. Do not reuse old RC as new geometry proof. No local project/CAD files.
+
 ## Cloud-only continuation: supply pin mapping and saved PLL resume
 Run 39389233033 passed the explicit positive-cell gate but stopped on supply-pin lookup. Pinned LEF and saved config agree VDD/VSS cell pins map to VPWR/VGND chip nets; corrected both hookup and independent geometry audit. The PLL storage workflow now has a branch push trigger with the exact saved 39370629792 continuation descriptor, because a never-triggered branch-only workflow cannot yet be dispatched. Both workflows run once from this push; do not manually dispatch duplicates. No local CAD or project files.
 
