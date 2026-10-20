@@ -5,6 +5,7 @@ import json,os,subprocess,sys,tarfile
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from run_cloud_tx_layout_repair import fetch,sha
+from cloud_tx_exact_external_ports import compare as compare_ports,controls as port_controls
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-raw64-powered-physical'
 TOP='nssoc_tx_full32_raw64_handoff_candidate_v1'
 def main():
@@ -14,6 +15,7 @@ def main():
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  save()
  try:
+  r['external_port_controls']=port_controls();save()
   pin=json.loads((ROOT/'docs/evidence/tx-raw64-physical-handoffs-20261020.json').read_text())
   prior,proof=reports.restore_report('tx-raw64-physical-handoffs',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',pin['selected_outputs'])
   assert prior['handoffs']['routed_count']==64 and prior['handoffs']['blocked_count']==0 and prior['sources_unchanged']
@@ -24,7 +26,7 @@ def main():
   packed.unlink();manifest=json.loads((ROOT/'manifest.json').read_text())
   assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())
   app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==spec['runtime_sha256']
-  protected={p:sha(p)for p in [Path(__file__),ROOT/'scripts/generate_tx_raw64_powered_physical.py',*[OUT/'source'/n for n in pin['selected_outputs']]]}
+  protected={p:sha(p)for p in [Path(__file__),ROOT/'scripts/generate_tx_raw64_powered_physical.py',ROOT/'scripts/cloud_tx_exact_external_ports.py',*[OUT/'source'/n for n in pin['selected_outputs']]]}
   sys.path.insert(0,str(ROOT/'hw/soc/flow'))
   from check_pcie_rx_cell import execute
   from prepare_ihp_drc import validate_lock,verify
@@ -65,11 +67,21 @@ def main():
    else:
     step['audit_execution']=execute([app,'python',ROOT/'hw/soc/flow/audit_klayout_lvs.py',d/'result.lvsdb','--top',TOP,'--deck-log',d/'deck.log','--output',d/'audit.json'],d,'audit')
     a=json.loads((d/'audit.json').read_text());step['audit']=a
+    step['external_ports']=compare_ports((OUT/'layout/schematic.cir').read_text(),(d/'extracted.cir').read_text(),TOP)
     ok=a['status']==('PASS within comparison scope'if positive else'FAIL')and step['audit_execution']['returncode']==(0 if positive else 1)
     if positive:
      tops=[c for c in a['circuits']if c['layout']==TOP]
      ok=ok and len(tops)==1 and not a['extraction_diagnostics']and all(tops[0][k]==8074 for k in('layout_devices_recursive','schematic_devices_recursive'))
     else:ok=ok and 'Deck explicitly reported a mismatch'in a['reasons']
+    if positive:ok=ok and step['external_ports']['passed']
+    if name=='internal_port_alias':
+     # Native circuit matching tolerates this extra port. Preserve that result,
+     # and require the stronger explicit external-interface contract to reject it.
+     step['native_circuit_comparison_passed']=a['status']=='PASS within comparison scope'
+     ok=(not step['external_ports']['passed']and step['external_ports'].get('actual_count')==164
+      and step['external_ports'].get('extra')==['D0P']and not step['external_ports'].get('missing')
+      and step['native_circuit_comparison_passed']and not a['extraction_diagnostics'])
+     step['fault_rejection_gate']='EXACT_EXTERNAL_INTERFACE_163_NAMES'
    step['expected_verdict_observed']=bool(ok);results.append(bool(ok));save();print(name,'expected verdict',bool(ok),flush=True)
   assert all(sha(p)==v for p,v in protected.items())
   assert all(sha(ROOT/n)==v['sha256']for n,v in manifest['files'].items())

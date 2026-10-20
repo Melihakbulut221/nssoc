@@ -1,3 +1,6 @@
+## 2026-10-20 — Native powered8074 DRC/deep/flat now pass; tighten external interface
+Run39465250247: zero560-category DRC markers, deep and flat8074-device matches, all original faults rejected. New extra-port fault unexpectedly passed native comparer despite164pins versus163; preserve this limitation and rejected suite. Added mandatory independent exact163-name extracted interface gate and five parser controls. Actual extraD0P fault must fail this stronger gate; native success remains visible. Geometry/reference and native gates unchanged. Rerun powered workflow; fullparent RC/electrical still required. CDRv22 exact latch review39464720493 passed diagnosis, not design. Existing TX/PLL/mainchip runs preserved; cloud-only.
+
 ## 2026-10-20 — Powered raw64 native DRC/deep LVS pass; flat port annotation fix
 Powered39464090686: full560 DRC zero, deep LVS8074/8074 and163ports; all real faults detected. Flat device comparison matched but native strict ports rejected227ports:64 former internal core labels and shared din/dout aliases. Removed only66 datatype25 standalone child labels; material/pin/device geometry unchanged. New actual internal-port-alias fault must reject in flat mode, and all original gates rerun. No deck/audit waiver. CDR v22 latch review39464720493 live; existing TX/PLL/mainchip jobs preserved. Cloud-only.
 
