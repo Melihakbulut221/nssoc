@@ -1,3 +1,18 @@
+## 2026-10-20 — v21 collector physical pass; fresh extraction launched
+
+39440691879 source4446725... passed native DRC560categories0markers,
+unsimplified deep/flat484-device LVS, all9physical/circuitfaults, exact serialized
+delta and all16child/eightdrawing controls. New GDS3fdfff892b3c84d78349c7358699dfa2ec8fd98a98b887573beb4f4b3219c936;
+7761.4um shorter horizontal wire, actual cleared columns959.6/954.6um reused
+for disjoint A/B spans. Full immutable receipt committed.
+
+New cdr-collector-trunks-v21-extraction-cloud workflow runs fresh planes,
+wire-inputs, binding andRC with original native gates. Inspect its actual
+run; on pass rebuild11MIMcapture/audit/composition then original loaded
+early/late + fault waveforms. Never reuse v20RC or claim sampling closure.
+TX diagnosis39438335576 complete; immutable native review receipt saved.
+Mainchip39436610858 and PLL39423618115 live. Cloud-only; full goals open.
+
 ## 2026-10-20 — actual AVDD short located and corridor selection repaired
 
 Native diagnosis39439752247 passed exact source checks: no opens, aqp/bqn/bqp
