@@ -4,6 +4,23 @@
 import json,math,re
 from collections import defaultdict
 import heapq
+
+def unescape_identifier(s):
+    # SPEF backslash quotes the following character; retain its literal identity.
+    out=[];i=0
+    while i<len(s):
+        if s[i]=='\\':
+            i+=1;assert i<len(s),'Trailing SPEF identifier escape'
+        out.append(s[i]);i+=1
+    return ''.join(out)
+def controls():
+    assert unescape_identifier(r'\$auto\$ff\.cc\:337\:slice\$1346320:CLK')=='$auto$ff.cc:337:slice$1346320:CLK'
+    assert unescape_identifier(r'foo\\bar:A')=='foo\\bar:A'
+    try:unescape_identifier('bad'+chr(92))
+    except AssertionError:pass
+    else:raise AssertionError('Truncated SPEF escape accepted')
+    return dict(native_escaped_instance_exact=True,literal_backslash_preserved=True,truncated_escape_rejected=True)
+
 def number(s):
     v=float(s);assert math.isfinite(v)and v>=0
     return v
@@ -11,7 +28,7 @@ def parse(path,wanted):
     names={};selected={};current=None;section=None;inmap=False;units={};pin_none=False
     def expand(s):
         a,sep,b=s.partition(':')
-        return names.get(a,a)+(sep+b if sep else '')
+        return unescape_identifier(names.get(a,a)+(sep+b if sep else ''))
     with path.open()as f:
         for line in f:
             words=line.split()

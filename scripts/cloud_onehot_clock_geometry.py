@@ -6,7 +6,7 @@ from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from bootstrap_flow import verify
 from route_cloud_newer_postcts import sha
-from inspect_onehot_clock_spef import parse,review
+from inspect_onehot_clock_spef import parse,review,controls
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'hw/soc/out/cloud-onehot-clock-geometry'
 ODB='run/2-openroad-detailedrouting/soc_top.odb'
@@ -28,6 +28,7 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
+        r['identifier_controls']=controls()
         sources={};protected={}
         for tag,pin in PINS.items():
             source,proof=reports.restore_report(pin['group'],pin['run'],pin['summary'],pin['parts'],OUT/tag,[ODB,SPEF])

@@ -1,3 +1,6 @@
+## Native SPEF identity correction
+39364939117 exposed literal SPEF backslash quoting in auto-generated flip-flop instance names. Three buffer-only nets matched; clknet_leaf_256_pcie_clk_i was rejected because quoted native names were not decoded. Decode quoted characters and retain exact full ODB membership/direction, connectivity, capacitance and immutable-source checks; reject truncated quoting. This is a reader correction, not a changed wire model or timing acceptance.
+
 ## Clock wire geometry measured, RC identity still rejected
 39364493631 native ODB geometry passed: unchanged clknet_3_5_0_pcie_clk_i endpoints and NDR, routed wire total 1142.070 to 2996.810 um. Nominal SPEF pin-membership check failed and remains enforced. Next cloud run preserves exact mismatched identities; do not infer RC pass or timing repair from geometry alone. All sources and failed results archived remotely.
 
