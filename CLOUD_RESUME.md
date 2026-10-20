@@ -1,3 +1,10 @@
+## 2026-10-20 — fresh whole PLL845 RC capture dispatched
+- New workflow pll845-whole-mim-rc-cloud.yml uses successful terminal-reference run39350440897 and exact original GDS79b2f5869f620cb5d6ce57756bab18f6ef10743aee953fb9c140202a6b225cdc.
+- Covers all235 actual wire components,26 MIM masks and1877 logical metal/port points; every point re-probed, only exact physical coincidences may alias.
+- Await native capture and8 mutation controls; no raw R/C audit or electrical acceptance is claimed. Next: raw point/value/topology/C conservation and native MIM location auditing, then all845 intrinsic model composition.
+- TX fullwave39344566214 and mainchip128-buffer route39331918238 are live; do not duplicate. CDR v17 remains rejected.
+- Cloud-only user override remains active; local project empty, no local CAD/results.
+
 ## 2026-10-20 — whole PLL terminal-reference proof passed in the cloud
 - Run39350440897 / sourceece13196ca044e4f8beb18b043fae6a679f9de54 SUCCESS:845devices,2737 terminal identities,1860 metal references+819 body identities+58 shared intrinsic diffusion identities;17ports,1877 anchors,all235 wire components,0 unresolved.
 -30 MOS rail references proved through actual unblocked salicide shared edges and local tap contacts;90 physical fault cases and8 prior controls rejected as required. Compact immutable pins: docs/evidence/pll845-whole-terminal-references-pass-20261020.json.
