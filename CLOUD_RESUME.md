@@ -1,3 +1,16 @@
+## 2026-10-20 — PLL2737 reference access repair
+PLL39347984074 failed with208unresolved, preservingall235wire components:
+1652metal+819body+58shared intrinsic diffusion.102HBTnowmatchedcorrectly.
+178rppdendstrips have no fullcontactinside; bind two distinct actual native
+PCellpin boxes using unique enclosure/end correspondence and exactowner.
+30MOS S/D pending: require positive actual contact overlap, M1coverage and
+correctnative/wireowner; emit nearbygeometryifstillunresolved. No remote
+same-net anchors, inventededges or geometrychanges. Addedrppdendswapfault;
+eightcontrols required. Fullfailedreport releasepinned and compactreceiptkept.
+TX39344566214/mainchip39331918238 remainlive. CDRv17 rejected; donotadopt.
+Allnativework/cloudartifacts only.
+
+
 ## 2026-10-20 — CDR v17 rejected; PLL namespace census repair
 CDR39345807451 nominal early/late both nativeexit0/nodiagnostics/devicespass,
 but original sampling failed and C/D wrong-sign counts worsened:

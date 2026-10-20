@@ -38,7 +38,7 @@ def main():
   assert rc==0,'Whole native terminal reference binding rejected; retain unresolved details'
   bound=r['binding']
   assert bound['status']=='PASS_ALL2737_PLL_TERMINAL_IDENTITIES_AND_ACTUAL_METAL_REFERENCES_REQUIRES_FULL_RC'
-  assert len(bound['negative_controls'])==7 and all(c['rejected']for c in bound['negative_controls'])
+  assert len(bound['negative_controls'])==8 and all(c['rejected']for c in bound['negative_controls'])
   assert bound['counts']['terminals']==2737 and bound['counts']['covered_wire_components']==235
   assert not bound['unresolved']
   assert all(sha(Path(n))==v for n,v in bound['inputs'].items())

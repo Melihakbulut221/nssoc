@@ -29,17 +29,20 @@ def generate(out):
  metals={m:pya.Region(T.begin_shapes_rec(L.layer(m,0))).merged()for m in METALS}
  poly=pya.Region(T.begin_shapes_rec(L.layer(5,0))).merged()
  contacts=pya.Region(T.begin_shapes_rec(L.layer(6,0))).merged()
- hbt_cells=[];hierarchy=Counter()
+ hbt_cells=[];rppd_cells=[];hierarchy=Counter()
  def visit(cell,tr):
   hierarchy[cell.name]+=1
   if cell.name.split('$')[0].endswith('npn13G2'):
    hbt_cells.append((cell,tr));return
+  if cell.name.split('$')[0].endswith('rppd'):
+   rppd_cells.append((cell,tr));return
   for inst in cell.each_inst():
    assert not inst.is_regular_array(),'Explicit expansion of physical arrays required'
    visit(inst.cell,tr*inst.cplx_trans)
  visit(T,pya.ICplxTrans())
- (out/'hierarchy.json').write_text(json.dumps(dict(visited_cells=dict(hierarchy),matched_hbt_instances=len(hbt_cells),matched_hbt_cells=sorted({cell.name for cell,tr in hbt_cells})),indent=2)+'\n')
+ (out/'hierarchy.json').write_text(json.dumps(dict(visited_cells=dict(hierarchy),matched_rppd_instances=len(rppd_cells),matched_rppd_cells=sorted({cell.name for cell,tr in rppd_cells}),matched_hbt_instances=len(hbt_cells),matched_hbt_cells=sorted({cell.name for cell,tr in hbt_cells})),indent=2)+'\n')
  assert len(hbt_cells)==102,('Actual namespaced HBT instance census',len(hbt_cells))
+ assert len(rppd_cells)==89,('Actual namespaced resistor census',len(rppd_cells))
  terminals={};by_net=defaultdict(list)
  for did,d in devices.items():
   cls=d.device_class()
@@ -54,7 +57,7 @@ def generate(out):
  assert len(terminals)==2737
  mimpins={(d['native_id'],p['terminal']):p for d in mim['native_mim_bindings']for p in d['points']}
  assert len(mimpins)==52
- rows=[];anchors=[];unresolved=[];shared={};used_hbt={}
+ rows=[];anchors=[];unresolved=[];shared={};used_hbt={};used_rppd={}
  def point_probe(m,p,nid):
   wn=wire.probe_net(wire.layer_by_name('gds_'+str(m)),p)
   nn=native.probe_net(native.layer_by_index(mapping[m]),p)
@@ -65,7 +68,8 @@ def generate(out):
   return wn.cluster_id
  def access_contacts(area,nid):
   found=[]
-  for contact in contacts.inside(area).each():
+  for contact in contacts.interacting(area).each():
+   if (pya.Region(contact)&area).area()==0:continue
    b=contact.bbox()
    if contact.area()!=b.area()or not(pya.Region(contact)-metals[8]).is_empty():continue
    q=b.center()
@@ -111,6 +115,24 @@ def generate(out):
     m,b={'C':(8,collector),'B':(8,base),'E':(10,pins[10][0])}[name]
     b=b.transformed(tr);assert(pya.Region(b)-metals[m]).is_empty()
     q=b.center();choices=[(m,q,point_probe(m,q,nid))];selection='pinned_native_hbt_'+name+'_pin'
+   elif cls=='rppd':
+    enclosure=pya.Box()
+    ends={t:terminals[did,t]['region'].bbox() for t in ('rppd_1','rppd_2')}
+    for b in ends.values():enclosure+=b
+    matches=[(cell,tr)for cell,tr in rppd_cells if(cell.bbox().transformed(tr)&enclosure)==enclosure]
+    assert len(matches)==1,('Unique resistor primitive enclosure',did,len(matches))
+    cell,tr=matches[0];used_rppd[did]=(cell.cell_index(),str(tr))
+    pins=[shape.box.transformed(tr)for shape in cell.each_shape(L.layer(8,2))if shape.is_box()]
+    assert len(pins)==2,'Exactly two original resistor metal pins required'
+    selected={}
+    for terminal,box in ends.items():
+     center=box.center()
+     ranked=sorted(((b.center().x-center.x)**2+(b.center().y-center.y)**2,i)for i,b in enumerate(pins))
+     assert ranked[0][0]<ranked[1][0],'Ambiguous resistor physical end'
+     selected[terminal]=ranked[0][1]
+    assert len(set(selected.values()))==2,'Resistor ends must retain distinct physical planes'
+    box=pins[selected[name]];assert(pya.Region(box)-metals[8]).is_empty()
+    q=box.center();choices=[(8,q,point_probe(8,q,nid))];selection='unique_original_resistor_end_pin'
    else:
     area=poly.interacting(reg).merged()if cls.startswith('sg13_')and name=='G'else reg
     choices=access_contacts(area,nid);selection='actual_gate_poly_contact'if name=='G'else'actual_native_terminal_contact'
@@ -127,7 +149,15 @@ def generate(out):
    row['candidate_points']=[dict(metal=m,point_dbu=[q.x,q.y],wire_component=component)for m,q,component in choices]
   except (AssertionError,KeyError,ValueError)as error:
    row.update(disposition='UNRESOLVED_NO_INVENTED_ANCHOR',reason=str(error))
-   unresolved.append(dict(device=did,model=cls,terminal=name,native_cluster=nid,reason=str(error)))
+   detail=dict(device=did,model=cls,terminal=name,native_cluster=nid,reason=str(error))
+   if cls.startswith('sg13_') and name in ('S','D'):
+    nearby=[]
+    for contact in contacts.interacting(pya.Region(reg.bbox().enlarged(2000))).each():
+     box=contact.bbox();q=box.center()
+     nn=native.probe_net(native.layer_by_index(mapping[8]),q)
+     nearby.append(dict(box_dbu=[box.left,box.bottom,box.right,box.top],overlap_area_dbu2=(pya.Region(contact)&reg).area(),metal_native_cluster=None if nn is None else nn.cluster_id))
+    detail.update(terminal_shapes=[p.to_s()for p in reg.each()],nearby_contacts=nearby)
+   unresolved.append(detail)
   rows.append(row)
  metadata=json.loads((source/'parent/integrated/result.json').read_text());public=[]
  assert len(metadata['ports'])==17 and {p.name()for p in c.each_pin()}==set(metadata['ports'])
@@ -150,6 +180,7 @@ def generate(out):
  assert census.get('RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING')==819
  assert not unresolved,('Unresolved actual terminal references',len(unresolved),unresolved[:8])
  assert len(used_hbt)==102 and len(set(used_hbt.values()))==102
+ assert len(used_rppd)==89 and len(set(used_rppd.values()))==89
  assert {a['wire_component']for a in anchors}==set(owners),'Unanchored actual wire components'
  expected={(r['device'],r['terminal']):copy.deepcopy(r)for r in rows}
  lookup={a['label']:a for a in anchors};assert len(lookup)==len(anchors)
@@ -164,7 +195,7 @@ def generate(out):
    elif r['disposition'].startswith('RETAINED_SHARED'):
     assert shared_diffusion(r['native_cluster'])==shared[r['native_cluster']]
  verify(rows)
- for fault in ('missing_terminal','duplicate_terminal','off_metal','wrong_owner','body_as_metal','mim_plates_swapped','hbt_base_collector_swapped'):
+ for fault in ('missing_terminal','duplicate_terminal','off_metal','wrong_owner','body_as_metal','mim_plates_swapped','hbt_base_collector_swapped','rppd_ends_swapped'):
   bad=copy.deepcopy(rows);r=next(r for r in bad if r['disposition']=='ACTUAL_TERMINAL_METAL_POINT_REFERENCE')
   if fault=='missing_terminal':bad.pop()
   elif fault=='duplicate_terminal':bad[-1]=copy.deepcopy(bad[0])
@@ -173,7 +204,7 @@ def generate(out):
   elif fault=='body_as_metal':
    b=next(x for x in bad if x['disposition']=='RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING');b['reference_label']=r['reference_label']
   else:
-   kind,first,second=('cap_cmim','mim_top','mim_btm')if fault=='mim_plates_swapped'else('npn13G2','B','C')
+   kind,first,second=('cap_cmim','mim_top','mim_btm')if fault=='mim_plates_swapped'else('rppd','rppd_1','rppd_2')if fault=='rppd_ends_swapped'else('npn13G2','B','C')
    a=next(x for x in bad if x['model']==kind and x['terminal']==first)
    b=next(x for x in bad if x['device']==a['device']and x['terminal']==second)
    assert a['point_dbu']!=b['point_dbu']or a['metal']!=b['metal']
@@ -181,10 +212,10 @@ def generate(out):
   try:verify(bad)
   except (AssertionError,KeyError):result['negative_controls'].append(dict(fault=fault,rejected=True))
   else:raise AssertionError('Actual terminal corruption accepted '+fault)
- assert len(result['negative_controls'])==7
+ assert len(result['negative_controls'])==8
  assert all(sha(Path(n))==digest for n,digest in result['inputs'].items())
  result['status']='PASS_ALL2737_PLL_TERMINAL_IDENTITIES_AND_ACTUAL_METAL_REFERENCES_REQUIRES_FULL_RC'
- save();print(json.dumps(dict(status=result['status'],counts=result['counts'],controls=7)))
+ save();print(json.dumps(dict(status=result['status'],counts=result['counts'],controls=8)))
 if __name__=='__main__':
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  generate(Path(sys.argv[1]).resolve())
