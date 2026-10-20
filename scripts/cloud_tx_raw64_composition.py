@@ -35,6 +35,7 @@ def prerequisite():
     assert r['source_head']==spec['source_head']and r['sources_unchanged']
     assert r['status']=='PASS_REBUILT_NATIVE8074_RC_DOUBLE_TOTALS_AND13_CONTROLS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE'
     assert r['baseline_reproduced_original_rc_and_failure']and r['no_rc_records_changed']and r['no_geometry_technology_or_threshold_change']
+    assert r['both_native_input_orders_verified']and len(r['historical_controls']['cases'])==13
     assert len(r['controls']['cases'])==13 and r['controls']['status']=='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'
     a=r['precise_audit']
     assert a['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'and a['actual_exported_resistors']==137221 and a['actual_exported_capacitors']==98241

@@ -1,3 +1,6 @@
+## 2026-10-20 native input-order regression
+Cloud-only. Local workspace remains empty. TX 39484218799 rejected because fresh baseline passed instead of reproducing old float error; R exact and capacitor endpoint/value multiset exact, cap ordering differed. New pipeline requires exact historical-order failure and both fresh/historical double-total raw audits plus 13 controls each. Composition 39485204826 rejected its failed prerequisite; repin only after successful new producer. CDR v23 fullwaves 39479905700 early/late failed, clock-stopped and VI-off passed; full PHY remains open. Do not restart still-live mainchip/PLL/TX jobs.
+
 ## 2026-10-20 whole-parent RC composition handoff
 
 New tx-raw64-composition-cloud waits exact native precision run39484218799/headfe89458c0096fd9b50ca712456e7930583c1d37f. It cannot simulate or compose if prerequisite rejects. Passed intrinsic source39482960779 is pinned separately.

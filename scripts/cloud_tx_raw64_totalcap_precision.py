@@ -2,11 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 """Rebuild archived native Magic with only total-load storage precision changed.
 
-Baseline must reproduce the failed native wire model. Candidate must preserve
-all R/C records and pass the unchanged raw auditor and thirteen corruptions.
+Baseline must reproduce the failed native wire model in its historical input
+order. Both fresh and historical-order candidates must preserve all electrical
+R/C records and pass the unchanged raw auditor and thirteen corruptions each.
 No post-extraction numeric edits and no tolerance/PDK/geometry changes.
 """
-import hashlib,io,json,os,shutil,subprocess,sys,tarfile
+import hashlib,io,json,os,shutil,subprocess,sys,tarfile,shlex
+from decimal import Decimal
+import tx_native_cap_order as cap_order
 from pathlib import Path
 from collections import Counter
 import compare_cloud_routed_endpoints as reports
@@ -127,17 +130,29 @@ def main():
         rawspec=json.loads((ROOT/'docs/evidence/pcie-tx-cloud-extraction-input-20261013.json').read_text())['raw_parser']
         raw_parser=OUT/'pcie-magic-resis-terminals-v1-20261004/audit_pilot.py';raw_parser.parent.mkdir()
         fetch(rawspec['url'],rawspec['sha256'],raw_parser)
+        run([sys.executable,ROOT/'scripts/tx_native_cap_order.py','--controls'],OUT/'order-controls.log')
+        r['order_controls']=cap_order.controls()
         def wire_records(p):
-            return Counter(line for line in p.read_text().splitlines()if line and line[0]in ('R','C'))
+            out=Counter()
+            for line in p.read_text().splitlines():
+                if not line or line[0]not in ('R','C'):continue
+                row=shlex.split(line);assert len(row)==4
+                # Preserve resistor identifiers exactly. Capacitor ordering/IDs
+                # and the order of its two symmetric terminals are immaterial.
+                key=tuple(row)if row[0][0]=='R'else('C',*sorted(row[1:3]),Decimal(row[3]))
+                out[key]+=1
+            return out
         original_wire=wire_records(evidence/'rc01/wires.spice')
-        assert sum(n for s,n in original_wire.items()if s.startswith('R'))==137221
-        assert sum(n for s,n in original_wire.items()if s.startswith('C'))==98241
-        for label in ('baseline','precise'):
+        assert sum(n for s,n in original_wire.items()if s[0].startswith('R'))==137221
+        assert sum(n for s,n in original_wire.items()if s[0]=='C')==98241
+        historical_ext=evidence/'rc01/full_raw64_core_wires.ext'
+        for label in ('baseline','baseline_historical','precise','precise_historical'):
+            runtime_label=label.split('_')[0]
             b=OUT/label;b.mkdir()
             shutil.copytree(evidence/'native01',b/'native01')
             shutil.copytree(evidence/'magic-cloud',b/'magic-cloud')
             library=b/'magic-cloud/runtime/lib/magic/tcl/tclmagic.so'
-            shutil.copyfile(runtimes[label]['library'],library);assert sha(library)==runtimes[label]['sha256']
+            shutil.copyfile(runtimes[runtime_label]['library'],library);assert sha(library)==runtimes[runtime_label]['sha256']
             a=json.loads((evidence/'anchors03.json').read_text());old='/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-native-rc/'
             changed={}
             for name,digest in a['inputs'].items():
@@ -149,31 +164,53 @@ def main():
             for name in ('run-rc01.py','audit-rc02.py','mutations01.py'):
                 text=(evidence/name).read_text()
                 if name=='run-rc01.py':
-                    assert text.count(MAGIC_OLD)==1;text=text.replace(MAGIC_OLD,runtimes[label]['sha256'])
+                    assert text.count(MAGIC_OLD)==1;text=text.replace(MAGIC_OLD,runtimes[runtime_label]['sha256'])
+                if name=='run-rc01.py'and label.endswith('_historical'):
+                    # Same physical extraction first. Before native RC consumption,
+                    # restore only the independently proven equivalent cap order.
+                    marker="'extract all',"
+                    assert text.count(marker)==1
+                    command='exec /usr/bin/python3 {'+str(ROOT/'scripts/tx_native_cap_order.py')+'} {'+str(b/'rc01/full_raw64_core_wires.ext')+'} {'+str(historical_ext)+'}'
+                    text=text.replace(marker,marker+repr(command)+',')
                 (b/name).write_text(text)
             assert sha(b/'audit-rc02.py')==sha(evidence/'audit-rc02.py')
             assert sha(b/'mutations01.py')==sha(evidence/'mutations01.py')
             run([sys.executable,b/'run-rc01.py'],OUT/(label+'-native.log'))
             run([sys.executable,b/'audit-rc02.py',b/'rc01',b/'anchors03.json',b/'audit.json'],OUT/(label+'-audit.log'))
             audit=json.loads((b/'audit.json').read_text());r[label+'_audit']=audit;save()
-            expected_status='FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT'if label=='baseline'else'PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
-            assert audit['status']==expected_status,(label,audit['status'],audit.get('error'))
-            assert wire_records(b/'rc01/wires.spice')==original_wire,'Rebuilt native R/C records differ from archived failed extraction'
-            if label=='baseline':
-                assert audit['status']=='FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT'
-                assert audit['wrong_native_branch_witnesses']==prior['audit']['wrong_native_branch_witnesses']
-                assert not audit['disconnected_probes']and audit['complete_collapsed_capacitance_conserved']
-                r['baseline_reproduced_original_rc_and_failure']=True
+            assert wire_records(b/'rc01/wires.spice')==original_wire,'Native R/C topology or value differs from archived extraction'
+            source=(b/'rc01/full_raw64_core_wires.ext').read_text()
+            _,order_proof=cap_order.reorder(source,historical_ext.read_text())
+            r[label+'_source_equivalence']=order_proof
+            assert not audit['disconnected_probes']and audit['complete_collapsed_capacitance_conserved']
+            assert audit['native_export_r_edge_value_multiset_exact']
+            assert audit['every_native_point_ground_capacitance_preserved']
+            assert audit['every_native_mutual_attachment_and_value_preserved']
+            if runtime_label=='baseline':
+                if label=='baseline_historical':
+                    assert audit['status']=='FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT'
+                    assert audit['wrong_native_branch_witnesses']==prior['audit']['wrong_native_branch_witnesses']
+                    r['baseline_reproduced_original_rc_and_failure']=True
+                else:
+                    # A different cap enumeration may happen to round within 3ppm.
+                    # It is not accepted as the producer fix; historical-order
+                    # reproduction and both precise runs remain mandatory.
+                    assert audit['status']in ('PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY','FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT')
             else:
                 assert audit['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
                 assert not audit['wrong_native_branch_witnesses']
-                run([sys.executable,b/'mutations01.py'],OUT/'precise-controls.log')
+                run([sys.executable,b/'mutations01.py'],OUT/(label+'-controls.log'))
                 controls=json.loads((b/'native-mutations01.json').read_text())
                 assert controls['status']=='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'
-                assert len(controls['cases'])==13;r['controls']=controls
+                assert len(controls['cases'])==13
+                r['controls'if label=='precise'else'historical_controls']=controls
+            save()
+        assert r['baseline_reproduced_original_rc_and_failure']
+        assert len(r['controls']['cases'])==len(r['historical_controls']['cases'])==13
+        r['both_native_input_orders_verified']=True
         assert all(sha(evidence/n)==v for n,v in prior['outputs'].items())
         assert sha(raw_parser)==rawspec['sha256']and sha(mp)==MANIFEST_SHA
-        r.update(status='PASS_REBUILT_NATIVE8074_RC_DOUBLE_TOTALS_AND13_CONTROLS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE',sources_unchanged=True,no_rc_records_changed=True,no_geometry_technology_or_threshold_change=True)
+        r.update(status='PASS_REBUILT_NATIVE8074_RC_DOUBLE_TOTALS_AND13_CONTROLS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE',sources_unchanged=True,no_rc_records_changed=True,rc_equivalence='Exact resistor cards and symmetric capacitor endpoint/value multiset; capacitor identifiers may reorder',no_geometry_technology_or_threshold_change=True)
     except BaseException as error:r.update(status='FAIL_OR_ERROR',error=repr(error));raise
     finally:
         r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
