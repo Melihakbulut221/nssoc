@@ -67,7 +67,9 @@ def parameters(d,tech):
         return dict(nx=str(int(p['Nx'])),we=str(p['we'])+'u',le=str(p['le'])+'u')
     if kind=='rppd':
         assert set(p)=={'w','l','ps','b','m'}and p['b']==0 and p['m']==1
-        assert all(decimal(p[k])>0 for k in ('w','l','ps'))
+        # All504 native non-meander resistors have b=0 and ps=0. The pinned
+        # PDK computes leff=(b+1)*l+(2/kappa*weff+ps)*b; no bend spacing applies.
+        assert all(decimal(p[k])>0 for k in ('w','l'))and p['ps']==0
         return {k:str(p[k])+'u'for k in ('w','l','ps')}|dict(b='0',m='1',sw_et='1')
     assert kind in ('ptap1','ntap1')and set(p)=={'A','P'}and p['A']>0 and p['P']>0
     return {'R':str(driver.resistance(d,tech))}
@@ -166,6 +168,13 @@ def main():
             fetch('https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/'+driver.PDK+'/ihp-sg13g2/'+path,digest,target)
         driver.validate_model_libraries(OUT/'pdk')
         tech=json.loads((OUT/'pdk/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json').read_text())['techParams']
+        resistors=[d for d in native['devices']if d['model']=='rppd']
+        assert len(resistors)==504 and all(d['parameters']['b']==d['parameters']['ps']==0 for d in resistors)
+        r['native_rppd_spacing']=dict(devices=504,b=0,ps_um=0,geometry_preserved=True)
+        bad=copy.deepcopy(resistors[0]);bad['parameters']['ps']=-1
+        try:parameters(bad,tech)
+        except AssertionError:r['negative_spacing_control']=dict(rejected=True)
+        else:raise AssertionError('Accepted negative native resistor spacing')
         text,binding=build(native,tech);verify(text,native,tech)
         r['controls']=controls(text,native,tech)
         (OUT/'raw8074-intrinsic.spice').write_text(text);(OUT/'binding.json').write_text(json.dumps(binding,indent=2)+'\n')

@@ -1,3 +1,9 @@
+## 2026-10-20 raw8074 converter correction
+
+TX intrinsic39482444225: native export PASSED8074devices28582terminals163ports65bodies; conversion rejected an incorrect positive-ps assumption. All504rppd are native b=0,ps=0 non-meanders. This commit preserves exactzero spacing and adds negative-spacing control; fresh intrinsic job launches. Failed evidence retained.
+
+TX native precision39481658422 and CDRwaves39479905700 remain live. Do not restart live computations. Original mainchip/PLL/TXwave handles remain as prior checkpoint. Cloud-only; full PHY and timing still open.
+
 ## 2026-10-20 full TX intrinsic handoff
 
 TX precision rebuild39481658422 is live fromed71a75ed58826890ff6dacd270f7f9944de7a28. Do not restart. Baseline must reproduce old R/C and failed witnesses; candidate must pass unchanged original13controls.
