@@ -1,0 +1,109 @@
+{
+  "baseline_path": "scripts/cloud_tx_driver_localpins_anchors.py",
+  "baseline_sha256": "c874a890be0479652574f81bf6be888513b4adeecfc4b57118edafc53c8ca0b0",
+  "baseline_function_sha256": "574aeae1b56f71e8d288d1d56b3d6d78bd916dcb408ea8f097fe87cb8a9e6265",
+  "candidate_sha256": "ffadec7a3128cf2ebb28f12659c376909206fd108c2a043a93d51abd6ae80872",
+  "edits": [
+    {
+      "before": "source=Path(source) if source is not None else OUT/'inputs/tx-driver-localpins-wires/cloud-tx-driver-localpins-wires'",
+      "after": "source=Path(source) if source is not None else OUT/'source'",
+      "count": 1
+    },
+    {
+      "before": "physical_source=Path(physical_source) if physical_source is not None else source/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'",
+      "after": "physical_source=Path(physical_source) if physical_source is not None else source/'source'",
+      "count": 1
+    },
+    {
+      "before": "gds=physical_source/'base/layout.gds';db=physical_source/'check-raw_flat_lvs/result.lvsdb'",
+      "after": "gds=physical_source/'layout/layout.gds';db=physical_source/'flat_lvs/result.lvsdb'",
+      "count": 1
+    },
+    {
+      "before": "physical.TOP",
+      "after": "TOP",
+      "count": 2
+    },
+    {
+      "before": "len(devices)==100",
+      "after": "len(devices)==8074",
+      "count": 1
+    },
+    {
+      "before": "len(owner)==10",
+      "after": "len(owner)==698",
+      "count": 1
+    },
+    {
+      "before": "body={('sg13_hv_nmos','B')",
+      "after": "body={('npn13G2','S'),('sg13_hv_nmos','B')",
+      "count": 1
+    },
+    {
+      "before": "rows=[];anchors=[];by_point={};allowed={}",
+      "after": "# Walk real GDS hierarchy for resistor pin witnesses; never infer an\n    # access point from an invented transistor model or reference label.\n    resistor_instances=[]\n    def walk(cell,tr):\n        if cell.name.split('$')[0]=='rppd':\n            resistor_instances.append((cell,tr));return\n        for inst in cell.each_inst():\n            for i in range(max(1,inst.na)):\n                for j in range(max(1,inst.nb)):\n                    offset=pya.Trans(i*inst.a.x+j*inst.b.x,i*inst.a.y+j*inst.b.y)\n                    walk(inst.cell,tr*offset*inst.trans)\n    walk(top,pya.Trans())\n    assert len(resistor_instances)==504\n    rows=[];anchors=[];by_point={};allowed={}",
+      "count": 1
+    },
+    {
+      "before": "if not candidates and cls.name=='rppd':",
+      "after": "if not candidates and cls.name=='npn13G2':\n                # Native HBT terminal polygons can already be Metal1 access\n                # planes rather than contact cuts. Intersect actual material,\n                # then independently probe both conductor databases below.\n                access=(region&metal1).merged()\n                for polygon in access.decompose_trapezoids_to_region().each():\n                    box=polygon.bbox()\n                    if polygon.area()!=box.area()or box.width()<2 or box.height()<2:continue\n                    point=box.center();nn=native.probe_net(native.layer_by_index(mapping[8]),point)\n                    if nn is not None and nn.cluster_id==net.cluster_id:candidates.append((8,point,'native_hbt_terminal_metal_intersection'))\n            if not candidates and cls.name=='rppd':",
+      "count": 1
+    },
+    {
+      "before": "instances=[i for i in top.each_inst() if i.cell.name.split('$')[0]=='rppd' and (i.cell.bbox().transformed(i.trans)&bounds)==bounds]",
+      "after": "instances=[(cell,tr)for cell,tr in resistor_instances if (cell.bbox().transformed(tr)&bounds)==bounds]",
+      "count": 1
+    },
+    {
+      "before": "inst=instances[0]\n                for shape in inst.cell.each_shape(layout.layer(8,2)):",
+      "after": "cell,tr=instances[0]\n                for shape in cell.each_shape(layout.layer(8,2)):",
+      "count": 1
+    },
+    {
+      "before": "box=shape.box.transformed(inst.trans);point=box.center()",
+      "after": "box=shape.box.transformed(tr);point=box.center()",
+      "count": 1
+    },
+    {
+      "before": "record=json.loads((physical_source/'base/result.json').read_text())\n    for name,b in record['ports'].items():\n        box=pya.DBox.from_s(b).to_itype(layout.dbu);pin=next(p for p in c.each_pin() if p.name()==name);net=c.net_for_pin(pin.id())\n        a=witness(67,box.center(),net.cluster_id,'P_'+name);assert a['label']=='P_'+name;public.append(dict(name=name,reference_label=a['label']))",
+      "after": "parent_ports={}\n    for metal in (67,134):\n        boxes=[s.box for s in top.each_shape(layout.layer(metal,2))if s.is_box()]\n        for s in top.each_shape(layout.layer(metal,25)):\n            if not s.is_text():continue\n            name=s.text.string;matches=[b for b in boxes if b.contains(s.text.trans.disp)]\n            assert len(matches)==1 and name not in parent_ports\n            parent_ports[name]=(metal,matches[0])\n    assert len(parent_ports)==163 and set(parent_ports)=={p.name()for p in c.each_pin()}\n    for name,(metal,box)in sorted(parent_ports.items()):\n        pin=next(p for p in c.each_pin()if p.name()==name);net=c.net_for_pin(pin.id())\n        a=witness(metal,box.center(),net.cluster_id,'P_'+name);assert a['label']=='P_'+name;public.append(dict(name=name,reference_label=a['label']))",
+      "count": 1
+    },
+    {
+      "before": "len(rows)==372 and sum('reference_label'in r for r in rows)==272 and len(public)==6",
+      "after": "len(rows)==28582 and sum('reference_label'in r for r in rows)==20508 and len(public)==163",
+      "count": 1
+    },
+    {
+      "before": "len(observed)==372 and len({(r['device'],r['terminal']) for r in observed})==372",
+      "after": "len(observed)==28582 and len({(r['device'],r['terminal']) for r in observed})==28582",
+      "count": 1
+    },
+    {
+      "before": "PASS_ALL372_DRIVER_TERMINALS_BOUND_WITH272_METAL100_BODY_AND_FOUR_FAULTS_NOT_RC_ACCEPTANCE",
+      "after": "PASS_ALL28582_FULL_PARENT_TERMINALS_WITH20508_METAL8074_BODY_AND_FOUR_FAULTS_NOT_RC_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "devices=100,terminals=372,metal_terminals=272,body_terminals=100,public_ports=6",
+      "after": "devices=8074,terminals=28582,metal_terminals=20508,body_terminals=8074,public_ports=163",
+      "count": 1
+    },
+    {
+      "before": "wire_components=10",
+      "after": "wire_components=698",
+      "count": 1
+    },
+    {
+      "before": ",physical_source/'base/result.json'",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R",
+      "after": "ACTUAL_TERMINAL_METAL_REFERENCE_WITH_UNMODELED_DEVICE_ACCESS_R",
+      "count": 1
+    }
+  ],
+  "scope": "Full native HBT plus raw MOS terminal support; actual hierarchical resistor access and163 parent pins. Original four corruption controls retained."
+}
