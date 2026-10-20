@@ -1,3 +1,12 @@
+## Data4 native MIM capture passed; audit/composition dispatched
+
+Run39424942579 at a1d92377ce17f2589e2c42eea729e4015203b681 passed native MIM capture. Actual fresh extraction:17674R,12712C,11MIM,946points,111components. Full immutable capture/binding receipts committed. The new cdr-data-v20-mim-validation-cloud workflow retains13 wire faults,9 intrinsic faults and19 composition faults.
+
+Next: inspect audit and composition; if passing, bind exact new model to original loaded early/late fullwave and reject controls (150fF sampler loads, original clock offsets, no phase fitting). Do not claim fullPHY or reuse v19 RC by matching counts.
+
+PLL39423618115, mainchip39415055626 and TX39409002976 remain authoritative active runs. No restart while live. Cloud-only; local workspace remains empty.
+
+
 ## CDR data4 extraction passed; fresh full MIM capture dispatched
 
 All four jobs of run 39423976647 at 12dff65a6dfcf2c6b6df044f8e6ef9718398c8e2 passed. The exact failed npn13G2 cell was proven unreachable; all actual reachable primitives remain source-geometry matched, and omission of a referenced primitive is rejected. Model binding passed12 controls; fresh wire RC passed13 controls. Immutable summary/parts assets are recorded in docs/evidence/cdr-data-v20-extraction-pass-20261020.json.
