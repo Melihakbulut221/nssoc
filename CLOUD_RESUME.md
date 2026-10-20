@@ -1,3 +1,6 @@
+## 2026-10-20 measured CDR selector candidate
+Cloud-only. Diagnosis39487495346 passed reproduction for both rejected v23 captures: all120HBT/all4samplers, two VCE violations located at C master-track selectors. New v24 physical candidate changes only eight selector HBT Nx4->2 per sampler; original bias/tails/loads and physical/electrical gates retained. New leaf requires whole-parent integration/fresh RC/waves after physical pass; no PHY acceptance. TX precision39486998309 still live, mainchip39436610858 still live; do not restart.
+
 ## 2026-10-20 CDR v23 electrical rejection and next diagnosis
 Cloud-only. 39479905700 finished: early/late failed, stopped-clock and VI-off passed. v23 C/D improve but timing/data margins and signed phase still fail; two native HBT VCE values below0.4V. Original waveform/gates unchanged. New cdr-v23-latch-timing cloud workflow replays measurements and identifies actual failing stage. Native TX precision order-regression39486998309 remains running; do not repeat it or live mainchip/PLL/TX waves.
 
