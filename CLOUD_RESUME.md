@@ -1,3 +1,12 @@
+## PLL streamed continuation dispatched; extraction manifest corrected
+
+PLL old run 39390580356 completed successfully publishing its saved continuation capsule, but native progress was negligible because old disk protection immediately checkpointed. New streamed run 39423618115 at 46bc4165c18d4044a86ed8587a745df9d72f0b8e uses the exact latest continuation summary e65d262f4d29ff0b8ab4a57e33d584e8599ed49ab829d68150efbd1d38a8548f and parts 5c79bcbd21f7f2a57a00b1f09a64b081884a0b16490d8cb46b27c48eac2aae26. Controls passed; initial native restore/setup is live. No lock/full-capture acceptance.
+
+CDR extraction 39423323138 rejected before CAD because the newly appended workflow comment was not updated in its exact-source manifest. Corrected this bookkeeping mismatch; native gates unchanged. The next extraction will test the earlier reachable-cell annotation fix. MIM run 39422787044 correctly rejected failed prerequisite 39422106468; create a new pinned prerequisite only for a successful extraction.
+
+Mainchip 39415055626 and TX 39409002976 remain live. Cloud-only, empty local workspace. Continue fresh CDR RC/MIM/fullwave and actual PLL/mainchip completion evidence; all three full-goal requirements remain open.
+
+
 ## CDR extraction annotation recovery rejected; reachable-cell fix under cloud verification
 
 Extraction 39422106468 passed planes then rejected missing exact source annotation for npn13G2 drawing 0f068860a3d6570665f9534cf14c7346fa99f214c8d4648bcc3cfdd578f6c89c. Failed immutable evidence retained in docs/evidence/cdr-data-v20-annotation-rejection-20261020.json. MIM prerequisite correctly rejects this failed run.
