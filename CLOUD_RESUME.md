@@ -1,3 +1,11 @@
+## 2026-10-20 — v21 KLayout containment API corrected
+
+39436410429 stopped before physical checks because Box.contains accepts a Point,
+not a Box. Replace only that API misuse with exact integer rectangle bounds;
+no geometric margin/tolerance/acceptance change. New CDR run follows this commit.
+Mainchip corrected per-layer route39436610858 at a9468ba... is confirmed live;
+do not dispatch another. Cloud-only; full closure unproven.
+
 ## 2026-10-20 — physical junction representation and actual GRT settings repaired
 
 CDR lookup39435510210 proves all parent junctions are flattened; only16macro

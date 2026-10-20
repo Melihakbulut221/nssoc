@@ -34,6 +34,8 @@ def main():
   return shapes,labels,instances
  before=snapshot(L,T);old_bbox=T.dbbox()
  changes=[];junction_changes=[];moved=[];total=0.;new_meta=copy.deepcopy(meta)
+ def encloses(outer,inner):
+  return outer.left<=inner.left and outer.bottom<=inner.bottom and outer.right>=inner.right and outer.top>=inner.top
  def replace_rectangle(layer,oldbox,newbox):
   li=L.layer(layer,0);ib=oldbox.to_itype(L.dbu);nb=newbox.to_itype(L.dbu)
   found=[s for s in T.shapes(li).each() if not s.is_text() and not s.is_edge() and s.bbox()==ib
@@ -60,7 +62,7 @@ def main():
    junction=[]
    for layer in (126,133,134):
     found=[sh for sh in T.shapes(L.layer(layer,0)).each()
-      if not sh.is_text() and window.contains(sh.bbox()) and sh.bbox().contains(cut)]
+      if not sh.is_text() and encloses(window,sh.bbox()) and encloses(sh.bbox(),cut)]
     assert found,('Missing flattened native junction layer',net,layer,ox,y)
     if layer==133:assert len(found)==1 and found[0].bbox()==cut
     for sh in found:
