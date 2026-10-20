@@ -1,3 +1,11 @@
+## 2026-10-20 — fresh raw audit PASSED; actual regular-body composition dispatched
+- Run39358698811 /9dd5bfdf0ed1d588282213f96b7e56851e90c75c SUCCESS:3381R/5105C,1606points,235conductors,26MIM.13wire+9MIMfaults passed.
+- Complete2075edge old/new collapsed-C matrix agrees for unchanged geometry;3matrix faults passed. Receipt docs/evidence/pll845-body-raw-audit-pass-20261020.json.
+- New pll845-body-composition-cloud keeps845native instances plus4separately counted actual regular ntap1 models.125PMOS bulk terminals split over4actual n-well islands. Requires65bodygroups contacted and all62composition faults.
+- Uses exact native MIM attachment nodes and fresh RC at2newpoints. No supply-name body aliases.
+- NEXT: inspect composition then full loaded closed-loop whole845 PLL and all-device operating checks. CDR actual-MIM attachment audit remains important before further tuning. TX39344566214/mainchip39331918238 remain existing handles.
+- All work cloud-only; full serial PHY/route/final timing still unaccepted.
+
 ## 2026-10-20 — fresh body-contact RC capture passed, raw audit dispatched
 - Native run39357622740 SUCCESS:3381R/5105C,1606physical/1879logical references,235conductors,26MIMs. The two actual body-contact points changed the network; original3380R/5104C must not be substituted.
 - New pll845-body-raw-audit-cloud checks all raw R edges/values, every ground-C point, mutual attachments, all conductor totals;13wire+9MIM corruptions retained. A complete old/new collapsed-C comparison with3additional faults checks unchanged geometry.
