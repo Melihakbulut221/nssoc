@@ -1,3 +1,7 @@
+## 2026-10-20 — Fresh selector4 MIM capture continuation
+
+Cloud-only capture is bound to extraction 39396626134 at 8789725da417537488b307aa0f76c08624822ac2 and successful physical parent 39394475994. It requires all four native extraction stages to succeed, with report, archive and lineage hashes preserved. Original eleven MIM masks, 946 terminal points, 111 physical components and five capture fault controls are unchanged. Strict raw RC audit, exact-once composition and original full-wave electrical gates remain required; no PHY closure is claimed. Mainchip route and PLL saved-process continuation remain live separately.
+
 ## 2026-10-20 — Cloud-only CDR extraction root selection
 
 Run 39395228380 passed planes but failed wire-inputs before extraction: KLayout top_cell() saw unreferenced old native PCells after the verified sampler replacement. Select the exact physical/LVS-pinned parent by name and assert it remains a layout root in probe, location and terminal-anchor methods. No GDS, conductor, device, RC or acceptance gate is changed. Original 484-device and 1394-terminal bindings remain mandatory. New push reruns the complete cloud extraction. Mainchip route 39392483151 and saved-process PLL continuation 39390580356 remain independent. Local workspace is empty; no local CAD process is running.
