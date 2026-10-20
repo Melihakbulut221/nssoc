@@ -1,3 +1,16 @@
+## 2026-10-20: v21 CDR normal cases rejected; new native latch review
+
+Full run39444824145 completed: nominal early/late fail sampling+phase, all normal
+device limits pass; both clock-stopped/V-I-disabled faults detected.
+Early C113/D283 wrong; late C115/D252, versus v20late182/291. Late phase regressed.
+All four exact result pins and compact gates committed. cdr-v21-latch-timing-cloud
+reproduces both complete raw captures and diagnoses real master/slave terminals.
+
+TX p4-drive3 extraction39449073164 passed117251R77892C and13controls. Its new
+composition workflow is active/queued; inspect current run at b47b573b1f5d609409215e53a8c9c41b75b61f70.
+PLL39423618115 publishing; mainchip39436610858 live. Cloud-only, workspace empty.
+
+
 ## 2026-10-20: p4 drive3 fresh extraction passed; composition next
 
 TX extraction39449073164 passed actual117251R77892C,377conductors,4774terminals,
