@@ -62,3 +62,12 @@ The first transfer attempt 39365732494 was rejected because its DEF reader
 assumed unindented net declarations. The native exporter uses leading spaces
 ([OpenDB DEF writer](https://github.com/The-OpenROAD-Project/OpenROAD/blob/master/src/odb/src/defout/defout_impl.cpp)).
 Recognizing that whitespace leaves the raw non-target DEF hash comparison intact.
+
+The transfer runs 39366144342 and 39366605396 exposed a real import-mode error:
+OpenDB incremental DEF reading does not register NETS callbacks. It therefore
+cannot import the proposed wire. The existing-net FLOORPLAN mode does register
+them ([native reader source](https://github.com/The-OpenROAD-Project/OpenROAD/blob/master/src/odb/src/defin/definReader.cpp)).
+The patch contains only this one NETS record; all other DEF content must still
+match byte-for-byte and both native wire metadata and wire decoder must say
+FIXED. The first native run of the corrected import must prove this behavior;
+the documentation alone is not validation.

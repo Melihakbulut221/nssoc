@@ -93,6 +93,7 @@ def main():
         elif fault=='wire_type':net.setWireType('ROUTED')
         assert identity(net)==plan['native_pin_identity']
         assert str(net.getWireType())=='FIXED',('Clock route is not physically fixed',str(net.getWireType()))
+        assert net.getWire()is not None,'Native DEF import omitted physical clock wire'
         assert net.getWire().getLength()==plan['old_length_dbu']
         actual,unrelated=export(block,'candidate.def'if fault=='none'else 'fault-'+fault+'.def')
         assert unrelated==plan['current_unrelated_def_sha256'],'Unrelated DEF geometry, cells or connectivity changed'

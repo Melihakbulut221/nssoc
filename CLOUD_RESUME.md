@@ -1,3 +1,6 @@
+## Correct native clock DEF import mode
+39366605396 proved incremental DEF mode omitted the clock wire entirely; no candidate accepted. Primary OpenDB reader source registers NETS callbacks in FLOORPLAN mode, not INCREMENTAL. Use floorplan_initialize only for the one-net patch, retaining strict exact non-target DEF, native netlist, pin/via and fixed-wire proofs and real fault controls. Re-run natively on hosted runner; no timing gate relaxed.
+
 ## Clock transfer native fixed metadata correction
 39366144342 imported the clock DEF but was rejected because the existing native net metadata was not FIXED. Explicitly set this single native net wire type before import; still require the imported decoder opcode to be FIXED, exact old route and via geometry, unchanged non-target DEF and exported logic. Neither validation nor timing constraints are relaxed. The fixed-route fault control must continue to reject a routed metadata mutation.
 

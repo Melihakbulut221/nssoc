@@ -54,11 +54,11 @@ def main():
         assert plan['net']=='clknet_3_5_0_pcie_clk_i'
         assert plan['patch_sha256']==sha(OUT/'clock-patch.def')and plan['import_base_sha256']==sha(OUT/'import-base.odb')
         tcl=OUT/'import.tcl'
-        tcl.write_text('read_db {'+str(OUT/'import-base.odb')+'}\nread_def -incremental {'+str(OUT/'clock-patch.def')+'}\nwrite_db {'+str(OUT/'candidate.odb')+'}\nwrite_verilog {'+str(OUT/'candidate.v')+'}\n')
+        tcl.write_text('read_db {'+str(OUT/'import-base.odb')+'}\nread_def -floorplan_initialize {'+str(OUT/'clock-patch.def')+'}\nwrite_db {'+str(OUT/'candidate.odb')+'}\nwrite_verilog {'+str(OUT/'candidate.v')+'}\n')
         baseline=OUT/'export-baseline.tcl'
         baseline.write_text('read_db {'+str(OUT/'after'/ODB)+'}\nwrite_verilog {'+str(OUT/'baseline-export.v')+'}\n')
         run([exe,'-exit',baseline],'export-unchanged-baseline-netlist')
-        run([exe,'-exit',tcl],'native-incremental-clock-def-import')
+        run([exe,'-exit',tcl],'native-existing-net-clock-def-import')
         run([exe,'-exit','-python',helper],'native-route-transfer-proof','audit')
         r['proof']=json.loads((OUT/'transfer-proof.json').read_text())
         assert r['proof']['original_clock_route_restored_exactly']and r['proof']['all_unrelated_def_content_unchanged']
