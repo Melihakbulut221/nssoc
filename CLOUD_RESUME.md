@@ -1,3 +1,6 @@
+## 2026-10-20 — CDR v22 exact-run MIM continuation
+Extraction39455570367 is live (planes passed). New MIM capture workflow waits for that exact run/source/path and all four successful stages, then binds immutable release receipts and executes original native11MIM/946point/5fault capture. No live prerequisite restarted, no dynamic receipts precommitted. Physical pass is not electrical acceptance; raw audits, composition and original waveforms remain required. Latest user instruction remains cloud-only; local project folder is empty.
+
 ## 2026-10-20 — CDR v22 physical pass; fresh native extraction
 Physical run39454675485 passed original native484 DRC/LVS and faults. Receipt pins exact GDS and archive. New cdr-retime-trunks-v22-extraction-cloud push runs planes, wire inputs, binding and RC with unchanged algorithms. Do not precommit dynamic stage receipts. Electrical/fullPHY acceptance still open. All work/evidence stays on GitHub; local project remains empty.
 
