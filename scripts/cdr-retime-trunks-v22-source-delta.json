@@ -1,0 +1,155 @@
+{
+  "baseline_run": 39440691879,
+  "passive_measurement_run": 39451162827,
+  "files": [
+    {
+      "baseline_path": "scripts/generate_cdr_collector_trunks_v21_parent.py",
+      "baseline_sha256": "868bbda2109dd3a782e765c919dcdc200690bdf1fed735bcf24032120cef4517",
+      "candidate_path": "scripts/generate_cdr_retime_trunks_v22_parent.py",
+      "candidate_sha256": "427171cf0b39c20ddf083900bd4a24f59aa1f32ef8ca60cbad7bc6cc70c2af43",
+      "edits": [
+        {
+          "before": "Shorten four internal collector trunks",
+          "after": "Shorten four internal retime-input trunks",
+          "count": 1
+        },
+        {
+          "before": "TARGET_NETS=('aqn','aqp','bqn','bqp')",
+          "after": "TARGET_NETS=('cun','cup','dun','dup')",
+          "count": 1
+        },
+        {
+          "before": "56733ea37cc7dc7fc6e8b2180d122511cfddd4a3bc9e1917a8f280f0d7604636",
+          "after": "3fdfff892b3c84d78349c7358699dfa2ec8fd98a98b887573beb4f4b3219c936",
+          "count": 1
+        },
+        {
+          "before": "assert len(rows)==(3 if net.startswith('a')else 2)",
+          "after": "assert len(rows)==2",
+          "count": 1
+        },
+        {
+          "before": "len(changes)==14 and len(moved)==10 and total>6000",
+          "after": "len(changes)==12 and len(moved)==8 and total>2500",
+          "count": 1
+        },
+        {
+          "before": "fourteen declared rectangles",
+          "after": "twelve declared rectangles",
+          "count": 1
+        },
+        {
+          "before": "SERIALIZED_FOUR_INTERNAL_COLLECTOR_TRUNKS",
+          "after": "SERIALIZED_FOUR_INTERNAL_RETIME_TRUNKS",
+          "count": 1
+        },
+        {
+          "before": "new_meta['collector_trunk_relocation']=proof",
+          "after": "new_meta['retime_input_trunk_relocation']=proof",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_collector_trunks_v21_parent.py",
+      "baseline_sha256": "462f1309b0a429670a75305d9b10b71f39502ea4f922a09ff060fcea6cd4eea0",
+      "candidate_path": "scripts/cloud_cdr_retime_trunks_v22_parent.py",
+      "candidate_sha256": "36e218023c7e2e958b8948496ffe00ec0e1f38326ff3f1193735ecc82bfa04a0",
+      "edits": [
+        {
+          "before": "physical collector routing candidate from the exact v20 parent",
+          "after": "physical retime-input routing candidate from the exact v21 parent",
+          "count": 1
+        },
+        {
+          "before": "collector_trunks_v21",
+          "after": "retime_trunks_v22",
+          "count": 2
+        },
+        {
+          "before": "collector-trunks-v21",
+          "after": "retime-trunks-v22",
+          "count": 1
+        },
+        {
+          "before": "cdr-data-v20-parent-physical-pass-20261020.json",
+          "after": "cdr-collector-trunks-v21-parent-physical-pass-20261020.json",
+          "count": 1
+        },
+        {
+          "before": "39420628714",
+          "after": "39440691879",
+          "count": 1
+        },
+        {
+          "before": "e00f439f650c884950ccc232bca90a26958cce39e93606316834a991e945e463",
+          "after": "ae578b3ecf11a68193c310a0a496d47c959d30a411f7c6803aeb04f1e5dfff0d",
+          "count": 1
+        },
+        {
+          "before": "659244604",
+          "after": "659575914",
+          "count": 1
+        },
+        {
+          "before": "87b35ff5bc80630cb4ad4614bd644ed37d5e77e8",
+          "after": "4446725afb079d53c9f707c92fc4cfb2a94e31a7",
+          "count": 1
+        },
+        {
+          "before": "PASS_PD484_DATA4_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "after": "PASS_PD484_COLLECTOR_TRUNKS_V21_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "count": 1
+        },
+        {
+          "before": "restore_report('cdr-data-v20-parent'",
+          "after": "restore_report('cdr-collector-trunks-v21-parent'",
+          "count": 1
+        },
+        {
+          "before": "len(r['routing']['changed_rectangles'])==14 and len(r['routing']['moved_native_tm1_tm2_vias'])==10",
+          "after": "len(r['routing']['changed_rectangles'])==12 and len(r['routing']['moved_native_tm1_tm2_vias'])==8",
+          "count": 1
+        },
+        {
+          "before": "r.update(status='PASS_PD484_COLLECTOR_TRUNKS_V21_PHYSICAL",
+          "after": "r.update(status='PASS_PD484_RETIME_TRUNKS_V22_PHYSICAL",
+          "count": 1
+        },
+        {
+          "before": "Four internal collector trunks moved into the existing channel; ten horizontal arms shortened and ten native junctions translated.",
+          "after": "Four internal retime-input trunks moved into the existing channel; eight horizontal arms shortened and eight native junctions translated. Existing v21 collector routing is retained.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/cdr-collector-trunks-v21-parent-cloud.yml",
+      "baseline_sha256": "41a5d3991a5e3a98220c74973ba69aa7141b07a9cb3eb31b8764995ceffc0e56",
+      "candidate_path": ".github/workflows/cdr-retime-trunks-v22-parent-cloud.yml",
+      "candidate_sha256": "68f90fb9ab4379c1388bd9890a74a80c5a829c87804d58936eca210f69251a6e",
+      "edits": [
+        {
+          "before": "collector-trunks-v21",
+          "after": "retime-trunks-v22",
+          "count": 8
+        },
+        {
+          "before": "collector_trunks_v21",
+          "after": "retime_trunks_v22",
+          "count": 6
+        },
+        {
+          "before": "Shorten four collector trunks",
+          "after": "Shorten four retime-input trunks",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "protected": {
+    "scripts/check_cdr_retime_trunks_v22_sources.py": "a9d013766721e120ed822a5863fb452f402d09e1e8e1835c562416ebee561ac6",
+    "scripts/check_cdr_localbus_v12_parent_geometry.py": "4c0917d4d88e61cb6c9cb7a02124d527a3a26b3de0ad5e1b556db87c78b45c97",
+    "hw/soc/flow/check_pcie_cdr_retimed_localbus_v12_parent.py": "350cd17e827e43621265122d49db10b1aedb2d1dbd740d4dc0df51cb045ba392"
+  }
+}

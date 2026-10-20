@@ -1,3 +1,6 @@
+## 2026-10-20 — CDR v22 retime-input physical candidate; cloud-only
+V21 passive and latch reviews reproduce its electrical rejection. Filter-output-to-sampler wire loads remain 0.2305–0.2571pF with 45.73–54.92ohm effective metal resistance. V22 moves cup/cun/dup/dun trunks and eight arms using actual obstacle-checked native geometry while retaining v21 collector routes and all children/pins. New push starts cdr-retime-trunks-v22-parent-cloud; it must pass original full DRC/LVS before fresh RC and unchanged waveforms. TX corrected fullwave39453950816 is live. Mainchip39436610858 and PLL39423618115 remain live; do not restart. Full PHY and final timing are not accepted.
+
 ## 2026-10-20 — TX fullwave receipt path repair; cloud-only
 Run 39452581487 stopped before transient on a nonexistent baseline receipt date. Corrected to the pinned October 20 wire20 receipt; no circuit, solver, stimulus or gate change. Push triggers the replacement TX fullwave workflow. Mainchip 39436610858 and PLL 39423618115 remain running; do not restart them. Local project directory is empty and no local CAD process is running. Full serial PHY and final timing remain unaccepted.
 
