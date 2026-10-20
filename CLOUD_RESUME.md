@@ -1,3 +1,6 @@
+## 2026-10-20 — CDR v22 fullwave exact-run continuation
+Prepared original34.25ns256-bit early/late/clock-stopped/VI-off tests on fresh17674R12700C. cdr-retime-trunks-v22-mim-streamed-cloud waits for exact validation39457813038 and every original fault control. Fresh planes receipt pinned; dynamic audit/composition receipts remain worker-only. New TX raw64 OP transport preparation is on sourced322a4df. Running TX39453950816, PLL39423618115 and mainchip39436610858 are preserved. Electrical/fullPHY/final timing not accepted. Cloud-only.
+
 ## 2026-10-20 — Full32 raw64 preparation hit native wrdata limit
 Preparation39457421944 rejected before DUT simulation because more than10000native probes exceed a single wrdata command. Added bounded512-vector OP chunks, exact decimal reconstruction and a pinned-simulator10032-distinct-vector control with five corruption checks. No observation/gate dropped; full transient remains binary and complete. Preparation reruns on push. CDR v22 raw audit/composition pipeline is on source2892d756; original TX39453950816, PLL39423618115 and mainchip39436610858 remain running. Cloud-only.
 
