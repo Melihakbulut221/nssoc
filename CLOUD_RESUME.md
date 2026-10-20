@@ -1,3 +1,12 @@
+## Mainchip global guide congestion rejected; native capacity trial dispatched
+
+Run39415055626 failed GRT-0116 before detailed routing, with8overflow (Metal3=1,Metal5=7). Immutable summaryca757b01a6234a1b63fb9fafe2a3432e23ba239e7b54752902d37115bf479bc7 and full archive retained. NativeGRT-0704 explicitly recommended20percent ->0percent layer adjustment.
+
+The new route trial changes ONLY the global-guide artificial capacity reserve from0.2 to0.0; original actual physical/timing gates and fixed clock preservation remain. No allow_congestion. Workflow manually dispatched with unchanged ancestor resize39160200022; controller itself pins actual fanout39404356943/candidatec005764c949e088b96cea5583f3a86fe901772b5e0eafc9d93bba506a151f2b7.
+
+CDR validation39425717815 audit passed, composition pending; CDR fullwaves39426217320 depend on its complete success. PLL39423618115 and TX39409002976 live. Cloud-only.
+
+
 ## Data4 original loaded waveform workflow dispatched behind exact validation
 
 Fresh audit/composition39425717815 at271d7849a81ae07c89f18e96cf17e938deeab90e is the only allowed prerequisite. The new cdr-data-v20-mim-streamed-cloud workflow waits for both successful native stages, verifies immutable source receipts, then runs nominal_early, nominal_late, clock_stopped and vi_bias_off.

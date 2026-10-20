@@ -11,7 +11,7 @@ FRESH_GUIDES=r'''
 # The input has only stale data wires removed. Source geometry, netlist,
 # power and clock wires were independently checked before this native step.
 set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
-set_global_routing_layer_adjustment * 0.2
+set_global_routing_layer_adjustment * 0.0
 set_macro_extension 0
 global_route -congestion_iterations 200 -verbose
 write_guides "$::env(STEP_DIR)/fresh-fanout.guide"

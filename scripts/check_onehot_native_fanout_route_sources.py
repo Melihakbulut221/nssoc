@@ -20,3 +20,10 @@ m=json.loads((root/'scripts/onehot-native-fanout-route-source-delta.json').read_
 for path,digest in m['fresh_route_support'].items():
     assert hashlib.sha256((root/path).read_bytes()).hexdigest()==digest
 print('PASS_EXACT_FRESH_ROUTE_PREPARATION_AND_NATIVE_GUIDE_REBUILD_SOURCES')
+
+c=m['fresh_route_capacity_change']
+raw=(root/'hw/soc/pnr/onehot_fanout_fresh_route_flow.py').read_text()
+assert raw.count(c['after'])==1 and c['before']not in raw
+assert hashlib.sha256(raw.replace(c['after'],c['before']).encode()).hexdigest()==c['baseline_sha256']
+assert '-allow_congestion'not in raw and 'global_route -congestion_iterations 200 -verbose'in raw
+print('PASS_ONLY_GUIDE_CAPACITY_RESERVE_CHANGED_FULL_PHYSICAL_AND_TIMING_GATES_RETAINED')
