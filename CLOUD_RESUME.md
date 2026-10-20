@@ -1,3 +1,6 @@
+## 2026-10-20 native TX precision gate PASS
+Cloud-only. 39486998309/4036318ae68455de556bcb60e14d3b17520c4288 passed: exact historical float error reproduced, both double input orders pass unchanged raw audit,137221R98241C exact electrical records,13+13 raw faults and4order faults passed. New composition input pins this successful run;20composition controls still required before loaded waves. v24 sampler physical39489042777 running. Mainchip39436610858/PLL39423618115/TX39460427396+39453950816 live; do not restart.
+
 ## 2026-10-20 measured CDR selector candidate
 Cloud-only. Diagnosis39487495346 passed reproduction for both rejected v23 captures: all120HBT/all4samplers, two VCE violations located at C master-track selectors. New v24 physical candidate changes only eight selector HBT Nx4->2 per sampler; original bias/tails/loads and physical/electrical gates retained. New leaf requires whole-parent integration/fresh RC/waves after physical pass; no PHY acceptance. TX precision39486998309 still live, mainchip39436610858 still live; do not restart.
 
