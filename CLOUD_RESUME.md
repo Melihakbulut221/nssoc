@@ -1,3 +1,6 @@
+## 2026-10-20 CDR v23 electrical rejection and next diagnosis
+Cloud-only. 39479905700 finished: early/late failed, stopped-clock and VI-off passed. v23 C/D improve but timing/data margins and signed phase still fail; two native HBT VCE values below0.4V. Original waveform/gates unchanged. New cdr-v23-latch-timing cloud workflow replays measurements and identifies actual failing stage. Native TX precision order-regression39486998309 remains running; do not repeat it or live mainchip/PLL/TX waves.
+
 ## 2026-10-20 native input-order regression
 Cloud-only. Local workspace remains empty. TX 39484218799 rejected because fresh baseline passed instead of reproducing old float error; R exact and capacitor endpoint/value multiset exact, cap ordering differed. New pipeline requires exact historical-order failure and both fresh/historical double-total raw audits plus 13 controls each. Composition 39485204826 rejected its failed prerequisite; repin only after successful new producer. CDR v23 fullwaves 39479905700 early/late failed, clock-stopped and VI-off passed; full PHY remains open. Do not restart still-live mainchip/PLL/TX jobs.
 
