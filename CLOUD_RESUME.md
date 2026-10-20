@@ -1,3 +1,12 @@
+## 2026-10-20 — fresh v24 MIM capture passed
+
+Native capture39494983590 PASS:17654R/12682C,seven actual MIM devices,938points,111wire components,five intrinsic corruption checks. Four fresh extraction receipts and full capture are now pinned.
+
+New cdr-selector-small-v24-mim-validation workflow retains13wire+9MIM controls and19composition faults, using actual v24 output only. After these stages pass launch original loaded fullwaves with model nssoc_cdr_pd476_retime_mim_wire_v24; no electrical pass yet.
+
+Mainchip portable runtime39494338440 native/container equivalence step succeeded; publication live at last check. Read its actual receipt before any process checkpoint claim.
+
+
 ## 2026-10-20 — v24 fresh extraction passed; native MIM capture next
 
 Run39493004118 passed all four original stages:476devices/1382terminals,111wire components/938points,19interface faults,12binding controls and13rawRC controls. Exact native HBT size census also matches the new parent reference. Immutable summary/part hashes are recorded in the extraction-pass receipt.
