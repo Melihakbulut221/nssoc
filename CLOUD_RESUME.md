@@ -1,3 +1,14 @@
+## Latest cloud handoff: CDR loaded simulations and fresh mainchip route live
+
+CDR MIM validation39425717815 passed both stages:13 wire+9 intrinsic controls,19 composition controls. Exact composed model SHA9b087e6c0c67b674b294321dfcfe269e2558b042235d3b48ef4cee2ec1996279,484devices17674R12712C. Compact immutable receipt in docs/evidence/cdr-data-v20-mim-validation-pass-20261020.json. Do NOT precreate individual audit/composition pass receipts: fullwave stage creates them itself from verified immutable assets.
+
+CDR fullwave39426217320 atb1dcf87fb2e5b85d88f397185f3eeae775e546cc: syntax-controls passed; nominal_early118640965600,nominal_late118640965778,clock_stopped118640965869,vi_bias_off118640965506 executing unchanged loaded native gates. No sampling acceptance yet.
+
+Mainchip fresh zero guide-reserve trial39427183963 at5c1639d18ed405ed86a9492c1f0711b55866ae88 is live (job118642589718). Previous39415055626 terminalGRT-0116,8overflows, retained. No real physical/timing gate relaxed.
+
+PLL streamed39423618115 (initial118630701374) and TXwire2039409002976 (nominal118581992980,swapped118581992937) remain live. Do not duplicate or restart these handles. Cloud-only; local workspace empty. Full serial Gen3x4, routed integrated chip and final setup/hold not closed.
+
+
 ## Mainchip global guide congestion rejected; native capacity trial dispatched
 
 Run39415055626 failed GRT-0116 before detailed routing, with8overflow (Metal3=1,Metal5=7). Immutable summaryca757b01a6234a1b63fb9fafe2a3432e23ba239e7b54752902d37115bf479bc7 and full archive retained. NativeGRT-0704 explicitly recommended20percent ->0percent layer adjustment.
