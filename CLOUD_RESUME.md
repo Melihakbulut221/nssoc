@@ -1,3 +1,7 @@
+## 2026-10-20 — Fresh CDR full-wave chain and TX bridge rejection
+
+Selector4 streamed tests consume only audit/composition39399444981 at7b452101d3d64572a1a9b58a0f1f1e1844f11084 after both stages succeed; original34.25ns/256bits/loads/phases/device gates and all simulator/model hashes remain unchanged. Fresh parent planes receipt is committed. TX bridge39376417214 nominal completed but rejected:87wrong/768,107below100mV,6HBTfail,0MOSfail. Selector worstVCE improved0.356462to0.392282V, still below0.4V; upstream interface failures persist. Preserve both original captures. Exact baseline path review39399643386 is live; mainchip route39392483151 and PLL39390580356 remain live. No fullPHY/finaltiming claim.
+
 ## 2026-10-20 — Fresh selector4 RC ready for strict audit
 
 All4 extraction jobs39396626134 and capture39397118280 passed. Capture has17674R12712C, eleven native MIMs,946 points and111 components; all5 intrinsic capture faults rejected. Commit exact capture/binding receipts and launch original13wire+9MIM audit then19fault exact-once composition. Fullwave electrical rejection criteria remain unchanged. Also fix TX g234 read-only reviewer source-check entrypoint: its predecessor is a script, not a check() function; invoke via runpy. Dispatch that reviewer after this fix without restarting any native waveform.
