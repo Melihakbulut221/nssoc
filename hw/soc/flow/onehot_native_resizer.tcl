@@ -80,12 +80,17 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     # Setup violations are not authorized by this hold repair.
     repair_timing -hold -setup_margin 0 -hold_margin 0.1 \
         -max_iterations 200 -max_buffer_percent 20 -verbose
+    # Preserve the real native result even if a later acceptance gate rejects it.
+    write_db "$::env(NSSOC_RESIZER_OUT)/hold-unchecked.odb"
+    write_verilog "$::env(NSSOC_RESIZER_OUT)/hold-unchecked.v"
+    # Positive delay cells have X=A in the pinned Liberty, like ordinary buffers.
+    # Enable/tri-state buffers and arbitrary added logic remain forbidden.
     # New delay buffers need real supply nets in addition to signal equations.
     foreach inst [$block getInsts] {
         set n [$inst getName]
         if {[info exists original_master($n)]} {continue}
-        if {![string match sg13g2_buf_* [[$inst getMaster] getName]]} {
-            error "Unexpected new master in hold repair"
+        if {![regexp {^sg13g2_(buf_(1|2|4|8|16)|dlygate4sd[123]_1)$} [[$inst getMaster] getName]]} {
+            error "Unexpected new master in hold repair: $n / [[$inst getMaster] getName]"
         }
         foreach {pin_name net_name} {VPWR VPWR VGND VGND} {
             set pin [$inst findITerm $pin_name]

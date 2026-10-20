@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Audit the candidate geometry independently of timing/Boolean equation proof."""
-import copy,hashlib,json,os
+import copy,hashlib,json,os,re
 from pathlib import Path
 import odb
 OUT=Path(os.environ['NSSOC_RESIZER_OUT'])
@@ -73,7 +73,7 @@ def main():
     for name,item in added.items():
         assert item['pins']['VPWR']=='VPWR'and item['pins']['VGND']=='VGND',('New buffer supply mismatch',name)
     # Hold repair may only add positive standard buffers. Liberty proof is mandatory.
-    assert all(r['master'].startswith('sg13g2_buf_')for r in added.values()),'Unexpected added function'
+    assert all(re.fullmatch(r'sg13g2_(buf_(1|2|4|8|16)|dlygate4sd[123]_1)',r['master'])for r in added.values()),'Unexpected added function'
     r=dict(status='PASS_SCOPED_CANDIDATE_GEOMETRY_NOT_ROUTE_OR_LVS',original_instances=len(old),
         guarded_instances=len(guarded),added=added,changes=changes,rejected=rejects,
         pg_ndr_ports_preserved=True,clock_pins_and_clock_sram_geometry_preserved=True,

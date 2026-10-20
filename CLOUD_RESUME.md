@@ -1,3 +1,6 @@
+## Cloud-only handoff: native optimizer now runs
+Run 39388037634 passed router identity, resized 214 cells and retained four hold buffers, then hit the added-master gate. Exact offending master was not logged. This commit explicitly recognizes only pinned X=A buffers/delay cells and retains unchecked hold ODB/netlist plus useful rejection names. Run the native-resizer workflow at this commit; fresh route/RC/STA still required. PLL/TX cloud jobs must not be restarted while live. Local project directory is empty.
+
 ## Native routed repair callback initialization — 2026-10-20
 Second resizer attempt39386565913 crashed inside pinned OpenROAD GlobalRouter::addDirtyNet at first SizeUpMove after reproducing all six original worst slacks. It is terminal, with no candidate checkpoint; preserve the failure. Exact source analysis found uninitialized router net tables. New initialization reuses existing guides and an empty incremental session before native repair, with full DEF identity (only GCell grid metadata excluded) and six literal timing-report comparisons before editing cells. New hold buffers get explicit native VPWR/VGND connectivity and independent supply checks. New workflow auto-starts; inspect its actual outcome before routing. Existing PLL/TX cloud jobs remain separate; don't restart live computations. No local CAD/files were introduced.
 

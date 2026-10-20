@@ -30,3 +30,31 @@ Inspection of the exact OpenROAD revision shows that IncrementalGRoute installs 
 Before editing any cell, the workflow compares full physical DEF before/after initialization (excluding only GCell grid bookkeeping), and requires literal identity of all six per-corner max/min worst-path reports. A changed-DEF negative control is retained. Native resizer callbacks own subsequent dirty-net updates; final route/RC/STA is still required. All added positive hold buffers must have VPWR/VGND connected to the actual existing supply nets; the independent geometry checker verifies those connections.
 
 Primary evidence: [exact GlobalRouter implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/grt/src/GlobalRouter.cpp) and [exact incremental parasitic update implementation](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/est/src/EstimateParasitics.cpp).
+
+
+## 2026-10-20 native optimizer reached; explicit positive delay-cell allowlist
+Run 39388037634 passed the exact physical DEF and six-report router initialization
+identity gates. Native setup repair resized 214 cells; native hold repair retained
+four buffers. It stopped at the added-master gate before legalization/proof.
+The rejected run did not print the offending master, so its exact identity is
+not claimed. Its summary asset 658641687 SHA256
+bf646e76cc871e9f7f83fc9484e1fc30383327e2e42009d9fb2dce0de951e92d
+and full archive 658641863 SHA256
+16d6e6982a69e7b337eea7093978365e69c0e76addc12f1fdf058f5736997462
+remain immutable cloud evidence.
+
+The pinned typ Liberty SHA256
+968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4
+defines sg13g2_dlygate4sd1_1, sg13g2_dlygate4sd2_1 and
+sg13g2_dlygate4sd3_1 as X=A, as it does the five ordinary buffer sizes.
+The added-cell gates now explicitly accept only these eight positive cells.
+Enabled/tri-state cells and arbitrary new logic remain rejected. Actual candidate
+Boolean proof and inversion negative control remain mandatory. An unchecked
+hold ODB/netlist is saved before acceptance gates and the error prints the exact
+instance/master if a different cell is seen. Power, geometry and fixed-clock
+checks remain mandatory.
+
+The optimizer's estimated WNS changed from -15.804 to -9.457 ns for setup;
+hold remained -0.513 ns. These are incremental estimates, not freshly routed
+all-corner signoff. No timing closure, route acceptance, LVS or PHY acceptance
+is claimed. All computations and durable results remain on GitHub.
