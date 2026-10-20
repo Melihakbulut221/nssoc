@@ -1,3 +1,11 @@
+## 2026-10-21 — distinct-runner OpenROAD process continuation PASS
+
+Run39497563699 cross stage PASS on different VM boot IDs:single entrypoint,120exact journal rows,152762instances,unchanged ODBhash,5corruption controls. Exact immutable receipt and actual native logs retained. This proves loaded-design process portability, not yet active detailed-router worker state.
+
+NEXT mainchip: use pinned portable image39494338440 and original route Tcl/config/globalODB/guides39436610858. Preserve all original fixed-clock/settings/gates, start real DRT, checkpoint during active progress and prove cross-runner continuation before long segmented routing. Original interrupted optimization state is unavailable; do not call it iteration3 resume.
+
+CDR v24 electrical run39497247685 has four actual native cases running. TX separate-native-driver39460427396 and PLL39423618115 remain live at last verification; check exact handles before changing anything. Prior TX nominal39453950816 is terminal/rejected and its18HBT/13sign failures are pinned. Full8074 TX electrical test still required. All native work and archives cloud-only; local project empty.
+
 ## 2026-10-21 — passed physical model and native process proof; TX rejection retained
 
 CDR v24 MIM validation39495976408 PASS:13raw-wire+9intrinsic controls,19composition controls,476devices17654R12682C. Four original loaded cases run in39497247685 (sourcec6d06da249dd52f5a0a629dd62d0942bd438f033).

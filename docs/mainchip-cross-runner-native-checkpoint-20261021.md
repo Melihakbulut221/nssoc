@@ -1,0 +1,7 @@
+# Actual OpenROAD process continuation verified across cloud VMs
+
+Run39497563699 passed both same-runner and distinct-runner process restoration using the exact native OpenROAD image from39494338440. The two VM boot IDs differ. A single original process entrypoint,120 ordered journal rows, the in-memory token,152762 actual instances and the exact original ODB hash survive restoration. Five corruption controls passed. The generic CRIU capability survey reported unsupported capabilities; the actual required checkpoint/restore operations themselves passed and their raw logs are preserved.
+
+This proves portable continuation of the real OpenROAD process with this loaded design. It does not yet prove serialization of active detailed-router workers. Next, restore the exact saved global database/guides and original routing configuration, start actual detailed routing, checkpoint during progress, and resume on another runner. Keep the original fixed-clock protections, routing settings and subsequent DRC/antenna/disconnect/RC/STA checks. Do not claim resumption at iteration3 of the old interrupted run: only its saved global database survived.
+
+Once active-worker continuation is demonstrated, route in cloud segments that checkpoint and publish before the hosted job limit. The final routed database must then pass the complete original physical and timing gates. The full serial PHY remains a separate open requirement.
