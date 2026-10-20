@@ -1,3 +1,6 @@
+## 2026-10-20 — All64 raw physical input drivers prepared for full32 integration
+Added cloud preparation with64source-pinned native100-device drivers (5376individual MOS), all604HBT and original124interfaces/256bits/34ns/limits. It uses the existing physically extracted localpins models, not an invented or electrically accepted driver. Original4:1rejection retained. Build-only workflow reports real probe count/capture lower bound before full simulation; no electrical acceptance. CDR v22 extraction39455570367 passed; MIM continuation on source7f458f0 is queued/running. TX39453950816, PLL39423618115 and mainchip39436610858 remain live. Cloud-only; no local CAD files.
+
 ## 2026-10-20 — CDR v22 exact-run MIM continuation
 Extraction39455570367 is live (planes passed). New MIM capture workflow waits for that exact run/source/path and all four successful stages, then binds immutable release receipts and executes original native11MIM/946point/5fault capture. No live prerequisite restarted, no dynamic receipts precommitted. Physical pass is not electrical acceptance; raw audits, composition and original waveforms remain required. Latest user instruction remains cloud-only; local project folder is empty.
 
