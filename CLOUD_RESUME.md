@@ -1,3 +1,7 @@
+## Cloud checkpoint: actual v16 CDR physical reorder candidate
+
+The new cdr-retime-band-reorder-cloud workflow preserves the actual verified v16 GDS, all native children and all prior local overlays while enumerating720 macro-band orders and rebuilding only global TM1 trunks. See docs/cdr-v16-band-reorder-20261020.md. Native DRC/LVS and conservation proofs are pending; fresh complete RC and original full loaded sampling gates must follow a physical pass. Do not claim timing acceptance from geometry. Independent mainchip39373842033, PLL39370629792, TXg23439372036289 and TXg234+bridge39376417214 remain live at latest check. All work stays cloud-only.
+
 ## Cloud checkpoint: v16 latch diagnosis completed
 
 All work remains cloud-only; local project directory rechecked empty. CDR analysis39376994817 reproduced all original gates, retained rejection, and identified late A/B slave output plus weak/late C/D incoming data. See docs/cdr-v16-latch-timing-review-20261020.md and its digest-pinned evidence receipt. Do not adopt rejected v17 resistor edits or move capture phases. Next candidate requires regenerated physical routing and new extraction, not translated children with stale wires.
