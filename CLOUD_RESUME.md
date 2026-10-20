@@ -1,3 +1,6 @@
+## Cloud-only CDR parent integration
+Leaf run39391984326 passed native54-device DRC/LVS/LEF/faults and exact46-unchanged/8-changed primitive checks. New cdr-selector-v19-parent-cloud replaces four actual sampler children in the pinned v18 parent, preserves all parent shapes/transforms and changes exactly32 flattened Nx parameters. Full484-device DRC/LVS and fresh whole-parent RC plus original loaded electrical cases are still required. Mainchip fresh-route run39392483151 and PLL saved-process continuation39390580356 remain live; do not duplicate or restart them. All artifacts remain cloud-only.
+
 ## Cloud-only mainchip routing handoff
 New onehot-native-resizer-route-cloud routes only the proven 39390580378 candidate ODB e2eef1214e78bf5143a6192633260b004542d1b6830372a983b457e9501e0386 (151051 instances). Full previous ancestry and real candidate proof are revalidated; original constraints and physical/timing scripts remain hash-pinned. Do not manually dispatch a duplicate: the new workflow starts on this push. PLL 39390580356 and CDR selector-v19 physical workflow remain independent cloud work; retain all failures. Local workspace stays empty.
 
