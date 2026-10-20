@@ -1,3 +1,15 @@
+## 2026-10-20: v21 MIM continuation armed after exact fresh extraction
+
+Cloud only. Parent physical pass 39440691879 is proven; extraction 39441534722
+has completed planes and wire-inputs, with binding/RC not yet accepted. New
+cdr-collector-trunks-v21-mim-parent-rc-cloud.yml waits for all four exact stages,
+pins native release digests and cross-checks provenance. No v20 RC is substituted.
+After capture: raw audit, composition, original loaded early/late and fault gates.
+
+Mainchip route 39436610858 and PLL streamed continuation 39423618115 remain live.
+TX wire20 remains electrically rejected. No full serial PHY/timing closure claim.
+
+
 ## 2026-10-20 — v21 collector physical pass; fresh extraction launched
 
 39440691879 source4446725... passed native DRC560categories0markers,
