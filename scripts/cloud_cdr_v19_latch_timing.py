@@ -119,8 +119,9 @@ def main():
   sh,ph=PINS[args.case];assert receipt['run']==39400191012 and pin['summary_sha256']==sh and pin['parts_sha256']==ph
   prior,proof=reports.restore_report('cdr-selector-v19-mim-streamed-'+args.case,receipt['run'],sh,ph,inputs/'wave',['native/wave.raw','composed/composition.json','planes/native-planes.json'])
   assert prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'
-  for key in ('case','source_head','status','raw_capture','validation_prerequisite','source_bits_sha256','data_offset_s','devices_passed','phase_passed','sources_unchanged'):
+  for key in ('case','source_head','status','validation_prerequisite','source_bits_sha256','data_offset_s','devices_passed','phase_passed','sources_unchanged'):
    assert prior[key]==pin[key],('Pinned native report mismatch',key)
+  assert {key:prior['raw_capture'][key]for key in pin['raw_capture']}==pin['raw_capture']
   for tag,check in pin['sampler_checks'].items():
    assert {key:prior['sampler_checks'][tag][key]for key in check}==check
   assert prior['case']==args.case and prior['source_head']=='604b0fbf89e27619220422b41a068de0dfc144e4'

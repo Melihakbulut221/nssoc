@@ -20,3 +20,10 @@ by the source experiment still does not demonstrate a complete closed-loop PHY.
 Both cases execute entirely on GitHub Actions. Only the diagnostic,
 checksums and input provenance are published; large original waveforms
 remain in their source releases. Analysis results are pending.
+
+Initial diagnostic run 39413465640 stopped before analysis because the compact
+receipt omits the large native vector map and was compared as an entire object.
+The comparison now checks every stored compact capture field against the
+SHA-bound full report. Subsequent raw reader equality still compares the full
+capture to the original full report, including every vector. No raw field,
+numerical gate or sample has been removed from that reproduction check.

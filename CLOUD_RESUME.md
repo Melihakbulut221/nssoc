@@ -1,3 +1,11 @@
+## Cloud CDR receipt projection correction
+Run 39413465640 rejected a compact/full raw metadata shape mismatch before analysis.
+Every compact field remains checked; the complete native raw-capture reproduction
+check remains unchanged. Replacement cloud analysis queued by this workflow change.
+Mainchip fanout route 39409367521 failed native DRT-0206 connectivity and is
+being investigated; it did not reach timing acceptance.
+
+
 ## Cloud-only continuation: CDR v19 timing diagnosis
 The original early/late v19 electrical rejection is preserved. A cloud-only
 read-only diagnosis now restores both complete raw captures and exact v19

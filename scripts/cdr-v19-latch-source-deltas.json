@@ -10,7 +10,7 @@
     "baseline_path": "scripts/cloud_cdr_v16_latch_timing.py",
     "baseline_sha256": "ef9bc8e289f7629a406cff646387eaffc27869a96d3a38da0678edf01ce4bc3e",
     "candidate_path": "scripts/cloud_cdr_v19_latch_timing.py",
-    "candidate_sha256": "6b150d4094c515575ccce7bf190094c4b28d0dccc0ad1dd7f2cb2d919f1eb1f6",
+    "candidate_sha256": "a549a68fe2ff9519c87beacedac927195e776f93c307faea2690bd830029d2f7",
     "edits": [
       {
         "before": "cloud-cdr-v16-latch-timing-",
@@ -59,7 +59,7 @@
       },
       {
         "before": "  assert prior==pin['report']and prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'",
-        "after": "  assert prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'\n  for key in ('case','source_head','status','raw_capture','validation_prerequisite','source_bits_sha256','data_offset_s','devices_passed','phase_passed','sources_unchanged'):\n   assert prior[key]==pin[key],('Pinned native report mismatch',key)\n  for tag,check in pin['sampler_checks'].items():\n   assert {key:prior['sampler_checks'][tag][key]for key in check}==check",
+        "after": "  assert prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'\n  for key in ('case','source_head','status','validation_prerequisite','source_bits_sha256','data_offset_s','devices_passed','phase_passed','sources_unchanged'):\n   assert prior[key]==pin[key],('Pinned native report mismatch',key)\n  assert {key:prior['raw_capture'][key]for key in pin['raw_capture']}==pin['raw_capture']\n  for tag,check in pin['sampler_checks'].items():\n   assert {key:prior['sampler_checks'][tag][key]for key in check}==check",
         "count": 1
       },
       {
