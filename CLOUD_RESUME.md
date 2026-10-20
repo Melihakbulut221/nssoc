@@ -1,3 +1,9 @@
+## Cloud checkpoint: full reordered-CDR waveform comparison prepared
+
+cdr-retime-bands-v18-mim-streamed-cloud now runs the original four cases(nominal_early,nominal_late,clock_stopped,vi_bias_off), full256bits/34.25ns and original phases/loads/device checks. It waits on exactvalidation39380893611(source762861b4...) and requires original13wire+9MIM+19composition faults before simulating actual17674R12712C/484devices. All PDK/tool hashes and waveform/oracle logic are unchanged.
+
+Physical39379285294 and extraction39379894690 and MIMcapture39380388968 passed within their stated scopes. Validation39380893611 was live at latest check. Next verifyvalidation, then fullfour-case nativewave outcomes; preserve failures and do not accept from geometry/RC alone. Mainchip39373842033, PLL39370629792, TXg23439372036289 and TXbridge39376417214 remain separate. Localproject stays empty; all work cloud-only.
+
 ## Cloud checkpoint: fresh CDR extraction and whole-MIM capture complete
 
 Fresh extraction39379894690 passed158planes,484device/1394terminal/111conductor graph, native binding and wireRC17651R12701C. Whole-MIM capture39380388968 passed with actual17674R12712C and11MIM/946points. New cdr-retime-bands-v18-mim-validation-cloud performs strict rawaudit+MIMidentity and composition with original13wire,9MIM,19assembly faults. Pin receipts now under docs/evidence/cdr-retime-bands-v18-{binding,mim-parent-capture}-pass-20261020.json.
