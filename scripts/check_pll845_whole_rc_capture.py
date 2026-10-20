@@ -6,7 +6,7 @@ from collections import Counter,defaultdict
 from decimal import Decimal
 from pathlib import Path
 import build_pcie_local_vco_hybrid_v6 as parser
-def check_capture(text,anchors,mim):
+def check_capture(text,anchors,mim,diagnostic_path=None):
  rows=parser.statements(text)
  assert rows[0][:2]==['.subckt','pump_wires']and rows[-1][0]=='.ends'
  points={x['label']:x for x in anchors['anchors']}
@@ -48,6 +48,12 @@ def check_capture(text,anchors,mim):
   key=(owners[graph.find(x[1])],owners[graph.find(x[2])],
        parser.number(p['w'])/Decimal('1e-6'),parser.number(p['l'])/Decimal('1e-6'))
   actual[key]+=1;exports[key].append(x[0])
+ if diagnostic_path is not None:
+  def serial(counter):
+   return [dict(plus_component=k[0],minus_component=k[1],w_um=str(k[2]),l_um=str(k[3]),count=v)for k,v in counter.items()]
+  diagnostic_path.write_text(json.dumps(dict(R=len(R),C=len(C),physical_points=len(points),
+   expected=serial(expected),actual=serial(actual),missing=serial(expected-actual),extra=serial(actual-expected),
+   native_dimensions=[dict(native_id=d['native_id'],parameters=d['parameters'],mask_bbox_dbu=d['mask_bbox_dbu'])for d in mim['native_mim_bindings']]),indent=2)+'\n')
  assert actual==expected,'Native MIM terminal-owner/dimension multiset differs'
  return dict(status='PASS_CAPTURE_235_COMPONENTS_AND26_NATIVE_MIM_MULTISET_REQUIRES_RAW_RC_AUDIT',
   R=len(R),C=len(C),physical_components=235,physical_points=len(points),logical_points=1877,

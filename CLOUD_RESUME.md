@@ -1,3 +1,9 @@
+## 2026-10-20 — whole PLL RC captured, MIM comparison rejected
+- Native run39352067225 at8045ebfecb88064453c1311b4fad8f606d354dd7: actual input geometry passed,1604 distinct physical points retain1877 logical references. All235 resistor components passed capture ownership checks. Native capture exit0 in3.51s.
+-26-MIM terminal-owner/dimension multiset comparison FAILED. Preserve original failure and all raw artifacts; do not accept or repeat native CAD merely for diagnosis.
+- New pll845-whole-rc-review-cloud workflow restores that exact immutable capture and records expected/actual MIM differences before the unchanged rejection gate.
+- TX39344566214 and mainchip39331918238 remain in progress. Cloud-only work; no local files.
+
 ## 2026-10-20 — fresh whole PLL845 RC capture dispatched
 - New workflow pll845-whole-mim-rc-cloud.yml uses successful terminal-reference run39350440897 and exact original GDS79b2f5869f620cb5d6ce57756bab18f6ef10743aee953fb9c140202a6b225cdc.
 - Covers all235 actual wire components,26 MIM masks and1877 logical metal/port points; every point re-probed, only exact physical coincidences may alias.
