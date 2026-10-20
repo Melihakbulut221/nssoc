@@ -1,3 +1,18 @@
+## 2026-10-20: p4 drive3 composition passed; full TX waves next
+
+Composition39450330853 passed all1674devices117251R77892C, six model faults,
+124inputlegs/372bases and endpoint faults. Compact1f0709a19395e7de77529adb20fbdff04f895fcc8588e0ba7ac5a32fb8c110bb;
+wire df92e5b36e0c633a9df3a065fe55729d50ca103e3fbaaa2a8267a5464d1f3eee.
+tx-p4-drive3-loaded-wave-cloud.yml first proves four actual high-drive master
+substitutions using old native a primitive identity/topology, then runs original
+full nominal/leaf-select-fault waves with original604HBT512MOS/bit/clock gates.
+No electrical pass yet; oldwire20 rejection preserved.
+
+CDR latch review39450671367 passed exact-wave reproduction. Passive v21 review
+is also running/queued; inspect before next circuit change. PLL39423618115
+publishing; mainchip39436610858 live. Cloud-only; local workspace empty.
+
+
 ## 2026-10-20: measure v21 residual retime wire loads
 
 cdr-v21-retime-passive-networks-cloud.yml now measures exact fresh collector and
