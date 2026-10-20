@@ -1,3 +1,11 @@
+## 2026-10-20 — whole PLL terminal-reference proof passed in the cloud
+- Run39350440897 / sourceece13196ca044e4f8beb18b043fae6a679f9de54 SUCCESS:845devices,2737 terminal identities,1860 metal references+819 body identities+58 shared intrinsic diffusion identities;17ports,1877 anchors,all235 wire components,0 unresolved.
+-30 MOS rail references proved through actual unblocked salicide shared edges and local tap contacts;90 physical fault cases and8 prior controls rejected as required. Compact immutable pins: docs/evidence/pll845-whole-terminal-references-pass-20261020.json.
+- NEXT PLL: fresh whole-geometry RC from these references and the frozen whole26-MIM geometry; retain explicit unmodeled body/poly/diffusion/salicide resistance limitations. Parent-only RC is insufficient.
+- TX fullwave39344566214 and mainchip128-buffer route39331918238 remain active. Preserve live jobs; no duplicates.
+- CDR v17 is rejected; original sampling gates failed. Full serial PHY and final mainchip timing remain open.
+- All sources, reports and restart notes are in GitHub. Local NSSOC directory empty; no local CAD or artifacts.
+
 ## 2026-10-20 — cloud-only salicide reference investigation
 - User requires all NSSOC work/artifacts in the cloud; local project directory is empty.
 - Run39348680934 failed with exactly30 unresolved MOS rail terminals; all178 resistor ends now resolved. Immutable failure pins: docs/evidence/pll845-thirty-mos-reference-rejection-20261020.json.
