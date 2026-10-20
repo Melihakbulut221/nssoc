@@ -1,3 +1,19 @@
+## 2026-10-20 — CDR v17 circuit sensitivity on frozen v16 metal
+Previous goal turn progressed: TX wire24 native composition39343496964 passed;
+new loaded-wave39344566214 is live. Mainchip39331918238 also live. No duplicates.
+CDR passive report identifies12 actual C/D input filter/bias resistors.
+New diagnostic changes only intrinsic lengths: filter5.4/12.6to1.8/16.2um,
+samplerbias2.4to6um, width4um fixed. All HBT/MOS/MIM, A/B input dividers,
+connectivity and17674R12709C old metal unchanged. This IS NOT new physical
+geometry or qualified PEX: reports/contract explicitly mark mismatch and
+adoption/PHY acceptance false. Five actual parameter/wire/terminal faults
+plus original binding and loaded data/device/current gates are required.
+Workflow cdr-retime-rebalance-v17-diagnostic-cloud.yml runs early/late,
+clock_stopped andvi_bias_off. If useful, generate actual candidate geometry,
+nativeDRC/LVS,freshMIMawareRC and rerun full gates; otherwise revise hypothesis.
+All calculations/artifacts stay in cloud; no local checkout or CAD.
+
+
 ## 2026-10-20 — Preserve comparison failures before native waves
 Wave39344347509 passed source controls; both workers were still setting up,
 and native simulation had not started when cancellation was requested.
