@@ -1,3 +1,6 @@
+## 2026-10-20 — CDR v22 fresh17674R12700C capture passed
+Extraction39455570367 and MIM capture39456445937 passed all native checks. Pinned capture and device-binding receipts; launched cdr-retime-trunks-v22-mim-validation-cloud for original raw13wire+9MIM controls and19composition faults. Dynamic per-run audit/composition receipts must remain uncommitted. Full original CDR waveforms still required after composition. TX raw64 driver build preparation is on source7deaca9; ongoing TX/PLL/mainchip jobs remain intact. Cloud-only.
+
 ## 2026-10-20 — All64 raw physical input drivers prepared for full32 integration
 Added cloud preparation with64source-pinned native100-device drivers (5376individual MOS), all604HBT and original124interfaces/256bits/34ns/limits. It uses the existing physically extracted localpins models, not an invented or electrically accepted driver. Original4:1rejection retained. Build-only workflow reports real probe count/capture lower bound before full simulation; no electrical acceptance. CDR v22 extraction39455570367 passed; MIM continuation on source7f458f0 is queued/running. TX39453950816, PLL39423618115 and mainchip39436610858 remain live. Cloud-only; no local CAD files.
 
