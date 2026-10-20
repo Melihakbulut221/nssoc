@@ -1,3 +1,6 @@
+## 2026-10-20 — Full32 raw64 preparation hit native wrdata limit
+Preparation39457421944 rejected before DUT simulation because more than10000native probes exceed a single wrdata command. Added bounded512-vector OP chunks, exact decimal reconstruction and a pinned-simulator10032-distinct-vector control with five corruption checks. No observation/gate dropped; full transient remains binary and complete. Preparation reruns on push. CDR v22 raw audit/composition pipeline is on source2892d756; original TX39453950816, PLL39423618115 and mainchip39436610858 remain running. Cloud-only.
+
 ## 2026-10-20 — CDR v22 fresh17674R12700C capture passed
 Extraction39455570367 and MIM capture39456445937 passed all native checks. Pinned capture and device-binding receipts; launched cdr-retime-trunks-v22-mim-validation-cloud for original raw13wire+9MIM controls and19composition faults. Dynamic per-run audit/composition receipts must remain uncommitted. Full original CDR waveforms still required after composition. TX raw64 driver build preparation is on source7deaca9; ongoing TX/PLL/mainchip jobs remain intact. Cloud-only.
 

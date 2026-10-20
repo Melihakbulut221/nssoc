@@ -17,6 +17,7 @@ def check():
             text=text.replace(e['before'],e['after'])
         candidate=(ROOT/row['candidate_path']).read_bytes()
         assert candidate==text.encode() and hashlib.sha256(candidate).hexdigest()==row['candidate_sha256']
+    for path,digest in m['protected'].items():assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==digest
     row=m['adapter'];raw=(ROOT/row['baseline_path']).read_bytes()
     assert hashlib.sha256(raw).hexdigest()==row['baseline_sha256']
     def function(source):

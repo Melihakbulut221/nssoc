@@ -6,6 +6,7 @@ from pathlib import Path
 import cloud_tx_input_driver_localpins as physical
 import cloud_tx_p4_drive3_builder as tree
 from cloud_tx_stream import pwl_voltage_sources
+from cloud_tx_chunked_op import save_commands
 from build_pcie_local_vco_hybrid_v6 import statements
 from run_cloud_tx_layout_repair import sha
 ROOT=Path(__file__).resolve().parents[1]
@@ -37,7 +38,7 @@ def adapt(deck,contract,model):
         old=prefix+' '.join(oldvectors);assert deck.count(old)==1
         deck=deck.replace(old,prefix+' '.join(vectors))
     oldsave='\n'.join(tree.native_save_commands(oldvectors));assert deck.count(oldsave)==1
-    deck=deck.replace(oldsave,'\n'.join(tree.native_save_commands(vectors)))
+    deck=deck.replace(oldsave,'\n'.join(save_commands(vectors)))
     oldinclude=f'.include "{tree.FRONT}"';assert deck.count(oldinclude)==1
     deck=deck.replace(oldinclude,f'.include "{model}"')
     assert pwl_voltage_sources(deck)==pwl_voltage_sources(original),'Source or timing changed'

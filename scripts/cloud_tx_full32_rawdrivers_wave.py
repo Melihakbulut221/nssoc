@@ -7,6 +7,7 @@ from pathlib import Path
 import cloud_tx_p4_drive3_builder as tree
 import cloud_tx_companion_replay as engines
 from cloud_tx_driver_localpins_loaded import fixtures
+from cloud_tx_chunked_op import chunked_stream,assemble_op,native_pilot
 from cloud_tx_stream import streaming_deck
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
@@ -151,12 +152,13 @@ def main():
   result['native_binding']=dict(actual_input_legs=124,actual_data_bases=372,hbt_count=604,mos_count=5376,public_data_pins=64,all_interface_probes_are_bound_terminals=True);save()
   assert contract['source_bits_sha256']=='5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825'
   assert len(contract['tree_plan']['nodes'])==30 and tree.BITS==256 and tree.UI==125e-12 and abs(tree.STOP-34e-9)<1e-22
-  native=out/'native';native.mkdir();(native/'bench.cir').write_text(streaming_deck(deck,contract));(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
+  result['op_transport_control']=native_pilot(paths['patched'],out/'op-transport-control');save()
+  native=out/'native';native.mkdir();streamed,op_spec=chunked_stream(deck,contract);result['op_chunk_spec']=op_spec;(native/'bench.cir').write_text(streamed);(native/'contract.json').write_text(json.dumps(contract,indent=2)+'\n');(native/'spinit').write_text('set num_threads=1\n')
   protected=[Path(__file__),ROOT/'scripts/bind_tx_p4_drive3_interfaces.py',ROOT/'scripts/run_cloud_tx_mux4.py',ROOT/'scripts/cloud_tx_p4_drive3_builder.py',ROOT/'scripts/check_tx_p4_drive3_builder.py',ROOT/'scripts/cloud_tx_stream.py',tree.FRONT,tree.TX,tree.PRE_FEED,tree.OUTPUT_FEEDS,tree.CLOCK_REFERENCES[clock_key],tree.CLOCK_FEEDS[clock_key],paths['patched'],probe,*[q for q in inputs.rglob('*')if q.is_file()],*[q for q in source.rglob('*')if q.is_file()],*native.iterdir()]
   if args.physical_clock:protected += [ROOT/'scripts/cloud_tx_tree32_clock_adapter.py',ROOT/'scripts/cloud_tx_p4_drive3_clock_adapter.py',*[q for q in clock_source.rglob('*')if q.is_file()]]
   if args.first_clock_l5p7:protected += [ROOT/'scripts/cloud_tx_tree32_firstclock.py',*[q for q in first_clock_source.rglob('*')if q.is_file()]]
   protected += [ROOT/'scripts/check_tx_wire24_g234_evidence.py',out/'selection-proof.json',out/'selection-source-summary.json',out/'selection-source.tar.gz']
-  protected += [ROOT/'scripts/cloud_tx_p4_drive3_model_compare.py',ROOT/'hw/soc/out/cloud-tx-p4-drive3-model-compare/result.json',ROOT/'scripts/cloud_tx_full32_rawdriver_adapter.py',*[q for q in driver_root.rglob('*')if q.is_file()]]
+  protected += [ROOT/'scripts/cloud_tx_p4_drive3_model_compare.py',ROOT/'hw/soc/out/cloud-tx-p4-drive3-model-compare/result.json',ROOT/'scripts/cloud_tx_full32_rawdriver_adapter.py',*[q for q in driver_root.rglob('*')if q.is_file()],ROOT/'scripts/cloud_tx_chunked_op.py',*[q for q in (out/'op-transport-control').rglob('*')if q.is_file()]]
   result['protected_inputs']={str(q):sha(q)for q in protected};save()
   columns=len(contract['vectors'])+1
   minimum_rows=math.ceil(tree.STOP/(contract['condition']['step_ps']*1e-12))+1
@@ -179,7 +181,7 @@ def main():
   flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',text)
   assert [n for n,_ in flags]==['q.'+n+'.qnpn13g2'for n in contract['hbt']]
   assert all(re.findall(r'(?m)^\s*off\s+([01])\s*$',body)==['1']for _,body in flags)
-  result['native_off_flags_count']=len(flags);result['review']=tree.review(native,contract)
+  result['native_off_flags_count']=len(flags);result['op_reassembly']=assemble_op(native,op_spec);result['review']=tree.review(native,contract)
   assert set(result['review']['interfaces'])=={'cmos','final','level_4','level_8','level_16'}
   assert all(v['samples']==6912 for v in result['review']['interfaces'].values()) if args.mode=='wire' else all(v['samples']==768 for v in result['review']['interfaces'].values())
   assert all(sha(Path(n))==h for n,h in result['protected_inputs'].items());result['source_unchanged']=True
