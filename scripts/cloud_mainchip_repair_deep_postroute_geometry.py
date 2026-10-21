@@ -44,6 +44,13 @@ def main():
         assert source_hash(controller,selected['source_head'])==selected['controller_sha256']==sha(ROOT/controller)
         native=log_proof((OUT/'routed/work/native.log').read_bytes(),(OUT/'routed/work/boots.log').read_bytes())
         assert native==actual['native_log']
+        drc=OUT/'routed/work/detailed-route.drc'
+        if native['completed_violation_counts'][-1]==0:
+            assert not drc.read_text().strip(),'Zero native count but nonempty final DRC report'
+        else:
+            assert drc.read_text().strip(),'Nonzero native count but empty final DRC report'
+        r['native_drc_report']=dict(sha256=sha(drc),bytes=drc.stat().st_size,
+            final_native_count=native['completed_violation_counts'][-1],zero_count_and_empty_report_consistent=True)
         assert(OUT/'routed/work/drt-done').read_text().strip()
         assert sha(OUT/'routed/work/before-guide-read.odb')==sha(a)
         b=OUT/'routed/work/detailed-route.odb';assert sha(b)==actual['routed_odb_sha256']
