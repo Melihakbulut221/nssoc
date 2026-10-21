@@ -1,3 +1,8 @@
+## Local cleanup completed; cloud execution retained
+Both historical cloud-backed NSSoC clones listed in cloud-only-cleanup-20261021.json have been removed, including generated environment/cache/site files. Their local heads were proven ancestors of current upstream heads, with no unpushed branch, stash, source changes or unreachable objects. App workspace is empty. No local CAD process; no local source/artifact downloads.
+
+TX8088 physical revalidation39578033552 is running from323d8c6948ebd41d99146c439584acdb7cbb7c88 with explicit165-port contract. Continue all engineering in GitHub. Preserve live mainchip39572968246, nominalTX39573847558, faultTX39573851657 and PLL storage scan39571416471. Full PHY and final chip timing remain unaccepted.
+
 ## Cloud-only work and TX8088 exact interface correction
 User requires all work in cloud and local project cleanup. Keep all sources, native state and artifacts on GitHub; do not create local checkouts or download artifacts. API orchestration may use RAM. Two clean historical NSSoC-linked clones verified fully contained in their upstream histories; cleanup receipt records exact heads.
 
