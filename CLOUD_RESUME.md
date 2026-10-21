@@ -1,3 +1,14 @@
+##2026-10-21 power128 initial native capsules saved; first continuation
+39627629074 passes actual native process/prefix preservation for both cases.
+Nominal786 complete rows to0.374963453316ns; leaf fault839 to0.401463453347ns.
+All14182 columns and partial tail bytes are retained. Full34ns capture and
+electrical review are still incomplete; checkpoint success is not circuit acceptance.
+Dispatch each exact source once to power128-native-continuation for3600s.
+No cold restart or old-geometry process reuse. Source/controller/model fixed.
+Mainchip39610377184, PLL39602655093 and input preparation39628968402
+remain separate cloud work. Full PHY/mainchip timing still open.
+
+
 ##2026-10-21 postroute-input raw-config failure preserved and corrected
 39627219647 completed candidate ancestry but failed on missing STA_CORNERS
 in raw user config before packaging. New job restores exact resolved native
