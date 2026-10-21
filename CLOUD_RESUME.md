@@ -1,3 +1,8 @@
+## 2026-10-22: v29 native planes/wire graph/binding passed; fresh MIM capture queued
+Live extraction39693048851/source db62ee1056042d7531d068c09a62359afe8cdcde passed native planes, wire-inputs and intrinsic binding; actual RC job119544862976 remains live. New MIM capture workflow waits only for this exact run/head/attempt and all four required stages; failed prerequisite cannot be consumed.
+Actual476device/1382terminal/938point/111component and seven MIM mask/plate/geometry capture logic is byte-identical to v28 except new provenance/receipt namespace. All26v29source corruption controls and original MIM faults remain. Native full capture and raw point/value audit must precede composition and unchanged full256bit loaded electrical acceptance. No priorRC or electrical pass reused; cloud only.
+Mainchip39682593979 cross, TX39681742199/39681748051 and PLL39674830790 remain live in last API checks; do not duplicate.
+
 ## 2026-10-22: v29 full476 parent physical PASS; fresh extraction starts
 Run39692037466/sourceb3d275434a4ff38c76a9c4dd64872dc6cf0a4137 passed560DRC0 and unsimplifieddeep/flat476LVS with originalfaults. GDS c3b2ce62c374a3614c137969ea15fd8c94e839ce2fac3b95c1f39a6f02bdb851; summary664068017 SHA5e7ab07191831d3f378a7719d355cacc591f76553d5302ce10b53cad21788b6f; parts664068088 SHA6f39dc3a4781ed35bbe6741962749c93539fe4707950393221d0b1a09c676d3a.
 Eight actual M4notches filled with1.96um2 metal; all originalgeometry/899M4components/leafdrawings/16placements retained, no newvia contacts. Earlier physical rejection/diagnosis/path failure archives retained.
