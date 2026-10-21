@@ -25,3 +25,11 @@ The corrected source is the original run39436610858 full run/resolved.json.
 The independently reconstructed raw config must exactly equal that run's
 trial-config.json; both files and the filtered step config are hash verified.
 No setting is inferred from absence and no corner/gate is removed.
+
+## Exact PDK and runtime dependencies
+
+Run 39631393774 reproduced the original user configuration and restored the complete resolved flow configuration, then failed before native analysis because its preparation-only path had not invoked the PDK setup normally performed by the LibreLane CLI. Its failure and complete missing-file inventory remain in the immutable Release and the new rejection receipt.
+
+The replacement uses the pinned AppImage's Ciel API with the exact original revision c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c and default/sg13g2_stdcell libraries. All five upstream release archives are independently checked for byte length and SHA256; every installed member must equal the corresponding archive member. No SRAM or library overlay is introduced. The tool-owned base.sdc is copied from its original AppImage path, retains its hash and original namespace, and is recorded separately from project files. DESIGN_DIR remains recorded metadata; no old route is created.
+
+This is an input preparation repair, not a routed geometry, antenna, RC, timing or full-PHY acceptance. Original clocks, corners, uncertainty, derating, candidate geometry and functional proofs remain mandatory.

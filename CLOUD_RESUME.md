@@ -1,3 +1,8 @@
+## 2026-10-21 — cloud-only exact PDK dependency repair
+The complete config job 39631393774 failed on missing PDK/runtime files, not native routing. Exact failure preserved. Preparation now installs the same pinned PDK through the original runtime Ciel API, independently verifies all five upstream archives and every installed member, exports the original tool SDC, and classifies only exact DESIGN_DIR as metadata. The input-package workflow runs on this controller change.
+Live jobs: mainchip ninth 39631640578; power128 TX first continuations 39630182787/39630188922; PLL 39602655093 publishing full native evidence (335 parts /89.9GB at 16:30 UTC). Never restart these live jobs.
+Full PHY, routed mainchip and original-clock timing remain open. Local workspace remains empty; all native work and evidence stay hosted.
+
 ##2026-10-21 eighth mainchip route segment saved; ninth continuation
 39610377184 ended with the real process saved, not a completed route.
 Measured completed router counts: [173861, 98155, 87048, 21646, 11790, 8379, 6882, 5698, 4867, 4027, 2197, 985, 815, 507, 406, 268, 232, 2371, 169]

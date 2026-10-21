@@ -12,5 +12,8 @@ for c in d['changes']:
     pieces.extend([old[cursor:c['start']],c['replacement']]);cursor=c['end']
 pieces.append(old[cursor:]);assert ''.join(pieces)==new
 ast.parse(new)
+helper=(ROOT/d['dependency_helper']).read_bytes()
+assert hashlib.sha256(helper).hexdigest()==d['dependency_helper_sha256']
+ast.parse(helper)
 assert 'OnehotFreshFanoutRoute'not in new and 'fresh-routing-input'not in new
 print('PASS_EXACT_CURRENT_FANOUT_ANCESTRY_TO_INPUT_PACKAGE_NO_NEW_ROUTE')

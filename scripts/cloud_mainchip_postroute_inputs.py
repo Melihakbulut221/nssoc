@@ -784,6 +784,26 @@ def main():
         clean=dict(state);clean['metrics']={}
         for key in ('def','spef','pnl','sdf'):clean[key]=None
         (package/'candidate-state.json').write_text(json.dumps(clean,indent=2)+'\n')
+        dependency_helper=ROOT/'scripts/prepare_mainchip_postroute_pdk.py'
+        dependency_root=OUT/'exact-pdk'
+        with(OUT/'exact-pdk.log').open('w')as log:
+            code=subprocess.call([str(app),'python',str(dependency_helper),
+                str(OUT/'resolved-source/run/resolved.json'),str(dependency_root)],
+                cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,
+                env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')})
+        if code:print((OUT/'exact-pdk.log').read_text(errors='replace')[-12000:],flush=True)
+        assert code==0,'Original PDK/runtime dependency restoration failed'
+        exact=json.loads((dependency_root/'result.json').read_text())
+        assert exact['status']=='PASS_PINNED_ORIGINAL_PDK_ARCHIVES_AND_TOOL_INPUTS_ONLY'
+        assert exact['config_sha256']==sha(OUT/'resolved-source/run/resolved.json')
+        assert all(sha(ROOT/n)==v['sha256']for n,v in exact['installed_files'].items())
+        r['original_pdk_archives_and_tool_inputs']=exact;save()
+        tool_inputs=exact['tool_files']
+        for source,row in tool_inputs.items():
+            export=dependency_root/row['exported'];target=package/row['exported']
+            assert sha(export)==row['sha256']
+            target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(export,target)
+            assert sha(target)==row['sha256']
         paths=set();directories=set();missing=set();outside=set()
         def collect(value):
             if isinstance(value,dict):
@@ -792,7 +812,9 @@ def main():
                 for v in value:collect(v)
             elif isinstance(value,str)and value.startswith('/'):
                 p=Path(value)
-                if p.is_file():paths.add(p)
+                if value in tool_inputs:
+                    assert sha(package/tool_inputs[value]['exported'])==tool_inputs[value]['sha256']
+                elif p.is_file():paths.add(p)
                 elif p.is_dir():directories.add(p)
                 elif any(x in value for x in '*?['):
                     import glob
@@ -804,7 +826,14 @@ def main():
                         elif q.is_dir():directories.add(q)
                         else:missing.add(name)
                 else:missing.add(value)
-        collect(raw_cfg);collect(cfg);collect(clean)
+        # DESIGN_DIR is archived output-directory metadata, not a model file.
+        # Preserve its exact value without creating or copying an obsolete run.
+        design_dir=cfg['DESIGN_DIR']
+        assert design_dir==str(ROOT/'hw/soc/out/cloud-onehot-native-fanout-route')
+        assert 'DESIGN_DIR'not in raw_cfg or raw_cfg['DESIGN_DIR']==design_dir
+        collect({k:v for k,v in raw_cfg.items()if k!='DESIGN_DIR'})
+        collect({k:v for k,v in cfg.items()if k!='DESIGN_DIR'})
+        collect(clean);directories.add(Path(design_dir))
         paths.update([odb,netlist,sdc,PLACE/'prepared/physical.sdc'])
         pdk=ROOT/'hw/soc/tools/ciel-corrpre'
         if pdk.is_dir():
@@ -834,6 +863,8 @@ def main():
             candidate_odb_sha256=sha(odb),candidate_netlist_sha256=sha(netlist),candidate_sdc_sha256=sha(sdc),
             configuration_sha256=sha(package/'trial-config.json'),resolved_configuration_sha256=sha(package/'resolved-flow-config.json'),state_sha256=sha(package/'candidate-state.json'),
             input_files=inventory,file_count=len(inventory),bytes=sum(v['bytes']for v in inventory.values()),
+            tool_input_files=tool_inputs,original_pdk_revision=exact['pdk_revision'],
+            upstream_pdk_archives=exact['archives'],metadata_directories=[design_dir],
             clocks_ns=[20,4,8,8],derating_percent=5,nominal_rc_only=True,qualified_rc_minmax=False,
             native_routing_started=False,fresh_spef_required=True,inherited_metrics_discarded=True,
             completed_route_not_included=True,full_phy_accepted=False,final_timing_complete=False)
