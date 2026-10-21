@@ -1,3 +1,12 @@
+## 2026-10-21 06:33 UTC cloud-only continuation
+Local /home/hasanmelih/Documents/ChatGPT/nnsoc is empty and no local CAD/simulator process is running. User instruction is ALL CLOUD, overriding the older local-work wording in the goal. Do not clone, download native artifacts, run CAD or keep scratch files locally.
+
+Mainchip fourth cross39542126811 completed successfully with routing violation counts173861,98155,87048,21646. Fifth cross39555639933 continues the exact saved native process for7200host seconds from receipt mainchip-active-drt-fourth-cross-pass-20261021.json. No final STA or routing completion yet.
+
+CDR native diagnosis39555076416 passed complete reconstruction of both failed v27 waves. All device bounds pass and all four sampler clocks actually steer; C/D master-input differential transfer collapses. Compact source-bound evidence is in cdr-v27-native-latch-diagnosis-20261021.json; complete9.6MB per-case diagnoses remain in immutable releases. Investigate C/D upstream drive and pull-up loading before another physical candidate. Original electrical rejection39548690293 and gates remain.
+
+TX boundary inventory39555328447 passed five actual-deck controls, including unknown-source rejection. Exact11clock leaf,62modulator,62series-resistor,30prefeed,finalfeed/outputfeed and4outputHBT bindings are in tx-lane-boundaries-pass-20261021.json. Bench title is explicitly separate from device primitives. No full-lane integration acceptance. TX native39544297368/39544299695 and full PLL compressed39551551389 were live at last check; consume their latest completed capsules only when publication succeeds. No local copies.
+
 ## Mainchip routing: fourth cross-runner capsule accepted for continuation
 Run39542126811 completed successfully with the same native process, single entrypoint and all restart/prefix rejection controls. Completed optimization violation counts are173861,98155,87048,21646; iteration4 started. These are routing counters, not final DRC or STA.
 Exact next descriptor and all original timing/settings/native image hashes are in mainchip-active-drt-fourth-cross-pass-20261021.json. Continue from this latest successful capsule for7200host seconds; never cold restart. Once detailed-route.odb is actually complete, enforce fixed-clock topology, antenna, disconnect, RC and three-corner final STA.
