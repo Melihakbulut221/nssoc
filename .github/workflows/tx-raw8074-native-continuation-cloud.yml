@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 name: tx-raw8074-native-continuation-cloud
 on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/tx-raw8074-native-continuation-cloud.yml]
   workflow_dispatch:
     inputs:
       source_checkpoint:
@@ -39,6 +42,7 @@ jobs:
           python3 scripts/check_tx_raw8074_native_sources.py
           PYTHONPATH=scripts python3 -c "import json; from cloud_tx_raw8074_native import controls; print(json.dumps(controls()))"
   native:
+    if: github.event_name == 'workflow_dispatch'
     needs: controls
     runs-on: ubuntu-24.04
     timeout-minutes: 180
