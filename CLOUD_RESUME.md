@@ -1,3 +1,17 @@
+## 2026-10-21 — fresh cleaned-parent extraction and original MIM capture
+
+Fresh extraction39532277767 has passed planes and wire-inputs; binding and RC
+were live at last poll. The v26 MIM workflow now consumes only that run and the
+actual clean-parent summary9182d81d1edd700aa7a5884b2f29f4611e254c298ad278fa8fc6898ee77c6856.
+It requires all four exact stages and unchanged original MIM/point/device gates.
+No old failed wire or MIM evidence is accepted.
+
+TX continued from the latest successful native capsules in39532132082 and
+39532134850, each7200seconds. DRT39529165315 and PLL39502073954 remain live.
+Everything is cloud-only. Full electrical capture, full serial PHY and final
+mainchip timing remain open.
+
+
 ## 2026-10-21 — actual CDR parent metal fixed; fresh RC restarted in cloud
 
 Clean-parent39531419538 passed full560-rule DRC, deep and unsimplified flat
