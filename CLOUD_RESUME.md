@@ -1,3 +1,7 @@
+## Cloud-only checkpoint: filesystem root restoration probe
+All work remains in GitHub; local workspace is empty. Native Btrfs run39537262048 failed and is retained in native-btrfs-root-path-rejection-20261021.json. CRIU could not reopen the original filesystem-root-relative raw pathname. The bounded helper now mounts a separate compressed filesystem, recreates the original full path inside it and bind-mounts that directory onto the unchanged case path. FSROOT and same-inode readback are mandatory.
+This remains an unproven bounded storage migration until the dedicated workflow passes actual restore, redump/restore, complete raw byte comparison and fault controls. No full PLL capsule is migrated or restarted. All existing native CDR, TX, PLL and mainchip runs are retained. Dispatch native-btrfs-cross-job-cloud.yml explicitly for this storage-only commit; unchanged digital CI is not restarted.
+
 ## 2026-10-21 — preserve actual CRIU restore error before runtime cleanup
 
 Bounded compressed-storage diagnostic39535899625 also rejected restore; all

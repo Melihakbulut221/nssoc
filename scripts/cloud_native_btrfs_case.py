@@ -16,9 +16,20 @@ def mount_case(case,out,run):
     with image.open('xb')as f:f.truncate(8*1024**3)
     shutil.move(str(case),str(backup));case.mkdir()
     run('btrfs-format-owned-image',['sudo','mkfs.btrfs','-f','-m','single','-d','single',str(image)])
-    run('btrfs-mount-owned-image',['sudo','mount','-o','loop,compress-force=zstd:3,noatime',str(image),str(case)])
-    run('btrfs-case-owner',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(case)])
-    shutil.copytree(backup,case,dirs_exist_ok=True,copy_function=shutil.copy2)
+    # The saved descriptor is relative to the original filesystem root, not
+    # merely to the case bind mount. Keep both roots and absolute paths intact.
+    volume=root/'native-btrfs-case-probe-volume'
+    volume.mkdir(exist_ok=False)
+    run('btrfs-mount-owned-image',['sudo','mount','-o','loop,compress-force=zstd:3,noatime',str(image),str(volume)])
+    run('btrfs-volume-owner',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(volume)])
+    relative=case.relative_to(case.anchor)
+    nested=volume/relative
+    nested.parent.mkdir(parents=True,exist_ok=True)
+    shutil.copytree(backup,nested,copy_function=shutil.copy2)
+    run('btrfs-bind-original-path',['sudo','mount','--bind',str(nested),str(case)])
+    assert (volume/relative/'actual-acquisition.raw').samefile(case/'actual-acquisition.raw')
+    filesystem_root=run('btrfs-filesystem-root-readback',['findmnt','-n','-o','FSROOT','-T',str(case)]).stdout.strip()
+    assert filesystem_root=='/'+str(relative),(filesystem_root,relative)
     assert {str(p.relative_to(case)):sha(p)for p in case.rglob('*')if p.is_file()}==before
     os.sync()
     mount=json.loads(run('btrfs-mount-readback',['findmnt','--json','-T',str(case)]).stdout)['filesystems']
@@ -27,6 +38,8 @@ def mount_case(case,out,run):
     sizes=run('btrfs-source-compression',['sudo','compsize','-b',str(case/'actual-acquisition.raw')]).stdout
     return dict(status='MOUNTED_EXACT_NATIVE_CASE_BYTES_ON_ZSTD_BTRFS_REQUIRES_NATIVE_RESTORE',
         source_files=before,mount=mount[0],compression=sizes,original_backup_retained=True,
+        filesystem_root=filesystem_root,volume_path=str(volume),native_case_path=str(case),
+        same_inode_through_original_path_and_filesystem_root=True,
         logical_image_bytes=image.stat().st_size,allocated_image_bytes=image.stat().st_blocks*512,
         compression_scope='Only actual bounded native raw file, not a full1us capacity proof',
         native_or_phy_acceptance=False)
