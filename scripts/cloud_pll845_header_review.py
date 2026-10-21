@@ -41,10 +41,10 @@ def main():
    assert len(xs)==1;return xs[0]
   assert field('Flags')=='real'and field('Plotname').lower()=='transient analysis'
   table=[x.split()for x in text.split('Variables:\n')[1].split('Binary:\n')[0].splitlines()]
-  assert len(table)==int(field('No. Variables'))==1695
-  assert all(len(x)==3 for x in table)and [x[0]for x in table]==list(map(str,range(1695)))
-  assert table[0]==['0','time','time']and len({x[1]for x in table})==1695
-  r['header']={'bytes':pos+len(frozen.MARKER),'declared_rows':int(field('No. Points')),'columns':len(table),
+  width=int(field('No. Variables'));assert len(table)==width and 1<width<=20000
+  assert all(len(x)==3 for x in table)and [x[0]for x in table]==list(map(str,range(width)))
+  assert table[0]==['0','time','time']and len({x[1]for x in table})==width
+  r['header']={'bytes':pos+len(frozen.MARKER),'declared_rows':int(field('No. Points')),'columns':len(table),'expected_original_columns':1695,'matches_original_column_count':len(table)==1695,
     'unit_counts':dict(collections.Counter(x[2]for x in table)),
     'not_wrapped_voltage':[x for x in table[1:]if not (x[2]=='voltage'and re.fullmatch(r'v\([^()\s]+\)',x[1]))],
     'first_vectors':table[:8],'last_vectors':table[-8:]}
