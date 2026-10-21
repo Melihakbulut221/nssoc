@@ -58,7 +58,7 @@ def main():
         protected[str(tech)]=sha(tech)
         r['technology_lef_source']=dict(pdk_commit='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c',url='https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef',sha256=sha(tech),bytes=tech.stat().st_size)
         save()
-        baseline_pin=json.loads((ROOT/'docs/evidence/cdr-sampler-input-access-v26-physical-pass-20261020.json').read_text())
+        baseline_pin=json.loads((ROOT/'docs/evidence/cdr-sampler-input-access-v26-physical-pass-20261021.json').read_text())
         assert baseline_pin['run']==39524824363 and baseline_pin['source_head']=='72e896211aee33b0980f3bccd73d607e21f2bc67'
         assert baseline_pin['group']=='cdr-sampler-input-access-v26-physical'
         assert baseline_pin['summary_sha256']=='e52fc2760e614fdc2182257070ea475f19988c0078979fa6777989cddaaddaef'
