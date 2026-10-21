@@ -1,3 +1,9 @@
+## 2026-10-21 — both feed32 native initial processes SAVED; continue exact capsules
+
+39660121041 terminalSUCCESS/source91c772b. Normal reached0.430935820353ns/898complete rows; swapped reached0.453435820384ns/943rows. Every14182columns retained, single original entrypoint, exact engine and actual nonempty process images. No fullcapture or electrical acceptance. Exact descriptors pinned in tx-power128feed32-native-initial-saved-20261021.json. Dispatch one7200second continuation per case using these descriptors; never a cold restart. Controller2ddd7d4dfebe66b81e72dbd262192e6db1d9fc2ab9944da46ea79f0008ff0199 unchanged.
+
+Mainchip actual repair39661771876/source5281afb active after exact source controls. Native baseline reproduction must pass before changes; all originalclock/geometry/equation controls remain. PLL39637767590 still uploading actual full capsule with fresh progress; leave live. Old power128 normal17.3473861ns and swap14.0002588ns capsules saved, electrically refuted geometry must not be endlessly continued. Cloud only.
+
 ## 2026-10-21 — actual completed-route repair iteration starts
 
 New mainchip-postroute-repair workflow consumes only verified39654204345 completedODB/netlist/originalSDC/fresh143338-netSPEF/resolvedconfig. Reproduce all six original worst slacks within1ps before native mutation. Existing proved electrical/setup/hold repair method now uses actual completed-route loads; original20/4/8/8ns,.25nsuncertainty,5%derate and all guards retained.152762sourceinstances/20SRAM/clockgeometry/equations/fixedPCIeclock remain mandatory. Native intermediate candidates/failures are preserved. Success is preparation only: new routing/antenna/freshRC/STA required. NewTX39660121041 controls passed and both native full34ns processes are live. Old power12839640657545/39640662925 now terminalSUCCESS, preserve as refuted-oldgeometry capsules rather than continuing indefinitely. PLL39637767590 still publishing. Local empty; cloud only.
