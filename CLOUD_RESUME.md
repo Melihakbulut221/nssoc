@@ -1,3 +1,7 @@
+## 2026-10-21 — power128 saved-prefix rail diagnostic
+New tx-power128-prefix-rails-cloud job reads only immutable normal39630182787 at4.7986ns, actual8088physical terminal bindings, all14182columns and completeprefixrows. Partialtail stays in source. It measures physical supply drops after2ns without touching ongoing native continuations or accepting partialcapture. Originalfull34ns reader unchanged; eight malformed-prefix controls.
+Second TX continuations were dispatched from c8b2b035; resolve their runIDs without duplicating. Mainchip39631640578, PLL39637767590 remain live. Actual mainchip input/config preflight39639250513 has completed SUCCESS; pin and inspect its native result next. All computation hosted; local project empty.
+
 ## 2026-10-21 — TX power128 reaches4.8ns; continue two-hour native segments
 Normal39630182787 and fault39630188922 completed real3600s continuation stages with original14182columns, singleentry, unchangedsources. Normal4.798637531ns/10423rows, fault4.827412540ns/10484rows. Neither full34ns nor electrical acceptance. Both next descriptors are pinned in tx-output8088-power128-first-continuations-20261021.json. Dispatch each once for7200native seconds using unchanged controller.
 Mainchip ninth39631640578 live. PLL continuation39637767590 live from820.364ns. Input/config preflight39639250513 verifies fixed shared-reader binding; older failure39639055120 explicitly retained. Local project empty; all work hosted.

@@ -1,0 +1,7 @@
+# Power128 rail diagnostic on immutable saved prefix
+
+This observer reads the saved normal-case native waveform from39630182787 and actual8088-device physical interface/composition bindings. All14182 columns and every complete native row are verified, including header/vector identity, exact payload hash, finite samples, monotonic time and unchanged timestep. The partial final row is retained in the original immutable source and never interpreted as a complete sample. The original full34ns reader is unchanged and must still reject incomplete captures.
+
+Only the actual available interval from2ns to4.798637531ns is measured. AVDD, AVSS and DVDD are mapped through native conductor clusters to each physical device terminal plane. Min/median/max local voltage and external-to-local voltage drop are reported. Eight corruption controls must reject malformed prefixes; no numerical electrical threshold is relaxed or accepted.
+
+This is diagnostic evidence for the supply-metal repair, not fullwave electrical acceptance, device safety, full serial PHY or mainchip signoff. The earlier8074 fullwave has a different time window; no fullwave A/B pass can be inferred. The ongoing normal and fault native processes are untouched. No simulator is started. Only this observer's temporary downloaded raw copy is deleted after exact hash revalidation; the complete source capsule remains in its original Release.
