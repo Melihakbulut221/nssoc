@@ -50,7 +50,6 @@ jobs:
           print('PASS_ACTUAL_NATIVE_POSTROUTE_STEP_CONTRACT_NO_ROUTE_EXECUTED')
           PYCODE
   native:
-    if: github.event_name == 'workflow_dispatch'
     needs: controls
     runs-on: ubuntu-22.04
     timeout-minutes: 350
@@ -71,12 +70,17 @@ jobs:
           python3 scripts/bootstrap_flow.py
           python3 scripts/check_mainchip_postroute_review_sources.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Analyze completed route without restarting native routing
+      - name: Validate actual inputs on push or analyze the explicitly completed route
         env:
           GH_TOKEN: ${{ github.token }}
           NSSOC_COMPLETED_DRT: ${{ inputs.source_checkpoint }}
-          NSSOC_INPUT_PACKAGE: ${{ inputs.input_package }}
-        run: python3 scripts/cloud_mainchip_postroute_review.py
+          NSSOC_INPUT_PACKAGE: ${{ inputs.input_package || '{"run":39635867954,"group":"mainchip-postroute-inputs","source_head":"d37ef5a4358933a7b9b106ef7f9c6724a4e71f3b","controller_sha256":"b4ea0290387bd9891559c146b88aab274da60f180cad4b356bd53b986398382a","summary_sha256":"069978a77028b77bc5a59534a241bb97b4d5ef3a13c3b72621133a64eb0cfd73","parts_sha256":"256db094424d4c4f35afac9592a0339a241a615c9de6c4a636650e2ba215c716","attempt":1}' }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            python3 scripts/cloud_mainchip_postroute_review.py --preflight-inputs
+          else
+            python3 scripts/cloud_mainchip_postroute_review.py
+          fi
       - name: Preserve all measured results and any rejection
         if: always()
         id: publish

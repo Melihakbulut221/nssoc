@@ -1,3 +1,7 @@
+## 2026-10-21 — native postroute controls pass; input-only runtime preflight
+39638124762 passed method/antenna/timing rejection controls and actual LibreLane step+DEF contract; receipt retained. New push now also restores passed inputpackage39635867954 and constructs the actual native flow config, requiring every timing/model value match the original. This preflight never routes or runs antenna/RC/STA and cannot accept incomplete DRT.
+PLL continuation39637767590 resumes820.364ns checkpoint. Mainchip39631640578 and TX39630182787/39630188922 remain live. Cloud-only; local project empty.
+
 ## 2026-10-21 — completed-route analysis prepared; no new routing
 New mainchip-postroute-review-cloud workflow runs only method/native-step controls on push. Actual analysis is manual and requires a completed native DRT descriptor plus the exact passed input-package descriptor(39635867954). It reuses all existing geometry/fixed-clock controls, exports fresh DEF from completedODB, and runs antenna/disconnect/freshnominalRC/guardedthree-cornerSTA. Original clocks/gates unchanged; no routing restart. Review is not yet native exercised on completedroute.
 PLL nextstage dispatched from39602655093 (820.364ns/1us); resolve its new runID once, do not duplicate. Mainchip39631640578 and TX39630182787/39630188922 remain live. Local workspace remains empty.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Consume completed native DRT and exact inputs; never rerun routing."""
-import base64,hashlib,json,math,os,re,shutil,subprocess,traceback
+import argparse,base64,hashlib,json,math,os,re,shutil,subprocess,traceback
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 import cloud_mainchip_postroute_geometry as geometry
@@ -37,6 +37,7 @@ def source_hash(path,ref):
     if data.get('encoding')!='base64':data=api('git/blobs/'+data['sha'])
     return hashlib.sha256(base64.b64decode(data['content'])).hexdigest()
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--preflight-inputs',action='store_true');args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,
@@ -95,6 +96,22 @@ def main():
         env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')}
         subprocess.run([str(app),'python','-c',toolcheck,json.dumps(contract['tool_input_files'])],cwd=ROOT,env=env,check=True)
         r.update(input_package_source=proof,input_package_descriptor=descriptor,input_contract=contract);save()
+        config_root=OUT/'native-config'
+        with(OUT/'native-config.log').open('w')as log:
+            code=subprocess.call([str(app),'python',str(ROOT/'scripts/check_mainchip_postroute_config.py'),str(package),str(config_root)],
+                cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT)
+        if code:print((OUT/'native-config.log').read_text(errors='replace')[-12000:],flush=True)
+        if(config_root/'result.json').is_file():r['native_configuration']=json.loads((config_root/'result.json').read_text());save()
+        assert code==0,'Actual native postroute configuration differs'
+        assert r['native_configuration']['status']=='PASS_ORIGINAL_NATIVE_POSTROUTE_CONFIG_NOT_ROUTED_ANALYSIS'
+        assert r['native_configuration']['original_sha256']==contract['resolved_configuration_sha256']
+        if args.preflight_inputs:
+            assert not os.environ.get('NSSOC_COMPLETED_DRT','').strip(),'Do not misclassify a completed route as input-only preflight'
+            assert all(sha(ROOT/n)==v['sha256']for n,v in contract['input_files'].items())
+            r.update(status='PASS_NATIVE_POSTROUTE_INPUT_CONFIG_PREFLIGHT_NOT_ROUTED',
+                sources_unchanged=True,native_routing_started=False,final_timing_complete=False,
+                next_action='Require genuinely completed DRT descriptor before antenna/RC/STA; this only validates original input restoration and native flow configuration.')
+            save();return
         assert os.environ.get('NSSOC_COMPLETED_DRT','').strip(),'Completed native route descriptor is mandatory'
         geometry.OUT=OUT/'geometry'
         geometry.main()
