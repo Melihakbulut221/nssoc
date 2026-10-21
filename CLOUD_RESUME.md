@@ -1,3 +1,8 @@
+## Bounded cloud storage: preserve original external superblock relationship
+FSROOT-preserving run39539101155 still failed reopening raw file. CRIU external-bind documentation requires originally shared superblocks to remain shared after migration. Retained failure receipt records this as a hypothesis.
+Next isolated4ns probe mounts exact copied workspace and a dedicated Docker data root on one compressed Btrfs filesystem, keeps original overlay2/image/command, and verifies case/workspace/all three Docker /etc bind files have the same st_dev before native restore. All complete-raw comparison, one-entrypoint, redump/restore and fault gates remain. No full PLL migration or restart.
+Dispatch native-btrfs-cross-job-cloud.yml explicitly. v27 parent pipeline and current DRT/TX/PLL native handles continue independently. Cloud-only.
+
 ## v27 actual leaf passed; integrate four leaves into clean parent
 Run39541838229 passed actual54-device leaf generation, unchanged52 primitive drawings,560-rule DRC, deep/unsimplified-flat LVS, LEF and20 fault controls. Receipt cdr-sampler-bias-access-v27-physical-pass-20261021.json pins complete evidence.
 New cdr-bias-access-v27-parent-cloud integrates four leaves into the exact cleaned v26 parent39531419538/GDS c6be4893... Retains all original parent polygons and eight native leaf types; only8 BP/BN intrinsic lengths2.4um to0.9um change. Parent physical gates and child region comparison remain unchanged. Requires fresh strict extraction and full loaded electrical verification after native parent checks.

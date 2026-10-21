@@ -83,6 +83,7 @@ def main():
         run('default-checkpoint-dir',['sudo','mkdir','-p',str(destination.parent)]);run('copy-native-checkpoint',['sudo','cp','-a',str(checkpoints),str(destination)])
         check="import pathlib,hashlib,sys,json;scan=lambda r:{str(p.relative_to(r)):hashlib.sha256(p.read_bytes()).hexdigest()for p in r.rglob('*')if p.is_file()};a=scan(pathlib.Path(sys.argv[1]));b=scan(pathlib.Path(sys.argv[2]));assert a and a==b;print(json.dumps(a))"
         transfer=json.loads(run('copy-proof',['sudo','python3','-c',check,str(checkpoints),str(destination)]).stdout);assert transfer==prior['checkpoint_images'];result['checkpoint_images']=transfer;save()
+        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()
         started=run('restore-native',['docker','start','--checkpoint','state',clone],False)
         if started.returncode:
             compressed.restore_failure(clone_id,OUT,run)

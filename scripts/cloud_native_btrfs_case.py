@@ -8,41 +8,63 @@ def sha(path):
 def mount_case(case,out,run):
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     root=Path(os.environ['GITHUB_WORKSPACE']).resolve();case=Path(case).resolve();out=Path(out).resolve()
-    assert case.is_relative_to(root)and out.is_relative_to(root)and case.is_dir()and not os.path.ismount(case)
+    assert str(root)=='/home/runner/work/nssoc/nssoc'
+    assert case.is_relative_to(root)and out.is_relative_to(root)and case.is_dir()and not os.path.ismount(root)
     before={str(p.relative_to(case)):sha(p)for p in case.rglob('*')if p.is_file()}
     assert before and 'actual-acquisition.raw'in before and 'boots.log'in before
-    backup=out/'uncompressed-case-proof';assert not backup.exists()
-    image=root/'native-btrfs-case-probe.img'
-    with image.open('xb')as f:f.truncate(8*1024**3)
-    shutil.move(str(case),str(backup));case.mkdir()
+    # CRIU requires external mounts from the same original superblock to
+    # remain on the same destination superblock. Migrate workspace AND
+    # Docker's external /etc files, preserving filesystem-relative paths.
+    info=json.loads(run('btrfs-original-docker-info',['docker','info','--format','{{json .}}']).stdout)
+    assert info['Driver']=='overlay2','Bounded probe requires the original overlay2 driver'
+    assert not run('btrfs-empty-docker-proof',['docker','ps','-aq']).stdout.strip()
+    scratch=Path(os.environ['RUNNER_TEMP']).resolve()/'nssoc-btrfs-superblock-probe'
+    assert not scratch.is_relative_to(root)
+    scratch.mkdir(exist_ok=False)
+    image=scratch/'case.img';volume=scratch/'volume';volume.mkdir()
+    with image.open('xb')as f:f.truncate(12*1024**3)
     run('btrfs-format-owned-image',['sudo','mkfs.btrfs','-f','-m','single','-d','single',str(image)])
-    # The saved descriptor is relative to the original filesystem root, not
-    # merely to the case bind mount. Keep both roots and absolute paths intact.
-    volume=root/'native-btrfs-case-probe-volume'
-    volume.mkdir(exist_ok=False)
     run('btrfs-mount-owned-image',['sudo','mount','-o','loop,compress-force=zstd:3,noatime',str(image),str(volume)])
     run('btrfs-volume-owner',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(volume)])
-    relative=case.relative_to(case.anchor)
-    nested=volume/relative
+    relative=root.relative_to(root.anchor);nested=volume/relative
     nested.parent.mkdir(parents=True,exist_ok=True)
-    shutil.copytree(backup,nested,copy_function=shutil.copy2)
-    run('btrfs-bind-original-path',['sudo','mount','--bind',str(nested),str(case)])
-    assert (volume/relative/'actual-acquisition.raw').samefile(case/'actual-acquisition.raw')
-    filesystem_root=run('btrfs-filesystem-root-readback',['findmnt','-n','-o','FSROOT','-T',str(case)]).stdout.strip()
-    assert filesystem_root=='/'+str(relative),(filesystem_root,relative)
+    immutable={str(p.relative_to(root)):sha(p)for p in root.rglob('*')if p.is_file()and not p.is_relative_to(out)}
+    shutil.copytree(root,nested,symlinks=True,copy_function=shutil.copy2)
+    assert all(sha(nested/n)==h for n,h in immutable.items())
+    run('btrfs-bind-original-workspace',['sudo','mount','--bind',str(nested),str(root)])
+    os.chdir(root)
+    assert all(sha(root/n)==h for n,h in immutable.items())
     assert {str(p.relative_to(case)):sha(p)for p in case.rglob('*')if p.is_file()}==before
+    assert (volume/case.relative_to(case.anchor)/'actual-acquisition.raw').samefile(case/'actual-acquisition.raw')
+    docker_root=volume/Path(info['DockerRootDir']).relative_to('/')
+    docker_root.mkdir(parents=True,exist_ok=False)
+    config="import pathlib,json,sys;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['data-root']=sys.argv[1];d['storage-driver']='overlay2';p.write_text(json.dumps(d));print(p.read_text())"
+    run('btrfs-owned-docker-root',['sudo','python3','-c',config,str(docker_root)])
     os.sync()
     mount=json.loads(run('btrfs-mount-readback',['findmnt','--json','-T',str(case)]).stdout)['filesystems']
     assert len(mount)==1 and mount[0]['fstype']=='btrfs'and 'compress-force=zstd:3'in mount[0]['options']
-    assert os.path.ismount(case)
+    fsroot=run('btrfs-filesystem-root-readback',['findmnt','-n','-o','FSROOT','-T',str(root)]).stdout.strip()
+    assert fsroot=='/'+str(relative)and os.path.ismount(root)
+    assert root.stat().st_dev==case.stat().st_dev==docker_root.stat().st_dev
     sizes=run('btrfs-source-compression',['sudo','compsize','-b',str(case/'actual-acquisition.raw')]).stdout
-    return dict(status='MOUNTED_EXACT_NATIVE_CASE_BYTES_ON_ZSTD_BTRFS_REQUIRES_NATIVE_RESTORE',
-        source_files=before,mount=mount[0],compression=sizes,original_backup_retained=True,
-        filesystem_root=filesystem_root,volume_path=str(volume),native_case_path=str(case),
-        same_inode_through_original_path_and_filesystem_root=True,
+    return dict(status='MOUNTED_EXACT_WORKSPACE_AND_CONFIGURED_SHARED_DOCKER_SUPERBLOCK_REQUIRES_NATIVE_RESTORE',
+        source_files=before,mount=mount[0],compression=sizes,original_workspace_hidden_but_retained=True,
+        immutable_workspace_files=immutable,filesystem_root=fsroot,volume_path=str(volume),
+        docker_root=str(docker_root),original_docker_root=info['DockerRootDir'],storage_driver='overlay2',
         logical_image_bytes=image.stat().st_size,allocated_image_bytes=image.stat().st_blocks*512,
         compression_scope='Only actual bounded native raw file, not a full1us capacity proof',
         native_or_phy_acceptance=False)
+
+def verify_external_superblock(container,case,out,run):
+    row=json.loads(run('btrfs-container-filesystem-readback',['docker','inspect',container]).stdout)[0]
+    root=Path(os.environ['GITHUB_WORKSPACE']).resolve()
+    paths=[root,Path(case),*[Path(row[k])for k in ('ResolvConfPath','HostnamePath','HostsPath')]]
+    assert all(p.exists()for p in paths)
+    ids={str(p):p.stat().st_dev for p in paths}
+    assert len(set(ids.values()))==1,'Original external superblock sharing was not preserved'
+    run('btrfs-container-mount-readback',['findmnt','--json','-T',row['ResolvConfPath']])
+    return dict(external_filesystem_devices=ids,same_superblock=True,source_image_and_native_command_unchanged=True)
+
 def redump(container,cmd,out,run):
     directory=out/'btrfs-checkpoints';directory.mkdir(exist_ok=False)
     run('checkpoint-btrfs-native',['docker','checkpoint','create','--checkpoint-dir',str(directory),container,'state'])

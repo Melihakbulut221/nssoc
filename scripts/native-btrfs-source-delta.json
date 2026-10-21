@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_native_portable_cross_job.py",
   "baseline_sha256": "b64430f6a94026228b40283bae3fb2505ab462d6b0c21caba0a293a8f3f64a11",
   "candidate_path": "scripts/cloud_native_btrfs_cross_job.py",
-  "candidate_sha256": "d13020d1cfafdc62b2316260a8f2f59f7353a4a0488ffad5cbc8d1e46ce0f9ef",
+  "candidate_sha256": "e1213e5895989e9ac08cbc06de0ce411cd68b100864810769b24aa8918729545",
   "edits": [
     {
       "before": "OUT=ROOT/'cloud-native-portable-cross-job'",
@@ -63,11 +63,16 @@
       "before": "        result['outputs']={str(p.relative_to(OUT))",
       "after": "        run('readable-durable-criu-log',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(OUT/'criu-durable.log')],False)\n        result['outputs']={str(p.relative_to(OUT))",
       "count": 1
+    },
+    {
+      "before": "        started=run('restore-native'",
+      "after": "        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()\n        started=run('restore-native'",
+      "count": 1
     }
   ],
   "pins": {
-    "scripts/cloud_native_btrfs_cross_job.py": "d13020d1cfafdc62b2316260a8f2f59f7353a4a0488ffad5cbc8d1e46ce0f9ef",
-    "scripts/cloud_native_btrfs_case.py": "3cf39d59dae03e055aad49869f2fa95b16df7fc19f79b87faff9b1ae92d32d4b",
+    "scripts/cloud_native_btrfs_cross_job.py": "e1213e5895989e9ac08cbc06de0ce411cd68b100864810769b24aa8918729545",
+    "scripts/cloud_native_btrfs_case.py": "68907173760ae3dd41b9efb57914fe33aacee20458346ad757a70c79a18199f6",
     ".github/workflows/native-btrfs-cross-job-cloud.yml": "109509a000d1ab53c2e2ba7ec89b22e05c1d2484ad568aa4695ccbf2dd3a6691"
   }
 }
