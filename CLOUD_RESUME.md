@@ -1,3 +1,8 @@
+## Mainchip routing: third cross-runner capsule accepted for continuation
+Run39529165315 completed successfully with same native process, single entrypoint and four restart/prefix rejection controls. Completed optimization violation counts are173861 then98155; iteration2 at50percent reports95177 interim violations. These are routing counters, not final DRC or STA.
+Exact next descriptor and all original timing/settings/native image hashes are in mainchip-active-drt-third-cross-pass-20261021.json. Continue from this latest successful capsule for7200host seconds; never cold restart. Once detailed-route.odb is actually complete, enforce fixed-clock topology, antenna, disconnect, RC and three-corner final STA.
+CDR v27 corrected leaf run follows39541838229; prior39541559456 failed only because of a stale receipt date before geometry execution, now fixed. Native TX39532132082/39532134850 and PLL39502073954 remain live. Cloud-only, no local artifacts.
+
 ## Cloud-only: v26 diagnosis reproduced; actual v27 bias candidate
 Both full-wave diagnostics39540450970 succeeded in reproducing the rejected original measurements. Four HBT VCE failures belong to master track selectors of sc/sd. Exact diagnostic source descriptors are in cdr-v26-native-latch-diagnosis-20261021.json.
 New cdr-sampler-bias-access-v27-physical-cloud workflow changes only actual BP/BN rppd2.4um to0.9um from v26, preserving IP/IN0.9um and other52 native drawings. Original19 fault controls plus wrong-bias-length control are required. Candidate is NOT electrically accepted. After leaf DRC/deep-flat LVS/LEF, integrate into actual cleaned parent, remove only proven native orphans if needed, re-extract RC and repeat full unchanged loaded waves.
