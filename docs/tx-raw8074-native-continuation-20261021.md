@@ -1,0 +1,8 @@
+# Full TX transient with durable native state
+The initial cloud jobs restore the immutable actual8074 prepared nominal and swap-leaf-select decks. They keep every original34ns/256-bit/.5ps stimulus and all14162 raw columns. No shorter analysis or selected waveform window substitutes for the full electrical test.
+
+The controller binds every recursively included model and OSDI file to preparation hashes and builds a scratch Docker image from the exact engine/OSDI loader library closure. Native execution has no GitHub credentials. CRIU captures the actual ngspice process after600host seconds, with the full original analysis still in progress. A low disk reserve requests earlier process capture. The original image, process images and complete mutable working files are published; consumed ancestor capsules are not recursively republished.
+
+The continuation workflow requires an exact successful source descriptor, unchanged controller/engine/runtime and preparation, another boot and run, identical command/CPU mask, a single entrypoint, and bit-identical raw/log prefixes. Native raw growth proves numerical progress. Nineteen structural/file-prefix faults must reject. These controls are not a native portability pass; the actual cross-runner restore must still succeed.
+
+On genuine native completion the original solver/diagnostic/OFF/zeroOP, all604HBT/5376MOS, five interface groups and full original bit gates run. Nominal failures remain failures; the swapped-select case must be detected. Physical clock macro assembly, PVT/PEX, full serial PHY and mainchip signoff remain open even if this electrical screen passes.
