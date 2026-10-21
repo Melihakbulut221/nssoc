@@ -1,0 +1,65 @@
+{
+  "baseline_path": "scripts/cloud_mainchip_repair_deep_drt.py",
+  "baseline_sha256": "13060f197d5e9f75368e9db1e104d7f30381e3ca4bfa4f9d10e7c4438a625fc5",
+  "candidate_path": "scripts/cloud_mainchip_repair_deep_drt_continuation.py",
+  "candidate_sha256": "d033e54252166ab930a50e5d3039bee45ac114d6f5088a8316fb4fd8652c5ffc",
+  "protected": {
+    "scripts/cloud_mainchip_process_checkpoint.py": "b1ec1b367a17ae4bdc07683f9aa8a12628dd3c5430e441c179a94c54984cbc63",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
+    "docs/evidence/mainchip-portable-runtime-pass-20261020.json": "165629f8ec5b3ff99b9b9c01464b7fb129fb991ee9c5287e19de614c36e62e18",
+    "docs/evidence/mainchip-cross-runner-native-checkpoint-pass-20261021.json": "751718384fa5ccb4036cfdbf69543e7742e73f3ede41ad7f7954e93a11f92822",
+    "scripts/cloud_mainchip_repair_deep_drt.py": "13060f197d5e9f75368e9db1e104d7f30381e3ca4bfa4f9d10e7c4438a625fc5",
+    "docs/evidence/mainchip-repair-deep-global-pass-20261021.json": "bc1c0d8b2220956a29db91c998d3e36ecd2244eefafff59dc8b877ec41eeb886",
+    "scripts/mainchip-repair-deep-drt-methods.json": "1b6a24b818a07d22ae0b30091458164682de8b645d55039f9d809494d9116cc8"
+  },
+  "changes": [
+    {
+      "start": 829,
+      "end": 829,
+      "replacement": "LEGACY_CONTROLLER_SHA256='13060f197d5e9f75368e9db1e104d7f30381e3ca4bfa4f9d10e7c4438a625fc5'\nGLOBAL_INPUTS=dict(global_candidate_instance_count=153130,\n global_odb_sha256='6bf5a055467ffea2e4fb0059ffcac4293d939171b0e17af6e224aee13b41c00c',\n global_guides_sha256='4b22365ef87d0c5880fe2e27732e6be19644f24cbcc2d309862a841b80721efb',\n candidate_netlist_sha256='3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030',\n source_sdc_sha256='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597')\ndef validate_saved_source(spec,run,report,summary_sha,parts_sha,compatible):\n    assert set(spec)=={'run','attempt','group','source_head','controller_sha256','summary_sha256','parts_sha256'}\n    assert type(spec['run'])is int and spec['run']>0 and spec['attempt']==1\n    assert spec['group']=='mainchip-repair-deep-drt-cross'\n    assert re.fullmatch('[a-f0-9]{40}',spec['source_head'])\n    for k in ('controller_sha256','summary_sha256','parts_sha256'):\n        assert re.fullmatch('[a-f0-9]{64}',spec[k])\n    assert summary_sha==spec['summary_sha256'] and parts_sha==spec['parts_sha256']\n    assert run['id']==spec['run'] and run['run_attempt']==1\n    assert run['head_sha']==spec['source_head'] and run['head_branch']=='codex/complete-open-work'\n    assert run['path']in('.github/workflows/mainchip-repair-deep-drt-cloud.yml','.github/workflows/mainchip-repair-deep-drt-continuation-cloud.yml')\n    assert run['status']=='completed' and run['conclusion']=='success'\n    assert all(report[k]==v for k,v in GLOBAL_INPUTS.items()),'Saved process belongs to a different candidate'\n    assert report['source_head']==spec['source_head'] and report['run_id']==spec['run'] and report['stage']=='cross'\n    assert report['sources_unchanged'] and report['native_process_saved'] and not report['route_complete']\n    assert report['status']=='SAVED_CROSS_RUNNER_ACTIVE_DRT_PROGRESS_REQUIRES_FURTHER_CONTINUATION_AND_SIGNOFF'\n    assert report['active_drt_cross_runner_progress_proven'] and report['restored_native_process']\n    assert report['controller_sha256']==spec['controller_sha256'] and spec['controller_sha256']in compatible\n    assert report['checkpointed_elf_sha256']=='25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b'\n    assert report['checkpoint_images'] and report['native_log']['single_entrypoint']\n    c=report['continuation']\n    assert {k:c[k]for k in ('run','attempt','group','source_head','controller_sha256')}=={k:spec[k]for k in ('run','attempt','group','source_head','controller_sha256')}\n    assert c['native_process_saved'] and c['next_phase']=='continue_same_native_process'\ndef source_controls():\n    import copy\n    # Structural fixtures only, not a simulated or actual router progress claim.\n    h='1'*64\n    s=dict(run=17,attempt=1,group='mainchip-repair-deep-drt-cross',source_head='a'*40,controller_sha256=h,summary_sha256='2'*64,parts_sha256='3'*64)\n    run=dict(id=17,run_attempt=1,head_sha='a'*40,head_branch='codex/complete-open-work',path='.github/workflows/mainchip-repair-deep-drt-cloud.yml',status='completed',conclusion='success')\n    r=dict(source_head='a'*40,run_id=17,stage='cross',sources_unchanged=True,native_process_saved=True,route_complete=False,\n        status='SAVED_CROSS_RUNNER_ACTIVE_DRT_PROGRESS_REQUIRES_FURTHER_CONTINUATION_AND_SIGNOFF',\n        active_drt_cross_runner_progress_proven=True,restored_native_process=True,controller_sha256=h,\n        checkpointed_elf_sha256='25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b',\n        checkpoint_images={'pages-1.img':'4'*64},native_log={'single_entrypoint':True},\n        continuation={k:s[k]for k in ('run','attempt','group','source_head','controller_sha256')}|dict(native_process_saved=True,next_phase='continue_same_native_process'))\n    r.update(GLOBAL_INPUTS)\n    validate_saved_source(s,run,r,'2'*64,'3'*64,{h})\n    faults=[]\n    cases=[('live_source','run','status','in_progress'),('failed_source','run','conclusion','failure'),\n        ('wrong_run','run','id',18),('wrong_head','run','head_sha','b'*40),\n        ('unknown_controller','report','controller_sha256','5'*64),\n        ('no_process','report','native_process_saved',False),('route_already_done','report','route_complete',True),\n        ('no_progress','report','active_drt_cross_runner_progress_proven',False),\n        ('wrong_binary','report','checkpointed_elf_sha256','6'*64),\n        ('empty_process_images','report','checkpoint_images',{}),\n        ('changed_summary','spec','summary_sha256','7'*64),('changed_parts','spec','parts_sha256','8'*64),\n        ('cold_initial_capsule','spec','group','mainchip-repair-deep-drt-initial'),\n        ('unknown_source_workflow','run','path','.github/workflows/unrelated.yml')]\n    cases += [('changed-'+k,'report',k,0 if isinstance(v,int)else'0'*64)for k,v in GLOBAL_INPUTS.items()]\n    for label,which,key,value in cases:\n        ss,rr,pp=copy.deepcopy((s,run,r));{'spec':ss,'run':rr,'report':pp}[which][key]=value\n        try:validate_saved_source(ss,rr,pp,'2'*64,'3'*64,{h})\n        except (AssertionError,KeyError):faults.append(dict(name=label,rejected=True))\n        else:raise AssertionError('Accepted malformed source: '+label)\n    try:validate_saved_source(s,run,r,'2'*64,'3'*64,{'9'*64})\n    except AssertionError:faults.append(dict(name='incompatible_controller_version',rejected=True))\n    else:raise AssertionError('Accepted incompatible controller')\n    assert len(faults)==20\n    return dict(scope='Synthetic descriptor/receipt validation only; actual CRIU progress must be proven separately',faults=faults)\n"
+    },
+    {
+      "start": 852,
+      "end": 1006,
+      "replacement": "    spec=json.loads(os.environ['NSSOC_DRT_SOURCE'])\n    assert type(spec['run'])is int and spec['run']!=int(os.environ['GITHUB_RUN_ID'])\n    run=api('actions/runs/'+str(spec['run']))\n    assert run['status']=='completed' and run['conclusion']=='success','Never replay a live or rejected source'\n    group=spec['group'];assert group=='mainchip-repair-deep-drt-cross' and spec['attempt']==1\n    rel=api('releases/tags/cloud-results-'+str(spec['run'])+'-1-'+group);got={}\n"
+    },
+    {
+      "start": 1057,
+      "end": 1254,
+      "replacement": "        found=[a for a in rel['assets']if a['name'].endswith(suffix)];assert len(found)==1\n        a=found[0];raw=subprocess.check_output(['gh','api',REPO+'releases/assets/'+str(a['id']),'-H','Accept: application/octet-stream'])\n"
+    },
+    {
+      "start": 1423,
+      "end": 1696,
+      "replacement": "    compatible={LEGACY_CONTROLLER_SHA256,sha(Path(__file__))}\n    validate_saved_source(spec,run,r,digest(raw),digest(parts),compatible)\n    return dict(run=spec['run'],group=group,summary_sha256=digest(raw),parts_sha256=digest(parts),report=r,descriptor=spec)\n"
+    },
+    {
+      "start": 3470,
+      "end": 3470,
+      "replacement": "    assert args.stage=='cross','Continuation controller cannot start a fresh native route'\n    from check_mainchip_repair_deep_drt_continuation_sources import check\n    check();source_controls()\n"
+    },
+    {
+      "start": 17653,
+      "end": 17843,
+      "replacement": "            assert old==pin['report']and old['sources_unchanged']and old['controller_sha256']in{LEGACY_CONTROLLER_SHA256,r['controller_sha256']}\n            assert old['boot_id']!=r['boot_id']and old['run_id']!=r['run_id']\n"
+    },
+    {
+      "start": 20253,
+      "end": 20253,
+      "replacement": "            r['continuation_source_descriptor']=pin['descriptor']\n"
+    },
+    {
+      "start": 20863,
+      "end": 20887,
+      "replacement": "            budget=int(os.environ.get('NSSOC_DRT_SECONDS','3600'))\n            assert 600<=budget<=7200\n"
+    },
+    {
+      "start": 20990,
+      "end": 21106,
+      "replacement": "            if shutil.disk_usage(case).free<=14*1024**3:\n                r['early_checkpoint_reason']='Reserve native process dump/publication space';save();break\n"
+    }
+  ]
+}
