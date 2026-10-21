@@ -1,3 +1,8 @@
+## v27 actual leaf passed; integrate four leaves into clean parent
+Run39541838229 passed actual54-device leaf generation, unchanged52 primitive drawings,560-rule DRC, deep/unsimplified-flat LVS, LEF and20 fault controls. Receipt cdr-sampler-bias-access-v27-physical-pass-20261021.json pins complete evidence.
+New cdr-bias-access-v27-parent-cloud integrates four leaves into the exact cleaned v26 parent39531419538/GDS c6be4893... Retains all original parent polygons and eight native leaf types; only8 BP/BN intrinsic lengths2.4um to0.9um change. Parent physical gates and child region comparison remain unchanged. Requires fresh strict extraction and full loaded electrical verification after native parent checks.
+Mainchip fourth continuation39542126811 consumes only successful capsule39529165315. TX39532132082/39532134850 and PLL39502073954 remain live. No full PHY, final route or STA acceptance yet; all work cloud-only.
+
 ## Mainchip routing: third cross-runner capsule accepted for continuation
 Run39529165315 completed successfully with same native process, single entrypoint and four restart/prefix rejection controls. Completed optimization violation counts are173861 then98155; iteration2 at50percent reports95177 interim violations. These are routing counters, not final DRC or STA.
 Exact next descriptor and all original timing/settings/native image hashes are in mainchip-active-drt-third-cross-pass-20261021.json. Continue from this latest successful capsule for7200host seconds; never cold restart. Once detailed-route.odb is actually complete, enforce fixed-clock topology, antenna, disconnect, RC and three-corner final STA.
