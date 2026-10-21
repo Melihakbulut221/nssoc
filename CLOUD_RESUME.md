@@ -1,3 +1,16 @@
+## 2026-10-21 — compressed native storage not yet accepted
+
+Probe39534984940 copied all bounded native case files byte-exact to Btrfs and
+measured516096allocated/569344logical raw bytes, but Docker/CRIU restore failed.
+The legacy restore.log path was absent; next probe retains runtime CRIU logs and
+Docker debug journal. No full PLL migration is allowed from this failed proof.
+Current full PLL39502073954 remains live and unchanged.
+
+CDR independent audit/composition39533943848 passed; full-wave39534542949
+preflight remains live (prior equivalent preflight took8minutes). Do not restart.
+Cloud-only; full serial PHY/mainchip route/final setup-hold remain open.
+
+
 ## 2026-10-21 — storage probe dependency correction
 
 Bounded probe39534232911 stopped before CAD because Ubuntu package compsize does

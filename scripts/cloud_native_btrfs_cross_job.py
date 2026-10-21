@@ -66,7 +66,7 @@ def main():
         result['criu_build']=json.loads((Path(os.environ['RUNNER_TEMP'])/'criu-build.json').read_text());assert sha('/usr/sbin/criu')==result['criu_build']['binary_sha256']
         assert result['criu_build']['source_commit']==prior['criu_build']['source_commit']=='9539417f3e3cfa4eb84c319cd71f4d52f1f08645'
         run('criu-check',['sudo','criu','check','--all'],False)
-        config="import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))"
+        config="import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;d['debug']=True;p.write_text(json.dumps(d))"
         run('docker-experimental',['sudo','python3','-c',config]);run('docker-restart',['sudo','systemctl','restart','docker'])
         assert sha(source/'native-image.tar')==prior['native_image_sha256'];run('load-native-image',['docker','load','-i',str(source/'native-image.tar')])
         image=json.loads(run('loaded-image',['docker','image','inspect',prior['image_id']]).stdout)[0];assert image['Id']==prior['image_id']
@@ -84,6 +84,7 @@ def main():
         transfer=json.loads(run('copy-proof',['sudo','python3','-c',check,str(checkpoints),str(destination)]).stdout);assert transfer==prior['checkpoint_images'];result['checkpoint_images']=transfer;save()
         started=run('restore-native',['docker','start','--checkpoint','state',clone],False)
         if started.returncode:
+            compressed.restore_failure(clone_id,OUT,run)
             run('restore-native-detail',['sudo','cat','/run/containerd/io.containerd.runtime.v2.task/moby/'+clone_id+'/work/restore.log'],False);raise RuntimeError('Separate-job native restore failed')
         run('pre-redump-log',['docker','logs',clone],False)
         result['compressed_redump']=compressed.redump(clone,cmd,OUT,run);save()

@@ -52,3 +52,19 @@ def redump(container,cmd,out,run):
         run('btrfs-restore-detail',['sudo','cat','/run/containerd/io.containerd.runtime.v2.task/moby/'+ident+'/work/restore.log'],False)
         raise RuntimeError('Native Btrfs redump/restore failed')
     return dict(checkpoint_images=images,exact_copied_images=True,same_native_command=True)
+
+def restore_failure(container_id,out,run):
+    code="""import pathlib,json,sys
+cid=sys.argv[1];roots=[pathlib.Path('/run/containerd'),pathlib.Path('/run/docker/containerd'),pathlib.Path('/var/lib/docker/containers')/cid]
+rows=[]
+for root in roots:
+ if root.exists():
+  for p in root.rglob('*.log'):
+   if p.name in ('restore.log','dump.log')or 'criu'in p.name:
+    try:rows.append(dict(path=str(p),text=p.read_text(errors='replace')))
+    except OSError as e:rows.append(dict(path=str(p),error=repr(e)))
+print(json.dumps(rows))
+"""
+    run('all-owned-criu-restore-logs',['sudo','python3','-c',code,container_id],False)
+    run('docker-restore-journal',['sudo','journalctl','-u','docker','--no-pager','-n','500'],False)
+    run('runtime-versions',['docker','version'],False)

@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_native_portable_cross_job.py",
   "baseline_sha256": "b64430f6a94026228b40283bae3fb2505ab462d6b0c21caba0a293a8f3f64a11",
   "candidate_path": "scripts/cloud_native_btrfs_cross_job.py",
-  "candidate_sha256": "a13f30f17ff759842db2d76c7f170b1375ee8963855d7732df5c0cca56a1d6b2",
+  "candidate_sha256": "bd1cb0b7443e897084b8c3281aed596bc5a357d9cfce92361005aa4a236b7765",
   "edits": [
     {
       "before": "OUT=ROOT/'cloud-native-portable-cross-job'",
@@ -43,11 +43,21 @@
       "before": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())",
       "after": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())\n        result['compressed_case']['final_compression']=run('btrfs-final-compression',['sudo','compsize','-b',str(case/'actual-acquisition.raw')]).stdout",
       "count": 1
+    },
+    {
+      "before": "d['experimental']=True;p.write_text(json.dumps(d))",
+      "after": "d['experimental']=True;d['debug']=True;p.write_text(json.dumps(d))",
+      "count": 1
+    },
+    {
+      "before": "        if started.returncode:\n            run('restore-native-detail'",
+      "after": "        if started.returncode:\n            compressed.restore_failure(clone_id,OUT,run)\n            run('restore-native-detail'",
+      "count": 1
     }
   ],
   "pins": {
-    "scripts/cloud_native_btrfs_cross_job.py": "a13f30f17ff759842db2d76c7f170b1375ee8963855d7732df5c0cca56a1d6b2",
-    "scripts/cloud_native_btrfs_case.py": "ce2274e19b796582ec3df1f3a7329550597e5bf8c9c8b6ab05e15a5ad2ed555f",
-    ".github/workflows/native-btrfs-cross-job-cloud.yml": "8cc274a20dc83820b2d93f762566dd5282e3d3ad6bc220ab1469bfd2bf1b3f0c"
+    "scripts/cloud_native_btrfs_cross_job.py": "bd1cb0b7443e897084b8c3281aed596bc5a357d9cfce92361005aa4a236b7765",
+    "scripts/cloud_native_btrfs_case.py": "b7a757497c70d7ae88a698283211b79b276867e096cbb3196bf6f4d779434aef",
+    ".github/workflows/native-btrfs-cross-job-cloud.yml": "75a00ae1a9c00494f17041cf71849fbca6f3917c34c3b75fb305293c5722564d"
   }
 }
