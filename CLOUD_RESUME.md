@@ -1,3 +1,7 @@
+## 2026-10-21: repaired global passed; new resumable DRT launched by push
+39680690957 PASS fresh-global. Exact original native script/config; physical DEF unchanged except routing grid,153130instances/20SRAM and fixedPCIeclock proven. GlobalODB6bf5a055... guides4b22365e.... New mainchip-repair-deep-drt-cloud push owns initial300s actual optimization plus distinct-runner3600s exact-process continuation. Do not rerun old completed route or duplicate this new workflow. Requires terminal global-bound DRT receipt before fresh antenna/RC/three-corner STA.
+TX39681742199(normal)/39681748051(swap_leaf_select) are7200s exact continuations from39662510592/39662516267. PLL39674830790 still live. All native work cloud-only; local project empty.
+
 ## 2026-10-21: TX first long native continuations saved; continue exact processes
 TX39662510592(normal) reached12.1071894176ns/27282rows;39662516267(swap_leaf_select)8.96754132997ns/20084rows,14182columns each. TerminalSUCCESS, real nonempty checkpoint images, one entrypoint, literal old raw/log prefixes and cross-runner numerical progress proven. Full34ns/electrical acceptance still pending. Latest immutable descriptors in tx-power128feed32-native-first-cross-saved-20261021.json; dispatch one7200s continuation per case, not initial runs.
 Mainchip fresh-global39680690957 source5b56b1aa queued, do not duplicate. PLL39674830790 remains live. Cloud only.
