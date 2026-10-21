@@ -1,3 +1,8 @@
+## Production-sized preallocated storage qualification launched before full PLL migration
+native-preallocated-btrfs-cross-job-cloud retains original bounded8454ns/34-probe native trajectory,12818-row equality,3corruption and5path controls. New helper allocates actual backing extents BEFORE any capsule download, preserves them using mkfs-K plus mountednodiscard, keeps originalFSROOT and sharedDocker superblock, and measures backing st_blocks and independent native12GiB/outside4GiB reserves (6GiB initially left outside). Only the small repository is copied before download.
+This is a new native storage qualification, not full1us acceptance or fullraw capacity proof. After its actual pass, integrate same helper into a reversible production storage-only controller delta preserving all11 native/parser methods, complete raw bytes and original process command. Consume only latest terminal-success PLL39502073954 continuation; never fork live/initial stage.
+CDR fullwave39548690293 at3a1e7db11456f4d0c0af5384cca56362783108aa waits for exact independent audit/composition39548204907. Audit passed; composition last seen live. Mainchip39542126811 and TX39544297368/39544299695 remain native continuations. Cloud-only.
+
 ## v27 full loaded capture chained to exact independent audit
 New cdr-bias-access-v27-mim-streamed-cloud waits for audit/composition39548204907 atb2a19223457398361ad61c51bd2c72fb44327f67. It consumes only new17694R12714C/476-device native model and retains full256-bit34.25ns/.3125ps,150fF/50fF loads, original37.5ps/100mV/30mV/50uA/nativeHBT-MOS gates and both fault cases. No electrical pass assumed.
 Do not commit dynamic v27 mim-parent-audit/composition receipts until the fullwave wrappers consume them.

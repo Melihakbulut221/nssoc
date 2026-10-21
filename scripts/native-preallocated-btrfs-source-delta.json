@@ -1,0 +1,50 @@
+{
+  "controller": {
+    "baseline_path": "scripts/cloud_native_btrfs_cross_job.py",
+    "baseline_sha256": "f5b289411856a6eade21f5cde5b948521fb0250d926fdec5e024442d8dd8d809",
+    "candidate_path": "scripts/cloud_native_preallocated_btrfs_cross_job.py",
+    "candidate_sha256": "52cf6ada8c429ca307c34d64eb1410051e4a4432115842aa8711ece7c0df1030",
+    "edits": [
+      {
+        "before": "import cloud_native_btrfs_case as compressed",
+        "after": "import cloud_native_btrfs_case as compressed\nimport cloud_pll845_preallocated_storage as allocation",
+        "count": 1
+      },
+      {
+        "before": "cloud-native-btrfs-cross-job",
+        "after": "cloud-native-preallocated-btrfs-cross-job",
+        "count": 1
+      },
+      {
+        "before": "assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False)",
+        "after": "assert os.environ.get('GITHUB_ACTIONS')=='true'\n    prepared=allocation.prepare_workspace(ROOT,OUT)\n    OUT.mkdir(exist_ok=False)",
+        "count": 1
+      },
+      {
+        "before": "result['compressed_case']=compressed.mount_case(case,OUT,run);save()",
+        "after": "result['compressed_case']=allocation.capture_ready(case,OUT,run,prepared);save()",
+        "count": 1
+      },
+      {
+        "before": "Ext4 checkpoint to compressed Btrfs, then native Btrfs checkpoint/restore; CPU features recorded independently",
+        "after": "Native capsule downloaded onto preallocated shared Btrfs before ext4-checkpoint restore and Btrfs redump; CPU features recorded independently",
+        "count": 1
+      },
+      {
+        "before": "        result.update(status='PASS_NATIVE_PHYSICAL845_EXT4_TO_ZSTD_BTRFS_REDUMP_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_FULL_STORAGE_OR_ACQUISITION'",
+        "after": "        result['final_storage_capacity']=allocation.capacity(ROOT)\n        assert not result['final_storage_capacity']['checkpoint_required']\n        result.update(status='PASS_NATIVE_PHYSICAL845_PREALLOCATED_BEFORE_DOWNLOAD_SHARED_BTRFS_BIT_EXACT_BOUNDED4NS_NOT_FULL_CAPACITY'",
+        "count": 1
+      }
+    ]
+  },
+  "current_files": {
+    "scripts/cloud_pll845_preallocated_storage.py": "8750623b4f3cc77f168ed59a7a0c4b4a1baba8f9aed6cf2924af1e50f5249dda",
+    "scripts/cloud_native_preallocated_btrfs_cross_job.py": "52cf6ada8c429ca307c34d64eb1410051e4a4432115842aa8711ece7c0df1030",
+    ".github/workflows/native-preallocated-btrfs-cross-job-cloud.yml": "d9cac087e47e12c712166a7ebc8289130ac893d2e787422d30d7064cbacc2ae6"
+  },
+  "unchanged_files": {
+    "scripts/cloud_native_btrfs_case.py": "b4c30536e1fb64b8af9389bf4571b691c7418070b3187cac272e3e365e6ea947",
+    "docs/evidence/native-btrfs-complete-bounded-proof-20261021.json": "31e068fca9cd1941b54da0dd7ac2bab8a15a3742f5fb38d82ce658e17a7de868"
+  },
+  "scope": "Storage preparation timing and allocation only. Exact original4ns native process,34probes,12818rows, single entrypoint, all native bit equality, three corruption controls and five path controls retained. Preallocate before download; mkfs-K and mountednodiscard preserve backing extents. Full1us/full94.76GB capacity still unproven."
+}
