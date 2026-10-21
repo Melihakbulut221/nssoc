@@ -67,6 +67,7 @@ def main():
         # Obtain the immutable summary through the existing report reader before
         # selecting only package members; no unrelated old native output is inherited.
         import cloud_replay_onehot_logic as logic
+        logic.OUT=OUT
         summary,digest,parts=logic.summary(descriptor['group'],live)
         assert digest==descriptor['summary_sha256']and parts==descriptor['parts_sha256']
         assert summary['source_head']==descriptor['source_head']and summary['sources_unchanged']

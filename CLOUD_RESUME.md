@@ -1,3 +1,6 @@
+## 2026-10-21 — postroute reader output namespace
+The shared immutable-summary reader writes into its module OUT. Bind that to the current review directory before use; otherwise a fresh cloud runner would try to write into a nonexistent historical directory. All native input and acceptance gates unchanged. The actual input-configuration preflight runs on this fix; previous run evidence must be retained.
+
 ## 2026-10-21 — native postroute controls pass; input-only runtime preflight
 39638124762 passed method/antenna/timing rejection controls and actual LibreLane step+DEF contract; receipt retained. New push now also restores passed inputpackage39635867954 and constructs the actual native flow config, requiring every timing/model value match the original. This preflight never routes or runs antenna/RC/STA and cannot accept incomplete DRT.
 PLL continuation39637767590 resumes820.364ns checkpoint. Mainchip39631640578 and TX39630182787/39630188922 remain live. Cloud-only; local project empty.
