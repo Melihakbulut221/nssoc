@@ -1,3 +1,10 @@
+## 2026-10-21 — cloud followthrough queued behind actual anchor success
+
+New tx-power128feed32-followthrough workflow waits for exact39648841180/attempt1/source1bc1580, requiring terminalSUCCESS and every actual terminal/fault predicate. It then generates explicit, hash-checked source adaptations of the original power128 intrinsic and nativeRC methods and runs both independent stages on the hosted runner. Generated source/receipts and both native reports are retained in immutable Releases; no local CAD or output files. Consume those real results, review/commit the generated adapters byte-for-byte, then run two-order precision, composition/interfaces/full waves. Do not dispatch duplicate intrinsic/RC workflows while this followthrough runs. The RAM-only manual publication draft was superseded by this hosted followthrough.
+
+Mainchip ninth39631640578, PLL39637767590 and old power128 continuations remain untouched. Final residual-capacity observer fromdc4745f8 is running after two recorded portability fixes; original reserve/window/vectors unchanged.
+
+
 ## 2026-10-21 — measured residual capacity, final observer hash-check fix
 
 39649526415 completed all capacity measurements then failed its final protected-executable recheck because the shared sha reader requires Path, not string. Failure and actual values pinned; corrected only Path conversion and rerun on fresh disposable runner. Observed135092932608free bytes, possible image127775277056, full uncompressed payload plus unchanged12GiBreserve needs15823224832more image bytes before runtime overhead. /swapfile is3GiB unused at observation, not removed. Do not claim capacity resolved or sum directory totals. Actual TX anchor39648841180 and mainchip/PLL long processes remain running.
