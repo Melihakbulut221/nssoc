@@ -1,3 +1,8 @@
+## 2026-10-21 — exact dependency package passes; PLL reaches820ns
+Mainchip input run39635867954 passed:5030files/1.173GB plus toolSDC, all five pinned originalPDK archives. Receipt mainchip-postroute-inputs-pass-20261021.json.
+PLL39602655093 completed saved-process stage:724.594→820.364ns/1us,5106columns,2626323complete rows, originalpayload unchanged. Immutable summary663148586/parts663148721 pinned in pll845-allcolumn-headroom-progress-20261021.json; nextdescriptor recorded. Dispatch the allcolumn-headroom workflow once from this exact checkpoint,1800seconds, preserving all capacity guards. 21.1GBfree is not proof of full remaining capacity.
+Mainchip ninth39631640578 and TX39630182787/39630188922 still live. No local files or CAD execution. FullPHY/routing/finaltiming remain open.
+
 ## 2026-10-21 — cloud-only exact PDK dependency repair
 The complete config job 39631393774 failed on missing PDK/runtime files, not native routing. Exact failure preserved. Preparation now installs the same pinned PDK through the original runtime Ciel API, independently verifies all five upstream archives and every installed member, exports the original tool SDC, and classifies only exact DESIGN_DIR as metadata. The input-package workflow runs on this controller change.
 Live jobs: mainchip ninth 39631640578; power128 TX first continuations 39630182787/39630188922; PLL 39602655093 publishing full native evidence (335 parts /89.9GB at 16:30 UTC). Never restart these live jobs.
