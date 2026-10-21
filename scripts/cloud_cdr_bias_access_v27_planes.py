@@ -100,17 +100,13 @@ def native():
     (OUT/'native-planes.json').write_text(json.dumps(result,indent=2)+'\n')
 
 def validate_parent_pin(pin,prior):
-    # Preserve the prior cleanup/strict-graph proof as the exact baseline;
-    # new geometry must independently pass the following wire-input stage.
-    from cloud_cdr_input_access_v26_planes import validate_parent_pin as validate_clean_baseline
-    old=pin['baseline_clean_parent'];baseline=validate_clean_baseline(old,old['report'])
-    assert pin['run']==39542990472 and pin['source_head']=='1617ce452a9f929c8d0fce1cdbda29f4ca362588'
-    assert pin['summary_sha256']=='b96b70cad6e96f19c6bb2dae41c1dfdfb3326ceb46b67c119744be688b206ebb'
-    assert pin['parts_sha256']=='754e7c5e4ae6247aca77e54ffab33bae369d85ccb4db0eaf8bfb7bba37c465ea'
+    assert pin['run']==39545167886 and pin['source_head']=='94e0dcb1923cf3d79e4729c8b8dcb7c5c4839fd5'
+    assert pin['summary_sha256']=='bb26caca65c86d6f14c4e62a7a226eaa5e32e68e43c48aeeafa87e854a433ac8'
+    assert pin['parts_sha256']=='eac1305390b97d8eb281784ea46968e8554f3920bf82d225c4e07d1ec079b5fd'
     assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']
-    assert prior['status']=='PASS_PD476_BIAS_ACCESS_V27_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'
+    assert prior['status']=='PASS_PD476_V27_CLEAN_PARENT_PHYSICAL_AND_STRICT111_COMPONENT_GRAPH_REQUIRES_FRESH_RC'
     assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD476_DRC_LVS_AND_FAULT_CONTROLS'
-    geometry=prior['replacement']
+    geometry=prior['intrinsic_replacement_history']
     assert geometry['status']=='PASS_SERIALIZED_UNCHANGED_PARENT_WITH_FOUR_NATIVE_BIAS_ACCESS_V27_SAMPLERS'
     assert geometry['actual_sampler_instances']==4
     expected_changed={f'Rs{sampler}_{leg}' for sampler in 'abcd' for leg in ('BP','BN')}
@@ -118,11 +114,25 @@ def validate_parent_pin(pin,prior):
     assert geometry['parent_geometry_unchanged'] and geometry['all_existing_collector_retime_trunks_retained']
     assert geometry['external_leaf_ports_and_bbox_unchanged'] and geometry['serialized_native_check']
     assert len(geometry['controls'])==2
-    assert prior['parent_source']['summary_sha256']==old['summary_sha256']
+    assert prior['parent_source']['summary_sha256']=='b96b70cad6e96f19c6bb2dae41c1dfdfb3326ceb46b67c119744be688b206ebb'
     assert prior['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_EIGHT_NATIVE_LEAF_DRAWINGS'
     assert len(prior['child_geometry']['controls'])==3
-    assert prior['outputs']['layout/nssoc_cdr_pd476_follower_v23.gds']=='603f6fc6ab4471b2aab87b64b29c2a013ae9379c8df798c417a0c2b588d485cd'
-    return dict(intrinsic_replacement=geometry,unchanged_clean_baseline=baseline,new_strict_graph_requires_fresh_wire_input_stage=True)
+    assert prior['outputs']['layout/nssoc_cdr_pd476_follower_v23.gds']=='ada3f68c2ac15a5a564c5985f9082ac5276fdacec533a386f22442de40a33682'
+    cleanup=prior['cleanup']
+    assert cleanup['status']=='PASS_EXACT_EIGHT_NATIVE_TERMINAL_FREE_PARENT_COMPONENTS_REMOVED'
+    assert cleanup['before_gds_sha256']=='603f6fc6ab4471b2aab87b64b29c2a013ae9379c8df798c417a0c2b588d485cd'
+    assert cleanup['after_gds_sha256']==prior['outputs']['layout/nssoc_cdr_pd476_follower_v23.gds']
+    assert cleanup['removed_components']==8 and len(cleanup['clusters'])==8
+    assert cleanup['removed_area_dbu2']=={'30':23180000,'67':9540000}
+    assert cleanup['only_parent_metal_changed'] and cleanup['all_child_geometry_unchanged']
+    assert cleanup['all_16_parent_instances_unchanged'] and cleanup['schematic_and_lef_unchanged']
+    assert cleanup['original_terminal_and_port_count']==[1382,25] and len(cleanup['controls'])==4
+    graph=prior['strict_graph']
+    assert graph['status']=='PASS_GEOMETRIC_PUMP_WIRE_COMPONENT_BINDING_NO_RC'
+    assert graph['native_device_count']==476 and graph['native_terminal_count']==1382 and graph['wire_component_count']==111
+    assert graph['no_wire_geometry_change'] and graph['no_component_union_by_native_label']
+    assert prior['graph_source_delta']['only_parent_input_paths_changed']
+    return dict(intrinsic_replacement_history=geometry,actual_parent_cleanup=cleanup,strict_graph_status=graph['status'])
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--native',action='store_true');args=parser.parse_args()
@@ -133,12 +143,12 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        pin=json.loads((ROOT/'docs/evidence/cdr-bias-access-v27-parent-physical-pass-20261021.json').read_text())
+        pin=json.loads((ROOT/'docs/evidence/cdr-bias-access-v27-clean-parent-pass-20261021.json').read_text())
         validate_parent_pin(pin,pin['report'])
         selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]
-        prior,proof=reports.restore_report('cdr-bias-access-v27-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
+        prior,proof=reports.restore_report('cdr-bias-access-v27-clean-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
         geometry=validate_parent_pin(pin,prior)
-        assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='603f6fc6ab4471b2aab87b64b29c2a013ae9379c8df798c417a0c2b588d485cd'
+        assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='ada3f68c2ac15a5a564c5985f9082ac5276fdacec533a386f22442de40a33682'
         r['retime_parent_geometry']=geometry
         r['physical_source']=proof
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
