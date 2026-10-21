@@ -1,3 +1,8 @@
+## Cloud-only: v26 diagnosis reproduced; actual v27 bias candidate
+Both full-wave diagnostics39540450970 succeeded in reproducing the rejected original measurements. Four HBT VCE failures belong to master track selectors of sc/sd. Exact diagnostic source descriptors are in cdr-v26-native-latch-diagnosis-20261021.json.
+New cdr-sampler-bias-access-v27-physical-cloud workflow changes only actual BP/BN rppd2.4um to0.9um from v26, preserving IP/IN0.9um and other52 native drawings. Original19 fault controls plus wrong-bias-length control are required. Candidate is NOT electrically accepted. After leaf DRC/deep-flat LVS/LEF, integrate into actual cleaned parent, remove only proven native orphans if needed, re-extract RC and repeat full unchanged loaded waves.
+No full production PLL migration is allowed from either failed Btrfs probe. Existing native routing/TX/PLL processes remain authoritative. All work stays in cloud.
+
 ## Cloud-only: v26 full-wave rejection and next diagnosis
 Full wave run39534542949 finished: both nominal cases REJECTED; both original fault cases detected. The v26-electrical-rejection receipt retains immutable captures and exact four HBT VCE violations. Phase/current and sampler gates remain failed.
 Dispatch cdr-v26-latch-timing-cloud.yml for both complete captured waves; its topology/transfer analysis identifies the next real layout correction without rerunning or weakening native tests. Full PHY acceptance remains false.
