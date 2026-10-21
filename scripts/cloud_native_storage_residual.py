@@ -37,7 +37,17 @@ def main():
    for line in text.splitlines():
     size,name=line.split('\t',1);rows.append(dict(path=name,bytes=int(size)))
    r['remaining_directories'][path]=sorted(rows,key=lambda x:x['bytes'],reverse=True);save()
-  r['swap']=json.loads(run('swap',['swapon','--show','--bytes','--json']))
+  # The actual hosted util-linux swapon lacks --json. Its previously
+  # verified plain table is retained verbatim and parsed without changing swap.
+  text=run('swap',['swapon','--show','--bytes'])
+  lines=text.splitlines();r['swap_text']=text
+  if lines:
+   assert lines[0].split()==['NAME','TYPE','SIZE','USED','PRIO']
+  rows=[]
+  for line in lines[1:]:
+   fields=line.split();assert len(fields)==5
+   rows.append(dict(path=fields[0],type=fields[1],size_bytes=int(fields[2]),used_bytes=int(fields[3]),priority=int(fields[4])))
+  r['swap']=rows
   r['root_files']=run('root-files',['sudo','find','/','-maxdepth','1','-type','f','-printf','%p %s bytes %b allocated512blocks\\n'])
   r['filesystems']=run('filesystems',['df','-B1','-T'])
   r['mount']=json.loads(run('mount',['findmnt','--json','-T',str(ROOT)]))

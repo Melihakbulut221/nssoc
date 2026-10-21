@@ -1,3 +1,8 @@
+## 2026-10-21 — residual inventory portability correction
+
+39648375595 preserved all directory measurements but failed because hosted swapon lacks --json. Proven existing SDK cleanup succeeded and retained protected tools; no native process or additional cleanup ran. Failure receipt pinned. The corrected observer uses the already-proven swapon --show --bytes text interface and retains the complete raw output. No source capture, reserve or numerical gate changes. New anchor run39648841180 remains the real TX extraction next stage.
+
+
 ## 2026-10-21 — new power128feed32 conductor graph PASS
 
 39648022412 completedSUCCESS, source0520ee9193cbd84393801cf4a7b1721252df5c4b:8088devices,28620terminals,703metal/via conductors,768native electrical nets; actual new GDS hash and every original geometry ownership predicate passed. Receipt pinned. Fresh terminal-anchor workflow triggers now with only isolated staging-directory adaptation of the existing qualified binder. Next requires all20532metal/8088body terminals,165pins, six negative controls, then fresh intrinsic and two-order RC/composition/waves. Physical and conductor proofs alone do not close electrical/fullPHY gates.
