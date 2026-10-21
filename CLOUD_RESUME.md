@@ -1,3 +1,14 @@
+##2026-10-21 actual8088 physical power128 repair, cloud only
+Original8074 full34ns nominal rejected. Attribution39604983700 independently
+reproduced rejection and measured1.404V AVDD drop and0.211V local AVSS.
+New power128 workflow starts from immutable8074+14 physical cells, adds real
+AVDD/AVSS distribution and requires original full native DRC/LVS/faults.
+Do not claim acceptance before fresh RC/composition/full loaded gates.
+Monitor new tx-output8088-power128-physical-cloud run. Preserve live mainchip
+39591380714, old fault39592612780 and PLL39602655093. Saved8088 initial
+39601746737 is not running. Local directory remains empty; work cloud-only.
+
+
 ## 2026-10-21 active cloud handoff after first full TX result
 
 Verified live: TX rail/input attribution39604983700, PLL exact allcolumn/headroom resume39602655093, mainchip route39591380714, oldTX leaf-fault39592612780. Do not duplicate or restart live work. Old nominal39592603205 is TERMINAL FULL34ns REJECTED; complete evidence retained. It is not a resumable checkpoint.
