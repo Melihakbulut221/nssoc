@@ -1,3 +1,17 @@
+## 2026-10-21 — actual cleaned v26 fresh RC and MIM capture passed
+
+Four extraction stages39532277767 and MIM capture39532836299 passed.
+New cdr-input-access-v26-mim-validation-cloud consumes only these exact bytes:
+17674R12694C,476devices,seven MIMs,938points. Original13+9 audit and19composition
+fault controls remain. Full original early/late/fault native captures follow.
+
+PLL initial39502073954 restored but hit12GiB reserve immediately with11.94GB
+free and94.76GB raw data. Its current continuation remains live; do not fork.
+Investigate lossless compressed backing storage with native checkpoint controls
+before migration. Do not trim waveform probes or loosen full1us gates.
+All computation and persistence remain in cloud.
+
+
 ## 2026-10-21 — fresh cleaned-parent extraction and original MIM capture
 
 Fresh extraction39532277767 has passed planes and wire-inputs; binding and RC
