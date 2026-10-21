@@ -1,3 +1,8 @@
+## Mainchip routing: fourth cross-runner capsule accepted for continuation
+Run39542126811 completed successfully with the same native process, single entrypoint and all restart/prefix rejection controls. Completed optimization violation counts are173861,98155,87048,21646; iteration4 started. These are routing counters, not final DRC or STA.
+Exact next descriptor and all original timing/settings/native image hashes are in mainchip-active-drt-fourth-cross-pass-20261021.json. Continue from this latest successful capsule for7200host seconds; never cold restart. Once detailed-route.odb is actually complete, enforce fixed-clock topology, antenna, disconnect, RC and three-corner final STA.
+CDR39548690293 nominal waves rejected; native diagnosis39555076416 passes reproduction and locates C/D master-input collapse despite correct clock steering. TX39544297368/39544299695 and PLL39551551389 remain live. Cloud-only, no local artifacts.
+
 ## 2026-10-21 v27 electrical rejection retained
 
 CDR39548690293: both nominal34.25ns captures rejected despite all device gates passing. Early phase/current have wrong sign, C/D show hundreds of wrong samples. Start cdr-v27-latch-timing-cloud on the exact original raw waves and native geometry; do not weaken gates. New report retains original summary/parts SHA256 and compact measured failures. Cloud-only; no local files.
