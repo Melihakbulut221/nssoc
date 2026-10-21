@@ -1,0 +1,7 @@
+# Completed-route electrical and timing repair
+
+The exact route measured by run39654204345 has0 routerDRC and0 critical disconnected pins, but563 antenna nets/626pins. Original-clock nominalRC produced9671setup/3hold violations at slow,7358/9 at typical,3967/31 at fast. The exact native diagnosis39657466517 identifies large data-cell delays on the Ibex path and PCIe link-up paths, plus PCIe RX-valid and Ethernet SRAM hold paths.
+
+The new cloud workflow consumes the exact completed ODB, original netlist/SDC, fresh143338-net SPEF and resolved configuration. Before any mutation, native OpenROAD must reproduce all six worst slacks within1ps. The previously qualified native electrical/setup/hold algorithm now consumes these new actual routed loads: repair_design, setup buffering/sizing and positive hold buffers. No clock period, uncertainty, derate, slew/cap acceptance or endpoint waiver changes. This is another measured physical optimization iteration, not proof that the algorithm will close all violations.
+
+Native geometry/equation/fault controls preserve original152762instances,20SRAMs, clock-pin geometry, fixed PCIe clock route, supplies and external interfaces. Actual intermediate databases and failures are retained. Any candidate must subsequently pass routing, antenna repair, freshRC and all-corner STA. Optimizer estimates, source-binding controls and a green execution job are not final timing or fullPHY acceptance.
