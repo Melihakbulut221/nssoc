@@ -1,3 +1,17 @@
+## 2026-10-21 — preserve actual CRIU restore error before runtime cleanup
+
+Bounded compressed-storage diagnostic39535899625 also rejected restore; all
+runtime work logs had already been removed and daemon reported only errno0.
+Use the supported runc.conf log-file override to write CRIU diagnostics into
+owned output directly; source-pinned change affects logging only. No full PLL
+migration or process restart. Source source-code evidence confirms RPC config
+output override is retained by the pinned CRIU build.
+
+Cleaned-v26 fullwave39534542949 preflight passed; native cases are running/queued.
+Latest physical RC audit/composition descriptors remain in
+cdr-cleaned-v26-validation-summary-20261021.json. Cloud-only.
+
+
 ## 2026-10-21 — authoritative cloud-only continuation checkpoint
 
 Confirmed independent clean-v26 validation39533943848 PASS:

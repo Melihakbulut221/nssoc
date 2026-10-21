@@ -63,6 +63,7 @@ def main():
         assert (case/'boots.log').read_text().splitlines()==['native-entrypoint']
         result['prefix_restore']=dict(original_checkpoint_bytes_restored=True,sha256=sha(case/'actual-acquisition.raw'),bytes=len(prefix),full_old_capture_not_used_as_process_input=True);save()
         result['compressed_case']=compressed.mount_case(case,OUT,run);save()
+        result['criu_log_configuration']=compressed.durable_logs(OUT,run);save()
         result['criu_build']=json.loads((Path(os.environ['RUNNER_TEMP'])/'criu-build.json').read_text());assert sha('/usr/sbin/criu')==result['criu_build']['binary_sha256']
         assert result['criu_build']['source_commit']==prior['criu_build']['source_commit']=='9539417f3e3cfa4eb84c319cd71f4d52f1f08645'
         run('criu-check',['sudo','criu','check','--all'],False)
@@ -114,6 +115,7 @@ def main():
         if case is not None:
             for filename in ('actual-acquisition.raw','op.raw','boots.log'):
                 if (case/filename).exists():shutil.copyfile(case/filename,OUT/('retained-'+filename))
+        run('readable-durable-criu-log',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(OUT/'criu-durable.log')],False)
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
         print(json.dumps({k:result[k]for k in ('status','error','cross_job_native_restore_proven')if k in result}),flush=True)
 if __name__=='__main__':main()

@@ -65,6 +65,13 @@ for root in roots:
     except OSError as e:rows.append(dict(path=str(p),error=repr(e)))
 print(json.dumps(rows))
 """
+    run('durable-criu-error-log',['sudo','cat',str(out/'criu-durable.log')],False)
     run('all-owned-criu-restore-logs',['sudo','python3','-c',code,container_id],False)
     run('docker-restore-journal',['sudo','journalctl','-u','docker','--no-pager','-n','500'],False)
     run('runtime-versions',['docker','version'],False)
+
+def durable_logs(out,run):
+    config='log-file '+str(out/'criu-durable.log')+'\n'
+    code="import pathlib,sys;p=pathlib.Path('/etc/criu/runc.conf');assert not p.exists()or not p.read_text().strip();p.parent.mkdir(parents=True,exist_ok=True);p.write_text(sys.argv[1]);print(p.read_text())"
+    run('configure-durable-criu-log',['sudo','python3','-c',code,config])
+    return dict(config='/etc/criu/runc.conf',text=config,scope='Log destination only; no restore behavior or native input change')
