@@ -1,3 +1,8 @@
+## 2026-10-21 Second active DRT continuation passed; latest process must continue
+Run39515176239 completed successfully after7207.7native seconds, preserving the same OpenROAD process across runners. Route is not complete. Optimization iteration0 finished with173861violations; iteration1 reached50% with154320interim violations. These are native detailed-route optimization counts, not final chip DRC or STA closure.
+Exact latest descriptor and summary/parts hashes are pinned in mainchip-active-drt-second-cross-pass-20261021.json. Dispatch another7200seconds from this capsule, never from the earlier39502505171 capsule. On actual route completion require original fixed-clock/topology/antenna/disconnect/extraction/three-corner STA gates.
+CDR v26 planes passed, but wire-inputs39528173939 rejected a terminal-free geometric component. Preserve strict graph gate; diagnose actual geometry before cleanup/re-extraction. Dependent MIM39528364601 correctly rejected failed prerequisite. TX/PLL remain live. Cloud-only.
+
 ## 2026-10-21 CDR full parent identity preflight passed; capture rebound
 Fresh extraction39528173939 at f92fc0dfcd7a0bb285b85d289b90b2e75a164c8f passed preflight executing the actual complete parent validator on the immutable v26 report and10 corruption controls. Native extraction remains in progress. MIM capture now waits for exactly this run and source; failed extraction39527151875 and dependent capture39527324592 remain preserved.
 No layout, physical gate or waveform acceptance was changed by the provenance repairs. Next: all4 extraction stages success, fresh seven-MIM capture, independent RC/intrinsic audit/composition, complete original loaded electrical gates. Cloud-only; active mainchip/PLL/TX native runs retained.
