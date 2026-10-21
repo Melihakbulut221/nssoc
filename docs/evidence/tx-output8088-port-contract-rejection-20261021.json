@@ -1,0 +1,58 @@
+{
+  "run": 39575949654,
+  "source_head": "f05ded8ed8bac948eef6f804e00fdc1324bd6104",
+  "accepted": false,
+  "reason": "AssertionError('Reference interface is not163 pins')",
+  "assets": {
+    "tx-output8088-physical-39575949654-1.parts.json": {
+      "id": 661979335,
+      "sha256": "c2e2d83efc526b34e3e95307e25ad0dc53d2848cc9cd2c42e69fce2ffb7c9e3b",
+      "bytes": 850
+    },
+    "tx-output8088-physical-39575949654-1.summary.json": {
+      "id": 661979231,
+      "sha256": "2c0338c94b5893d0237ec03cf8233730789e2dc2dea854b63e34ff17a75466a8",
+      "bytes": 32664
+    }
+  },
+  "observed": {
+    "drc": {
+      "status": "PASS",
+      "process_returncode": 0,
+      "markers": 0,
+      "categories": {},
+      "category_count": 560,
+      "report_sha256": "b0c09f86b32a4726887cb63d77c4bf266a0a5de48223aae2eddf27b72c386e21",
+      "log_sha256": "6b2217cb85a5735d2ab44c0c1c3e4bfac4ada01a42233c7245ff86bcc6851758"
+    },
+    "deep_lvs": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_output8088_parent_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_output8088_parent_v1",
+          "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+          "status": "Match",
+          "layout_devices_recursive": 8088,
+          "schematic_devices_recursive": 8088
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-physical/deep_lvs/result.lvsdb": {
+          "bytes": 18561182,
+          "sha256": "0e6227b15da1537ead23ad6e9937d370a977928c18ee19e6d75728cbf66389e2"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-physical/deep_lvs/deck.log": {
+          "bytes": 37233,
+          "sha256": "885696c83309776ec9e80744f66b800e5fca7c5c2bda66c44d8dd971fb24dad0"
+        }
+      }
+    }
+  },
+  "correction": "Explicit165-port contract for actual8088 parent; original163-port callers retain their default. Both contracts run all five interface corruption controls plus wrong declared count. No geometry, deck or native circuit mismatch override."
+}

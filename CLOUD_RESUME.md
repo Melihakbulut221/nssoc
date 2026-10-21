@@ -1,3 +1,8 @@
+## Cloud-only work and TX8088 exact interface correction
+User requires all work in cloud and local project cleanup. Keep all sources, native state and artifacts on GitHub; do not create local checkouts or download artifacts. API orchestration may use RAM. Two clean historical NSSoC-linked clones verified fully contained in their upstream histories; cleanup receipt records exact heads.
+
+TX39575949654 passed560-category zero-marker DRC and unsimplified8088-device deepLVS, then hit an inherited163-port checker assertion for the actual165-port integration. Preserve this failed evidence. Checker now accepts an explicit expected count, default163 for existing consumers and fixed165 for this parent. Both163/165 fixtures must reject all original five faults and an inconsistent declared count. Re-run full native deep/flat/port/fault suite; no geometry or DRC/LVS gates weakened. Mainchip39572968246, TX39573847558/39573851657 and PLL scan39571416471 remain live.
+
 ## TX8088 first physical route obstruction corrected without waiving clearance
 Run39575422763 terminated at AVSS routing: all five center offsets hit native TopMetal1 under the existing pad. Both signal joins passed the unchanged obstacle screen. No native DRC/LVS acceptance yet. Preserve rejected summary/parts.
 New generator extends the actual TopMetal2 conductor below the original pad before placing a TopMetal1 landing, for AVSS/SUB. No same-net inference, no obstacle exclusion and no clearance reduction. Save placed and partial routed GDS even if a later route blocks. Dispatch fresh tx-output8088-physical-cloud only after this terminal failure; live mainchip/TX/PLL scans unchanged.

@@ -15,7 +15,7 @@ def main():
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  save()
  try:
-  r['external_port_controls']=port_controls();save()
+  r['external_port_controls']={str(n):port_controls(expected_count=n) for n in (163,165)};save()
   inputs=[
    ('tx-raw64-powered-physical',39466552523,'f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53','2a3431b7a2cae61f6b9edcbce8edeef23963bc62c170332064a5ab779ac58404','core',['layout/layout.gds','layout/schematic.cir','power-result.json']),
    ('tx-output14-physical',39564026768,'8f434b1368bcf613ca2f32c4eeebc528d3e131a243299bf6df09f609c293f9fa','82076d156f767b5c9caf35f9fea9f13e7953022abec73f6814bb473c1de452c4','output',['layout/nssoc_tx_cml_layout.gds','layout/schematic.cir','layout/result.json'])]
@@ -79,7 +79,7 @@ def main():
    else:
     step['audit_execution']=execute([app,'python',ROOT/'hw/soc/flow/audit_klayout_lvs.py',d/'result.lvsdb','--top',TOP,'--deck-log',d/'deck.log','--output',d/'audit.json'],d,'audit')
     a=json.loads((d/'audit.json').read_text());step['audit']=a
-    step['external_ports']=compare_ports((OUT/'layout/schematic.cir').read_text(),(d/'extracted.cir').read_text(),TOP)
+    step['external_ports']=compare_ports((OUT/'layout/schematic.cir').read_text(),(d/'extracted.cir').read_text(),TOP,expected_count=165)
     ok=a['status']==('PASS within comparison scope'if positive else'FAIL')and step['audit_execution']['returncode']==(0 if positive else 1)
     if positive:
      tops=[c for c in a['circuits']if c['layout']==TOP]

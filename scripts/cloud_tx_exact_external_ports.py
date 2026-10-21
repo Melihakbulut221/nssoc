@@ -10,22 +10,26 @@ def ports(text,top):
  assert len(names)==len(set(names)),'Repeated public port'
  assert all(re.fullmatch(r'[A-Z0-9_]+',n)for n in names),'Aliased or malformed public port'
  return names
-def compare(reference,extracted,top):
- expected=ports(reference,top);assert len(expected)==163,'Reference interface is not163 pins'
+def compare(reference,extracted,top,expected_count=163):
+ assert isinstance(expected_count,int) and expected_count>1
+ expected=ports(reference,top);assert len(expected)==expected_count,f'Reference interface is not{expected_count} pins'
  try:
   actual=ports(extracted,top)
- except AssertionError as e:return dict(passed=False,reason=str(e),expected_count=163)
+ except AssertionError as e:return dict(passed=False,reason=str(e),expected_count=expected_count)
  missing=sorted(set(expected)-set(actual));extra=sorted(set(actual)-set(expected))
- return dict(passed=len(actual)==163 and not missing and not extra,expected_count=163,actual_count=len(actual),missing=missing,extra=extra)
-def controls():
- top='fixture';ref='.subckt fixture '+' '.join('p'+str(i)for i in range(163))+'\n.ends fixture\n'
- assert compare(ref,ref.upper(),top)['passed']
+ return dict(passed=len(actual)==expected_count and not missing and not extra,expected_count=expected_count,actual_count=len(actual),missing=missing,extra=extra)
+def controls(expected_count=163):
+ top='fixture';ref='.subckt fixture '+' '.join('p'+str(i)for i in range(expected_count))+'\n.ends fixture\n'
+ assert compare(ref,ref.upper(),top,expected_count=expected_count)['passed']
  bads={
   'extra_internal_port':ref.replace('\n.ends',' internal\n.ends'),
-  'missing_external_port':ref.replace(' p162\n','\n'),
+  'missing_external_port':ref.replace(f' p{expected_count-1}\n','\n'),
   'alias_external_port':ref.replace(' p0 ',' p0|din '),
   'renamed_external_port':ref.replace(' p0 ',' wrong '),
   'duplicate_external_port':ref.replace(' p1 ',' p0 ')}
- for name,text in bads.items():assert not compare(ref,text,top)['passed'],name
- return dict(case_insensitive_native_spice_names=True,all163_required=True,rejected=list(bads))
+ for name,text in bads.items():assert not compare(ref,text,top,expected_count=expected_count)['passed'],name
+ try:compare(ref,ref,top,expected_count=expected_count+1)
+ except AssertionError:pass
+ else:raise AssertionError('Wrong declared interface count accepted')
+ return dict(wrong_declared_count_rejected=True,case_insensitive_native_spice_names=True,all_expected_ports_required=True,expected_count=expected_count,rejected=list(bads))
 if __name__=='__main__':print(controls())
