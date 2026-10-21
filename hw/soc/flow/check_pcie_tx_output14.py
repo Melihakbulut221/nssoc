@@ -16,7 +16,7 @@ from check_pcie_rx_cell import execute
 from check_pcie_analog_bank import extracted_ports
 
 TOP = "nssoc_tx_cml_layout"
-PORTS = "inp inn outp outn avdd avss sub iref".split()
+PORTS = "INP INN OUTP OUTN AVDD AVSS SUB IREF".split()
 
 APP_SHA = "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 
