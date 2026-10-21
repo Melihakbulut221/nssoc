@@ -1,3 +1,9 @@
+## 2026-10-21: current cloud work handles
+
+Mainchip deep setup repair39674630712 is running from6fbd2215 (5000 iterations; all original gates). Preserve passed80-iteration candidate39669577979 and passed fresh-wire handoff39672217279. New global/detail routing has not started for this repaired candidate; choose only a proved candidate and regenerate RC/three-corner STA.
+
+PLL storage namespace controls39673761018 passed all original plus9 namespace/method rejection cases. Actual continuation39674830790 dispatched from6fbd2215 for1800host seconds using valid saved39602655093(initial), summary813bc135... parts12c4059f.... Do not resume failed39637767590 or cold restart. Keep old proofs and native12GiB/host4GiB reserves. TX39662510592(normal)/39662516267(swap_leaf_select) remain7200s exact-process continuations from initial39660121041. Inspect terminal status and immutable new capsule before scheduling successors. All work is cloud-only; local project remains empty.
+
 ## 2026-10-21: handoff passed; extend setup effort before reroute
 
 39672217279 PASS: ready152988-instance fresh-data-wire input ODB52fd1a1e..., original cfgb86cade4..., fixed clock preserved. Native80-iteration candidate still reports8006 estimated setup violations (WNS-5.641ns); hold WNS-0.469ns. Exact upstream shows80 is a global iteration cap. Separate mainchip-postroute-repair-deep-cloud raises only setup cap to5000, keeping all source/baseline/geometry/equation/clock/hold gates. Preserve proven candidate; no final timing claim. PLL proof-namespace controls39673761018 pending; must pass before restoring valid39602655093 process. TX39662510592/39662516267 remain original process continuations.
