@@ -3,7 +3,7 @@
 """Fill eight proven same-component M4 notches; preserve all original geometry."""
 import json
 from pathlib import Path
-def apply(layout,top):
+def apply(layout,top,layer_map):
  import pya
  assert layout.dbu==.001 and top.name=='nssoc_cdr_pd476_follower_v23'
  evidence=json.loads((Path(__file__).with_name('cdr-v29-parent-m4-diagnosis.json')).read_text())
@@ -36,8 +36,8 @@ def apply(layout,top):
  after_full=(full+bridges).merged()
  assert after_full.size()==full.size(),'Connected-component count changed'
  # Reject new vertical connections: added metal must not expose an existing via.
- tech=list((Path(__file__).resolve().parents[1]/'hw/soc/tools').rglob('sg13g2.lyp'))
- assert tech,'Missing pinned native layer map'
+ tech=[Path(layer_map)]
+ assert tech[0].is_file(),'Missing pinned native layer map'
  import xml.etree.ElementTree as ET
  maps=[]
  for path in tech:

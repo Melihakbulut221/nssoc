@@ -56,7 +56,7 @@ def main():
  # Retain every original parent polygon, including already shortened
  # collector/retime trunks. Add only eight diagnosed same-component notch fills; no waiver.
  from repair_cdr_v29_parent_m4_notches import apply as repair_m4
- bridges,m4_proof=repair_m4(L,T)
+ bridges,m4_proof=repair_m4(L,T,Path(__file__).resolve().parents[1]/'pdk/libs.tech/klayout/tech/sg13g2.lyp')
  L.write(str(dest/(TOP+'.gds')))
  R=pya.Layout();R.read(str(dest/(TOP+'.gds')));U=R.cell(TOP)
  after=parent_snapshot(R,U)

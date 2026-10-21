@@ -1,3 +1,6 @@
+## 2026-10-22: exact native layer-map path correction
+Run39691334889 passed all eight same-component/gap/area checks but stopped before inserting metal because layer map was searched under tools. Pinned runtime actually restores pdk/libs.tech/klayout/tech/sg13g2.lyp. Pass that exact existing native path; no geometry/gate relaxation. Failed candidate retained in its immutable release. New push reruns all original physical checks.
+
 ## 2026-10-22: v29 native diagnosis identified eight same-component M4 notches
 Actual diagnosis39690468644 confirms four old parent M4 border polygons at C/D sampler vias; new v29 vias shifted and leave eight0.20um slots within the same M4 conductor. Candidate fills only eight1225x200dbu gaps (1.96um2 total added flattened M4), checks every original offending parent polygon, proves each patch touches exactly one existing M4 component, preserves component count and all original metal, and forbids new Via3/Via4 contacts using native PDK layer maps. Child geometry/placements/other parent layers remain exact.
 New push reruns original full476-device native DRC/LVS/fault gates; physical acceptance is unproven until complete. Fresh RC/MIM and original loaded electrical gates follow only after actual physical pass. Prior rejected runs remain archived; cloud-only.
