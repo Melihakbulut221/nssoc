@@ -1,3 +1,6 @@
+## 2026-10-21 — preserve counterexample observer transport failure and repair it
+39643000497 failed before numerical review: ongoing native capsule has28OP chunks, not yet aggregateop.dat. Exact failure receipt retained. New observer verifies all nativewrdata commands and28file hashes, uses unchanged losslessassemble_op, then retains originalzeroOP and all numerical gates. Explicitly dispatch corrected observer once; active native processes remain untouched.
+
 ## 2026-10-21 — immutable-prefix counterexample review
 Previous turn made concrete progress: exact PDK/config restoration passed, native PLL advanced820.364ns, TX advanced4.8ns and both continued, actual power128 rail drops measured. Live handles freshly revalidated: mainchip39631640578, PLL39637767590, TX39640657545/39640662925.
 New tx-power128-prefix-counterexamples-cloud observer applies unchanged original numerical gates to actual available prefix samples and first complete original bits. Failed prefix samples refute finalpass; passing prefix never establishes fullcapture. Original full34ns reader and active native processes untouched. Keep all failures. Cloud-only; local project remains empty.

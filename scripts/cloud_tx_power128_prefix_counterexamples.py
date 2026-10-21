@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Find irreversible original-gate counterexamples in an immutable TX prefix."""
-import hashlib,json,os,traceback
+import hashlib,json,os,re,traceback
 from pathlib import Path
 import numpy as np
 import compare_cloud_routed_endpoints as reports
@@ -9,6 +9,7 @@ from cloud_tx_power128_prefix_rails import read_saved_prefix,controls as prefix_
 from cloud_tx_output8088_power128_native import source_valid
 from cloud_tx_p4_drive3_builder import START,UI,STOP,prestage_bias_currents,interface_screen
 from cloud_tx_data_driver import original_bit_output_screen
+from cloud_tx_chunked_op import commands,assemble_op
 from run_cloud_tx_layout_repair import sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'cloud-tx-power128-prefix-counterexamples'
 def evaluate_samples(t, values, contract, transport):
@@ -102,13 +103,29 @@ def main():
         r['original_review_math_unchanged']=True;r['prefix_transport_controls']=prefix_controls()
         pin=json.loads((ROOT/'docs/evidence/tx-output8088-power128-first-continuations-20261021.json').read_text())['cases']['none'];spec=pin['descriptor']
         live=json.loads(__import__('subprocess').check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/'+str(spec['run'])]))
+        import cloud_replay_onehot_logic as logic
+        logic.OUT=OUT
+        summary,digest,parts=logic.summary(spec['group'],live)
+        assert digest==spec['summary_sha256']and parts==spec['parts_sha256']
+        source_valid(spec,live,summary,methods['scripts/cloud_tx_output8088_power128_native.py'])
+        chunks=sorted(n for n in summary['outputs']if re.fullmatch(r'work/op-part[0-9]{4}\.dat',n))
+        assert len(chunks)==28,'All original native OP chunks are mandatory'
+        names=['work/wave.raw','work/contract.json','work/bench.cir',*chunks]
         original,proof=reports.restore_report(spec['group'],spec['run'],spec['summary_sha256'],spec['parts_sha256'],
-            OUT/'source',['work/wave.raw','work/contract.json','work/op.dat'])
+            OUT/'source',names)
+        assert original==summary
         source_valid(spec,live,original,methods['scripts/cloud_tx_output8088_power128_native.py'])
         assert original['raw_prefix']==pin['report_excerpt']['raw_prefix']
         case=OUT/'source/work';raw=case/'wave.raw';contract=json.loads((case/'contract.json').read_text())
-        hashes={n:sha(case/n)for n in ('wave.raw','contract.json','op.dat')}
+        hashes={n.removeprefix('work/'):sha(OUT/'source'/n)for n in names}
         assert all(hashes[n]==original['outputs']['work/'+n]for n in hashes)
+        writes,specification=commands(contract['vectors'])
+        assert ['work/'+p['file']for p in specification['parts']]==chunks
+        actual_commands=[line for line in(case/'bench.cir').read_bytes().decode('latin-1').splitlines()if line.startswith('wrdata op-part')]
+        assert actual_commands==writes,'OP chunks do not match the actual native saved deck'
+        r['op_reassembly']=assemble_op(case,specification)
+        assert r['op_reassembly']['vectors']==len(contract['vectors'])and r['op_reassembly']['chunks']==28
+        assert not r['op_reassembly']['numeric_values_reformatted']and not r['op_reassembly']['omitted_vectors']
         op=np.loadtxt(case/'op.dat',skiprows=1)
         assert op.size==len(contract['vectors'])+1 and np.isfinite(op).all()and abs(op).max()<=1e-10
         t,values,transport=read_saved_prefix(raw,contract['vectors'],STOP,contract['condition']['step_ps']*1e-12,original['raw_prefix'])
