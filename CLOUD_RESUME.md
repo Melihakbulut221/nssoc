@@ -1,3 +1,10 @@
+## PLL reader qualified; reader-only controller integration under test
+Run39582875018 passed all1694 required voltage probes/2737 terminal coverage, actual46row5106column bit-exact prefix and16corruption controls. Canonical receipt and exact reader contract SHAee6e0a9d309ce6de9a36ded8184381be8537100b506bd83a0515f1c57ed9e951 committed. No full capture/lock acceptance.
+
+New pll845-reader-migration-cloud tests a reversible three-edit controller adaptation: reader import, reader source hash and final capture call. Helper retains original native/storage/checkpoint/acquisition methods, verifies actual prior39502073954 capsule migration and uses actual5106-column position. No native activation or storage reserve reduction. Do not resume PLL before complete storage census39581427678 resolves capacity.
+
+TX8088 terminal binding39580230591, mainchip39572968246 and TX39573847558/39573851657 remain live. Cloud-only.
+
 ## PLL complete-column reader qualification queued
 Run39582875018/job119164510267 is confirmed queued on GitHub from6852971cd4da26bdb84f56914285b98c22d73f06. It checks all1694 requested voltage identities against actual5106-column header, all2737 physical terminal mappings and16reader corruption controls. No pass claimed. Do not modify the existing native process/controller/frozen reader until this result is reviewed and a source-bound migration is implemented.
 

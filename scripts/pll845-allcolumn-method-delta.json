@@ -1,0 +1,44 @@
+{
+  "baseline_method_hashes": {
+    "scripts/cloud_native_checkpoint_probe.py": "28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231",
+    "scripts/cloud_native_portable_checkpoint.py": "5c2a6ca0996ffe88b4dd232ed5755f02cd8c9b0ba92f137c78d447f76b8b0b14",
+    "scripts/cloud_pll_vbic_acquisition.py": "841b74f19b10a9596af231a3e5250a0654d55fcc1004286bc20f24e273808a30",
+    "scripts/cloud_pll_filter_physical_acquisition.py": "f7bdad6929eaa5d686229e63c9f6146595cbdb174414f5d68e989fb12716aac4",
+    "scripts/run_cloud_pll865_snapshot.py": "c38656c2e64d5e2ce9902c845020442082b6b605c664644ee1e78ea34195fb9f",
+    "scripts/cloud_vbic_tree32_backend.py": "472c0c14d1a55785c3d0e9823e2bac94a97216781c530fdb8e8562bd0b805639",
+    "scripts/review_pcie_pll_acquisition_v1.py": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+    "scripts/cloud_pll_divider_load3p2v2_diagnostic.py": "8b9ff5b4d4d5ba1d3d8b61535d8b027c2719f423c2cb855aacb6da13796f2f9e",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5",
+    "scripts/read_pll845_full_native_transient.py": "59e4fb382439db1e8d16ecf80d64ae0406d775b41197037494ff60dbe0a3f3c4",
+    "scripts/cloud_pll845_compressed_acquisition.py": "0ee0dece573ae27e7fc272f0757b9b8f16332da887ed196f273040cb25266271",
+    "scripts/cloud_pll845_compressed_disk.py": "19b4b2d593d4f0d3bf525d50fec580b6db9f8088e57722f6654eebc25940d058",
+    "scripts/cloud_streamed_native_archive.py": "ed500db932348586efb9a86efd42cacafe2ca3d377de24e60196c6dbbbd2d5d5",
+    "scripts/cloud_pll845_preallocated_storage.py": "8750623b4f3cc77f168ed59a7a0c4b4a1baba8f9aed6cf2924af1e50f5249dda",
+    "scripts/cloud_native_btrfs_case.py": "b4c30536e1fb64b8af9389bf4571b691c7418070b3187cac272e3e365e6ea947"
+  },
+  "current_files": {
+    "scripts/cloud_pll845_allcolumn_disk.py": "7f674db581a25a9a3b0a9d581db986d1a2caa42675651154dbacde14230b17c6",
+    "scripts/check_pll845_reader_migration.py": "920ce33af331d4b2177135f27c42e3654d8cf7259e3c78efbb6f58b3e54a8460",
+    "scripts/cloud_pll845_allcolumn_acquisition.py": "bf87d8c067a3cc3af6c51b49ae9817550c485b2405a11eaeca3651e6354b91e1",
+    "scripts/read_pll845_all_native_transient.py": "792c402154e1f3122f6f4f197d721e7e16632dba3dab05e4ac7e705e51922da1"
+  },
+  "edits": [
+    {
+      "before": "import cloud_pll845_compressed_disk as host_disk",
+      "after": "import cloud_pll845_allcolumn_disk as host_disk\nimport read_pll845_all_native_transient as actual_wave",
+      "count": 1
+    },
+    {
+      "before": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__)",
+      "after": "Path(full_op.__file__),Path(full_wave.__file__),Path(actual_wave.__file__),Path(host_disk.__file__)",
+      "count": 1
+    },
+    {
+      "before": "names,values,cap=full_wave.capture(raw,vectors);result['capture']=cap",
+      "after": "names,values,cap=actual_wave.capture(raw,host_disk.load_contract(ROOT,vectors));result['capture']=cap",
+      "count": 1
+    }
+  ],
+  "scope": "Only reader dispatch, reader method hash and storage diagnostic header stride change. Frozen native runtime, process continuation, physical deck, loads, original clocks/solver, acquisition analyzers, checkpoint reserves and old readers remain unchanged. Do not resume until storage failure is resolved."
+}
