@@ -1,3 +1,10 @@
+## PLL complete-column reader qualification queued
+Run39582875018/job119164510267 is confirmed queued on GitHub from6852971cd4da26bdb84f56914285b98c22d73f06. It checks all1694 requested voltage identities against actual5106-column header, all2737 physical terminal mappings and16reader corruption controls. No pass claimed. Do not modify the existing native process/controller/frozen reader until this result is reviewed and a source-bound migration is implemented.
+
+Confirmed live: TX8088 terminal binding39580230591/job119155733169; read-only PLL storage census39581427678/job119159711814; mainchip detailed-route39572968246/job119132278215; fullTX nominal39573847558/job119134644088 and fault39573851657/job119134612528. Do not cancel/restart them to free a slot or because a poll expires.
+
+Next: inspect binding then full fresh703-component parent RC/intrinsic/composition; inspect storage census for actual disk consumption and last native time; inspect reader coverage before adapting final capture consumption. All PHY/clock/bias/CDR and final mainchip timing gates remain required. Everything cloud-only.
+
 ## Actual PLL all-column reader qualification launched
 New pll845-native-reader-cloud compares the verified5106-column native header with exact1694 requested voltage vectors covering2737 prepared terminals. Missing/type-mismatched probes fail. Separate reader preserves all raw columns and tests actual prefix plus16corruption controls, including extra voltage NaN/current infinity and chunk-boundary time errors. Original full1us/.3125ps/row-count gates retained. Live native/controller/source-contract methods unchanged until qualification and explicit migration.
 
