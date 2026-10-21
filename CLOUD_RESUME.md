@@ -1,3 +1,7 @@
+## 2026-10-21: PLL restore bookkeeping fix; no cold restart
+
+PLL39637767590 terminalFAILURE: inherited preallocated-storage-proof caused FileExistsError before native activation. Full archive published and pinned. Last valid native source remains39602655093(initial), summary813bc135... parts12c4059f.... New pll845-proof-namespace-cloud retains all native methods/capture/gates/reserves and uses distinct run/attempt storage-proof directories. Its controls must pass before dispatching a continuation of the exact valid capsule. Mainchip repair handoff39672217279 has completedSUCCESS; verify its receipt then generate fresh guides/resumable DRT. Local workspace remains empty.
+
 ## 2026-10-21: native repair passed; preparing fresh routing
 
 39669577979 completed. Actual candidate ODB8d472e3f... / netlist6c1d229e... retains152762 originals and adds226 positive buffers (152988 total). Geometry, exact fixed PCIe clock route, native equation proof and inverted-buffer rejection passed. This is candidate proof, not final timing. mainchip-repair-handoff-cloud restores exact original5030 inputs and strips only stale data wires with independent native guards; next requires fresh global guides and resumable DRT before RC/STA. Full PHY still open. Everything remains cloud-only.

@@ -1,0 +1,38 @@
+{
+  "run": 39637767590,
+  "source_head": "208ff3eff25ae2a53b9ca43a59a8dd3ce5aae475",
+  "status": "FAIL_OR_ERROR",
+  "error": "FileExistsError(17, 'File exists')",
+  "summary_asset": 663724757,
+  "summary_sha256": "6ed0bb8188eaa4dd126672c64daee363be70a713c0d5742f1fe3acdbda4aba4f",
+  "parts_asset": 663724879,
+  "parts_sha256": "1cb1fea1300c99a647d077ce07adbad85e254a12822bfaaeeb5248e631c744ec",
+  "checkpoint_saved": false,
+  "full_capture": false,
+  "native_commands": [
+    {
+      "label": "readable-durable-criu-log",
+      "args": [
+        "sudo",
+        "chown",
+        "1001:1001",
+        "/home/runner/work/nssoc/nssoc/cloud-pll845-native-acquisition/criu-durable.log"
+      ],
+      "returncode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_checkpoint": {
+    "run": "39602655093",
+    "attempt": "1",
+    "stage": "initial",
+    "summary_sha256": "813bc135b0885334993cac34a169aaf46542c6b67e14bb61478feca3010e5a4c",
+    "parts_sha256": "12c4059ff6063286434359c1c6d1bd6da0d49fc1e73de0238503f6f57d8577c3"
+  },
+  "resume_methods": {
+    "mode": "exact-current-all-column-reader-methods",
+    "native_process_methods_unchanged": true
+  },
+  "cause": "capture_ready attempted to create preallocated-storage-proof already inherited from the source archive, before native Docker activation.",
+  "next_action": "Keep inherited proof unchanged; create current storage proof under run/attempt namespace. Resume only last valid39602655093 capsule after controls."
+}
