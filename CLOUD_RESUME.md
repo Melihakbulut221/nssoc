@@ -1,3 +1,13 @@
+## 2026-10-22: cloud-only verified; v29 parent DRC rejection retained
+User requires all computation and project artifacts in cloud. Local workspace /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. No local OpenROAD, ngspice, KLayout, Yosys or Netgen processes. Removed only stale Yosys temporary directories /tmp/yosys-liberty-scl-cache, /tmp/yosys-abc-TRwc7i, /tmp/yosys-abc-hEqXQX and empty ~/.cache/yosyshq. Do not reclone/download CAD or evidence archives to local disk.
+
+Current CDR parent run39689212327/sourcec9313ba724690318c692a1a300d73ecca12762a3 FAILED actual DRC (560categories,8 Metal4 M4.b spacing markers). Actual generation and serialized child/parent conservation both passed. Full parent LVS was not reached; do not report parent physical passage or begin RC from rejected parent.
+Immutable summary664013864 SHA37c4873a9c1a273e0de1dd197dd1514cc6e41a51fef92ed2952229df12bc4ea3; parts664013940 SHA39e8d17dafb761d4bbf2755595037aa7603dac36c9c7b67334f0f0ea050198e9; archive664013981 SHA5f6338d547815341844d14cc3ca9eaa29d18a2496cb52e7ea943ed7b80465e4f.
+Eight actual markers: y290.655..290.855 and1480.175..1480.375, x1156.98..1158.205 /1159.405..1160.63 /1191.38..1192.605 /1193.805..1195.03. Next cloud-native geometry diagnosis must identify child/parent metal contributions and repair spacing/connectivity without moving unrelated cells or relaxing DRC/LVS. Then rerun physical gates before fresh RC/MIM and original loaded waves.
+
+Last live checks: mainchip39682593979 cross optimization running; TX39681742199 and39681748051 native continuations running; PLL39674830790 publishing actual native data and next-stage descriptor. Verify terminal state and immutable checkpoint hashes before scheduling continuations; never duplicate live jobs. Full serial PHY and final setup/hold remain open.
+
+
 ## 2026-10-21: v29 leaf native physical pass; full476 parent next
 39686764938 passed560DRC0, unsimplifieddeep/flat54LVS, LEF and20faults. NewleafGDS88af7c31...,source38e71777...; same1003x243.63um boundary, allports/positions,48 unchangeddrawings, sixchangedR and7geometryrejections. Immutable receipt cdr-sampler-gain-headroom-v29-physical-pass-20261021.json.
 New cdr-gain-headroom-v29-parent-cloud push replaces4real samplers in exact v28 parent39558088682, changes24actual resistorreference lengths only, and requires nativefull476DRC/LVS/child+parentconservation. Physical passage then freshRC/MIM/originalfullwaves mandatory; no electrical/PHY acceptance yet.
