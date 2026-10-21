@@ -4,8 +4,8 @@ import ast,hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def check():
-    from check_native_btrfs_sources import check as original
-    original()
+    import runpy
+    runpy.run_path(str(ROOT/'scripts/check_native_btrfs_sources.py'),run_name='__main__')
     m=json.loads((ROOT/'scripts/native-preallocated-btrfs-source-delta.json').read_text())
     for p,h in {**m['current_files'],**m['unchanged_files']}.items():
         data=(ROOT/p).read_bytes();assert hashlib.sha256(data).hexdigest()==h,p
