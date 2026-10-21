@@ -1,3 +1,8 @@
+## Actual PLL all-column reader qualification launched
+New pll845-native-reader-cloud compares the verified5106-column native header with exact1694 requested voltage vectors covering2737 prepared terminals. Missing/type-mismatched probes fail. Separate reader preserves all raw columns and tests actual prefix plus16corruption controls, including extra voltage NaN/current infinity and chunk-boundary time errors. Original full1us/.3125ps/row-count gates retained. Live native/controller/source-contract methods unchanged until qualification and explicit migration.
+
+TX8088 terminal binding39580230591, PLL storage census39581427678, mainchip39572968246 and TX39573847558/39573851657 are confirmed live. Cloud-only. Full PHY and final timing remain open.
+
 ## Live cloud handles after physical integration and PLL format diagnosis
 TX8088 all-terminal binding39580230591/job119155733169 is confirmed in progress. Its real contract is165public ports; only the human-readable step label corrected from163. The executing source375a70281b71865f895fe1dda42977defbb09978 already asserts165.
 
