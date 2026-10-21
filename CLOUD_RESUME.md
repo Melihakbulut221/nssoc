@@ -1,3 +1,8 @@
+## Cloud-only: v26 full-wave rejection and next diagnosis
+Full wave run39534542949 finished: both nominal cases REJECTED; both original fault cases detected. The v26-electrical-rejection receipt retains immutable captures and exact four HBT VCE violations. Phase/current and sampler gates remain failed.
+Dispatch cdr-v26-latch-timing-cloud.yml for both complete captured waves; its topology/transfer analysis identifies the next real layout correction without rerunning or weakening native tests. Full PHY acceptance remains false.
+Storage root-path probe39539101155 also failed with the same raw-file reopening error despite verified FSROOT and exact copy. Do not migrate the production PLL to Btrfs. Native mainchip39529165315, TX39532132082/39532134850 and PLL39502073954 remain authoritative live handles. Local workspace remains empty.
+
 ## Cloud-only checkpoint: filesystem root restoration probe
 All work remains in GitHub; local workspace is empty. Native Btrfs run39537262048 failed and is retained in native-btrfs-root-path-rejection-20261021.json. CRIU could not reopen the original filesystem-root-relative raw pathname. The bounded helper now mounts a separate compressed filesystem, recreates the original full path inside it and bind-mounts that directory onto the unchanged case path. FSROOT and same-inode readback are mandatory.
 This remains an unproven bounded storage migration until the dedicated workflow passes actual restore, redump/restore, complete raw byte comparison and fault controls. No full PLL capsule is migrated or restarted. All existing native CDR, TX, PLL and mainchip runs are retained. Dispatch native-btrfs-cross-job-cloud.yml explicitly for this storage-only commit; unchanged digital CI is not restarted.
