@@ -29,7 +29,9 @@ def definitions(text):
     assert active is None
     return result
 def analyze(deck,contract,models):
-    rows=statements(deck.split('.control\n',1)[0])
+    lines=deck.splitlines()
+    assert lines[0]=='NSSOC native full 32:1 tree, unchanged source-bit oracle'
+    rows=statements('\n'.join(lines[1:]).split('.control\n',1)[0])
     top={r[0].lower():r for r in rows if not r[0].startswith('.')}
     assert len(top)==len([r for r in rows if not r[0].startswith('.')]),'Duplicate top-level primitive'
     assert len(contract['hbt'])==604 and len(contract['mos'])==5376
@@ -98,7 +100,8 @@ def analyze(deck,contract,models):
         other_primitives.append(dict(name=row[0],endpoints=row[1:3],role=role,
             card=(row if len(row)<20 else row[:3]+['<full stimulus retained in immutable deck>']),
             card_sha256=hashlib.sha256(' '.join(row).encode()).hexdigest()))
-    return dict(clock_groups=groups,clock_handoffs=handoffs,top_instances=instances,
+    assert not any(x['role'].startswith('unclassified') for x in other_primitives),'Unresolved actual top-level primitive'
+    return dict(title=lines[0],clock_groups=groups,clock_handoffs=handoffs,top_instances=instances,
         other_top_primitives=other_primitives,external_output_hbts=output_hbts,
         hbt_ownership=dict(core=589,clock_leaves=11,output_stage=4,total=604),
         scope='Actual nominal saved8074 bench boundaries. The11clock6 leaves,62ideal differential modulation sources,62schematic25ohm legs and schematic output/bias instances are NOT a physically assembled lane. Supply/data stimuli and external output loads remain separately classified; do not treat testbench sources as fabricated circuitry.',
@@ -141,6 +144,7 @@ def main():
         first=result['clock_handoffs'][0];clockrow=first['schematic_series_resistor'];original=' '.join(clockrow)
         assert original in deck
         variants={
+            'unexpected_behavioral_source':deck.replace('.control\n','BUNBOUND extra 0 V=1\n.control\n',1),
             'missing_clock_resistor':deck.replace(original,'* missing physical handoff candidate',1),
             'wrong_clock_endpoint':deck.replace(original,' '.join([clockrow[0],clockrow[1],first['reference_node'],clockrow[3]]),1),
             'wrong_clock_reference':deck.replace(first['modulator_endpoints'][0]+' '+first['reference_node']+' PWL',first['modulator_endpoints'][0]+' avdd PWL',1),
@@ -150,7 +154,7 @@ def main():
             try:analyze(mutant,contract,models)
             except (AssertionError,KeyError):faults.append(dict(name=name,rejected=True))
             else:raise AssertionError('Invalid actual clock handoff accepted: '+name)
-        assert len(faults)==4
+        assert len(faults)==5
         (OUT/'clock-boundaries.json').write_text(json.dumps(result,indent=2)+'\n')
         r.update(source=proof,includes=includes,inventory=result,controls=faults,
             actual_deck_sha256=sha(OUT/'source/native/bench.cir'),actual_contract_sha256=sha(OUT/'source/native/contract.json'))
