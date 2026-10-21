@@ -1,3 +1,8 @@
+## Read-only PLL failure-prefix observation
+Native run39551551389 failed and its publisher remains live. New pll845-failure-prefix-cloud reads only already-published immutable part0000 asset661613918, verifies its268435456bytes and SHA45d946227bc7948bc560529a6e7119709ecc353a8d2c2aada6594f6238fb0d41, then captures bounded small metadata before the first large member. This is not full archive verification or a resumable capsule; it never restores native state, restarts or touches the live publisher. If the failure report is beyond the prefix, wait for full publication.
+Initial TX output14 run39563389201 passed actual six binding controls and native DRC/14-device deep LVS, then rejected wrong checker port letter case. Evidence preserved in its release. Exact uppercase-port fix3d8c55b8830336e654d907ff115a807f760e8094 was dispatched only after initial run terminated.
+CDR v28 audit/composition39562157915 passed; fullwave39562531785 remains live in source controls. Mainchip39555639933 and TX39557480969/39557484428 remain live. Cloud-only.
+
 ## TX output14 strict port spelling corrected
 The unchanged native output generator writes uppercase INP/INN/OUTP/OUTN/AVDD/AVSS/SUB/IREF labels; extracted_ports preserves case. The new output checker now expects those exact labels, instead of the lowercase labels inherited from the clock-reference template. Actual bench source aliases remain lowercase and independently bound. No geometry, native deck, device census, faults or acceptance thresholds changed.
 Observe the initial tx-output14-physical-cloud run at eeaadb80fe58eb0a3f12e6831b58419ccced95c1 to terminal before fresh corrected dispatch; do not fork live native work. CDR v28 audit/composition39562157915 passed; fullwave39562531785 running. All work cloud-only.
