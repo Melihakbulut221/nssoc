@@ -1,3 +1,8 @@
+## 2026-10-21 CDR v26 input-access physical candidate launched
+Do not accept v25: its actual Nx3 data/hold shrink regressed D sampler timing and late-phase margin. New v26 starts from actual v24 Nx4/Nx2 and changes only IP/IN native rppd length3.6um to0.9um at4um width. The measured D master input is weak/late; reduced series resistance/divider attenuation is a hypothesis requiring full loaded validation.
+cdr-sampler-input-access-v26-physical-cloud generates fresh PCells at the same primitive placements, compares52 unchanged drawings and runs original DRC/deep-flatLVS/LEF plus wrong-input-length and unrelated-HBT controls. After leaf success, integrate four new leaves and regenerate full parent RC before original complete loaded tests. No PEX/electrical/PHY acceptance claimed.
+TX initial capsules remain authoritative; continuation workflow registration correction preserves its exact controller bytes. All execution cloud-only.
+
 ## 2026-10-21 Register TX continuation workflow before dispatch
 The first dispatch of tx-raw8074-native-continuation-cloud returned HTTP404: the new dispatch-only workflow was not registered on GitHub. No continuation run exists yet. Added a path-scoped push registration event; the native job explicitly requires workflow_dispatch and therefore cannot run without an exact source descriptor. Structural controls run on registration. Controller bytes remain f9240718... and existing saved native capsules remain compatible.
 After registration, dispatch both exact descriptors from tx-raw8074-native-initial-save-pass-20261021.json. Do not repeat initial native runs. Prior cloud-only and full PHY/signoff constraints remain unchanged.
