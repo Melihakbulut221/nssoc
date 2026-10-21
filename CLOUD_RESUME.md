@@ -1,3 +1,6 @@
+## 2026-10-21: proved deep handoff; fresh global routing
+39678505610 passed; fresh ODB22a6238e...,153130 cells. Original-clock deep optimizer placement-only setup WNS-3.874ns/TNS-18247.5ns/8006 endpoints and hold WNS-0.469ns remain unclosed. New mainchip-repair-deep-global-cloud push owns original-native fresh global routing with exact config, physical DEF, clock and source guards. It stops before DRT deliberately; next must start a new resumable native DRT from its new guides, never the old completed DRT. PLL39674830790 and TX39662510592/39662516267 still live. All work cloud-only.
+
 ## 2026-10-21: deep repair proved; fresh routing handoff
 39674630712 completed PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA. 153130 instances, 368 added positive buffers,146 equivalent-size changes. ODB25b1e56f... / netlist3a200ea7...; original six-slack baseline, geometry, fixed PCIe clock, native equation proof and actual inversion rejection passed. Immutable receipt mainchip-postroute-repair-deep-pass-20261021.json. New mainchip-repair-deep-handoff-cloud push owns the source-bound fresh-wire handoff; do not duplicate. Still requires fresh global/DRT, RC/antenna/three-corner STA. PLL39674830790 and TX39662510592/39662516267 remain cloud continuations; inspect terminal capsules before successors. Local workspace remains empty.
 
