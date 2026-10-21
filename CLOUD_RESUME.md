@@ -1,3 +1,18 @@
+## 2026-10-21 — actual CDR parent metal fixed; fresh RC restarted in cloud
+
+Clean-parent39531419538 passed full560-rule DRC, deep and unsimplified flat
+476-device LVS, original fault controls, all16 placements/eight leaf drawings,
+and original strict111-wire/1382-terminal graph. Eight terminal-free M3/M5 pieces
+were removed only from parent geometry. GDS SHA256:
+c6be489346bba16ce781ff09a919618dbaf9fee17a85714149400b70b3445458.
+
+Receipt cdr-input-access-v26-clean-parent-pass-20261021.json binds actual evidence.
+The extraction workflow now consumes this clean parent;14 provenance corruption
+controls precede native160-plane,938-anchor,111-conductor and original RC gates.
+Do not reuse the old failed extraction39528173939 or claim electrical acceptance.
+All source and execution are cloud-only; local workspace remains empty.
+
+
 ## 2026-10-21 — TX cross-runner progress verified; cloud continuation
 
 Both actual8074 native processes restored from earlier saved processes with one
