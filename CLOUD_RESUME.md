@@ -1,3 +1,13 @@
+##2026-10-21 fresh power128 intrinsic and RC passed; two-order reproduction starts
+Intrinsic39618886589 passes all8088 devices/28620 terminals/65 body nets and19 faults.
+RC39618886679 passes original independent raw topology and13 faults.
+Receipts pin all outputs. Fresh power128-precision workflow reruns both native
+coupling orders and requires exact baseline R/C multisets and13 faults per order.
+After that compose exact native model, bind interfaces, then full34ns loaded waves.
+Mainchip39610377184 and PLL39602655093 remain preserved. Cloud-only.
+No full PHY, qualified PEX or final setup/hold acceptance inferred.
+
+
 ##2026-10-21 power128 all28620 terminals bound; fresh intrinsic and RC start
 39611514856 passes8088 devices/28620 terminals/13370 planes/165 ports/703
 conductors and six deliberate faults. Receipt and every native output pinned.

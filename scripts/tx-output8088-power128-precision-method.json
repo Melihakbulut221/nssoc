@@ -1,0 +1,79 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_precision.py",
+  "baseline_sha256": "e82d68bcf81a973d7a45858857a9ce59808450f7d4501b6e1687fd4bc410d963",
+  "candidate_path": "scripts/cloud_tx_output8088_power128_precision.py",
+  "candidate_sha256": "d637061e2b5c8565a65fd61db5472f47721930c8a41a5d051dde80899725d113",
+  "edits": [
+    {
+      "before": "cloud-tx-output8088-precision",
+      "after": "cloud-tx-output8088-power128-precision",
+      "count": 1
+    },
+    {
+      "before": "tx-output8088-native-rc-pass-20261021.json",
+      "after": "tx-output8088-power128-native-rc-pass-20261021.json",
+      "count": 1
+    },
+    {
+      "before": "assert pin['run']==39587339745 and pin['summary_sha256']=='537b6c791eee8b1c04a5a17bb70d4b7ad1a66ceb53b721a4b8b8fb70620e496b'",
+      "after": "assert pin['run']==39618886679 and pin['summary_sha256']=='63f854ffcfc38453d2b0b484e0f3e502a1db737e25657e131650134bc93c0551'",
+      "count": 1
+    },
+    {
+      "before": "'tx-output8088-native-rc'",
+      "after": "'tx-output8088-power128-native-rc'",
+      "count": 1
+    },
+    {
+      "before": "assert prior['audit']['actual_exported_resistors']==139838 and prior['audit']['actual_exported_capacitors']==99650",
+      "after": "assert prior['source_head']==pin['source_head']and prior['sources_unchanged']\n        assert prior['audit']==pin['audit']and prior['controls']==pin['controls']\n        assert prior['audit']['actual_exported_resistors']>0 and prior['audit']['actual_exported_capacitors']>0",
+      "count": 1
+    },
+    {
+      "before": "        failed,failedproof=reports.restore_report('tx-output8088-precision',39591337663,\n            '157af9f38d07e8df8499cec523b7de4afe53901e4779a849ea8a6d2420c007c9',\n            '10eefe268577c67e3362e519f237268de9d68bb3aa814d6aafd1dc2e581e8f43',\n            OUT/'failed-start',['precise/rc01/result.json','precise/rc01/native.log'])\n        assert failed['status']=='FAIL_OR_ERROR'\n        r['previous_native_failure']=dict(restore=failedproof,\n            result=json.loads((OUT/'failed-start/precise/rc01/result.json').read_text()),\n            log=(OUT/'failed-start/precise/rc01/native.log').read_text())\n        print('PREVIOUS_NATIVE_FAILURE',r['previous_native_failure']['log'],flush=True);save()\n",
+      "after": "        # The earlier unrelated startup failure remains in its immutable original report.\n",
+      "count": 1
+    },
+    {
+      "before": "tx-output8088-rc-methods.json",
+      "after": "tx-output8088-power128-rc-methods.json",
+      "count": 1
+    },
+    {
+      "before": "assert sha(evidence/'magic-cloud/runtime/lib/magic/tcl/tclmagic.so')==OLD",
+      "after": "assert sha(evidence/'magic-cloud/runtime/lib/magic/tcl/tclmagic.so')==PRECISE",
+      "count": 1
+    },
+    {
+      "before": "==139838",
+      "after": "==prior['audit']['actual_exported_resistors']",
+      "count": 1
+    },
+    {
+      "before": "==99650",
+      "after": "==prior['audit']['actual_exported_capacitors']",
+      "count": 1
+    },
+    {
+      "before": "cloud-tx-output8088-native-rc/",
+      "after": "cloud-tx-output8088-power128-native-rc/",
+      "count": 1
+    },
+    {
+      "before": "assert text.count(OLD)==1;text=text.replace(OLD,PRECISE)",
+      "after": "assert text.count(PRECISE)==1 and OLD not in text",
+      "count": 1
+    },
+    {
+      "before": "full_tx_output8088_wires",
+      "after": "full_tx_output8088_power128_wires",
+      "count": 4
+    },
+    {
+      "before": "PASS_ACTUAL8088_NATIVE_RC_DOUBLE_TOTALS_TWO_ORDERS_AND13_CONTROLS_EACH_NOT_FULL_PHY",
+      "after": "PASS_ACTUAL8088_POWER128_NATIVE_RC_DOUBLE_TOTALS_TWO_ORDERS_AND13_CONTROLS_EACH_NOT_FULL_PHY",
+      "count": 1
+    }
+  ],
+  "scope": "Changed physical power128 geometry uses its own complete native RC evidence and measured record counts. Qualified producer is already installed. Two fresh native extraction orders, exact R/C multiset equality, source equivalence, independent raw audits and all13 faults per order are unchanged."
+}
