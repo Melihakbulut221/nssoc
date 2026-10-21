@@ -83,6 +83,14 @@ jobs:
           python3 -m pip install numpy==2.3.3
           python3 -m py_compile scripts/cloud_pll845_compressed_acquisition.py scripts/read_pll845_full_native_transient.py
           python3 scripts/check_pll845_compressed_acquisition_sources.py
+      - name: Reclaim only unused hosted image and package caches before allocating storage
+        run: |
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test -z "$(docker ps -aq)"
+          df -B1 "$GITHUB_WORKSPACE"
+          docker image prune --all --force
+          sudo apt-get clean
+          df -B1 "$GITHUB_WORKSPACE"
       - name: Require the explicitly selected source run to be terminal
         env:
           GH_TOKEN: ${{ github.token }}
