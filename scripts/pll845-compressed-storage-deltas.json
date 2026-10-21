@@ -1,0 +1,84 @@
+{
+  "baseline_method_hashes": {
+    "scripts/cloud_native_checkpoint_probe.py": "28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231",
+    "scripts/cloud_native_portable_checkpoint.py": "5c2a6ca0996ffe88b4dd232ed5755f02cd8c9b0ba92f137c78d447f76b8b0b14",
+    "scripts/cloud_pll_vbic_acquisition.py": "841b74f19b10a9596af231a3e5250a0654d55fcc1004286bc20f24e273808a30",
+    "scripts/cloud_pll_filter_physical_acquisition.py": "f7bdad6929eaa5d686229e63c9f6146595cbdb174414f5d68e989fb12716aac4",
+    "scripts/run_cloud_pll865_snapshot.py": "c38656c2e64d5e2ce9902c845020442082b6b605c664644ee1e78ea34195fb9f",
+    "scripts/cloud_vbic_tree32_backend.py": "472c0c14d1a55785c3d0e9823e2bac94a97216781c530fdb8e8562bd0b805639",
+    "scripts/review_pcie_pll_acquisition_v1.py": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+    "scripts/cloud_pll_divider_load3p2v2_diagnostic.py": "8b9ff5b4d4d5ba1d3d8b61535d8b027c2719f423c2cb855aacb6da13796f2f9e",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5",
+    "scripts/read_pll845_full_native_transient.py": "59e4fb382439db1e8d16ecf80d64ae0406d775b41197037494ff60dbe0a3f3c4",
+    "scripts/cloud_pll845_streamed_acquisition.py": "2ea29c60484f976411ae377fa7300fe7b70fae26efa9184fab1ac67f4e9b19af",
+    "scripts/cloud_pll845_stream_disk.py": "c5a0ff9b54cd2ac22fb74c9cc7e75a04c36551ae0e112b3bf541962b220c8fed",
+    "scripts/cloud_streamed_native_archive.py": "ed500db932348586efb9a86efd42cacafe2ca3d377de24e60196c6dbbbd2d5d5"
+  },
+  "current_files": {
+    "docs/evidence/native-preallocated-btrfs-proof-20261021.json": "fa06be9a94176c5ece5d8969c6fdf0af27cac4bc26151b4f132d4b26e7653d22",
+    "scripts/cloud_pll845_compressed_disk.py": "19b4b2d593d4f0d3bf525d50fec580b6db9f8088e57722f6654eebc25940d058",
+    "scripts/cloud_pll845_compressed_acquisition.py": "0ee0dece573ae27e7fc272f0757b9b8f16332da887ed196f273040cb25266271",
+    "scripts/publish_pll845_compressed_checkpoint.py": "403117bccb7d421bd669e50c982e0bcdd0edbc92193a922b024e7af7862421a5",
+    "scripts/check_pll845_compressed_acquisition_sources.py": "24d78200dc751be7dee55b062ee38cb4b5803c75f1bdb1005f6e8cd76e7235dd",
+    ".github/workflows/pll845-compressed-continuation-cloud.yml": "db0c6aab166435e046c1b4411d4c5ab7ee230263475566f62a92ce06a789b5f1",
+    "scripts/cloud_pll845_preallocated_storage.py": "8750623b4f3cc77f168ed59a7a0c4b4a1baba8f9aed6cf2924af1e50f5249dda",
+    "scripts/cloud_native_btrfs_case.py": "b4c30536e1fb64b8af9389bf4571b691c7418070b3187cac272e3e365e6ea947",
+    "scripts/cloud_streamed_native_archive.py": "ed500db932348586efb9a86efd42cacafe2ca3d377de24e60196c6dbbbd2d5d5",
+    "docs/evidence/pll845-streamed-latest-continuation-20261021.json": "dfb0f81326fb2a2817715542799c0685882aa79824748b5b3905fe28e78c7f5c"
+  },
+  "edits": [
+    {
+      "before": "import cloud_pll845_stream_disk as host_disk",
+      "after": "import cloud_pll845_compressed_disk as host_disk",
+      "count": 1
+    },
+    {
+      "before": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__),Path(host_archive.__file__)]",
+      "after": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__),Path(host_archive.__file__),Path(host_disk.allocation.__file__),Path(host_disk.btrfs.__file__)]",
+      "count": 1
+    },
+    {
+      "before": "    prior=restore_source(spec)if spec else None",
+      "after": "    assert spec is not None,'Only the exact saved native process may continue'\n    host_disk.source_contract(ROOT)\n    allocated_storage=host_disk.allocation.prepare_workspace(ROOT,OUT)\n    prior=restore_source(spec)",
+      "count": 1
+    },
+    {
+      "before": "    container=None;save()\n    try:",
+      "after": "    container=None;save()\n    try:\n        result['compressed_case']=host_disk.allocation.capture_ready(CASE,OUT,run,allocated_storage)\n        result['source_raw_position']=host_disk.raw_position(CASE/'actual-acquisition.raw')\n        result['external_path_controls']=host_disk.btrfs.external_path_controls()\n        result['criu_log_configuration']=host_disk.btrfs.durable_logs(OUT,run);save()",
+      "count": 1
+    },
+    {
+      "before": "            if started.returncode:\n                run('restore-detail'",
+      "after": "            if started.returncode:\n                host_disk.btrfs.restore_failure(cid,OUT,run)\n                run('restore-detail'",
+      "count": 1
+    },
+    {
+      "before": "            result['native_resume_started']=True;save()",
+      "after": "            result['native_resume_started']=True\n            result['external_superblock']=host_disk.btrfs.verify_external_superblock(container,CASE,OUT,run);save()",
+      "count": 1
+    },
+    {
+      "before": "            if elapsed>=seconds or free<reserve:",
+      "after": "            if elapsed>=seconds or free<reserve or storage['checkpoint_required']:",
+      "count": 1
+    },
+    {
+      "before": "        result['protected_inputs_unchanged']=True;save()",
+      "after": "        result['protected_inputs_unchanged']=True\n        result['final_raw_position']=host_disk.raw_position(raw)\n        result['compressed_case']['final_capacity']=host_disk.allocation.capacity(ROOT)\n        result['compressed_case']['final_compression']=run('final-raw-compression',['sudo','compsize','-b',str(raw)]).stdout\n        save()",
+      "count": 1
+    },
+    {
+      "before": "        result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}",
+      "after": "        run('readable-durable-criu-log',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(OUT/'criu-durable.log')],False)\n        result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}",
+      "count": 1
+    }
+  ],
+  "qualification_receipt": "docs/evidence/native-preallocated-btrfs-proof-20261021.json",
+  "qualification": {
+    "run": 39550383992,
+    "summary_sha256": "6bca1caaf72c84684b142a1061d199585095c89ddc760d456e4d96853aad2d08",
+    "parts_sha256": "86337d2ad59c7a1c0c55c07a4baeceba77eed1557ef708fd9ce234e8c7f7879f"
+  },
+  "scope": "Reversible storage-only controller delta from exact streamed baseline. Original eleven native/parser methods, full1us1694terminal capture, model/detector/stimuli/loads/solver/zeroOP/102OFF/probe and both final100ns acceptance windows unchanged. Mount preallocated shared Btrfs before full raw restore, retain every byte, preserve single entrypoint and original command. Independent backing/native budgets only; raw-position reporting is diagnostic."
+}
