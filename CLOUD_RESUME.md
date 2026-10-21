@@ -1,3 +1,7 @@
+## v28 full parent physical pass; fresh extraction
+
+Run39558088682 passed actual476-device DRC/LVS and unchanged-parent/child checks after16resistor changes. Receipt pinned. Start cdr-input-loading-v28-extraction-cloud: actual current160planes/51nets, strict111conductor graph,1382terminals/938points, intrinsic binding and nativeRC controls. Baselinev27cleanup is independently retained; it is not proof of v28 graph. Both parent consumers must restore v28, never the prior clean geometry. All original loaded wave gates remain open pending fresh RC/MIM. All work cloud-only.
+
 ## v28 leaf physical pass; real parent assembly next
 
 Run39557261382 passed actual54-device DRC/deep-flatLVS/LEF and20faults. Source receipt saved. New cdr-input-loading-v28-parent-cloud replaces four native leaves in cleaned v27 parent,16 actual resistor length changes only. Every parent route and other child retained and independently checked; fresh parent DRC/LVS is mandatory. Do not reuse old RC or mark sampling accepted. Next: strict physical extraction/RC/MIM and original fullwave cases. Cloud-only; TX39557480969/39557484428, mainchip39555639933 and PLL39551551389 remain the existing live jobs.
