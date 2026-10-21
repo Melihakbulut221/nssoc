@@ -8,7 +8,8 @@ from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'hw/soc/out/cloud-cdr-bias-access-v27-parent'
 TOP='nssoc_cdr_pd476_follower_v23'
-LEAF='nssoc_rx_sampler_bias_access_layout_v27'
+# Leaf keeps the serialized top name used by the actual verified v27 run.
+LEAF='nssoc_rx_sampler_input_access_layout_v26'
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT

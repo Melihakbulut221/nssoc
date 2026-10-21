@@ -4,7 +4,8 @@
 import argparse,copy,hashlib,json,re,shutil
 from pathlib import Path
 TOP='nssoc_cdr_pd476_follower_v23'
-LEAF='nssoc_rx_sampler_bias_access_layout_v27'
+# Leaf keeps the serialized top name used by the actual verified v27 run.
+LEAF='nssoc_rx_sampler_input_access_layout_v26'
 OLDLEAF='nssoc_rx_sampler_input_access_layout_v26'
 BIAS_RESISTORS={'BP','BN'}
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
