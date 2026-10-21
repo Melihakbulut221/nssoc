@@ -1,0 +1,35 @@
+{
+  "run": 39639055120,
+  "source_head": "7a745b3c0306a638550988bfa0efb05b75ecebe6",
+  "summary_asset": 663191472,
+  "summary_sha256": "6fa7915b1eb3f2a2eed22296b220d6627c57324947107b6ca03df5ed36f0f1fa",
+  "parts_asset": 663191598,
+  "parts_sha256": "3f10118c04e89f9c60f792e03a341ebfbe2f0ccd1463efb647fdf3cf12cb4470",
+  "report": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "7a745b3c0306a638550988bfa0efb05b75ecebe6",
+    "accepted": false,
+    "final_timing_complete": false,
+    "full_phy_accepted": false,
+    "qualified_pex": false,
+    "native_routing_started": false,
+    "scope": "Completed native DRT topology, antenna/disconnect, fresh nominal RC and original-clock three-corner STA. Does not establish foundry RC-min/max, transistor LVS, full DRC or full serial PHY.",
+    "decision_controls": {
+      "status": "PASS_POSTROUTE_DECISION_CONTROLS_NOT_NATIVE_ANALYSIS",
+      "nonzero_or_negative_rejected": [
+        "timing__setup__ws",
+        "timing__hold__ws",
+        "timing__setup_vio__count",
+        "timing__hold_vio__count",
+        "design__max_cap_violation__count",
+        "design__max_slew_violation__count",
+        "design__max_fanout_violation__count"
+      ]
+    },
+    "error": "FileNotFoundError(2, 'No such file or directory')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_postroute_review.py\", line 70, in main\n    summary,digest,parts=logic.summary(descriptor['group'],live)\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_replay_onehot_logic.py\", line 26, in summary\n    raw,digest=get_asset(matches[0]);(OUT/(stem+suffix)).write_bytes(raw)\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py\", line 1036, in write_bytes\n    with self.open(mode='wb') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/nssoc/nssoc/cloud-replay-onehot-logic/mainchip-postroute-inputs-39635867954-1.summary.json'\n",
+    "outputs": {}
+  },
+  "fix_commit": "02cbe85c51d10acc8319ff12332f22b4d64a542f",
+  "explanation": "Shared summary reader used historical OUT rather than current evidence directory. Rejected before input restoration/native flow. Fixed reader binding is being verified by input preflight39639250513."
+}

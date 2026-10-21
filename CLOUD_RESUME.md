@@ -1,3 +1,7 @@
+## 2026-10-21 — TX power128 reaches4.8ns; continue two-hour native segments
+Normal39630182787 and fault39630188922 completed real3600s continuation stages with original14182columns, singleentry, unchangedsources. Normal4.798637531ns/10423rows, fault4.827412540ns/10484rows. Neither full34ns nor electrical acceptance. Both next descriptors are pinned in tx-output8088-power128-first-continuations-20261021.json. Dispatch each once for7200native seconds using unchanged controller.
+Mainchip ninth39631640578 live. PLL continuation39637767590 live from820.364ns. Input/config preflight39639250513 verifies fixed shared-reader binding; older failure39639055120 explicitly retained. Local project empty; all work hosted.
+
 ## 2026-10-21 — postroute reader output namespace
 The shared immutable-summary reader writes into its module OUT. Bind that to the current review directory before use; otherwise a fresh cloud runner would try to write into a nonexistent historical directory. All native input and acceptance gates unchanged. The actual input-configuration preflight runs on this fix; previous run evidence must be retained.
 
