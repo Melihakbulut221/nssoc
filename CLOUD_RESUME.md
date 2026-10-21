@@ -1,3 +1,9 @@
+## 2026-10-21 — feed32 full-parent RC composition PASS; native interface binding starts
+
+39657871046 terminalSUCCESS/sourcec79ecf7:8088actualdevices,140222R,99906C,28620terminals,13370planes,703conductors,65body nets. All25 real corruptions rejected; original native model records and physical reference planes retained. Exact summary663501085 pinned, model2572406e76c5db277acaf2a50d95c6a1b476e26e44f9a1fb388537e95bec3177. Native interface workflow now reopens actual new GDS/LVS, requiring124inputs/372bases/64driverhandoffs/four outputs and all28620terminals. Binder is byte-identical to original power128 method; only exact producer pins/names change. Electrical/fullPHY not accepted.
+
+Mainchip triage39657466517 terminalSUCCESS: genuine worst slow path runs from Ibex register file through overloaded fanout and combinational gates; input pcie_rx_valid_i dominates hold; fast setup starts pcie_link_up_i. Source reports preserved. Need targeted physical sizing/buffering and antenna repair followed by freshRC/STA, not constraint relaxation. All work cloud-only.
+
 ## 2026-10-21 — feed32 two-order precision PASS; actual composition next
 
 39655076891 terminalSUCCESS/source0514e53. Both actual native extraction orders preserve exact140222R/99906C and13 raw-corruption rejections each; qualified double-total producer unchanged. Receipt pins Release assets663489721/663489866. Actual intrinsic report from39651408848 is added to its receipt for byte-identical consumer verification. New isolated composition controller/library are explicit hash-bound derivations of the original power128 methods, with only namespace and actual producer pins changed. Require8088devices/28620terminals/165physicalpins/13370planes/65body/703conductors and25 mutations before loaded-wave preparation. Mainchip triage39657466517 reads actual unclosed timing paths; no repeated DRT. Cloud only.
