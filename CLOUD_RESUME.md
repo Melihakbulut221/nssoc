@@ -1,3 +1,13 @@
+## 2026-10-21 active cloud handoff after first full TX result
+
+Verified live: TX rail/input attribution39604983700, PLL exact allcolumn/headroom resume39602655093, mainchip route39591380714, oldTX leaf-fault39592612780. Do not duplicate or restart live work. Old nominal39592603205 is TERMINAL FULL34ns REJECTED; complete evidence retained. It is not a resumable checkpoint.
+
+New8088 initial39601746737 has two valid saved process capsules pinned in tx-output8088-native-initial-pass-20261021.json (controller33b6cab21b696fe63f4de2a3a46290d431106439eb8ae29ee5dbda418d9c7548); they are currently saved, not running. Prioritize the newly observed input/core electrical failures before committing more long unchanged baselines. Continue from the exact saved capsules if baseline evidence is needed; altered geometry requires new physical proofs and a distinct native trajectory.
+
+Attribution39604983700 restores original full raw, contract and OP, reproduces the ENTIRE unchanged review, verifies actual8074 interfaces/native composition, measures every AVDD/AVSS/DVDD terminal plane and all logical input banks at original phases. It deletes only its temporary raw copy after full hash/review reproduction; original immutable capture remains in39592603205 release. Inspect real measured results before claiming supply droop vs driver loading.
+
+Source inspection found generate_tx_raw64_powered_physical.py uses6um TopMetal1 vertical trunks and6um TopMetal2 core feeds with one-column/one-row native via stacks,3.2um Metal5 driver branches. This is a candidate physical bottleneck, NOT a proven cause or accepted repair. Other core power routes also require actual measurement. If rails collapse, trace failing planes to the actual geometry and widen/add legitimate power paths with fresh DRC/LVS/anchors/intrinsic/RC/composition; preserve all primitive parameters, original clocks and gates. Do not infer success from connectivity/LVS alone. No local checkout/artifacts/CAD work.
+
 ## 2026-10-21 full8074 nominal rejection and new8088 capsules
 
 Old nominal39592603205 finished full34ns/77904rows14162columns; nativeexit0/no diagnostics/sources unchanged, but original gates reject130/768 output signs,133 below100mV,284/604 HBTs; all5376MOS pass. All interfacegroups fail original limits. CMOS inputs have0wrong signs but5049/6912 below150mV and CM0.879--1.606V. Preserve failed complete capture; NEVER resume this terminal full waveform or report it passed. New tx-raw8074-loaded-attribution-cloud reproduces original full review and measures actual rail/individual physical input banks to select targeted repair; no new simulation or gate change.
