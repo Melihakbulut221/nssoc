@@ -1,3 +1,7 @@
+## 2026-10-21 — investigate full PLL storage on disposable hosted runner
+New native-storage-inventory-cloud job inventories real mounts/block devices(/mnt included) read-only. Existing allcolumn PLL remains live; no formatting/swap changes/cleanup/native restart. Full1us lower bound130.714GB plus reserves may exceed single allocatedvolume; independent storage is not assumed until measured.
+Corrected TX prefix original-gate observer39643945084 is running from78882caf after exact28OPchunk restoration fix. Preserve its actual result, not the earlier KeyError. Live native handles unchanged.
+
 ## 2026-10-21 — preserve counterexample observer transport failure and repair it
 39643000497 failed before numerical review: ongoing native capsule has28OP chunks, not yet aggregateop.dat. Exact failure receipt retained. New observer verifies all nativewrdata commands and28file hashes, uses unchanged losslessassemble_op, then retains originalzeroOP and all numerical gates. Explicitly dispatch corrected observer once; active native processes remain untouched.
 
