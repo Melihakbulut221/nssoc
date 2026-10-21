@@ -1,3 +1,7 @@
+## v28 native latch diagnosis passed; actual retime current observations launched
+CDR diagnosis39570507312 reproduced all120HBT/all4sampler failures. All0.6/0.9UI outputs exceed100mV; all remaining margin/polarity failures are at original0.3UI. C master input below100mV marker222/197bits; D193/193bits, with64 wrong at edge. Slave steering observed roughly12.6–14.3ps median nearest edge; not causal proof. Two VCE failures are C'sNx2 selectors. New cdr-v28-transfer-timing-cloud adds actual ac/bd follower base/emitter/current measurements without changing native waves or gates, to select a defensible geometry correction.
+TX composition39570119084 passed and pinned. PLL storage-diagnosis verifies terminal failed321part archive without resume. Mainchip39555639933/TX39557480969/39557484428 keep live native handles. Cloud-only, local workspace empty.
+
 ## TX output14 exact composition passed; PLL reserve rejection now authoritative
 TX39570119084 passed actual14devices38terminals/2619R1410C and11corruption controls, canonical receipt committed. Still requires loaded electrical validation and real parent routes; no PHY completion claim.
 PLL39551551389 completed failed archive publication321parts. Native activation never started: Insufficient native or backing reserve before resume. Keep original successful39502073954 capsule. New pll845-storage-diagnosis-cloud verifies the complete failed archive while keeping only bounded metadata/raw header and measuring last native time plus file census. No restart and no weakening original reserves or capture.
