@@ -1,3 +1,7 @@
+## 2026-10-21: native repair passed; preparing fresh routing
+
+39669577979 completed. Actual candidate ODB8d472e3f... / netlist6c1d229e... retains152762 originals and adds226 positive buffers (152988 total). Geometry, exact fixed PCIe clock route, native equation proof and inverted-buffer rejection passed. This is candidate proof, not final timing. mainchip-repair-handoff-cloud restores exact original5030 inputs and strips only stale data wires with independent native guards; next requires fresh global guides and resumable DRT before RC/STA. Full PHY still open. Everything remains cloud-only.
+
 ## 2026-10-21: exact OpenROAD mode-override cause found
 
 39667104303 failed after 19 setup resizes because native revision dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 forcibly switches repair_timing back to detailed_routing on routed ODBs. Exact upstream body is now runtime-bound; separate candidate procedure changes only model selection and retains original constraints/checks/native optimizer. Partial failed setup ODB and all evidence remain in Release. Next cloud-only repair must pass runtime body binding, original six-slack baseline, geometry and logic proof; fresh route/RC/final STA still required. TX39662510592/39662516267 remain active, PLL39637767590 publication advances.
