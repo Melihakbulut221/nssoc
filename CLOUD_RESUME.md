@@ -1,3 +1,10 @@
+## TX8088 full intrinsic binding passed; corrected fresh RC remains live
+Run39586675206 passed actual8088devices28620terminals165ports65body703wire nets and19model faults plus negative-spacing control. Both actual10um/70.215um outputrsil loads retain self-heating. Canonical receipt pins model33ef923e5208e6243c14cbde5f72b1ed13698327882c5cd0da389d3578398a26, bindingf8b441e0fae040ff144c7a7aa54293079eb583e8ff87eb32df3b94b08e4ea892 and native7b6397688337a3aa9d442576634839eda6f5fe2bb9a1605f10ae8490d375c11a.
+
+Corrected RC39587339745 is confirmed live from17764a8a5ca5600c2b51ba6632002dc341257175; initial39586054928 extraction succeeded but inherited699-total-net audit rejected. New audit requires703metal+1substrate=704 and all original per-point/value/topology/13fault checks. After pass compose actual full parent RC with this model; do not reuse child-RC sums.
+
+PLL reader migration39584979653 passed. Storage census39586241135 remains live with81696byte tail; original resume39502073954 must not run until capacity/reserve correction. Mainchip39572968246 and nominal/faultTX39573847558/39573851657 preserve native processes. Full serial PHY, remaining clock/bias/CDR boundaries, mainchip route and final timing remain open. Cloud-only.
+
 ## TX8088 RC extraction completed; inherited total-net audit count corrected
 Run39586054928 terminal failure after native extraction returned0(214.7s). Audit still expected699 total nets from prior698-component core; independent combined parent proves703 metal components plus one substrate reference, requiring704 total. Exact matrix size metadata corrected704 squared. All other native topology/R/C/per-point controls unchanged; failed raw archive retained. Re-dispatch output8088-native-rc only after this terminal failure.
 
