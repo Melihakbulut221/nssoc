@@ -1,3 +1,10 @@
+## TX8088 physical gates passed; fresh parent graph and PLL header observation launched
+TX39578033552 passed560-category zero-marker DRC,8088-device unsimplified deep/flatLVS, exact165ports and all7negative controls. Canonical receipt pins actual GDS3b1a16d8e96f0326b430c7c9214e61e723dcb0eee07e70266f30bc8a9ba673e7. Fresh output8088-native-wires extracts all actual parent metal/via material; no child-RC substitution. Next all28620 terminal references and fresh RC/composition/loaded waves.
+
+PLL scan39571416471 is terminal failure in original header parser, after hashing94756323259-byte raw. Source simulator was never activated. New pll845-header-review-cloud examines only the preserved small diagnostic archive and reproduces exact header rejection; no expensive full scan restart until diagnosed. Original native capsule39502073954 remains authoritative.
+
+Mainchip39572968246 and TX39573847558/39573851657 remain live. All work cloud-only; local project workspace empty.
+
 ## Local cleanup completed; cloud execution retained
 Both historical cloud-backed NSSoC clones listed in cloud-only-cleanup-20261021.json have been removed, including generated environment/cache/site files. Their local heads were proven ancestors of current upstream heads, with no unpushed branch, stash, source changes or unreachable objects. App workspace is empty. No local CAD process; no local source/artifact downloads.
 
