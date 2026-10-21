@@ -1,0 +1,9 @@
+# TX lane boundaries before whole-lane assembly
+
+The saved nominal actual8074 preparation from run39518358552 is the input to this cloud inventory. Its original deck, contract, actual8074 wire model and both actual clock-leaf models are recovered from the hash-verified complete published archive. No local extraction or simulator is used.
+
+The existing actual8074 parent contains the64 native CMOS input drivers,31 mux core and their physical interconnect. Eleven clock-reference/feed leaf models are present in the electrical bench but are not routed in that parent. The31 differential clocks still use62 ideal relative PWL modulation sources and62 schematic25ohm access resistors. Placing only the11 reference leaves cannot implement these clock paths. Clock modulation must be replaced with a hardware clock-generation/distribution design before full-lane acceptance.
+
+The actual604 HBT probes divide into589 core,11 clock-reference and4 output-stage HBTs. The output stage and other active top-level bias models require exact model/port/primitive inventory, layout construction, physical interconnect and fresh extraction. Zero-volt measurement probes do not represent a physical route. Conversely, supply/data test stimuli and declared external100ohm/100fF loads must remain explicitly identified as bench boundaries rather than silently fabricated or deleted.
+
+The cloud job emits an actual endpoint inventory and tests rejection of a missing clock resistor, wrong endpoint, wrong reference and wrong clock variant. Its successful status means only that the remaining boundaries have been identified from the immutable deck. It does not mean layout, electrical, serial PHY, PVT, ESD or mainchip acceptance. The running full34ns TX acquisitions retain their original sources and acceptance gates.

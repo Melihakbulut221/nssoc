@@ -1,3 +1,7 @@
+## 2026-10-21 cloud-only TX boundary work
+
+Local project directory verified empty. PLL39551551389, mainchip39542126811 and TX39544297368/39544299695 remain live and must not be restarted. CDR39548690293 finished: both nominal cases rejected, both fault controls passed. Investigate retained full native waves; device gates now pass but sampling/early phase fail. New tx-lane-boundaries-cloud job derives missing clock modulation, clock access and output/bias layout endpoints from saved immutable actual8074 deck; inventory success is not physical acceptance.
+
 ## Full native compressed-storage migration dispatched after passing source controls
 Controls39551217565 passed at500a60ec6a851596d0d260d9d34e3f31c3bcb128. Before allocation, production now also verifies an empty github-hosted Docker runner and removes only unused Docker images and package download caches. Inventory measured about2GB of disposable Docker image cache. No containers/volumes/native inputs are deleted; active runtime and all source gates retained. Updated workflow hash is pinned; controls must pass again before native stage.
 Dispatch pll845-compressed-continuation-cloud with exact latest39502073954/1/continuation descriptor and1800host seconds. This restores every byte of94756323259B raw on qualified preallocated Btrfs, observes actual fullcase compression/capacity, and resumes the same native process only if both reserves remain. No cold restart, shortened1us, probe reduction or alternate equations.
