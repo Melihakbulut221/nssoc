@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Replace four native samplers; retain every original parent polygon and other leaf."""
+"""Replace four native samplers and fill eight same-net M4 notches."""
 import argparse,copy,hashlib,json,re,shutil
 from pathlib import Path
 TOP='nssoc_cdr_pd476_follower_v23'
@@ -54,14 +54,18 @@ def main():
     shapes.clear()
  assert removed and all(row['datatype']in (2,25)for row in removed)
  # Retain every original parent polygon, including already shortened
- # collector/retime trunks and the verified v27 cleanup retained through v28. No cleanup waiver.
+ # collector/retime trunks. Add only eight diagnosed same-component notch fills; no waiver.
+ from repair_cdr_v29_parent_m4_notches import apply as repair_m4
+ bridges,m4_proof=repair_m4(L,T)
  L.write(str(dest/(TOP+'.gds')))
  R=pya.Layout();R.read(str(dest/(TOP+'.gds')));U=R.cell(TOP)
  after=parent_snapshot(R,U)
  def compare(a,b):
   assert a[1:]==b[1:],'Parent labels or transforms changed'
   assert a[0].keys()==b[0].keys()
-  for layer in a[0]:assert (a[0][layer]^b[0][layer]).is_empty(),('Parent metal changed',layer)
+  for layer in a[0]:
+   expected=(a[0][layer]+bridges).merged() if layer==(50,0) else a[0][layer]
+   assert (expected^b[0][layer]).is_empty(),('Unexpected parent metal change',layer)
  compare(snap,after)
  # Fresh serialized children are independently compared against all eight sources next.
  reference=(old/'layout/schematic.cir').read_text();lines=reference.splitlines(keepends=True)
@@ -78,10 +82,11 @@ def main():
  meta=copy.deepcopy(before);meta['source_plan']['types']['sampler']['top']=LEAF
  meta['status']='GENERATED_PD476_GAIN_HEADROOM_V29_REQUIRES_NATIVE_PHYSICAL_AND_ELECTRICAL_CHECKS'
  meta.pop('native_reorder',None)
+ meta['v29_same_net_m4_notch_fill']=m4_proof
  meta['collector_and_bias_resistor_replacement']=dict(previous_parent_gds_sha256=sha(old/'layout'/(TOP+'.gds')),
   new_sampler_gds_sha256=sha(fresh/(LEAF+'.gds')),changed_native_reference_devices=sorted(changed))
  files=[p for name in ('baseline','data','inputs')for p in (out/name).rglob('*')if p.is_file()]+[out/'children.json']
- meta['inputs']={str(p):sha(p)for p in [Path(__file__),*files]}
+ meta['inputs']={str(p):sha(p)for p in [Path(__file__),Path(__file__).with_name('repair_cdr_v29_parent_m4_notches.py'),Path(__file__).with_name('cdr-v29-parent-m4-diagnosis.json'),*files]}
  meta['outputs']={n:sha(dest/n)for n in (TOP+'.gds',TOP+'.lef','schematic.cir')}
  (dest/'result.json').write_text(json.dumps(meta,indent=2)+'\n')
  faults=[]
@@ -93,9 +98,13 @@ def main():
  try:compare(snap,bad)
  except AssertionError:faults.append('removed_parent_instance')
  else:raise AssertionError('Parent hierarchy fault accepted')
- assert len(faults)==2
- proof=dict(status='PASS_SERIALIZED_UNCHANGED_PARENT_WITH_FOUR_NATIVE_GAIN_HEADROOM_V29_SAMPLERS',
-  actual_sampler_instances=4,changed_reference_devices=sorted(changed),parent_geometry_unchanged=True,all_existing_collector_retime_trunks_retained=True,
+ bad=(dict(after[0]),after[1],after[2]);bad[0][(50,0)]=snap[0][(50,0)]
+ try:compare(snap,bad)
+ except AssertionError:faults.append('missing_required_notch_fill')
+ else:raise AssertionError('Missing notch fill accepted')
+ assert len(faults)==3
+ proof=dict(status='PASS_SERIALIZED_PARENT_PLUS_EIGHT_SAME_NET_NOTCH_FILLS_WITH_FOUR_NATIVE_V29_SAMPLERS',
+  actual_sampler_instances=4,changed_reference_devices=sorted(changed),parent_geometry_unchanged=False,all_original_parent_geometry_retained=True,all_existing_collector_retime_trunks_retained=True,m4_notch_fill=m4_proof,
   removed_child_port_annotations=removed,original_children_had_no_port_annotations=True,
   external_leaf_ports_and_bbox_unchanged=True,serialized_native_check=True,controls=faults,
   full_phy_accepted=False,qualified_pex=False)
