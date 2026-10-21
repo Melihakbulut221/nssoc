@@ -1,3 +1,9 @@
+## 2026-10-21 exact PLL headroom continuation
+
+New pll845-allcolumn-headroom-cloud uses the unchanged already qualified allcolumn controller and real preallocated storage, after guarded extra hosted SDK cleanup. Original source39502073954; no other PLL native job live at dispatch preparation.12GiB native/4GiB backing reserves unchanged. Full95GB archive restored/hash-verified before actual capacity check and any process activation. Measured compressed occupancy, complete5106-column capture, original full1us gates and source process preserved. May checkpoint before capacity exhaustion; not a full-capacity guarantee. Dispatch only once after controls pass and source is terminalsuccess. Preserve all native bytes and publish checkpoint even if full capture remains open.
+
+New TX8088 native initial workflow was committed at47c20057c19d048ee5baca6d1dca6a0eb504d5ae; inspect live ID and controls. Mainchip and old8074 native continuations remain separate. Cloud-only; local workspace empty.
+
 ## 2026-10-21 actual8088 preparation passed; fresh full native wave
 
 Preparation39600814498 passed both nominal and swap_leaf_select cases, ten physical adaptation faults each and native10032-vector OP transport. Actual8088 model139838R99650C, all604HBT5376MOS,14182 columns, original34ns/256bits/three sampling phases preserved. Separate schematicoutput removed; all8088 reference planes used. Exact receipts and methods pinned. New tx-output8088-native-initial-cloud starts fresh trajectories for this changed physical model, saves real processes, and applies the original review only to complete captures. Initial600s work segments qualify checkpoint transport; continuation workflow preserves exact process/runtime/all raw bytes. Do not reuse8074 evidence as8088 acceptance.
