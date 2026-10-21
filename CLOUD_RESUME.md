@@ -1,3 +1,7 @@
+## 2026-10-21 — completed-route native analysis exposes actual unclosed gates
+
+39654204345 terminalSUCCESS means analysis completed, NOT timing acceptance. Native DRT0, critical disconnected pins0, antenna563nets/626pins. Original-clock fresh nominalRC: slow setup9671/hold3 with worst−18.0796165/−0.4788252ns; typical7358/9; fast3967/31. Slew/cap/fanout violations also remain. Full summary and actual three-corner measurements pinned. New mainchip-postroute-triage workflow restores only exact immutable reports and extracts actual path identities/complete first paths to select evidence-based repairs. No rerouting, constraints or numerical acceptance changes. Feed32 two-order precision39655076891 remains live; next composition requires its actual successful evidence. Cloud only; local empty.
+
 ## 2026-10-21 — fresh feed32 intrinsic+RC PASS; exact generated sources committed
 
 Hosted followthrough39651408848 terminalSUCCESS. Actual8088-device/65body/19fault intrinsic model and fresh140222R/99906C/703conductor native RC with13 raw faults passed. Every generated source, method delta and anchor receipt was reconstructed byte-for-byte against the exact successful hosted SHA256 map and committed; generated intrinsic/RC workflow templates remain only in the archive to avoid duplicate runs. Their stage summaries are independently published and pinned.
