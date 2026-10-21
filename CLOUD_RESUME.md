@@ -1,3 +1,10 @@
+## Live cloud handles after physical integration and PLL format diagnosis
+TX8088 all-terminal binding39580230591/job119155733169 is confirmed in progress. Its real contract is165public ports; only the human-readable step label corrected from163. The executing source375a70281b71865f895fe1dda42977defbb09978 already asserts165.
+
+PLL read-only storage census39581427678 is confirmed in progress from7c7cf8cf75f3d13418fdeea6dd1f7e628d827d38. It first verifies the actual5106-column archived header and eight mutations, then finishes the original321part archive/file census and reads last complete native time. No native resume or final capture acceptance.
+
+Mainchip native detailed-route39572968246/job119132278215 and fullTX nominal39573847558/job119134644088/fault39573851657/job119134612528 are confirmed live. Preserve exact processes and full captures. After terminal binding succeeds: fresh parent703-component RC, native8088 intrinsic composition and original loaded waves. Source/core clock and bias physical boundaries plus CDR loaded failures remain open. Local workspace empty, no local CAD or artifact downloads. Full PHY, route completion and final timing remain unproven.
+
 ## Actual PLL raw format measured; complete storage census resumed with exact header proof
 Header review39580323368 passed:5106columns(time+5088voltages+17currents),196539-byte header. Original1695-column voltage-only reader rejects, including nested native flow(...) names. Canonical receipt pins evidence; no waveform acceptance. New archive-specific storage observer checks exact header/raw identities, eight mutation controls and actual5106-column stride. Re-run read-only pll845-storage-diagnosis-cloud to finish321-part census and recover last complete native time; no native activation, column removal or final reader change. Keep original39502073954 resumable source.
 
