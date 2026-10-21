@@ -6,6 +6,7 @@ from pathlib import Path
 import cloud_streamed_native_archive as archive
 import read_pll845_full_native_transient as wave
 import pll845_archived_header_observation as observed
+import pll845_archive_tail as raw_tail
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-pll845-storage-diagnosis'
@@ -21,6 +22,7 @@ def main():
     save()
     try:
         r['stream_controls']=archive.controls()
+        r['tail_controls']=raw_tail.controls();save()
         r['actual_header_qualification']=observed.qualify(OUT/'header-qualification');save()
         stem=GROUP+'-'+str(RUN)+'-1';url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-'+str(RUN)+'-1-'+GROUP+'/'
         fetch(url+stem+'.summary.json',SUMMARY,OUT/'source-summary.json')
@@ -46,7 +48,7 @@ def main():
                         digest.update(data);count+=len(data)
                         if israw:
                             if len(prefix)<wave.MAX_HEADER:prefix.extend(data[:wave.MAX_HEADER-len(prefix)])
-                            tail=(tail+data)[-65536:]
+                            tail=(tail+data)[-raw_tail.TAIL_BYTES:]
                         if keep_small:keep.extend(data)
                     assert count==m.size
                     known[rel]=digest.hexdigest();r['member_census'].append(dict(path=rel,bytes=count,sha256=digest.hexdigest()))
@@ -56,16 +58,25 @@ def main():
                         metadata[rel]=dict(path=str(target.relative_to(OUT)),sha256=sha(target),bytes=count)
                     if israw:
                         head=OUT/'native-header-prefix.bin';head.write_bytes(prefix)
-                        names,h=observed.header(head.read_bytes());assert len(names)==5106
-                        assert count==94756323259 and digest.hexdigest()=='17a116d880d748a3bf773f6d8268b16b7fa06c914a19dabbf8439819acb8e88a'
-                        stride=8*len(names);rows,remainder=divmod(count-h['header_bytes'],stride);assert rows>0
-                        absolute=h['header_bytes']+(rows-1)*stride
-                        index=absolute-(count-len(tail));assert 0<=index<=len(tail)-8
-                        last=struct.unpack('<d',tail[index:index+8])[0];assert math.isfinite(last)and last>=0
-                        r['raw_position']=dict(bytes=count,sha256=digest.hexdigest(),header=h,complete_rows=rows,partial_row_bytes=remainder,last_native_time_s=last,all_terminal_values_audited=False)
+                        (OUT/'native-raw-tail.bin').write_bytes(tail)
+                        r['raw_tail_evidence']=dict(bytes=len(tail),file_offset=count-len(tail),sha256=sha(OUT/'native-raw-tail.bin'),source_raw_bytes=count,source_raw_sha256=digest.hexdigest())
+                        try:
+                            names,h=observed.header(head.read_bytes());assert len(names)==5106
+                            assert count==94756323259 and digest.hexdigest()=='17a116d880d748a3bf773f6d8268b16b7fa06c914a19dabbf8439819acb8e88a'
+                            position=raw_tail.position(count,h['header_bytes'],tail)
+                            r['raw_position']=dict(bytes=count,sha256=digest.hexdigest(),header=h,**position)
+                        except (AssertionError,ValueError)as error:
+                            # Preserve a diagnostic failure but finish the immutable
+                            # archive census, so it does not hide later capacity metadata.
+                            r['raw_position_error']=repr(error)
                     r['observed_files']=len(known);save()
         assert all(known.get(p)==h for p,h in report['outputs'].items())
         assert known['result.json']==SUMMARY
+        r['whole_archive_verified']=True
+        r['metadata']=metadata
+        r['largest_members']=sorted(r['member_census'],key=lambda x:x['bytes'],reverse=True)[:30]
+        r['logical_archive_file_bytes']=sum(x['bytes']for x in r['member_census'])
+        save()
         assert 'storage-initialization-state.json'in metadata
         init=json.loads((OUT/metadata['storage-initialization-state.json']['path']).read_text())
         r['storage_initialization']={k:v for k,v in init.items()if k not in ['immutable_workspace_files','commands']}
@@ -73,6 +84,7 @@ def main():
         r['largest_members']=sorted(r['member_census'],key=lambda x:x['bytes'],reverse=True)[:30]
         r['logical_archive_file_bytes']=sum(x['bytes']for x in r['member_census'])
         r['whole_archive_verified']=True
+        assert 'raw_position'in r and 'raw_position_error'not in r,'Native position diagnosis failed; full verified census retained'
         r['status']='COMPLETE_FAILED_PLL_ARCHIVE_STORAGE_CENSUS_AND_NATIVE_POSITION_NOT_RESUME_OR_PHY_ACCEPTANCE'
         r['scope']='All ordered parts and original file digests verified. No native process activated; only bounded metadata/header retained on this cloud runner. Original failed and resumable source archives remain intact. Initialization capacity is not final post-restore free-space measurement.'
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise

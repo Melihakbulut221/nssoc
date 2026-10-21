@@ -1,3 +1,10 @@
+## TX8088 all terminal planes passed; fresh parent RC launched
+Run39580230591 passed28620 terminals(20532metal8088body),165publicports,13370planes703components and all6faults including same-net outputREF C/B swap. Receipt pins full cloud report and selected outputs. New output8088-native-rc runs original native extraction, topology/per-point-C audit and13raw faults with exact reversible census/name adaptations. No electrical or fullPHY pass.
+
+PLL scan39581427678 failed only in the last-row observer after verifying exact94.756GB raw:64KiB tail was smaller than one40848byte complete row plus a partial row. Corrected bounded81696byte tail has partial-boundary and invalid-time controls; saves raw tail and continues immutable archive census even when a diagnostic fails, retaining its failure. Re-dispatch read-only scan after terminal failed run. No native resume, source truncation or reserve reduction.
+
+Reader-only controller migration rerun follows fixed6bc296e staging. Mainchip39572968246/TX39573847558/39573851657 remain live; cloud-only.
+
 ## Reader integration proof staging correction
 The source review found restore_report uses a module-level staging root. The new reader helper now creates its own cloud staging directory and restores the previous reporting context after proof download. Source hash bound in the migration manifest. No simulation or acceptance changes. Preserve the initial migration run if it fails on missing staging directory; dispatch corrected qualification only after it is terminal.
 
