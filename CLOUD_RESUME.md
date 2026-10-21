@@ -1,3 +1,7 @@
+## Composition input reference corrected before native evidence consumption
+The first composition observer39593087442 uses an inherited20261020 intrinsic receipt filename. Corrected to actual20261021 and moved input validation before prerequisite wait. That observer contains no native CAD or simulation and will be cancelled for this concrete source error, then dispatched from corrected source after terminal status. Preserve every native router/TX/precision/PLL process. No acceptance gate changed.
+
+
 ## Actual8088 whole-parent composition queued behind exact producer
 The new tx-output8088-composition-cloud waits for exact precision run39592592670/source063df858349980c3dc50cd41693b7c5ad4456504. Failed or partial producer evidence prevents composition. It combines full native8088 intrinsic39586675206 with actual parent139838R99650C at13370reference planes, preserving165physical ports plus separate wire_cref,65body nets and28620terminals. All20prior corruption checks remain; adds4outputrsil faults and actual same-net outputREF C/B plane swap. Requires25rejections. No loaded-wave or fullPHY claim.
 

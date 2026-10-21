@@ -58,13 +58,13 @@ def main():
                 assert cursor<=change['start']<=change['end']<=len(before)
                 pieces.extend([before[cursor:change['start']],change['replacement']]);cursor=change['end']
             pieces.append(before[cursor:]);assert ''.join(pieces)==after
+        bp=json.loads((ROOT/'docs/evidence/tx-output8088-intrinsic-pass-20261021.json').read_text())
+        assert bp['run']==39586675206 and bp['source_head']=='87a43edb8dd3874f179c5ee690089f3eaf6e9bf7'
         spec,pin=prerequisite();(OUT/'precision-source.json').write_text(json.dumps(pin,indent=2)+'\n')
         selected=['precise/rc01/wires.spice','precise/anchors03.json','precise/audit.json']
         prior,proof=reports.restore_report('tx-output8088-precision',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'rc',selected)
         assert prior==pin['report'];result['rc_source']=proof
         assert json.loads((OUT/'rc/precise/audit.json').read_text())==prior['variants']['precise']['audit']
-        bp=json.loads((ROOT/'docs/evidence/tx-output8088-intrinsic-pass-20261020.json').read_text())
-        assert bp['run']==39586675206 and bp['source_head']=='87a43edb8dd3874f179c5ee690089f3eaf6e9bf7'
         names=['binding.json','native.json','output8088-intrinsic.spice','source/anchors.json','pdk/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json']
         bound,bproof=reports.restore_report('tx-output8088-intrinsic',bp['run'],bp['summary_sha256'],bp['parts_sha256'],OUT/'intrinsic',names)
         assert bound==bp['report']and bound['sources_unchanged']and len(bound['controls'])==19 and bound['negative_spacing_control']['rejected']
