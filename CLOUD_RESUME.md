@@ -1,3 +1,9 @@
+## 2026-10-21 — verified cloud checkpoint
+Mainchip native input/config preflight39639250513 PASS: actual original settings restored without model/timing differences. This is not completed-route analysis.
+Power128 prefix observer39641391754 completed:2.0003–4.7986ns,6379active rows/14182columns; worstAVDD2.04415V(drop.45585V), highestAVSS.28034V, minDVDD1.14141V. Diagnostic only, no fullcapture/electricalacceptance. Full34ns reviews still mandatory.
+LIVE: mainchip ninth39631640578; PLL39637767590 from820.364ns/1us; TX second normal39640657545 and fault39640662925, each7200hostseconds. Do not duplicate or cold-restart. Exact receipts and doc cloud-native-config-and-power128-rails-20261021.md hold evidence and nextaction.
+When DRT truly complete, use mainchip-postroute-review-cloud with exact completeddescriptor plus passedpackage39635867954. Current source is checked; full antenna/RC/STA has not run on completedroute yet. User cloud-only instruction overrides all old local directives. Local project empty.
+
 ## 2026-10-21 — power128 saved-prefix rail diagnostic
 New tx-power128-prefix-rails-cloud job reads only immutable normal39630182787 at4.7986ns, actual8088physical terminal bindings, all14182columns and completeprefixrows. Partialtail stays in source. It measures physical supply drops after2ns without touching ongoing native continuations or accepting partialcapture. Originalfull34ns reader unchanged; eight malformed-prefix controls.
 Second TX continuations were dispatched from c8b2b035; resolve their runIDs without duplicating. Mainchip39631640578, PLL39637767590 remain live. Actual mainchip input/config preflight39639250513 has completed SUCCESS; pin and inspect its native result next. All computation hosted; local project empty.
