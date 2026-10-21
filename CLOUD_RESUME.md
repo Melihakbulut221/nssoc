@@ -1,3 +1,7 @@
+## Latest actual TX native capsules
+Runs39544297368 nominal and39544299695 swap_leaf_select completed with numerical progress, exact input/payload-prefix verification and single entrypoint. The retained full14162-column captures reached14.846653797525116ns and16.124343486620348ns respectively. Original34ns/256bit test is still incomplete; do not claim electrical acceptance. Exact latest descriptors are in tx-raw8074-third-cross-pass-20261021.json. Continue each same process for7200host seconds, retaining original guards and180minute job budget. Do not reuse older capsules.
+CDR v28 leaf physical candidate is registered after4e8f619; check its actual physical run. Mainchip39555639933 and full PLL39551551389 remain live. Cloud-only.
+
 ## 2026-10-21 v28 cloud physical candidate
 
 Actual v27 C/D master-input transfer collapse motivates changing IP/IN/BP/BN lengths together0.9um to2.4um at unchanged4um width. Equal geometry ratio, lower ideal loading; actual response unproven. The four changed native PCells must pass original54-device deep/flatLVS,560-ruleDRC and20faults against actual v27 leaf before parent integration, fresh RC/MIM and unchanged full loaded waves. Start cdr-sampler-input-loading-v28-physical-cloud. Keep v27 rejection and native diagnosis; never relabel a leaf pass as full PHY closure. All work in GitHub, local folder remains empty.
