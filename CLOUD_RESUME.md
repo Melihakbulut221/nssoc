@@ -1,3 +1,8 @@
+## Exact TX second continuations passed; same processes continue
+Native8074 TX runs39532132082 and39532134850 completed with proven numerical progress, one entrypoint and exact native input/prefix preservation. Latest descriptors and raw prefix timing are in tx-raw8074-second-cross-pass-20261021.json. Dispatch each next7200-second segment only from these latest capsules; full34ns and electrical review remain mandatory.
+Btrfs repeat39543477264 stopped on PermissionError while statting actual root-owned Docker paths after restore. Five invalid-path controls passed. New helper uses sudo for read-only exists/stat/findmnt, retaining native bytes and all original raw comparison/redump gates.
+Integrated v27 parent39542990472 passed; fresh v27 extraction workflow is current (afceec5...). Mainchip39542126811 continues original route. PLL39502073954 is still publishing the same saved process; do not fork. All work cloud-only.
+
 ## v27 integrated native parent passed; fresh extraction dispatched by push
 Run39542990472 passed all476-device native parent DRC/LVS and actual16-placement/eight-leaf geometry checks. Final candidate GDS SHA603f6fc6ab4471b2aab87b64b29c2a013ae9379c8df798c417a0c2b588d485cd; exact source in cdr-bias-access-v27-parent-physical-pass-20261021.json.
 New cdr-bias-access-v27-extraction-cloud repeats160-plane/51-net native binding, complete1382terminal strict graph and actual938-point RC extraction with original fault gates. It validates the original v26 cleanup using its unchanged original validator, then verifies exactly8 BP/BN replacements and the current native GDS. The new strict111-component graph is required independently by the wire stage; parent physical pass alone does not assert it.

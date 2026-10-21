@@ -82,10 +82,12 @@ def verify_external_superblock(container,case,out,run):
     row=json.loads(run('btrfs-container-filesystem-readback',['docker','inspect',container]).stdout)[0]
     root=Path(os.environ['GITHUB_WORKSPACE']).resolve()
     paths=external_paths(row,root,Path(case))
-    assert all(p.exists()for p in paths)
-    ids={str(p):p.stat().st_dev for p in paths}
+    # Docker owns these directories as root; inspect, never chmod/chown them.
+    code="import json,pathlib,sys;ps=[pathlib.Path(x)for x in json.loads(sys.argv[1])];assert len(set(ps))==5 and all(p.is_absolute()and p.exists()for p in ps);print(json.dumps({str(p):p.stat().st_dev for p in ps}))"
+    ids=json.loads(run('btrfs-five-external-device-stat',['sudo','python3','-c',code,json.dumps(list(map(str,paths)))]).stdout)
+    assert set(ids)==set(map(str,paths))and len(ids)==5
     assert len(set(ids.values()))==1,'Original external superblock sharing was not preserved'
-    run('btrfs-container-mount-readback',['findmnt','--json','-T',row['ResolvConfPath']])
+    run('btrfs-container-mount-readback',['sudo','findmnt','--json','-T',row['ResolvConfPath']])
     return dict(external_filesystem_devices=ids,same_superblock=True,source_image_and_native_command_unchanged=True)
 
 def redump(container,cmd,out,run):
