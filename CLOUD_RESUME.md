@@ -1,3 +1,11 @@
+## 2026-10-21 actual8088 preparation passed; fresh full native wave
+
+Preparation39600814498 passed both nominal and swap_leaf_select cases, ten physical adaptation faults each and native10032-vector OP transport. Actual8088 model139838R99650C, all604HBT5376MOS,14182 columns, original34ns/256bits/three sampling phases preserved. Separate schematicoutput removed; all8088 reference planes used. Exact receipts and methods pinned. New tx-output8088-native-initial-cloud starts fresh trajectories for this changed physical model, saves real processes, and applies the original review only to complete captures. Initial600s work segments qualify checkpoint transport; continuation workflow preserves exact process/runtime/all raw bytes. Do not reuse8074 evidence as8088 acceptance.
+
+Headroom39599806731 passed and recovered45064990720bytes, measured135125282816free. Possible127775277056image leaves114890375168 after12GiB reserve, below130713600000 full uncompressed payload lower bound. No full capacity or PLL activation claim. Remaining small SDKs cannot alone prove closure; investigate actual compressed occupancy/retention with complete raw preservation. Original95GB archive and reader migration remain intact.
+
+Existing mainchip39591380714 and TX8074 nominal39592603205/fault39592612780 remain separately live. Full PHY, CDR/PLL, clock/bias physical integration, qualified PEX and original-clock mainchip timing remain open. Cloud-only.
+
 ## 2026-10-21 actual8088 full loaded preparation
 
 New tx-output8088-prepared-cloud prepares both nominal and actual leaf-select fault full34ns decks. Actual8088 wire model replaces8074 plus separate schematicoutput together, preserving604HBT5376MOS/native observations and original stimuli/loads/gates. Physical interface receipt39597177162 is pinned. Preparation is not native electrical acceptance. Do not modify or cancel existing8074 native trajectories. Next inspect both preparation results, preserve every failure, then bind a new native initial controller to exact source/model and original review. All work remains cloud-only.
