@@ -153,6 +153,11 @@ def main(out):
   def pv(bottom,upper,qx,qy):
    for m,region in power_via(bottom,upper,qx,qy).items():
     candidate[m]=candidate.get(m,pya.Region())+region
+    if m==134:
+     # The four-column via landing extends beyond the original bridge end.
+     # Fill its full lateral span to6um width; preserve every native via cut.
+     pad=region.bbox();assert pad.bottom>=qy-3000 and pad.top<=qy+3000
+     candidate[m]+=pya.Region(pya.Box(pad.left,qy-3000,pad.right,qy+3000))
   pv('TopMetal1','TopMetal2',x,root.y)
   for pin in pins:
    q=pin.center();allowed[67]+=power_component(67,pin)

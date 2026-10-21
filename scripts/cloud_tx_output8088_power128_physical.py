@@ -15,6 +15,20 @@ def main():
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  save()
  try:
+  # Preserve and locate both native width failures before the local metal repair.
+  old,oldproof=reports.restore_report('tx-output8088-power128-physical',39608386983,
+   '9d5e4b5f7e70287c89cb5d0e531268a0348083df7491bd450162a676a300bd6a',
+   '95b5052eb825f2d022cc2b8624af34a41061fae1f7fd48464c28f7c8528baea0',
+   OUT/'prior-width-rejection',['drc/drc.lyrdb'])
+  assert old['source_head']=='eecb44cb6f2c57286bd408b2b020e3895d1120e8'
+  assert old['steps']['drc']['measurement']['categories']=={"'TM2.a'":2}
+  assert all(s['expected_verdict_observed']for n,s in old['steps'].items()if n!='drc')
+  import xml.etree.ElementTree as ET
+  tree=ET.parse(OUT/'prior-width-rejection/drc/drc.lyrdb')
+  items=[ET.tostring(v,encoding='unicode')for v in tree.findall('.//items/item')]
+  assert len(items)==2
+  r['prior_width_rejection']=dict(source=oldproof,items=items,repair='Cover complete four-column TopMetal2 landing with6um bridge width; native cuts preserved')
+  save();print('Native prior width markers:',items,flush=True)
   r['external_port_controls']={str(n):port_controls(expected_count=n) for n in (163,165)};save()
   inputs=[
    ('tx-raw64-powered-physical',39466552523,'f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53','2a3431b7a2cae61f6b9edcbce8edeef23963bc62c170332064a5ab779ac58404','core',['layout/layout.gds','layout/schematic.cir','power-result.json','source/handoff-result.json']),

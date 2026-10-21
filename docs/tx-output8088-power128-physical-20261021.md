@@ -38,3 +38,16 @@ release group. Keep native live PLL/mainchip/old fault work running.
 
 All work and artifacts are in GitHub. No local checkout or downloaded CAD
 artifact is required; the local project directory is intentionally empty.
+
+## Native width rejection and repair
+
+The first candidate39608386983 passed both8088-device LVS modes, exact165-port
+checks and all deliberate fault controls. Full DRC rejected two TM2.a markers.
+The original IHP5e6d592 deck defines TM2.a as minimum2um TopMetal2 width:
+https://github.com/IHP-GmbH/IHP-Open-PDK/blob/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/beol/5_25_topmetal2.drc
+
+The four-column via landing protrudes beyond the old bridge's capped end.
+The revision extends6um-wide bridge material across the complete via landing
+bbox. No cut is removed. Both old native marker geometries are restored into
+the new report, and the complete original physical suite must pass again.
+The failed first candidate remains immutable and is not reclassified.

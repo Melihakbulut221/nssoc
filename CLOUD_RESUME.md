@@ -1,3 +1,13 @@
+##2026-10-21 power128 native TM2.a repair
+First power12839608386983 rejected exactly two TM2.a minimum-width markers;
+both8088-device LVS modes, exact165 ports and all original fault controls pass.
+Preserve this failed result. New candidate fills complete four-column
+TopMetal2 landings to6um bridge width and includes original marker diagnosis.
+Dispatch tx-output8088-power128-physical-cloud.yml once on this revision;
+require full original physical gates, then fresh RC/electrical checks.
+No electrical acceptance. All work cloud-only, local project empty.
+
+
 ##2026-10-21 actual8088 physical power128 repair, cloud only
 Original8074 full34ns nominal rejected. Attribution39604983700 independently
 reproduced rejection and measured1.404V AVDD drop and0.211V local AVSS.
