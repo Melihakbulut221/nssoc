@@ -1,0 +1,106 @@
+# Preserve encoded FIXED clock geometry during native antenna repair; all gates retained.
+# Restore full current-route report from hash-pinned cloud assets before native routing.
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-postroute-inputs-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/mainchip-postroute-inputs-cloud.yml, scripts/cloud_mainchip_postroute_inputs.py]
+  workflow_dispatch:
+    inputs:
+      resize_run:
+        description: Passed native sizing preparation run
+        required: true
+        type: string
+      resize_head:
+        description: Exact preparation source commit
+        required: true
+        type: string
+      resize_summary_sha:
+        description: SHA256 of immutable preparation summary
+        required: true
+        type: string
+      resize_parts_sha:
+        description: SHA256 of immutable preparation parts manifest
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-postroute-inputs-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-routed-extraction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Prepare pinned physical runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Compile controller and validate against actual native STA script
+        run: |
+          python3 scripts/check_onehot_routed_drive_route_sources.py
+          python3 scripts/check_onehot_critical_data_route_sources.py
+          python3 scripts/check_onehot_coverage_route_sources.py
+          python3 scripts/check_onehot_clock_restore_route_sources.py
+          python3 scripts/check_onehot_native_fanout_route_sources.py
+          python3 scripts/check_mainchip_postroute_inputs_sources.py
+          python3 -m py_compile scripts/prepare_onehot_fanout_fresh_route.py hw/soc/pnr/onehot_fanout_fresh_route_flow.py scripts/check_onehot_fixed_clock_route.py scripts/check_onehot_native_fanout_routed_topology.py hw/soc/pnr/onehot_clock_restore_route_flow.py scripts/cloud_mainchip_postroute_inputs.py scripts/check_onehot_routed_extraction_native.py hw/soc/pnr/replay_onehot_routed_extraction_flow.py
+          "$CLOUD_APPIMAGE" python scripts/check_onehot_routed_extraction_native.py
+      - name: Package exact proved mainchip inputs without starting any routing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESIZE_RUN: ${{ inputs.resize_run || '39160200022' }}
+          RESIZE_HEAD: ${{ inputs.resize_head || '9eb5f112210e144d8d8b58b46725ea569913ebcf' }}
+          RESIZE_SUMMARY_SHA: ${{ inputs.resize_summary_sha || '075c85ab47e858ee12588bfecc3990679820c6beaa6270d307cfce4b87f0ad32' }}
+          RESIZE_PARTS_SHA: ${{ inputs.resize_parts_sha || '85afa99a93eb08e46bc8b3105afc12500a423aaa51a493e6cb2521d95c6b3220' }}
+          ROUTE_SUMMARY_SHA: f7a5c4951a3c4f3b0aa91c81f2cf7ceb33f6e3e0fbe3515bcc8b2fd3b343b1e5
+          ROUTE_PARTS_SHA: e6b84fd57e6ddd2f31e79daa381aafaa8bb608147262320c7e25bcaa31f03859
+        run: |
+          python3 scripts/cloud_mainchip_postroute_inputs.py --summary-sha256 "$ROUTE_SUMMARY_SHA" --parts-sha256 "$ROUTE_PARTS_SHA" --resize-run "$RESIZE_RUN" --resize-head "$RESIZE_HEAD" --resize-summary-sha256 "$RESIZE_SUMMARY_SHA" --resize-parts-sha256 "$RESIZE_PARTS_SHA"
+      - name: Preserve every native state and any rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-mainchip-postroute-inputs
+          mkdir -p "$root"
+          python3 - "$root" <<'PYCODE'
+          import hashlib,json,pathlib,sys
+          p=pathlib.Path(sys.argv[1]);f=p/'result.json'
+          r=json.loads(f.read_text()) if f.is_file() else {'accepted':False,'status':'FAIL_MISSING_REPORT'}
+          if r['status'].startswith(('RUNNING','RESTORING')):
+              r.update(status='INTERRUPTED_NATIVE_STAGE_RETAINED_NOT_ACCEPTED',accepted=False)
+          r['outputs']={str(x.relative_to(p)):hashlib.file_digest(x.open('rb'),'sha256').hexdigest()for x in p.rglob('*')if x.is_file()and x!=f}
+          f.write_text(json.dumps(r,indent=2)+'\n')
+          PYCODE
+          stem="mainchip-postroute-inputs-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','mainchip-postroute-inputs',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain states if permanent publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-postroute-inputs-${{ github.run_id }}
+          path: hw/soc/out/cloud-mainchip-postroute-inputs/
+          retention-days: 30

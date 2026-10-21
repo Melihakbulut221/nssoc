@@ -1,3 +1,15 @@
+##2026-10-21 mainchip postroute inputs prepared independently in cloud
+New mainchip-postroute-inputs job retains full original boot/protocol/RTL/
+native geometry proof chain through exact current152762-cell candidate.
+It stops before routing and packages actual resolved PDK/Liberty/SDC/RCX/state
+files with hashes; missing dependencies must fail rather than be substituted.
+Original20/4/8/8ns,5percent derate and three cell corners are retained.
+Next require completed DRT plus topology/fixed-clock pass, then fresh
+antenna/disconnect/RC/STA with actual routed ODB and no inherited metrics.
+TX preparation39625813143 and DRT39610377184/PLL39602655093 stay live.
+Cloud-only; package preparation is not routing/timing/PHY closure.
+
+
 ##2026-10-21 power128 physical interfaces passed; full loaded preparation starts
 The exact new GDS/LVS, complete native composition and every terminal/interface
 are bound. New power128-prepared workflow prepares nominal/leaf-select-fault
