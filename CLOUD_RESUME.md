@@ -1,3 +1,18 @@
+##2026-10-21 native mainchip global geometry preflight PASS
+39615642252 passed actual candidate-to-global comparison: all152762 original
+masters/instances/pins/positions/orientations/nets/NDRs/ports preserved; four
+deliberate corruptions rejected; clknet_3_5_0_pcie_clk_i exact physical fixed
+wire and terminal geometry retained. This is not completed route or STA.
+When mainchip39610377184 finishes, inspect actual route_complete. If still
+checkpointed continue exact process. If complete, dispatch existing
+mainchip-postroute-geometry-cloud with exact completed descriptor, then native
+DRC/antenna/disconnected/RC/original20/4/8/8ns three-corner STA.
+Power128 anchors39611514856 and PLL39602655093 were confirmed live.
+After anchors pass launch fresh intrinsic19controls and native RC13controls
+using already qualified double-total producer; preserve all original gates.
+Cloud-only; local directory remains empty.
+
+
 ##2026-10-21 native mainchip postroute geometry gate prepared
 New mainchip-postroute-geometry-cloud starts candidate-to-saved-global native
 topology and fixed clock preflight. It does not reroute or claim route complete.
