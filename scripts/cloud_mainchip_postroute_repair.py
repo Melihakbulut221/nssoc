@@ -140,7 +140,7 @@ def main():
         script=OUT/'native.tcl';script.write_text('\n'.join(tcl)+'\n')
         app=Path(os.environ['CLOUD_APPIMAGE'])
         assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-        protected={str(p):sha(p)for p in [Path(__file__),native,ROOT/'hw/soc/flow/onehot_native_router_init.tcl',script,lockpath,ROOT/'scripts/check_mainchip_postroute_repair_geometry.py',*[source/n for n in names]]}
+        protected={str(p):sha(p)for p in [Path(__file__),native,ROOT/'hw/soc/flow/mainchip_repair_timing_native_reference.tcl',ROOT/'hw/soc/flow/mainchip_placement_timing_wrapper.tcl',ROOT/'hw/soc/flow/onehot_native_router_init.tcl',script,lockpath,ROOT/'scripts/check_mainchip_postroute_repair_geometry.py',*[source/n for n in names]]}
         protected.update(model_hashes)
         r.update(source=proof,verified_postroute_run=pin['run'],previous_antenna=original['antenna'],
             original_measurements=measurements,model_hashes=model_hashes,protected_inputs=protected,
@@ -148,6 +148,7 @@ def main():
         save()
         run([app,'openroad','-version'],'native-version')
         r['native_version']=(OUT/'native-version.log').read_text().strip()
+        assert r['native_version']=='dcf36133a369abc8f3c5e5738cd4d82e4903c0e0'
         print(r['native_version'],flush=True);save()
         run([app,'openroad','-exit',script],'native-baseline',{'NSSOC_RESIZER_STAGE':'baseline'})
         actual={c:{m:worst((OUT/('before-'+c+'-'+m+'.rpt')).read_text())for m in ('max','min')}for c in CORNERS}

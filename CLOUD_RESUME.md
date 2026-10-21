@@ -1,3 +1,7 @@
+## 2026-10-21: exact OpenROAD mode-override cause found
+
+39667104303 failed after 19 setup resizes because native revision dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 forcibly switches repair_timing back to detailed_routing on routed ODBs. Exact upstream body is now runtime-bound; separate candidate procedure changes only model selection and retains original constraints/checks/native optimizer. Partial failed setup ODB and all evidence remain in Release. Next cloud-only repair must pass runtime body binding, original six-slack baseline, geometry and logic proof; fresh route/RC/final STA still required. TX39662510592/39662516267 remain active, PLL39637767590 publication advances.
+
 ## 2026-10-21: cloud-only candidate repair after RSZ-0074
 
 39663969344 failed a native incomplete global-route tree (3/8 loads), after exact six-mode baseline reproduction. Failure receipt and archive pins preserved. Next repair uses labelled placement/Steiner estimates only for candidate creation, retains original timing and physical acceptance gates, and requires fresh route/RC/all-corner STA. Local project and temporary CAD directories are empty; no local native tools are running. TX continuations 39662510592 and 39662516267 remain active; PLL39637767590 is publishing its capsule. Do not cold restart or duplicate these runs.

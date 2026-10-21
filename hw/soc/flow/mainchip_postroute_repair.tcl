@@ -85,6 +85,7 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     # run 39663969344 failed RSZ-0074 (3 reachable loads versus 8 expected).
     # Use placement/Steiner estimates ONLY to construct a candidate.
     # Fresh routing/extraction/all-corner measurements remain mandatory.
+    source [file join [file dirname [info script]] mainchip_placement_timing_wrapper.tcl]
     estimate_parasitics -placement
     foreach c $::env(NSSOC_CORNERS) {
         foreach kind {max min} {
@@ -107,7 +108,7 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     # Setup may add positive buffers/load splits; no clone/remove/swap/retime.
     # Native Liberty equation proof and original-instance retention are mandatory.
     if {[catch {
-        repair_timing -setup -setup_margin 0 -repair_tns 100 \
+        nssoc_repair_timing_candidate -setup -setup_margin 0 -repair_tns 100 \
             -max_iterations 80 -max_repairs_per_pass 1 -max_utilization 80 \
             -skip_pin_swap -skip_gate_cloning -skip_size_down \
             -skip_buffer_removal -skip_last_gasp -skip_vt_swap -skip_crit_vt_swap \
@@ -128,7 +129,7 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
         }
     }
     # Setup violations are not authorized by this hold repair.
-    repair_timing -hold -setup_margin 0 -hold_margin 0.1 \
+    nssoc_repair_timing_candidate -hold -setup_margin 0 -hold_margin 0.1 \
         -max_iterations 200 -max_buffer_percent 20 -verbose
     # Preserve the real native result even if a later acceptance gate rejects it.
     write_db "$::env(NSSOC_RESIZER_OUT)/hold-unchecked.odb"
