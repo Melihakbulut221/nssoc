@@ -1,3 +1,8 @@
+## Native TX output14 intrinsic export launched alongside fresh wire RC
+New tx-output14-intrinsic-cloud exports both actual deep/flat14-device LVS databases, maps all8public nets by actual GDS probes and derives separate TAIL/BULK from native tail connectivity. Exact4HBT2rsil8ptap/38-terminal topology required in both modes. Pinned PDK compact models preserve Nx1/8, resistor self-heating and eight finite A/P contact resistances. All8native mapping faults plus8compact-model faults required.
+TX output38-plane gate39566626613 passed. RC workflow from6661b49607de04f07aa2627f9b0dd536a5a73c3b is processing exact32planes9components and13raw controls. After both pass, compose all actual wire values and contact models; no full-lane/PEX/PHY pass implied.
+CDR39562531785, mainchip39555639933, TX39557480969/39557484428 and PLL failurepublisher39551551389 remain the same live handles. Cloud-only.
+
 ## TX output14 all38 terminal planes passed; fresh native RC launched
 Run39566626613 at0c98791c08684adc2ca6ea16a0223413b0fb351c passed24metal14body/32planes9components8ports plus6physical point faults. Canonical receipt committed. New tx-output14-rc-cloud uses unchanged native extraction/per-point/raw-RC audit with13original corruption controls and unchanged tolerances. Only actual census and public pin case adapted. No body short or logical alias used to repair the graph. Next native14 intrinsic export/eight finite contacts, exact composition, actual tree-output routes and loaded fullwaves.
 CDR39562531785, mainchip39555639933 and TX39557480969/39557484428 confirmed live. PLL39551551389 failednative report still awaiting complete archive publication; no restart or acceptance from prefix. Cloud-only.
