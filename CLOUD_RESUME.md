@@ -1,3 +1,7 @@
+## v28 leaf physical pass; real parent assembly next
+
+Run39557261382 passed actual54-device DRC/deep-flatLVS/LEF and20faults. Source receipt saved. New cdr-input-loading-v28-parent-cloud replaces four native leaves in cleaned v27 parent,16 actual resistor length changes only. Every parent route and other child retained and independently checked; fresh parent DRC/LVS is mandatory. Do not reuse old RC or mark sampling accepted. Next: strict physical extraction/RC/MIM and original fullwave cases. Cloud-only; TX39557480969/39557484428, mainchip39555639933 and PLL39551551389 remain the existing live jobs.
+
 ## Latest actual TX native capsules
 Runs39544297368 nominal and39544299695 swap_leaf_select completed with numerical progress, exact input/payload-prefix verification and single entrypoint. The retained full14162-column captures reached14.846653797525116ns and16.124343486620348ns respectively. Original34ns/256bit test is still incomplete; do not claim electrical acceptance. Exact latest descriptors are in tx-raw8074-third-cross-pass-20261021.json. Continue each same process for7200host seconds, retaining original guards and180minute job budget. Do not reuse older capsules.
 CDR v28 leaf physical candidate is registered after4e8f619; check its actual physical run. Mainchip39555639933 and full PLL39551551389 remain live. Cloud-only.
