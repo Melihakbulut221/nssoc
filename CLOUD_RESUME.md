@@ -1,3 +1,8 @@
+## 2026-10-21 — residual hosted storage inventory, without native migration
+
+The secondary-volume hypothesis was refuted by39644394439. A separate disposable runner now uses the exact hash-bound proven SDK cleanup, then measures remaining root/usr/share/var/cache directories, allocated root files, swap and statvfs. No new cleanup target, swap disabling, mount/format, native restore or allocation-margin reduction. This establishes actual remaining candidates before any larger storage change. TX feed32 physical PASS39646885443 is pinned; its fresh conductor workflow from0520ee9 is pending/running. Existing long-running native processes remain untouched.
+
+
 ## 2026-10-21 —32um actual public-pad feed physical gates PASS
 
 Native39646885443 completedSUCCESS:560DRCcategories0markers; both deep and flat8088-device LVS pass;165 exact external names; all7 native/interface fault controls observed. Actual new GDS9f333d79ee43e745a9d216cf36eb17a7b77f57885309ddadeda38c3fcabea16c, flatLVS b34dc579c583dd505dceac7aeb26e8c3956b329bdda7b2ddcef844c0df7437e5. Receipt pinned with both summaries. New independent native-wires workflow triggers on this commit, using an exact four-field derivation from the previously qualified whole-parent extractor: GDS identity and isolated output/status names only. All topology, device census, geometry and native terminal binding checks unchanged. Next: anchors, intrinsic/fresh RC, order/precision controls, composition, loaded electrical waves. No electrical or fullPHY acceptance yet. Cloud-only, local workspace empty.
