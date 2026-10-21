@@ -28,7 +28,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/cloud_tx_output8088_precision.py scripts/tx_reverse_native_cap_order.py
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev
           python3 -m pip install networkx==3.4.2
       - name: Verify double-total producer on actual8088 geometry in both cap orders
         env:

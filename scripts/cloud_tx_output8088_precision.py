@@ -40,12 +40,26 @@ def main():
         assert prior['audit']['actual_exported_resistors']==139838 and prior['audit']['actual_exported_capacitors']==99650
         assert len(prior['controls']['cases'])==13
         r['physical_rc_source']=proof
+        failed,failedproof=reports.restore_report('tx-output8088-precision',39591337663,
+            '157af9f38d07e8df8499cec523b7de4afe53901e4779a849ea8a6d2420c007c9',
+            '10eefe268577c67e3362e519f237268de9d68bb3aa814d6aafd1dc2e581e8f43',
+            OUT/'failed-start',['precise/rc01/result.json','precise/rc01/native.log'])
+        assert failed['status']=='FAIL_OR_ERROR'
+        r['previous_native_failure']=dict(restore=failedproof,
+            result=json.loads((OUT/'failed-start/precise/rc01/result.json').read_text()),
+            log=(OUT/'failed-start/precise/rc01/native.log').read_text())
+        print('PREVIOUS_NATIVE_FAILURE',r['previous_native_failure']['log'],flush=True);save()
         qualified,proof=reports.restore_report('tx-raw64-totalcap-precision',39486998309,'bdcbddedf70af7e4bc9a1d6b3ec4ac334a619e2fe208244b83a6e8b74cc09a38','3b0dc36952ae38ac4ce1c1ea8e27cac8e4917ca7543a81a916a207b49adaa9e2',OUT/'producer',['precise-source/magic/tclmagic.so'])
         assert qualified['status']=='PASS_REBUILT_NATIVE8074_RC_DOUBLE_TOTALS_AND13_CONTROLS_NOT_COMPOSED_ELECTRICAL_OR_PHY_ACCEPTANCE'
         for key in ('sources_unchanged','baseline_reproduced_original_rc_and_failure','no_rc_records_changed','no_geometry_technology_or_threshold_change','both_native_input_orders_verified'):assert qualified[key]
         assert len(qualified['controls']['cases'])==len(qualified['historical_controls']['cases'])==13
         lib=OUT/'producer/precise-source/magic/tclmagic.so'
         assert sha(lib)==qualified['rebuilt_runtimes']['precise']['sha256']==PRECISE
+        deps=subprocess.run(['ldd',str(lib)],capture_output=True,text=True)
+        (OUT/'producer-ldd.log').write_text(deps.stdout+deps.stderr)
+        r['producer_dependencies']=dict(returncode=deps.returncode,log=deps.stdout+deps.stderr)
+        print('PRODUCER_DEPENDENCIES',deps.stdout+deps.stderr,flush=True);save()
+        assert deps.returncode==0 and 'not found'not in deps.stdout+deps.stderr,'Qualified producer dependency missing'
         assert qualified['source_changes']['changed_only']=='resis/resis.h'
         r['qualified_producer']=proof;r['producer_library_sha256']=PRECISE
         methods=json.loads((ROOT/'scripts/tx-output8088-rc-methods.json').read_text())
@@ -86,6 +100,8 @@ def main():
             for name in ('audit-rc02.py','mutations01.py'):assert sha(b/name)==sha(evidence/name)
             run([sys.executable,b/'run-rc01.py'],OUT/(label+'-native.log'))
             native=json.loads((b/'rc01/result.json').read_text())
+            r.setdefault('native_attempts',{})[label]=native;save()
+            if native['returncode']!=0:print((b/'rc01/native.log').read_text(errors='replace')[-12000:],flush=True)
             assert native['returncode']==0 and native['status']=='NATIVE_COMPLETE_AWAITING_RC_AUDIT'
             run([sys.executable,b/'audit-rc02.py',b/'rc01',b/'anchors03.json',b/'audit.json'],OUT/(label+'-audit.log'))
             audit=json.loads((b/'audit.json').read_text())

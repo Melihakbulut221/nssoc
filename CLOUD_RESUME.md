@@ -1,3 +1,8 @@
+## TX8088 precision producer launch failure retained
+39591337663 failed after verified producer restoration but before native RC completion. Original complete failure archive is retained. Next cloud run first restores/prints its exact native log/result, records all subsequent native return codes and checks ldd, using the same package set as the proven original producer qualification. No tolerance, geometry, RC value or acceptance changes.
+
+Mainchip39591380714 remains live. TX8074 fifth continuations39573847558/39573851657 completed with saved native processes, not full captures; continue exact latest capsules. PLL metadata corrected scan has been dispatched. Cloud-only.
+
 ## PLL initialization metadata exists; observer selection corrected
 Correction to the previous checkpoint: storage-initialization-state.json is PRESENT in the fully verified1901file archive. Its5320793bytes exceeded the observer2MiB retention bound. Keep that exact known file under a bounded8MiB exception and assert its pinned digest; all other metadata remains2MiB and no raw waveform is retained locally. Tests cover the actual size, boundary/overflow, unrelated data and raw exclusion. Repeat read-only cloud diagnosis to inspect capacity, retaining original failure. Do not waive native12GiB/backing4GiB reserves.
 
