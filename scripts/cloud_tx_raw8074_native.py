@@ -69,9 +69,12 @@ def source_valid(spec,run,r,self_sha):
     assert r['native_process_saved'] and r['sources_unchanged'] and not r['full_capture']
     assert r['checkpointed_elf_sha256']==ENGINE_SHA and r['checkpoint_images']
     assert r['single_entrypoint'] and r['continuation']['next_phase']=='continue_same_native_process'
+def spice_lines(path):
+    # SPICE inputs are byte-oriented; Latin-1 comments must not rewrite model bytes.
+    return [line.decode('latin-1') for line in path.read_bytes().splitlines()]
 def runtime_files(deck,prepared):
     todo=[deck];seen={};osdis=[]
-    for line in deck.read_text().splitlines():
+    for line in spice_lines(deck):
         if line.startswith('pre_osdi '):osdis.append(Path(shlex.split(line)[1]).resolve())
     assert len(osdis)==3 and len(set(osdis))==3
     while todo:
@@ -80,7 +83,7 @@ def runtime_files(deck,prepared):
         assert p.is_relative_to(ROOT) and p.is_file(),('Missing or external runtime input',str(p))
         assert str(p)in prepared['protected_inputs'],('Runtime input not in preparation evidence',str(p))
         h=sha(p);assert h==prepared['protected_inputs'][str(p)],('Prepared runtime bytes changed',str(p));seen[str(p)]=h
-        for line in p.read_text().splitlines():
+        for line in spice_lines(p):
             m=re.match(r"\s*\.(include|inc|lib)\s+(?:\"([^\"]+)\"|'([^']+)'|(\S+))(.*)$",line,re.I)
             if not m:continue
             name=next(v for v in m.group(2,3,4)if v is not None);target=Path(name)
@@ -133,8 +136,29 @@ def controls():
             try:verify_prefix(root,prior,2)
             except (AssertionError,AttributeError):rejected.append(fault)
             else:raise AssertionError('Accepted prefix '+fault)
-    assert len(rejected)==19
-    return dict(scope='Synthetic descriptor and lossless native file-prefix controls only',rejected=rejected,count=19)
+    with tempfile.TemporaryDirectory(dir=ROOT)as directory:
+        root=Path(directory);deck=root/'bench.cir';child=root/'child.inc';leaf=root/'leaf.lib'
+        osdis=[root/('model'+str(i)+'.osdi')for i in range(3)]
+        for p in osdis:p.write_bytes(b'\x7fELF\x00\xb5')
+        deck.write_bytes((''.join('pre_osdi '+str(p)+'\n'for p in osdis)+'.include "child.inc"\n').encode())
+        child.write_bytes(b'* untouched 1\xb5m comment\r\n.include leaf.lib\r\n')
+        leaf.write_bytes(b'.lib typical\n* native section comment\n.endl typical\n')
+        originals={p:p.read_bytes()for p in [deck,child,leaf,*osdis]}
+        prepared=dict(protected_inputs={str(p.resolve()):sha(p)for p in originals})
+        seen,loaded=runtime_files(deck,prepared)
+        assert seen==prepared['protected_inputs'] and loaded==osdis
+        assert all(p.read_bytes()==b for p,b in originals.items())
+        for fault in ('changed_model_bytes','unproven_model_input','missing_model_input'):
+            pp=copy.deepcopy(prepared);child.write_bytes(originals[child])
+            if fault=='changed_model_bytes':child.write_bytes(originals[child]+b'* changed\n')
+            elif fault=='unproven_model_input':del pp['protected_inputs'][str(child)]
+            else:child.unlink()
+            try:runtime_files(deck,pp)
+            except AssertionError:rejected.append(fault)
+            else:raise AssertionError('Accepted runtime model fault '+fault)
+        child.write_bytes(originals[child])
+    assert len(rejected)==22
+    return dict(scope='Synthetic descriptor, lossless native prefix and byte-preserving SPICE closure controls only',rejected=rejected,count=22)
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--stage',choices=('initial','cross'),required=True);p.add_argument('--case',choices=('none','swap_leaf_select'),required=True);args=p.parse_args()
