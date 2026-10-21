@@ -1,3 +1,7 @@
+## Cloud-only v28 MIM capture after fresh native extraction
+Run39559188023 passed planes, wire-inputs, binding and RC onf79741aa2d89467db07e00171355b8347d60dd36. New cdr-input-loading-v28-mim-parent-rc-cloud binds to that exact run and parent39558088682, with original938-point111-component seven-MIM geometry/ownership checks and all five corruption controls. Do not reuse old v27 RC or commit dynamic v28 stage receipts before consumption. Next: raw RC/intrinsic audit, composition and unchanged full loaded nominal/fault waves. No full PHY acceptance.
+PLL39551551389 native step failed; publisher is still uploading all failure bytes. Wait for its report; do not restart or guess cause. Mainchip39555639933 and TX39557480969/39557484428 native continuations are live; do not restart them. Local project directory confirmed empty, no local CAD/simulation processes. All code, results, checkpoints and subsequent work remain in GitHub/cloud.
+
 ## v28 full parent physical pass; fresh extraction
 
 Run39558088682 passed actual476-device DRC/LVS and unchanged-parent/child checks after16resistor changes. Receipt pinned. Start cdr-input-loading-v28-extraction-cloud: actual current160planes/51nets, strict111conductor graph,1382terminals/938points, intrinsic binding and nativeRC controls. Baselinev27cleanup is independently retained; it is not proof of v28 graph. Both parent consumers must restore v28, never the prior clean geometry. All original loaded wave gates remain open pending fresh RC/MIM. All work cloud-only.
