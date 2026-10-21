@@ -17,6 +17,13 @@ FIXED=[
  '/usr/local/julia','/opt/az']
 def sha(path):
     with Path(path).open('rb')as f:return hashlib.file_digest(f,'sha256').hexdigest()
+def entry_exists(path):
+    # /root cache entries are intentionally inspected with the same privilege
+    # used for their bounded disposable-runner cleanup.
+    code='import os,sys;sys.exit(0 if os.path.lexists(sys.argv[1]) else 1)'
+    check=subprocess.run(['sudo','python3','-c',code,str(path)],capture_output=True,text=True)
+    assert check.returncode in (0,1),check.stderr
+    return check.returncode==0
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ.get('RUNNER_ENVIRONMENT')=='github-hosted'
     assert str(ROOT)=='/home/runner/work/nssoc/nssoc'and not os.path.ismount(ROOT)
@@ -55,7 +62,7 @@ def main():
         seen=set()
         for p in candidates:
             assert p.is_absolute()and str(p)not in ('/','/usr','/opt','/home/runner',str(ROOT))
-            if not p.exists()and not p.is_symlink():continue
+            if not entry_exists(p):continue
             if str(p)in seen:continue
             seen.add(str(p))
             if any(Path(q).is_relative_to(p)for q in protected):
@@ -64,7 +71,7 @@ def main():
             before=shutil.disk_usage(ROOT).free
             measured=run('size-'+str(len(r['removed'])),['sudo','du','-sxB1',str(p)]).strip()
             run('remove-'+str(len(r['removed'])),['sudo','rm','-rf','--',str(p)])
-            assert not p.exists()and not p.is_symlink()
+            assert not entry_exists(p)
             r['removed'].append(dict(path=str(p),measured_bytes=measured,free_gain_bytes=shutil.disk_usage(ROOT).free-before));save()
         run('apt-cache-clean',['sudo','apt-get','clean'])
         run('unused-docker-images',['docker','image','prune','-af'])

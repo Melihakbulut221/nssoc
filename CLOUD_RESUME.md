@@ -1,3 +1,8 @@
+## Actual8088 full-parent RC composition passed
+39595327006 passed all8088devices139838R99650C,165physical+wire_cref ports,13370reference planes65body nets28620terminals and25corruption checks. Modelbe24c1648cac436714ed3d681e4da7a232ae1983840e227f63e58844dd5a70ce and binding01be2b2a6759bf5efb8aba4c719fd5c589a1af13cfffec3cc64b2f60ceeb8c8b are pinned. Next reopen actual GDS/LVS to bind logical input sampling planes and output ports, then build original loaded34ns bench with actual output included. No electrical/PHY acceptance yet.
+
+Extra-space probe39595708873 failed inspecting /root/.rustup as unprivileged runner after partial disposable SDK cleanup. All partial evidence retained. Fix uses privileged lstat-style existence check only for exact allowlisted paths; native/tool preservation gates unchanged. Rerun only probe, not native jobs. PLL census39592019880 remains live. Mainchip/TX continuations unchanged. Cloud-only.
+
 ## Additional hosted headroom measurement launched
 New pll-storage-headroom-cloud operates only on a fresh GitHub-hosted Ubuntu24 runner. It removes explicit unused SDK/cache roots and unused Docker images, preserves active Python and required executable hashes, then verifies Python/gh/Docker/compiler/curl and unchanged allocation controls. It must not restore or activate any native process. Original12GiB native reserve,4GiB backing reserve and6GiB allocation margin remain unchanged.
 
