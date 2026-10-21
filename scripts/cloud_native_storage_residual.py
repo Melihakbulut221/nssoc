@@ -59,7 +59,7 @@ def main():
     native_reserve_bytes=allocation.NATIVE_CHECKPOINT_RESERVE,backing_reserve_bytes=allocation.HOST_CHECKPOINT_RESERVE,
     original_full_wave_uncompressed_lower_bound_bytes=minimum,
     minimum_extra_image_bytes_before_other_overheads=max(0,minimum+allocation.NATIVE_CHECKPOINT_RESERVE-image))
-  assert all(Path(p).is_file()and sha(p)==h for p,h in prior['protected_executables'].items())
+  assert all(Path(p).is_file()and sha(Path(p))==h for p,h in prior['protected_executables'].items())
   assert not run('empty-docker',['docker','ps','-aq']).strip()
   r.update(status='MEASURED_RESIDUAL_HOSTED_STORAGE_AFTER_PROVEN_CLEANUP_NOT_NATIVE_CAPACITY_PROOF',
    protected_executables_unchanged=True,no_swap_disabling_no_new_cleanup_no_mount_or_format=True,

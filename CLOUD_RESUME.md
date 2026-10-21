@@ -1,3 +1,8 @@
+## 2026-10-21 — measured residual capacity, final observer hash-check fix
+
+39649526415 completed all capacity measurements then failed its final protected-executable recheck because the shared sha reader requires Path, not string. Failure and actual values pinned; corrected only Path conversion and rerun on fresh disposable runner. Observed135092932608free bytes, possible image127775277056, full uncompressed payload plus unchanged12GiBreserve needs15823224832more image bytes before runtime overhead. /swapfile is3GiB unused at observation, not removed. Do not claim capacity resolved or sum directory totals. Actual TX anchor39648841180 and mainchip/PLL long processes remain running.
+
+
 ## 2026-10-21 — residual inventory portability correction
 
 39648375595 preserved all directory measurements but failed because hosted swapon lacks --json. Proven existing SDK cleanup succeeded and retained protected tools; no native process or additional cleanup ran. Failure receipt pinned. The corrected observer uses the already-proven swapon --show --bytes text interface and retains the complete raw output. No source capture, reserve or numerical gate changes. New anchor run39648841180 remains the real TX extraction next stage.
