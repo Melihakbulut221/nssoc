@@ -1,3 +1,8 @@
+## v28 full original loaded gates launched after exact audit/composition
+Workflow cdr-input-loading-v28-mim-streamed-cloud waits for39562157915 at0f39a9fdcc2a848fb00048a5d5d14231e7fab99a; actual capture39561460306 and original476-device17674R12694C/7MIM composition required. Preserve original256-bit34.25ns/.3125ps/150fF50fF/100mV37.5ps30mV50uA/120HBT46MOS gates and both faults. No electrical pass assumed.
+Do not commit dynamic v28 mim-parent-audit/composition receipts before these wrappers consume them. All original source-delta gates retained. v28 reduces physical input loading after actual v27 native-latch diagnosis; full electrical tests decide acceptance.
+PLL39551551389 publishing failed native state; mainchip39555639933 and TX39557480969/39557484428 continue live. All code/layout/simulation/checkpoints remain in GitHub; no local artifacts. Full PHY and final routed timing remain open.
+
 ## v28 MIM capture passed; independent audit and composition
 Run39561460306 at84cce05f98a13e7fa96ddfc86dcb54eef0819724 captured actual17674R12694C,111conductors,938points and7intrinsic MIMs from fresh input-loading v28 GDS9dd0a49425183d04e1389ff19b97c3f82784d4715c8e0fcb5e628adcbfde7a6b. All5 native capture faults rejected. Canonical extraction receipts from39559188023 now committed after capture consumed them.
 New cdr-input-loading-v28-mim-validation-cloud retains original13 wire and9 intrinsic corruption controls, then actual476-device composition with19 controls. Only source identities change from v26 validation method; actual measured element census happens to match v26, but no v26 RC values reused.
