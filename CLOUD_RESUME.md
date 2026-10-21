@@ -1,3 +1,25 @@
+## 2026-10-21 — authoritative cloud-only continuation checkpoint
+
+Confirmed independent clean-v26 validation39533943848 PASS:
+17674R12694C/seven MIMs,13raw-RC+9intrinsic+19composition fault controls.
+Immutable stage descriptors are in cdr-cleaned-v26-validation-summary-20261021.json.
+Full-wave39534542949 passed preflight; native cases are running/queued.
+Do not create its dynamic per-stage mim-parent-audit/mim-composition receipt paths
+while the full-wave wrapper expects to create them.
+
+Current full process handles: TX39532132082/39532134850, DRT39529165315,
+PLL39502073954. Preserve same processes and latest successful capsules.
+PLL initial immediate checkpoint was caused by94.76GB raw/11.94GB free against
+12GiB reserve. Btrfs bounded probe39534984940 FAILED restore; no production
+migration authorized by evidence. Diagnostic39535899625 retains CRIU/runtime logs.
+Next inspect that exact handle; do not assume compression supports native restore.
+
+Requested cancellation only of superseded general checks39532277823 after proving
+newer39534244338 descends from it with identical workflow. Native work untouched.
+Local project directory remains empty; all source, reports and computation in cloud.
+Full serial Gen3x4 PHY, final mainchip route/STA and complete product signoff remain open.
+
+
 ## 2026-10-21 — compressed native storage not yet accepted
 
 Probe39534984940 copied all bounded native case files byte-exact to Btrfs and
