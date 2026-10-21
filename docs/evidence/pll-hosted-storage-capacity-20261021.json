@@ -1,0 +1,788 @@
+{
+  "run": 39547749984,
+  "source_head": "823c5bd86f1d5663229161327d837f7283a39ea2",
+  "summary_asset": 661422585,
+  "summary_sha256": "3dafc735c219cb498a6928fa16453758a4bc1f16363218b3024236568516921e",
+  "parts_asset": 661422666,
+  "parts_sha256": "60d3e5be6f82794224f36243a4bc718c0834c50213d1b598561349508ab3c52a",
+  "report": {
+    "status": "MEASURED_HOSTED_CAPACITY_NOT_FULL_RAW_COMPRESSION_OR_NATIVE_CONTINUATION_PROOF",
+    "source_head": "823c5bd86f1d5663229161327d837f7283a39ea2",
+    "full_capacity_proven": false,
+    "acquisition_accepted": false,
+    "full_phy_accepted": false,
+    "commands": [
+      {
+        "label": "mounts",
+        "args": [
+          "findmnt",
+          "--json",
+          "-o",
+          "TARGET,SOURCE,FSTYPE,SIZE,AVAIL,OPTIONS"
+        ],
+        "returncode": 0,
+        "sha256": "f18ab9c63aeda3dfbcf52d20fc2f6e4bd40f4e97a2f6532f28b952e100311ff3"
+      },
+      {
+        "label": "block-devices",
+        "args": [
+          "lsblk",
+          "--json",
+          "--bytes",
+          "-o",
+          "NAME,TYPE,SIZE,FSTYPE,MOUNTPOINTS"
+        ],
+        "returncode": 0,
+        "sha256": "07c4fcab7107f2b1bb2d05a75833dc37125e2e422d77f3ab0c6702d408932e25"
+      },
+      {
+        "label": "filesystem-bytes",
+        "args": [
+          "df",
+          "-B1",
+          "-T"
+        ],
+        "returncode": 0,
+        "sha256": "a41940f377bd409dd007d1cc2bf59bf13051527e7495f21a138d1e93fcc468ca"
+      },
+      {
+        "label": "docker-info",
+        "args": [
+          "docker",
+          "info",
+          "--format",
+          "{{json .}}"
+        ],
+        "returncode": 0,
+        "sha256": "170d0bad61a4e5cfa51ee0b86dbb7778f9404cea42065f9bae16a36337c08df1"
+      },
+      {
+        "label": "empty-docker",
+        "args": [
+          "docker",
+          "ps",
+          "-aq"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "directory-0",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/opt/hostedtoolcache"
+        ],
+        "returncode": 0,
+        "sha256": "093d7f712a6b92560bf83e2c0bee221d17573be903e9946dbb81fa0bb4478ebc"
+      },
+      {
+        "label": "directory-4",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/local/share"
+        ],
+        "returncode": 0,
+        "sha256": "719e4dbe335ffd5247140c8d296eadc760b5309a46865fba9394a04366352f51"
+      },
+      {
+        "label": "directory-5",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/lib"
+        ],
+        "returncode": 0,
+        "sha256": "89dc8275eac8b9d13cee15d742258268f60b44c1bcc0cc7d1d5e3ebf31e87bd6"
+      },
+      {
+        "label": "directory-6",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/share"
+        ],
+        "returncode": 0,
+        "sha256": "710c8945303fae50f254a5c41c110fdfb4f3f93b8d3a07e692e6f3c8e5a43044"
+      },
+      {
+        "label": "directory-7",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/var/lib/docker"
+        ],
+        "returncode": 0,
+        "sha256": "708e1c42bbe6a45f4b7f02c85b6c90e03734172ef513862462d4c6ebdcf43c78"
+      },
+      {
+        "label": "directory-8",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/mnt"
+        ],
+        "returncode": 0,
+        "sha256": "e94307eb9e29618293d69cde02da72424b09ff07ae645cf4697d9a00f0b07edb"
+      }
+    ],
+    "workspace_disk": {
+      "total": 154894188544,
+      "used": 46780784640,
+      "free": 108096626688
+    },
+    "mounts": {
+      "filesystems": [
+        {
+          "target": "/",
+          "source": "/dev/nvme0n1p1",
+          "fstype": "ext4",
+          "size": "144.3G",
+          "avail": "100.7G",
+          "options": "rw,relatime,discard,journal_async_commit,nobarrier,errors=remount-ro,commit=30,data=writeback",
+          "children": [
+            {
+              "target": "/dev",
+              "source": "devtmpfs",
+              "fstype": "devtmpfs",
+              "size": "7.8G",
+              "avail": "7.8G",
+              "options": "rw,nosuid,noexec,relatime,size=8181664k,nr_inodes=2045416,mode=755,inode64",
+              "children": [
+                {
+                  "target": "/dev/shm",
+                  "source": "tmpfs",
+                  "fstype": "tmpfs",
+                  "size": "7.8G",
+                  "avail": "7.8G",
+                  "options": "rw,nosuid,nodev,inode64"
+                },
+                {
+                  "target": "/dev/pts",
+                  "source": "devpts",
+                  "fstype": "devpts",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000"
+                },
+                {
+                  "target": "/dev/hugepages",
+                  "source": "hugetlbfs",
+                  "fstype": "hugetlbfs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,relatime,pagesize=2M"
+                },
+                {
+                  "target": "/dev/mqueue",
+                  "source": "mqueue",
+                  "fstype": "mqueue",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                }
+              ]
+            },
+            {
+              "target": "/proc",
+              "source": "proc",
+              "fstype": "proc",
+              "size": "0",
+              "avail": "0",
+              "options": "rw,nosuid,nodev,noexec,relatime",
+              "children": [
+                {
+                  "target": "/proc/sys/fs/binfmt_misc",
+                  "source": "systemd-1",
+                  "fstype": "autofs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,relatime,fd=32,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=2596",
+                  "children": [
+                    {
+                      "target": "/proc/sys/fs/binfmt_misc",
+                      "source": "binfmt_misc",
+                      "fstype": "binfmt_misc",
+                      "size": "0",
+                      "avail": "0",
+                      "options": "rw,nosuid,nodev,noexec,relatime"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "/sys",
+              "source": "sysfs",
+              "fstype": "sysfs",
+              "size": "0",
+              "avail": "0",
+              "options": "rw,nosuid,nodev,noexec,relatime",
+              "children": [
+                {
+                  "target": "/sys/kernel/security",
+                  "source": "securityfs",
+                  "fstype": "securityfs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                },
+                {
+                  "target": "/sys/fs/cgroup",
+                  "source": "cgroup2",
+                  "fstype": "cgroup2",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot"
+                },
+                {
+                  "target": "/sys/fs/pstore",
+                  "source": "none",
+                  "fstype": "pstore",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                },
+                {
+                  "target": "/sys/firmware/efi/efivars",
+                  "source": "efivarfs",
+                  "fstype": "efivarfs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                },
+                {
+                  "target": "/sys/fs/bpf",
+                  "source": "bpf",
+                  "fstype": "bpf",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime,mode=700"
+                },
+                {
+                  "target": "/sys/kernel/debug",
+                  "source": "debugfs",
+                  "fstype": "debugfs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                },
+                {
+                  "target": "/sys/kernel/tracing",
+                  "source": "tracefs",
+                  "fstype": "tracefs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                },
+                {
+                  "target": "/sys/fs/fuse/connections",
+                  "source": "fusectl",
+                  "fstype": "fusectl",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                },
+                {
+                  "target": "/sys/kernel/config",
+                  "source": "configfs",
+                  "fstype": "configfs",
+                  "size": "0",
+                  "avail": "0",
+                  "options": "rw,nosuid,nodev,noexec,relatime"
+                }
+              ]
+            },
+            {
+              "target": "/run",
+              "source": "tmpfs",
+              "fstype": "tmpfs",
+              "size": "3.1G",
+              "avail": "3.1G",
+              "options": "rw,nosuid,nodev,size=3274692k,nr_inodes=819200,mode=755,inode64",
+              "children": [
+                {
+                  "target": "/run/lock",
+                  "source": "tmpfs",
+                  "fstype": "tmpfs",
+                  "size": "5M",
+                  "avail": "5M",
+                  "options": "rw,nosuid,nodev,noexec,relatime,size=5120k,inode64"
+                },
+                {
+                  "target": "/run/user/1001",
+                  "source": "tmpfs",
+                  "fstype": "tmpfs",
+                  "size": "1.6G",
+                  "avail": "1.6G",
+                  "options": "rw,nosuid,nodev,relatime,size=1637344k,nr_inodes=409336,mode=700,uid=1001,gid=1001,inode64"
+                }
+              ]
+            },
+            {
+              "target": "/boot",
+              "source": "/dev/nvme0n1p16",
+              "fstype": "ext4",
+              "size": "880.4M",
+              "avail": "755.3M",
+              "options": "rw,relatime,discard",
+              "children": [
+                {
+                  "target": "/boot/efi",
+                  "source": "/dev/nvme0n1p15",
+                  "fstype": "vfat",
+                  "size": "104.3M",
+                  "avail": "98.2M",
+                  "options": "rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "block_devices": {
+      "blockdevices": [
+        {
+          "name": "nvme0n1",
+          "type": "disk",
+          "size": 161061273600,
+          "fstype": null,
+          "mountpoints": [
+            null
+          ],
+          "children": [
+            {
+              "name": "nvme0n1p1",
+              "type": "part",
+              "size": 159986466304,
+              "fstype": "ext4",
+              "mountpoints": [
+                "/"
+              ]
+            },
+            {
+              "name": "nvme0n1p14",
+              "type": "part",
+              "size": 4194304,
+              "fstype": null,
+              "mountpoints": [
+                null
+              ]
+            },
+            {
+              "name": "nvme0n1p15",
+              "type": "part",
+              "size": 111149056,
+              "fstype": "vfat",
+              "mountpoints": [
+                "/boot/efi"
+              ]
+            },
+            {
+              "name": "nvme0n1p16",
+              "type": "part",
+              "size": 957350400,
+              "fstype": "ext4",
+              "mountpoints": [
+                "/boot"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "filesystem_bytes": "Filesystem      Type     1B-blocks        Used    Available Use% Mounted on\n/dev/root       ext4  154894188544 46780796928 108096614400  31% /\ntmpfs           tmpfs   8383205376       86016   8383119360   1% /dev/shm\ntmpfs           tmpfs   3353284608     1032192   3352252416   1% /run\ntmpfs           tmpfs      5242880           0      5242880   0% /run/lock\n/dev/nvme0n1p16 ext4     923156480    66572288    791941120   8% /boot\n/dev/nvme0n1p15 vfat     109395456     6399488    102995968   6% /boot/efi\ntmpfs           tmpfs   1676640256       12288   1676627968   1% /run/user/1001\n",
+    "docker": {
+      "ID": "6134b6ae-8eb1-4f62-889e-a360c80bcfbf",
+      "Containers": 0,
+      "ContainersRunning": 0,
+      "ContainersPaused": 0,
+      "ContainersStopped": 0,
+      "Images": 6,
+      "Driver": "overlay2",
+      "DriverStatus": [
+        [
+          "Backing Filesystem",
+          "extfs"
+        ],
+        [
+          "Supports d_type",
+          "true"
+        ],
+        [
+          "Using metacopy",
+          "false"
+        ],
+        [
+          "Native Overlay Diff",
+          "false"
+        ],
+        [
+          "userxattr",
+          "false"
+        ]
+      ],
+      "Plugins": {
+        "Volume": [
+          "local"
+        ],
+        "Network": [
+          "bridge",
+          "host",
+          "ipvlan",
+          "macvlan",
+          "null",
+          "overlay"
+        ],
+        "Authorization": null,
+        "Log": [
+          "awslogs",
+          "fluentd",
+          "gcplogs",
+          "gelf",
+          "journald",
+          "json-file",
+          "local",
+          "splunk",
+          "syslog"
+        ]
+      },
+      "MemoryLimit": true,
+      "SwapLimit": true,
+      "CpuCfsPeriod": true,
+      "CpuCfsQuota": true,
+      "CPUShares": true,
+      "CPUSet": true,
+      "PidsLimit": true,
+      "IPv4Forwarding": true,
+      "BridgeNfIptables": false,
+      "BridgeNfIp6tables": false,
+      "Debug": false,
+      "NFd": 22,
+      "OomKillDisable": false,
+      "NGoroutines": 41,
+      "SystemTime": "2026-10-21T05:08:25.424112356Z",
+      "LoggingDriver": "json-file",
+      "CgroupDriver": "systemd",
+      "CgroupVersion": "2",
+      "NEventsListener": 0,
+      "KernelVersion": "6.17.0-1022-azure",
+      "OperatingSystem": "Ubuntu 24.04.5 LTS",
+      "OSVersion": "24.04",
+      "OSType": "linux",
+      "Architecture": "x86_64",
+      "IndexServerAddress": "https://index.docker.io/v1/",
+      "RegistryConfig": {
+        "IndexConfigs": {
+          "docker.io": {
+            "Name": "docker.io",
+            "Mirrors": [],
+            "Secure": true,
+            "Official": true
+          }
+        },
+        "InsecureRegistryCIDRs": [
+          "::1/128",
+          "127.0.0.0/8"
+        ],
+        "Mirrors": null
+      },
+      "NCPU": 4,
+      "MemTotal": 16766414848,
+      "GenericResources": null,
+      "DockerRootDir": "/var/lib/docker",
+      "HttpProxy": "",
+      "HttpsProxy": "",
+      "NoProxy": "",
+      "Name": "runnervm8k3b6",
+      "Labels": [],
+      "ExperimentalBuild": false,
+      "ServerVersion": "28.0.4",
+      "Runtimes": {
+        "io.containerd.runc.v2": {
+          "path": "runc",
+          "status": {
+            "org.opencontainers.runtime-spec.features": "{\"ociVersionMin\":\"1.0.0\",\"ociVersionMax\":\"1.3.0\",\"hooks\":[\"prestart\",\"createRuntime\",\"createContainer\",\"startContainer\",\"poststart\",\"poststop\"],\"mountOptions\":[\"async\",\"atime\",\"bind\",\"defaults\",\"dev\",\"diratime\",\"dirsync\",\"exec\",\"iversion\",\"lazytime\",\"loud\",\"mand\",\"noatime\",\"nodev\",\"nodiratime\",\"noexec\",\"noiversion\",\"nolazytime\",\"nomand\",\"norelatime\",\"nostrictatime\",\"nosuid\",\"nosymfollow\",\"private\",\"ratime\",\"rbind\",\"rdev\",\"rdiratime\",\"relatime\",\"remount\",\"rexec\",\"rnoatime\",\"rnodev\",\"rnodiratime\",\"rnoexec\",\"rnorelatime\",\"rnostrictatime\",\"rnosuid\",\"rnosymfollow\",\"ro\",\"rprivate\",\"rrelatime\",\"rro\",\"rrw\",\"rshared\",\"rslave\",\"rstrictatime\",\"rsuid\",\"rsymfollow\",\"runbindable\",\"rw\",\"shared\",\"silent\",\"slave\",\"strictatime\",\"suid\",\"symfollow\",\"sync\",\"tmpcopyup\",\"unbindable\"],\"linux\":{\"namespaces\":[\"cgroup\",\"ipc\",\"mount\",\"network\",\"pid\",\"time\",\"user\",\"uts\"],\"capabilities\":[\"CAP_CHOWN\",\"CAP_DAC_OVERRIDE\",\"CAP_DAC_READ_SEARCH\",\"CAP_FOWNER\",\"CAP_FSETID\",\"CAP_KILL\",\"CAP_SETGID\",\"CAP_SETUID\",\"CAP_SETPCAP\",\"CAP_LINUX_IMMUTABLE\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_BROADCAST\",\"CAP_NET_ADMIN\",\"CAP_NET_RAW\",\"CAP_IPC_LOCK\",\"CAP_IPC_OWNER\",\"CAP_SYS_MODULE\",\"CAP_SYS_RAWIO\",\"CAP_SYS_CHROOT\",\"CAP_SYS_PTRACE\",\"CAP_SYS_PACCT\",\"CAP_SYS_ADMIN\",\"CAP_SYS_BOOT\",\"CAP_SYS_NICE\",\"CAP_SYS_RESOURCE\",\"CAP_SYS_TIME\",\"CAP_SYS_TTY_CONFIG\",\"CAP_MKNOD\",\"CAP_LEASE\",\"CAP_AUDIT_WRITE\",\"CAP_AUDIT_CONTROL\",\"CAP_SETFCAP\",\"CAP_MAC_OVERRIDE\",\"CAP_MAC_ADMIN\",\"CAP_SYSLOG\",\"CAP_WAKE_ALARM\",\"CAP_BLOCK_SUSPEND\",\"CAP_AUDIT_READ\",\"CAP_PERFMON\",\"CAP_BPF\",\"CAP_CHECKPOINT_RESTORE\"],\"cgroup\":{\"v1\":true,\"v2\":true,\"systemd\":true,\"systemdUser\":true,\"rdma\":true},\"seccomp\":{\"enabled\":true,\"actions\":[\"SCMP_ACT_ALLOW\",\"SCMP_ACT_ERRNO\",\"SCMP_ACT_KILL\",\"SCMP_ACT_KILL_PROCESS\",\"SCMP_ACT_KILL_THREAD\",\"SCMP_ACT_LOG\",\"SCMP_ACT_NOTIFY\",\"SCMP_ACT_TRACE\",\"SCMP_ACT_TRAP\"],\"operators\":[\"SCMP_CMP_EQ\",\"SCMP_CMP_GE\",\"SCMP_CMP_GT\",\"SCMP_CMP_LE\",\"SCMP_CMP_LT\",\"SCMP_CMP_MASKED_EQ\",\"SCMP_CMP_NE\"],\"archs\":[\"SCMP_ARCH_AARCH64\",\"SCMP_ARCH_ARM\",\"SCMP_ARCH_LOONGARCH64\",\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\",\"SCMP_ARCH_MIPS64N32\",\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\",\"SCMP_ARCH_MIPSEL64N32\",\"SCMP_ARCH_PPC\",\"SCMP_ARCH_PPC64\",\"SCMP_ARCH_PPC64LE\",\"SCMP_ARCH_RISCV64\",\"SCMP_ARCH_S390\",\"SCMP_ARCH_S390X\",\"SCMP_ARCH_X32\",\"SCMP_ARCH_X86\",\"SCMP_ARCH_X86_64\"],\"knownFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\",\"SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV\"],\"supportedFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"]},\"apparmor\":{\"enabled\":true},\"selinux\":{\"enabled\":true},\"intelRdt\":{\"enabled\":true},\"mountExtensions\":{\"idmap\":{\"enabled\":true}}},\"annotations\":{\"io.github.seccomp.libseccomp.version\":\"2.5.5\",\"org.opencontainers.runc.checkpoint.enabled\":\"true\",\"org.opencontainers.runc.commit\":\"v1.5.2-0-g29dd3dc2\",\"org.opencontainers.runc.version\":\"1.5.2\"},\"potentiallyUnsafeConfigAnnotations\":[\"bundle\",\"org.systemd.property.\",\"org.criu.config\"]}"
+          }
+        },
+        "runc": {
+          "path": "runc",
+          "status": {
+            "org.opencontainers.runtime-spec.features": "{\"ociVersionMin\":\"1.0.0\",\"ociVersionMax\":\"1.3.0\",\"hooks\":[\"prestart\",\"createRuntime\",\"createContainer\",\"startContainer\",\"poststart\",\"poststop\"],\"mountOptions\":[\"async\",\"atime\",\"bind\",\"defaults\",\"dev\",\"diratime\",\"dirsync\",\"exec\",\"iversion\",\"lazytime\",\"loud\",\"mand\",\"noatime\",\"nodev\",\"nodiratime\",\"noexec\",\"noiversion\",\"nolazytime\",\"nomand\",\"norelatime\",\"nostrictatime\",\"nosuid\",\"nosymfollow\",\"private\",\"ratime\",\"rbind\",\"rdev\",\"rdiratime\",\"relatime\",\"remount\",\"rexec\",\"rnoatime\",\"rnodev\",\"rnodiratime\",\"rnoexec\",\"rnorelatime\",\"rnostrictatime\",\"rnosuid\",\"rnosymfollow\",\"ro\",\"rprivate\",\"rrelatime\",\"rro\",\"rrw\",\"rshared\",\"rslave\",\"rstrictatime\",\"rsuid\",\"rsymfollow\",\"runbindable\",\"rw\",\"shared\",\"silent\",\"slave\",\"strictatime\",\"suid\",\"symfollow\",\"sync\",\"tmpcopyup\",\"unbindable\"],\"linux\":{\"namespaces\":[\"cgroup\",\"ipc\",\"mount\",\"network\",\"pid\",\"time\",\"user\",\"uts\"],\"capabilities\":[\"CAP_CHOWN\",\"CAP_DAC_OVERRIDE\",\"CAP_DAC_READ_SEARCH\",\"CAP_FOWNER\",\"CAP_FSETID\",\"CAP_KILL\",\"CAP_SETGID\",\"CAP_SETUID\",\"CAP_SETPCAP\",\"CAP_LINUX_IMMUTABLE\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_BROADCAST\",\"CAP_NET_ADMIN\",\"CAP_NET_RAW\",\"CAP_IPC_LOCK\",\"CAP_IPC_OWNER\",\"CAP_SYS_MODULE\",\"CAP_SYS_RAWIO\",\"CAP_SYS_CHROOT\",\"CAP_SYS_PTRACE\",\"CAP_SYS_PACCT\",\"CAP_SYS_ADMIN\",\"CAP_SYS_BOOT\",\"CAP_SYS_NICE\",\"CAP_SYS_RESOURCE\",\"CAP_SYS_TIME\",\"CAP_SYS_TTY_CONFIG\",\"CAP_MKNOD\",\"CAP_LEASE\",\"CAP_AUDIT_WRITE\",\"CAP_AUDIT_CONTROL\",\"CAP_SETFCAP\",\"CAP_MAC_OVERRIDE\",\"CAP_MAC_ADMIN\",\"CAP_SYSLOG\",\"CAP_WAKE_ALARM\",\"CAP_BLOCK_SUSPEND\",\"CAP_AUDIT_READ\",\"CAP_PERFMON\",\"CAP_BPF\",\"CAP_CHECKPOINT_RESTORE\"],\"cgroup\":{\"v1\":true,\"v2\":true,\"systemd\":true,\"systemdUser\":true,\"rdma\":true},\"seccomp\":{\"enabled\":true,\"actions\":[\"SCMP_ACT_ALLOW\",\"SCMP_ACT_ERRNO\",\"SCMP_ACT_KILL\",\"SCMP_ACT_KILL_PROCESS\",\"SCMP_ACT_KILL_THREAD\",\"SCMP_ACT_LOG\",\"SCMP_ACT_NOTIFY\",\"SCMP_ACT_TRACE\",\"SCMP_ACT_TRAP\"],\"operators\":[\"SCMP_CMP_EQ\",\"SCMP_CMP_GE\",\"SCMP_CMP_GT\",\"SCMP_CMP_LE\",\"SCMP_CMP_LT\",\"SCMP_CMP_MASKED_EQ\",\"SCMP_CMP_NE\"],\"archs\":[\"SCMP_ARCH_AARCH64\",\"SCMP_ARCH_ARM\",\"SCMP_ARCH_LOONGARCH64\",\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\",\"SCMP_ARCH_MIPS64N32\",\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\",\"SCMP_ARCH_MIPSEL64N32\",\"SCMP_ARCH_PPC\",\"SCMP_ARCH_PPC64\",\"SCMP_ARCH_PPC64LE\",\"SCMP_ARCH_RISCV64\",\"SCMP_ARCH_S390\",\"SCMP_ARCH_S390X\",\"SCMP_ARCH_X32\",\"SCMP_ARCH_X86\",\"SCMP_ARCH_X86_64\"],\"knownFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\",\"SECCOMP_FILTER_FLAG_WAIT_KILLABLE_RECV\"],\"supportedFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"]},\"apparmor\":{\"enabled\":true},\"selinux\":{\"enabled\":true},\"intelRdt\":{\"enabled\":true},\"mountExtensions\":{\"idmap\":{\"enabled\":true}}},\"annotations\":{\"io.github.seccomp.libseccomp.version\":\"2.5.5\",\"org.opencontainers.runc.checkpoint.enabled\":\"true\",\"org.opencontainers.runc.commit\":\"v1.5.2-0-g29dd3dc2\",\"org.opencontainers.runc.version\":\"1.5.2\"},\"potentiallyUnsafeConfigAnnotations\":[\"bundle\",\"org.systemd.property.\",\"org.criu.config\"]}"
+          }
+        }
+      },
+      "DefaultRuntime": "runc",
+      "Swarm": {
+        "NodeID": "",
+        "NodeAddr": "",
+        "LocalNodeState": "inactive",
+        "ControlAvailable": false,
+        "Error": "",
+        "RemoteManagers": null
+      },
+      "LiveRestoreEnabled": false,
+      "Isolation": "",
+      "InitBinary": "docker-init",
+      "ContainerdCommit": {
+        "ID": "f2551031d7276a770f65f98c9b52e57e7dad07e8",
+        "Expected": "f2551031d7276a770f65f98c9b52e57e7dad07e8"
+      },
+      "RuncCommit": {
+        "ID": "v1.5.2-0-g29dd3dc2",
+        "Expected": "v1.5.2-0-g29dd3dc2"
+      },
+      "InitCommit": {
+        "ID": "de40ad0",
+        "Expected": "de40ad0"
+      },
+      "SecurityOptions": [
+        "name=apparmor",
+        "name=seccomp,profile=builtin",
+        "name=cgroupns"
+      ],
+      "CDISpecDirs": [],
+      "Containerd": {
+        "Address": "/run/containerd/containerd.sock",
+        "Namespaces": {
+          "Containers": "moby",
+          "Plugins": "plugins.moby"
+        }
+      },
+      "Warnings": null,
+      "ClientInfo": {
+        "Debug": false,
+        "Platform": {
+          "Name": "Docker Engine - Community"
+        },
+        "Version": "28.0.4",
+        "DefaultAPIVersion": "1.48",
+        "GitCommit": "b8034c0",
+        "GoVersion": "go1.23.7",
+        "Os": "linux",
+        "Arch": "amd64",
+        "BuildTime": "Tue Mar 25 15:07:16 2025",
+        "Context": "default",
+        "Plugins": [
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v0.38.0",
+            "ShortDescription": "Docker Buildx",
+            "Name": "buildx",
+            "Path": "/usr/libexec/docker/cli-plugins/docker-buildx"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v2.38.2",
+            "ShortDescription": "Docker Compose",
+            "Name": "compose",
+            "Path": "/usr/libexec/docker/cli-plugins/docker-compose"
+          }
+        ],
+        "Warnings": null
+      }
+    },
+    "directory_bytes": {
+      "/opt/hostedtoolcache": "5368926208\t/opt/hostedtoolcache",
+      "/usr/local/share": "2438512640\t/usr/local/share",
+      "/usr/lib": "6877466624\t/usr/lib",
+      "/usr/share": "6310424576\t/usr/share",
+      "/var/lib/docker": "2042540032\t/var/lib/docker",
+      "/mnt": "4096\t/mnt"
+    },
+    "required_runtime": {
+      "python": "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+      "python_version": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+      "node": "/usr/local/bin/node",
+      "gh": "/usr/bin/gh",
+      "docker": "/usr/bin/docker"
+    },
+    "bounded_native_proof": {
+      "run": 39544302605,
+      "status": "PASS_NATIVE_PHYSICAL845_EXT4_TO_ZSTD_BTRFS_REDUMP_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_FULL_STORAGE_OR_ACQUISITION",
+      "source_head": "7c7c8fd1340a34e0aab7aadf4e9296ce953e8462",
+      "summary_asset": 661353254,
+      "summary_sha256": "ea82e2a449d2bf1bcd10271e98aea06aba95b8941828aa15e48aba24582d135e",
+      "parts_asset": 661353306,
+      "parts_sha256": "9af0d47d3b7cdc1ebb9d3973c4878681bc69acb73f95a192b9206dd280d098e1",
+      "positive": {
+        "all_native_times_and_all34_probes_bit_exact": true,
+        "rows": 12818,
+        "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "single_entrypoint": true
+      },
+      "continued": {
+        "capture": {
+          "header_points": 12818,
+          "observed_rows": 12818,
+          "width": 35,
+          "header_bytes": 1190,
+          "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+          "header_matches_observed": true,
+          "payload_has_only_complete_rows": true,
+          "excluded_trailing_bytes": 0,
+          "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "complete_rows_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+          "interrupted_diagnostic": false
+        },
+        "start_s": 0.0,
+        "end_s": 4e-09,
+        "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "zero_source_operating_point": {
+          "maximum_abs_v": 0.0,
+          "columns": [
+            "v(clkp)",
+            "v(clkn)",
+            "v(down)",
+            "v(fb)",
+            "v(fbbar)",
+            "v(qn)",
+            "v(qp)",
+            "v(reference)",
+            "v(reset)",
+            "v(up)",
+            "v(vctrl)",
+            "v(xloop.a_count_vss)",
+            "v(xloop.a_release_clk)",
+            "v(xloop.a_release_reset_b)",
+            "v(xloop.bn)",
+            "v(xloop.bp)",
+            "v(xloop.clk)",
+            "v(xloop.count)",
+            "v(xloop.countb)",
+            "v(xloop.counter_reset_b)",
+            "v(xloop.qn2)",
+            "v(xloop.qp2)",
+            "v(xloop.releaseb)",
+            "v(xloop.xcount.q0)",
+            "v(xloop.xcount.q1)",
+            "v(xloop.xpfd.t001_d)",
+            "v(xloop.xpfd.t003_d)",
+            "v(xloop.xpfd.t005_g)",
+            "v(xloop.xpfd.t007_g)",
+            "v(xloop.xpfd.t009_g)",
+            "v(xloop.xpfd.t012_d)",
+            "v(xloop.xpfd.t013_d)",
+            "v(xloop.xpfd.t014_d)",
+            "v(xloop.xpfd.t016_d)"
+          ],
+          "sha256": "58b3f44e793efa178032b2a2ed28d719c3c53d3b2dcea9991bf0e25971bdeb7c"
+        },
+        "diagnostics": []
+      },
+      "complete_raw_sha256": "38dc869d06bfb9691d4dc49f91ba15df6a60875d9c833ac130fbaea44346877a",
+      "external_superblock": {
+        "external_filesystem_devices": {
+          "/home/runner/work/nssoc/nssoc": 50,
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed": 50,
+          "/home/runner/work/_temp/nssoc-btrfs-superblock-probe/volume/var/lib/docker/containers/5b810d1c86c6d19290162453d38988356f921f42533640c7a88b308d0ed991eb/resolv.conf": 50,
+          "/home/runner/work/_temp/nssoc-btrfs-superblock-probe/volume/var/lib/docker/containers/5b810d1c86c6d19290162453d38988356f921f42533640c7a88b308d0ed991eb/hostname": 50,
+          "/home/runner/work/_temp/nssoc-btrfs-superblock-probe/volume/var/lib/docker/containers/5b810d1c86c6d19290162453d38988356f921f42533640c7a88b308d0ed991eb/hosts": 50
+        },
+        "same_superblock": true,
+        "source_image_and_native_command_unchanged": true
+      },
+      "external_path_controls": {
+        "valid_five_paths": true,
+        "rejected": [
+          "empty",
+          "relative",
+          "missing",
+          "duplicate",
+          "parent-traversal"
+        ]
+      },
+      "controls": [
+        {
+          "fault": "truncation",
+          "rejected": true,
+          "error": "Missing samples or probes"
+        },
+        {
+          "fault": "state_corruption",
+          "rejected": true,
+          "error": "Native times or voltage states changed"
+        },
+        {
+          "fault": "cold_restart",
+          "rejected": true,
+          "error": "Cold restart detected"
+        }
+      ],
+      "compressed_redump": {
+        "checkpoint_images": {
+          "cgroup.img": "3dcaad727582afdc92e525cffe23652ccf9df46c75c7208ae8ba967221a6b6d2",
+          "core-1.img": "f39e56a4019b3fc6d23f2d9051afcd22164743999fa2543645342d2f694df263",
+          "descriptors.json": "69f6a6a104a3fa49188c643c3c70cd5f239d64daec12020c4b4fd08de4973f96",
+          "fdinfo-2.img": "26aa510dabe8637954a181cf70dc5d018d16ddfb80e27c2c4704a7a3ca2701c7",
+          "files.img": "00d7b2903fbab096f35b73ee90377f562d2bc22422b472fef54e4461d764d120",
+          "fs-1.img": "b19d457673c827e42adee1fea9fe3a91850d9fdc2b03ba7be09e350e5c58a8c3",
+          "ids-1.img": "63a196c2e44563d89bd075e843724b684b2d7c01c360ea4b4ce5bade713444b8",
+          "inventory.img": "10b050247dcd187ff3b3534f56aed8b5ab26011ddd9b8dec0edd307f8d6041f1",
+          "ipcns-var-10.img": "2c6811e94d6ee6661be7bbfbc5ba6fd86325e32599233fb8fe872e79b4047e22",
+          "mm-1.img": "6ec59e514c3cb2bad64d88b44614adb63110412362bd2f8f75c4d75c47a65bc1",
+          "mountpoints-13.img": "f561e05f7518cfd956334c38a5a7cc128cb0e0694f4814ea84e05ad8479e3175",
+          "pagemap-1.img": "b7d2c337437b032bdc8c6a4fb8b8171223721c2b1a6568ca016a8a7483b3d7ed",
+          "pages-1.img": "8fe45cccb59d6cca6a6b0cad09564240b7315e50a2bf9d7882e709eda436ba39",
+          "pstree.img": "14d914057fb14ec294b37c00b8676c1c0d9a956d35859b0360237f7316b37207",
+          "seccomp.img": "957296853c04f6368f4ba65b5e86dc74860fec6d7017e51428e65632052e88dd",
+          "timens-12.img": "3fdedb8accd8ad8f4ed18b5814314679fe210db1b887175fba14dce596e70885",
+          "tmpfs-dev-61.tar.gz.img": "fd9465a7e8285a5ba0f7933d67ebe13eb5d79a81a073767e11bd29d3055258c4",
+          "tmpfs-dev-62.tar.gz.img": "71be9b160f4bfad7b66878251390198982dd8efe9f484ed18ce7f8f554e34853",
+          "tmpfs-dev-64.tar.gz.img": "fd9465a7e8285a5ba0f7933d67ebe13eb5d79a81a073767e11bd29d3055258c4",
+          "utsns-11.img": "2476fd0136a613307df21285227a5cfb0268c7ca6989705722b1e3d9715c5562"
+        },
+        "exact_copied_images": true,
+        "same_native_command": true
+      },
+      "initial_compression": "Processed 1 file, 5 regular extents (5 refs), 0 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       90%     516096       569344       569344      \nzstd        90%     516096       569344       569344      \n",
+      "final_compression": "Processed 1 file, 33 regular extents (33 refs), 0 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       88%     3207168      3612672      3592192     \nnone       100%     8192         8192         8192        \nzstd        88%     3198976      3604480      3584000     \n",
+      "full_capture": false,
+      "full_pll_capacity_proven": false,
+      "acquisition_accepted": false,
+      "full_phy_accepted": false,
+      "migration_requirement": "Before any production migration, mount shared workspace/Docker filesystem BEFORE restoring the large capsule; preserve original native/parser method hashes and complete raw payload, monitor both backing-filesystem and Btrfs capacity, and consume only the latest terminal-success capsule. Never copy the existing94.76GB tree into a second local copy, reduce probes/gates, or fork a live process."
+    },
+    "full_current_raw_bytes": 94755872699,
+    "minimum_native_checkpoint_reserve_bytes": 12884901888,
+    "proposed_outside_backing_reserve_bytes": 4294967296,
+    "uncompressed_remaining_after_reserves_bytes": -3839115195,
+    "scope": "Read-only observation after the established disposable SDK cleanup. No mount, repartition, native restart, raw truncation, solver or gate change. Bounded4ns compression cannot predict full94.76GB capacity.",
+    "outputs": {
+      "block-devices.log": "07c4fcab7107f2b1bb2d05a75833dc37125e2e422d77f3ab0c6702d408932e25",
+      "docker-info.log": "170d0bad61a4e5cfa51ee0b86dbb7778f9404cea42065f9bae16a36337c08df1",
+      "directory-8.log": "e94307eb9e29618293d69cde02da72424b09ff07ae645cf4697d9a00f0b07edb",
+      "directory-4.log": "719e4dbe335ffd5247140c8d296eadc760b5309a46865fba9394a04366352f51",
+      "empty-docker.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "filesystem-bytes.log": "a41940f377bd409dd007d1cc2bf59bf13051527e7495f21a138d1e93fcc468ca",
+      "directory-7.log": "708e1c42bbe6a45f4b7f02c85b6c90e03734172ef513862462d4c6ebdcf43c78",
+      "mounts.log": "f18ab9c63aeda3dfbcf52d20fc2f6e4bd40f4e97a2f6532f28b952e100311ff3",
+      "directory-5.log": "89dc8275eac8b9d13cee15d742258268f60b44c1bcc0cc7d1d5e3ebf31e87bd6",
+      "directory-6.log": "710c8945303fae50f254a5c41c110fdfb4f3f93b8d3a07e692e6f3c8e5a43044",
+      "directory-0.log": "093d7f712a6b92560bf83e2c0bee221d17573be903e9946dbb81fa0bb4478ebc"
+    }
+  }
+}
