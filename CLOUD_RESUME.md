@@ -1,3 +1,8 @@
+## 2026-10-22: v29 full476 parent physical PASS; fresh extraction starts
+Run39692037466/sourceb3d275434a4ff38c76a9c4dd64872dc6cf0a4137 passed560DRC0 and unsimplifieddeep/flat476LVS with originalfaults. GDS c3b2ce62c374a3614c137969ea15fd8c94e839ce2fac3b95c1f39a6f02bdb851; summary664068017 SHA5e7ab07191831d3f378a7719d355cacc591f76553d5302ce10b53cad21788b6f; parts664068088 SHA6f39dc3a4781ed35bbe6741962749c93539fe4707950393221d0b1a09c676d3a.
+Eight actual M4notches filled with1.96um2 metal; all originalgeometry/899M4components/leafdrawings/16placements retained, no newvia contacts. Earlier physical rejection/diagnosis/path failure archives retained.
+New cdr-gain-headroom-v29-extraction-cloud push runs planes -> wire-inputs -> binding+rc with same-run immutable dependencies,26sourcefaults and original native160planes/51nets/476devices/1382terminals/938points/111wirecomponents and13rawRCfaults. Never reuse oldv28RC. Physical passage does not imply electrical/fullPHY acceptance. After real extraction pass, fresh intrinsicMIM composition and unchangedfullwaves remain necessary. Mainchip/TX/PLL live jobs not duplicated. Cloud only.
+
 ## 2026-10-22: exact native layer-map path correction
 Run39691334889 passed all eight same-component/gap/area checks but stopped before inserting metal because layer map was searched under tools. Pinned runtime actually restores pdk/libs.tech/klayout/tech/sg13g2.lyp. Pass that exact existing native path; no geometry/gate relaxation. Failed candidate retained in its immutable release. New push reruns all original physical checks.
 
