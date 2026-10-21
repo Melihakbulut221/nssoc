@@ -1,3 +1,16 @@
+## 2026-10-21 — cleaned v26 full loaded electrical trials
+
+cdr-input-access-v26-mim-streamed-cloud waits on exact validation39533943848.
+Nominal early/late and original two fault cases preserve complete256-bit34.25ns,
+original loads,step,device/current/phase/data thresholds and37.5ps valid-data gate.
+Actual model476devices17674R12694C. Do not commit dynamically produced
+v26 mim-parent-audit/mim-composition receipts until this wrapper has consumed them.
+
+The separate native-btrfs-cross-job storage probe tests only old bounded4ns
+native process compatibility, not full PLL acquisition. Full PLL39502073954,
+DRT39529165315 and TX39532132082/39532134850 remain live. Cloud-only.
+
+
 ## 2026-10-21 — bounded native compressed-storage qualification
 
 Current full PLL39502073954 remains live and is not forked. Separate
