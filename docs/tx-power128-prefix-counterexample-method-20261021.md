@@ -1,0 +1,7 @@
+# Immutable-prefix counterexamples to original TX electrical gates
+
+The full34ns,256-bit captures continue unchanged. This independent cloud observer reads the saved normal-case prefix39630182787 to identify any original-gate failure that is already irreversible in that preserved trajectory. It never restarts, changes or accepts the native process.
+
+The original complete-capture reader remains untouched. The previously qualified diagnostic prefix reader binds every byte, vector and partial tail. Actual zero-source OP is checked. All HBT/MOS/rail/bias review arithmetic is copied byte-for-byte from the original full review, with a runtime source-identity check. Output and interface functions themselves are imported unchanged. Only the available first complete source bits are selected; all original0.3/0.5/0.7UI phases must fall inside observed data. No extrapolation, fitted latency or altered thresholds is permitted.
+
+A failed subset disproves a full pass because those original samples persist in every continuation. A passing subset proves no full capture or electrical acceptance. The report always keeps full_capture/electrical_accepted/full_phy_accepted false, separates observed and required bit counts, includes exact failed output sample times/margins and actual failing device terminals, and preserves source hashes. The complete immutable waveform remains in its original Release; only the observer's temporary raw copy is removed after hash revalidation.

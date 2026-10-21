@@ -1,3 +1,7 @@
+## 2026-10-21 — immutable-prefix counterexample review
+Previous turn made concrete progress: exact PDK/config restoration passed, native PLL advanced820.364ns, TX advanced4.8ns and both continued, actual power128 rail drops measured. Live handles freshly revalidated: mainchip39631640578, PLL39637767590, TX39640657545/39640662925.
+New tx-power128-prefix-counterexamples-cloud observer applies unchanged original numerical gates to actual available prefix samples and first complete original bits. Failed prefix samples refute finalpass; passing prefix never establishes fullcapture. Original full34ns reader and active native processes untouched. Keep all failures. Cloud-only; local project remains empty.
+
 ## 2026-10-21 — verified cloud checkpoint
 Mainchip native input/config preflight39639250513 PASS: actual original settings restored without model/timing differences. This is not completed-route analysis.
 Power128 prefix observer39641391754 completed:2.0003–4.7986ns,6379active rows/14182columns; worstAVDD2.04415V(drop.45585V), highestAVSS.28034V, minDVDD1.14141V. Diagnostic only, no fullcapture/electricalacceptance. Full34ns reviews still mandatory.
