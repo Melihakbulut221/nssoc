@@ -1,3 +1,8 @@
+## 2026-10-21 —32um actual public-pad feed physical gates PASS
+
+Native39646885443 completedSUCCESS:560DRCcategories0markers; both deep and flat8088-device LVS pass;165 exact external names; all7 native/interface fault controls observed. Actual new GDS9f333d79ee43e745a9d216cf36eb17a7b77f57885309ddadeda38c3fcabea16c, flatLVS b34dc579c583dd505dceac7aeb26e8c3956b329bdda7b2ddcef844c0df7437e5. Receipt pinned with both summaries. New independent native-wires workflow triggers on this commit, using an exact four-field derivation from the previously qualified whole-parent extractor: GDS identity and isolated output/status names only. All topology, device census, geometry and native terminal binding checks unchanged. Next: anchors, intrinsic/fresh RC, order/precision controls, composition, loaded electrical waves. No electrical or fullPHY acceptance yet. Cloud-only, local workspace empty.
+
+
 ## 2026-10-21 — actual TX prefix rejection, new32um public-pad feeds
 
 Cloud-only; local workspace remains empty. Original-power128 observer39643945084 completed with ORIGINAL_GATES_REFUTED_BY_IMMUTABLE_POWER128_PREFIX:22 complete bits, two<100mV samples, CMOS CM<1.8V,85 HBT failures,0 MOS failures. All original numerical gates unchanged; receipt pinned. New independent power128feed32 physical workflow triggers on this commit:32um TM2 extends each128um trunk to the actual public pad instead of ending at the old narrow trunk. Full native geometry checks,560-category DRC, deep/flat8088-device LVS and all faults retained. No claim of fresh RC or electrical acceptance yet.
