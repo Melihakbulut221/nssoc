@@ -1,3 +1,7 @@
+## 2026-10-21 v27 electrical rejection retained
+
+CDR39548690293: both nominal34.25ns captures rejected despite all device gates passing. Early phase/current have wrong sign, C/D show hundreds of wrong samples. Start cdr-v27-latch-timing-cloud on the exact original raw waves and native geometry; do not weaken gates. New report retains original summary/parts SHA256 and compact measured failures. Cloud-only; no local files.
+
 ## 2026-10-21 cloud-only TX boundary work
 
 Local project directory verified empty. PLL39551551389, mainchip39542126811 and TX39544297368/39544299695 remain live and must not be restarted. CDR39548690293 finished: both nominal cases rejected, both fault controls passed. Investigate retained full native waves; device gates now pass but sampling/early phase fail. New tx-lane-boundaries-cloud job derives missing clock modulation, clock access and output/bias layout endpoints from saved immutable actual8074 deck; inventory success is not physical acceptance.
