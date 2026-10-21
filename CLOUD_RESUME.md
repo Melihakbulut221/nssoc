@@ -1,3 +1,7 @@
+## Completed v28 nominal rejection preserved; native diagnosis launched
+CDR39562531785 completed both original full captures. Early C/D wrong sign14/74; late1/64, but all original sampler timing/margin gates remain failing and xd0105/xd0106 violate0.4V VCE. Phase/current magnitudes also below original30mV/50uA. No gate waived. Exact rejected summary and parts hashes committed. cdr-v28-latch-timing-cloud reads original full waves and physical476-device graph to reproduce120HBT bounds/all4samplers and diagnose actual master/slave transfer.
+TX output composition39570119084 uses verified intrinsic and actual2619R1410C. Cloud-only; no local artifacts. Preserve live mainchip39555639933, TX39557480969/39557484428 and PLL39551551389 handles.
+
 ## TX output14 exact composition launched after fresh RC and intrinsic passes
 Verified39567299858 passed2619R1410C/9components32planes plus13raw controls;39567903604 passed14devices38terminals/eight finite contacts plus16intrinsic controls. Canonical receipts committed. New tx-output14-compose-cloud preserves every native wire token and all11 original corruption checks, including actual same-net REF C/B planes. No fullwave, qualified PEX, parent-route or PHY acceptance implied.
 Cloud-only: local workspace remains empty. CDR39562531785 now terminal failure; diagnose actual completed loaded waves. Mainchip39555639933, TX39557480969/39557484428 and PLL39551551389 retain original handles; never restart because an observation expires.
