@@ -1,3 +1,7 @@
+## 2026-10-21: cloud-only candidate repair after RSZ-0074
+
+39663969344 failed a native incomplete global-route tree (3/8 loads), after exact six-mode baseline reproduction. Failure receipt and archive pins preserved. Next repair uses labelled placement/Steiner estimates only for candidate creation, retains original timing and physical acceptance gates, and requires fresh route/RC/all-corner STA. Local project and temporary CAD directories are empty; no local native tools are running. TX continuations 39662510592 and 39662516267 remain active; PLL39637767590 is publishing its capsule. Do not cold restart or duplicate these runs.
+
 ## 2026-10-21 — mainchip baseline reproduced, native setup SIGSEGV isolated
 
 39661771876 terminalFAILURE, not a timeout. All six original max/min worst slacks reproduced within1ps; repair_design changed20cells and saved electrical-checkpoint. Setup then SIGSEGV(-11) in BaseMove::upsizeCell/LibertyPort::capacitance after makeBufferedNet warning. Failure and real intermediate hashes pinned. No final candidate accepted. Controlled retry changes only2→1threads and8→1repairs/pass plus native-version logging; it tests an unproven stale-path/concurrency hypothesis. Original source/equation/geometry/fixedclock gates and physical clock budgets unchanged. New workflow push owns retry; do not duplicate it. NewTX continuations39662510592(normal)/39662516267(swap) remain live; PLL39637767590 publication progresses.

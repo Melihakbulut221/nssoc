@@ -80,7 +80,21 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
         set n [$inst getName]
         $inst setDoNotTouch $original_touch($n)
     }
-    # Repair actual extracted high-fanout/slew/cap loads before setup.
+    # Exact routed SPEF baseline above remains immutable evidence.
+    # read_guides is not a complete pin-connected global-route tree:
+    # run 39663969344 failed RSZ-0074 (3 reachable loads versus 8 expected).
+    # Use placement/Steiner estimates ONLY to construct a candidate.
+    # Fresh routing/extraction/all-corner measurements remain mandatory.
+    estimate_parasitics -placement
+    foreach c $::env(NSSOC_CORNERS) {
+        foreach kind {max min} {
+            report_checks -corner $c -path_delay $kind -group_path_count 1 \
+                -digits 9 -format full_clock_expanded \
+                > "$::env(NSSOC_RESIZER_OUT)/optimizer-placement-$c-$kind.rpt"
+        }
+    }
+    puts "NSSOC_PLACEMENT_ESTIMATES_FOR_CANDIDATE_ONLY_NOT_FINAL_TIMING"
+    # Repair electrical loads on the explicitly labelled candidate estimate.
     # All clock/SRAM guards and original clocks/constraints remain in force.
     # Keep a real checkpoint even if subsequent timing/proof rejects the candidate.
     if {[catch {repair_design -slew_margin 10 -cap_margin 10 -max_utilization 80 -verbose} failure options]} {
@@ -92,11 +106,17 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     write_verilog "$::env(NSSOC_RESIZER_OUT)/electrical-checkpoint.v"
     # Setup may add positive buffers/load splits; no clone/remove/swap/retime.
     # Native Liberty equation proof and original-instance retention are mandatory.
-    repair_timing -setup -setup_margin 0 -repair_tns 100 \
-        -max_iterations 80 -max_repairs_per_pass 1 -max_utilization 80 \
-        -skip_pin_swap -skip_gate_cloning -skip_size_down \
-        -skip_buffer_removal -skip_last_gasp -skip_vt_swap -skip_crit_vt_swap \
-        -verbose
+    if {[catch {
+        repair_timing -setup -setup_margin 0 -repair_tns 100 \
+            -max_iterations 80 -max_repairs_per_pass 1 -max_utilization 80 \
+            -skip_pin_swap -skip_gate_cloning -skip_size_down \
+            -skip_buffer_removal -skip_last_gasp -skip_vt_swap -skip_crit_vt_swap \
+            -verbose
+    } failure options]} {
+        write_db "$::env(NSSOC_RESIZER_OUT)/setup-unchecked.odb"
+        write_verilog "$::env(NSSOC_RESIZER_OUT)/setup-unchecked.v"
+        return -options $options $failure
+    }
     write_db "$::env(NSSOC_RESIZER_OUT)/setup-checkpoint.odb"
     write_verilog "$::env(NSSOC_RESIZER_OUT)/setup-checkpoint.v"
     # Restore cell flags before hold: protected clock nets stay immutable,

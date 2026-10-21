@@ -39,10 +39,12 @@ def main():
     OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,
         full_phy_accepted=False,final_timing_complete=False,detailed_route_complete=False,
+        optimizer_parasitics='placement-Steiner candidate estimates; not routed signoff',
         qualified_pex=False,scope='Source-bound native electrical repair, setup buffering/sizing and positive hold-buffer candidate. '
         'Original routed nominal SPEF, 20/4/8/8ns propagated clocks, 5 percent derate, twenty SRAMs. '
         'Baseline must reproduce all six original worst slacks within 1ps before mutation. '
-        'Optimizer estimates after mutation are not final timing; new route/RC/all-corner STA required.')
+        'After the exact baseline and router guards, use placement-Steiner estimates only for candidate optimization. '
+        'Optimizer estimates are not final timing; new route/RC/all-corner STA required.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     def run(cmd,label,extra=None,required=True):
         env={k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')}
@@ -145,6 +147,8 @@ def main():
             source_odb_sha256=sha(db),source_spef_sha256=sha(spef),source_sdc_sha256=sha(sdc))
         save()
         run([app,'openroad','-version'],'native-version')
+        r['native_version']=(OUT/'native-version.log').read_text().strip()
+        print(r['native_version'],flush=True);save()
         run([app,'openroad','-exit',script],'native-baseline',{'NSSOC_RESIZER_STAGE':'baseline'})
         actual={c:{m:worst((OUT/('before-'+c+'-'+m+'.rpt')).read_text())for m in ('max','min')}for c in CORNERS}
         expected={c:{m:measurements[c]['timing__'+key+'__ws']for m,key in [('max','setup'),('min','hold')]}for c in CORNERS}
