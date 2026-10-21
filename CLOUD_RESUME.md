@@ -1,3 +1,12 @@
+## 2026-10-21 — actual postroute and TX followthrough ACTIVE; local empty
+
+Completed mainchip route39631640578 is pinned with lastDRTcount0 and empty final router report. POSTROUTE REVIEW ALREADY DISPATCHED:39652405552, sourcee2dabd1e79551812d11734192993b12ad49a26a9, exact completed route+input39635867954. Do not dispatch it twice and do not resume completed DRT. Await actual topology/fixed-clock/antenna/disconnect/fresh nominalRC/20/4/8/8ns three-corner timing; final signoff remains unaccepted.
+
+NewTX feed32: physical39646885443 PASS and conductors39648022412 PASS. Anchor39648841180 running; hosted followthrough39651408848/source0b72170aca43c422d267eeaaa9f819bfab08fd5b is active and will run fresh intrinsic+RC after exact successful terminal anchor. Its generated source/receipt bundle must be reviewed and committed byte-for-byte before subsequent two-order precision, composition, interfaces and full waves. Do NOT execute the superseded RAM-only manual intrinsic/RC publication draft or duplicate these native stages.
+
+PLL39637767590 and oldTX39640657545/39640662925 remain live. Actual residual storage observer39650432878 passed; full capture capacity not established. No tests or native artifacts retained locally: /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. All evidence and resumable state stay in GitHub. Full serialPHY and final original-clock setup/hold remain open.
+
+
 ## 2026-10-21 — MAINCHIP NATIVE DRT COMPLETE, zero router markers
 
 39631640578 has terminalSUCCESS and actual COMPLETE_NATIVE_DRT_REQUIRES_ALL_POSTROUTE_PHYSICAL_RC_STA_GATES. The single original native route process completed: last completed count0, final detailed-route.drc is empty, routedODB6a7bbf7bb871fa6037d26d0f60c2979ae5a3bb13caf8c84459a518c5fb0ca633. Original20/4/8/8ns clocks and5%derate retained. Do NOT dispatch another DRT continuation. Exact completed-route descriptor pinned in mainchip-native-drt-complete-20261021.json. Next dispatch mainchip-postroute-review-cloud with that descriptor and already-passed exact input39635867954; require actual topology/fixed-clock,antenna/disconnect,freshRC and original three-corner setup/hold. Router0 alone is not signoff.
