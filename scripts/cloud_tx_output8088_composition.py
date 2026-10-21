@@ -6,7 +6,7 @@ from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 import compose_tx_output8088_native as compose
 import cloud_tx_output8088_intrinsic as intrinsic
-from run_cloud_tx_layout_repair import sha
+from run_cloud_tx_layout_repair import sha,fetch
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-output8088-composition'
 REPO='repos/Melihakbulut221/nssoc/'
 def api(path):return json.loads(subprocess.check_output(['gh','api',REPO+path]))
@@ -24,13 +24,16 @@ def prerequisite():
         time.sleep(30)
     jobs=api('actions/runs/'+str(spec['run'])+'/jobs?per_page=100')['jobs']
     assert len(jobs)==1 and jobs[0]['name']=='actual-full-parent-wire-rc'and jobs[0]['conclusion']=='success'
-    release=api('releases/tags/cloud-results-'+str(spec['run'])+'-1-tx-output8088-precision');loaded={}
-    for suffix in ('.summary.json','.parts.json'):
-        found=[a for a in release['assets']if a['name'].endswith(suffix)];assert len(found)==1
-        a=found[0];data=subprocess.check_output(['gh','api','-H','Accept: application/octet-stream',REPO+'releases/assets/'+str(a['id'])])
-        digest=hashlib.sha256(data).hexdigest()
-        assert len(data)==a['size']and a['digest']=='sha256:'+digest
-        loaded[suffix]=(a,data,digest)
+    receipt=json.loads((ROOT/'docs/evidence/tx-output8088-precision-pass-20261021.json').read_text())
+    assert receipt['run']==spec['run']and receipt['source_head']==spec['source_head']
+    stem='tx-output8088-precision-'+str(spec['run'])+'-1'
+    base='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-'+str(spec['run'])+'-1-tx-output8088-precision/'
+    loaded={}
+    for suffix,key in (('.summary.json','summary'),('.parts.json','parts')):
+        target=OUT/('producer'+suffix);digest=receipt[key+'_sha256']
+        fetch(base+stem+suffix,digest,target)
+        data=target.read_bytes();assert len(data)==receipt[key+'_bytes']
+        loaded[suffix]=(dict(id=receipt[key+'_asset_id']),data,digest)
     a,data,digest=loaded['.summary.json'];b,parts,partsha=loaded['.parts.json'];r=json.loads(data)
     assert r['source_head']==spec['source_head']and r['sources_unchanged']
     assert r['status']=='PASS_ACTUAL8088_NATIVE_RC_DOUBLE_TOTALS_TWO_ORDERS_AND13_CONTROLS_EACH_NOT_FULL_PHY'

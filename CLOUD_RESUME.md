@@ -1,3 +1,10 @@
+## Actual8088 precise RC passed; composition network failure corrected
+39592592670 passed both fresh and reversed native coupling orders:139838R99650C,703components13370planes, original13raw faults each. Every R/C record is unchanged; original source/geometry/technology/thresholds preserved. Earlier native-start failure is confirmed missing libGLU.so.1 and resolved by the qualified producer dependency set. Canonical receipt pins report91a74f25e070fa86a56fa10c4899f919b28a2250074bab3631f79a88d405315d and partsb9ec8f3b908871292dd23d392dd616ddf911c91aa856c8d8e1f44c8ce4bb3d67.
+
+Composition39593495995 failed only while downloading the successful summary with TCP connection reset. It never reached model composition. The controller now uses that same pinned summary/parts with existing retrying fetch and exact byte/hash checks. Redispatch only composition after terminal failure; do not rerun passed native RC.
+
+Mainchip39591380714, TX39592603205/39592612780 and PLL read-only census39592019880 remain the existing live handles. Full PHY and final mainchip timing remain open. Cloud-only.
+
 ## Current live native and dependent jobs
 Mainchip39591380714 resumes exact sixth saved router. TX nominal39592603205/fault39592612780 resume fifth captures29.138422440393524ns/28.438634845952907ns toward original34ns; fifth receipts committed. Precision39592592670 runs both actual8088 extraction orders. Corrected composition39593495995/sourcecd000330edef2aebb4fd11cb56e25cddadc7281f waits for that exact producer. Its known-invalid observer39593087442 was cancelled solely for the stale receipt filename; no native process was cancelled. PLL corrected full storage census39592019880 continues read-only.
 
