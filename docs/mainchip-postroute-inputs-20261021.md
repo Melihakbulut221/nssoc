@@ -18,3 +18,10 @@ STA_CORNERS from the PDK. The failure is preserved. The corrected job restores
 the exact resolved current-candidate native stage config from39494338440,
 requires all raw user settings to match it, and packages both configurations.
 No missing corner is filled with a guessed default and no timing gate changes.
+
+Run39628968402 demonstrated that per-step config omits flow/STA settings
+and resolves pdk_dir macro/CDL paths, so literal raw-to-step comparison fails.
+The corrected source is the original run39436610858 full run/resolved.json.
+The independently reconstructed raw config must exactly equal that run's
+trial-config.json; both files and the filtered step config are hash verified.
+No setting is inferred from absence and no corner/gate is removed.

@@ -1,3 +1,12 @@
+##2026-10-21 full native configuration bound after filtered-step rejection
+39628968402 showed per-step JSON omits flow/STA keys and expands PDK macros.
+Failure preserved. Input job now restores original39436610858 trial-config,
+full run/resolved.json and step config by exact hashes. Reconstructed raw
+settings must exactly equal original native raw input; complete resolved
+config supplies corners/models. No default clock/corner or weakened gate.
+Current power128 continuation processes and mainchip/PLL remain untouched.
+
+
 ##2026-10-21 power128 initial native capsules saved; first continuation
 39627629074 passes actual native process/prefix preservation for both cases.
 Nominal786 complete rows to0.374963453316ns; leaf fault839 to0.401463453347ns.

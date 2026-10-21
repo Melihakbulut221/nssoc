@@ -754,27 +754,33 @@ def main():
         assert sha(netlist)=='b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0'
         assert sha(sdc)=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'
         assert cfg['STA_THREADS']==1 and cfg['TIME_DERATING_CONSTRAINT']==5.0
-        # Raw user config inherits PDK variables. Bind the already resolved
-        # config from the exact native current-candidate global-route stage.
+        # Bind both representations from the exact original native flow:
+        # user input and complete resolved flow config, not a filtered step.
         raw_cfg=dict(cfg)
-        pp=json.loads((ROOT/'docs/evidence/mainchip-portable-runtime-pass-20261020.json').read_text())
-        assert pp['run']==39494338440 and pp['summary_sha256']=='21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2'
-        config_name='source/run/1-openroad-detailedrouting/config.json'
-        portable,pconfig=reports.restore_report(pp['group'],pp['run'],pp['summary_sha256'],pp['parts_sha256'],OUT/'resolved-source',[config_name])
-        assert portable==pp['report']and portable['sources_unchanged']
-        cfg=json.loads((OUT/'resolved-source'/config_name).read_text())
-        compared={k:dict(raw=v,resolved=cfg.get(k),equal=(cfg.get(k)==v))for k,v in raw_cfg.items()if k!='meta'}
+        pp=json.loads((ROOT/'docs/evidence/mainchip-native-route-interruption-20261020.json').read_text())
+        assert pp['run']==39436610858 and pp['summary_sha256']=='4daa6ba4a1d8b7336cb667938c9bea12385a0e994b40145766e55e9f7e4e310f'
+        assert pp['parts_sha256']=='d556729eb60033b683eabf9156a75b62212a8ee6873d6912bc6d6b4f56841058'
+        names=['trial-config.json','run/resolved.json','run/1-openroad-detailedrouting/config.json']
+        original,pconfig=reports.restore_report(pp['group'],pp['run'],pp['summary_sha256'],pp['parts_sha256'],OUT/'resolved-source',names)
+        assert original['source_head']==pp['source_head']and original['status']=='INTERRUPTED_NATIVE_STAGE_RETAINED_NOT_ACCEPTED'
+        assert all(sha(OUT/'resolved-source'/n)==pp['outputs'][n]==original['outputs'][n]for n in names)
+        raw_original=json.loads((OUT/'resolved-source/trial-config.json').read_text())
+        assert raw_cfg==raw_original,'Current candidate user settings differ from archived actual native flow'
+        cfg=json.loads((OUT/'resolved-source/run/resolved.json').read_text())
+        stage_cfg=json.loads((OUT/'resolved-source/run/1-openroad-detailedrouting/config.json').read_text())
         r['resolved_configuration_source']=pconfig
-        r['raw_to_resolved_configuration_comparison']=compared
+        r['raw_configuration_exactly_reproduced']=True
+        r['resolved_configuration_is_complete_flow_not_filtered_step']=True
+        r['stage_configuration_keys']=sorted(stage_cfg)
+        r['raw_to_resolved_changes']={k:dict(raw=v,resolved=cfg.get(k))for k,v in raw_cfg.items()if cfg.get(k)!=v}
         save()
-        assert all(v['equal']for v in compared.values()),'Resolved native stage differs from original candidate configuration'
         assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']
         assert float(cfg['CLOCK_PERIOD'])==20 and float(cfg['TIME_DERATING_CONSTRAINT'])==5
         assert cfg['STA_THREADS']==1
         assert set(cfg['STA_CORNERS'])=={'nom_slow_1p08V_125C','nom_typ_1p20V_25C','nom_fast_1p32V_m40C'}
         package=OUT/'postroute-inputs';package.mkdir()
         (package/'trial-config.json').write_text(json.dumps(raw_cfg,indent=2)+'\n')
-        (package/'resolved-stage-config.json').write_text(json.dumps(cfg,indent=2)+'\n')
+        (package/'resolved-flow-config.json').write_text(json.dumps(cfg,indent=2)+'\n')
         clean=dict(state);clean['metrics']={}
         for key in ('def','spef','pnl','sdf'):clean[key]=None
         (package/'candidate-state.json').write_text(json.dumps(clean,indent=2)+'\n')
@@ -826,7 +832,7 @@ def main():
         contract=dict(status='PASS_EXACT_CURRENT_CANDIDATE_POSTROUTE_INPUT_PACKAGE_NOT_ROUTED_OR_TIMING_ACCEPTANCE',
             original_root=str(ROOT),candidate_odb=str(odb.relative_to(ROOT)),candidate_netlist=str(netlist.relative_to(ROOT)),candidate_sdc=str(sdc.relative_to(ROOT)),
             candidate_odb_sha256=sha(odb),candidate_netlist_sha256=sha(netlist),candidate_sdc_sha256=sha(sdc),
-            configuration_sha256=sha(package/'trial-config.json'),resolved_configuration_sha256=sha(package/'resolved-stage-config.json'),state_sha256=sha(package/'candidate-state.json'),
+            configuration_sha256=sha(package/'trial-config.json'),resolved_configuration_sha256=sha(package/'resolved-flow-config.json'),state_sha256=sha(package/'candidate-state.json'),
             input_files=inventory,file_count=len(inventory),bytes=sum(v['bytes']for v in inventory.values()),
             clocks_ns=[20,4,8,8],derating_percent=5,nominal_rc_only=True,qualified_rc_minmax=False,
             native_routing_started=False,fresh_spef_required=True,inherited_metrics_discarded=True,
