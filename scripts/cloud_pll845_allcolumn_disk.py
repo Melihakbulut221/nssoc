@@ -41,10 +41,15 @@ def verify_resume_methods(report,current,root):
 def load_contract(root,vectors=None):
  out=root/'cloud-pll845-allcolumn-reader-proof'
  if not out.exists():
-  report,proof=reports.restore_report('pll845-native-reader',39582875018,
-   '2d5d2a0acd3817c4cad40519b6d4021b6fe1953f7a638c1982c555b07deae329',
-   'c61eea87ccfbdb3c5375ad60172d8d2c1318543f0f84e1e17c1780564ee69533',
-   out,['reader-contract.json','header/native-header-prefix.bin'])
+  staging=root/'cloud-pll845-reader-fetch';staging.mkdir(exist_ok=True)
+  previous_out=reports.OUT
+  try:
+   reports.OUT=staging
+   report,proof=reports.restore_report('pll845-native-reader',39582875018,
+    '2d5d2a0acd3817c4cad40519b6d4021b6fe1953f7a638c1982c555b07deae329',
+    'c61eea87ccfbdb3c5375ad60172d8d2c1318543f0f84e1e17c1780564ee69533',
+    out,['reader-contract.json','header/native-header-prefix.bin'])
+  finally:reports.OUT=previous_out
  else:
   report=json.loads((out/'result.json').read_text())
  assert sha(out/'result.json')=='2d5d2a0acd3817c4cad40519b6d4021b6fe1953f7a638c1982c555b07deae329'

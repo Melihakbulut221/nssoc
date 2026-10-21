@@ -1,3 +1,6 @@
+## Reader integration proof staging correction
+The source review found restore_report uses a module-level staging root. The new reader helper now creates its own cloud staging directory and restores the previous reporting context after proof download. Source hash bound in the migration manifest. No simulation or acceptance changes. Preserve the initial migration run if it fails on missing staging directory; dispatch corrected qualification only after it is terminal.
+
 ## PLL reader qualified; reader-only controller integration under test
 Run39582875018 passed all1694 required voltage probes/2737 terminal coverage, actual46row5106column bit-exact prefix and16corruption controls. Canonical receipt and exact reader contract SHAee6e0a9d309ce6de9a36ded8184381be8537100b506bd83a0515f1c57ed9e951 committed. No full capture/lock acceptance.
 
