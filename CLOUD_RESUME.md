@@ -1,3 +1,8 @@
+## Native8088 loaded-wave endpoint binding launched
+tx-output8088-interfaces-cloud reopens actual8088 GDS/flat transistor LVS and fresh703-conductor graph, and binds all28620 composed terminals to that independent database. The original124logical input legs/372data bases/64driver handoffs are located from the preserved core placement metadata, whose GDS identity matches the integrated source. Four new output/supply/bias ports are probed on actual drawn metal, with polarity and supply/bias swap controls. Existing8semantic controls and2actual wrong-endpoint checks remain.
+
+Composition39595327006 already passed25controls and is pinned. After endpoint binding, adapt the original full34ns/256-bit bench to the actual8088 model, removing the now-physical schematic output instance, preserving every original stimulus and electrical/safety gate. No loaded-wave success claimed. Headroom probe was redispatched after privileged cache existence fix. Native mainchip/TX processes and PLL read-only census remain untouched. Cloud-only.
+
 ## Actual8088 full-parent RC composition passed
 39595327006 passed all8088devices139838R99650C,165physical+wire_cref ports,13370reference planes65body nets28620terminals and25corruption checks. Modelbe24c1648cac436714ed3d681e4da7a232ae1983840e227f63e58844dd5a70ce and binding01be2b2a6759bf5efb8aba4c719fd5c589a1af13cfffec3cc64b2f60ceeb8c8b are pinned. Next reopen actual GDS/LVS to bind logical input sampling planes and output ports, then build original loaded34ns bench with actual output included. No electrical/PHY acceptance yet.
 
