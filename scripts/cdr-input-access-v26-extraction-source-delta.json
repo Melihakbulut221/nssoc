@@ -4,7 +4,7 @@
       "baseline": "scripts/cloud_cdr_data3_v25_planes.py",
       "baseline_sha256": "c0e3cb9398d4cf080e567e942e1c38966c4c787312a6a89fc7046ca51147e4d5",
       "candidate": "scripts/cloud_cdr_input_access_v26_planes.py",
-      "candidate_sha256": "abca09681aeee969815f75a90b57cc98d145bea7bad37853960bc0db0f54c613",
+      "candidate_sha256": "6824ed7fcf4c68b5a08fae41f3e5e3fefd4ce9c97530bf5f57db5bfd22fe0e29",
       "changes": [
         {
           "start": 616,
@@ -22,6 +22,11 @@
           "replacement": "6"
         },
         {
+          "start": 6256,
+          "end": 6256,
+          "replacement": "validate_parent_pin(pin,prior):\n    assert pin['run']==39525872386 and pin['source_head']=='7760e5574ab337beb4e1777983e73e446440658a'\n    assert pin['summary_sha256']=='44361f37b6558c13937c127027e911cd6136d60a96ede44c061d7e0da52c0dae'\n    assert pin['parts_sha256']=='ae1401d260984b7d8ad9e7c21bd52b15ef59f7578f0d179c1b271a90814b6fff'\n    assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']\n    assert prior['status']=='PASS_PD476_INPUT_ACCESS_V26_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'\n    assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD476_DRC_LVS_AND_FAULT_CONTROLS'\n    geometry=prior['replacement']\n    assert geometry['status']=='PASS_SERIALIZED_UNCHANGED_PARENT_WITH_FOUR_NATIVE_INPUT_ACCESS_V26_SAMPLERS'\n    assert geometry['actual_sampler_instances']==4\n    expected_changed={f'Rs{sampler}_{leg}' for sampler in 'abcd' for leg in ('IP','IN')}\n    assert len(geometry['changed_reference_devices'])==8 and set(geometry['changed_reference_devices'])==expected_changed\n    assert geometry['parent_geometry_unchanged'] and geometry['all_existing_collector_retime_trunks_retained']\n    assert geometry['external_leaf_ports_and_bbox_unchanged'] and geometry['serialized_native_check']\n    assert len(geometry['controls'])==2\n    assert prior['parent_source']['summary_sha256']=='f6575268cb8ff39408803e747b63788d15d67f639ea8f207a13e4c4140e9205b'\n    assert prior['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_EIGHT_NATIVE_LEAF_DRAWINGS'\n    assert len(prior['child_geometry']['controls'])==3\n    assert prior['outputs']['layout/nssoc_cdr_pd476_follower_v23.gds']=='4a0567c696b994f087440b17a41162e760c70dd6495d3f9317e416496ce5ca51'\n    return geometry\n\ndef "
+        },
+        {
           "start": 6810,
           "end": 6811,
           "replacement": "input-"
@@ -37,99 +42,39 @@
           "replacement": "6"
         },
         {
-          "start": 6900,
-          "end": 6901,
-          "replacement": "25"
+          "start": 6878,
+          "end": 6878,
+          "replacement": "v"
         },
         {
-          "start": 6902,
-          "end": 6902,
-          "replacement": "723"
+          "start": 6879,
+          "end": 6881,
+          "replacement": "lidat"
         },
         {
-          "start": 6903,
-          "end": 6908,
-          "replacement": "6"
+          "start": 6882,
+          "end": 6882,
+          "replacement": "_pa"
         },
         {
-          "start": 6935,
-          "end": 6935,
-          "replacement": "760"
+          "start": 6883,
+          "end": 6883,
+          "replacement": "en"
         },
         {
-          "start": 6936,
-          "end": 6937,
-          "replacement": "5574ab337beb4e1777983e73e4"
+          "start": 6884,
+          "end": 6885,
+          "replacement": "_pin(pin,"
         },
         {
-          "start": 6939,
-          "end": 6940,
-          "replacement": "44065"
+          "start": 6891,
+          "end": 6893,
+          "replacement": "eport"
         },
         {
-          "start": 6941,
-          "end": 6974,
-          "replacement": "a"
-        },
-        {
-          "start": 7015,
-          "end": 7015,
-          "replacement": "44361"
-        },
-        {
-          "start": 7016,
-          "end": 7016,
-          "replacement": "37b6558"
-        },
-        {
-          "start": 7017,
-          "end": 7020,
-          "replacement": "1"
-        },
-        {
-          "start": 7021,
-          "end": 7021,
-          "replacement": "937"
-        },
-        {
-          "start": 7022,
-          "end": 7023,
-          "replacement": "127027e911c"
-        },
-        {
-          "start": 7025,
-          "end": 7028,
-          "replacement": "136"
-        },
-        {
-          "start": 7029,
-          "end": 7031,
-          "replacement": "60a96ede"
-        },
-        {
-          "start": 7033,
-          "end": 7033,
-          "replacement": "c061d7e0d"
-        },
-        {
-          "start": 7034,
-          "end": 7036,
-          "replacement": "5"
-        },
-        {
-          "start": 7037,
-          "end": 7037,
-          "replacement": "c0"
-        },
-        {
-          "start": 7038,
-          "end": 7045,
-          "replacement": "a"
-        },
-        {
-          "start": 7046,
-          "end": 7079,
-          "replacement": ""
+          "start": 6895,
+          "end": 7183,
+          "replacement": ")"
         },
         {
           "start": 7362,
@@ -147,24 +92,54 @@
           "replacement": "6"
         },
         {
-          "start": 7612,
-          "end": 7613,
-          "replacement": "INPUT_"
+          "start": 7464,
+          "end": 7796,
+          "replacement": ""
         },
         {
-          "start": 7614,
-          "end": 7617,
-          "replacement": "CCESS"
+          "start": 7805,
+          "end": 7807,
+          "replacement": "val"
         },
         {
-          "start": 7618,
-          "end": 7626,
-          "replacement": "V"
+          "start": 7808,
+          "end": 7853,
+          "replacement": "d"
         },
         {
-          "start": 7627,
-          "end": 7627,
-          "replacement": "6"
+          "start": 7855,
+          "end": 8182,
+          "replacement": ""
+        },
+        {
+          "start": 8184,
+          "end": 8289,
+          "replacement": ""
+        },
+        {
+          "start": 8296,
+          "end": 8340,
+          "replacement": "p"
+        },
+        {
+          "start": 8342,
+          "end": 8372,
+          "replacement": "(p"
+        },
+        {
+          "start": 8374,
+          "end": 8544,
+          "replacement": ","
+        },
+        {
+          "start": 8549,
+          "end": 8819,
+          "replacement": ""
+        },
+        {
+          "start": 8820,
+          "end": 8823,
+          "replacement": ""
         },
         {
           "start": 8879,

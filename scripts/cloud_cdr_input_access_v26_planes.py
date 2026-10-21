@@ -99,6 +99,27 @@ def native():
     assert len(faults)==19
     (OUT/'native-planes.json').write_text(json.dumps(result,indent=2)+'\n')
 
+def validate_parent_pin(pin,prior):
+    assert pin['run']==39525872386 and pin['source_head']=='7760e5574ab337beb4e1777983e73e446440658a'
+    assert pin['summary_sha256']=='44361f37b6558c13937c127027e911cd6136d60a96ede44c061d7e0da52c0dae'
+    assert pin['parts_sha256']=='ae1401d260984b7d8ad9e7c21bd52b15ef59f7578f0d179c1b271a90814b6fff'
+    assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']
+    assert prior['status']=='PASS_PD476_INPUT_ACCESS_V26_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'
+    assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD476_DRC_LVS_AND_FAULT_CONTROLS'
+    geometry=prior['replacement']
+    assert geometry['status']=='PASS_SERIALIZED_UNCHANGED_PARENT_WITH_FOUR_NATIVE_INPUT_ACCESS_V26_SAMPLERS'
+    assert geometry['actual_sampler_instances']==4
+    expected_changed={f'Rs{sampler}_{leg}' for sampler in 'abcd' for leg in ('IP','IN')}
+    assert len(geometry['changed_reference_devices'])==8 and set(geometry['changed_reference_devices'])==expected_changed
+    assert geometry['parent_geometry_unchanged'] and geometry['all_existing_collector_retime_trunks_retained']
+    assert geometry['external_leaf_ports_and_bbox_unchanged'] and geometry['serialized_native_check']
+    assert len(geometry['controls'])==2
+    assert prior['parent_source']['summary_sha256']=='f6575268cb8ff39408803e747b63788d15d67f639ea8f207a13e4c4140e9205b'
+    assert prior['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_EIGHT_NATIVE_LEAF_DRAWINGS'
+    assert len(prior['child_geometry']['controls'])==3
+    assert prior['outputs']['layout/nssoc_cdr_pd476_follower_v23.gds']=='4a0567c696b994f087440b17a41162e760c70dd6495d3f9317e416496ce5ca51'
+    return geometry
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--native',action='store_true');args=parser.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
@@ -109,25 +130,10 @@ def main():
     save()
     try:
         pin=json.loads((ROOT/'docs/evidence/cdr-input-access-v26-parent-physical-pass-20261021.json').read_text())
-        assert pin['run']==39525872386 and pin['source_head']=='7760e5574ab337beb4e1777983e73e446440658a'
-        assert pin['summary_sha256']=='44361f37b6558c13937c127027e911cd6136d60a96ede44c061d7e0da52c0dae'
-        assert pin['parts_sha256']=='c68a6315a0c48bf7876c21686d8d876ed8d724133551ebca8ddd4f401c5e4c31'
+        validate_parent_pin(pin,pin['report'])
         selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]
         prior,proof=reports.restore_report('cdr-input-access-v26-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
-        assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']
-        assert prior['status']=='PASS_PD476_INPUT_ACCESS_V26_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'
-        assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD476_DRC_LVS_AND_FAULT_CONTROLS'
-        geometry=prior['replacement']
-        assert geometry['status']=='PASS_SERIALIZED_UNCHANGED_PARENT_WITH_FOUR_NATIVE_DATA3_SELECTOR2_SAMPLERS'
-        assert geometry['actual_sampler_instances']==4
-        expected_changed={f'Qs{sampler}_{latch}_{selector}' for sampler in 'abcd' for latch in ('M','S') for selector in ('DP','DN','LP','LN')}
-        assert len(geometry['changed_reference_devices'])==32 and set(geometry['changed_reference_devices'])==expected_changed
-        assert geometry['parent_geometry_unchanged'] and geometry['all_existing_collector_retime_trunks_retained']
-        assert geometry['external_leaf_ports_and_bbox_unchanged'] and geometry['serialized_native_check']
-        assert len(geometry['controls'])==2
-        assert prior['parent_source']['summary_sha256']=='f6575268cb8ff39408803e747b63788d15d67f639ea8f207a13e4c4140e9205b'
-        assert prior['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_EIGHT_NATIVE_LEAF_DRAWINGS'
-        assert len(prior['child_geometry']['controls'])==3
+        geometry=validate_parent_pin(pin,prior)
         assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='4a0567c696b994f087440b17a41162e760c70dd6495d3f9317e416496ce5ca51'
         r['retime_parent_geometry']=geometry
         r['physical_source']=proof
