@@ -1,0 +1,53 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128_prepared.py",
+  "baseline_sha256": "ec5366a42d9cddea87717ad81e36cb1be28f19072eef61330c5746e7ec62a44e",
+  "candidate_path": "scripts/cloud_tx_output8088_power128feed32_prepared.py",
+  "candidate_sha256": "af9469a335fa029a745335e789b7debf9baae3eed6df195521af41abe1b28299",
+  "edits": [
+    {
+      "before": "power128",
+      "after": "power128feed32",
+      "count": 7
+    },
+    {
+      "before": "POWER128",
+      "after": "POWER128FEED32",
+      "count": 1
+    }
+  ],
+  "adapter_derivation": {
+    "baseline_path": "scripts/cloud_tx_output8088_power128_fullwave_adapter.py",
+    "baseline_sha256": "6dc8192c9e8f1eda3c6b0ed1aa4d6f629b9f7813098a361ce5f8e073ecdc6139",
+    "candidate_path": "scripts/cloud_tx_output8088_power128feed32_fullwave_adapter.py",
+    "candidate_sha256": "1860f9de7fbe467e7e723a7385610a8cd91d21af15a36c614279bfbf9d9a239e",
+    "edits": [
+      {
+        "before": "power128",
+        "after": "power128feed32",
+        "count": 2
+      },
+      {
+        "before": "POWER128",
+        "after": "POWER128FEED32",
+        "count": 1
+      },
+      {
+        "before": "39624491519",
+        "after": "39658547934",
+        "count": 1
+      },
+      {
+        "before": "8b867ae9927e08a7d13251115cc1d67906fc259e9c4f5e94406e82f3ea35d443",
+        "after": "a0e1d0a069e91a48e4238ecb1b46c9b0a7a16dfb7079f73c654c5851d3727159",
+        "count": 1
+      }
+    ]
+  },
+  "frozen_inputs": {
+    "scripts/cloud_tx_output8088_power128feed32_fullwave_adapter.py": "1860f9de7fbe467e7e723a7385610a8cd91d21af15a36c614279bfbf9d9a239e",
+    "scripts/check_tx_output8088_power128feed32_prepared_sources.py": "5dc2fe648c13f5ce486b7d9071ccbc20e4334fbfbbe06ac20f9943b00e33e89a",
+    ".github/workflows/tx-output8088-power128feed32-prepared-cloud.yml": "5b491b4ee6061fd70a9cc0622fb3e3e0906900cf035b6e5959649626f8c0d3d2",
+    "docs/evidence/tx-output8088-power128feed32-interfaces-pass-20261021.json": "42649e556afd519209e9b1fe057e628cc156cfc57073ae1d9c81b076416b3cb5"
+  },
+  "scope": "Only isolated feed32 namespace and actual successful physical interface source pins change. Original power128 checker also runs. Original34ns256bits604HBT5376MOS, all stimuli, solver, timestep, loads, sample phases, device bounds and gates unchanged."
+}

@@ -1,3 +1,9 @@
+## 2026-10-21 — feed32 actual native interfaces PASS; full34ns decks preparing
+
+39658547934 terminalSUCCESS/sourceec671f5. Actual124inputlegs/372bases/64driverhandoffs/four outputports and every28620native terminal match new GDS/LVS and composed model; all8record+2endpoint+2outputfaults rejected. Exact receipt pinned. New preparation matrix normal and swap_leaf_select uses original34ns/256bits/.5ps and604HBT5376MOS bounds, all original phases and loads. Only new physical model/namespace/pins change; original power128 source checker remains mandatory plus exact new adapter derivation. Preparation is not electrical acceptance. Next must consume exact successful prepared evidence into new isolated checkpointed native fullwave controller; do not reuse old geometry capsules.
+
+Mainchip native route is complete but setup/hold/antenna open per39654204345; diagnosis39657466517 preserved. Local workspace remains empty; all CAD and evidence in GitHub.
+
 ## 2026-10-21 — feed32 full-parent RC composition PASS; native interface binding starts
 
 39657871046 terminalSUCCESS/sourcec79ecf7:8088actualdevices,140222R,99906C,28620terminals,13370planes,703conductors,65body nets. All25 real corruptions rejected; original native model records and physical reference planes retained. Exact summary663501085 pinned, model2572406e76c5db277acaf2a50d95c6a1b476e26e44f9a1fb388537e95bec3177. Native interface workflow now reopens actual new GDS/LVS, requiring124inputs/372bases/64driverhandoffs/four outputs and all28620terminals. Binder is byte-identical to original power128 method; only exact producer pins/names change. Electrical/fullPHY not accepted.
