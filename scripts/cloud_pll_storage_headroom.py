@@ -14,7 +14,10 @@ FIXED=[
  '/usr/local/share/boost','/usr/local/share/vcpkg',
  '/home/runner/.rustup','/home/runner/.cargo','/home/runner/.cache',
  '/root/.rustup','/root/.cargo','/root/.cache',
- '/usr/local/julia','/opt/az']
+ '/usr/local/julia','/opt/az',
+ # Additional named unused SDK roots measured in39595708873.
+ '/usr/local/.ghcup','/usr/local/julia1.13.1','/usr/share/miniconda',
+ '/opt/pipx','/usr/local/aws-cli','/usr/local/aws-sam-cli','/usr/share/az_15.6.1']
 def sha(path):
     with Path(path).open('rb')as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def entry_exists(path):
@@ -80,6 +83,7 @@ def main():
             run('post-'+label,args)
         assert not run('empty-docker-after',['docker','ps','-aq']).strip()
         r['after']=dict(zip(('total','used','free'),shutil.disk_usage(ROOT)))
+        r['remaining_directory_bytes']=run('remaining-directory-bytes',['sudo','du','-xB1','--max-depth=1','/usr/lib','/usr/local/lib','/usr/local/share','/opt','/home/runner'])
         r['free_gain_bytes']=r['after']['free']-r['before']['free']
         r['original_allocation_controls']=allocation.controls()
         image=allocation.choose_image(r['after']['free'])
