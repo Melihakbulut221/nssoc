@@ -1,3 +1,14 @@
+## Cloud-only cleanup confirmed; actual8088 RC passed and full PLL archive census retained
+
+All future CAD, simulations, tests, source changes and artifacts stay in GitHub. Local use is RAM-only API orchestration. The local app workspace is empty and no local CAD process was observed. Verified clean old clones were removed in the existing cleanup receipt; do not recreate a checkout or download artifacts locally.
+
+TX8088 RC39587339745 passed139838R99650C,703metal components13370planes and all13raw faults. Receipt now pins the complete report/manifest/output hashes. Its measured scope is wire topology and collapsed C, not qualified RF/substrate PEX or full PHY. Next reuse already proven double-total producer39486998309 against actual8088 input orders with unchanged audit and13faults, then compose actual8088 intrinsic39586675206 with fresh full-parent RC. Never sum child RC.
+
+PLL census39586241135 failed after verifying the entire source archive and1901files: storage-initialization-state.json is absent. Raw94,756,323,259bytes,2,319,724complete5106-column rows,40,768partialbytes; last native time724.5935937500396ns. Total archived logical bytes94,959,812,286. Retained initialization logs and new-preparation metadata must resolve the actual capacity/reserve cause before any native resume. Original39502073954 checkpoint preserved; no reserve waiver or capture/lock acceptance.
+
+Mainchip39572968246 and TX nominal39573847558/fault39573851657 remain live at this update. Preserve their native processes; only inspect terminal capsules and continue from exact checkpoint. Full serial PHY, CDR/clock/bias boundaries, completed mainchip route and final setup/hold remain open.
+
+
 ## TX8088 full intrinsic binding passed; corrected fresh RC remains live
 Run39586675206 passed actual8088devices28620terminals165ports65body703wire nets and19model faults plus negative-spacing control. Both actual10um/70.215um outputrsil loads retain self-heating. Canonical receipt pins model33ef923e5208e6243c14cbde5f72b1ed13698327882c5cd0da389d3578398a26, bindingf8b441e0fae040ff144c7a7aa54293079eb583e8ff87eb32df3b94b08e4ea892 and native7b6397688337a3aa9d442576634839eda6f5fe2bb9a1605f10ae8490d375c11a.
 
