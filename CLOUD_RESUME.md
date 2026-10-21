@@ -1,3 +1,12 @@
+##2026-10-21 eighth mainchip route segment saved; ninth continuation
+39610377184 ended with the real process saved, not a completed route.
+Measured completed router counts: [173861, 98155, 87048, 21646, 11790, 8379, 6882, 5698, 4867, 4027, 2197, 985, 815, 507, 406, 268, 232, 2371, 169]
+Last native progress: {'percent': 90, 'violations': 147}
+Dispatch ninth continuation once from this exact capsule for7200 native seconds.
+Original20/4/8/8ns clocks and5percent derate unchanged. No final STA verdict.
+Power128 TX39627629074 and PLL39602655093 remain separate cloud work.
+
+
 ##2026-10-21 full native configuration bound after filtered-step rejection
 39628968402 showed per-step JSON omits flow/STA keys and expands PDK macros.
 Failure preserved. Input job now restores original39436610858 trial-config,
