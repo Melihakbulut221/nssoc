@@ -94,8 +94,8 @@ def main():
         assert rc==0,(label,rc)
     save()
     try:
-        pin=json.loads((ROOT/'docs/evidence/cdr-bias-access-v27-parent-physical-pass-20261021.json').read_text())
-        prior,proof=reports.restore_report('cdr-bias-access-v27-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',list(pin['report']['outputs']))
+        pin=json.loads((ROOT/'docs/evidence/cdr-bias-access-v27-clean-parent-pass-20261021.json').read_text())
+        prior,proof=reports.restore_report('cdr-bias-access-v27-clean-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',list(pin['report']['outputs']))
         assert prior==pin['report']and prior['sources_unchanged'];r['physical_source']=proof
         plane=json.loads((ROOT/'docs/evidence/cdr-bias-access-v27-planes-pass-20261021.json').read_text())
         assert plane['report']['physical_source']['summary_sha256']==pin['summary_sha256']

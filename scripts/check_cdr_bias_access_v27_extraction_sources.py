@@ -5,7 +5,7 @@
 import ast,hashlib,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-PINS={'scripts/cloud_cdr_bias_access_v27_planes.py': '161ab51bd77d8a15832bf3854c5d23a3814cdf051be481c5ddc0c46ccd6abd47', 'scripts/cloud_cdr_bias_access_v27_wire_inputs.py': '374415925787de3be68541eaea13cc4a40202a53290f5819bca18c7d7fd953ec', 'scripts/cloud_cdr_bias_access_v27_binding.py': '9f701407666cb33d98af39af35a890ec3bca6496f019820055995041370dc058', 'scripts/cloud_cdr_bias_access_v27_rc.py': 'b0725798b1e8294645616786fd63a807ba8658d646ea0583f5b4691ded42d70c', 'scripts/cloud_cdr_bias_access_v27_extraction_stage.py': '698c65144c1e60933c585544cd586336d14ad326416feb4bf412e31deaa8d5c9', '.github/workflows/cdr-bias-access-v27-extraction-cloud.yml': '9626475ebb5c86dfe55243d06a50fefa9427724d511fa31fa2bfaf77ce163aea', 'docs/evidence/cdr-bias-access-v27-clean-parent-pass-20261021.json': '44e8e9615a0d49b79f9a2b066c178ac6a1eb8f967eea8aea464fbe5775bd6714'}
+PINS={'scripts/cloud_cdr_bias_access_v27_planes.py': '161ab51bd77d8a15832bf3854c5d23a3814cdf051be481c5ddc0c46ccd6abd47', 'scripts/cloud_cdr_bias_access_v27_wire_inputs.py': '0049a6a27d7e4cdeb0a098f5a185a883ba0fb0728c1c7f7a1e38fbc1ec64163a', 'scripts/cloud_cdr_bias_access_v27_binding.py': '9f701407666cb33d98af39af35a890ec3bca6496f019820055995041370dc058', 'scripts/cloud_cdr_bias_access_v27_rc.py': 'b0725798b1e8294645616786fd63a807ba8658d646ea0583f5b4691ded42d70c', 'scripts/cloud_cdr_bias_access_v27_extraction_stage.py': '698c65144c1e60933c585544cd586336d14ad326416feb4bf412e31deaa8d5c9', '.github/workflows/cdr-bias-access-v27-extraction-cloud.yml': '9626475ebb5c86dfe55243d06a50fefa9427724d511fa31fa2bfaf77ce163aea', 'docs/evidence/cdr-bias-access-v27-clean-parent-pass-20261021.json': '44e8e9615a0d49b79f9a2b066c178ac6a1eb8f967eea8aea464fbe5775bd6714'}
 def check():
     for name,digest in PINS.items():
         data=(ROOT/name).read_bytes()
@@ -57,5 +57,29 @@ def check():
         for dep in deps:
             expected=str(stage['receipt_path'](dep).relative_to(ROOT))
             assert expected in literals,('Producer/consumer receipt mismatch',name,dep,expected)
+    # Both independent parent consumers must restore the same clean capsule.
+    # The actual provenance gate previously rejected a stale wire-input source.
+    def parent_binding(text):
+        tree=ast.parse(text)
+        literals={n.value for n in ast.walk(tree)if isinstance(n,ast.Constant)and isinstance(n.value,str)}
+        expected='docs/evidence/cdr-bias-access-v27-clean-parent-pass-20261021.json'
+        assert expected in literals
+        assert 'docs/evidence/cdr-bias-access-v27-parent-physical-pass-20261021.json'not in literals
+        calls=[n for n in ast.walk(tree)if isinstance(n,ast.Call)and isinstance(n.func,ast.Attribute)and n.func.attr=='restore_report'and n.args and isinstance(n.args[0],ast.Constant)]
+        parents=[n.args[0].value for n in calls if n.args[0].value in ('cdr-bias-access-v27-parent','cdr-bias-access-v27-clean-parent')]
+        assert parents==['cdr-bias-access-v27-clean-parent']
+    for name in ('planes','wire_inputs'):
+        text=(ROOT/('scripts/cloud_cdr_bias_access_v27_'+name+'.py')).read_text()
+        parent_binding(text)
+        mutants=[
+            text.replace('docs/evidence/cdr-bias-access-v27-clean-parent-pass-20261021.json','docs/evidence/cdr-bias-access-v27-parent-physical-pass-20261021.json'),
+            text.replace("restore_report('cdr-bias-access-v27-clean-parent',","restore_report('cdr-bias-access-v27-parent',")
+        ]
+        for mutant in mutants:
+            assert mutant!=text
+            try:parent_binding(mutant)
+            except AssertionError:pass
+            else:raise AssertionError('Stale native parent receipt/group accepted')
+    print('PASS_BOTH_NATIVE_PARENT_CONSUMERS_AND_FOUR_STALE_BINDING_CONTROLS')
     print('PASS_FROZEN_PD476_NATIVE_EXTRACTION_AND_ACTUAL_DEPENDENCY_PATHS_NOT_ELECTRICAL_ACCEPTANCE')
 if __name__=='__main__':check()
