@@ -1,3 +1,7 @@
+## 2026-10-21 — mainchip baseline reproduced, native setup SIGSEGV isolated
+
+39661771876 terminalFAILURE, not a timeout. All six original max/min worst slacks reproduced within1ps; repair_design changed20cells and saved electrical-checkpoint. Setup then SIGSEGV(-11) in BaseMove::upsizeCell/LibertyPort::capacitance after makeBufferedNet warning. Failure and real intermediate hashes pinned. No final candidate accepted. Controlled retry changes only2→1threads and8→1repairs/pass plus native-version logging; it tests an unproven stale-path/concurrency hypothesis. Original source/equation/geometry/fixedclock gates and physical clock budgets unchanged. New workflow push owns retry; do not duplicate it. NewTX continuations39662510592(normal)/39662516267(swap) remain live; PLL39637767590 publication progresses.
+
 ## 2026-10-21 — both feed32 native initial processes SAVED; continue exact capsules
 
 39660121041 terminalSUCCESS/source91c772b. Normal reached0.430935820353ns/898complete rows; swapped reached0.453435820384ns/943rows. Every14182columns retained, single original entrypoint, exact engine and actual nonempty process images. No fullcapture or electrical acceptance. Exact descriptors pinned in tx-power128feed32-native-initial-saved-20261021.json. Dispatch one7200second continuation per case using these descriptors; never a cold restart. Controller2ddd7d4dfebe66b81e72dbd262192e6db1d9fc2ab9944da46ea79f0008ff0199 unchanged.

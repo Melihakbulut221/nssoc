@@ -3,7 +3,7 @@
     "scripts/cloud_mainchip_postroute_repair.py": {
       "baseline_path": "scripts/cloud_onehot_native_fanout.py",
       "baseline_sha256": "340c25935bb0df4fabaec45fd5321affa3490b037e4fd034c0a1395e6dea0786",
-      "candidate_sha256": "9eaee45fd40aafdd7bbd5afe677e13271d9163b3e13bbdcd1f838651965bc400",
+      "candidate_sha256": "fed0d5d452544ecfd319ca0c83138e8955492e94a7b9abe15715da6942fb1efd",
       "changes": [
         {
           "start": 369,
@@ -36,6 +36,11 @@
           "replacement": "        assert sha(db)=='6a7bbf7bb871fa6037d26d0f60c2979ae5a3bb13caf8c84459a518c5fb0ca633'\n        assert sha(nl)=='b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0'\n        assert sha(sdc)=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'\n        assert sha(spef)=='a945642b3df7b61eb1c57250d7794d0134ba6c57bb0987721731be2414a13c9d'\n        assert sha(source/names[1])=='0fc8159beefd0a013aea99b34a92322248ae3f3ead58db7648ff0d1f39948293'\n"
         },
         {
+          "start": 7134,
+          "end": 7205,
+          "replacement": "        tcl=['set_thread_count 1','define_corners '+' '.join(CORNERS)]\n"
+        },
+        {
           "start": 8647,
           "end": 8706,
           "replacement": "        native=ROOT/'hw/soc/flow/mainchip_postroute_repair.tcl'\n"
@@ -51,6 +56,11 @@
           "replacement": "        r.update(source=proof,verified_postroute_run=pin['run'],previous_antenna=original['antenna'],\n"
         },
         {
+          "start": 9530,
+          "end": 9530,
+          "replacement": "        run([app,'openroad','-version'],'native-version')\n"
+        },
+        {
           "start": 10995,
           "end": 11115,
           "replacement": "        run([app,'openroad','-exit','-python',ROOT/'scripts/check_mainchip_postroute_repair_geometry.py'],'native-geometry')\n"
@@ -60,12 +70,17 @@
     "hw/soc/flow/mainchip_postroute_repair.tcl": {
       "baseline_path": "hw/soc/flow/onehot_native_fanout.tcl",
       "baseline_sha256": "d12ad0e97180e7a65add6f23929e77fd7396434d26b5917d60333c20c11aadaa",
-      "candidate_sha256": "c258138f370ac394af7619336cfde4cb2fd8cfbca9ea305765bbc6bf4c68bde4",
+      "candidate_sha256": "0d8e690057749fc0b951ee43dd2649fc7ada2b9109c874021180d081c7fbcfb5",
       "changes": [
         {
           "start": 634,
           "end": 716,
           "replacement": "if {[llength [$block getInsts]] != 152762} {error \"Wrong source instance census\"}\n"
+        },
+        {
+          "start": 4679,
+          "end": 4752,
+          "replacement": "        -max_iterations 80 -max_repairs_per_pass 1 -max_utilization 80 \\\n"
         }
       ]
     },

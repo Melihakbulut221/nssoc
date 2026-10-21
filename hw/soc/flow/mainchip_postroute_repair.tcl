@@ -93,7 +93,7 @@ if {$::env(NSSOC_RESIZER_STAGE) eq "baseline"} {
     # Setup may add positive buffers/load splits; no clone/remove/swap/retime.
     # Native Liberty equation proof and original-instance retention are mandatory.
     repair_timing -setup -setup_margin 0 -repair_tns 100 \
-        -max_iterations 80 -max_repairs_per_pass 8 -max_utilization 80 \
+        -max_iterations 80 -max_repairs_per_pass 1 -max_utilization 80 \
         -skip_pin_swap -skip_gate_cloning -skip_size_down \
         -skip_buffer_removal -skip_last_gasp -skip_vt_swap -skip_crit_vt_swap \
         -verbose

@@ -110,7 +110,7 @@ def main():
             target=pdk/'ihp-sg13g2'/str(path).rsplit('/ihp-sg13g2/',1)[1]
             assert str(target)in model_hashes
             return target
-        tcl=['set_thread_count 2','define_corners '+' '.join(CORNERS)]
+        tcl=['set_thread_count 1','define_corners '+' '.join(CORNERS)]
         for c in CORNERS:
             libs=list(cfg['LIB'][c])
             libs += [p for m in cfg['MACROS'].values()for p in m['lib'][c]]
@@ -144,6 +144,7 @@ def main():
             original_measurements=measurements,model_hashes=model_hashes,protected_inputs=protected,
             source_odb_sha256=sha(db),source_spef_sha256=sha(spef),source_sdc_sha256=sha(sdc))
         save()
+        run([app,'openroad','-version'],'native-version')
         run([app,'openroad','-exit',script],'native-baseline',{'NSSOC_RESIZER_STAGE':'baseline'})
         actual={c:{m:worst((OUT/('before-'+c+'-'+m+'.rpt')).read_text())for m in ('max','min')}for c in CORNERS}
         expected={c:{m:measurements[c]['timing__'+key+'__ws']for m,key in [('max','setup'),('min','hold')]}for c in CORNERS}
