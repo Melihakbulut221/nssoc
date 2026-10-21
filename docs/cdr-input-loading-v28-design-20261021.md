@@ -1,0 +1,9 @@
+# v28 equal-ratio input loading candidate
+
+The actual v27 full-wave and graph-bound diagnoses show that C/D clock steering remains active, while the data difference at their real master-input transistor bases collapses. The retime driver is a native HBT emitter follower with a finite4.5um/4um rppd pull-down, not an ideal source. Shortening sampler BP/BN from2.4um to0.9um made the pull-up load stronger and cleared the four selector VCE failures, but substantially worsened C/D functional sampling. Both nominal v27 captures remain rejected.
+
+This candidate changes four actual rppd lengths per sampler: IP, IN, BP and BN from0.9um to2.4um, keeping their4um widths. The equal input-to-pull-up geometry ratio is retained while increasing the series branch resistance. For an ideal divider that would preserve the common-mode interpolation and lower source loading; the real PDK includes contacts, nonlinear terminal loading and fresh routing parasitics, so neither equal operating point nor improved timing is assumed.
+
+All16HBT and9MOS primitives, every device width/count,12resistor census,17 physical taps, ports, placements, clock connections, data oracle and load/test gates remain. Four resistor PCells may change; the other50 primitive drawings must compare identically against the actual verified v27 leaf. Native560-rule DRC, unsimplified deep and flat54-device LVS and all20 existing physical fault controls are required.
+
+After the leaf passes, build the actual four-sampler parent and re-extract all physical RC and MIM inputs. No v27 resistance/capacitance may be reused as acceptance of this geometry. The original256bit34.25ns loaded waves,100mV samples,37.5ps timing, phase/current sign and transistor limits remain mandatory. This is an experimental circuit correction; it is not evidence that the CDR or complete serial Gen3 x4 PHY works.

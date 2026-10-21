@@ -1,3 +1,7 @@
+## 2026-10-21 v28 cloud physical candidate
+
+Actual v27 C/D master-input transfer collapse motivates changing IP/IN/BP/BN lengths together0.9um to2.4um at unchanged4um width. Equal geometry ratio, lower ideal loading; actual response unproven. The four changed native PCells must pass original54-device deep/flatLVS,560-ruleDRC and20faults against actual v27 leaf before parent integration, fresh RC/MIM and unchanged full loaded waves. Start cdr-sampler-input-loading-v28-physical-cloud. Keep v27 rejection and native diagnosis; never relabel a leaf pass as full PHY closure. All work in GitHub, local folder remains empty.
+
 ## 2026-10-21 06:33 UTC cloud-only continuation
 Local /home/hasanmelih/Documents/ChatGPT/nnsoc is empty and no local CAD/simulator process is running. User instruction is ALL CLOUD, overriding the older local-work wording in the goal. Do not clone, download native artifacts, run CAD or keep scratch files locally.
 
