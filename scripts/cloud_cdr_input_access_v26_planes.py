@@ -110,7 +110,7 @@ def main():
     try:
         pin=json.loads((ROOT/'docs/evidence/cdr-input-access-v26-parent-physical-pass-20261021.json').read_text())
         assert pin['run']==39525872386 and pin['source_head']=='7760e5574ab337beb4e1777983e73e446440658a'
-        assert pin['summary_sha256']=='fc6fa3cfd6545db344a8f2dcd8f03fe49177a24403ff33ff86533f63187309b4'
+        assert pin['summary_sha256']=='44361f37b6558c13937c127027e911cd6136d60a96ede44c061d7e0da52c0dae'
         assert pin['parts_sha256']=='c68a6315a0c48bf7876c21686d8d876ed8d724133551ebca8ddd4f401c5e4c31'
         selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]
         prior,proof=reports.restore_report('cdr-input-access-v26-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
