@@ -1,3 +1,14 @@
+##2026-10-21 power128 full loaded decks passed; new native trajectories start
+Both exact nominal and leaf-select-fault preparations passed all original
+stimuli/loads/gates and native OP transport. Power128-native-initial runs new
+processes for changed physical geometry, preserving14182 columns,34ns,
+604HBT5376MOS and original electrical review. Model/receipts are hash-pinned.
+Initial600s segments save full native process/raw bytes; resume latest saved
+capsules through power128-native-continuation with no cold restart.
+Old8074 nominal was rejected and pre-power1288088 capsules remain historical.
+Cloud-only. A saved native process is not full electrical or PHY acceptance.
+
+
 ##2026-10-21 mainchip postroute inputs prepared independently in cloud
 New mainchip-postroute-inputs job retains full original boot/protocol/RTL/
 native geometry proof chain through exact current152762-cell candidate.
