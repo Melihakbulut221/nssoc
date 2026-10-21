@@ -1,3 +1,10 @@
+## Additional hosted headroom measurement launched
+New pll-storage-headroom-cloud operates only on a fresh GitHub-hosted Ubuntu24 runner. It removes explicit unused SDK/cache roots and unused Docker images, preserves active Python and required executable hashes, then verifies Python/gh/Docker/compiler/curl and unchanged allocation controls. It must not restore or activate any native process. Original12GiB native reserve,4GiB backing reserve and6GiB allocation margin remain unchanged.
+
+Actual full1us/.3125ps/5106-column raw payload lower bound is130713600000bytes before header/startup/other files. Prior measured runner free108096626688bytes cannot satisfy the uncompressed full capture plus reserves. Measure available disposable space before selecting a real production storage change; do not infer full capacity from this probe or the earlier4ns native test.
+
+Passed8088 precision39592592670 retained. Corrected composition was dispatched from7dd900d4; mainchip39591380714/TX39592603205/39592612780/PLL census39592019880 preserve existing processes. Cloud-only.
+
 ## Actual8088 precise RC passed; composition network failure corrected
 39592592670 passed both fresh and reversed native coupling orders:139838R99650C,703components13370planes, original13raw faults each. Every R/C record is unchanged; original source/geometry/technology/thresholds preserved. Earlier native-start failure is confirmed missing libGLU.so.1 and resolved by the qualified producer dependency set. Canonical receipt pins report91a74f25e070fa86a56fa10c4899f919b28a2250074bab3631f79a88d405315d and partsb9ec8f3b908871292dd23d392dd616ddf911c91aa856c8d8e1f44c8ce4bb3d67.
 
