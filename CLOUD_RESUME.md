@@ -1,3 +1,7 @@
+## Latest actual TX native capsules
+Runs39557480969 nominal and39557484428 swap_leaf_select completed with numerical progress, exact input/payload-prefix verification and single entrypoint. The retained full14162-column captures reached22.8350225423463ns and22.262511995263933ns respectively. Original34ns/256bit test is still incomplete; do not claim electrical acceptance. Exact latest descriptors are in tx-raw8074-fourth-cross-pass-20261021.json. Continue each same process for7200host seconds, retaining original guards and180minute job budget. Do not reuse older capsules.
+CDR v28 transfer39572394402 shows all four retime HBTs continuously conducting; current-cutoff hypothesis is not supported. Preserve full rejection. Mainchip continuation39572968246 and read-only PLL storage diagnosis39571416471 remain live. Cloud-only.
+
 ## Mainchip routing: fifth cross-runner capsule accepted for continuation
 Run39555639933 completed successfully with the same native process, single entrypoint and all restart/prefix rejection controls. Completed optimization violation counts are173861,98155,87048,21646,11790,8379,6882; iteration7 at70%6283. These are routing counters, not final DRC or STA.
 Exact next descriptor and all original timing/settings/native image hashes are in mainchip-active-drt-fifth-cross-pass-20261021.json. Continue from this latest successful capsule for7200host seconds; never cold restart. Once detailed-route.odb is actually complete, enforce fixed-clock topology, antenna, disconnect, RC and three-corner final STA.
