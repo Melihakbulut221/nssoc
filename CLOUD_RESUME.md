@@ -1,3 +1,7 @@
+## Actual TX output14 physical integration preparation
+New tx-output14-physical-cloud reuses unchanged legacy native generator and requires fresh560-rule DRC, unsimplified deep/flat14-device LVS, eight real ports, six native geometry/reference fault controls and six actual-bench binding faults. It restores immutable boundary39555328447 and checks exact current xtx endpoint/model mapping. Eight real substrate contacts remain explicit; ideal source SUB-to-physical-BULK adaptation is recorded and requires fresh RC/electrical checks. Parent routing and full PHY not claimed.
+CDR v28 independent audit39562157915 and full loaded capture39562531785 are running on actual fresh17674R12694C model. Wait same runs; original gates unchanged. PLL39551551389 failednative and still preserving failure archive; mainchip39555639933 and TX39557480969/39557484428 remain live. Cloud-only; no local artifacts.
+
 ## v28 full original loaded gates launched after exact audit/composition
 Workflow cdr-input-loading-v28-mim-streamed-cloud waits for39562157915 at0f39a9fdcc2a848fb00048a5d5d14231e7fab99a; actual capture39561460306 and original476-device17674R12694C/7MIM composition required. Preserve original256-bit34.25ns/.3125ps/150fF50fF/100mV37.5ps30mV50uA/120HBT46MOS gates and both faults. No electrical pass assumed.
 Do not commit dynamic v28 mim-parent-audit/composition receipts before these wrappers consume them. All original source-delta gates retained. v28 reduces physical input loading after actual v27 native-latch diagnosis; full electrical tests decide acceptance.
