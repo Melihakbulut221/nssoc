@@ -1,3 +1,7 @@
+## 2026-10-21 — completed-route analysis prepared; no new routing
+New mainchip-postroute-review-cloud workflow runs only method/native-step controls on push. Actual analysis is manual and requires a completed native DRT descriptor plus the exact passed input-package descriptor(39635867954). It reuses all existing geometry/fixed-clock controls, exports fresh DEF from completedODB, and runs antenna/disconnect/freshnominalRC/guardedthree-cornerSTA. Original clocks/gates unchanged; no routing restart. Review is not yet native exercised on completedroute.
+PLL nextstage dispatched from39602655093 (820.364ns/1us); resolve its new runID once, do not duplicate. Mainchip39631640578 and TX39630182787/39630188922 remain live. Local workspace remains empty.
+
 ## 2026-10-21 — exact dependency package passes; PLL reaches820ns
 Mainchip input run39635867954 passed:5030files/1.173GB plus toolSDC, all five pinned originalPDK archives. Receipt mainchip-postroute-inputs-pass-20261021.json.
 PLL39602655093 completed saved-process stage:724.594→820.364ns/1us,5106columns,2626323complete rows, originalpayload unchanged. Immutable summary663148586/parts663148721 pinned in pll845-allcolumn-headroom-progress-20261021.json; nextdescriptor recorded. Dispatch the allcolumn-headroom workflow once from this exact checkpoint,1800seconds, preserving all capacity guards. 21.1GBfree is not proof of full remaining capacity.
