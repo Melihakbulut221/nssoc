@@ -1,3 +1,8 @@
+## Actual8088 precision producer reuse launched
+The new tx-output8088-precision-cloud workflow restores qualified double-total Magic library1a44bd5c70af3800213419c2e3b2213285523a74fcc4b92bc9cf7314d93a592c from39486998309. It runs fresh actual8088 native extraction in normal and reversed coupling enumeration, retaining all geometry, technology, thresholds and raw audit/mutation code. Both results must preserve139838 resistor cards and99650 capacitor endpoint/value records and pass all13 corruption controls. Only after this passes compose full intrinsic8088 with actual full-parent wireRC. No full PHY acceptance.
+
+Mainchip39572968246 is terminal saved continuation, not completed layout. Last completed iteration has4027 violations; iteration10 reached40percent/3522. Continue its exact saved process, with original clocks and settings unchanged. TX39573847558/39573851657 last confirmed live. PLL complete archive census preserved; capacity metadata absence remains under diagnosis. All work cloud-only.
+
 ## Cloud-only cleanup confirmed; actual8088 RC passed and full PLL archive census retained
 
 All future CAD, simulations, tests, source changes and artifacts stay in GitHub. Local use is RAM-only API orchestration. The local app workspace is empty and no local CAD process was observed. Verified clean old clones were removed in the existing cleanup receipt; do not recreate a checkout or download artifacts locally.
