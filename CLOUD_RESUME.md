@@ -1,3 +1,11 @@
+## 2026-10-21 full8074 nominal rejection and new8088 capsules
+
+Old nominal39592603205 finished full34ns/77904rows14162columns; nativeexit0/no diagnostics/sources unchanged, but original gates reject130/768 output signs,133 below100mV,284/604 HBTs; all5376MOS pass. All interfacegroups fail original limits. CMOS inputs have0wrong signs but5049/6912 below150mV and CM0.879--1.606V. Preserve failed complete capture; NEVER resume this terminal full waveform or report it passed. New tx-raw8074-loaded-attribution-cloud reproduces original full review and measures actual rail/individual physical input banks to select targeted repair; no new simulation or gate change.
+
+New8088 initial39601746737 passed both real process capsules, controller33b6cab21b696fe63f4de2a3a46290d431106439eb8ae29ee5dbda418d9c7548. Nominal0.46427980641924965ns966rows; fault0.6137798064519522ns1265rows,14182columns. Receipts pinned. They are incomplete new-model trajectories, not a cure for the old input/core rejection. Continue only these exact capsules when needed; preserve all raw bytes.
+
+PLL39602655093 is live on sourcece17685d2241bc2e76f196f1fd3a275f8009c89f, using original39502073954 capsule, qualified allcolumn reader and extra hosted headroom with unchanged reserve guards. Mainchip39591380714 and oldfault39592612780 also remain live. All cloud-only. Full PHY and original-clock final timing remain open.
+
 ## 2026-10-21 exact PLL headroom continuation
 
 New pll845-allcolumn-headroom-cloud uses the unchanged already qualified allcolumn controller and real preallocated storage, after guarded extra hosted SDK cleanup. Original source39502073954; no other PLL native job live at dispatch preparation.12GiB native/4GiB backing reserves unchanged. Full95GB archive restored/hash-verified before actual capacity check and any process activation. Measured compressed occupancy, complete5106-column capture, original full1us gates and source process preserved. May checkpoint before capacity exhaustion; not a full-capacity guarantee. Dispatch only once after controls pass and source is terminalsuccess. Preserve all native bytes and publish checkpoint even if full capture remains open.
