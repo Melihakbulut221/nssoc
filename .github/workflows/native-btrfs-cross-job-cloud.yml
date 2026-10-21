@@ -28,7 +28,7 @@ jobs:
       - name: Install cloud-only checkpoint dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends btrfs-progs compsize build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          sudo apt-get install -y --no-install-recommends btrfs-progs btrfs-compsize build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
           git init "$RUNNER_TEMP/criu-src"
           git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
           git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645

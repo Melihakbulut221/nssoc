@@ -1,3 +1,12 @@
+## 2026-10-21 — storage probe dependency correction
+
+Bounded probe39534232911 stopped before CAD because Ubuntu package compsize does
+not exist; executable compsize is provided by btrfs-compsize. Failure log hash
+and source receipt retained. New workflow corrects only package name and exact
+workflow source pin. Full PLL39502073954 remains live, never restarted.
+CDR fresh raw audit passed; composition and full-wave prerequisite jobs continue.
+
+
 ## 2026-10-21 — cleaned v26 full loaded electrical trials
 
 cdr-input-access-v26-mim-streamed-cloud waits on exact validation39533943848.
