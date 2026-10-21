@@ -1,3 +1,14 @@
+##2026-10-21 native mainchip postroute geometry gate prepared
+New mainchip-postroute-geometry-cloud starts candidate-to-saved-global native
+topology and fixed clock preflight. It does not reroute or claim route complete.
+For actual completed DRT dispatch same workflow with exact completed descriptor;
+all152762 cells/masters/pins/positions/orientations/nets/NDR/ports and fixed
+PCIe clock wire must survive. DRC/antenna/disconnect/RC/STA remain required.
+TX power128 anchors39611514856 still live; once passed execute fresh intrinsic
+and precise native RC. Mainchip39610377184 and PLL39602655093 still live.
+Cloud-only; local workspace empty.
+
+
 ##2026-10-21 power128 wire graph passed; fresh anchors start
 39610759883 passes native8088/28620terminal/703metal/768electrical census and
 actual native net ownership. Fresh GDS4c3142408854201d2084ca1ada81e7460e2a90525c7ac7ab6c571b86eb9c887b.
