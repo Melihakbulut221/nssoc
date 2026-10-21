@@ -1,3 +1,7 @@
+## TX output14 exact composition launched after fresh RC and intrinsic passes
+Verified39567299858 passed2619R1410C/9components32planes plus13raw controls;39567903604 passed14devices38terminals/eight finite contacts plus16intrinsic controls. Canonical receipts committed. New tx-output14-compose-cloud preserves every native wire token and all11 original corruption checks, including actual same-net REF C/B planes. No fullwave, qualified PEX, parent-route or PHY acceptance implied.
+Cloud-only: local workspace remains empty. CDR39562531785 now terminal failure; diagnose actual completed loaded waves. Mainchip39555639933, TX39557480969/39557484428 and PLL39551551389 retain original handles; never restart because an observation expires.
+
 ## Native TX output14 intrinsic export launched alongside fresh wire RC
 New tx-output14-intrinsic-cloud exports both actual deep/flat14-device LVS databases, maps all8public nets by actual GDS probes and derives separate TAIL/BULK from native tail connectivity. Exact4HBT2rsil8ptap/38-terminal topology required in both modes. Pinned PDK compact models preserve Nx1/8, resistor self-heating and eight finite A/P contact resistances. All8native mapping faults plus8compact-model faults required.
 TX output38-plane gate39566626613 passed. RC workflow from6661b49607de04f07aa2627f9b0dd536a5a73c3b is processing exact32planes9components and13raw controls. After both pass, compose all actual wire values and contact models; no full-lane/PEX/PHY pass implied.
