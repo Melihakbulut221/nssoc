@@ -1,0 +1,81 @@
+{
+  "scripts/cloud_tx_output8088_power128feed32_composition.py": {
+    "baseline_path": "scripts/cloud_tx_output8088_power128_composition.py",
+    "baseline_sha256": "273c243ece5dfaf824fd89ca2245e501daf5a11b1e645ad6d9a9d7326d9aae04",
+    "candidate_sha256": "b77749a865f372fe0b4657ad0345c15c1ab86ad26fe1afca2c1460e0d7396ad4",
+    "changes": [
+      {
+        "start": 270,
+        "end": 385,
+        "replacement": "import compose_tx_output8088_power128feed32_native as compose\nimport cloud_tx_output8088_power128feed32_intrinsic as intrinsic\n"
+      },
+      {
+        "start": 434,
+        "end": 538,
+        "replacement": "ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-output8088-power128feed32-composition'\n"
+      },
+      {
+        "start": 675,
+        "end": 786,
+        "replacement": "    spec=json.loads((ROOT/'docs/evidence/tx-output8088-power128feed32-composition-input-20261021.json').read_text())\n"
+      },
+      {
+        "start": 1654,
+        "end": 1765,
+        "replacement": "    receipt=json.loads((ROOT/'docs/evidence/tx-output8088-power128feed32-precision-pass-20261021.json').read_text())\n"
+      },
+      {
+        "start": 1851,
+        "end": 2059,
+        "replacement": "    stem='tx-output8088-power128feed32-precision-'+str(spec['run'])+'-1'\n    base='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-'+str(spec['run'])+'-1-tx-output8088-power128feed32-precision/'\n"
+      },
+      {
+        "start": 2583,
+        "end": 2702,
+        "replacement": "    assert r['status']=='PASS_ACTUAL8088_POWER128FEED32_NATIVE_RC_DOUBLE_TOTALS_TWO_ORDERS_AND13_CONTROLS_EACH_NOT_FULL_PHY'\n"
+      },
+      {
+        "start": 4066,
+        "end": 4173,
+        "replacement": "        adaptation=json.loads((ROOT/'scripts/tx-output8088-power128feed32-composition-method.json').read_text())\n"
+      },
+      {
+        "start": 4781,
+        "end": 4995,
+        "replacement": "        bp=json.loads((ROOT/'docs/evidence/tx-output8088-power128feed32-intrinsic-pass-20261021.json').read_text())\n        assert bp['run']==39651408848 and bp['source_head']=='0b72170aca43c422d267eeaaa9f819bfab08fd5b'\n"
+      },
+      {
+        "start": 5191,
+        "end": 5341,
+        "replacement": "        prior,proof=reports.restore_report('tx-output8088-power128feed32-precision',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'rc',selected)\n"
+      },
+      {
+        "start": 5673,
+        "end": 5825,
+        "replacement": "        bound,bproof=reports.restore_report('tx-output8088-power128feed32-intrinsic',bp['run'],bp['summary_sha256'],bp['parts_sha256'],OUT/'intrinsic',names)\n"
+      },
+      {
+        "start": 8015,
+        "end": 8454,
+        "replacement": "        result.update(status='PASS_ACTUAL_FULL8088_POWER128FEED32_PARENT_WIRE_COMPOSITION_AND25_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES',sources_unchanged=True,counts=formal['counts'],model_sha256=sha(final),composition_sha256=sha(OUT/'composition.json'),methods={p:sha(ROOT/p)for p in ['scripts/cloud_tx_output8088_power128feed32_composition.py','scripts/compose_tx_output8088_power128feed32_native.py','scripts/cloud_tx_output8088_power128feed32_intrinsic.py']})\n"
+      }
+    ]
+  },
+  "scripts/compose_tx_output8088_power128feed32_native.py": {
+    "baseline_path": "scripts/compose_tx_output8088_power128_native.py",
+    "baseline_sha256": "19edc5833887b304d4365654cb37381458c3d39c12446975f0d49fe03821e074",
+    "candidate_sha256": "ee068f9a178f6139a3a362cf7c227b3079672c1dc5f585e09c11f80c6b23cc64",
+    "changes": [
+      {
+        "start": 265,
+        "end": 324,
+        "replacement": "import cloud_tx_output8088_power128feed32_intrinsic as intrinsic\n"
+      },
+      {
+        "start": 1270,
+        "end": 1408,
+        "replacement": "    assert w[0][:2]==['.subckt','full_tx_output8088_power128feed32_wires']and w[-1]in (['.ends'],['.ends','full_tx_output8088_power128feed32_wires'])\n"
+      }
+    ]
+  }
+}
