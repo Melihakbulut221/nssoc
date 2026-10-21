@@ -1,3 +1,8 @@
+## 2026-10-21: v29 leaf native physical pass; full476 parent next
+39686764938 passed560DRC0, unsimplifieddeep/flat54LVS, LEF and20faults. NewleafGDS88af7c31...,source38e71777...; same1003x243.63um boundary, allports/positions,48 unchangeddrawings, sixchangedR and7geometryrejections. Immutable receipt cdr-sampler-gain-headroom-v29-physical-pass-20261021.json.
+New cdr-gain-headroom-v29-parent-cloud push replaces4real samplers in exact v28 parent39558088682, changes24actual resistorreference lengths only, and requires nativefull476DRC/LVS/child+parentconservation. Physical passage then freshRC/MIM/originalfullwaves mandatory; no electrical/PHY acceptance yet.
+Mainchip newDRT39682593979 crossjob119521690967 live; PLL39674830790 and TX39681742199/39681748051 live. Cloud only.
+
 ## 2026-10-21: new repaired DRT actual optimization saved
 Run39682593979 initialjob119508540502 completedSUCCESS; real native optimization iteration0 was reached and300.42s of its process saved. Nonempty CRIU images, actualELF25a5e9ba..., singleentrypoint and sources unchanged. Summary662dbd67...,partsc38290b4..., sourcec324e13d/controller13060f19.... Route not complete; no completed iteration DRC count yet. Sameworkflow crossjob119521690967 is next; do not dispatch another initial or a separate continuation while this workflow is live. Receipt mainchip-repaired-native-drt-initial-saved-20261021.json.
 CDRv29 physical39686764938/source9cac8850 queued: six real resistorlengthchanges, no claimed electricalpass. PLL39674830790 and TX39681742199/39681748051 remain ongoing. All work cloud-only. Finalsetup/hold/fullserialPHY still open.
