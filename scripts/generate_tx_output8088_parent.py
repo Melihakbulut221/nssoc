@@ -50,6 +50,7 @@ def main(out):
    for s in shapes:edits.append(dict(cell=cell.name,text=s.text.string,layer=L.get_info(li).layer));s.delete()
  assert len([e for e in edits if e['cell']=='actual_output14'])==8
  assert {e['text']for e in edits if e['cell']!='actual_output14'}=={'mp','mn'}
+ L.write(str(out/'placed-layout.gds'))
  baseline=regions(L,T);metals=(67,126,134)
  flat={m:pya.Region(T.begin_shapes_rec(L.layer(m,0))).merged()for m in metals}
  def component(m,p):
@@ -78,6 +79,7 @@ def main(out):
   for m,r in candidate.items():T.shapes(L.layer(m,0)).insert(r);added[m]=added.get(m,pya.Region())+r
   for m in metals:prior[m]+=candidate.get(m,pya.Region())
   route_shapes[name]=candidate
+  L.write(str(out/'partial-layout.gds'))
   routes.append(dict(net=name,source_dbu=str(source),destination_dbu=str(target),foreign_clearance_dbu=1645,layers=sorted(candidate)))
  dest=out/'layout';dest.mkdir();faults=out/'faults';faults.mkdir()
  for name,pin in [('mp','INP'),('mn','INN')]:
@@ -103,8 +105,11 @@ def main(out):
   for offset in offsets:
    s=pya.Point(source.center().x+offset,source.center().y)
    assert source.contains(s)
-   candidate={126:wire(s.x,s.y,s.x,y,3000)+wire(x,y,x,t.y,3000),134:wire(s.x,y,x,y,3000)+wire(x,t.y,t.x,t.y,3000)}
-   for q in [s,pya.Point(s.x,y),pya.Point(x,y),pya.Point(x,t.y)]:attach(candidate,'TopMetal1',q.x,q.y)
+   # Exit the actual TopMetal2 pin before introducing a new TopMetal1 landing.
+   # The original pad has underlying native TopMetal1 material; never assume its net.
+   anchor=pya.Point(s.x,source.bottom-15000)
+   candidate={126:wire(anchor.x,anchor.y,s.x,y,3000)+wire(x,y,x,t.y,3000),134:wire(s.x,s.y,anchor.x,anchor.y,3000)+wire(s.x,y,x,y,3000)+wire(x,t.y,t.x,t.y,3000)}
+   for q in [anchor,pya.Point(s.x,y),pya.Point(x,y),pya.Point(x,t.y)]:attach(candidate,'TopMetal1',q.x,q.y)
    attach(candidate,'Metal5',t.x,t.y)
    bad=collisions(candidate,allowed)
    if not bad:chosen=(candidate,s);break

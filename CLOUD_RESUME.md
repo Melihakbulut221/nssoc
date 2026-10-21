@@ -1,3 +1,7 @@
+## TX8088 first physical route obstruction corrected without waiving clearance
+Run39575422763 terminated at AVSS routing: all five center offsets hit native TopMetal1 under the existing pad. Both signal joins passed the unchanged obstacle screen. No native DRC/LVS acceptance yet. Preserve rejected summary/parts.
+New generator extends the actual TopMetal2 conductor below the original pad before placing a TopMetal1 landing, for AVSS/SUB. No same-net inference, no obstacle exclusion and no clearance reduction. Save placed and partial routed GDS even if a later route blocks. Dispatch fresh tx-output8088-physical-cloud only after this terminal failure; live mainchip/TX/PLL scans unchanged.
+
 ## Actual TX8088 core/output physical candidate launched
 New tx-output8088-physical-cloud combines verified core39466552523 and output39564026768. Adds real mp/INP,mn/INN,AVSS and SUB routes using actual native via stacks and obstacle checks, preserving all original material. Requires560-category DRC,8088-device unsimplified deep/flatLVS, exact165ports and seven corruption controls. No schematic-short handoff or reused child RC can prove parent closure. Supply/bias and clock boundaries remain explicit.
 Mainchip39572968246, nominalTX39573847558, faultTX39573851657 and PLL storage-diagnosis39571416471 remain the same live jobs. No local files. After physical pass re-extract actual full8088 parent before loaded waves; existing8074 simulations remain unmodified.
