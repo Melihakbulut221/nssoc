@@ -1,3 +1,14 @@
+##2026-10-21 power128 all28620 terminals bound; fresh intrinsic and RC start
+39611514856 passes8088 devices/28620 terminals/13370 planes/165 ports/703
+conductors and six deliberate faults. Receipt and every native output pinned.
+New power128-intrinsic and power128-native-rc workflows run independently.
+RC uses previously qualified native double-total producer; all original raw
+audits/13 faults, thresholds and technology unchanged. Intrinsic19 faults kept.
+After results: repeat native input-order equivalence on changed geometry,
+compose exact native model, bind physical interfaces, then full loaded waves.
+Mainchip39610377184/PLL39602655093 remain live. Cloud-only. Full PHY open.
+
+
 ##2026-10-21 native mainchip global geometry preflight PASS
 39615642252 passed actual candidate-to-global comparison: all152762 original
 masters/instances/pins/positions/orientations/nets/NDRs/ports preserved; four
