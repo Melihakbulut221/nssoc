@@ -1,3 +1,12 @@
+## 2026-10-21 — fresh feed32 intrinsic+RC PASS; exact generated sources committed
+
+Hosted followthrough39651408848 terminalSUCCESS. Actual8088-device/65body/19fault intrinsic model and fresh140222R/99906C/703conductor native RC with13 raw faults passed. Every generated source, method delta and anchor receipt was reconstructed byte-for-byte against the exact successful hosted SHA256 map and committed; generated intrinsic/RC workflow templates remain only in the archive to avoid duplicate runs. Their stage summaries are independently published and pinned.
+
+New power128feed32 precision workflow triggers here. It reruns both native coupling enumeration orders, requires exact original new-geometry R/C record multisets and all13 raw faults per order, with an added runtime source-derivation guard. No numerical/stimulus/acceptance change. Next consume real precision, then compose original full-parent model, bind actual interfaces and run complete34ns loaded waves.
+
+Mainchip run-directory fix59297d9 is queued in actual completed-route review39654204345 after push input-preflight39654126900. No new routing. PLL39637767590 publishing; oldTX native continuations remain active. Cloud only, local empty.
+
+
 ## 2026-10-21 — actual completed-route geometry PASS, native CLI path failure fixed
 
 39652405552 is terminalFAILURE: exact original native configuration,152762-instance topology/faults, fixedPCIe clock route and fresh ODB-to-DEF export passed. Native flow had not started: LibreLane3.0.5 rejected --force-run-dir because the output directory did not exist. Failure receipt and original report retained. Create only a fresh empty run directory before CLI invocation, update its method hash; no geometry, clocks, flow stages, RC or timing gate changes. Redispatch mainchip-postroute-review-cloud with the same completed39631640578 descriptor and exact input39635867954. No rerouting.
