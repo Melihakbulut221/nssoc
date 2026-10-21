@@ -1,3 +1,7 @@
+## 2026-10-22: original full v29 electrical cases queued behind raw audit/composition
+MIM validation39694882029/source2e789a549370f07ee5a7df5fde34460f990c095a is the exact prerequisite for new cdr-gain-headroom-v29-mim-streamed-cloud. It must pass raw13wire+9intrinsicfaults and19compositionfaults; no failed evidence consumed.
+New fullwave candidate preserves original256bits/full transient/native solver/all terminal-vector/sampling/device gates and original150fF+50fF loads, with only proven v29 source namespace/model identity and measured17906R12834C census changed. All original dependency SHA256 literals remain exact. Four full-duration cases nominal_early/nominal_late/clock_stopped/vi_bias_off; retain failures. FullPHY, PVT/full-loop/RF and finalchip timing remain open. Cloud only.
+
 ## 2026-10-22: fresh v29 wire RC and seven-MIM capture PASS; strict raw audit/composition starts
 Extraction39693048851/source db62ee1056042d7531d068c09a62359afe8cdcde completed all4native stages. Actual476devices/1382terminals,938points,111wirecomponents; wire-only17891R/12827C and13rawcorruptioncontrols passed.
 MIMcapture39694160820/source d4b48ffbf77a10a048166681a5054d9e1fbb4c12 completed; actual17906R/12834C plus7matchednativeMIM,938points/111components and5MIMcapturefaults. Summary664101148 SHAccfe6913daa977fe9de26cb413c993e408ba38ab53430cd6a24e74b3065da1a8; parts664101212 SHAa7ae9795c127ebcfd94ab737f7a7592a7377d630f5d447be4f2e0b6bbe20c78a.
