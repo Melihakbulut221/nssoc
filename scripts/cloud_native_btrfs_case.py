@@ -55,10 +55,33 @@ def mount_case(case,out,run):
         compression_scope='Only actual bounded native raw file, not a full1us capacity proof',
         native_or_phy_acceptance=False)
 
+def external_paths(row,root,case):
+    raw=[row.get(k)for k in ('ResolvConfPath','HostnamePath','HostsPath')]
+    assert all(isinstance(x,str)and x and Path(x).is_absolute()and '..'not in Path(x).parts for x in raw),'Docker external paths unavailable or relative'
+    paths=[root,case,*map(Path,raw)]
+    assert len(set(paths))==5,'External bind paths must be distinct'
+    return paths
+
+def external_path_controls():
+    good=dict(ResolvConfPath='/native/resolv.conf',HostnamePath='/native/hostname',HostsPath='/native/hosts')
+    assert len(external_paths(good,Path('/repo'),Path('/repo/case')))==5
+    rejected=[]
+    for label in ('empty','relative','missing','duplicate','parent-traversal'):
+        bad=dict(good)
+        if label=='empty':bad['HostsPath']=''
+        elif label=='relative':bad['HostsPath']='hosts'
+        elif label=='missing':del bad['HostsPath']
+        elif label=='duplicate':bad['HostsPath']=bad['HostnamePath']
+        else:bad['HostsPath']='/native/../hosts'
+        try:external_paths(bad,Path('/repo'),Path('/repo/case'))
+        except AssertionError:rejected.append(label)
+        else:raise AssertionError('Invalid Docker path accepted: '+label)
+    return dict(valid_five_paths=True,rejected=rejected)
+
 def verify_external_superblock(container,case,out,run):
     row=json.loads(run('btrfs-container-filesystem-readback',['docker','inspect',container]).stdout)[0]
     root=Path(os.environ['GITHUB_WORKSPACE']).resolve()
-    paths=[root,Path(case),*[Path(row[k])for k in ('ResolvConfPath','HostnamePath','HostsPath')]]
+    paths=external_paths(row,root,Path(case))
     assert all(p.exists()for p in paths)
     ids={str(p):p.stat().st_dev for p in paths}
     assert len(set(ids.values()))==1,'Original external superblock sharing was not preserved'

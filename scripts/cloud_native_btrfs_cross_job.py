@@ -25,6 +25,7 @@ def main():
     clone=None;case=None;save()
     try:
         assert sha(native.__file__)=='28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231'
+        result['external_path_controls']=compressed.external_path_controls();save()
         assert not run('empty-runner',['docker','ps','-aq']).stdout.strip()
         result['destination_cpu']=json.loads(run('destination-lscpu',['lscpu','--json']).stdout)
         fields={r['field']:r['data']for r in result['destination_cpu']['lscpu']}
@@ -83,11 +84,11 @@ def main():
         run('default-checkpoint-dir',['sudo','mkdir','-p',str(destination.parent)]);run('copy-native-checkpoint',['sudo','cp','-a',str(checkpoints),str(destination)])
         check="import pathlib,hashlib,sys,json;scan=lambda r:{str(p.relative_to(r)):hashlib.sha256(p.read_bytes()).hexdigest()for p in r.rglob('*')if p.is_file()};a=scan(pathlib.Path(sys.argv[1]));b=scan(pathlib.Path(sys.argv[2]));assert a and a==b;print(json.dumps(a))"
         transfer=json.loads(run('copy-proof',['sudo','python3','-c',check,str(checkpoints),str(destination)]).stdout);assert transfer==prior['checkpoint_images'];result['checkpoint_images']=transfer;save()
-        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()
         started=run('restore-native',['docker','start','--checkpoint','state',clone],False)
         if started.returncode:
             compressed.restore_failure(clone_id,OUT,run)
             run('restore-native-detail',['sudo','cat','/run/containerd/io.containerd.runtime.v2.task/moby/'+clone_id+'/work/restore.log'],False);raise RuntimeError('Separate-job native restore failed')
+        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()
         run('pre-redump-log',['docker','logs',clone],False)
         result['compressed_redump']=compressed.redump(clone,cmd,OUT,run);save()
         exitcode=run('wait-native',['docker','wait',clone],timeout=900).stdout.strip();run('continued-log',['docker','logs',clone],False)

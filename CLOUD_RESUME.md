@@ -1,3 +1,8 @@
+## Bounded storage native proof passed; repair external-stat timing
+Run39542721583 actually restored the original native845 process, redumped/restored it on Btrfs, and completed a bit-exact4ns raw trajectory with original controls. Complete capture native bytes are preserved. However pre-start Docker inspect returned empty external file paths; Path(empty) aliased cwd, so that stat evidence is invalid.
+New run must measure five distinct absolute original workspace/case/Docker file paths after successful native restore, before redump, with five empty/relative/missing/duplicate/traversal rejection controls. Retain original proven native result but do not accept full migration or capacity from it. Full PLL process remains unchanged and publishing.
+v27 parent39542990472 and mainchip continuation39542126811 remain current. Cloud-only.
+
 ## Bounded cloud storage: preserve original external superblock relationship
 FSROOT-preserving run39539101155 still failed reopening raw file. CRIU external-bind documentation requires originally shared superblocks to remain shared after migration. Retained failure receipt records this as a hypothesis.
 Next isolated4ns probe mounts exact copied workspace and a dedicated Docker data root on one compressed Btrfs filesystem, keeps original overlay2/image/command, and verifies case/workspace/all three Docker /etc bind files have the same st_dev before native restore. All complete-raw comparison, one-entrypoint, redump/restore and fault gates remain. No full PLL migration or restart.
