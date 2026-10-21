@@ -1,3 +1,15 @@
+## 2026-10-21 — bounded native compressed-storage qualification
+
+Current full PLL39502073954 remains live and is not forked. Separate
+native-btrfs-cross-job-cloud probes old immutable bounded4ns845-device capsule
+on lossless ZSTD Btrfs, including re-checkpoint/restore and exact original raw
+comparison. It does not represent full1us acquisition or storage capacity closure.
+
+CDR clean-v26 MIM audit/composition was launched from actual17674R12694C capture.
+Wait for its evidence, then original full loaded early/late/fault waveforms.
+All work remains cloud-only; workspace empty.
+
+
 ## 2026-10-21 — actual cleaned v26 fresh RC and MIM capture passed
 
 Four extraction stages39532277767 and MIM capture39532836299 passed.

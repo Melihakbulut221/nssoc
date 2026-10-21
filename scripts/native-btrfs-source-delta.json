@@ -1,0 +1,53 @@
+{
+  "baseline_path": "scripts/cloud_native_portable_cross_job.py",
+  "baseline_sha256": "b64430f6a94026228b40283bae3fb2505ab462d6b0c21caba0a293a8f3f64a11",
+  "candidate_path": "scripts/cloud_native_btrfs_cross_job.py",
+  "candidate_sha256": "a13f30f17ff759842db2d76c7f170b1375ee8963855d7732df5c0cca56a1d6b2",
+  "edits": [
+    {
+      "before": "OUT=ROOT/'cloud-native-portable-cross-job'",
+      "after": "OUT=ROOT/'cloud-native-btrfs-cross-job'",
+      "count": 1
+    },
+    {
+      "before": "import numpy as np",
+      "after": "import numpy as np\nimport cloud_native_btrfs_case as compressed",
+      "count": 1
+    },
+    {
+      "before": "        assert not result['destination_has_avx512f'],'Diagnostic CPU target not met: select a runner without AVX512; no source restored'",
+      "after": "        result['probe_target']='Ext4 checkpoint to compressed Btrfs, then native Btrfs checkpoint/restore; CPU features recorded independently'",
+      "count": 1
+    },
+    {
+      "before": "        result['criu_build']=json.loads",
+      "after": "        result['compressed_case']=compressed.mount_case(case,OUT,run);save()\n        result['criu_build']=json.loads",
+      "count": 1
+    },
+    {
+      "before": "        exitcode=run('wait-native'",
+      "after": "        run('pre-redump-log',['docker','logs',clone],False)\n        result['compressed_redump']=compressed.redump(clone,cmd,OUT,run);save()\n        exitcode=run('wait-native'",
+      "count": 1
+    },
+    {
+      "before": "log=(source/'original-prefix-log.log').read_text()+(OUT/'continued-log.log').read_text()",
+      "after": "log=(source/'original-prefix-log.log').read_text()+(OUT/'pre-redump-log.log').read_text()+(OUT/'continued-log.log').read_text()",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_PHYSICAL845_MASKED_AVX512_TO_NON_AVX512_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_ACQUISITION",
+      "after": "PASS_NATIVE_PHYSICAL845_EXT4_TO_ZSTD_BTRFS_REDUMP_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_FULL_STORAGE_OR_ACQUISITION",
+      "count": 1
+    },
+    {
+      "before": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())",
+      "after": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())\n        result['compressed_case']['final_compression']=run('btrfs-final-compression',['sudo','compsize','-b',str(case/'actual-acquisition.raw')]).stdout",
+      "count": 1
+    }
+  ],
+  "pins": {
+    "scripts/cloud_native_btrfs_cross_job.py": "a13f30f17ff759842db2d76c7f170b1375ee8963855d7732df5c0cca56a1d6b2",
+    "scripts/cloud_native_btrfs_case.py": "ce2274e19b796582ec3df1f3a7329550597e5bf8c9c8b6ab05e15a5ad2ed555f",
+    ".github/workflows/native-btrfs-cross-job-cloud.yml": "0476c6270c373744ef0712ffc8f10128b3a2c8c4b42bd2a43f7e07ac4ea0e9bd"
+  }
+}
