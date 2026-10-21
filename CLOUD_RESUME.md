@@ -1,3 +1,13 @@
+##2026-10-21 power128 two native input orders verified; full composition starts
+Run39620614501 reproduces exact140222R99906C for normal/reversed native
+coupling order with13 original faults each. Intrinsic39618886589 remains pinned.
+Power128 composition preserves8088 devices/28620 terminals/13370 planes/65
+body nets/165 physical ports and25 original circuit fault controls.
+After PASS bind actual interfaces, prepare original full34ns nominal/fault
+loaded simulations. Native device access/substrate/RF PEX remains unqualified.
+All work and evidence remain cloud-only. Full PHY/mainchip timing still open.
+
+
 ##2026-10-21 fresh power128 intrinsic and RC passed; two-order reproduction starts
 Intrinsic39618886589 passes all8088 devices/28620 terminals/65 body nets and19 faults.
 RC39618886679 passes original independent raw topology and13 faults.
