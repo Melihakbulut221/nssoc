@@ -1,3 +1,7 @@
+## 2026-10-21: TX first long native continuations saved; continue exact processes
+TX39662510592(normal) reached12.1071894176ns/27282rows;39662516267(swap_leaf_select)8.96754132997ns/20084rows,14182columns each. TerminalSUCCESS, real nonempty checkpoint images, one entrypoint, literal old raw/log prefixes and cross-runner numerical progress proven. Full34ns/electrical acceptance still pending. Latest immutable descriptors in tx-power128feed32-native-first-cross-saved-20261021.json; dispatch one7200s continuation per case, not initial runs.
+Mainchip fresh-global39680690957 source5b56b1aa queued, do not duplicate. PLL39674830790 remains live. Cloud only.
+
 ## 2026-10-21: proved deep handoff; fresh global routing
 39678505610 passed; fresh ODB22a6238e...,153130 cells. Original-clock deep optimizer placement-only setup WNS-3.874ns/TNS-18247.5ns/8006 endpoints and hold WNS-0.469ns remain unclosed. New mainchip-repair-deep-global-cloud push owns original-native fresh global routing with exact config, physical DEF, clock and source guards. It stops before DRT deliberately; next must start a new resumable native DRT from its new guides, never the old completed DRT. PLL39674830790 and TX39662510592/39662516267 still live. All work cloud-only.
 
