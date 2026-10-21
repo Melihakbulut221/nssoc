@@ -1,3 +1,8 @@
+## Actual TX8088 intrinsic model launched alongside fresh parent RC
+New output8088-intrinsic-cloud uses actual whole-parent terminal/LVS proof39580230591, preserving8088devices28620terminals165ports703wire65body nets and every MOS junction. Adds two native10um/70.215um rsil loads with self-heating; requires original15core plus4rsil model corruption controls. Reversible source adaptation checked before native export. Fresh RC39586054928 remains independent; compose only after both pass.
+
+PLL reader migration39584979653 passed exact prior-capsule migration, all original controls and6method faults plus omitted prepared vector. Receipt committed. No native resume: storage census39586241135 from0c235651 uses corrected bounded2row tail and must resolve capacity. Mainchip39572968246 and TX39573847558/39573851657 remain live. Cloud-only.
+
 ## TX8088 all terminal planes passed; fresh parent RC launched
 Run39580230591 passed28620 terminals(20532metal8088body),165publicports,13370planes703components and all6faults including same-net outputREF C/B swap. Receipt pins full cloud report and selected outputs. New output8088-native-rc runs original native extraction, topology/per-point-C audit and13raw faults with exact reversible census/name adaptations. No electrical or fullPHY pass.
 
