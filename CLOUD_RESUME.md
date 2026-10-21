@@ -1,3 +1,6 @@
+## 2026-10-22: native CDR parent Metal4 diagnosis
+Run new parent workflow to read actual transformed polygon ownership at all eight real M4.b markers before rerunning unchanged DRC/LVS gates. No geometry correction or acceptance is claimed; retain diagnosis and rejected physical candidate in immutable cloud archive. Local workspace stays empty.
+
 ## 2026-10-22: cloud-only verified; v29 parent DRC rejection retained
 User requires all computation and project artifacts in cloud. Local workspace /home/hasanmelih/Documents/ChatGPT/nnsoc verified empty. No local OpenROAD, ngspice, KLayout, Yosys or Netgen processes. Removed only stale Yosys temporary directories /tmp/yosys-liberty-scl-cache, /tmp/yosys-abc-TRwc7i, /tmp/yosys-abc-hEqXQX and empty ~/.cache/yosyshq. Do not reclone/download CAD or evidence archives to local disk.
 

@@ -55,7 +55,7 @@ def main():
   manifest['children']['sampler']=dict(directory='inputs/sampler/layout',
    files={str(p.relative_to(OUT)):sha(p)for p in directory.iterdir()})
   (OUT/'children.json').write_text(json.dumps(manifest,indent=2)+'\n')
-  methods=[Path(__file__),leaf_pin_path,ROOT/'scripts/generate_cdr_gain_headroom_v29_parent.py',
+  methods=[Path(__file__),ROOT/'scripts/diagnose_cdr_v29_parent_m4.py',leaf_pin_path,ROOT/'scripts/generate_cdr_gain_headroom_v29_parent.py',
    ROOT/'scripts/check_cdr_follower_v23_parent_geometry.py',ROOT/'hw/soc/flow/check_pcie_cdr_follower_v23_parent.py']
   protected={str(p):sha(p)for p in [*methods,*[OUT/'baseline'/n for n in names],*[OUT/'data'/n for n in fn]]}
   spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
@@ -69,6 +69,7 @@ def main():
   for name,cmd in [
    ('generation',[app,'python',ROOT/'scripts/generate_cdr_gain_headroom_v29_parent.py','--out',OUT]),
    ('child_geometry',[app,'python','-c',script,OUT]),
+   ('metal4_diagnosis',[app,'python',ROOT/'scripts/diagnose_cdr_v29_parent_m4.py','--root',OUT]),
    ('physical',[sys.executable,ROOT/'hw/soc/flow/check_pcie_cdr_follower_v23_parent.py','--layout',OUT/'layout','--out',OUT/'physical','--app',app])]:
    with(OUT/(name+'.log')).open('w')as f:code=subprocess.call(list(map(str,cmd)),cwd=ROOT,stdout=f,stderr=subprocess.STDOUT)
    r[name+'_returncode']=code;save()
