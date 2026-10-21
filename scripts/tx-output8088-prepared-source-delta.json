@@ -1,0 +1,70 @@
+{
+  "baseline_path": "scripts/cloud_tx_raw8074_prepared.py",
+  "baseline_sha256": "d2a8e1832b8aa9ad2ddbfc57200f09374ad7e3ef542c46798f387ab83dbe399d",
+  "candidate_path": "scripts/cloud_tx_output8088_prepared.py",
+  "candidate_sha256": "b02d592972c20f24624e142430e1309f3b5b3282f37104a68af422a04e28a3a9",
+  "edits": [
+    {
+      "before": "\"\"\"Full native32:1 waveform from actual1674-device GDS and parent RC.\"\"\"",
+      "after": "\"\"\"Prepare the actual8088 core plus output with unchanged full34ns gates.\"\"\"",
+      "count": 1
+    },
+    {
+      "before": "cloud-tx-raw8074-prepared-",
+      "after": "cloud-tx-output8088-prepared-",
+      "count": 1
+    },
+    {
+      "before": " from check_tx_raw8074_prepared_sources import check",
+      "after": " assert args.mode=='wire','Actual8088 acceptance uses its complete wire model'\n from check_tx_output8088_prepared_sources import check",
+      "count": 1
+    },
+    {
+      "before": "  deck,contract,result['whole_parent_binding']=whole_adapt(whole_root,deck,contract)",
+      "after": "  deck,contract,result['whole_parent_binding']=whole_adapt(whole_root,deck,contract)\n  from cloud_tx_output8088_fullwave_adapter import restore_and_adapt as output_adapt\n  output_root=out/'whole8088'\n  deck,contract,result['output_parent_binding']=output_adapt(output_root,deck,contract)",
+      "count": 1
+    },
+    {
+      "before": "  result['core_counts']=dict(devices=8074,R=137221,C=98241)",
+      "after": "  result['core_counts']=dict(devices=8088,R=139838,C=99650)",
+      "count": 1
+    },
+    {
+      "before": "  result['model_sha256']=result['whole_parent_binding']['model_sha256']",
+      "after": "  result['model_sha256']=result['output_parent_binding']['model_sha256']",
+      "count": 1
+    },
+    {
+      "before": "  result['scope']='Actual whole8074 parent including64 raw input drivers and physical driver/core interconnect, all137221R98241C, original256-bit34ns stimuli and604HBT5376MOS observations. External11clock macros, modulation and output frontend boundaries remain; no fullPHY/mainchip acceptance.'",
+      "after": "  result['scope']='Actual whole8088 parent including64 native input drivers, native output14 and physical driver/core/output routes with139838R99650C. Original256-bit34ns stimuli,604HBT5376MOS observations, device bounds and three sampling phases retained. External11clock macros/intermacro modulation, bias/supply feeds, RF/device-access/substrate PEX and mainchip integration remain open.'",
+      "count": 1
+    },
+    {
+      "before": "  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+      "after": "  protected += [ROOT/'scripts/cloud_tx_output8088_fullwave_adapter.py',ROOT/'scripts/check_tx_output8088_prepared_sources.py',ROOT/'scripts/tx-output8088-prepared-source-delta.json',ROOT/'docs/evidence/tx-output8088-interfaces-pass-20261021.json',*[q for q in output_root.rglob('*')if q.is_file()]]\n  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+      "count": 1
+    },
+    {
+      "before": "READY_ACTUAL8074_PHYSICAL_WIRE_DECK_NOT_SIMULATED",
+      "after": "READY_ACTUAL8088_PHYSICAL_WIRE_DECK_NOT_SIMULATED",
+      "count": 1
+    },
+    {
+      "before": "Actual8074 native fullwave requires a checkpointed runtime",
+      "after": "Actual8088 native fullwave requires a checkpointed runtime",
+      "count": 1
+    },
+    {
+      "before": "\n  pin=json.loads((ROOT/'docs/evidence/tx-full32-rawdrivers-preparation-pass-20261020.json').read_text())\n  assert pin['source_run']==39459369542 and pin['source_head']=='36b2250c75b4ba514969b57acf66020c14ff321e'\n  assert pin['.summary.json']['sha256']=='e29e16dcae6c9dc76af22e308bfbdd4e5faa1e8baab0246699f6c891018a03ef'\n  assert columns==pin['result']['capture_preflight']['columns']==11708\n  assert columns*minimum_rows*8==pin['result']['capture_preflight']['minimum_raw_payload_bytes']==6369245664\n  assert len(result['op_transport_control']['controls'])==5 and all(c['rejected']for c in result['op_transport_control']['controls'])\n  if args.fault=='none':\n   assert sha(native/'bench.cir')==pin['out_hashes']['native/bench.cir']=='d8624b2bc9d4c233716851d84ed2a792afa1d9564816fb0aa43c44b975786e26'\n   assert sha(native/'contract.json')==pin['out_hashes']['native/contract.json']=='37c865f5f4cafc40af22ba14e23b7c6bc5902ae12e8b50c2d050fcbbdf7df8c0'\n  raw_limit=32*1024**3\n  required_free=2*raw_limit+8*1024**3\n  assert shutil.disk_usage(out).free>=required_free,'Insufficient cloud disk for all raw bytes, complete archive and8GiB reserve'\n  result['capture_storage_contract']=dict(raw_file_limit_bytes=raw_limit,minimum_free_bytes=required_free,\n   observed_free_bytes=shutil.disk_usage(out).free,prepared_nominal_deck_byte_identical=(args.fault=='none'),\n   unchanged_all_original_samples=True,preparation_summary_sha256=pin['.summary.json']['sha256'])\n  save()\n  def limits():\n   resource.setrlimit(resource.RLIMIT_AS,(12*1024**3,)*2);resource.setrlimit(resource.RLIMIT_FSIZE,(raw_limit,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n  env={k:v for k,v in os.environ.items()if k not in ('LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN')};env.update(SPICE_SCRIPTS=str(native),OMP_NUM_THREADS='1',RAYON_NUM_THREADS='1')\n  start=time.monotonic()\n  with (native/'run.log').open('w')as log:rc=subprocess.call([str(paths['patched']),'-n','-b','bench.cir'],cwd=native,env=env,preexec_fn=limits,stdout=log,stderr=subprocess.STDOUT)\n  result.update(returncode=rc,elapsed_s=time.monotonic()-start);save();assert rc==0,'Native simulation failed'\n  text=(native/'run.log').read_text(errors='replace');result['solver_options']=tree.verify_solver_options(text,PROFILE);result['diagnostics']=tree.native_diagnostics(text,PROFILE)\n  flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\\S+)\\n(.*?)^NSSOC_NATIVE_FLAG_END\\s*$',text)\n  assert [n for n,_ in flags]==['q.'+n+'.qnpn13g2'for n in contract['hbt']]\n  assert all(re.findall(r'(?m)^\\s*off\\s+([01])\\s*$',body)==['1']for _,body in flags)\n  result['native_off_flags_count']=len(flags);result['op_reassembly']=assemble_op(native,op_spec);result['review']=tree.review(native,contract)\n  assert set(result['review']['interfaces'])=={'cmos','final','level_4','level_8','level_16'}\n  assert all(v['samples']==6912 for v in result['review']['interfaces'].values()) if args.mode=='wire' else all(v['samples']==768 for v in result['review']['interfaces'].values())\n  assert all(sha(Path(n))==h for n,h in result['protected_inputs'].items());result['source_unchanged']=True\n  result['electrical_screen_passed']=args.fault=='none' and result['review']['all_engineering_gates_passed'] and not result['diagnostics']\n  if args.fault!='none':\n   result['actual_leaf_fault_rejected_by_original_bits']=not result['review']['signals']['passed']\n   assert result['actual_leaf_fault_rejected_by_original_bits']\n  result['status']='COMPLETE_ACTUAL_FULL32_PHYSICAL_NATIVE_WAVEFORM_NOT_PHY_ACCEPTANCE'\n  if args.fault=='none' and not result['electrical_screen_passed']:\n   result['status']='REJECTED_ACTUAL_FULL32_PHYSICAL_NATIVE_WAVEFORM'\n   raise AssertionError('Original full-wire signal/interface/device/diagnostic gates failed')",
+      "after": "\n  raise AssertionError('Preparation-only path must return before native activation')\n",
+      "count": 1
+    }
+  ],
+  "frozen_inputs": {
+    "scripts/cloud_tx_output8088_fullwave_adapter.py": "68c32b6044e94ccda052a8f1a2d57f48b6ed09deb1aef42924c4de63b59512e0",
+    "scripts/check_tx_output8088_prepared_sources.py": "4e9a322545445973e6876c7bbfa336982f7cd18276ae1d4a102d0605b9e8cec5",
+    ".github/workflows/tx-output8088-prepared-cloud.yml": "ae27ce67857b4cc583f888db839bf27c5c901b4e48f21313ba26adf0d02cd5a3",
+    "docs/evidence/tx-output8088-interfaces-pass-20261021.json": "6a9da3889dfd8b1bb24adabd04ec3129207b0a3db3bdb00d7ecedc6a208afa5c"
+  },
+  "scope": "Exact physical8088 substitution only; remove duplicate schematic output. Original34ns/256bits, external loads,604HBT5376MOS and all sampling/device bounds retained. Preparation is not electrical or PHY acceptance."
+}

@@ -1,3 +1,9 @@
+## 2026-10-21 actual8088 full loaded preparation
+
+New tx-output8088-prepared-cloud prepares both nominal and actual leaf-select fault full34ns decks. Actual8088 wire model replaces8074 plus separate schematicoutput together, preserving604HBT5376MOS/native observations and original stimuli/loads/gates. Physical interface receipt39597177162 is pinned. Preparation is not native electrical acceptance. Do not modify or cancel existing8074 native trajectories. Next inspect both preparation results, preserve every failure, then bind a new native initial controller to exact source/model and original review. All work remains cloud-only.
+
+Existing live handles: mainchip39591380714, TX8074 nominal39592603205/fault39592612780. Headroom probe39599806731 is separate and does not activate the PLL. No full PHY/final timing closure yet.
+
 ## Actual8088 interface proof and PLL storage evidence passed
 TX39597177162 independently reopened actual GDS/LVS and passed all28620terminal bindings,124inputlegs372bases64driver handoffs and four output ports, with original8semantic faults/two actual endpoint faults plus two output polarity/supply-bias faults. Receipt7cac9391d218d57f20f537d039fdc53affc2e6dd16d2c7911a62298c9f45180c pinned. Next build a new loaded full34ns bench from existing raw8074 preparation: replace the whole model, remove separate schematicxtx (its4HBT+2rsil are now physical), retain external11clock HBT, all604HBT5376MOS observation and original stimuli/safety/sampling gates. Rebind every actual new terminal and124inputlegs; output op/on/tvdd/tr remain physical boundary names. Existing8074 native runs continue separately and cannot certify8088.
 
