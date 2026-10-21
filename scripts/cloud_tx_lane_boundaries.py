@@ -114,6 +114,7 @@ def main():
         assert pin['run']==39518358552 and pin['summary_sha256']=='3479396a12e86147e40b4da481e6c11101950e5c88ea16e2d0618bce68625496'
         selected=[n for n in pin['outputs']if n in ('native/bench.cir','native/contract.json')or n.endswith(('/clock6-wire.spice','/raw8074-wire.spice'))]
         assert len(selected)==5
+        selected+=sorted(n for n in pin['outputs'] if n.startswith('fixtures/') and n.endswith(('.inc','.spice','.lib')))
         prior,proof=reports.restore_report(pin['group'],pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',selected)
         assert prior['source_unchanged']and prior['status']=='READY_ACTUAL8074_PHYSICAL_WIRE_DECK_NOT_SIMULATED'
         assert prior['core_counts']==dict(devices=8074,R=137221,C=98241)
@@ -126,7 +127,7 @@ def main():
             source=Path(raw)
             assert source.is_absolute()and'..'not in source.parts
             if source.is_relative_to(PREPARED):
-                relative=str(source.relative_to(PREPARED));assert relative in selected
+                relative=str(source.relative_to(PREPARED));assert relative in selected,('Active include missing from restored source set',relative)
                 path=OUT/'source'/relative;expected=prior['outputs'][relative]
             else:
                 assert source.is_relative_to(ROOT)
