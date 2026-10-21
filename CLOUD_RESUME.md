@@ -1,3 +1,18 @@
+## 2026-10-21 — TX cross-runner progress verified; cloud continuation
+
+Both actual8074 native processes restored from earlier saved processes with one
+entrypoint and exact raw/log prefix preservation. Nominal39524905842 reached
+3.325995094ns /6981 complete rows; swapped-select fault39524910643 reached
+3.462371760ns /7283 rows. Original34ns full capture and electrical gates remain.
+The exact latest descriptors are in tx-raw8074-first-cross-pass-20261021.json.
+Dispatch next7200-second segments from these latest capsules only.
+All project source, outputs, simulations and resume receipts remain in GitHub;
+local workspace remains empty.
+
+CDR clean-parent39531419538 passed full native DRC/LVS and strict111-wire graph;
+fresh RC and original electrical acceptance remain to be rerun.
+
+
 ## 2026-10-21 — cloud-only actual v26 parent metal cleanup candidate
 
 User requires all project source/CAD/results in cloud; local workspace verified
