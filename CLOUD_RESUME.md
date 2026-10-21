@@ -1,3 +1,8 @@
+## TX output14 exact composition passed; PLL reserve rejection now authoritative
+TX39570119084 passed actual14devices38terminals/2619R1410C and11corruption controls, canonical receipt committed. Still requires loaded electrical validation and real parent routes; no PHY completion claim.
+PLL39551551389 completed failed archive publication321parts. Native activation never started: Insufficient native or backing reserve before resume. Keep original successful39502073954 capsule. New pll845-storage-diagnosis-cloud verifies the complete failed archive while keeping only bounded metadata/raw header and measuring last native time plus file census. No restart and no weakening original reserves or capture.
+CDR native diagnosis39570507312 remains live on completed v28 original waves. Mainchip39555639933 and TX39557480969/39557484428 retain existing live handles. Everything cloud-only.
+
 ## Completed v28 nominal rejection preserved; native diagnosis launched
 CDR39562531785 completed both original full captures. Early C/D wrong sign14/74; late1/64, but all original sampler timing/margin gates remain failing and xd0105/xd0106 violate0.4V VCE. Phase/current magnitudes also below original30mV/50uA. No gate waived. Exact rejected summary and parts hashes committed. cdr-v28-latch-timing-cloud reads original full waves and physical476-device graph to reproduce120HBT bounds/all4samplers and diagnose actual master/slave transfer.
 TX output composition39570119084 uses verified intrinsic and actual2619R1410C. Cloud-only; no local artifacts. Preserve live mainchip39555639933, TX39557480969/39557484428 and PLL39551551389 handles.
