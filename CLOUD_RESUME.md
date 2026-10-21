@@ -1,3 +1,8 @@
+## Current live native and dependent jobs
+Mainchip39591380714 resumes exact sixth saved router. TX nominal39592603205/fault39592612780 resume fifth captures29.138422440393524ns/28.438634845952907ns toward original34ns; fifth receipts committed. Precision39592592670 runs both actual8088 extraction orders. Corrected composition39593495995/sourcecd000330edef2aebb4fd11cb56e25cddadc7281f waits for that exact producer. Its known-invalid observer39593087442 was cancelled solely for the stale receipt filename; no native process was cancelled. PLL corrected full storage census39592019880 continues read-only.
+
+Next inspect exact terminal receipts, compose and then run loaded new8088 waves; correct PLL storage capacity from actual retained initialization inventory. Old full PHY/clock/bias/CDR and final mainchip timing requirements remain open. Cloud-only; local workspace stays empty.
+
 ## Composition input reference corrected before native evidence consumption
 The first composition observer39593087442 uses an inherited20261020 intrinsic receipt filename. Corrected to actual20261021 and moved input validation before prerequisite wait. That observer contains no native CAD or simulation and will be cancelled for this concrete source error, then dispatched from corrected source after terminal status. Preserve every native router/TX/precision/PLL process. No acceptance gate changed.
 
