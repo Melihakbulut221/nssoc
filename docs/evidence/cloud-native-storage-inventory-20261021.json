@@ -1,0 +1,189 @@
+{
+  "status": "COMPLETE_READ_ONLY_HOSTED_STORAGE_INVENTORY_NOT_CAPACITY_PROOF",
+  "source_head": "c4302be55ea32640ca7c2c7ef63155ba55bfbe3b",
+  "read_only_inventory": true,
+  "native_activation": false,
+  "full_capacity_proven": false,
+  "full_phy_accepted": false,
+  "commands": [
+    {
+      "label": "filesystems",
+      "command": [
+        "df",
+        "-B1",
+        "-T"
+      ],
+      "returncode": 0,
+      "sha256": "fb43fe66a0848828de5e9f5b1589606e10c19cc3464fe00ab1dc39906c0e14b5"
+    },
+    {
+      "label": "block-devices",
+      "command": [
+        "lsblk",
+        "--bytes",
+        "--json",
+        "--output",
+        "NAME,PATH,TYPE,SIZE,FSTYPE,MOUNTPOINTS,RO,MODEL"
+      ],
+      "returncode": 0,
+      "sha256": "23fd3ca70342e9a713df54d04682ea2dc76565c967d005cbf205ef680858f638"
+    },
+    {
+      "label": "mounts",
+      "command": [
+        "findmnt",
+        "--json"
+      ],
+      "returncode": 0,
+      "sha256": "82a8b71cf777e17f62f5111f90fc4e2fbfc0380f6fc94dfcb2e53db4e9dcd4e9"
+    },
+    {
+      "label": "swap",
+      "command": [
+        "swapon",
+        "--show",
+        "--bytes"
+      ],
+      "returncode": 0,
+      "sha256": "692afda2ecc2a518c39db4224a1fdb9b570d47e3278b4273fc5cb902d33d79a6"
+    }
+  ],
+  "paths": {
+    "/home/runner/work/nssoc/nssoc": {
+      "exists": true,
+      "device_id": 66305,
+      "mountpoint": false,
+      "total_bytes": 154894188544,
+      "used_bytes": 65633902592,
+      "free_bytes": 89243508736
+    },
+    "/home/runner/work/_temp": {
+      "exists": true,
+      "device_id": 66305,
+      "mountpoint": false,
+      "total_bytes": 154894188544,
+      "used_bytes": 65633902592,
+      "free_bytes": 89243508736
+    },
+    "/": {
+      "exists": true,
+      "device_id": 66305,
+      "mountpoint": true,
+      "total_bytes": 154894188544,
+      "used_bytes": 65633902592,
+      "free_bytes": 89243508736
+    },
+    "/mnt": {
+      "exists": true,
+      "device_id": 66305,
+      "mountpoint": false,
+      "total_bytes": 154894188544,
+      "used_bytes": 65633902592,
+      "free_bytes": 89243508736
+    },
+    "/mnt/resource": {
+      "exists": false
+    },
+    "/tmp": {
+      "exists": true,
+      "device_id": 66305,
+      "mountpoint": false,
+      "total_bytes": 154894188544,
+      "used_bytes": 65633902592,
+      "free_bytes": 89243508736
+    },
+    "/home/runner": {
+      "exists": true,
+      "device_id": 66305,
+      "mountpoint": false,
+      "total_bytes": 154894188544,
+      "used_bytes": 65633902592,
+      "free_bytes": 89243508736
+    }
+  },
+  "block_devices": {
+    "blockdevices": [
+      {
+        "name": "nvme0n1",
+        "path": "/dev/nvme0n1",
+        "type": "disk",
+        "size": 161061273600,
+        "fstype": null,
+        "mountpoints": [
+          null
+        ],
+        "ro": false,
+        "model": "MSFT NVMe Accelerator v1.0",
+        "children": [
+          {
+            "name": "nvme0n1p1",
+            "path": "/dev/nvme0n1p1",
+            "type": "part",
+            "size": 159986466304,
+            "fstype": "ext4",
+            "mountpoints": [
+              "/"
+            ],
+            "ro": false,
+            "model": null
+          },
+          {
+            "name": "nvme0n1p14",
+            "path": "/dev/nvme0n1p14",
+            "type": "part",
+            "size": 4194304,
+            "fstype": null,
+            "mountpoints": [
+              null
+            ],
+            "ro": false,
+            "model": null
+          },
+          {
+            "name": "nvme0n1p15",
+            "path": "/dev/nvme0n1p15",
+            "type": "part",
+            "size": 111149056,
+            "fstype": "vfat",
+            "mountpoints": [
+              "/boot/efi"
+            ],
+            "ro": false,
+            "model": null
+          },
+          {
+            "name": "nvme0n1p16",
+            "path": "/dev/nvme0n1p16",
+            "type": "part",
+            "size": 957350400,
+            "fstype": "ext4",
+            "mountpoints": [
+              "/boot"
+            ],
+            "ro": false,
+            "model": null
+          }
+        ]
+      }
+    ]
+  },
+  "different_device_paths": [],
+  "uncompressed_full_wave_lower_bound_bytes": 130713600000,
+  "no_cleanup_format_mount_or_native_process_started": true,
+  "next_action": "Assess any independent existing storage before changing checkpoint allocation. Do not sum paths sharing device_id or count unallocated/block/raw capacity as usable; prove any proposed layout on a disposable hosted runner first.",
+  "outputs": {
+    "proc-swaps.txt": "5ec9116b5895333953f2a55ee828643cd570bc656ab102b31348442d854731d2",
+    "mounts.log": "82a8b71cf777e17f62f5111f90fc4e2fbfc0380f6fc94dfcb2e53db4e9dcd4e9",
+    "swap.log": "692afda2ecc2a518c39db4224a1fdb9b570d47e3278b4273fc5cb902d33d79a6",
+    "proc-mounts.txt": "ecdbeb8a677c919634717e20b0078212f80d48425f491e66887a24d083ff346b",
+    "proc-partitions.txt": "3872f7ab1236f7fd5c48c2a65d2d84fbab76e5fdfb6565a005a0b3f26077d350",
+    "filesystems.log": "fb43fe66a0848828de5e9f5b1589606e10c19cc3464fe00ab1dc39906c0e14b5",
+    "block-devices.log": "23fd3ca70342e9a713df54d04682ea2dc76565c967d005cbf205ef680858f638"
+  },
+  "run": 39644394439,
+  "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39644394439",
+  "summary_asset": 663279641,
+  "summary_sha256": "e48ca61279a57bb2fdd6af75eb842c2e4c395e793e4cdd41a275b4fe32a7d4f6",
+  "parts_asset": 663279707,
+  "parts_sha256": "b076d5d8275b76f657eef4906ab8892c06c0b84871b4cee9ead0b3c9063b54b0"
+}

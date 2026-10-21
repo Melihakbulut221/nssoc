@@ -1,3 +1,10 @@
+## 2026-10-21 — actual TX prefix rejection, new32um public-pad feeds
+
+Cloud-only; local workspace remains empty. Original-power128 observer39643945084 completed with ORIGINAL_GATES_REFUTED_BY_IMMUTABLE_POWER128_PREFIX:22 complete bits, two<100mV samples, CMOS CM<1.8V,85 HBT failures,0 MOS failures. All original numerical gates unchanged; receipt pinned. New independent power128feed32 physical workflow triggers on this commit:32um TM2 extends each128um trunk to the actual public pad instead of ending at the old narrow trunk. Full native geometry checks,560-category DRC, deep/flat8088-device LVS and all faults retained. No claim of fresh RC or electrical acceptance yet.
+
+Storage inventory39644394439 confirms no second independent/mnt volume. Receipt pinned; no reserve/vector/timestep/window reduction. Existing live handles unchanged: mainchip ninth39631640578, whole845PLL39637767590, oldpower128 normal39640657545 and swap39640662925. Let current old TX capsules publish; do not endlessly continue electrically refuted geometry. Read immutable new physical outcome and fix actual obstructions if any, then perform fresh whole-parent extraction/waves. Mainchip completed-route input preflight39639250513 passed; actual route completion remains pending.
+
+
 ## 2026-10-21 — investigate full PLL storage on disposable hosted runner
 New native-storage-inventory-cloud job inventories real mounts/block devices(/mnt included) read-only. Existing allcolumn PLL remains live; no formatting/swap changes/cleanup/native restart. Full1us lower bound130.714GB plus reserves may exceed single allocatedvolume; independent storage is not assumed until measured.
 Corrected TX prefix original-gate observer39643945084 is running from78882caf after exact28OPchunk restoration fix. Preserve its actual result, not the earlier KeyError. Live native handles unchanged.
