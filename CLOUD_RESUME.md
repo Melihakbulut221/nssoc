@@ -1,3 +1,8 @@
+## TX8088 RC extraction completed; inherited total-net audit count corrected
+Run39586054928 terminal failure after native extraction returned0(214.7s). Audit still expected699 total nets from prior698-component core; independent combined parent proves703 metal components plus one substrate reference, requiring704 total. Exact matrix size metadata corrected704 squared. All other native topology/R/C/per-point controls unchanged; failed raw archive retained. Re-dispatch output8088-native-rc only after this terminal failure.
+
+Intrinsic39586675206 and storage census39586241135 are live. PLL reader-only migration39584979653 passed but no native resume until reserve/capacity fixed. Mainchip39572968246/TX39573847558/39573851657 retain original live processes. Cloud-only.
+
 ## Actual TX8088 intrinsic model launched alongside fresh parent RC
 New output8088-intrinsic-cloud uses actual whole-parent terminal/LVS proof39580230591, preserving8088devices28620terminals165ports703wire65body nets and every MOS junction. Adds two native10um/70.215um rsil loads with self-heating; requires original15core plus4rsil model corruption controls. Reversible source adaptation checked before native export. Fresh RC39586054928 remains independent; compose only after both pass.
 

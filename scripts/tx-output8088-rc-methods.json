@@ -15,7 +15,7 @@
   },
   "audit-rc02.py": {
     "path": "scripts/tx_output8088_audit_rc02.py",
-    "adapted_sha256": "0ac14692e73f5f94bb4acdbacb4b0fd38fa2190cfd1f63fc16710bff7805d7bf",
+    "adapted_sha256": "4f0be6db543abd393eec5a53d59cae2da82ad04f32a7c1a436269e8755b6b5f8",
     "baseline_path": "scripts/tx_raw64_audit_rc02.py",
     "baseline_sha256": "71460d918cabdaea67fae1da1c9217dc1c54b20615441cac0dfc41bfe02561a1",
     "edits": [
@@ -68,9 +68,19 @@
         "before": "range(1,699)",
         "after": "range(1,704)",
         "count": 2
+      },
+      {
+        "before": "==['699']",
+        "after": "==['704']",
+        "count": 1
+      },
+      {
+        "before": "collapsed_matrix_entries=699**2",
+        "after": "collapsed_matrix_entries=704**2",
+        "count": 1
       }
     ],
-    "scope": "Actual8088 devices/28620 terminals/13370 physical planes/703 components. Original native RC extraction, precision, per-point capacitance, topology and13 raw corruption checks unchanged."
+    "scope": "Actual8088 devices/28620 terminals/13370 physical planes/703 components. Original native RC extraction, precision, per-point capacitance, topology and13 raw corruption checks unchanged. Total native net count includes exactly703 actual metal components plus one substrate capacitance reference:704."
   },
   "mutations01.py": {
     "path": "scripts/tx_output8088_mutations01.py",

@@ -31,7 +31,7 @@ def audit(p,anchors):
  require([r[1:] for r in rep if r[0]=='scale']==[['1000','1','0.5']],'Replacement scale changed')
  require([r[1:] for r in rows if r[0]=='style']==[['ngspice()']],'Wrong native extraction style')
  require(not re.search(r'Missing (?:gate|substrate|terminal|source|drain)|Orphaned node|Error in extracting node|Unknown (?:layer|statement)|Error: Node with no area',log),'Native failure')
- require(re.findall(r'^Total Nets: (\d+)$',log,re.M)==['699'],'Wrong full native node count')
+ require(re.findall(r'^Total Nets: (\d+)$',log,re.M)==['704'],'Wrong full native node count')
  for key in ('Nets extracted','Nets output'):require(re.findall(r'^'+key+r': (\d+)',log,re.M)==['703'],'Incomplete native wire extraction')
  require(log.count('\nNSSOC_WIRE_RC_COMPLETE\n')==1,'Missing/duplicate native completion')
  ports=[r for r in rows if r[0]=='port'];require(len(ports)==13370 and {r[1] for r in ports}==set(a),'Incomplete native port census')
@@ -135,7 +135,7 @@ def audit(p,anchors):
   disconnected_by_kind=dict(Counter(a[n].get('kind','INTRINSIC_OR_PUBLIC_METAL_REFERENCE') for n in isolated)),
   native_export_r_edge_value_multiset_exact=True,geometry_conductor_ownership_exact=True,
   every_native_point_ground_capacitance_preserved=True,every_native_mutual_attachment_and_value_preserved=True,
-  collapsed_capacitance_edge_count=len(expected),collapsed_matrix_entries=699**2,
+  collapsed_capacitance_edge_count=len(expected),collapsed_matrix_entries=704**2,
   complete_collapsed_capacitance_conserved=cap_pass,per_conductor_intrinsic_ground_c_conserved=not wrong_ground,
   wrong_native_branch_witnesses=wrong_markers,
   missing_capacitance_edges=[dict(a=x,b=y,source_af=expected[x,y]) for x,y in missing_caps],extra_capacitance_edges=[dict(a=x,b=y,actual_af=actual[x,y]) for x,y in extra_caps],wrong_capacitance_values=wrong_caps,wrong_intrinsic_ground_values=wrong_ground,
