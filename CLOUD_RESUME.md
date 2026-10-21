@@ -1,3 +1,8 @@
+## Actual8088 whole-parent composition queued behind exact producer
+The new tx-output8088-composition-cloud waits for exact precision run39592592670/source063df858349980c3dc50cd41693b7c5ad4456504. Failed or partial producer evidence prevents composition. It combines full native8088 intrinsic39586675206 with actual parent139838R99650C at13370reference planes, preserving165physical ports plus separate wire_cref,65body nets and28620terminals. All20prior corruption checks remain; adds4outputrsil faults and actual same-net outputREF C/B plane swap. Requires25rejections. No loaded-wave or fullPHY claim.
+
+Mainchip39591380714 remains live. TX sixth continuations39592603205/39592612780 resume fifth nominal29.138422440393524ns/fault28.438634845952907ns captures toward original34ns. PLL corrected metadata census39592019880 remains live. Cloud-only.
+
 ## TX8088 precision producer launch failure retained
 39591337663 failed after verified producer restoration but before native RC completion. Original complete failure archive is retained. Next cloud run first restores/prints its exact native log/result, records all subsequent native return codes and checks ldd, using the same package set as the proven original producer qualification. No tolerance, geometry, RC value or acceptance changes.
 
