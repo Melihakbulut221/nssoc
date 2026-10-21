@@ -1,3 +1,7 @@
+## 2026-10-21 Actual8074 native process saved; first cross-runner continuations
+Run39522574861 passed22 controls and saved both actual ngspice processes. Nominal877 complete raw rows reached0.419787ns; swap1057 rows reached0.509787ns. All14162columns, exact prepared model/engine, original full34ns endpoint and file prefixes retained. These are partial captures, not an electrical or PHY pass.
+Immutable case descriptors, raw prefixes and checkpoint/image hashes are pinned in tx-raw8074-native-initial-save-pass-20261021.json. Dispatch the first different-runner continuation per case for3600native seconds. Require restored process, single entrypoint, unchanged runtime/source/raw prefixes and actual numerical growth. Do not restart an analysis from its deck when a latest capsule exists. DRT39515176239 and PLL39502073954 remain live. Cloud-only; local workspace empty.
+
 ## 2026-10-21 Actual8074 native preflight encoding correction
 Run39521590595 passed19 controls but both native jobs stopped before simulation: UTF-8 decoding rejected comment byte0xb5 in a prepared model. Failed run/log digests are retained. The input scanner now reads native bytes with a one-to-one Latin-1 mapping; no model/deck or engineering gate changes. Added nested include/section fixture and three corruption/missing-input controls (22 faults total), to run in cloud. Retry starts from the immutable prepared full deck because no native process existed in the failed run. Local workspace remains empty; cloud-only execution continues.
 
