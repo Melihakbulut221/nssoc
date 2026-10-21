@@ -1,3 +1,14 @@
+##2026-10-21 power128 wire graph passed; fresh anchors start
+39610759883 passes native8088/28620terminal/703metal/768electrical census and
+actual native net ownership. Fresh GDS4c3142408854201d2084ca1ada81e7460e2a90525c7ac7ab6c571b86eb9c887b.
+New power128-native-anchors workflow retains exact six original fault controls;
+only staging directory changes from already qualified8088 native binder.
+After anchors require fresh intrinsic/nativeRC/composition and full loaded waves.
+Old8074 fault39592612780 completed34ns and correctly detected swapped leaf
+selects; retained forever, no restart. It does not rescue failed old nominal.
+Mainchip39610377184 and PLL39602655093 remain live. Work cloud-only.
+
+
 ##2026-10-21 actual8088 power128 physical PASS; fresh RC starts
 39609833404 source931858dadf22b305a69afa5e37f2a308d4a11829 passes560-category
 DRC0, deep/flat8088 LVS, exact165 ports and all original fault controls.
