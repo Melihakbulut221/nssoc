@@ -1,3 +1,8 @@
+## PLL initialization metadata exists; observer selection corrected
+Correction to the previous checkpoint: storage-initialization-state.json is PRESENT in the fully verified1901file archive. Its5320793bytes exceeded the observer2MiB retention bound. Keep that exact known file under a bounded8MiB exception and assert its pinned digest; all other metadata remains2MiB and no raw waveform is retained locally. Tests cover the actual size, boundary/overflow, unrelated data and raw exclusion. Repeat read-only cloud diagnosis to inspect capacity, retaining original failure. Do not waive native12GiB/backing4GiB reserves.
+
+Mainchip continuation39591380714 is live from3d8f1aa80d5f505a84f1190786fde5c50230ad48, resuming exact sixth checkpoint39572968246 (completed4027 violations, partial iteration10/40percent3522). Receipt pinned. TX8088 precise producer39591337663 is live from the same commit. TX8074 existing nominal/fault jobs remain separate and must not be restarted while live. Full PHY, routing completion and final timing remain open. Cloud-only.
+
 ## Actual8088 precision producer reuse launched
 The new tx-output8088-precision-cloud workflow restores qualified double-total Magic library1a44bd5c70af3800213419c2e3b2213285523a74fcc4b92bc9cf7314d93a592c from39486998309. It runs fresh actual8088 native extraction in normal and reversed coupling enumeration, retaining all geometry, technology, thresholds and raw audit/mutation code. Both results must preserve139838 resistor cards and99650 capacitor endpoint/value records and pass all13 corruption controls. Only after this passes compose full intrinsic8088 with actual full-parent wireRC. No full PHY acceptance.
 

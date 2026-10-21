@@ -14,6 +14,20 @@ RUN=39551551389
 GROUP='pll845-native-acquisition-initial'
 SUMMARY='bd0f59b0f945d749452199de4a1f11277d179893ed143a7046712297c61af133'
 PARTS='e90caa0175de307a74a6bc349e8f18ab2c6117fd37afa853c0c9f2e7ac9b5762'
+def retain_metadata(rel,size):
+    # The actual initialization inventory is5.3MB; only this hash-pinned
+    # metadata member gets an8MiB bound. Unrelated payloads remain unretained.
+    if rel=='storage-initialization-state.json':return 0<=size<=8*1024**2
+    return (rel.startswith('storage-initialization')or rel in ('result.json','new-preparation.json','case/circuit.cir','prepared/terminal-instrumentation.json')or rel.startswith('history/'))and 0<=size<=2*1024**2
+def retention_controls():
+    assert retain_metadata('storage-initialization-state.json',5320793)
+    assert retain_metadata('storage-initialization-state.json',8*1024**2)
+    assert not retain_metadata('storage-initialization-state.json',8*1024**2+1)
+    assert retain_metadata('storage-initialization-logs/mount-readback.log',283)
+    assert not retain_metadata('storage-initialization-other.bin',2*1024**2+1)
+    assert not retain_metadata('case/actual-acquisition.raw',94756323259)
+    assert not retain_metadata('unrelated',1)
+    return dict(actual5320793byte_inventory_retained=True,initialization_limit_bytes=8*1024**2,other_metadata_limit_bytes=2*1024**2,unrelated_raw_payload_not_retained=True)
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False);stage=ROOT/'pll845-diagnostic-parts';stage.mkdir(exist_ok=False)
@@ -21,7 +35,7 @@ def main():
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
-        r['stream_controls']=archive.controls()
+        r['stream_controls']=archive.controls();r['retention_controls']=retention_controls()
         r['tail_controls']=raw_tail.controls();save()
         r['actual_header_qualification']=observed.qualify(OUT/'header-qualification');save()
         stem=GROUP+'-'+str(RUN)+'-1';url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-'+str(RUN)+'-1-'+GROUP+'/'
@@ -43,7 +57,7 @@ def main():
                     if not m.isfile():continue
                     rel=str(Path(*p.parts[1:]));f=tar.extractfile(m);digest=hashlib.sha256();count=0;prefix=bytearray();tail=b'';keep=bytearray()
                     israw=rel=='case/actual-acquisition.raw'
-                    keep_small=(rel.startswith('storage-initialization')or rel in ('result.json','new-preparation.json','case/circuit.cir','prepared/terminal-instrumentation.json') or rel.startswith('history/')) and m.size<=2*1024**2
+                    keep_small=retain_metadata(rel,m.size)
                     while data:=f.read(archive.CHUNK):
                         digest.update(data);count+=len(data)
                         if israw:
@@ -78,6 +92,8 @@ def main():
         r['logical_archive_file_bytes']=sum(x['bytes']for x in r['member_census'])
         save()
         assert 'storage-initialization-state.json'in metadata
+        assert metadata['storage-initialization-state.json']['bytes']==5320793
+        assert metadata['storage-initialization-state.json']['sha256']=='323de65d2e1b17d465311652938271e577a482046a2d9edc056a67cdb55f90cd'
         init=json.loads((OUT/metadata['storage-initialization-state.json']['path']).read_text())
         r['storage_initialization']={k:v for k,v in init.items()if k not in ['immutable_workspace_files','commands']}
         r['metadata']=metadata
