@@ -1,3 +1,6 @@
+## 2026-10-21: deep repair proved; fresh routing handoff
+39674630712 completed PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA. 153130 instances, 368 added positive buffers,146 equivalent-size changes. ODB25b1e56f... / netlist3a200ea7...; original six-slack baseline, geometry, fixed PCIe clock, native equation proof and actual inversion rejection passed. Immutable receipt mainchip-postroute-repair-deep-pass-20261021.json. New mainchip-repair-deep-handoff-cloud push owns the source-bound fresh-wire handoff; do not duplicate. Still requires fresh global/DRT, RC/antenna/three-corner STA. PLL39674830790 and TX39662510592/39662516267 remain cloud continuations; inspect terminal capsules before successors. Local workspace remains empty.
+
 ## 2026-10-21: current cloud work handles
 
 Mainchip deep setup repair39674630712 is running from6fbd2215 (5000 iterations; all original gates). Preserve passed80-iteration candidate39669577979 and passed fresh-wire handoff39672217279. New global/detail routing has not started for this repaired candidate; choose only a proved candidate and regenerate RC/three-corner STA.
