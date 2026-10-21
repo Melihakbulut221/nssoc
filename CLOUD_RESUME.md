@@ -1,3 +1,7 @@
+## 2026-10-21: handoff passed; extend setup effort before reroute
+
+39672217279 PASS: ready152988-instance fresh-data-wire input ODB52fd1a1e..., original cfgb86cade4..., fixed clock preserved. Native80-iteration candidate still reports8006 estimated setup violations (WNS-5.641ns); hold WNS-0.469ns. Exact upstream shows80 is a global iteration cap. Separate mainchip-postroute-repair-deep-cloud raises only setup cap to5000, keeping all source/baseline/geometry/equation/clock/hold gates. Preserve proven candidate; no final timing claim. PLL proof-namespace controls39673761018 pending; must pass before restoring valid39602655093 process. TX39662510592/39662516267 remain original process continuations.
+
 ## 2026-10-21: PLL restore bookkeeping fix; no cold restart
 
 PLL39637767590 terminalFAILURE: inherited preallocated-storage-proof caused FileExistsError before native activation. Full archive published and pinned. Last valid native source remains39602655093(initial), summary813bc135... parts12c4059f.... New pll845-proof-namespace-cloud retains all native methods/capture/gates/reserves and uses distinct run/attempt storage-proof directories. Its controls must pass before dispatching a continuation of the exact valid capsule. Mainchip repair handoff39672217279 has completedSUCCESS; verify its receipt then generate fresh guides/resumable DRT. Local workspace remains empty.

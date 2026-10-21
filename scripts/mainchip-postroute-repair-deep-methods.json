@@ -1,0 +1,35 @@
+{
+  "derivations": [
+    {
+      "baseline": "scripts/cloud_mainchip_postroute_repair.py",
+      "baseline_sha256": "f01748a6181478ca8ddb56095c608b5b283923f80b60fb49d6a46dbf8076e708",
+      "candidate": "scripts/cloud_mainchip_postroute_repair_deep.py",
+      "candidate_sha256": "db41264f5d124f87782e422930be14c61507d544dc031b87c69091a0df191337",
+      "changes": [
+        {
+          "before": "from check_mainchip_postroute_repair_sources import check",
+          "after": "from check_mainchip_postroute_repair_deep_sources import check",
+          "count": 1
+        },
+        {
+          "before": "native=ROOT/'hw/soc/flow/mainchip_postroute_repair.tcl'",
+          "after": "native=ROOT/'hw/soc/flow/mainchip_postroute_repair_deep.tcl'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline": "hw/soc/flow/mainchip_postroute_repair.tcl",
+      "baseline_sha256": "e643d26f131f3bc67e39c4618199307a305887759178ff45d36d0d46acade08f",
+      "candidate": "hw/soc/flow/mainchip_postroute_repair_deep.tcl",
+      "candidate_sha256": "57592ad65153b0ca65692dd95beb05e39bac9ba4966cfc9c3ec7dc391c05f133",
+      "changes": [
+        {
+          "before": "-max_iterations 80 -max_repairs_per_pass 1",
+          "after": "-max_iterations 5000 -max_repairs_per_pass 1",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
