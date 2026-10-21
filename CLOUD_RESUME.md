@@ -1,3 +1,19 @@
+## 2026-10-21 — cloud-only actual v26 parent metal cleanup candidate
+
+User requires all project source/CAD/results in cloud; local workspace verified
+empty and no local CAD processes. All edits were sent directly through GitHub API
+from RAM; no local checkout or simulation.
+
+CDR diagnosis39529481164 found8 terminal-free parent-metal candidates. New
+cdr-input-access-v26-clean-parent-cloud workflow removes only native-LVS-proven
+parent polygons, then reruns unchanged full DRC/LVS and strict111-component graph.
+This candidate has not yet passed. Do not waive ownership or electrical gates.
+
+Continue live handles: mainchip39529165315; TX39524905842 and39524910643;
+PLL39502073954 (initial succeeded, continuation running). Do not cold restart.
+Full serial PHY/mainchip routing/final setup-hold remain open.
+
+
 ## 2026-10-21 CDR v26 native wire ownership failure investigation
 Planes39528173939 passed, but wire-inputs job118988233148 rejected terminal-free native metal at probe01.py. This is now an actual geometric finding, not the earlier provenance issue. Failed wire summary01976c.../parts60c9dd... are immutable in its release. Dependent capture39528364601 correctly failed; do not replay it.
 New cdr-v26-unowned-metal-diagnosis-cloud reproduces the original strict failure on exact unchanged GDS/LVS, then records all offending clusters/layers/polygons in a separate diagnostic. It exits before normal PASS artifacts and makes no physical/PEX/electrical acceptance claim. Use its coordinates to make a real geometry repair, then repeat DRC/LVS and native extraction. Latest DRT39515176239 capsule has been dispatched for another7200seconds; preserve the new live process. Cloud-only.
