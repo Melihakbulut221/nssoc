@@ -1,3 +1,10 @@
+## 2026-10-21 — actual completed-route geometry PASS, native CLI path failure fixed
+
+39652405552 is terminalFAILURE: exact original native configuration,152762-instance topology/faults, fixedPCIe clock route and fresh ODB-to-DEF export passed. Native flow had not started: LibreLane3.0.5 rejected --force-run-dir because the output directory did not exist. Failure receipt and original report retained. Create only a fresh empty run directory before CLI invocation, update its method hash; no geometry, clocks, flow stages, RC or timing gate changes. Redispatch mainchip-postroute-review-cloud with the same completed39631640578 descriptor and exact input39635867954. No rerouting.
+
+TX anchor39648841180 now terminalSUCCESS:28620terminals,13370planes,165pins,six faults. Hosted followthrough39651408848 owns fresh intrinsic+RC; do not duplicate. PLL39637767590 is publishing its preserved full native capsule; do not resume before terminal verification.
+
+
 ## 2026-10-21 — actual postroute and TX followthrough ACTIVE; local empty
 
 Completed mainchip route39631640578 is pinned with lastDRTcount0 and empty final router report. POSTROUTE REVIEW ALREADY DISPATCHED:39652405552, sourcee2dabd1e79551812d11734192993b12ad49a26a9, exact completed route+input39635867954. Do not dispatch it twice and do not resume completed DRT. Await actual topology/fixed-clock/antenna/disconnect/fresh nominalRC/20/4/8/8ns three-corner timing; final signoff remains unaccepted.

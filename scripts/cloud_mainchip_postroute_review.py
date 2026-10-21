@@ -147,9 +147,13 @@ def main():
         protected.update({str(ROOT/n):v for n,v in methods.items()})
         protected.update({str(p):sha(p)for p in (route,deffile,trial,initial)})
         flow=ROOT/'hw/soc/pnr/mainchip_completed_postroute_flow.py'
+        # Pinned LibreLane3.0.5 CLI validates --force-run-dir as an existing
+        # directory before native flow execution. Require a fresh empty folder.
+        run_dir=OUT/'run';run_dir.mkdir(exist_ok=False)
+        assert run_dir.is_dir()and not any(run_dir.iterdir())
         cmd=[str(app),'python',str(flow),'--flow','MainchipCompletedPostroute',
           '--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell',
-          '--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(trial)]
+          '--force-run-dir',str(run_dir),'--with-initial-state',str(initial),str(trial)]
         r.update(status='RUNNING_NATIVE_COMPLETED_ROUTE_ANTENNA_RC_STA',command=cmd,protected_inputs=protected);save()
         with(OUT/'native.log').open('w')as log:
             code=subprocess.call(cmd,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT)
