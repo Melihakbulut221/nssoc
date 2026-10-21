@@ -754,9 +754,27 @@ def main():
         assert sha(netlist)=='b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0'
         assert sha(sdc)=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'
         assert cfg['STA_THREADS']==1 and cfg['TIME_DERATING_CONSTRAINT']==5.0
+        # Raw user config inherits PDK variables. Bind the already resolved
+        # config from the exact native current-candidate global-route stage.
+        raw_cfg=dict(cfg)
+        pp=json.loads((ROOT/'docs/evidence/mainchip-portable-runtime-pass-20261020.json').read_text())
+        assert pp['run']==39494338440 and pp['summary_sha256']=='21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2'
+        config_name='source/run/1-openroad-detailedrouting/config.json'
+        portable,pconfig=reports.restore_report(pp['group'],pp['run'],pp['summary_sha256'],pp['parts_sha256'],OUT/'resolved-source',[config_name])
+        assert portable==pp['report']and portable['sources_unchanged']
+        cfg=json.loads((OUT/'resolved-source'/config_name).read_text())
+        compared={k:dict(raw=v,resolved=cfg.get(k),equal=(cfg.get(k)==v))for k,v in raw_cfg.items()if k!='meta'}
+        r['resolved_configuration_source']=pconfig
+        r['raw_to_resolved_configuration_comparison']=compared
+        save()
+        assert all(v['equal']for v in compared.values()),'Resolved native stage differs from original candidate configuration'
+        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']
+        assert float(cfg['CLOCK_PERIOD'])==20 and float(cfg['TIME_DERATING_CONSTRAINT'])==5
+        assert cfg['STA_THREADS']==1
         assert set(cfg['STA_CORNERS'])=={'nom_slow_1p08V_125C','nom_typ_1p20V_25C','nom_fast_1p32V_m40C'}
         package=OUT/'postroute-inputs';package.mkdir()
-        (package/'trial-config.json').write_text(json.dumps(cfg,indent=2)+'\n')
+        (package/'trial-config.json').write_text(json.dumps(raw_cfg,indent=2)+'\n')
+        (package/'resolved-stage-config.json').write_text(json.dumps(cfg,indent=2)+'\n')
         clean=dict(state);clean['metrics']={}
         for key in ('def','spef','pnl','sdf'):clean[key]=None
         (package/'candidate-state.json').write_text(json.dumps(clean,indent=2)+'\n')
@@ -780,7 +798,7 @@ def main():
                         elif q.is_dir():directories.add(q)
                         else:missing.add(name)
                 else:missing.add(value)
-        collect(cfg);collect(clean)
+        collect(raw_cfg);collect(cfg);collect(clean)
         paths.update([odb,netlist,sdc,PLACE/'prepared/physical.sdc'])
         pdk=ROOT/'hw/soc/tools/ciel-corrpre'
         if pdk.is_dir():
@@ -808,7 +826,7 @@ def main():
         contract=dict(status='PASS_EXACT_CURRENT_CANDIDATE_POSTROUTE_INPUT_PACKAGE_NOT_ROUTED_OR_TIMING_ACCEPTANCE',
             original_root=str(ROOT),candidate_odb=str(odb.relative_to(ROOT)),candidate_netlist=str(netlist.relative_to(ROOT)),candidate_sdc=str(sdc.relative_to(ROOT)),
             candidate_odb_sha256=sha(odb),candidate_netlist_sha256=sha(netlist),candidate_sdc_sha256=sha(sdc),
-            configuration_sha256=sha(package/'trial-config.json'),state_sha256=sha(package/'candidate-state.json'),
+            configuration_sha256=sha(package/'trial-config.json'),resolved_configuration_sha256=sha(package/'resolved-stage-config.json'),state_sha256=sha(package/'candidate-state.json'),
             input_files=inventory,file_count=len(inventory),bytes=sum(v['bytes']for v in inventory.values()),
             clocks_ns=[20,4,8,8],derating_percent=5,nominal_rc_only=True,qualified_rc_minmax=False,
             native_routing_started=False,fresh_spef_required=True,inherited_metrics_discarded=True,

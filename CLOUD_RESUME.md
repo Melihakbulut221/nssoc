@@ -1,3 +1,12 @@
+##2026-10-21 postroute-input raw-config failure preserved and corrected
+39627219647 completed candidate ancestry but failed on missing STA_CORNERS
+in raw user config before packaging. New job restores exact resolved native
+stage config from39494338440 and requires every raw setting to match.
+Both raw/resolved configs and exact model files will be packaged; no default
+corners or looser gates introduced. Native DRT39610377184, PLL39602655093
+and new power128 TX39627629074 are untouched and remain cloud-only.
+
+
 ##2026-10-21 power128 full loaded decks passed; new native trajectories start
 Both exact nominal and leaf-select-fault preparations passed all original
 stimuli/loads/gates and native OP transport. Power128-native-initial runs new

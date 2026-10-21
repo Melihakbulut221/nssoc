@@ -12,3 +12,9 @@ After complete route and geometry proof, use the actual routed ODB for fresh
 native antenna/disconnection, OpenRCX and original guarded three-corner STA.
 Nominal RC remains unqualified for foundry RCmin/max signoff.
 Current native DRT/PLL/TX jobs are unaffected.
+
+Initial39627219647 failed before packaging because raw user config inherits
+STA_CORNERS from the PDK. The failure is preserved. The corrected job restores
+the exact resolved current-candidate native stage config from39494338440,
+requires all raw user settings to match it, and packages both configurations.
+No missing corner is filled with a guessed default and no timing gate changes.
