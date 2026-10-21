@@ -5,6 +5,7 @@ import hashlib,json,math,os,struct,tarfile
 from pathlib import Path
 import cloud_streamed_native_archive as archive
 import read_pll845_full_native_transient as wave
+import pll845_archived_header_observation as observed
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-pll845-storage-diagnosis'
@@ -20,6 +21,7 @@ def main():
     save()
     try:
         r['stream_controls']=archive.controls()
+        r['actual_header_qualification']=observed.qualify(OUT/'header-qualification');save()
         stem=GROUP+'-'+str(RUN)+'-1';url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-'+str(RUN)+'-1-'+GROUP+'/'
         fetch(url+stem+'.summary.json',SUMMARY,OUT/'source-summary.json')
         fetch(url+stem+'.parts.json',PARTS,OUT/'source-parts.json')
@@ -39,7 +41,7 @@ def main():
                     if not m.isfile():continue
                     rel=str(Path(*p.parts[1:]));f=tar.extractfile(m);digest=hashlib.sha256();count=0;prefix=bytearray();tail=b'';keep=bytearray()
                     israw=rel=='case/actual-acquisition.raw'
-                    keep_small=(rel.startswith('storage-initialization')or rel=='result.json' or rel.startswith('history/')) and m.size<=2*1024**2
+                    keep_small=(rel.startswith('storage-initialization')or rel in ('result.json','new-preparation.json','case/circuit.cir','prepared/terminal-instrumentation.json') or rel.startswith('history/')) and m.size<=2*1024**2
                     while data:=f.read(archive.CHUNK):
                         digest.update(data);count+=len(data)
                         if israw:
@@ -54,7 +56,8 @@ def main():
                         metadata[rel]=dict(path=str(target.relative_to(OUT)),sha256=sha(target),bytes=count)
                     if israw:
                         head=OUT/'native-header-prefix.bin';head.write_bytes(prefix)
-                        names,h=wave.header(head);assert len(names)==1695
+                        names,h=observed.header(head.read_bytes());assert len(names)==5106
+                        assert count==94756323259 and digest.hexdigest()=='17a116d880d748a3bf773f6d8268b16b7fa06c914a19dabbf8439819acb8e88a'
                         stride=8*len(names);rows,remainder=divmod(count-h['header_bytes'],stride);assert rows>0
                         absolute=h['header_bytes']+(rows-1)*stride
                         index=absolute-(count-len(tail));assert 0<=index<=len(tail)-8

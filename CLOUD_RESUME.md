@@ -1,3 +1,8 @@
+## Actual PLL raw format measured; complete storage census resumed with exact header proof
+Header review39580323368 passed:5106columns(time+5088voltages+17currents),196539-byte header. Original1695-column voltage-only reader rejects, including nested native flow(...) names. Canonical receipt pins evidence; no waveform acceptance. New archive-specific storage observer checks exact header/raw identities, eight mutation controls and actual5106-column stride. Re-run read-only pll845-storage-diagnosis-cloud to finish321-part census and recover last complete native time; no native activation, column removal or final reader change. Keep original39502073954 resumable source.
+
+TX8088 conductor graph39579416248 passed; all28620 terminal planes running39580230591. Mainchip39572968246 and TX39573847558/39573851657 retain live native processes. Cloud-only.
+
 ## TX8088 actual conductor graph passed; all terminal planes launched
 Run39579416248 verified8088devices28620terminals703metalcomponents768electricalnets in actual parent, no logical-label unions. Pins in canonical receipt. New output8088-native-anchors preserves original core plane selection and four faults, adds actual output14 Nx1/Nx8 PCell C/B/E mapping, rsil accesses, duplicate-terminal and same-net REF C/B swap rejection. All20532metal+8088body terminals and165external ports required. Next fresh native RC, exact composition and loaded electrical waves.
 
