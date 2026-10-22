@@ -1,0 +1,6 @@
+# Original1us native PLL trajectory completed; independent reader pending
+Run39750949326/source7c4c61b9a5087ba198816887159919c4e4f4ec27 resumed the exact845-device process and reached1us with native exit0 and no native diagnostics. The continuation used1922.743s of native work. Original protected inputs and the complete earlier payload were retained.
+
+The native record contains3201410 complete rows,5106 columns and no partial final row. Its ordinary reconstructed file is130771392219 bytes, SHA256 4646ad014fb3cf44b06adf6b9ec7b29a9ed50011ea7214f4223d1c9acff314d1. The archive is118807467719 bytes in443 immutable parts. This is a complete trajectory/publication milestone, not an acquisition or device-safety pass.
+
+The separate original full-reader job119860827050 is now running. It must verify all data and original acquisition windows. After it finishes, the new complete-terminal-envelopes workflow can inspect all6167 physical terminal voltage measurements on the same full capture. Original acquisition rejection remains a failed result even if a useful voltage diagnosis follows. No PHY/mainchip closure is implied.
