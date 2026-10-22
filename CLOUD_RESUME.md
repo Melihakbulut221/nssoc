@@ -1,3 +1,9 @@
+## 2026-10-22: Original5106-column sparse reader and separate reader-capacity qualification
+
+New pll845-sparse-reader-cloud has two isolated jobs: exact reconstruction of original native prefix with unchanged16-reader-fault controls and all5106 columns; scripts-only static-reader host capacity measurement using existing bounded cleanup. No real PLL process is restored. Original1us/3million-row gate must reject all short fixtures. Native reserves remain unchanged. Full logical archive integration is still outstanding.
+
+v31 actual parent39718154517 atf6a7300ee045ab435546c7b1b31290946a9c0882 is live. Require all-parent geometry/476-deviceDRC/LVS before fresh extraction. Mainchip39710297457 and TX39711301866/39711311480 remain live. All cloud-only.
+
 ## 2026-10-22: v31 follower leaf passed; actual476-device parent replacement
 
 Leaf39717037237/source9b8c43b1c910765387d7abc83d482c3347333067 passes560DRC,8-device deep/flatLVS and7fault controls; GDS21f6cbd93bf94c5d827a083883f88ec4c1c239d0be5ff2d9f0fbed74e106b03d. New cdr-follower-v31-parent-cloud replaces only ac/bd leaves in actual passed v30parent39706018326. Four resistor lengths4.5->2.25um; all old parent shapes/labels/transforms/fills retained exactly. Require independent all16placement/eightchild geometry and full476-device native DRC/LVS.
