@@ -1,0 +1,68 @@
+* Candidate v32: native bias and slave-bleed resistor changes from measured v30 sampler.
+* BP/BN length1.1um ->0.9um at width4um raises input common-mode; gain/headroom tradeoff is unproven.
+* Slave BS12.8um ->6.4um and BH9.6um ->4.8um at width1um target inactive-emitter settling.
+* IP/IN1.2um, master bleeds38.4um, collector loads2.6um and every transistor remain unchanged.
+* Requires fresh physical parent RC and all original full loaded timing/device gates.
+* Fourfold-drive load-stress candidate:16HBT/9native LV NMOS/12rppd. No physical or PHY acceptance.
+* MOS reference8um/0.3um, tails4x36um/0.3um per stage; total18:1 width ratio.
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Development CML master/slave sampler, not a CDR or complete PCIe PHY.
+* External AVDD=2.5 V, AVSS=0 V, IREF=0.5 mA and differential clock required.
+* RX v2 remains separately powered from 1.8 V. Native resistive level shift
+* loads its actual outputs; no ideal voltage gain or behavioral latch exists.
+* Clock target: 8 GHz, common mode 1.29 V, differential levels +/-0.30 V.
+* Preamplifier/substrate/pad parasitics are not supplied by this schematic.
+
+.subckt nssoc_cml_latch_settling_v32 dp dn qp qn cp cn avdd avss sub ref
+XDP qn dp se sub npn13G2 Nx=4
+XDN qp dn se sub npn13G2 Nx=4
+XLP qn qp he sub npn13G2 Nx=4
+XLN qp qn he sub npn13G2 Nx=4
+XCS0 se cp te sub npn13G2 Nx=2
+XCS1 se cp te sub npn13G2 Nx=2
+XCH0 he cn te sub npn13G2 Nx=2
+XCH1 he cn te sub npn13G2 Nx=2
+XT0 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT1 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT2 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT3 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XRP avdd qp sub rppd w=32u l=2.6u b=0 sw_et=1
+XRN avdd qn sub rppd w=32u l=2.6u b=0 sw_et=1
+* Weak native bleeders keep the inactive emitter nodes from floating.
+XBS se avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBH he avss sub rppd w=1u l=38.4u b=0 sw_et=1
+.ends nssoc_cml_latch_settling_v32
+
+* Explicit slave native bleeds: data6x, hold8x; master unchanged.
+.subckt nssoc_cml_slave_settling_v32 dp dn qp qn cp cn avdd avss sub ref
+XDP qn dp se sub npn13G2 Nx=4
+XDN qp dn se sub npn13G2 Nx=4
+XLP qn qp he sub npn13G2 Nx=4
+XLN qp qn he sub npn13G2 Nx=4
+XCS0 se cp te sub npn13G2 Nx=2
+XCS1 se cp te sub npn13G2 Nx=2
+XCH0 he cn te sub npn13G2 Nx=2
+XCH1 he cn te sub npn13G2 Nx=2
+XT0 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT1 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT2 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT3 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XRP avdd qp sub rppd w=32u l=2.6u b=0 sw_et=1
+XRN avdd qn sub rppd w=32u l=2.6u b=0 sw_et=1
+* Weak native bleeders keep the inactive emitter nodes from floating.
+XBS se avss sub rppd w=1u l=6.4u b=0 sw_et=1
+XBH he avss sub rppd w=1u l=4.8u b=0 sw_et=1
+.ends nssoc_cml_slave_settling_v32
+
+.subckt nssoc_rx_sampler_settling_v32 dp dn qp qn clkp clkn avdd avss sub iref
+XREF iref iref avss sub sg13_lv_nmos w=8u l=.3u ng=1
+XIP dp lp sub rppd w=4u l=1.2u b=0 sw_et=1
+XIN dn ln sub rppd w=4u l=1.2u b=0 sw_et=1
+XBP avdd lp sub rppd w=4u l=.9u b=0 sw_et=1
+XBN avdd ln sub rppd w=4u l=.9u b=0 sw_et=1
+* Master tracks low clock; slave tracks high clock, capturing a rising edge.
+XM lp ln mp mn clkn clkp avdd avss sub iref nssoc_cml_latch_settling_v32
+XS mp mn qp qn clkp clkn avdd avss sub iref nssoc_cml_slave_settling_v32
+.ends nssoc_rx_sampler_settling_v32
+
