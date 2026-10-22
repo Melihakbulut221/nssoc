@@ -80,7 +80,7 @@ class PartSink:
     def __init__(self,stem,destination,send,limit):
         self.stem=stem;self.destination=Path(destination);self.send=send;self.limit=limit
         self.parts=[];self.receipts=[];self.stream=None;self.path=None;self.used=0
-        self.total=0;self.digest=hashlib.sha256()
+        self.total=0;self.digest=hashlib.sha256();self.failure=None
     def finish_part(self):
         self.stream.close();self.stream=None
         p=dict(index=len(self.parts),name=self.path.name,bytes=self.used,sha256=archive.sha(self.path))
@@ -90,6 +90,14 @@ class PartSink:
         assert self.path.stat().st_size==self.used and archive.sha(self.path)==p['sha256'],'Published part changed'
         self.path.unlink();self.parts.append(p);self.receipts.append(receipt);self.path=None
     def write(self,data):
+        if self.failure is not None:raise self.failure
+        try:return self._write(data)
+        except BaseException as error:
+            # tarfile may flush its footer while unwinding an earlier error.
+            # Retain the original failed part and error; never reopen/retry it.
+            self.failure=error
+            raise
+    def _write(self,data):
         self.digest.update(data);self.total+=len(data);offset=0
         while offset<len(data):
             if self.stream is None:
@@ -100,7 +108,12 @@ class PartSink:
             if self.used==self.limit:self.finish_part()
         return len(data)
     def finish(self):
-        if self.stream is not None:self.finish_part()
+        if self.failure is not None:raise self.failure
+        try:
+            if self.stream is not None:self.finish_part()
+        except BaseException as error:
+            self.failure=error
+            raise
     def abort(self):
         if self.stream is not None:self.stream.close();self.stream=None
 

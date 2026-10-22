@@ -94,14 +94,20 @@ def controls(out):
             nonlocal count
             count+=1
             return name!='not-stopped'and not(name=='resumed-during-archive'and count>1)
-        dest=trial/'stage';dest.mkdir();published={}
+        dest=trial/'stage';dest.mkdir();published={};upload_calls=0
         def send(path):
+            nonlocal upload_calls
+            upload_calls+=1
             if name=='failed-upload':raise OSError('Injected failed upload')
             r=host_memory(published,dest,limit)(path)
             if name=='bad-upload-receipt':r['sha256']='0'*64
             return r
         try:logical.stream_pack(body,'failed',dest,send,{'raw.bin':dict(source=expected,plan=p,open_source=source_chunks)},stopped,limit)
-        except (AssertionError,OSError,ValueError)as error:rejected.append(dict(name=name,reason=str(error)))
+        except (AssertionError,OSError,ValueError)as error:
+            reason=str(error)
+            if name=='bad-upload-receipt':assert reason=='Hosted asset identity/size/digest mismatch'and upload_calls==1
+            if name=='failed-upload':assert reason=='Injected failed upload'and upload_calls==1
+            rejected.append(dict(name=name,reason=reason,upload_calls=upload_calls))
         else:raise AssertionError('Accepted '+name)
         assert not(dest/'failed.parts.json').exists()
         assert live.exists()and other.exists()
