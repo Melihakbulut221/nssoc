@@ -5631,3 +5631,10 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - New cdr-candidate-pcells workflow uses exact established AppImage/PDK to generate17 actual changed/reference PCells and read back geometry parameters. Measures real bounding boxes against the old necessary50um row-local top limit, preserving GDS and failures.
 - This inventory is not full macro/parent DRC/LVS, actual diffusion extraction, fresh wire RC or accepted PHY. Those remain open and explicit in result flags.
 - v38 run39860793200 at8e1e6b3fea1bf910c8a532c46bf0bf2f2228ca7c is in source controls. v37 run39857552791 controls passed; native full trials are active/queued. Original route/TX/PLL handles remain unchanged.
+
+
+## 2026-10-23 exact cloud preflight and PCell queue handles
+- v37 run39857552791/job120099596145 source2d98322485942f1325345383c1e506b3cf97925b: controls success; full native cases active/queued.
+- v38 run39860793200/job120110659088 source8e1e6b3fea1bf910c8a532c46bf0bf2f2228ca7c: controls success; full native cases active/queued. Exact job-log hashes: docs/evidence/cdr-v37-v38-preflight-pass-20261023.json.
+- Actual17-PCell inventory39862564844/job120116650311 sourcea3e8fef82274f7e02cd789bf3b63ebfc93baf9d1 queued, not failed and not native geometry acceptance. Check this exact handle rather than duplicating it.
+- Original route39849657003, TX39849664074/39849669847, PLL39854075819 remain the only current running chains. Verify exact terminal results/capsules before next continuation or full result review.
