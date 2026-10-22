@@ -5662,3 +5662,13 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Route9 run39849657003 saved exact state after iteration25;113violations at24 rose3906 at25,26enteredpartial3568. Route10 now39868561968, source590ae6bfcd5b26dfdf802fbcf23cdb1e84bcba3e. Original64iterations/clocks retained. Postroute original RC/antenna/disconnect/STA pending.
 - TX fourth segments39867591857none/39867597476swap, source590ae6bfcd5b26dfdf802fbcf23cdb1e84bcba3e, controls passed and live native restore/continue. Previous24.4028/24.9923ns saved; target34ns.
 - All computation/testing cloud-only. No local checkout, artifacts or CAD. Full serial PHY, mainchip final routing and setup/hold remain incomplete.
+
+
+## 2026-10-23 existing-record PLL control-wire current diagnosis
+Cloud-only user instruction remains binding; local /home/hasanmelih/Documents/ChatGPT/nnsoc is empty and no local CAD process is running. Mainchip route10 39868561968 and TX4 39867591857/39867597476 continue live without restart. CDR v39 39869412251 source93e95 controls passed and all four full native cases entered the actual screen.
+
+PLL complete reader39854075819 remains an actual acquisition rejection. VCTRL480 connects four VCO control gates, both pump switches and filter. No disconnected VCTRL or proven PFD polarity fault established. Original current columns are voltage-source branches, not MOS channel currents. R3379/R3380=53.7174ohm at sink/source output metal terminal, with both endpoint voltages recorded.
+
+New pll845-vctrl-wire-cloud workflow binds all845 original device records, nine VCTRL terminal leaves, actual RC/header and completed-reader report. Controls must pass before full existing-capture dispatch. Original 1us/5106-column validation and acquisition/cycle rejection remain unchanged; new exact selected-column copies and wire-current/charge diagnosis remain cloud-only. No native SPICE or all-terminal envelopes rerun. Wire current is not intrinsic MOS channel current or qualified PEX. Full PHY/routing/timing remain open.
+
+After controls pass, dispatch once with exact original completed native SOURCE_CHECKPOINT from reader39854075819 original_reader.source_checkpoint. Never use a failed-reader run as native source; inspect Actions before dispatch to avoid duplicates. Keep failures and original gates unchanged.
