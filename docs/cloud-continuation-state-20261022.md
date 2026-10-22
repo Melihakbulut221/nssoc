@@ -20,6 +20,6 @@ The complete 5106-column, at least 3200000-row raw payload alone is at least1307
 
 ## Other live native simulations
 
-TX continuation runs39697650133 and39697654247 remain the authoritative current handles until terminal evidence says otherwise. Read the published case binding rather than inferring it from run order. Continue saved processes or validate completed native waves as appropriate.
+TX runs39697650133 (normal) and39697654247 (selection fault) completed with saved native states at28.7500489820868ns/65736complete rows and23.82961867978459ns/54449complete rows respectively. Both retain all14182columns and single-entrypoint numerical progress; neither is a complete34ns capture or electrical acceptance. New same-process continuation handles are39711301866 and39711311480, source618824d3523b8ca782dcd5f9d489ab390c513b8f,7200native seconds each. Read actual case binding from their published reports rather than inferring it from run order. Exact source descriptors and raw-prefix hashes are in docs/evidence/tx-power128feed32-third-checkpoints-20261022.json.
 
 Full serial Gen3 x4 PHY, final routed mainchip timing and production qualification are not yet accepted.

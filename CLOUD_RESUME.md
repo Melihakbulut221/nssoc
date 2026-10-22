@@ -1,3 +1,11 @@
+## 2026-10-22: TX fourth same-process continuations active; complete native data retained
+
+- Completed third checkpoints: normal39697650133 at28.7500489820868ns/65736rows; selection-fault39697654247 at23.82961867978459ns/54449rows. Each14182columns, original34ns/.5ps/256bit target unchanged. Both are saved processes, not complete electrical passes.
+- Dispatched once each from exact verified checkpoints:39711301866 and39711311480 at618824d3523b8ca782dcd5f9d489ab390c513b8f,7200native seconds. Do not infer id-to-case mapping from dispatch order; use actual reports.
+- Current other handles: CDR four-case full-wave39709128571; mainchip same-process detailed route39710297457. PLL892.69ns checkpoint preserved; storage capacity unresolved. Extended capacity evidence39709857751 is committed.
+- All source hashes, raw-prefix hashes and exact descriptors:docs/evidence/tx-power128feed32-third-checkpoints-20261022.json. All CAD/cloud results remain hosted; local workspace empty. Full PHY and final fixed-clock timing are still unaccepted.
+
+
 ## 2026-10-22: Same mainchip process continued; actual storage and all active handles recorded
 
 - Mainchip second checkpoint39696184554 proves progress from iteration0 into1 with single entrypoint. First iteration173046 intermediate routing violations, not final DRC or STA. New same-process continuation39710297457 (f214e473727d81bb2d1055c0849f52c784e3b6d5),7200s.
