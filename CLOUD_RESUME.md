@@ -5638,3 +5638,11 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - v38 run39860793200/job120110659088 source8e1e6b3fea1bf910c8a532c46bf0bf2f2228ca7c: controls success; full native cases active/queued. Exact job-log hashes: docs/evidence/cdr-v37-v38-preflight-pass-20261023.json.
 - Actual17-PCell inventory39862564844/job120116650311 sourcea3e8fef82274f7e02cd789bf3b63ebfc93baf9d1 queued, not failed and not native geometry acceptance. Check this exact handle rather than duplicating it.
 - Original route39849657003, TX39849664074/39849669847, PLL39854075819 remain the only current running chains. Verify exact terminal results/capsules before next continuation or full result review.
+
+
+## 2026-10-23: v37 loading regression and actual candidate geometry
+- All fourv37 original full native cases reject; width6early C/D64/64 wrong apertures, width8early128/166, not a repair to promote.
+- Source-bound v36/v37 transfer/input-bias comparison added; auto-triggered cloud workflow cdr-v36-v37-transfer-cloud.yml reads immutable full captures only.
+- Actual PCell run39862564844 completed:17cells/readbacks pass,54um single-finger MOS54.36um tall exceeds old50um top envelope. Receipt docs/evidence/cdr-candidate-pcells-result-20261023.json. No macro DRC/LVS/diffusion/PEX acceptance.
+- Route39849657003 remains live; TX39849664074/39849669847 publishing latest exact process checkpoints at last verification; do not duplicate or restart live tasks. PLL39854075819 live full reader.
+- v38 is not accepted: early A/B now pass but C/D fail; late data_area5 A/C/D fail. Preserve all native results and finish collection before selecting next circuit.
