@@ -5603,3 +5603,10 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Preserve all120 HBT and4 sampler check reproductions. Added actual C/D input/bias resistor endpoint voltages, common mode and master selector/data VCE at fixed original apertures and full active statistics.
 - Eight endpoint/extrapolation fault controls and source-edit reconstruction must pass before diagnosis. This is measured evidence for a possible input attenuation/headroom change, not a candidate fix or acceptance claim.
 - PLL39854075819 full reader live; route39849657003, TX39849664074/39849669847 and four CDRv36 cases39850649751 live at latest verification. Do not restart them on observation timeout.
+
+
+## 2026-10-23 measured C/D headroom constrains next native candidate
+- Both input-bias diagnostics39856218758 completed successfully as rejection reproductions. Eight fault controls passed; all120 original HBT and4 sampler checks reproduced. Exact assets and selected native resistor cards: docs/evidence/cdr-v35-input-bias-results-20261023.json.
+- Full active C master-track min VCE0.42030/0.42123V (early/late), only20–21mV above0.4V. Input-only resistance reduction is not assumed safe.
+- v37 preserves nominal divider ratio by widening all8 C/D input and bias resistors4->6 or8um together, on pending v36 slave_drive15_load12. This is a bounded new intrinsic trial, not a promoted layout. Four full early/late simulations follow exact source/dimension controls. All previous clocks, samples, loads and electrical gates unchanged.
+- Preserve v36 original jobs39850649751. Continue exact mainchip39849657003 and TX39849664074/39849669847 saved-process chains. PLL39854075819 full-reader analysis remains active; no original native simulation restarted.
