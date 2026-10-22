@@ -1,3 +1,9 @@
+## 2026-10-22: Cross-host native sparse Btrfs experiment
+
+New native-sparse-btrfs-cross-job-cloud restores the preserved bounded4ns physical845 process from38904997140 onto a distinct runner and compressed Btrfs, uses lossless sparse-prefix storage, redumps and restores, then demands bit-exact original complete raw and all probes. This is a qualification experiment, not real1us PLL activation or full-column reader acceptance. Existing native-sparse same-host proof39713442944 passed.
+
+CDR v30 diagnosis39715337308 is active; first case completed. Mainchip39710297457 and TX39711301866/39711311480 continue. All local project directories remain empty; all files and evidence hosted.
+
 ## 2026-10-22: v30 electrical rejection retained; actual latch diagnosis launched
 
 CDR39709128571 rejected both nominal full loaded cases; both fault controls detected. All transistor gates passed, but downstream C/D sampling regressed. New cdr-v30-latch-timing-cloud reproduces exact complete waveforms/geometry and unchanged latch measurements before another design change. Receipt: docs/evidence/cdr-input-impedance-v30-electrical-rejection-20261022.json.
