@@ -1,3 +1,11 @@
+## 2026-10-22: v30 fresh extraction and MIM capture passed; raw audit/composition launched
+
+- Fresh extraction 39707446970 at 97c114638871b59de1cb6f0192391436ce9f5b01: all four stages PASS. Native graph 476 devices / 1382 terminals / 111 wire components / 938 points.
+- MIM capture 39708084548 at ea39f289a589d3a1bf2973a6c46b7e8d3406efc8: actual 17918 R / 12850 C / seven MIM devices, all five corruptions rejected. Summary 260420a91547b8b245e6f7bca362e52991a11669f45f42d48801b1a2f8ea6a51, parts e1215d30bf8db5e6d4a70ac496782c08f28b2a4782ecca36ee3ae2edd4689dcb.
+- Start cdr-input-impedance-v30-mim-validation-cloud from this commit; require raw audit and composition to pass before original 34.25 ns / 256-bit loaded electrical tests.
+- Do not mark electrical or qualified PEX acceptance from these physical/capture results. No local CAD files/processes; all work remains cloud-only.
+
+
 ## 2026-10-22: v30 MIM capture chained to exact live fresh extraction
 
 - Extraction 39707446970 at 97c114638871b59de1cb6f0192391436ce9f5b01 passed native planes; wire-inputs was running. MIM capture workflow now waits on that exact run, never a new/restarted or different source.
