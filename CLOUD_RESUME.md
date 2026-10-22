@@ -1,3 +1,9 @@
+## 2026-10-22: v31 MIM capture follows exact fresh extraction
+
+Corrected extraction39720055542/source462b8a4ac896fc26626787c7c0010e3595a6dae3 passed native planes; wire-inputs is live. New cdr-follower-v31-mim-parent-rc-cloud waits on this exact run and all4successful native stages, binds immutable receipts, then captures actual freshRC with7MIMs/938points and original5fault controls. No old parasitic values or electrical gates changed.
+
+After capture measure actualR/C census, audit raw/intrinsic capacitance, compose once, and run original34.25ns/256bit/1104-column loaded matrix. Mainchip39710297457 and TX39711301866/39711311480 remain live. PLL sparse/full-column reconstruction qualified on real prefix and separate static capacity measured; logical archive integration still required before real892.69ns activation. All cloud-only.
+
 ## 2026-10-22: Sparse5106-column reader passed; repair stale v31 transport GDS pin
 
 PLL reader39718716834 passed lossless original2MiB prefix/all46 complete native rows/all5106columns, preserving21605 partial payload bytes and all16 reader corruption controls. Direct sparse reads and short full-capture claims rejected. Separate scripts-only static reader measured137053306880free bytes; after4GiB static reserve supports132758339584raw bytes/~3250005rows. Actual final size must still be checked. Native12GiB/4GiB reserves unchanged. Implement and qualify lossless logical archive publication/restoration before real892.69ns process activation.
