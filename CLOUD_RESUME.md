@@ -5576,3 +5576,10 @@ Verified terminal-success source runs39795757947,39789628668,39789637111 publish
 ## Exact continuations dispatched and coupled slave-drive candidate
 
 Route ninth segment39849657003 resumes39795757947; TX second cross-runner continuations39849664074 nominal and39849669847 swap resume39789628668/39789637111. Their immutable source is eaa49798cf1ec6781054131c7f1bdc8b8cb1ebc0. Do not duplicate. CDRv36 now tests two explicit slave-drive/load recipes, with all original electrical gates. See docs/cdr-v36-slave-drive-load-balance-20261022.md; no candidate result or physical acceptance yet.
+
+
+## 2026-10-22 PLL full-reader timeout; byte-exact storage adapter queued
+- Reader39798792510 ended cancelled at its350-minute job limit. Native source39750949326 remains complete; do not rerun SPICE.
+- Exact failure receipt: docs/evidence/pll845-full-reader-timeout-20261022.json. Interrupted summary RUNNING is not acceptance.
+- New workflow pll845-contiguous-reader-cloud.yml initially runs controls only. Verify pass before dispatching exact completed-source descriptor. Original all-column gates/envelope formulas and acceptance thresholds retained; eight byte-exact column copies address suspected repeated strided I/O. Phase, RSS/I/O and stack telemetry plus always-copy reader report added.
+- Route39849657003, nominalTX39849664074 and swapTX39849669847 remain live; no duplicate/restarted native jobs. CDRv3639850649751 quick controls passed; four full native screens started.
