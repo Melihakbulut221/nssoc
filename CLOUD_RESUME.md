@@ -1,3 +1,9 @@
+## 2026-10-22: Actual v30 latch measurements reproduced; follower loading diagnosis
+
+Native latch run39715337308 passed both read-only diagnoses. At0.3UI early A master output258.7mV versus slave39.3mV; C/D master inputs7.20/19.58mV and all255 below the100mV diagnostic marker. Original electrical rejection retained. New cdr-v30-transfer-timing-cloud measures exact ac/bd follower voltages/currents before choosing the next geometry.
+
+Sparse cross-host Btrfs qualification39715789011 is live. Mainchip39710297457 and TX39711301866/39711311480 remain active. All cloud-only; no real PLL resume until full data-path qualification. Full PHY and final timing remain open.
+
 ## 2026-10-22: Cross-host native sparse Btrfs experiment
 
 New native-sparse-btrfs-cross-job-cloud restores the preserved bounded4ns physical845 process from38904997140 onto a distinct runner and compressed Btrfs, uses lossless sparse-prefix storage, redumps and restores, then demands bit-exact original complete raw and all probes. This is a qualification experiment, not real1us PLL activation or full-column reader acceptance. Existing native-sparse same-host proof39713442944 passed.
