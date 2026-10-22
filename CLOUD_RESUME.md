@@ -5554,3 +5554,17 @@ CDR wholeparentgeometry/nativeplanes39139774141 at4b724d35e998849b0177b84ec87edb
 
 
 CDR freshwireinputs39140115416 atdd4b9a6d4861a7338cdb1a65fb5cd67dfa4cc08e PASSED111wirecomponents/484native devices/1394terminals/921metal+473body/946actualpoints25public. Receipt cdr-retimed-power-v4-wire-inputs-pass-20261018.json. Thiscommit launches independent cdr-retimed-power-v4-binding-cloud and cdr-retimed-power-v4-rc-cloud: unchangednativePDKconverter(8x8um,2x32um,32x36um,4x64umMOS),12realmodelcontrols, freshnativeMagicwireextraction and13rawR/Ccorruptions withallpoint/edgevalue/capconservationgates. No newR/Ccounts assumed. Then freshintrinsicMIMcapture/audit/composition/originalloaded earlylate+faults required. Newcompactmodelheader nssoc_cdr_pd484_power_compact_v4; rootGDS nssoc_cdr_pd484_power_access_v4. CloudonlygoalstillOPEN.
+
+# Cloud-only continuation — 22 October 2026
+
+All CAD, native simulation, routing and verification remain on GitHub-hosted runners. Local workspace is empty and no local CAD process is running. Do not restore sources or large waveforms locally. Read current branch/release metadata via APIs and retain exact failed evidence.
+
+- PLL original1us capture39750949326 is complete but not acquisition/safety accepted. Exact sparse-reader import and source-contract controls39798324839 passed. Reader39798792510 (source23424903b51fa2c0a76c4510b148758070fb2072) has passed preparation and reached full-capture validation. Follow that run; do not repeat the native simulation or duplicate the reader. Older capacity/import/workflow-proof failures are preserved.
+- Mainchip exact eighth detailed-route continuation39795757947 follows saved seventh39774389407. Last verified completed-iteration violations594, not final DRC or setup/hold. Continue only the newest authenticated native process; on completion use original postroute extraction/timing gates.
+- TX return32 nominal39789628668 and swap39789637111 are exact live first continuations from39771504622. Do not duplicate. Full34ns256bit native/device validation remains pending.
+- CDR v35 four full rejected captures were diagnosed in39799502447. All original checks reproduce; one individual B sampler passes but all complete candidates remain rejected. See docs/cdr-v35-transfer-diagnosis-20261022.md and its pinned receipt. No v36 model or physical promotion has been launched.
+- CDR v34 all_area20 nominal_late job119824769083 is a remaining original native job from39776898597. Refresh exact job/report status, retain actual failures and avoid duplicate simulation.
+- The existing heartbeat prompt already gives cloud-only instructions. Its persisted schedule unexpectedly remains weekly Sunday09:00 after the app automation tool reported successful updates for several eight-hour encodings. The eight-hour schedule is NOT verified. Do not claim the monitor runs every8h or directly edit its TOML as a workaround.
+
+Full serial Gen3x4 PHY, final routed mainchip signoff and original-clock setup/hold remain open. Diagnostic/job success does not close them.
+
