@@ -58,7 +58,7 @@ def apply(model,contract,planes,variant,out):
     value=spec['new_length_um']+'u';new[i]='l='+value;copies[name]['parameters']['l']=value
     changed.append(dict(instance=name,**spec,original_card=row,candidate_card=new))
   newrows.append(new)
- assert len(changed)==(8 if variant=='bleed12'else24)
+ assert len(changed)==(8 if variant=='bleed12' else 24)
  assert [r for r in rows if r[0].startswith(('R','C'))]==[r for r in newrows if r[0].startswith(('R','C'))]
  assert [r for r in rows if r[0].lower()not in selected]==[r for r in newrows if r[0].lower()not in selected]
  candidate_path=out/('exploratory-'+variant+'.spice')

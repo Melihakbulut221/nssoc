@@ -21,6 +21,8 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Compile controller before starting any native corner
+        run: python3 -m py_compile scripts/cloud_cdr_v33_intrinsic_screen.py scripts/cloud_cdr_v33_intrinsic_mutator.py scripts/cloud_cdr_v33_intrinsic_stage.py
       - name: Require exact original test adaptation with native MOS model and safety gates
         run: |
           python3 - <<'PYCODE'
@@ -42,8 +44,7 @@ jobs:
         run: |
           python3 scripts/check_cdr_sampler_settling_v32_streamed_sources.py
           python3 scripts/check_cdr_v33_intrinsic_screen_sources.py
-      - name: Compile controller before starting any native corner
-        run: python3 -m py_compile scripts/cloud_cdr_v33_intrinsic_screen.py scripts/cloud_cdr_v33_intrinsic_mutator.py scripts/cloud_cdr_v33_intrinsic_stage.py
+
   native-current:
     needs: syntax-controls
     runs-on: ubuntu-24.04
