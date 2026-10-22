@@ -145,9 +145,6 @@ jobs:
           CAPSULE_STAGE: initial
         run: |
           mkdir -p cloud-pll845-native-acquisition
-          if [ -d "$RUNNER_TEMP/nssoc-pll845-preallocated-storage/logs" ]; then cp -a "$RUNNER_TEMP/nssoc-pll845-preallocated-storage/logs" cloud-pll845-native-acquisition/storage-initialization-logs; fi
-          if [ -f "$RUNNER_TEMP/nssoc-pll845-preallocated-storage/state.json" ]; then cp "$RUNNER_TEMP/nssoc-pll845-preallocated-storage/state.json" cloud-pll845-native-acquisition/storage-initialization-state.json; fi
-          if [ -d cloud-pll-storage-headroom ]; then cp -a cloud-pll-storage-headroom cloud-pll845-native-acquisition/host-headroom-proof; fi
           python3 scripts/publish_pll845_sparse_checkpoint.py
       - name: Retain evidence after publication failure
         if: always() && steps.publish.outcome == 'failure'
@@ -210,3 +207,5 @@ jobs:
           name: pll845-sparse-completed-reader-${{ github.run_id }}
           path: cloud-pll845-sparse-completed-reader/
           retention-days: 30
+
+# Publisher stages new storage metadata under a fresh run-owned namespace after verifying native logical bytes.

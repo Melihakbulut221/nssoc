@@ -13,7 +13,8 @@ SELF='scripts/cloud_pll845_sparse_disk.py'
 MANIFEST='scripts/pll845-sparse-method-delta.json'
 EXTRA=(CONTROLLER,SELF,'scripts/cloud_pll845_sparse_io.py',
  'scripts/cloud_logical_native_archive.py','scripts/cloud_native_sparse_prefix_store.py',
- 'scripts/publish_pll845_sparse_checkpoint.py','scripts/read_pll845_sparse_completed.py')
+ 'scripts/publish_pll845_sparse_checkpoint.py','scripts/read_pll845_sparse_completed.py',
+ 'scripts/pll845-source-publication-reconciliation.json')
 allocation=previous.allocation
 btrfs=previous.btrfs
 load_contract=previous.load_contract
@@ -29,7 +30,7 @@ def source_contract(root):
     assert text==(root/CONTROLLER).read_text(),'Unexpected production controller change'
     current={p:h for p,h in old.items()if p not in (OLD,OLD_HELPER)}
     current.update({p:sha(root/p)for p in EXTRA})
-    assert len(current)==23
+    assert len(current)==24
     return m,current
 def verify_resume_methods(report,current,root):
     m,expected=source_contract(root);assert current==expected

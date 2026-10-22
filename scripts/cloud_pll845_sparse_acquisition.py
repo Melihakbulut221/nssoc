@@ -42,7 +42,7 @@ def method_hashes():
         Path(physical_pll.__file__),Path(pll.__file__),ROOT/'scripts/cloud_vbic_tree32_backend.py',
         ROOT/'scripts/review_pcie_pll_acquisition_v1.py',
         ROOT/'scripts/cloud_pll_divider_load3p2v2_diagnostic.py',ROOT/'scripts/compare_cloud_routed_endpoints.py',
-        Path(full_op.__file__),Path(full_wave.__file__),Path(actual_wave.__file__),Path(host_disk.__file__),Path(host_archive.__file__),Path(host_disk.allocation.__file__),Path(host_disk.btrfs.__file__),ROOT/'scripts/cloud_pll845_preallocated_storage.py',Path(sparse_io.__file__),Path(logical_archive.__file__),Path(sparse_store.__file__),ROOT/'scripts/publish_pll845_sparse_checkpoint.py',ROOT/'scripts/read_pll845_sparse_completed.py']
+        Path(full_op.__file__),Path(full_wave.__file__),Path(actual_wave.__file__),Path(host_disk.__file__),Path(host_archive.__file__),Path(host_disk.allocation.__file__),Path(host_disk.btrfs.__file__),ROOT/'scripts/cloud_pll845_preallocated_storage.py',Path(sparse_io.__file__),Path(logical_archive.__file__),Path(sparse_store.__file__),ROOT/'scripts/publish_pll845_sparse_checkpoint.py',ROOT/'scripts/read_pll845_sparse_completed.py',ROOT/sparse_io.RECONCILIATION]
     return {str(p.relative_to(ROOT)):sha(p)for p in paths}
 
 def payload_info(path):

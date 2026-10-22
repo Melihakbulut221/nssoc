@@ -75,16 +75,17 @@ def restore(manifest,staging,root,download,report,spec,url,out):
     out=Path(out);raw=out/RAW
     assert raw.stat().st_size==source['bytes']
     assert archive.sha(out/'result.json')==spec['summary_sha256']
+    reconciliation=reconcile_source_metadata(out,report,spec,source)
     # materialize() has already checked the entire raw and payload SHA256.
     # Do not hash zero-filled holes as though they were original waveform data.
     for name,digest in report['outputs'].items():
         if name==RAW:continue
         assert archive.sha(out/name)==digest,('Changed source capsule file',name)
     saved=dict(format=FORMAT,member=RAW,checkpoint=spec,url=url,source=source,
-        manifest=manifest,plan=proof['plans'][RAW],restore=proof)
+        manifest=manifest,plan=proof['plans'][RAW],restore=proof,metadata_reconciliation=reconciliation)
     (out/STATE).write_text(json.dumps(saved,indent=2)+'\n')
     assert state(out)==saved
-    return dict(source=source,restore=proof,logical_source_stays_immutable=True,
+    return dict(source=source,restore=proof,metadata_reconciliation=reconciliation,logical_source_stays_immutable=True,
         ordinary_full_raw_not_allocated=True,full_capture_accepted=False)
 def snapshot(out,stop_check=native_stopped):
     out=Path(out);raw=out/RAW
@@ -113,3 +114,110 @@ def hash_outputs(out):
 def logical_member(out):
     s=state(out)
     return {RAW:dict(source=s['source'],plan=s['plan'],open_source=lambda:open_source(out))}
+
+RECONCILIATION='scripts/pll845-source-publication-reconciliation.json'
+AUDITED_SOURCE=dict(run='39674830790',attempt='1',stage='initial',
+ summary_sha256='95f6e3053f2484af8ba2eab954b6d5f3536cc20898226a8f5c95f0f81df0b243',
+ parts_sha256='9194f7614fea02517754431ea85873afdbd60782a270d1d69d9eb68eb461eb36')
+def reconcile_inventory(out,report,record,verified_source):
+    """Restore one original metadata path from its archived identical peer.
+
+    Every archive file is first checked against an independently audited exact
+    inventory. Native/raw/model/checkpoint bytes cannot be substituted here.
+    """
+    out=Path(out);raw_identity=sparse.identity(out/RAW)
+    assert record['source']==AUDITED_SOURCE
+    assert record['audit']['run']==39743545709
+    assert record['audit']['summary_sha256']=='7e42f3c0e44c3bcedada9d6b4fe1327df365c86c88e36346b439a29e37b35222'
+    assert report['outputs']==record['recorded_outputs']
+    assert verified_source==record['original_raw']==report['checkpoint_prefix']
+    actual=record['actual']
+    files={p.relative_to(out).as_posix():p for p in out.rglob('*')if p.is_file()}
+    assert set(files)==set(actual),'Uninventoried or missing source member'
+    for name,p in files.items():
+        assert not p.is_symlink()and p.resolve().is_relative_to(out.resolve())
+        assert p.stat().st_size==actual[name]['bytes'],('Source member size changed',name)
+        got=verified_source['sha256']if name==RAW else archive.sha(p)
+        assert got==actual[name]['sha256'],('Audited archive member changed',name)
+    target='storage-initialization-state.json'
+    original='preallocated-storage-proof/state.json'
+    published='storage-evidence/run-39674830790-attempt-1/preallocated-storage-proof/state.json'
+    old=record['replacement']['recorded_sha256'];new=record['replacement']['archived_sha256']
+    # Exact known archive metadata discrepancy only, with both byte-identical peers.
+    differences={n for n,d in report['outputs'].items()if actual[n]['sha256']!=d}
+    assert differences=={target}
+    assert report['outputs'][target]==report['outputs'][original]==actual[original]['sha256']==old
+    assert actual[target]['sha256']==actual[published]['sha256']==report['outputs'][published]==new
+    assert record['replacement']==dict(target=target,original_peer=original,published_peer=published,recorded_sha256=old,archived_sha256=new)
+    evidence=out/'publication-metadata-reconciliation/source-39674830790-attempt-1'
+    evidence.mkdir(parents=True,exist_ok=False)
+    retained=evidence/'published-storage-initialization-state.json'
+    shutil.copyfile(out/target,retained)
+    assert archive.sha(retained)==new
+    shutil.copyfile(out/original,out/target)
+    assert archive.sha(out/target)==old and archive.sha(out/original)==old and archive.sha(out/published)==new
+    for name,digest in report['outputs'].items():
+        got=verified_source['sha256']if name==RAW else archive.sha(out/name)
+        assert got==digest,('Original source output not restored exactly',name)
+    assert sparse.identity(out/RAW)==raw_identity,'Reconciliation touched native raw'
+    proof=dict(source=record['source'],audit=record['audit'],replacement=record['replacement'],
+        retained_published_metadata=retained.relative_to(out).as_posix(),
+        original_all_output_hashes_restored=True,all_archived_files_verified_before_change=True,
+        native_model_checkpoint_raw_unchanged=True,original_archive_unchanged=True)
+    (evidence/'proof.json').write_text(json.dumps(proof,indent=2)+'\n')
+    return proof
+def reconcile_source_metadata(out,report,spec,verified_source):
+    normalized=dict(spec,run=str(spec['run']),attempt=str(spec['attempt']))
+    if normalized!=AUDITED_SOURCE:return dict(applied=False,reason='Not the exact audited historical publication')
+    record=json.loads((Path(__file__).resolve().parents[1]/RECONCILIATION).read_text())
+    validate_reconciliation_record(record)
+    proof=reconcile_inventory(out,report,record,verified_source)
+    return dict(applied=True,proof=proof)
+def publication_evidence(out,run,attempt,host=None,headroom=None):
+    """Create new owned evidence; never overwrite a controller-recorded path."""
+    assert str(run).isdigit()and str(attempt).isdigit()
+    out=Path(out);dest=out/('storage-publication/run-'+str(run)+'-attempt-'+str(attempt))
+    assert not dest.exists(),'Publication evidence may not be overwritten'
+    dest.mkdir(parents=True,exist_ok=False)
+    host=Path(host)if host is not None else Path(os.environ['RUNNER_TEMP'])/'nssoc-pll845-preallocated-storage'
+    headroom=Path(headroom)if headroom is not None else Path.cwd()/'cloud-pll-storage-headroom'
+    def copy_one(src,dst):
+        assert src.is_file()and not src.is_symlink()
+        dst.parent.mkdir(parents=True,exist_ok=True);assert not dst.exists()
+        before=archive.sha(src);shutil.copyfile(src,dst)
+        assert archive.sha(src)==archive.sha(dst)==before
+    if (host/'state.json').exists():copy_one(host/'state.json',dest/'state.json')
+    for srcroot,target in [(host/'logs',dest/'logs'),(headroom,dest/'headroom')]:
+        if not srcroot.exists():continue
+        assert srcroot.is_dir()and not srcroot.is_symlink()
+        for src in sorted(srcroot.rglob('*')):
+            assert not src.is_symlink()
+            if src.is_file():copy_one(src,target/src.relative_to(srcroot))
+    hashes={p.relative_to(out).as_posix():archive.sha(p)for p in dest.rglob('*')if p.is_file()}
+    proof=dest/'manifest.json'
+    proof.write_text(json.dumps(dict(run=str(run),attempt=str(attempt),outputs=hashes,
+        separate_owned_namespace=True,controller_recorded_paths_not_overwritten=True),indent=2)+'\n')
+    hashes[proof.relative_to(out).as_posix()]=archive.sha(proof)
+    return dict(path=dest.relative_to(out).as_posix(),outputs=hashes)
+
+def validate_reconciliation_record(record):
+    assert record['source']==AUDITED_SOURCE
+    assert record['audit']==dict(run=39743545709,source_head='6ec4e7d61ee04b554dc1b46d65e35426d9d39472',
+        summary_sha256='7e42f3c0e44c3bcedada9d6b4fe1327df365c86c88e36346b439a29e37b35222',
+        parts_sha256='eb24e15a1e5ffa8fd7d7984c9f66e6a874ba373cc92ce826174c87f92d899706')
+    assert record['replacement']==dict(target='storage-initialization-state.json',
+        original_peer='preallocated-storage-proof/state.json',
+        published_peer='storage-evidence/run-39674830790-attempt-1/preallocated-storage-proof/state.json',
+        recorded_sha256='8ad8d2e9c198aa484bf88d63ee2d3787135f193b4f99f3671121f5f04363513c',
+        archived_sha256='7e96ec47f82a937f3ec1cf4b06ef038452c7136718255b3931adb63f9e3c2577')
+    assert record['original_raw']==dict(bytes=116738387899,
+        sha256='609bdad347f007b894fc0a08fe8ad89bf0ad2e29ea27a1b295d685c7411777f0',
+        header_bytes=196539,payload_bytes=116738191360,
+        payload_sha256='dc95861a8b7dc0ecb8094bab865e11464de99994d9fc7d73adba90c1b547c375')
+    expected=record['recorded_outputs'];actual=record['actual']
+    assert set(expected).issubset(actual)
+    assert {n for n,d in expected.items()if actual[n]['sha256']!=d}=={'storage-initialization-state.json'}
+    assert actual['result.json']['sha256']==AUDITED_SOURCE['summary_sha256']
+    assert actual[RAW]['sha256']==expected[RAW]==record['original_raw']['sha256']
+    assert actual[RAW]['bytes']==record['original_raw']['bytes']
+    return True

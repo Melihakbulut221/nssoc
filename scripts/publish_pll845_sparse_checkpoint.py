@@ -74,6 +74,10 @@ def main():
             report['failed_sparse_working_file']=str(failure.relative_to(out))
         report.update(status='FAIL_UNQUALIFIED_NATIVE_STORAGE_EVIDENCE',checkpoint_saved=False,
             full_capture=False,full_phy_accepted=False,native_outcome=outcome)
+    evidence=storage.publication_evidence(out,run,attempt)
+    assert not set(evidence['outputs'])&set(report.get('outputs',{}))
+    report.setdefault('outputs',{}).update(evidence['outputs'])
+    report['publication_storage_evidence']=evidence
     path.write_text(json.dumps(report,indent=2)+'\n')
     summary=root/(stem+'.summary.json');summary.write_bytes(path.read_bytes())
     try:
