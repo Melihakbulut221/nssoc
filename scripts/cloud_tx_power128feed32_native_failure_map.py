@@ -50,16 +50,21 @@ def mapped(review,composition,interfaces,contract):
  for stage,data in stages.items():
   emitters={cluster(n,'E')for n in data};assert len(emitters)==2
   selectors=[n for n in hbts if cluster(n,'C')in emitters]
-  assert len(selectors)==6 and not set(selectors)&set(topology)
+  assert len(selectors)==4 and not set(selectors)&set(topology),(stage,selectors)
   selector_emitters={cluster(n,'E')for n in selectors};assert len(selector_emitters)==1
   tails=[n for n in hbts if cluster(n,'C')in selector_emitters]
-  assert len(tails)==1 and not set(tails)&set(topology)and not set(tails)&set(selectors)
+  assert len(tails)==2 and not set(tails)&set(topology)and not set(tails)&set(selectors),(stage,tails)
   for n in selectors:topology[n]=dict(kind='selector',stage=stage)
-  topology[tails[0]]=dict(kind='tail',stage=stage)
+  for n in tails:topology[n]=dict(kind='tail',stage=stage)
+  tail_bases={cluster(n,'B')for n in tails};tail_emitters={cluster(n,'E')for n in tails}
+  assert len(tail_bases)==len(tail_emitters)==1
+  references=[n for n in hbts if cluster(n,'C')==cluster(n,'B')and cluster(n,'B')in tail_bases and cluster(n,'E')in tail_emitters]
+  assert len(references)==1 and not set(references)&set(topology),(stage,references)
+  topology[references[0]]=dict(kind='reference',stage=stage)
  assert len(topology)==589
  remaining=set(hbts)-set(topology);assert len(remaining)==4
  for n in remaining:topology[n]=dict(kind='remaining_parent_hbt',stage=None)
- assert Counter(v['kind']for v in topology.values())==dict(data=372,selector=186,tail=31,remaining_parent_hbt=4)
+ assert Counter(v['kind']for v in topology.values())==dict(data=372,selector=124,tail=62,reference=31,remaining_parent_hbt=4)
  rows=[]
  for name,value in sorted(failed.items(),key=lambda x:x[1]['min_post_vce_v']):
   d=hbts[name]
