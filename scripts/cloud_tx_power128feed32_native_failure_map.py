@@ -58,7 +58,7 @@ def main():
   raw=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/releases/assets/664616996','-H','Accept: application/octet-stream'])
   (OUT/'normal-summary.json').write_bytes(raw);assert sha(OUT/'normal-summary.json')==NORMAL_SHA
   normal=json.loads(raw)
-  assert normal['run_id']=='39711301866'and normal['full_capture']and not normal['electrical_screen_passed']
+  assert normal['run_id']==39711301866and normal['full_capture']and not normal['electrical_screen_passed']
   assert normal['sources_unchanged']and normal['native_exit_code']==0
   assert normal['preparation_source']['run']==PREP['run']
   assert normal['preparation_source']['summary_sha256']==PREP['summary_sha256']
