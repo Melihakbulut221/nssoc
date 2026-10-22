@@ -15,3 +15,9 @@ Mainchip39738186533 saved its next exact routing state: completed iteration viol
 Run39758169383 rejected generation before DRC/LVS: the centered32um output AVSS vertical addition violated the original1.645um foreign-clearance guard toward the unchanged SUB route by0.645um. The failing geometry/logs remain in its release.
 
 Only the added32um strip on the output-side TopMetal1 vertical span is shifted2um away from SUB. Every old6um path polygon, all endpoints, via cuts, SUB and signal material remain unchanged. The width stays32um and the clearance guard remains1.645um; no rule waiver or narrower fallback is introduced. Native generation and all physical/fault gates must pass again.
+
+## Measured physical result
+
+Run39759053449/source caa3db24d2d0c9d754a5d63d9d7793e4577c47cc passed all560 DRC categories with zero markers, both deep and flat8088-device LVS, exact165 external names, all retained negative controls and the new full-width output-return-open control. Native sources remained unchanged. The new GDS SHA256 is ea4afe878696b513c31592c693b4e0f63a5b7d8571acb0d33ca0fc91fe148c3b.
+
+This closes the candidate's tested physical construction gates only. Fresh native metal/via binding starts from this exact GDS/LVS database; old140222R99906C must not be reused as the new geometry's extraction. Fresh RC and complete loaded electrical tests remain required before the return repair is accepted electrically.
