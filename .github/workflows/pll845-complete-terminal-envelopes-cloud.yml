@@ -27,6 +27,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/
+            /.github/
             /docs/evidence/native-preallocated-btrfs-proof-20261021.json
             /docs/evidence/pll845-streamed-latest-continuation-20261021.json
             /docs/evidence/pll845-logical-native-capsule-pass-20261022.json
@@ -61,6 +62,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/
+            /.github/
             /docs/evidence/native-preallocated-btrfs-proof-20261021.json
             /docs/evidence/pll845-streamed-latest-continuation-20261021.json
             /docs/evidence/pll845-logical-native-capsule-pass-20261022.json
@@ -117,7 +119,7 @@ jobs:
               free_bytes=shutil.disk_usage(root).free,
               source_methods_verified=methods,
               retained_proofs={p:hashlib.sha256((root/p).read_bytes()).hexdigest()for p in sorted(wanted)},
-              source_checkout='scripts and exact eleven required immutable proof receipts',
+              source_checkout='scripts, workflow method proofs and exact eleven required immutable proof receipts',
               original_capacity_guard_unchanged=True,native_activation=False)
           (out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
           print(json.dumps(report))

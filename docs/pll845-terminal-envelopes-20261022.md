@@ -11,3 +11,7 @@ Run39783658420 passed all845 native-device bindings, all2737 physical terminals,
 The separate complete-terminal-envelopes workflow accepts only a terminal source run whose selected native stage succeeded. Another acquisition reader failure does not erase a valid complete native capture. The unchanged original ordinary-file reader verifies source hashes, all5106 columns, all samples, original1us duration and acquisition windows first. Only an explicitly recorded original acquisition-gate rejection with a verified full capture allows diagnostic analysis afterward; that rejection remains a failed job. Every other original-reader failure stops the analysis. Native method hashes and live processes remain unchanged.
 
 The complete analyzer has not yet run on the full1us record. Device current, reliability limits, independent PVT, qualified PEX and complete PHY signoff remain open.
+
+## Exact sparse checkout preflight follow-up
+
+Runs39794978815 and39795925021 failed before any complete reader started: the original method contract also authenticates workflow files. Both sparse checkouts now retain .github/ alongside scripts and the eleven proof receipts. The original source-contract hashes and full-capture capacity guard remain unchanged. The failed runs and log hashes are preserved in docs/evidence/pll845-reader-workflow-proof-preflight-rejections-20261022.json; this repair still requires its new cloud control result. No native simulation was restarted.
