@@ -1,0 +1,39 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128feed32_interfaces.py",
+  "baseline_sha256": "763780d2ae430730394a089bb9c93c158fb86ce531893ab4517c6d50d3e6331f",
+  "candidate_path": "scripts/cloud_tx_output8088_power128return32_interfaces.py",
+  "candidate_sha256": "13efb2db039b1c94b5774eeba144c5db499da0faf24a5c2f612e781508f2a989",
+  "changes": [
+    {
+      "start": 294,
+      "end": 403,
+      "replacement": "ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-output8088-power128return32-interfaces'\n"
+    },
+    {
+      "start": 786,
+      "end": 892,
+      "replacement": "        delta=json.loads((ROOT/'scripts/tx-output8088-power128return32-interface-method.json').read_text())\n"
+    },
+    {
+      "start": 1458,
+      "end": 1740,
+      "replacement": "          ('tx-output8088-power128return32-physical',39759053449,'b6255b42e50ec93cd518fcbd799383087954eaf1c7dd510967b97079e0575a32','7c800cb11dc1ebda007440a10ed3ce186335ed2db22283eb57a8967d899711ce','physical',['layout/layout.gds','flat_lvs/result.lvsdb','integration-result.json']),\n"
+    },
+    {
+      "start": 2007,
+      "end": 2557,
+      "replacement": "          ('tx-output8088-power128return32-native-wires',39760109496,'b113effc985a8c1265831e88ad080d806bf4caae681aaea44c618f52554d9029','cc4c597d3772e192386cba1bd95ce4972c715e1d7a1f502f799c7af8b15846ac','wires',['native01/result.json']),\n          ('tx-output8088-power128return32-composition',39768389212,'2f542d1300f11ed79edd94767bb1d55c0dc04e794ce6fde7eb085460a79d2b47','12bcab744b403c68b829fca02ceda5fd1672e0711237f192a647fa466295527b','composed',['composition.json','output8088-wire.spice','intrinsic/native.json','intrinsic/source/anchors.json'])]\n"
+    },
+    {
+      "start": 3121,
+      "end": 3341,
+      "replacement": "        assert all(physical['steps'][name]['expected_verdict_observed']for name in ('drc','deep_lvs','flat_lvs','handoff_open','output_return_open','wrong_width','body_supply_short','wrong_output_Nx','internal_port_alias','offgrid','swap_output_inputs'))\n"
+    },
+    {
+      "start": 3685,
+      "end": 3804,
+      "replacement": "        pin=json.loads((ROOT/'docs/evidence/tx-output8088-power128return32-composition-pass-20261022.json').read_text())\n"
+    }
+  ],
+  "scope": "New physical/wire/composition immutable pins and stage names/date only; additionally require return-open and wrong-width faults. All original gates retained."
+}
