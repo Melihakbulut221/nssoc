@@ -1,3 +1,9 @@
+## 2026-10-22: v30 electrical rejection retained; actual latch diagnosis launched
+
+CDR39709128571 rejected both nominal full loaded cases; both fault controls detected. All transistor gates passed, but downstream C/D sampling regressed. New cdr-v30-latch-timing-cloud reproduces exact complete waveforms/geometry and unchanged latch measurements before another design change. Receipt: docs/evidence/cdr-input-impedance-v30-electrical-rejection-20261022.json.
+
+Sparse native qualification39713442944 passed exact bounded4ns same-host solver trajectory and direct-sparse rejection. Cross-host/Btrfs native, full5106-column reader and complete logical archive qualification still required before real PLL892.69ns continuation. Mainchip39710297457 and TX39711301866/39711311480 remain live. Cloud-only; local workspace stays empty. Full PHY and final timing remain open.
+
 ## 2026-10-22: User requires cloud-only work; final local test logs archived
 
 User instruction: perform everything in the cloud and clean local project data. Workspace is empty and no local CAD process is running. Two legacy local test logs are archived under docs/evidence/retired-local-logs-20261022/ with SHA-256 receipt docs/evidence/cloud-only-local-cleanup-20261022.json; remove originals only after exact remote verification. Do not recreate a local checkout or download CAD assets.
