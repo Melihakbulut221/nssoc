@@ -1,3 +1,9 @@
+## 2026-10-22: User requires cloud-only work; final local test logs archived
+
+User instruction: perform everything in the cloud and clean local project data. Workspace is empty and no local CAD process is running. Two legacy local test logs are archived under docs/evidence/retired-local-logs-20261022/ with SHA-256 receipt docs/evidence/cloud-only-local-cleanup-20261022.json; remove originals only after exact remote verification. Do not recreate a local checkout or download CAD assets.
+
+Native sparse checkpoint qualification39713442944 completed successfully; this is bounded runtime qualification only. CDR fullwave39709128571 completed with failure; electrical acceptance remains open. Mainchip39710297457 and TX39711301866/39711311480 remain active hosted calculations. Preserve original gates and all evidence. Full PHY and final timing are not complete.
+
 ## 2026-10-22: Sparse storage byte tests passed; bounded real-native checkpoint qualification launched
 
 - Storage fixture39712609867 at7b1080abc155958b956939c163bb29f1777b4319 passed on ext4 and compressedBtrfs. All16 corruptions rejected; exact bytes reconstructed. HelperSHA aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14.
