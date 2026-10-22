@@ -1,0 +1,89 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v31_transfer.py",
+  "baseline_sha256": "204a000801cb3ec5e13d54e20992343b48e7632d0ce5ce1217b3f99f1515b9cd",
+  "candidate_path": "scripts/cloud_cdr_v32_transfer.py",
+  "candidate_sha256": "6c9acbd98512c7d7efaabe16777583efd3609b2085d7732f909ca0f3ecfdb18a",
+  "edits": [
+    {
+      "before": "PINS={\"nominal_early\":[\"204b9cd4aa6fe74a36df4fa39edd9b4aa8fd126048070ac5b3ccf722ccd87dd1\",\"2cfe9c5ebd680fcbb5ec660e2122cf59f6763b51dce3e0429858f1b03af1bab8\"],\"nominal_late\":[\"cb89111e2723fdac58d43627c40b03f6b0514bfc6c913af2ebbdf7aa5d28f777\",\"04c50f528325cc1b6489d2235c2c078ea73022adc53522aa6731e2a1c29da931\"]}",
+      "after": "PINS={\"nominal_early\":[\"3a9f161fe1b407160305591810e3c8f4ff33b4a0c72df2eb45fce4381e973287\",\"d293a696fdf99ca963c39471dbdf730eb0bd5a0292623662febacc28151b5af8\"],\"nominal_late\":[\"e11a867a32a3aa2f8256f9109fd8d117b468f00a02a3ee4d9cb8fadb7edb09d5\",\"f1123a453f86099eec94f3c149938e0b44e366af8d0a46365a747bf35b9b128d\"]}",
+      "count": 1
+    },
+    {
+      "before": "v31-transfer",
+      "after": "v32-transfer",
+      "count": 2
+    },
+    {
+      "before": "cdr-follower-v31-diagnostic-input-20261022.json",
+      "after": "cdr-sampler-settling-v32-diagnostic-input-20261022.json",
+      "count": 1
+    },
+    {
+      "before": "39723936059",
+      "after": "39743054879",
+      "count": 2
+    },
+    {
+      "before": "cdr-follower-v31-mim-streamed-",
+      "after": "cdr-sampler-settling-v32-mim-streamed-",
+      "count": 1
+    },
+    {
+      "before": "4b4c01de5dc5920c168927d78105ed61d0e22f91",
+      "after": "80c2e9190ae30314d11669252086600ee0412b0e",
+      "count": 1
+    },
+    {
+      "before": "cdr-follower-v31-mim-parent-capture-pass-20261022.json",
+      "after": "cdr-sampler-settling-v32-mim-parent-capture-pass-20261022.json",
+      "count": 1
+    },
+    {
+      "before": "39720419606",
+      "after": "39741464094",
+      "count": 1
+    },
+    {
+      "before": "30f3aeea746835dd56dea6edb6c826c16dfcb99cf0bba71855f02c7e2c490851",
+      "after": "e12cfa1fe10452af4ce3de39516ac19d52aa05d7b2b37284d025050fbc3bac98",
+      "count": 1
+    },
+    {
+      "before": "cdr-follower-v31-mim-parent-rc",
+      "after": "cdr-sampler-settling-v32-mim-parent-rc",
+      "count": 1
+    },
+    {
+      "before": "12e7887c7e293016b6da37de316c0511e2122fea",
+      "after": "99d258927f9a253691e75d4efccd76c66b9e6a59",
+      "count": 1
+    },
+    {
+      "before": "assert set(violations)=={'xpd.xd0105','xpd.xd0106'} and not prior['devices_passed']",
+      "after": "assert not violations and prior['devices_passed']",
+      "count": 1
+    },
+    {
+      "before": "same complete v31 waveform",
+      "after": "same complete v32 waveform",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/check_cdr_v30_transfer_sources.py": "fc30625539282f2e17b33055aaeae072eb4e87b4737a5b16a06f4fad43d55dad",
+    "scripts/check_cdr_v30_latch_sources.py": "66e8434184cbdea53ee27e6da41df7d8d29a82c7bc7ff77ae657c2caa67d55e0",
+    "scripts/cdr-v30-transfer-source-adaptation.json": "a31e90d2f362c9283926e1a8a8ad7bab02e1a7525b4fc8ffa0eefcb97b21e0cc",
+    "scripts/cdr-v30-latch-source-deltas.json": "508b677017f4eaeb35a00775c34e9a3ee626919464d9e605c8aa0bffc12701f4",
+    "scripts/check_cdr_v31_transfer_sources.py": "935311a89c42b62f625ec52d10dc12d8dcc03a31a060c609f199585182c69f5d",
+    "scripts/cdr-v31-transfer-source-adaptation.json": "d9eef1bf5ba97ac9857f526e4f32ba8bbb8978f42ab0b3de72a18d41ea4f75d1",
+    "docs/evidence/cdr-sampler-settling-v32-mim-parent-capture-pass-20261022.json": "b7cd5204955a723c34fc03392e2e62965a41dde5cb030c5ae24d688d06346c86",
+    "docs/evidence/cdr-sampler-settling-v32-diagnostic-input-20261022.json": "b206e46107351476a37e26c6928b64cf6b0d7e09e4bd85ca5a55bafdd9e5c0dd"
+  },
+  "scope": "Source binding and expected measured HBT result only. All original electrical gates and rejection are preserved."
+}

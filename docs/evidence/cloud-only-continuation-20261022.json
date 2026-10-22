@@ -1,25 +1,23 @@
 {
   "status": "CLOUD_ONLY_CONTINUATION_REQUIRED",
   "local_checkout": "empty; no local CAD process",
-  "completed": "V32 physical leaf/parent, four native extraction stages, MIM capture39741464094 and audit/composition39742448854 passed. Electrical acceptance still requires original full loaded tests. PLL sparse production39735397718 failed before native activation on archived storage metadata hash mismatch; failure preserved.",
   "active_runs": {
     "mainchip": 39738186533,
-    "pll_source_archive_metadata_audit": 39743545709,
-    "cdr_v32_full_loaded_electrical": 39743054879
+    "pll_native_continuation": 39750949326
   },
+  "pending_workflow": "cdr-v32-transfer-timing-cloud.yml (auto-triggered by this commit)",
+  "completed": "PLL publication-metadata mismatch exhaustively diagnosed and exact reconciliation controls passed. TX full-wave topology/headroom diagnosis passed but original electrical rejection remains. V32 native transistor gates pass; original timing/data/phase rejection remains.",
   "next": [
-    "Monitor CDR39743054879 source80c2e9190ae30314d11669252086600ee0412b0e. It waits for exact passing audit39742448854 then runs unchanged nominal early/late and clock/VI fault cases; never accept a preflight or fault pass as nominal/PHY proof.",
-    "Monitor source audit39743545709 source6ec4e7d61ee04b554dc1b46d65e35426d9d39472. It reads full immutable PLL source39674830790 archive and raw payload, inventories ALL mismatches, and never activates native code. Diagnose full report before any reconciliation.",
-    "Inspect PLL source workflow publication copies: storage-initialization-state/logs and headroom get overwritten after controller output hashing. Prove exhaustive metadata-only differences; never skip original native/model/CRIU/raw/input hashes. Preserve original and changed metadata and failed sparse file. Correct future publication namespace so new evidence cannot overwrite recorded prior evidence.",
-    "Mainchip39738186533 is the exact live continuation from39723935555. If it saves a checkpoint, resume only its complete immutable descriptor; if routed, run fresh extracted-RC final timing and physical gates with original clocks.",
-    "TX full normal39711301866 remains rejected (85HBT failures and output/interface violations); negative39725526693 is only a fault-control pass. Do not mark transmitter/serialPHY complete."
+    "Monitor exact live PLL39750949326; preserve full native/archive and ordinary reader results. Do not duplicate active simulation.",
+    "Monitor mainchip39738186533. Resume only its complete immutable checkpoint if saved; if routed, run fresh original-clock RC/STA/DRC.",
+    "Read v32 native transfer diagnosis before selecting the next physical sampler repair; C/D retiming worsened despite headroom closure.",
+    "Trace TX output local return routing from actual native geometry and wire network; preserve full-wave gates for any physical repair."
   ],
   "constraints": [
-    "All code edits and evidence publication through GitHub; all CAD and tests on hosted runners.",
-    "Keep original clocks, loads, device gates, all waveform columns and samples. No acceptance based on archive or fault-test success.",
-    "Full serial PHY and final routed-chip timing remain open."
+    "All CAD/tests on GitHub-hosted runners; edits and receipts through GitHub API; no local checkout or generated artifacts.",
+    "Keep original clocks, loads, device gates, waveform columns and samples.",
+    "Full serial PHY, routed mainchip and final timing remain open."
   ],
-  "cloud_source_commit": "6ec4e7d61ee04b554dc1b46d65e35426d9d39472",
   "local_verification": {
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "entries": 0,
