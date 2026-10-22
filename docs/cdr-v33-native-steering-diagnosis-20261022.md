@@ -1,0 +1,8 @@
+# V33 native data and steering diagnosis
+All six original failed34.25ns captures are read in full. Their exact summaries, archive manifests, candidate intrinsic models and contracts are pinned. The analyzer reconstructs the original120HBT checks and all four original sampler results; every previous rejection remains a rejection.
+
+The native master/slave graph is preserved. Existing parallel clock base pairs and follower observations are retained. The added diagnostic associates an expected capture edge only when exactly one actual master track-minus-hold falling crossing occurs within0.45UI. It records native master/slave input/output differences at that crossing and at the original0.3UI output deadline, with the original expected bit polarity. Missing or ambiguous associations are reported rather than forced to a nearest edge. Controls cover known delay, reversed expected bit, missing/ambiguous crossings and forbidden extrapolation.
+
+A current crossing is a steering proxy, not proof of the latch aperture or a causal explanation. Internal100mV markers are diagnostic only; no new or weakened acceptance gate is introduced. These observations separate weak input at a steering transition from later master/slave settling failures and guide the next circuit change.
+
+Only intrinsic resistor lengths changed in the exploratory candidates. Reversing those exact declared edits must reproduce the original full contract. All HBT ownership uses unchanged v32 geometry; no fresh resized-resistor GDS or RC is claimed. No simulation is restarted and no existing raw sample or column is changed. Everything executes in GitHub-hosted runners; originals remain immutable.
