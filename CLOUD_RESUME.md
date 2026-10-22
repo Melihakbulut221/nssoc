@@ -5625,3 +5625,9 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Four early/late cases follow five geometry fault controls, inherited diffusion controls and exact original-controller source reconstruction. Data_area4 reverses16 earlier HBT edits and has48 changed primitives relative to v32; data_area5 has64.
 - v37 run39857552791 controls passed; four native cases queued at last verification. Preserve it as independent C/D input-bias experiment; don't mix results or promote either as physical acceptance.
 - Mainchip39849657003, TX39849664074/39849669847 and PLL39854075819 remain the current live handles. All work stays cloud-only, original failed captures retained.
+
+
+## 2026-10-23 prepare real physical promotion: native candidate PCell inventory
+- New cdr-candidate-pcells workflow uses exact established AppImage/PDK to generate17 actual changed/reference PCells and read back geometry parameters. Measures real bounding boxes against the old necessary50um row-local top limit, preserving GDS and failures.
+- This inventory is not full macro/parent DRC/LVS, actual diffusion extraction, fresh wire RC or accepted PHY. Those remain open and explicit in result flags.
+- v38 run39860793200 at8e1e6b3fea1bf910c8a532c46bf0bf2f2228ca7c is in source controls. v37 run39857552791 controls passed; native full trials are active/queued. Original route/TX/PLL handles remain unchanged.
