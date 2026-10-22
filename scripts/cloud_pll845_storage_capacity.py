@@ -12,7 +12,7 @@ def main():
  r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],native_activation=False,full_capture_accepted=False,full_phy_accepted=False,commands={},filesystems={})
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  try:
-  for name,cmd in [('blocks',['lsblk','--json','--bytes','--output','NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS']),('mounts',['findmnt','--json']),('space',['df','-B1','-T']),('swap',['swapon','--show','--bytes']),('remaining',['sudo','du','-xB1','--max-depth=1','/var','/usr/lib','/usr/local/lib','/usr/local/share','/opt','/home/runner'])]:
+  for name,cmd in [('blocks',['lsblk','--json','--bytes','--output','NAME,SIZE,TYPE,FSTYPE,MOUNTPOINTS']),('mounts',['findmnt','--json']),('space',['df','-B1','-T']),('swap',['swapon','--show','--bytes']),('remaining',['sudo','du','-xB1','--max-depth=1','/var','/usr/lib','/usr/local/lib','/usr/local/share','/opt','/home/runner']),('additional-shared',['sudo','du','-xB1','--max-depth=1','/usr/share','/usr/src','/usr/bin']),('workspace',['du','-xB1','--max-depth=1',str(ROOT)]),('memory',['free','-b'])]:
    p=subprocess.run(cmd,capture_output=True,text=True,timeout=600)
    (OUT/(name+'.log')).write_text(p.stdout+p.stderr)
    r['commands'][name]=dict(returncode=p.returncode,sha256=hashlib.sha256((p.stdout+p.stderr).encode()).hexdigest())

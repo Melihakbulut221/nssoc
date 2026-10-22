@@ -46,3 +46,5 @@ jobs:
           stem=sys.argv[1];m=json.load(open(stem+'.parts.json'))
           subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll845-storage-capacity',stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]],check=True)
           PYCODE
+
+# Extend read-only inventory to shared resources and checkout storage before any additional reclamation.

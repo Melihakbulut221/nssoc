@@ -1,3 +1,11 @@
+## 2026-10-22: v30 raw audit/composition both passed; full wave matrix39709128571 active
+
+- Native validation39708600220 at e20a8aa2da383cfeffaf8662c173923e87d12366 passed:13 raw-wire and9 intrinsic-MIM corruptions rejected,19 composition controls rejected, all original17918R12850C retained and seven MIMs emitted exactly once.
+- Fullwave39709128571 at0337485e3e0bbacd89385703b21c1a35cce4c539 starts four original complete native cases. It is not yet an electrical acceptance result.
+- PLL inventory extended to /usr/share, /usr/src, /usr/bin and checkout bytes to measure whether further bounded hosted cleanup can preserve the original12GiB/4GiB safety reserves. No new deletion or native activation is authorized by this inventory script itself.
+- Continue exact mainchip/TX running handles and retain all raw failure evidence. Local directory stays empty; all CAD is cloud-only.
+
+
 ## 2026-10-22: Original loaded v30 wave matrix launched behind exact native audit/composition
 
 - Source audit/composition 39708600220 at e20a8aa2da383cfeffaf8662c173923e87d12366: raw MIM audit passed; composition was live. New cdr-input-impedance-v30-mim-streamed-cloud waits for both exact jobs to succeed.
