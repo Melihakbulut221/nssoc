@@ -5,13 +5,12 @@
     "mainchip": 39774389407,
     "cdr_v34_intrinsic_screen": 39776898597,
     "cdr_v35_intrinsic_screen": 39788103410,
-    "pll_complete_reader": 39750949326,
     "tx_return32_nominal_continuation": 39789628668,
     "tx_return32_fault_continuation": 39789637111
   },
   "completed": "PLL publication-metadata mismatch exhaustively diagnosed and exact reconciliation controls passed. TX full-wave topology/headroom diagnosis passed but original electrical rejection remains. V32 native transistor gates pass; original timing/data/phase rejection remains. CDR native diagnosis39753512279 reproduced both nominal device passes and all original data/timing failures. TX return diagnosis39756511142 found the actual output return dominated by29.8196ohm R139947; next candidate adds real32um return metal. Mainchip39738186533 saved verified routing progress to iteration4. TX return32 physical39759053449 passed native DRC/deep-flat8088 LVS and full-width open fault after preserving the rejected first geometry. Return32 native anchors39761348924 and intrinsic/RC39762727581 passed; the fresh actual graph contains140222R99906C. New two-order precision39766233962 is running. Return32 precision39766233962 passed exact native records in both enumeration orders and all13 raw controls per order. Return32 full native composition39768389212 passed all25 corruption controls. Return32 interfaces39769220171 passed all actual native endpoints. CDR v33 six full captures completed but every candidate failed original electrical gates. Return32 both fullwave decks39770384053 passed source/OP controls; actual full native simulation remains pending. Mainchip39756174188 saved additional7208.55seconds same-process routing progress, completed violation counts21505\u219211671\u21927724\u21925227; next exact continuation39774389407 is active. CDR native steering diagnosis39773737912 reproduced all six original failures and supports matched-area experiments; v34 screen39776898597 is active.",
   "next": [
-    "PLL native39750949326 completed original1us with3201410 complete rows/all5106columns, zero native diagnostics, all prior payload preserved. Full ordinary raw130771392219bytes archived in443parts. Independent full reader job119860827050 is LIVE in same run; wait exact result. Do not restart native. After source run terminal, use pinned descriptor in pll_complete_native_record for complete-terminal-envelopes workflow, including if original acquisition gates reject; preserve rejection. No full acquisition/device/PHY pass yet.",
+    "PLL native39750949326 complete1us record is preserved, but full reader119860827050 failed before raw download: free134959046656bytes below required135334794971bytes including unchanged4GiB reserve. Dedicated complete-terminal-envelopes workflow now checks out only scripts and exact four required method-proof receipts; source_contract and original capacity guard stay unchanged. Dispatch pinned complete descriptor from pll_complete_native_record on this updated workflow, then record new run. Never restart native.",
     "Monitor mainchip39774389407/sourcea63c0e9775bb1d671a82660db88ff31c2e0917ee resumed from exact checkpoint39756174188. Completed native DRT counts now5227 (current partial iteration7 at90percent4617). These are routing counts, not STA. If saved resume latest exact descriptor; if routed run original20/4/8/8ns fixed-clock/topology/antenna/disconnected-pin/RC/three-corner STA gates.",
     "Monitor exact CDR v34 screen39776898597/sourcef009bb59906ee76baa8bcb46a92155d9394fe755. Five full cases are published and rejected; all_area20/nominal_late job119824769083 still runs. Do not duplicate. Larger HBT area did not close timing, and enlarging masters also lowered VCE below0.4V. Native steering diagnosis39773737912 showed bleed12 master outputs valid by37.5ps but slaves late; all255 steering-matched master input polarities were correct. New matched HBT area tests preserve all476 devices,17918R12850C, original1104-column34.25ns data, loads and gates. Retain failures. Only a useful full result advances to actual larger-HBT GDS/DRC/LVS/freshRC and repeated full wave; no candidate physical acceptance yet.",
     "Once PLL39750949326 is terminal and its native initial job published a complete ordinary1us capture, run pll845-complete-terminal-envelopes-cloud.yml with the exact5-field descriptor. Preserve original reader/acquisition rejection and analyze all original rows across6167 native terminal voltage measurements. Saved process capsules must resume, not enter full reader. Do not claim voltage envelopes prove current-density/device/PVT safety.",
@@ -29,7 +28,9 @@
     "cad_processes": 0,
     "checked_at": "2026-10-22T12:51:12.765533+00:00"
   },
-  "pending_workflows": [],
+  "pending_workflows": [
+    "pll845-complete-terminal-envelopes-cloud.yml"
+  ],
   "last_physical_result": {
     "run": 39759053449,
     "source_head": "caa3db24d2d0c9d754a5d63d9d7793e4577c47cc",
@@ -203,5 +204,23 @@
     "controls_passed": true,
     "native_stage": "restore/resume in progress",
     "cold_restart_permitted": false
+  },
+  "pll_reader_capacity_failure": {
+    "run": 39750949326,
+    "job": 119860827050,
+    "summary_asset": 666010348,
+    "summary_sha256": "914103049005cbd90dcda4b1124157ea3a97838368812b08d9ecca3652eb09f6",
+    "parts_asset": 666010414,
+    "parts_sha256": "87fa0e7165830555d850ec4bf58220ea0fd3bca0447f57905757ea0ae8e7e618",
+    "status": "FAIL_COMPLETE_NATIVE_READER",
+    "error": "AssertionError('Insufficient ordinary full-capture reader capacity')",
+    "observed_free_bytes_from_job_log": 134959046656,
+    "required_raw_bytes": 130771392219,
+    "required_part_bytes": 268435456,
+    "required_reserve_bytes": 4294967296,
+    "required_total_bytes": 135334794971,
+    "source_native_capture_preserved": true,
+    "raw_download_started": false,
+    "repair": "Static reader sparse checkout retains all scripts and exact four immutable method-proof receipts, excluding unused hw and unrelated documentation. Original source-contract and capacity checks remain mandatory."
   }
 }
