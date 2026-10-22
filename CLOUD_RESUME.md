@@ -1,3 +1,11 @@
+## 2026-10-22: v30 MIM capture chained to exact live fresh extraction
+
+- Extraction 39707446970 at 97c114638871b59de1cb6f0192391436ce9f5b01 passed native planes; wire-inputs was running. MIM capture workflow now waits on that exact run, never a new/restarted or different source.
+- It binds all four successful stage release summaries/manifests, then captures actual MIM masks and seven intrinsic devices with the original point/ownership checks. No old RC values or original gates changed.
+- Required next: inspect actual MIM RC census, audit raw wire/intrinsic capacitance, compose once, run complete loaded early/late and negative-control waves. Full PHY remains unaccepted.
+- Cloud only; local workspace remains empty. Mainchip and TX continuation jobs remain the same handles. PLL 892.69 ns checkpoint still needs a capacity solution before restore.
+
+
 ## 2026-10-22: Cloud-only v30 parent passed; fresh extraction launched
 
 Local workspace remains empty; all CAD and simulations run on GitHub hosted runners. No local checkout or native process is needed.
