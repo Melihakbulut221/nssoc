@@ -1,3 +1,8 @@
+## 2026-10-22: v30 leaf physically passed; actual four-copy parent integration
+Leaf39703416443/source17dffb1c636237b5dbf154ca393338fd4a9096d7 passes560DRC/zero markers,54-device unsimplifieddeep+flatLVS,LEF and20faults;7geometry faults also rejected. NewGDSf1618ddc27ef0de9939796cee2f1830f93b6f265c036de4e596bf1d838428d30.
+cdr-input-impedance-v30-parent-cloud begins from actual passed v29 parent39692037466/GDSc3b2ce62... and new native v30 leaf. Replace4samplers/16resistor reference lengths only. Preserve every parent polygon including eight existingM4fills, all placements, other child drawings and ports. Do not replay old notch repairs; any fresh DRC failure must be diagnosed.
+Await native476-device parent checks, then regenerate all wire/MIM RC and original full loaded waveforms. No electrical acceptance yet. Mainchip39696184554, PLL39674830790 and TX39697650133/39697654247 remain independent active calculations. Cloud only; local workspace empty.
+
 ## 2026-10-22: v29 follower diagnosis complete; v30 physical candidate started
 Cloud-only. Actual run39702353118/source8d5861a089111bb1effde0ed67a4602b85fa5353 reproduced original rejection and measured ac/bd followers: conducting throughout active interval, output attenuation and late downstream sampling remain. Full measurements and source hashes recorded.
 New v30 changes only IP/IN lengths2.4um->1.2um and BP/BN2.2um->1.1um at4um width; nominal divider ratio retained, lower impedance hypothesis unproven. No device, clock, test load, bit pattern or acceptance gate changed.
