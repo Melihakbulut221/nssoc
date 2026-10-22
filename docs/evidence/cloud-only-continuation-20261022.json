@@ -4,15 +4,14 @@
   "active_runs": {
     "mainchip": 39756174188,
     "pll_native_continuation": 39750949326,
-    "cdr_v33_intrinsic_screen": 39759265431,
-    "tx_return32_native_wires": 39760109496
+    "tx_return32_native_anchors": 39761348924
   },
   "completed": "PLL publication-metadata mismatch exhaustively diagnosed and exact reconciliation controls passed. TX full-wave topology/headroom diagnosis passed but original electrical rejection remains. V32 native transistor gates pass; original timing/data/phase rejection remains. CDR native diagnosis39753512279 reproduced both nominal device passes and all original data/timing failures. TX return diagnosis39756511142 found the actual output return dominated by29.8196ohm R139947; next candidate adds real32um return metal. Mainchip39738186533 saved verified routing progress to iteration4. TX return32 physical39759053449 passed native DRC/deep-flat8088 LVS and full-width open fault after preserving the rejected first geometry.",
   "next": [
     "Monitor exact live PLL39750949326; preserve full native/archive and ordinary reader results. Do not duplicate active simulation.",
     "Monitor exact mainchip39756174188 from checkpoint39738186533. If saved, resume only its complete immutable descriptor; if routed, run original fixed-clock RC/STA/DRC gates.",
     "Read v33 three-variant early/late intrinsic screens; full original gates but frozen v32 wire RC. Only select a useful candidate for actual GDS/DRC/LVS/fresh extraction, never treat a screen as physical acceptance.",
-    "Follow return32 fresh-native-wires, then anchors/RC/precision/intrinsic/composition/interfaces and full original electrical capture. Baseline wire counts may change with real geometry; derive and verify new counts, do not import old RC."
+    "Follow exact anchor39761348924 into return32 cloud followthrough. It generates immutable source adapters, then independently runs native intrinsic binding and precise RC/raw corruption controls. Commit published generated adapters and receipts, then run two-order RC precision, full composition/interfaces/preparation and original complete loaded waveforms."
   ],
   "constraints": [
     "All CAD/tests on GitHub-hosted runners; edits and receipts through GitHub API; no local checkout or generated artifacts.",
@@ -24,7 +23,10 @@
     "entries": 0,
     "cad_processes": 0
   },
-  "pending_workflows": [],
+  "pending_workflows": [
+    "tx-power128return32-followthrough-cloud.yml",
+    "cdr-v33-intrinsic-screen-cloud.yml (corrected syntax; previous39759265431 never simulated)"
+  ],
   "last_physical_result": {
     "run": 39759053449,
     "source_head": "caa3db24d2d0c9d754a5d63d9d7793e4577c47cc",

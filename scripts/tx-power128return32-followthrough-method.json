@@ -1,0 +1,49 @@
+{
+  "baseline_path": "scripts/cloud_tx_power128feed32_followthrough.py",
+  "baseline_sha256": "029ecfd3a80ccde6c7fe26d052f8476c2742ccf01ec2cdc3d2be33922abc2712",
+  "candidate_path": "scripts/cloud_tx_power128return32_followthrough.py",
+  "candidate_sha256": "91c304dadeb1a02c67c3ffe307589cab2d0bdd2e5f8ea179648a06090d021072",
+  "edits": [
+    {
+      "before": "power128feed32",
+      "after": "power128return32",
+      "count": 17
+    },
+    {
+      "before": "POWER128FEED32",
+      "after": "POWER128RETURN32",
+      "count": 2
+    },
+    {
+      "before": "39648841180",
+      "after": "39761348924",
+      "count": 4
+    },
+    {
+      "before": "1bc1580da8135c4b4b3e064b5d59692f30c35af0",
+      "after": "4bb359d4beccbe498d0b0d4912cdd1e934eeb2a1",
+      "count": 2
+    },
+    {
+      "before": "native-anchors-pass-20261021.json",
+      "after": "native-anchors-pass-20261022.json",
+      "count": 1
+    },
+    {
+      "before": "PASS_FRESH_FEED32_INTRINSIC",
+      "after": "PASS_FRESH_RETURN32_INTRINSIC",
+      "count": 1
+    },
+    {
+      "before": " new=base.replace('power128','power128return32')",
+      "after": " new=base.replace('power128','power128return32').replace('native-anchors-pass-20261021.json','native-anchors-pass-20261022.json')",
+      "count": 1
+    },
+    {
+      "before": " ctrl=ctrl.replace('power128','power128return32').replace('POWER128','POWER128RETURN32')",
+      "after": " ctrl=ctrl.replace('power128','power128return32').replace('POWER128','POWER128RETURN32').replace('native-anchors-pass-20261021.json','native-anchors-pass-20261022.json')",
+      "count": 1
+    }
+  ],
+  "scope": "Exact return32 terminal run and isolated stage paths only. Qualified native producer, all raw topology checks, thirteen RC and nineteen intrinsic corruption controls preserved."
+}
