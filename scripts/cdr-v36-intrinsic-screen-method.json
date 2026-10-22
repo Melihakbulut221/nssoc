@@ -1,0 +1,90 @@
+{
+  "files": {
+    "screen": {
+      "baseline": "scripts/cloud_cdr_v35_intrinsic_screen.py",
+      "baseline_sha256": "f73411218e77ba097f0ea170126c59a751c8a259e01621fa92d76c1692bdbeae",
+      "candidate": "scripts/cloud_cdr_v36_intrinsic_screen.py",
+      "candidate_sha256": "2bc647e50738326aa36990192c7b5c3e74262b7587b9d912c0a88d11ac833a07"
+    },
+    "stage": {
+      "baseline": "scripts/cloud_cdr_v35_intrinsic_stage.py",
+      "baseline_sha256": "a4375768451fc448bb25bdb5216740d8a90f3c9753a8108a925aa9b935d76a80",
+      "candidate": "scripts/cloud_cdr_v36_intrinsic_stage.py",
+      "candidate_sha256": "1d1bae8d0ee842ad135b82c99100f1115e8f8ff58b2240e11f87f21defcab0f6"
+    }
+  },
+  "edits": [
+    {
+      "target": "screen",
+      "before": "v35",
+      "after": "v36",
+      "count": 3
+    },
+    {
+      "target": "screen",
+      "before": "['slave_load20','slave_load16']",
+      "after": "['slave_drive15_load12','slave_drive15_load10']",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "Decimal('36e-6'),Decimal('64e-6')",
+      "after": "Decimal('36e-6'),Decimal('54e-6'),Decimal('64e-6')",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "Decimal('36e-6'):32,Decimal('64e-6'):4",
+      "after": "Decimal('36e-6'):16,Decimal('54e-6'):16,Decimal('64e-6'):4",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "if sampler:assert all(parser.number(groups['sg13_lv_nmos'][n]['parameters']['w'])==Decimal('36e-6')for n in names)",
+      "after": "if sampler:assert {parser.number(groups['sg13_lv_nmos'][n]['parameters']['w'])for n in names}in ({Decimal('36e-6')},{Decimal('54e-6')})",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "ROOT/'scripts/cloud_cdr_v36_intrinsic_mutator.py',ROOT/'scripts/cloud_cdr_v33_intrinsic_mutator.py'",
+      "after": "ROOT/'scripts/cloud_cdr_v36_intrinsic_mutator.py',ROOT/'scripts/cloud_cdr_v35_intrinsic_mutator.py',ROOT/'scripts/cloud_cdr_v33_intrinsic_mutator.py'",
+      "count": 1
+    },
+    {
+      "target": "stage",
+      "before": "v35",
+      "after": "v36",
+      "count": 4
+    },
+    {
+      "target": "stage",
+      "before": "['slave_load20','slave_load16']",
+      "after": "['slave_drive15_load12','slave_drive15_load10']",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_xor.py": "3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe",
+    "scripts/check_cdr_sampler_settling_v32_streamed_sources.py": "faf57f6ca97f74ac8c869b7962c557b2ee32645e032cb5121345ee2d43721b1e",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-sampler-settling-v32-fullwave-input-20261022.json": "6733a68a384209cee6bc0e0882488fed39e7fd1dbd894ad632bf96fb92b1d7f6",
+    "scripts/cloud_cdr_v33_intrinsic_mutator.py": "e986b387a9ecd1982fd3a38d89b8f8f1bca1707ce02699fc57239a8fad577ca7",
+    "scripts/cloud_cdr_v34_intrinsic_mutator.py": "be9b1ada8aabb9b5103de2dfd825a3d2053654ff92d985bfcb65879da4606de3",
+    "scripts/check_cdr_v34_intrinsic_screen_sources.py": "4957914869ebd74f25433a4e92efa00f546707cd0ff5f57bff3c90a1b9bf2a6d",
+    ".github/workflows/cdr-v34-intrinsic-screen-cloud.yml": "017924deac016d26d22f94a2728c2d1d5f55104da6d327bd9d8f8993fb5427bb",
+    "docs/evidence/cdr-v33-native-steering-diagnosis-pass-20261022.json": "105177b0b87d38a5a4016e7bfa143ab73f2245317a99657c24edb652510f2667",
+    "scripts/cloud_cdr_v35_intrinsic_mutator.py": "9c4da944475cf3f68c3a7244380452ce1dbb9c7cda516e06a35b5f815cc2b109",
+    "scripts/check_cdr_v35_intrinsic_screen_sources.py": "29eab3a45e930b75e98f5395478caa5f9cb3ccae27dcdbb7fb84bb6f0381e429",
+    ".github/workflows/cdr-v35-intrinsic-screen-cloud.yml": "6ce7e4c98492707bbf346ddb8c8e61f152d76ffa9f0f586a84c9a37deeafe605",
+    "scripts/cloud_cdr_v35_intrinsic_screen.py": "f73411218e77ba097f0ea170126c59a751c8a259e01621fa92d76c1692bdbeae",
+    "scripts/cloud_cdr_v35_intrinsic_stage.py": "a4375768451fc448bb25bdb5216740d8a90f3c9753a8108a925aa9b935d76a80",
+    "scripts/cdr-v35-intrinsic-screen-method.json": "d15ef33f438f170ff5e1dd2b0236cf0947d6c2dc07ba5a4432fd8ef9c87b297e",
+    "docs/evidence/cdr-v35-transfer-diagnosis-results-20261022.json": "cfc4e3cd11c15b4aafccbfcc5131a4488d6559599318b1898ce1d44aa1f8690c",
+    "scripts/cloud_cdr_v36_intrinsic_mutator.py": "d80d978bdfc111e1d07ebabe913625f21e637b1674af5b04908d78412ec26e9d",
+    "scripts/check_cdr_v36_intrinsic_screen_sources.py": "9c106437c9146beafa8a0bf68eb72a3252e41f04de6aa5dc341803d1a51de3f2",
+    ".github/workflows/cdr-v36-intrinsic-screen-cloud.yml": "d2cba150e5dc8e99f921a597b22e411f919465b99b118cb1c8a24b73cc715278"
+  },
+  "scope": "Explicit slave32HBT area and16MOS width/diffusion recipe, collector loading and namespace only. Original clocks/biases,1104columns,34.25ns,150fF/50fF, sampler/phase/current and per-device electrical limits unchanged. FrozenRC screen is not physical acceptance."
+}

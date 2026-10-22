@@ -5572,3 +5572,7 @@ Full serial Gen3x4 PHY, final routed mainchip signoff and original-clock setup/h
 ## Latest saved native processes before next cloud continuation
 
 Verified terminal-success source runs39795757947,39789628668,39789637111 published actual saved processes. Exact source descriptors and original-result pins are in docs/evidence/route8-tx2-native-checkpoints-20261022.json. Mainchip last completed native-router iteration17 increased348 to3534 violations; iteration18 was entered. This is not final DRC or timing, and the regression is retained. TX nominal advanced to15.323795506ns and swap to16.127914292ns, with all14182 columns and partial-row prefixes retained; full34ns capture remains pending. Resume these exact saved processes only.
+
+## Exact continuations dispatched and coupled slave-drive candidate
+
+Route ninth segment39849657003 resumes39795757947; TX second cross-runner continuations39849664074 nominal and39849669847 swap resume39789628668/39789637111. Their immutable source is eaa49798cf1ec6781054131c7f1bdc8b8cb1ebc0. Do not duplicate. CDRv36 now tests two explicit slave-drive/load recipes, with all original electrical gates. See docs/cdr-v36-slave-drive-load-balance-20261022.md; no candidate result or physical acceptance yet.
