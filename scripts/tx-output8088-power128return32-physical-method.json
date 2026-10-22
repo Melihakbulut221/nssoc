@@ -5,7 +5,7 @@
       "baseline": "scripts/generate_tx_output8088_power128feed32_parent.py",
       "baseline_sha256": "4eaf899d7b828290eca7f0aeac8391efe88d357c2c1dd34bb4a21fe66dcd2398",
       "candidate": "scripts/generate_tx_output8088_power128return32_parent.py",
-      "candidate_sha256": "aedbe2ba8ff64164d4b2ef8ccd66a3f0a637ddcbed48acc3a8c2599234081b1a"
+      "candidate_sha256": "735deb10899f84fbe3acdb4e6f7dead0e0072c0f5901b7efd64b7df07e7ae7b7"
     },
     "controller": {
       "baseline": "scripts/cloud_tx_output8088_power128feed32_physical.py",
@@ -67,6 +67,12 @@
       "target": "controller",
       "before": "  r['external_port_controls']=",
       "after": "  r['return_network_diagnosis']=dict(run=39756511142,summary_sha256='8f7c02eb7623d0e069c45a2c60933ba540efb13a85f954f464fbaadce6980327',\n   measured_output_effective_resistance_ohm=30.270116442211645,dominant_raw_edge='R139947',dominant_edge_ohm=29.8196,\n   dominant_energy_fraction=.9851167919251396,repair_hypothesis='Add32um middle metal to real output return spans; keep old6um geometry, endpoints, every primitive, source and original gates. Requires fresh physical/RC/full-wave checks.')\n  r['external_port_controls']=",
+      "count": 1
+    },
+    {
+      "target": "generator",
+      "before": "     candidate[metal]+=wire(ax+20000*ux,ay+20000*uy,bx-20000*ux,by-20000*uy,16000)",
+      "after": "     shift=-2000 if metal==126 and ax==bx==x else 0\n     candidate[metal]+=wire(ax+20000*ux+shift,ay+20000*uy,bx-20000*ux+shift,by-20000*uy,16000)",
       "count": 1
     }
   ],

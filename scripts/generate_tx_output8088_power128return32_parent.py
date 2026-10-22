@@ -119,7 +119,8 @@ def main(out):
      assert distance>40000,('Return span too short for preserved endpoint access',metal,distance)
      ux=0 if ax==bx else 1 if bx>ax else -1
      uy=0 if ay==by else 1 if by>ay else -1
-     candidate[metal]+=wire(ax+20000*ux,ay+20000*uy,bx-20000*ux,by-20000*uy,16000)
+     shift=-2000 if metal==126 and ax==bx==x else 0
+     candidate[metal]+=wire(ax+20000*ux+shift,ay+20000*uy,bx-20000*ux+shift,by-20000*uy,16000)
     assert all((region-candidate[m]).is_empty()for m,region in original_return.items())
    for q in [anchor,pya.Point(s.x,y),pya.Point(x,y),pya.Point(x,t.y)]:attach(candidate,'TopMetal1',q.x,q.y)
    attach(candidate,'Metal5',t.x,t.y)

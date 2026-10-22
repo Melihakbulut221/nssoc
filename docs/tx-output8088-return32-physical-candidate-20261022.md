@@ -9,3 +9,9 @@ All previous native DRC, deep/flat8088-device LVS and fault gates remain. A new 
 A physical pass must be followed by fresh native conductor/anchor binding, raw RC extraction, composition and the original complete8088-device loaded waveform. Neither model resistance editing nor a DC estimate is electrical acceptance. Current/full-serial PHY gates remain open.
 
 Mainchip39738186533 saved its next exact routing state: completed iteration violations173046,97152,88437,21505. Iteration4 was80% through, reporting13722 interim violations. Continuation39756174188 resumes that saved process. These are routing counts, not final setup/hold or production DRC acceptance.
+
+## Clearance rejection and corrected addition
+
+Run39758169383 rejected generation before DRC/LVS: the centered32um output AVSS vertical addition violated the original1.645um foreign-clearance guard toward the unchanged SUB route by0.645um. The failing geometry/logs remain in its release.
+
+Only the added32um strip on the output-side TopMetal1 vertical span is shifted2um away from SUB. Every old6um path polygon, all endpoints, via cuts, SUB and signal material remain unchanged. The width stays32um and the clearance guard remains1.645um; no rule waiver or narrower fallback is introduced. Native generation and all physical/fault gates must pass again.
