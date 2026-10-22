@@ -1,0 +1,8 @@
+# Isolate slave collector loading after rejected area experiments
+Five completed v34 cases did not close original data/timing/phase gates; master area increases also reduced VCE below0.4V. The remaining v34 case continues unchanged. No v34 candidate is promoted to layout.
+
+The earlier full v33 steering diagnosis found valid master outputs by the original37.5ps deadline while slave outputs remained late. Reducing collector resistance in both master and slave (v33 load20/load16) also weakened master outputs, so those experiments did not isolate slave settling. The new screen changes only eight slave collector resistors from2.6um to2.0um or1.6um length at unchanged32um width. The eight disclosed bleed12 resistor edits remain. All master collector loads and all120 HBT geometries remain identical to v32.
+
+This is a testable hypothesis: lower slave collector resistance may reduce settling delay while also reducing voltage swing. It must still pass the original100mV/37.5ps, device VCE/current, phase/VI and full waveform gates. No timing window, clock phase,150fF/50fF load or gate is relaxed. The unchanged test runs nominal early and late cases for both variants, retaining every original row and recorded column.
+
+The mutator reverses exactly eight master-load edits from the original v33 candidate and proves all remaining changes are the16 declared slave resistors. All476 native devices and17918R12850C remain. Frozen v32 interconnect is exploratory only. Any useful candidate needs real resistor geometry, native DRC/LVS, fresh RC and repeated full loaded simulation before acceptance. No improved result is assumed.
