@@ -1,3 +1,8 @@
+## 2026-10-22: PLL892.69ns saved capsule and capacity diagnosis
+PLL39674830790/source6fbd221520a35d6b5ef01cc1c67796175093ee3c terminalSUCCESS means saved native process, not full capture. Progress820.364372710ns->892.691247612ns,2857867rows,5106columns; prior payload/protectedinputs unchanged. Preserve396part/106073878727-byte archive;summary95f6e3053f2484af8ba2eab954b6d5f3536cc20898226a8f5c95f0f81df0b243,parts9194f7614fea02517754431ea85873afdbd60782a270d1d69d9eb68eb461eb36.
+Stopped by original12GiB native disk reserve: inside12.30GB after checkpoint, backing7.08GB, allocated127.775GB. Btrfs actualraw compression96%; same-storage resume cannot progress safely. New storage-capacity workflow performs existing bounded hosted cleanup and inventories distinct devices/mounts without downloading106GB or starting native. Keep all5106columns/allrows/full1us/originalreserves; no reduced capture.
+CDRv30 same-component40nm gap repair39706018326/source3e02237b3bc8cf1e6f4e83ad4bb105c680675204 live lastcheck. NeedactualDRC/LVS thenfreshRC. Mainchip39696184554 andTX39697650133/39697654247 remain pending last observation. Cloud only.
+
 ## 2026-10-22: repair actual v30 eight40nm M4 slots
 Native read-only run39705547543/source dc1a8fba18ceca0043aa3600d21288f0935680d7 reproduced16M4markers and serialized polygon ownership. ArchivedGDSda508094accb3a502fc21a70366dfdbdd3ad2484c1519a795102379565780ed2.
 This commit fills eight exact40nm gaps with0.392um2 actual flat metal only. Native geometry must prove one touched existing component per patch, unchanged full component count, no new Via3/Via4 contacts, all original metal retained, all child/other-layer geometry retained. Parent serialized union has4fault controls; original476-device DRC/LVS remains unchanged.
