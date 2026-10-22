@@ -5583,3 +5583,9 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Exact failure receipt: docs/evidence/pll845-full-reader-timeout-20261022.json. Interrupted summary RUNNING is not acceptance.
 - New workflow pll845-contiguous-reader-cloud.yml initially runs controls only. Verify pass before dispatching exact completed-source descriptor. Original all-column gates/envelope formulas and acceptance thresholds retained; eight byte-exact column copies address suspected repeated strided I/O. Phase, RSS/I/O and stack telemetry plus always-copy reader report added.
 - Route39849657003, nominalTX39849664074 and swapTX39849669847 remain live; no duplicate/restarted native jobs. CDRv3639850649751 quick controls passed; four full native screens started.
+
+
+## 2026-10-22 CDRv34 all six candidates rejected; v36 running
+- Final all_area20/nominal_late source run39776898597 completed and rejected; exact receipt docs/evidence/cdr-v34-sixth-full-screen-rejection-20261022.json. Device/data/phase gates fail; V/I stage passes in this case. All six v34 screens now rejected; preserve every waveform, promote none.
+- Four v36 candidates in39850649751 are in full native simulation after passed syntax/source controls.
+- PLL contiguous-reader controls39853068275 at source3e8a7e4ef09ed85e8fb25563b86b927b26b2b448 pending. No full reader redispatched yet.
