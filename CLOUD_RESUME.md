@@ -1,3 +1,9 @@
+## 2026-10-22: v29 follower diagnosis complete; v30 physical candidate started
+Cloud-only. Actual run39702353118/source8d5861a089111bb1effde0ed67a4602b85fa5353 reproduced original rejection and measured ac/bd followers: conducting throughout active interval, output attenuation and late downstream sampling remain. Full measurements and source hashes recorded.
+New v30 changes only IP/IN lengths2.4um->1.2um and BP/BN2.2um->1.1um at4um width; nominal divider ratio retained, lower impedance hypothesis unproven. No device, clock, test load, bit pattern or acceptance gate changed.
+cdr-sampler-input-impedance-v30-physical-cloud starts on this commit. Require4changed/50unchanged native drawings, all54-device DRC/deep-flatLVS/LEF and original20faults plus7geometry faults. If physical passes, replace four actual parent leaves then regenerate parent physical evidence and all wire/MIM RC before original full loaded waveforms. Do not reuse v29 RC to claim v30 acceptance.
+Mainchip39696184554, PLL39674830790 and TX39697650133/39697654247 remain independent active calculations; do not duplicate/restart. Full serial PHY, qualified finalRC/timing and production approval remain unproven.
+
 ## 2026-10-22: actual v29 latch diagnosis complete; retime-drive measurement next
 Cloud run39701514959/source7832654d4feeb8e00532457c50c52f2965147add reproduced all120 HBT measurements and all4 original sampler checks in both nominal cases. Green diagnostic jobs preserve the original circuit rejection.
 All four sampler outputs meet100mV at0.6/0.9UI but not at original0.3UI. D has96/74 wrong signs at0.3UI; internal D master/slave inputs settle late. Slave current-steering nearest-edge medians are roughly12.6-14.3ps; these observations alone are not a causal-delay proof.
