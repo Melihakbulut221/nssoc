@@ -118,7 +118,9 @@ def main():
   composition=json.loads((root/'whole8088/source/composed/composition.json').read_text())
   contract=json.loads((root/'native/contract.json').read_text())
   interfaces=json.loads((root/'whole8088/source/interfaces.json').read_text())
-  assert mapping.mapped(normal['review'],composition,interfaces,contract)==mapped['mapping']
+  recomputed=mapping.mapped(normal['review'],composition,interfaces,contract)
+  # The original Counter includes the remaining output stage key None; JSON stores that key as 'null'.
+  assert json.loads(json.dumps(recomputed))==mapped['mapping'],'Exact JSON mapping differs'
   rows=parser.statements(model.read_text())
   assert rows[0]==['.subckt','nssoc_tx_output8088_wire_v1',*composition['interface']] and rows[-1]==['.ends','nssoc_tx_output8088_wire_v1']
   counts=Counter(x[0][0]for x in rows[1:-1]);assert counts==dict(X=8088,R=140222,C=99906)
