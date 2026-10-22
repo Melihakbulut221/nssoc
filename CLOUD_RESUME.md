@@ -1,3 +1,13 @@
+## 2026-10-22: Same mainchip process continued; actual storage and all active handles recorded
+
+- Mainchip second checkpoint39696184554 proves progress from iteration0 into1 with single entrypoint. First iteration173046 intermediate routing violations, not final DRC or STA. New same-process continuation39710297457 (f214e473727d81bb2d1055c0849f52c784e3b6d5),7200s.
+- CDR full-wave39709128571 (0337485e3e0bbacd89385703b21c1a35cce4c539) passed source controls; four actual native cases are live. Wait for actual electrical outcomes.
+- TX39697650133/39697654247 remain same live handles; on completion inspect immutable actual case reports and continue from saved state if needed.
+- PLL extended inventory39709857751:133831618560 free bytes, no separate /mnt disk; full5106-column1us capture still needs a measured capacity solution. Checkpoint39674830790 remains intact at892.691247612412ns. Preserve all reserves/data.
+- Exact run/asset hashes and resume source descriptor are in docs/evidence/mainchip-deep-drt-second-checkpoint-20261022.json; storage receipt in docs/evidence/pll845-extended-host-storage-20261022.json. Full state:docs/cloud-continuation-state-20261022.md.
+- Cloud-only; no local CAD data or jobs. No full PHY/final timing acceptance claim.
+
+
 ## 2026-10-22: v30 raw audit/composition both passed; full wave matrix39709128571 active
 
 - Native validation39708600220 at e20a8aa2da383cfeffaf8662c173923e87d12366 passed:13 raw-wire and9 intrinsic-MIM corruptions rejected,19 composition controls rejected, all original17918R12850C retained and seven MIMs emitted exactly once.
