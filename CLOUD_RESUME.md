@@ -1,3 +1,9 @@
+## 2026-10-22: v31 follower leaf passed; actual476-device parent replacement
+
+Leaf39717037237/source9b8c43b1c910765387d7abc83d482c3347333067 passes560DRC,8-device deep/flatLVS and7fault controls; GDS21f6cbd93bf94c5d827a083883f88ec4c1c239d0be5ff2d9f0fbed74e106b03d. New cdr-follower-v31-parent-cloud replaces only ac/bd leaves in actual passed v30parent39706018326. Four resistor lengths4.5->2.25um; all old parent shapes/labels/transforms/fills retained exactly. Require independent all16placement/eightchild geometry and full476-device native DRC/LVS.
+
+After success, fresh wire/MIM extraction and original fullwaves are mandatory; no v30RC reuse or electrical acceptance. Source receipts are committed. Mainchip39710297457 and TX39711301866/39711311480 continue; PLL892.69ns awaits complete sparse archive/full-reader qualification. Cloud only.
+
 ## 2026-10-22: v31 real follower pull-down candidate; sparse cross-host passed
 
 Actual v30 follower diagnosis39716266870 passed: ac/bd collector current nonpositive10.7–15.9% active samples, ac swing about-101.7/+98.3mV. New cdr-follower-v31-physical-cloud halves only two native follower pull-down lengths4.5um->2.25um at4um width; originalNx4 HBTs/ports and all560DRC/deep-flat8deviceLVS/sevenfault gates retained. Stable layout top v23 intentionally retained for exact parent replacement. No electrical acceptance. If leaf passes, replace actual ac/bd parent leaves, rerun parent physical and freshRC/fullwaves; A/B timing still open.
