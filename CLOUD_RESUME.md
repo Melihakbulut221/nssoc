@@ -1,3 +1,11 @@
+## 2026-10-22: Qualify lossless sparse-prefix storage without activating the PLL
+
+- Existing actual PLL checkpoint39674830790 remains unchanged at892.691247612412ns; no native resume was started on insufficient storage.
+- Added cloud_native_sparse_prefix_store.py and ext4/compressed-Btrfs fixture workflow. Exact source bytes remain in the immutable archive; the sparse working file alone is not a valid waveform. Sixteen corruption checks, complete logical source/payload hashes and native header/tail preservation are required.
+- This is NOT yet native CRIU/ngspice continuation or original-reader qualification. Do not migrate the real PLL until the five gates in docs/pll-lossless-sparse-prefix-storage-20261022.md pass.
+- Other actual jobs remain: CDR39709128571, mainchip39710297457, TX39711301866/39711311480. All hosted; no local CAD files/jobs.
+
+
 ## 2026-10-22: TX fourth same-process continuations active; complete native data retained
 
 - Completed third checkpoints: normal39697650133 at28.7500489820868ns/65736rows; selection-fault39697654247 at23.82961867978459ns/54449rows. Each14182columns, original34ns/.5ps/256bit target unchanged. Both are saved processes, not complete electrical passes.
