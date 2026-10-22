@@ -5672,3 +5672,6 @@ PLL complete reader39854075819 remains an actual acquisition rejection. VCTRL480
 New pll845-vctrl-wire-cloud workflow binds all845 original device records, nine VCTRL terminal leaves, actual RC/header and completed-reader report. Controls must pass before full existing-capture dispatch. Original 1us/5106-column validation and acquisition/cycle rejection remain unchanged; new exact selected-column copies and wire-current/charge diagnosis remain cloud-only. No native SPICE or all-terminal envelopes rerun. Wire current is not intrinsic MOS channel current or qualified PEX. Full PHY/routing/timing remain open.
 
 After controls pass, dispatch once with exact original completed native SOURCE_CHECKPOINT from reader39854075819 original_reader.source_checkpoint. Never use a failed-reader run as native source; inspect Actions before dispatch to avoid duplicates. Keep failures and original gates unchanged.
+
+
+PLL wire controls39872681373 failed before any full-raw restore: initial shunt-only capacitor assumption rejected real cross-net coupling. New method keeps all actual coupling endpoint voltages, both explicitly grounded ports and signed interior capacitor charge; original resistance, model, capture and acquisition untouched. Re-run controls before full diagnostic dispatch.

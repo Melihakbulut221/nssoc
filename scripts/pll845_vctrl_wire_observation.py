@@ -73,14 +73,18 @@ def plan(model, comp, instrumentation, names):
     selected_r = [r for r in resistors if r[1] in nodes or r[2] in nodes]
     assert all(r[1] in nodes and r[2] in nodes for r in selected_r)
     selected_c = [r for r in caps if r[1] in nodes or r[2] in nodes]
-    assert all((r[1] in nodes and r[2]=='wire_cref') or
-               (r[2] in nodes and r[1]=='wire_cref') for r in selected_c)
+    # Include actual cross-net coupling; it is not equivalent to capacitance to ground.
+    cap_nodes={n for r in selected_c for n in r[1:3]}
     external = instrumentation['external_mapping']
     assert external['vctrl'] == 'vctrl' and external['wire_cref']=='wire_cref'
     def vector(n):
-        return 'v('+external[n].lower()+')' if n in external else 'v(xloop.'+n.lower()+')'
-    vector_map = {n:vector(n) for n in sorted(nodes | {'wire_cref'})}
-    assert set(vector_map.values()) <= set(names), 'Missing actual wire-node voltage column'
+        if n in external:
+            return None if external[n]=='0' else 'v('+external[n].lower()+')'
+        return 'v(xloop.'+n.lower()+')'
+    vector_map = {n:vector(n) for n in sorted(nodes | cap_nodes | {'wire_cref'})}
+    assert {v for v in vector_map.values() if v is not None} <= set(names), 'Missing actual wire-node voltage column'
+    assert {n for n,v in vector_map.items() if v is None} == {'avss','sub'}
+    assert external['avss']==external['sub']=='0'
     leaves = {t['node'] for t in terminals}
     for terminal in terminals:
         node = terminal['node']
@@ -94,10 +98,19 @@ def plan(model, comp, instrumentation, names):
         rr=next(t for t in terminals if t['instance']==dev)['outgoing_resistors']
         assert len(rr)==1 and rr[0]['name']==expected_r and rr[0]['ohms']==53.7174
     interior = nodes-leaves
+    interior_caps=[]
+    for r in selected_c:
+        # Internal-to-internal capacitances cancel in total interior charge.
+        if (r[1] in interior) != (r[2] in interior):
+            positive=r[1] if r[1] in interior else r[2]
+            negative=r[2] if r[1] in interior else r[1]
+            interior_caps.append(dict(name=r[0],positive=positive,negative=negative,
+                                      farads=float(r[3]),original_record=' '.join(r)))
     return dict(model_sha256=MODEL_SHA, raw_sha256=RAW_SHA, native_cluster=480,
                 terminals=terminals, modeled_network_nodes=sorted(nodes),
                 vector_map=vector_map, interior_nodes=sorted(interior),
-                interior_caps=[r for r in selected_c if (set(r[1:3]) & interior)],
+                interior_caps=interior_caps, explicit_ground_ports=['avss','sub'],
+                cross_net_caps=[r for r in selected_c if 'wire_cref' not in r[1:3]],
                 modeled_resistors=selected_r, modeled_caps=selected_c,
                 current_sign='Positive from native-device metal terminal into interior VCTRL wire network.',
                 scope='Actual modeled wire-branch current only. Local terminal shunt capacitance is outside the cut. No MOS channel-current or qualified physical PEX claim.')
@@ -155,7 +168,7 @@ def numeric_controls():
 def observe(names,values,binding,out,progress):
     assert values.shape==(3201410,5106) and values.dtype==np.dtype('<f8')
     wanted=list(dict.fromkeys(['time','v(vctrl)','v(up)','v(down)','v(reference)','v(fb)',
-                              *binding['vector_map'].values()]))
+                              *[v for v in binding['vector_map'].values() if v is not None]]))
     assert set(wanted)<=set(names)
     indices=[names.index(n) for n in wanted]
     selected=np.empty((len(values),len(wanted)),dtype='<f8')
@@ -172,7 +185,7 @@ def observe(names,values,binding,out,progress):
     (out/'original-vctrl-column-names.json').write_text(json.dumps(wanted,indent=2)+'\n')
     data={n:selected[:,i] for i,n in enumerate(wanted)}
     t=data['time'];assert t[0]==0 and abs(t[-1]-1e-6)<1e-15 and np.all(np.diff(t)>0)
-    volt={n:data[v] for n,v in binding['vector_map'].items()}
+    volt={n:(np.zeros(len(t),dtype='<f8') if v is None else data[v]) for n,v in binding['vector_map'].items()}
     currents={}
     for terminal in binding['terminals']:
         label=terminal['instance']+'.'+terminal['terminal']
@@ -181,8 +194,7 @@ def observe(names,values,binding,out,progress):
     total=sum(currents.values())
     charge=np.zeros(len(t),dtype='<f8')
     for r in binding['interior_caps']:
-        node=r[1] if r[1]!='wire_cref' else r[2]
-        charge+=float(r[3])*(volt[node]-volt['wire_cref'])
+        charge+=r['farads']*(volt[r['positive']]-volt[r['negative']])
     windows=[]
     for start,stop in [(0.,1e-6)]+[(i*1e-7,(i+1)*1e-7) for i in range(10)]:
         lo=int(np.searchsorted(t,start,side='left'));hi=int(np.searchsorted(t,stop,side='right'))
