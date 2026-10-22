@@ -1,3 +1,8 @@
+## 2026-10-22: v30 parent rejection retained; native M4 ownership diagnosis
+Parent39704508945/source92a53ab322cfae2a6729bfd447bd481a96eab13d passed generation/child-geometry but failed560-category nativeDRC with16markers:8M4.b+8M4.e. Actual serialized report shows eight40nm gaps at y290.565..290.605 and1480.085..1480.125 with x1156.980..1158.205,1159.405..1160.630,1191.380..1192.605,1193.805..1195.030.
+This commit adds read-only actual native polygon ownership diagnosis before the unchanged physical gate; no geometry patch or acceptance. Use that output for a same-component gap-fill proof before retrying parentDRC/LVS.
+PLL39674830790 finished saved at892.691247612ns/2857867rows/5106columns, not full1us, due native disk reserve. Preserve capsule summary95f6e3053f2484af8ba2eab954b6d5f3536cc20898226a8f5c95f0f81df0b243 /parts9194f7614fea02517754431ea85873afdbd60782a270d1d69d9eb68eb461eb36. Do not resume unchanged storage: only12.30GBinsidefree,12GiBreserve; needs additional capacity. No samples may be dropped. Cloud only.
+
 ## 2026-10-22: v30 leaf physically passed; actual four-copy parent integration
 Leaf39703416443/source17dffb1c636237b5dbf154ca393338fd4a9096d7 passes560DRC/zero markers,54-device unsimplifieddeep+flatLVS,LEF and20faults;7geometry faults also rejected. NewGDSf1618ddc27ef0de9939796cee2f1830f93b6f265c036de4e596bf1d838428d30.
 cdr-input-impedance-v30-parent-cloud begins from actual passed v29 parent39692037466/GDSc3b2ce62... and new native v30 leaf. Replace4samplers/16resistor reference lengths only. Preserve every parent polygon including eight existingM4fills, all placements, other child drawings and ports. Do not replay old notch repairs; any fresh DRC failure must be diagnosed.
