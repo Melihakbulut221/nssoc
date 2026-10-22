@@ -1,3 +1,9 @@
+## 2026-10-22: v31 parent physical passed; fresh native extraction
+
+Parent39718154517/sourcef6a7300ee045ab435546c7b1b31290946a9c0882 passes actual476-device physical gates and exact all-parent geometry preservation. GDS0cd831dd0ac1dc05554ebb02c9dccfa50ad6b22833e8e296b6a564d155ac847c. Four ac/bd pull-down resistor lengths changed. New cdr-follower-v31-extraction-cloud regenerates planes, conductor/terminal graph, binding andRC using unchanged native measurement bodies and all26 provenance fault controls.
+
+After extraction, capture/audit intrinsicMIM, compose once and run all original full loaded cases. No v30RC reuse or fullPHY claim. PLL sparse-reader/static-capacity qualification from567ebf4c0b170b90595973529c915ff8a3b5700c remains independent. Mainchip39710297457/TX39711301866/39711311480 stay live. All cloud-only.
+
 ## 2026-10-22: Original5106-column sparse reader and separate reader-capacity qualification
 
 New pll845-sparse-reader-cloud has two isolated jobs: exact reconstruction of original native prefix with unchanged16-reader-fault controls and all5106 columns; scripts-only static-reader host capacity measurement using existing bounded cleanup. No real PLL process is restored. Original1us/3million-row gate must reject all short fixtures. Native reserves remain unchanged. Full logical archive integration is still outstanding.
