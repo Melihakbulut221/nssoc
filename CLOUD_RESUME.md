@@ -1,3 +1,14 @@
+## 2026-10-22: Cloud-only v30 parent passed; fresh extraction launched
+
+Local workspace remains empty; all CAD and simulations run on GitHub hosted runners. No local checkout or native process is needed.
+
+- Parent 39706018326 at 3e02237b3bc8cf1e6f4e83ad4bb105c680675204 passed native DRC and 476-device deep/flat LVS. GDS 49914cacf6d66660c7e0373c8a60ce59e0b389c5c86b538daa54a2062324ea42.
+- New cdr-input-impedance-v30-extraction-cloud workflow starts on this commit. Check all four stages and bind actual release receipts before MIM audit/composition/full-wave electrical tests.
+- PLL checkpoint 39674830790 is preserved at 892.691247612412 ns, not full 1 us. Storage inventory 39706223422 proves /mnt shares root device 66305; 133839351808 free bytes after existing cleanup. No additional persistent disk found. Do not restore the 106 GB capsule onto unchanged storage and expect progress.
+- Mainchip 39696184554 and TX 39697650133/39697654247 were still live at this verification. Inspect native completion/checkpoint before dispatching dependent work; do not duplicate processes.
+- Full PHY, routed mainchip final timing and production qualification remain open.
+
+
 ## 2026-10-22: PLL892.69ns saved capsule and capacity diagnosis
 PLL39674830790/source6fbd221520a35d6b5ef01cc1c67796175093ee3c terminalSUCCESS means saved native process, not full capture. Progress820.364372710ns->892.691247612ns,2857867rows,5106columns; prior payload/protectedinputs unchanged. Preserve396part/106073878727-byte archive;summary95f6e3053f2484af8ba2eab954b6d5f3536cc20898226a8f5c95f0f81df0b243,parts9194f7614fea02517754431ea85873afdbd60782a270d1d69d9eb68eb461eb36.
 Stopped by original12GiB native disk reserve: inside12.30GB after checkpoint, backing7.08GB, allocated127.775GB. Btrfs actualraw compression96%; same-storage resume cannot progress safely. New storage-capacity workflow performs existing bounded hosted cleanup and inventories distinct devices/mounts without downloading106GB or starting native. Keep all5106columns/allrows/full1us/originalreserves; no reduced capture.
