@@ -5653,3 +5653,12 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - v36/v37 actual full-capture loading comparison39867076460 is running; do not launch replacement simulations while diagnosing.
 - TX39849664074/39849669847 terminal success published exact next process state:24.4028026598ns/24.9923394953ns of34ns,55785/57109complete rows. Resume only latest descriptors in docs/evidence/tx-return32-third-native-checkpoints-20261023.json.
 - Route39849657003 still live at prior observation; PLL39854075819 complete reader live. These are not timing/PHY acceptance.
+
+
+## 2026-10-23: complete PLL rejection, measured CDR loading, exact cloud continuations
+- PLL39854075819 complete reader finished all original1us/3,201,410rows/5106columns and6167terminal-voltage measurements. Original acquisition REJECTED: final feedback110.440674MHz, phase span9.190319ns, cycle slips; VCTRL0.413489..0.802017V. Receipt pll845-complete-native-acquisition-rejection-20261023.json. No new native simulation needed just to reproduce this failure.
+- CDR diagnostic39867076460 all4jobs PASS rejection reproduction. v37 AC/BD follower currents drop about half, differential swing shrinks, clock steering nearly unchanged. Receipt cdr-v36-v37-loading-results-20261023.json. v39 tests only four native emitter pull-down lengths2.25->1.8/1.5um on v37cdbias15, all original full gates retained; auto-trigger cdr-v39-intrinsic-screen-cloud.yml.
+- Nativecomposition39742448854 identifies sink XD0180/XD0184/XD0218/XD0219, rppd_1/rppd_2 endpoints, AVSS native35, HBT63/64/113/117. No current-source replacement.
+- Route9 run39849657003 saved exact state after iteration25;113violations at24 rose3906 at25,26enteredpartial3568. Route10 now39868561968, source590ae6bfcd5b26dfdf802fbcf23cdb1e84bcba3e. Original64iterations/clocks retained. Postroute original RC/antenna/disconnect/STA pending.
+- TX fourth segments39867591857none/39867597476swap, source590ae6bfcd5b26dfdf802fbcf23cdb1e84bcba3e, controls passed and live native restore/continue. Previous24.4028/24.9923ns saved; target34ns.
+- All computation/testing cloud-only. No local checkout, artifacts or CAD. Full serial PHY, mainchip final routing and setup/hold remain incomplete.
