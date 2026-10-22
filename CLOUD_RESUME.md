@@ -5568,3 +5568,7 @@ All CAD, native simulation, routing and verification remain on GitHub-hosted run
 
 Full serial Gen3x4 PHY, final routed mainchip signoff and original-clock setup/hold remain open. Diagnostic/job success does not close them.
 
+
+## Latest saved native processes before next cloud continuation
+
+Verified terminal-success source runs39795757947,39789628668,39789637111 published actual saved processes. Exact source descriptors and original-result pins are in docs/evidence/route8-tx2-native-checkpoints-20261022.json. Mainchip last completed native-router iteration17 increased348 to3534 violations; iteration18 was entered. This is not final DRC or timing, and the regression is retained. TX nominal advanced to15.323795506ns and swap to16.127914292ns, with all14182 columns and partial-row prefixes retained; full34ns capture remains pending. Resume these exact saved processes only.
