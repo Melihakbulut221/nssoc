@@ -1,3 +1,11 @@
+## 2026-10-22: Original loaded v30 wave matrix launched behind exact native audit/composition
+
+- Source audit/composition 39708600220 at e20a8aa2da383cfeffaf8662c173923e87d12366: raw MIM audit passed; composition was live. New cdr-input-impedance-v30-mim-streamed-cloud waits for both exact jobs to succeed.
+- Actual model: 476 devices, 17918 R, 12850 C. Four original cases; full34.25ns/256bits/1104columns/8GHz, all loads and gates retained. Observe actual nominal and negative-control outcomes, not just green source checks.
+- Full serial PHY and final mainchip timing remain open. Mainchip 39696184554 and TX 39697650133/39697654247 are unchanged active continuation handles. PLL needs disk-safe full-data continuation from preserved892.69ns checkpoint.
+- All work and raw evidence remain in GitHub. No local files or CAD jobs.
+
+
 ## 2026-10-22: v30 fresh extraction and MIM capture passed; raw audit/composition launched
 
 - Fresh extraction 39707446970 at 97c114638871b59de1cb6f0192391436ce9f5b01: all four stages PASS. Native graph 476 devices / 1382 terminals / 111 wire components / 938 points.
