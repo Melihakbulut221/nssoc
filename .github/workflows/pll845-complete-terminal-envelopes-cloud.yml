@@ -24,6 +24,20 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/
+            /docs/evidence/native-preallocated-btrfs-proof-20261021.json
+            /docs/evidence/pll845-streamed-latest-continuation-20261021.json
+            /docs/evidence/pll845-logical-native-capsule-pass-20261022.json
+            /docs/evidence/logical-native-archive-qualified-20261022.json
+            /docs/evidence/cloud-refined-load-hold-targets-20261016.json
+            /docs/evidence/route146-all-reachable-branch-recipe-20261016.json
+            /docs/evidence/cloud-routed-high-load-targets-20261016.json
+            /docs/evidence/cloud-expanded-load-targets-20261016.json
+            /docs/evidence/cloud-refined-load-targets-20261016.json
+            /docs/evidence/cloud-measured-load-hold-conflicts-20261016.json
+            /docs/evidence/cloud-protected-contact-diagnosis-20261016.json
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -32,6 +46,7 @@ jobs:
           python3 -m pip install numpy==2.3.3
           python3 -m py_compile scripts/cloud_pll845_complete_terminal_envelopes.py
           PYTHONPATH=scripts python3 -c "from pll845_terminal_envelopes import controls; print(controls())"
+          PYTHONPATH=scripts python3 -c "from pathlib import Path; import cloud_pll845_complete_terminal_envelopes; from cloud_pll845_sparse_disk import source_contract; source_contract(Path.cwd()); print('PASS_EXACT_SPARSE_READER_IMPORTS_AND_ORIGINAL_METHOD_CONTRACT')"
   complete-reader:
     needs: controls
     if: github.event_name == 'workflow_dispatch'
@@ -50,6 +65,13 @@ jobs:
             /docs/evidence/pll845-streamed-latest-continuation-20261021.json
             /docs/evidence/pll845-logical-native-capsule-pass-20261022.json
             /docs/evidence/logical-native-archive-qualified-20261022.json
+            /docs/evidence/cloud-refined-load-hold-targets-20261016.json
+            /docs/evidence/route146-all-reachable-branch-recipe-20261016.json
+            /docs/evidence/cloud-routed-high-load-targets-20261016.json
+            /docs/evidence/cloud-expanded-load-targets-20261016.json
+            /docs/evidence/cloud-refined-load-targets-20261016.json
+            /docs/evidence/cloud-measured-load-hold-conflicts-20261016.json
+            /docs/evidence/cloud-protected-contact-diagnosis-20261016.json
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -87,7 +109,7 @@ jobs:
           root=pathlib.Path.cwd()
           _,methods=source_contract(root)
           assert not (root/'hw').exists()
-          wanted={'docs/evidence/native-preallocated-btrfs-proof-20261021.json','docs/evidence/pll845-streamed-latest-continuation-20261021.json','docs/evidence/pll845-logical-native-capsule-pass-20261022.json','docs/evidence/logical-native-archive-qualified-20261022.json'}
+          wanted={'docs/evidence/native-preallocated-btrfs-proof-20261021.json','docs/evidence/pll845-streamed-latest-continuation-20261021.json','docs/evidence/pll845-logical-native-capsule-pass-20261022.json','docs/evidence/logical-native-archive-qualified-20261022.json','docs/evidence/cloud-refined-load-hold-targets-20261016.json','docs/evidence/route146-all-reachable-branch-recipe-20261016.json','docs/evidence/cloud-routed-high-load-targets-20261016.json','docs/evidence/cloud-expanded-load-targets-20261016.json','docs/evidence/cloud-refined-load-targets-20261016.json','docs/evidence/cloud-measured-load-hold-conflicts-20261016.json','docs/evidence/cloud-protected-contact-diagnosis-20261016.json'}
           actual={str(p.relative_to(root))for p in (root/'docs').rglob('*')if p.is_file()}
           assert actual==wanted,('Unexpected reader checkout proof set',actual)
           out=root/'cloud-pll845-reader-capacity';out.mkdir()
@@ -95,7 +117,7 @@ jobs:
               free_bytes=shutil.disk_usage(root).free,
               source_methods_verified=methods,
               retained_proofs={p:hashlib.sha256((root/p).read_bytes()).hexdigest()for p in sorted(wanted)},
-              source_checkout='scripts and exact four required immutable proof receipts',
+              source_checkout='scripts and exact eleven required immutable proof receipts',
               original_capacity_guard_unchanged=True,native_activation=False)
           (out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
           print(json.dumps(report))
