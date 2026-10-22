@@ -5646,3 +5646,10 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Actual PCell run39862564844 completed:17cells/readbacks pass,54um single-finger MOS54.36um tall exceeds old50um top envelope. Receipt docs/evidence/cdr-candidate-pcells-result-20261023.json. No macro DRC/LVS/diffusion/PEX acceptance.
 - Route39849657003 remains live; TX39849664074/39849669847 publishing latest exact process checkpoints at last verification; do not duplicate or restart live tasks. PLL39854075819 live full reader.
 - v38 is not accepted: early A/B now pass but C/D fail; late data_area5 A/C/D fail. Preserve all native results and finish collection before selecting next circuit.
+
+
+## 2026-10-23: all v37/v38 native results and next TX continuation
+- Both four-case suites fully reject despite passing device envelopes. Evidence receipts cdr-v37-four-full-screen-rejections-20261023.json and cdr-v38-four-full-screen-rejections-20261023.json preserve original raw/source hashes and every scalar sampler outcome.
+- v36/v37 actual full-capture loading comparison39867076460 is running; do not launch replacement simulations while diagnosing.
+- TX39849664074/39849669847 terminal success published exact next process state:24.4028026598ns/24.9923394953ns of34ns,55785/57109complete rows. Resume only latest descriptors in docs/evidence/tx-return32-third-native-checkpoints-20261023.json.
+- Route39849657003 still live at prior observation; PLL39854075819 complete reader live. These are not timing/PHY acceptance.
