@@ -1,3 +1,9 @@
+## 2026-10-22: v29 full-wave rejection and source-bound latch diagnosis
+Cloud only; local workspace empty. Run39695370523 completed: both nominal cases rejected; both injected faults detected. Preserve complete raw waves and all original gates.
+Early HBT/MOS checks pass but sampler worst59.21875ps and phase/VI gates fail. Late sampler worst54.53125ps, phase fails and one HBT VCE=0.399709092746213V<0.4V. No PHY acceptance.
+New cdr-v29-latch-timing-cloud workflow runs on this commit: restore exact original waves and physical geometry, reproduce every original HBT/sampler result, diagnose actual current-steering and data-transfer windows. Await that diagnosis before changing geometry or devices.
+Existing mainchip39696184554, PLL39674830790, TX39697650133/39697654247 remain active; do not duplicate or cold restart them. Original clocks, full waveform duration, all vectors and acceptance gates unchanged.
+
 ## 2026-10-22: TX third native continuations verified live
 Both new workflow_dispatch jobs39697650133 and39697654247 run source362abff7c7ef4591987ce77d55b960a1abaaa3f9,7200native seconds from exact second-cross descriptors in tx-power128feed32-native-second-cross-saved-20261022.json. Controls119558853424/119558865919 passed; native119559064689/119559056664 observed restoring/continuing the actual saved processes. Do not duplicate; bind cases from actual reports before scheduling any successor. Current saved source times normal21.625089420551606ns and swap16.89446841107583ns; target34ns remains mandatory.
 CDR39695370523 four actualnativecases and mainchip39696184554 continuation remain live. PLL39674830790 publishing: immutable release420125235 had227parts/60,934,848,512bytes at00:08UTC; descriptor intentionally published only after all native bytes, so no successor may consume partial archive.
