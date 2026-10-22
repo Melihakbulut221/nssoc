@@ -5675,3 +5675,11 @@ After controls pass, dispatch once with exact original completed native SOURCE_C
 
 
 PLL wire controls39872681373 failed before any full-raw restore: initial shunt-only capacitor assumption rejected real cross-net coupling. New method keeps all actual coupling endpoint voltages, both explicitly grounded ports and signed interior capacitor charge; original resistance, model, capture and acquisition untouched. Re-run controls before full diagnostic dispatch.
+
+
+## PLL full existing-record diagnostic dispatched after hosted controls — 2026-10-23
+Corrected source7193f8dbd943d7ee43c8d5b1faf0df9f33d1243b controls39873128105 passed: all845 original model records bound,9 VCTRL terminal leaves,18 network nodes,6 binding faults and3 numeric faults rejected; irregular-grid integral/sign controls pass. Original sparse-reader method contract still exact. Prior39872681373 coupling-assumption failure remains retained.
+
+Full existing-record analysis39873653454 dispatched ONCE using original completed native capture39750949326/initial/attempt1. SummarySHA06814bd30fa368790c70b85108e4a939a441e5b38eca8ee95d506bbe50aa334d; partsSHAb1ffca81120471810d307f0fbae320d58447a04f0a1762c4f4268105c9066a7c. Source7193f8d. It has no native simulation activation and must reproduce complete original acquisition/cycle rejection. No full wire-current result yet. Inspect this handle; do not redispatch because polling times out.
+
+While it runs, CDR v39 39869412251 full native jobs120145189033/120145189080/120145189096/120145189171 are live; route10 39868561968 native120137053808 and TX4 39867591857 native120133788297 /39867597476 native120133836946 remain live. Original controllers/stimuli/clocks/gates unchanged. Last verified processes are actual hosted running steps, not local locks. Full PHY/routing/final timing remain unproven. All work remains cloud-only.
