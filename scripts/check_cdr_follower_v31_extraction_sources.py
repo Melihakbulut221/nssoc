@@ -14,6 +14,16 @@ def check():
         if name.endswith('.py'):ast.parse(data,filename=name)
     receipt=json.loads((ROOT/'docs/evidence/cdr-follower-v31-parent-physical-pass-20261022.json').read_text())
     plane_source=(ROOT/'scripts/cloud_cdr_follower_v31_planes.py').read_text()
+    # Both receipt validation and the restored-file check must bind the same
+    # actual new GDS, rather than a stale baseline hash after namespace changes.
+    expected_gds=receipt['report']['outputs']['layout/nssoc_cdr_pd476_follower_v23.gds']
+    def transport_binding(text):
+        assert text.count(repr(expected_gds))==2,'Validator/transport GDS identity differs'
+    transport_binding(plane_source)
+    bad=plane_source.replace(repr(expected_gds),repr('f'*64),1)
+    try:transport_binding(bad)
+    except AssertionError:pass
+    else:raise AssertionError('Stale restored-file GDS binding accepted')
     tree=ast.parse(plane_source);f=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='validate_parent_pin'];assert len(f)==1
     ns={};exec(compile(ast.Module(body=f,type_ignores=[]),'<actual-v31-parent-validator>','exec'),ns)
     validate=ns['validate_parent_pin'];validate(receipt,receipt['report'])

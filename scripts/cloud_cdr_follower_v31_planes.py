@@ -151,7 +151,7 @@ def main():
         selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]
         prior,proof=reports.restore_report('cdr-follower-v31-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)
         geometry=validate_parent_pin(pin,prior)
-        assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='49914cacf6d66660c7e0373c8a60ce59e0b389c5c86b538daa54a2062324ea42'
+        assert sha(OUT/'parent/layout'/(TOP+'.gds'))=='0cd831dd0ac1dc05554ebb02c9dccfa50ad6b22833e8e296b6a564d155ac847c'
         r['retime_parent_geometry']=geometry
         r['physical_source']=proof
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'

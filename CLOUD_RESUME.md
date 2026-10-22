@@ -1,3 +1,11 @@
+## 2026-10-22: Sparse5106-column reader passed; repair stale v31 transport GDS pin
+
+PLL reader39718716834 passed lossless original2MiB prefix/all46 complete native rows/all5106columns, preserving21605 partial payload bytes and all16 reader corruption controls. Direct sparse reads and short full-capture claims rejected. Separate scripts-only static reader measured137053306880free bytes; after4GiB static reserve supports132758339584raw bytes/~3250005rows. Actual final size must still be checked. Native12GiB/4GiB reserves unchanged. Implement and qualify lossless logical archive publication/restoration before real892.69ns process activation.
+
+v31 extraction39719287250 failed before native extraction because restored-file SHA still referenced old v30GDS despite correct receipt validator. Failure saved. This commit fixes only that transport hash to actual0cd831dd... and adds validator/transport consistency control; fresh cdr-follower-v31-extraction-cloud follows. Native algorithms/all26 sourcefaults unchanged; parent physical39718154517 still passed.
+
+Mainchip39710297457/TX39711301866/39711311480 are the same active handles. All work cloud-only; fullPHY and finaltiming not complete.
+
 ## 2026-10-22: v31 parent physical passed; fresh native extraction
 
 Parent39718154517/sourcef6a7300ee045ab435546c7b1b31290946a9c0882 passes actual476-device physical gates and exact all-parent geometry preservation. GDS0cd831dd0ac1dc05554ebb02c9dccfa50ad6b22833e8e296b6a564d155ac847c. Four ac/bd pull-down resistor lengths changed. New cdr-follower-v31-extraction-cloud regenerates planes, conductor/terminal graph, binding andRC using unchanged native measurement bodies and all26 provenance fault controls.
