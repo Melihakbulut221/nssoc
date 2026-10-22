@@ -5,13 +5,13 @@
     "mainchip": 39738186533,
     "pll_native_continuation": 39750949326
   },
-  "pending_workflow": "cdr-v32-transfer-timing-cloud.yml (auto-triggered by this commit)",
-  "completed": "PLL publication-metadata mismatch exhaustively diagnosed and exact reconciliation controls passed. TX full-wave topology/headroom diagnosis passed but original electrical rejection remains. V32 native transistor gates pass; original timing/data/phase rejection remains.",
+  "pending_workflow": "tx-power128feed32-return-network-cloud.yml (auto-triggered by this commit)",
+  "completed": "PLL publication-metadata mismatch exhaustively diagnosed and exact reconciliation controls passed. TX full-wave topology/headroom diagnosis passed but original electrical rejection remains. V32 native transistor gates pass; original timing/data/phase rejection remains. CDR native diagnosis39753512279 reproduced both nominal device passes and all original data/timing failures.",
   "next": [
     "Monitor exact live PLL39750949326; preserve full native/archive and ordinary reader results. Do not duplicate active simulation.",
     "Monitor mainchip39738186533. Resume only its complete immutable checkpoint if saved; if routed, run fresh original-clock RC/STA/DRC.",
-    "Read v32 native transfer diagnosis before selecting the next physical sampler repair; C/D retiming worsened despite headroom closure.",
-    "Trace TX output local return routing from actual native geometry and wire network; preserve full-wave gates for any physical repair."
+    "CDR39753512279 completed: compare actual native stage data/clock observations; do not repeat stronger slave bleeds as a proven improvement.",
+    "Read the exact native TX return-network diagnosis, then repair dominant physical AVSS path with fresh DRC/LVS/RC and original full-wave checks."
   ],
   "constraints": [
     "All CAD/tests on GitHub-hosted runners; edits and receipts through GitHub API; no local checkout or generated artifacts.",
