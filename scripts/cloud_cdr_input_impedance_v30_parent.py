@@ -55,7 +55,7 @@ def main():
   manifest['children']['sampler']=dict(directory='inputs/sampler/layout',
    files={str(p.relative_to(OUT)):sha(p)for p in directory.iterdir()})
   (OUT/'children.json').write_text(json.dumps(manifest,indent=2)+'\n')
-  methods=[Path(__file__),ROOT/'scripts/diagnose_cdr_v30_parent_m4.py',leaf_pin_path,ROOT/'scripts/generate_cdr_input_impedance_v30_parent.py',
+  methods=[Path(__file__),ROOT/'scripts/repair_cdr_v30_parent_m4_notches.py',ROOT/'scripts/cdr-v30-parent-m4-diagnosis.json',ROOT/'scripts/diagnose_cdr_v30_parent_m4.py',leaf_pin_path,ROOT/'scripts/generate_cdr_input_impedance_v30_parent.py',
    ROOT/'scripts/check_cdr_follower_v23_parent_geometry.py',ROOT/'hw/soc/flow/check_pcie_cdr_follower_v23_parent.py']
   protected={str(p):sha(p)for p in [*methods,*[OUT/'baseline'/n for n in names],*[OUT/'data'/n for n in fn]]}
   spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
@@ -85,7 +85,7 @@ def main():
   assert all(sha(Path(n))==v for n,v in protected.items())
   assert all(sha(ROOT/n)==v['sha256']for n,v in runtime['files'].items())
   r.update(status='PASS_PD476_INPUT_IMPEDANCE_V30_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',
-   sources_unchanged=True,protected_inputs=protected,scope='Sixteen actual input/bias resistor length changes in four samplers (IP/IN2.4um->1.2um and BP/BN2.2um->1.1um; collector loads unchanged); all Nx4 data/hold and Nx2 selectors retained; every original parent polygon, collector/retime trunk, transform and all other children retained; the existing v29 M4 notch fills remain unchanged; no new parent polygon or via is introduced. Full native DRC/LVS. Requires fresh whole-parent extraction and original complete early/late and fault waveforms.')
+   sources_unchanged=True,protected_inputs=protected,scope='Sixteen actual input/bias resistor length changes in four samplers (IP/IN2.4um->1.2um and BP/BN2.2um->1.1um; collector loads unchanged); all Nx4 data/hold and Nx2 selectors retained; every original parent polygon, collector/retime trunk, transform and all other children retained; the existing v29 M4 notch fills remain unchanged; eight new measured40nm same-component slots are filled with0.392um2 actual additional metal and no new via contact. Full native DRC/LVS. Requires fresh whole-parent extraction and original complete early/late and fault waveforms.')
  except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
  finally:
   for key in ('layout','physical'):

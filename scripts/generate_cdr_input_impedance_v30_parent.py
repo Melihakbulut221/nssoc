@@ -54,7 +54,9 @@ def main():
     shapes.clear()
  assert removed and all(row['datatype']in (2,25)for row in removed)
  # Preserve all v29 parent metal including its proven eight same-net notch fills.
- # A changed child must pass fresh native DRC/LVS; no inherited repair is replayed.
+ # Fill only eight newly measured40nm same-component slots; retain earlier metal.
+ from repair_cdr_v30_parent_m4_notches import apply as repair_m4
+ bridges,m4_proof=repair_m4(L,T,Path(__file__).resolve().parents[1]/'pdk/libs.tech/klayout/tech/sg13g2.lyp')
  L.write(str(dest/(TOP+'.gds')))
  R=pya.Layout();R.read(str(dest/(TOP+'.gds')));U=R.cell(TOP)
  after=parent_snapshot(R,U)
@@ -62,7 +64,7 @@ def main():
   assert a[1:]==b[1:],'Parent labels or transforms changed'
   assert a[0].keys()==b[0].keys()
   for layer in a[0]:
-   expected=a[0][layer]
+   expected=(a[0][layer]+bridges).merged() if layer==(50,0) else a[0][layer]
    assert (expected^b[0][layer]).is_empty(),('Unexpected parent metal change',layer)
  compare(snap,after)
  # Fresh serialized children are independently compared against all eight sources next.
@@ -80,10 +82,11 @@ def main():
  meta=copy.deepcopy(before);meta['source_plan']['types']['sampler']['top']=LEAF
  meta['status']='GENERATED_PD476_INPUT_IMPEDANCE_V30_REQUIRES_NATIVE_PHYSICAL_AND_ELECTRICAL_CHECKS'
  meta.pop('native_reorder',None)
+ meta['v30_same_net_m4_notch_fill']=m4_proof
  meta['input_and_bias_resistor_replacement']=dict(previous_parent_gds_sha256=sha(old/'layout'/(TOP+'.gds')),
   new_sampler_gds_sha256=sha(fresh/(LEAF+'.gds')),changed_native_reference_devices=sorted(changed))
  files=[p for name in ('baseline','data','inputs')for p in (out/name).rglob('*')if p.is_file()]+[out/'children.json']
- meta['inputs']={str(p):sha(p)for p in [Path(__file__),*files]}
+ meta['inputs']={str(p):sha(p)for p in [Path(__file__),Path(__file__).with_name('repair_cdr_v30_parent_m4_notches.py'),Path(__file__).with_name('cdr-v30-parent-m4-diagnosis.json'),*files]}
  meta['outputs']={n:sha(dest/n)for n in (TOP+'.gds',TOP+'.lef','schematic.cir')}
  (dest/'result.json').write_text(json.dumps(meta,indent=2)+'\n')
  faults=[]
@@ -99,9 +102,13 @@ def main():
  try:compare(snap,bad)
  except AssertionError:faults.append('added_parent_metal')
  else:raise AssertionError('Added parent metal accepted')
- assert len(faults)==3
- proof=dict(status='PASS_SERIALIZED_UNCHANGED_PARENT_WITH_FOUR_NATIVE_V30_SAMPLERS',
-  actual_sampler_instances=4,changed_reference_devices=sorted(changed),parent_geometry_unchanged=True,all_original_parent_geometry_retained=True,all_existing_collector_retime_trunks_retained=True,
+ bad=(dict(after[0]),after[1],after[2]);bad[0][(50,0)]=snap[0][(50,0)]
+ try:compare(snap,bad)
+ except AssertionError:faults.append('missing_required_v30_notch_fill')
+ else:raise AssertionError('Missing v30 notch fill accepted')
+ assert len(faults)==4
+ proof=dict(status='PASS_SERIALIZED_PARENT_PLUS_EIGHT40NM_SAME_NET_FILLS_WITH_FOUR_NATIVE_V30_SAMPLERS',
+  actual_sampler_instances=4,changed_reference_devices=sorted(changed),parent_geometry_unchanged=False,all_original_parent_geometry_retained=True,all_existing_collector_retime_trunks_retained=True,m4_notch_fill=m4_proof,
   removed_child_port_annotations=removed,original_children_had_no_port_annotations=True,
   external_leaf_ports_and_bbox_unchanged=True,serialized_native_check=True,controls=faults,
   full_phy_accepted=False,qualified_pex=False)

@@ -1,3 +1,8 @@
+## 2026-10-22: repair actual v30 eight40nm M4 slots
+Native read-only run39705547543/source dc1a8fba18ceca0043aa3600d21288f0935680d7 reproduced16M4markers and serialized polygon ownership. ArchivedGDSda508094accb3a502fc21a70366dfdbdd3ad2484c1519a795102379565780ed2.
+This commit fills eight exact40nm gaps with0.392um2 actual flat metal only. Native geometry must prove one touched existing component per patch, unchanged full component count, no new Via3/Via4 contacts, all original metal retained, all child/other-layer geometry retained. Parent serialized union has4fault controls; original476-device DRC/LVS remains unchanged.
+Await new parent result; if clean regenerate all RC and run original full waveform gates. PLL newest checkpoint39674830790 at892.691247612ns is durable but storage-limited; do not blindly restore same disk capacity. Mainchip39696184554 andTX39697650133/39697654247 still pending last observation. Cloud-only.
+
 ## 2026-10-22: v30 parent rejection retained; native M4 ownership diagnosis
 Parent39704508945/source92a53ab322cfae2a6729bfd447bd481a96eab13d passed generation/child-geometry but failed560-category nativeDRC with16markers:8M4.b+8M4.e. Actual serialized report shows eight40nm gaps at y290.565..290.605 and1480.085..1480.125 with x1156.980..1158.205,1159.405..1160.630,1191.380..1192.605,1193.805..1195.030.
 This commit adds read-only actual native polygon ownership diagnosis before the unchanged physical gate; no geometry patch or acceptance. Use that output for a same-component gap-fill proof before retrying parentDRC/LVS.
