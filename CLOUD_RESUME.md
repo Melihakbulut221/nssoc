@@ -1,3 +1,9 @@
+## 2026-10-22: actual v29 latch diagnosis complete; retime-drive measurement next
+Cloud run39701514959/source7832654d4feeb8e00532457c50c52f2965147add reproduced all120 HBT measurements and all4 original sampler checks in both nominal cases. Green diagnostic jobs preserve the original circuit rejection.
+All four sampler outputs meet100mV at0.6/0.9UI but not at original0.3UI. D has96/74 wrong signs at0.3UI; internal D master/slave inputs settle late. Slave current-steering nearest-edge medians are roughly12.6-14.3ps; these observations alone are not a causal-delay proof.
+New cdr-v29-transfer-timing-cloud workflow adds only direct native base/emitter/current observations of the actual ac/bd followers to the same full-wave measurement. No ideal data regeneration, clock realignment, new simulation, or weaker gate. Await actual drive measurements before selecting a new physical candidate.
+Keep live mainchip39696184554, PLL39674830790, TX39697650133/39697654247; local workspace remains empty.
+
 ## 2026-10-22: v29 full-wave rejection and source-bound latch diagnosis
 Cloud only; local workspace empty. Run39695370523 completed: both nominal cases rejected; both injected faults detected. Preserve complete raw waves and all original gates.
 Early HBT/MOS checks pass but sampler worst59.21875ps and phase/VI gates fail. Late sampler worst54.53125ps, phase fails and one HBT VCE=0.399709092746213V<0.4V. No PHY acceptance.
