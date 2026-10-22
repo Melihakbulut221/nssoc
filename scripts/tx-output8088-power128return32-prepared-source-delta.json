@@ -1,0 +1,101 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128feed32_prepared.py",
+  "baseline_sha256": "af9469a335fa029a745335e789b7debf9baae3eed6df195521af41abe1b28299",
+  "candidate_path": "scripts/cloud_tx_output8088_power128return32_prepared.py",
+  "candidate_sha256": "55fafde58c11add7e1f36cb3602c1cb9d103542276fcc7e41d50d80d8eca43ea",
+  "edits": [
+    {
+      "before": "power128feed32",
+      "after": "power128return32",
+      "count": 7
+    },
+    {
+      "before": "POWER128FEED32",
+      "after": "POWER128RETURN32",
+      "count": 1
+    },
+    {
+      "before": "interfaces-pass-20261021.json",
+      "after": "interfaces-pass-20261022.json",
+      "count": 1
+    }
+  ],
+  "adapter_derivation": {
+    "baseline_path": "scripts/cloud_tx_output8088_power128feed32_fullwave_adapter.py",
+    "baseline_sha256": "1860f9de7fbe467e7e723a7385610a8cd91d21af15a36c614279bfbf9d9a239e",
+    "candidate_path": "scripts/cloud_tx_output8088_power128return32_fullwave_adapter.py",
+    "candidate_sha256": "da0cfcddbba485d8be2eee00e676005be9e3e4e9b02004d6afdb2a6beeac743c",
+    "edits": [
+      {
+        "before": "power128feed32",
+        "after": "power128return32",
+        "count": 2
+      },
+      {
+        "before": "POWER128FEED32",
+        "after": "POWER128RETURN32",
+        "count": 1
+      },
+      {
+        "before": "interfaces-pass-20261021.json",
+        "after": "interfaces-pass-20261022.json",
+        "count": 1
+      },
+      {
+        "before": "39658547934",
+        "after": "39769220171",
+        "count": 1
+      },
+      {
+        "before": "a0e1d0a069e91a48e4238ecb1b46c9b0a7a16dfb7079f73c654c5851d3727159",
+        "after": "0c6c5b9ff43edeb0b0f957b71293db7025b7c4a358cb2d98305e0b5b7329d633",
+        "count": 1
+      }
+    ]
+  },
+  "checker_derivation": {
+    "baseline_path": "scripts/check_tx_output8088_power128feed32_prepared_sources.py",
+    "baseline_sha256": "5dc2fe648c13f5ce486b7d9071ccbc20e4334fbfbbe06ac20f9943b00e33e89a",
+    "candidate_path": "scripts/check_tx_output8088_power128return32_prepared_sources.py",
+    "candidate_sha256": "9dab710e067d13d7d182fa0b42bf7b59fff5a575040e420a377a09ddeeca445d",
+    "edits": [
+      {
+        "before": "power128feed32",
+        "after": "power128return32",
+        "count": 2
+      },
+      {
+        "before": "POWER128FEED32",
+        "after": "POWER128RETURN32",
+        "count": 1
+      },
+      {
+        "before": "interfaces-pass-20261021.json",
+        "after": "interfaces-pass-20261022.json",
+        "count": 1
+      },
+      {
+        "before": "39658547934",
+        "after": "39769220171",
+        "count": 1
+      },
+      {
+        "before": "a0e1d0a069e91a48e4238ecb1b46c9b0a7a16dfb7079f73c654c5851d3727159",
+        "after": "0c6c5b9ff43edeb0b0f957b71293db7025b7c4a358cb2d98305e0b5b7329d633",
+        "count": 1
+      },
+      {
+        "before": "from check_tx_output8088_power128_prepared_sources import check as original_check",
+        "after": "from check_tx_output8088_power128feed32_prepared_sources import check as original_check",
+        "count": 1
+      }
+    ]
+  },
+  "frozen_inputs": {
+    "scripts/cloud_tx_output8088_power128return32_fullwave_adapter.py": "da0cfcddbba485d8be2eee00e676005be9e3e4e9b02004d6afdb2a6beeac743c",
+    "scripts/check_tx_output8088_power128return32_prepared_sources.py": "9dab710e067d13d7d182fa0b42bf7b59fff5a575040e420a377a09ddeeca445d",
+    ".github/workflows/tx-output8088-power128return32-prepared-cloud.yml": "5ad441bbbbdfc1a906c966fa7daaf9d5ead010b14b96b8052d98237d5222ba83",
+    "docs/evidence/tx-output8088-power128return32-interfaces-pass-20261022.json": "1ea75f6fee1605de9ce61d261b225eee6b46e8b5af668e2a39e16df018997c33"
+  },
+  "scope": "Only return32 source namespace, date and successful interface pins. Run original feed32 source checker too. Original34ns256bits604HBT5376MOS stimuli, sources, solver, full timestep, loads, sampling, gates, native OP transport and swap fault remain unchanged."
+}
