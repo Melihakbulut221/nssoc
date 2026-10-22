@@ -5,12 +5,11 @@
     "mainchip": 39756174188,
     "pll_native_continuation": 39750949326
   },
-  "pending_workflow": "tx-output8088-power128return32-physical-cloud.yml (auto-triggered by this commit)",
   "completed": "PLL publication-metadata mismatch exhaustively diagnosed and exact reconciliation controls passed. TX full-wave topology/headroom diagnosis passed but original electrical rejection remains. V32 native transistor gates pass; original timing/data/phase rejection remains. CDR native diagnosis39753512279 reproduced both nominal device passes and all original data/timing failures. TX return diagnosis39756511142 found the actual output return dominated by29.8196ohm R139947; next candidate adds real32um return metal. Mainchip39738186533 saved verified routing progress to iteration4.",
   "next": [
     "Monitor exact live PLL39750949326; preserve full native/archive and ordinary reader results. Do not duplicate active simulation.",
     "Monitor exact mainchip39756174188 from checkpoint39738186533. If saved, resume only its complete immutable descriptor; if routed, run original fixed-clock RC/STA/DRC gates.",
-    "CDR39753512279 completed: compare actual native stage data/clock observations; do not repeat stronger slave bleeds as a proven improvement.",
+    "Read v33 three-variant early/late intrinsic screens; full original gates but frozen v32 wire RC. Only select a useful candidate for actual GDS/DRC/LVS/fresh extraction, never treat a screen as physical acceptance.",
     "Inspect power128return32 physical candidate. If DRC/LVS and new full-width return-open control pass, perform fresh native wires/anchors/RC/composition and complete original full-wave checks; never substitute modified old extracted resistor values."
   ],
   "constraints": [
@@ -22,5 +21,9 @@
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "entries": 0,
     "cad_processes": 0
-  }
+  },
+  "pending_workflows": [
+    "tx-output8088-power128return32-physical-cloud.yml",
+    "cdr-v33-intrinsic-screen-cloud.yml"
+  ]
 }

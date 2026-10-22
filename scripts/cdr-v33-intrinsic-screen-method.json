@@ -1,0 +1,105 @@
+{
+  "files": {
+    "screen": {
+      "baseline": "scripts/cloud_cdr_sampler_settling_v32_mim_streamed.py",
+      "baseline_sha256": "3bb1063ba11cd23b384f553ff6da0c3621e5a68a2ad5d058ab63eb1a9f17b026",
+      "candidate": "scripts/cloud_cdr_v33_intrinsic_screen.py",
+      "candidate_sha256": "ce8eb0a0d58c7545717f6eb543ff45a47459acdaebf67625e5f80465d7b89fee"
+    },
+    "stage": {
+      "baseline": "scripts/cloud_cdr_sampler_settling_v32_fullwave_stage.py",
+      "baseline_sha256": "499ca27f32d4de326c2058cd6aae3dbbfba21c60a1f273253b05d0061cb9ce20",
+      "candidate": "scripts/cloud_cdr_v33_intrinsic_stage.py",
+      "candidate_sha256": "3751c4aedf4f37574e976445ffc449c68475559e0f8e872dd9499973f48c2166"
+    }
+  },
+  "edits": [
+    {
+      "target": "screen",
+      "before": "p.add_argument('--case',choices=CASES,required=True);args=p.parse_args()",
+      "after": "p.add_argument('--case',choices=['nominal_early','nominal_late'],required=True);p.add_argument('--variant',choices=['bleed12','load20','load16'],required=True);args=p.parse_args()",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "out=ROOT/('cloud-cdr-sampler-settling-v32-mim-streamed-'+args.case)",
+      "after": "out=ROOT/('cloud-cdr-v33-intrinsic-screen-'+args.variant+'-'+args.case)",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "scope='Actual PD476 complete native MIM-aware wire model:",
+      "after": "scope='EXPLORATORY INTRINSIC DIMENSIONS ON FROZEN V32 WIRE RC; no candidate GDS, fresh RC or post-layout acceptance. Baseline PD476 complete native MIM-aware wire model:",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "        r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)",
+      "after": "        from cloud_cdr_v33_intrinsic_mutator import apply\n        baseline_model=model\n        model,contract,screen=apply(model,contract,planes,args.variant,out)\n        r['intrinsic_screen']=screen\n        r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "RUNNING_ACTUAL_WHOLE_WIRE_TRANSIENT",
+      "after": "RUNNING_EXPLORATORY_FROZEN_RC_TRANSIENT",
+      "count": 2
+    },
+    {
+      "target": "screen",
+      "before": "PASS_WHOLE_MIM_PD476_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "after": "PASS_EXPLORATORY_INTRINSIC_SCREEN_REQUIRES_ACTUAL_LAYOUT_FRESH_RC_AND_FULL_GATES",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "REJECTED_WHOLE_MIM_PD476_LOADED",
+      "after": "REJECTED_EXPLORATORY_INTRINSIC_SCREEN",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "Path(__file__),Path(legacy.__file__),model,",
+      "after": "Path(__file__),ROOT/'scripts/cloud_cdr_v33_intrinsic_mutator.py',baseline_model,Path(legacy.__file__),model,",
+      "count": 1
+    },
+    {
+      "target": "stage",
+      "before": "p.add_argument('--case',required=True);args=p.parse_args()",
+      "after": "p.add_argument('--case',required=True);p.add_argument('--variant',choices=['bleed12','load20','load16'],required=True);args=p.parse_args()",
+      "count": 1
+    },
+    {
+      "target": "stage",
+      "before": "    check()",
+      "after": "    check()\n    subprocess.run([sys.executable,str(ROOT/'scripts/check_cdr_v33_intrinsic_screen_sources.py')],check=True,cwd=ROOT)",
+      "count": 2
+    },
+    {
+      "target": "stage",
+      "before": "ROOT/'scripts/cloud_cdr_sampler_settling_v32_mim_streamed.py'),'--case',args.case",
+      "after": "ROOT/'scripts/cloud_cdr_v33_intrinsic_screen.py'),'--case',args.case,'--variant',args.variant",
+      "count": 1
+    },
+    {
+      "target": "stage",
+      "before": "out=ROOT/('cloud-cdr-sampler-settling-v32-mim-streamed-'+args.case)",
+      "after": "out=ROOT/('cloud-cdr-v33-intrinsic-screen-'+args.variant+'-'+args.case)",
+      "count": 1
+    },
+    {
+      "target": "stage",
+      "before": "Original loaded electrical gates rejected",
+      "after": "Exploratory candidate failed unchanged original electrical gates",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_xor.py": "3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe",
+    "scripts/check_cdr_sampler_settling_v32_streamed_sources.py": "faf57f6ca97f74ac8c869b7962c557b2ee32645e032cb5121345ee2d43721b1e",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-sampler-settling-v32-fullwave-input-20261022.json": "6733a68a384209cee6bc0e0882488fed39e7fd1dbd894ad632bf96fb92b1d7f6",
+    "scripts/cloud_cdr_v33_intrinsic_mutator.py": "bc3ef8f97b505d9317dceedaf84f860aaabeae7ce0d25e129c56610cea296dc0"
+  }
+}
