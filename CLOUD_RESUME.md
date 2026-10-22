@@ -5618,3 +5618,10 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - v37 run39857552791/source2d98322485942f1325345383c1e506b3cf97925b is in source controls; four full balanced C/D input-bias cases follow. Its load12 parent is now known rejected, not promoted. Original gates stay fixed.
 - Next circuit decision should use v37 full results. Smaller slave data/hold HBT area may reduce remaining A master/slave loading, but observed Nx6 current density is not a guarantee for a modified Nx4/Nx5 circuit. Require actual complete new tests.
 - Mainchip route39849657003 and PLL reader39854075819 are live; TX39849664074/39849669847 remain the exact ongoing processes. Continue from terminal saved capsules only, never cold restart because a poll expires.
+
+
+## 2026-10-23 independent v38 intrinsic area trial for remaining A settling
+- Based on complete rejected v36 load10, change only16 slave data/hold HBT counts6->5 or4. Keep actual MOS drive, selectors, collector load, bias and all original gates. Existing Nx6 current measurements inform the hypothesis, not safety acceptance.
+- Four early/late cases follow five geometry fault controls, inherited diffusion controls and exact original-controller source reconstruction. Data_area4 reverses16 earlier HBT edits and has48 changed primitives relative to v32; data_area5 has64.
+- v37 run39857552791 controls passed; four native cases queued at last verification. Preserve it as independent C/D input-bias experiment; don't mix results or promote either as physical acceptance.
+- Mainchip39849657003, TX39849664074/39849669847 and PLL39854075819 remain the current live handles. All work stays cloud-only, original failed captures retained.
