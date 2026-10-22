@@ -1,0 +1,86 @@
+{
+  "baseline_method_hashes": {
+    "scripts/cloud_native_checkpoint_probe.py": "28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231",
+    "scripts/cloud_native_portable_checkpoint.py": "5c2a6ca0996ffe88b4dd232ed5755f02cd8c9b0ba92f137c78d447f76b8b0b14",
+    "scripts/cloud_pll_vbic_acquisition.py": "841b74f19b10a9596af231a3e5250a0654d55fcc1004286bc20f24e273808a30",
+    "scripts/cloud_pll_filter_physical_acquisition.py": "f7bdad6929eaa5d686229e63c9f6146595cbdb174414f5d68e989fb12716aac4",
+    "scripts/run_cloud_pll865_snapshot.py": "c38656c2e64d5e2ce9902c845020442082b6b605c664644ee1e78ea34195fb9f",
+    "scripts/cloud_vbic_tree32_backend.py": "472c0c14d1a55785c3d0e9823e2bac94a97216781c530fdb8e8562bd0b805639",
+    "scripts/review_pcie_pll_acquisition_v1.py": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+    "scripts/cloud_pll_divider_load3p2v2_diagnostic.py": "8b9ff5b4d4d5ba1d3d8b61535d8b027c2719f423c2cb855aacb6da13796f2f9e",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5",
+    "scripts/read_pll845_full_native_transient.py": "59e4fb382439db1e8d16ecf80d64ae0406d775b41197037494ff60dbe0a3f3c4",
+    "scripts/read_pll845_all_native_transient.py": "792c402154e1f3122f6f4f197d721e7e16632dba3dab05e4ac7e705e51922da1",
+    "scripts/cloud_streamed_native_archive.py": "ed500db932348586efb9a86efd42cacafe2ca3d377de24e60196c6dbbbd2d5d5",
+    "scripts/cloud_pll845_preallocated_storage.py": "8750623b4f3cc77f168ed59a7a0c4b4a1baba8f9aed6cf2924af1e50f5249dda",
+    "scripts/cloud_native_btrfs_case.py": "b4c30536e1fb64b8af9389bf4571b691c7418070b3187cac272e3e365e6ea947",
+    "scripts/cloud_pll845_proof_namespace_acquisition.py": "0dcfa7c4e4c02fb4c2d99c2ee1e63c293f3d26ad2a7529c74f0345e7a7c96fc6",
+    "scripts/cloud_pll845_proof_namespace_disk.py": "4b985f9b819b379d2a583eda7af59c3f28695ef4f135ae1a69682fcda16e81ed",
+    "scripts/cloud_pll845_storage_proof_namespace.py": "d4e053473776200172ff420c18fef5777157e3133188ff809b7e3fb6c672b981"
+  },
+  "current_files": {
+    "scripts/cloud_pll845_sparse_acquisition.py": "fd52df2a08db9898eba5b8ccb26d6a213eceeef5a1a01a896a8fc2351b75f154",
+    "scripts/cloud_pll845_sparse_io.py": "086d082539c916f89a9956af90d84a02aaf4c53fa5974e92901e2abc4150c8b8",
+    "scripts/cloud_pll845_sparse_disk.py": "1c034d07d7aa1b76981a2c04d1c8d131ed0d49c00af94dfa0dafb027dcb2ab79",
+    "scripts/publish_pll845_sparse_checkpoint.py": "5c99cbd1d8f5a1d54bd00e0fc76c3a31c3fe21d589a18b3fa6445ebd92d0696f",
+    "scripts/read_pll845_sparse_completed.py": "d64fe3b401035bac1477ac60804e382f0088a01e32c71c32115948c9edc0567e",
+    "scripts/cloud_pll845_sparse_controls.py": "3e9a14e4d50ea451a4c5bcce223a7bd5a98aac54f86c1b9d9de44e3241c38864",
+    ".github/workflows/pll845-sparse-production-cloud.yml": "125772d49f3f9bef024a937ffd33ae6eb61159ca95b20afb6a519bcabd2b75e8",
+    "scripts/cloud_logical_native_archive.py": "e264ff7ac376e32a3603dd2ef7ca29a1aef89eac80ee471d1ac2e658b4f89f14",
+    "scripts/cloud_native_sparse_prefix_store.py": "aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14",
+    "scripts/cloud_logical_native_archive_controls.py": "09b36b40beb64df2716ea3db2a1ba7d371bff331bc4dd14543267bdd759ffd62",
+    "docs/evidence/pll845-logical-native-capsule-pass-20261022.json": "b652064002b5b86dce91acd57ece4c0dfdfd6289b56d9b4e13ee6d224d70cfe1",
+    "docs/evidence/logical-native-archive-qualified-20261022.json": "55c44bd90556fcd2f0ce481ec1f8268d5cb4d8bb1e2206c9ddb468cabbd822bd"
+  },
+  "edits": [
+    {
+      "before": "import cloud_pll845_proof_namespace_disk as host_disk",
+      "after": "import cloud_pll845_sparse_disk as host_disk\nimport cloud_pll845_sparse_io as sparse_io\nimport cloud_logical_native_archive as logical_archive\nimport cloud_native_sparse_prefix_store as sparse_store",
+      "count": 1
+    },
+    {
+      "before": "ROOT/'scripts/cloud_pll845_preallocated_storage.py']",
+      "after": "ROOT/'scripts/cloud_pll845_preallocated_storage.py',Path(sparse_io.__file__),Path(logical_archive.__file__),Path(sparse_store.__file__),ROOT/'scripts/publish_pll845_sparse_checkpoint.py',ROOT/'scripts/read_pll845_sparse_completed.py']",
+      "count": 1
+    },
+    {
+      "before": "COMPLETE_STATUS='COMPLETE_ACTUAL_PHYSICAL845_ONE_US_NATIVE_CONTINUATION_NOT_PHY_ACCEPTANCE'",
+      "after": "COMPLETE_STATUS='COMPLETE_NATIVE845_PROCESS_REQUIRES_ORDINARY_FULL_CAPTURE_READER'",
+      "count": 1
+    },
+    {
+      "before": "    # Each part is verified before delivery. The full ordered digest must pass\n    # on context exit, before any native restore or source adoption below.\n    with host_archive.verified_remote_parts(manifest,staging,download_part)as packed,tarfile.open(fileobj=packed,mode='r|gz')as tar:\n        seen=set()\n        for m in tar:\n            p=Path(m.name);assert not p.is_absolute()and'..'not in p.parts and p.parts[0]==OUT.name\n            assert m.name not in seen and(m.isfile()or m.isdir());seen.add(m.name)\n            tar.extract(m,ROOT,filter='data')\n    assert sha(OUT/'result.json')==spec['summary_sha256']\n    assert all(sha(OUT/p)==d for p,d in report['outputs'].items())\n    assert not LIB.exists();shutil.copytree(OUT/'model-sources',LIB)\n    assert all(sha(LIB/p)==d for p,d in report['preparation']['model_sources'].items())\n    assert sha(CASE/'actual-acquisition.raw')==report['checkpoint_prefix']['sha256']\n    assert payload_info(CASE/'actual-acquisition.raw')==report['checkpoint_prefix']\n",
+      "after": "    restored=sparse_io.restore(manifest,staging,ROOT,download_part,report,spec,url,OUT)\n    assert not LIB.exists();shutil.copytree(OUT/'model-sources',LIB)\n    assert all(sha(LIB/p)==d for p,d in report['preparation']['model_sources'].items())\n    assert restored['source']==report['checkpoint_prefix']\n    report['_sparse_restore']=restored\n",
+      "count": 1
+    },
+    {
+      "before": "        checkpoint_saved=False,full_capture=False,acquisition_accepted=False,",
+      "after": "        sparse_restore=prior['_sparse_restore'],sparse_working_file_not_waveform=True,\n        checkpoint_saved=False,full_capture=False,acquisition_accepted=False,",
+      "count": 1
+    },
+    {
+      "before": "result['checkpoint_prefix']=payload_info(raw);",
+      "after": "result['checkpoint_prefix']=sparse_io.contract(OUT);",
+      "count": 1
+    },
+    {
+      "before": "prefix_preserved(raw,prior['checkpoint_prefix']);",
+      "after": "sparse_io.preserved(OUT,prior['checkpoint_prefix']);",
+      "count": 1
+    },
+    {
+      "before": "            names,values,cap=actual_wave.capture(raw,host_disk.load_contract(ROOT,vectors));result['capture']=cap\n            cols={n:values[:,i]for i,n in enumerate(names)}\n            result['independent_acquisition']=pll.acquisition_analyzer()(cols)\n            result['cycle_diagnosis']=pll.acquisition_cycle_diagnosis(cols,result['independent_acquisition'])\n            result.update(status=COMPLETE_STATUS,full_capture=True,original_gate_passed=bool(result['independent_acquisition']['passed']))\n",
+      "after": "            result['logical_capture']=sparse_io.contract(OUT)\n            result.update(status=COMPLETE_STATUS,native_complete=True,full_capture=False,\n                full_capture_reader_pending=True,original_gate_passed=None)\n",
+      "count": 1
+    },
+    {
+      "before": "        result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}",
+      "after": "        try:\n            result['outputs']=sparse_io.hash_outputs(OUT)\n            result['logical_storage_proof']=sparse_io.contract(OUT)\n        except BaseException as archive_error:\n            result.update(status='FAIL_OR_ERROR',checkpoint_saved=False,native_complete=False,\n                logical_archive_error=repr(archive_error),logical_archive_valid=False)\n            result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')\n                if p.is_file()and p!=OUT/'result.json'and p!=CASE/'actual-acquisition.raw'}\n",
+      "count": 1
+    }
+  ],
+  "scope": "Only sparse storage, lossless ordinary publication and separate ordinary full reader. Exact original native process and all engineering gates retained.",
+  "bounded_native_qualification_run": 39727525708,
+  "logical_archive_qualification_run": 39726696717
+}
