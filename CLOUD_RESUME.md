@@ -5610,3 +5610,11 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Full active C master-track min VCE0.42030/0.42123V (early/late), only20–21mV above0.4V. Input-only resistance reduction is not assumed safe.
 - v37 preserves nominal divider ratio by widening all8 C/D input and bias resistors4->6 or8um together, on pending v36 slave_drive15_load12. This is a bounded new intrinsic trial, not a promoted layout. Four full early/late simulations follow exact source/dimension controls. All previous clocks, samples, loads and electrical gates unchanged.
 - Preserve v36 original jobs39850649751. Continue exact mainchip39849657003 and TX39849664074/39849669847 saved-process chains. PLL39854075819 full-reader analysis remains active; no original native simulation restarted.
+
+
+## 2026-10-23 v36 full native results: four rejections, all device gates pass
+-39850649751 completed all4 full34.25ns/113475-row/1104-column cases with exit0/no numerical diagnostics. Receipt docs/evidence/cdr-v36-four-full-screen-rejections-20261023.json and comparison docs/cdr-v36-full-native-outcomes-20261023.md.
+- B sampler passes4/4; A/C/D and whole phase/V-I remain rejected. Best A load10 early101.42mV but37.656ps exceeds original37.5ps; do not waive/round this near-miss. Preserve all failures.
+- v37 run39857552791/source2d98322485942f1325345383c1e506b3cf97925b is in source controls; four full balanced C/D input-bias cases follow. Its load12 parent is now known rejected, not promoted. Original gates stay fixed.
+- Next circuit decision should use v37 full results. Smaller slave data/hold HBT area may reduce remaining A master/slave loading, but observed Nx6 current density is not a guarantee for a modified Nx4/Nx5 circuit. Require actual complete new tests.
+- Mainchip route39849657003 and PLL reader39854075819 are live; TX39849664074/39849669847 remain the exact ongoing processes. Continue from terminal saved capsules only, never cold restart because a poll expires.
