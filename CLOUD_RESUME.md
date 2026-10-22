@@ -1,3 +1,11 @@
+## 2026-10-22: v31 real follower pull-down candidate; sparse cross-host passed
+
+Actual v30 follower diagnosis39716266870 passed: ac/bd collector current nonpositive10.7–15.9% active samples, ac swing about-101.7/+98.3mV. New cdr-follower-v31-physical-cloud halves only two native follower pull-down lengths4.5um->2.25um at4um width; originalNx4 HBTs/ports and all560DRC/deep-flat8deviceLVS/sevenfault gates retained. Stable layout top v23 intentionally retained for exact parent replacement. No electrical acceptance. If leaf passes, replace actual ac/bd parent leaves, rerun parent physical and freshRC/fullwaves; A/B timing still open.
+
+Sparse cross-hostBtrfs39715789011 passed exact12818rows/all34probes with single entrypoint and all3fault controls across distinct boot IDs. Full5106-column reader/logicalarchive still unqualified; real PLL892.69ns remains untouched. Receipt native-sparse-cross-host-btrfs-pass-20261022.json.
+
+Mainchip39710297457 and TX39711301866/39711311480 remain active. All work is cloud-only; local directories stay empty. FullPHY/finaltiming not complete.
+
 ## 2026-10-22: Actual v30 latch measurements reproduced; follower loading diagnosis
 
 Native latch run39715337308 passed both read-only diagnoses. At0.3UI early A master output258.7mV versus slave39.3mV; C/D master inputs7.20/19.58mV and all255 below the100mV diagnostic marker. Original electrical rejection retained. New cdr-v30-transfer-timing-cloud measures exact ac/bd follower voltages/currents before choosing the next geometry.
