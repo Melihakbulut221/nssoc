@@ -26,7 +26,7 @@ def resistor_graph(rows):
   assert len(row)==4
   name,a,b,value=row
   assert name not in names and a!=b
-  value=parser.number(value);assert math.isfinite(value)and value>0
+  value=float(parser.number(value));assert math.isfinite(value)and value>0
   names.add(name);i=len(edges);edges.append((name,a,b,value));adj[a].append((b,i));adj[b].append((a,i))
  return edges,adj
 def component(adj,node):
