@@ -5589,3 +5589,10 @@ Route ninth segment39849657003 resumes39795757947; TX second cross-runner contin
 - Final all_area20/nominal_late source run39776898597 completed and rejected; exact receipt docs/evidence/cdr-v34-sixth-full-screen-rejection-20261022.json. Device/data/phase gates fail; V/I stage passes in this case. All six v34 screens now rejected; preserve every waveform, promote none.
 - Four v36 candidates in39850649751 are in full native simulation after passed syntax/source controls.
 - PLL contiguous-reader controls39853068275 at source3e8a7e4ef09ed85e8fb25563b86b927b26b2b448 pending. No full reader redispatched yet.
+
+
+## 2026-10-22 cloud-only continuation: contiguous full reader dispatched after passed controls
+- Controls39853068275/job120084056401 passed: three fixtures exactly match every frozen acquisition/cycle field; six invalid cache inputs rejected; original source-contract and envelope controls pass. Receipt docs/evidence/pll845-contiguous-reader-controls-and-dispatch-20261022.json.
+- Full reader39854075819 dispatched atfe2bc79176f7d55b8fd5f53fba300c45ebc55013 from exact complete native source39750949326. No native PLL restart. Full result pending; control success does not imply physical acquisition/device acceptance.
+- Local project working directory remains empty. All source changes are direct GitHub commits; all tests/simulations run on GitHub-hosted workers. Preserve original waveforms and native process checkpoints.
+- Continue mainchip route39849657003, TX nominal39849664074, TX swap39849669847 and CDRv3639850649751; no duplicate active native run.
