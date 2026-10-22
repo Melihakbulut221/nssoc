@@ -1,0 +1,44 @@
+{
+  "baseline_path": "scripts/cloud_native_portable_checkpoint.py",
+  "candidate_path": "scripts/cloud_native_sparse_prefix_checkpoint.py",
+  "baseline_sha256": "5c2a6ca0996ffe88b4dd232ed5755f02cd8c9b0ba92f137c78d447f76b8b0b14",
+  "candidate_sha256": "dcb375c64b0ea36b8c15cd7d7ec32c65b281e2b31daa41adaaaee7a0575e60a1",
+  "edits": [
+    {
+      "before": "import numpy as np",
+      "after": "import numpy as np\nimport cloud_native_sparse_prefix_store as sparse",
+      "count": 1
+    },
+    {
+      "before": "OUT=ROOT/'cloud-native-portable-checkpoint'",
+      "after": "OUT=ROOT/'cloud-native-sparse-prefix-checkpoint'",
+      "count": 1
+    },
+    {
+      "before": "        run('original-prefix-log',['docker','logs',original]);original_log=(OUT/'original-prefix-log.log').read_text()",
+      "after": "        # Only the owned bounded runtime fixture is migrated. The real1us\n        # checkpoint and its archive are not downloaded or changed here.\n        prefix_source=dict(bytes=len(prefix),sha256=hashlib.sha256(prefix).hexdigest(),\n            header_bytes=len(prefix)-len(payload),payload_bytes=len(payload),\n            payload_sha256=hashlib.sha256(payload).hexdigest())\n        def prefix_chunks():\n            with (OUT/'checkpoint-prefix.raw').open('rb')as source:\n                while data:=source.read(sparse.CHUNK):yield data\n        staged=cases['resumed']/'sparse-staging.raw'\n        sparse_plan=sparse.materialize(staged,prefix_chunks(),prefix_source,\n            head_keep=sparse.BLOCK,tail_keep=sparse.BLOCK)\n        sparse_before=sparse.inspect_logical(staged,prefix_chunks(),sparse_plan,prefix_source)\n        assert sparse_before['sha256']==prefix_source['sha256']\n        assert sparse_plan['hole_stop']-sparse_plan['hole_start']>=2*sparse.BLOCK\n        assert sha(OUT/'checkpoint-prefix.raw')==prefix_source['sha256']\n        staged.replace(raw)\n        sparse.unchanged_hole(raw,sparse_plan,prefix_source)\n        result['sparse_prefix']=dict(source=prefix_source,plan=sparse_plan,before=sparse_before,\n            helper_sha256=sha(sparse.__file__),immutable_prefix_retained=True,\n            original1us_checkpoint_modified=False)\n        save()\n        run('original-prefix-log',['docker','logs',original]);original_log=(OUT/'original-prefix-log.log').read_text()",
+      "count": 1
+    },
+    {
+      "before": "        sn,sv,sr=inspect_capture(cases['resumed'],vectors,resumed_log);result['restored']=sr\n        assert raw.read_bytes().split(marker,1)[1].startswith(payload),'Native pre-checkpoint payload changed'",
+      "after": "        # A sparse working file must never be accepted directly as a waveform.\n        try:inspect_capture(cases['resumed'],vectors,resumed_log)\n        except AssertionError:result['sparse_direct_reader_rejected']=True\n        else:raise AssertionError('Sparse working file accepted without reconstruction')\n        sparse_after=sparse.inspect_logical(raw,prefix_chunks(),sparse_plan,prefix_source)\n        reconstructed=OUT/'sparse-reconstructed';reconstructed.mkdir()\n        reconstructed_raw=reconstructed/'actual-acquisition.raw'\n        with reconstructed_raw.open('xb')as dest:\n            for data in sparse.logical_chunks(raw,prefix_chunks(),sparse_plan,prefix_source):dest.write(data)\n        assert sha(reconstructed_raw)==sparse_after['sha256']\n        shutil.copy2(cases['resumed']/'op.raw',reconstructed/'op.raw')\n        sn,sv,sr=inspect_capture(reconstructed,vectors,resumed_log);result['restored']=sr\n        assert reconstructed_raw.read_bytes().split(marker,1)[1].startswith(payload),'Native pre-checkpoint payload changed'\n        assert sha(OUT/'checkpoint-prefix.raw')==prefix_source['sha256']\n        assert sha(sparse.__file__)==result['sparse_prefix']['helper_sha256']\n        result['sparse_prefix']['after']=sparse_after",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_PHYSICAL845_MASKED_IFUNC_CHECKPOINT_BIT_EXACT_BOUNDED4NS_NOT_CROSS_JOB_OR_ACQUISITION",
+      "after": "PASS_NATIVE_PHYSICAL845_SPARSE_PREFIX_BIT_EXACT_BOUNDED4NS_NOT_CROSS_JOB_OR_ACQUISITION",
+      "count": 1
+    },
+    {
+      "before": "native_checkpoint_proven=True,original_bounded_trajectory_unchanged=True)",
+      "after": "native_checkpoint_proven=True,original_bounded_trajectory_unchanged=True,\n            native_same_host_sparse_resume_proven=True,cross_job_sparse_resume_proven=False,\n            original_full_column_reader_qualified=False)",
+      "count": 1
+    }
+  ],
+  "pins": {
+    ".github/workflows/native-sparse-prefix-checkpoint-cloud.yml": "57a90f11726411fa9f7311bc0b9688ea0e31c69e59878cec0b3310850644f8fd",
+    "scripts/check_native_sparse_prefix_checkpoint_sources.py": "b0faddd0f1fedf0964af8383fc790ea978e2cedc8c754784717f2268347f6f57",
+    "docs/evidence/native-sparse-prefix-fixtures-pass-20261022.json": "8402bc3f1b44735cb08992f6916dcb4e812c3d8b855da55cd1079c6a60a8aa1c",
+    "scripts/cloud_native_sparse_prefix_store.py": "aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14"
+  }
+}

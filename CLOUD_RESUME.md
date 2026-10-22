@@ -1,3 +1,11 @@
+## 2026-10-22: Sparse storage byte tests passed; bounded real-native checkpoint qualification launched
+
+- Storage fixture39712609867 at7b1080abc155958b956939c163bb29f1777b4319 passed on ext4 and compressedBtrfs. All16 corruptions rejected; exact bytes reconstructed. HelperSHA aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14.
+- New native-sparse-prefix-checkpoint-cloud uses unchanged original bounded4ns845-device/34-probe golden native comparison, then actual CRIU restore over sparse storage. Must pass bit-exact oracle and direct-sparse-file rejection. It does not resume the real1us checkpoint.
+- Real PLL still preserved at892.69ns. Require cross-host/Btrfs native restore, full5106-column reader equivalence and published logical archive reconstruction before adoption.
+- Existing live work remains CDR39709128571, mainchip39710297457, TX39711301866/39711311480. All cloud-only.
+
+
 ## 2026-10-22: Qualify lossless sparse-prefix storage without activating the PLL
 
 - Existing actual PLL checkpoint39674830790 remains unchanged at892.691247612412ns; no native resume was started on insufficient storage.
