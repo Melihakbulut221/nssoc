@@ -5803,3 +5803,12 @@ CDC source3416142696a509035b27f9fb4e28c9b740080624 passed cloud39886209079:217eq
 TXreturn32 failure-map workflow was added at955552371532c0a99ba0e68ba127495c20ad9007; locate its push run and require all original7fault controls before headroom diagnosis. Complete nominal TX39882244224 must not be restarted. Its full-gate rejection is preserved.
 
 Next digital target is the slow transmit_packet.index path. Current soc_pcie_lcrc_tx already selects each word's byte before its indexed8bit mux; avoid redoing that earlier optimization. The final flipped endpoint still needs its actual consumer/inverter binding to identify the RTL register. A registered one-hot word cursor may be worth testing only with full existing packet/CRC behavior and explicit sequential equivalence, not assumed faster from RTL form. Also retain current original-clock route11 baseline and compare fresh routed results before claiming timing closure.
+
+
+## 2026-10-23: Return32 failed-device map passed; full retained-wave headroom analysis
+
+Native map39887539396/source955552371532c0a99ba0e68ba127495c20ad9007 passed original7fault controls and all593parentHBT/31stage conductor-based identities.85actual failures are82selectors,2tails and1remainingparentHBT. Receipt: docs/evidence/tx-return32-failed-device-map-pass-20261023.json.
+
+New tx-power128return32-headroom-cloud restores only the already completed nominal34ns raw capture and contract on the hosted runner. It must reproduce every one of the604original HBT checks exactly and then report actualC/B/E/substrate/current extrema and stage-specific headroom. Only immutable source bindings changed from the earlier feed32 diagnostic; no SPICE activation, refitted sampling, altered thresholds or local wave download. Compare its full outcome with retained feed32 diagnosis before selecting any new clock-bias/device/physical change. Algebraic clock-shift intervals remain diagnostic only, not physical sensitivity proof.
+
+CDC localreset block remains verified but not remapped into live route11. Fullchip postroute closure and full serialPHY still open.
