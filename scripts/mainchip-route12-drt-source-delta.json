@@ -1,0 +1,91 @@
+{
+  "derivations": [
+    {
+      "baseline_path": "scripts/cloud_mainchip_repair_deep_drt.py",
+      "baseline_sha256": "13060f197d5e9f75368e9db1e104d7f30381e3ca4bfa4f9d10e7c4438a625fc5",
+      "candidate_path": "scripts/cloud_mainchip_route12_drt.py",
+      "candidate_sha256": "00ea591918771c60522a657e954b07b3a7d826dbb0b7fd70749aee49a3a81583",
+      "edits": [
+        {
+          "before": "mainchip-repair-deep-drt",
+          "after": "mainchip-route12-drt",
+          "count": 5
+        },
+        {
+          "before": "mainchip-repair-deep-global",
+          "after": "mainchip-route12-global",
+          "count": 2
+        },
+        {
+          "before": "mainchip-route12-global-pass-20261021",
+          "after": "mainchip-route12-global-pass-20261023",
+          "count": 1
+        },
+        {
+          "before": "3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030",
+          "after": "3c053c4cda51a001b926cce347b97de5c825cbff2082de550eeb9e31ff7fe5cd",
+          "count": 1
+        },
+        {
+          "before": "        assert global_report['fixed_clock']['original_physical_route_preserved']",
+          "after": "        assert global_report['fixed_clock']['original_physical_route_preserved']\n        assert global_report['all_clock_preservation']['all_source_clock_and_fixed_records_preserved'] and global_report['all_clock_preservation']['clock_or_fixed_nets']==1691",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_mainchip_repair_deep_drt_continuation.py",
+      "baseline_sha256": "d033e54252166ab930a50e5d3039bee45ac114d6f5088a8316fb4fd8652c5ffc",
+      "candidate_path": "scripts/cloud_mainchip_route12_drt_continuation.py",
+      "candidate_sha256": "08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee",
+      "edits": [
+        {
+          "before": "mainchip-repair-deep-drt",
+          "after": "mainchip-route12-drt",
+          "count": 11
+        },
+        {
+          "before": "mainchip-repair-deep-global",
+          "after": "mainchip-route12-global",
+          "count": 2
+        },
+        {
+          "before": "mainchip-route12-global-pass-20261021",
+          "after": "mainchip-route12-global-pass-20261023",
+          "count": 1
+        },
+        {
+          "before": "3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030",
+          "after": "3c053c4cda51a001b926cce347b97de5c825cbff2082de550eeb9e31ff7fe5cd",
+          "count": 2
+        },
+        {
+          "before": "        assert global_report['fixed_clock']['original_physical_route_preserved']",
+          "after": "        assert global_report['fixed_clock']['original_physical_route_preserved']\n        assert global_report['all_clock_preservation']['all_source_clock_and_fixed_records_preserved'] and global_report['all_clock_preservation']['clock_or_fixed_nets']==1691",
+          "count": 1
+        },
+        {
+          "before": "mainchip_repair_deep_drt_continuation",
+          "after": "mainchip_route12_drt_continuation",
+          "count": 1
+        },
+        {
+          "before": "13060f197d5e9f75368e9db1e104d7f30381e3ca4bfa4f9d10e7c4438a625fc5",
+          "after": "00ea591918771c60522a657e954b07b3a7d826dbb0b7fd70749aee49a3a81583",
+          "count": 1
+        },
+        {
+          "before": "6bf5a055467ffea2e4fb0059ffcac4293d939171b0e17af6e224aee13b41c00c",
+          "after": "2d3dfa6ed917fd0d06b20109f3044073f60bbe263f59d8f31ac4913e1a7a787a",
+          "count": 1
+        },
+        {
+          "before": "4b22365ef87d0c5880fe2e27732e6be19644f24cbcc2d309862a841b80721efb",
+          "after": "54ae78b49f70b05e007edc151c67c64a7eed4fd9a9ce0aed6d7898bb3286dcde",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Only candidate binding, namespace and stronger all-clock proof. Same actual native engine, DRT options, checkpoint lifecycle and original clock/STA requirements. No electrical or final timing acceptance."
+}
