@@ -37,15 +37,21 @@ def verify_resume_methods(report,current):
     if report['controller_sha256']==current[CONTROLLER]:
         assert report['method_hashes']==current,'Sparse method changed'
         return dict(mode='exact-current-RHI120-sparse',native_methods_unchanged=True)
-    assert report['controller_sha256']==m['baseline_method_hashes'][OLD],'Only qualified recovery may migrate'
-    assert report['method_hashes']==m['baseline_method_hashes']
+    # The exact original initial method map is admitted only by source_gate's
+    # audited terminal-publication fallback, never as a live-progress fork.
     proof=baseline.verify_resume_methods(report,m['baseline_method_hashes'])
     return dict(mode='explicit-RHI120-lossless-sparse-storage-only-migration',baseline=proof,
         native_methods_unchanged=True,original_all_columns_solver_loads_duration_and_gates_unchanged=True)
 def source_gate(run,spec,report):
     assert set(spec)=={'run','attempt','stage','summary_sha256','parts_sha256'}
     assert str(spec['run']).isdigit()and str(spec['attempt'])=='1'
-    assert spec['stage']in ('recovery','sparse'),'Never reuse failed initial after recovery started'
+    assert spec['stage']in ('initial','recovery','sparse')
+    if spec['stage']=='initial':
+        assert spec==baseline.INITIAL_SPEC,'Only the last verified durable initial capsule may recover'
+        original=baseline.source_gate(run,spec,report)
+        proof,_=fallback_authorization()
+        return dict(original,terminal_publication_fallback=proof,
+            cold_start_allowed=False,failed_newer_run_preserved=True)
     assert run['id']==int(spec['run'])and run['id']>=39941648965
     assert run['run_attempt']==1 and run['status']=='completed'and run['conclusion']=='success'
     assert run['head_branch']=='codex/complete-open-work'
@@ -60,6 +66,79 @@ def source_gate(run,spec,report):
     assert int(spec['run'])!=int(os.environ.get('GITHUB_RUN_ID','0'))
     return dict(original_run=39925042125,original_failure_preserved=True,
         previous_successful_recovery_run=spec['run'],no_live_source_or_initial_replay=True)
+def fallback_gate(run,job,annotations,artifacts,release_exists):
+    assert run['id']==39941648965 and run['run_attempt']==1
+    assert run['status']=='completed'and run['conclusion']=='cancelled'
+    assert run['head_sha']=='d171e9d4f886b7cdb92ae1f152f70f8133aa4177'
+    assert run['head_branch']=='codex/complete-open-work'
+    assert run['path']=='.github/workflows/pll-rhi120-c8-native-recovery-cloud.yml'
+    assert job['id']==120374455456 and job['status']=='completed'and job['conclusion']=='cancelled'
+    assert any(a['annotation_level']=='failure'and a['message']=='The job has exceeded the maximum execution time of 3h0m0s'for a in annotations)
+    native=next(s for s in job['steps']if s['name']=='Recover only the audited saved RHI120 process with exact qualified tables')
+    publication=next(s for s in job['steps']if s['name']=='Preserve every native byte and checkpoint including failed evidence')
+    assert native['status']=='completed'and native['conclusion']=='success'
+    assert publication['conclusion']!='success'
+    assert artifacts['total_count']==0 and artifacts['artifacts']==[]and release_exists is False
+    return dict(run=39941648965,job=120374455456,terminal_publication_timeout=True,
+        no_published_capsule_available=True,no_native_electrical_failure_inferred=True)
+def fallback_authorization():
+    repo='repos/Melihakbulut221/nssoc/'
+    api=lambda p:json.loads(subprocess.check_output(['gh','api',repo+p]))
+    run=api('actions/runs/39941648965');job=api('actions/jobs/120374455456')
+    annotations=api('check-runs/120374455456/annotations')
+    artifacts=api('actions/runs/39941648965/artifacts')
+    release=subprocess.run(['gh','api',repo+'releases/tags/cloud-results-39941648965-1-pll-rhi120-c8-native-recovery'],capture_output=True,text=True)
+    if release.returncode:
+        body=json.loads(release.stdout)
+        assert str(body.get('status'))=='404'and body.get('message')=='Not Found','Uncertain release access is not absence'
+        release_exists=False
+    else:release_exists=True
+    proof=fallback_gate(run,job,annotations,artifacts,release_exists)
+    owner=int(os.environ['GITHUB_RUN_ID'])
+    inspected=[]
+    for workflow in ('initial','recovery','sparse'):
+        page=1
+        while True:
+            rows=api('actions/workflows/pll-rhi120-c8-native-'+workflow+'-cloud.yml/runs?event=workflow_dispatch&per_page=100&page='+str(page))['workflow_runs']
+            if not rows:break
+            for other in rows:
+                if other['created_at']<run['created_at']:continue
+                inspected.append(dict(run=other['id'],event=other['event'],status=other['status'],conclusion=other['conclusion']))
+                assert other['id']in (owner,39941648965),'Another native attempt exists; inspect its capsule instead of replaying initial'
+            page+=1
+    proof['checked_later_dispatches']=inspected
+    return proof,dict(run=run,job=job,annotations=annotations,artifacts=artifacts,release_exists=release_exists)
+def fallback_controls():
+    proof,audit=fallback_authorization()
+    rejected=[]
+    for label in ('live-run','other-run','wrong-head','live-job','wrong-job','other-timeout','artifact-available','release-available','failed-native','publication-passed','missing-publication-step'):
+        bad=copy.deepcopy(audit)
+        if label=='live-run':bad['run']['status']='in_progress'
+        elif label=='other-run':bad['run']['id']=39941648966
+        elif label=='wrong-head':bad['run']['head_sha']='a'*40
+        elif label=='live-job':bad['job']['status']='in_progress'
+        elif label=='wrong-job':bad['job']['id']=120374455457
+        elif label=='other-timeout':bad['annotations']=[]
+        elif label=='artifact-available':bad['artifacts']=dict(total_count=1,artifacts=[{'id':1}])
+        elif label=='release-available':bad['release_exists']=True
+        elif label=='failed-native':next(s for s in bad['job']['steps']if s['name'].startswith('Recover only'))['conclusion']='failure'
+        elif label=='publication-passed':next(s for s in bad['job']['steps']if s['name'].startswith('Preserve every'))['conclusion']='success'
+        else:bad['job']['steps']=[s for s in bad['job']['steps']if not s['name'].startswith('Preserve every')]
+        try:fallback_gate(**bad)
+        except (AssertionError,StopIteration):rejected.append(label)
+        else:raise AssertionError('Invalid fallback accepted: '+label)
+    raw=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/releases/assets/668715744','-H','Accept: application/octet-stream'])
+    assert hashlib.sha256(raw).hexdigest()==baseline.INITIAL_SPEC['summary_sha256']
+    prior=json.loads(raw)
+    run=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/39925042125']))
+    assert source_gate(run,baseline.INITIAL_SPEC,prior)['terminal_publication_fallback']
+    _,current=source_contract()
+    assert verify_resume_methods(prior,current)['baseline']['mode']=='exact-failed-RHI120-initial-with-qualified-table-reader'
+    assert len(rejected)==11
+    return dict(actual_terminal_failure=proof,rejected=rejected,
+        actual_initial_method_identity_verified=True,native_process_activated=False,
+        scope='Exact last durable native checkpoint fallback after audited terminal publication timeout only')
+
 def qualification():
     api=lambda p:json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+p]))
     run=api('actions/runs/39954614699')
@@ -135,7 +214,7 @@ def controls():
         fixture=storage.sparse.controls(Path(temp)/'fixtures')
     assert len(rejected)==22
     from publish_pll_rhi120_c8_sparse_checkpoint import controls as publish_controls
-    return dict(qualification=qualification(),source_and_reserve_rejections=rejected,storage_fixture=fixture,
+    return dict(qualification=qualification(),terminal_publication_fallback=fallback_controls(),source_and_reserve_rejections=rejected,storage_fixture=fixture,
         publication=publish_controls(),baseline_resume=baseline.resume_controls(),
         native_activation_performed=False,full_capture_accepted=False)
 if __name__=='__main__':

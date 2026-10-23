@@ -52,3 +52,29 @@ The complete28,619-byte controls log has SHA256
 Receipt: docs/evidence/pll-rhi120-c8-sparse-resume-controls-20261023.json.
 This qualifies controls only; actual sparse native continuation remains pending
 the latest completed recovery checkpoint and a separate successful native run.
+
+
+## Exact fallback after the terminal publication timeout
+
+Recovery39941648965 completed its native step successfully, then was cancelled
+while archiving. GitHub's authoritative failure annotation says the job exceeded
+3h0m0s. The run has zero artifacts and no release. The native step's green state
+does not prove a durable new checkpoint or a recoverable new numerical position.
+
+The last verified durable native process remains39925042125 at193.792810ns.
+An explicit exception restores that exact checkpoint after the terminal loss,
+using the already qualified exact transient/OP column reader and lossless sparse
+storage. This is not a cold start at time zero and does not claim the lost
+recovery's unpublished progress. Both historical failures remain recorded.
+
+The exception binds the cancelled run, job, head, exact timeout annotation,
+successful native step, unfinished publication, missing artifacts/release and
+absence of any other later native dispatch. A live source, another cause,
+available newer evidence or a second native attempt rejects this exception.
+Eleven added controls test these cases. Actual original method-map identity is
+also checked. Controls must pass before the single fallback dispatch.
+
+The new workflow has a six-hour host envelope and streams each ordinary logical
+archive part directly to durable release storage. It does not reserve or wait
+for a second whole compressed archive. The same original1us trajectory,
+all5106columns, solver, stimuli, loads and electrical gates remain mandatory.

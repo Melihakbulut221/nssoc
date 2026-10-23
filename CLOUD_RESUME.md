@@ -6319,3 +6319,19 @@ Latest PLL39941648965 observation: still in_progress in publication with no
 release yet visible. An elapsed observation/job budget is not terminal evidence.
 Recheck the same run; do not fork or restart it. Sparse continuation controls
 are ready, but dispatch requires a completed valid saved source archive.
+
+
+## 2026-10-23 PLL publication failure is terminal; exact durable fallback prepared
+
+39941648965 is now completed/cancelled. Its native step succeeded; publication
+did not complete. GitHub confirms the3h0m0s execution timeout. No release or
+artifact exists. Job logs were unavailable via API; do not invent numerical
+progress or a completed checkpoint for this lost runner.
+
+The last durable process is39925042125 at193.792810ns. Sparse continuation now
+has a strictly scoped fallback for this exact terminal publication loss, checked
+against live API metadata plus11 rejection controls. It rejects any other later
+native dispatch. Wait for updated controls, then dispatch once from INITIAL_SPEC
+to the sparse workflow. This resumes the saved native process, not time zero.
+Receipt: docs/evidence/pll-rhi120-c8-recovery-publication-timeout-20261023.json.
+Keep the original failed initial and the cancelled recovery visible.

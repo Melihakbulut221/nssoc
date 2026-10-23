@@ -36,8 +36,8 @@
     "scripts/pll_rhi120_c8_native_columns.py": "7b7ae4c25ab5219444537f1cd48f27a9248a807c1bb38ad409efe90bcb2b7b30",
     "scripts/read_pll_rhi120_c8_all_native.py": "2d776f89979c9d91ed928f9f9dd83df618380681ae8f6f36e3c54551a69d0d5e",
     "docs/evidence/pll-rhi120-c8-column-qualification-pass-20261023.json": "f4be137c61b3021958374fa43e0ddaadff42564d450a30212dbab6f6b013b165",
-    "scripts/cloud_pll_rhi120_c8_sparse.py": "fc9fb740a23343f4a1623325de34adcfafee97909481d88725de3e2d44fafd68",
-    "scripts/cloud_pll_rhi120_c8_sparse_resume.py": "6caae2d4195a1077af03e160247df731fc44dfafedbe01bd72d6cefa6e8c4cec",
+    "scripts/cloud_pll_rhi120_c8_sparse.py": "c23470a3eaa62e09ce838c3892ac9dabf2693e6669d0298c65c2762bb6e34924",
+    "scripts/cloud_pll_rhi120_c8_sparse_resume.py": "35f42dde69b1769ee9a670a66bd7730ced40a1f89cf38f42358af150ff08249c",
     "scripts/publish_pll_rhi120_c8_sparse_checkpoint.py": "0e74747ed19f8559d8e574fa9f27df95a3824c5f259d6edd8609e8edaf9eea29",
     "scripts/check_pll_rhi120_c8_sparse_resume_sources.py": "b5e13c126049b8c2881a164315b97f049a02b3e43ec5a233a802d378ee08e5d7",
     ".github/workflows/pll-rhi120-c8-native-sparse-cloud.yml": "58e281e133ef8335fbfa86d186e56d6225099d51bfd927d3cbc028df06ca2bd9",
@@ -56,7 +56,8 @@
     "scripts/publish_pll845_sparse_checkpoint.py": "65fcdf5f9c1e48552cf3922ec2a1716189e48a1fb788a4152a9e77b9d2ade5e9",
     "scripts/cloud_pll845_compressed_disk.py": "19b4b2d593d4f0d3bf525d50fec580b6db9f8088e57722f6654eebc25940d058",
     "scripts/check_pll_rhi120_c8_sparse_sources.py": "d15b5ceaabaf5b9ba81a439bf13f64612726f5d1031daf83b78508969f2b7199",
-    "scripts/pll-rhi120-c8-sparse-storage-delta.json": "350f0103285e16bf68df49b66f3c7bbb725dcb9999566ab3bb93d3169cddf75e"
+    "scripts/pll-rhi120-c8-sparse-storage-delta.json": "350f0103285e16bf68df49b66f3c7bbb725dcb9999566ab3bb93d3169cddf75e",
+    "docs/evidence/pll-rhi120-c8-recovery-publication-timeout-20261023.json": "6e687380d030e4d93282d134c25610294cda06a4f2545c8466471b85bb93c1c8"
   },
   "added_methods": [
     "scripts/cloud_pll_rhi120_c8_sparse_resume.py",
@@ -70,7 +71,8 @@
     "scripts/migrate_outputs_to_cloud.py",
     "scripts/route_cloud_newer_postcts.py",
     "scripts/read_opensta_phase_slacks.py",
-    "docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json"
+    "docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json",
+    "docs/evidence/pll-rhi120-c8-recovery-publication-timeout-20261023.json"
   ],
   "edits": [
     {
@@ -167,6 +169,21 @@
       "before": "p.add_argument('--stage',choices=['initial','recovery'])",
       "after": "p.add_argument('--stage',choices=['sparse'])",
       "count": 1
+    },
+    {
+      "before": "spec['stage']in ('recovery','sparse')",
+      "after": "spec['stage']in ('initial','recovery','sparse')",
+      "count": 1
+    },
+    {
+      "before": "assert run['path']in('.github/workflows/pll-rhi120-c8-native-recovery-cloud.yml','.github/workflows/pll-rhi120-c8-native-sparse-cloud.yml')",
+      "after": "assert run['path']in('.github/workflows/pll-rhi120-c8-native-initial-cloud.yml','.github/workflows/pll-rhi120-c8-native-recovery-cloud.yml','.github/workflows/pll-rhi120-c8-native-sparse-cloud.yml')",
+      "count": 1
+    },
+    {
+      "before": "EXTRA_METHODS=['scripts/pll_rhi120_c8_native_columns.py', 'scripts/read_pll_rhi120_c8_all_native.py', 'docs/evidence/pll-rhi120-c8-column-qualification-pass-20261023.json', 'scripts/cloud_pll_rhi120_c8_sparse_resume.py', 'scripts/cloud_pll_rhi120_c8_sparse_io.py', 'scripts/cloud_streamed_native_archive.py', 'scripts/cloud_logical_native_archive.py', 'scripts/cloud_native_sparse_prefix_store.py', 'scripts/publish_pll_rhi120_c8_sparse_checkpoint.py', 'scripts/publish_pll845_compressed_checkpoint.py', 'scripts/publish_cloud_results.py', 'scripts/migrate_outputs_to_cloud.py', 'scripts/route_cloud_newer_postcts.py', 'scripts/read_opensta_phase_slacks.py', 'docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json']\n",
+      "after": "EXTRA_METHODS=['scripts/pll_rhi120_c8_native_columns.py', 'scripts/read_pll_rhi120_c8_all_native.py', 'docs/evidence/pll-rhi120-c8-column-qualification-pass-20261023.json', 'scripts/cloud_pll_rhi120_c8_sparse_resume.py', 'scripts/cloud_pll_rhi120_c8_sparse_io.py', 'scripts/cloud_streamed_native_archive.py', 'scripts/cloud_logical_native_archive.py', 'scripts/cloud_native_sparse_prefix_store.py', 'scripts/publish_pll_rhi120_c8_sparse_checkpoint.py', 'scripts/publish_pll845_compressed_checkpoint.py', 'scripts/publish_cloud_results.py', 'scripts/migrate_outputs_to_cloud.py', 'scripts/route_cloud_newer_postcts.py', 'scripts/read_opensta_phase_slacks.py', 'docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json']+['docs/evidence/pll-rhi120-c8-recovery-publication-timeout-20261023.json']\n",
+      "count": 1
     }
   ],
   "changed_functions": [
@@ -176,5 +193,5 @@
     "restore_source",
     "execute"
   ],
-  "scope": "Explicit storage/publication change only. No native activation on push. Original runtime, complete columns, duration, stimuli, physical source and gates preserved."
+  "scope": "Explicit storage/publication change only. No native activation on push. Original runtime, complete columns, duration, stimuli, physical source and gates preserved. Exact initial process fallback allowed only after pinned39941648965 terminal three-hour publication timeout with no artifacts/release and no other later native dispatch."
 }

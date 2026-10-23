@@ -241,7 +241,7 @@ def prepare():
 INITIAL_SPEC=dict(run=39925042125,attempt=1,stage='initial',
  summary_sha256='74033b131a40f5009565b1dd6e219f1b6748f555f750b1c715ebbc77ad93be8d',
  parts_sha256='bf1b8dcc19d1b8b31eb6934537f0efe728e7f8a6fd5060d1e1334d22627d436d')
-EXTRA_METHODS=['scripts/pll_rhi120_c8_native_columns.py', 'scripts/read_pll_rhi120_c8_all_native.py', 'docs/evidence/pll-rhi120-c8-column-qualification-pass-20261023.json', 'scripts/cloud_pll_rhi120_c8_sparse_resume.py', 'scripts/cloud_pll_rhi120_c8_sparse_io.py', 'scripts/cloud_streamed_native_archive.py', 'scripts/cloud_logical_native_archive.py', 'scripts/cloud_native_sparse_prefix_store.py', 'scripts/publish_pll_rhi120_c8_sparse_checkpoint.py', 'scripts/publish_pll845_compressed_checkpoint.py', 'scripts/publish_cloud_results.py', 'scripts/migrate_outputs_to_cloud.py', 'scripts/route_cloud_newer_postcts.py', 'scripts/read_opensta_phase_slacks.py', 'docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json']
+EXTRA_METHODS=['scripts/pll_rhi120_c8_native_columns.py', 'scripts/read_pll_rhi120_c8_all_native.py', 'docs/evidence/pll-rhi120-c8-column-qualification-pass-20261023.json', 'scripts/cloud_pll_rhi120_c8_sparse_resume.py', 'scripts/cloud_pll_rhi120_c8_sparse_io.py', 'scripts/cloud_streamed_native_archive.py', 'scripts/cloud_logical_native_archive.py', 'scripts/cloud_native_sparse_prefix_store.py', 'scripts/publish_pll_rhi120_c8_sparse_checkpoint.py', 'scripts/publish_pll845_compressed_checkpoint.py', 'scripts/publish_cloud_results.py', 'scripts/migrate_outputs_to_cloud.py', 'scripts/route_cloud_newer_postcts.py', 'scripts/read_opensta_phase_slacks.py', 'docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json']+['docs/evidence/pll-rhi120-c8-recovery-publication-timeout-20261023.json']
 def verify_resume_methods(report,current):
     return sparse_resume.verify_resume_methods(report,current)
 def source_gate(run,spec,report):
@@ -265,14 +265,14 @@ def resume_controls():
 
 def restore_source(spec):
     assert set(spec)=={'run','attempt','stage','summary_sha256','parts_sha256'}
-    assert str(spec['run']).isdigit()and str(spec['attempt']).isdigit()and spec['stage']in ('recovery','sparse')
+    assert str(spec['run']).isdigit()and str(spec['attempt']).isdigit()and spec['stage']in ('initial','recovery','sparse')
     assert all(re.fullmatch('[0-9a-f]{64}',spec[k])for k in ('summary_sha256','parts_sha256'))
     assert not OUT.exists()
     repository='repos/Melihakbulut221/nssoc/'
     run=json.loads(subprocess.check_output(['gh','api',repository+'actions/runs/'+str(spec['run'])]))
     assert run['status']=='completed','Do not fork a live native process'
     assert run['run_attempt']==int(spec['attempt'])==1 and str(run['id'])!=os.environ['GITHUB_RUN_ID']
-    assert run['path']in('.github/workflows/pll-rhi120-c8-native-recovery-cloud.yml','.github/workflows/pll-rhi120-c8-native-sparse-cloud.yml')
+    assert run['path']in('.github/workflows/pll-rhi120-c8-native-initial-cloud.yml','.github/workflows/pll-rhi120-c8-native-recovery-cloud.yml','.github/workflows/pll-rhi120-c8-native-sparse-cloud.yml')
     assert run['head_branch']=='codex/complete-open-work'
     staging=ROOT/'cloud-pll-native-restore';staging.mkdir(exist_ok=False)
     group='pll-rhi120-c8-native-'+spec['stage'];stem=f"{group}-{spec['run']}-{spec['attempt']}"
