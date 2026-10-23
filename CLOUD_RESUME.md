@@ -5893,3 +5893,10 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - New return64-precision-cloud checks both native capacitor enumeration orders and original13controls each, without changing any R/C record. After pass, compose fresh intrinsic+preciseRC, prepare and run full original electrical captures.
 - Native timing reader39901679268 passed18paths. Actual slow-path loads: baseline LCRC byte_index115; combined fullpacket byte_index180 and following controls108/153. Retain all setup/hold regressions; canonical CRC/LCRC unchanged. Matched physical buffering/sizing is the next timing investigation, not another standalone-only logic win.
 - Route12 39896983175 still active at last check; do not restart. Full serialPHY and original-clock routed timing remain open.
+
+## 2026-10-23: mainchip route12 actually finished; final native route DRC zero
+- Route12 39896983175 finished the original saved native process. route_complete=true; final completed DRT violation count0 after sequence5704,194,8,4,4,4,0. All earlier regressions retained; single entrypoint and unchanged sources verified.
+- Routed ODB8becfa04b073ed577014f8fb157ae89dd7f824efe16fb7b092348175192fee1a; exact netlist3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030.
+- Dispatched mainchip-repair-deep-postroute-cloud ONCE fromhead505cb0f89c61d3276856ab8f095dc5e0c1fc5a0f using exact completed route summary3a52d93756a23249e720315321b5a433525f707b56ae662e7466fac1bed8e2fc/parts95b6b8dd2c7aae30ebfc5a0ac826f91b1e6392ba24be66b4615b1045ca042dc8 and original postroute-input package39635867954. Recover runID by exacthead/workflow/event before any further dispatch.
+- This postroute run must check geometry/topology, antenna, disconnected pins, fresh RC and original20/4/8/8ns setup/hold at3corners. Native DRT0 is not full foundry DRC/LVS, full serialPHY integration or final timing closure.
+- Return64 precision39903139948 is live athead505cb0f89c61d3276856ab8f095dc5e0c1fc5a0f. After pass, continue composition/preparation/fullwaves; no electrical acceptance yet.
