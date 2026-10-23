@@ -7183,3 +7183,17 @@ Wire40039563443 passed all18native devices50terminals,9wire components,40physica
 This commit triggers independent v51-rc-cloud and v51-binding-cloud once. Native strict graph/value/ownership/14faults and exact18model50terminal/9faults unchanged. Discover runs; no oldRC reuse. After both pass inspect actual counts and native port order before composing and running all five unchanged full34.25ns loaded cases.
 
 Previous goal turn made measured physical/electrical progress, not a blocker. Mainchip40031170989,TX40039365864/40039368788 andPLL40001626503 revalidated live at this turn start. Full serialPHY/mainchiproute/setuphold objective remains unfulfilled. All work stays cloud-only per latest direct user instruction.
+
+
+## 2026-10-24 v51 RC fault-stimulus repair; cloud-only remains mandatory
+Local workspace verified empty and no local CAD/simulation process. Mainchip40031170989,
+TX40039365864/40039368788, PLL40001626503 still running; never duplicate them.
+v51 binding40039973486 passed18native devices and9controls; actual port order
+sub,ip,inn,avdd,on,op,avss,iref. RC40039973573 extracted181R/173C and passed the
+strict raw topology/value/attachment audit, but its mutation generator incorrectly
+required the whole new via-array graph to be a forest. Failure retained.
+Fix constrains only the actual two-node P_ip/T004_B input component and explicitly
+requires that edge to be a native bridge; global9components and exact raw auditing
+remain. All14corruptions still required. Workflow-only trigger runs in GitHub.
+Next: collect corrected RC receipt; compose181R/173C with actual binding port order,
+then run all5 original full-wave cases. No electrical/PHY acceptance inferred.
