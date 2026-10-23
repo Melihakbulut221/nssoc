@@ -6086,3 +6086,10 @@ Comparison39931950389 stopped before reading evidence: GH_TOKEN was absent in co
 ## 2026-10-23 cloud-only comparison raw-log transport
 
 Comparison 39932962492 failed at gh API log transport after all 870 source blobs matched. Preserve its release evidence. Capture the completed original log with explicit --allow-escape-sequences; no terminal rendering, no validator/native/electrical gate changes. Retry via workflow push only. Live route 39932664501, PLL 39925042125, TX 39922149686/39922153568, CDR 39928714596 remain untouched. Local project directory confirmed empty.
+
+
+## 2026-10-23 — guarded CDR source preflight independently matched
+
+Comparison39933826243 passed at77425eff8f2e72c9c12e59ee123fceb4d683d2b9. All870 input Git blobs identical to originalv41; all123 distinct validators executed, original success markers matched; all3 actual corruption controls rejected. Observed fresh guarded preflight1.9408s versus original source step460s (separate hosted jobs; original step also includes adaptation). Eligible only for fresh-process read-only source validation, never native/physical/electrical result caching. Livev41 remains unchanged. Preserve failed transport runs39931950389/39932962492. Exact receipt docs/evidence/cdr-source-validation-comparison-pass-20261023.json.
+
+Cloud-only execution persists; local workspace remains empty and no local CAD processes run. PLL39925042125 is publishing its first exact checkpoint; verify terminal status and release hashes before dispatching prepared continuation, never rerun initial. Mainchip39932664501 exact continuation remains live. TX39922149686/39922153568 and CDR39928714596 remain live. Full serialPHY, routed integration and timing are not closed.
