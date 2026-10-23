@@ -7077,3 +7077,9 @@ Composition40029826867 passed18native devices+53R+93C and14negative controls. Fu
 Detailed route40011725403 saved the same active native process after progress3007->334violations in completed iterations. Partial iteration16 is not a completed result. Exact continuation descriptor is next_source_checkpoint in docs/evidence/mainchip-route12-drt-334-checkpoint-20261024.json. Dispatch one7200second continuation after this commit; inspect workflow history before any retry and never duplicate/cold-start the route. Route/STA/signoff remain incomplete.
 
 At handoff verification, TX40024570662 and40024574047, PLL40001626503 are still in_progress; retain those jobs. Computer shutdown does not stop GitHub-hosted running jobs. Consume their durable terminal receipts before continuation; a green saved-checkpoint run is not full native completion.
+
+## 2026-10-24 actual v49 loaded extracted leaf screen
+
+This commit adds cdr-active-levelshift-v49-extracted-cloud.yml. Push auto-triggers exactly once; discover its run before any retry. Native physical composition40029826867 is pinned. All18devices53R93C, actual finite contacts and internal wire nodes are kept. Full original34.25ns/256bit five cases and all safety/commonmode/timing gates remain unchanged; actual tail device names are derived from native36um MOS records.
+
+Do not use pre-layout pass as evidence for this result. Inspect all five terminal cloud summaries and full captures. The hot-low schematic common-mode margin was only3.955mV, so physical supply/return losses may fail. Preserve the first actual failure and address geometry/topology from measured evidence, never loosen gates. Next actual C/D parent integration must avoid double XREF and regenerate geometry and complete physical extraction. Route40031170989,TX40024570662/40024574047 andPLL40001626503 were revalidated live before this implementation. Local project remains empty.
