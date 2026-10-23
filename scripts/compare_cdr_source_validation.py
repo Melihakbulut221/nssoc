@@ -44,7 +44,7 @@ def main():
         trees=[{x['path']:x['sha']for x in t['tree']if x['type']=='blob'}for t in (oldtree,fasttree)]
         for path in positive['protected_read_files']:
             assert path in trees[0]and trees[0][path]==trees[1][path],('Original input differs',path)
-        oldlog=subprocess.check_output(['gh','api',REPO+'actions/jobs/120331387449/logs'])
+        oldlog=subprocess.check_output(['gh','api',REPO+'actions/jobs/120331387449/logs','--allow-escape-sequences'])
         def markers(log):
             rows=[]
             for line in log.decode().splitlines():

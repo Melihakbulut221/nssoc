@@ -6081,3 +6081,8 @@ PLL39925042125 full1us capture,TX39922149686/39922153568 and4CDRv41native jobs39
 
 ## 2026-10-23 — comparison authentication plumbing corrected
 Comparison39931950389 stopped before reading evidence: GH_TOKEN was absent in comparison step, although publication already had it. Fixed only workflow token injection. Failure retained in cdr-source-validation-comparison-auth-failure-20261023.json; no validation threshold/source/native process changed. Push starts one read-only comparison retry. Mainchip exact checkpoint continuation39932664501 queued; do not duplicate.
+
+
+## 2026-10-23 cloud-only comparison raw-log transport
+
+Comparison 39932962492 failed at gh API log transport after all 870 source blobs matched. Preserve its release evidence. Capture the completed original log with explicit --allow-escape-sequences; no terminal rendering, no validator/native/electrical gate changes. Retry via workflow push only. Live route 39932664501, PLL 39925042125, TX 39922149686/39922153568, CDR 39928714596 remain untouched. Local project directory confirmed empty.
