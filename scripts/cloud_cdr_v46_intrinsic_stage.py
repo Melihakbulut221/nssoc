@@ -10,7 +10,7 @@ def api(p):
     return json.loads(subprocess.check_output(['gh','api',REPO+p]))
 def sha(b):return hashlib.sha256(b).hexdigest()
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--variant',choices=['cd_slave_hold3','cd_slave_data3_hold3'],required=True);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--case',required=True);p.add_argument('--variant',choices=['cd_slave_hold5','cd_slave_data5_hold5'],required=True);args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     preflights=[]
     def check():

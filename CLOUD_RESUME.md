@@ -6648,3 +6648,14 @@ prepared full deck, complete normal/fault native captures, all-device gates.
 CDR v46 run39997418576 passed source/syntax controls and four full-capture
 cases are live. Mainchip39991475218 and PLL39967627133 remain live; never
 duplicate/restart them on observation timeouts. Local workspace remains empty.
+
+
+## CDR v46 source-area guard rejected initial recipe; corrected before simulation
+
+39997418576 produced no native wave: actual slave devices are parentNx6,
+where the first recipe incorrectly assumed4. Failure evidence is preserved.
+The new pushed workflow uses only source-verified Nx6->5 hold-only or data+hold
+candidates. Selected devices overlap the parent's declared Nx4->6 changes,
+so the complete original contract is restored through the same84 declared
+changes rather than falsely counting extra devices. Original controls and
+current/voltage/data/phase gates remain unchanged.

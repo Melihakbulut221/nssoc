@@ -167,7 +167,7 @@ def binding_controls(text,contract,planes):
     return dict(equivalent_unit_spellings=2,rejected=rejected)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--case',choices=['nominal_early','nominal_late'],required=True);p.add_argument('--variant',choices=['cd_slave_hold3','cd_slave_data3_hold3'],required=True);args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--case',choices=['nominal_early','nominal_late'],required=True);p.add_argument('--variant',choices=['cd_slave_hold5','cd_slave_data5_hold5'],required=True);args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     out=ROOT/('cloud-cdr-v46-intrinsic-screen-'+args.variant+'-'+args.case);out.mkdir(exist_ok=False);reports.OUT=out
     corner='hot_low'if args.case.startswith('hot_')else'cold_high'if args.case.startswith('cold_')else'nominal'

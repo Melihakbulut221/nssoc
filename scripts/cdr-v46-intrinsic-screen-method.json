@@ -4,13 +4,13 @@
       "baseline": "scripts/cloud_cdr_v45_intrinsic_screen.py",
       "baseline_sha256": "ac9de86716a0756afe3c24145e2d7d9cad8aea2ab02dce52cc0947535245b0dc",
       "candidate": "scripts/cloud_cdr_v46_intrinsic_screen.py",
-      "candidate_sha256": "0759245ba800d3c5835b9d68d5c06a086c591deb57c689882315c8af2e8e6bea"
+      "candidate_sha256": "ca81617768eef0b46cb5355f28becd78b3915dc587517387c4adea1c171952c9"
     },
     "stage": {
       "baseline": "scripts/cloud_cdr_v45_intrinsic_stage.py",
       "baseline_sha256": "ccedf1cacf9b61fff8bd2a1e3a0dad86f3cbf97a5f9ff29cb2c559cd26ab725a",
       "candidate": "scripts/cloud_cdr_v46_intrinsic_stage.py",
-      "candidate_sha256": "6f6161fba8ac4cc130edbba37ecd67d235f9aaa9d68e6d07b82108c03fce485c"
+      "candidate_sha256": "45e79f3a8c277c180f6515e442038c4b9002b36a36040d1bd00a7d6a10ce5507"
     }
   },
   "edits": [
@@ -23,7 +23,7 @@
     {
       "target": "screen",
       "before": "['cd_master_data3','cd_master_data3_hold3']",
-      "after": "['cd_slave_hold3','cd_slave_data3_hold3']",
+      "after": "['cd_slave_hold5','cd_slave_data5_hold5']",
       "count": 1
     },
     {
@@ -35,7 +35,7 @@
     {
       "target": "stage",
       "before": "['cd_master_data3','cd_master_data3_hold3']",
-      "after": "['cd_slave_hold3','cd_slave_data3_hold3']",
+      "after": "['cd_slave_hold5','cd_slave_data5_hold5']",
       "count": 1
     }
   ],
@@ -111,7 +111,7 @@
     "scripts/cloud_cdr_v45_intrinsic_mutator.py": "a565f0df98061bbfc7a1855d214283aca9dc8d2fb116787fc2be39787488102e",
     "scripts/check_cdr_v45_intrinsic_screen_sources.py": "639099aa01c82e829566fe8ca99c3b49bd4a180a5ec66c0a9e67e44960b4864e",
     ".github/workflows/cdr-v45-intrinsic-screen-cloud.yml": "85069850ea223f9413cb28bc290f7ca2ff190b25e7b953f84febcb032c3c9941",
-    "scripts/cloud_cdr_v46_intrinsic_mutator.py": "e26017a2506153ab99b4e21633f8ed570967fa8c3b75a252c79518a0eb02c8fd"
+    "scripts/cloud_cdr_v46_intrinsic_mutator.py": "90eaa9b462ea39835358ffd79b029c831ddbe39810f15cd8a3944b393eb7c37e"
   },
-  "scope": "Only C/D slave hold Nx4->3 or data+hold Nx4->3 on exact v44l39 parent. Source-bound measured stage separation and both-phase current density precede full original gates. No circuit/source/load/window changes outside selected intrinsic primitives; frozen RC cannot qualify layout."
+  "scope": "Only C/D slave hold Nx6->5 or data+hold Nx6->5 on exact v44l39 parent. Source-bound measured stage separation and both-phase current density precede full original gates. No circuit/source/load/window changes outside selected intrinsic primitives; frozen RC cannot qualify layout. Actual l39 parent declared these selected slave devices Nx4->6; candidate updates that same declared subset. All84 original-to-candidate changes reconstruct the original contract exactly."
 }

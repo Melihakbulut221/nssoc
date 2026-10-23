@@ -13,7 +13,7 @@ resistance or current therefore consumes little available voltage margin.
 The master-area reduction v45 worsened timing and stays rejected.
 
 Two finite candidates target the actually late stage: four C/D slave hold
-HBTs Nx4->3, or those four plus four slave data HBTs Nx4->3. The parent l39
+HBTs Nx6->5, or those four plus four slave data HBTs Nx6->5. The parent l39
 master circuitry and every selector/follower/load/bias remain unchanged.
 The parent maximum current per proposed emitter is checked independently in
 both measured phases against the original3mA gate before simulation.
@@ -25,3 +25,18 @@ The same original256-bit/34.25ns,1104-column capture, actual8GHz10ohm clocks,
 No gate, window, waveform or extracted R/C card is relaxed or edited.
 No candidate is promoted without the original full gates. Any promising
 intrinsic result still requires actual new geometry, DRC/LVS and fresh RC.
+
+
+## Rejected source assumption and corrected exact parent
+
+Initial run39997418576 stopped before native simulation: selected slave devices
+are Nx6 in the actual l39 parent, not the assumed Nx4. The exact-area guard
+caught this. All four failures remain archived and no waveform is claimed.
+
+The corrected finite recipe is Nx6->5. The parent itself declared these eight
+possible devices as originalNx4->parentNx6; the candidate modifies only that
+declared subset and still reconstructs all84 original-to-candidate edits.
+Both measured parent phases have peak total current at most about11.011mA,
+corresponding to2.203mA per proposed emitter at fixed parent current, below the
+original3mA gate. This is justification for a simulation, not predicted safety.
+All full native all-device and data/phase gates remain mandatory.

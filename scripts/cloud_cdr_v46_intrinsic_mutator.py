@@ -7,28 +7,28 @@ import build_pcie_local_vco_hybrid_v6 as parser
 import cloud_cdr_v44_intrinsic_mutator as previous
 from cloud_cdr_v43_intrinsic_mutator import clock_response
 from run_cloud_tx_layout_repair import sha
-VARIANTS={'cd_slave_hold3':False,'cd_slave_data3_hold3':True}
+VARIANTS={'cd_slave_hold5':False,'cd_slave_data5_hold5':True}
 DIAG_ASSET=669833963
 DIAG_SHA='cbe2e04bebd90b7aa984940700aa754afe306ca94d1a1186d9a3ba2cba747c58'
 PARENTS=[('nominal_early',669073404,'bec2ab47a567f0a6ff2f8a0e403c179e8eeb2952388dcef28906693b8846f82a'),('nominal_late',669064409,'95f13c2d46aaa09c59e5233e43d5bfc245e8986333df952ef1aff727cbcfdcb8')]
 def resized(params,nx):
-    assert nx=='3'
-    assert parser.number(params['nx'])==4
+    assert nx=='5'
+    assert parser.number(params['nx'])==6
     assert parser.number(params['we'])==Decimal('0.070e-6')and parser.number(params['le'])==Decimal('0.900e-6')
     result=copy.deepcopy(params);result['nx']=nx
     assert {k:v for k,v in result.items()if k!='nx'}=={k:v for k,v in params.items()if k!='nx'}
     return result
 def controls():
-    p=dict(nx='4',we='0.070u',le='0.900u')
-    assert resized(p,'3')==dict(p,nx='3')
+    p=dict(nx='6',we='0.070u',le='0.900u')
+    assert resized(p,'5')==dict(p,nx='5')
     rejected=[]
-    for label,params,nx in [('wrong-parent-nx',dict(p,nx='2'),'3'),('wrong-width',dict(p,we='0.14u'),'3'),
-      ('wrong-length',dict(p,le='1.8u'),'3'),('outside-recipe',p,'2')]:
+    for label,params,nx in [('wrong-parent-nx',dict(p,nx='2'),'5'),('wrong-width',dict(p,we='0.14u'),'5'),
+      ('wrong-length',dict(p,le='1.8u'),'5'),('outside-recipe',p,'2')]:
         try:resized(params,nx)
         except AssertionError:rejected.append(label)
         else:raise AssertionError('Undeclared HBT area accepted: '+label)
     return dict(rejected=rejected,only_cd_slave_hold_or_data_hold_nx=True,
-        original_parameters_unchanged=p==dict(nx='4',we='0.070u',le='0.900u'))
+        original_parameters_unchanged=p==dict(nx='6',we='0.070u',le='0.900u'))
 def selection(records,planes,diag,variant):
     assert variant in VARIANTS
     edits={};roles={}
@@ -48,14 +48,14 @@ def selection(records,planes,diag,variant):
                 assert {'C','B','E'}.issubset(terminals)and len(terminals)==4 and terminals['C']in outputs
                 emitter_groups.add(terminals['E'])
                 assert name not in edits
-                edits[name]=resized(r['parameters'],'3')
-                roles[name]=dict(stage=tag,latch='slave',role=role,parent_nx=4,candidate_nx=3)
+                edits[name]=resized(r['parameters'],'5')
+                roles[name]=dict(stage=tag,latch='slave',role=role,parent_nx=6,candidate_nx=5)
             assert len(emitter_groups)==1
     assert len(edits)==(8 if VARIANTS[variant]else 4)
     return edits,roles
 def graph_controls(records,planes,diag):
     for variant in VARIANTS:selection(records,planes,diag,variant)
-    selected,_=selection(records,planes,diag,'cd_slave_data3_hold3');name=next(iter(selected))
+    selected,_=selection(records,planes,diag,'cd_slave_data5_hold5');name=next(iter(selected))
     faults=[]
     for label in ('missing-device','wrong-model','wrong-native-id','wrong-parent-nx','wrong-geometry','changed-slave-output','duplicate-hold'):
         rs,ps,ds=copy.deepcopy((records,planes,diag))
@@ -67,7 +67,7 @@ def graph_controls(records,planes,diag):
         elif label=='changed-slave-output':ds['stages']['c']['latches']['native_graph']['slave']['positive_output_native']=-993
         else:
             bank=ds['stages']['c']['latches']['native_graph']['slave'];bank['hold_pair']=[bank['data_positive'],bank['hold_pair'][0]]
-        try:selection(rs,ps,ds,'cd_slave_data3_hold3')
+        try:selection(rs,ps,ds,'cd_slave_data5_hold5')
         except (AssertionError,KeyError):faults.append(label)
         else:raise AssertionError('Invalid slave binding accepted: '+label)
     return faults
@@ -87,11 +87,11 @@ def parent_headroom(out,diag,variant):
             if VARIANTS[variant]:names += [bank['data_positive'],bank['data_negative']]
             for name in names:
                 q=parent['device_checks'][name];dev=parent['devices'][name]
-                assert dev['nx']==4 and q['minimum_active_vce_v']>=.4
+                assert dev['nx']==6 and q['minimum_active_vce_v']>=.4
                 total=q['maximum_alltime_abs_ic_per_emitter_a']*dev['nx']
-                projected=total/3
+                projected=total/5
                 assert projected<.003
-                rows[name]=dict(actual_parent=q,actual_parent_nx=4,
+                rows[name]=dict(actual_parent=q,actual_parent_nx=6,
                     parent_peak_current_a=total,fixed_parent_current_per_candidate_emitter_a=projected)
         all_rows[phase]=dict(asset=asset,sha256=digest,devices=rows)
     return dict(phases=all_rows,
@@ -120,8 +120,13 @@ def apply(model,contract,planes,variant,out):
     checks['actual_graph_faults']=graph_controls(records,planes,diag)
     edits,newroles=selection(records,planes,diag,variant)
     prior_roles={c['instance']:c for c in proof['changes']}
-    assert not set(edits)&set(prior_roles)
-    assert all(records[n]==originals[n]for n in edits)
+    assert set(edits)<=set(prior_roles),'Selected slave devices must be declared parent Nx4->6 edits'
+    for n in edits:
+        assert prior_roles[n]['original_parameters']==originals[n]['parameters']
+        assert prior_roles[n]['candidate_parameters']==records[n]['parameters']
+        assert parser.number(originals[n]['parameters']['nx'])==4
+        assert parser.number(records[n]['parameters']['nx'])==6
+        assert {k:v for k,v in originals[n]['parameters'].items()if k!='nx'}=={k:v for k,v in records[n]['parameters'].items()if k!='nx'}
     candidate=copy.deepcopy(parent_contract);copies={r['instance'].lower():r for r in candidate['device_records']}
     omitted={'instance','original_parameters','candidate_parameters','original_card','candidate_card'}
     roles={c['instance']:{k:v for k,v in c.items()if k not in omitted}for c in proof['changes']}
@@ -140,7 +145,7 @@ def apply(model,contract,planes,variant,out):
             changes.append(dict(instance=n,**roles[n],original_parameters=originals[n]['parameters'],
                 candidate_parameters=copies[n]['parameters'],original_card=oldcards[n],candidate_card=new))
         rows.append(new)
-    assert len(changed_parent)==len(edits)and len(changes)==len({c['instance']for c in changes})==84+len(edits)
+    assert len(changed_parent)==len(edits)and len(changes)==len({c['instance']for c in changes})==84
     assert len(rows)==476+17918+12850+2
     assert [r for r in parent_rows if r[0].lower()not in edits]==[r for r in rows if r[0].lower()not in edits]
     assert [r for r in original_rows if r[0].startswith(('R','C'))]==[r for r in rows if r[0].startswith(('R','C'))]
@@ -149,7 +154,7 @@ def apply(model,contract,planes,variant,out):
         if r['instance'].lower()in roles:r['parameters']=copy.deepcopy(originals[r['instance'].lower()]['parameters'])
     assert restored==contract,'Undeclared topology, native reference or primitive changed'
     output=out/('exploratory-'+variant+'.spice')
-    output.write_text('* EXPLORATORY C/D slave hold or data/hold Nx4->3 on measured v44L3.9 parent, frozen wire RC, no physical acceptance.\n'+'\n'.join(' '.join(r)for r in rows)+'\n')
+    output.write_text('* EXPLORATORY C/D slave hold or data/hold Nx6->5 on measured v44L3.9 parent, frozen wire RC, no physical acceptance.\n'+'\n'.join(' '.join(r)for r in rows)+'\n')
     (out/'exploratory-composition.json').write_text(json.dumps(candidate,indent=2)+'\n')
     return output,candidate,dict(variant=variant,parent_variant='v44_cd_master_l39',
       baseline_model_sha256=sha(model),candidate_model_sha256=sha(output),
@@ -157,4 +162,4 @@ def apply(model,contract,planes,variant,out):
       all_wire_cards_unchanged=True,all_other_native_cards_unchanged=True,unchanged_original_gates=True,
       changes=changes,parent_changes=changed_parent,controls=checks,source_diagnosis_sha256=DIAG_SHA,
       diffusion_model_scope=proof['diffusion_model_scope'],
-      scope='Only four C/D slave hold HBTs or those four plus four data HBTs change Nx4->3 relative to measured v44l39. Original HBT We/Le, A/B, slaves, selectors, followers, current/bias and all resistors unchanged from that parent. Test a finite slave-stage capacitance hypothesis after full-wave evidence shows master outputs pass at the original deadline while64 slave outputs fail. This is not inferred causality; all original gates decide. Projected parent current density is not candidate safety; all original full native gates rerun. FrozenRC requires new geometry/DRC/LVS/RC/PVT/loop qualification.')
+      scope='Only four C/D slave hold HBTs or those four plus four data HBTs change Nx6->5 relative to measured v44l39. Original HBT We/Le, A/B, slaves, selectors, followers, current/bias and all resistors unchanged from that parent. Test a finite slave-stage capacitance hypothesis after full-wave evidence shows master outputs pass at the original deadline while64 slave outputs fail. This is not inferred causality; all original gates decide. Projected parent current density is not candidate safety; all original full native gates rerun. FrozenRC requires new geometry/DRC/LVS/RC/PVT/loop qualification.')
