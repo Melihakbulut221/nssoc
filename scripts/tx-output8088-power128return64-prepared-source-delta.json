@@ -1,0 +1,101 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128return32_prepared.py",
+  "baseline_sha256": "55fafde58c11add7e1f36cb3602c1cb9d103542276fcc7e41d50d80d8eca43ea",
+  "candidate_path": "scripts/cloud_tx_output8088_power128return64_prepared.py",
+  "candidate_sha256": "0b62c624db70004579f325a36dc88d3b5342566d781f7e0dd372bf18208ce559",
+  "edits": [
+    {
+      "before": "power128return32",
+      "after": "power128return64",
+      "count": 7
+    },
+    {
+      "before": "POWER128RETURN32",
+      "after": "POWER128RETURN64",
+      "count": 1
+    },
+    {
+      "before": "interfaces-pass-20261022.json",
+      "after": "interfaces-pass-20261023.json",
+      "count": 1
+    }
+  ],
+  "adapter_derivation": {
+    "baseline_path": "scripts/cloud_tx_output8088_power128return32_fullwave_adapter.py",
+    "baseline_sha256": "da0cfcddbba485d8be2eee00e676005be9e3e4e9b02004d6afdb2a6beeac743c",
+    "candidate_path": "scripts/cloud_tx_output8088_power128return64_fullwave_adapter.py",
+    "candidate_sha256": "c2f0ccd17d06edf679ca843d1e8a83f628baec25ec986179a216e2fb336edc9d",
+    "edits": [
+      {
+        "before": "power128return32",
+        "after": "power128return64",
+        "count": 2
+      },
+      {
+        "before": "POWER128RETURN32",
+        "after": "POWER128RETURN64",
+        "count": 1
+      },
+      {
+        "before": "interfaces-pass-20261022.json",
+        "after": "interfaces-pass-20261023.json",
+        "count": 1
+      },
+      {
+        "before": "39769220171",
+        "after": "39905858535",
+        "count": 1
+      },
+      {
+        "before": "0c6c5b9ff43edeb0b0f957b71293db7025b7c4a358cb2d98305e0b5b7329d633",
+        "after": "b9b7b64adf5f8289a4982094ba0173e35e34310004f1e09a44ce1e483c887d54",
+        "count": 1
+      }
+    ]
+  },
+  "checker_derivation": {
+    "baseline_path": "scripts/check_tx_output8088_power128return32_prepared_sources.py",
+    "baseline_sha256": "9dab710e067d13d7d182fa0b42bf7b59fff5a575040e420a377a09ddeeca445d",
+    "candidate_path": "scripts/check_tx_output8088_power128return64_prepared_sources.py",
+    "candidate_sha256": "7a779cb4cf81290339cdee476d65060c89daacdee4f729a5dca9584a460e80bb",
+    "edits": [
+      {
+        "before": "power128return32",
+        "after": "power128return64",
+        "count": 2
+      },
+      {
+        "before": "POWER128RETURN32",
+        "after": "POWER128RETURN64",
+        "count": 1
+      },
+      {
+        "before": "interfaces-pass-20261022.json",
+        "after": "interfaces-pass-20261023.json",
+        "count": 1
+      },
+      {
+        "before": "39769220171",
+        "after": "39905858535",
+        "count": 1
+      },
+      {
+        "before": "0c6c5b9ff43edeb0b0f957b71293db7025b7c4a358cb2d98305e0b5b7329d633",
+        "after": "b9b7b64adf5f8289a4982094ba0173e35e34310004f1e09a44ce1e483c887d54",
+        "count": 1
+      },
+      {
+        "before": "from check_tx_output8088_power128feed32_prepared_sources import check as original_check",
+        "after": "from check_tx_output8088_power128return32_prepared_sources import check as original_check",
+        "count": 1
+      }
+    ]
+  },
+  "frozen_inputs": {
+    "scripts/cloud_tx_output8088_power128return64_fullwave_adapter.py": "c2f0ccd17d06edf679ca843d1e8a83f628baec25ec986179a216e2fb336edc9d",
+    "scripts/check_tx_output8088_power128return64_prepared_sources.py": "7a779cb4cf81290339cdee476d65060c89daacdee4f729a5dca9584a460e80bb",
+    ".github/workflows/tx-output8088-power128return64-prepared-cloud.yml": "991bcc19e5e89889c6805373a8afffe36727e91ecd16ba9dd542d785e96ef32e",
+    "docs/evidence/tx-output8088-power128return64-interfaces-pass-20261023.json": "d84ae2544a32ae9a8f21a375f81cea928de13cd4dcc6cd2732aff419288d67c0"
+  },
+  "scope": "Only fresh return64 namespace/date/exact successful interface pins. Run original return32 source checker too. Original34ns256bits604HBT5376MOS stimuli, external sources/loads, solver/timesteps, observations, three sampling phases, device bounds, native OP transport and swap-leaf fault remain unchanged."
+}

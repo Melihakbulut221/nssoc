@@ -5916,3 +5916,9 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - New return64-interfaces-cloud reopens actual return64 physicalGDS/LVS and conductor graph, then binds124input legs/372data bases/64driver handoffs/4outputs in this complete model. Byte-identical original binder and all endpoint/polarity faults retained.
 - After interface pass, adapt original full34ns/256bit native preparation using this exact model, then checkpointed normal and swap-leaf runs. Full electrical acceptance still open.
 - Postroute retry39904823953 remains live; only failed SHA-path conversion changed, no routed geometry/clock/threshold modification.
+
+## 2026-10-23: return64 physical interfaces passed; complete native preparation
+- Interfaces39905858535 passed124physical input legs/372data bases/64driver handoffs/4outputs and all28620native terminals, with8structural+2actual endpoint+2output-port faults. Exact fresh model remains69a8e6f9460a41d640475b66fe6c1900b7d7d5c4521d0aa414b7168fe132d469.
+- New return64-prepared-cloud builds nominal normal and swap-leaf decks with original34ns256bits604HBT5376MOS observations, original loads/solver/time steps/three sampling phases. It does not run the full DUT transient. Original return32 source checks run too; adapters are limited to namespace/date and exact source pins.
+- After both preparation jobs pass, start checkpointed native initial/continuation runs from their exact descriptors. Keep all native warnings/device failures/bit errors; no full electrical/PHY acceptance from preparation.
+- Postroute39904823953 still running at last live check; no further native reroute or duplicate postroute job dispatched.
