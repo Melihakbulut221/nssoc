@@ -23,3 +23,17 @@ No R/C value, terminal, device or original gate changes.
 This resistance matrix is a routing diagnostic. It does not substitute for the
 actual multi-source loaded IR drop, transistor simulation, capacitive transient,
 device-access/substrate extraction, GDS/DRC/LVS, full serial PHY or mainchip timing.
+
+
+Run39978950673 passed:11693 nodes,15648 resistors in the original AVSS component,
+maximum KCL residual3.637978807091713e-12A. Effective self-resistances for
+xd5644/xd5667/xd5674 are10.326486441861093/6.286958767402294/6.275982084626535ohm.
+The latter two share2.35779442271229ohm transfer resistance. The output-tail
+branch has zero transfer to them under the ideal publicAVSS ground constraint.
+
+The output shortest path includes r139947=9.87597ohm adjacent to avss. Shortest
+path size alone is not a contribution estimate in a parallel network. The next
+read-only sensitivity run computes each original segment's unit-injection
+current and I-squared-R contribution, requires their sum to reproduce effective
+resistance, and retains original extractor-node identities for physical mapping.
+No resistor is removed/scaled or assumed to be a physical fix.

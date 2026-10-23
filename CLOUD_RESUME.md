@@ -6435,3 +6435,19 @@ computes original AVSS DC effective/path resistance with analytic controls.
 It does not edit RC or devices, and is not a loaded transient or repair.
 Do not lower clock bias blindly: the three current-tail devices already lack
 headroom. Use the exact path evidence before selecting physical power routing.
+
+
+## 2026-10-23 AVSS grounded solve passed; segment sensitivity in cloud
+
+39978950673 passed on the original11693-node/15648-R ground component with
+3.64e-12A max KCL residual. Source-bound receipt:
+docs/evidence/tx-output8088-return-resistance-20261023.json.
+Effective selfR=10.3265/6.2870/6.2760ohm for xd5644/5667/5674. Output branch
+shortest path has r139947=9.87597ohm next to publicavss; do not infer its full
+contribution until actual solved currents are checked.
+
+A single push-triggered tx-output8088-return-sensitivity-cloud run at this commit
+computes original segment current/power sensitivity and native extractor-node
+names. It preserves all original R/C and acceptance gates. Next physical work
+must map dominant segments to actual GDS/metal/vias and re-extract any change.
+Fault continuation39977623211, route39970270107, PLL39967627133 remain live.
