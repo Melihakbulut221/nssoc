@@ -1,0 +1,16 @@
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Experimental active C/D input level shift. Not a qualified PHY or layout.
+* Two native HBTs, two parallel tail MOS, one MOS reference and four rppd.
+* Collector polarity restores non-inverting differential transfer.
+* Finite native shunts set output common mode; no behavioral gain/source.
+.subckt nssoc_cdr_active_levelshift_v49 ip inn op on avdd avss sub iref
+XP on ip tail sub npn13G2 Nx=4
+XN op inn tail sub npn13G2 Nx=4
+XT0 tail iref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT1 tail iref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XREF iref iref avss sub sg13_lv_nmos w=8u l=.3u ng=1
+XUP avdd op sub rppd w=8u l=2.8u b=0 sw_et=1
+XUN avdd on sub rppd w=8u l=2.8u b=0 sw_et=1
+XDP op avss sub rppd w=4u l=9.6u b=0 sw_et=1
+XDN on avss sub rppd w=4u l=9.6u b=0 sw_et=1
+.ends nssoc_cdr_active_levelshift_v49

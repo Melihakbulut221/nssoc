@@ -7002,3 +7002,12 @@ PLL completed-reader controls40016631396 passed; reader waits for real completed
 terminal source. Mainchip40011725403, TX40006507576 and PLL40001626503 were still
 live. Keep them and inspect exact native handles. Cloud-only work, no local CAD.
 Full serialPHY, completed mainchip routing and final timing remain open.
+
+
+## 2026-10-23 cloud-only cleanup recheck and active level-shifter v49 candidate
+
+User instruction: all work in cloud, leave no local project artifacts. Rechecked local project directory empty and no local ngspice/OpenROAD/KLayout/Netgen/Yosys/iverilog processes. Only GitHub metadata/source API calls are made locally; no native archives/checkouts/tests/CAD are staged locally. Unrelated projects and app state were not removed.
+
+v48 run40020729083 completed: nominal/cold_high and both fault checks passed; hot_low failed common-mode1.729465V<1.8V while device/signal gates passed. Receipt: docs/evidence/cdr-active-levelshift-v48-results-20261023.json. v49 changes exactly XDP/XDN length7.2um to9.6um and reruns the same five cases. Workflow cdr-active-levelshift-v49-cloud.yml triggers on this commit; discover its run by source SHA and never dispatch a duplicate. No acceptance claims before results.
+
+Mainchip40011725403, TX40006507576 and PLL40001626503 were still in progress at this check. Preserve them. Existing qualified readers/continuation protocols apply only after new durable/terminal evidence. Full serial PHY, routed mainchip and final setup/hold remain open.
