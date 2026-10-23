@@ -36,6 +36,7 @@ def main():
    tree=ast.parse(path.read_text());f=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name==function)
    return [ast.dump(n,include_attributes=False)for n in f.body if isinstance(n,ast.Assert)]
   assert assertions(ROOT/'scripts/read_pll_rhi120_c8_all_native.py','capture')==assertions(ROOT/'scripts/read_pll_rhi120_c8_streamed.py','full_capture')
+  (out/'reference').mkdir()
   ref=columns.load_reference(out/'reference');contract=ref['contract'];prefix=ref['prefix']
   before=digest(prefix);r['source_reference']=ref['restore_proof']
   baseline=original.controls(contract,prefix,out/'original-controls')

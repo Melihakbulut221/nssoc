@@ -6889,3 +6889,25 @@ or run qualified postroute flow only on actual completed routing. PLL still
 requires the entire1us record and original all-column reader; TX requires
 both full normal/fault34ns captures. Full serialPHY and final setup/hold remain
 open; separate packet-boundary mainchip integration is not full serialPHY.
+
+## Cloud-only continuation: v47 rejected; full-column PLL stream reader
+
+Corrected v47 run40012128810 finished both original full34.25ns captures,
+113475rows1104columns. Native diagnostics were empty and device bounds passed,
+but data/phase/VI gates failed. C/D remain late at45.78-48.91ps, with64 below100mV
+samples each. Exact immutable summaries, raw hashes and sampler metrics are in
+cdr-v47-drive-load-rejection-20261023.json. Do not promote this frozen-RC
+intrinsic trial to candidate geometry or fullCDR. Use actual capture diagnosis
+before another circuit hypothesis.
+
+Independent PLL stream-reader qualification40015072729 failed before loading
+reference because its caller did not create the required parent directory.
+Failure is preserved; this commit creates only that output directory and pins
+the corrected test source. It retains the original16 corruption controls and
+exact three full1us assertions, adds five transport/incomplete-source controls,
+and checks all5106 columns. This does not change active native controller bytes.
+
+Mainchip40011725403, TX40006507576 and PLL40001626503 were verified live.
+Do not duplicate them. Local project directory is empty; no local native
+execution, checkout or waveform archives. All source and evidence stay on
+GitHub. Full serialPHY, completed routing and final setup/hold remain open.
