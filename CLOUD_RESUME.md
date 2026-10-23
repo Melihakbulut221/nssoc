@@ -6253,3 +6253,18 @@ Mainchip route39949845770 and PLL recovery39941648965 remain live; no cold start
 Latest local checks: project directory empty; no local CAD or simulation process.
 Every source change and evidence receipt is on the remote branch. Do not create
 a local checkout or download native artifacts. Use hosted Actions/releases.
+
+
+## 2026-10-23 RHI120 sparse native continuation candidate, controls only
+
+The new pll-rhi120-c8-native-sparse-cloud workflow runs source/negative controls
+on push and native work only on explicit dispatch. It preserves the original
+recovery runtime, physical source, all5106columns and native process; sparse
+working bytes are never mistaken for ordinary waveform bytes. The immutable
+source archive and all failed evidence remain required.
+
+Do not dispatch while recovery39941648965 is live. After it publishes a
+successful saved checkpoint, inspect the new controls result and exact method
+delta, then dispatch once using that latest source. Never reuse the older failed
+initial to fork progress. Full native/reader/acquisition/PHY acceptance remains
+open. See docs/pll-rhi120-c8-sparse-native-continuation-20261023.md.
