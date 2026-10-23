@@ -5864,3 +5864,9 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - Route11 checkpoint39883818247 complete/saved, singleoriginalentrypoint. Completed counts ended35,35,35,35,18,5704; lastpartial50%/5045 in iteration34. Preserve this regression history;35marker snapshot is older, not current.
 - Route12 39896983175 dispatched once fromsourceb015fbc0ada93ebaa6bd908b89d8a9f25ec57cef with exactroute11 summarye1c03b54cff363ba5a60498636a06d7532261ed94e50efc29ec266dabe922876 andparts4e5fc64de85f77222ee14e42ce6b75a581a8e01ea7c08521bf04c0fd615bc803,7200nativeworkseconds. No coldrestart orchangednetlist.
 - LCRC timing39896567224 uses explicitnativecellaliases and retains builtSTA+source archives for later reuse; stillawait actualslacks,canonicalRTLnotadopted.
+
+## 2026-10-23: cloud-only verification; one-hot timing rejected; return64 anchors
+- Local workspace remains empty; no local CAD/simulation process or task-named artifact found in home/Downloads/tmp audit. Cloud-only policy unchanged.
+- LCRC native comparative STA39896567224 completed. Slow worst setup -6.768252850 to -7.244259834 ns (0.476006984 ns regression), despite improved selector launch cone. Fast hold -0.064122111 to -0.066402882 ns. Do not adopt candidate as closure. Full measurements in docs/evidence/lcrc-word-onehot-timing-results-20261023.json.
+- Return64 native wires39897229856 passed8088devices/28620terminals/703components/768nets. Fresh graph summary918072117513308657e7b2f0361b431ed08a965f4a50369a7155d388ea1032c0. New return64-native-anchors workflow starts from this graph; all original terminal/port/fault gates retained. No RC/electrical acceptance yet.
+- Route12 39896983175 remains active; do not restart it. Next exact continuation if saved, or postroute only if route_complete=true. Current route excludes newer CDC and LCRC experiments and is not full serial PHY integration.
