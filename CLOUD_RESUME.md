@@ -6003,3 +6003,8 @@ Raw audit39917781077 failed before nativeRC acceptance: audit_pll845_mim_intrins
 ## 2026-10-23 — RHI120 rawRC audit passed; actual regular-well binding starts
 Read-only audit39918288755 at4fe50446e3d1ff5d7cfa02afd500a1abbd919b22 passed every nativeR edge/value, pointwise/collapsedC checks, all26MIM identity and13wire+9intrinsic corruptions. Previous pathfailure39917781077 retained.
 New physical regular-well proof uses exact current845 native binding and audited anchors directly. Current125LVPMOS have bodycluster203/core_vdd; no namedntapWELL203 (fivecore_vdd TIE contacts supply other wells). Same original native well/contact geometry and all5control families are preserved to identify actual4regularcontacts and new referencepoints; freshRC still required. No synthetic composition failure or reused old bodyplan. LongDRT/TX continue.
+
+
+## 2026-10-23 — RHI120 four actual regular well contacts passed; fresh extended RC
+Body access39918715172 at4e64885879eb392bcea9d8eca1ca38b72e0ce801 passed actual125PMOS body identities,4n-well islands and4existing drawn taps. All20contact/metal/diffusion/owner/well fault cases rejected. Existing1604points/1877aliases unchanged;2genuinely new contact planes require freshRC. No geometry or named845device changes.
+New bodyRC workflow re-extracts all235conductors/26MIM with1606physical/1879logicalreferences. Same original nativeMagic/runtime/options/modelchecks. Next strict rawRC and same-geometry collapsedC-matrix/3controls against currentRHI120 original-point capture, then849instance physical model and62compositioncontrols, loadedOP and unchangedfull1us acquisition. Do not use oldbaselineRHI140 RC or contactplans.
