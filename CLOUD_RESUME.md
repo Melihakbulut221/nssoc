@@ -6268,3 +6268,18 @@ successful saved checkpoint, inspect the new controls result and exact method
 delta, then dispatch once using that latest source. Never reuse the older failed
 initial to fork progress. Full native/reader/acquisition/PHY acceptance remains
 open. See docs/pll-rhi120-c8-sparse-native-continuation-20261023.md.
+
+
+## 2026-10-23 CDR v45 actual master capacitance candidates
+
+Push triggers the two Nx4->3 C/D master recipes in both nominal phases.
+They retain measured v44l39 loads and avoid spending its remaining76mV hold
+headroom on more resistance. Parent peak-current justification uses both exact
+v44 phases; candidate actual current and every original gate are rerun.
+See docs/cdr-v45-master-capacitance-20261023.md. No candidate layout/PEX or
+fullPHY claim. Preserve all rejected v44 results and the new full captures.
+
+RHI120 sparse continuation controls39959506906 atdce0cde1c4c44578f31f9a1176b9923e4f8883cf
+passed; native job intentionally skipped. Recovery39941648965 moved into
+archive publication. Do not start sparse continuation until its terminal saved
+checkpoint is published and independently verified.
