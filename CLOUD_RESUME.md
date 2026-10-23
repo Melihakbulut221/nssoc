@@ -6451,3 +6451,17 @@ computes original segment current/power sensitivity and native extractor-node
 names. It preserves all original R/C and acceptance gates. Next physical work
 must map dominant segments to actual GDS/metal/vias and re-extract any change.
 Fault continuation39977623211, route39970270107, PLL39967627133 remain live.
+
+
+## 2026-10-23 dominant physical return bottlenecks identified
+
+Sensitivity39980682925 passed all current/power identities. Output r139947
+P_avss.n153--P_avss=9.87597ohm contributes95.6373% of xd5644 effective groundR.
+Core-tail direct-entry r130504/r130654=1.42924ohm; shared r130255=.706551ohm.
+Receipt: docs/evidence/tx-output8088-return-sensitivity-20261023.json.
+
+A single push-triggered tx-output8088-return-locations-cloud job at this commit
+binds the top segments to exact native .res.ext/.ext records from precision
+run39903139948 (asset668047039, SHA6671d835ed9cee45d39391191085d8e00b9ad2e32595bb48d490be9100c7b50f).
+Read its source file/line/coordinate records and map actual GDS before metal/via
+repair. Keep all original R/C and original electrical gates. No PHY closure yet.

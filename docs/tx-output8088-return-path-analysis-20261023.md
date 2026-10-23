@@ -37,3 +37,17 @@ read-only sensitivity run computes each original segment's unit-injection
 current and I-squared-R contribution, requires their sum to reproduce effective
 resistance, and retains original extractor-node identities for physical mapping.
 No resistor is removed/scaled or assumed to be a physical fix.
+
+
+Run39980682925 passed the unit-current energy identities. Output-tail segment
+r139947(P_avss.n153,P_avss) carries1.0000000000025362A for1A injection and accounts
+for95.63727271277177% of its effective return resistance. This identifies a
+specific physical bottleneck candidate, not yet a verified repair. Core-tail
+individual entry segments r130504/r130654 are1.42924ohm each; shared segment
+r130255(P_avss.n5905,P_avss.n5906) is0.706551ohm. The visually larger4.50418ohm
+shortest-path segments are not the largest effective-resistance contributions.
+
+A new read-only location job binds these actual exporter node pairs and values
+to the exact precision archive39903139948, retaining native node/port records
+and source line numbers. Geometry/units must be reviewed before changing metal
+or vias. Neither replacing wire resistors nor idealizing a pin is a physical fix.
