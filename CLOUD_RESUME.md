@@ -5849,3 +5849,10 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - New tx-output8088-power128return64-physical-cloud tests actual extra64um AVSS metal on >80um spans with40um wide-section end access. Original6/32um selected-route shapes preserved; right vertical shift18um preserves prior SUB-facing edge.
 - Full-width open control widened to68um cut; all original560DRC/deep-flat8088LVS/165ports/fault gates retained. This is an unaccepted output-return candidate, not a fix claim for all85HBT failures.
 - Inspect generation/collision and complete native physical outcomes; only then create fresh RC/composition/full-wave flow. Do not reuse return32 wire graph as return64 parasitics.
+
+
+## 2026-10-23: STA alias repair and exact35marker classification
+- OpenSTA3.1.0 built in39894427399; native structural readback retained1799cells but internal$ name representation differs after Verilog import. Explicit bijective alias table fixes identity binding without changing any cell or pin. Current workflow also retains built executable+corresponding source/build patches in release so later diagnostic retries can reuse it.
+- route marker reader39894810135 passed. drc-30.rpt has35actualmarkers:23Short+12MetalSpacing, Metal2=27,Metal4=3,Metal5=5. There are23distinct type/source navigation groups; do not replace35 with23. drc20=121 and drc25=3906 retain nonmonotonic history.
+- New TX return64 physical run39895931760 live, source432ee05bb5eda42c5298d2cbe936470529945d92. Requires all fresh physical gates and future freshRC/fullwaves; no acceptance yet.
+- Route11 39883818247 was publishing its exact saved process at last poll. Wait for completed release then resume only that process if route_complete=false; do not cold-start.

@@ -40,6 +40,7 @@ def normalize_structural(module,path):
             port=name+('['+str(i)+']'if len(p['bits'])>1 else '')
             lhs,rhs=(expr(b),port)if p['direction']=='input'else(port,expr(b))
             lines.append('assign '+lhs+' = '+rhs+';')
+    aliases={name:'physical_cell_'+str(i)for i,name in enumerate(module['cells'])}
     for name,cell in module['cells'].items():
         assert cell['type'].startswith('sg13g2_')and not cell['parameters']
         assert not re.search(r'\s',name)
@@ -47,18 +48,20 @@ def normalize_structural(module,path):
         for pin,v in cell['connections'].items():
             assert len(v)==1 and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*',pin)
             connections.append('.'+pin+'('+expr(v[0])+')')
-        lines.append(cell['type']+' \\'+name+' ('+', '.join(connections)+');')
+        lines.append(cell['type']+' '+aliases[name]+' ('+', '.join(connections)+');')
     lines.append('endmodule')
     path.write_text('\n'.join(lines)+'\n')
+    return aliases
 
-def verify_structural(module,parsed):
-    assert set(module['cells'])==set(parsed['cells'])
+def verify_structural(module,parsed,aliases):
+    assert set(aliases)==set(module['cells']) and len(set(aliases.values()))==len(aliases)
+    assert set(aliases.values())==set(parsed['cells'])
     def translate(bit):
         if isinstance(bit,str):return bit
         values=parsed['netnames']['n'+str(bit)]['bits'];assert len(values)==1
         return values[0]
     for name,cell in module['cells'].items():
-        c=parsed['cells'][name]
+        c=parsed['cells'][aliases[name]]
         assert cell['type']==c['type']and cell['parameters']==c['parameters']
         assert cell['port_directions']==c['port_directions']
         assert {p:[translate(b)for b in v]for p,v in cell['connections'].items()}==c['connections']
@@ -100,6 +103,19 @@ def main():
         r['tool']={'path':str(sta),'sha256':sha(sta),'version':subprocess.check_output([str(sta),'-version'],stderr=subprocess.STDOUT,text=True),
                    'source_commit':os.environ['OPENSTA_SOURCE_COMMIT'],'cudd_commit':os.environ['CUDD_SOURCE_COMMIT']}
         protected[str(sta)]=sha(sta);protected[str(Path(__file__))]=sha(__file__)
+        # Retain the built tool and corresponding pinned source/build patches
+        # so a later report-only fix need not rebuild the same native runtime.
+        runtime=OUT/'runtime';runtime.mkdir()
+        shutil.copyfile(sta,runtime/'sta')
+        for tool in ['opensta','cudd']:
+            source_dir=Path(os.environ['RUNNER_TEMP'])/tool
+            subprocess.run(['git','-C',str(source_dir),'archive','--format=tar.gz','--output='+str(runtime/(tool+'-source.tar.gz')),'HEAD'],check=True)
+            (runtime/(tool+'-generated-build.patch')).write_bytes(subprocess.check_output(['git','-C',str(source_dir),'diff','--binary']))
+        shutil.copyfile(ROOT/'.github/workflows/lcrc-word-onehot-timing-cloud.yml',runtime/'build-workflow.yml')
+        (runtime/'dynamic-libraries.txt').write_bytes(subprocess.check_output(['ldd',str(sta)]))
+        (runtime/'README.txt').write_text('Built for Ubuntu24.04. Original source archives include all upstream licenses. Apply generated-build patches when reproducing the exact build; pinned build commands are in build-workflow.yml. This tool is not a qualified signoff runtime.\n')
+        r['retained_runtime']={'binary_sha256':sha(runtime/'sta'),'scope':'Pinned native STA executable plus corresponding source archives, generated build patches and exact build workflow; Ubuntu24.04 dynamic system libraries are listed separately.'};save()
+
         libs={}
         for corner,(name,blob)in LIBRARIES.items():
             url='https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/'+PDK_COMMIT+'/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/'+name
@@ -108,11 +124,12 @@ def main():
             p=OUT/name;p.write_bytes(b);libs[corner]=p;protected[str(p)]=sha(p)
         r['libraries']={k:{'path':str(v),'sha256':sha(v),'git_blob':LIBRARIES[k][1]}for k,v in libs.items()}
         yosys=Path(shutil.which('yosys')).resolve();protected[str(yosys)]=sha(yosys)
-        r['normalization']={}
+        r['normalization']={};r['cell_name_aliases']={}
         r['measurements']={};r['launch_registers']={}
         for label in ['baseline','candidate']:
             module=json.loads((OUT/(label+'.json')).read_text())['modules']['soc_pcie_lcrc_tx']
-            normalized=OUT/(label+'-scalar.v');normalize_structural(module,normalized)
+            normalized=OUT/(label+'-scalar.v');aliases=normalize_structural(module,normalized)
+            r['cell_name_aliases'][label]=aliases
             parsed=OUT/(label+'-scalar.json')
             ys=OUT/(label+'-readback.ys')
             ys.write_text('read_liberty -lib '+str(libs['typ'])+'\nread_verilog '+str(normalized)+'\nhierarchy -check -top soc_pcie_lcrc_tx\nwrite_json '+str(parsed)+'\n')
@@ -120,14 +137,14 @@ def main():
                 code=subprocess.call([str(yosys),'-s',str(ys)],stdout=log,stderr=subprocess.STDOUT)
             assert code==0,'Native structural readback failed'
             native_module=json.loads(parsed.read_text())['modules']['soc_pcie_lcrc_tx']
-            r['normalization'][label]=verify_structural(module,native_module)
+            r['normalization'][label]=verify_structural(module,native_module,aliases)
             protected[str(normalized)]=sha(normalized)
             # Fault control: the comparison must detect a real pin inversion.
             import copy
             wrong=copy.deepcopy(native_module)
             n=next(n for n,x in wrong['cells'].items()if 'D'in x['connections'])
             wrong['cells'][n]['connections']['D']=['1']
-            try:verify_structural(module,wrong)
+            try:verify_structural(module,wrong,aliases)
             except AssertionError:r['normalization'][label]['wrong_data_pin_rejected']=True
             else:raise AssertionError('Structural readback control accepted')
             regs=['index']+(['word_read_onehot']if label=='candidate'else[])
@@ -135,7 +152,7 @@ def main():
             for net in regs:
                 bits=module['netnames'][net]['bits'];pins=[]
                 for n,c in module['cells'].items():
-                    if c['type'].startswith('sg13g2_df') and any(b in bits for b in c['connections'].get('Q',[])):pins.append(n+'/Q')
+                    if c['type'].startswith('sg13g2_df') and any(b in bits for b in c['connections'].get('Q',[])):pins.append(aliases[n]+'/Q')
                 assert pins,('Missing exact mapped launch registers',label,net)
                 launch[net]=pins
             r['launch_registers'][label]=launch
