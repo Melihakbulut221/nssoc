@@ -6113,3 +6113,12 @@ PLLheaderaudit39937306316 is live, waits for originalfailedpublisher39925042125 
  
 ## 2026-10-23 — TX return64 first cross-host slices saved
 Both39922149686(none) and39922153568(swap_leaf_select) completed successfully and preserved exact original native processes, all original source inputs and partial rows. Normal reached16.135032536705502ns/36603complete rows; fault reached15.06967396650529ns/34113rows,14182columns. Both increased from their prior real prefixes, not replayed/cold-started. Original34ns target remains open; no electrical acceptance. Exact immutable descriptors in docs/evidence/tx-output8088-power128return64-first-cross-checkpoints-20261023.json. Dispatch one7200s continuation percase using these descriptors after this commit; no newinitial. PLL39937306316 audits failedsavedinitial39925042125; CDRv42 newrun39938688503; mainchip39932664501 live.
+
+
+## 2026-10-23 — exact cloud handoff after v42 and TX dispatch
+
+Current active handles: mainchip DRT39932664501; CDR v42 full native screens39938688503 (syntax-controls passed, all four native jobs live); TX return64 continuation39939103488 and39939107708 (both dispatched once from the exact first-cross descriptors; preserve processes); PLL complete-archive audit39937306316. All source/evidence changes published; no local checkout or CAD process.
+
+PLL initial39925042125 is terminal failure with saved checkpoint. Completed job120319453932 proves the exact failure at scripts/cloud_pll_rhi120_c8_initial.py line400: transient table names/types were asserted equal to OP table names/types. Width assertion5106 passed and all5105 OP values passed. Do not assume the identity differences harmless: audit39937306316 must verify every member and report actual missing/extra columns and all1694 required terminal vectors before any reader repair or exact checkpoint recovery. No initial restart or success-only continuation dispatch occurred.
+
+CDR v42 changes only actual C/D slave data/hold area on the source-bound v41Nx8 parent; see docs/cdr-v42-slave-data-area-screen-20261023.md. Its four original full-window cases are still pending electrical acceptance; syntax success is not a device or PHY pass. Preserve all earlier v41 rejected captures and v40/V39 failures. Full serial PHY, actual mainchip serial integration, original-clock routed STA/antenna closure and final physical qualification remain open.
