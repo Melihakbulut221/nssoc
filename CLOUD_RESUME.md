@@ -6508,3 +6508,18 @@ witness and asset hashes are in
 docs/evidence/tx-output8088-via3-native-pattern-witness-20261023.json.
 A single new push-triggered physical run at this commit must prove the actual
 completed geometry. Preserve both previous rejected generations.
+
+
+## 2026-10-23 actual via3 physical gates PASSED; fresh graph launched
+
+39986288644 at438d6e842b8cea5f5d561d6d333480580ddabad6 passed all11 physical cases:
+560-category DRC0markers, deep/flat8088-device LVS, exact165ports and allfaults.
+Receipt: docs/evidence/tx-output8088-power128return64via3-physical-pass-20261023.json.
+NewGDS SHA853fcb891bad225640d3f37a1cd234f9a3ad82923ad56d6dbeeded523ea95a4e.
+
+A single push-triggered tx-output8088-power128return64via3-native-wires-cloud job
+at this commit binds the new actual metal/via graph. Native topology predicates
+are unchanged; exact method/controller deltas are pinned. Next: actual graph
+receipt -> fresh28620-terminal anchors -> native intrinsic/RC -> two-order
+precision -> composition/interfaces -> full original normal/fault captures.
+No reuse of old return64 RC/waveforms for via3 electrical claims.

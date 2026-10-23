@@ -35,3 +35,15 @@ The candidate already specified a6um TopMetal2 cover, but tested containment
 before adding it. The corrected construction applies that same cover first,
 then retains the exact original containment check on every layer. Original
 materials/cuts, collision checks and physical/electrical gates remain required.
+
+
+Corrected run39986288644 passed all11 physical cases. DRC reports0 markers across
+560 categories. Deep and flat LVS each match8088 native devices with exactly165
+external port names, and every injected fault has the expected rejection.
+The original single-via material guard now passes after its required landing
+cover. New GDS SHA256 is853fcb891bad225640d3f37a1cd234f9a3ad82923ad56d6dbeeded523ea95a4e.
+
+This establishes physical geometry consistency within the pinned deck scope.
+It does not establish lower RC or electrical closure. A fresh native metal/via
+graph is launched for this exact GDS; old return64 RC and waveforms must not be
+reused as validation of via3.
