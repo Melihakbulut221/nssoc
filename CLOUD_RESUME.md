@@ -6539,3 +6539,29 @@ Original return64 fault case39977623211 completed34ns/77694rows/14182columns.
 failedHBT; neither is electrically accepted. Fault observation is not proof
 of a passing healthy design. Do not resume either complete capture.
 PLL39967627133 is publishing; route39970270107 remains active.
+
+
+## Cloud-only continuation: via3 intrinsic/RC and current mainchip checkpoint
+
+The local workspace remains empty; no local native jobs or artifacts. All work
+runs on GitHub-hosted runners and evidence stays in releases.
+
+Via3 physical run39986288644 and fresh wire graph39987745998 passed their
+original physical checks. Exact terminal-anchor run39988863542 at
+152e2dbb7b3942fd9b955d92b87975368b9d3314 remains the only source for the new
+power128return64via3 followthrough. The followthrough waits for actual terminal
+success and binds the published summary and part hashes before running fresh
+intrinsic and RC controls in the cloud. The original power128 baselines,
+19 intrinsic controls and13 raw RC corruption controls remain unchanged.
+No two-order precision, composed electrical wave, qualified PEX or PHY acceptance
+is inferred from these stages.
+
+Route39970270107 completed a saved-process segment, not the final layout.
+Its verified summary is669748822 /
+21c694d07d1379cb33be901770f53c85afb63ee0e0e819c9a8b4f818be527f17;
+parts669748913 /
+63e3ab8b9854dac0c244543e821a61f1b1e829a9ad367364a60dd85a47a55aaa.
+Continue this exact checkpoint once, keeping original20/4/8/8ns clocks and
+routing parameters. Never cold-start the completed prefix. Original routed
+RC/STA and all postroute checks remain mandatory. PLL39967627133 was still
+publishing its sparse continuation at this checkpoint; do not duplicate it.
