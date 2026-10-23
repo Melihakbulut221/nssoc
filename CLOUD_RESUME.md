@@ -6565,3 +6565,18 @@ Continue this exact checkpoint once, keeping original20/4/8/8ns clocks and
 routing parameters. Never cold-start the completed prefix. Original routed
 RC/STA and all postroute checks remain mandatory. PLL39967627133 was still
 publishing its sparse continuation at this checkpoint; do not duplicate it.
+
+
+## Fresh via3 two-order RC followthrough
+
+Via3 intrinsic/RC parent39991332843 remains live, dependent on anchor39988863542.
+A single push-triggered tx-output8088-power128return64via3-precision-cloud run
+at this commit waits for that exact successful source and hash-bound reports.
+It preserves the original double-total producer, two native input orders,
+exact R/C multisets and13 controls per order. Generated source/receipt files
+are preserved under launcher-evidence/generated in its cloud release.
+Do not duplicate the live parent or consume old return64 RC as via3 evidence.
+
+Route39991475218 is the sole continuation of saved39970270107. Original clocks
+and native routing settings are unchanged. The local workspace stays empty.
+PLL39967627133 remains in publication; verify its terminal result before resume.
