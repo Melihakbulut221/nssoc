@@ -6215,3 +6215,23 @@ See docs/pll-rhi120-c8-sparse-storage-qualification-20261023.md.
 CDR run39952318814 finished: all four native cases return0/device checks pass, but all fail original data/phase gates. Full capture and immutable source checks passed. Preserve all rejected results; do not promote these candidates. See docs/evidence/cdr-v44-master-load-results-20261023.json.
 
 Storage-only RHI120 qualification39954614699 is active at9690bb870b2afde732bca4a900a272caff23f771. It verifies archived bytes and does not resume a simulator. Live native route/PLL/TX handles remain separately recorded above.
+
+
+## 2026-10-23 TX second cross-runner slices saved; third slices dispatched
+
+Both 39939103488 (none) and39939107708 (swap_leaf_select) completed successfully
+as saved native processes, not accepted electrical captures. Normal advanced
+from16.1350ns to30.2611ns; fault advanced from15.0697ns to23.4147ns. Each retains
+all14182columns and exact prior trajectory, same single native entrypoint,
+runtime and controller. Original34ns capture remains incomplete.
+
+The exact descriptors in docs/evidence/tx-return64-second-cross-checkpoints-20261023.json
+are dispatched once with7200native seconds to the unchanged continuation
+workflow. Discover the new workflow_dispatch run IDs at this receipt commit;
+do not dispatch them again merely because results are not yet available.
+
+Local project directory is empty and no local CAD/simulation processes run.
+The existing app monitor has the cloud-only instruction. Its eight-hour schedule
+update returned success from the app tool, but the inspected saved schedule
+still showed Sunday09:00. Do not claim eight-hour monitoring is verified;
+do not rely on it as proof that cloud jobs or native continuation have run.
