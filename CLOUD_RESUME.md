@@ -6659,3 +6659,26 @@ candidates. Selected devices overlap the parent's declared Nx4->6 changes,
 so the complete original contract is restored through the same84 declared
 changes rather than falsely counting extra devices. Original controls and
 current/voltage/data/phase gates remain unchanged.
+
+
+## Durable PLL486.4736ns checkpoint; continue exact process once
+
+Sparse run39967627133 completed successfully with a saved active process,
+not a full1us capture. Exact native position486.4735937501712ns,
+1557404 complete rows,37952 partial-row bytes,5106 columns. All original
+payload and protected inputs remained unchanged. Logical raw63617073083bytes
+has SHAec33229ebefa207d7ab2838a789cad577027c41b4e8b8d77d9b323ff1e342a14.
+All216 hosted archive parts and combined57781090246bytes were verified.
+Summary669929123 /3ff36c73fdcc52aa4096090d8d156e52e6173da3a837fa38ff5de81a6b0406bb;
+parts669929250 /7bbe164c01ec4680d551aea120807503c137c03a7daf3cccd52130d6afe04b15.
+
+The next dispatch consumes only this sparse checkpoint. Never return to the
+193ns initial source or cancelled recovery. Original1us/all5106columns,
+maxstep.3125ps/native equations/device and acquisition gates remain mandatory.
+Completed sparse full-capture reader adaptation is still required on actual
+native completion. No full PHY or PLL-lock acceptance.
+
+Via3 composition39998199226 passed all25 controls. Summary669914935 /
+77841e6215b66c6ef31d2481c9fd0f169fe42904c3c7461fea2dc5a27bae892e.
+Next: original interfaces/prepared deck and actual full normal/fault waves.
+CDR corrected Nx6->5 run39999252164 has passed source controls and is live.
