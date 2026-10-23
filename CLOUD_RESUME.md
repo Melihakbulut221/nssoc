@@ -7159,3 +7159,11 @@ Loss diagnosis40038187745 passed all three full failed captures; receipt docs/ev
 This commit auto-triggers v51-physical-cloud once. Same intrinsicv49 circuit; actual30um placement pitch,substrate escape+6um,90um bus start,4-column upper via escapes,MOS source/drain centered +/-3um with4rows, resistor8columns,1.6um localMOS/resistorM3. All changes are geometry, not arbitrary RC multipliers. Full560DRC/deep-flat18LVS/ninefaults remain mandatory. Discover run; repair actual DRC/LVS failures if any, then entirely fresh wire/RC/binding/composition/full original loaded cases. Do not reuse v50 RC or assume a pass.
 
 Mainchip40031170989,TX40024570662/40024574047,PLL40001626503 must be revalidated before continuation; never duplicate live jobs. Active full serialPHY/mainchiproute/finalsetuphold goal remains unmet. Local workspace stays empty.
+
+## 2026-10-24 TX via3 saved native progress and next cloud continuations
+
+Completed40024570662(none) and40024574047(swap_leaf_select) are saved processes, NOT full captures. Actual ordinary prefix8.783845ns->16.411763ns/37269rows; fault8.135802ns->15.791432ns/35814rows. Every14182column row and the partial row are preserved, same source/header/runtime, cross-runner numerical progress proven. Both reports remain electrical_screen_passed=False/full_capture=False/full_serial_phy=False.
+
+Exact descriptors and complete receipts: docs/evidence/tx-via3-second-native-checkpoints-20261024.json. This is the pre-dispatch ledger: dispatch one7200second continuation perdescriptor after committing, then discover resulting workflow_dispatch runs before any retry. Restore the same native processes; no cold start, shortened34ns target, lost prefix or new solver settings.
+
+V51 physical40038910783 is independently live from3943cfad9c1429498d5fc2caba028f890a272386; mainchip40031170989 andPLL40001626503 were revalidated live. Full serialPHY/mainchiprouting/finaltiming goal remains active. All CAD/runtime/artifacts cloud-only.
