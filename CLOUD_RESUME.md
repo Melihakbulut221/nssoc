@@ -6863,3 +6863,29 @@ A7200s mainchip continuation was dispatched from completed39991475218 at
 commit716265197b97e8722f226b0a1a9136da61f4ecb7. Discover the new run ID
 before any further dispatch; do not duplicate. TX40006507576 andPLL40001626503
 were last verified live. Cloud-only work remains mandatory.
+
+## Latest verified active cloud processes
+
+- Mainchip40011725403 from716265197b97e8722f226b0a1a9136da61f4ecb7:
+  source controls passed and exact saved DRT continuation step is live.
+  Consumes39991475218 once; completed count3007 is from that prior capsule,
+  not a new timing result. Do not dispatch another restore while it runs.
+- Corrected CDRv4740012128810 fromb3d6edd89b0747913975a050bc87b63dbbaf558f:
+  exact-source/dimension controls passed. Early and late full native tests
+  follow; job-level state is recorded in the accompanying snapshot.
+  It is a new bounded intrinsic trial, not fresh geometry or accepted CDR.
+- TXvia340006507576 and PLL40001626503 remain the existing native work.
+  Recheck their exact run IDs before any continuation; preserve complete
+  failure output and never restart because an observation expires.
+- v46 full-record diagnosis40008988737 passed all four cases; electrical
+  rejections are unchanged. v47 source rejection40011066168 is preserved.
+- No local CAD, simulation, checkout or waveform archives. All new source,
+  receipts, candidates, logs and later saved-process bundles stay in GitHub.
+
+Next actions: inspect completed v47 full gates and exact currents/phase rather
+than a green wrapper. Only useful electrical improvement justifies actual
+candidateGDS/freshRC/DRC/LVS/PVT/closed-loop work. Continue saved mainchip process
+or run qualified postroute flow only on actual completed routing. PLL still
+requires the entire1us record and original all-column reader; TX requires
+both full normal/fault34ns captures. Full serialPHY and final setup/hold remain
+open; separate packet-boundary mainchip integration is not full serialPHY.
