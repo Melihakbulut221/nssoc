@@ -7011,3 +7011,10 @@ User instruction: all work in cloud, leave no local project artifacts. Rechecked
 v48 run40020729083 completed: nominal/cold_high and both fault checks passed; hot_low failed common-mode1.729465V<1.8V while device/signal gates passed. Receipt: docs/evidence/cdr-active-levelshift-v48-results-20261023.json. v49 changes exactly XDP/XDN length7.2um to9.6um and reruns the same five cases. Workflow cdr-active-levelshift-v49-cloud.yml triggers on this commit; discover its run by source SHA and never dispatch a duplicate. No acceptance claims before results.
 
 Mainchip40011725403, TX40006507576 and PLL40001626503 were still in progress at this check. Preserve them. Existing qualified readers/continuation protocols apply only after new durable/terminal evidence. Full serial PHY, routed mainchip and final setup/hold remain open.
+
+
+## 2026-10-24 active level-shifter v49 electrical pass and native physical candidate
+
+Cloud-only remains mandatory. v49 component run40022525081 completed successfully: nominal/hot_low/cold_high and both real injected fault cases. Receipt docs/evidence/cdr-active-levelshift-v49-results-20261024.json. Hot_low common mode1.803955V has only3.955mV margin; this is not robust/full-PVT or parent acceptance.
+
+New workflow cdr-active-levelshift-v49-physical-cloud.yml generates real2HBT+3MOS+4R with9finite contacts and8ports, then full560DRC/deep-flat18deviceLVS plus9actual faults. Discover auto-triggered run for this commit; do not duplicate. Complete fullwave evidence and failed v48 remain in Releases. Native layout/PEX/parent integration still unproven. Mainchip40011725403,TX40006507576,PLL40001626503 remain separate live continuations; inspect authoritative state before action.
