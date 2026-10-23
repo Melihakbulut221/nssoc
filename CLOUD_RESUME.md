@@ -5881,3 +5881,8 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - New tx-power128return64-followthrough-cloud waits for exact anchor39898478620 at15ec1dc3c3dd7d3a392c28719e015e9f5ceb2399, then runs actual8088 native intrinsic binding/19controls and fresh native RC/13controls. It does not restart the anchor. Generated adapters and native outputs are released even on failure.
 - After followthrough success, commit exact generated source adapters and receipts, run two-order precision then native composition/preparation/full electrical captures. No return32 RC reuse, no electrical/PHY acceptance yet.
 - Route12 39896983175 remains the sole live route continuation. Original-clock routed closure remains open; current routed netlist excludes the newer CDC fix and is packet-boundary SoC, not full serial PHY.
+
+## 2026-10-23: live native followthrough and quantitative timing-path reader
+- Return64 followthrough39901168356, sourceeab4cea794ef2b27d693b0deb92ca7f6dc2b1361, passed exact source-adaptation check and native runtime preparation; it is waiting for live exact anchor39898478620. No child native stage starts from a failed anchor.
+- New read-only crc32-native-paths-cloud consumes complete CRC experiment39900301089, maps each reported native pin to the exact original physical cell and counts its connected input pins across both tops/all3variants/all3corners. No synthesis/STA/native simulation is restarted. Large launch delay alone is not treated as proof of a physical cause.
+- Local workspace remains empty. Route12 39896983175 remains live. Full serial PHY and routed original-clock closure remain open.
