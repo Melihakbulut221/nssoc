@@ -6682,3 +6682,20 @@ Via3 composition39998199226 passed all25 controls. Summary669914935 /
 77841e6215b66c6ef31d2481c9fd0f169fe42904c3c7461fea2dc5a27bae892e.
 Next: original interfaces/prepared deck and actual full normal/fault waves.
 CDR corrected Nx6->5 run39999252164 has passed source controls and is live.
+
+
+## PLL follow-on controls found a stale-fallback test coupling
+
+Dispatch40000203914 failed controls before native job (skipped), so it consumed
+no checkpoint and made no native progress. Source39967627133 remains the latest
+durable486.4736ns capsule. Production correctly rejected replay of the193ns
+initial checkpoint, but a historical fallback test demanded live authorization.
+
+The new controls-only entrypoint proves that live stale-initial authorization
+is rejected before and after every original test. It isolates the same real
+historical terminal-failure metadata only during the original11 fallback
+fixture tests. Production controller, authorizer, source_gate and saved native
+method map are unchanged. No compatibility exception or native gate is removed.
+After the push controls pass, dispatch the exact sparse39967627133 descriptor
+once. Do not rerun failed initial source or claim a currently running PLL until
+the next native job actually starts. CDR39999252164 and route39991475218 live.

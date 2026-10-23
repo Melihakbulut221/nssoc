@@ -34,7 +34,7 @@ jobs:
           python3 -m pip install numpy==2.3.3
           python3 scripts/check_pll_rhi120_c8_sparse_resume_sources.py
           python3 -m py_compile scripts/cloud_pll_rhi120_c8_sparse.py
-          python3 scripts/cloud_pll_rhi120_c8_sparse.py --controls
+          python3 scripts/check_pll_rhi120_c8_continuation_controls.py
   sparse:
     if: github.event_name == 'workflow_dispatch'
     needs: controls
