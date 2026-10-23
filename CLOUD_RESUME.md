@@ -6849,3 +6849,17 @@ CDRv47 run40011066168 rejected before native activation because the declared
 master track-bleed parent length6.4um differs from actual38.4um. Preserve it.
 Inspect all actual native master/hold dimensions before correcting the source
 recipe; do not weaken the equality guard or claim this as an electrical trial.
+
+## Correct actual v47 master bleed parents; no failed native replay
+
+All eight actual master track/hold resistors are W1um/L38.4um in pinned
+composition665092592, not the slave baseline dimensions. Corrected recipe
+requires38.4->30.72um and explicitly rejects earlier6.4/4.8/28.8 assumptions.
+Failed40011066168 had no native directory or capture; preserve both errors.
+The updated workflow starts only the corrected early/late candidate, with
+all exact graph, source, safety and electrical checks retained.
+
+A7200s mainchip continuation was dispatched from completed39991475218 at
+commit716265197b97e8722f226b0a1a9136da61f4ecb7. Discover the new run ID
+before any further dispatch; do not duplicate. TX40006507576 andPLL40001626503
+were last verified live. Cloud-only work remains mandatory.

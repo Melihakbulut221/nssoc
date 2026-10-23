@@ -37,3 +37,15 @@ This is an exploratory frozen-wire experiment, not a physical candidate.
 Only a useful full electrical result can proceed to actual newGDS,
 native intrinsic extraction, freshRC, DRC/LVS, PVT/timestep/closed-loop
 and serial mainchip integration. Original rejected runs remain evidence.
+
+## Source correction before any native transient
+
+Initial40011066168 stopped before native activation: the strict master
+track-bleed parent-length check expected6.4um but the actual model contains
+38.4um. The original error and both case manifests remain preserved.
+Independent inspection of all eight actual master track AND hold resistors
+in the immutable v32 native composition verifies W1um/L38.4um.
+The corrected recipe requires exactly38.4um and scales it to30.72um.
+Slave track12.8->10.24um and hold9.6->7.68um remain unchanged.
+Extra controls reject the incorrect6.4,4.8 and28.8um master assumptions.
+No waveform, acceptance threshold or equality check is changed.

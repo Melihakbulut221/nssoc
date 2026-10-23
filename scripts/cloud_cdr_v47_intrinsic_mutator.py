@@ -32,8 +32,7 @@ def resistor_dimensions(p,role,latch,tag):
         expected=D('1.2')if latch=='slave'else D('3.9')if tag in ('c','d')else D('2.6')
     else:
         assert role in ('track_bleed','hold_bleed') and parser.number(p['w'])==D('1e-6')
-        expected=D('6.4')if role=='track_bleed'else D('4.8')
-        if latch=='slave':expected*=2
+        expected=D('38.4')if latch=='master'else D('12.8')if role=='track_bleed'else D('9.6')
     assert length==expected,(role,latch,tag,length,expected)
     assert p['sw_et']=='1' and p['b']=='0' and p['m']=='1'
     q['l']=fmt(length*D('.8'))+'u'
@@ -55,7 +54,7 @@ def controls():
     for tag in 'abcd':
         for latch in ('master','slave'):
             for role in ('collector_load','track_bleed','hold_bleed'):
-                length=('1.2'if latch=='slave'else'3.9'if tag in 'cd'else'2.6')if role=='collector_load'else(('12.8'if latch=='slave'else'6.4')if role=='track_bleed'else('9.6'if latch=='slave'else'4.8'))
+                length=('1.2'if latch=='slave'else'3.9'if tag in 'cd'else'2.6')if role=='collector_load'else('38.4'if latch=='master'else'12.8'if role=='track_bleed'else'9.6')
                 r=dict(w='32u'if role=='collector_load'else'1u',l=length+'u',sw_et='1',b='0',m='1',ps='0u')
                 q=resistor_dimensions(r,role,latch,tag)
                 assert parser.number(q['l'])*D('1.25')==parser.number(r['l'])
@@ -63,6 +62,11 @@ def controls():
                 try:resistor_dimensions(bad,role,latch,tag)
                 except AssertionError:rejected.append(tag+'-'+latch+'-'+role)
                 else:raise AssertionError('Unknown parent resistor accepted')
+    for role,wrong in [('track_bleed','6.4u'),('hold_bleed','4.8u'),('hold_bleed','28.8u')]:
+        bad=dict(w='1u',l=wrong,sw_et='1',b='0',m='1',ps='0u')
+        try:resistor_dimensions(bad,role,'master','a')
+        except AssertionError:rejected.append('incorrect-master-parent-'+role+'-'+wrong)
+        else:raise AssertionError('Wrong master parent length accepted')
     return dict(rejected=rejected,geometry_width_times_length_ratio=D('1.25')*D('.8')==1,
       actual_current_or_swing_preservation_proven=False,
       scope='Nominal intrinsic dimension ratios only; all real currents, voltages and timing require the original full transient gates.')
