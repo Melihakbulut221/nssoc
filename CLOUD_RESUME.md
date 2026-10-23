@@ -6139,3 +6139,14 @@ Recovery controller review before any native dispatch: narrowed post-source asse
  
 ## 2026-10-23 — exact RHI120 recovery controls passed; dispatch once
 Recovery controls39941429542 passed at8e771b35c93471033e87b536a4220012a5c8ec87: original native control families plus16 initial/recovery identity corruptions; both positive source branches tested. Independent exact-column qualification39940337710 passed35controls. Dispatch one recovery of exact failed-initial39925042125 from original193.79281012421502ns process using pinned summary/parts; no cold start. Capture original failure in new report/history; expected new native step first restores/verifies full23GB source capsule. Never infer stopped from download/observation duration.
+
+
+## 2026-10-23 — v42 rejected, recovery live
+
+PLL exact saved-process recovery39941648965 is live at d171e9d4f886b7cdb92ae1f152f70f8133aa4177; controls passed and runner setup/restore proceeds. Source initial39925042125 must never be cold-started or dispatched again. Follow this specific recovery handle; its source is the audited193.792810ns native checkpoint.
+
+All four CDRv42 cases39938688503 completed original34.25ns/113475rows/1104columns and passed device limits but failed original data/phase gates. The slave-area hypothesis is rejected; no layout promotion. Nx4 early C/D wrong signs23/45, Nx5 early20/41, versus v41Nx8 parent20/42; no useful C settling gain. Exact receipts in docs/evidence/cdr-v42-slave-area-results-20261023.json. Fresh guarded pre/post source checks passed on all4cases:123validators/872readfiles each,2.35–3.50s; original full native equations unchanged.
+
+Next CDR action should use actual selector base/collector/current waveforms, not another blind area change. Existing v41Nx8 diagnosis shows clock-base nearest-edge medians about4.05ps in C, while measured track-to-hold current transition occurs about14.63ps after original edge (these observations are not causal-delay proof). At bit8 original0.3UI bad sample, C master hold selector xd0109 has VB1.3960V/VC1.1930V/IC3.695mA. Investigate full-wave base-collector bias and current steering before proposing an actual internal-clock/common-mode circuit/geometry change. External original clocks, windows and thresholds must stay unchanged.
+
+Mainchip39932664501 and TX39939103488/39939107708 remain exact live continuations. All work stays cloud-only; full serialPHY/routed mainchip/original-clock signoff remain open.
