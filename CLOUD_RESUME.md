@@ -6465,3 +6465,19 @@ binds the top segments to exact native .res.ext/.ext records from precision
 run39903139948 (asset668047039, SHA6671d835ed9cee45d39391191085d8e00b9ad2e32595bb48d490be9100c7b50f).
 Read its source file/line/coordinate records and map actual GDS before metal/via
 repair. Keep all original R/C and original electrical gates. No PHY closure yet.
+
+
+## 2026-10-23 targeted physical candidate: retained64um return with native via3
+
+Native-location39981981822 passed and source-bound endpoint records are in
+docs/evidence/tx-output8088-return-native-locations-20261023.json.
+The32->64um step improved output effectiveR only12.3831->10.3265ohm. Candidate
+power128return64via3 therefore adds native symmetric3-column via arrays at
+the five existing AVSS transition points, preserving original centred cuts,
+all64um/32um/6um metal and the proven6um landing-width cover. No resistor edits.
+
+A single push-triggered tx-output8088-power128return64via3-physical-cloud job
+at this commit runs unchanged geometry/DRC/deep-flat LVS/exact-port/fault gates.
+If it passes, restore its actual newGDS and run fresh native anchors/RC before
+deciding whether to run full native waves. Preserve failures; do not skip gates.
+The candidate is a hypothesis and is not serial-PHY or chip timing closure.
