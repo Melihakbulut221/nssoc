@@ -5886,3 +5886,10 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - Return64 followthrough39901168356, sourceeab4cea794ef2b27d693b0deb92ca7f6dc2b1361, passed exact source-adaptation check and native runtime preparation; it is waiting for live exact anchor39898478620. No child native stage starts from a failed anchor.
 - New read-only crc32-native-paths-cloud consumes complete CRC experiment39900301089, maps each reported native pin to the exact original physical cell and counts its connected input pins across both tops/all3variants/all3corners. No synthesis/STA/native simulation is restarted. Large launch delay alone is not treated as proof of a physical cause.
 - Local workspace remains empty. Route12 39896983175 remains live. Full serial PHY and routed original-clock closure remain open.
+
+## 2026-10-23: actual return64 native RC passed; two-order precision pending
+- Anchor39898478620 passed28620terminals/165ports/6controls, summary350eabcb2b1014a6fad1c76512800b51392906d4c2a859697562f58cf829ce0b.
+- Followthrough39901168356 completed:8088intrinsic binding and fresh140222R/99906C/703component wire graph+13raw controls. RC summary2b19f65083554c59fc5a171eb89e25ce51bcc5f8f3f31de42024a554e049d729; intrinsic67c28f4724ca79029953dc9eec22ef291a665837d56c9521808c8bacd890022c. Executed generated adapters/receipts committed by exact hash reproduction; no local CAD or artifact files.
+- New return64-precision-cloud checks both native capacitor enumeration orders and original13controls each, without changing any R/C record. After pass, compose fresh intrinsic+preciseRC, prepare and run full original electrical captures.
+- Native timing reader39901679268 passed18paths. Actual slow-path loads: baseline LCRC byte_index115; combined fullpacket byte_index180 and following controls108/153. Retain all setup/hold regressions; canonical CRC/LCRC unchanged. Matched physical buffering/sizing is the next timing investigation, not another standalone-only logic win.
+- Route12 39896983175 still active at last check; do not restart. Full serialPHY and original-clock routed timing remain open.
