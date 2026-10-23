@@ -6523,3 +6523,19 @@ are unchanged; exact method/controller deltas are pinned. Next: actual graph
 receipt -> fresh28620-terminal anchors -> native intrinsic/RC -> two-order
 precision -> composition/interfaces -> full original normal/fault captures.
 No reuse of old return64 RC/waveforms for via3 electrical claims.
+
+
+## 2026-10-23 via3 fresh wire graph passed; all-terminal binding launched
+
+39987745998 passed on the newGDS with8088 devices,28620 terminals,703 wire
+components and768 electrical nets. Receipt:
+docs/evidence/tx-output8088-power128return64via3-native-wires-pass-20261023.json.
+One push-triggered tx-output8088-power128return64via3-native-anchors-cloud run
+at this commit binds every real terminal. Binder changes only its staging path;
+controller pins the new completed source. Next: fresh native intrinsic/RC.
+
+Original return64 fault case39977623211 completed34ns/77694rows/14182columns.
+28wrong-sign/47below100mV,84failedHBT,0failedMOS. Normal baseline has14/32 and85
+failedHBT; neither is electrically accepted. Fault observation is not proof
+of a passing healthy design. Do not resume either complete capture.
+PLL39967627133 is publishing; route39970270107 remains active.
