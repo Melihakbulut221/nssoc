@@ -6135,3 +6135,7 @@ New native-recovery workflow starts only control job on push. Its dispatch path 
 
 
 Recovery controller review before any native dispatch: narrowed post-source assertion replacement to restore_source only, avoiding accidental self-recursion in later recovery-source handling. Added successful recovery-source positive control plus four failed/live/missing/status negative cases; both initial and repeated recovery branches must now pass. Native runtime remains unmodified; do not use the earlier control-only commit for dispatch.
+
+ 
+## 2026-10-23 — exact RHI120 recovery controls passed; dispatch once
+Recovery controls39941429542 passed at8e771b35c93471033e87b536a4220012a5c8ec87: original native control families plus16 initial/recovery identity corruptions; both positive source branches tested. Independent exact-column qualification39940337710 passed35controls. Dispatch one recovery of exact failed-initial39925042125 from original193.79281012421502ns process using pinned summary/parts; no cold start. Capture original failure in new report/history; expected new native step first restores/verifies full23GB source capsule. Never infer stopped from download/observation duration.
