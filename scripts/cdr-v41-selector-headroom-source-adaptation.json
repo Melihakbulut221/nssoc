@@ -1,0 +1,51 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v41_transfer.py",
+  "baseline_sha256": "454c3a55a6ff8a1da00d837fa4fbd5ae87158e10d5a58147c02df2eb642a55b6",
+  "candidate_path": "scripts/cloud_cdr_v41_selector_headroom.py",
+  "candidate_sha256": "848dc2c7e4e167365d1685fe98dfc79cedcf326481558d26f3caaab59952db5e",
+  "edits": [
+    {
+      "before": "import cdr_candidate_input_bias_observation as bias",
+      "after": "import cdr_candidate_input_bias_observation as bias\nimport cdr_selector_headroom as selector_observation",
+      "count": 1
+    },
+    {
+      "before": "out=ROOT/('cloud-cdr-v41-transfer-'",
+      "after": "out=ROOT/('cloud-cdr-v41-selector-headroom-'",
+      "count": 1
+    },
+    {
+      "before": "inputs=ROOT/('cdr-v41-transfer-inputs-'",
+      "after": "inputs=ROOT/('cdr-v41-selector-headroom-inputs-'",
+      "count": 1
+    },
+    {
+      "before": "  r['controls']=controls();",
+      "after": "  r['selector_observation_controls']=selector_observation.controls()\n  r['controls']=controls();",
+      "count": 1
+    },
+    {
+      "before": "Path(bias.__file__),ROOT/'scripts/cloud_cdr_v35_input_bias.py'",
+      "after": "Path(bias.__file__),Path(selector_observation.__file__),ROOT/'scripts/check_cdr_v41_selector_headroom_sources.py',ROOT/'scripts/cdr-v41-selector-headroom-source-adaptation.json',ROOT/'scripts/cloud_cdr_v35_input_bias.py'",
+      "count": 1
+    },
+    {
+      "before": "   stages[tag]=dict(latches=latch_data,physical_macro=macro,",
+      "after": "   stages[tag]=dict(selector_terminal_observation=selector_observation.observe(t,latch_data['native_graph'],members,v,w,latch_data['original_expected_capture_edges_s'],latch_data['steering_transition_windows'],UI,active),latches=latch_data,physical_macro=macro,",
+      "count": 1
+    },
+    {
+      "before": "  assert all(sha(Path(n))==h for n,h in frozen.items())",
+      "after": "  (out/'selector-observations.json').write_text(json.dumps(dict(source_waveform=proof,case=args.case,variant=args.variant,raw_sha256=prior['raw_capture']['raw_sha256'],original_rejection_preserved=True,all120_hbt_and4_sampler_results_reproduced=True,new_acceptance_gate=False,stages={tag:row['selector_terminal_observation']for tag,row in stages.items()}),indent=2)+'\\n')\n  assert all(sha(Path(n))==h for n,h in frozen.items())",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/check_cdr_v41_selector_headroom_sources.py": "1dcab5e450467d53c093e6784700c5786c0c43b6616261cf7882615376881393",
+    "scripts/cdr_selector_headroom.py": "6bbc9e6bc9841220bf2e1eee2d47ecc10fa7f842f0b5f0a02228a75c3da1d0e4",
+    ".github/workflows/cdr-v41-selector-headroom-cloud.yml": "51f908c720605391bf7800d19b4b519e374dcf4d754640c970feb003444fa075"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Add source-bound actual selector voltage/current observations to original complete v41Nx8 early/late capture diagnosis. All120 HBT and4sampler outcomes still reproduced. Original phases/deadline/expected bits retained; no waveform pruning, normalized clock, acceptance gate or causal stored-charge claim."
+}
