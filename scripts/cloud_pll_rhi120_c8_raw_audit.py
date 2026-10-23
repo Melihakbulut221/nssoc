@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 from unittest.mock import patch
 import compare_cloud_routed_endpoints as reports
-import audit_pll845_mim_intrinsic as intrinsic
+import audit_pll_rhi120_c8_mim_intrinsic as intrinsic
 from cloud_cdr_v4_rc import NONBRIDGE_SELECTOR
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1]
@@ -67,7 +67,7 @@ def main():
    "dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1860,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING=819,RETAINED_SHARED_INTRINSIC_DIFFUSION_NO_METAL_OR_DIFFUSION_R=58)")
   replace('logical=f"T{r[\'device\']:03d}_{r[\'terminal\']}"',"logical=r['reference_label']")
   replace('shared_diffusion_terminals=0','shared_diffusion_terminals=58')
-  replace('import networkx as nx','import networkx as nx\nsys.path.insert(0,str(Path.cwd()/"scripts"))\nfrom audit_pll845_mim_intrinsic import validate_mim')
+  replace('import networkx as nx','import networkx as nx\nsys.path.insert(0,str(Path.cwd()/"scripts"))\nfrom audit_pll_rhi120_c8_mim_intrinsic import validate_mim')
   replace("require(not after['devices'] and not before['devices'] and not before['resistors'],'Device insertion into wire-only graph')",
    "require(not before['resistors'],'Unexpected baseline resistor insertion')")
   replace("require(native_r==export_r,'Native/export resistor topology/value differs')",

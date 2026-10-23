@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_pll845_whole_raw_audit.py",
   "candidate_path": "scripts/cloud_pll_rhi120_c8_raw_audit.py",
   "baseline_sha256": "4e5838b3cfa98951d257e3472c884bf0285c33adedf845a3b220c0518f6e64ec",
-  "candidate_sha256": "3243fba77b2d6d5f00838af3e921e1ba0969421316677eb4e698a7d533ebb8bf",
+  "candidate_sha256": "1de66499db7bba8d947c49417eca1476b83c7381550acc8ff56f606b1acbb8c2",
   "edits": [
     {
       "before": "cloud-pll845-whole-raw-audit",
@@ -43,7 +43,30 @@
       "before": "0f8b7feb54398655d913534854370ca1c6b7bcfca8f26e944c047cf6924c973f",
       "after": "c55f4dd64cff7b31647a343036ec4d62f8c7324463b8c591d6dfddea8cad7b18",
       "count": 1
+    },
+    {
+      "before": "import audit_pll845_mim_intrinsic as intrinsic",
+      "after": "import audit_pll_rhi120_c8_mim_intrinsic as intrinsic",
+      "count": 1
+    },
+    {
+      "before": "from audit_pll845_mim_intrinsic import validate_mim",
+      "after": "from audit_pll_rhi120_c8_mim_intrinsic import validate_mim",
+      "count": 1
     }
   ],
-  "scope": "Exact source/namespace substitutions only; native R topology/value and full pointwise/collapsed C conservation audits,13wire+9intrinsic controls preserved."
+  "scope": "Exact source/namespace substitutions only; native R topology/value and full pointwise/collapsed C conservation audits,13wire+9intrinsic controls preserved.",
+  "helper": {
+    "baseline_path": "scripts/audit_pll845_mim_intrinsic.py",
+    "candidate_path": "scripts/audit_pll_rhi120_c8_mim_intrinsic.py",
+    "baseline_sha256": "85fbc5f685f61339fb5ff1442afcc352ee0e7917955731de6f4ac925ab83ecb1",
+    "candidate_sha256": "d1dfca31c95a4da1930028464d4ecf1b7af0e0618f662a5be4583d5acfe6e1a7",
+    "edits": [
+      {
+        "before": "cloud-pll845-whole-raw-audit",
+        "after": "cloud-pll-rhi120-c8-raw-audit",
+        "count": 1
+      }
+    ]
+  }
 }
