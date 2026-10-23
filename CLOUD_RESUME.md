@@ -6720,3 +6720,18 @@ Native sampler maxima around44-46ps still exceed original37.5ps; no promotion.
 PLL40001185272 controls passed (all original cases, isolated historical
 fixtures, actual stale-source rejection). A fresh dispatch from sparse39967627133
 was sent at1daf9700e47d657430111a1eb3372b751dd0cf8b; inspect latest run ID.
+
+
+## Current verified cloud handoff
+
+- PLL40001626503: controls passed; native sparse continuation step is live,
+  consuming exactly39967627133 at486.4736ns. Do not duplicate.
+- Mainchip39991475218: actual detailed-route continuation remains live.
+- Via3 composition39998199226: completed with25 controls; proceed to original
+  interface/prepared-deck and full normal/fault loaded native captures.
+- CDR v46 completed captures39999252164 remain rejected, with original
+  post-diagnostic filename failure preserved. Do not rerun those captures.
+  Source-only repair controls40002384694 passed, proving the one-filename
+  substitution and unchanged crossing equations/all observation controls.
+- No full serialPHY/mainchip or final setup/hold acceptance has been granted.
+  All CAD, native waveforms and archives stay in GitHub; local project empty.
