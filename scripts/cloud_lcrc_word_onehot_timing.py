@@ -22,6 +22,52 @@ def asset(aid):
     return subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/releases/assets/'+str(aid),'-H','Accept: application/octet-stream'])
 def q(s):
     s=str(s);assert not any(c in s for c in '{}\n\r');return '{'+s+'}'
+
+def normalize_structural(module,path):
+    """Only spelling changes: emit scalar wires and original physical cells."""
+    assert module['ports'] and module['cells']
+    bits={b for p in module['ports'].values()for b in p['bits']if isinstance(b,int)}
+    bits|={b for cell in module['cells'].values()for v in cell['connections'].values()for b in v if isinstance(b,int)}
+    def expr(bit):return 'n'+str(bit)if isinstance(bit,int)else "1'b"+bit
+    lines=['module soc_pcie_lcrc_tx ('+', '.join(module['ports'])+');']
+    for name,p in module['ports'].items():
+        assert re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*',name)
+        assert not p.get('upto',0)and not p.get('offset',0)and p['direction']in ['input','output']
+        width=len(p['bits']);lines.append(p['direction']+(' ['+str(width-1)+':0]'if width>1 else '')+' '+name+';')
+    lines += ['wire n'+str(b)+';'for b in sorted(bits)]
+    for name,p in module['ports'].items():
+        for i,b in enumerate(p['bits']):
+            port=name+('['+str(i)+']'if len(p['bits'])>1 else '')
+            lhs,rhs=(expr(b),port)if p['direction']=='input'else(port,expr(b))
+            lines.append('assign '+lhs+' = '+rhs+';')
+    for name,cell in module['cells'].items():
+        assert cell['type'].startswith('sg13g2_')and not cell['parameters']
+        assert not re.search(r'\s',name)
+        connections=[]
+        for pin,v in cell['connections'].items():
+            assert len(v)==1 and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*',pin)
+            connections.append('.'+pin+'('+expr(v[0])+')')
+        lines.append(cell['type']+' \\'+name+' ('+', '.join(connections)+');')
+    lines.append('endmodule')
+    path.write_text('\n'.join(lines)+'\n')
+
+def verify_structural(module,parsed):
+    assert set(module['cells'])==set(parsed['cells'])
+    def translate(bit):
+        if isinstance(bit,str):return bit
+        values=parsed['netnames']['n'+str(bit)]['bits'];assert len(values)==1
+        return values[0]
+    for name,cell in module['cells'].items():
+        c=parsed['cells'][name]
+        assert cell['type']==c['type']and cell['parameters']==c['parameters']
+        assert cell['port_directions']==c['port_directions']
+        assert {p:[translate(b)for b in v]for p,v in cell['connections'].items()}==c['connections']
+    assert set(module['ports'])==set(parsed['ports'])
+    for name,p in module['ports'].items():
+        pp=parsed['ports'][name]
+        assert p['direction']==pp['direction']and [translate(b)for b in p['bits']]==pp['bits']
+    return {'same_physical_cells':len(module['cells']),'same_cell_types_parameters_and_every_pin':True,'same_all_ports':True}
+
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     OUT.mkdir(exist_ok=False)
@@ -52,7 +98,7 @@ def main():
                 p=OUT/(label+'.'+ext);p.write_bytes(b);protected[str(p)]=sha(p)
         sta=Path(shutil.which('sta')).resolve();assert sta.is_file()
         r['tool']={'path':str(sta),'sha256':sha(sta),'version':subprocess.check_output([str(sta),'-version'],stderr=subprocess.STDOUT,text=True),
-                   'package':subprocess.check_output(['dpkg-query','-W','opensta'],text=True)}
+                   'source_commit':os.environ['OPENSTA_SOURCE_COMMIT'],'cudd_commit':os.environ['CUDD_SOURCE_COMMIT']}
         protected[str(sta)]=sha(sta);protected[str(Path(__file__))]=sha(__file__)
         libs={}
         for corner,(name,blob)in LIBRARIES.items():
@@ -61,9 +107,29 @@ def main():
             assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==blob
             p=OUT/name;p.write_bytes(b);libs[corner]=p;protected[str(p)]=sha(p)
         r['libraries']={k:{'path':str(v),'sha256':sha(v),'git_blob':LIBRARIES[k][1]}for k,v in libs.items()}
+        yosys=Path(shutil.which('yosys')).resolve();protected[str(yosys)]=sha(yosys)
+        r['normalization']={}
         r['measurements']={};r['launch_registers']={}
         for label in ['baseline','candidate']:
             module=json.loads((OUT/(label+'.json')).read_text())['modules']['soc_pcie_lcrc_tx']
+            normalized=OUT/(label+'-scalar.v');normalize_structural(module,normalized)
+            parsed=OUT/(label+'-scalar.json')
+            ys=OUT/(label+'-readback.ys')
+            ys.write_text('read_liberty -lib '+str(libs['typ'])+'\nread_verilog '+str(normalized)+'\nhierarchy -check -top soc_pcie_lcrc_tx\nwrite_json '+str(parsed)+'\n')
+            with(OUT/(label+'-readback.log')).open('w')as log:
+                code=subprocess.call([str(yosys),'-s',str(ys)],stdout=log,stderr=subprocess.STDOUT)
+            assert code==0,'Native structural readback failed'
+            native_module=json.loads(parsed.read_text())['modules']['soc_pcie_lcrc_tx']
+            r['normalization'][label]=verify_structural(module,native_module)
+            protected[str(normalized)]=sha(normalized)
+            # Fault control: the comparison must detect a real pin inversion.
+            import copy
+            wrong=copy.deepcopy(native_module)
+            n=next(n for n,x in wrong['cells'].items()if 'D'in x['connections'])
+            wrong['cells'][n]['connections']['D']=['1']
+            try:verify_structural(module,wrong)
+            except AssertionError:r['normalization'][label]['wrong_data_pin_rejected']=True
+            else:raise AssertionError('Structural readback control accepted')
             regs=['index']+(['word_read_onehot']if label=='candidate'else[])
             launch={}
             for net in regs:
@@ -76,7 +142,7 @@ def main():
             r['measurements'][label]={};save()
             for corner,lib in libs.items():
                 d=OUT/(label+'-'+corner);d.mkdir()
-                lines=['read_liberty '+q(lib),'read_verilog '+q(OUT/(label+'.v')),'link_design soc_pcie_lcrc_tx',
+                lines=['read_liberty '+q(lib),'read_verilog '+q(normalized),'link_design soc_pcie_lcrc_tx',
                        'create_clock -name clk -period 4 [get_ports clk_i]',
                        'set_clock_uncertainty 0.25 [get_clocks clk]',
                        'set_clock_transition 0.05 [get_clocks clk]',

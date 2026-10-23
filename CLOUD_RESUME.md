@@ -5826,3 +5826,9 @@ CDC localreset block remains verified but not remapped into live route11. Fullch
 - Default mapped original port tests2+2 pass; reliable-packet RTL integration4+4 pass; no skips. Mapped IHP cells1799 baseline vs1449 candidate.
 - Canonical LCRC unchanged. New lcrc-word-onehot-timing-cloud consumes exact default mapped releases, all3IHPcorners and fixed4ns zero-wire diagnostic. Do not claim routed timing/fullPHY from these measurements.
 - Pending route11 39883818247 must not be restarted while live.
+
+
+## 2026-10-23: LCRC comparative STA loader repaired, original rejection retained
+- First timing39891422617 failed oldOpenSTA2.0.17 parser/flag/name binding, not a design timing result. See docs/evidence/lcrc-onehot-sta-loader-rejection-20261023.json.
+- New cloud workflow builds fixedOpenSTA f2b334cf92b75c4091cb521de4607b0cf54c7b1b and CUDD f54f533303640afd5dbe47a05ebeabb3066f2a25. Native mapped JSON is serialized without signed debug wires/concatassign; actual every-cell/pin/port topology checked by independent Yosys readback and a fault control. No remap, clocks/loads/gates unchanged.
+- Canonical LCRC still unchanged; inspect fresh three-corner result before adoption.

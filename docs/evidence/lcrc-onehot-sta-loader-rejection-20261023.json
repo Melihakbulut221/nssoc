@@ -1,0 +1,15 @@
+{
+  "run": 39891422617,
+  "source_head": "257355cc8aa9e562030b02c85e4932044e9677c4",
+  "summary_asset": 667766302,
+  "summary_sha256": "67bfe70b9990f9d31cfa7f70234f9d38da97720c8c2b2becccdc039184168be5",
+  "status": "REJECTED_STALE_STA_PARSER_AND_NAME_BINDING_NOT_DESIGN_TIMING",
+  "reasons": [
+    "OpenSTA 2.0.17 cannot parse signed debug wire/concatenated assignment emitted by modern Yosys",
+    "Old report_checks flag syntax",
+    "Yosys default Verilog writer renamed cells relative to native JSON; launch-pin lookup must bind exact emitted names"
+  ],
+  "accepted": false,
+  "timing_values_accepted": false,
+  "correction": "Pinned modern OpenSTA; scalar graph serializer preserving actual native types/parameters/every pin. Independent native Yosys readback compares all cells, ports and connections plus corrupted data-pin control. No resynthesis or changed constraints."
+}
