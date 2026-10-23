@@ -5785,3 +5785,12 @@ Candidate RTL removes raw reset reconvergence from source_reset_n/destination_re
 New pcie-cdc-local-reset-cloud uses pinned2026-08-04 OSS tools and untouched c4b8b4e IHP models. It must pass existing RTL fault controls, frozen-reference clk2fflogic event equivalence, native IHP port tests, and exact mapped reset topology: raw reset only reaches four release flops; every functional reset uses its own domain's releaseQ. The actual old mapped RTL and injected raw-bypass/wrong-domain faults must reject. No clock or SDC exceptions changed.
 
 This is pending cloud validation, not a chip timing fix proved by layout. Current153130-cell route11 remains the old immutable netlist; it is not silently replaced. A passing block candidate still needs full-chip synthesis/integration/physical and original-clock STA. TXnormal full34ns capture39882244224 rejects original loaded gates:85HBT/0MOS failures and14wrong-sign samples; retain and diagnose that completed record, do not restart it.
+
+
+## 2026-10-23: Full return32 TX rejected; map actual failed devices without restarting SPICE
+
+TXnormal39882244224 is terminalfailure after a complete34ns capture:77702rows/all14182columns, zero partial bytes, nativeexit0,diagnostics[],85HBTfailures/0MOSfailures,14wrong-sign output samples and33below100mV. Last sample remains34ns. Receipt: docs/evidence/tx-return32-full-nominal-rejection-20261023.json. Narrower150mV interface and common-mode gates remain unchanged; level16passes, other interfaces do not. Do not restart this completed native process.
+
+New tx-power128return32-native-failure-map-cloud adapts only original immutable source bindings to this exact capture, prepared39770384053 and modela9faee...; the original8088device/593parentHBT conductor-based stage derivation and all7fault controls remain byte-for-byte methods. It restores only prepared circuit/topology metadata, not the full raw wave. Use the resulting actual role map for a full headroom comparison against the retained priorfeed32 record before choosing the next physical change. WiderAVSSreturn alone did not establish electrical acceptance.
+
+CDC local-reset native run39886209079 passed217equivalence points,414actual IHPcells,3clockratios/97transfers each,179functional reset sinks behind their localreleaseQ and all3topologycontrols. Fullchip remapping/physicalSTA is still required; currentroute11 uses the immutable pre-fix netlist.
