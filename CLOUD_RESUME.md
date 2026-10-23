@@ -5715,3 +5715,14 @@ New cdr-v40-intrinsic-screen-cloud workflow is push-triggered once, then4 full n
 Before simulation,6actual graph faults and4scalar area faults must reject. Unique original changed-device count76/92, not76+16 indiscriminately. All476modelrecords,17918R12850C,original34.25ns/256bits/1104column gates, external clocks/loads, MOS dimensions/bias/data-hold devices are retained. Actual currents may shift; do not call fixed bias dimensions fixed measured current. This is a frozen-RC exploratory trial, not a physical layout/PHY pass. Actual54umMOS geometry issue and freshGDS/RC/PVT remain open. Observe existing push run before any dispatch; do not duplicate.
 
 Existing PLL wire-reader39873653454, mainchip route10 39868561968, TX4 39867591857/39867597476 were last verified live. Inspect their terminal state before continuation or postroute analysis. Local CAD workspace remains empty.
+
+
+## 2026-10-23: Cloud-only execution and serial-mainchip boundary checkpoint
+
+Observed 2026-10-23T00:44:45.889830+00:00 at source 28d16083644ae3aea1d9763f27b62bb345c2ea95. Local NSSOC workspace is empty and no local CAD/simulation processes were found. Keep all CAD, tests, raw captures and persistent artifacts on GitHub-hosted runners/releases; use local tools only for API orchestration. Do not restore a local checkout or download raw captures locally.
+
+Live run snapshot: 39878490784 in_progress, 39873653454 in_progress, 39868561968 in_progress, 39867591857 in_progress, 39867597476 in_progress. Continue exact saved processes when checkpoints publish; never restart an active native job because polling ended.
+
+Source audit: hw/soc/rtl/soc_top.v exposes the packet PCIe boundary and external-PHY GMII Ethernet. scripts/prepare_pcie_mainchip_pnr.py explicitly records serial_phy=False. Current mainchip routing therefore does not demonstrate a routed serial Gen3 x4 PHY. This is a source-level finding, not a fresh layout census. Full serial PHY top-level integration and original-clock timing remain open. Existing subblock experiments must retain their original acceptance gates.
+
+Evidence: docs/evidence/cloud-only-mainchip-boundary-20261023.json. Do not infer full PHY acceptance from successful packet-SoC routing or isolated analog leaf checks.
