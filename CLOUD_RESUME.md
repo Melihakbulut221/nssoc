@@ -6354,3 +6354,27 @@ ordinary logical publication replace duplicate whole-archive staging.
 Descriptor: run39925042125, attempt1, stageinitial,
 summary74033b131a40f5009565b1dd6e219f1b6748f555f750b1c715ebbc77ad93be8d,
 partsbf1b8dcc19d1b8b31eb6934537f0efe728e7f8a6fd5060d1e1334d22627d436d.
+
+
+## 2026-10-23 cloud-only handoff: route checkpoint and complete rejected TX
+
+Local NSSoC project directory verified empty. No local CAD process or native
+artifact download. Sources and continuation records remain on GitHub.
+
+Route39949845770 completed successfully as a SAVED PROCESS, not a completed
+layout. Completed router iteration violation counts172654,95333,86913; iteration3
+started. Exact summary/parts hashes and source descriptor are preserved in
+docs/evidence/cloud-only-route-tx-handoff-20261023.json.
+A single7200second continuation is dispatched at this receipt commit. Discover
+its workflow_dispatch run and do not dispatch the same saved process again.
+Original routing parameters and clocks remain unchanged; postroute waits for
+actual native route completion.
+
+Normal TX39957261794 completed34ns capture but was rejected by original gates:
+14 wrong-sign and32 below100mV output samples, plus device/interface failures.
+Preserve its complete evidence. Do not resume or rerun this completed capture.
+Fault counterpart39957265010 was still active at inspection.
+
+PLL sparse fallback39967627133: controls passed, native sparse job120461960874
+active. Preserve this single actual continuation. Full serial PHY, routed
+mainchip and final timing acceptance remain open.
