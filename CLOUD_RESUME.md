@@ -6616,3 +6616,18 @@ Master output meets100mV by the original deadline while64/65 slave samples
 remain late. Actual gain, selector-current response and headroom are recorded
 in its full summaries. Next changes must target the measured second-stage
 limitation and preserve all original full-capture and device gates.
+
+
+## Measured via3 improvement and CDR slave-stage candidate
+
+Via3 comparison39996439603 passed. Output-tail return drops10.326486->5.193286
+ohm (49.7091%); core-tail returns6.286959/6.275982ohm are unchanged. The native
+R139947 bottleneck drops9.87597->4.74277ohm. Summary669882388 /
+704ecec430595f3437f93705215c76ed7826cb7394c11867190fb65e8a77a602.
+This is linear DC wire-only evidence, not loaded-wave or fullPHY acceptance.
+
+CDR v46 tests four slave hold HBTs Nx4->3 or those plus four slave data HBTs,
+on the unchanged v44l39 parent. It uses exact new early-stage diagnosis and
+both measured parent phases. Original source/device/data/phase gates and
+frozen wire RC are preserved; failed v45 remains rejected. A promising screen
+still needs new candidate geometry/DRC/LVS/RC. See cdr-v46-slave-regeneration doc.
