@@ -1,0 +1,2126 @@
+{
+  "status": "PASS_ACTUAL_TX_OUTPUT8088_POWER128RETURN64_PARENT_DRC_DEEP_FLAT_LVS_AND_FAULTS_REQUIRES_FRESH_RC_FULLWAVE",
+  "source_head": "432ee05bb5eda42c5298d2cbe936470529945d92",
+  "accepted": false,
+  "full_phy_accepted": false,
+  "qualified_pex": false,
+  "steps": {
+    "drc": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/drc/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/drc/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 11.792915031999996,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "3da7c062f2733fa58ef7eb72128595b2aea445da00284d6e7c326c2a1a853f68"
+      },
+      "positive": true,
+      "mode": "deep",
+      "combine_devices": false,
+      "measurement": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "b0c09f86b32a4726887cb63d77c4bf266a0a5de48223aae2eddf27b72c386e21",
+        "log_sha256": "3da7c062f2733fa58ef7eb72128595b2aea445da00284d6e7c326c2a1a853f68"
+      },
+      "expected_verdict_observed": true
+    },
+    "deep_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 9.269125944999928,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "f0b58e1a120de1825976b0029fd81f5fa93cb37e4ddbd8addf8dceb10fc07774"
+      },
+      "positive": true,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.6527558779999936,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "Match",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/result.lvsdb": {
+            "bytes": 18593365,
+            "sha256": "3a649088696303978fc077c958d3eb128c0dab653dcc5c4b48b94616863aaade"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/deep_lvs/deck.log": {
+            "bytes": 37301,
+            "sha256": "90ad1c59f528ba1d2ce0b7dac465488579ce9f2f3cb227a7957b0104e057e8b1"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "flat_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 12.818652209999982,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "76c9778458ff9713de3353394736de1bf9dce540d5586090aba142c187b83869"
+      },
+      "positive": true,
+      "mode": "flat",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.5102490710000893,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "Match",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/result.lvsdb": {
+            "bytes": 15904318,
+            "sha256": "e451d5d5f1fde7295cea8a74ca5135f8076e9a424a47b7e9d4ffebc9c430020b"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/flat_lvs/deck.log": {
+            "bytes": 37285,
+            "sha256": "3037fdc7a492b31321160c2d5c68597dd83f981763512d1334d3d1e2c414edf4"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "handoff_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/handoff_open.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 8.940386936999971,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "0090ede9d5c838b1b1a17f3eb166eefea1f54df38fc53b7fa02178ca172e61bd"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.6005892450000374,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/result.lvsdb": {
+            "bytes": 18587046,
+            "sha256": "ea2340294c5706566c2127ae5dfcc44d15a2d28ec8b14f08b511501c65eb8942"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/handoff_open/deck.log": {
+            "bytes": 37304,
+            "sha256": "16c40805ef274bf60e2c6d7767cd9d618ff594b82437922db7183a621d09d86b"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "output_return_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/output_return_open.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 9.879159857000104,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "3ee6c0b25a2eef51078831a33b2b4354abf67cf19f7b65f9b04c312ebdbf5b5a"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.6099974640000028,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/result.lvsdb": {
+            "bytes": 18683089,
+            "sha256": "df3f4566c17a1614003bedd39d00ac4d2a2e4fab0018401b27d764ef6d7f67f7"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/output_return_open/deck.log": {
+            "bytes": 37322,
+            "sha256": "d095488e3c36f40a4998285337962e6d69d08e50900fca12bac0bd652c42c197"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "body_supply_short": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/body_supply_short.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 8.882563914999992,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "1bb708d196ba25f9991df5749edebe508c0895bf23a5c55163f41cc3a847e7e9"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.6520281670000259,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/result.lvsdb": {
+            "bytes": 18613220,
+            "sha256": "e603987af8ea5bfc52d014e526eaf718489427a1523fe280f30a9712c6207d0a"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/body_supply_short/deck.log": {
+            "bytes": 37319,
+            "sha256": "750f18eef3c0dc83deee075f383c2796884e2a4cc04bedff925ce30de4e9d80b"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": false,
+        "reason": "Aliased or malformed public port",
+        "expected_count": 165
+      },
+      "expected_verdict_observed": true
+    },
+    "wrong_width": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/wrong_width.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 8.897845555000004,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "8591e1db7423088ccbb349b56caf074aedeff0990233142118dd003ca6beda39"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.6035677129999613,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/result.lvsdb": {
+            "bytes": 18593252,
+            "sha256": "d92c79cf6c556f86dfbb4cbe4fc002b0e79c55f75c1a48d1223f4a1dec4dc9b0"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_width/deck.log": {
+            "bytes": 37298,
+            "sha256": "4249692c3e0d1be3e6b2d4302572ffece04e784cf8377df90c12dc629ba5f891"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "internal_port_alias": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/internal_port_alias.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 12.606039829999986,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "91ef498f05fbc7762ae408ceb27b7857802518d0d7045eb19a88aa9143c95114"
+      },
+      "positive": false,
+      "mode": "flat",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.4746383440000272,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "Match",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/result.lvsdb": {
+            "bytes": 15904414,
+            "sha256": "0e425ab6e88c8f917fcb4a0952bed270f1b73a3120c09e91e7eefb4975628b1d"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/internal_port_alias/deck.log": {
+            "bytes": 37320,
+            "sha256": "a378efab746d51d78f1ebcf47fb4e4fe91e11b568e991b5911950a8195521744"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": false,
+        "expected_count": 165,
+        "actual_count": 166,
+        "missing": [],
+        "extra": [
+          "MP"
+        ]
+      },
+      "native_circuit_comparison_passed": true,
+      "fault_rejection_gate": "EXACT_EXTERNAL_INTERFACE_165_NAMES",
+      "expected_verdict_observed": true
+    },
+    "wrong_output_Nx": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/wrong_output_Nx.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 9.348657414999934,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "e65faf6b5a1cd82fa354beaee5a822830caa95eb4dc6f15387bb2f952c641a67"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.6418162719999145,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/result.lvsdb": {
+            "bytes": 18593983,
+            "sha256": "3ec2076eaf267c336c54ceb806c37d56261fcf76e37da9ca816659cb5e5f882f"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/wrong_output_Nx/deck.log": {
+            "bytes": 37310,
+            "sha256": "664802da39382e2f065cb802a62c803664373aa0f384ea6fb477111697be733b"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "swap_output_inputs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/swap_output_inputs.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 9.22354441799996,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "94bc550d406625af61dd9aae775ae35e77d0a874ee8c5fc8f9bd15f96ad490b3"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/result.lvsdb",
+          "--top",
+          "nssoc_tx_output8088_parent_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.6299954229999685,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_output8088_parent_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_output8088_parent_v1",
+            "schematic": "NSSOC_TX_OUTPUT8088_PARENT_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8088,
+            "schematic_devices_recursive": 8088
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/result.lvsdb": {
+            "bytes": 18593244,
+            "sha256": "dc672f2dbb4e0620dee36f115e476132706e3acca77f092035c362b4e7ebd8ec"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/swap_output_inputs/deck.log": {
+            "bytes": 37319,
+            "sha256": "01e4581440672c71f979218ef1f87773d60a691dfb258d88b47babf4c5f57ba8"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 165,
+        "actual_count": 165,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "offgrid": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/faults/offgrid.gds",
+          "-rd",
+          "topcell=nssoc_tx_output8088_parent_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/offgrid/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical/offgrid/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 10.29672220000009,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "3b08eea90842fd427c00bf396b2991fad2afb10b10c446623a5c57bd810ad8b2"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "measurement": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 4,
+        "categories": {
+          "metal5_drw_Offgrid": 4
+        },
+        "category_count": 560,
+        "report_sha256": "f525ee811f6c6ed5b0f4fc2112786143a4d140c2c28c3fd030a569ad9ea98e4d",
+        "log_sha256": "3b08eea90842fd427c00bf396b2991fad2afb10b10c446623a5c57bd810ad8b2"
+      },
+      "expected_verdict_observed": true
+    }
+  },
+  "prior_width_rejection": {
+    "source": {
+      "run": 39608386983,
+      "summary_sha256": "9d5e4b5f7e70287c89cb5d0e531268a0348083df7491bd450162a676a300bd6a",
+      "manifest_sha256": "95b5052eb825f2d022cc2b8624af34a41061fae1f7fd48464c28f7c8528baea0",
+      "restore": {
+        "archive": {
+          "parts": 1,
+          "bytes": 6670159,
+          "sha256": "be4cd92fe14cef8ba884e0aa185d53a05e5b48fcb303477322ae03644060cda1",
+          "all_parts_and_combined_bytes_verified": true
+        },
+        "selected_files": {
+          "result.json": {
+            "sha256": "9d5e4b5f7e70287c89cb5d0e531268a0348083df7491bd450162a676a300bd6a",
+            "bytes": 69308
+          },
+          "drc/drc.lyrdb": {
+            "sha256": "601b1914590a12d3f0554f79fa8fbc33f74ba55d00ccffe77f517b6e20edcfdf",
+            "bytes": 114284
+          }
+        },
+        "full_archive_verified_before_extraction": true
+      }
+    },
+    "items": [
+      "<item>\n   <tags />\n   <category>'TM2.a'</category>\n   <cell>nssoc_tx_output8088_parent_v1</cell>\n   <visited>false</visited>\n   <multiplicity>1</multiplicity>\n   <comment />\n   <image />\n   <values>\n    <value>edge-pair: (-353,102.94;-353.89,102.94)|(-353.89,104.84;-353,104.84)</value>\n   </values>\n  </item>\n  ",
+      "<item>\n   <tags />\n   <category>'TM2.a'</category>\n   <cell>nssoc_tx_output8088_parent_v1</cell>\n   <visited>false</visited>\n   <multiplicity>1</multiplicity>\n   <comment />\n   <image />\n   <values>\n    <value>edge-pair: (-153,202.94;-153.89,202.94)|(-153.89,204.84;-153,204.84)</value>\n   </values>\n  </item>\n "
+    ],
+    "repair": "Cover complete four-column TopMetal2 landing with6um bridge width; native cuts preserved"
+  },
+  "electrical_predecessor": {
+    "run": 39643945084,
+    "summary_sha256": "c067f83ec3a34f0c66da85b267d0da34c69a94a2657fb47cee6574e80cba2b7e",
+    "status": "ORIGINAL_GATES_REFUTED_BY_IMMUTABLE_POWER128_PREFIX",
+    "repair_hypothesis": "32um TopMetal2 from actual public AVDD/AVSS pad to128um parallel trunk; requires fresh RC and full waves"
+  },
+  "return_network_diagnosis": {
+    "run": 39779483353,
+    "summary_sha256": "c78176a0e96132c2f5c023530c5f493fe7a4e5ab5504a862317a0ac4898ba1b2",
+    "measured_output_effective_resistance_ohm": 12.383116441782459,
+    "dominant_raw_edge": "R139947",
+    "dominant_edge_ohm": 11.9326,
+    "dominant_energy_fraction": 0.9636184926464064,
+    "repair_hypothesis": "Add64um middle metal only on actual AVSS spans longer than80um; preserve6/32um selected-route shapes and40um wide-section endpoint access. Requires fresh physical/RC/full-wave checks."
+  },
+  "full_return32_rejection": {
+    "run": 39882244224,
+    "summary_sha256": "0ecc3dc388c00cc05dac72ae349db19f935e970180ea149e6bb495ceac14aa66",
+    "duration_ns": 34.0,
+    "failed_hbt": 85,
+    "wrong_output_samples": 14,
+    "full_phy_accepted": false,
+    "scope": "The64um candidate targets output-return resistance only. It does not claim to repair the82 selector and2 final-tail failures or the full serial PHY."
+  },
+  "external_port_controls": {
+    "163": {
+      "wrong_declared_count_rejected": true,
+      "case_insensitive_native_spice_names": true,
+      "all_expected_ports_required": true,
+      "expected_count": 163,
+      "rejected": [
+        "extra_internal_port",
+        "missing_external_port",
+        "alias_external_port",
+        "renamed_external_port",
+        "duplicate_external_port"
+      ]
+    },
+    "165": {
+      "wrong_declared_count_rejected": true,
+      "case_insensitive_native_spice_names": true,
+      "all_expected_ports_required": true,
+      "expected_count": 165,
+      "rejected": [
+        "extra_internal_port",
+        "missing_external_port",
+        "alias_external_port",
+        "renamed_external_port",
+        "duplicate_external_port"
+      ]
+    }
+  },
+  "sources": {
+    "core": {
+      "run": 39466552523,
+      "summary_sha256": "f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53",
+      "manifest_sha256": "2a3431b7a2cae61f6b9edcbce8edeef23963bc62c170332064a5ab779ac58404",
+      "restore": {
+        "archive": {
+          "parts": 1,
+          "bytes": 4642120,
+          "sha256": "439c7da2f299ee7c0e5da365ab547b8eda0bdd107fe5e8d62f4e4e64ba9741e8",
+          "all_parts_and_combined_bytes_verified": true
+        },
+        "selected_files": {
+          "source/handoff-result.json": {
+            "sha256": "0872a917cb63cac3631ad9b59c1e0aaca001346d2bff1d7bbbfc4a67859ef796",
+            "bytes": 56408
+          },
+          "power-result.json": {
+            "sha256": "b0dc84e7b447a31ca7183836f4615f8c45d7a8353bf2976226d1418e49d76d31",
+            "bytes": 46866
+          },
+          "layout/layout.gds": {
+            "sha256": "9583c6cf7f70d4dad4736b808535ef564bed11d0730ce4674314025d0beaebdb",
+            "bytes": 422042
+          },
+          "layout/schematic.cir": {
+            "sha256": "0e3f54d27928ea442d3398d6723dcff277c434a978d3943af3149b19e1268d95",
+            "bytes": 717469
+          },
+          "result.json": {
+            "sha256": "f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53",
+            "bytes": 86715
+          }
+        },
+        "full_archive_verified_before_extraction": true
+      }
+    },
+    "output": {
+      "run": 39564026768,
+      "summary_sha256": "8f434b1368bcf613ca2f32c4eeebc528d3e131a243299bf6df09f609c293f9fa",
+      "manifest_sha256": "82076d156f767b5c9caf35f9fea9f13e7953022abec73f6814bb473c1de452c4",
+      "restore": {
+        "archive": {
+          "parts": 1,
+          "bytes": 604233,
+          "sha256": "83a208af4c1144fa407c89cdf825c07def9e4df45cebd0cabbacb7fae555f71e",
+          "all_parts_and_combined_bytes_verified": true
+        },
+        "selected_files": {
+          "result.json": {
+            "sha256": "8f434b1368bcf613ca2f32c4eeebc528d3e131a243299bf6df09f609c293f9fa",
+            "bytes": 2823199
+          },
+          "layout/result.json": {
+            "sha256": "01575f208df3ada8067cc74f7c8df80e578c77fd8c7adf2bfc1a3e4eac9e6bec",
+            "bytes": 28610
+          },
+          "layout/nssoc_tx_cml_layout.gds": {
+            "sha256": "e3502ee90dae5af99e7ab03ef443197f84c71613189703e8a4b112db77053ef5",
+            "bytes": 98118
+          },
+          "layout/schematic.cir": {
+            "sha256": "7fb2304070aa120cecc0a26b2a852a9f0b559a729545fb91928396ded2b44677",
+            "bytes": 749
+          }
+        },
+        "full_archive_verified_before_extraction": true
+      }
+    }
+  },
+  "generation": {
+    "command": [
+      "/home/runner/work/_temp/librelane.AppImage",
+      "python",
+      "/home/runner/work/nssoc/nssoc/scripts/generate_tx_output8088_power128return64_parent.py",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-output8088-power128return64-physical"
+    ],
+    "returncode": 0,
+    "seconds": 9.219008829000018,
+    "memory_limit_bytes": 2147483648,
+    "elapsed_watchdog": null,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "geometry": {
+    "status": "GENERATED_ACTUAL8088_POWER128RETURN64_PARENT_REQUIRES_NATIVE_DRC_LVS_AND_FRESH_RC",
+    "source_core_gds_sha256": "9583c6cf7f70d4dad4736b808535ef564bed11d0730ce4674314025d0beaebdb",
+    "source_output_gds_sha256": "e3502ee90dae5af99e7ab03ef443197f84c71613189703e8a4b112db77053ef5",
+    "reference_devices": 8088,
+    "output_transform": "r0 4330785,4850130",
+    "routes": [
+      {
+        "net": "mp",
+        "source_dbu": "3805785,4874130",
+        "destination_dbu": "4345785,4874130",
+        "foreign_clearance_dbu": 1645,
+        "layers": [
+          67,
+          125,
+          126,
+          133,
+          134
+        ]
+      },
+      {
+        "net": "mn",
+        "source_dbu": "3805785,4882130",
+        "destination_dbu": "4385785,4874130",
+        "foreign_clearance_dbu": 1645,
+        "layers": [
+          67,
+          125,
+          126,
+          133,
+          134
+        ]
+      },
+      {
+        "net": "avss",
+        "source_dbu": "632000,103890",
+        "destination_dbu": "4361285,4828130",
+        "foreign_clearance_dbu": 1645,
+        "layers": [
+          67,
+          125,
+          126,
+          133,
+          134
+        ]
+      },
+      {
+        "net": "sub",
+        "source_dbu": "1225985,3890",
+        "destination_dbu": "4374785,4976130",
+        "foreign_clearance_dbu": 1645,
+        "layers": [
+          67,
+          125,
+          126,
+          133,
+          134
+        ]
+      }
+    ],
+    "parallel_power_routes": [
+      {
+        "net": "avdd",
+        "parallel_trunk_x_dbu": -150000,
+        "trunk_width_um": 128.0,
+        "driver_branches": 64,
+        "branch_width_um": 3.2,
+        "bridge_width_um": 32.0,
+        "bridge_to_public_pin_center_dbu": "1165985,203890",
+        "original_trunk_x_dbu": 50000,
+        "core_public_pin_unchanged": "(1149985,187890;1181985,219890)",
+        "via_columns": 4,
+        "via_rows": 1,
+        "foreign_clearance_dbu": 1645,
+        "original_paths_and_every_native_primitive_preserved": true
+      },
+      {
+        "net": "avss",
+        "parallel_trunk_x_dbu": -350000,
+        "trunk_width_um": 128.0,
+        "driver_branches": 64,
+        "branch_width_um": 3.2,
+        "bridge_width_um": 32.0,
+        "bridge_to_public_pin_center_dbu": "632000,103890",
+        "original_trunk_x_dbu": 30000,
+        "core_public_pin_unchanged": "(600000,71890;664000,135890)",
+        "via_columns": 4,
+        "via_rows": 1,
+        "foreign_clearance_dbu": 1645,
+        "original_paths_and_every_native_primitive_preserved": true
+      }
+    ],
+    "external_ports": {
+      "sap": {
+        "layer": 134,
+        "box_dbu": "(2772000,4749530;2774000,4750730)"
+      },
+      "san": {
+        "layer": 134,
+        "box_dbu": "(2772000,4756530;2774000,4757730)"
+      },
+      "ra": {
+        "layer": 134,
+        "box_dbu": "(2772000,4805530;2774000,4806730)"
+      },
+      "avdd": {
+        "layer": 134,
+        "box_dbu": "(1149985,187890;1181985,219890)"
+      },
+      "avss": {
+        "layer": 134,
+        "box_dbu": "(600000,71890;664000,135890)"
+      },
+      "sub": {
+        "layer": 134,
+        "box_dbu": "(1223985,1890;1227985,5890)"
+      },
+      "sbp": {
+        "layer": 134,
+        "box_dbu": "(2772000,5349530;2774000,5350730)"
+      },
+      "sbn": {
+        "layer": 134,
+        "box_dbu": "(2772000,5356530;2774000,5357730)"
+      },
+      "rb": {
+        "layer": 134,
+        "box_dbu": "(2772000,5405530;2774000,5406730)"
+      },
+      "sp4_0p": {
+        "layer": 134,
+        "box_dbu": "(2072000,3754330;2074000,3755530)"
+      },
+      "sp4_0n": {
+        "layer": 134,
+        "box_dbu": "(2072000,3761330;2074000,3762530)"
+      },
+      "rp4_0": {
+        "layer": 134,
+        "box_dbu": "(2072000,3810330;2074000,3811530)"
+      },
+      "sp4_1p": {
+        "layer": 134,
+        "box_dbu": "(2072000,5554330;2074000,5555530)"
+      },
+      "sp4_1n": {
+        "layer": 134,
+        "box_dbu": "(2072000,5561330;2074000,5562530)"
+      },
+      "rp4_1": {
+        "layer": 134,
+        "box_dbu": "(2072000,5610330;2074000,5611530)"
+      },
+      "sp4_2p": {
+        "layer": 134,
+        "box_dbu": "(2072000,4354330;2074000,4355530)"
+      },
+      "sp4_2n": {
+        "layer": 134,
+        "box_dbu": "(2072000,4361330;2074000,4362530)"
+      },
+      "rp4_2": {
+        "layer": 134,
+        "box_dbu": "(2072000,4410330;2074000,4411530)"
+      },
+      "sp4_3p": {
+        "layer": 134,
+        "box_dbu": "(2072000,6754330;2074000,6755530)"
+      },
+      "sp4_3n": {
+        "layer": 134,
+        "box_dbu": "(2072000,6761330;2074000,6762530)"
+      },
+      "rp4_3": {
+        "layer": 134,
+        "box_dbu": "(2072000,6810330;2074000,6811530)"
+      },
+      "sp8_0p": {
+        "layer": 134,
+        "box_dbu": "(1372000,2254330;1374000,2255530)"
+      },
+      "sp8_0n": {
+        "layer": 134,
+        "box_dbu": "(1372000,2261330;1374000,2262530)"
+      },
+      "rp8_0": {
+        "layer": 134,
+        "box_dbu": "(1372000,2310330;1374000,2311530)"
+      },
+      "sp8_1p": {
+        "layer": 134,
+        "box_dbu": "(1372000,5854330;1374000,5855530)"
+      },
+      "sp8_1n": {
+        "layer": 134,
+        "box_dbu": "(1372000,5861330;1374000,5862530)"
+      },
+      "rp8_1": {
+        "layer": 134,
+        "box_dbu": "(1372000,5910330;1374000,5911530)"
+      },
+      "sp8_2p": {
+        "layer": 134,
+        "box_dbu": "(1372000,4054330;1374000,4055530)"
+      },
+      "sp8_2n": {
+        "layer": 134,
+        "box_dbu": "(1372000,4061330;1374000,4062530)"
+      },
+      "rp8_2": {
+        "layer": 134,
+        "box_dbu": "(1372000,4110330;1374000,4111530)"
+      },
+      "sp8_3p": {
+        "layer": 134,
+        "box_dbu": "(1372000,7654330;1374000,7655530)"
+      },
+      "sp8_3n": {
+        "layer": 134,
+        "box_dbu": "(1372000,7661330;1374000,7662530)"
+      },
+      "rp8_3": {
+        "layer": 134,
+        "box_dbu": "(1372000,7710330;1374000,7711530)"
+      },
+      "sp8_4p": {
+        "layer": 134,
+        "box_dbu": "(1372000,2854330;1374000,2855530)"
+      },
+      "sp8_4n": {
+        "layer": 134,
+        "box_dbu": "(1372000,2861330;1374000,2862530)"
+      },
+      "rp8_4": {
+        "layer": 134,
+        "box_dbu": "(1372000,2910330;1374000,2911530)"
+      },
+      "sp8_5p": {
+        "layer": 134,
+        "box_dbu": "(1372000,6454330;1374000,6455530)"
+      },
+      "sp8_5n": {
+        "layer": 134,
+        "box_dbu": "(1372000,6461330;1374000,6462530)"
+      },
+      "rp8_5": {
+        "layer": 134,
+        "box_dbu": "(1372000,6510330;1374000,6511530)"
+      },
+      "sp8_6p": {
+        "layer": 134,
+        "box_dbu": "(1372000,4654330;1374000,4655530)"
+      },
+      "sp8_6n": {
+        "layer": 134,
+        "box_dbu": "(1372000,4661330;1374000,4662530)"
+      },
+      "rp8_6": {
+        "layer": 134,
+        "box_dbu": "(1372000,4710330;1374000,4711530)"
+      },
+      "sp8_7p": {
+        "layer": 134,
+        "box_dbu": "(1372000,8254330;1374000,8255530)"
+      },
+      "sp8_7n": {
+        "layer": 134,
+        "box_dbu": "(1372000,8261330;1374000,8262530)"
+      },
+      "rp8_7": {
+        "layer": 134,
+        "box_dbu": "(1372000,8310330;1374000,8311530)"
+      },
+      "sp16_0p": {
+        "layer": 134,
+        "box_dbu": "(672000,754330;674000,755530)"
+      },
+      "sp16_0n": {
+        "layer": 134,
+        "box_dbu": "(672000,761330;674000,762530)"
+      },
+      "rp16_0": {
+        "layer": 134,
+        "box_dbu": "(672000,810330;674000,811530)"
+      },
+      "sp16_1p": {
+        "layer": 134,
+        "box_dbu": "(672000,5554330;674000,5555530)"
+      },
+      "sp16_1n": {
+        "layer": 134,
+        "box_dbu": "(672000,5561330;674000,5562530)"
+      },
+      "rp16_1": {
+        "layer": 134,
+        "box_dbu": "(672000,5610330;674000,5611530)"
+      },
+      "sp16_2p": {
+        "layer": 134,
+        "box_dbu": "(672000,3154330;674000,3155530)"
+      },
+      "sp16_2n": {
+        "layer": 134,
+        "box_dbu": "(672000,3161330;674000,3162530)"
+      },
+      "rp16_2": {
+        "layer": 134,
+        "box_dbu": "(672000,3210330;674000,3211530)"
+      },
+      "sp16_3p": {
+        "layer": 134,
+        "box_dbu": "(672000,7954330;674000,7955530)"
+      },
+      "sp16_3n": {
+        "layer": 134,
+        "box_dbu": "(672000,7961330;674000,7962530)"
+      },
+      "rp16_3": {
+        "layer": 134,
+        "box_dbu": "(672000,8010330;674000,8011530)"
+      },
+      "sp16_4p": {
+        "layer": 134,
+        "box_dbu": "(672000,1954330;674000,1955530)"
+      },
+      "sp16_4n": {
+        "layer": 134,
+        "box_dbu": "(672000,1961330;674000,1962530)"
+      },
+      "rp16_4": {
+        "layer": 134,
+        "box_dbu": "(672000,2010330;674000,2011530)"
+      },
+      "sp16_5p": {
+        "layer": 134,
+        "box_dbu": "(672000,6754330;674000,6755530)"
+      },
+      "sp16_5n": {
+        "layer": 134,
+        "box_dbu": "(672000,6761330;674000,6762530)"
+      },
+      "rp16_5": {
+        "layer": 134,
+        "box_dbu": "(672000,6810330;674000,6811530)"
+      },
+      "sp16_6p": {
+        "layer": 134,
+        "box_dbu": "(672000,4354330;674000,4355530)"
+      },
+      "sp16_6n": {
+        "layer": 134,
+        "box_dbu": "(672000,4361330;674000,4362530)"
+      },
+      "rp16_6": {
+        "layer": 134,
+        "box_dbu": "(672000,4410330;674000,4411530)"
+      },
+      "sp16_7p": {
+        "layer": 134,
+        "box_dbu": "(672000,9154330;674000,9155530)"
+      },
+      "sp16_7n": {
+        "layer": 134,
+        "box_dbu": "(672000,9161330;674000,9162530)"
+      },
+      "rp16_7": {
+        "layer": 134,
+        "box_dbu": "(672000,9210330;674000,9211530)"
+      },
+      "sp16_8p": {
+        "layer": 134,
+        "box_dbu": "(672000,1354330;674000,1355530)"
+      },
+      "sp16_8n": {
+        "layer": 134,
+        "box_dbu": "(672000,1361330;674000,1362530)"
+      },
+      "rp16_8": {
+        "layer": 134,
+        "box_dbu": "(672000,1410330;674000,1411530)"
+      },
+      "sp16_9p": {
+        "layer": 134,
+        "box_dbu": "(672000,6154330;674000,6155530)"
+      },
+      "sp16_9n": {
+        "layer": 134,
+        "box_dbu": "(672000,6161330;674000,6162530)"
+      },
+      "rp16_9": {
+        "layer": 134,
+        "box_dbu": "(672000,6210330;674000,6211530)"
+      },
+      "sp16_10p": {
+        "layer": 134,
+        "box_dbu": "(672000,3754330;674000,3755530)"
+      },
+      "sp16_10n": {
+        "layer": 134,
+        "box_dbu": "(672000,3761330;674000,3762530)"
+      },
+      "rp16_10": {
+        "layer": 134,
+        "box_dbu": "(672000,3810330;674000,3811530)"
+      },
+      "sp16_11p": {
+        "layer": 134,
+        "box_dbu": "(672000,8554330;674000,8555530)"
+      },
+      "sp16_11n": {
+        "layer": 134,
+        "box_dbu": "(672000,8561330;674000,8562530)"
+      },
+      "rp16_11": {
+        "layer": 134,
+        "box_dbu": "(672000,8610330;674000,8611530)"
+      },
+      "sp16_12p": {
+        "layer": 134,
+        "box_dbu": "(672000,2554330;674000,2555530)"
+      },
+      "sp16_12n": {
+        "layer": 134,
+        "box_dbu": "(672000,2561330;674000,2562530)"
+      },
+      "rp16_12": {
+        "layer": 134,
+        "box_dbu": "(672000,2610330;674000,2611530)"
+      },
+      "sp16_13p": {
+        "layer": 134,
+        "box_dbu": "(672000,7354330;674000,7355530)"
+      },
+      "sp16_13n": {
+        "layer": 134,
+        "box_dbu": "(672000,7361330;674000,7362530)"
+      },
+      "rp16_13": {
+        "layer": 134,
+        "box_dbu": "(672000,7410330;674000,7411530)"
+      },
+      "sp16_14p": {
+        "layer": 134,
+        "box_dbu": "(672000,4954330;674000,4955530)"
+      },
+      "sp16_14n": {
+        "layer": 134,
+        "box_dbu": "(672000,4961330;674000,4962530)"
+      },
+      "rp16_14": {
+        "layer": 134,
+        "box_dbu": "(672000,5010330;674000,5011530)"
+      },
+      "sp16_15p": {
+        "layer": 134,
+        "box_dbu": "(672000,9754330;674000,9755530)"
+      },
+      "sp16_15n": {
+        "layer": 134,
+        "box_dbu": "(672000,9761330;674000,9762530)"
+      },
+      "rp16_15": {
+        "layer": 134,
+        "box_dbu": "(672000,9810330;674000,9811530)"
+      },
+      "sp": {
+        "layer": 134,
+        "box_dbu": "(3472000,4937530;3474000,4938730)"
+      },
+      "sn": {
+        "layer": 134,
+        "box_dbu": "(3472000,4945530;3474000,4946730)"
+      },
+      "mr": {
+        "layer": 134,
+        "box_dbu": "(3472000,5073530;3474000,5074730)"
+      },
+      "d0p0": {
+        "layer": 67,
+        "box_dbu": "(250000,612730;254000,615130)"
+      },
+      "d0n0": {
+        "layer": 67,
+        "box_dbu": "(250000,742730;254000,745130)"
+      },
+      "d16p0": {
+        "layer": 67,
+        "box_dbu": "(250000,872730;254000,875130)"
+      },
+      "d16n0": {
+        "layer": 67,
+        "box_dbu": "(250000,1002730;254000,1005130)"
+      },
+      "d8p0": {
+        "layer": 67,
+        "box_dbu": "(250000,1212730;254000,1215130)"
+      },
+      "d8n0": {
+        "layer": 67,
+        "box_dbu": "(250000,1342730;254000,1345130)"
+      },
+      "d24p0": {
+        "layer": 67,
+        "box_dbu": "(250000,1472730;254000,1475130)"
+      },
+      "d24n0": {
+        "layer": 67,
+        "box_dbu": "(250000,1602730;254000,1605130)"
+      },
+      "d4p0": {
+        "layer": 67,
+        "box_dbu": "(250000,1812730;254000,1815130)"
+      },
+      "d4n0": {
+        "layer": 67,
+        "box_dbu": "(250000,1942730;254000,1945130)"
+      },
+      "d20p0": {
+        "layer": 67,
+        "box_dbu": "(250000,2072730;254000,2075130)"
+      },
+      "d20n0": {
+        "layer": 67,
+        "box_dbu": "(250000,2202730;254000,2205130)"
+      },
+      "d12p0": {
+        "layer": 67,
+        "box_dbu": "(250000,2412730;254000,2415130)"
+      },
+      "d12n0": {
+        "layer": 67,
+        "box_dbu": "(250000,2542730;254000,2545130)"
+      },
+      "d28p0": {
+        "layer": 67,
+        "box_dbu": "(250000,2672730;254000,2675130)"
+      },
+      "d28n0": {
+        "layer": 67,
+        "box_dbu": "(250000,2802730;254000,2805130)"
+      },
+      "d2p0": {
+        "layer": 67,
+        "box_dbu": "(250000,3012730;254000,3015130)"
+      },
+      "d2n0": {
+        "layer": 67,
+        "box_dbu": "(250000,3142730;254000,3145130)"
+      },
+      "d18p0": {
+        "layer": 67,
+        "box_dbu": "(250000,3272730;254000,3275130)"
+      },
+      "d18n0": {
+        "layer": 67,
+        "box_dbu": "(250000,3402730;254000,3405130)"
+      },
+      "d10p0": {
+        "layer": 67,
+        "box_dbu": "(250000,3612730;254000,3615130)"
+      },
+      "d10n0": {
+        "layer": 67,
+        "box_dbu": "(250000,3742730;254000,3745130)"
+      },
+      "d26p0": {
+        "layer": 67,
+        "box_dbu": "(250000,3872730;254000,3875130)"
+      },
+      "d26n0": {
+        "layer": 67,
+        "box_dbu": "(250000,4002730;254000,4005130)"
+      },
+      "d6p0": {
+        "layer": 67,
+        "box_dbu": "(250000,4212730;254000,4215130)"
+      },
+      "d6n0": {
+        "layer": 67,
+        "box_dbu": "(250000,4342730;254000,4345130)"
+      },
+      "d22p0": {
+        "layer": 67,
+        "box_dbu": "(250000,4472730;254000,4475130)"
+      },
+      "d22n0": {
+        "layer": 67,
+        "box_dbu": "(250000,4602730;254000,4605130)"
+      },
+      "d14p0": {
+        "layer": 67,
+        "box_dbu": "(250000,4812730;254000,4815130)"
+      },
+      "d14n0": {
+        "layer": 67,
+        "box_dbu": "(250000,4942730;254000,4945130)"
+      },
+      "d30p0": {
+        "layer": 67,
+        "box_dbu": "(250000,5072730;254000,5075130)"
+      },
+      "d30n0": {
+        "layer": 67,
+        "box_dbu": "(250000,5202730;254000,5205130)"
+      },
+      "d1p0": {
+        "layer": 67,
+        "box_dbu": "(250000,5412730;254000,5415130)"
+      },
+      "d1n0": {
+        "layer": 67,
+        "box_dbu": "(250000,5542730;254000,5545130)"
+      },
+      "d17p0": {
+        "layer": 67,
+        "box_dbu": "(250000,5672730;254000,5675130)"
+      },
+      "d17n0": {
+        "layer": 67,
+        "box_dbu": "(250000,5802730;254000,5805130)"
+      },
+      "d9p0": {
+        "layer": 67,
+        "box_dbu": "(250000,6012730;254000,6015130)"
+      },
+      "d9n0": {
+        "layer": 67,
+        "box_dbu": "(250000,6142730;254000,6145130)"
+      },
+      "d25p0": {
+        "layer": 67,
+        "box_dbu": "(250000,6272730;254000,6275130)"
+      },
+      "d25n0": {
+        "layer": 67,
+        "box_dbu": "(250000,6402730;254000,6405130)"
+      },
+      "d5p0": {
+        "layer": 67,
+        "box_dbu": "(250000,6612730;254000,6615130)"
+      },
+      "d5n0": {
+        "layer": 67,
+        "box_dbu": "(250000,6742730;254000,6745130)"
+      },
+      "d21p0": {
+        "layer": 67,
+        "box_dbu": "(250000,6872730;254000,6875130)"
+      },
+      "d21n0": {
+        "layer": 67,
+        "box_dbu": "(250000,7002730;254000,7005130)"
+      },
+      "d13p0": {
+        "layer": 67,
+        "box_dbu": "(250000,7212730;254000,7215130)"
+      },
+      "d13n0": {
+        "layer": 67,
+        "box_dbu": "(250000,7342730;254000,7345130)"
+      },
+      "d29p0": {
+        "layer": 67,
+        "box_dbu": "(250000,7472730;254000,7475130)"
+      },
+      "d29n0": {
+        "layer": 67,
+        "box_dbu": "(250000,7602730;254000,7605130)"
+      },
+      "d3p0": {
+        "layer": 67,
+        "box_dbu": "(250000,7812730;254000,7815130)"
+      },
+      "d3n0": {
+        "layer": 67,
+        "box_dbu": "(250000,7942730;254000,7945130)"
+      },
+      "d19p0": {
+        "layer": 67,
+        "box_dbu": "(250000,8072730;254000,8075130)"
+      },
+      "d19n0": {
+        "layer": 67,
+        "box_dbu": "(250000,8202730;254000,8205130)"
+      },
+      "d11p0": {
+        "layer": 67,
+        "box_dbu": "(250000,8412730;254000,8415130)"
+      },
+      "d11n0": {
+        "layer": 67,
+        "box_dbu": "(250000,8542730;254000,8545130)"
+      },
+      "d27p0": {
+        "layer": 67,
+        "box_dbu": "(250000,8672730;254000,8675130)"
+      },
+      "d27n0": {
+        "layer": 67,
+        "box_dbu": "(250000,8802730;254000,8805130)"
+      },
+      "d7p0": {
+        "layer": 67,
+        "box_dbu": "(250000,9012730;254000,9015130)"
+      },
+      "d7n0": {
+        "layer": 67,
+        "box_dbu": "(250000,9142730;254000,9145130)"
+      },
+      "d23p0": {
+        "layer": 67,
+        "box_dbu": "(250000,9272730;254000,9275130)"
+      },
+      "d23n0": {
+        "layer": 67,
+        "box_dbu": "(250000,9402730;254000,9405130)"
+      },
+      "d15p0": {
+        "layer": 67,
+        "box_dbu": "(250000,9612730;254000,9615130)"
+      },
+      "d15n0": {
+        "layer": 67,
+        "box_dbu": "(250000,9742730;254000,9745130)"
+      },
+      "d31p0": {
+        "layer": 67,
+        "box_dbu": "(250000,9872730;254000,9875130)"
+      },
+      "d31n0": {
+        "layer": 67,
+        "box_dbu": "(250000,10002730;254000,10005130)"
+      },
+      "dvdd": {
+        "layer": 134,
+        "box_dbu": "(117000,300890;123000,306890)"
+      },
+      "op": {
+        "layer": 67,
+        "box_dbu": "(4389260,4879130;4405260,4885130)"
+      },
+      "on": {
+        "layer": 67,
+        "box_dbu": "(4349260,4879130;4365260,4885130)"
+      },
+      "tvdd": {
+        "layer": 67,
+        "box_dbu": "(4375785,4967130;4378785,4969130)"
+      },
+      "tr": {
+        "layer": 67,
+        "box_dbu": "(4349285,4845130;4352285,4847130)"
+      }
+    },
+    "internal_port_annotation_changes": [
+      {
+        "cell": "nssoc_tx_output8088_parent_v1",
+        "text": "mp",
+        "layer": 134
+      },
+      {
+        "cell": "nssoc_tx_output8088_parent_v1",
+        "text": "mn",
+        "layer": 134
+      },
+      {
+        "cell": "native_core",
+        "text": "mp",
+        "layer": 134
+      },
+      {
+        "cell": "native_core",
+        "text": "mn",
+        "layer": 134
+      },
+      {
+        "cell": "actual_output14",
+        "text": "INP",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "INN",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "AVDD",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "AVSS",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "IREF",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "OUTN",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "OUTP",
+        "layer": 67
+      },
+      {
+        "cell": "actual_output14",
+        "text": "SUB",
+        "layer": 67
+      }
+    ],
+    "native_material_preserved": true,
+    "serialized_geometry_verified": true,
+    "actual_output_mapping": {
+      "INP": "mp",
+      "INN": "mn",
+      "OUTP": "op",
+      "OUTN": "on",
+      "AVDD": "tvdd",
+      "AVSS": "avss",
+      "SUB": "sub",
+      "IREF": "tr",
+      "BULK": "BULK",
+      "TAIL": "output_tail"
+    },
+    "all_four_handoffs_routed": true,
+    "full_phy_accepted": false,
+    "main_chip_integrated": false,
+    "qualified_pex": false,
+    "electrical_accepted": false,
+    "remaining": "Native clock modulation, clock/bias macro integration, output bias feed and supply endpoints, fresh whole-parent RC, full loaded waves and mainchip closure remain.",
+    "output_return_repair": {
+      "net": "avss",
+      "middle_width_um": 64.0,
+      "retained_middle_width_um": 32.0,
+      "minimum_span_for64um_um": 80.0,
+      "wide_endpoint_access_um": 40.0,
+      "unchanged_endpoint_access_um": 20.0,
+      "old_width_um": 6.0,
+      "every_old_return_polygon_retained": true,
+      "native_devices_and_ports_unchanged": true,
+      "full_width_open_fault": "output_return_open.gds",
+      "electrical_effect_unproven_until_fresh_extraction": true
+    }
+  },
+  "sources_unchanged": true,
+  "outputs": {
+    "placed-layout.gds": "1183211402b4b5f46c528296b25c1db8f4733ef820d4c6e54ca2f9c7163d29e6",
+    "avss-power128feed32-obstructions.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "avss-obstructions.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "integration-result.json": "653bb6e1d41cbb3b84201d521925d91cf3d8089077a13626aad2b7ffa01ce9ea",
+    "partial-layout.gds": "ae526992b5b57e8e488b2dc2d083c9352700a86c6b36bda5e4172b799399b42d",
+    "avdd-power128feed32-obstructions.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "mn-obstructions.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "mp-obstructions.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "generation.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sub-obstructions.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "wrong_width/run.log": "8591e1db7423088ccbb349b56caf074aedeff0990233142118dd003ca6beda39",
+    "wrong_width/result.lvsdb": "d92c79cf6c556f86dfbb4cbe4fc002b0e79c55f75c1a48d1223f4a1dec4dc9b0",
+    "wrong_width/extracted.cir": "ab5baac23c3746d7b6923f6a2cff06fdd6f7413c5cf28406bfff571496d8724d",
+    "wrong_width/deck.log": "4249692c3e0d1be3e6b2d4302572ffece04e784cf8377df90c12dc629ba5f891",
+    "wrong_width/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+    "wrong_width/audit.json": "e9fa613021e9aea9f7a4cdd145bdcfac9a1e48646204b04ff138ba1bf20d7ee0",
+    "handoff_open/run.log": "0090ede9d5c838b1b1a17f3eb166eefea1f54df38fc53b7fa02178ca172e61bd",
+    "handoff_open/result.lvsdb": "ea2340294c5706566c2127ae5dfcc44d15a2d28ec8b14f08b511501c65eb8942",
+    "handoff_open/extracted.cir": "e7a16547bc2136e842c1a36ed86dc855722c817ab84cd05dcd612ff8bba25bc6",
+    "handoff_open/deck.log": "16c40805ef274bf60e2c6d7767cd9d618ff594b82437922db7183a621d09d86b",
+    "handoff_open/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+    "handoff_open/audit.json": "732dd4b797febc09cea4188dd8b5caf104a234521e53639e41096cfb7aeba7bb",
+    "tx-output14-physical-source/parts.json": "82076d156f767b5c9caf35f9fea9f13e7953022abec73f6814bb473c1de452c4",
+    "tx-output14-physical-source/summary.json": "8f434b1368bcf613ca2f32c4eeebc528d3e131a243299bf6df09f609c293f9fa",
+    "body_supply_short/run.log": "1bb708d196ba25f9991df5749edebe508c0895bf23a5c55163f41cc3a847e7e9",
+    "body_supply_short/result.lvsdb": "e603987af8ea5bfc52d014e526eaf718489427a1523fe280f30a9712c6207d0a",
+    "body_supply_short/extracted.cir": "d6f6de18e080bc391e9fc2d2d349a6f75a9dec36bfb05a13558d073db8e10de4",
+    "body_supply_short/deck.log": "750f18eef3c0dc83deee075f383c2796884e2a4cc04bedff925ce30de4e9d80b",
+    "body_supply_short/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+    "body_supply_short/audit.json": "c4e0f7da67fbb28a8377deaf693f73a04e2b4bbff49ca25e7bc2aaeb30ec99ad",
+    "tx-raw64-powered-physical-source/parts.json": "2a3431b7a2cae61f6b9edcbce8edeef23963bc62c170332064a5ab779ac58404",
+    "tx-raw64-powered-physical-source/summary.json": "f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53",
+    "drc/run.log": "3da7c062f2733fa58ef7eb72128595b2aea445da00284d6e7c326c2a1a853f68",
+    "drc/deck.log": "e93c1f82222d6f6a57d2622631ec0f94a4f5076457f778bb0760dacc5898cb3d",
+    "drc/drc.lyrdb": "b0c09f86b32a4726887cb63d77c4bf266a0a5de48223aae2eddf27b72c386e21",
+    "drc/result.json": "9d104374efa7b9f0cc00328d21de6bec290daabba53a1f2151c8046c1811ed4d",
+    "output_return_open/run.log": "3ee6c0b25a2eef51078831a33b2b4354abf67cf19f7b65f9b04c312ebdbf5b5a",
+    "output_return_open/result.lvsdb": "df3f4566c17a1614003bedd39d00ac4d2a2e4fab0018401b27d764ef6d7f67f7",
+    "output_return_open/extracted.cir": "0bf9adf8bfa17457de3f054ac9ca6cad0ac7c4e02f07e3cdf37018c24b1edac5",
+    "output_return_open/deck.log": "d095488e3c36f40a4998285337962e6d69d08e50900fca12bac0bd652c42c197",
+    "output_return_open/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+    "output_return_open/audit.json": "2e0a8b2b1756065acfbd6801d9a74fdbd71fcdb0db58da5e642f09e5047c2863",
+    "tx-output8088-power128-physical-source/parts.json": "95b5052eb825f2d022cc2b8624af34a41061fae1f7fd48464c28f7c8528baea0",
+    "tx-output8088-power128-physical-source/summary.json": "9d5e4b5f7e70287c89cb5d0e531268a0348083df7491bd450162a676a300bd6a",
+    "output/result.json": "8f434b1368bcf613ca2f32c4eeebc528d3e131a243299bf6df09f609c293f9fa",
+    "internal_port_alias/run.log": "91ef498f05fbc7762ae408ceb27b7857802518d0d7045eb19a88aa9143c95114",
+    "internal_port_alias/result.lvsdb": "0e425ab6e88c8f917fcb4a0952bed270f1b73a3120c09e91e7eefb4975628b1d",
+    "internal_port_alias/extracted.cir": "c0978168bc148c819c51b97a6609c72d567a47f6b948f7cd6d7053c6edde511f",
+    "internal_port_alias/deck.log": "a378efab746d51d78f1ebcf47fb4e4fe91e11b568e991b5911950a8195521744",
+    "internal_port_alias/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+    "internal_port_alias/audit.json": "9ed975d80d3d71375f4c675e3f80ac1d7eb393129dc816768fd7cbb79d45652c",
+    "layout/layout.gds": "abd940c922472c3c9ca4ac4b5944fe82e85dfc70e07972aec0e29e200b0955d9",
+    "layout/schematic.cir": "a28d2b6a4d2ad83d65ba813e0a62d50975bcab16b75cbeb0b39b30e40c2f5380",
+    "faults/offgrid.gds": "9843d8abf9c40f5584513109c4fe9291895b1d9f833c2b8f8c5b7a7a91349c29",
+    "faults/handoff_open.gds": "3c7c8fe2a8adb1b0cdf780c43797a2afe780b2ed6b159fda59eaf7b7ed534021",
+    "faults/output_return_open.gds": "6c1080a59deb8205eff3b3ac5a5b2d92b54fa0278e1750e01b58e01422c09d6b",
+    "faults/wrong_width.cir": "717ff9651c48f5db861b917cd08b0db2b82edbb29a6e62070a24661846a0f5db",
+    "faults/wrong_output_Nx.cir": "717ac1dac6a816bcc844279d404373d7b2a403f8d183dfa76acd1980c5532bd0",
+    "faults/swap_output_inputs.cir": "94ed37d39d95aee278ae80b059e140e99ecd339a7eda0dabdb68a6a24b240243",
+    "faults/internal_port_alias.gds": "a2d8b31f84293f9e32a0f0fe786f2f672886e7853d3a20954c60eb0db656a71a",
+    "faults/body_supply_short.gds": "a6a96637592918b32a2bd482d6e04047b467db7d6b92b0967c73f16712e59ed9",
+    "prior-width-rejection/result.json": "9d5e4b5f7e70287c89cb5d0e531268a0348083df7491bd450162a676a300bd6a",
+    "wrong_output_Nx/run.log": "e65faf6b5a1cd82fa354beaee5a822830caa95eb4dc6f15387bb2f952c641a67",
+    "wrong_output_Nx/result.lvsdb": "3ec2076eaf267c336c54ceb806c37d56261fcf76e37da9ca816659cb5e5f882f",
+    "wrong_output_Nx/extracted.cir": "13f6c23224041685c951324bfee0965346c7e122f1ed7daeaf83311afd0aab4d",
+    "wrong_output_Nx/deck.log": "664802da39382e2f065cb802a62c803664373aa0f384ea6fb477111697be733b",
+    "wrong_output_Nx/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+    "wrong_output_Nx/audit.json": "8445665713aa38d6c43796bd0807c636157bff5fdf366065e8e1062e460383bf",
+    "offgrid/run.log": "3b08eea90842fd427c00bf396b2991fad2afb10b10c446623a5c57bd810ad8b2",
+    "offgrid/deck.log": "b851f246901e150fb2525d2e889fdbfa539776e9a4cda521967656d162c66151",
+    "offgrid/drc.lyrdb": "f525ee811f6c6ed5b0f4fc2112786143a4d140c2c28c3fd030a569ad9ea98e4d",
+    "offgrid/result.json": "c6920d71b0dc2dc1ac72c4fb72be7a4c2d01eb9a9e9fb8f7bac2145eb833bb8d",
+    "deep_lvs/run.log": "f0b58e1a120de1825976b0029fd81f5fa93cb37e4ddbd8addf8dceb10fc07774",
+    "deep_lvs/result.lvsdb": "3a649088696303978fc077c958d3eb128c0dab653dcc5c4b48b94616863aaade",
+    "deep_lvs/extracted.cir": "013e8c22510f07ef8127fdade9b67a9e77d11ffc2bac5371b7c785944dccdbca",
+    "deep_lvs/deck.log": "90ad1c59f528ba1d2ce0b7dac465488579ce9f2f3cb227a7957b0104e057e8b1",
+    "deep_lvs/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+    "deep_lvs/audit.json": "aaf0003d91c779f2c53fdbc5897b8fb2d351fa7994056921def4740b2bb61210",
+    "swap_output_inputs/run.log": "94bc550d406625af61dd9aae775ae35e77d0a874ee8c5fc8f9bd15f96ad490b3",
+    "swap_output_inputs/result.lvsdb": "dc672f2dbb4e0620dee36f115e476132706e3acca77f092035c362b4e7ebd8ec",
+    "swap_output_inputs/extracted.cir": "13f6c23224041685c951324bfee0965346c7e122f1ed7daeaf83311afd0aab4d",
+    "swap_output_inputs/deck.log": "01e4581440672c71f979218ef1f87773d60a691dfb258d88b47babf4c5f57ba8",
+    "swap_output_inputs/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+    "swap_output_inputs/audit.json": "b36fc5292fcfe9137894e9662867e0cfedeb1d73930f6d9c23736f6758a8124d",
+    "core/power-result.json": "b0dc84e7b447a31ca7183836f4615f8c45d7a8353bf2976226d1418e49d76d31",
+    "core/result.json": "f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53",
+    "flat_lvs/run.log": "76c9778458ff9713de3353394736de1bf9dce540d5586090aba142c187b83869",
+    "flat_lvs/result.lvsdb": "e451d5d5f1fde7295cea8a74ca5135f8076e9a424a47b7e9d4ffebc9c430020b",
+    "flat_lvs/extracted.cir": "4621cb8003e9f9eb419956a499f2cdf5b7a4145ca4111ff79dbe064069c91133",
+    "flat_lvs/deck.log": "3037fdc7a492b31321160c2d5c68597dd83f981763512d1334d3d1e2c414edf4",
+    "flat_lvs/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+    "flat_lvs/audit.json": "a45747d4bd9062e3f54b8408ee2c75326d3ade3bff15cd0b3cec5853bf5801e7",
+    "output/layout/nssoc_tx_cml_layout.gds": "e3502ee90dae5af99e7ab03ef443197f84c71613189703e8a4b112db77053ef5",
+    "output/layout/schematic.cir": "7fb2304070aa120cecc0a26b2a852a9f0b559a729545fb91928396ded2b44677",
+    "output/layout/result.json": "01575f208df3ada8067cc74f7c8df80e578c77fd8c7adf2bfc1a3e4eac9e6bec",
+    "prior-width-rejection/drc/drc.lyrdb": "601b1914590a12d3f0554f79fa8fbc33f74ba55d00ccffe77f517b6e20edcfdf",
+    "core/source/handoff-result.json": "0872a917cb63cac3631ad9b59c1e0aaca001346d2bff1d7bbbfc4a67859ef796",
+    "core/layout/layout.gds": "9583c6cf7f70d4dad4736b808535ef564bed11d0730ce4674314025d0beaebdb",
+    "core/layout/schematic.cir": "0e3f54d27928ea442d3398d6723dcff277c434a978d3943af3149b19e1268d95"
+  },
+  "run": 39895931760,
+  "attempt": 1,
+  "summary_asset": 667865538,
+  "summary_sha256": "11cc148299aa8c3363de4d25f0f326944e56b2bf08a7618ec7da7a85dbf9770d",
+  "parts_asset": 667865619,
+  "parts_sha256": "2cb514f3aed30a5965c8d204cc58e157524256b0ef6d155e9ac8bbe2406f71c8"
+}

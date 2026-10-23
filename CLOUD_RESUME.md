@@ -5856,3 +5856,11 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - route marker reader39894810135 passed. drc-30.rpt has35actualmarkers:23Short+12MetalSpacing, Metal2=27,Metal4=3,Metal5=5. There are23distinct type/source navigation groups; do not replace35 with23. drc20=121 and drc25=3906 retain nonmonotonic history.
 - New TX return64 physical run39895931760 live, source432ee05bb5eda42c5298d2cbe936470529945d92. Requires all fresh physical gates and future freshRC/fullwaves; no acceptance yet.
 - Route11 39883818247 was publishing its exact saved process at last poll. Wait for completed release then resume only that process if route_complete=false; do not cold-start.
+
+
+## 2026-10-23: return64 physical pass, fresh native wires, route12
+- Return64 physical39895931760 passed all560DRC categories, deep/flat8088deviceLVS,165exactports and all actualfaultcontrols. Receipt docs/evidence/tx-output8088-power128return64-physical-pass-20261023.json; GDSabd940c922472c3c9ca4ac4b5944fe82e85dfc70e07972aec0e29e200b0955d9. Not electrical acceptance.
+- New return64-native-wires workflow consumes exactly that GDS+nativeflatLVS and builds a fresh conductor/via graph. Do not reuse return32RC. Then bind newanchors, precisionRC,intrinsic/composition,prepare and fullnativewaves with originalgates.
+- Route11 checkpoint39883818247 complete/saved, singleoriginalentrypoint. Completed counts ended35,35,35,35,18,5704; lastpartial50%/5045 in iteration34. Preserve this regression history;35marker snapshot is older, not current.
+- Route12 39896983175 dispatched once fromsourceb015fbc0ada93ebaa6bd908b89d8a9f25ec57cef with exactroute11 summarye1c03b54cff363ba5a60498636a06d7532261ed94e50efc29ec266dabe922876 andparts4e5fc64de85f77222ee14e42ce6b75a581a8e01ea7c08521bf04c0fd615bc803,7200nativeworkseconds. No coldrestart orchangednetlist.
+- LCRC timing39896567224 uses explicitnativecellaliases and retains builtSTA+source archives for later reuse; stillawait actualslacks,canonicalRTLnotadopted.
