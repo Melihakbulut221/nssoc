@@ -7018,3 +7018,10 @@ Mainchip40011725403, TX40006507576 and PLL40001626503 were still in progress at 
 Cloud-only remains mandatory. v49 component run40022525081 completed successfully: nominal/hot_low/cold_high and both real injected fault cases. Receipt docs/evidence/cdr-active-levelshift-v49-results-20261024.json. Hot_low common mode1.803955V has only3.955mV margin; this is not robust/full-PVT or parent acceptance.
 
 New workflow cdr-active-levelshift-v49-physical-cloud.yml generates real2HBT+3MOS+4R with9finite contacts and8ports, then full560DRC/deep-flat18deviceLVS plus9actual faults. Discover auto-triggered run for this commit; do not duplicate. Complete fullwave evidence and failed v48 remain in Releases. Native layout/PEX/parent integration still unproven. Mainchip40011725403,TX40006507576,PLL40001626503 remain separate live continuations; inspect authoritative state before action.
+
+
+## 2026-10-24 TX via3 first durable native continuation
+
+Initial run40006507576 completed successfully by saving the actual native simulator processes, not by accepting full34ns captures. Normal saved at8.783844617770122ns with19669complete rows; fault saved at8.135801693944567ns with18183complete rows. Both retain all14182columns and partial-row bytes. Descriptor pins: docs/evidence/tx-via3-first-native-checkpoints-20261024.json.
+
+Dispatch the continuation workflow only once per descriptor,7200native seconds, preserving original runtime/trajectory/prefix and all34ns gates. This commit is the pre-dispatch ledger; discover workflow_dispatch runs after it before any retry. Never restart the simulator or mistake saved/green Actions for complete electrical acceptance. CDR physical run40024005062 remains separate and live.
