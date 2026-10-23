@@ -6208,3 +6208,10 @@ generic sparse storage methods. It never activates a simulator or changes the
 live recovery. Wait for its proof before preparing any production migration;
 a storage pass is not native-resume, full-capture, PLL or PHY acceptance.
 See docs/pll-rhi120-c8-sparse-storage-qualification-20261023.md.
+
+
+## 2026-10-23 CDR v44 complete and cloud storage proof active
+
+CDR run39952318814 finished: all four native cases return0/device checks pass, but all fail original data/phase gates. Full capture and immutable source checks passed. Preserve all rejected results; do not promote these candidates. See docs/evidence/cdr-v44-master-load-results-20261023.json.
+
+Storage-only RHI120 qualification39954614699 is active at9690bb870b2afde732bca4a900a272caff23f771. It verifies archived bytes and does not resume a simulator. Live native route/PLL/TX handles remain separately recorded above.
