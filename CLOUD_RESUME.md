@@ -6981,3 +6981,24 @@ the accompanying snapshot records live state. Do not restart/duplicate while
 live; continue only newly saved immutable capsules. For mainchip use qualified
 postroute workflow only after actual DRT completion. All work remains cloud-only,
 local project empty. Full serialPHY, completed routing and final setup/hold open.
+
+## v48 native active input level-shifter topology
+
+After comparing v33-v47 records, repeated tail/area/divider sizing alone is not
+a justified closure path. New cdr-active-levelshift-v48-cloud screens a native
+differential HBT level shifter with finite collector pullups/shunts and LVNMOS
+tails. It targets weak C/D source transfer while providing independent output
+common mode. This is a new component topology, not a v47 accepted parent.
+
+Five cloud cases cover nominal/hot-low/cold-high plus swapped output/bias-off.
+Full256bit34.25ns capture,0.3125ps step,60mV differential at1.48V CM,10ohm source
+and150fF per output are explicitly component stress, not replacement full-CDR
+stimuli. Original HBT/MOS limits and all diagnostics remain. No parent or active
+native process is changed. Find the new run ID before any repeated dispatch.
+A useful result requires actual source/loading/bias integration, native candidate
+GDS/DRC/LVS/freshRC and unchanged full original CDR/loop/PVT tests.
+
+PLL completed-reader controls40016631396 passed; reader waits for real completed
+terminal source. Mainchip40011725403, TX40006507576 and PLL40001626503 were still
+live. Keep them and inspect exact native handles. Cloud-only work, no local CAD.
+Full serialPHY, completed mainchip routing and final timing remain open.
