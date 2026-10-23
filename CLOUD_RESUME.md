@@ -7135,3 +7135,9 @@ Composition40036688906 passed18native+53newR+93newC, all14faults. Receipt docs/e
 This commit auto-triggers v50-extracted-cloud once with all five original full34.25ns/256bit/67column cases. Discover run and preserve all failures. No gates/loads/options changed; controls compare the original v49 pre-layout acceptance region. Inspect all five native terminal reports before accepting any leaf result. Native path losses remain finite, and the original4mV hot-low schematic headroom may still be insufficient. Do not claim full parent/PHY or final chip timing closure.
 
 Mainchip40031170989,TX40024570662/40024574047 andPLL40001626503 were revalidated live immediately before composition. Do not duplicate these jobs. Local workspace remains empty; all runtime/artifacts are cloud-only.
+
+## 2026-10-24 v50 extracted harness preflight correction
+
+Run40036998736 failed all five cases before launching SPICE because line108 still required PASS_V49... from the copied harness, while exact source40036688906 correctly reported PASS_V50.... No wave/circuit/electrical result exists from that failed run. Full receipts docs/evidence/cdr-v50-extracted-preflight-error-20261024.json.
+
+This commit corrects that single versioned status expectation and adds exact receipt status/port-order checks to source_check so the controls job rejects such incompatibility before launching a matrix. Every electrical/source/load/solver gate and composed model remains unchanged. Workflow auto-triggers once on script+manifest; discover corrected run. Do not treat harness failure as a measured electrical failure or discard it.

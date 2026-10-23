@@ -22,6 +22,9 @@ CASES=('nominal','hot_low','cold_high','swap_output','bias_off')
 def source_check():
  m=json.loads(METHOD.read_text())
  for p,h in m['protected'].items():assert sha(ROOT/p)==h,p
+ cp=json.loads(PIN.read_text())
+ assert cp['report']['status']=='PASS_V50_LEAF18_ALL146_WIRE_ELEMENTS_AND14_COMPOSITION_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES'
+ assert cp['report']['composition']['interface']==['sub','ip','inn','avdd','avss','iref','on','op','wire_cref']
  return m
 
 def bind(text,contract,output):
@@ -105,7 +108,7 @@ def main():
   pinpath=PIN;cp=json.loads(pinpath.read_text())
   previous,proof=reports.restore_report('cdr-active-levelshift-v50-composition',cp['run'],cp['summary_sha256'],cp['parts_sha256'],out/'composed',['levelshift18-wire.spice','composition.json'])
   assert previous==cp['report'] and previous['sources_unchanged'] and len(previous['controls'])==14
-  assert previous['status']=='PASS_V49_LEAF18_ALL146_WIRE_ELEMENTS_AND14_COMPOSITION_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES'
+  assert previous['status']=='PASS_V50_LEAF18_ALL146_WIRE_ELEMENTS_AND14_COMPOSITION_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES'
   SOURCE=out/'composed/levelshift18-wire.spice'
   contract=json.loads((out/'composed/composition.json').read_text());assert contract==previous['composition']
   assert contract['all_raw_wire_values_and_topology_preserved'] and contract['intrinsic_device_models_emitted_once']
