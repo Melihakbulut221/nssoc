@@ -5998,3 +5998,8 @@ Next after rawaudit: actual regular NWELL contact/body geometry must be rebound 
 
 ## 2026-10-23 — rawRC tooling namespace failure preserved and corrected
 Raw audit39917781077 failed before nativeRC acceptance: audit_pll845_mim_intrinsic.py read old cloud-pll845-whole-raw-audit/capture/source/source/native-mim-geometry.json. New isolated helper changes only exact source path to current cloud-pll-rhi120-c8-raw-audit. Controller and generated auditor import the candidate helper; exact source-delta proofs cover both. Original helper and rejected run remain immutable; no RC/simulation rerun, no gate relaxation. Same workflow runs read-only audit again after this commit. Continue current4contact regular-NWELL proof before bodyRC/composition, preserving raw sources.
+
+
+## 2026-10-23 — RHI120 rawRC audit passed; actual regular-well binding starts
+Read-only audit39918288755 at4fe50446e3d1ff5d7cfa02afd500a1abbd919b22 passed every nativeR edge/value, pointwise/collapsedC checks, all26MIM identity and13wire+9intrinsic corruptions. Previous pathfailure39917781077 retained.
+New physical regular-well proof uses exact current845 native binding and audited anchors directly. Current125LVPMOS have bodycluster203/core_vdd; no namedntapWELL203 (fivecore_vdd TIE contacts supply other wells). Same original native well/contact geometry and all5control families are preserved to identify actual4regularcontacts and new referencepoints; freshRC still required. No synthetic composition failure or reused old bodyplan. LongDRT/TX continue.
