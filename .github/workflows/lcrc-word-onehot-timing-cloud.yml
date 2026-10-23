@@ -27,7 +27,7 @@ jobs:
       - name: Build pinned current native STA runtime in the cloud
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake tcl-dev swig bison flex automake autotools-dev libeigen3-dev libfmt-dev libgtest-dev zlib1g-dev
+          sudo apt-get install -y build-essential cmake tcl-dev swig bison flex automake autoconf libtool autotools-dev libeigen3-dev libfmt-dev libgtest-dev zlib1g-dev
           git init "$RUNNER_TEMP/cudd"
           git -C "$RUNNER_TEMP/cudd" remote add origin https://github.com/cuddorg/cudd.git
           git -C "$RUNNER_TEMP/cudd" fetch --depth 1 origin f54f533303640afd5dbe47a05ebeabb3066f2a25
@@ -35,6 +35,7 @@ jobs:
           test "$(git -C "$RUNNER_TEMP/cudd" rev-parse HEAD)" = f54f533303640afd5dbe47a05ebeabb3066f2a25
           (
             cd "$RUNNER_TEMP/cudd"
+            autoreconf -fi
             ./configure --prefix="$RUNNER_TEMP/cudd-install"
             make -j2
             make install

@@ -5832,3 +5832,6 @@ CDC localreset block remains verified but not remapped into live route11. Fullch
 - First timing39891422617 failed oldOpenSTA2.0.17 parser/flag/name binding, not a design timing result. See docs/evidence/lcrc-onehot-sta-loader-rejection-20261023.json.
 - New cloud workflow builds fixedOpenSTA f2b334cf92b75c4091cb521de4607b0cf54c7b1b and CUDD f54f533303640afd5dbe47a05ebeabb3066f2a25. Native mapped JSON is serialized without signed debug wires/concatassign; actual every-cell/pin/port topology checked by independent Yosys readback and a fault control. No remap, clocks/loads/gates unchanged.
 - Canonical LCRC still unchanged; inspect fresh three-corner result before adoption.
+
+## 2026-10-23: CUDD cloud build correction
+Run39892670643 failed before STA: legacy generated CUDD build files requested unavailable aclocal. Regenerate with autoreconf -fi using installed autotools; pinned CUDD/OpenSTA source commits and all design/constraint inputs unchanged. Original failed logs retained. Fresh lcrc-word-onehot-timing-cloud run will start from this workflow fix.
