@@ -6591,3 +6591,28 @@ then measures actual master/slave data, selector VBE/current, voltage headroom,
 and divider transfer. The exact84 changed primitive identities are verified.
 No new waveform, simulated ideal internal signal, gate shift or layout claim.
 Use the resulting native-node evidence before choosing gain/bias changes.
+
+
+## Via3 RC passed; actual resistance comparison started
+
+Parent39991332843 completed successfully. FreshRC summary669848097 /
+0045abe297e091cb91c9233caa158460236d180515d7c510dc263250336cf848,
+parts669848172 /7c1dba647216c993b3aa6e9aac7a4532b2bf9bfefed589827408e39602fa6555.
+All8088 devices/28620 terminals/703 conductors are retained; the exported graph
+has140222 R and99906 C. Intrinsic summary669847530 /
+e0d82e0b7fac26a96d7ee1d1f742805dad56881b729b94aeb8f5303d384f88a5 passed.
+Two-order native precision39992856037 remains live.
+
+The push-triggered tx-output8088-via3-return-comparison-cloud job at this commit
+binds the original output/core-tail E reference planes in both native RC graphs,
+reproduces the old10.326486/6.286959/6.275982ohm DC result, and measures actual
+via3 changes with the unchanged qualified sparse solver. It checks KCL,
+reciprocity, analytic series/parallel controls and corrupt physical bindings.
+No RC values are edited; comparison can report no improvement or regression.
+Electrical/fullPHY claims still require original full normal/fault captures.
+
+CDR l39 observation39993707351 passed in both phases; original failure remains.
+Master output meets100mV by the original deadline while64/65 slave samples
+remain late. Actual gain, selector-current response and headroom are recorded
+in its full summaries. Next changes must target the measured second-stage
+limitation and preserve all original full-capture and device gates.
