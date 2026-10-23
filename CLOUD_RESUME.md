@@ -6631,3 +6631,20 @@ on the unchanged v44l39 parent. It uses exact new early-stage diagnosis and
 both measured parent phases. Original source/device/data/phase gates and
 frozen wire RC are preserved; failed v45 remains rejected. A promising screen
 still needs new candidate geometry/DRC/LVS/RC. See cdr-v46-slave-regeneration doc.
+
+
+## Via3 two-order RC passed; full parent composition launched
+
+39992856037 completed both native input orders and13 corruption controls per
+order, preserving every actual R/C multiset. Summary669885636 /
+42a9cc9ae8aa4f93cd430856b48636b428c5119e3ee42e6fc104172e106c1cb8;
+parts669885709 /1e626f5db80292f83ae08657610f247e0aca6b4d92732127771d274310e42256.
+The push-triggered via3 composition workflow at this commit restores all
+generated exact-source adapters from that verified archive and composes all
+8088 devices/140222 R/99906 C with the original25 corruption controls.
+No candidate electrical/PHY pass is inferred. Next: original loaded interfaces,
+prepared full deck, complete normal/fault native captures, all-device gates.
+
+CDR v46 run39997418576 passed source/syntax controls and four full-capture
+cases are live. Mainchip39991475218 and PLL39967627133 remain live; never
+duplicate/restart them on observation timeouts. Local workspace remains empty.
