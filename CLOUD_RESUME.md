@@ -5726,3 +5726,10 @@ Live run snapshot: 39878490784 in_progress, 39873653454 in_progress, 39868561968
 Source audit: hw/soc/rtl/soc_top.v exposes the packet PCIe boundary and external-PHY GMII Ethernet. scripts/prepare_pcie_mainchip_pnr.py explicitly records serial_phy=False. Current mainchip routing therefore does not demonstrate a routed serial Gen3 x4 PHY. This is a source-level finding, not a fresh layout census. Full serial PHY top-level integration and original-clock timing remain open. Existing subblock experiments must retain their original acceptance gates.
 
 Evidence: docs/evidence/cloud-only-mainchip-boundary-20261023.json. Do not infer full PHY acceptance from successful packet-SoC routing or isolated analog leaf checks.
+
+
+## 2026-10-23: Diagnose repaired candidate timing while exact route remains live
+
+Added mainchip-repair-deep-triage-cloud. It reads six immutable optimizer-placement reports plus the native repair log from run39674630712/source6fbd221520a35d6b5ef01cc1c67796175093ee3c. Exact candidate netlist3a200e..., sourceSDC19fdfb..., candidateODB25b1e... and logic/clock proofs are required. The original native report parser is preserved through an explicit source adaptation. This is placement-path diagnosis to guide the next ECO after route, never final timing acceptance; original clocks and all live native processes remain unchanged. All restore, report parsing and publication occur on the hosted runner.
+
+After completion, inspect each corner's actual startpoint/endpoint/path group and preserved first paths; compare with the fresh postroute results only when route_complete is true. Do not compare placement WNS with routed WNS as a validated improvement.
