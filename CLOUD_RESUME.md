@@ -6378,3 +6378,16 @@ Fault counterpart39957265010 was still active at inspection.
 PLL sparse fallback39967627133: controls passed, native sparse job120461960874
 active. Preserve this single actual continuation. Full serial PHY, routed
 mainchip and final timing acceptance remain open.
+
+
+## 2026-10-23 actual8088 complete rejected TX diagnosis launched
+
+New tx-output8088-return64-diagnosis-cloud workflow is read-only on exact completed
+rejected normal run39957261794. It reproduces every original gate before locating
+all62 interface and85 HBT failures at actual capture times. It never reruns the
+simulator, changes a gate, or claims repair. Watch the single push-triggered job
+at this commit; do not dispatch a duplicate. Original raw remains in its release.
+
+Route continuation39970270107 and PLL39967627133 were verified live. Fault TX
+39957265010 was verified live; keep all three processes. No local checkout,
+native artifact, simulator, or CAD execution.
