@@ -15,10 +15,12 @@ def map_endpoints(path, corners):
         found=[(i,pattern.match(line)) for i,line in enumerate(lines) if pattern.match(line)]
         assert len(found)==1,('Expected one exact native endpoint cell',name,len(found))
         i,m=found[0]
-        end=next((j for j in range(i+1,min(i+80,len(lines))) if re.match(r'^\s*\);\s*$',lines[j])),None)
+        end=next((j for j in range(i,min(i+80,len(lines))) if re.search(r'\)\s*;\s*$',lines[j])),None)
         assert end is not None,('Unterminated native cell',name)
         raw='\n'.join(lines[i:end+1])
-        pins=dict(re.findall(r'\.([A-Za-z0-9_]+)\s*\(\s*([^()]*)\s*\)',raw))
+        pairs=re.findall(r'\.([A-Za-z0-9_]+)\s*\(\s*([^()]*)\s*\)',raw)
+        pins=dict(pairs)
+        assert len(pairs)==len(pins),('Repeated pins or merged cell records',name)
         pins={k:v.strip() for k,v in pins.items()}
         assert 'D' in pins and 'Q' in pins and 'CLK' in pins,(name,pins)
         result[name]={'cell_type':m.group(1),'line':i+1,'native_instance_text':raw,

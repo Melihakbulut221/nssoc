@@ -5751,3 +5751,10 @@ Next: inspect the PCIe worst-path logic and reset-domain source mapping, then us
 The first candidate timing diagnosis passed. Extended the same immutable-source reader to include the exact3a200e... candidate netlist and expose each actual reported flop's cell, D/Q/CLK/reset connections and literal direct assignment aliases. Source adaptation and helper hashes are checked on the runner. This is required before choosing any RTL reset/data-path repair: the current APB CDC already has per-domain reset-release synchronizers, so an asynchronous path label alone does not establish a missing synchronizer. Do not waive raw reset paths or change RTL from flattened names without actual mapping.
 
 TX normal continuation39882244224/source9dcbe5b3c9256cbc4c48d3e8f064c536aef5b194 resumes the33.109724269ns checkpoint. Swap fault capture remains complete and is not restarted. First CDRv40early cases both rejected on original full34.25ns captures; all_select34 also violates HBT VCE, so larger selector area is not a verified fix. Retain remaining late results before selecting the next experiment.
+
+
+## 2026-10-23: Route10 progressed to35 reported violations; exact continuation ready
+
+Native route39868561968/source590ae6bfcd5b26dfdf802fbcf23cdb1e84bcba3e is completed successfully as a saved-process segment, NOT a completed route. Latest reported completed counts end70,35,35,35,35; iteration27 is present and last progress is100%/35. Keep the full count history, including earlier increases. Exact next descriptor: docs/evidence/mainchip-route10-checkpoint-20261023.json. Resume the same CRIU process with unchanged64iteration cap/original clocks; postroute freshRC/STA is still forbidden until route_complete=true.
+
+Endpoint mapping39883098160 failed on a real formatting assumption: native cell ends with .CLK(...)); on the same line as its final pin, rather than a separate ); line. Correct only that read-only boundary recognition, including same-line cells, and reject merged records/duplicatepins. The failed archive and unchanged candidate netlist remain preserved; no circuit or timing gate was changed.
