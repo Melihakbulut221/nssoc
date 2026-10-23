@@ -7167,3 +7167,11 @@ Completed40024570662(none) and40024574047(swap_leaf_select) are saved processes,
 Exact descriptors and complete receipts: docs/evidence/tx-via3-second-native-checkpoints-20261024.json. This is the pre-dispatch ledger: dispatch one7200second continuation perdescriptor after committing, then discover resulting workflow_dispatch runs before any retry. Restore the same native processes; no cold start, shortened34ns target, lost prefix or new solver settings.
 
 V51 physical40038910783 is independently live from3943cfad9c1429498d5fc2caba028f890a272386; mainchip40031170989 andPLL40001626503 were revalidated live. Full serialPHY/mainchiprouting/finaltiming goal remains active. All CAD/runtime/artifacts cloud-only.
+
+## 2026-10-24 v51 compact via geometry PASS; fresh native wire binding
+
+Physical40038910783 at3943cfad9c1429498d5fc2caba028f890a272386 passed560DRC/0markers,deep-flat18deviceLVS and all9physicalfaults. Summary670689836 SHA026aee3217dd82173a2bb0cb7e8e9f8488ae0995032feab6ca2b302f58309be7;parts670689883 SHA3402ae16df0221445d5120163884e41bbed844cbd10275759a23e8ebb046c8d1. Full receipt docs/evidence/cdr-active-levelshift-v51-physical-pass-20261024.json.
+
+This commit auto-triggers v51-wire-inputs-cloud once. Discover run; require all18native devices50terminals40anchors before fresh actualRC and binding, then compose NEW physical data and rerun unchanged full five-case extracted screen. Do not assume old counts/port order/RC values or call physical pass electrical success. Original v49/v50 electrical failures and v50 initialDRC/harness failures remain preserved.
+
+TX new continuations40039365864 and40039368788 were confirmedlive on45b190189feea8e818266d963742c637d89fe0a3 after dispatching none then swap_leaf_select once each. Verify case mapping via eventual report; no duplicate native restart. Sources40024570662/40024574047 at16.411763ns/15.791432ns have been consumed. Mainchip40031170989 andPLL40001626503 still require live revalidation before action. Full serialPHY/mainchiproute/finaltiming goal remains active; local workspace empty, all native work cloud-only.
