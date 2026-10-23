@@ -6781,3 +6781,21 @@ Never reuse return64 waveforms or restart a live via3 process.
 PLL40001626503 and mainchip39991475218 remain active in cloud. No local
 checkout, layout, waveform or simulator process is used. No full serial
 PHY or routed final setup/hold closure is claimed.
+
+## Verified via3 dispatch and cloud-only continuation
+
+- Via3 initial40006507576 fromf2ca953f3aa7c56f2af3da48b2b72cbf96da8725:
+  source checks and22 descriptor/prefix/model corruption controls passed.
+  Normal and swap-leaf native jobs have started on GitHub-hosted runners;
+  installation step was active at this snapshot. Do not duplicate them.
+- Via3 continuation controls40006507581 passed; native was deliberately
+  skipped on push. Dispatch continuation only after a completed successful
+  saved descriptor, verifying both case and immutable controller hashes.
+- PLL40001626503 and mainchip39991475218 remain live at the snapshot.
+  No numerical progress is inferred from an active step label.
+- Local project directory remains empty and no local native CAD/simulator
+  process was found. Existing monitor prompt already prioritizes cloud-only
+  execution over its historical local instructions. All run artifacts remain
+  GitHub releases; no archives were downloaded locally.
+- Full serial PHY and final setup/hold closure remain open. Prepared decks
+  and controller controls do not imply loaded electrical acceptance.
