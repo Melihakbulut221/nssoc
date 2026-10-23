@@ -6335,3 +6335,22 @@ native dispatch. Wait for updated controls, then dispatch once from INITIAL_SPEC
 to the sparse workflow. This resumes the saved native process, not time zero.
 Receipt: docs/evidence/pll-rhi120-c8-recovery-publication-timeout-20261023.json.
 Keep the original failed initial and the cancelled recovery visible.
+
+
+## 2026-10-23 exact durable PLL fallback dispatch
+
+Updated controls39966782046 passed, including11 fallback faults and exact
+original method identity. Log29509bytes SHA256
+4a5fef1ce7ab2d326fab8f7196be2737420edaecb74be9845164a87948305108.
+Receipt: docs/evidence/pll-rhi120-c8-terminal-fallback-controls-20261023.json.
+
+A single workflow_dispatch to pll-rhi120-c8-native-sparse-cloud is issued at this
+receipt commit, using exact39925042125 INITIAL_SPEC below. It resumes193.792810ns,
+not time zero, and does not claim lost progress from cancelled39941648965.
+Discover this one new dispatch by this commit and do not dispatch again.
+Original1us/5106columns/native runtime/gates remain;6h host envelope and streamed
+ordinary logical publication replace duplicate whole-archive staging.
+
+Descriptor: run39925042125, attempt1, stageinitial,
+summary74033b131a40f5009565b1dd6e219f1b6748f555f750b1c715ebbc77ad93be8d,
+partsbf1b8dcc19d1b8b31eb6934537f0efe728e7f8a6fd5060d1e1334d22627d436d.

@@ -8,10 +8,10 @@ publish a terminal successful saved checkpoint and bind its exact descriptors.
 The source manifest reproduces every controller edit. Command construction,
 physical circuit/deck/102OFF validation, original1us/.3125ps KLU and exact5106
 column qualification remain unchanged. Native checkpoint images, image/ELF,
-CPU affinity, environment and prior payload remain checked. The failed original
-initial source cannot be reused after recovery started. Only successful saved
-recovery or this exact sparse controller may continue, with the same single
-native entrypoint.
+CPU affinity, environment and prior payload remain checked. Normally only successful saved recovery or this exact sparse controller may
+continue with the same single native entrypoint. The exact terminal-publication
+timeout exception below is the sole permitted fallback to the archived initial
+process; it cannot fork a live or newer saved trajectory.
 
 Sparse I/O is the helper verified against the entire archived initial prefix
 in39954614699. Each restore verifies every source part, member and logical
@@ -78,3 +78,8 @@ The new workflow has a six-hour host envelope and streams each ordinary logical
 archive part directly to durable release storage. It does not reserve or wait
 for a second whole compressed archive. The same original1us trajectory,
 all5106columns, solver, stimuli, loads and electrical gates remain mandatory.
+
+
+## Updated fallback controls passed
+
+Run39966782046 at002d6aea30a2a4c5c30e49aa498eb7ec4fed6704 passed all existing families and11 added terminal-fallback fault controls. It verified the actual original method identity and the actual terminal timeout metadata; no simulator was activated. Native fallback is dispatched separately from the exact immutable initial descriptor.
