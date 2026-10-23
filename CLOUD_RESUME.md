@@ -7089,3 +7089,9 @@ Do not use pre-layout pass as evidence for this result. Inspect all five termina
 Run40032180357 completed: all three corners REJECTED, both injected faults detected. Every original110385row67column/full34.25ns waveform preserved; no native diagnostics. Device safety passed, output CM and100mV/37.5ps signal gates failed. Nominal CM1.6335–1.6433V,29.18mV sampled margin,62.34ps latency; hot-low1.5428–1.5512V,17.81mV,72.34ps. Receipt docs/evidence/cdr-active-levelshift-v49-extracted-results-20261024.json. Do not claim pre-layout v49 pass is a physical result.
 
 This commit auto-triggers cdr-active-levelshift-v49-losses-cloud.yml once for three actual captures. Discover its run. Analyze exact native wire paths and voltage/current losses; repair actual geometry based on that evidence and regenerate DRC/LVS/freshRC, without reducing gates or load. Full native parent integration has not begun because this real physical leaf fails.
+
+## 2026-10-24 v50 physical route repair, unchanged intrinsic circuit
+
+Loss diagnosis40032831292 completed all three cases. Nominal actual AVDD load loss0.304658/0.317578V, local return elevation0.158325–0.253541V;50.85–64.51ohm power/return paths. Receipt docs/evidence/cdr-active-levelshift-v49-loss-diagnosis-20261024.json preserves all full original-wave evidence.
+
+New cdr-active-levelshift-v50-physical-cloud.yml auto-triggers once on this commit. The v49 circuit and placements are unchanged; only long routes and ports move to wider upper metals with6um escape lanes/12um bus pitch. Full560DRC/deep-flat18deviceLVS/nineactualfaults required. Discover run before retries. If it passes, generate fresh native wire graph/terminal binding/RC/model assembly and rerun the original loaded screen; do not reuse oldRC or claim accepted electrical repair. Full parent/PHY/route/timing still open. All runtime and files remain cloud-only.
