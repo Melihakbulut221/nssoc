@@ -6735,3 +6735,16 @@ was sent at1daf9700e47d657430111a1eb3372b751dd0cf8b; inspect latest run ID.
   substitution and unchanged crossing equations/all observation controls.
 - No full serialPHY/mainchip or final setup/hold acceptance has been granted.
   All CAD, native waveforms and archives stay in GitHub; local project empty.
+
+
+## Fresh via3 native interfaces before full loaded bench
+
+The new push-triggered tx-output8088-power128return64via3-interfaces-cloud
+workflow binds actual newGDS39986288644, wire graph39987745998 and composition
+39998199226. The native binder is byte-identical to the previous original,
+preserving124 input legs,372 bases,64 driver handoffs,four output ports,
+all28620 terminal checks and all endpoint corruption controls.
+Controller changes only source pins and isolated stage paths.
+Next: prepare original full34ns/256bit deck and run complete normal/fault
+captures without changing stimuli, clocks, loads, solver or device/data gates.
+PLL40001626503 and mainchip39991475218 are verified live; do not duplicate.
