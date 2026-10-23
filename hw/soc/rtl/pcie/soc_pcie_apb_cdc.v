@@ -29,8 +29,11 @@ module soc_pcie_apb_cdc (
    if(!reset_ni) source_release<=0; else source_release<={source_release[0],1'b1};
  always @(posedge destination_clk_i or negedge reset_ni)
    if(!reset_ni) destination_release<=0; else destination_release<={destination_release[0],1'b1};
- wire source_reset_n=reset_ni && source_release[1];
- wire destination_reset_n=reset_ni && destination_release[1];
+ // These flops assert asynchronously even with their clock stopped. Use
+ // only the local release Q for functional registers: recombining raw reset
+ // would recreate an asynchronous path into both functional reset trees.
+ wire source_reset_n=source_release[1];
+ wire destination_reset_n=destination_release[1];
  reg request, acknowledgement;
  (* ASYNC_REG="TRUE" *) reg [1:0] request_sync, acknowledgement_sync;
  always @(posedge source_clk_i or negedge source_reset_n)

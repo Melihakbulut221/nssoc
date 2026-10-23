@@ -96,6 +96,21 @@ module tb_pcie_apb_cdc;
    #0.3;reset();destination_run=1;block_slave=0;
    repeat(20)@(negedge dc);
    if(seen!=baseline)$fatal(1,"cancelled wait committed");
+   // Stop the source while a real destination ACCESS is stalled. Reset
+   // must clear both sides without a source edge; release while source is
+   // stopped must not resurrect the old request or produce a response.
+   block_slave=1;request(113);wait(ms && me);
+   @(negedge sc);source_run=0;
+   #0.3;rn=0;ss=0;se=0;expecting=0;
+   #0.1;if(sr || ms || me)$fatal(1,"stopped-source reset isolation failed");
+   repeat(5)@(negedge dc);
+   rn=1;
+   repeat(10)begin
+     @(negedge dc);
+     if(sr || ms || me || seen!=baseline)$fatal(1,"stale transfer during stopped-source release");
+   end
+   source_run=1;block_slave=0;
+   repeat(8)@(negedge sc);
    request(113);response();@(negedge sc);ss=0;se=0;
    repeat(30)@(negedge dc);
    if(seen!=97)$fatal(1,"post-reset recovery failed");

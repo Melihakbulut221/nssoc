@@ -5776,3 +5776,12 @@ Corrected read-only endpoint mapping39883824924/source461d15daf953e5437a6ca67f1f
 Next concrete digital work: map the slow-path flipped endpoint to its actual consumer/RTL register, then inspect packet byte selection/CRC and retry write-enable cones. For reset repair, retain legitimate first-stage synchronizer handling; downstreamCDCraw-reset AND and retry reset paths must be reviewed against stopped-clock/link-loss tests, not blanket false-path constraints. No RTL or timing exception was changed in this diagnosis.
 
 Route11 run39883818247 and TXnormalfifth39882244224 are live at last poll. PLL complete-current diagnosis is published and requires closed-loop corrective-sign/filter investigation using original cached columns/cycle records. FullPHY, actual serial-mainchip integration and original-clock postroute setup/hold remain unclosed. All computation and persistent artifacts remain in GitHub.
+
+
+## 2026-10-23: CDC functional reset trees use only their local synchronized release
+
+Candidate RTL removes raw reset reconvergence from source_reset_n/destination_reset_n; four release flops keep their asynchronous reset. Adds a real stalled destination ACCESS with stopped source clock, reset assertion, and release before restarting the source. Existing97completed-transfer and three-clock-ratio verdicts remain. Frozen before-RTL fixture retained.
+
+New pcie-cdc-local-reset-cloud uses pinned2026-08-04 OSS tools and untouched c4b8b4e IHP models. It must pass existing RTL fault controls, frozen-reference clk2fflogic event equivalence, native IHP port tests, and exact mapped reset topology: raw reset only reaches four release flops; every functional reset uses its own domain's releaseQ. The actual old mapped RTL and injected raw-bypass/wrong-domain faults must reject. No clock or SDC exceptions changed.
+
+This is pending cloud validation, not a chip timing fix proved by layout. Current153130-cell route11 remains the old immutable netlist; it is not silently replaced. A passing block candidate still needs full-chip synthesis/integration/physical and original-clock STA. TXnormal full34ns capture39882244224 rejects original loaded gates:85HBT/0MOS failures and14wrong-sign samples; retain and diagnose that completed record, do not restart it.
