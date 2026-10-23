@@ -6748,3 +6748,20 @@ Controller changes only source pins and isolated stage paths.
 Next: prepare original full34ns/256bit deck and run complete normal/fault
 captures without changing stimuli, clocks, loads, solver or device/data gates.
 PLL40001626503 and mainchip39991475218 are verified live; do not duplicate.
+
+## Via3 interfaces passed; exact original full-wave bench preparation
+
+Run40003582105 passed all124 input/372 base/64 driver/four output bindings
+and8+2+2 fault controls with28620 native terminals. Exact metadata and
+source-delta pins are committed. New preparation changes only stage names
+and physical interface source; original34ns/256bits,604HBT5376MOS, source
+bits, clocks, loads, solver, step, device bounds and sample gates stay fixed.
+Both normal and swap-leaf decks are prepared on GitHub. Preparation is not
+a loaded transient pass. Inspect the new preparation run before dispatching
+the checkpointed native full-wave runtime; never reuse old return64 captures
+as evidence for via3. PLL40001626503 and route39991475218 remain live.
+
+Cloud-only preference is current: local project folder is empty; no local
+CAD/simulator process or matched task artifacts were found in the checked
+project parent, Downloads, /tmp or top-level cache. All source and results
+are published through GitHub, with no local archive or checkout.
