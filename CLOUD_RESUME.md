@@ -6580,3 +6580,14 @@ Do not duplicate the live parent or consume old return64 RC as via3 evidence.
 Route39991475218 is the sole continuation of saved39970270107. Original clocks
 and native routing settings are unchanged. The local workspace stays empty.
 PLL39967627133 remains in publication; verify its terminal result before resume.
+
+
+## CDR measured l39 bias and regeneration investigation
+
+V45 area reductions worsened both measured C/D delays. A new two-case
+cdr-v44-l39-observation-cloud job reads the actual rejected early/late l39
+full captures from39952318814. It reproduces all120 HBT/four sampler checks,
+then measures actual master/slave data, selector VBE/current, voltage headroom,
+and divider transfer. The exact84 changed primitive identities are verified.
+No new waveform, simulated ideal internal signal, gate shift or layout claim.
+Use the resulting native-node evidence before choosing gain/bias changes.
