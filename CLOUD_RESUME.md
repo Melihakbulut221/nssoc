@@ -5733,3 +5733,14 @@ Evidence: docs/evidence/cloud-only-mainchip-boundary-20261023.json. Do not infer
 Added mainchip-repair-deep-triage-cloud. It reads six immutable optimizer-placement reports plus the native repair log from run39674630712/source6fbd221520a35d6b5ef01cc1c67796175093ee3c. Exact candidate netlist3a200e..., sourceSDC19fdfb..., candidateODB25b1e... and logic/clock proofs are required. The original native report parser is preserved through an explicit source adaptation. This is placement-path diagnosis to guide the next ECO after route, never final timing acceptance; original clocks and all live native processes remain unchanged. All restore, report parsing and publication occur on the hosted runner.
 
 After completion, inspect each corner's actual startpoint/endpoint/path group and preserved first paths; compare with the fresh postroute results only when route_complete is true. Do not compare placement WNS with routed WNS as a validated improvement.
+
+
+## 2026-10-23: TX fourth segment, completed fault capture and candidate timing diagnosis
+
+TX normal run39867591857 completed a saved-process segment at33.109724269ns,75720 complete rows/14182columns,111232 partial bytes. It has not completed34ns and has no electrical acceptance. Continue ONLY its exact new checkpoint; do not repeat an earlier segment. TX swap_leaf_select run39867597476 completed34ns/77694rows/all14182columns withnativeexit0 anddiagnostics[]. The intended fault is detected; electrical_screen_passed remainsfalse. Preserve its device/interface failures and do not rerun this completed fault capture.
+
+Exact descriptors and complete compact outcomes: docs/evidence/tx-return32-fourth-native-results-20261023.json.
+
+Read-only timing diagnosis39881471453/sourcec095d21f9fcb01f17f3694795bb79b06799fae49 succeeded on the exact current candidate's six native placement-estimated reports. Slow PCIe data path slack-3.271100044ns and typ PCIe-3.411071539ns remain; asynchronous reset recovery/removal and short SRAM/data-input hold paths also remain. Each report has only one worst path per path group: do not infer whole-chip violating counts from these13max/min groups or treat placement slack as postroute signoff. Original full report bytes and source hashes are preserved in the cloud release. Compact paths: docs/evidence/mainchip-repair-deep-placement-paths-20261023.json.
+
+Next: inspect the PCIe worst-path logic and reset-domain source mapping, then use actual fresh routed RC/three-corner reports after route completion to select a verified ECO; no clock/false-path waiver. Existing route10, PLL wire-current and fourCDRv40 cases remain live at last poll. All work stays cloud-only.
