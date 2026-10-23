@@ -39,6 +39,27 @@ def aggregate(rows,review):
    assert sum(r[key] for r in selected)==old[key],(stage,key)
   assert min(r['minimum_margin_v'] for r in selected)==old['minimum_margin_v']
   assert [min(r['common_mode_range_v'][0] for r in selected),max(r['common_mode_range_v'][1] for r in selected)]==old['common_mode_range_v']
+def archive_gate(embedded,report,actual,selected):
+ assert embedded==report,'Embedded source summary changed'
+ assert set(actual)==set(report['outputs'])|{'criu-build.log'},'Unexpected/missing archive member'
+ assert all(actual[p]==h for p,h in report['outputs'].items()),'Original output hash changed'
+ assert selected<=set(actual),'Missing selected capture'
+ assert len(actual['criu-build.log'])==64
+def archive_controls():
+ report={'outputs':{'work/wave.raw':'a'*64,'work/contract.json':'b'*64}}
+ actual=report['outputs']|{'criu-build.log':'c'*64};selected={'work/wave.raw','work/contract.json'}
+ archive_gate(report,report,actual,selected);faults=[]
+ for kind in ('changed-raw','missing-raw','extra-member','missing-build-log','changed-embedded'):
+  bad=copy.deepcopy(actual);embedded=copy.deepcopy(report)
+  if kind=='changed-raw':bad['work/wave.raw']='d'*64
+  elif kind=='missing-raw':del bad['work/wave.raw']
+  elif kind=='extra-member':bad['unexpected']='e'*64
+  elif kind=='missing-build-log':del bad['criu-build.log']
+  else:embedded['changed']=True
+  try:archive_gate(embedded,report,bad,selected)
+  except AssertionError:faults.append(kind)
+  else:raise AssertionError('Accepted '+kind)
+ return faults
 def controls():
  d=dict(source_head=SPEC['head'],run_id=SPEC['run'],case='none',
  status='REJECTED_ACTUAL8088_POWER128RETURN64_ORIGINAL_LOADED_GATES',native_exit_code=0,
@@ -56,7 +77,7 @@ def controls():
   try:source_gate(rr,dd)
   except (AssertionError,KeyError):faults.append(owner+'.'+key)
   else:raise AssertionError('Accepted '+key)
- return dict(source_faults_rejected=faults,synthetic_only=True)
+ return dict(source_faults_rejected=faults,archive_faults_rejected=archive_controls(),synthetic_only=True)
 def restore(result):
  raw=small(SPEC['summary_asset'],SPEC['summary_sha256'])
  manifest_raw=small(SPEC['parts_asset'],SPEC['parts_sha256'])
@@ -95,7 +116,10 @@ def restore(result):
     with dest.open('xb')as f:shutil.copyfileobj(stream,f)
     actual[name]=sha(dest)
    else:actual[name]=hashlib.file_digest(stream,'sha256').hexdigest()
- assert embedded==d and actual==d['outputs'] and selected<=set(actual)
+ result['archive_member_inventory']=dict(actual=actual,expected=d['outputs'],
+  extra=sorted(set(actual)-set(d['outputs'])),missing=sorted(set(d['outputs'])-set(actual)),
+  changed=[p for p,h in d['outputs'].items()if p in actual and actual[p]!=h])
+ archive_gate(embedded,d,actual,selected)
  result['archive_verified']=dict(bytes=length,sha256=total.hexdigest(),all_output_hashes=actual)
  (OUT/'source-summary.json').write_bytes(raw);(OUT/'source-parts.json').write_bytes(manifest_raw)
  packed.unlink()

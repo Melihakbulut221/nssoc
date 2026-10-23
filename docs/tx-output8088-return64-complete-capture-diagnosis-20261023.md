@@ -28,3 +28,12 @@ receipt, retaining hashes rather than a second multi-gigabyte raw copy.
 
 This does not close TX electrical gates, CDR/PLL, serial PHY, routed mainchip,
 postroute timing, foundry extraction, DRC/LVS, ESD, or production approval.
+
+
+The first read-only run39972075681 rejected archive inventory equality before
+electrical review. The exact original workflow appends criu-build.log after
+writing result.json. The corrected reader permits exactly this one extra member,
+requires every original output hash unchanged and all selected files present,
+and still verifies every archive byte. Five additional corruption checks reject
+changed/missing raw, extra member, missing build log and changed embedded summary.
+The failed diagnostic remains published; no native simulator is restarted.
