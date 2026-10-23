@@ -1,0 +1,37 @@
+{
+  "source_head": "6f90388e4dfb272ff662aab5695381a2dfe1ca4f",
+  "sha256": {
+    "scripts/run_cloud_pll_filter_layout.py": "3067a19a08d1329e79d7f11ec26e0ded7f6b9093f066e0ac464739c3541007ae",
+    "hw/soc/flow/make_pcie_pump_filter13_v1.py": "694edd8e1619509c6f996972c8873b5e440ac2d29bab28a8034c07f833d57f0e",
+    "hw/soc/flow/check_pcie_pump_filter13_v1.py": "8bf58d50b926f4281aef1129914a2c879b152ebc2d505b97bc5cf4c5dbcebd36",
+    "hw/soc/flow/check_pcie_pump_filter13_lef.py": "f44b9b88491c0da050fdde64bb19f3a08b7182ac6e44b5ea222856e7717d9fa4",
+    "hw/soc/analog/pcie/pll_pfd_charge_pump_hv_v1.spice": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc",
+    "scripts/cloud_pll_rhi120_c8_layout.py": "511a8896b77d5d81624cac5733ad0ff12220ee743b25311622dba742e12a8c42",
+    "hw/soc/analog/pcie/pll_pump_filter_hv_rhi140_c8_v1.spice": "f1ac5a165fdc8160d6ad2588a6da87d62a4314cc7ce67e7bc4bac0ed6ccd31d7",
+    "hw/soc/analog/pcie/pll_pump_filter_hv_rhi120_c8_v1.spice": "88c72dc6de79d598548e3eba833f832bf02501c126f75e2f2e9435fcd207fc55"
+  },
+  "scope": "Only RHI intrinsic length140->120um versus exact physical C8 pump. Native PCell regeneration, original full560 DRC/native deep+flat30device LVS, geometric faults and real RHI reference fault. No PLL or physical acceptance before tests.",
+  "hypothesis": "Actual full1us PLL845 feedback exceeds100MHz and VCTRL/frequency anticorrelation is observed. Increasing upper bias conductance is a candidate to shift attainable control bias; waveform correlation is not causal gain and does not predict acceptance.",
+  "evidence": {
+    "loop_response_run": 39912552652,
+    "summary_asset": 668223401,
+    "summary_sha256": "397b02064dce0e94402a9ca94cccefaa53211011af5a6dae64ae22882bd13068"
+  },
+  "not_changed": [
+    "RLO47um",
+    "MIM8x8um",
+    "charge_pump_devices",
+    "PFD_polarity",
+    "clocks",
+    "loads",
+    "original_acquisition_gates"
+  ],
+  "next_required": [
+    "native child DRC and LVS",
+    "unchanged-parent physical integration and full parent DRC/LVS",
+    "fresh parent actual-terminal RC/MIM composition",
+    "complete original1us acquisition and device safety",
+    "PVT and qualified parasitics",
+    "full serial PHY and mainchip integration"
+  ]
+}
