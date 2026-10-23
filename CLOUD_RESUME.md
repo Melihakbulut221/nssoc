@@ -5838,3 +5838,8 @@ Run39892670643 failed before STA: legacy generated CUDD build files requested un
 
 ## 2026-10-23: native STA build dependency fixed
 Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_INCLUDE_DIR. Add libfl-dev; design analysis had not started. Canonical LCRC remains unchanged.
+
+
+## 2026-10-23: read-only route marker diagnosis
+- mainchip-route10-drc-markers-cloud restores only immutable route10 reports20/25/30 and native.log from39868561968, preserving exact text/hashes. It never touches live route11. Inspect whether the remaining35 markers are recurring physical obstructions before proposing a future ECO.
+- LCRC comparative STA run39894427399 builds pinned current tools after fixing CUDD autoreconf and Flex headers. Do not rerun its proven functional suite; canonical candidate not adopted until timing review.
