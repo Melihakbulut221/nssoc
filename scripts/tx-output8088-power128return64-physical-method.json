@@ -1,0 +1,75 @@
+{
+  "baseline_source": "c7aa68fd35cfefb53a88f490205310d86a70408e",
+  "files": {
+    "generator": {
+      "baseline": "scripts/generate_tx_output8088_power128return32_parent.py",
+      "baseline_sha256": "735deb10899f84fbe3acdb4e6f7dead0e0072c0f5901b7efd64b7df07e7ae7b7",
+      "candidate": "scripts/generate_tx_output8088_power128return64_parent.py",
+      "candidate_sha256": "5e329ca8857c637d3710a4b035cb165ba6285d49c00c21b0c352fe657d2b97bc"
+    },
+    "controller": {
+      "baseline": "scripts/cloud_tx_output8088_power128return32_physical.py",
+      "baseline_sha256": "886a3584b7e6c3081d3480ef6ff44f8d3cfcdcd1bb4125d07f487725838ef589",
+      "candidate": "scripts/cloud_tx_output8088_power128return64_physical.py",
+      "candidate_sha256": "e6457ff10ed0726ac4b75b4bfe88a8fc0d460d2270d1a46e2d2798823ac01f9d"
+    }
+  },
+  "edits": [
+    {
+      "target": "generator",
+      "before": "     candidate[metal]+=wire(ax+20000*ux+shift,ay+20000*uy,bx-20000*ux+shift,by-20000*uy,16000)",
+      "after": "     candidate[metal]+=wire(ax+20000*ux+shift,ay+20000*uy,bx-20000*ux+shift,by-20000*uy,16000)\n     # Preserve the6/32um paths and all endpoint/via access. Add64um\n     # only where two40um end clearances fit. Move the right vertical\n     # addition left18um so its SUB-facing edge stays exactly unchanged.\n     if distance>80000:\n      wide_shift=-18000 if metal==126 and ax==bx==x else 0\n      candidate[metal]+=wire(ax+40000*ux+wide_shift,ay+40000*uy,bx-40000*ux+wide_shift,by-40000*uy,32000)",
+      "count": 1
+    },
+    {
+      "target": "generator",
+      "before": "lower-18000,middle+5000,lower+18000",
+      "after": "lower-34000,middle+5000,lower+34000",
+      "count": 1
+    },
+    {
+      "target": "generator",
+      "before": "POWER128RETURN32_PARENT_REQUIRES",
+      "after": "POWER128RETURN64_PARENT_REQUIRES",
+      "count": 1
+    },
+    {
+      "target": "generator",
+      "before": "middle_width_um=32.,unchanged_endpoint_access_um=20.,old_width_um=6.",
+      "after": "middle_width_um=64.,retained_middle_width_um=32.,minimum_span_for64um_um=80.,wide_endpoint_access_um=40.,unchanged_endpoint_access_um=20.,old_width_um=6.",
+      "count": 1
+    },
+    {
+      "target": "generator",
+      "before": "Widen actual output AVSS spans while retaining the core power128feed32 geometry.",
+      "after": "Add64um long-span output AVSS metal while retaining native core/leaf and6/32um route shapes.",
+      "count": 1
+    },
+    {
+      "target": "controller",
+      "before": "power128return32",
+      "after": "power128return64",
+      "count": 3
+    },
+    {
+      "target": "controller",
+      "before": "POWER128RETURN32_PARENT",
+      "after": "POWER128RETURN64_PARENT",
+      "count": 2
+    },
+    {
+      "target": "controller",
+      "before": "  r['return_network_diagnosis']=dict(run=39756511142,summary_sha256='8f7c02eb7623d0e069c45a2c60933ba540efb13a85f954f464fbaadce6980327',\n   measured_output_effective_resistance_ohm=30.270116442211645,dominant_raw_edge='R139947',dominant_edge_ohm=29.8196,\n   dominant_energy_fraction=.9851167919251396,repair_hypothesis='Add32um middle metal to real output return spans; keep old6um geometry, endpoints, every primitive, source and original gates. Requires fresh physical/RC/full-wave checks.')\n",
+      "after": "  r['return_network_diagnosis']=dict(run=39779483353,summary_sha256='c78176a0e96132c2f5c023530c5f493fe7a4e5ab5504a862317a0ac4898ba1b2',\n   measured_output_effective_resistance_ohm=12.383116441782459,dominant_raw_edge='R139947',dominant_edge_ohm=11.9326,\n   dominant_energy_fraction=.9636184926464064,repair_hypothesis='Add64um middle metal only on actual AVSS spans longer than80um; preserve6/32um selected-route shapes and40um wide-section endpoint access. Requires fresh physical/RC/full-wave checks.')\n  r['full_return32_rejection']=dict(run=39882244224,summary_sha256='0ecc3dc388c00cc05dac72ae349db19f935e970180ea149e6bb495ceac14aa66',\n   duration_ns=34.,failed_hbt=85,wrong_output_samples=14,full_phy_accepted=False,\n   scope='The64um candidate targets output-return resistance only. It does not claim to repair the82 selector and2 final-tail failures or the full serial PHY.')\n",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_exact_external_ports.py": "0c98c7d1f43f5fda36a869383a6cd6d91bdec581466664f3e80be029fd2ff583",
+    "hw/soc/flow/check_pcie_rx_cell.py": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885",
+    "hw/soc/flow/check_ihp_drc.py": "b93e899a9b350edf63e55292913be09e2eea3dedbc95a6d027a5254979ad8650",
+    "hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+    "hw/soc/pnr/ihp-drc.lock.json": "d47860e82e76d81897ce51452aa1f7a7bb76643da38093911b5cdb55a4ebf73a",
+    "hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532"
+  }
+}
