@@ -5900,3 +5900,8 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - Dispatched mainchip-repair-deep-postroute-cloud ONCE fromhead505cb0f89c61d3276856ab8f095dc5e0c1fc5a0f using exact completed route summary3a52d93756a23249e720315321b5a433525f707b56ae662e7466fac1bed8e2fc/parts95b6b8dd2c7aae30ebfc5a0ac826f91b1e6392ba24be66b4615b1045ca042dc8 and original postroute-input package39635867954. Recover runID by exacthead/workflow/event before any further dispatch.
 - This postroute run must check geometry/topology, antenna, disconnected pins, fresh RC and original20/4/8/8ns setup/hold at3corners. Native DRT0 is not full foundry DRC/LVS, full serialPHY integration or final timing closure.
 - Return64 precision39903139948 is live athead505cb0f89c61d3276856ab8f095dc5e0c1fc5a0f. After pass, continue composition/preparation/fullwaves; no electrical acceptance yet.
+
+## 2026-10-23: postroute controller path-type repair, original failure preserved
+- Postroute39903708641 completed failure before antenna/RC/STA: geometry integrity loop passed string keys into a SHA helper requiring Path. Original reportebbf357061ec731f219755b4c3ca2c7f4a9e30e37344eff99fd84a6860c91ec0 and traceback retained.
+- Fixed only sha(Path(p)) in the protected-input loop; updated exact bound method digest. All geometry/timing checks, files/digests, clocks, completedroute39896983175 and inputpackage39635867954 are unchanged. Retry only postroute validation; native DRT must never restart.
+- Return64 precision39903139948 remains live; no duplicate producer run.

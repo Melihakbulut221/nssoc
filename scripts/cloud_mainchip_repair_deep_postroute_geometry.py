@@ -75,7 +75,7 @@ def main():
         assert set(topology['rejected'])=={'changed_master','changed_pin','changed_location','non_diode_addition'}
         run('scripts/check_onehot_fixed_clock_route.py','native-fixed-clock',dict(NSSOC_CLOCK_ROUTE_PROOF_OUT=str(OUT/'fixed-clock.json')))
         fixed=json.loads((OUT/'fixed-clock.json').read_text());assert fixed['original_physical_route_preserved']
-        assert all(sha(p)==h for p,h in protected.items())
+        assert all(sha(Path(p))==h for p,h in protected.items())
         r.update(status='PASS_COMPLETED_NATIVE_ROUTE_GEOMETRY_REQUIRES_DRC_ANTENNA_RC_STA',
             topology=topology,fixed_clock=fixed,sources_unchanged=True,protected_inputs=protected)
     except BaseException as e:r.update(status='FAIL_REPAIRED_ROUTE_GEOMETRY',error=repr(e),traceback=traceback.format_exc());raise
