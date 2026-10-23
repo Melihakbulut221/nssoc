@@ -6072,3 +6072,8 @@ Independent cdr-readonly-source-validation-cloud proof executes each distinct ze
 ## 2026-10-23 — guarded source validation proof passed
 39930946907 at4ffe7bec passed123distinct validators/190guarded calls with870read files unchanged in1.94078s. Three actual source/physical/receipt mutations rejected; originals restored. Native/electrical computations were never cached. Originalv41 syntax job120331387449 passed, its final source-check step took460s(09:00:54–09:08:34UTC);4native jobs are live.
 New comparison workflow binds both exact commits/870Gitblob identities, protected proof receipt and original successful job log markers before future use. No live v41 workflow/source changed or restarted. All PHY/mainchip/timing gates remain open.
+
+
+## 2026-10-23 — resized route12 now in second optimization pass
+Mainchip39923389964 completed successful exact process-save: first optimization iteration0finished with172654reported violations; iteration1began. This is intermediate DRT state, not finalDRC/antenna/timing result and not comparable to completed oldroute0violations. Sources/entrypoint unchanged; new checkpoint descriptor in docs/evidence/mainchip-route12-drt-39923389964-checkpoint-20261023.json. Dispatch next native continuation7200s under existing allowed limit, reducing host handoff overhead; do not cold-start.
+PLL39925042125 full1us capture,TX39922149686/39922153568 and4CDRv41native jobs39928714596 remain live. Source-validation comparison39931950389 queued; immutable read-only proof39930946907passed123distinct validators/870files/3faults. All workcloud/localempty.
