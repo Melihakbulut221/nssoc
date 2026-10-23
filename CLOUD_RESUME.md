@@ -7060,3 +7060,10 @@ This commit retains every strict extraction/audit gate. Native negative stimulus
 RC40028080567 passed53R/93C/9components and14raw faults. Source6927916eab0e41e6f5dd3d3e070eda93da2be8ab. Exact native extractor/audit hashes match rejected-first-run40027403483; only fault stimulus selection changed. Receipt docs/evidence/cdr-active-levelshift-v49-rc-pass-20261024.json.
 
 New cdr-active-levelshift-v49-binding-cloud.yml auto-triggers this commit. It binds actual18devices/50terminals/8ports to pinned native PDK models with9corruption controls. Discover run and do not duplicate. Next compose18intrinsic+53R+93C with all40physical anchors and distinct body/extractor-reference nodes, then run full native loaded cases. Parent integration must avoid double8um XREF when connecting existing sampler IREF and v49's IREF; both schematics have diode-connected references. No new ideal parent bias source is authorized as acceptance evidence. Full parent/PHY/timing remain open.
+
+
+## 2026-10-24 v49 native model binding PASS and full leaf composition
+
+Binding40028786566 passed18devices/50terminals/8ports and9corruption controls. Receipt docs/evidence/cdr-active-levelshift-v49-binding-pass-20261024.json. Actual PDK finite contact model has R81.66666666666666666666666668ohm per2um-square ptap1; do not collapse it or claim substrate-spreading qualification.
+
+New cdr-active-levelshift-v49-composition-cloud.yml auto-triggers this commit, joins exact binding to source-matched fresh53R/93C with14composition faults. Discover run before any retry. Output intended: levelshift18-wire.spice and composition.json with8physical ports+wire_cref, all18models once and actual body identities. Next full native loaded waveform uses actual compact geometry params and finite contact subcircuit; then actual C/D integration without double XREF. No loaded extracted result or parent acceptance yet.
