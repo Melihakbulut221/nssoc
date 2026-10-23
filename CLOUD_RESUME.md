@@ -7209,3 +7209,13 @@ All130569396155logical bytes and saved process hosted; prior/protected unchanged
 Dispatch same-process sparse continuation from this exact descriptor after this
 commit; never dispatch completed-reader on a saved source. Mainchip andTX jobs
 already live and must not be duplicated. Cloud only, local workspace stays empty.
+
+
+## 2026-10-24 v51 actual extracted full waveform launched
+Composition40041871542 passed18devices+181R+173C and14faults, source-matched
+binding and RC receipts. The physical native interface is explicitly pinned.
+New v51 full-wave workflow repeats nominal/hot_low/cold_high/swap_output/bias_off
+with unchanged original v49 acceptance region, all native nodes/currents,
+34.25ns,125psUI,0.3125ps step,150fF/output,10ohm input,100mV margin and37.5ps delay.
+No new electrical pass claimed before actual results. PLL continuation40041871167
+now live consuming998.4567ns checkpoint; do not dispatch completed-reader yet.
