@@ -6954,3 +6954,30 @@ actual node/current timing to decide the next circuit change.
 Mainchip40011725403, TX40006507576 and PLL40001626503 were verified live in their
 native steps. Keep exact processes; no duplicate dispatch. Cloud-only execution
 and empty local workspace remain current. Full serialPHY and final timing open.
+
+## v47 full-record diagnosis complete; active cloud handles preserved
+
+Run40017175142 at5bf70fc891bde61cb74111692ed38de7c9655035 passed both early/late
+postprocessing jobs. All120HBT and four sampler results reproduced on unchanged
+original full records; actual112 native parameter deltas verified. Full summary
+hashes, parts hashes, phase/steering summaries and v44early input comparison are
+committed in cdr-v47-drive-load-observation-pass-20261023.json.
+
+v47 remains rejected. C early capture-aperture source/base differential changed
+64.572/30.602mV ->56.161/27.644mV; observed aperture master VCE410.182mV is narrow.
+C/D retain64 low output samples each. Do not promote stronger-tail/inverse-load
+trial to accepted layout, or repeat it as a speed fix. Next CDR work must address
+upstream/input-transfer loading and headroom together from these native records,
+with original full electrical gates and later real candidate geometry/freshRC.
+
+Completed PLL reader/cache controls40016631396 and all-column stream controls
+40015445081 passed. Its manual full reader is ready only for a successful terminal
+sparse publisher, not current saved source. All5106 columns and complete archive
+bytes are validated before unchanged original acquisition analysis. Dynamic
+device/PVT/fullPHY remains separate. Original active controller bytes unchanged.
+
+Latest native handles are mainchip40011725403, TX40006507576 and PLL40001626503;
+the accompanying snapshot records live state. Do not restart/duplicate while
+live; continue only newly saved immutable capsules. For mainchip use qualified
+postroute workflow only after actual DRT completion. All work remains cloud-only,
+local project empty. Full serialPHY, completed routing and final setup/hold open.
