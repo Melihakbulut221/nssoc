@@ -5835,3 +5835,6 @@ CDC localreset block remains verified but not remapped into live route11. Fullch
 
 ## 2026-10-23: CUDD cloud build correction
 Run39892670643 failed before STA: legacy generated CUDD build files requested unavailable aclocal. Regenerate with autoreconf -fi using installed autotools; pinned CUDD/OpenSTA source commits and all design/constraint inputs unchanged. Original failed logs retained. Fresh lcrc-word-onehot-timing-cloud run will start from this workflow fix.
+
+## 2026-10-23: native STA build dependency fixed
+Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_INCLUDE_DIR. Add libfl-dev; design analysis had not started. Canonical LCRC remains unchanged.
