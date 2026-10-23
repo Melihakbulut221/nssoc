@@ -36,7 +36,7 @@ jobs:
           python3 scripts/check_cdr_v41_selector_headroom_sources.py
           python3 -m py_compile scripts/cloud_cdr_v41_selector_headroom.py scripts/cdr_capture_windows.py scripts/cdr_candidate_input_bias_observation.py
           PYTHONPATH=scripts python3 -c "from cloud_cdr_v41_selector_headroom import controls,parallel_controls,window_controls,bias,selector_observation; print(controls()); print(parallel_controls()); print(window_controls()); print(bias.controls()); print(selector_observation.controls())"
-      - name: Observe actual follower input/output commonmode and C/D master headroom with original full checks
+      - name: Observe selector base, base-emitter and current response with original full checks
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_cdr_v41_selector_headroom.py --variant ${{ matrix.variant }} --case ${{ matrix.case }}
@@ -70,3 +70,5 @@ jobs:
           retention-days: 30
 
 # Observe actual original full v41 recordings only; compare with already completed v36/v37 observations. No new native simulation, acceptance gate, ideal divider or waveform trimming.
+
+# Pair response diagnosis: known-offset and ambiguous/missing crossing controls precede unchanged original capture analysis.
