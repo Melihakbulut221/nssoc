@@ -6057,3 +6057,8 @@ After initial completes, inspect published summary and parts; only successful sa
 ## 2026-10-23 — CDRv40 cached full-wave diagnosis
 PLL39925042125 entered initial full1us native stage; mainchip39923389964 and both TX39922149686/39922153568 remain live. Preserve them.
 New cdr-v40-transfer-cloud workflow reads only the four exact already-completed39878490784 captures. Reproduce every120HBT/four sampler result, including failed VCE for all_select34; match actual76/92changed primitive census and selector areas. Analyze same observed clock/collector-current/transfer/headroom quantities as v39, not new simulation. All candidates remain rejected; no v41 change selected yet. Read actual diagnostic results and compare v39follower_l18 before new sizing.
+
+
+## 2026-10-23 — v40 full diagnoses passed; v41 follower area screen
+Cached full-wave39926831412 all4jobs succeeded as failure reproductions, not candidate acceptance. Exact summary/parts metadata in cdr-v40-loading-results-20261023.json. Early C selector enlargement delays measured nearest-edge steering medians (master15.0616->15.6146ps/slave15.4191->15.8255ps),46wrong slave signs remain. All failures retained.
+New cloud-only v41 source-bound experiment changes only4actual ac/bd follower Nx4->6 or8 on exactv39L1.8 (not failedv40larger selectors).80unique original-model deltas, allwirecards/loads/clocks/windows/gates retained. Five parameter/sixactualgraph faults must pass before native screens. No predicted pass, no newlayout claim. Watch cdr-v41-intrinsic-screen-cloud generated on this commit. Existing PLL39925042125,mainchip39923389964,TX39922149686/39922153568 live; preserve all.
