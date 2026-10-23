@@ -26,7 +26,7 @@ def main():
         live=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/'+str(RUN)]))
         assert live['head_sha']==HEAD and live['run_attempt']==1 and live['status']=='completed'and live['conclusion']=='success'
         assert live['path']=='.github/workflows/mainchip-postroute-repair-deep-cloud.yml'
-        names=[f'optimizer-placement-{c}-{n}.rpt'for c in CORNERS for n in NAMES]+['native-repair.log']
+        names=[f'optimizer-placement-{c}-{n}.rpt'for c in CORNERS for n in NAMES]+['native-repair.log','candidate.v']
         prior,proof=reports.restore_report('mainchip-postroute-repair-deep',RUN,SUMMARY,PARTS,OUT/'source',names)
         assert prior['source_head']==HEAD and prior['sources_unchanged']
         assert prior['status']=='PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA'
@@ -61,6 +61,9 @@ def main():
                     path_groups=dict(Counter(x['Path Group']for x in paths)),
                     first_three_native_paths=blocks[:3])
             result['corners'][c]=row
+        assert digest(OUT/'source/candidate.v')==prior['candidate_netlist_sha256']
+        from map_mainchip_candidate_timing import map_endpoints
+        result['candidate_endpoint_mapping']=map_endpoints(OUT/'source/candidate.v',result['corners'])
         assert all(digest(OUT/'source'/n)==prior['outputs'][n]for n in names)
         result.update(status='COMPLETE_EXACT_CANDIDATE_PLACEMENT_PATH_DIAGNOSIS_NOT_ROUTED_TIMING',
           sources_unchanged=True,all_native_reports_retained=True)

@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_mainchip_postroute_triage.py",
   "baseline_sha256": "759952d231687cfd77239bca8a5a342280687fae8c5eeada7144c579aad67126",
   "candidate_path": "scripts/cloud_mainchip_repair_deep_triage.py",
-  "candidate_sha256": "b859af44c4cde0d188e688d8a048b23050777449579cb2ec849b480cdfa2be36",
+  "candidate_sha256": "255f4d0d47748c48635e1f3ed05427c1173623a4aa8cbf07acb15f20ccbb1b89",
   "edits": [
     {
       "before": "Read the completed route's exact native reports; no CAD rerun or acceptance.",
@@ -83,7 +83,18 @@
       "before": "'COMPLETE_EXACT_POSTROUTE_NATIVE_PATH_DIAGNOSIS_NOT_REPAIR'",
       "after": "'COMPLETE_EXACT_CANDIDATE_PLACEMENT_PATH_DIAGNOSIS_NOT_ROUTED_TIMING'",
       "count": 1
+    },
+    {
+      "before": "]+['native-repair.log']",
+      "after": "]+['native-repair.log','candidate.v']",
+      "count": 1
+    },
+    {
+      "before": "        assert all(digest(OUT/'source'/n)==prior['outputs'][n]for n in names)",
+      "after": "        assert digest(OUT/'source/candidate.v')==prior['candidate_netlist_sha256']\n        from map_mainchip_candidate_timing import map_endpoints\n        result['candidate_endpoint_mapping']=map_endpoints(OUT/'source/candidate.v',result['corners'])\n        assert all(digest(OUT/'source'/n)==prior['outputs'][n]for n in names)",
+      "count": 1
     }
   ],
-  "scope": "Only source binding and report paths change; inherited full native path parser retained. Candidate paths are placement estimated and cannot establish final timing closure."
+  "scope": "Only source binding and report paths change; inherited full native path parser retained. Candidate paths are placement estimated and cannot establish final timing closure.",
+  "mapping_helper_sha256": "76198b892f975db79e5484f994167625cb132ffe80170316d7755f710bbb0477"
 }

@@ -5744,3 +5744,10 @@ Exact descriptors and complete compact outcomes: docs/evidence/tx-return32-fourt
 Read-only timing diagnosis39881471453/sourcec095d21f9fcb01f17f3694795bb79b06799fae49 succeeded on the exact current candidate's six native placement-estimated reports. Slow PCIe data path slack-3.271100044ns and typ PCIe-3.411071539ns remain; asynchronous reset recovery/removal and short SRAM/data-input hold paths also remain. Each report has only one worst path per path group: do not infer whole-chip violating counts from these13max/min groups or treat placement slack as postroute signoff. Original full report bytes and source hashes are preserved in the cloud release. Compact paths: docs/evidence/mainchip-repair-deep-placement-paths-20261023.json.
 
 Next: inspect the PCIe worst-path logic and reset-domain source mapping, then use actual fresh routed RC/three-corner reports after route completion to select a verified ECO; no clock/false-path waiver. Existing route10, PLL wire-current and fourCDRv40 cases remain live at last poll. All work stays cloud-only.
+
+
+## 2026-10-23: Bind timing endpoints to actual candidate cells
+
+The first candidate timing diagnosis passed. Extended the same immutable-source reader to include the exact3a200e... candidate netlist and expose each actual reported flop's cell, D/Q/CLK/reset connections and literal direct assignment aliases. Source adaptation and helper hashes are checked on the runner. This is required before choosing any RTL reset/data-path repair: the current APB CDC already has per-domain reset-release synchronizers, so an asynchronous path label alone does not establish a missing synchronizer. Do not waive raw reset paths or change RTL from flattened names without actual mapping.
+
+TX normal continuation39882244224/source9dcbe5b3c9256cbc4c48d3e8f064c536aef5b194 resumes the33.109724269ns checkpoint. Swap fault capture remains complete and is not restarted. First CDRv40early cases both rejected on original full34.25ns captures; all_select34 also violates HBT VCE, so larger selector area is not a verified fix. Retain remaining late results before selecting the next experiment.

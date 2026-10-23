@@ -39,6 +39,7 @@ jobs:
               s=s.replace(e['before'],e['after'])
           after=Path(d['candidate_path']).read_bytes()
           assert after==s.encode() and hashlib.sha256(after).hexdigest()==d['candidate_sha256']
+          assert hashlib.sha256(Path('scripts/map_mainchip_candidate_timing.py').read_bytes()).hexdigest()==d['mapping_helper_sha256']
           print('Exact source-bound native report adaptation verified')
           PYCODE
           python3 -m pip install networkx==3.4.2
