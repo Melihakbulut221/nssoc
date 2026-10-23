@@ -1,0 +1,116 @@
+{
+  "derivations": [
+    {
+      "baseline_path": "scripts/cloud_onehot_resize_prepare.py",
+      "baseline_sha256": "62ddc885ff834044ebd1f7876ace0ec83b65cc6bdd54d8e1a8fef82b23dc1f2a",
+      "candidate_path": "scripts/cloud_mainchip_route12_resize.py",
+      "candidate_sha256": "8ecc80ee939ee3118c6fcbaabc5ec8ea0e604777101d47fb1e262f2a7c9a8055",
+      "edits": [
+        {
+          "before": "        pin=json.loads((ROOT/'docs/evidence/onehot-load-resume-route-result-20261018.json').read_text())\n        names=['run/1-openroad-detailedrouting/soc_top.odb','run/1-openroad-detailedrouting/soc_top.nl.v','run/1-openroad-detailedrouting/state_out.json','trial-config.json']\n        rel='run/5-nssoc-onehotroutedsta/nom_slow_1p08V_125C/max.rpt';names.append(rel)\n        source,proof=reports.restore_report('onehot-load-resume',pin['run_id'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',names)\n        assert source['source_head']==pin['source_head']and source['status']==pin['observed']['status']and source['sources_unchanged']\n        assert source['detailed_route_complete']and source['native_routing_drc_errors']==0 and source['critical_disconnected_pins']==0\n        odb=OUT/'source'/names[0];netlist=OUT/'source'/names[1]\n        assert sha(odb)==source['routed_odb_sha256']and sha(netlist)==source['routed_netlist_sha256']\n        cfg=json.loads((OUT/'source/trial-config.json').read_text())\n        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']and cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5\n        assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']\n",
+          "after": "        pin=json.loads((ROOT/'docs/evidence/mainchip-route12-postroute-open-gates-20261023.json').read_text())\n        assert pin['run']==39904823953 and pin['summary_sha256']=='7492dd5d5719f1dd2a7ab15f997eeff70a869f9287ef92c3c6dfa07bad292fb5'\n        live=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/39904823953']))\n        assert live['status']=='completed'and live['conclusion']=='success'and live['head_sha']=='8214789ad779515f719670a873136842cd50f963'\n        names=['geometry/routed/work/detailed-route.odb','geometry/handoff/repair/candidate.v','run/4-nssoc-onehotroutedsta/state_out.json','trial-config.json']\n        rel='run/4-nssoc-onehotroutedsta/nom_slow_1p08V_125C/max.rpt';names.append(rel)\n        source,proof=reports.restore_report('mainchip-repair-deep-postroute',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',names)\n        assert source['source_head']==live['head_sha']and source['status']=='COMPLETE_NATIVE_POSTROUTE_WITH_UNCLOSED_GATES'and source['sources_unchanged']\n        assert source['native_drt_reported_final_violations']==source['critical_disconnected_pins']==0\n        assert source['measurements']==pin['measurements']\n        odb=OUT/'source'/names[0];netlist=OUT/'source'/names[1]\n        assert sha(odb)=='8becfa04b073ed577014f8fb157ae89dd7f824efe16fb7b092348175192fee1a'\n        assert sha(netlist)=='3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030'\n        cfg=json.loads((OUT/'source/trial-config.json').read_text())\n        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']and cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5\n        assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']\n",
+          "count": 1
+        },
+        {
+          "before": "cloud-onehot-resize-prepare",
+          "after": "cloud-mainchip-route12-resize",
+          "count": 1
+        },
+        {
+          "before": "prepare_onehot_resized_drivers.py",
+          "after": "prepare_mainchip_route12_drivers.py",
+          "count": 1
+        },
+        {
+          "before": "targets=candidates[:50]",
+          "after": "targets=candidates[:128]",
+          "count": 1
+        },
+        {
+          "before": "At most50; no clock/logic/state/macro changes. Not exhaustive closure.",
+          "after": "At most128 actual route12 drivers; no clock/logic/state/macro changes. Original thresholds and sorting unchanged. Not exhaustive closure.",
+          "count": 1
+        },
+        {
+          "before": "state['def']=None",
+          "after": "state['def']=None;state['sdf']=None;state['pnl']=None",
+          "count": 1
+        },
+        {
+          "before": "assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir",
+          "after": "assert os.environ.get('GITHUB_ACTIONS')=='true';check_sources();OUT.mkdir",
+          "count": 1
+        },
+        {
+          "before": "def main():",
+          "after": "def check_sources():\n    d=json.loads((ROOT/'scripts/mainchip-route12-resize-methods.json').read_text())\n    assert all(sha(ROOT/p)==h for p,h in d.items())\ndef main():",
+          "count": 1
+        },
+        {
+          "before": "r['geometry']=json.loads((OUT/'geometry-proof.json').read_text());assert len(r['geometry']['changes'])==len(targets)",
+          "after": "r['geometry']=json.loads((OUT/'geometry-proof.json').read_text());assert len(r['geometry']['changes'])==len(targets)\n        run(['env','NSSOC_TOPOLOGY_BEFORE='+str(odb),'NSSOC_TOPOLOGY_AFTER='+str(OUT/'candidate.odb'),'NSSOC_CLOCK_ROUTE_PROOF_OUT='+str(OUT/'fixed-clock.json'),openroad,'-exit','-python',ROOT/'scripts/check_onehot_fixed_clock_route.py'],'fixed-clock-route-proof')\n        r['fixed_clock']=json.loads((OUT/'fixed-clock.json').read_text());assert r['fixed_clock']['original_physical_route_preserved']",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/prepare_onehot_resized_drivers.py",
+      "baseline_sha256": "6821413cdbae5cc3af3860930bc9a248e7497779c1e9cc15be71655d787fe9ec",
+      "candidate_path": "scripts/prepare_mainchip_route12_drivers.py",
+      "candidate_sha256": "800d9adaba233f33d26458058ab527608d19c25b5565f9760b8373ce65ff6f1e",
+      "edits": [
+        {
+          "before": "cloud-onehot-resize-prepare",
+          "after": "cloud-mainchip-route12-resize",
+          "count": 1
+        },
+        {
+          "before": "source/run/1-openroad-detailedrouting/soc_top.odb",
+          "after": "source/geometry/routed/work/detailed-route.odb",
+          "count": 1
+        },
+        {
+          "before": "9fd2de4914a736dc666da66b866bbd1b1ae07547183044aa033628bc620bbe77",
+          "after": "8becfa04b073ed577014f8fb157ae89dd7f824efe16fb7b092348175192fee1a",
+          "count": 1
+        },
+        {
+          "before": "len(original)==146728 and 1<=len(targets)<=50",
+          "after": "len(original)==153130 and 1<=len(targets)<=128",
+          "count": 1
+        },
+        {
+          "before": "status=str(i.getPlacementStatus()),pins=",
+          "after": "status=str(i.getPlacementStatus()),dont_touch=i.isDoNotTouch(),pins=",
+          "count": 1
+        },
+        {
+          "before": "    for i in block.getInsts():i.setPlacementStatus('FIRM')",
+          "after": "    clock_nets={n.getName()for n in block.getNets()if str(n.getSigType())=='CLOCK' or any(str(p.getMTerm().getSigType())=='CLOCK'for p in n.getITerms())}\n    from prepare_onehot_clock_restore import NET\n    assert block.findNet(NET);clock_nets.add(NET)\n    for i in block.getInsts():i.setPlacementStatus('FIRM')",
+          "count": 1
+        },
+        {
+          "before": "        assert t['master']in ('sg13g2_buf_1','sg13g2_buf_2')and not i.getName().startswith('clkbuf')",
+          "after": "        assert t['master']in ('sg13g2_buf_1','sg13g2_buf_2')and not i.getName().startswith('clkbuf')\n        assert not i.isDoNotTouch()\n        assert all(not p.getNet()or p.getNet().getName()not in clock_nets for p in i.getITerms())",
+          "count": 1
+        },
+        {
+          "before": "if str(n.getSigType())in ('POWER','GROUND'):continue",
+          "after": "if str(n.getSigType())in ('POWER','GROUND')or n.getName()in clock_nets:continue",
+          "count": 1
+        },
+        {
+          "before": "topology=nets,fixed=fixed,changes=changes",
+          "after": "topology=nets,fixed=fixed,changes=changes,clock_nets=sorted(clock_nets)",
+          "count": 1
+        },
+        {
+          "before": "if str(n.getSigType())not in ('POWER','GROUND'):assert",
+          "after": "if str(n.getSigType())not in ('POWER','GROUND')and n.getName()not in old['clock_nets']:assert",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Actual route12 source, up to128 measured positive buffers, preserve clock routes. Functional equations and protected placement remain mandatory; fresh route/RC/STA required."
+}

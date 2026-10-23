@@ -5933,3 +5933,8 @@ Return64 native initial run: https://github.com/Melihakbulut221/nssoc/actions/ru
 
 ## 2026-10-23 — route12 path diagnosis
 Added cloud-only read-only extraction of exact completed route12 max/min/checks/clock/antenna reports from postroute 39904823953. Compare parsed worst slacks against native summary in all three corners before using reports to select repairs. This is not timing closure; no physical or clock mutations. Live TX initial 39907702183 must continue without restart.
+
+
+## 2026-10-23 — measured route12 buffer sizing candidate
+Read-only path diagnosis 39908476421 passed all six worst-slack comparisons to actual postroute. Slow reported groups: CPU -15.523910ns, PCIe -11.033969ns, asynchronous -7.151594ns, Ethernet TX -2.517988ns/RX -1.482936ns. Actual weak positive buffers on data paths show 0.25-0.33pF loads.
+New cloud mainchip-route12-resize workflow selects up to128 buf1/buf2 data drivers from negative slow paths using unchanged >=0.1pF and >=1ns gates; cap>=0.25pF becomes buf16, otherwise buf8. This is a real candidate preparation, not timing acceptance. Native ODB pin/membership proofs, original-cell/SRAM/port/PG/NDR placement guards, fixed-clock-route proof, legalization and full Liberty equation proof plus inversion control are required. All clock/sensitive nets retained; invalid old data routes removed. Fresh route/RC/all-corner STA and antenna repair remain mandatory. Canonical RTL and clocks unchanged.
