@@ -7107,3 +7107,9 @@ This commit triggers a cloud-only read of the exact original DRC marker coordina
 Inspection40034691292 passed and preserved all120native TM1.a coordinates (asset670606373 SHA bb891c9733b14d76aad298c0c94ea14399f46b994a0aafcc021f0a30562ce4aa). Narrow2um trunks leave50nm protrusions and1.26um local widths at native via landings; see x283.95–284,y159.4–160.66. All vertical TopMetal1 trunks now4um, spacing6um. Original gates/deck unchanged.
 
 Physical workflow now triggers on source/manifest edits as well; this commit starts one corrected run. Discover it before dispatching. Original40033603461failure retained. Await full560DRC/deep-flat18LVS/ninefaults before fresh physical extraction and electrical replay. No RC or fullPHY acceptance yet.
+
+## 2026-10-24 corrected v50 physical PASS; fresh wire graph
+
+Physical40035056992 at e71352119be39e388e3aa5eb785f8bb266a8cf5c passed560DRC with0markers, deep+flat18native-device LVS, all8ports and all9actualfault controls. Summary670617015 SHA b68f5e6471086ed6b8cbf83f84bd9fd66bc7dbe5c0f8d34fa42317e760cbc235;parts670617067 SHA08a81ba2ebf8c2882f9ace4c5071dcb8b75601c53cab3e45671372ff4e3b39b3. Full receipt docs/evidence/cdr-active-levelshift-v50-physical-pass-20261024.json.
+
+New cdr-active-levelshift-v50-wire-inputs-cloud.yml auto-triggers this commit once. Source-matched correctedGDS, all50native terminals,40actual anchors and8TopMetal2 ports; original native anchor method already used134, so no oldv49M5 substitution. Discover run, then freshRC. Expect original18intrinsic devices; do not assume old53R93C counts after geometry changes. Native RC graph/value/ownership and allcorruption checks must be rerun. Electrical commonmode/delay repair not yet measured. FullPHY/parent/timing remain open.
