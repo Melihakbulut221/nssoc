@@ -5922,3 +5922,9 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - New return64-prepared-cloud builds nominal normal and swap-leaf decks with original34ns256bits604HBT5376MOS observations, original loads/solver/time steps/three sampling phases. It does not run the full DUT transient. Original return32 source checks run too; adapters are limited to namespace/date and exact source pins.
 - After both preparation jobs pass, start checkpointed native initial/continuation runs from their exact descriptors. Keep all native warnings/device failures/bit errors; no full electrical/PHY acceptance from preparation.
 - Postroute39904823953 still running at last live check; no further native reroute or duplicate postroute job dispatched.
+
+
+## 2026-10-23 — completed route12 postroute; return64 full transient launch
+Cloud-only operation; local workspace empty. No local CAD, test, waveform, or checkout.
+Postroute run 39904823953 completed measurement, NOT acceptance: route DRT 0, critical disconnected pins 0, antenna 603 nets / 685 pins. Original-clock nominal-RC STA setup/hold counts slow 9683/6, typical 6517/9, fast 2554/17; slow setup worst -15.523909708 ns. Preserve this actual baseline and repair exact physical paths. Full transistor LVS, foundry RC corners and full serial integration remain open. Current frozen route excludes the later CDC reset fix.
+Return64 preparation 39906382209 both original cases passed. New native initial workflow automatically starts nominal and swap_leaf_select full34ns captures on this commit. Continue only exact saved processes after completed successful checkpoint publication. Never dispatch a second initial while active. No threshold, loading, clock, sampling, solver, or waveform reductions. Return64 is not yet electrical acceptance and does not address all prior selector/CDR/PLL failures.
