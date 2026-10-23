@@ -6391,3 +6391,21 @@ at this commit; do not dispatch a duplicate. Original raw remains in its release
 Route continuation39970270107 and PLL39967627133 were verified live. Fault TX
 39957265010 was verified live; keep all three processes. No local checkout,
 native artifact, simulator, or CAD execution.
+
+
+## 2026-10-23 TX complete-capture diagnosis passed; physical mapping follows
+
+39973764125 at9756efaacc1f8d98e0290915bcfff42868a42f5e passed. It reproduces the
+original rejected electrical review exactly, all77706x14182native samples, and23
+negative controls. See docs/evidence/tx-output8088-complete-diagnosis-20261023.json.
+All85 failing HBTs have low VCE; no maximum VCE/VBE/current or MOS violation.
+Worst xd5676 is0.34511908405080094V. Data-margin failing pairs are a,b,p4_0,p4_3,
+p8_0,p8_7. CMOS common-mode also fails. No circuit repair or acceptance yet.
+
+A single push-triggered tx-output8088-failure-topology-cloud run at this commit
+reads the exact prepared physical model39906382209 and measured diagnostic,
+mapping failed terminals and all interface bases through the native resistor graph.
+Do not duplicate it or infer equal voltage on resistor-connected nodes.
+
+Route39970270107 and PLL39967627133 remain live. FaultTX39957265010 was publishing;
+wait for durable terminal results. All work remains cloud-only.
