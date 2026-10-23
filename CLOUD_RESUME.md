@@ -6012,3 +6012,8 @@ New bodyRC workflow re-extracts all235conductors/26MIM with1606physical/1879logi
 
 ## 2026-10-23 — RHI120 extended-contact freshRC captured; strict comparison launched
 BodyRC39919164840 atfff80cfb71ea5b43445f9a224a3e64dd18de7c5c completed3381R/5105C/26MIM over235conductors,1606points/1879logicalreferences. All8capture+2dimension controlfamilies passed. New raw audit retains all nativeedge/value andpointC checks,13wire+9MIM faults and exact same-geometry complete collapsedC matrix with3faultcontrols against newRHI120 original-point capture39918288755. NativeCAD is not repeated. Allbodypoints must be included in849instance composition/62controls and laterloadedOP/full1us acquisition. OriginalfailedPLL andotherfailures retained; fullPHY/mainchip/timing open.
+
+
+## 2026-10-23 — RHI120 bodyRC25 controls passed; full849instance composition
+Bodyaudit39919694972 at77421080e0e25df82f3a460ba683bbc500b29ad6 passed every3381R/5105C/26MIM identity and13wire+9MIM+3matrix faults. Same235conductor geometry2075collapsedC edges retained; source/baseline maxdelta0, distributed0.0015015602111816406aF within original bounds. Exact4actualcontacts/125PMOSbodyislands and2newmetalplanes validated.
+New composition workflow binds only current RHI120 native845models plus4proven contact models to fullyauditedRC. Original62negative controls and no-floating-body gate retained. After success prepare unchanged externalbench/full1us/3.125e-13s/100ppm/50ps and2737terminal instrumentation, then nativepreflight/fullacquisition with allcolumn storage/checkpoint continuity. No fullPHY/signoffacceptance yet. No localfiles.
