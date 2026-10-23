@@ -7039,3 +7039,10 @@ TX first source40006507576 was dispatched once per case from ledger905e420d78c00
 ## 2026-10-24 fresh v49 native wire preparation
 
 New cloud workflow cdr-active-levelshift-v49-wire-inputs-cloud.yml consumes exact physical pass40024005062 and derives the unchanged native conductor graph, all18physical device enclosures and50intrinsic terminal references. Expected32metal+18body+8public logical anchors; no old CDR frozenRC reused. Discover this commit's auto-triggered run; never duplicate it. Next use its actual measured component/physical-anchor counts for original native wireRC audit, preserving all R/C values, point ownership and fault controls. Current run does not yet extract RC or integrate the parent.
+
+
+## 2026-10-24 v49 native wire binding PASS and fresh RC dispatch
+
+Native binding40026009718 passed:18devices/50terminals/9wire components/40distinct points/8ports. Receipt docs/evidence/cdr-active-levelshift-v49-wire-inputs-pass-20261024.json. Exact physical source40024005062 and all geometry/terminal ownership retained. New cdr-active-levelshift-v49-rc-cloud.yml is auto-triggered by this commit; discover run ID, do not duplicate. It requires the original native raw R/C point/value/topology audit and13actual corruption checks. RC publication root intentionally remains hw/soc/out/cloud-cdr-active-levelshift-v49-wire-inputs to keep every original anchor path/hash valid.
+
+Mainchip40011725403,PLL40001626503,TX40024570662/40024574047 were revalidated live. No new native continuation until each produces a terminal source. FullPHY/parent/timing goals remain open.
