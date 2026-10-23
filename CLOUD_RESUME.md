@@ -7151,3 +7151,11 @@ Nominal:CMmin1.861655V (was1.633534),sampled44.621mV,delay57.031ps (was62.344). 
 This commit auto-triggers v50-losses-cloud for all three original failed waves. It measures true external input, intrinsic base pair, intrinsic collector pair and external output waveforms plus all physical R-path losses. Exact output metrics must equal the original report. Discover run; use actual stage results before the next geometry/topology repair. No SPICE rerun or changed waveform is involved. Physical compacting/local contact/via improvements or an actual circuit redesign remain possible; do not assume wider global metal alone closed delay. Do not integrate failed leaf as accepted parent.
 
 Mainchip40031170989 and bothTX40024570662/40024574047 andPLL40001626503 were revalidated live earlier in this turn; revalidate before acting. All files/jobs cloud-only. No local output files created.
+
+## 2026-10-24 measured v50 stage delays; actual v51 compact/via candidate
+
+Loss diagnosis40038187745 passed all three full failed captures; receipt docs/evidence/cdr-active-levelshift-v50-loss-diagnosis-20261024.json. Nominal:public input4.531ps,actual bases4.844ps (30mV threshold),actual collectors45.781ps andexternal output57.031ps (100mV). Output metrics exactly equal rejected native report. Tail-source paths~45.8ohm/85mV; actual collector-port paths~20.9ohm and supply-load paths~20.4ohm/95mV. Thus global upper metal alone did not close local/device-output delay.
+
+This commit auto-triggers v51-physical-cloud once. Same intrinsicv49 circuit; actual30um placement pitch,substrate escape+6um,90um bus start,4-column upper via escapes,MOS source/drain centered +/-3um with4rows, resistor8columns,1.6um localMOS/resistorM3. All changes are geometry, not arbitrary RC multipliers. Full560DRC/deep-flat18LVS/ninefaults remain mandatory. Discover run; repair actual DRC/LVS failures if any, then entirely fresh wire/RC/binding/composition/full original loaded cases. Do not reuse v50 RC or assume a pass.
+
+Mainchip40031170989,TX40024570662/40024574047,PLL40001626503 must be revalidated before continuation; never duplicate live jobs. Active full serialPHY/mainchiproute/finalsetuphold goal remains unmet. Local workspace stays empty.
