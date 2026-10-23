@@ -5794,3 +5794,12 @@ TXnormal39882244224 is terminalfailure after a complete34ns capture:77702rows/al
 New tx-power128return32-native-failure-map-cloud adapts only original immutable source bindings to this exact capture, prepared39770384053 and modela9faee...; the original8088device/593parentHBT conductor-based stage derivation and all7fault controls remain byte-for-byte methods. It restores only prepared circuit/topology metadata, not the full raw wave. Use the resulting actual role map for a full headroom comparison against the retained priorfeed32 record before choosing the next physical change. WiderAVSSreturn alone did not establish electrical acceptance.
 
 CDC local-reset native run39886209079 passed217equivalence points,414actual IHPcells,3clockratios/97transfers each,179functional reset sinks behind their localreleaseQ and all3topologycontrols. Fullchip remapping/physicalSTA is still required; currentroute11 uses the immutable pre-fix netlist.
+
+
+## 2026-10-23: Verified CDC block reset change; next chip and analog work
+
+CDC source3416142696a509035b27f9fb4e28c9b740080624 passed cloud39886209079:217equivalencepoints/0unproved;414IHPmappedcells;3clockratios*97transfers including newly stopped-source reset/release; raw reset only on4releaseflops;90source+89destinationfunctional flops reset only by respective localreleaseQ; actualpre-change/rawbypass/wrongdomain controls allreject. Receipt/docs: docs/evidence/pcie-cdc-local-reset-pass-20261023.json and docs/pcie-cdc-local-reset-verification-20261023.md. NoSDC or clocks changed. This is not chipSTA: route11still uses old3a200e... netlist.
+
+TXreturn32 failure-map workflow was added at955552371532c0a99ba0e68ba127495c20ad9007; locate its push run and require all original7fault controls before headroom diagnosis. Complete nominal TX39882244224 must not be restarted. Its full-gate rejection is preserved.
+
+Next digital target is the slow transmit_packet.index path. Current soc_pcie_lcrc_tx already selects each word's byte before its indexed8bit mux; avoid redoing that earlier optimization. The final flipped endpoint still needs its actual consumer/inverter binding to identify the RTL register. A registered one-hot word cursor may be worth testing only with full existing packet/CRC behavior and explicit sequential equivalence, not assumed faster from RTL form. Also retain current original-clock route11 baseline and compare fresh routed results before claiming timing closure.
