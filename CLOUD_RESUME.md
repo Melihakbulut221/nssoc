@@ -5910,3 +5910,9 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - Exact precision39903139948 completed both native cap enumeration orders with unchanged140222R/99906C multiset and13raw corruption controls per order. Sources and original thresholds unchanged; receipt docs/evidence/tx-output8088-power128return64-precision-pass-20261023.json.
 - New return64-composition workflow combines every new extracted wire with verified8088intrinsic devices, preserves28620terminals/65body nets/165physicalports and all25composition controls. After pass, bind the new model to native prepared fullwave decks; no reuse of return32 wire RC, no electrical acceptance yet.
 - Postroute retry39904823953 at8214789ad779515f719670a873136842cd50f963 is queued behind the push controls39904825419. Path-type fix only; completed route39896983175 and originalclock/input contracts unchanged. Earlier failure39903708641 remains preserved.
+
+## 2026-10-23: return64 complete wire composition passed; physical endpoints next
+- Composition39905090602 passed actual8088devices/140222R99906C/28620terminals and25controls, summary0af88e610bfd9f6406a7987902a2459fc3aac2cbdcc8e224c76860586ab1001c. Model69a8e6f9460a41d640475b66fe6c1900b7d7d5c4521d0aa414b7168fe132d469; compositiond74b1daa4786f86f40969c819036176735f4e3cbce4298be7ce6253eb400966b.
+- New return64-interfaces-cloud reopens actual return64 physicalGDS/LVS and conductor graph, then binds124input legs/372data bases/64driver handoffs/4outputs in this complete model. Byte-identical original binder and all endpoint/polarity faults retained.
+- After interface pass, adapt original full34ns/256bit native preparation using this exact model, then checkpointed normal and swap-leaf runs. Full electrical acceptance still open.
+- Postroute retry39904823953 remains live; only failed SHA-path conversion changed, no routed geometry/clock/threshold modification.
