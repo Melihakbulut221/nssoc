@@ -26,6 +26,7 @@ jobs:
       - name: Compare all original source inputs and successful validation markers
         env:
           PYTHONDONTWRITEBYTECODE: '1'
+          GH_TOKEN: ${{ github.token }}
         run: python3 scripts/compare_cdr_source_validation.py
       - name: Publish comparison and original job evidence
         if: always()

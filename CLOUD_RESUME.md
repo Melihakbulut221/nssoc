@@ -6077,3 +6077,7 @@ New comparison workflow binds both exact commits/870Gitblob identities, protecte
 ## 2026-10-23 — resized route12 now in second optimization pass
 Mainchip39923389964 completed successful exact process-save: first optimization iteration0finished with172654reported violations; iteration1began. This is intermediate DRT state, not finalDRC/antenna/timing result and not comparable to completed oldroute0violations. Sources/entrypoint unchanged; new checkpoint descriptor in docs/evidence/mainchip-route12-drt-39923389964-checkpoint-20261023.json. Dispatch next native continuation7200s under existing allowed limit, reducing host handoff overhead; do not cold-start.
 PLL39925042125 full1us capture,TX39922149686/39922153568 and4CDRv41native jobs39928714596 remain live. Source-validation comparison39931950389 queued; immutable read-only proof39930946907passed123distinct validators/870files/3faults. All workcloud/localempty.
+
+
+## 2026-10-23 — comparison authentication plumbing corrected
+Comparison39931950389 stopped before reading evidence: GH_TOKEN was absent in comparison step, although publication already had it. Fixed only workflow token injection. Failure retained in cdr-source-validation-comparison-auth-failure-20261023.json; no validation threshold/source/native process changed. Push starts one read-only comparison retry. Mainchip exact checkpoint continuation39932664501 queued; do not duplicate.
