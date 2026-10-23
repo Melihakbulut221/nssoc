@@ -7025,3 +7025,12 @@ New workflow cdr-active-levelshift-v49-physical-cloud.yml generates real2HBT+3MO
 Initial run40006507576 completed successfully by saving the actual native simulator processes, not by accepting full34ns captures. Normal saved at8.783844617770122ns with19669complete rows; fault saved at8.135801693944567ns with18183complete rows. Both retain all14182columns and partial-row bytes. Descriptor pins: docs/evidence/tx-via3-first-native-checkpoints-20261024.json.
 
 Dispatch the continuation workflow only once per descriptor,7200native seconds, preserving original runtime/trajectory/prefix and all34ns gates. This commit is the pre-dispatch ledger; discover workflow_dispatch runs after it before any retry. Never restart the simulator or mistake saved/green Actions for complete electrical acceptance. CDR physical run40024005062 remains separate and live.
+
+
+## 2026-10-24 active level-shifter native physical PASS; TX continuations live
+
+Actual run40024005062 completed:560DRC/0markers,deep+flat18deviceLVS/8ports/no extraction warnings,9intentional faults rejected. Receipt docs/evidence/cdr-active-levelshift-v49-physical-pass-20261024.json contains complete source/summary/parts/output hashes and report. GDSf05e4b9c2125e0e65d18b10e6e9fc708067b0ea5b2055e9a747b8a062939c5dc. Local workspace remains empty; all artifacts in Releases.
+
+Required next CDR work: fresh wire/via RC on exact18device GDS; real loaded C/D parent connection with existing bias network; original fullwave device/data/phase/VI gates,closed-loop and PVT. Do not reuse v44/v47 frozenRC for new topology or call the standalone screen/full560DRC a fullPHY pass. Hot/low common-mode margin3.955mV remains narrow.
+
+TX first source40006507576 was dispatched once per case from ledger905e420d78c00ebb934b0e44f2e0ba75d688c3fe. Runs40024570662 and40024574047 are in progress and both controls succeeded. Revalidate their actual case descriptors once published; do not dispatch duplicates. Each has7200native seconds with checkpoint preservation, full34ns target unchanged. Mainchip40011725403 is still running exactDRT continuation. PLL40001626503 was still publishing its actual logical raw/capsule; wait for terminal release before choosing continuation vs qualified completed-reader.
