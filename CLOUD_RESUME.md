@@ -6765,3 +6765,19 @@ Cloud-only preference is current: local project folder is empty; no local
 CAD/simulator process or matched task artifacts were found in the checked
 project parent, Downloads, /tmp or top-level cache. All source and results
 are published through GitHub, with no local archive or checkout.
+
+## Via3 full34ns native normal/fault activation
+
+Preparation40005449202 passed both original cases atf69aa30bcf33f098bc8b29136905ac5ed2f2539b:
+all8088devices140222R99906C,604HBT5376MOS,14182columns, original256bits34ns,
+and10 physical output-adaptation faults. New native initial workflow starts
+both cases once on GitHub with unchanged executable, solver, input/loading,
+full native capture and every original acceptance gate. The new source
+checker freezes exact source substitutions and runtime method bytes.
+The continuation workflow only runs controls on push; restore native work
+only from a completed successful saved descriptor matching this controller.
+Never reuse return64 waveforms or restart a live via3 process.
+
+PLL40001626503 and mainchip39991475218 remain active in cloud. No local
+checkout, layout, waveform or simulator process is used. No full serial
+PHY or routed final setup/hold closure is claimed.
