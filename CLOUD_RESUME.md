@@ -6409,3 +6409,15 @@ Do not duplicate it or infer equal voltage on resistor-connected nodes.
 
 Route39970270107 and PLL39967627133 remain live. FaultTX39957265010 was publishing;
 wait for durable terminal results. All work remains cloud-only.
+
+
+## 2026-10-23 exact fault TX saved at30.9881026569454ns
+
+39957265010 completed successfully as saved process, not full-capture acceptance.
+The swap_leaf_select case has70916complete rows,111424partial bytes,14182columns.
+Original34ns remains required. Exact hashes in
+docs/evidence/tx-return64-third-fault-checkpoint-20261023.json.
+A single7200second continuation is dispatched at this receipt commit using its
+exact descriptor. Discover the one new workflow_dispatch and never duplicate it.
+Normal39957261794 is already complete and rejected; never resume that capture.
+The physical mapping job39977012991 is separately live.
