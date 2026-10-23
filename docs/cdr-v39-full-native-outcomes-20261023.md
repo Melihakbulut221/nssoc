@@ -2,7 +2,7 @@
 
 All four cases in run39869412251 completed the original113475-row,1104-column,34.25ns native simulation. Each retained1,002,247,291 raw bytes, original256bits,8GHz clock,150fF/50fF loads and original100mV/37.5ps/device/phase gates. Native return code was0, diagnostic lists empty, protected sources unchanged and device checks passed. All four data, phase and VI results failed.
 
-The experiment changes only four actual retimer pull-down resistor lengths relative to v37cdbias15. L1.8/L1.5um increased the modeled follower bias relative to the original2.25um. This is still a frozen-RC intrinsic screen, not candidate layout or post-layout acceptance.
+The experiment changes only four actual retimer pull-down resistor lengths relative to v37cdbias15. L1.8/L1.5um targets stronger follower bias than the original2.25um; the current distribution must be measured from native collector-current records. This is still a frozen-RC intrinsic screen, not candidate layout or post-layout acceptance.
 
 | Follower length | Case | A minimum / maximum delay | C wrong signs / maximum delay | D wrong signs / maximum delay |
 |---|---|---|---|---|
