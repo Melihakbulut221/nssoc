@@ -6834,3 +6834,18 @@ Fresh candidate GDS/RC/PVT/loop qualification remains mandatory.
 TX40006507576, PLL40001626503 and mainchip39991475218 were last verified live.
 Inspect their exact handles before continuation; never restart a live process.
 All native work and archives remain in GitHub, local project empty.
+
+## Router advances to completed3007 violations; preserve exact continuation
+
+Run39991475218 completed successfully as a SAVED process, not finished routing.
+Native completed counts advanced7787->4917->4328->3605->3007. Iteration10
+was only40percent complete at2634, which is not a completed iteration result.
+Original20/4/8/8ns,5percent derate,153130instances and2thread64iteration settings
+remain. Both process-prefix controls and actual cross-runner progress passed.
+Exact new descriptor/summary/parts are committed in the next-checkpoint receipt.
+Dispatch one7200s continuation from this source; never repeat a live restore.
+
+CDRv47 run40011066168 rejected before native activation because the declared
+master track-bleed parent length6.4um differs from actual38.4um. Preserve it.
+Inspect all actual native master/hold dimensions before correcting the source
+recipe; do not weaken the equality guard or claim this as an electrical trial.
