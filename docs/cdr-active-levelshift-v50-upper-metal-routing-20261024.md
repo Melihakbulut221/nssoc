@@ -7,3 +7,9 @@ v50 keeps every native v49 device, placement, intrinsic dimension, finite contac
 The checker applies the same560 native DRC categories, deep/flat18-device transistor LVS and nine actual fault controls. Open/short faults follow the actual port layer/width. This physical candidate must pass the actual decks and a fresh wire extraction and loaded native simulation. The previousRC values and pre-layout pass cannot accept this candidate. Wider top metal can change capacitance; improvement is unproven until rerun.
 
 Parent integration, full serial Gen3x4 and final chip timing remain open.
+
+## Actual first DRC and landing correction
+
+Run40033603461 rejected120TM1.a markers. The pinned deck requires minimum1.64um TopMetal1 width. Cloud inspection40034691292 read the original report and retained every coordinate. Example actual edge pairs at the substrate trunk centeredx285um include a50nm lateral protrusion betweenx283.95 and284um and local separation1.26um at the upper via landing. The2um trunk does not completely absorb the native via landing shape.
+
+The correction makes every vertical TopMetal1 trunk4um wide, keeping6um center spacing. Existing4um current-carrying trunks, horizontal widths, all intrinsic devices and original rule decks are unchanged. This removes the narrow-trunk landing transition by geometry, rather than waiving the120errors. Full native DRC/LVS/fault verification is rerun and its result remains pending. Any extra wire capacitance must still be extracted and simulated.

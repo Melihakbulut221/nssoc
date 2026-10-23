@@ -7101,3 +7101,9 @@ New cdr-active-levelshift-v50-physical-cloud.yml auto-triggers once on this comm
 Physical40033603461 is terminalFAILED:120markers, all TM1.a,560categories. Native pinned rule5_22_topmetal1.drc(blob2435faff21936b397e97ab162ccd6e894b5992e0) requires minimum1.64um TopMetal1 width; unchanged deck/hash. No LVS result yet because DRC failed first. Preserve receipt docs/evidence/cdr-v50-first-physical-failure-20261024.json.
 
 This commit triggers a cloud-only read of the exact original DRC marker coordinates, not a simulator rerun. Use the reported locations to repair actual via landing/trunk geometry; keep all120original failures, full rules and original electrical gates. No new native process should be started before evidence identifies the geometry repair.
+
+## 2026-10-24 v50 real via landing width repair
+
+Inspection40034691292 passed and preserved all120native TM1.a coordinates (asset670606373 SHA bb891c9733b14d76aad298c0c94ea14399f46b994a0aafcc021f0a30562ce4aa). Narrow2um trunks leave50nm protrusions and1.26um local widths at native via landings; see x283.95–284,y159.4–160.66. All vertical TopMetal1 trunks now4um, spacing6um. Original gates/deck unchanged.
+
+Physical workflow now triggers on source/manifest edits as well; this commit starts one corrected run. Discover it before dispatching. Original40033603461failure retained. Await full560DRC/deep-flat18LVS/ninefaults before fresh physical extraction and electrical replay. No RC or fullPHY acceptance yet.

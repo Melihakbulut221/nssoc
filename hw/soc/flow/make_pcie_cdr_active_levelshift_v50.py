@@ -266,7 +266,7 @@ def main():
     routing_geometry=[]
     for i, net in enumerate(["avss", "inn", "ip", "on", "op", "sub", "avdd", "iref", "tail"]):
         y = 110 + i * 12
-        vertical_width = 4.0 if net in ("avdd","avss","on","op","tail") else 2.0
+        vertical_width = 4.0  # Enclose the actual via landing without sub-minimum edge slivers.
         horizontal_width = 8.0 if net in ("avdd","avss") else 4.0 if net in ("on","op","tail") else 2.0
         xs = []
         for x, sy in terminals[net]:
