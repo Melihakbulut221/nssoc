@@ -30,3 +30,26 @@ This is an intrinsic candidate on the frozen17918R/12850C v32 network.
 Before any layout or PHY claim, an electrically useful candidate needs
 actual revised geometry, extraction, DRC/LVS, fresh RC and repeated loaded,
 PVT, loop and full integration verification. v42 remains rejected.
+
+
+## Actual result: rejected in both phases
+
+Run39947591954 completed both original34.25ns captures with113475 complete
+rows and1104 columns. Both passed device limits and both failed original
+data/phase gates. All pre/post source checks passed; exactly16 parent cards
+changed and64 unique original changes remained. Full artifacts and precise
+metrics are pinned in docs/evidence/cdr-v43-selector-results-20261023.json.
+
+Early C/D wrong-sign samples are30/36; late12/31. C still has65 samples
+below100mV in each phase. B passes, A still misses the100mV gate. Signed
+phase magnitudes are13.930mV/14.409mV against the unchanged30mV requirement.
+The measured loaded cp/cn rising-edge median offsets are9.861ps/9.845ps
+from original expected edges. Every original source window has one crossing.
+
+These results do not support promoting selector-only resizing as the fix.
+Do not rerun this same candidate or relax clocks/thresholds. The remaining
+C/D failure requires work on actual cascaded data transfer and its gain,
+headroom and settling, using existing whole-record terminal observations
+before choosing a further circuit or physical change. A new data-path
+topology, if needed, must preserve actual loading and receive fresh physical
+qualification; a frozen-wire sizing screen is not an integrated layout.
