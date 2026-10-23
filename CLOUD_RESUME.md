@@ -6815,3 +6815,22 @@ failed outcome remain. No candidate geometry/freshRC/fullCDR acceptance.
 
 TX40006507576 both native stages, PLL40001626503 and route39991475218
 were verified live. Do not duplicate or restart while postprocessing runs.
+
+## CDR diagnosis passed; bounded sampler drive/load experiment
+
+All four postprocessing-only jobs40008988737 passed and reproduced original
+120HBT/four sampler results. Original39999252164 error and electrical rejection
+remain. No waveform was rerun or accepted. Full source pins and compact
+timing/steering observations are in cdr-v46-transfer-observation-pass receipt.
+
+New v47 tests one physical-dimension hypothesis from v44l39:32 tail MOS
+widths1.25x plus32 collector/bleed intrinsic lengths0.8x, all HBT areas unchanged.
+Exact graph controls and source-method comparisons precede both original
+early/late full native captures. External clocks, biases,150fF/50fF loads,
+all observations, full34.25ns, solver and original safety/data/phase/VI gates
+remain. No static ratio or current projection is an electrical pass.
+Fresh candidate GDS/RC/PVT/loop qualification remains mandatory.
+
+TX40006507576, PLL40001626503 and mainchip39991475218 were last verified live.
+Inspect their exact handles before continuation; never restart a live process.
+All native work and archives remain in GitHub, local project empty.
