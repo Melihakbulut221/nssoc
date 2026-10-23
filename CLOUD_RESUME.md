@@ -7095,3 +7095,9 @@ This commit auto-triggers cdr-active-levelshift-v49-losses-cloud.yml once for th
 Loss diagnosis40032831292 completed all three cases. Nominal actual AVDD load loss0.304658/0.317578V, local return elevation0.158325–0.253541V;50.85–64.51ohm power/return paths. Receipt docs/evidence/cdr-active-levelshift-v49-loss-diagnosis-20261024.json preserves all full original-wave evidence.
 
 New cdr-active-levelshift-v50-physical-cloud.yml auto-triggers once on this commit. The v49 circuit and placements are unchanged; only long routes and ports move to wider upper metals with6um escape lanes/12um bus pitch. Full560DRC/deep-flat18deviceLVS/nineactualfaults required. Discover run before retries. If it passes, generate fresh native wire graph/terminal binding/RC/model assembly and rerun the original loaded screen; do not reuse oldRC or claim accepted electrical repair. Full parent/PHY/route/timing still open. All runtime and files remain cloud-only.
+
+## 2026-10-24 v50 initial native DRC rejection and exact marker inspection
+
+Physical40033603461 is terminalFAILED:120markers, all TM1.a,560categories. Native pinned rule5_22_topmetal1.drc(blob2435faff21936b397e97ab162ccd6e894b5992e0) requires minimum1.64um TopMetal1 width; unchanged deck/hash. No LVS result yet because DRC failed first. Preserve receipt docs/evidence/cdr-v50-first-physical-failure-20261024.json.
+
+This commit triggers a cloud-only read of the exact original DRC marker coordinates, not a simulator rerun. Use the reported locations to repair actual via landing/trunk geometry; keep all120original failures, full rules and original electrical gates. No new native process should be started before evidence identifies the geometry repair.
