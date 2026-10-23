@@ -140,7 +140,18 @@ def main(out):
      tr=pya.Trans(q.x-center.x,q.y-center.y)
      enlarged={m:r.transformed(tr)for(m,dt),r in regions(L,cell).items()if dt==0}
      original=via(bottom,'TopMetal2',q.x,q.y)
-     assert all(m in enlarged and (region-enlarged[m]).is_empty()for m,region in original.items()),'Native centred via material removed'
+     missing={m:(region-enlarged.get(m,pya.Region()))for m,region in original.items()if m not in enlarged or not(region-enlarged[m]).is_empty()}
+     if missing:
+      witness=dict(bottom=bottom,endpoint_dbu=[q.x,q.y],array_center_dbu=[center.x,center.y],
+       layers={str(m):dict(old_area=original.get(m,pya.Region()).area(),new_area=enlarged.get(m,pya.Region()).area(),
+        old_bbox=str(original.get(m,pya.Region()).bbox()),new_bbox=str(enlarged.get(m,pya.Region()).bbox()),
+        missing_area=missing.get(m,pya.Region()).area(),
+        missing_polygons=[str(p)for p in missing.get(m,pya.Region()).each()],
+        old_polygons=[str(p)for p in original.get(m,pya.Region()).each()],
+        new_polygons=[str(p)for p in enlarged.get(m,pya.Region()).each()])for m in sorted(set(original)|set(enlarged))})
+      (out/'via3-native-pattern-mismatch.json').write_text(json.dumps(witness,indent=2)+'\n')
+      print('Native via pattern mismatch',json.dumps(witness),flush=True)
+     assert not missing,'Native centred via material removed'
      for m,region in enlarged.items():
       candidate[m]=candidate.get(m,pya.Region())+region
       if m==134:

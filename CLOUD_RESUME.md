@@ -6481,3 +6481,17 @@ at this commit runs unchanged geometry/DRC/deep-flat LVS/exact-port/fault gates.
 If it passes, restore its actual newGDS and run fresh native anchors/RC before
 deciding whether to run full native waves. Preserve failures; do not skip gates.
 The candidate is a hypothesis and is not serial-PHY or chip timing closure.
+
+
+## 2026-10-23 via3 generation rejected before physical decks
+
+39984154536 failed on original single-via material containment in the native
+three-column pattern. Source controls/compilation/runtime restore passed; no
+DRC/LVS pass is claimed. Receipt:
+docs/evidence/tx-output8088-via3-generation-rejection-20261023.json.
+
+The same guard remains. The next single push-triggered physical job at this
+commit records exact old/new/missing native polygons by layer and endpoint in
+via3-native-pattern-mismatch.json before rejecting. Inspect that witness before
+changing alignment or landing geometry. Do not remove/skip the preservation,
+collision, DRC/LVS or electrical gates. Existing long native jobs stay untouched.
