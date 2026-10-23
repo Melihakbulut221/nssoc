@@ -1,0 +1,52 @@
+{
+  "baseline_path": "scripts/cloud_pll845_loaded_op.py",
+  "candidate_path": "scripts/cloud_pll_rhi120_c8_op.py",
+  "baseline_sha256": "32096e1ebc36c7545c8292fba595dfbfbf164ca85e437817ebf2d8b2e1b5906c",
+  "candidate_sha256": "4b595bb5da099b2479da8b11d04bfab9201b270ccbd504dee1bcb73c6d7e016a",
+  "edits": [
+    {
+      "before": "cloud-pll845-loaded-op",
+      "after": "cloud-pll-rhi120-c8-op",
+      "count": 1
+    },
+    {
+      "before": "RUN=39360285698",
+      "after": "RUN=39920519407",
+      "count": 1
+    },
+    {
+      "before": "858c5f3bf1dd567f137c7397966b34edcc3185edf06ccb1d76f99359b6e6387f",
+      "after": "63c6b8d34ecf277dce223427c72bdb943ed0dc010c80f496d8feb33f268f94dd",
+      "count": 1
+    },
+    {
+      "before": "607b2be43604c11ef09c865f0be144dda3bd827ee98d9a31c7bd8713ce3b2979",
+      "after": "92a85edae348ad4e3ebfb62b372f627dde16ef9aadb4fcb55cedc1422a9d4657",
+      "count": 1
+    },
+    {
+      "before": "cb2f3f79f7593303e8e8eda36624c7305a98c115",
+      "after": "efe9885e87bce9eb82a1c6decc4ed85ab2d65160",
+      "count": 1
+    },
+    {
+      "before": "pll845-loaded-preparation",
+      "after": "pll-rhi120-c8-preparation",
+      "count": 3
+    },
+    {
+      "before": "import run_cloud_pll865_snapshot as pll",
+      "after": "import run_cloud_pll865_snapshot as pll\nimport read_pll845_full_native_op as full_op",
+      "count": 1
+    },
+    {
+      "before": "        r['operating_point']=pll.zero_source_operating_point((case/'op.raw').read_bytes(),coverage['vectors'])",
+      "after": "        raw_op=(case/'op.raw').read_bytes()\n        r['operating_point']=pll.zero_source_operating_point(raw_op,coverage['vectors'])\n        r['all_native_operating_point']=full_op.read(raw_op,coverage['vectors'])\n        r['all_native_op_controls']=full_op.controls(raw_op,coverage['vectors'])\n        assert len(r['all_native_op_controls'])==12 and all(c['rejected']for c in r['all_native_op_controls'])",
+      "count": 1
+    }
+  ],
+  "unchanged_methods": {
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5"
+  },
+  "scope": "Exact current prepared physical model. Same native engine/backend/OFF/zero-source OP; additionally independently check every native internal voltage/current and12actual reader faults. Not biased operation/full transient or lock acceptance."
+}
