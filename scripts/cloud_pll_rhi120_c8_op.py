@@ -73,8 +73,14 @@ def main():
         r['native_options']=options;r['native_diagnostics']=diagnostics;save()
         assert not diagnostics
         raw_op=(case/'op.raw').read_bytes()
-        r['operating_point']=pll.zero_source_operating_point(raw_op,coverage['vectors'])
+        # write all includes simulator-internal voltages and currents.
+        # The all-column reader includes every required terminal and retains
+        # the original <1nV zero-voltage gate, plus <1pA for every current.
         r['all_native_operating_point']=full_op.read(raw_op,coverage['vectors'])
+        r['operating_point']=dict(verified_by='all_native_operating_point',
+          required_terminal_voltages=len(coverage['vectors']),
+          maximum_abs_v=r['all_native_operating_point']['max_abs']['voltage'],
+          raw_sha256=r['all_native_operating_point']['raw_sha256'])
         r['all_native_op_controls']=full_op.controls(raw_op,coverage['vectors'])
         assert len(r['all_native_op_controls'])==12 and all(c['rejected']for c in r['all_native_op_controls'])
         assert all(sha(Path(p))==h for p,h in protected.items())

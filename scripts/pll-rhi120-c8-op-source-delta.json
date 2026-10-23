@@ -2,7 +2,7 @@
   "baseline_path": "scripts/cloud_pll845_loaded_op.py",
   "candidate_path": "scripts/cloud_pll_rhi120_c8_op.py",
   "baseline_sha256": "32096e1ebc36c7545c8292fba595dfbfbf164ca85e437817ebf2d8b2e1b5906c",
-  "candidate_sha256": "4b595bb5da099b2479da8b11d04bfab9201b270ccbd504dee1bcb73c6d7e016a",
+  "candidate_sha256": "b448cf2137782b4451c7ea7ac275fec7013e946133e937c7b5a34517e9d922af",
   "edits": [
     {
       "before": "cloud-pll845-loaded-op",
@@ -42,6 +42,11 @@
     {
       "before": "        r['operating_point']=pll.zero_source_operating_point((case/'op.raw').read_bytes(),coverage['vectors'])",
       "after": "        raw_op=(case/'op.raw').read_bytes()\n        r['operating_point']=pll.zero_source_operating_point(raw_op,coverage['vectors'])\n        r['all_native_operating_point']=full_op.read(raw_op,coverage['vectors'])\n        r['all_native_op_controls']=full_op.controls(raw_op,coverage['vectors'])\n        assert len(r['all_native_op_controls'])==12 and all(c['rejected']for c in r['all_native_op_controls'])",
+      "count": 1
+    },
+    {
+      "before": "        r['operating_point']=pll.zero_source_operating_point(raw_op,coverage['vectors'])\n        r['all_native_operating_point']=full_op.read(raw_op,coverage['vectors'])",
+      "after": "        # write all includes simulator-internal voltages and currents.\n        # The all-column reader includes every required terminal and retains\n        # the original <1nV zero-voltage gate, plus <1pA for every current.\n        r['all_native_operating_point']=full_op.read(raw_op,coverage['vectors'])\n        r['operating_point']=dict(verified_by='all_native_operating_point',\n          required_terminal_voltages=len(coverage['vectors']),\n          maximum_abs_v=r['all_native_operating_point']['max_abs']['voltage'],\n          raw_sha256=r['all_native_operating_point']['raw_sha256'])",
       "count": 1
     }
   ],
