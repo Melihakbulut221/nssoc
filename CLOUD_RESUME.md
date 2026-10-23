@@ -6932,3 +6932,25 @@ directly through GitHub; no local checkout, native archive or waveform created.
 Three native cloud run snapshots are in cloud-only-workspace-clean receipt.
 Keep mainchip40011725403, TX40006507576 and PLL40001626503 rather than starting
 duplicates. Full serialPHY, completed mainchip routing and final timing remain open.
+
+## Completed PLL source/cache controls passed; diagnose actual v47 records
+
+Independent completed-reader controls40016631396 at6778626f10ca3be33bfa309b8fef938e9e4b4763
+passed22 source rejections including the actual486ns saved capsule, original
+publication gates, three acquisition/cycle equivalence cases, six invalid cache
+inputs and six cache ordering/capacity faults. Its runtime consumes the whole
+verified logical archive and every5106-column row before original acquisition
+analysis. Manual dispatch only for a completed successful sparse terminal
+publisher descriptor, never a live run or saved checkpoint. Full-device/PVT
+signoff remains separate even if acquisition later passes.
+
+CDRv47 failed both original full captures. New drive-load observation reads those
+exact archived recordings, reproduces all120HBT/four sampler checks, verifies112
+actual parameter changes and applies unchanged master/slave/selector diagnostic
+equations. It does not rerun native simulation, claim new geometry, relax gates or
+promote this frozen-RC hypothesis. Inspect the new cloud observation run and use
+actual node/current timing to decide the next circuit change.
+
+Mainchip40011725403, TX40006507576 and PLL40001626503 were verified live in their
+native steps. Keep exact processes; no duplicate dispatch. Cloud-only execution
+and empty local workspace remain current. Full serialPHY and final timing open.
