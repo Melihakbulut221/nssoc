@@ -25,3 +25,19 @@ need their own exact-current-checkpoint qualification after the live process
 has saved. No original columns, rows, loads, solver methods, clocks or electrical
 acceptance gates are reduced. Full PLL acquisition and serial PHY acceptance
 remain open until the original gates actually pass.
+
+
+## Passed hosted qualification
+
+Run39954614699 at9690bb870b2afde732bca4a900a272caff23f771 completed successfully.
+All16 corruption controls passed; all1856 recorded source members, ordered
+archive bytes and full25,342,824,379-byte logical raw/payload hashes matched.
+The sparse working allocation was6,344,704bytes; this is not compression or
+removal of the immutable archive. Every original byte remains required there.
+
+No simulator was activated. This does not yet qualify native continuation,
+publication after growth, waveform-reader materialization or PLL acquisition.
+Live recovery39941648965 is unchanged. The next production-storage adaptation
+must use its latest completed saved checkpoint and preserve exact column,
+runtime, trajectory and publication checks. Receipt:
+docs/evidence/pll-rhi120-c8-sparse-storage-pass-20261023.json.

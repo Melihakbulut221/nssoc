@@ -6235,3 +6235,21 @@ The existing app monitor has the cloud-only instruction. Its eight-hour schedule
 update returned success from the app tool, but the inspected saved schedule
 still showed Sunday09:00. Do not claim eight-hour monitoring is verified;
 do not rely on it as proof that cloud jobs or native continuation have run.
+
+
+## 2026-10-23 verified cloud handoff
+
+RHI120 sparse storage qualification39954614699 passed. Full original logical
+raw/payload and all1856 recorded source members verified;16 corruption controls
+passed. Physical sparse working allocation6,344,704bytes depends on the intact
+25,342,824,379-byte immutable logical source. No simulator was activated.
+Native-resume and newly grown capture publication still need qualification.
+
+TX third continuation dispatches at e2f80d21ad3f6c0d6bdac34b04e694fbbe3580d5:
+39957261794 and39957265010. Both observed in_progress; do not repeat dispatch.
+Exact source descriptors are in the preceding TX receipt.
+Mainchip route39949845770 and PLL recovery39941648965 remain live; no cold start.
+
+Latest local checks: project directory empty; no local CAD or simulation process.
+Every source change and evidence receipt is on the remote branch. Do not create
+a local checkout or download native artifacts. Use hosted Actions/releases.
