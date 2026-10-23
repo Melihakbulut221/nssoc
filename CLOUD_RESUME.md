@@ -6052,3 +6052,8 @@ Controls push before explicit once-only dispatch. Duplicate initial/rerun reject
 ## 2026-10-23 — initial native39925042125 running; exact new-candidate continuation prepared
 Initial39925042125 sourceece94d479509de8fda3ac37ef4f0a4d9856aef85 passed original source/native controls and is building hosted runtime. Never dispatch initial again. New continuation-only controller accepts exact initial controller bytes or itself, all other methods identical, terminal-success source/head/workflow identity and every native raw/partial/checkpoint byte checked. Cannot cold-start or consume RHI140 state.
 After initial completes, inspect published summary and parts; only successful saved native state gets next dispatch. Full1us complete flag requires separate original all-column gate review and no PHY acceptance implied. Current conservative ordinary archive storage remains appropriate for early slices; adapt proven sparse storage before late large-capture capacity becomes limiting, without replaying native samples.
+
+
+## 2026-10-23 — CDRv40 cached full-wave diagnosis
+PLL39925042125 entered initial full1us native stage; mainchip39923389964 and both TX39922149686/39922153568 remain live. Preserve them.
+New cdr-v40-transfer-cloud workflow reads only the four exact already-completed39878490784 captures. Reproduce every120HBT/four sampler result, including failed VCE for all_select34; match actual76/92changed primitive census and selector areas. Analyze same observed clock/collector-current/transfer/headroom quantities as v39, not new simulation. All candidates remain rejected; no v41 change selected yet. Read actual diagnostic results and compare v39follower_l18 before new sizing.

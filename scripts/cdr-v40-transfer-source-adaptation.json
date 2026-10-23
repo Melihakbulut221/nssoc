@@ -1,0 +1,77 @@
+{
+  "format": "cdr-v40-existing-full-record-observation-adaptation-v1",
+  "baseline_path": "scripts/cloud_cdr_v39_transfer.py",
+  "baseline_sha256": "2a0fbfc551c345e31bb7f6be94c2f1bcc2baf8552090fe08e203aa1c40d301b0",
+  "candidate_path": "scripts/cloud_cdr_v40_transfer.py",
+  "candidate_sha256": "593bd8d27663e49a62227cdacc1d022c644838beac53636ee8a5ad73a82d73f1",
+  "edits": [
+    {
+      "before": "PINS={'follower_l18-nominal_early': ['87fd7afc490796f004c89144b3e7a252474fc3c0ee03d956e846d95ef0fd73a9', 'a862b59874b2c18cb216af702e97e4a89aaf55219b1710b9d188d786c7118166'], 'follower_l18-nominal_late': ['52c08ff3ddf368080f84b1ca2857351835541b0cf1c85ea8c337077341139759', '81814a3606306a5a927cfcdc0640018e5ae1063133cc4483c0a27d22fb088eb0'], 'follower_l15-nominal_early': ['8b76c06b460dbac98bd7fd7ec5e45fd1f6702c223ecd214cd99d29d025ba73ba', 'dadf5ed87780efb25849f74dfaed9b633280af7bfb40c624fa2891747004b1c7'], 'follower_l15-nominal_late': ['5fd6ca740b229b608d22331195378efc5d254cc41a525ef63c24adde7a403556', '828d5f353b51d58c6ccb98f3427b98439e59c044c0fc705d727cf0aae12102aa']}",
+      "after": "PINS={'slave_select4-nominal_early': ['92a066422b7fba96ef4cf6a180a7f5a755296fed6a3367865c8bc2aa319e8c30', '1150267f43b7ae4a10a961ec62c04a375698de565f4169e70d81fa29f589f713'], 'slave_select4-nominal_late': ['b344b3246ac339565851a46332bb0dfd07bcc0cdfdd1fda6fc52e41e7f93baa3', '4f9c90561a540d98065095c4060e07616ab7d992f0effc345a306690faac9129'], 'all_select34-nominal_early': ['6b62b33ccf1b601bbf9a56a79345e5b3d302060dc80146688064c2c1ecab3bdb', 'eec407126031b54a43d3f20e6d750b5427200bdb3389b3d50d58c8e8f171b020'], 'all_select34-nominal_late': ['08b3a1b3d9a541ba092993a6481ba76806d6957ae6b0f7929a62ce30dc7f9912', '7c09ec1fef5ce1fd31af60f2327774c1d9630bfd4e5bda110912114361c54c3c']}",
+      "count": 1
+    },
+    {
+      "before": "choices=('follower_l18','follower_l15')",
+      "after": "choices=('slave_select4','all_select34')",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-v39-transfer-",
+      "after": "cloud-cdr-v40-transfer-",
+      "count": 1
+    },
+    {
+      "before": "cdr-v39-transfer-inputs-",
+      "after": "cdr-v40-transfer-inputs-",
+      "count": 1
+    },
+    {
+      "before": "cdr-v39-transfer-input-20261023.json",
+      "after": "cdr-v40-transfer-input-20261023.json",
+      "count": 2
+    },
+    {
+      "before": "assert pin['run']==39869412251",
+      "after": "assert pin['run']==39878490784",
+      "count": 1
+    },
+    {
+      "before": "assert len(screen['changes'])==76",
+      "after": "assert len(screen['changes'])==(76 if args.variant=='slave_select4'else 92)",
+      "count": 1
+    },
+    {
+      "before": "cdr-v39-transfer-source-adaptation.json",
+      "after": "cdr-v40-transfer-source-adaptation.json",
+      "count": 1
+    },
+    {
+      "before": "check_cdr_v39_transfer_sources.py",
+      "after": "check_cdr_v40_transfer_sources.py",
+      "count": 1
+    },
+    {
+      "before": "same complete exploratory v39 waveform",
+      "after": "same complete exploratory v40 waveform",
+      "count": 1
+    },
+    {
+      "before": "  assert not violations and prior['devices_passed']",
+      "after": "  assert prior['devices_passed']==(not bool(violations)),'Reproduced device failures differ from original failed screen'",
+      "count": 1
+    },
+    {
+      "before": "members[n]['nx']==(2 if label=='master'else 3)",
+      "after": "members[n]['nx']==((2 if args.variant=='slave_select4'else 3)if label=='master'else 4)",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/check_cdr_v40_transfer_sources.py": "62df70f30d71ebffdc083a383390048bcc14316442e5c1bef4c7e815441f6773",
+    ".github/workflows/cdr-v40-transfer-cloud.yml": "174c48449e29e51b014f5dc36c166f794460861eb44ec142b08c0a804b543f7c",
+    "docs/evidence/cdr-v40-transfer-input-20261023.json": "ad307d0382035662f3be54b830f71028db520286f5d484053f9456ee2be1fe4a"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Read only four original failed v40 records; retain 76/92 parameter deltas and actual selector Nx. Reproduce all120HBT checks including original VCE failures and all4sampler checks. No acceptance threshold changed."
+}
