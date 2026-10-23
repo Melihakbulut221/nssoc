@@ -25,3 +25,26 @@ No ideal internal data or clock is inserted; no sample window or gate shifts.
 
 Candidate geometry/fresh RC and full closed-loop/PVT/RF/PHY acceptance remain
 open. A control pass or an improvement in C/D is not full-CDR acceptance.
+
+
+## Completed full native results: both recipes rejected
+
+Run39961095437 finished all four full113475-row/1104-column/34.25ns captures.
+All native simulations exited0, sources were unchanged and original all-device
+checks passed. All four failed the unchanged data and signed30mV phase gates.
+
+Every C/D maximum clock-to-valid delay worsened relative to the matching
+v44l39 phase. Reducing only master data area worsened C by0.938/0.625ps and D
+by0.313/0.313ps (early/late). Reducing data and hold area worsened C by2.188/
+1.875ps and D by1.250/0.938ps. The predicted capacitance reduction did not improve
+the actual loaded circuit. Neither recipe is promoted or substituted for v44.
+
+The next circuit work must address measured gain, bias/common-mode and
+regeneration together. Further collector resistance consumes the approximately
+76mV hold-device headroom; the parent C master track selectors have only about
+19mV above the original0.4V VCE gate, so changing the input-divider gain alone
+also requires a real bias/headroom analysis. No clock/source/load/gate
+relaxation or further blind area reduction is justified by these results.
+
+Exact summaries, native model/raw hashes and manifest digests:
+docs/evidence/cdr-v45-master-capacitance-results-20261023.json.

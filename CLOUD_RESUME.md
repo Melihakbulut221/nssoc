@@ -6300,3 +6300,22 @@ controls120438979987 passed; native jobs120439301784/120439301883/
 PLL recovery39941648965 moved to archive publication; wait for terminal success
 and exact saved-process summary/manifest before sparse dispatch. Route39949845770
 and TX39957261794/39957265010 remain separately live; do not duplicate them.
+
+
+## 2026-10-23 CDR v45 rejected after complete native captures
+
+All four cases of39961095437 finished with native exit0, full113475rows/
+1104columns/34.25ns and original device safety passing. All original data/phase
+gates failed. Both C/D delays worsened for both recipes in both phases versus
+the exact v44l39 parent. Do not promote or repeat smaller master area trials.
+Receipt: docs/evidence/cdr-v45-master-capacitance-results-20261023.json.
+
+Next CDR design work needs source-bound gain/bias/regeneration analysis; the
+parent master hold and track-selector headrooms constrain passive changes.
+Keep original clock/loads/gates. Actual new topology requires real devices,
+then new layout/DRC/LVS/RC and full-loop/PVT tests, not ideal internal sources.
+
+Latest PLL39941648965 observation: still in_progress in publication with no
+release yet visible. An elapsed observation/job budget is not terminal evidence.
+Recheck the same run; do not fork or restart it. Sparse continuation controls
+are ready, but dispatch requires a completed valid saved source archive.
