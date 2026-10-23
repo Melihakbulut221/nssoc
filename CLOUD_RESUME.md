@@ -6799,3 +6799,19 @@ PHY or routed final setup/hold closure is claimed.
   GitHub releases; no archives were downloaded locally.
 - Full serial PHY and final setup/hold closure remain open. Prepared decks
   and controller controls do not imply loaded electrical acceptance.
+
+## Diagnose archived v46 failures without rerunning native simulation
+
+New cdr-v46-transfer-observation-cloud reads all four actual full records
+from39999252164, each113475rows1104columns/full34.25ns. The original
+FileNotFoundError and missing final source assertion remain disclosed.
+Before analysis it verifies exact failed-source identity, two successful
+before/after readonly source preflights and all archived protected runtime
+inputs against original pre-native hashes. Ten corruption cases must reject.
+The full120HBT and four sampler results must reproduce exactly; topology
+checks bind actual C/D slave Nx5 hold or data/hold cells, not parent Nx6.
+Original observation equations, edge windows, data/phase/device gates and
+failed outcome remain. No candidate geometry/freshRC/fullCDR acceptance.
+
+TX40006507576 both native stages, PLL40001626503 and route39991475218
+were verified live. Do not duplicate or restart while postprocessing runs.
