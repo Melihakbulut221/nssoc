@@ -5966,3 +5966,8 @@ Continue all CAD and validation on GitHub-hosted runners; preserve failed gates.
 
 ## 2026-10-23 — actual RHI120/C8 pump candidate begins in cloud
 PLL loop-response39912552652 reproduced original rejection and measured actual branch charge. New physical hypothesis changes only upper bias resistor length140->120um; RLO47um, MIM8x8um and other12core devices retained. No predicted lock claim; original feedback100MHz/100ppm,50ps/no-slip/VCTRL gates unchanged. New pll-rhi120-c8-layout-cloud workflow automatically runs native PCell geometry, original full DRC/LVS/LEF and actual RHI-length/reference-open/short controls. Candidate is not adopted or integrated until these gates and fresh parentRC/full1us acquisition pass. Existing DRT39911732716 and TX39907702183 remain active; no restarts. Local workspace remains empty.
+
+
+## 2026-10-23 — native RHI120/C8 child passed; exact physical PLL845 parent integration
+Child39914302787 atf7ec0c598772fd7f1c0206979c452a5efad26897 passed full560 native DRC, deep/flat transistor LVS, original reference/geometry fault controls and LEF. Actual RHI120 vs wrong140um reference rejected; all other12core devices unchanged. ChildGDSa8f2cef9f5bf0883474d9b41db681e2d7f4c7732a4275feca9ca0a020dc532ee. Native bbox544x206.63um.
+New parent workflow uses exact physical C8/divider-v2 parent39005910789 and only replaces pump, requiring all other shapes/instances, parent wires,7pump ports, placement/bbox exact. Reference delta must be exactly RHI length140->120; actual reference140 mismatch and open-wire faults retained. Fresh parentRC/full1us unchanged-gate acquisition still mandatory. No PLL lock/fullPHY/mainchip acceptance claimed. Localworkspace empty; DRT/TX live processes preserved.
