@@ -7127,3 +7127,11 @@ After both pass, compose the exact NEW R/C counts and native intrinsic parameter
 RC40036071799 passed exact NEW53R93C,9connectedcomponents,40anchors, all14actualrawcorruptions. Binding40036071886 passed18devices50terminals8ports and9modelcorruptions. Both source-matched wire40035558577; immutable receipts docs/evidence/cdr-active-levelshift-v50-{rc,binding}-pass-20261024.json. Counts happen to match v49; wire values do NOT: e.g.shared AVDD segment23.6867ohm->0.4345ohm. Do not infer electrical acceptance from this segment alone; native local terminal paths still have finite resistance.
 
 This commit auto-triggers v50-composition-cloud once, requiring all18models and everynew53R93C with14faults. Then restore its exact immutable output into the full original five-case extracted-wave screen; port contract and actual device records drive all vectors. Electrical safety/signal/commonmode gates,34.25ns/256bits and150fF loads unchanged. Full parent/PHY/finaltiming remain open.
+
+## 2026-10-24 v50 composition PASS, actual loaded screen dispatched by push
+
+Composition40036688906 passed18native+53newR+93newC, all14faults. Receipt docs/evidence/cdr-active-levelshift-v50-composition-pass-20261024.json. Actual native public port order changed to sub,ip,inn,avdd,avss,iref,on,op; the new screen explicitly binds those names/order, not oldv49 ordinal order.
+
+This commit auto-triggers v50-extracted-cloud once with all five original full34.25ns/256bit/67column cases. Discover run and preserve all failures. No gates/loads/options changed; controls compare the original v49 pre-layout acceptance region. Inspect all five native terminal reports before accepting any leaf result. Native path losses remain finite, and the original4mV hot-low schematic headroom may still be insufficient. Do not claim full parent/PHY or final chip timing closure.
+
+Mainchip40031170989,TX40024570662/40024574047 andPLL40001626503 were revalidated live immediately before composition. Do not duplicate these jobs. Local workspace remains empty; all runtime/artifacts are cloud-only.
