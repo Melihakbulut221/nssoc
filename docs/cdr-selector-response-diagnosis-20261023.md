@@ -26,3 +26,25 @@ not causal proof, a new electrical gate, or PHY acceptance.
 All execution and retained waveform evidence stay in GitHub. Mainchip route
 39932664501, PLL recovery 39941648965 and TX 39939103488/39939107708 are
 existing live native processes and must not be duplicated or cold-started.
+
+
+## Observed result
+
+Run 39945517007 passed both phases and controls. Every one of the 32
+physical pairs per phase yielded 255 unique triplets, with no unresolved
+windows. The receipt records exact assets and all per-stage summaries.
+
+Pair median base-to-collector-current delays are approximately 0.476–0.685 ps.
+The actual C master base crossings occur approximately 14.03–14.09 ps after
+the original expected edge; collector-current crossings occur approximately
+14.53–14.72 ps after it. Direct pair matching therefore does not support
+attributing the earlier approximately 10 ps difference between two separate
+clock/steering observations to selector intrinsic response. Those earlier
+observations used different measurement points or reference associations.
+
+Next inspect the exact graph from original clock sources through the
+physical local clock nodes to selector base terminals. Match directions and
+original edge indices before distinguishing interconnect/loading from
+reference-definition differences. Only then select an internal clock-path
+or physical correction; do not shift external clocks or acceptance windows.
+The original data/phase failure remains open.
