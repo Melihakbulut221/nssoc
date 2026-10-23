@@ -7121,3 +7121,9 @@ Wire-inputs40035558577 passed18devices50terminals9wire components40actual anchor
 This commit auto-triggers v50-rc-cloud and v50-binding-cloud independently once from the same physical source. Discover both runs before retries. The RC fault generator no longer assumes oldv49's53edges: it requires allactual parsed edges plus the unchanged strict native edge/value audit, actual forest9components, actual P_ip/T004_B isolation, complete14corruptions. No extraction/audit gate was weakened. Binding retains exact18device50terminal9fault checks.
 
 After both pass, compose the exact NEW R/C counts and native intrinsic parameters/terminal identities, then rerun the original full34.25ns five-case loaded screen. New physical layout is not electrically accepted yet. No fullPHY/parent/mainchip final timing acceptance.
+
+## 2026-10-24 v50 fresh RC and native binding PASS
+
+RC40036071799 passed exact NEW53R93C,9connectedcomponents,40anchors, all14actualrawcorruptions. Binding40036071886 passed18devices50terminals8ports and9modelcorruptions. Both source-matched wire40035558577; immutable receipts docs/evidence/cdr-active-levelshift-v50-{rc,binding}-pass-20261024.json. Counts happen to match v49; wire values do NOT: e.g.shared AVDD segment23.6867ohm->0.4345ohm. Do not infer electrical acceptance from this segment alone; native local terminal paths still have finite resistance.
+
+This commit auto-triggers v50-composition-cloud once, requiring all18models and everynew53R93C with14faults. Then restore its exact immutable output into the full original five-case extracted-wave screen; port contract and actual device records drive all vectors. Electrical safety/signal/commonmode gates,34.25ns/256bits and150fF loads unchanged. Full parent/PHY/finaltiming remain open.
