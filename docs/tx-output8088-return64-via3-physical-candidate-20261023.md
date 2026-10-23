@@ -24,3 +24,14 @@ must pass. Results and rejected candidates remain available. A pass here require
 fresh actual anchors/RC and a complete loaded native capture before any
 electrical benefit can be claimed. This does not close the82 selector or two
 core-tail failures, CDR/PLL, full serial Gen3x4, mainchip route or final timing.
+
+
+Generation39984154536 and witness39985152584 were rejected before DRC/LVS.
+The actual native three-column array retains every centre cut exactly. Its
+TopMetal2 native surface is1.9um high, while the single-column native minimum
+surface is2.0um high. At endpoint(632000,56890)dbu the containment difference is
+two50nm strips on layer134, total200000dbu2. Layers126 and133 lose no area.
+The candidate already specified a6um TopMetal2 cover, but tested containment
+before adding it. The corrected construction applies that same cover first,
+then retains the exact original containment check on every layer. Original
+materials/cuts, collision checks and physical/electrical gates remain required.

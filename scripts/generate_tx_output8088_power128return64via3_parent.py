@@ -139,6 +139,10 @@ def main(out):
      center=pya.Region(cell.begin_shapes_rec(L.layer(133,0))).bbox().center()
      tr=pya.Trans(q.x-center.x,q.y-center.y)
      enlarged={m:r.transformed(tr)for(m,dt),r in regions(L,cell).items()if dt==0}
+     # Apply the required landing cover before testing the complete addition.
+     # Native3-column TopMetal2 is1.9um high; the original single landing is2um.
+     pad=enlarged[134].bbox();assert pad.bottom>=q.y-3000 and pad.top<=q.y+3000
+     enlarged[134]+=pya.Region(pya.Box(pad.left,q.y-3000,pad.right,q.y+3000))
      original=via(bottom,'TopMetal2',q.x,q.y)
      missing={m:(region-enlarged.get(m,pya.Region()))for m,region in original.items()if m not in enlarged or not(region-enlarged[m]).is_empty()}
      if missing:

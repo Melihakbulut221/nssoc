@@ -6495,3 +6495,16 @@ commit records exact old/new/missing native polygons by layer and endpoint in
 via3-native-pattern-mismatch.json before rejecting. Inspect that witness before
 changing alignment or landing geometry. Do not remove/skip the preservation,
 collision, DRC/LVS or electrical gates. Existing long native jobs stay untouched.
+
+
+## 2026-10-23 via3 geometry witness explained and construction order fixed
+
+Witness39985152584 proves centre cuts on133 and bottom metal126 are preserved.
+Only native TopMetal2 lacks two50nm strips: single landing height2.0um versus
+array height1.9um. The already specified6um cover was applied after the guard.
+It is now applied before the same all-layer original-material containment check.
+No preservation check or physical/electrical gate is removed. Native source
+witness and asset hashes are in
+docs/evidence/tx-output8088-via3-native-pattern-witness-20261023.json.
+A single new push-triggered physical run at this commit must prove the actual
+completed geometry. Preserve both previous rejected generations.
