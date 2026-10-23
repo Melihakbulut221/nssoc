@@ -7034,3 +7034,8 @@ Actual run40024005062 completed:560DRC/0markers,deep+flat18deviceLVS/8ports/no e
 Required next CDR work: fresh wire/via RC on exact18device GDS; real loaded C/D parent connection with existing bias network; original fullwave device/data/phase/VI gates,closed-loop and PVT. Do not reuse v44/v47 frozenRC for new topology or call the standalone screen/full560DRC a fullPHY pass. Hot/low common-mode margin3.955mV remains narrow.
 
 TX first source40006507576 was dispatched once per case from ledger905e420d78c00ebb934b0e44f2e0ba75d688c3fe. Runs40024570662 and40024574047 are in progress and both controls succeeded. Revalidate their actual case descriptors once published; do not dispatch duplicates. Each has7200native seconds with checkpoint preservation, full34ns target unchanged. Mainchip40011725403 is still running exactDRT continuation. PLL40001626503 was still publishing its actual logical raw/capsule; wait for terminal release before choosing continuation vs qualified completed-reader.
+
+
+## 2026-10-24 fresh v49 native wire preparation
+
+New cloud workflow cdr-active-levelshift-v49-wire-inputs-cloud.yml consumes exact physical pass40024005062 and derives the unchanged native conductor graph, all18physical device enclosures and50intrinsic terminal references. Expected32metal+18body+8public logical anchors; no old CDR frozenRC reused. Discover this commit's auto-triggered run; never duplicate it. Next use its actual measured component/physical-anchor counts for original native wireRC audit, preserving all R/C values, point ownership and fault controls. Current run does not yet extract RC or integrate the parent.
