@@ -5905,3 +5905,8 @@ Run39893755089 built CUDD successfully; OpenSTA CMake stopped for missing FLEX_I
 - Postroute39903708641 completed failure before antenna/RC/STA: geometry integrity loop passed string keys into a SHA helper requiring Path. Original reportebbf357061ec731f219755b4c3ca2c7f4a9e30e37344eff99fd84a6860c91ec0 and traceback retained.
 - Fixed only sha(Path(p)) in the protected-input loop; updated exact bound method digest. All geometry/timing checks, files/digests, clocks, completedroute39896983175 and inputpackage39635867954 are unchanged. Retry only postroute validation; native DRT must never restart.
 - Return64 precision39903139948 remains live; no duplicate producer run.
+
+## 2026-10-23: return64 precision passed; complete native composition started
+- Exact precision39903139948 completed both native cap enumeration orders with unchanged140222R/99906C multiset and13raw corruption controls per order. Sources and original thresholds unchanged; receipt docs/evidence/tx-output8088-power128return64-precision-pass-20261023.json.
+- New return64-composition workflow combines every new extracted wire with verified8088intrinsic devices, preserves28620terminals/65body nets/165physicalports and all25composition controls. After pass, bind the new model to native prepared fullwave decks; no reuse of return32 wire RC, no electrical acceptance yet.
+- Postroute retry39904823953 at8214789ad779515f719670a873136842cd50f963 is queued behind the push controls39904825419. Path-type fix only; completed route39896983175 and originalclock/input contracts unchanged. Earlier failure39903708641 remains preserved.
