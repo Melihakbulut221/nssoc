@@ -5812,3 +5812,10 @@ Native map39887539396/source955552371532c0a99ba0e68ba127495c20ad9007 passed orig
 New tx-power128return32-headroom-cloud restores only the already completed nominal34ns raw capture and contract on the hosted runner. It must reproduce every one of the604original HBT checks exactly and then report actualC/B/E/substrate/current extrema and stage-specific headroom. Only immutable source bindings changed from the earlier feed32 diagnostic; no SPICE activation, refitted sampling, altered thresholds or local wave download. Compare its full outcome with retained feed32 diagnosis before selecting any new clock-bias/device/physical change. Algebraic clock-shift intervals remain diagnostic only, not physical sensitivity proof.
 
 CDC localreset block remains verified but not remapped into live route11. Fullchip postroute closure and full serialPHY still open.
+
+
+## 2026-10-23: full TX headroom results and non-adopted LCRC selector screen
+- TX headroom run39888254509 completed; all604 HBT checks reproduced,85 still fail. See docs/evidence/tx-return32-headroom-results-20261023.json. Final-stage frozen clock-shift interval empty; not an electrical acceptance or physical sensitivity result.
+- New workflow lcrc-word-onehot-cloud proves a registered LCRC word selector at4/5/8/16, default native port/integration tests and deliberate faults. Canonical RTL unchanged; inspect all job outcomes and mapped timing before adoption.
+- Existing route11 39883818247 still live when last checked; do not restart it. Current candidate SHA3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030 does not contain the newer CDC reset fix.
+- CDC whole-SoC regression39886209101 completed success. Full serial PHY, routed original-clock setup/hold, physical integration and production qualification remain open.
