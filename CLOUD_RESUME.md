@@ -5819,3 +5819,10 @@ CDC localreset block remains verified but not remapped into live route11. Fullch
 - New workflow lcrc-word-onehot-cloud proves a registered LCRC word selector at4/5/8/16, default native port/integration tests and deliberate faults. Canonical RTL unchanged; inspect all job outcomes and mapped timing before adoption.
 - Existing route11 39883818247 still live when last checked; do not restart it. Current candidate SHA3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030 does not contain the newer CDC reset fix.
 - CDC whole-SoC regression39886209101 completed success. Full serial PHY, routed original-clock setup/hold, physical integration and production qualification remain open.
+
+
+## 2026-10-23: LCRC cursor functional proof passed; native STA comparison dispatched
+- All4 jobs in39890538709 succeeded:347/379/486/761 full equivalence points at4/5/8/16; wrong-word/order and frozen-cursor faults rejected.
+- Default mapped original port tests2+2 pass; reliable-packet RTL integration4+4 pass; no skips. Mapped IHP cells1799 baseline vs1449 candidate.
+- Canonical LCRC unchanged. New lcrc-word-onehot-timing-cloud consumes exact default mapped releases, all3IHPcorners and fixed4ns zero-wire diagnostic. Do not claim routed timing/fullPHY from these measurements.
+- Pending route11 39883818247 must not be restarted while live.
