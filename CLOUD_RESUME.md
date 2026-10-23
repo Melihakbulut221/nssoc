@@ -6067,3 +6067,8 @@ New cloud-only v41 source-bound experiment changes only4actual ac/bd follower Nx
 ## 2026-10-23 — source-validation duplicate-call investigation
 CDRv41 syntax-controls ran the inherited v32 source tree for several minutes; its original job remains authoritative and is not canceled. Read-only source checker v32 imports both previous streamed and current physical branches, sharing prior physical validators recursively.
 Independent cdr-readonly-source-validation-cloud proof executes each distinct zero-argument source-checker body once in a fresh process, hashes every repository file read before/after, forbids writes/subprocess/network/environment changes, and never caches failed checks or native/physical/electrical results. Three real source/receipt corruptions must reject and be restored. No production workflow adopts this wrapper yet. Inspect actual proof and originalv41 job outcome before proposing adoption.
+
+
+## 2026-10-23 — guarded source validation proof passed
+39930946907 at4ffe7bec passed123distinct validators/190guarded calls with870read files unchanged in1.94078s. Three actual source/physical/receipt mutations rejected; originals restored. Native/electrical computations were never cached. Originalv41 syntax job120331387449 passed, its final source-check step took460s(09:00:54–09:08:34UTC);4native jobs are live.
+New comparison workflow binds both exact commits/870Gitblob identities, protected proof receipt and original successful job log markers before future use. No live v41 workflow/source changed or restarted. All PHY/mainchip/timing gates remain open.
