@@ -1,0 +1,9 @@
+# v49 native primitive binding
+
+Fresh native RC run40028080567 passed53R/93C/9wire components and14actual raw corruption controls. The extractor and strict audit source hashes are identical to first run40027403483. Its forest-selector failure remains preserved. Complete successful evidence is pinned in docs/evidence/cdr-active-levelshift-v49-rc-pass-20261024.json.
+
+The new native model-binding stage consumes the original exact v49 wire/physical source40026009718. It reads the unsimplified actual LVS database using the pinned native runtime and matches extracted SPICE/native PCell geometry/terminal orders. It retains the established exact native-PDK converter and one-binary-ULP readback bound. Expected inventory is2HBT(Nx4),3LVNMOS(width8um once and36um twice),4rppd and9finite ptap1 contacts,50terminals and8external ports. Nine source corruptions cover HBT size/terminal, resistor width, contact loss/body-to-supply short and MOS loss/width/gate-source/body errors.
+
+This binds compact device models only; it does not tie bodies or extraction-reference nodes to supplies. The actual wire network must be composed with every primitive exactly once before repeating full34.25ns loaded native tests and then actual C/D parent integration.
+
+Integration constraint from the native schematic: both the existing sampler and standalone v49 leaf contain an8um diode-connected XREF. Simply joining their IREF pins would put two reference MOS devices in parallel and change the sampler bias. Final parent integration must preserve one physical reference per intended current branch, using the existing bias network; do not add a new ideal current source or silently double the reference. Replacing the old sampler reference with the new integrated reference requires new geometry,LVS and full-parent extracted validation. No such integration is claimed here.

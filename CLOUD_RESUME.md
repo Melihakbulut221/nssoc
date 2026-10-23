@@ -7053,3 +7053,10 @@ Mainchip40011725403,PLL40001626503,TX40024570662/40024574047 were revalidated li
 Run40027403483 native extraction/strict audit passed53R/93C/9components with every native edge,value,point-C and mutual-C preserved. Overall run FAILED in old nonbridge fault selection (StopIteration); the actual graph is a forest. Failure receipt docs/evidence/cdr-active-levelshift-v49-rc-fault-selector-20261024.json.
 
 This commit retains every strict extraction/audit gate. Native negative stimulus now removes actual sole P_ip/T004_B bridge and expects the existing open-network rejection; an additional same-conductor duplicate-R control checks the native edge/value multiset.14controls required (all13prior intents plusduplicate). Workflow auto-triggered once; discover current run and never call old failure a pass.
+
+
+## 2026-10-24 v49 fresh RC PASS and native primitive binding
+
+RC40028080567 passed53R/93C/9components and14raw faults. Source6927916eab0e41e6f5dd3d3e070eda93da2be8ab. Exact native extractor/audit hashes match rejected-first-run40027403483; only fault stimulus selection changed. Receipt docs/evidence/cdr-active-levelshift-v49-rc-pass-20261024.json.
+
+New cdr-active-levelshift-v49-binding-cloud.yml auto-triggers this commit. It binds actual18devices/50terminals/8ports to pinned native PDK models with9corruption controls. Discover run and do not duplicate. Next compose18intrinsic+53R+93C with all40physical anchors and distinct body/extractor-reference nodes, then run full native loaded cases. Parent integration must avoid double8um XREF when connecting existing sampler IREF and v49's IREF; both schematics have diode-connected references. No new ideal parent bias source is authorized as acceptance evidence. Full parent/PHY/timing remain open.
