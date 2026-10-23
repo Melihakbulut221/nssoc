@@ -6421,3 +6421,17 @@ A single7200second continuation is dispatched at this receipt commit using its
 exact descriptor. Discover the one new workflow_dispatch and never duplicate it.
 Normal39957261794 is already complete and rejected; never resume that capture.
 The physical mapping job39977012991 is separately live.
+
+
+## 2026-10-23 actual failed TX selectors/tails mapped; AVSS path calculation
+
+Topology39977012991 passed with all703 conductor clusters intact and4 binding
+corruptions rejected. Of85 failed HBTs,82 connect to clock bases; three are
+xd5644(tr) and xd5667/5674(mr). Their local ground voltage at each respective
+worstVCE instant is111.153/86.695/86.667mV. See the source-bound receipt.
+
+A single push-triggered tx-output8088-return-paths-cloud job at this commit
+computes original AVSS DC effective/path resistance with analytic controls.
+It does not edit RC or devices, and is not a loaded transient or repair.
+Do not lower clock bias blindly: the three current-tail devices already lack
+headroom. Use the exact path evidence before selecting physical power routing.
