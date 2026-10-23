@@ -4,7 +4,7 @@
       "baseline": "scripts/cloud_cdr_v45_intrinsic_screen.py",
       "baseline_sha256": "ac9de86716a0756afe3c24145e2d7d9cad8aea2ab02dce52cc0947535245b0dc",
       "candidate": "scripts/cloud_cdr_v46_intrinsic_screen.py",
-      "candidate_sha256": "ca81617768eef0b46cb5355f28becd78b3915dc587517387c4adea1c171952c9"
+      "candidate_sha256": "9f6804882a4f8f8ae12d066be4b9c42d362d6fa9cc635f809477347e7a379980"
     },
     "stage": {
       "baseline": "scripts/cloud_cdr_v45_intrinsic_stage.py",
@@ -36,6 +36,12 @@
       "target": "stage",
       "before": "['cd_master_data3','cd_master_data3_hold3']",
       "after": "['cd_slave_hold5','cd_slave_data5_hold5']",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "ROOT/'scripts/cloud_cdr_v46_intrinsic_mutator.py',",
+      "after": "ROOT/'scripts/cloud_cdr_v46_intrinsic_mutator.py',ROOT/'scripts/cdr_v46_clock_response.py',",
       "count": 1
     }
   ],
@@ -111,7 +117,8 @@
     "scripts/cloud_cdr_v45_intrinsic_mutator.py": "a565f0df98061bbfc7a1855d214283aca9dc8d2fb116787fc2be39787488102e",
     "scripts/check_cdr_v45_intrinsic_screen_sources.py": "639099aa01c82e829566fe8ca99c3b49bd4a180a5ec66c0a9e67e44960b4864e",
     ".github/workflows/cdr-v45-intrinsic-screen-cloud.yml": "85069850ea223f9413cb28bc290f7ca2ff190b25e7b953f84febcb032c3c9941",
-    "scripts/cloud_cdr_v46_intrinsic_mutator.py": "90eaa9b462ea39835358ffd79b029c831ddbe39810f15cd8a3944b393eb7c37e"
+    "scripts/cloud_cdr_v46_intrinsic_mutator.py": "3e18af6388233bcc579c89842d252356062c6437a1ae4c7043483c24fcf65f15",
+    "scripts/cdr_v46_clock_response.py": "09241391a0c1290bf7d8c8d3cf8abbf6d6c8c76be424c7c090ac8d1b42c3b840"
   },
-  "scope": "Only C/D slave hold Nx6->5 or data+hold Nx6->5 on exact v44l39 parent. Source-bound measured stage separation and both-phase current density precede full original gates. No circuit/source/load/window changes outside selected intrinsic primitives; frozen RC cannot qualify layout. Actual l39 parent declared these selected slave devices Nx4->6; candidate updates that same declared subset. All84 original-to-candidate changes reconstruct the original contract exactly."
+  "scope": "Only C/D slave hold Nx6->5 or data+hold Nx6->5 on exact v44l39 parent. Source-bound measured stage separation and both-phase current density precede full original gates. No circuit/source/load/window changes outside selected intrinsic primitives; frozen RC cannot qualify layout. Actual l39 parent declared these selected slave devices Nx4->6; candidate updates that same declared subset. All84 original-to-candidate changes reconstruct the original contract exactly. Postprocessing uses the same measured-selector equations with the actual v44-l39 diagnosis filename, and the helper is protected through the native run."
 }

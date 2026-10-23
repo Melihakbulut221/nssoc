@@ -6699,3 +6699,24 @@ method map are unchanged. No compatibility exception or native gate is removed.
 After the push controls pass, dispatch the exact sparse39967627133 descriptor
 once. Do not rerun failed initial source or claim a currently running PLL until
 the next native job actually starts. CDR39999252164 and route39991475218 live.
+
+
+## CDR full captures rejected; postprocessing filename fixed without rerun
+
+Corrected Nx6->5 run39999252164 completed native captures (native exit0).
+Published cases fail original data/phase gates even though device checks pass.
+A subsequent clock diagnostic tried the old v41 filename; the actual new
+source is v44-l39-early-native-diagnosis.json. Original error and waveforms
+remain preserved. Do not call the whole run clean or rerun completed captures.
+
+The new cdr_v46_clock_response helper changes that single source filename,
+retaining the exact original function AST after substitution. Both the source
+adaptation and all original crossing/corruption controls run in a separate
+controls-only workflow; no simulation is dispatched by this source repair.
+Future native runs protect the new helper through unchanged before/after checks.
+Existing v46 results remain rejected, with postprocessing error explicitly noted.
+Native sampler maxima around44-46ps still exceed original37.5ps; no promotion.
+
+PLL40001185272 controls passed (all original cases, isolated historical
+fixtures, actual stale-source rejection). A fresh dispatch from sparse39967627133
+was sent at1daf9700e47d657430111a1eb3372b751dd0cf8b; inspect latest run ID.

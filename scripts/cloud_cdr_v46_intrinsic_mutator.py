@@ -5,7 +5,7 @@ import copy,json,subprocess
 from decimal import Decimal
 import build_pcie_local_vco_hybrid_v6 as parser
 import cloud_cdr_v44_intrinsic_mutator as previous
-from cloud_cdr_v43_intrinsic_mutator import clock_response
+from cdr_v46_clock_response import clock_response
 from run_cloud_tx_layout_repair import sha
 VARIANTS={'cd_slave_hold5':False,'cd_slave_data5_hold5':True}
 DIAG_ASSET=669833963
