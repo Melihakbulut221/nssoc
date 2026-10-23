@@ -1,0 +1,77 @@
+{
+  "format": "cdr-v41-existing-full-record-observation-adaptation-v1",
+  "baseline_path": "scripts/cloud_cdr_v40_transfer.py",
+  "baseline_sha256": "593bd8d27663e49a62227cdacc1d022c644838beac53636ee8a5ad73a82d73f1",
+  "candidate_path": "scripts/cloud_cdr_v41_transfer.py",
+  "candidate_sha256": "454c3a55a6ff8a1da00d837fa4fbd5ae87158e10d5a58147c02df2eb642a55b6",
+  "edits": [
+    {
+      "before": "PINS={'slave_select4-nominal_early': ['92a066422b7fba96ef4cf6a180a7f5a755296fed6a3367865c8bc2aa319e8c30', '1150267f43b7ae4a10a961ec62c04a375698de565f4169e70d81fa29f589f713'], 'slave_select4-nominal_late': ['b344b3246ac339565851a46332bb0dfd07bcc0cdfdd1fda6fc52e41e7f93baa3', '4f9c90561a540d98065095c4060e07616ab7d992f0effc345a306690faac9129'], 'all_select34-nominal_early': ['6b62b33ccf1b601bbf9a56a79345e5b3d302060dc80146688064c2c1ecab3bdb', 'eec407126031b54a43d3f20e6d750b5427200bdb3389b3d50d58c8e8f171b020'], 'all_select34-nominal_late': ['08b3a1b3d9a541ba092993a6481ba76806d6957ae6b0f7929a62ce30dc7f9912', '7c09ec1fef5ce1fd31af60f2327774c1d9630bfd4e5bda110912114361c54c3c']}",
+      "after": "PINS={'follower_n6-nominal_early': ['ab0c306bc89fcc898432c02e9652ee418d83636cb00c7564a0d48846111cc895', '4c3087a61cf0e1c74520bdaad357a4d492d779919ae9dd4bb625ef32e6cad801'], 'follower_n6-nominal_late': ['74e5961d66017a3f33f878e70e647e0a2aaf397eb600c0c1e483e9f49041032c', '20f45bc277c6a5af38e5fe2c04cbafebbbb457c0a1cb571827007726859f3648'], 'follower_n8-nominal_early': ['9a9c6ff5356e2c5e2da91e04df2f3c76190aff8fd5a1ab400d4ac65ff41b863e', '0cd0c05ed4a86fcac9b57dd86f46fafd1b7e67e6bcce427500d26c0d120d6063'], 'follower_n8-nominal_late': ['e281ec7fad42b1aa312c2580a7ab87fc0ac9bce8e5239f70dce2611f840b6d10', '1ed27bc0788c6e5f98ba1832d2f979edff45e853223e1292b40af475ba3dfbed']}",
+      "count": 1
+    },
+    {
+      "before": "choices=('slave_select4','all_select34')",
+      "after": "choices=('follower_n6','follower_n8')",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-v40-transfer-",
+      "after": "cloud-cdr-v41-transfer-",
+      "count": 1
+    },
+    {
+      "before": "cdr-v40-transfer-inputs-",
+      "after": "cdr-v41-transfer-inputs-",
+      "count": 1
+    },
+    {
+      "before": "cdr-v40-transfer-input-20261023.json",
+      "after": "cdr-v41-transfer-input-20261023.json",
+      "count": 2
+    },
+    {
+      "before": "assert pin['run']==39878490784",
+      "after": "assert pin['run']==39928714596",
+      "count": 1
+    },
+    {
+      "before": "assert len(screen['changes'])==(76 if args.variant=='slave_select4'else 92)",
+      "after": "assert len(screen['changes'])==80",
+      "count": 1
+    },
+    {
+      "before": "cdr-v40-transfer-source-adaptation.json",
+      "after": "cdr-v41-transfer-source-adaptation.json",
+      "count": 1
+    },
+    {
+      "before": "check_cdr_v40_transfer_sources.py",
+      "after": "check_cdr_v41_transfer_sources.py",
+      "count": 1
+    },
+    {
+      "before": "all(d['nx']==4 for d in members.values())",
+      "after": "all(d['nx']==(6 if args.variant=='follower_n6'else 8)for d in members.values())",
+      "count": 1
+    },
+    {
+      "before": "same complete exploratory v40 waveform",
+      "after": "same complete exploratory v41 waveform",
+      "count": 1
+    },
+    {
+      "before": "members[n]['nx']==((2 if args.variant=='slave_select4'else 3)if label=='master'else 4)",
+      "after": "members[n]['nx']==(2 if label=='master'else 3)",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/check_cdr_v41_transfer_sources.py": "b0035092d51aab0ae07c1740282d43b887e7c20fa36891bae0630274927bec06",
+    ".github/workflows/cdr-v41-transfer-cloud.yml": "b89d22675e990c41dff7fb3508398a1e65eda8138ccee12a9ac6373e6008a9e1",
+    "docs/evidence/cdr-v41-transfer-input-20261023.json": "7611bdb8af6ed8eaa4ae90742d12143941aa77094f81bebe3d32915a5c4cb8e8"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Observe four completed rejected v41 full records; source-bind all80 parameter deltas, actual follower Nx6/8, unchanged master2/slave3 selectors. Reproduce all120 HBT and all4 sampler gates. No ideal regeneration, gate change, new native simulation or geometry acceptance."
+}
