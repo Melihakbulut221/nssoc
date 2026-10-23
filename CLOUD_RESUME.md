@@ -7197,3 +7197,15 @@ requires that edge to be a native bridge; global9components and exact raw auditi
 remain. All14corruptions still required. Workflow-only trigger runs in GitHub.
 Next: collect corrected RC receipt; compose181R/173C with actual binding port order,
 then run all5 original full-wave cases. No electrical/PHY acceptance inferred.
+
+
+## 2026-10-24 v51 composition and PLL final segment
+RC40041326936 passed actual181R/173C and14raw corruption controls. Source and
+binding receipts pinned; new v51 composition retains every actual element and
+14composition controls. Native ports sub,ip,inn,avdd,on,op,avss,iref.
+PLL40001626503 is terminal successful SAVED, not completed capture. Native prefix
+998.45671875031ns,3196464complete rows,38144partial bytes,5106columns.
+All130569396155logical bytes and saved process hosted; prior/protected unchanged.
+Dispatch same-process sparse continuation from this exact descriptor after this
+commit; never dispatch completed-reader on a saved source. Mainchip andTX jobs
+already live and must not be duplicated. Cloud only, local workspace stays empty.
