@@ -6911,3 +6911,24 @@ Mainchip40011725403, TX40006507576 and PLL40001626503 were verified live.
 Do not duplicate them. Local project directory is empty; no local native
 execution, checkout or waveform archives. All source and evidence stay on
 GitHub. Full serialPHY, completed routing and final setup/hold remain open.
+
+## Qualified bounded PLL reader; cloud-only workspace verified
+
+PLL stream-reader qualification40015445081 at6d5a834cec479d107fba06e35eaf8a2c9f288ce8
+passed all original16 corruption controls, five transport/incomplete-capture
+faults and bit-for-bit comparison of all5106 columns in the complete-row native
+prefix. Original full1us/step assertions are AST-identical. Full native process
+and controller bytes were not changed. Receipt pins the entire published test.
+
+Next PLL work: connect this qualified reader to a completed terminal RHI120
+logical cloud archive using a strict completed-source gate and unchanged
+acquisition/device/PVT checks. Reader qualification is not full capture, PLL
+lock, device signoff or fullPHY acceptance. Never validate sparse working holes.
+
+The local nnsoc project has zero entries and no local CAD/simulator processes.
+Targeted shallow scans of project parent, Downloads, /tmp and top-level cache
+found no other project-named artifacts. All new source and receipts are committed
+directly through GitHub; no local checkout, native archive or waveform created.
+Three native cloud run snapshots are in cloud-only-workspace-clean receipt.
+Keep mainchip40011725403, TX40006507576 and PLL40001626503 rather than starting
+duplicates. Full serialPHY, completed mainchip routing and final timing remain open.
