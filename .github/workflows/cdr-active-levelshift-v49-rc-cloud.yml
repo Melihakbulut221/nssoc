@@ -32,7 +32,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends tcl8.6 tk8.6
           python3 -m pip install networkx==3.4.2
-      - name: Extract actual distributed wire RC and require original thirteen raw corruption controls
+      - name: Extract actual distributed wire RC and require fourteen raw corruption controls including an actual input open
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/cloud_cdr_active_levelshift_v49_rc.py
@@ -62,3 +62,6 @@ jobs:
           name: cdr-active-levelshift-v49-rc-${{ github.run_id }}
           path: hw/soc/out/cloud-cdr-active-levelshift-v49-wire-inputs/
           retention-days: 30
+
+# The53-resistor native leaf is a forest. Test actual P_ip/T004_B bridge removal,
+# preserve the original strict audit and all13 fault intents, and add duplicate-R.

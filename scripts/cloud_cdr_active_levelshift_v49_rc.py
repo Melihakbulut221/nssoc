@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
 from run_cloud_tx_layout_repair import fetch,sha
-from cloud_cdr_v4_rc import NONBRIDGE_SELECTOR
+TREE_FAULT_SELECTOR="# This native leaf is a forest: every resistor is a bridge.\nresistor_rows=[(i,line.split()) for i,line in enumerate(rows) if re.fullmatch(r'R\\d+ \\S+ \\S+ \\S+',line)]\nassert len(resistor_rows)==len(parsed['resistors'])==53\nassert nx.is_forest(graph) and nx.number_connected_components(graph)==9\nassert 'P_ip' in anchor and 'T004_B' in anchor and anchor['P_ip']==anchor['T004_B']\nassert set(nx.node_connected_component(graph,'P_ip'))=={'P_ip','T004_B'}\ndrop_index,drop_fields=next((i,f) for i,f in resistor_rows if {f[1],f[2]}=={'P_ip','T004_B'})\ndropped_rows=rows[:drop_index]+rows[drop_index+1:]\ndropped_text='\\n'.join(dropped_rows)+'\\n'\ndropped_parsed=m.rawparser.parse_spice(dropped_text)\nassert len(dropped_parsed['resistors'])==len(parsed['resistors'])-1\nbroken=nx.Graph();broken.add_nodes_from(anchor);broken.add_edges_from((x,y)for x,y,v in dropped_parsed['resistors'])\nassert broken.degree('P_ip')==broken.degree('T004_B')==0\nassert nx.number_connected_components(broken)==10\nduplicate_text=text.replace('.ends','R_EXTRA_SAME_CONDUCTOR '+drop_fields[1]+' '+drop_fields[2]+' '+drop_fields[3]+'\\n.ends')\nduplicate_parsed=m.rawparser.parse_spice(duplicate_text)\nassert len(duplicate_parsed['resistors'])==len(parsed['resistors'])+1 and duplicate_text!=text\nassert 'P_ip' in anchor and 'P_inn' in anchor and anchor['P_ip']!=anchor['P_inn']\n"
 ROOT=Path(__file__).resolve().parents[1]
 # Restore the original cloud path so every native anchor input hash can be checked
 # without rewriting any of the source graph, device or terminal reports.
@@ -22,7 +22,7 @@ def main():
     check()
     STAGE.mkdir(parents=True,exist_ok=False);reports.OUT=STAGE
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],qualified_pex=False,full_phy_accepted=False,closed_loop=False,
-        scope='Exact actual v49 leaf metal/via RC:18native devices/50terminals,9wire components,40actual anchor points. Strict raw R/C value/point/topology checks and13corruptions. Wire-only geometry extracts no intrinsic devices. Original18intrinsic devices must be retained exactly once in subsequent composition. Substrate spreading/RF qualification,actual parent loading and bias,closed-loop/PVT/fullPHY remain unaccepted.')
+        scope='Exact actual v49 leaf metal/via RC:18native devices/50terminals,9wire components,40actual anchor points. Strict raw R/C value/point/topology checks and14corruptions. Wire-only geometry extracts no intrinsic devices. Original18intrinsic devices must be retained exactly once in subsequent composition. Substrate spreading/RF qualification,actual parent loading and bias,closed-loop/PVT/fullPHY remain unaccepted.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     def run(command,label):
         log=OUT/(label+'.log')
@@ -67,9 +67,14 @@ def main():
                 text=tokenize.untokenize(tokens);changes.append(dict(numeric_census_token_changes=dict(counts),map=replacements))
                 replace("==['18']","==['10']");replace("==['17']","==['9']")
             else:
-                replace('cases=[\n',NONBRIDGE_SELECTOR+"assert 'P_ip' in anchor and 'P_inn' in anchor and anchor['P_ip']!=anchor['P_inn']\n"+'cases=[\n')
+                replace('cases=[\n',TREE_FAULT_SELECTOR+'cases=[\n')
                 replace('R_EXTRA P_cp P_cn 1','R_EXTRA P_ip P_inn 1')
                 replace(r"re.sub(r'^R\d+ .*\n','',text,count=1,flags=re.M)",'dropped_text')
+                replace("('dropped_resistor',{'wires.spice':dropped_text},'Native/export resistor topology/value differs')",
+                        "('dropped_resistor',{'wires.spice':dropped_text},'Physical wire R graph open or incomplete')")
+                replace(" ('cross_conductor_short',",
+                        " ('duplicated_resistor',{'wires.spice':duplicate_text},'Native/export resistor topology/value differs'),\n ('cross_conductor_short',")
+                replace('PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS','PASS_REAL_NATIVE_BASELINE_AND14_RAW_CORRUPTION_CONTROLS')
             assert not(wire/name).exists()
             (wire/name).write_text(text);edits[name]=dict(original_sha256=meta['sha256'],adapted_sha256=sha(wire/name),changes=changes)
         r['method_adaptations']=edits;r['magic_runtime']=runtime;save()
@@ -80,13 +85,13 @@ def main():
         run([sys.executable,wire/'audit-rc48.py',wire/'rc03',wire/'anchors08.json',wire/'audit.json'],'native-audit')
         r['audit']=json.loads((wire/'audit.json').read_text());save();assert r['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'
         run([sys.executable,wire/'mutations48.py'],'native-fault-controls')
-        r['controls']=json.loads((wire/'native-mutations01.json').read_text());assert r['controls']['status']=='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'and len(r['controls']['cases'])==13
+        r['controls']=json.loads((wire/'native-mutations01.json').read_text());assert r['controls']['status']=='PASS_REAL_NATIVE_BASELINE_AND14_RAW_CORRUPTION_CONTROLS'and len(r['controls']['cases'])==14
         assert all(sha(OUT/n)==v for n,v in prior['outputs'].items())
         assert all(sha(rt/n)==v['sha256']for n,v in manifest['files'].items())
         assert all(sha(wire/n)==v['adapted_sha256']for n,v in edits.items())
         assert sha(raw)==spec['raw_parser']['sha256'] and sha(OUT/'wire-inputs-source.json')==pin['summary_sha256']
         check()
-        r['sources_unchanged']=True;r['status']='PASS_V49_LEAF18_FRESH_NATIVE_WIRE_RC_AND13_CONTROLS_REQUIRES_LOADED_CLOSED_LOOP'
+        r['sources_unchanged']=True;r['status']='PASS_V49_LEAF18_FRESH_NATIVE_WIRE_RC_AND14_CONTROLS_REQUIRES_LOADED_CLOSED_LOOP'
     except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
     finally:
         OUT.mkdir(parents=True,exist_ok=True)

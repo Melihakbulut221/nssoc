@@ -7046,3 +7046,10 @@ New cloud workflow cdr-active-levelshift-v49-wire-inputs-cloud.yml consumes exac
 Native binding40026009718 passed:18devices/50terminals/9wire components/40distinct points/8ports. Receipt docs/evidence/cdr-active-levelshift-v49-wire-inputs-pass-20261024.json. Exact physical source40024005062 and all geometry/terminal ownership retained. New cdr-active-levelshift-v49-rc-cloud.yml is auto-triggered by this commit; discover run ID, do not duplicate. It requires the original native raw R/C point/value/topology audit and13actual corruption checks. RC publication root intentionally remains hw/soc/out/cloud-cdr-active-levelshift-v49-wire-inputs to keep every original anchor path/hash valid.
 
 Mainchip40011725403,PLL40001626503,TX40024570662/40024574047 were revalidated live. No new native continuation until each produces a terminal source. FullPHY/parent/timing goals remain open.
+
+
+## 2026-10-24 v49 actual RC audit passed; forest-aware fault stimulus correction
+
+Run40027403483 native extraction/strict audit passed53R/93C/9components with every native edge,value,point-C and mutual-C preserved. Overall run FAILED in old nonbridge fault selection (StopIteration); the actual graph is a forest. Failure receipt docs/evidence/cdr-active-levelshift-v49-rc-fault-selector-20261024.json.
+
+This commit retains every strict extraction/audit gate. Native negative stimulus now removes actual sole P_ip/T004_B bridge and expects the existing open-network rejection; an additional same-conductor duplicate-R control checks the native edge/value multiset.14controls required (all13prior intents plusduplicate). Workflow auto-triggered once; discover current run and never call old failure a pass.
