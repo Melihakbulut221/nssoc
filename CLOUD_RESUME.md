@@ -7113,3 +7113,11 @@ Physical workflow now triggers on source/manifest edits as well; this commit sta
 Physical40035056992 at e71352119be39e388e3aa5eb785f8bb266a8cf5c passed560DRC with0markers, deep+flat18native-device LVS, all8ports and all9actualfault controls. Summary670617015 SHA b68f5e6471086ed6b8cbf83f84bd9fd66bc7dbe5c0f8d34fa42317e760cbc235;parts670617067 SHA08a81ba2ebf8c2882f9ace4c5071dcb8b75601c53cab3e45671372ff4e3b39b3. Full receipt docs/evidence/cdr-active-levelshift-v50-physical-pass-20261024.json.
 
 New cdr-active-levelshift-v50-wire-inputs-cloud.yml auto-triggers this commit once. Source-matched correctedGDS, all50native terminals,40actual anchors and8TopMetal2 ports; original native anchor method already used134, so no oldv49M5 substitution. Discover run, then freshRC. Expect original18intrinsic devices; do not assume old53R93C counts after geometry changes. Native RC graph/value/ownership and allcorruption checks must be rerun. Electrical commonmode/delay repair not yet measured. FullPHY/parent/timing remain open.
+
+## 2026-10-24 v50 exact native wire graph PASS; parallel RC and native binding
+
+Wire-inputs40035558577 passed18devices50terminals9wire components40actual anchors8TopMetal2 ports. Full receipt docs/evidence/cdr-active-levelshift-v50-wire-inputs-pass-20261024.json. Summary670624425 SHA2ab90ab1dfadd4c1cefbef016fa1f89c873e47186b6a4628ebbe86af8595347f;parts670624508 SHA111b93977a955b5249167be2536e85ae972d97034cf65ee9f2e9506498696601.
+
+This commit auto-triggers v50-rc-cloud and v50-binding-cloud independently once from the same physical source. Discover both runs before retries. The RC fault generator no longer assumes oldv49's53edges: it requires allactual parsed edges plus the unchanged strict native edge/value audit, actual forest9components, actual P_ip/T004_B isolation, complete14corruptions. No extraction/audit gate was weakened. Binding retains exact18device50terminal9fault checks.
+
+After both pass, compose the exact NEW R/C counts and native intrinsic parameters/terminal identities, then rerun the original full34.25ns five-case loaded screen. New physical layout is not electrically accepted yet. No fullPHY/parent/mainchip final timing acceptance.
