@@ -6159,3 +6159,7 @@ Next use complete measured selector profiles to select an actual circuit/physica
 
 ## 2026-10-23 — selector headroom passed; direct response decomposition
 Both original v41Nx8 early/late headroom jobs39943530320 passed, with original rejection unchanged. Exact compact artifacts pinned in docs/evidence/cdr-v41-selector-headroom-pass-20261023.json. Next workflow version adds actual base/VBE/collector-current pair crossings and known-offset/ambiguity controls. No new native simulator; all255 original edge windows and all120HBT/4sampler results preserved. Do not claim positive VBC alone proves stored-charge causality. All compute remains cloud-only; local workspace verified empty. PLL39941648965, route39932664501, TX39939103488/39939107708 remain live, preserve their exact processes.
+
+
+## 2026-10-23 — direct selector response run registered
+Response diagnosis39945517007 at58b07e5559fb1ef864f755fcdc1885c4cf520250 is live. Both cloud control steps passed; all known-offset, missing/ambiguous crossing and invalid-input cases are exercised before full original early/late capture analysis. Jobs120387101214/120387101512. Poll this handle, do not duplicate. Source/evidence/checkpoints remain on GitHub; local workspace is empty. Mainchip39932664501, PLL39941648965 and TX39939103488/39939107708 remain live exact-process continuations. No full PHY or final routed timing acceptance is claimed.
