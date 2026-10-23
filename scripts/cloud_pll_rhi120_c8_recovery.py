@@ -258,6 +258,7 @@ def verify_resume_methods(report,current):
     return dict(mode=mode,native_solver_physical_runtime_and_original_parser_methods_unchanged=True,
       qualified_exact_table_methods_added=EXTRA_METHODS)
 def source_gate(run,spec,report):
+    assert run['id']==spec['run']
     assert run['status']=='completed','Do not fork a live native process'
     if spec['stage']=='initial':
         assert spec==INITIAL_SPEC,'Only the audited exact failed initial capsule is eligible'
@@ -270,7 +271,7 @@ def source_gate(run,spec,report):
           original_summary_sha256=INITIAL_SPEC['summary_sha256'],
           exact_post_checkpoint_table_failure_only=True)
     assert spec['stage']=='recovery'and run['conclusion']=='success'
-    source_gate(run,spec,report)
+    assert report['status']==CHECKPOINT_STATUS and report['checkpoint_saved']
     return dict(original_run=39925042125,original_failure_preserved=True,
       previous_successful_recovery_run=spec['run'])
 def verify_column_qualification():
@@ -321,7 +322,20 @@ def resume_controls():
         try:source_gate(r,s,p)
         except AssertionError:rejected.append(label)
         else:raise AssertionError('Accepted '+label)
-    assert len(rejected)==12
+    r=dict(id=39950000000,status='completed',conclusion='success')
+    sp=dict(run=r['id'],stage='recovery')
+    pr=dict(status=CHECKPOINT_STATUS,checkpoint_saved=True)
+    assert source_gate(r,sp,pr)
+    for label in ('failed-recovery-source','live-recovery-source','missing-recovery-checkpoint','wrong-recovery-status'):
+        rr,ss,pp=copy.deepcopy((r,sp,pr))
+        if label=='failed-recovery-source':rr['conclusion']='failure'
+        elif label=='live-recovery-source':rr['status']='in_progress'
+        elif label=='missing-recovery-checkpoint':pp['checkpoint_saved']=False
+        else:pp['status']='FAIL_OR_ERROR'
+        try:source_gate(rr,ss,pp)
+        except AssertionError:rejected.append(label)
+        else:raise AssertionError('Accepted '+label)
+    assert len(rejected)==16
     return dict(rejected=rejected,physical_candidate_replay_not_executed=True)
 
 def restore_source(spec):
