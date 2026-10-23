@@ -7141,3 +7141,13 @@ Mainchip40031170989,TX40024570662/40024574047 andPLL40001626503 were revalidated
 Run40036998736 failed all five cases before launching SPICE because line108 still required PASS_V49... from the copied harness, while exact source40036688906 correctly reported PASS_V50.... No wave/circuit/electrical result exists from that failed run. Full receipts docs/evidence/cdr-v50-extracted-preflight-error-20261024.json.
 
 This commit corrects that single versioned status expectation and adds exact receipt status/port-order checks to source_check so the controls job rejects such incompatibility before launching a matrix. Every electrical/source/load/solver gate and composed model remains unchanged. Workflow auto-triggers once on script+manifest; discover corrected run. Do not treat harness failure as a measured electrical failure or discard it.
+
+## 2026-10-24 v50 full native waveform measured; still rejected, stage diagnosis
+
+Corrected harness40037560023 completed all five actual full34.25ns/110385row67column captures. Three normal cases still fail signal; only hot-low fails CM. Native safety, solver/no-diagnostics,zeroOP,OFF flags pass. Both injected faults detected. Full receipt docs/evidence/cdr-active-levelshift-v50-extracted-results-20261024.json.
+
+Nominal:CMmin1.861655V (was1.633534),sampled44.621mV,delay57.031ps (was62.344). Hot-low:1.747817V,31.918mV,66.094ps. Cold-high:1.970139V,56.754mV,51.406ps. Original100mV/37.5ps/1.8–2.15V gates unchanged. New v50 geometry is physically clean, not electrically accepted.
+
+This commit auto-triggers v50-losses-cloud for all three original failed waves. It measures true external input, intrinsic base pair, intrinsic collector pair and external output waveforms plus all physical R-path losses. Exact output metrics must equal the original report. Discover run; use actual stage results before the next geometry/topology repair. No SPICE rerun or changed waveform is involved. Physical compacting/local contact/via improvements or an actual circuit redesign remain possible; do not assume wider global metal alone closed delay. Do not integrate failed leaf as accepted parent.
+
+Mainchip40031170989 and bothTX40024570662/40024574047 andPLL40001626503 were revalidated live earlier in this turn; revalidate before acting. All files/jobs cloud-only. No local output files created.
