@@ -1,0 +1,38 @@
+{
+  "baseline_path": "scripts/cloud_pll_rhi120_c8_initial.py",
+  "baseline_sha256": "08028af99b7d139175d61b0ef2712e57df69b8b59d675653bfa775e1ff06b5c9",
+  "candidate_path": "scripts/cloud_pll_rhi120_c8_continuation.py",
+  "candidate_sha256": "6fcf418c90ff26ad24262bd31cb7512bec274c64fcca8fa8b0df8731b7f2fff9",
+  "edits": [
+    {
+      "before": "    assert stage=='initial' and spec is None,'New physical candidate initial only; no old RHI140 process'\n    assert os.environ['GITHUB_RUN_ATTEMPT']=='1','Never rerun an initial native process'\n    assert 60<=seconds<=3600\n    prior=None",
+      "after": "    assert stage=='continuation' and spec is not None,'Continuation cannot cold-start'\n    assert os.environ['GITHUB_RUN_ATTEMPT']=='1','Inspect preserved state instead of rerunning'\n    assert 60<=seconds<=7200\n    prior=restore_source(spec)",
+      "count": 1
+    },
+    {
+      "before": "group='pll845-native-acquisition-'+spec['stage']",
+      "after": "group='pll-rhi120-c8-native-'+spec['stage']",
+      "count": 1
+    },
+    {
+      "before": "    assert not OUT.exists()\n    staging=ROOT/'cloud-pll-native-restore';staging.mkdir(exist_ok=False)",
+      "after": "    assert not OUT.exists()\n    repository='repos/Melihakbulut221/nssoc/'\n    run=json.loads(subprocess.check_output(['gh','api',repository+'actions/runs/'+str(spec['run'])]))\n    assert run['status']=='completed'and run['conclusion']=='success','Do not fork a live or failed native process'\n    assert run['run_attempt']==int(spec['attempt'])==1 and str(run['id'])!=os.environ['GITHUB_RUN_ID']\n    assert run['path']in('.github/workflows/pll-rhi120-c8-native-initial-cloud.yml','.github/workflows/pll-rhi120-c8-native-continuation-cloud.yml')\n    assert run['head_branch']=='codex/complete-open-work'\n    staging=ROOT/'cloud-pll-native-restore';staging.mkdir(exist_ok=False)",
+      "count": 1
+    },
+    {
+      "before": "    resume_methods=host_disk.verify_resume_methods(report,method_hashes(),ROOT)",
+      "after": "    assert report['source_head']==run['head_sha']\n    resume_methods=verify_resume_methods(report,method_hashes())",
+      "count": 1
+    },
+    {
+      "before": "def restore_source(spec):",
+      "after": "\ndef verify_resume_methods(report,current):\n    initial='scripts/cloud_pll_rhi120_c8_initial.py'\n    current_path='scripts/cloud_pll_rhi120_c8_continuation.py'\n    assert current[current_path]==sha(Path(__file__))\n    expected_initial=dict(current)\n    expected_initial.pop(current_path)\n    expected_initial[initial]=sha(ROOT/initial)\n    assert expected_initial[initial]=='08028af99b7d139175d61b0ef2712e57df69b8b59d675653bfa775e1ff06b5c9'\n    if report['controller_sha256']==current[current_path]:\n        assert report['method_hashes']==current,'Changed continuation source methods'\n        mode='exact-current-RHI120-continuation'\n    else:\n        assert report['controller_sha256']==expected_initial[initial],'Unrecognized initial or old physical candidate'\n        assert report['method_hashes']==expected_initial,'Changed initial runtime/physical/parser methods'\n        mode='exact-RHI120-initial-to-continuation'\n    return dict(mode=mode,all_native_physical_and_parser_methods_unchanged=True)\ndef resume_controls():\n    current=method_hashes();key='scripts/cloud_pll_rhi120_c8_continuation.py'\n    good=dict(controller_sha256=current[key],method_hashes=current)\n    assert verify_resume_methods(good,current)\n    original=dict(current);original.pop(key)\n    initial='scripts/cloud_pll_rhi120_c8_initial.py';original[initial]=sha(ROOT/initial)\n    assert verify_resume_methods(dict(controller_sha256=original[initial],method_hashes=original),current)\n    rejected=[]\n    for label in ('old-physical-controller','changed-runtime','missing-method','extra-method','changed-initial-controller'):\n        bad=copy.deepcopy(good)\n        if label=='old-physical-controller':bad['controller_sha256']='0'*64\n        elif label=='changed-runtime':bad['method_hashes']['scripts/cloud_native_checkpoint_probe.py']='0'*64\n        elif label=='missing-method':del bad['method_hashes']['scripts/read_pll845_full_native_op.py']\n        elif label=='extra-method':bad['method_hashes']['unexpected']='0'*64\n        else:bad=dict(controller_sha256=original[initial],method_hashes=dict(original));bad['method_hashes'][initial]='0'*64\n        try:verify_resume_methods(bad,current)\n        except AssertionError:rejected.append(label)\n        else:raise AssertionError('Accepted '+label)\n    return dict(rejected=rejected,physical_candidate_replay_not_executed=True)\n\ndef restore_source(spec):",
+      "count": 1
+    },
+    {
+      "before": "    if a.controls:print(json.dumps(controls()))",
+      "after": "    if a.controls:print(json.dumps(dict(original=controls(),resume=resume_controls())))",
+      "count": 1
+    }
+  ]
+}
