@@ -38,3 +38,17 @@ original final100ns acquisition analyses. A complete sparse capture is published
 as an ordinary lossless archive; no sparse file is passed to that reader. Native
 capture, full device/PVT/RF safety, closed CDR/PLL, x4 integration and mainchip
 timing are separate open gates. No completion claim is made here.
+
+
+## Hosted controls passed
+
+Run39959506906 atdce0cde1c4c44578f31f9a1176b9923e4f8883cf passed.
+The native job was intentionally skipped on push. Exact source deltas and both
+method-map branches passed;22 source/reserve faults,16 sparse storage faults,
+13 complete-reader-publication claims,6 checkpoint-publication faults and16
+existing recovery faults were rejected. Original control families also passed.
+The complete28,619-byte controls log has SHA256
+3d5c41bc23f124cdf59100369ea24ac158150816bb89a229ee9dd676241bd2e4.
+Receipt: docs/evidence/pll-rhi120-c8-sparse-resume-controls-20261023.json.
+This qualifies controls only; actual sparse native continuation remains pending
+the latest completed recovery checkpoint and a separate successful native run.

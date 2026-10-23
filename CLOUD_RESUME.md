@@ -6283,3 +6283,20 @@ RHI120 sparse continuation controls39959506906 atdce0cde1c4c44578f31f9a1176b9923
 passed; native job intentionally skipped. Recovery39941648965 moved into
 archive publication. Do not start sparse continuation until its terminal saved
 checkpoint is published and independently verified.
+
+
+## 2026-10-23 verified sparse continuation controls and CDR v45 handles
+
+Sparse controls39959506906 passed with22 source/reserve,16 sparse,13 completed-
+publication,6 checkpoint-publication and16 baseline recovery negative checks.
+Native job intentionally skipped. Full log digest and source-bound results:
+docs/evidence/pll-rhi120-c8-sparse-resume-controls-20261023.json.
+Do not treat these control results as actual sparse native-resume acceptance.
+
+CDR v45run39961095437 atf4c80153a278d3435231eab95206f6d387687ed7:
+controls120438979987 passed; native jobs120439301784/120439301883/
+120439301901/120439301907 observed active. Preserve each original gate/failure.
+
+PLL recovery39941648965 moved to archive publication; wait for terminal success
+and exact saved-process summary/manifest before sparse dispatch. Route39949845770
+and TX39957261794/39957265010 remain separately live; do not duplicate them.
