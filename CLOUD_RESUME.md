@@ -6193,3 +6193,18 @@ Newroute12continuation39949845770 is live at098fd5f5860fe1024a1048227d7a2eccaa09
 
 ## 2026-10-23 — v44 actual C/D master gain candidate
 Measured v41 master outputs remainweak at currenthandoff: C129/D123 belowinternaldiagnostic100mV; slaveoriginaldeadline misses65/97. ParentC/D masterdata/hold minimumVCE0.567–0.815V verifiedoriginalnativeasset668664370. V44returns tov41follower_n8 (notrejectedv43) andchangesonly4actual C/Dmaster rppdcollectorlengths2.6->3.4/3.9um,width32retained. Fulloriginal clocks,loads,solver,all476devices/safety/data/phase/VI checks unchanged; fourearly/latecases aftercloudcontrols. Noactualcandidategeometry/freshRC orPHYpass. Do not duplicateworkflowpush. Route39949845770 andPLL39941648965/TX39939103488/39939107708 remainexistinglivehandles; allcloud-only.
+
+
+## 2026-10-23 cloud-only handoff and RHI120 storage qualification
+
+All source changes, tests, native simulations and results remain on GitHub.
+The local project directory was verified empty; no local checkout or CAD job
+was created. Active route 39949845770, PLL recovery 39941648965, TX
+39939103488/39939107708 and CDR candidate 39952318814 must not be cold-restarted.
+
+A separate push-triggered pll-rhi120-c8-sparse-storage-qualification-cloud
+workflow verifies the exact failed initial archive losslessly with the existing
+generic sparse storage methods. It never activates a simulator or changes the
+live recovery. Wait for its proof before preparing any production migration;
+a storage pass is not native-resume, full-capture, PLL or PHY acceptance.
+See docs/pll-rhi120-c8-sparse-storage-qualification-20261023.md.
