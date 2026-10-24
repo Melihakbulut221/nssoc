@@ -8075,3 +8075,13 @@ Real phase-divider physical40079962143 and fresh wire40082784240 both passed. Ph
 CDR500 cleaned geometry/MIM-aware RC/composition passed. Loaded40081228425 preparation passed; both nominal cases completed actual waveform rejection, not infrastructure error. Four HBTs exceed unchanged1.6V VCE (max1.7183V), phase/margin and VI current gates fail. Other eight original cases continue. Preserve all failed results; diagnose actual mapped devices without gate relaxation.
 
 Mainchip40075970481 still owns live same-process routing. Do not dispatch another route or postroute until its full terminal publication is verified. Packet-boundary routing is not full serial PHY integration.
+
+## 2026-10-24 10:09 UTC — exact diagnostic dispatches
+
+PLL observer controls40083774007 passed at corrected source f520b2511b9dd00c98c1bff5491e87d232f11d21. The full existing-capture diagnostic is40084454916 on codex/pll-feedback-cycle-diagnosis, job diagnostic, with its own mandatory same-source controls. No fresh PLL simulation. Adjacent-sample interpolation fixes repeated full strided-array copies; exact original capture/cache/failure requirements unchanged.
+
+CDR existing-waveform diagnostic40084668388 at08fcc6cd1ad9ac95643e345bb3d4d2c67a896a6f reads the two original failed nominal archives on codex/cdr500-floating-wire-diagnosis. Jobs readback (nominal_early) and readback (nominal_late); no simulator. Preserve full34.25ns native data and reproduce all original failed measurements before derived diagnosis. Hot pair also failed; all remaining original matrix cases untouched.
+
+TX actual native interface40083738813 succeeded. The isolated branch is preparing a NEW trajectory against the fresh model/interface; old native capsules must never be rebound to changed model bytes. Original34ns stimuli/solver/step/load/data/device gates remain mandatory. Root review of exact preparation source/descriptor precedes34ns and its original fault run.
+
+Cloud monitor inventory v11 now tracks these exact diagnostic runs. Mainchip40075970481 remains sole live routing owner. No local files/CAD/artifacts; all native and large evidence stay in GitHub Actions/Releases.
