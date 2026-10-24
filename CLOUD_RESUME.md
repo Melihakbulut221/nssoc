@@ -7456,3 +7456,12 @@ Native pin ownership remains geometric; every new via branch is real geometry.
 Fresh RC14negative controls and binding9faults launched. Model converter remains
 build_cdr_active_levelshift_v53_native_models.py because dimensions5.4/36um unchanged.
 Read actual new R/C census before composition and fullwaves; do not assume473/350.
+
+## 2026-10-24 v55 fresh RC valid, dropped-resistor error expectation corrected
+RC40051098597 exact native1270R849C and all value/point/conductor audits passed,
+but fault harness expected open-count message and instead got native/export
+topology mismatch. New mesh leaves nine nontrivial conductors plus one isolated
+real input endpoint after bridge deletion. Keep exact native audit unchanged.
+Add explicit single-endpoint isolation/count/row-removal witness; expect original
+strict topology mismatch. All14corruptions must pass. Full failed report retained.
+Binding40051098574 passed18native devices/50terminals/ninefaults; no model changes.
