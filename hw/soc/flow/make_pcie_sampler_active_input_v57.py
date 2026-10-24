@@ -494,18 +494,25 @@ def main():
         assert net not in PORTS or min(xs) > shunt_left + 2
         shunt = pya.DBox(shunt_left, y-1.6, right, y+1.6)
         top.shapes(layout.layer(134, 0)).insert(shunt)
-        centers = []
+        centers = []; landing_extensions=[]
         for x in sorted(set(xs + ([8.0] if net in PORTS else []))):
             gain_x=any(n==net and abs(gx-x)<1e-8 for n,gx,_ in gain_points)
             cell = pc("via_stack", dict(b_layer="Metal5", t_layer="TopMetal2",
-                      vn_columns=8, vn_rows=1, vt1_columns=2, vt1_rows=1,
+                      vn_columns=8, vn_rows=1, vt1_columns=4 if gain_x else 2, vt1_rows=4 if gain_x else 1,
                       vt2_columns=2 if gain_x else 1, vt2_rows=1))
             raw = cell.dbbox()
             trans = instance(cell, x-raw.center().x, y-raw.center().y)
             cover_topmetal1(cell,trans)
             vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))
+            if gain_x:
+                landing=pya.Region(cell.begin_shapes_rec(layout.layer(134,0))).bbox().to_dtype(layout.dbu).transformed(trans)
+                assert landing.bottom>=y-1.6-1e-8 and landing.top<=y+1.6+1e-8
+                # Enclose the actual wider native TopMetal2 landing in the full-width bus.
+                extension=pya.DBox(min(shunt_left,landing.left),y-1.6,max(right,landing.right),y+1.6)
+                top.shapes(layout.layer(134,0)).insert(extension)
+                landing_extensions.append(dict(native_landing_um=str(landing),actual_bus_extension_um=str(extension)))
             centers.append([x,y])
-        output_shunts.append(dict(net=net,metal=134,width_um=3.2,box_um=str(shunt),via_centers_um=centers))
+        output_shunts.append(dict(net=net,metal=134,width_um=3.2,box_um=str(shunt),via_centers_um=centers,native_landing_extensions=landing_extensions))
     assert len(output_shunts)==len(nets) and {r['net']for r in output_shunts}==set(nets)
     box = top.dbbox()
     dx, dy = -box.left, -box.bottom

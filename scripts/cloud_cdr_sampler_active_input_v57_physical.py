@@ -26,6 +26,17 @@ def main():
         assert all(sha(Path(p))==h for p,h in protected.items())
         protected[str(method)]=sha(method);r['protected_inputs']=protected
         reports.OUT=OUT
+        import xml.etree.ElementTree as ET
+        failure=json.loads((ROOT/'docs/evidence/cdr-sampler-active-input-v57-upper-via-drc-error-20261024.json').read_text())
+        previous,proof=reports.restore_report('cdr-sampler-active-input-v57-physical',failure['run'],failure['summary_sha256'],failure['parts_sha256'],OUT/'prior-drc',['physical/drc/drc.lyrdb','layout/result.json'])
+        assert previous==failure['report']
+        measurement=previous['physical']['steps'][0]['measurement']
+        path=OUT/'prior-drc/physical/drc/drc.lyrdb';assert sha(path)==measurement['report_sha256']
+        markers=[ET.tostring(x,encoding='unicode')for x in ET.parse(path).findall('.//items/item')]
+        assert len(markers)==62
+        r['previous_drc_diagnosis']=dict(source=proof,measurement=measurement,markers=markers,
+           correction='Match native4x4 TopVia1 array on both overlapping bus stacks; enclose actual two-column TopMetal2 native landings with full3.2um bus width',waivers=[])
+        save()
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
         packed=OUT/'runtime.tar.gz';fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed)
         with tarfile.open(packed)as tar:tar.extractall(ROOT,filter='data')

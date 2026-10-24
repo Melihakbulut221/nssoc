@@ -7727,3 +7727,12 @@ Full560DRC/deep-flatLVS/LEF and27actualfaults launched. Native1pF screen device
 failures preserved; geometry pass alone will not closeactualparent electrical.
 Afterleafphysical pass replace onlysc/sd instances inrealparent; sa/sb unchanged.
 Expected parent500derivefromactualcensus, needfullfreshparentgates andRC/fullwaves.
+
+## 2026-10-24 actual sampler66 generated; fix overlapping upper via arrays
+Physical40059880856 generated actual1323x243.63um sampler withoriginalpublicpins,
+but full560DRC found56TV1.a and6TM2.a. Keep failedGDS/XML/report. At each28gain
+terminal, M4->TM1 uses4x4TopVia1 while overlaid busM5->TM2 had2x1; align both
+actualnativearrays4x4. Extend full3.2um TM2 bus to actualnative two-column landing
+bounds, avoiding narrow end projections. Controller restores immutable62marker
+XML and records actual coordinates. No waiver or DRC/LVS gate change.
+Run all560rules,66device deep/flatLVS,LEF and27faults after thisrealgeometryfix.
