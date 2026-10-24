@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "status": "DERIVED_SUMMARY_BOUND_REJECTION_FULL_ORIGINAL_JSONS_RETAINED",
+  "run": 40124538661,
+  "attempt": 2,
+  "source": "849cf464829e778753839bfde037234f41adba2f",
+  "job": 120963922485,
+  "log": {
+    "bytes": 26492,
+    "sha256": "3b91ffb3813da6e0627b23f51d9ecb05c248089f093af7c30ee2f9a672c26280",
+    "path": "docs/evidence/cdr-v58-publication-summary-bound-joblog-20261024.txt"
+  },
+  "failure": {
+    "file": "scripts/cloud_cdr_v58_diagnostic_publication.py",
+    "line": 228,
+    "message": "Summary too large; never silently truncate",
+    "result_json_written": false
+  },
+  "fallback": {
+    "id": 12572830573,
+    "name": "cdr-v58-complete-diagnostic-jsons",
+    "bytes": 92897707,
+    "sha256": "d1dafe2abeb00da5260b98cc54d989cec11a4006fb9ae11bacfb020b41b5c94e",
+    "hosted_file_count": 17
+  },
+  "prior_release": {
+    "id": 422933105,
+    "tag": "cloud-results-40124538661-2-cdr-v58-diagnostic-publication"
+  },
+  "control_proof": "docs/evidence/cdr-v58-publication-controls-full-result-20261024.json",
+  "interpretation": "The final derived summary exceeded32MiB. The fallback contains the16 original source JSON outputs and source joblog after the reviewed verification/copy sequence; whole fallback/member authentication remains pending. No publication pass or electrical acceptance is inferred.",
+  "next": "Recover only the92.9MB JSON/log fallback; authenticate all17 members against original rootresult and log hashes. Preserve complete original JSONs plus full derived case summaries as assets, with an explicit compact log/result projection. Do not reread the593MB cache artifact or rerun simulation.",
+  "new_simulation": false,
+  "cdr_accepted": false,
+  "full_phy_accepted": false
+}
