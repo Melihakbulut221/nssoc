@@ -8188,3 +8188,10 @@ Mainchip 40095811631 is now a terminal failure: the resumed segment produced no 
 Canonical TX runs 40098024825 and 40098031853 remain active. Exact-source evidence releases were reserved for both, the two actual phase/clock proof jobs, and corrected codec artifact reader 40106066552. The tag trigger audit found no matching cloud-results jobs at these exact source commits; never default release targets to main.
 
 Endpoint helper 40103396561 passed its controls. PLL cache replay controls 40105495542 precede the one cache-only replay. CDR preparation passed but its loaded matrix never started because publication failed. All original electrical, timing and failure gates remain unchanged. Full serial PHY, serial mainchip integration and final timing are not accepted.
+
+
+### 2026-10-24T15:35:00.659110+00:00 — exact native codec imported
+
+Corrected Gen1/2 codec 40102483214 and full artifact reader 40106066552 passed. Imported exactly 15 source paths from aa8afbb7, plus the complete 99-member proof and receipt from 1e3781f7. Licensed Benz derivatives are actual synthesized DUT dependencies; the IEEE table is the independent oracle. Preserve this distinction.
+
+This qualifies the single-lane codec scope only. RX/TX raw32 integration, original vendor nettype lint repair, lower-rate analog operation, LTSSM and full serial PHY remain separate requirements. Agents own the already-reviewed RX/TX native proofs; do not duplicate them. All files remain in GitHub only.

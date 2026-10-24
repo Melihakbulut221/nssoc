@@ -1,0 +1,66 @@
+{
+  "source": "https://asics.chuckbenz.com/",
+  "retrieved_utc_date": "2026-10-24",
+  "license": "LicenseRef-Chuck-Benz-2002: reuse and modification permitted while preserving the original notice",
+  "original_revision": "Original 2002 combinational source; immutable content hashes identify the exact retrieved revision",
+  "upstream": [
+    {
+      "url": "https://asics.chuckbenz.com/encode.v",
+      "path": "third_party/chuck_benz_8b10b/encode.v.txt",
+      "bytes": 4105,
+      "sha256": "c8e59b8457c3ee32a3058e24e1adb190cc22c9ec98e752ab5356c0a39ba0398b"
+    },
+    {
+      "url": "https://asics.chuckbenz.com/decode.v",
+      "path": "third_party/chuck_benz_8b10b/decode.v.txt",
+      "bytes": 5782,
+      "sha256": "b4ef92679b25aba7aaaf3492b948c3a9ffc635e82de04bae53eb1599566ed19d"
+    }
+  ],
+  "derivatives": [
+    {
+      "path": "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v",
+      "original_path": "third_party/chuck_benz_8b10b/encode.v.txt",
+      "sha256": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+      "edits": [
+        {
+          "before": "module encode (",
+          "after": "module nssoc_benz_8b10b_encode (",
+          "count": 1
+        },
+        {
+          "before": "wire do =",
+          "after": "wire d_o =",
+          "count": 1
+        },
+        {
+          "before": "(do ^",
+          "after": "(d_o ^",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v",
+      "original_path": "third_party/chuck_benz_8b10b/decode.v.txt",
+      "sha256": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+      "edits": [
+        {
+          "before": "module decode (",
+          "after": "module nssoc_benz_8b10b_decode (",
+          "count": 1
+        },
+        {
+          "before": "wire do =",
+          "after": "wire d_o =",
+          "count": 1
+        },
+        {
+          "before": "eo, do, co",
+          "after": "eo, d_o, co",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}
