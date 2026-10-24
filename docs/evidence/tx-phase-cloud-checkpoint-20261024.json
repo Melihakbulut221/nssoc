@@ -1,9 +1,9 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v6",
-  "observed_utc": "2026-10-24T16:03:41.540Z",
+  "observed_utc": "2026-10-24T16:08:31.437Z",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
-  "source_head": "eef3f8ba6a093eac7604498a015c4fbe3055d54a",
+  "source_head": "5cb4592d97ead28fe1c4ea118b88466aa0f054c2",
   "qualified_RC": {
     "run": 40086006467,
     "source": "c7cb559701eb5b05194110ef3c9bf8bd43626db0",
@@ -307,7 +307,8 @@
         ]
       },
       "production_job": 120916487594,
-      "no_duplicate_dispatch": true
+      "no_duplicate_dispatch": true,
+      "controls_receipt": "docs/evidence/tx-native-role-rejection-reader-controls-pass-20261024.json"
     }
   },
   "trigger_audit": {
@@ -332,7 +333,7 @@
     "document": "docs/tx-phase-assert-offset-source-candidate-20261024.md",
     "source_only": true,
     "source_controls_workflow": "tx-phase-assert-offset-source-controls-cloud.yml",
-    "source_review_pending": true,
+    "source_review_pending": false,
     "native_dispatched": false,
     "electrical_accepted": false,
     "one_resistor_delta": "XAND_SKEW W1/L32 to W1/L20; original244 source recovered byte-exact",
@@ -343,11 +344,24 @@
       "source_only": true,
       "workflow": "tx-phase-assert-offset-preparation-cloud.yml",
       "job": "preparation-only",
-      "independent_review_pending": true,
+      "independent_review_pending": false,
       "dispatched": false,
       "exact_four_old_decks_expected": true,
       "sole_model_delta": "xdut.xrun.xand_skew l=32u to l=20u",
-      "native_execution": false
-    }
+      "native_execution": false,
+      "independent_review_passed": true,
+      "reviewed_source": "5cb4592d97ead28fe1c4ea118b88466aa0f054c2",
+      "registration": {
+        "branch": "codex/tx-offset-preparation-registration",
+        "commit": "ba5ef1c87f4dac0f8eea5c3d8b85b5d8d8376694",
+        "workflow_path": ".github/workflows/tx-phase-assert-offset-preparation-cloud.yml",
+        "workflow_sha256": "9bb447f8c87d2e2abeaaa13956ab0c00df423874d40434392cd9c74388283436",
+        "orphan": true,
+        "tree_contains_one_noop_workflow_only": true
+      },
+      "status": "ready_for_one_manual_preparation_only"
+    },
+    "source_review_passed": true,
+    "source_review_receipt": "docs/evidence/tx-phase-assert-offset-source-review-20261024.json"
   }
 }
