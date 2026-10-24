@@ -30,6 +30,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 -m pip install numpy==2.3.3
+          python3 scripts/ensure_cloud_tested_source_release.py --controls
           python3 scripts/cloud_pll_first_latch_cache_replay.py --controls
   replay:
     if: github.event_name == 'workflow_dispatch' && github.ref_name == 'codex/pll-first-latch-cache-replay'
@@ -51,6 +52,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 -m pip install numpy==2.3.3
+          python3 scripts/ensure_cloud_tested_source_release.py --group pll-first-latch-cache-replay
           python3 scripts/cloud_pll_first_latch_cache_replay.py --replay
       - name: Preserve small diagnosis and receipts without republishing native cache
         if: always()
@@ -64,3 +66,10 @@ jobs:
           stem="pll-first-latch-cache-replay-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           cp cloud-pll-first-latch-cache-replay/result.json "$stem.summary.json"
           python3 scripts/publish_cloud_results.py --group pll-first-latch-cache-replay "$stem.summary.json" cloud-pll-first-latch-cache-replay/*.json
+      - name: Preserve small replay evidence if publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll-first-latch-cache-replay-${{ github.run_id }}
+          path: cloud-pll-first-latch-cache-replay/*.json
+          retention-days: 30
