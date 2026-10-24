@@ -566,6 +566,75 @@ def main():
     reread.read(str(output))
     rt = reread.cell(CANDIDATE)
     require(rt is not None and rt.bbox() == original_box and reread.dbu == L.dbu, 'Serialized boundary/grid changed')
+    # Reporting only: inspect every serialized layer/cell before the unchanged
+    # exact XOR gate. No region or acceptance condition is modified here.
+    serialized_layers = []
+    for key, before in all_before.items():
+        expected = before + additions.get(key[0], pya.Region()) if key[1] == 0 else before
+        actual = pya.Region(rt.begin_shapes_rec(reread.layer(*key)))
+        delta = (actual^expected).merged()
+        if not delta.is_empty():
+            actual_merged = actual.merged()
+            expected_merged = expected.merged()
+            serialized_layers.append(dict(layer=list(key),
+                before_area_dbu2=before.area(), additions_area_dbu2=additions.get(key[0], pya.Region()).area() if key[1] == 0 else 0,
+                expected_raw_count=expected.count(), actual_raw_count=actual.count(),
+                expected_merged_count=expected_merged.count(), actual_merged_count=actual_merged.count(),
+                expected_merged_area_dbu2=expected_merged.area(), actual_merged_area_dbu2=actual_merged.area(),
+                exact_original_guard_xor_area_dbu2=delta.area(),
+                exact_original_guard_xor_polygons_dbu=[str(p) for p in delta.each()],
+                expected_minus_actual_polygons_dbu=[str(p) for p in (expected-actual).merged().each()],
+                actual_minus_expected_polygons_dbu=[str(p) for p in (actual-expected).merged().each()],
+                independently_merged_xor_area_dbu2=(actual_merged^expected_merged).area(),
+                independently_merged_xor_polygons_dbu=[str(p) for p in (actual_merged^expected_merged).each()]))
+    serialized_children = []
+    for index, before in old_cells.items():
+        if index == T.cell_index():
+            continue
+        child = reread.cell(old_names[index])
+        if child is None:
+            serialized_children.append(dict(name=old_names[index], missing=True))
+            continue
+        after = cell_snapshot(reread, child)
+        mismatches = []
+        for key in sorted(set(before[0]) | set(after[0])):
+            old_region = before[0].get(key, pya.Region())
+            new_region = after[0].get(key, pya.Region())
+            diff = (old_region^new_region).merged()
+            if not diff.is_empty():
+                mismatches.append(dict(layer=list(key), before_area_dbu2=old_region.area(),
+                    after_area_dbu2=new_region.area(), xor_polygons_dbu=[str(p) for p in diff.each()]))
+        if mismatches or before[1] != after[1] or before[2] != after[2]:
+            serialized_children.append(dict(name=old_names[index], missing=False, layer_differences=mismatches,
+                original_labels=before[1], serialized_labels=after[1],
+                original_instances=before[2], serialized_instances=after[2]))
+    serialization_witness = dict(status='REPORT_ONLY_SERIALIZED_GEOMETRY_DIAGNOSIS_ORIGINAL_XOR_GATE_UNCHANGED',
+        source_head=__import__('os').environ['GITHUB_SHA'], source_sha256=sha(Path(__file__)),
+        original_gds_sha256=GDS_SHA, candidate_gds_sha256=sha(output), grid_dbu=L.dbu,
+        original_top_name=original_top_name, candidate_top_name=rt.name,
+        original_controls=controls, high_cut_controls=high_cut_controls, selection_controls=selection_controls,
+        original_high_cut_sets=sum(r.get('exact_original_via4_cuts_preserved', False) for r in route_records),
+        added_via_instances=len(now[2])-len(old_top[2]), added_route_rectangles=sum('pcell' not in q for q in route_records),
+        inspected_original_layers=len(all_before), inspected_original_children=len(old_cells)-1,
+        serialized_layer_differences=serialized_layers, serialized_original_child_differences=serialized_children,
+        original_top_labels=old_top[1], serialized_top_labels=cell_snapshot(reread, rt)[1],
+        original_top_instances=old_top[2], serialized_top_instances=cell_snapshot(reread, rt)[2],
+        candidate_geometry_changed_by_diagnostic=False, acceptance_guard_changed=False,
+        physical_accepted=False, rc_accepted=False, electrical_accepted=False)
+    # Snapshot label dictionaries have tuple layer keys; use JSON-safe records
+    # without changing or filtering any native labels.
+    def label_records(value):
+        return [dict(layer=list(k), texts=v) for k, v in sorted(value.items())]
+    for item in serialized_children:
+        if not item.get('missing', False):
+            item['original_labels'] = label_records(item['original_labels'])
+            item['serialized_labels'] = label_records(item['serialized_labels'])
+    serialization_witness['original_top_labels'] = label_records(serialization_witness['original_top_labels'])
+    serialization_witness['serialized_top_labels'] = label_records(serialization_witness['serialized_top_labels'])
+    (args.out.parent/'serialized-delta-witness.json').write_text(json.dumps(serialization_witness, indent=2)+'\n')
+    print(json.dumps(dict(serialization_witness='serialized-delta-witness.json',
+        changed_layers=len(serialized_layers), changed_original_children=len(serialized_children),
+        original_xor_gate_unchanged=True)), flush=True)
     for key, before in all_before.items():
         expected = before + additions.get(key[0], pya.Region()) if key[1] == 0 else before
         require((pya.Region(rt.begin_shapes_rec(reread.layer(*key)))^expected).is_empty(), 'Serialized original material differs')

@@ -37,7 +37,7 @@ jobs:
       - name: Generate owned metal candidate then original full physical and fresh strict wires
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/cloud_cdr500_input_access_v58_physical.py
+        run: python3 scripts/cloud_cdr500_input_access_v58_physical.py --serialization-diagnostic
       - name: Preserve every physical result and rejection
         if: always()
         id: publish

@@ -31,7 +31,7 @@ def native(which):
     getattr(module,'native'if which=='planes'else'recover')()
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--native',choices=('planes','recover'));args=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--native',choices=('planes','recover'));p.add_argument('--serialization-diagnostic',action='store_true');args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     if args.native:native(args.native);return
     assert os.environ['GITHUB_RUN_ATTEMPT']=='1'
@@ -87,6 +87,10 @@ def main():
         assert all(sha(Path(n))==h for n,h in protected.items())
         parent=OUT/'parent';parent.mkdir();shutil.copytree(OUT/'source/parent/inputs',parent/'inputs');shutil.copyfile(OUT/'source/parent/children.json',parent/'children.json')
         run([app,'python',ROOT/'scripts/generate_cdr500_input_access_v58.py','--physical',OUT/'source','--diagnosis',diagnostic,'--survey',survey,'--pdk',ROOT/'pdk','--out',parent/'layout'],'generation')
+        if args.serialization_diagnostic:
+            r.update(status='REPORT_ONLY_GENERATION_COMPLETED_ORIGINAL_GATES_PASSED_NO_PHYSICAL_STARTED',sources_unchanged=all(sha(Path(n))==v for n,v in protected.items()))
+            assert r['sources_unchanged']
+            return
         layout=parent/'layout';delta=json.loads((layout/'result.json').read_text())
         assert len(delta['controls'])==9 and delta['added_via_instances']==24
         assert len(delta['native_survey_selection_controls'])==8 and delta['added_route_rectangles']==20
@@ -165,7 +169,7 @@ def main():
     except BaseException as e:
         r.update(status='FAIL_NATIVE_PHYSICAL_OR_STRICT_WIRES',error=repr(e),traceback=traceback.format_exc());raise
     finally:
-        for name,path in [('layout',OUT/'parent/layout/result.json'),('physical',OUT/'parent/physical/result.json'),('candidate_delta',OUT/'candidate-delta.json')]:
+        for name,path in [('layout',OUT/'parent/layout/result.json'),('physical',OUT/'parent/physical/result.json'),('candidate_delta',OUT/'candidate-delta.json'),('serialization_witness',OUT/'parent/serialized-delta-witness.json')]:
             if path.exists():r[name]=json.loads(path.read_text())
         r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
 if __name__=='__main__':main()
