@@ -525,13 +525,13 @@
         "sha256": "a23fb5e2cefb81982851b558307e21b897d0167ca43b2aded53fcd6fde60fef4",
         "proof": [
           "2026-10-24T17:08:53.5124172Z Complete job name: source-controls",
-          "2026-10-24T17:09:17.7332148Z \u001b[36;1mpython3 scripts/ensure_cloud_tested_source_release.py --controls | tee release-controls.json\u001b[0m",
-          "2026-10-24T17:09:17.7332774Z \u001b[36;1mpython3 scripts/check_tx_phase_assert_offset_intrinsic.py | tee controls.json\u001b[0m",
-          "2026-10-24T17:09:17.7333812Z \u001b[36;1md=json.load(open('controls.json'));r=json.load(open('release-controls.json'))\u001b[0m",
-          "2026-10-24T17:09:17.7334448Z \u001b[36;1massert r['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'and len(r['rejected'])==17\u001b[0m",
-          "2026-10-24T17:09:17.7335408Z \u001b[36;1massert d['status']=='PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT'\u001b[0m",
-          "2026-10-24T17:09:17.7338504Z \u001b[36;1massert len(d['original_loader_and_reader_controls']['full_raw_reader_controls'])==7\u001b[0m",
-          "2026-10-24T17:09:17.7339073Z \u001b[36;1massert len(d['original_loader_and_reader_controls']['zero_OP_reader_controls'])==8\u001b[0m",
+          "2026-10-24T17:09:17.7332148Z ^[[36;1mpython3 scripts/ensure_cloud_tested_source_release.py --controls | tee release-controls.json^[[0m",
+          "2026-10-24T17:09:17.7332774Z ^[[36;1mpython3 scripts/check_tx_phase_assert_offset_intrinsic.py | tee controls.json^[[0m",
+          "2026-10-24T17:09:17.7333812Z ^[[36;1md=json.load(open('controls.json'));r=json.load(open('release-controls.json'))^[[0m",
+          "2026-10-24T17:09:17.7334448Z ^[[36;1massert r['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'and len(r['rejected'])==17^[[0m",
+          "2026-10-24T17:09:17.7335408Z ^[[36;1massert d['status']=='PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT'^[[0m",
+          "2026-10-24T17:09:17.7338504Z ^[[36;1massert len(d['original_loader_and_reader_controls']['full_raw_reader_controls'])==7^[[0m",
+          "2026-10-24T17:09:17.7339073Z ^[[36;1massert len(d['original_loader_and_reader_controls']['zero_OP_reader_controls'])==8^[[0m",
           "2026-10-24T17:09:31.6353887Z   \"status\": \"PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS\",",
           "2026-10-24T17:09:38.1235895Z   \"status\": \"PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT\",",
           "2026-10-24T17:09:38.1250348Z     \"status\": \"PASS_EXACT_OFFSET_PREPARATION_OLD_REJECTION_AND10_FAULTS_NO_DUT_TRANSIENT\",",
@@ -642,5 +642,24 @@
     "summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
     "parts_asset": 672983475,
     "parts_sha256": "a6be15e92a1721ddd794ab75cce227e962f6ada294d5a54b0e58cc4778ec187b"
-  }
+  },
+  "canonical_clock_role_native_pass": {
+    "source": "82450b1dd760bd12bf6544d26b1a9affcdeb7b1b",
+    "run": 40121026312,
+    "receipt": "docs/evidence/tx-canonical-clock-role-native-pass-20261024.json",
+    "receipt_sha256": "7c82d594ff36a934d29fb81e778c005e757f0056fd339c00f83d195df24e2253",
+    "full_result": "docs/evidence/tx-canonical-clock-role-full-result-20261024.json",
+    "full_result_sha256": "0b166e90b9e3ff95386974d72e944ea2a469f85581585d7dc066a50f81e83b46",
+    "canonical_counts": {
+      "muxes": 31,
+      "HBTs": 589,
+      "emitters": 863
+    },
+    "native_role_accepted": true,
+    "electrical_accepted": false,
+    "full31_tree_accepted": false,
+    "PLL_connected": false,
+    "full_phy_accepted": false
+  },
+  "next_owned_work": "Source-reviewed fresh 334-device eight-MIM intrinsic and two-order RC, then loaded reset/clock electrical proof; no repeated intrinsic run."
 }
