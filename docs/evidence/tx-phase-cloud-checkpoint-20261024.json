@@ -373,7 +373,15 @@
         "terminal_receipt": "docs/evidence/tx-role-parameter-inner-failure-readback-20261024.json",
         "actual_inner_failure": "Native child kind disagrees with pinned plan"
       },
-      "kind_provenance_receipt": "docs/evidence/tx-native-clock-role-four-p4-kind-provenance-20261024.json"
+      "kind_provenance_receipt": "docs/evidence/tx-native-clock-role-four-p4-kind-provenance-20261024.json",
+      "four_p4_correction": {
+        "source": "5d6c5bd5c69ea490dbf599ee97f8b64ce7c2ae5e",
+        "independent_review_passed": true,
+        "native_readback_authorized": true,
+        "workflow": "tx-native-clock-role-p4-parameters-cloud.yml",
+        "expected_emitters": 863,
+        "role_accepted": false
+      }
     }
   },
   "trigger_audit": {
@@ -546,7 +554,7 @@
     "dedicated_native_jobs_untouched": true
   },
   "new244_physical": {
-    "status": "source_reviewed_hosted_planning_controls_next",
+    "status": "hosted_source_planning_pass_native_controller_in_preparation",
     "source": "246599ca9e3db64d328329425a0ae09b5c84ff73",
     "generator": "hw/soc/flow/make_pcie_tx_phase_reset244_v1.py",
     "checker": "scripts/check_tx_phase_reset244_physical_source.py",
@@ -556,12 +564,23 @@
     "native_LVS_devices": 334,
     "source_control_faults": 27,
     "source_review_passed": true,
-    "source_control_passed": false,
+    "source_control_passed": true,
     "native_physical_dispatched": false,
     "DRC_LVS_RC_passed": false,
     "real_selector_load_accepted": false,
     "all31_clock_tree_accepted": false,
     "PLL_connected": false,
-    "full_PHY_accepted": false
+    "full_PHY_accepted": false,
+    "planning_run": {
+      "id": 40118554214,
+      "head_sha": "7c5d1177873428bb4f35ba097174e359e246582d",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "created_at": "2026-10-24T17:58:31Z"
+    },
+    "planning_job": 120944928730,
+    "planning_receipt": "docs/evidence/tx-phase-reset244-source-planning-pass-20261024.json",
+    "second_peer_review_passed": true
   }
 }
