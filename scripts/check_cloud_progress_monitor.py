@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Deterministic controls; network and native CAD execution are forbidden here."""
 import copy
+import base64
 import datetime as dt
 import hashlib
 import json
@@ -15,7 +16,7 @@ NOW = dt.datetime(2026, 10, 24, 12, tzinfo=dt.timezone.utc)
 HEAD = "a" * 40
 
 def config():
-    return dict(schema=1, repository=m.REPO, target_branch="codex/complete-open-work",
+    return dict(schema=1, inventory_version=1, inventory_updated_at="2026-10-24T07:25:00Z", repository=m.REPO, target_branch="codex/complete-open-work",
                 stall_seconds=21600, automatic_native_dispatch=False,
                 runs=[dict(run=123, label="fixture", branch="codex/complete-open-work", head_sha=HEAD)],
                 latest_workflows=[])
@@ -23,7 +24,7 @@ def config():
 def run(status="in_progress", conclusion=None):
     return dict(id=123, name="native", head_sha=HEAD, head_branch="codex/complete-open-work",
                 run_attempt=1, path=".github/workflows/native.yml", status=status, conclusion=conclusion,
-                created_at="2026-10-24T10:00:00Z", run_started_at="2026-10-24T10:00:00Z",
+                event="push", created_at="2026-10-24T10:00:00Z", run_started_at="2026-10-24T10:00:00Z",
                 updated_at="2026-10-24T10:01:00Z", html_url="https://github.com/Melihakbulut221/nssoc/actions/runs/123")
 
 def job(status="in_progress", started="2026-10-24T10:00:00Z", conclusion=None):
@@ -46,6 +47,7 @@ class Mock:
         self.assets.append(dict(id=102, name="forbidden.raw.part000", size=999999999))
         self.refs = [dict(ref="refs/tags/cloud-results-123-1-native")]
         self.latest = dict(workflow_runs=[self.state])
+        self.remote_config = None
 
     def get(self, path):
         self.calls.append(("get", path))
@@ -59,6 +61,7 @@ class Mock:
         self.calls.append(("maybe", path))
         if path == "git/matching-refs/tags/cloud-results-123-1-": return self.refs
         if path.startswith("actions/workflows/"): return self.latest
+        if path.startswith("contents/"): return self.remote_config
         raise AssertionError("Unexpected optional GET: " + path)
 
     def pages(self, path, key, maximum=1000):
@@ -74,6 +77,44 @@ class Mock:
 class Controls(unittest.TestCase):
     def test_real_config(self):
         m.check_config(json.loads(Path(".github/cloud-progress-monitor.json").read_text()))
+
+    def test_remote_config_is_commit_and_blob_bound(self):
+        api = Mock(); raw = json.dumps(config()).encode()
+        api.remote_config = dict(encoding="base64", size=len(raw), content=base64.b64encode(raw).decode(),
+                                 sha=hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest())
+        actual, proof = m.load_config(api, config())
+        self.assertEqual(actual, config()); self.assertFalse(proof["bootstrap"])
+        self.assertEqual(proof["head_sha"], HEAD)
+        self.assertEqual(proof["sha256"], hashlib.sha256(raw).hexdigest())
+
+    def test_remote_config_corrupt_blob_rejected(self):
+        api = Mock(); raw = json.dumps(config()).encode()
+        api.remote_config = dict(encoding="base64", size=len(raw), content=base64.b64encode(raw).decode(), sha="f" * 40)
+        with self.assertRaises(AssertionError): m.load_config(api, config())
+
+    def test_absent_remote_config_explicit_bootstrap(self):
+        actual, proof = m.load_config(Mock(), config())
+        self.assertTrue(proof["bootstrap"])
+        self.assertEqual(actual, config())
+
+    def test_inventory_version_required(self):
+        c = config(); del c["inventory_version"]
+        with self.assertRaises(AssertionError): m.check_config(c)
+
+    def test_push_controls_not_manual_reader(self):
+        c = config(); c["latest_workflows"] = [dict(label="reader", workflow="reader.yml",
+            branch=c["target_branch"], optional=True, event="workflow_dispatch", production_jobs=["completed-reader"])]
+        api = Mock(); api.latest = dict(workflow_runs=[run("completed", "success")])
+        r = m.collect(api, c, NOW)
+        self.assertEqual(len(r["runs"]), 1)
+        self.assertEqual(len(r["missing_selectors"]), 1)
+        self.assertIn("No production event", r["missing_selectors"][0]["reason"])
+
+    def test_skipped_production_is_not_native_completion(self):
+        c = config(); c["runs"][0]["production_jobs"] = ["native simulation"]
+        r = m.collect(Mock(run("completed", "success"), [job("completed", conclusion="skipped")]), c, NOW)
+        self.assertEqual(r["runs"][0]["classification"], "NOT_EXECUTED")
+        self.assertFalse(r["full_phy_accepted"])
 
     def test_duplicate_pinned_run_rejected(self):
         c = config(); c["runs"] *= 2

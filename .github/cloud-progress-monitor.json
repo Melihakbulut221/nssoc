@@ -47,13 +47,28 @@
       "label": "CDR newest actual-parent physical pipeline",
       "workflow": "cdr-sampler-active-input-v57-parent-cloud.yml",
       "branch": "codex/complete-open-work",
-      "optional": false
+      "optional": false,
+      "production_jobs": [
+        "native-physical"
+      ]
     },
     {
       "label": "CDR newest fresh extraction pipeline",
       "workflow": "cdr-sampler-active-input-v57-extraction-cloud.yml",
       "branch": "codex/complete-open-work",
       "optional": true
+    },
+    {
+      "label": "PLL latest complete-capture reader",
+      "workflow": "pll-rhi120-c8-delta-reader-cloud.yml",
+      "branch": "codex/complete-open-work",
+      "event": "workflow_dispatch",
+      "production_jobs": [
+        "completed-reader"
+      ],
+      "optional": true
     }
-  ]
+  ],
+  "inventory_version": 1,
+  "inventory_updated_at": "2026-10-24T07:25:00Z"
 }

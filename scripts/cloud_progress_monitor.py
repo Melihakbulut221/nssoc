@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Cloud-only progress observation. Never dispatch, restart, cancel or repair CAD jobs."""
 import argparse
+import base64
 import datetime as dt
 import hashlib
 import io
@@ -17,7 +18,7 @@ import zipfile
 REPO = "Melihakbulut221/nssoc"
 WORKFLOW = ".github/workflows/cloud-progress-monitor.yml"
 ARTIFACT = "cloud-progress-snapshot"
-LIMIT = 2 * 1024 * 1024
+LIMIT = 8 * 1024 * 1024
 TERMINAL_BAD = {"failure", "cancelled", "timed_out", "action_required", "startup_failure", "stale"}
 UTC = dt.timezone.utc
 
@@ -92,6 +93,8 @@ class API:
 
 def check_config(config):
     assert config["schema"] == 1 and config["repository"] == REPO
+    assert type(config.get("inventory_version")) is int and config["inventory_version"] > 0
+    assert config.get("inventory_updated_at") and time_value(config["inventory_updated_at"])
     assert config["target_branch"] == "codex/complete-open-work"
     assert config["stall_seconds"] == 21600
     seen = set()
@@ -104,7 +107,28 @@ def check_config(config):
         assert re.fullmatch(r"[a-z0-9-]+\.yml", item["workflow"])
         assert item["branch"] == config["target_branch"]
         assert isinstance(item["optional"], bool)
+        assert item.get("event") in (None, "push", "workflow_dispatch")
+        assert isinstance(item.get("production_jobs", []), list)
     assert config["automatic_native_dispatch"] is False
+
+def load_config(api, bootstrap):
+    """Pin the small working-branch inventory to one exact Git commit/blob."""
+    branch = "codex/complete-open-work"
+    head = api.get("git/ref/heads/" + branch)["object"]["sha"]
+    path = ".github/cloud-progress-monitor.json"
+    data = api.maybe("contents/" + path + "?ref=" + head)
+    if data is None:
+        check_config(bootstrap)
+        return bootstrap, dict(branch=branch, head_sha=head, bootstrap=True,
+            note="Working-branch inventory absent; using explicit reviewed bootstrap inventory")
+    assert data["encoding"] == "base64" and data["size"] <= 65536
+    raw = base64.b64decode(data["content"], validate=False)
+    assert len(raw) == data["size"] <= 65536
+    assert hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest() == data["sha"]
+    config = json.loads(raw)
+    check_config(config)
+    return config, dict(branch=branch, head_sha=head, blob_sha=data["sha"],
+        sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw), bootstrap=False)
 
 def classify(run, jobs, now, stall_seconds):
     status = run["status"]
@@ -181,10 +205,17 @@ def select_runs(api, config):
     missing = []
     for item in config["latest_workflows"]:
         path = "actions/workflows/" + item["workflow"] + "/runs?branch=" + urllib.parse.quote(item["branch"], safe="") + "&per_page=10"
+        if item.get("event"):
+            path += "&event=" + item["event"]
         data = api.maybe(path)
         candidates = [] if data is None else data["workflow_runs"]
         if not candidates:
             missing.append({"workflow": item["workflow"], "optional": item["optional"], "reason": "No run exists; no automatic engineering action"})
+            continue
+        if item.get("event"):
+            candidates = [r for r in candidates if r["event"] == item["event"]]
+        if not candidates:
+            missing.append({"workflow": item["workflow"], "optional": item["optional"], "reason": "No production event exists; push controls are not native completion"})
             continue
         newest = max(candidates, key=lambda r: (time_value(r["created_at"]), r["id"]))
         assert newest["head_branch"] == item["branch"]
@@ -193,6 +224,7 @@ def select_runs(api, config):
             selected[newest["id"]] = {
                 "run": newest["id"], "label": item["label"], "branch": newest["head_branch"],
                 "head_sha": newest["head_sha"], "selection": "latest_workflow",
+                "production_jobs": item.get("production_jobs", []),
             }
         else:
             current.setdefault("also_selected_by", []).append(item["workflow"])
@@ -228,15 +260,18 @@ def progress_signature(item):
         tuple((r["tag"], r.get("native_status"), tuple(sorted((k, v["sha256"]) for k, v in r["metadata"].items()))) for r in item["reports"]),
     )
 
-def collect(api, config, now, previous=None):
+def collect(api, config, now, previous=None, configuration_source=None):
     check_config(config)
     branch = config["target_branch"]
-    head = api.get("git/ref/heads/" + branch)["object"]["sha"]
+    head = configuration_source["head_sha"] if configuration_source else api.get("git/ref/heads/" + branch)["object"]["sha"]
     assert re.fullmatch(r"[0-9a-f]{40}", head)
     selected, missing = select_runs(api, config)
     old = {} if previous is None else {r["id"]: r for r in previous["runs"]}
     result = {
         "schema": 1, "repository": REPO, "target_branch": branch, "target_head": head,
+        "configuration_source": configuration_source,
+        "inventory_version": config["inventory_version"],
+        "inventory_updated_at": config["inventory_updated_at"],
         "observed_at": now.isoformat(), "monitor_source": os.environ.get("GITHUB_SHA"),
         "monitor_run": os.environ.get("GITHUB_RUN_ID"), "runs": [], "missing_selectors": missing,
         "automatic_native_dispatch": False, "full_phy_accepted": False, "final_timing_accepted": False,
@@ -247,6 +282,10 @@ def collect(api, config, now, previous=None):
         assert run["id"] == item["run"] and run["head_sha"] == item["head_sha"] and run["head_branch"] == item["branch"]
         jobs = api.pages("actions/runs/" + str(run["id"]) + "/attempts/" + str(run["run_attempt"]) + "/jobs", "jobs")
         category, reason = classify(run, jobs, now, config["stall_seconds"])
+        required_jobs = item.get("production_jobs", [])
+        production = [j for j in jobs if j["name"] in required_jobs and j.get("conclusion") != "skipped"]
+        if required_jobs and not production and run["status"] == "completed":
+            category, reason = "NOT_EXECUTED", "Production job absent or skipped; control-job success is not native completion"
         reports = terminal_reports(api, run) if run["status"] == "completed" else []
         statuses = [r.get("native_status") or "" for r in reports]
         if any(s.startswith(("FAIL", "ERROR", "REJECT")) for s in statuses):
@@ -261,7 +300,7 @@ def collect(api, config, now, previous=None):
             "reason": reason, "jobs": [job_record(j) for j in jobs], "reports": reports,
             "publication_verified": bool(reports) and all(r["complete_descriptor"] for r in reports),
         }
-        if run["status"] == "completed" and run["conclusion"] == "success" and not record["publication_verified"]:
+        if category == "COMPLETED_ACTIONS" and not record["publication_verified"]:
             record["classification"] = "INCOMPLETE_PUBLICATION"
             record["reason"] = "Actions succeeded without every expected terminal summary/parts pair"
         record["changed_since_previous"] = run["id"] not in old or progress_signature(record) != progress_signature(old[run["id"]])
@@ -304,8 +343,9 @@ def main():
     api = API(os.environ["GH_TOKEN"])
     args.out.mkdir(parents=True, exist_ok=True)
     try:
+        config, configuration_source = load_config(api, config)
         previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]))
-        result = collect(api, config, utc_now(), previous)
+        result = collect(api, config, utc_now(), previous, configuration_source)
     except Exception as exc:
         result = {"schema": 1, "repository": REPO, "target_branch": config["target_branch"],
                   "target_head": None, "runs": [], "observed_at": utc_now().isoformat(),
