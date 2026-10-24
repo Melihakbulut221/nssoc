@@ -1,109 +1,31 @@
 {
   "schema": 1,
-  "status": "EXISTING_CAPTURE_READBACK_ACTIVE_NOT_CIRCUIT_ACCEPTANCE",
-  "observed_at": "2026-10-24T10:09:11.924878+00:00",
+  "status": "TERMINAL_BOTH_READBACKS_PASSED_ORIGINAL_CIRCUIT_REJECTIONS_REMAIN",
   "run": 40084668388,
   "source_head": "08fcc6cd1ad9ac95643e345bb3d4d2c67a896a6f",
-  "branch": "codex/cdr500-floating-wire-diagnosis",
   "workflow": ".github/workflows/cdr500-loaded-rejection-readback-cloud.yml",
-  "run_status": "queued",
-  "run_conclusion": null,
+  "branch": "codex/cdr500-floating-wire-diagnosis",
+  "receipt": "docs/evidence/cdr500-loaded-rejection-readback-pass-20261024.json",
   "jobs": [
     {
       "id": 120845029308,
       "name": "readback (nominal_early)",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "started_at": "2026-10-24T10:08:01Z",
-      "completed_at": null,
-      "steps": [
-        {
-          "name": "Set up job",
-          "status": "completed",
-          "conclusion": "success",
-          "number": 1,
-          "started_at": "2026-10-24T10:08:01Z",
-          "completed_at": "2026-10-24T10:08:02Z"
-        },
-        {
-          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
-          "status": "completed",
-          "conclusion": "success",
-          "number": 2,
-          "started_at": "2026-10-24T10:08:02Z",
-          "completed_at": "2026-10-24T10:08:19Z"
-        },
-        {
-          "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
-          "status": "completed",
-          "conclusion": "success",
-          "number": 3,
-          "started_at": "2026-10-24T10:08:19Z",
-          "completed_at": "2026-10-24T10:08:19Z"
-        },
-        {
-          "name": "Verify readback source without installing a simulator",
-          "status": "completed",
-          "conclusion": "success",
-          "number": 4,
-          "started_at": "2026-10-24T10:08:19Z",
-          "completed_at": "2026-10-24T10:08:26Z"
-        },
-        {
-          "name": "Verify all published native bytes and reproduce original rejection before diagnosis",
-          "status": "in_progress",
-          "conclusion": null,
-          "number": 5,
-          "started_at": "2026-10-24T10:08:26Z",
-          "completed_at": null
-        },
-        {
-          "name": "Preserve readback failure evidence",
-          "status": "pending",
-          "conclusion": null,
-          "number": 6,
-          "started_at": null,
-          "completed_at": null
-        },
-        {
-          "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
-          "status": "pending",
-          "conclusion": null,
-          "number": 11,
-          "started_at": null,
-          "completed_at": null
-        },
-        {
-          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
-          "status": "pending",
-          "conclusion": null,
-          "number": 12,
-          "started_at": null,
-          "completed_at": null
-        }
-      ]
+      "completed_at": "2026-10-24T10:09:37Z"
     },
     {
       "id": 120845029487,
       "name": "readback (nominal_late)",
-      "status": "queued",
-      "conclusion": null,
-      "started_at": "2026-10-24T10:07:36Z",
-      "completed_at": null,
-      "steps": []
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T10:09:40Z",
+      "completed_at": "2026-10-24T10:11:11Z"
     }
   ],
-  "production_jobs": [
-    "readback (nominal_early)",
-    "readback (nominal_late)"
-  ],
-  "source_failed_run": 40081228425,
-  "source_failed_head": "e4aca2e147acf55dfe9718da5a4a6e0471fbb2d5",
-  "source_failure_receipt": "docs/evidence/cdr500-cleaned-loaded-nominal-rejection-diagnosis-20261024.json",
   "native_simulation_started": false,
-  "source_jobs_cancelled_or_restarted": false,
-  "local_native_work_or_artifacts": false,
-  "next_step": "Read this exact existing run terminal summaries. Do not dispatch duplicate readbacks. Diagnostic PASS means original rejection was reproduced exactly; then select a justified physical repair from actual stress times and terminal waveform evidence.",
+  "next_step": "Inspect actual C/D retimed-input routing, termination and common-mode delivery. At the worst early event the upstream HBT70 emitter is 1.27613 V, gain HBT60 base is 1.13496 V and termination-resistor188 input is 1.01134 V on one native net. A physical repair must be selected with native route/RC topology, not by changing test thresholds.",
   "full_phy_accepted": false,
   "cdr_accepted": false
 }
