@@ -1,0 +1,12 @@
+name: tx-role-parameter-failure-readback-cloud
+on:
+  push:
+    branches: [codex/tx-role-failure-reader-registration]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo Manual small failure-reader workflow registered
