@@ -7255,3 +7255,13 @@ mode/collector stress; keep original1.6V bound and all other gates. New five-cas
 screen must pass before qualified physical work. Planned physical improvement:
 more actual upper via cuts to reduce measured10-16ohm port-terminal series losses,
 fresh native DRC/LVS and RC required, never numerical rescaling of oldRC.
+
+
+## 2026-10-24 v53 schematic passed; actual geometry dispatched
+v53 run40043630319 all5cases passed original gates. Nominal195.151mV/17.969ps,
+hot169.678mV/20.469ps, cold208.780mV/16.406ps. ColdmaxVCE1.587646V<1.6V.
+No fullPHY or physical acceptance. Build new v53 source-matched native geometry
+with4x2TopVia1,2x2TopVia2,4x2upper regular vias and at least4um horizontal TM2.
+All original560DRC/18device deep-flatLVS/ninefaults unchanged. If physical passes,
+new wire graph/binding/RC/composition/full-loaded fivecase waves required.
+Do not reuse v51's181R/173C census or native port order without actual extraction.
