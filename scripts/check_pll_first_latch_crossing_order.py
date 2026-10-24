@@ -22,6 +22,37 @@ def controls():
     assert [r["index"]for r in q["observed_intervals"]]==[0,1,2]
     assert [[e["time_s"]for e in r["events"]]for r in q["observed_intervals"]]==[[2.75],[4.75,6.75],[8.75]]
     assert q["output_events_observed"]==4
+    first=q["observed_intervals"][0]["events"][0]
+    actual={(z["signal"],z["threshold_v"]):[]for z in first["related_crossings"]}
+    for z in first["related_crossings"]:
+        actual[z["signal"],z["threshold_v"]].append((z["event"]["time_s"],z["event"]["kind"]))
+    assert actual=={
+      ("data_v",0.):[(1.5,"rising"),(3.5,"falling"),(5.5,"rising"),(7.5,"falling")],
+      ("data_v",.01):[(1.75,"rising"),(3.75,"falling"),(5.75,"rising"),(7.75,"falling")],
+      ("hold_v",0.):[(3.5,"rising"),(5.5,"falling"),(7.5,"rising")],
+      ("hold_v",.01):[(3.75,"rising"),(5.75,"falling"),(7.75,"rising")]}
+    n=first["nearest_same_direction_data_zero_crossing"]
+    assert n["time_s"]==1.5 and n["interpolated_delay_to_output_s"]==1.25
+    assert n["native_bracket_order"]=="overlapping_native_brackets_order_unresolved"
+    assert n["causally_corresponding_edge_proved"]is False
+    assert all(v["nearest_data_zero_crossing_order"]==
+      {"overlapping_native_brackets_order_unresolved":2}for v in q["comparison"].values())
+    # Exercise the exact independently pinned native-role map with transparent integer
+    # values. These arbitrary arithmetic fixtures are not a voltage simulation.
+    import json
+    mapping=json.loads((a.frozen.ROOT/a.frozen.original.MAP).read_text())
+    fake={"time":t}
+    for item in mapping["devices"]:
+        if item["native_id"]not in a.ROLES:continue
+        i=item["native_id"]
+        for term in item["terminals"]:
+            if term["terminal"]in ("B","C","E"):
+                fake[term["vector"]]=t*0+i*{"B":17,"C":23,"E":5}[term["terminal"]]
+    vs,raw,names=a.vectors(fake,mapping)
+    want=dict(clock_hold_v=-17,clock_hold_effective_v=-12,data_v=17,
+              data_effective_v=12,hold_v=102,hold_effective_v=72,output_v=-46)
+    assert all(np.array_equal(vs[k],t*0+v)for k,v in want.items())
+    assert len(raw)==len(names)==18
     # Independent affine snapshot oracle covers actual samples and intervening events.
     sig={k:2*t+1 for k in a.SIGNALS}
     for x in (0.,.25,1.,2.75,16.):
