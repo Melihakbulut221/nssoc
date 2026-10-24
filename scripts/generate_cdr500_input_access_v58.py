@@ -309,7 +309,7 @@ def main():
         # each real TM1 strap gets separate native M4/M5/TopVia1 endpoint stacks.
         for col in plan['columns']:
             for point in (col['low_dbu'], col['high_dbu']):
-                via('Metal4', 'TopMetal1', point, plan, col['role']+'_native_upper_landing', upper=True)
+                via('Metal4', 'TopMetal1', point, plan, col['role']+'_native_upper_landing', columns=6, upper=True)
             add_line(126, col['low_dbu'], col['high_dbu'], 3200, plan, col['role']+'_parallel_tm1_access')
         high = [col['high_dbu'] for col in plan['columns']]
         for point in high:
