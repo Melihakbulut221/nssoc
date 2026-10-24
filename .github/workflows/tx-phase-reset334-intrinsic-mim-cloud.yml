@@ -1,0 +1,13 @@
+name: tx-phase-reset334-intrinsic-mim-cloud
+on:
+  push:
+    branches: ['codex/tx-phase-reset334-intrinsic-mim-registration']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - shell: bash
+        run: echo 'Registered workflow path only; no checkout or native work.'
