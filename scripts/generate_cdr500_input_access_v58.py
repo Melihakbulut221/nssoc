@@ -284,11 +284,33 @@ def main():
                             piece = pya.Region(cell.begin_shapes_rec(layer_index)).transformed(tr).merged()
                             if not piece.is_empty():
                                 footprint[str((layer_info.layer, layer_info.datatype))] = [str(q) for q in piece.each()]
+                        original_intersections = []
+                        for original in own[plan['gain_native_id']][info.layer].interacting(reg).each():
+                            original_region = pya.Region(original)
+                            center_point = original.bbox().center()
+                            actual_owners = []
+                            via_index = VIAS.index(info.layer)
+                            for adjacent in METALS[via_index:via_index+2]:
+                                native_owner = native.probe_net(native.layer_by_index(graph['native_layer_mapping'][str(adjacent)]), center_point)
+                                wire_owner = wire.probe_net(wire.layer_by_name('gds_'+str(adjacent)), center_point)
+                                require(native_owner is not None and wire_owner is not None, 'Original cut adjacent native/wire owner absent')
+                                require(native_owner.cluster_id == plan['native_cluster'] and wire_owner.cluster_id == plan['wire_component'], 'Original cut owner differs from bound source net')
+                                actual_owners.append(dict(metal=adjacent, native_cluster=native_owner.cluster_id,
+                                    native_name=native_owner.name, wire_component=wire_owner.cluster_id))
+                            intersection = (original_region & reg).area()
+                            remainder = (original_region-reg).area()
+                            original_intersections.append(dict(polygon_dbu=str(original),
+                                bbox_center_dbu=[center_point.x, center_point.y],
+                                intersection_area_dbu2=intersection, outside_candidate_area_dbu2=remainder,
+                                overlap='FULL_CONTAINMENT' if remainder == 0 else 'PARTIAL_AREA' if intersection else 'BOUNDARY_TOUCH_ONLY',
+                                adjacent_native_wire_owners=actual_owners))
                         diagnostic = dict(status='REJECTED_UNCHANGED_PARTIAL_ORIGINAL_CUT_GUARD',
                             gain_native_id=plan['gain_native_id'], native_cluster=plan['native_cluster'],
                             wire_component=plan['wire_component'], purpose=purpose, point_dbu=list(point),
                             pcell=cell.name, parameters=parameters, transform=str(tr), via_layer=info.layer,
                             original_cut_polygon_dbu=str(old_cut), candidate_cut_polygons_dbu=[str(q) for q in reg.each()],
+                            all_intersecting_original_cuts=original_intersections,
+                            candidate_cut_bbox_centers_dbu=[[q.bbox().center().x, q.bbox().center().y] for q in reg.each()],
                             intersection_area_dbu2=(old_region & reg).area(),
                             original_cut_outside_candidate_dbu2=(old_region-reg).area(),
                             original_drawing_owners=owners, actual_candidate_footprint=footprint,
