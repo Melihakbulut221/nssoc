@@ -181,7 +181,7 @@ def binding_controls(text,contract,planes):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--case',choices=CASES,required=True);p.add_argument('--prepare-only',action='store_true');args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'
-    assert UI==125e-12 and START==2e-9 and STOP==34.25e-9 and STEP==.3125e-12
+    assert UI==125e-12 and START==2e-9 and STOP==START+258*UI and STEP==.3125e-12
     method=json.loads((ROOT/'scripts/cdr500-cleaned-loaded-methods.json').read_text())
     assert all(sha(ROOT/name)==digest for name,digest in method['protected'].items())
     out=ROOT/('cloud-cdr500-cleaned-loaded-'+args.case);out.mkdir(exist_ok=False);reports.OUT=out
