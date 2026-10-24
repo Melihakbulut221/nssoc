@@ -43,3 +43,7 @@ The control's Boolean truth checks are conditional topology checks. They assume 
 7. Qualify selector-level clock buffers, global reset distribution and the actual routed 31-node parent with the real PLL.
 
 The added selectors lengthen the regenerative and data paths and the release circuitry increases clock loading. A failed electrical result requires a genuine design change, not a fitted initial condition, extra ideal driver, delayed oracle or relaxed threshold. No native simulation or physical job is registered by this source-only workflow.
+
+## Terminal source-only verification
+
+Run 40091251531 at a83bfc1da87695ae141468452680351077593efe passed both 241-primitive/821-terminal expansions, 16 conditional preset truth cases, both initial clock phases and all 14 connection faults. Two independent source/circuit reviews found no concrete polarity or topology blocker. The complete report and joblog hash are preserved in docs/evidence/tx-phase-async-preset-source-pass-20261024.json. Native layout, RC, transistor transient, device safety and reset qualification remain false. A separately reviewed nominal-fixture intrinsic transient is the next diagnostic; it will not claim PLL connection or extracted-layout acceptance.

@@ -1,9 +1,9 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v3",
-  "observed_utc": "2026-10-24T11:33:55.716949+00:00",
+  "observed_utc": "2026-10-24T11:51:28.156440+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
-  "source_head": "5db3ffab8c62e2c2da1a8e7b47360925ec877ddb",
+  "source_head": "a83bfc1da87695ae141468452680351077593efe",
   "qualified_RC": {
     "run": 40086006467,
     "source": "c7cb559701eb5b05194110ef3c9bf8bd43626db0",
@@ -81,13 +81,29 @@
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "next": [
-    "Preserve terminal source receipts; their success is not native electrical/reset qualification.",
-    "Await root completed observer receipt; do not assume PLL common mode or swing.",
-    "Only after exact source review and boundary verification implement strict native controller; source-only workflows do not simulate the DUT.",
-    "Implement real independent preset and first-fall release, selector buffers and routed parent before claiming all31 clocks. Existing feedback-only reset candidate is insufficient."
+    "Prepare and independently review a fixture-driven intrinsic transistor transient for both parent presets and both initial clock phases, including reset assertion during running and first-fall release. Root has authorized this independent diagnostic; measured PLL boundary is not required for its explicitly documented nominal fixture.",
+    "Do not dispatch the intrinsic transient until exact fixture/model/engine/source and negative controls are reviewed. No new layoutRC or PLL-connected acceptance.",
+    "Keep actual phase55 child-load/PLL connection pending the measured root observer boundary.",
+    "Implement physical independent preset/release, body contacts, fresh DRC/LVS/RC, selector buffers and routed parent before all31 hardware acceptance."
   ],
   "terminal_source_receipt": {
     "path": "docs/evidence/tx-phase-source-preparation-and31-mapping-pass-20261024.json",
     "sha256": "cec1eb3d82489be21728f607f870aad961dded9d921d9060e76555d1d5a1ad94"
+  },
+  "independent_async_preset_candidate": {
+    "source": "a83bfc1da87695ae141468452680351077593efe",
+    "source_path": "hw/soc/analog/pcie/clock_div2_async_preset_firstfall_v2.spice",
+    "receipt": "docs/evidence/tx-phase-async-preset-source-pass-20261024.json",
+    "receipt_sha256": "8d5f76875aa9cb892ad8ae93c4f67aecf0d9fdf2ce855a3f9fb74388fd5a9dc5",
+    "run": 40091251531,
+    "schematic_HBT": 106,
+    "schematic_R": 127,
+    "schematic_MIM": 8,
+    "schematic_terminals": 821,
+    "source_controls_passed": true,
+    "independent_source_reviews": 2,
+    "negative_controls": 14,
+    "replaces_insufficient_feedback_only_source_hypothesis": true,
+    "physical_reset_or_release_qualified": false
   }
 }
