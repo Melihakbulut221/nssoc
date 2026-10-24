@@ -95,7 +95,7 @@ def main():
   candidate='scripts/cloud_tx_output8088_driverpinfeed_precision.py'
   edits=[dict(before='power128return64',after='driverpinfeed',count=10),
    dict(before='POWER128RETURN64',after='DRIVERPINFEED',count=1),
-   dict(before='full_tx_output8088_driverpinfeed_wires',after='full_tx_output8088_driver_pinfeed_wires',count=3),
+   dict(before='full_tx_output8088_driverpinfeed_wires',after='full_tx_output8088_driver_pinfeed_wires',count=4),
    dict(before='20261023',after='20261024',count=1),
    dict(before='39901168356',after=str(RUN),count=1),
    dict(before='2b19f65083554c59fc5a171eb89e25ce51bcc5f8f3f31de42024a554e049d729',after=rc['summary_sha256'],count=1)]
