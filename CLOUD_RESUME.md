@@ -7764,3 +7764,6 @@ Parent500 run40061773728 retained a diagnostic-script newline launch error befor
 
 
 Parent500 actual run40061976764: serialized C/D replacement, all9native child drawings, exact LEF and6+5 geometry controls passed. Full560-rule DRC rejected54markers:32M1.a/16M1.b/6M5.b. Deep/flat LVS not yet run. Diagnose exact native markers and top/child contributors before any geometry repair; preserve all artifacts. Standalone sampler66 physical pass does not imply parent pass. Fresh plane/wire builder prepared only in orchestration memory and MUST NOT launch until actual parent closure.
+
+
+Actual diagnosis40062426929 identified32 old C/D MOS Metal1 enclosure strips still at old positions (65nm width,7.49umheight), causing48M1markers. Relocate each320um only if old/new attachment is the identical translated native component. Six M5notches may be filled only within one existing actual metal component; whole M5component count must remain unchanged. Track this explicit parent geometry delta; do not claim all parent polygons unchanged. Native560DRC/deep-flat500LVS/12faults must pass. Pending fresh-extraction builder MUST be adapted to this explicit delta and8replacement controls before use.

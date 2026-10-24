@@ -65,6 +65,61 @@ def main():
  for i in replacements.values():i.cell_index=C.cell_index()
  T.name=TOP
  expected=(snap[0],snap[1],sorted(expected_instances))
+ # Diagnose and relocate only proven old C/D MOS enclosure strips.
+ diagnosis_path=Path.cwd()/'docs/evidence/cdr-sampler-active-input-v57-parent-drc-diagnosis-20261024.json'
+ diagnosis=json.loads(diagnosis_path.read_text())['report']['diagnosis']
+ assert diagnosis['status']=='PASS_ACTUAL54_MARKER_AND_GEOMETRY_READBACK'
+ m1_index=L.layer(8,0);m5_index=L.layer(67,0)
+ old_direct=pya.Region(T.shapes(m1_index)).flatten().merged()
+ assert old_direct.count()==64
+ moved=pya.Region();shifted=pya.Region();m1_records=[]
+ old_core=pya.Region(L.cell('pd_child_sampler').begin_shapes_rec(m1_index)).flatten().merged()
+ new_core=pya.Region(C.begin_shapes_rec(m1_index)).flatten().merged()
+ for tag in ('sc','sd'):
+  origin=nums(before['placements'][tag]['bbox_um'])[:2];tr=pya.Trans(round(origin[0]/L.dbu),round(origin[1]/L.dbu))
+  limits=pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu)
+  source=old_core.transformed(tr).merged();target=new_core.transformed(tr).merged()
+  candidates=[q for q in old_direct.each()if limits.contains(q.bbox())]
+  assert len(candidates)==16,('C/D old enclosure census',tag,len(candidates))
+  for polygon in candidates:
+   r=pya.Region(polygon);b=polygon.bbox()
+   assert polygon.area()==b.area() and b.width()==65 and b.height()==7490
+   # Both before and after strips must touch one identical translated native
+   # primitive component. This is a tracked conductor relocation, not deletion.
+   connected=source.interacting(r)
+   assert connected.count()==1,('Old enclosure connection differs',tag,str(b),connected.count())
+   delta=pya.Trans(320000,0);candidate=r.transformed(delta)
+   new_connected=target.interacting(candidate)
+   assert new_connected.count()==1,('New enclosure connection differs',tag,str(b),new_connected.count())
+   assert(connected.transformed(delta)^new_connected).is_empty(),'Native attachment changed'
+   moved+=r;shifted+=candidate
+   m1_records.append(dict(tag=tag,before_box_dbu=str(b),after_box_dbu=str(b.transformed(delta)),translation_dbu=[320000,0],same_translated_native_metal_component=True))
+ assert len(m1_records)==32 and moved.count()==32
+ for marker in diagnosis['markers']:
+  if marker['category'].startswith('M1.'):
+   box=pya.DBox(*nums(marker['bbox_um'])).to_itype(L.dbu)
+   assert not moved.interacting(pya.Region(box.enlarged(1))).is_empty()
+ corrected=(old_direct-moved)+shifted
+ T.shapes(m1_index).clear();T.shapes(m1_index).insert(corrected)
+ expected_metal=dict(expected[0]);expected_metal[(8,0)]=corrected.merged()
+ # Fill only six actual narrow notches within one existing M5 component.
+ m5_before=pya.Region(T.begin_shapes_rec(m5_index)).flatten().merged()
+ parent_m5=pya.Region(T.shapes(m5_index)).flatten().merged()
+ m5_fill=pya.Region();m5_records=[]
+ for marker in diagnosis['markers']:
+  if marker['category']!='M5.b':continue
+  b=pya.DBox(*nums(marker['bbox_um'])).to_itype(L.dbu)
+  box=pya.Box((b.left//5)*5-5,(b.bottom//5)*5-5,((b.right+4)//5)*5+5,((b.top+4)//5)*5+5)
+  patch=pya.Region(box);touch=m5_before.interacting(patch)
+  assert touch.count()==1,('Notch spans different M5 components',str(box),touch.count())
+  assert (patch-m5_before).area()>0,'No actual notch gap covered'
+  assert any(pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu).contains(box)for tag in ('sc','sd'))
+  m5_fill+=patch;m5_records.append(dict(box_dbu=str(box),source_marker=marker['values'],touched_existing_m5_components=touch.count(),added_area_dbu2=(patch-m5_before).area()))
+ assert len(m5_records)==6 and (m5_before+m5_fill).merged().count()==m5_before.count()
+ T.shapes(m5_index).insert(m5_fill)
+ expected_metal[(67,0)]=(parent_m5+m5_fill).merged()
+ expected=(expected_metal,expected[1],expected[2])
+ metal_delta=dict(status='TRACKED_C_D_M1_COMPONENT_RELOCATION_AND_SAME_COMPONENT_M5_NOTCH_FILL',diagnosis_sha256=sha(diagnosis_path),m1_strips=m1_records,m5_patches=m5_records,m5_component_count_before=m5_before.count(),m5_component_count_after=(m5_before+m5_fill).merged().count(),all_other_parent_layers_unchanged=True,all_parent_labels_and_transforms_unchanged=True,all_children_unchanged=True)
  compare(expected,snapshot(L,T))
  assert T.dbbox()==pya.DBox(0,0,2316.6,4715.48)
  options=pya.SaveLayoutOptions();options.select_cell(T.cell_index());L.write(str(dest/(TOP+'.gds')),options)
@@ -158,12 +213,18 @@ def main():
   try:check_lef(bad)
   except AssertionError:faults.append(name)
   else:raise AssertionError(name+' accepted')
- files=[p for name in ('baseline','data','inputs')for p in(out/name).rglob('*')if p.is_file()]+[out/'children.json',Path(__file__),Path(writer.__file__),circuit]
+ for name,layer in [('unmoved_old_m1_patch',(8,0)),('missing_m5_fill',(67,0))]:
+  bad=dict(after[0]);bad[layer]=snap[0][layer]
+  try:compare(expected,(bad,after[1],after[2]))
+  except AssertionError:faults.append(name)
+  else:raise AssertionError(name+' accepted')
+ files=[p for name in ('baseline','data','inputs')for p in(out/name).rglob('*')if p.is_file()]+[out/'children.json',Path(__file__),Path(writer.__file__),circuit,diagnosis_path]
  meta['inputs']={str(p):sha(p)for p in files}
+ meta['active_input_parent_metal_delta']=metal_delta
  meta['active_input_replacement']=dict(tags=['sc','sd'],old_devices_per_leaf=54,new_devices_per_leaf=66,preserved_reference_devices=368,one_reference_per_sampler=True,source_parent_gds_sha256=sha(old/'layout'/(OLD_TOP+'.gds')),source_leaf_gds_sha256=sha(fresh/(LEAF+'.gds')))
  meta['outputs']={n:sha(dest/n)for n in (TOP+'.gds',TOP+'.lef','schematic.cir')}
  (dest/'result.json').write_text(json.dumps(meta,indent=2)+'\n')
- proof=dict(status='PASS_C_D_ONLY_REPLACEMENT_WITH_ALL_PARENT_GEOMETRY_AND_A_B_UNCHANGED',changed_sampler_tags=['sc','sd'],parent_geometry_unchanged=True,all_parent_labels_and_transforms_unchanged=True,removed_child_port_annotations=removed,preserved_reference_devices=368,old_bbox_um=before['bbox_um'],new_bbox_um=str(U.dbbox()),external_leaf_pins_unchanged=True,actual_lef_size_pins_and_all_seven_obstruction_planes_checked=True,controls=faults,full_phy_accepted=False,qualified_pex=False)
- assert len(faults)==6
+ proof=dict(status='PASS_C_D_REPLACEMENT_WITH_TRACKED_M1_TRANSLATION_AND_SAME_COMPONENT_M5_FILL',changed_sampler_tags=['sc','sd'],parent_geometry_unchanged=False,parent_geometry_changes=metal_delta,all_parent_labels_and_transforms_unchanged=True,removed_child_port_annotations=removed,preserved_reference_devices=368,old_bbox_um=before['bbox_um'],new_bbox_um=str(U.dbbox()),external_leaf_pins_unchanged=True,actual_lef_size_pins_and_all_seven_obstruction_planes_checked=True,controls=faults,full_phy_accepted=False,qualified_pex=False)
+ assert len(faults)==8
  (out/'replacement-proof.json').write_text(json.dumps(proof,indent=2)+'\n')
 if __name__=='__main__':main()
