@@ -8270,3 +8270,16 @@ Localworkspace rechecked empty. All source, receipts and continuingcompute remai
 One-resistor offset run40114254950 now passes all4fresh34ns cases with full110875x359captures,106HBT safety, originalzeroOP and unchanged31.25ps/100mV gates. Worst prescribed margin114.126mV; no simulatorwarnings/errors. Exactpass receipt7d67efe1/SHA117ad08b and smallactualsummarySHA80597ce7 are retained here. No repeat simulation. Next: propagate onlyXAND_SKEW rppdL32toL20 into real244layout/model, preserveother243devices, independentlyreview then fullphysical/RC validation. Real31tree/load/PLL/mainchip/fullPHY remainopen.
 
 Mainchippublication checkpoint9b8f4e91 pins sole40115867400 and exactsource release422874927. Roleinnerlog reader40115817352 andrecordproof40114982496 remain sole pendinghandles. All work remainscloud-only and workspaceempty.
+
+
+### 2026-10-24T18:34:39.467020+00:00 — cloud-only checkpoint v28
+
+All execution and evidence remain in GitHub; local workspace verified empty.78 exact run/source handles are now monitored by the existing8hour read-only main workflow.
+
+Fresh reset244 layout40120130880 PASS for both actual334-device variants:560DRC0, deep+flatLVS11ports,9real faults, strict119wirecomponents/1010terminals/695anchors. Exact506246ad receipt is imported. This does not qualify RC/electrical/real31tree/PLL. Actual589HBT/863emitter stage parameter proof40119049907 passes; minimalcanonicalbinder correction f1410563 is peer-reviewed andawaitingnativeproof.
+
+Mainchip original40095811631 remainsno-logrejected. Recoverypublication40115867400 and complete65ZIP/emptyinventory nowPASS. Hostedobserver/admission controls40120093419 passed27+71+20 faults. Sole600second exactsaved-process observation40120760532 uses84b513cb and precreatedexactsource release422907570. Nativeinput/runtime/ELF/cpuset/Tcl/clock/derate invariants areunchanged; sameprocessmustberecheckpointed. CPUmotion doesnotprove routingprogress or normalcontinuation acceptance.
+
+CDR40108285374 completed all10cases:8originalelectricalrejections,2expectedfaultscreensPASS. Allsummary hashes/nativecase evidence arepreserved in docs/evidence/cdr500-v58-complete-ten-case-matrix-20261024.json. Existingcapture exactsame-row diagnostics precedeanynewcircuitguess. PLLcrossingorder40120469625 iscache-only onexact35c92ae7, no newPLLsimulation.
+
+Recordretry40116908104 losthostcommunication, afterfirst40114982496 interrupt143. Noresult/artifact orcheckerfailureproof exists; source remainsunqualified. Prepare boundedphase/resource telemetry, notanotherblindretry. ExistingTXnormal40109066076/swapped40109221280 remainsole savedprocesscontinuations. FullserialPHY, serialmainchip routing andfinaltiming remainopen.
