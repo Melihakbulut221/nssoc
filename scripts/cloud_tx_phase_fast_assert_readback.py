@@ -68,7 +68,13 @@ def diagnostic(t,values,c):
       ('master_data','xdut.xm.data_p','xdut.xm.data_n'),('master_hold','xdut.xm.hold_p','xdut.xm.hold_n'),
       ('slave_data','xdut.xs.data_p','xdut.xs.data_n'),('slave_hold','xdut.xs.hold_p','xdut.xs.hold_n'),
       ('MP','mp','mn'),('QP','qp','qn'),('clock','clkp','clkn'),('conditioned_clock','xdut.ckp','xdut.ckn')]}
-    requested=bench.RESET_ASSERT+np.array([-25,0,5,10,15,20,25,31.25,35,40,50,62.5,125])*1e-12
+    points=list(bench.RESET_ASSERT+np.array([-25,0,5,10,15,20,25,31.25,35,40,50,62.5,125])*1e-12)
+    # Both mixed logic states and both releases must be observed before any
+    # real fan-in resistor redesign. All times come from the frozen fixture,
+    # never an observed DUT edge; include steady run and held-reset points.
+    for edge in (bench.ARM_RELEASE,bench.RESET_RELEASE,*[r['fall_s']for r in c['oracle']['first_falls']]):
+        points.extend(edge+np.array([0,5,10,20,25,31.25,50,62.5,100])*1e-12)
+    requested=np.array(sorted(set([*map(float,points),bench.START,10e-9,12.5e-9])))
     def bracket(time):
         i=int(np.searchsorted(t,time,side='right'))-1
         assert 0<=i<len(t)-1 and t[i]<=time<=t[i+1]
@@ -91,7 +97,7 @@ def diagnostic(t,values,c):
     active=t>=bench.START
     currents={k:dict(minimum_a=float(values['i(v'+k+')'].min()),maximum_a=float(values['i(v'+k+')'].max()),
       mean_post_START_a=float(np.trapezoid(values['i(v'+k+')'][active],t[active])/(t[active][-1]-t[active][0])))for k in ('armp','armn','clkp','clkn','rail')}
-    return dict(original_fixed_UI_margin_failures=failures,predeclared_reset_samples=samples,reset_window_threshold_crossings=transitions,
+    return dict(original_fixed_UI_margin_failures=failures,predeclared_reset_release_and_steady_samples=samples,reset_window_threshold_crossings=transitions,
       external_source_currents=currents,sample_method='Original np.interp within explicitly recorded adjacent actual native samples; no phase/event fitting. Full original waveform and acceptance reproduction are separate strict prerequisites.',
       acceptance_changed=False,full_PHY_accepted=False)
 def controls():
