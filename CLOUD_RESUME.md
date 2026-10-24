@@ -8055,3 +8055,9 @@ Only GitHub-hosted workers perform CAD/simulation. Source, reports, native archi
 Observation40077793787 failed the original check_config assertion because inventory versions5–7 incorrectly used latest-workflow selectors on isolated branches. Existing policy permits dynamic latest selectors only on codex/complete-open-work; this was an inventory error, not a failed native CAD result. Snapshot12554607957 preserves this MONITOR_ERROR (366bytes, SHA2566e0db9c5b8d45fd40a2f137e83488df474fa00d01b209107986343dd297613dc).
 
 Inventory version8 keeps the original verifier unchanged. Every isolated branch candidate is now pinned by exact run/branch/full commit and required native job names. Only working-root workflows remain dynamic selectors. Added all live TX wire→intrinsic/RC→two-order precision→composition/DC stages, CDR MIM-aware precision and the real phase-divider physical candidate. No native job was restarted or cancelled. Scheduled monitor source remains the original47-control qualified main commit8689cb4b866b050f4136482d34433a62491f95ef; a fresh main observation must confirm the repaired inventory.
+
+## 2026-10-24 full serial integration source audit
+
+Added docs/full-serial-phy-integration-status-20261024.md with source-pinned evidence for the still-external serial/link/clock/pad boundaries. Existing packet-mainchip routing is not full serial integration. Next actual hardware work includes real master/slave phase-output divider qualification, deterministic phase generation/distribution and PLL-connected parent assembly; the 31 ideal per-mux clocks are not hidden or accepted as hardware.
+
+Cloud-only execution remains mandatory. Native TX/CDR pipelines continue from exact qualified artifacts; no original electrical/clock/device gates were weakened.
