@@ -1,6 +1,6 @@
 {
-  "schema": "tx-phase-cloud-checkpoint-v5",
-  "observed_utc": "2026-10-24T14:33:44.104073+00:00",
+  "schema": "tx-phase-cloud-checkpoint-v6",
+  "observed_utc": "2026-10-24T15:14:55.287257+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "6240eda9c2273338dc84627d0dbc01ee4adbc82b",
@@ -202,7 +202,7 @@
       "job": "exact-reset-path-readback",
       "source_controls_run": 40099838691,
       "source_controls_job": 120890401401,
-      "last_observed_status": "queued",
+      "last_observed_status": "queued_after_source_controls_success",
       "source_review_passed": true,
       "native_simulator_execution": false,
       "manual_dispatch_pending_source_controls": false,
@@ -216,7 +216,9 @@
       "source_controls_receipt": "docs/evidence/tx-phase-fast-assert-readback-controls-pass-20261024.json",
       "run": 40102964781,
       "dispatch_source": "7253ef855ad20a61204038c9ae5076e7f6a99b7b",
-      "no_duplicate_dispatch": true
+      "no_duplicate_dispatch": true,
+      "manual_source_controls_job": 120898711149,
+      "production_job": 120905934713
     }
   },
   "zero_op_initialization": {
@@ -260,8 +262,18 @@
       "source_head": "d9d3e8453dbb5831354bb84b40e042dd73c61211",
       "workflow": "tx-output8088-native-clock-roles-cloud.yml",
       "job": "actual-native-clock-roles",
-      "last_observed_status": "queued",
-      "no_duplicate_dispatch": true
+      "last_observed_status": "queued_after_source_controls_success",
+      "no_duplicate_dispatch": true,
+      "source_controls_job": 120897848745,
+      "production_job": 120904864521
     }
+  },
+  "trigger_audit": {
+    "path": "docs/evidence/cloud-evidence-tag-trigger-audit-20261024.json",
+    "sha256": "66207076e4055a97b475a302479f39925fd82573ac358b576626109bbc1876c8",
+    "all_1352_blobs_verified": true,
+    "seven_exact_source_commits_safe": true,
+    "main_target_prohibited": true,
+    "no_mutation_during_audit": true
   }
 }
