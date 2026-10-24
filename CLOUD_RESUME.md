@@ -7847,3 +7847,23 @@ every original archive member only on GitHub-hosted runner, reproduces the
 whole original rejection, then identifies exact interface endpoints and native
 failure times. No new simulation or large duplicate raw publication. Existing
 source release remains immutable. Workflow tx-output8088-return64via3-diagnosis-cloud.
+
+
+## Actual500 parent LVS cause located; exact old Metal3 correction relocation
+
+Native readback40065658287 restores two independently passing LVS sources.
+AVSS and SUB remain separate in both old476 parent and new66 sampler.
+The actual500 short is exactly two Metal3 overlaps: old root AVSS correction
+components intersect new C/D SUB contacts at x1887.860..1888.970um,
+y405.885..406.175um and1595.405..1595.695um. No schematic net merge or
+substrate waiver is appropriate.
+
+Generator now translates only these two exactly witnessed root components
++320um X, with the original native child Metal3 attachment required to equal
+the translated new attachment exactly. Other source and child geometry remain
+unchanged. Parent tracked delta now includes32M1 strips,2M3 components,4M5
+same-component fills; replacement controls rise8->9, including unrelocatedM3.
+Fresh full560-rule DRC/deep+flat500-device LVS and12 physical faults must pass
+before parent acceptance or RC extraction. Do not reuse prior RC or claim
+physical acceptance merely from this repair. Future extraction validator must
+check the new M1/M3 proof status and nine replacement controls.
