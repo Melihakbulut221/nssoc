@@ -39,12 +39,23 @@ def native():
             r=pya.Region(poly)
             oldtouch=oldchild.interacting(r);newtouch=newchild.interacting(r)
             oldvias={v:pya.Region(OT.begin_shapes_rec(O.layer(v,0))).flatten().merged().interacting(r)for v in(49,66)}
+            rootvias={v:pya.Region(OT.shapes(O.layer(v,0))).flatten().merged().interacting(r)for v in(49,66)}
+            root_attachments={}
+            for via,othermetal in((49,30),(66,67)):
+                vr=rootvias[via]
+                parent_other=pya.Region(OT.shapes(O.layer(othermetal,0))).flatten().merged().interacting(vr)
+                leaf_other=pya.Region(oi.cell.begin_shapes_rec(O.layer(othermetal,0))).transformed(oi.cplx_trans).flatten().merged().interacting(vr)
+                root_attachments[str(via)]=dict(cuts=[str(q)for q in vr.each()],
+                    other_root_metal=[str(q)for q in parent_other.each()],
+                    other_child_metal=[str(q)for q in leaf_other.each()])
+
             supply={name:FD.shapes_of_net(nets[name],fl,True).transformed(inst.cplx_trans).interacting(r)for name in('avss','sub')}
             shifted=r.transformed(pya.Trans(320000,0))
             records.append(dict(transform=str(inst.dcplx_trans),polygon_dbu=str(poly),bbox_dbu=str(poly.bbox()),area_dbu2=poly.area(),
                 old_child_touch_count=oldtouch.count(),old_child_overlap_area_dbu2=(oldchild&r).area(),
                 new_child_touch_count=newtouch.count(),new_child_overlap_area_dbu2=(newchild&r).area(),
                 old_via_counts={str(v):x.count()for v,x in oldvias.items()},
+                root_via_counts={str(v):x.count()for v,x in rootvias.items()},root_via_attachments=root_attachments,
                 old_via_overlap_areas={str(v):(x&r).area()for v,x in oldvias.items()},
                 old_merged_component_count=oldall.interacting(r).count(),
                 old_component_only_this_root=(oldall.interacting(r)^r).is_empty(),
