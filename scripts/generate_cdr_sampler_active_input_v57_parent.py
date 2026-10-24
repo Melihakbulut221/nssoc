@@ -187,13 +187,81 @@ def main():
  corrected_m3=(m3_direct-m3_removed)+m3_added
  T.shapes(m3_index).clear();T.shapes(m3_index).insert(corrected_m3)
  expected_metal[(30,0)]=corrected_m3.merged()
+ # Reconcile original C/D Metal4 enclosures with the replacement child.
+ # These pieces were attached to old child routes, not floating metal.
+ m4_path=Path.cwd()/'docs/evidence/cdr-sampler-active-input-v57-parent-m4-attachments-20261024.json'
+ m4_pin=json.loads(m4_path.read_text());assert m4_pin['run']==40070690392
+ witnesses=m4_pin['report']['native']['records'];assert len(witnesses)==48
+ m4_index=L.layer(50,0);m4_direct=pya.Region(T.shapes(m4_index)).flatten().merged()
+ old_m4=pya.Region(L.cell('pd_child_sampler').begin_shapes_rec(m4_index)).flatten().merged()
+ new_m4=pya.Region(C.begin_shapes_rec(m4_index)).flatten().merged()
+ root_vias={v:pya.Region(T.shapes(L.layer(v,0))).flatten().merged()for v in(49,66)}
+ m4_removed=pya.Region();m4_added=pya.Region();m4_records=[]
+ for witness in witnesses:
+  candidates=[q for q in m4_direct.each()if str(q)==witness['polygon_dbu']]
+  assert len(candidates)==1,'Measured root M4 polygon changed'
+  polygon=candidates[0];r=pya.Region(polygon);box=polygon.bbox()
+  instances=[i for i in replacements.values()if str(i.dcplx_trans)==witness['transform']]
+  assert len(instances)==1;instance=instances[0]
+  tag=next(k for k,v in replacements.items()if str(v.dcplx_trans)==witness['transform'])
+  old_bounds=pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu)
+  assert(old_bounds & box)==box,'M4 piece extends beyond replaced child'
+  old_touch=old_m4.transformed(instance.cplx_trans).interacting(r)
+  assert old_touch.count()==witness['old_child_touch_count']==1
+  assert witness['old_component_only_this_root']is False
+  # Child vias are intentionally replaced with their verified child. Root-owned
+  # vias are different: none may depend on a relocated/removed old enclosure.
+  contacts={str(v):q.interacting(r).count()for v,q in root_vias.items()}
+  assert all(n==0 for n in contacts.values()),('Root endpoint depends on old M4 enclosure',tag,str(box),contacts)
+  assert m4_direct.interacting(r).count()==1,'External root M4 attachment'
+  if witness['shifted_old_attachment_matches']:
+   assert box.width()==1225 and box.height()==290 and polygon.area()==355250
+   candidate=r.transformed(pya.Trans(320000,0))
+   target=new_m4.transformed(instance.cplx_trans).interacting(candidate)
+   assert target.count()==1 and(old_touch.transformed(pya.Trans(320000,0))^target).is_empty()
+   m4_added+=candidate;action='RELOCATE_WITH_IDENTICAL_RETAINED_CHILD_COMPONENT'
+   after=[str(q)for q in candidate.each()]
+  else:
+   assert box.width()==4150 and polygon.holes()>=1,'Not a witnessed old route enclosure'
+   # Old overlay touches only one old child route and no root-owned via.
+   # New child is independently DRC/LVS passed and keeps its own full routes.
+   # Full parent native checks below must prove their new connectivity.
+   action='REMOVE_OBSOLETE_PARENT_ENCLOSURE_OVER_REPLACED_CHILD_ROUTE';after=[]
+  m4_removed+=r
+  m4_records.append(dict(tag=tag,action=action,before_polygon_dbu=str(polygon),after_polygons_dbu=after,
+   old_child_attachment_count=1,old_piece_was_floating=False,root_owned_via_contacts=contacts,
+   confined_to_replaced_child=True,no_external_parent_m4_component=True,
+   exact_translated_attachment=bool(witness['shifted_old_attachment_matches'])))
+ assert len(m4_records)==48 and sum(r['exact_translated_attachment']for r in m4_records)==32
+ assert sum(not r['exact_translated_attachment']for r in m4_records)==16
+ corrected_m4=((m4_direct-m4_removed)+m4_added).merged()
+ T.shapes(m4_index).clear();T.shapes(m4_index).insert(corrected_m4)
+ expected_metal[(50,0)]=corrected_m4
+ # Independent drawing-only proof after every parent edit; no text union.
+ def supply_separation(layout,top):
+  metals=(8,10,30,50,67,126,134);vias=(19,29,49,66,125,133)
+  regions={m:pya.Region(top.begin_shapes_rec(layout.layer(m,0))).flatten().merged()for m in(*metals,*vias)}
+  extractor=pya.LayoutToNetlist('PD500_SUPPLY_WIRES',layout.dbu)
+  for m,r in regions.items():extractor.register(r,'gds_'+str(m));extractor.connect(r)
+  for lo,v,hi in zip(metals,vias,metals[1:]):
+   extractor.connect(regions[lo],regions[v]);extractor.connect(regions[v],regions[hi])
+  extractor.extract_netlist()
+  nets={}
+  for name in('avss','sub'):
+   point=pya.DBox(*nums(before['ports'][name])).to_itype(layout.dbu).center()
+   n=extractor.probe_net(regions[134],point);assert n is not None
+   nets[name]=n.cluster_id
+  assert nets['avss']!=nets['sub'],'Physical AVSS/SUB wire short remains'
+  return dict(method='Seven drawing metals and six via layers without text union',clusters=nets,separate=True)
+ wire_separation=supply_separation(L,T)
  expected=(expected_metal,expected[1],expected[2])
- metal_delta=dict(status='TRACKED_C_D_M1_RELOCATION_M3_SUPPLY_DETOUR_AND_SAME_COMPONENT_M5_FILL',diagnosis_sha256=sha(diagnosis_path),m1_strips=m1_records,m3_reroutes=m3_records,m3_diagnosis_sha256=sha(collision_path),m5_patches=m5_records,m5_component_count_before=m5_before.count(),m5_component_count_after=(m5_before+m5_fill).merged().count(),all_other_parent_layers_unchanged=True,all_parent_labels_and_transforms_unchanged=True,all_children_unchanged=True)
+ metal_delta=dict(status='TRACKED_C_D_M1_M4_RECONCILIATION_M3_SUPPLY_DETOUR_AND_SAME_COMPONENT_M5_FILL',diagnosis_sha256=sha(diagnosis_path),m1_strips=m1_records,m4_enclosures=m4_records,m4_diagnosis_sha256=sha(m4_path),drawing_only_supply_separation=wire_separation,m3_reroutes=m3_records,m3_diagnosis_sha256=sha(collision_path),m5_patches=m5_records,m5_component_count_before=m5_before.count(),m5_component_count_after=(m5_before+m5_fill).merged().count(),all_other_parent_layers_unchanged=True,all_parent_labels_and_transforms_unchanged=True,all_children_unchanged=True)
  compare(expected,snapshot(L,T))
  assert T.dbbox()==pya.DBox(0,0,2316.6,4715.48)
  options=pya.SaveLayoutOptions();options.select_cell(T.cell_index());L.write(str(dest/(TOP+'.gds')),options)
  R=pya.Layout();R.read(str(dest/(TOP+'.gds')));U=R.cell(TOP);after=snapshot(R,U)
  compare(expected,after);assert U.dbbox()==T.dbbox()
+ assert supply_separation(R,U)['separate']
  plan=copy.deepcopy(before['source_plan']);by_tag={n['tag']:n for n in plan['nodes']}
  reference=(old/'layout/schematic.cir').read_text();lines=reference.splitlines(keepends=True)
  reference_rows={l.split()[0]:' '.join(l.split())for l in lines if l and l[0]in 'QRCM'}
@@ -282,18 +350,18 @@ def main():
   try:check_lef(bad)
   except AssertionError:faults.append(name)
   else:raise AssertionError(name+' accepted')
- for name,layer in [('unmoved_old_m1_patch',(8,0)),('unrepaired_old_m3_bridge',(30,0)),('missing_m5_fill',(67,0))]:
+ for name,layer in [('unmoved_old_m1_patch',(8,0)),('unrepaired_old_m3_bridge',(30,0)),('stale_old_m4_enclosures',(50,0)),('missing_m5_fill',(67,0))]:
   bad=dict(after[0]);bad[layer]=snap[0][layer]
   try:compare(expected,(bad,after[1],after[2]))
   except AssertionError:faults.append(name)
   else:raise AssertionError(name+' accepted')
- files=[p for name in ('baseline','data','inputs')for p in(out/name).rglob('*')if p.is_file()]+[out/'children.json',Path(__file__),Path(writer.__file__),circuit,diagnosis_path,collision_path]
+ files=[p for name in ('baseline','data','inputs')for p in(out/name).rglob('*')if p.is_file()]+[out/'children.json',Path(__file__),Path(writer.__file__),circuit,diagnosis_path,collision_path,m4_path]
  meta['inputs']={str(p):sha(p)for p in files}
  meta['active_input_parent_metal_delta']=metal_delta
  meta['active_input_replacement']=dict(tags=['sc','sd'],old_devices_per_leaf=54,new_devices_per_leaf=66,preserved_reference_devices=368,one_reference_per_sampler=True,source_parent_gds_sha256=sha(old/'layout'/(OLD_TOP+'.gds')),source_leaf_gds_sha256=sha(fresh/(LEAF+'.gds')))
  meta['outputs']={n:sha(dest/n)for n in (TOP+'.gds',TOP+'.lef','schematic.cir')}
  (dest/'result.json').write_text(json.dumps(meta,indent=2)+'\n')
- proof=dict(status='PASS_C_D_REPLACEMENT_WITH_TRACKED_M1_TRANSLATION_M3_SUPPLY_DETOUR_AND_M5_FILL',changed_sampler_tags=['sc','sd'],parent_geometry_unchanged=False,parent_geometry_changes=metal_delta,all_parent_labels_and_transforms_unchanged=True,removed_child_port_annotations=removed,preserved_reference_devices=368,old_bbox_um=before['bbox_um'],new_bbox_um=str(U.dbbox()),external_leaf_pins_unchanged=True,actual_lef_size_pins_and_all_seven_obstruction_planes_checked=True,controls=faults,full_phy_accepted=False,qualified_pex=False)
- assert len(faults)==9
+ proof=dict(status='PASS_C_D_REPLACEMENT_WITH_TRACKED_M1_M4_RECONCILIATION_M3_SUPPLY_DETOUR_AND_M5_FILL',changed_sampler_tags=['sc','sd'],parent_geometry_unchanged=False,parent_geometry_changes=metal_delta,all_parent_labels_and_transforms_unchanged=True,removed_child_port_annotations=removed,preserved_reference_devices=368,old_bbox_um=before['bbox_um'],new_bbox_um=str(U.dbbox()),external_leaf_pins_unchanged=True,actual_lef_size_pins_and_all_seven_obstruction_planes_checked=True,controls=faults,full_phy_accepted=False,qualified_pex=False)
+ assert len(faults)==10
  (out/'replacement-proof.json').write_text(json.dumps(proof,indent=2)+'\n')
 if __name__=='__main__':main()

@@ -46,7 +46,7 @@ def main():
   manifest['children']['sampler_cd']=dict(directory='inputs/sampler_cd/layout',files={str(p.relative_to(OUT)):sha(p)for p in directory.iterdir()})
   manifest['status']='ALL_NINE_CHILD_SOURCE_PROOFS_BOUND_C_D_ONLY_ACTIVE_INPUT'
   (OUT/'children.json').write_text(json.dumps(manifest,indent=2)+'\n')
-  methods=[Path(__file__),parent_path,leaf_path,ROOT/'scripts/generate_cdr_sampler_active_input_v57_parent.py',ROOT/'scripts/check_cdr_sampler_active_input_v57_parent_geometry.py',ROOT/'scripts/check_cdr_sampler_active_input_v57.py',ROOT/'hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py',ROOT/'scripts/generate_cdr_retimed_parallel_v3_base.py',ROOT/'hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py',ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-drc-marker-frames-20261024.json',ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-supply-collision-20261024.json']
+  methods=[Path(__file__),parent_path,leaf_path,ROOT/'scripts/generate_cdr_sampler_active_input_v57_parent.py',ROOT/'scripts/check_cdr_sampler_active_input_v57_parent_geometry.py',ROOT/'scripts/check_cdr_sampler_active_input_v57.py',ROOT/'hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py',ROOT/'scripts/generate_cdr_retimed_parallel_v3_base.py',ROOT/'hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py',ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-drc-marker-frames-20261024.json',ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-supply-collision-20261024.json',ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-m4-attachments-20261024.json']
   protected={str(p):sha(p)for p in [*methods,*[OUT/'baseline'/n for n in names],*[OUT/'data'/n for n in fn],OUT/'children.json']}
   spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
   packed=OUT/'runtime.tar.gz';fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed)
@@ -76,13 +76,13 @@ def main():
   r['replacement']=json.loads((OUT/'replacement-proof.json').read_text())
   r['child_geometry']=json.loads((OUT/'child-geometry-proof.json').read_text())
   r['physical']=json.loads((OUT/'physical/result.json').read_text())
-  assert r['replacement']['changed_sampler_tags']==['sc','sd']and len(r['replacement']['controls'])==9
+  assert r['replacement']['changed_sampler_tags']==['sc','sd']and len(r['replacement']['controls'])==10
   assert r['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_NINE_NATIVE_LEAF_DRAWINGS'
   assert len(r['child_geometry']['controls'])==5
   assert r['physical']['status']=='PASS_NATIVE_PDK_CDR_PD500_DRC_LVS_AND_FAULT_CONTROLS'
   assert all(sha(Path(n))==v for n,v in protected.items())
   assert all(sha(ROOT/n)==v['sha256']for n,v in runtime['files'].items())
-  r.update(status='PASS_PD500_C_D_ACTIVE_INPUT_V57_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',sources_unchanged=True,protected_inputs=protected,scope='Only C/D sampler leaves changed from54 to66 devices. A/B and368 other reference devices unchanged; 32 old C/D Metal1 enclosure strips moved with their identical native components; two old AVSS Metal3 bridges rerouted around new SUB contacts with all original via contacts preserved; four same-component Metal5 notches filled. All other parent geometry, labels and transforms preserved. Actual width grows320um; LEF regenerated and checked. Full560-rule DRC, unsimplified deep/flat500-device LVS and12 faults. Standalone1pF electrical safety failures remain; fresh actual whole-parent RC and original full loaded early/late/fault waves required. No complete PHY, recovered clock, mainchip or production approval.')
+  r.update(status='PASS_PD500_C_D_ACTIVE_INPUT_V57_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',sources_unchanged=True,protected_inputs=protected,scope='Only C/D sampler leaves changed from54 to66 devices. A/B and368 other reference devices unchanged; 32 old C/D Metal1 enclosure strips moved with their identical native components; two old AVSS Metal3 bridges rerouted around new SUB contacts with all original via contacts preserved; 32 M4 enclosure strips relocated with identical child attachments; 16 old M4 route overlays removed only after proving no root-owned via or external parent endpoint depends on them; four same-component Metal5 notches filled. Drawing-only AVSS/SUB separation checked before and after GDS serialization. All other parent geometry, labels and transforms preserved. Actual width grows320um; LEF regenerated and checked. Full560-rule DRC, unsimplified deep/flat500-device LVS and12 faults. Standalone1pF electrical safety failures remain; fresh actual whole-parent RC and original full loaded early/late/fault waves required. No complete PHY, recovered clock, mainchip or production approval.')
  except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
  finally:
   for key in ('layout','physical'):
