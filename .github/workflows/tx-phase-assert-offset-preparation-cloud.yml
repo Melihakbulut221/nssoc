@@ -1,0 +1,14 @@
+name: TX phase assertion offset preparation
+on:
+  push:
+    branches: [codex/tx-offset-preparation-registration]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-workflow-name-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - shell: bash
+        run: echo 'Workflow name registration only; no checkout, models, DUT or controls.'
