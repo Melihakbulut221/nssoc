@@ -1,0 +1,67 @@
+name: pll-feedback-cycle-diagnosis-cloud
+on:
+  push:
+    branches: [codex/pll-feedback-cycle-diagnosis]
+    paths: [.github/workflows/pll-feedback-cycle-diagnosis-cloud.yml, scripts/cloud_pll_feedback_cycle_diagnosis.py]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pll-rhi120-c8-completed-stream
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check exact-cache, crossings, source faults and unchanged original gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_pll_feedback_cycle_diagnosis.py --controls
+  diagnostic:
+    if: github.event_name == 'workflow_dispatch' && github.ref_name == 'codex/pll-feedback-cycle-diagnosis'
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Revalidate all original bytes and observe real feedback terminals
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_pll_feedback_cycle_diagnosis.py --review
+      - name: Preserve diagnosis or exact failure and cloud-only selected native cache
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-pll-feedback-cycle-diagnosis
+          if [ ! -f cloud-pll-feedback-cycle-diagnosis/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_DIAGNOSIS","acquisition_accepted":false,"full_phy_accepted":false}' > cloud-pll-feedback-cycle-diagnosis/result.json
+          fi
+          stem="pll-feedback-cycle-diagnosis-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-pll-feedback-cycle-diagnosis/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-pll-feedback-cycle-diagnosis --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          s=sys.argv[1];m=json.load(open(s+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-feedback-cycle-diagnosis',s+'.summary.json',s+'.parts.json',*[x['name']for x in m['parts']]],check=True)
+          PYCODE
