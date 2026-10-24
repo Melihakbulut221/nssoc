@@ -1,7 +1,7 @@
 {
   "branch": "codex/tx-via3-rail-diagnosis",
   "baseline_already_integrated_by_root": "b78a3420",
-  "source_snapshot": "738a58194bbd46801042f6133444a3fc1e400417",
+  "source_snapshot": "d22df3621d54dab38debb72e781b2b914c26dc9e",
   "native_source_heads": {
     "physical": "74bc46d2e9518821a12c66b6a071add579ccf2df",
     "wire_anchors": "737bef27ae4bd8ddb0b2740f2e0562cb51f8991b",
@@ -33,6 +33,8 @@
     "docs/evidence/tx-branch-tail-wire-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-followthrough-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-fresh-intrinsic-rc-pass-20261024.json",
+    "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
+    "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-source-review-20261024.json",
     "docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json",
     "docs/evidence/tx-driver-pinfeed-physical-pass-20261024.json",
@@ -121,7 +123,7 @@
     },
     "receipt": "docs/evidence/tx-branch-tail-fresh-native-anchors-pass-20261024.json"
   },
-  "cloud_pipeline_observed_utc": "2026-10-24T09:33:56.237655+00:00",
+  "cloud_pipeline_observed_utc": "2026-10-24T09:47:50.472416+00:00",
   "branch_tail_guarded_pipeline": {
     "wire_anchors": {
       "run": 40078861177,
@@ -183,16 +185,48 @@
       "source_head": "00b9d3dc879253faece67d3db3136daeb4811203",
       "workflow": ".github/workflows/tx-output8088-branchtailfeed-precision-cloud.yml",
       "job": "actual-full-parent-wire-rc",
-      "observed_status": "in_progress",
-      "observed_conclusion": null
+      "observed_status": "completed",
+      "observed_conclusion": "success",
+      "receipt": "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
+      "assets": {
+        "run": 40080002978,
+        "source_head": "00b9d3dc879253faece67d3db3136daeb4811203",
+        "group": "tx-output8088-branchtailfeed-precision",
+        "summary": {
+          "id": 671870459,
+          "sha256": "5b131f49570e8f25b00b54d483d74b7267d7131b082aa1982fd5b2e4de9d06ba",
+          "bytes": 2910310
+        },
+        "parts": {
+          "id": 671870584,
+          "sha256": "c94534a57f83fdfea372f27d82fa1758f7e050579c897caf428d1c33b65f8744",
+          "bytes": 901
+        }
+      }
     },
     "composition_dc": {
       "run": 40080181306,
       "source_head": "69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147",
       "workflow": ".github/workflows/tx-output8088-branchtailfeed-composition-cloud.yml",
       "job": "actual-whole-parent-composition",
-      "observed_status": "queued",
-      "observed_conclusion": null
+      "observed_status": "completed",
+      "observed_conclusion": "success",
+      "receipt": "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
+      "assets": {
+        "run": 40080181306,
+        "source_head": "69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147",
+        "group": "tx-output8088-branchtailfeed-composition",
+        "summary": {
+          "id": 671874144,
+          "sha256": "0eaf95458de7e0ffda91a80bc022830994972e933a0a6d2cb064dd9839ee2c43",
+          "bytes": 37697
+        },
+        "parts": {
+          "id": 671874255,
+          "sha256": "addebff74d0c1612cb2eda6cd3ccaf0cf20761bcfdb96bb5cce6d07805ac2f3a",
+          "bytes": 907
+        }
+      }
     }
   },
   "no_34ns_transient_in_guarded_pipeline": true,
@@ -206,7 +240,7 @@
     "method_manifest": "scripts/tx-branchtailfeed-interface-methods.json",
     "no_workflow": true,
     "native_executed": false,
-    "independent_review": "PENDING",
+    "independent_review": "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
     "parent_review_of_qualified_geometry_rc_and_dc_required": true
   },
   "branch_tail_fresh_counts": {
@@ -217,5 +251,29 @@
     "ports": 165,
     "body_nets": 65,
     "conductors": 703
-  }
+  },
+  "branch_tail_model": {
+    "sha256": "8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8",
+    "composition_sha256": "093dba5b465ee54cc8232d28c196be13eaf7c74637ed742989c44d75976e9708",
+    "counts": {
+      "devices": 8088,
+      "R": 141473,
+      "C": 100694,
+      "external_ports": 166,
+      "physical_ports": 165,
+      "metal_reference_planes": 13370,
+      "body_nets": 65,
+      "conductors": 703,
+      "terminals": 28620
+    },
+    "rail_comparison_sha256": "8320106dc8503ad5b14d2ee3c3be5d09263224e061fec51314f46820ab173a3a"
+  },
+  "branch_tail_native_source_heads": {
+    "wire_anchors": "b91a3f312d2538faf232164cdf9493b0cac61422",
+    "intrinsic_rc": "1b3c71745361e40f508024f9ba76e49bc0804769",
+    "precision": "00b9d3dc879253faece67d3db3136daeb4811203",
+    "composition_dc": "69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147",
+    "physical": "12dbfa546406f345bc594cf25af699bea5840634"
+  },
+  "branch_tail_qualification_scope": "Physical DRC/LVS/geometry controls, fresh wire/intrinsicRC, two-order precision, composition and130-target metal DC comparison passed. Native interface/loaded waveform/fullPEX/PHY/mainchip acceptance remains open."
 }
