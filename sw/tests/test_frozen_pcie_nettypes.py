@@ -49,7 +49,7 @@ def test_all_frozen_sources_are_actually_parsed_with_guard(tmp_path):
     assert YOSYS.is_file(), "Real pinned Yosys is required"
     r = M.guarded_frozen_nettypes(ROOT, tmp_path / "all", YOSYS)
     assert r["status"] == "PASS_FROZEN_SOURCES_PARSED_WITH_NO_IMPLICIT_NETS"
-    assert len(r["sources"]) == 34 and r["sources_unchanged"]
+    assert len(r["sources"]) == 36 and r["sources_unchanged"]
 
 
 @pytest.mark.parametrize("implicit", [False, True])
@@ -114,3 +114,59 @@ def test_hosted_path_without_local_runtime_is_usable(tmp_path, monkeypatch):
     monkeypatch.setenv("OSS_CAD_SUITE", str(tmp_path / "absent-suite"))
     monkeypatch.setenv("PATH", str(binary.parent))
     assert compiler_path() == binary
+
+
+
+VENDOR_CODEC_SOURCES = {
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v":
+        "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v":
+        "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+}
+
+
+def test_codec_dependencies_preserve_exact_upstream_and_derivatives():
+    """These are synthesized DUT dependencies; the IEEE table is the oracle."""
+    registered = M.frozen_nettype_sources(ROOT)
+    assert {p: registered[p] for p in VENDOR_CODEC_SOURCES} == VENDOR_CODEC_SOURCES
+    provenance = json.loads(
+        (ROOT / "third_party/chuck_benz_8b10b/provenance.json").read_text()
+    )
+    for item in provenance["upstream"]:
+        raw = (ROOT / item["path"]).read_bytes()
+        assert len(raw) == item["bytes"]
+        assert hashlib.sha256(raw).hexdigest() == item["sha256"]
+    assert {row["path"] for row in provenance["derivatives"]} == set(VENDOR_CODEC_SOURCES)
+    for row in provenance["derivatives"]:
+        source = (ROOT / row["original_path"]).read_text()
+        for edit in row["edits"]:
+            assert source.count(edit["before"]) == edit["count"]
+            source = source.replace(edit["before"], edit["after"])
+        actual = (ROOT / row["path"]).read_bytes()
+        assert source.encode() == actual
+        assert hashlib.sha256(actual).hexdigest() == VENDOR_CODEC_SOURCES[row["path"]]
+    assert "nssoc_benz_8b10b_encode native_codec(" in (
+        ROOT / "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v"
+    ).read_text()
+    assert "nssoc_benz_8b10b_decode native_codec(" in (
+        ROOT / "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v"
+    ).read_text()
+
+
+@pytest.mark.parametrize("source_path", sorted(VENDOR_CODEC_SOURCES))
+def test_actual_codec_implicit_net_corruption_rejected(tmp_path, source_path):
+    source = (ROOT / source_path).read_text()
+    before = "wire ai = datain[0] ;"
+    assert source.count(before) == 1
+    # Remove an actual declaration while retaining its actual assignment/use.
+    # Rebind the temporary fixture hash so the real compiler, not a stale
+    # source hash, must reject this otherwise syntactically valid mutation.
+    changed = source.replace(before, "assign ai = datain[0] ;")
+    fixture(tmp_path, changed)
+    assert M.frozen_nettype_sources(tmp_path)
+    with pytest.raises(RuntimeError, match="guarded compilation failed"):
+        M.guarded_frozen_nettypes(tmp_path, tmp_path / "compile", YOSYS)
+    log = (tmp_path / "compile/yosys.log").read_text()
+    assert "ai" in log and "default_nettype" in log
+    assert (ROOT / source_path).read_text() == source
+

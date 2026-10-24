@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: Apache-2.0
+name: pcie-gen12-nettype-cloud
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/pcie-gen12-nettype]
+    paths: [.github/workflows/pcie-gen12-nettype-cloud.yml]
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-nettype-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact-guarded-lint:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Exact sources and mandatory real frontend lint controls
+        run: |
+          python3 -m pip install pytest==8.3.5
+          mkdir -p hw/soc/out/pcie-gen12-nettypes
+          python3 - <<'PYCODE'
+          import hashlib,json
+          from pathlib import Path
+          m=json.loads(Path('scripts/pcie-gen12-nettype-methods.json').read_text())
+          for p,h in m['protected'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          print('PASS_EXACT_NETTYPE_CONTROL_SOURCE_BINDING')
+          PYCODE
+          python3 -m pytest sw/tests/test_soc_lint.py sw/tests/test_frozen_pcie_nettypes.py -q -rs --junitxml=hw/soc/out/pcie-gen12-nettypes/results.xml | tee hw/soc/out/pcie-gen12-nettypes/pytest.log
+          python3 - <<'PYCODE'
+          import hashlib,json,os,xml.etree.ElementTree as ET
+          from pathlib import Path
+          mpath=Path('scripts/pcie-gen12-nettype-methods.json')
+          m=json.loads(mpath.read_text())
+          for p,h in m['protected'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          suites=list(ET.parse('hw/soc/out/pcie-gen12-nettypes/results.xml').getroot().iter('testsuite'))
+          assert len(suites)==1
+          counts={k:int(suites[0].attrib[k])for k in ('tests','failures','errors','skipped')}
+          assert counts==dict(tests=31,failures=0,errors=0,skipped=0),counts
+          manifest=json.loads(Path('hw/soc/frozen-pcie-nettypes.json').read_text())
+          assert len(manifest['sources'])==36
+          result=dict(status='PASS_EXACT_36_GUARDED_SOURCES_AND31_LINT_CONTROLS',
+            source=os.environ['GITHUB_SHA'],run=os.environ['GITHUB_RUN_ID'],
+            counts=counts,guarded_source_count=36,source_hashes=manifest['sources'],
+            protected_sources=m['protected'],method_sha256=hashlib.sha256(mpath.read_bytes()).hexdigest(),
+            includes_real_codec_implicit_net_rejections=2,upstream_and_DUT_bytes_unchanged=True,
+            hardware_functional_resimulation=False,whole_SoC_lint_rerun=False,full_PHY_accepted=False)
+          data=json.dumps(result,indent=2)+'\n'
+          Path('hw/soc/out/pcie-gen12-nettypes/result.json').write_text(data)
+          print(json.dumps(dict(result_sha256=hashlib.sha256(data.encode()).hexdigest(),result=result),indent=2))
+          PYCODE
+      - name: Preserve targeted acceptance or rejection
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen12-nettype-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/pcie-gen12-nettypes/
+          retention-days: 90
