@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T16:16:04.070019+00:00",
+  "updated_at": "2026-10-24T16:21:54.306502+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "77d16d440b1a489da6041ee7fe4fef6ea0fe80c8",
+  "root_source_before_receipt": "2dec9f3165652f128c5b66bef1372d75346361e3",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 23,
+    "inventory_version": 24,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966,
@@ -19,7 +19,8 @@
     "gen12_raw32_receiver": 40108338384,
     "tx_native_role_failure_readback": 40108734425,
     "phase244_offset_preparation": 40110198744,
-    "mainchip_saved_artifact_recovery": 40110502492
+    "mainchip_saved_artifact_recovery": 40110502492,
+    "pll_saved_cache_replay": 40111010067
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -77,22 +78,26 @@
     "phase_latest_cloud_checkpoint": "bcd18a2fbfff48b909069bd05f93510a47c8f17c",
     "mainchip_raw_log_transport_fix": "d6eb121aa35c59d2053d91424eb84f622dfefd2f",
     "mainchip_reviewed_recovery_source": "ac1740af745fe3d62960b1e62297096c619f0c5d",
-    "pll_raw_log_transport_fix": "379bbcbd5653445d97a16024b5296a07d68be468"
+    "pll_raw_log_transport_fix": "379bbcbd5653445d97a16024b5296a07d68be468",
+    "mainchip_raw_cli_continuation": "41e82f0d16d658ce5ea6d4769a90933b40e5f2ae",
+    "pll_raw_cli_continuation": "00c20c00c3f22b305e9a2f0e0129a020e0cf8411",
+    "gen12_rx_latest_checkpoint": "b760af45bf01ae629aedb5a450248d22fbc9e9d2",
+    "pll_raw_cli_peer_review": "11c9c07346daa9aecf5c78f691c8e85557804b0f"
   },
   "qualified_progress": {
     "tx": "Exact continuation capsules40098024825/40098031853 saved normal17.176968514ns and swapped15.682858938ns of34ns, not completed. Next40109066076/40109221280 were dispatched once with unchanged source/controller/runtime gates and source-bound output releases.",
     "phase": "Exact reset readback40102964781 reproduced original3failures and measured real fan-in settling2.35-3.14ps past fixed31.25ps deadline. Independently reviewed one-resistor rppdL32toL20 source candidate has sole preparation40110198744, no transient; original oracle/vectors/safety gates unchanged. Clock-role rejection40102668052 stays open; exact reader40108734425 pending.",
     "cdr": "Source-bound preparation/publication40108285374 passed and the ten original loaded waveform jobs now exist. All required results remain pending; no electrical acceptance.",
-    "pll": "Original acquisition and first replay rejection are preserved. Replay40108109320 stopped before cache restoration because hosted gh rejected ANSI-bearing source log bytes; this is a metadata transport failure. Corrected raw-byte transport379bbcbd preserves all original hashes/analysis gates and is under peer review. No fresh simulation or130GB reread.",
+    "pll": "Original acquisition and first replay rejection are preserved. Replay40108109320 failed before real cache restoration because hosted gh refused the ANSI-bearing original log. Narrow fix379bbcbd passed independent review with17 pins and14 unchanged AST functions. Sole retry40111010067 at6755118f has46 transport controls, unchanged cache/80/8 hashes, mandatory original row-zero failure reproduction and source-bound release422841066; no fresh simulation,130GB reread or acquisition acceptance.",
     "gen12": "Exact codec, aligner, nettype guard remedy and native digital transmitter sources/proofs are imported in root. TX40108369376 passed23618cycles,536legal/488invalidK RD pairs,37occupancies/all3flushes,8192continuous words,dual simulators,1077cell synthesis and18compiling mutations. All23protected pins match imported root77d16d44. RX40108338384 remains pending. No low-rate PMA, training owner, serializer connection, layout or fullPHY acceptance.",
-    "mainchip": "Original routing40095811631 remains rejected for no additional native log bytes. Artifact12564886005 retains65outputs. First recovery controls40107937311 stopped on hosted gh ANSI log transport before any archive/native work. Narrow raw-byte fixd6eb121a passed independent review; sole retry40110502492 targets exactac1740af and preserves original log SHA, ZIP and65member gates. Recovery is not routing continuation or acceptance."
+    "mainchip": "Original routing40095811631 and its no-new-log rejection remain preserved. Artifact12564886005 retains65outputs; first recovery controls40107937311 failed before archive/native work. Narrow raw-byte fixd6eb121a passed independent review; sole recovery40110502492 at exactac1740af has29 source/transport faults,17 publication controls and reserved source-bound release422839260. Exact ZIP/member/native-failure gates remain; artifact recovery is not route continuation or acceptance."
   },
   "next_actions": [
     "Cloud-only policy overrides older goal wording that requested local work. Workspace empty, no local native processes or project-named temporary entries. Do not recreate local checkouts or download native archives.",
     "Follow exact analog TX40109066076/40109221280 and all10CDR cases40108285374; never duplicate active processes or treat saved/preparation states as acceptance.",
     "Consume exact RX40108338384. TX transport40108369376 has complete authenticated receipt and exact9paths imported77d16d44; no additional TX proof is needed unless source changes.",
-    "Consume mainchip recovery40110502492 after its29source faults and17publication controls. Delta owns exact-source release reservation. Retain original routing rejection; authenticate65outputs before any saved-process diagnosis/continuation.",
-    "PLL source379bbcbd only fixes captured raw-log transport, with original cache/observer/oldfailure gates intact. Peer review precedes one retry; delta owns dispatch and exact-source release reservation. No new simulation.",
+    "Consume sole mainchip recovery40110502492 after29 faults and17 publication controls; exact-source release422839260 is reserved. Authenticate all65outputs and original rejection before any saved-process diagnosis. Immutable continuation receipt41e82f0d records source/hash/tag; do not dispatch another route.",
+    "Consume sole reviewed PLL cache replay40111010067 at6755118f; release422841066 is reserved and immutable continuation00c20c00 records all source/trigger/failure pins. Require46 controls, original acquisition rejection, exact131/80/8 cache bits and the actual original line142 row-zero exception before endpoint sampling repair. No fresh simulation or duplicate replay.",
     "Consume role failure readback40108734425 and phase source/deck preparation40110198744. A source-only offset candidate is not an electrical or layout pass.",
     "Existing GitHub monitor on main runs every8hours, is read-only, and reads this root pinned inventory. It does not itself dispatch engineering work or certify fullPHY/timing.",
     "Use immutable commits and exact audited cloud-results tags. Preserve all original failures, actual DUT/source licenses, independent oracle and original20/4/8/8ns plus5percent constraints."
@@ -341,6 +346,34 @@
           "conclusion": null
         }
       ]
+    },
+    {
+      "run": 40110502492,
+      "head_sha": "ac1740af745fe3d62960b1e62297096c619f0c5d",
+      "status": "queued",
+      "conclusion": null,
+      "jobs": [
+        {
+          "id": 120921031748,
+          "name": "controls",
+          "status": "queued",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 40111010067,
+      "head_sha": "6755118f44284fc78f7874dabcd6fe00764f876d",
+      "status": "queued",
+      "conclusion": null,
+      "jobs": [
+        {
+          "id": 120922548944,
+          "name": "controls",
+          "status": "queued",
+          "conclusion": null
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
@@ -350,5 +383,41 @@
     "project_named_tmp_entries": 0,
     "native_processes": 0,
     "scope": "project workspace and project-named tmp entries; unrelated user files untouched"
+  },
+  "immutable_continuation_receipts": {
+    "mainchip_recovery": {
+      "source": "41e82f0d16d658ce5ea6d4769a90933b40e5f2ae",
+      "path": "docs/evidence/mainchip-route12-recovery-raw-cli-continuation-20261024.json",
+      "sha256": "11cc46adecc1c1df16fe060bb48f7339eb6201e667bf49551d1216b54bb0e558",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/41e82f0d16d658ce5ea6d4769a90933b40e5f2ae/docs/evidence/mainchip-route12-recovery-raw-cli-continuation-20261024.json"
+    },
+    "pll_cache_replay": {
+      "source": "00c20c00c3f22b305e9a2f0e0129a020e0cf8411",
+      "path": "docs/evidence/pll-first-latch-raw-cli-continuation-20261024.json",
+      "sha256": "78677ee5ecbfed2d23bb9c73f40e317c89de22b21884b8b61bee7e89cfc7bc20",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/00c20c00c3f22b305e9a2f0e0129a020e0cf8411/docs/evidence/pll-first-latch-raw-cli-continuation-20261024.json"
+    },
+    "gen12_rx": {
+      "source": "b760af45bf01ae629aedb5a450248d22fbc9e9d2",
+      "path": "docs/evidence/pcie-gen12-rx-cloud-checkpoint-20261024.json",
+      "sha256": "68c79136bf2961fc3b769cc2198cc4d01ec0489bcb84cb31456b201cbbe8d8bb",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/b760af45bf01ae629aedb5a450248d22fbc9e9d2/docs/evidence/pcie-gen12-rx-cloud-checkpoint-20261024.json"
+    }
+  },
+  "cloud_results_release_reservations": {
+    "mainchip_artifact_recovery": {
+      "run": 40110502492,
+      "source": "ac1740af745fe3d62960b1e62297096c619f0c5d",
+      "release": 422839260,
+      "tag": "cloud-results-40110502492-1-mainchip-route12-artifact-recovery",
+      "exact_tag_target_verified": true
+    },
+    "pll_cache_replay": {
+      "run": 40111010067,
+      "source": "6755118f44284fc78f7874dabcd6fe00764f876d",
+      "release": 422841066,
+      "tag": "cloud-results-40111010067-1-pll-first-latch-cache-replay",
+      "exact_tag_target_verified": true
+    }
   }
 }
