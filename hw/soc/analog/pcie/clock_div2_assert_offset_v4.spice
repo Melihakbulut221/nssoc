@@ -1,0 +1,158 @@
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* SOURCE CANDIDATE ONLY. No accepted reset, electrical result or layout.
+* Native devices only; no internal voltage/current/behavioral sources or IC/UIC.
+* ARM_P/ARM_N are an external differential interface requiring a real driver.
+* P/N parent suffix selects the required independent master preset polarity.
+* Added selectors change data/hold delay and loading; all native checks are open.
+
+.subckt nssoc_phase_seed_reference_v2 p n avdd avss sub
+XHP avdd p sub rppd w=4u l=4u b=0 sw_et=1
+XLP p avss sub rppd w=4u l=40u b=0 sw_et=1
+XHN avdd n sub rppd w=4u l=4u b=0 sw_et=1
+XLN n avss sub rppd w=4u l=20u b=0 sw_et=1
+.ends nssoc_phase_seed_reference_v2
+
+.subckt nssoc_phase_preset_selector_p_v2 dp dn runp runn outp outn avdd avss sub
+XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XAP outn dp ea sub npn13G2 Nx=2
+XAN outp dn ea sub npn13G2 Nx=2
+XBP outn seedp eb sub npn13G2 Nx=2
+XBN outp seedn eb sub npn13G2 Nx=2
+XSA ea runp tail sub npn13G2 Nx=4
+XSB eb runn tail sub npn13G2 Nx=4
+XT tail ref avss sub npn13G2 Nx=4
+XRP avdd outp sub rppd w=8u l=2.12u b=0 sw_et=1
+XRN avdd outn sub rppd w=8u l=2.12u b=0 sw_et=1
+XBA ea avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBB eb avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XSEED seedp seedn avdd avss sub nssoc_phase_seed_reference_v2
+.ends nssoc_phase_preset_selector_p_v2
+
+.subckt nssoc_phase_preset_selector_n_v2 dp dn runp runn outp outn avdd avss sub
+XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XAP outn dp ea sub npn13G2 Nx=2
+XAN outp dn ea sub npn13G2 Nx=2
+XBP outn seedn eb sub npn13G2 Nx=2
+XBN outp seedp eb sub npn13G2 Nx=2
+XSA ea runp tail sub npn13G2 Nx=4
+XSB eb runn tail sub npn13G2 Nx=4
+XT tail ref avss sub npn13G2 Nx=4
+XRP avdd outp sub rppd w=8u l=2.12u b=0 sw_et=1
+XRN avdd outn sub rppd w=8u l=2.12u b=0 sw_et=1
+XBA ea avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBB eb avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XSEED seedp seedn avdd avss sub nssoc_phase_seed_reference_v2
+.ends nssoc_phase_preset_selector_n_v2
+
+.subckt nssoc_phase_async_latch_p_v2 dp dn qp qn cp cn runp runn avdd avss sub ref
+XDP qn data_p se sub npn13G2 Nx=2
+XDN qp data_n se sub npn13G2 Nx=2
+XLP qn hold_p he sub npn13G2 Nx=2
+XLN qp hold_n he sub npn13G2 Nx=2
+XCS se cp te sub npn13G2 Nx=4
+XCH he cn te sub npn13G2 Nx=4
+XT te ref avss sub npn13G2 Nx=4
+XRP avdd qp sub rppd w=8u l=2.12u b=0 sw_et=1
+XRN avdd qn sub rppd w=8u l=2.12u b=0 sw_et=1
+XBS se avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBH he avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XDATA dp dn runp runn data_p data_n avdd avss sub nssoc_phase_preset_selector_p_v2
+XHOLD qp qn runp runn hold_p hold_n avdd avss sub nssoc_phase_preset_selector_p_v2
+.ends nssoc_phase_async_latch_p_v2
+
+.subckt nssoc_phase_async_latch_n_v2 dp dn qp qn cp cn runp runn avdd avss sub ref
+XDP qn data_p se sub npn13G2 Nx=2
+XDN qp data_n se sub npn13G2 Nx=2
+XLP qn hold_p he sub npn13G2 Nx=2
+XLN qp hold_n he sub npn13G2 Nx=2
+XCS se cp te sub npn13G2 Nx=4
+XCH he cn te sub npn13G2 Nx=4
+XT te ref avss sub npn13G2 Nx=4
+XRP avdd qp sub rppd w=8u l=2.12u b=0 sw_et=1
+XRN avdd qn sub rppd w=8u l=2.12u b=0 sw_et=1
+XBS se avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBH he avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XDATA dp dn runp runn data_p data_n avdd avss sub nssoc_phase_preset_selector_n_v2
+XHOLD qp qn runp runn hold_p hold_n avdd avss sub nssoc_phase_preset_selector_n_v2
+.ends nssoc_phase_async_latch_n_v2
+
+.subckt nssoc_phase_native_level_v2 ip in cp cn avdd avss sub
+XLSP ip bip sub rppd w=2u l=3.6u b=0 sw_et=1
+XLSN in bin sub rppd w=2u l=3.6u b=0 sw_et=1
+XLDP bip avss sub rppd w=1u l=16u b=0 sw_et=1
+XLDN bin avss sub rppd w=1u l=16u b=0 sw_et=1
+XLB avdd lref sub rppd w=1u l=9u b=0 sw_et=1
+XLREF lref lref avss sub npn13G2 Nx=1
+XLP ln bip lt sub npn13G2 Nx=2
+XLN lp bin lt sub npn13G2 Nx=2
+XLT lt lref avss sub npn13G2 Nx=4
+XLRP avdd lp sub rppd w=8u l=4.4u b=0 sw_et=1
+XLRN avdd ln sub rppd w=8u l=4.4u b=0 sw_et=1
+XSP lp cp sub rppd w=2u l=8u b=0 sw_et=1
+XSN ln cn sub rppd w=2u l=8u b=0 sw_et=1
+XDP cp avss sub rppd w=1u l=8u b=0 sw_et=1
+XDN cn avss sub rppd w=1u l=8u b=0 sw_et=1
+XCP lp cp cap_cmim w=24u l=24u
+XCN ln cn cap_cmim w=24u l=24u
+.ends nssoc_phase_native_level_v2
+
+.subckt nssoc_phase_first_fall_release_v2 clkp clkn armp armn releasep releasen avdd avss sub
+XARM armp armn armcp armcn avdd avss sub nssoc_phase_native_level_v2
+XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XSEED capturep capturen avdd avss sub nssoc_phase_seed_reference_v2
+XM capturep capturen amp amn clkp clkn armcp armcn avdd avss sub ref nssoc_phase_async_latch_n_v2
+XS amp amn releasep releasen clkn clkp armcp armcn avdd avss sub ref nssoc_phase_async_latch_n_v2
+.ends nssoc_phase_first_fall_release_v2
+
+.subckt nssoc_phase_async_preset_parent_p_v2 CLKP CLKN MP MN QP QN ARM_P ARM_N DIV_AVDD AVSS SUB
+XCLK CLKP CLKN ckp ckn DIV_AVDD AVSS SUB nssoc_phase_native_level_v2
+XRELEASE ckp ckn ARM_P ARM_N releasedp releasedn DIV_AVDD AVSS SUB nssoc_phase_first_fall_release_v2
+XRUN releasedp releasedn ARM_P ARM_N runp runn DIV_AVDD AVSS SUB nssoc_phase_arm_release_level_v3
+XBIAS DIV_AVDD ref SUB rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref AVSS SUB npn13G2 Nx=1
+XM QN QP MP MN ckn ckp runp runn DIV_AVDD AVSS SUB ref nssoc_phase_async_latch_p_v2
+XS MP MN QP QN ckp ckn runp runn DIV_AVDD AVSS SUB ref nssoc_phase_async_latch_p_v2
+XSEEDP MP AVSS cap_cmim w=2.2u l=2u
+XSEEDN MN AVSS cap_cmim w=2u l=2u
+.ends nssoc_phase_async_preset_parent_p_v2
+
+.subckt nssoc_phase_async_preset_parent_n_v2 CLKP CLKN MP MN QP QN ARM_P ARM_N DIV_AVDD AVSS SUB
+XCLK CLKP CLKN ckp ckn DIV_AVDD AVSS SUB nssoc_phase_native_level_v2
+XRELEASE ckp ckn ARM_P ARM_N releasedp releasedn DIV_AVDD AVSS SUB nssoc_phase_first_fall_release_v2
+XRUN releasedp releasedn ARM_P ARM_N runp runn DIV_AVDD AVSS SUB nssoc_phase_arm_release_level_v3
+XBIAS DIV_AVDD ref SUB rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref AVSS SUB npn13G2 Nx=1
+XM QN QP MP MN ckn ckp runp runn DIV_AVDD AVSS SUB ref nssoc_phase_async_latch_n_v2
+XS MP MN QP QN ckp ckn runp runn DIV_AVDD AVSS SUB ref nssoc_phase_async_latch_p_v2
+XSEEDP MP AVSS cap_cmim w=2.2u l=2u
+XSEEDN MN AVSS cap_cmim w=2u l=2u
+.ends nssoc_phase_async_preset_parent_n_v2
+
+* Real-device fast assertion candidate: ARM and release must both be positive.
+* Extra positive-base shunt gives the passive fan-in a negative decision offset.
+* Geometry-only nominal algebra is not loaded transistor or corner qualification.
+.subckt nssoc_phase_arm_release_level_v3 ip in armp armn cp cn avdd avss sub
+XLSP ip bip sub rppd w=2u l=3.6u b=0 sw_et=1
+XLSN in bin sub rppd w=2u l=3.6u b=0 sw_et=1
+XLDP bip avss sub rppd w=1u l=16u b=0 sw_et=1
+XLDN bin avss sub rppd w=1u l=16u b=0 sw_et=1
+XLB avdd lref sub rppd w=1u l=9u b=0 sw_et=1
+XLREF lref lref avss sub npn13G2 Nx=1
+XLP ln bip lt sub npn13G2 Nx=2
+XLN lp bin lt sub npn13G2 Nx=2
+XLT lt lref avss sub npn13G2 Nx=4
+XLRP avdd lp sub rppd w=8u l=4.4u b=0 sw_et=1
+XLRN avdd ln sub rppd w=8u l=4.4u b=0 sw_et=1
+XSP lp cp sub rppd w=2u l=8u b=0 sw_et=1
+XSN ln cn sub rppd w=2u l=8u b=0 sw_et=1
+XDP cp avss sub rppd w=1u l=8u b=0 sw_et=1
+XDN cn avss sub rppd w=1u l=8u b=0 sw_et=1
+XCP lp cp cap_cmim w=24u l=24u
+XCN ln cn cap_cmim w=24u l=24u
+XARM_P armp bip sub rppd w=2u l=3.6u b=0 sw_et=1
+XARM_N armn bin sub rppd w=2u l=3.6u b=0 sw_et=1
+XAND_SKEW bip avss sub rppd w=1u l=20u b=0 sw_et=1
+.ends nssoc_phase_arm_release_level_v3

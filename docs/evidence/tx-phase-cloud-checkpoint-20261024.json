@@ -1,9 +1,9 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v6",
-  "observed_utc": "2026-10-24T15:49:03.929139+00:00",
+  "observed_utc": "2026-10-24T15:57:56.424Z",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
-  "source_head": "6240eda9c2273338dc84627d0dbc01ee4adbc82b",
+  "source_head": "c120426f5430548038847516f2a876caf24964f9",
   "qualified_RC": {
     "run": 40086006467,
     "source": "c7cb559701eb5b05194110ef3c9bf8bd43626db0",
@@ -84,9 +84,10 @@
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "next": [
-    "Follow existing simulator-free readback40102964781/source7253ef85; no duplicate reader or DUT. It must reproduce every original359-column capture and all unchanged safety/phase results before diagnosing actual reset/fanin/run/selector paths.",
-    "Read the exact role40102668052 failure log in one reviewed simulator-free cloud reader; original geometry/interface restore passed, new native role binder rejected. No role repair or native rerun before actual underlying traceback is read.",
-    "Use actual244 readback path measurements to justify any new transistor/resistor circuit repair; retain fixed125psUI/100mV margins, all106HBT safety, measured scalar fixture and original rejected outputs. No full31-tree/layoutRC/actualPLL/fullPHY acceptance follows from these proofs."
+    "Follow existing role rejection reader40108734425/sourcec120426f, readbackjob120916487594; controls passed. No native rerun or binder repair until exact underlying log is read.",
+    "Independently review source-only one-resistor assertion-offset candidate, then execute its strict cloud source controls. No transient until original fixture/oracle adapter and acceptance path receive separate review.",
+    "Original244 reset waveform readback40102964781 is terminal PASS, reproducing all original359 columns and full measurement reports. Three electrical cases still rejected; the next candidate must preserve original fixedUI/100mV/106HBT numerical and safety gates.",
+    "Loaded31-tree, new physical reset/RC, realPLL connection and fullPHY remain open."
   ],
   "terminal_source_receipt": {
     "path": "docs/evidence/tx-phase-source-preparation-and31-mapping-pass-20261024.json",
@@ -202,7 +203,7 @@
       "job": "exact-reset-path-readback",
       "source_controls_run": 40099838691,
       "source_controls_job": 120890401401,
-      "last_observed_status": "queued_after_source_controls_success",
+      "last_observed_status": "completed_success",
       "source_review_passed": true,
       "native_simulator_execution": false,
       "manual_dispatch_pending_source_controls": false,
@@ -218,7 +219,13 @@
       "dispatch_source": "7253ef855ad20a61204038c9ae5076e7f6a99b7b",
       "no_duplicate_dispatch": true,
       "manual_source_controls_job": 120898711149,
-      "production_job": 120905934713
+      "production_job": 120905934713,
+      "terminal_receipt": "docs/evidence/tx-phase-fast-assert244-reset-path-readback-pass-20261024.json",
+      "summary_asset": 672656007,
+      "summary_sha256": "b4615b3428ae63e612d60707dd07273d7b0650c02c2e545ebbe8383008721363",
+      "parts_asset": 672656082,
+      "parts_sha256": "04f02ced14f5e8ef6f882bbf3ec149c83c9a40a6c36ba325625e1eb05dcb4d6d",
+      "exact_four_reports_reproduced": true
     }
   },
   "zero_op_initialization": {
@@ -272,7 +279,7 @@
       "workflow": "tx-native-clock-role-failure-readback-cloud.yml",
       "source_only": true,
       "independent_review_pending": false,
-      "readback_dispatched": false,
+      "readback_dispatched": true,
       "native_rerun": false,
       "source": "5b167a6d5d1208732a7a3d84a40e81503a94d247",
       "source_review_passed": true,
@@ -286,7 +293,21 @@
         "orphan": true,
         "tree_contains_one_noop_workflow_only": true
       },
-      "status": "ready_for_one_manual_cloud_readback_needs_controls"
+      "status": "queued_after_controls_pass",
+      "run": 40108734425,
+      "dispatch_source": "c120426f5430548038847516f2a876caf24964f9",
+      "source_controls_job": 120915787556,
+      "source_controls_passed": true,
+      "source_controls_log": {
+        "job": 120915787556,
+        "bytes": 24985,
+        "sha256": "ba2dd18683acb3737405d065dab23c4b099a1be17636a5178730feaef085a661",
+        "proof_lines": [
+          "2026-10-24T15:52:41.3038534Z PASS_CLOCK_ROLE_REJECTION_READER_CONTROLS_ONLY"
+        ]
+      },
+      "production_job": 120916487594,
+      "no_duplicate_dispatch": true
     }
   },
   "trigger_audit": {
@@ -305,5 +326,18 @@
     "both_production_jobs_queued": false,
     "exact_source_releases_verified": true,
     "role_production_terminal_failure_preserved": true
+  },
+  "assert_offset_candidate": {
+    "source_path": "hw/soc/analog/pcie/clock_div2_assert_offset_v4.spice",
+    "document": "docs/tx-phase-assert-offset-source-candidate-20261024.md",
+    "source_only": true,
+    "source_controls_workflow": "tx-phase-assert-offset-source-controls-cloud.yml",
+    "source_review_pending": true,
+    "native_dispatched": false,
+    "electrical_accepted": false,
+    "one_resistor_delta": "XAND_SKEW W1/L32 to W1/L20; original244 source recovered byte-exact",
+    "original_sample_deadline_ps": 31.25,
+    "original_threshold_v": 0.1,
+    "original_rejection_preserved": true
   }
 }
