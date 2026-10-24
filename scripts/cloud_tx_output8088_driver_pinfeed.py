@@ -114,5 +114,8 @@ def main():
   if r['status']=='RUNNING':r['status']='FAIL_OR_ERROR'
   r['error']=repr(e);raise
  finally:
+  progress=OUT/'candidate-progress.json'
+  if progress.exists():
+   value=json.loads(progress.read_text());r['candidate_progress']=dict(route_count=len(value['routes']),blocked=value['blocked'])
   r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()
 if __name__=='__main__':main()

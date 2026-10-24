@@ -43,6 +43,7 @@ def main(out):
   net=net_at(8,point)
   rails[rail]=dict(local=point-tr.disp,cluster=net.cluster_id,term=source_rows[0]['terminal'],same={m:same(m,net)for m in METALS})
  assert rails['avdd']['cluster']!=rails['avss']['cluster']
+ for rail in rails:rails[rail]['foreign']={m:flat[m]-rails[rail]['same'][m]for m in METALS}
  additions={};routes=[];blocked=[]
  def native_via(lo,hi,x,y,columns=3,rows=1):
   cell=L.create_cell('via_stack','SG13_dev',dict(b_layer='Metal'+str(lo),t_layer='Metal'+str(hi),
@@ -63,7 +64,7 @@ def main(out):
   for m in METALS:
    # Independent native ownership at the original endpoints does not permit
    # touching any other net elsewhere along a new route.
-   foreign=flat[m]-rails[rail]['same'][m]
+   foreign=rails[rail]['foreign'][m].dup()
    foreign+=additions.get((m,'avss'if rail=='avdd'else'avdd'),pya.Region())
    overlap=candidate.get(m,pya.Region()).sized(400)&foreign
    if not overlap.is_empty():bad[str(m)]=dict(area=overlap.area(),bbox=str(overlap.bbox()))
@@ -71,7 +72,11 @@ def main(out):
    # Retain the exact existing central V1 cut; reject added cut interference
    # with all other native cuts. The native deck remains authoritative.
    new=(candidate.get(m,pya.Region())-flat[m]).merged()
-   overlap=new.sized(250)&flat[m]
+   # Native array members use the native PCell spacing, including its retained
+   # original centre cut. Screen only other, non-array cuts here; full DRC
+   # still checks the complete union with the original unmodified deck.
+   other=flat[m]-candidate.get(m,pya.Region())
+   overlap=new.sized(250)&other
    if not overlap.is_empty():bad['cut'+str(m)]=dict(area=overlap.area(),bbox=str(overlap.bbox()))
   return bad
  for placement in hand['placements']:
@@ -95,7 +100,8 @@ def main(out):
      # The three-column V1 is centred on the original one-cut access.
      add(candidate,native_via(1,2,q.x,q.y))
      assert(candidate[8]-rails[rail]['same'][8]).is_empty(),'Intrinsic M1 pin would be enlarged'
-     assert not(candidate[19]&flat[19]).is_empty()
+     old_cut=flat[19].interacting(pya.Region(pya.Box(q.x-1,q.y-1,q.x+1,q.y+1)))
+     assert old_cut.count()==1 and (old_cut-candidate[19]).is_empty(),'Original centred native V1 cut changed'
      add(candidate,native_via(2,4,x,q.y))
      candidate[10]=candidate.get(10,pya.Region())+line(q,pya.Point(x,q.y),600)
      candidate[50]=candidate.get(50,pya.Region())+line(pya.Point(x,q.y),landing,half)
@@ -105,12 +111,16 @@ def main(out):
      attempts.append(dict(shift=shift,half=half,obstructions=bad))
     if chosen:break
    if chosen is None:
-    blocked.append(dict(net=placement['net'],rail=rail,anchor=anchor,attempts=attempts));continue
+    blocked.append(dict(net=placement['net'],rail=rail,anchor=anchor,attempts=attempts))
+    print('BLOCKED_ACTUAL_PIN_FEED',json.dumps(blocked[-1]),flush=True)
+    break
    candidate,landing,half,shift=chosen
    for m,r in candidate.items():T.shapes(L.layer(m,0)).insert(r);additions[(m,rail)]=additions.get((m,rail),pya.Region())+r
    routes.append(dict(driver=placement['net'],rail=rail,anchor=anchor,terminal=row[0],landing_dbu=[landing.x,landing.y],
     vertical_width_um=2*half*.001,lateral_shift_dbu=shift,layers=sorted(candidate)))
   (out/'candidate-progress.json').write_text(json.dumps(dict(routes=routes,blocked=blocked),indent=2)+'\n')
+  print('PIN_FEED_PROGRESS',placement['net'],'routes',len(routes),'blocked',len(blocked),flush=True)
+  if blocked:break
  assert not blocked and len(routes)==128,('No safe actual feed for all128 driver rail terminals',len(routes),len(blocked))
  dest=out/'layout';dest.mkdir();L.write(str(dest/'layout.gds'))
  (dest/'schematic.cir').write_bytes((out/'parent/layout/schematic.cir').read_bytes())
