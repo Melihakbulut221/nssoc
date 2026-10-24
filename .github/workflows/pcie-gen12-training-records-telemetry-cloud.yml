@@ -1,0 +1,13 @@
+name: Record telemetry workflow registration only
+on:
+  push:
+    branches: [codex/record-telemetry-register]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: printf '%s\n' 'Registration only; no checkout, RTL, simulator, or proof.'
