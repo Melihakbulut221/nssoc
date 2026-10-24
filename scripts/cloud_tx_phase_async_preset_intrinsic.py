@@ -106,6 +106,7 @@ def main():
                                 save();print(json.dumps(dict(case=label,elapsed_s=row['elapsed_s'],raw_bytes=row['raw_bytes'])),flush=True)
                     row.update(returncode=proc.returncode,elapsed_s=time.monotonic()-start);row.pop('native_pid',None)
                     log=(case/'native.log').read_text(errors='replace')
+                    row['native_log_tail']=log[-16384:];row['native_log_sha256']=sha(case/'native.log')
                     row['solver']=verify_solver_options(log,bench.PROFILE)
                     row['diagnostics']=native_diagnostics(log,bench.PROFILE)
                     assert proc.returncode==0 and not row['diagnostics'],'Native diagnostics/process failure'

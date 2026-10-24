@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Source/reader controls only. Synthetic waves below are never DUT evidence."""
+"""Source/reader and native one-resistor loader controls; never DUT transient evidence."""
 import copy,json,struct,tempfile
 from pathlib import Path
 import numpy as np
@@ -89,6 +89,7 @@ def main():
     assert fails(lambda:b.boundary(json.dumps(d).encode()));rejected.append('changed_observer')
     for name,p in [('newline','bad\nname'),('CR','bad\rname'),('quote','bad"name'),('NUL','bad\x00name')]:
         assert fails(lambda:b.prepare(text,bound,'p',True,p,'/models','/r3'));rejected.append('path_'+name)
+    assert fails(lambda:b.prepare(text,bound,'p',True,'candidate','/models','/bad path/r3.osdi'));rejected.append('OSDI_whitespace')
     assert fails(lambda:b.inventory(text.replace('Nx=4','Nx=8',1),'p'));rejected.append('changed_device')
     # Actual binary reader is exercised in the cloud on tiny complete records.
     raw_controls=[]
@@ -128,20 +129,45 @@ def main():
         for name,raw_op in mutations:
             p.write_bytes(raw_op);assert fails(lambda:native.zero_op(p,vectors));op_controls.append(name)
     # Fetch and verify the exact qualified runtime/model bundle on the runner,
-    # but do not execute any native program. Missing CAP/model files must fail
+    # before any DUT program. Missing CAP/model files must fail
     # this real preparation control before a DUT run is dispatched.
     with tempfile.TemporaryDirectory()as td:
         old_out=native.OUT;native.OUT=Path(td)
         try:
             engine,models,proof=native.restore()
+            # Real one-resistor OP controls reproduce the exact loader defect;
+            # they do not contain, simulate or qualify the241-device DUT.
+            loader={}
+            for name,quoted in [('unquoted_positive',False),('quoted_negative',True)]:
+                case=Path(td)/name;case.mkdir()
+                osdi=str(models/'r3_cmc.osdi')
+                path_token='"'+osdi+'"'if quoted else osdi
+                circuit='\n'.join(['NSSOC real r3 loader control',
+                  f'.lib "{models/"models/cornerRES.lib"}" res_typ',
+                  'Vzero vdd 0 0','XR vdd 0 0 rppd w=8u l=2.12u b=0 sw_et=1',
+                  '.control','pre_osdi '+path_token,'op','write op.raw all',
+                  'echo NSSOC_RESISTOR_OP_COMPLETE','quit','.endc','.end'])+'\n'
+                (case/'loader.cir').write_text(circuit)
+                (case/'spinit').write_text('set num_threads=1\n')
+                env={k:v for k,v in native.os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN','LD_PRELOAD','PYTHONPATH','PYTHONHOME')}
+                env.update(SPICE_SCRIPTS=str(case),OMP_NUM_THREADS='1')
+                proc=native.subprocess.run([str(engine),'-n','-b','loader.cir'],cwd=case,env=env,
+                  stdout=native.subprocess.PIPE,stderr=native.subprocess.STDOUT,timeout=60)
+                log=proc.stdout.decode(errors='replace')
+                if quoted:
+                    assert proc.returncode!=0 and 'Error opening osdi lib' in log and not(case/'op.raw').exists(),log
+                else:
+                    assert proc.returncode==0 and 'NSSOC_RESISTOR_OP_COMPLETE'in log and (case/'op.raw').is_file(),log
+                    assert not any(k in log.lower()for k in ('error','warning','singular','stepping','too small')),log
+                loader[name]=dict(returncode=proc.returncode,log_sha256=b.digest(proc.stdout),log=log,expected_outcome_verified=True)
             runtime_preparation=dict(engine_sha256=native.sha(engine),
               model_archive_sha256=proof['model_receipt']['sha256'],
               model_manifest_entries=len(proof['model_manifest']['files']),
               HBT_RES_CAP_present=all((models/'models'/('corner'+k+'.lib')).is_file()for k in ('HBT','RES','CAP')),
-              native_program_executed=False)
+              native_program_executed=True,native_program_scope='One real-resistor loader OP positive and exact quoted-path negative; no DUT transient',loader_controls=loader)
         finally:native.OUT=old_out
     assert native.source_pins()==pins
-    print(json.dumps(dict(status='PASS_INTRINSIC241_SOURCE_PREPARATION_AND_OBSERVER_CONTROLS_NO_NATIVE_SIMULATION',
+    print(json.dumps(dict(status='PASS_INTRINSIC241_PREPARATION_FIXED_OBSERVERS_AND_NATIVE_LOADER_CONTROLS_NO_DUT_TRANSIENT',
       source=b.SOURCE_SHA,boundary=bound,positive_cases=cases,original_first80_root_phase_centers_match=True,
       all106_actual_HBT_terminal_and_current_binding=True,negative_controls=rejected,full_raw_reader_controls=raw_controls,zero_OP_reader_controls=op_controls,qualified_runtime_models_prepared=runtime_preparation,
       DUT_waveforms_executed=False,deterministic_reset_qualified=False,physical_accepted=False,PLL_connected=False,full_PHY_accepted=False),indent=2))

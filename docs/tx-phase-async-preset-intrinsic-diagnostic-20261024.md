@@ -75,3 +75,7 @@ The previous 55-device physical/RC result cannot qualify this 241-device design.
 ## Preparation evidence
 
 Guarded source controls run40092803320 at3f96603e passed four actual preparation paths,355 vectors each,20 source/signal/safety faults,7 full-raw reader faults and8 zero-OP reader faults. The runner restored the exact patched runtime and all40 model-manifest entries without executing a native program. The concrete pipeline failure-masking review finding was fixed and negatively exercised. Two independent source reviews found no remaining concrete blocker. This result authorizes the bounded diagnostic dispatch; it is not native electrical evidence.
+
+## First native attempt: loader rejection preserved
+
+Run40092958226 rejected all four cases before simulation. Cloud-only readback40093229489 verified identical native logs: the pre_osdi command interpreted quotes as literal filename characters and could not load r3_cmc.osdi. The exact failed summary/parts remain published; no device/reset result was accepted. The repair removes only the unsupported control-command quotes and rejects whitespace in that token. A real one-resistor operating-point positive plus the original quoted-path negative now test this loader on the cloud runner before a DUT retry. These tiny OP controls are native model-loader evidence, not DUT waveform or PHY evidence. Actual case logs are also included in future small summaries for transparent failure diagnosis.

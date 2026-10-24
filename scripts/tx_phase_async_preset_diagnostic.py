@@ -112,6 +112,7 @@ def at_events(t,events,key):
 def prepare(text,bound,sign,initial_high,model_path,model_dir,osdi):
     assert type(initial_high)is bool
     for p in (model_path,model_dir,osdi):assert not any(x in str(p)for x in ('"','\n','\r','\x00'))
+    assert not any(ch.isspace()for ch in str(osdi)), 'Native pre_osdi path must be an unquoted single token'
     inv=inventory(text,sign);oracle=expected(sign,initial_high)
     lines=['NSSOC intrinsic241 real-reset/first-fall diagnostic; not physical or PLL acceptance',
       *[f'.lib "{Path(model_dir)/("corner"+kind+".lib")}" {corner}'for kind,corner in [('HBT','hbt_typ'),('RES','res_typ'),('CAP','cap_typ')]],
@@ -120,7 +121,7 @@ def prepare(text,bound,sign,initial_high,model_path,model_dir,osdi):
         pts=source_points(bound,initial_high,arm,invert)
         lines.append('V'+name+' '+name+' 0 PWL('+' '.join(f'{t:.16g} {v:.16g}'for t,v in pts)+')')
     lines +=['Xdut '+' '.join(inv['ports'])+' '+inv['top'],f'.tran {STEP:.16g} {STOP:.16g} 0 {STEP:.16g}',
-      '.control',f'pre_osdi "{osdi}"','set filetype=binary','set numdgt=16','save '+' '.join(inv['vectors']),
+      '.control',f'pre_osdi {osdi}','set filetype=binary','set numdgt=16','save '+' '.join(inv['vectors']),
       'op','write op.raw all','run wave.raw','echo NSSOC_SOLVER_OPTIONS_BEGIN','option',
       'echo NSSOC_NATIVE_MINBREAK $minbreak','echo NSSOC_SOLVER_OPTIONS_END','quit','.endc','.end']
     deck='\n'.join(lines)+'\n'
