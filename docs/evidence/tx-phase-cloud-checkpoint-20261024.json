@@ -1,6 +1,6 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v6",
-  "observed_utc": "2026-10-24T15:44:44.553212+00:00",
+  "observed_utc": "2026-10-24T15:49:03.929139+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "6240eda9c2273338dc84627d0dbc01ee4adbc82b",
@@ -271,9 +271,22 @@
     "failure_reader": {
       "workflow": "tx-native-clock-role-failure-readback-cloud.yml",
       "source_only": true,
-      "independent_review_pending": true,
+      "independent_review_pending": false,
       "readback_dispatched": false,
-      "native_rerun": false
+      "native_rerun": false,
+      "source": "5b167a6d5d1208732a7a3d84a40e81503a94d247",
+      "source_review_passed": true,
+      "source_review_receipt": "docs/evidence/tx-native-clock-role-failure-reader-source-review-20261024.json",
+      "source_review_receipt_sha256": "b476fc6eadd23f58330bef3ae1577068c5a6e2ed0701b5850526a4f756519fa2",
+      "registration": {
+        "branch": "codex/tx-role-rejection-reader-registration",
+        "commit": "d8e131c3f30c352b93e8d5c6370afccb4f992686",
+        "workflow_path": ".github/workflows/tx-native-clock-role-failure-readback-cloud.yml",
+        "workflow_sha256": "4df68f20e3e78aa20b54071810981b2cb5525c80baf225c94a65e4b8ed22de46",
+        "orphan": true,
+        "tree_contains_one_noop_workflow_only": true
+      },
+      "status": "ready_for_one_manual_cloud_readback_needs_controls"
     }
   },
   "trigger_audit": {
@@ -289,7 +302,8 @@
     "sha256": "851279dc3680cfc254a39c388697cec4ae378bf88e7b71047e121a8a0c58b538",
     "role_source_controls_passed": true,
     "reset_source_controls_passed": true,
-    "both_production_jobs_queued": true,
-    "exact_source_releases_verified": true
+    "both_production_jobs_queued": false,
+    "exact_source_releases_verified": true,
+    "role_production_terminal_failure_preserved": true
   }
 }
