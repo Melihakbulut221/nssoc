@@ -1,0 +1,58 @@
+{
+  "schema": "cdr500-owned-input-access-source-review-v1",
+  "source_only": true,
+  "native_job_dispatched": false,
+  "branch": "codex/cdr500-floating-wire-diagnosis",
+  "baseline_head": "7d8f42883cb1665657c7dd444f10d74985e6c312",
+  "protected": {
+    "scripts/cloud_cdr500_input_path_diagnosis.py": "9b17ccce9bf18cca5fd597f69a037389d041e6c0847b763e13db9ce53c3c48b6",
+    "scripts/cdr500_input_path_geometry.py": "72879bc1d114f52b0fadadcfe3243e38927662ad50d730476446698b35d28948",
+    "docs/evidence/cdr500-input-path-diagnosis-pass-20261024.json": "2db03b24c14e4ae13ab698ebf52b20b626fab755fd26bbd75e7346bea116885f",
+    "hw/soc/flow/make_pcie_sampler_active_input_v57.py": "8e2006a15a40d03a368f06e4d5ee7926f8a5407459d12f429f5001e28453a151",
+    "scripts/generate_cdr_sampler_active_input_v57_parent.py": "94c45b309446ecdbc4cccd262af777df14d4cb5945b4d28b777268317de0a799",
+    "scripts/generate_cdr500_input_access_v58.py": "f5a15380894474876e3a3ab8be5c20e687fce4b60f818fe562c19d9ff1a4e16a"
+  },
+  "diagnosis": {
+    "run": 40085495203,
+    "source_head": "ae95568cccf257f9740b65019b49914933fa18ea",
+    "summary_asset": 671969727,
+    "summary_sha256": "dafde770d5ca0f625f8d5116e50b896e9531fdcee525daa4e2398062d6910a01",
+    "parts_asset": 671969796,
+    "parts_sha256": "42dacd38cb102d30dd7f07f8a7a079c7260afcced755add67d2f70efda8e9083"
+  },
+  "baseline_gds_sha256": "e6ab61471595cd3635c8e2ef3922a09d6b128db0a5338fd6106f3a8e4aefc2f3",
+  "candidate": {
+    "top": "nssoc_cdr_pd500_input_access_v58",
+    "unchanged_native_devices": 500,
+    "unchanged_original_children": true,
+    "unchanged_bias_and_stimulus": true,
+    "added_native_via_instances": 28,
+    "real_route_rectangles": 16,
+    "no_original_geometry_removed": true
+  },
+  "runtime_requirement": "Use exact qualified cleanup runtime and PDK sources, protected manifest verified by future cloud controller before execution. The generator also hashes supplied original GDS/LVS/wires/PDK and rejects mutation.",
+  "controls": [
+    "changed_endpoint_identity",
+    "changed_owned_path_layer",
+    "wrong_native_owner",
+    "wrong_wire_owner",
+    "foreign_native_terminal",
+    "missing_original_landing",
+    "forbidden_device_layer",
+    "foreign_actual_conductor",
+    "removed_actual_original_material"
+  ],
+  "mandatory_next_gates": [
+    "Root or peer source review before native execution",
+    "Cloud source syntax and corruption controls",
+    "Actual full560 DRC and unsimplified deep/flat500-device LVS with original faults",
+    "Fresh original strict wire planes and finite-contact/native-MIM binding",
+    "Fresh both-order precise native RC and original raw/intrinsic/composition faults",
+    "Only then unchanged ten loaded cases,34.25ns,256bits and original device/timing/phase/VI gates"
+  ],
+  "current_status": "SOURCE_ONLY_UNEXECUTED_UNQUALIFIED",
+  "resistance_reduction_measured": false,
+  "physical_accepted": false,
+  "electrical_accepted": false,
+  "scope": "Finite native vias and real same-conductor parallel metal. No ideal bypass, RC scale, altered intrinsic device/bias/stimulus or gate waiver."
+}
