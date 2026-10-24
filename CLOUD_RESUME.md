@@ -7594,3 +7594,13 @@ choosing a physical repair. Candidate hypothesis: shorten only XUP/XUN supply M3
 escapes by routing toward right side, with substrate routing column kept distinct;
 requires actual routing/DRC/LVS/newRC/fullwaves, never numerical resistance scaling.
 Preserve native8umref/53.335umtails and2x20um contacts for final shared-bias parent.
+
+## 2026-10-24 mainchip same-process route reached154 violations, cloud-only continuation
+Run40045229904 completed exact saved process with new completed iteration counts
+265,222,161,154,154 after previous399. Iteration24 partial40percent is not final.
+No route/STA acceptance. Four restart/prefix controls reject, source/prefix intact.
+Continue same checkpoint for7200native seconds using new descriptor in
+mainchip-route12-drt-154-checkpoint-20261024.json. Original20/4/8/8ns+5percent unchanged.
+Local workspace verified empty and no local CAD process; all archives stay Releases.
+PLL40041871167 currently publishing native full bytes; TX40050776700 and40051009656
+remain live. No duplicates or local download of native wave/GDS/archive.
