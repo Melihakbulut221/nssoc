@@ -243,6 +243,42 @@ def exact_original_failure(data,mapping,chain,analysis,out):
         else:
             raise AssertionError('Original native-endpoint failure did not reproduce')
 
+def prepare_reference(work):
+    """The frozen report loader requires its parent directory to exist."""
+    target = work/'reference'
+    target.mkdir(exist_ok=False)
+    return old.adapter.reference.load_reference(target)
+
+def reference_directory_controls():
+    """Exercise the real filesystem precondition; do not mock content validation."""
+    with tempfile.TemporaryDirectory(prefix='reference-parent-controls-') as td:
+        root = Path(td); calls = []; sentinel = object()
+        def loader(target):
+            calls.append(target)
+            # Same immediate mkdir precondition as frozen restore_report.
+            (target/'pll-rhi120-c8-header-audit-source').mkdir()
+            return sentinel
+        with patch.object(old.adapter.reference,'load_reference',loader):
+            assert prepare_reference(root) is sentinel
+            assert calls == [root/'reference']
+            rejected = []
+            try: prepare_reference(root)
+            except FileExistsError: rejected.append('preexisting-reference-directory')
+            else: raise AssertionError('Reused reference directory')
+            occupied = root/'occupied'; occupied.mkdir()
+            (occupied/'reference').write_bytes(b'occupied')
+            try: prepare_reference(occupied)
+            except FileExistsError: rejected.append('preexisting-reference-file')
+            else: raise AssertionError('Reused reference file')
+            assert calls == [root/'reference'], 'Loader entered for occupied target'
+            untouched = root/'old-call'; untouched.mkdir()
+            try: loader(untouched/'reference')
+            except FileNotFoundError: rejected.append('old-missing-parent-call')
+            else: raise AssertionError('Missing parent regression not detected')
+        return dict(status='PASS_REFERENCE_PARENT_PRECONDITION',rejected=rejected,
+            fresh_parent_created=True,unchanged_loader_invoked=True,
+            reference_content_validated_by_fixture=False)
+
 def controls(s,m):
     """Real metadata mutations plus complete successful/failing transport fixtures; no simulator."""
     methods(); summary_valid(s); manifest_valid(m)
@@ -344,6 +380,7 @@ def controls(s,m):
     assert len(bad)==46, len(bad)
     return dict(status='PASS_REPLAY_TRANSPORT_METADATA_CACHE_AND46_FAULTS',
         rejected=bad,successful_three_part_transport=positive,successful_exact_tar=True,
+        reference_directory=reference_directory_controls(),
         successful_chunked_cache=scan,endpoint_sampling=sampling.controls(),
         original_source_and_observer_controls=original.controls(),native_simulation_started=False)
 
@@ -364,6 +401,13 @@ def main():
         r['original_failed_job']=source_identity()
         with tempfile.TemporaryDirectory(prefix='first-latch-cache-only-') as td:
             work=Path(td)
+            mapping=json.loads((ROOT/original.MAP).read_text())
+            chain=json.loads((ROOT/old.MAP).read_text())
+            ref=prepare_reference(work)
+            contract_sha=digest((json.dumps(ref['contract'],indent=2)+'\n').encode())
+            assert contract_sha==mapping['proofs']['contract_sha256']
+            r['reference_preflight']=dict(contract_sha256=contract_sha,
+                frozen_loader_completed=True,completed_before_large_cache_restore=True)
             found,r['transport']=restore(work,s,m)
             current=json.loads(found['original-review.json'].read_text())
             base=json.loads(small(671784463,events.OLD_SHA))
@@ -373,10 +417,6 @@ def main():
             assert base['analyzer_cache']['selected_row_major_binary64_sha256']==OLD8_SHA
             assert base['analyzer_cache']['cached_columns']==OLD8
             prev=json.loads(small(672131330,events.SUMMARY_SHA,288016));events.summary_valid(prev)
-            mapping=json.loads((ROOT/original.MAP).read_text())
-            chain=json.loads((ROOT/old.MAP).read_text())
-            ref=old.adapter.reference.load_reference(work/'reference')
-            assert digest((json.dumps(ref['contract'],indent=2)+'\n').encode())==mapping['proofs']['contract_sha256']
             selected,prior=original.choose(mapping,ref['contract']['raw_table'],chain)
             assert selected==s['selected_cache']['columns'] and prior==prev['selected_cache']['columns']
             raw,r['cache']=cache_scan(found['selected-native.bin'],s['selected_cache'],prior,
