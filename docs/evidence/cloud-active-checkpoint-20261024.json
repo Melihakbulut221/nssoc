@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T11:33:36.241373+00:00",
+  "updated_at": "2026-10-24T11:42:40.680082+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "b1986a7622e08526855928ce705f0e2aef57ff29",
+  "root_source_before_receipt": "d41c9b9234e3797272850743220a54debf756a25",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 14,
+    "inventory_version": 15,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966
@@ -16,7 +16,7 @@
     "pll_existing_capture_diagnosis": 40084454916,
     "cdr_full_original_loaded_matrix": 40081228425,
     "tx_fresh_full_native_and_fault": 40088271926,
-    "cdr_exact_partial_via_cut_diagnosis": 40090258380
+    "cdr_original_high_cuts_fresh_physical": 40090874676
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -24,18 +24,20 @@
     "cdr_six_column_source_review": "a48d67720a3491720428c02dbd040b6dacf0cc03",
     "tx_initial_dispatch_receipt": "b5d47768078214a792e1025c83ae6da181b4976d",
     "phase_rc_pass_receipt": "7d5eeda103b0dfdb0cee82350ba3ea7b7dcca6fb",
-    "phase_source_and31_design_checkpoint": "5db3ffab8c62e2c2da1a8e7b47360925ec877ddb",
-    "cdr_six_column_cut_rejection_receipt": "a42a3600"
+    "phase_source_and31_design_checkpoint": "0a7102deba6a8f79659d94c6363d30ece2333886",
+    "cdr_six_column_cut_rejection_receipt": "a42a360070f3a1b09b18f92933475577aaffc3de",
+    "cdr_exact_cut_witness_receipt": "ba5e2a3df7e4bf6ab5fe2261fc658d2f1407685b",
+    "cdr_original_high_cuts_review": "ca2ea8f0189ab608cbbaed038d1bdbf6b933d8c1"
   },
   "qualified_progress": {
     "tx": "Both exact fresh model/bench preparations passed; same-source22controls passed; actual normal/fault matrix now running. No new waveform acceptance yet.",
-    "phase": "Real55-device RC qualified. Actual exact-model positive preparation40089341166 and analytic31 original-oracle mapping40089557733 passed. They are source-level controls, not phase/reset electrical qualification.",
-    "cdr": "Six-column via candidate passed first clearance location but original partial-cut-overlap guard rejected before DRC/LVS. Current1893ae48 adds exact native cut/owner diagnostics only; geometry and rejection unchanged."
+    "phase": "Exact55model preparation passed12ptaps/57HBT bindings/39negativecontrols; analytic31phase ownership passed7936samples/7faults. Receipt0a7102de. Real independent preset and first-parent-fall release source design in progress; not physically or electrically qualified.",
+    "cdr": "Actual cut witness proved original two190nm cuts on410nm pitch versus six-column PCell480nm pitch. Native PDK spacing rule verified. Current candidate preserves6low columns but uses2at8high endpoints; mandatory actual Via4 XOR equality and3faults supplement original9/fullphysical gates. Fresh40090874676 pending; no DRC/LVS/RC pass inferred."
   },
   "next_actions": [
     "Never duplicate live native jobs; verify terminal summary/parts/full-source hashes before advancing.",
     "PLL existing full-capture observer must reproduce original acquisition rejection before diagnosing actual4/4/5 stage edges and boundary swings.",
-    "Read exact CDR40090258380 witness before geometric alignment repair. Preserve old native cuts/owners and all560DRC/deepflat500LVS/wire gates; require freshRC after actual pass.",
+    "Read40090874676 native physical/wires result. All8 exactoriginalhighVia4 sets plus9+3candidatecontrols and560DRC/deepflat500LVS/strictwires required. Only then freshRC/MIM and original ten-case fullwaveforms; never reuse v57RC.",
     "TX40088271926 must preserve fresh new model and trajectory; same-process capsules only. Full34ns full-column original review and fault mandatory.",
     "Phase exact55model positive preparation and31analytic mapping passed. Await exact PLL measured boundary, then original fixed-phase child-load electrical validation; independent preset/first-fall release and routed31-clock implementation remain open.",
     "Route terminal publication leads to same-process continuation unless route_complete; then original topology/antenna/disconnect/RC and20/4/8/8ns+5percent STA."

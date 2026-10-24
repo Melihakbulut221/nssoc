@@ -8111,3 +8111,11 @@ Inventory v14 tracks CDR diagnostic40090258380 at1893ae481c5ab7686d1235eb1d3735b
 Corrected phase55 exact-qualified-model positive preparation40089341166/b8dd002 and31clock analytic source40089557733/c3daf9a8 both completed successfully. Independent reviews retained. The15-cell design requires11 swapped master outputs and independent mixed master/slave presets plus first-parent-fall release; these are analytic hardware requirements, not implemented/qualified reset. Phase durable checkpoint5db3ffab oncodex/tx-clock-phase-parent. No phase electrical dispatch while measured PLL boundary remains unavailable.
 
 TX40088271926, PLLobserver40084454916 and mainchip40085912519 remain sole native owners. All work/evidence is remote. Full serialPHY, routed fullserial chip and final original-clock timing remain unaccepted.
+
+## 2026-10-24T11:42:40.680082+00:00 — exact original via cuts and source control receipts
+
+CDR native40090258380 proved high-endpoint original Via4two190nm cuts at410nm pitch, while6columns used480nm pitch. Both adjacent native/wire probes retained cluster13/wire5 at first witness. Pinned PCell count-dependent spacing rule verified from exact original source. Candidate45949ca8 retains six-column low landings but uses two-column native stacks at eight high landings, samecentroids/routes/clearances; actual generated cuts must XOR-equal originaltwo-cut geometry at all8 locations. Original9controls plus3actualcutcorruptions/full560DRC/deepflat500LVS/strictwires retained. Independent reviewca2ea8f0; sole freshphysical40090874676. No RC or electrical acceptance inferred.
+
+Phase terminal receipt0a7102de oncodex/tx-clock-phase-parent records exact55model positive preparation40089341166 (12ptaps,57HBTbindings,39faults) and analytic31mapping40089557733 (7936samplecenters,7faults). No phase electrical simulation; measured PLL boundary remains pending. Next source work develops independent master/slave preset and first-parent-fall release from actual devices, preserving originaloracle and all safety/physical obligations.
+
+Current root monitorinventoryv15 and compactcheckpoint identify all remote owners. Case-insensitive localprojectfilename scan again found no NSSOC remnants; only unrelated X11substring files and protectedsystemservice paths were excluded. No local artifact or native process was created.
