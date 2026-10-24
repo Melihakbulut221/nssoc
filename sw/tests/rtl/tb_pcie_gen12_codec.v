@@ -49,6 +49,9 @@ module tb_pcie_gen12_codec;
    if(cdecoded!==cd || decoded_k!==ck || cd_rd[4]!==expected_end || cde!==0 || cdd!==0)
     $fatal(1,"CHAIN decoder vector %0d",i);
   end
+  // A real assertion edge is required before checking asynchronous reset.
+  // Declaration initialization to zero is not a reset transition.
+  trst=1;rrst=1;#1;trst=0;rrst=0;#1;
   for(i=0;i<4096;i=i+1)begin
    txclk=0;rxclk=0;
    {trst,rrst,ten,ren,tk,td,rc,etc,etrd,etv,ete,erd_data,erk,errd,erv,erce,erde}=lv[i];

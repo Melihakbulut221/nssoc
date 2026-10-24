@@ -1,0 +1,339 @@
+{
+  "status": "PASS_EXACT_CODEC_NATIVE_ARTIFACT_SOURCES_TABLE_AND_ALL_GATES",
+  "readback_source": "b255e253d92443c4deee840d75e537681b265384",
+  "readback_run": "40106066552",
+  "native_run": 40102483214,
+  "native_source": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
+  "native_attempt": 1,
+  "no_new_simulation": true,
+  "full_PHY_accepted": false,
+  "native_job": 120897302344,
+  "native_conclusion": "success",
+  "artifact": {
+    "id": 12563629865,
+    "name": "pcie-gen12-codec-40102483214-1",
+    "metadata_digest": "sha256:1e6dfffeb50530fbe6215ee0b708fb223cd52d98fae42ce3d978a44a8791dca7",
+    "archive_sha256": "1e6dfffeb50530fbe6215ee0b708fb223cd52d98fae42ce3d978a44a8791dca7",
+    "archive_bytes": 24208064,
+    "files": 99,
+    "all_recorded_member_hashes_verified": true
+  },
+  "result_sha256": "795e077c81e383036089a47e29a299710c9fa76d3c8d58d0dd68212b20cda590",
+  "original_result": {
+    "status": "PASS_GEN12_SINGLE_LANE_CODEC_TABLE_EXHAUSTIVE_STATE_SYNTHESIS_AND9_FAULTS",
+    "source_head": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
+    "run_id": "40102483214",
+    "LTSSM_implemented": false,
+    "comma_alignment_implemented": false,
+    "low_rate_PMA_qualified": false,
+    "full_PHY_accepted": false,
+    "primary_oracle": {
+      "url": "https://www.ieee802.org/3/z/public/presentations/sep1996/RT8b10b_codes.pdf",
+      "sha256": "8db7e64132d931c25a579a9582404af3fb505f97079e21c08d373d9563b3e749",
+      "rows": 268,
+      "independent_published_table_exact": true
+    },
+    "coverage": {
+      "encode_cases": 1024,
+      "valid_encode": 536,
+      "invalid_K_cases": 488,
+      "decode_cases": 2048,
+      "all_codes_both_disparities": true,
+      "legal_code_patterns": 464,
+      "allowed_code_RD_pairs": 536,
+      "four_symbol_chain_cases": 2048,
+      "lane_cycles": 4096,
+      "lane_coverage": {
+        "tx_disabled": 2049,
+        "rx_disabled": 2051,
+        "tx_invalid_k": 961,
+        "rx_invalid_code": 1114,
+        "rx_wrong_disparity": 395,
+        "independent_resets": 65
+      },
+      "alternate_D7_cases": [
+        {
+          "rd": 0,
+          "data": 241,
+          "code": "1000110111"
+        },
+        {
+          "rd": 0,
+          "data": 242,
+          "code": "0100110111"
+        },
+        {
+          "rd": 0,
+          "data": 244,
+          "code": "0010110111"
+        },
+        {
+          "rd": 1,
+          "data": 235,
+          "code": "1101001000"
+        },
+        {
+          "rd": 1,
+          "data": 237,
+          "code": "1011001000"
+        },
+        {
+          "rd": 1,
+          "data": 238,
+          "code": "0111001000"
+        }
+      ],
+      "all_RX_RD_updates_from_received_subblocks": true
+    },
+    "icarus": "PASS_INDEPENDENT_TABLE_AND_STATE_TESTS",
+    "verilator": "PASS_SAME_INDEPENDENT_VECTORS",
+    "synthesis": {
+      "soc_pcie_gen12_8b10b_encode": {
+        "cells": 37,
+        "yosys_check_assert": true,
+        "netlist_sha256": "185fa1ae252c3cf2b4f5545cae5be71d729f7e553ebd3b7a4fdcd751954e8056"
+      },
+      "soc_pcie_gen12_8b10b_decode": {
+        "cells": 64,
+        "yosys_check_assert": true,
+        "netlist_sha256": "40e7cc7a02a4764813b100bb093beb6c4851db0f2680b8566c6975d878b7e749"
+      },
+      "soc_pcie_gen12_codec_lane": {
+        "cells": 32,
+        "yosys_check_assert": true,
+        "netlist_sha256": "3d4d2e6e283ae166006308400c39d880c4e4d435abc643cf66b0df8c2734b27b"
+      }
+    },
+    "negative_controls": [
+      {
+        "name": "tx_bit_order",
+        "rejected": true,
+        "mutant_sha256": "822eef1acd9cb4a462c2fa3d83eb4d5409d38cd1b5bec4803548953c53403aca"
+      },
+      {
+        "name": "tx_invalid_K",
+        "rejected": true,
+        "mutant_sha256": "d1f30187fdf1681a0223f5e3664c8f430cec1de197ad5dbb37154cf024000249"
+      },
+      {
+        "name": "tx_RD_constant",
+        "rejected": true,
+        "mutant_sha256": "c2556e57a30bad30d5129cac3c4a1febe72259fafadf6fee9ab9ff97f5205089"
+      },
+      {
+        "name": "rx_code_error_hidden",
+        "rejected": true,
+        "mutant_sha256": "abda1b6e73f89cd295e19f908e95a1a62fdaef170ff241d4c044a71ad6586f09"
+      },
+      {
+        "name": "rx_disparity_hidden",
+        "rejected": true,
+        "mutant_sha256": "c12b8d2798a617c7223bb72fbe0e23d4f4b3ca29840297b4c238aff56ecf7623"
+      },
+      {
+        "name": "rx_RD_invalid_hold",
+        "rejected": true,
+        "mutant_sha256": "5047670c40e24774a7b39a679f945dbb168d8e9d23cdeeace64ab4d89885ade8"
+      },
+      {
+        "name": "rx_alternate7_reject",
+        "rejected": true,
+        "mutant_sha256": "e1ebe2d4d2978b3ca9bee6f5759956b0af26cc115fd008088f5d621716b56fe3"
+      },
+      {
+        "name": "lane_enable_ignored",
+        "rejected": true,
+        "mutant_sha256": "14c5de6270723d44a8652f333087e79a2b03335c2a925e37c62e0d72ede8f4f3"
+      },
+      {
+        "name": "lane_reset_positive",
+        "rejected": true,
+        "mutant_sha256": "20f54a1fea07e5d2351ede2d7241fef38ed56d0985145700eeacb8b588baabd1"
+      }
+    ],
+    "sources_unchanged": true,
+    "outputs": {
+      "rx_code_error_hidden.v": "abda1b6e73f89cd295e19f908e95a1a62fdaef170ff241d4c044a71ad6586f09",
+      "fault-rx_alternate7_reject.vvp": "1770feb144c4817643b3e00882db2e25f6a5e62cece0f060f460447a4e46bd8a",
+      "fault-lane_reset_positive.log": "14cc5f80ccab3f13f608e14ac83b0d5b8af380a6732889b71ad925f0fcaedc0a",
+      "fault-rx_alternate7_reject.log": "5a2129ec1c6e4cd34c6048ecb6f280b9307321ef22a796f9f66637473cda1c18",
+      "yosys-soc_pcie_gen12_8b10b_encode.log": "68498ef1d2fb7710d4c00a80d51051ae9a6695a6d7aa9e64eda38a7c788bb1a0",
+      "tx_bit_order.v": "822eef1acd9cb4a462c2fa3d83eb4d5409d38cd1b5bec4803548953c53403aca",
+      "tx_invalid_K.v": "d1f30187fdf1681a0223f5e3664c8f430cec1de197ad5dbb37154cf024000249",
+      "verilator.log": "815b311acbd8d649b8b8fbc07cc67fa7d4e71fe7986d5ed05bc43ad42419b811",
+      "fault-tx_bit_order-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fault-rx_code_error_hidden-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fault-tx_RD_constant.log": "19492754888c8978746d2c7c398b70233ba403ec277abb836e3a2377450ddacf",
+      "icarus-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fault-lane_enable_ignored.vvp": "6d03a1b0bdb939fe9066f22b2d98cfc1a36a0ed56510ae3fb98e70d0356fbc67",
+      "rx_disparity_hidden.v": "c12b8d2798a617c7223bb72fbe0e23d4f4b3ca29840297b4c238aff56ecf7623",
+      "fault-rx_code_error_hidden.log": "ff3efef2880584d714cec61b3c7d2dc9d9a7358bf2fb1ef8017b5874c30ae5b5",
+      "fault-rx_disparity_hidden.log": "e2f9c4f64081cc7508a0dece44ea1d9ad49df7c4d8cb006fbc88cad52bd18cc5",
+      "fault-rx_RD_invalid_hold.log": "8ef05501260b651637a56922ac3c2b4d684084dee82c5b40384714f51430cb8e",
+      "soc_pcie_gen12_8b10b_encode.json": "185fa1ae252c3cf2b4f5545cae5be71d729f7e553ebd3b7a4fdcd751954e8056",
+      "fault-rx_code_error_hidden.vvp": "0ab7c5e57f7ae14023d8166fed9269b3f1116be86acc5549b7c27b0f8f219639",
+      "lane_reset_positive.v": "20f54a1fea07e5d2351ede2d7241fef38ed56d0985145700eeacb8b588baabd1",
+      "icarus.log": "b71ae1f85d0abe283d34bb38974182f9a502d0a24e2d22e5a95c26eaf30acbdb",
+      "fault-tx_RD_constant-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fault-rx_alternate7_reject-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fault-lane_enable_ignored-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "encode.mem": "db2a0b5085cc9ea929aa77d83769a5e3fd74f8c9ace18b80ab779cf0351ffbec",
+      "fault-tx_bit_order.log": "5f5f8d37b373a2d8e7c6d473636eca3dcc90b2b5f179cc3a3a02b8c73b57808e",
+      "fault-tx_invalid_K-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "soc_pcie_gen12_8b10b_decode.json": "40e7cc7a02a4764813b100bb093beb6c4851db0f2680b8566c6975d878b7e749",
+      "rx_alternate7_reject.v": "e1ebe2d4d2978b3ca9bee6f5759956b0af26cc115fd008088f5d621716b56fe3",
+      "fault-rx_RD_invalid_hold-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fault-tx_invalid_K.log": "fa3822daa76e3933a7ba7561a9f79f3005c7fb5c7cb44ec9340973ff5d115794",
+      "fault-rx_disparity_hidden.vvp": "54046660fccd4fbe6f92160875e1ec0dbce9b976c6d0a2e4e6e16e0f781b22df",
+      "lane_enable_ignored.v": "14c5de6270723d44a8652f333087e79a2b03335c2a925e37c62e0d72ede8f4f3",
+      "decode.mem": "c7a854a5b11347022c7bd7108f38f5999357c89ce50e17160cdaaec83b96f1b0",
+      "fault-rx_RD_invalid_hold.vvp": "9fa3be0756751b46b3094810fb10b2f2d9108ea4e012ce625cc1ca1a9f012fac",
+      "yosys-soc_pcie_gen12_8b10b_decode.log": "835de57928968078c4fe7a351e207adad71338457ac48eead43dc1eb89912986",
+      "yosys-soc_pcie_gen12_codec_lane.log": "f07fda050393d5109bc221e717049059cc35a75d554c6dd61e323a8c26dc856e",
+      "fault-tx_invalid_K.vvp": "fe6d888e6f43b9ac8d0e6ea15179edbd89741eb3656f68463095856d9bbc000e",
+      "icarus.vvp": "8552c0438018a2b271a4585f18fcc562d14ba477a29de361873b2fc1f960e5ee",
+      "fault-tx_bit_order.vvp": "c10a82db27c74004fcca9a17c5209bad14237c2a727a84e1ae292f0371dc0ef7",
+      "fault-lane_enable_ignored.log": "d97e8ca7e7215b4f6e0c6b884b1ceea0f89368017852d203c9bc851cdb6c5da0",
+      "fault-lane_reset_positive-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "chain.mem": "96f2bb84a531c3df1b186d3697bae86cdf87b5aa86aa4bdd4c68ad2cf6745c64",
+      "lane.mem": "7772756e78e72aac034e7eb9ba6bd77660754f9b016b5b09a62b6c35e823b831",
+      "fault-rx_disparity_hidden-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "rx_RD_invalid_hold.v": "5047670c40e24774a7b39a679f945dbb168d8e9d23cdeeace64ab4d89885ade8",
+      "verilator-build.log": "ce7aaa96a3a1d9e17287ca9b7897fe995a5f3736ea0b64d7b6d07fb733d89441",
+      "soc_pcie_gen12_codec_lane.json": "3d4d2e6e283ae166006308400c39d880c4e4d435abc643cf66b0df8c2734b27b",
+      "fault-tx_RD_constant.vvp": "6f8bc0a755044c0574d1e6cb27dcd3cfeb6dd43d7d766c42704c7e6f0914b552",
+      "fault-lane_reset_positive.vvp": "8c6cbac1bfdbdcda467263f755f2eef2e3b2d831120e88511324b247f7f4873c",
+      "tx_RD_constant.v": "c2556e57a30bad30d5129cac3c4a1febe72259fafadf6fee9ab9ff97f5205089",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__0.o": "706b3e9d31ae926e3c96965d29f83a5b5e9e7ca42ff0496a20d4b378c3bd4b27",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__1.o": "6a4ddb8950f6e2ff5f60f5ce61546bdebbff6369fdff55354227f4ffe6b81453",
+      "verilator/verilated_threads.o": "7b329cb59ddf986aa0b9991d864cf24c3d4d63955e156816d17bb5e47438cd8e",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_hebce9b5e__0.cpp": "42176c155e03f347d16174a78d69c739ef2b25d55232ea1f853a165d8062739f",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_hebce9b5e__0__Slow.o": "7aacd50c8854bb2a687f0c780dbedf237cc912f86d441613c5f334e6c3b0ff2e",
+      "verilator/Vtb_pcie_gen12_codec.d": "8f85907069c2e30c00079fe9b2142d5b7ba310ff640cfb684028e1034e99a21d",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__0__Slow.d": "52a3e3a637c7d3261d433f83ee55fef139a6234ea984b35522863fb80ef17035",
+      "verilator/Vtb_pcie_gen12_codec__pch.h.slow.d": "b8382ee58cf2e1857602168c910c75ec530b4b157339c03aef1a308cec7a0f9c",
+      "verilator/Vtb_pcie_gen12_codec__pch.h.slow.gch": "bd2599f7c8bb513ea4c096cb459289595cd8c4e1b1d528de2da0584ecf414f00",
+      "verilator/Vtb_pcie_gen12_codec__pch.h.fast.d": "d9d43ac6f18f943d86c6dd2788f6d8f887137075f0533597e7bcbee233c78ff0",
+      "verilator/Vtb_pcie_gen12_codec__ver.d": "a9861c5353919498e9bf38fa503e46ff6037b3fabf50c6c86a17eac8d595003f",
+      "verilator/Vtb_pcie_gen12_codec_classes.mk": "c70dc73598f49b02283ee316ceec9627c0489b53dee52383786fa61fec1128cb",
+      "verilator/Vtb_pcie_gen12_codec__Syms.o": "28126ac04050da72fd2d8e1d6a6488b31e3e7d4c561e34074bfe5798e9507710",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__0.cpp": "b23bd18d661013a0375902eefc8acd7d89996d36c96337c5bcb642e500d6a75d",
+      "verilator/Vtb_pcie_gen12_codec__pch.h.fast.gch": "dfb288caf43df70223a04e5cec678602caf5e2fc989408e73b598653a4a5dc86",
+      "verilator/Vtb_pcie_gen12_codec__Syms.cpp": "3a70ba91d76b43d200449286e8f645ec9ac3b810a5951fbeaa9c1cdeb45223ca",
+      "verilator/Vtb_pcie_gen12_codec__Syms.d": "b2f02f784b01966918ec2d8d940d5f11a1afc470970fdc529bcf48128a9b0c3b",
+      "verilator/Vtb_pcie_gen12_codec__ALL.a": "0f28b1f107798a2dd53ff0d61644d212d4c9347a34a1bb2cb6ba22b7efe7c680",
+      "verilator/Vtb_pcie_gen12_codec__Syms.h": "bbf69327e0931c0c1d29091b24cdb39c006b5feaa6ec0edc13b878e127651c95",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__0__Slow.cpp": "c45155758e440b20f6fc745622b5852c3652b0b0bb8fa80b57955dcac5ae1bb4",
+      "verilator/verilated.d": "7709a6f70e5990c409d9bc64ab43e8624a332c03230350d6046bc2e2e6f556ae",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_hebce9b5e__0.d": "16902f8334924f95fb1668b3ec0aa3b1a8011f0247a3a47b7d723f4f66a7dd5b",
+      "verilator/Vtb_pcie_gen12_codec__verFiles.dat": "f7359f25a430d0a483fb610a8850fa8ede5287d5f938121d89280a211fff2b0c",
+      "verilator/verilated_timing.o": "f2bca8afa56ba8ab7edf6e2e8a16a3fff10f8a2c4e73fc6b418f4b27f805c5bc",
+      "verilator/Vtb_pcie_gen12_codec.mk": "d9c6153390023d9469f7d95b27e6f4a20a580ca067375a21ece1db5ae7372e3f",
+      "verilator/Vtb_pcie_gen12_codec___024root__Slow.d": "d62dfbd5fd525cb1a0b7fdf4e23f5a8938648f5dede9b9ab18a2f07f3cc9b490",
+      "verilator/verilated_timing.d": "19bc573a4e706f27e798b1017a74f02e9774064cc6c1b7232efaa12f435cc184",
+      "verilator/verilated_threads.d": "58e40742732676a43a74c71b41c5f7f2f74fdd58e2bb55832280afbc3d05f2f2",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_hebce9b5e__0__Slow.d": "4b763db3706bed1b2f38a111cf2077e5c59d8dfa374bf4e1dc1ca5d9c1565522",
+      "verilator/Vtb_pcie_gen12_codec__main.d": "3c1cd011eb99ca5702d777a24e4e21add9fc5846d92b96b591f435e63bb38f52",
+      "verilator/Vtb_pcie_gen12_codec___024root__Slow.cpp": "7d6ce3e7e7d19521a9cf5168165d3fef2d432cdc8f51df3ff58acf6fc69b75db",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__0.d": "f56ce27268d673710e9ff0a601eb5f365f82655a1ac29679d20a696e291db5e3",
+      "verilator/Vtb_pcie_gen12_codec.cpp": "00538a093e1f05b494529a652c6bced7a44ef4c0d7203fd715887072a022360e",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_hebce9b5e__0.o": "0106408bc09794b916c2e8e9665506284ecdb68042f33be31aed4138274e39b1",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__0__Slow.o": "13cc1db8993cfbbc4436ceb9a438279350f60b4bea80edbea0751e687f4d1b0b",
+      "verilator/Vtb_pcie_gen12_codec.h": "480c5baac156cb1d319ef9e871506f280c6f6fa19ce5c9291f564e50ab9931aa",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__1.cpp": "841bc245418b9db257f01c7bd03722b3e2c2385a20c47ca8c8ff89cdb9bfd299",
+      "verilator/codec_test": "09453fc02da64e244dd45721a7525f9662a6ec8ce8b731c132145937fe37b28e",
+      "verilator/Vtb_pcie_gen12_codec__pch.h": "7fff55e59eac788f529886d25d398b6762561170c21521f1d4c1878aa779a9c5",
+      "verilator/Vtb_pcie_gen12_codec__main.o": "06e57cdddb41df317f1552b4804983c6d61c876479cea7101c01dfd98eb3dcdf",
+      "verilator/Vtb_pcie_gen12_codec___024root.h": "6e3f1c2fd8293e34266e5556bd9e6a7f6fa48b9a5a3b39960aac0d6837a20641",
+      "verilator/Vtb_pcie_gen12_codec___024root__Slow.o": "d97d853e04b22cbb46d74ea2f3b6f87f7f710df7b61449594165cf2c07bfae66",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_h641cde41__1.d": "ed534b659a701b9ffa0ca8eb49ae5ec379660fcc49b3aaaf7b8d90dd4e28afd3",
+      "verilator/Vtb_pcie_gen12_codec__main.cpp": "70179f5cc5fda81f25a58d88dd83cfe914a4298f772e588332668ed3139ec47a",
+      "verilator/Vtb_pcie_gen12_codec___024root__DepSet_hebce9b5e__0__Slow.cpp": "40482c0d6cb28d41efada5c4c7001d34244b1b2db21dc6a67708b3520994193c",
+      "verilator/verilated.o": "6371ab4c64eacb8f310198256120e539556ffcf99a848fbeb6e9f6a7838fa82a",
+      "verilator/Vtb_pcie_gen12_codec.o": "ca497748d3cd434a6cb667d1f6c0fced605d17879dab0988e9248227cf0908a0"
+    }
+  },
+  "protected_sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_codec_lane.v": "bc7805d182fec9f7658c7573c019fde6b287e3d2da5df7b1134795192c2d212e",
+    "sw/tests/rtl/tb_pcie_gen12_codec.v": "7bb310c10c7064e2de150039d384fe88ec3a73dea1bd057359cbb4bc92684990",
+    "scripts/check_pcie_gen12_codec.py": "7e7b839089d78a7a32791335698d71514f03501f30b70fd5918b3b986141a180",
+    ".github/workflows/pcie-gen12-codec-cloud.yml": "563eef688f587d1b8f6eec1af8be24efbd385ba5a240ba2e061ee7f3eabcc303",
+    "docs/pcie-gen12-codec-development-20261024.md": "0e8a0842a8b1f192d476de98a3fe17fef8fbc8bb397bf90fc45653edca1a404b",
+    "third_party/chuck_benz_8b10b/encode.v.txt": "c8e59b8457c3ee32a3058e24e1adb190cc22c9ec98e752ab5356c0a39ba0398b",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+    "third_party/chuck_benz_8b10b/decode.v.txt": "b4ef92679b25aba7aaaf3492b948c3a9ffc635e82de04bae53eb1599566ed19d",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+    "third_party/chuck_benz_8b10b/LICENSE.txt": "f2e5b94be743fcaa8dd661a9794e4c50f8f48a4371ac7cc58c03fd64b7e63643",
+    "third_party/chuck_benz_8b10b/provenance.json": "879f1df1e516e3c982ca5f3631a0fc2645d621b2ec34f36a93bf71bb7eaecd9f",
+    "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+  },
+  "upstream_and_vendor_provenance": {
+    "source": "https://asics.chuckbenz.com/",
+    "retrieved_utc_date": "2026-10-24",
+    "license": "LicenseRef-Chuck-Benz-2002: reuse and modification permitted while preserving the original notice",
+    "original_revision": "Original 2002 combinational source; immutable content hashes identify the exact retrieved revision",
+    "upstream": [
+      {
+        "url": "https://asics.chuckbenz.com/encode.v",
+        "path": "third_party/chuck_benz_8b10b/encode.v.txt",
+        "bytes": 4105,
+        "sha256": "c8e59b8457c3ee32a3058e24e1adb190cc22c9ec98e752ab5356c0a39ba0398b"
+      },
+      {
+        "url": "https://asics.chuckbenz.com/decode.v",
+        "path": "third_party/chuck_benz_8b10b/decode.v.txt",
+        "bytes": 5782,
+        "sha256": "b4ef92679b25aba7aaaf3492b948c3a9ffc635e82de04bae53eb1599566ed19d"
+      }
+    ],
+    "derivatives": [
+      {
+        "path": "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v",
+        "original_path": "third_party/chuck_benz_8b10b/encode.v.txt",
+        "sha256": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+        "edits": [
+          {
+            "before": "module encode (",
+            "after": "module nssoc_benz_8b10b_encode (",
+            "count": 1
+          },
+          {
+            "before": "wire do =",
+            "after": "wire d_o =",
+            "count": 1
+          },
+          {
+            "before": "(do ^",
+            "after": "(d_o ^",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "path": "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v",
+        "original_path": "third_party/chuck_benz_8b10b/decode.v.txt",
+        "sha256": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+        "edits": [
+          {
+            "before": "module decode (",
+            "after": "module nssoc_benz_8b10b_decode (",
+            "count": 1
+          },
+          {
+            "before": "wire do =",
+            "after": "wire d_o =",
+            "count": 1
+          },
+          {
+            "before": "eo, do, co",
+            "after": "eo, d_o, co",
+            "count": 1
+          }
+        ]
+      }
+    ]
+  },
+  "codec_RTL_accepted": true
+}

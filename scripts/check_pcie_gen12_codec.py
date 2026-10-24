@@ -184,4 +184,5 @@ def main():
  finally:
   result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
   save()
+  print(json.dumps(dict(result_sha256=sha(OUT/'result.json'),result={k:v for k,v in result.items()if k!='outputs'}),indent=2))
 if __name__=='__main__':main()
