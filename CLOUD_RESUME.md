@@ -8009,3 +8009,15 @@ Cloud inventory version 3 includes this continuation and TX remaining driver/fin
 Cancelled redundant isolated PLL checks 40070531615 after verifying identical checks workflow and PLL delta source paths against active root checks 40073945162. This is cancellation, not test success; no native job was cancelled. The root regression remains active.
 
 GitHub main monitor is installed at 8689cb4b866b050f4136482d34433a62491f95ef, first main verification run 40075060423. Wait for the live inventory bootstrap=false gate and snapshot publication before retiring local heartbeat nssoc-bulut-takibi. Monitor observes every eight hours; it does not automatically dispatch, cancel, or repair native CAD runs. Local workspace remains empty.
+
+## 2026-10-24 cloud-only transfer verified
+
+Main GitHub monitor 40075060423 ran all 47 controls successfully. Its main-only inventory gate passed with bootstrap=false, working head a8f6ba185f0bfefba781c4992f181e034d8592fe and exact inventory SHA256 61c5d1d925c38001676e3abe989c1c4278c95c675abd04c5273604bbaed7a99b. Snapshot artifact 12553512292 (8044 bytes) SHA256 9c057d6f7ea5213955a2573b186f91077227192243b9ade6add9419d69e60e17 is published. ATTENTION_REQUIRED / workflow failure correctly reports real CDR wire-inputs failure 40073945226; it is not a monitor malfunction.
+
+After this live verification, Codex local heartbeat nssoc-bulut-takibi was deleted with confirmed delete_status=deleted. GitHub default-branch schedule is 17 */8 * * * UTC (03:17,11:17,19:17 Europe/Istanbul). It reads the current working-branch inventory and persists snapshots, detects stalled/failed/missing evidence, but does not automatically dispatch/cancel/repair native jobs or perform autonomous design engineering. Running GitHub jobs and these scheduled observations do not require the local computer. No local checkout, CAD process, or project-named temporary entry remains.
+
+PLL native continuation 40071288423 completed the original 1 us capture (3,201,410 complete rows, 5,106 columns, no partial bytes, exit0, diagnostics[]). Exact lossless delta and durable prefix metadata passed verification. Dispatched all-column/full-byte reader 40076916467 at a8f6ba185f0bfefba781c4992f181e034d8592fe; acquisition/full-PHY acceptance remains false pending its native result.
+
+CDR native orphan diagnosis 40074893232 identified exactly10 root-exclusive terminal/public-pin-free metal components (20 of32 old M4 strips). Guarded cleanup run40076590920 at2627eb651ebff31b96abac985d19e1bc9b76d6a8 is running on isolated branch codex/cdr500-floating-wire-diagnosis, with full500-device physical checks and unchanged strict wire methods. It must not be accepted until all native controls finish.
+
+Cancelled duplicate root pull-request checks40073952481 after matching workflow/head against retained push checks40073945162. Cancellation is not a passing test; native jobs were not cancelled.
