@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-assert-offset-intrinsic-cloud
+on:
+  push:
+    branches: [codex/tx-offset-intrinsic-registration]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Registration only. No checkout, transistor simulation, extraction or data readback.'
