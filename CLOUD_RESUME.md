@@ -7332,3 +7332,15 @@ design and rerun actual parent geometry/RC/full waves; no new ideal IREF source.
 One untested option preserves original8um reference and scales gain tails to
 near53.335um each (5nm grid) while omitting leaf reference; requires native
 simulation before any acceptance, not an already-validated integration.
+
+
+## 2026-10-24 v53 actual loaded result: cold passed, nominal/hot still rejected
+Run40046126964 complete; all5full native waves retained. Cold108.209mV/35.156ps
+and all device/CM gates pass. Nominal96.847mV/38.594ps misses100mV/37.5ps.
+Hot81.261mV/45.156ps misses signal; CMminimum1.797548V also below1.8V.
+All ordinary device safety gates pass, both faults detected. No overall leaf or
+parent/PHY acceptance. Saved full-wave loss diagnosis runs for all3corners,
+including cold pass, with unchanged all-branch nodal/KCL/power checks.
+Investigate actual lower-terminal via/access drops before further physical edit;
+original HBT lower escapes still4columns/.4umM3 and MOS source/drain4lower via cuts.
+Any stronger arrays require real pin geometry/DRC/LVS/freshRC, never scaled values.
