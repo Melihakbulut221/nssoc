@@ -1,0 +1,27 @@
+name: tx-phase-preset-failure-readback-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths: [scripts/read_tx_phase_preset_intrinsic_failure.py, .github/workflows/tx-phase-preset-failure-readback-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  existing-native-log-readback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify and read only existing failed native logs in cloud RAM
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/read_tx_phase_preset_intrinsic_failure.py | tee failed-native-logs.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: phase-preset-failure-readback-${{ github.run_id }}
+          path: failed-native-logs.json
+          retention-days: 30
