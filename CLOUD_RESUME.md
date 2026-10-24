@@ -7631,3 +7631,11 @@ actual shortened-supply layout. Launch original14wire-fault controls and native
 model binding with9old+6contact faults/oracle. Intrinsic model converter remains
 exact v56 (8umref/53.335umtails;7small/2extended taps), not a new conversion.
 Read actual new R/C census and native port order before composition/fullwaves.
+
+## 2026-10-24 v57 fresh1244R835C and native binding passed
+RC40057087982 passes all14wire faults; binding40057087945 passes18devices/50terms,
+nine original plus six contact-specific corruptions and exact native PDK oracle.
+Same native wire source and intrinsic8/53.335um/7small2large contacts verified.
+Native ports remain ip,inn,avdd,on,op,avss,sub,iref. Compose all18+1244+835=2097
+rows; require original14composition faults before full five loaded cases.
+New counts differ fromv56, never reuse1270R849C or old waveform.
