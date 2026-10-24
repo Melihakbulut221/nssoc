@@ -7425,3 +7425,11 @@ width hypothesis was insufficient; preserve both failures. Reduce only HBT
 emitter upper regular via array8x4->8x2 (still16cuts), leaving TopVia1 4x4,
 all other upper arrays8x4, lower emitter16cuts/.6umM3 and tailMOS16rows intact.
 Full native physical suite rerun, no marker waiver or deck modifications.
+
+## 2026-10-24 TX normal same native process reached23.514405ns
+Run40039365864 completed successful SAVED checkpoint, not full electrical pass.
+53750complete rows/14182columns,110560partial-row bytes,6098370560payload bytes.
+All original source/prefix integrity retained. Exact next descriptor preserved
+in tx-via3-normal-23ns-checkpoint-20261024.json. Dispatch same native process for
+7200more native seconds, fulltarget34ns unchanged. Fault40039368788 remains live,
+do not duplicate it. v55physical40050528141 is testing upper-array clearance.
