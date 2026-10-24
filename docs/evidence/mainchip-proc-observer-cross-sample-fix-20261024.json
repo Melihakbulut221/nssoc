@@ -1,0 +1,18 @@
+{
+  "schema": "mainchip-proc-observer-cross-sample-review-fix-v1",
+  "reviewed_source": "ad8385b564d0411609fb83c032d887af380d1174",
+  "reviewer": "/root",
+  "finding": "Surviving thread current-before CPU could regress below prior-after then recover by current-after, escaping the old endpoint-only cross-sample check.",
+  "fix": "Require both user/system current-before >= prior-after before calculating surviving-thread deltas.",
+  "control": "Actual hosted self-sample-derived before-regression with unchanged recovered after; local single-snapshot validation passes, cross-sample validation must reject.",
+  "negative_controls_defined": 39,
+  "native_controls_executed": false,
+  "original_controller_unchanged": true,
+  "workflow_registered": false,
+  "workflow_dispatch_performed": false,
+  "changed_source_sha256": {
+    "scripts/mainchip_proc_observer.py": "aa91c6122a94479fc42d8ee1ea9046ac8e753ce450f21d2b910f854ac12eef19",
+    "scripts/check_mainchip_proc_observer.py": "206c2efffedcbe7bfc7781a3357c1055baa7b937a3c3a87064571831b5c0d41e",
+    "docs/mainchip-process-observer-design-20261024.md": "66fbb3c92f257158e3151b201378013d996256439dee14e6afd11ca0f6f4aa12"
+  }
+}

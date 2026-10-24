@@ -211,6 +211,7 @@ def validate(report, previous=None, expected_identity=None):
             old=old_threads[tid]
             assert cur["directory"]==old["directory"]
             assert cur["stat_before"]["starttime_ticks"]==old["stat_after"]["starttime_ticks"], "TID reused across samples"
+            assert all(cur["stat_before"][k]>=old["stat_after"][k] for k in ("user_ticks","system_ticks")), "Thread CPU counter decreased before current sample"
             deltas[tid]={k:cur["stat_after"][k]-old["stat_after"][k] for k in ("user_ticks","system_ticks")}
             assert all(x>=0 for x in deltas[tid].values())
         result["between_samples"]=dict(

@@ -152,8 +152,17 @@ def controls(evidence):
         cross("directory-reuse-between-samples",lambda q:[metadata(q,k,"inode",identity["proc_directory"]["inode"]+1)for k in ("directory_before","directory_after")])
         cross("binary-change-between-samples",lambda q:[q["raw"][k].__setitem__("sha256","0"*64)for k in ("exe_before","exe_after")])
         cross("tid-reuse-between-samples",lambda q:[stat_field(q,prefix+"stat_"+k,22,base["derived"]["threads"][leader]["stat_after"]["starttime_ticks"]+1)for k in ("before","after")])
-        assert len(bad)==38,len(bad)
-        return dict(status="PASS_NATIVE_SELF_AND38_PROCESS_OBSERVER_FAULTS",
+        # The thread before counter regresses, then recovers by current-after.
+        # A single snapshot and the former after>=prior-after test both pass.
+        prior_user=base["derived"]["threads"][leader]["stat_after"]["user_ticks"]
+        assert prior_user>0
+        recovered=copy.deepcopy(current)
+        stat_field(recovered,prefix+"stat_before",14,prior_user-1)
+        rebound=obs.validate(recovered)
+        assert rebound["threads"][leader]["stat_after"]["user_ticks"]>=prior_user
+        reject("surviving-thread-before-regression-recovers-by-after",lambda:obs.validate(recovered,base))
+        assert len(bad)==39,len(bad)
+        return dict(status="PASS_NATIVE_SELF_AND39_PROCESS_OBSERVER_FAULTS",
             rejected=bad,actual_sample_count=len(samples),comm_parenthesis_newline_cases=len(names),
             optional_permission_fixture_verified=True,router_started=False,simulator_started=False,
             process_restart_performed=False,read_only_target=True,**obs.FLAGS)
