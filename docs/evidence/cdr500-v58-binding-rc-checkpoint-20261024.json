@@ -1,0 +1,36 @@
+{
+  "schema": "cdr500-v58-native-binding-rc-checkpoint-v1",
+  "branch": "codex/cdr500-floating-wire-diagnosis",
+  "run": 40097552747,
+  "source_head": "afd5c914cc512b68af408b49d59885116d334807",
+  "event": "push",
+  "workflow": ".github/workflows/cdr500-v58-binding-rc-cloud.yml",
+  "jobs": [
+    {
+      "id": 120882869558,
+      "name": "native (rc)",
+      "status": "in_progress",
+      "source_controls": "passed"
+    },
+    {
+      "id": 120882869745,
+      "name": "native (binding)",
+      "status": "in_progress",
+      "source_controls": "passed"
+    }
+  ],
+  "predecessor": {
+    "run": 40096705004,
+    "status": "PASS_PD500_V58_OWNED_ACCESS_FULL_PHYSICAL_AND_STRICT_WIRES_REQUIRES_FRESH_MIM_RC",
+    "summary_asset": 672301614,
+    "summary_sha256": "c757b2d7416031b94f625591f8568a08ff61a60d62ec02c5822325083827515c",
+    "parts_asset": 672301687,
+    "parts_sha256": "c0b75c3dc414160400f8a722e09a94679f8e123725e86edc49b5933bdbd207bc",
+    "gds_sha256": "c51ba01ba4c94a4fd59bb4a7462386b474818caf26739e6bb35dbbd9a38ce125"
+  },
+  "next": "Inspect exact existing run. Preserve actual terminal summaries/parts. Only if native500/1446/113/978 binding/rawRC pass, derive fresh explicit-MIM two-order RC with unchanged13+9 raw/intrinsic controls and21 composition faults. Actual R/C counts required, with non-cascading source adapter. Do not reuse old RC, cancel live cases, dispatch a duplicate or start transient before fresh RC passes.",
+  "cloud_only": true,
+  "local_workspace_artifacts_created": false,
+  "electrical_gain_measured": false,
+  "full_PHY_accepted": false
+}
