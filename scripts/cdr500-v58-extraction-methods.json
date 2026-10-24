@@ -1,0 +1,100 @@
+{
+  "source_physical_run": 40096705004,
+  "source_head": "9e7f3d3dd55ec452dfbb27520a73b67f5078067a",
+  "source_gds_sha256": "c51ba01ba4c94a4fd59bb4a7462386b474818caf26739e6bb35dbbd9a38ce125",
+  "protected": {
+    "scripts/cdr500_cleaned_source.py": "068d6666ef8ef7f56e511f43481f3f4c4c8cba734fb08f4bc6da90c1e7fa5d73",
+    "scripts/build_cdr500_cleaned_native_models.py": "d78139ce5ebff8f072765f322dadc4aa3867c97e9f7b3f42a21fb8e8eb75289d",
+    "scripts/cloud_cdr500_cleaned_binding.py": "878f3de41f194cb717500ee9e7110ede45b6535b2df5d8e23a091f538bff1b11",
+    "scripts/cloud_cdr500_cleaned_rc.py": "cbb028488aa34d0ceecc3b35617ef2b2cde2374c2b08903bf9543633e46b3fdd",
+    "scripts/cloud_cdr500_cleaned_stage.py": "23253e153d12f8bab3d26593b72fc87dd1eef8f361d11c9113dab1bb018f8d5a",
+    ".github/workflows/cdr500-cleaned-binding-rc-cloud.yml": "84296c291c95b0ae58d8ea8417cf14cc751c0d62f8b457a28249d12ed018882a",
+    "scripts/build_pcie_local_vco_hybrid_v6.py": "ab2962f0c47cc89029866761992bfdd87ab1d5649920b8bc8edaa1c54bbe5a3f",
+    "scripts/cloud_cdr_v4_rc.py": "b2294ffe27fd9aed1ebefd96ea6fc06739154db57d26cda873abc790f35a78db",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
+    "docs/evidence/cdr500-input-access-v58-physical-pass-20261024.json": "f5f4bcb3cdb548070152c3d06d1f75dd01d1be526f7636220f756bdfc5cfcdde",
+    "scripts/cdr500_v58_source.py": "ce1e506ce69760e3cebd5639ac07f943153bcf6fe58a60f5177be4d9459f5025",
+    "scripts/cloud_cdr500_v58_binding.py": "e989a9795312e6da4955e226f80b8c7ca6c2dde6a27717fa989aeea91bc7ae3e",
+    "scripts/cloud_cdr500_v58_rc.py": "d9e82c2b9eaa57cf4e6ebe2bb7e5ac2d1e61ce58bb2789b122309642529a10e6",
+    "scripts/cloud_cdr500_v58_stage.py": "d432349ecfa43bb84725ac99c00467cfc34ca96f2a30af419261d91f2a9e4e99",
+    ".github/workflows/cdr500-v58-binding-rc-cloud.yml": "e304dc79e3510bfad6107ca6262ce4688e6d62c9f041fc96305da5fd2054ff12",
+    "docs/evidence/cdr500-v58-fresh-binding-rc-design-20261024.md": "eb819e9b3eb11bcc6b8f3b2a43bb5081257597c9ad736ec8cbe8173728ff563f"
+  },
+  "controller_derivations": {
+    "scripts/cloud_cdr500_v58_binding.py": {
+      "original": "scripts/cloud_cdr500_cleaned_binding.py",
+      "original_sha256": "878f3de41f194cb717500ee9e7110ede45b6535b2df5d8e23a091f538bff1b11",
+      "adapted_sha256": "e989a9795312e6da4955e226f80b8c7ca6c2dde6a27717fa989aeea91bc7ae3e",
+      "reversible_changes": [
+        {
+          "before": "from cdr500_cleaned_source import",
+          "after": "from cdr500_v58_source import",
+          "count": 1
+        },
+        {
+          "before": "cloud-cdr500-cleaned-binding",
+          "after": "cloud-cdr500-v58-binding",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd500_active_input_v57",
+          "after": "nssoc_cdr_pd500_input_access_v58",
+          "count": 2
+        }
+      ]
+    },
+    "scripts/cloud_cdr500_v58_rc.py": {
+      "original": "scripts/cloud_cdr500_cleaned_rc.py",
+      "original_sha256": "cbb028488aa34d0ceecc3b35617ef2b2cde2374c2b08903bf9543633e46b3fdd",
+      "adapted_sha256": "d9e82c2b9eaa57cf4e6ebe2bb7e5ac2d1e61ce58bb2789b122309642529a10e6",
+      "reversible_changes": [
+        {
+          "before": "from cdr500_cleaned_source import",
+          "after": "from cdr500_v58_source import",
+          "count": 1
+        },
+        {
+          "before": "cloud-cdr500-floating-wire-cleanup",
+          "after": "cloud-cdr500-input-access-v58-physical",
+          "count": 1
+        },
+        {
+          "before": "cloud-cdr500-cleaned-rc-transfer",
+          "after": "cloud-cdr500-v58-rc-transfer",
+          "count": 1
+        }
+      ]
+    },
+    "scripts/cloud_cdr500_v58_stage.py": {
+      "original": "scripts/cloud_cdr500_cleaned_stage.py",
+      "original_sha256": "23253e153d12f8bab3d26593b72fc87dd1eef8f361d11c9113dab1bb018f8d5a",
+      "adapted_sha256": "d432349ecfa43bb84725ac99c00467cfc34ca96f2a30af419261d91f2a9e4e99",
+      "reversible_changes": [
+        {
+          "before": "from cdr500_cleaned_source import",
+          "after": "from cdr500_v58_source import",
+          "count": 1
+        },
+        {
+          "before": "cdr500-cleaned-",
+          "after": "cdr500-v58-",
+          "count": 2
+        },
+        {
+          "before": "cloud-cdr500-floating-wire-cleanup",
+          "after": "cloud-cdr500-input-access-v58-physical",
+          "count": 1
+        },
+        {
+          "before": "cloud_cdr500_cleaned_",
+          "after": "cloud_cdr500_v58_",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "scope": "Fresh exact v58 native binding and raw wire RC; actual R/C counts required, no loaded transient or electrical acceptance."
+}

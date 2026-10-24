@@ -1,0 +1,9 @@
+# Fresh native binding and raw RC for the physically qualified CDR v58
+
+Run40096705004 qualified the exact candidate GDS with all560 DRC categories, deep and flat500-device LVS,12 physical faults, native160 planes/51 nets/19 faults, five child-placement faults, and the unchanged strict113-component/978-anchor wire gate. The serialized-material repair is covered by three actual Region/text corruption controls; those operate on data reread from GDS, not separately written fault GDS files.
+
+This next stage restores that exact immutable run and reruns native model binding and fresh whole-layout raw wire extraction. It retains all500 intrinsic devices and1446 terminals, allseven MIM capacitors, the exact four53.335um MOS devices and217 small plus four large native taps. The original14 model faults, native PDK contact-equation readback and one-binary-ULP geometry controls are unchanged. Raw extraction retains all13 raw-RC corruptions and actual113 components/978 points; resistance and capacitance counts will be measured, not copied from the old layout.
+
+Only imports, top/subcircuit names, output/publication paths and the qualified source contract change in the original binding/raw-RC controllers. Their full reversible substitutions and hashes are recorded in the methods manifest. The old sources and evidence remain unchanged. Ten prerequisite corruption controls independently reject wrong source/GDS, census/material faults, DRC/LVS rejection, wrong body-anchor count and wrong large-tap geometry.
+
+The two parallel native jobs run only in GitHub. No loaded transient is included. A raw-RC pass still requires fresh explicit intrinsic-MIM masking, two extraction orders, raw and composition faults, then the original ten loaded cases with34.25ns/256-bit gates. No resistance gain, electrical closure or full PHY acceptance is claimed.
