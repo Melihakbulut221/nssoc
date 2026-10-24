@@ -23,6 +23,8 @@ Input common mode and swing have **no production defaults**. They must be bound 
 
 The isolated source still uses a fixed-frequency external test clock. It is not actual PLL replay or PLL connection. Before any native dispatch, the controller must additionally validate the qualified engine/models, exact model restoration, zero operating point, every native column and terminal, solver diagnostics and complete capture. The source-only control workflow does not contain a native electrical job. The all-HBT screen retains VCE≥0.4 V after startup, whole-trajectory |VCE|≤1.6 V, |VBE|≤1 V and |IC|/emitter≤3 mA.
 
+The first-cell MP/QP assignment is not a recursive all31 wiring plan. For parent origin O and halfperiod H, the master/slave divide-by-two origins are O−H and O. At the next level the original stride4 clocks require origins START−2UI, START−UI, START and START+UI. The sa-driven master produces START−3UI; reaching the desired START+UI periodic phase requires a fixed polarity swap (one child halfperiod), together with a separately defined startup sequence. Other branches also need explicit ownership. A modulo-period match does not prove the original startup interval. All deeper phase routes and reset/release schedules must be fixed before testing, never fitted from a passing waveform.
+
 A downstream divider is a real fanout load, but this bench does not yet contain the TX selector-level clock buffer or selector load. Phase55 outputs are a high-common-mode interface; the actual selector level must be implemented and measured, not connected by an assumed ideal translation. The eleven existing qualified clock leaves are DC-reference cells, not clock-distribution drivers.
 
 ## Separate physical reset/synchronization hypothesis
@@ -49,3 +51,7 @@ Crucially, holding an upstream divider in reset stops its children's clocks. Thi
 5. Connect the real PLL, then all31 actual mux clocks, and run original full-TX bit/phase/load gates with no internal ideal sources.
 
 No acceptance here extends to a complete clock tree, PLL acquisition, serial PCIe PHY, four lanes, main-chip routing or final timing.
+
+## Source-review corrections
+
+The independent source review found missing corruption-oracle checks for the reset level subcircuit's public port order and the selector's seed/load/bleeder resistors. The oracle now verifies those exact ports, all selector cards and their endpoints/geometries, with separate port, symmetric-seed, wrong-endpoint and bleeder-value faults. Path validation also now rejects actual newline, carriage return, quote and NUL characters. These are source-control coverage corrections; they do not provide native reset acceptance.

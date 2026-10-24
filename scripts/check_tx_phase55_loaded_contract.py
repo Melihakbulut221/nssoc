@@ -40,6 +40,7 @@ def reset_validate(text):
     # Exact original limiter/real MIM feed-forward, with only its public names changed.
     mapping={'clkp':'ip','clkn':'in','ckp':'cp','ckn':'cn'}
     level_expected=[[mapping.get(x,x)for x in r]for r in front['cards']if r[0]!='XSECOND']
+    assert d['nssoc_phase_reset_level_v1']['ports']==['ip','in','cp','cn','avdd','avss','sub']
     assert d['nssoc_phase_reset_level_v1']['cards']==level_expected
     sync=d['nssoc_phase_reset_sync2_v1'];s={r[0]:r for r in sync['cards']}
     assert sync['ports']==['reqp','reqn','clkp','clkn','qp','qn','avdd','avss','sub']
@@ -54,6 +55,12 @@ def reset_validate(text):
     selector=d['nssoc_phase_reset_feedback_selector_v1']
     assert selector['ports']==['fbp','fbn','runp','runn','outp','outn','avdd','avss','sub']
     a={r[0]:r for r in selector['cards']}
+    assert len(a)==len(selector['cards'])and set(a)=={'XBIAS','XREF','XAP','XAN','XBP','XBN','XSA','XSB','XT','XRP','XRN','XBA','XBB','XHP','XLP','XHN','XLN'}
+    for n,nodes,w,l in [('XRP','avdd outp','8u','2.12u'),('XRN','avdd outn','8u','2.12u'),
+      ('XBA','ea avss','1u','38.4u'),('XBB','eb avss','1u','38.4u'),
+      ('XHP','avdd seedp','4u','4u'),('XLP','seedp avss','4u','40u'),
+      ('XHN','avdd seedn','4u','4u'),('XLN','seedn avss','4u','20u')]:
+        assert a[n]==[n,*nodes.split(),'sub','rppd','w='+w,'l='+l,'b=0','sw_et=1']
     # Existing latch current levels and two-stage stack; no added series enable.
     assert a['XT']==['XT','tail','ref','avss','sub','npn13G2','Nx=4']
     for n,term in [('XAP','outn fbp ea'),('XAN','outp fbn ea'),('XBP','outn seedp eb'),('XBN','outp seedn eb')]:
@@ -120,8 +127,19 @@ def main():
     try:bench.prepare('not exact native model','not exact summary',boundary,'model.spice','models','r3.osdi')
     except AssertionError:rejected.append('unqualified_model_summary')
     else:raise AssertionError('Unqualified model accepted')
+    bench.validate_paths('/actual/model.spice','/actual/models','/actual/r3.osdi')
+    for name,path in [('newline','model\n.spice'),('carriage_return','model\r.spice'),('quote','bad"model'),('nul','model\x00')]:
+        try:bench.validate_paths(path)
+        except AssertionError:rejected.append('path_'+name)
+        else:raise AssertionError('Unsafe path accepted: '+name)
     reset=(ROOT/RESET).read_text();positive=reset_validate(reset);reset_faults=[]
     for name,old,new in [
+      ('level_input_port_swap','nssoc_phase_reset_level_v1 ip in cp cn','nssoc_phase_reset_level_v1 in ip cp cn'),
+      ('level_output_port_swap','nssoc_phase_reset_level_v1 ip in cp cn','nssoc_phase_reset_level_v1 ip in cn cp'),
+      ('symmetric_seed','XLP seedp avss sub rppd w=4u l=40u','XLP seedp avss sub rppd w=4u l=20u'),
+      ('seed_endpoint','XHP avdd seedp sub','XHP avdd seedn sub'),
+      ('load_endpoint','XRP avdd outp sub','XRP avss outp sub'),
+      ('bleeder_value','XBA ea avss sub rppd w=1u l=38.4u','XBA ea avss sub rppd w=1u l=3.84u'),
       ('master_clock_polarity','XM rp rn mp mn clkn clkp','XM rp rn mp mn clkp clkn'),
       ('wrong_seed','w=2.2u l=2u','w=2u l=2u'),
       ('feedback_reversed','XRMUX qn qp','XRMUX qp qn'),

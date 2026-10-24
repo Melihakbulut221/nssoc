@@ -2,8 +2,8 @@
   "schema": "phase55-loaded-source-methods-v1",
   "source_only": true,
   "protected": {
-    "scripts/tx_phase55_loaded_contract.py": "4e85a0540689bbe7382803dc1b7642058aae7669020d8aab70c97265071c5f69",
-    "scripts/check_tx_phase55_loaded_contract.py": "5e4671517986ca7b9b9c059c5e29aae4a338f1a092d62be773656f2abd5966d5",
+    "scripts/tx_phase55_loaded_contract.py": "d029c5e581b5b761365b318ab4decc3312b434d5e497e9c4bac37efeebc152bd",
+    "scripts/check_tx_phase55_loaded_contract.py": "9e6ddfe0f589e797e4de1451cd1775968aa5c3cdcbeff8766b90fed8c3a43b2a",
     "hw/soc/analog/pcie/clock_div2_reset_feedback_candidate_v1.spice": "5dbc69634d9b9421fea2da4a1fec30424b7209fa41021878c1ed493f4e1f935e",
     ".github/workflows/tx-phase55-loaded-source-controls-cloud.yml": "2208c49c252a9391b2ec7d11ca3d1b8aa9a974cf01e855aeeda01e7b8b742e3a",
     "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
@@ -35,5 +35,10 @@
   "reset_native_layout_available": false,
   "full_tree_reset_implemented": false,
   "PLL_connected": false,
-  "full_PHY_accepted": false
+  "full_PHY_accepted": false,
+  "independent_review_corrections": [
+    "Exact reset level public-port order and two swap faults",
+    "All selector resistor cards/endpoints/geometry with seed/load/bleeder corruptions",
+    "Actual newline/CR/quote/NUL path rejection"
+  ]
 }

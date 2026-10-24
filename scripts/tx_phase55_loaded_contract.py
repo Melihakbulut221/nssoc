@@ -41,6 +41,8 @@ def validate_boundary(boundary):
     assert set(boundary['exact_observer_field_paths'])=={'common_mode_v','single_ended_amplitude_v'}
     assert all(isinstance(v,str)and v for v in boundary['exact_observer_field_paths'].values())
     clock_points(boundary['common_mode_v'],boundary['single_ended_amplitude_v'])
+def validate_paths(*paths):
+    assert all(not any(c in str(p) for c in ('"','\n','\r','\x00')) for p in paths)
 def prepare(model_text,rc_summary_text,boundary,model_path,model_directory,r3_osdi):
     validate_boundary(boundary)
     assert digest(rc_summary_text)==RC_SUMMARY
@@ -89,7 +91,7 @@ def prepare(model_text,rc_summary_text,boundary,model_path,model_directory,r3_os
     assert not re.search(r'(?im)^\s*(?:\.ic\b|\.nodeset\b|alter\b)|\buic\b',deck)
     assert sum(line.startswith('V')for line in lines)==3
     assert not any(line.startswith(('B','E','G','I','R','C'))for line in lines[1:])
-    assert all('"'not in str(p)and '\\n'not in str(p)and '\\r'not in str(p)for p in (model_path,model_directory,r3_osdi))
+    validate_paths(model_path,model_directory,r3_osdi)
     contract=dict(schema='phase55-real-child-load-v1',model_sha256=MODEL_SHA,rc_run=RC_RUN,rc_summary_sha256=RC_SUMMARY,
       rc_parts_sha256=RC_PARTS,boundary=boundary,instances=instances,hbt=bindings,vectors=vectors,
       device_count=165,native_wire_R=714,native_wire_C=1230,actual_intrinsic_MIM=12,
