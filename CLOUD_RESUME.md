@@ -7981,3 +7981,7 @@ Imported exact14 added files from independently reviewed eb2d69856ee29b078af437a
 
 ### Root M4 reconciliation candidate; requires native proof
 Run40070690392 measured all48 C/D old M4 parent pieces: all touched old child geometry; NONE were floating.32 small enclosures have exact retained-child attachment under320um shift.16 ring overlays are over replaced child routes, including changed retained-base routes; blind translation rejected. Candidate removes rings only if no root-owned Via3/Via4 contact or external parent endpoint exists; all child drawing/ports/devices preserved. Drawing-only supply separation before/after GDS serialization, full560DRC,500deep/flatLVS and allfaultcontrols required. Physical acceptance not yet claimed.
+
+
+### Correct native ownership supersedes attempted M4-strip relocation
+40071409794 correctly rejected translation because strips have root Via3. Native ownership readback40071753728 plus original generation sources resolves purpose:32 strips are intentional v14 MOS-source bypass pieces with96 root Via3; preserve them all.16 rings are v16 250nm data-wire widening deltas around changed child routes; every ring has zero root-ownedVia3/Via4. Candidate removes ONLY these16 obsolete widening overlays with exact oldchild/rootendpoint guards. No floating-metal claim, no source-bypass deletion. Drawing-only supply separation andfull500physicalgate remainmandatory. PLL same-process delta publication run40071288423 is active atc61befbd; no duplicate native launch.

@@ -190,7 +190,7 @@ def main():
  # Reconcile original C/D Metal4 enclosures with the replacement child.
  # These pieces were attached to old child routes, not floating metal.
  m4_path=Path.cwd()/'docs/evidence/cdr-sampler-active-input-v57-parent-m4-attachments-20261024.json'
- m4_pin=json.loads(m4_path.read_text());assert m4_pin['run']==40070690392
+ m4_pin=json.loads(m4_path.read_text());assert m4_pin['run']==40071753728
  witnesses=m4_pin['report']['native']['records'];assert len(witnesses)==48
  m4_index=L.layer(50,0);m4_direct=pya.Region(T.shapes(m4_index)).flatten().merged()
  old_m4=pya.Region(L.cell('pd_child_sampler').begin_shapes_rec(m4_index)).flatten().merged()
@@ -212,28 +212,28 @@ def main():
   # Child vias are intentionally replaced with their verified child. Root-owned
   # vias are different: none may depend on a relocated/removed old enclosure.
   contacts={str(v):q.interacting(r).count()for v,q in root_vias.items()}
-  assert all(n==0 for n in contacts.values()),('Root endpoint depends on old M4 enclosure',tag,str(box),contacts)
+  assert contacts==witness['root_via_counts'],'Root via readback changed'
   assert m4_direct.interacting(r).count()==1,'External root M4 attachment'
   if witness['shifted_old_attachment_matches']:
+   # These are intentional v14 MOS-source bypass pieces with three owned
+   # Via3 cuts each. They are preserved, not translated or deleted.
    assert box.width()==1225 and box.height()==290 and polygon.area()==355250
-   candidate=r.transformed(pya.Trans(320000,0))
-   target=new_m4.transformed(instance.cplx_trans).interacting(candidate)
-   assert target.count()==1 and(old_touch.transformed(pya.Trans(320000,0))^target).is_empty()
-   m4_added+=candidate;action='RELOCATE_WITH_IDENTICAL_RETAINED_CHILD_COMPONENT'
-   after=[str(q)for q in candidate.each()]
+   assert contacts=={'49':3,'66':0}
+   action='PRESERVE_V14_SOURCE_BYPASS_METAL_AND_ALL_ROOT_VIAS'
+   after=[str(polygon)]
   else:
-   assert box.width()==4150 and polygon.holes()>=1,'Not a witnessed old route enclosure'
-   # Old overlay touches only one old child route and no root-owned via.
-   # New child is independently DRC/LVS passed and keeps its own full routes.
-   # Full parent native checks below must prove their new connectivity.
-   action='REMOVE_OBSOLETE_PARENT_ENCLOSURE_OVER_REPLACED_CHILD_ROUTE';after=[]
-  m4_removed+=r
+   assert all(n==0 for n in contacts.values()),('Root endpoint depends on old M4 overlay',tag,str(box),contacts)
+   assert box.width()==4150 and polygon.holes()>=1,'Not a witnessed old route widening overlay'
+   # These v16 widening deltas surround one replaced child route, without
+   # any root-owned via. Preserve the replacement child's complete own route.
+   action='REMOVE_OBSOLETE_V16_PARENT_WIDENING_OVERLAY';after=[];m4_removed+=r
   m4_records.append(dict(tag=tag,action=action,before_polygon_dbu=str(polygon),after_polygons_dbu=after,
    old_child_attachment_count=1,old_piece_was_floating=False,root_owned_via_contacts=contacts,
    confined_to_replaced_child=True,no_external_parent_m4_component=True,
-   exact_translated_attachment=bool(witness['shifted_old_attachment_matches'])))
- assert len(m4_records)==48 and sum(r['exact_translated_attachment']for r in m4_records)==32
- assert sum(not r['exact_translated_attachment']for r in m4_records)==16
+   preserved_v14_source_bypass=bool(witness['shifted_old_attachment_matches'])))
+ assert len(m4_records)==48 and sum(r['preserved_v14_source_bypass']for r in m4_records)==32
+ assert sum(not r['preserved_v14_source_bypass']for r in m4_records)==16
+ assert m4_removed.count()==16 and m4_added.is_empty()
  corrected_m4=((m4_direct-m4_removed)+m4_added).merged()
  T.shapes(m4_index).clear();T.shapes(m4_index).insert(corrected_m4)
  expected_metal[(50,0)]=corrected_m4
@@ -251,6 +251,10 @@ def main():
    point=pya.DBox(*nums(before['ports'][name])).to_itype(layout.dbu).center()
    n=extractor.probe_net(regions[134],point);assert n is not None
    nets[name]=n.cluster_id
+  if nets['avss']==nets['sub']:
+   rejected=pya.SaveLayoutOptions();rejected.select_cell(top.cell_index())
+   layout.write(str(out/'rejected-supply-short.gds'),rejected)
+   (out/'rejected-supply-short.json').write_text(json.dumps(dict(accepted=False,clusters=nets,reason='Candidate drawing-only short; never a physical pass'))+'\n')
   assert nets['avss']!=nets['sub'],'Physical AVSS/SUB wire short remains'
   return dict(method='Seven drawing metals and six via layers without text union',clusters=nets,separate=True)
  wire_separation=supply_separation(L,T)
