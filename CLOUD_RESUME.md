@@ -7492,3 +7492,13 @@ If this candidate passes, final sampler must retain existing single8um reference
 omit duplicate gain reference, replace old passive input divider, preserve all
 existing latch tails/bias. Requires actual whole-parent circuit and new geometry/
 DRC/LVS/RC/fullwaves; no acceptance from this isolated native candidate.
+
+## 2026-10-24 v55 full actual electrical results retained; remaining hot loss
+Full5case40052062927 retained824columns/110385rows/full34.25ns,zero diagnostics.
+Nominal116.998mV/33.281ps and cold131.004mV/30.156ps pass all originalgates.
+Hot97.374mV/38.594ps still fails100mV/37.5ps; CM1.808765..1.811481V and allordinary
+transistor safety pass. Both faults detected. No overall/parent/fullPHY acceptance.
+Full saved loss diagnosis launched foractual1270R849C. Investigate remaining
+collector access and load capacitance with real geometry before choosing fix.
+v56 independent existing8um reference compatibility screen40052296928 queued;
+keep separate from proven v55 physical variant and do not reuse its wire model.
